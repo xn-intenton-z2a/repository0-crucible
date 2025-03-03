@@ -20,7 +20,8 @@ describe("Main Module General Functions", () => {
   test("main with --help prints help details", () => {
     const spy = vi.spyOn(console, "log");
     main(["--help"]);
-    expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options\nOptions: --help, --build, --serve, --diagnostics, --integrate, --crawl");
+    const helpMessage = `Usage: node src/lib/main.js [options]\nOptions: --help, --build, --serve, --diagnostics, --integrate, --crawl`;
+    expect(spy).toHaveBeenCalledWith(helpMessage);
     spy.mockRestore();
   });
 
@@ -82,7 +83,8 @@ describe("Utility Functions", () => {
   test("displayHelp prints the correct usage message", () => {
     const spy = vi.spyOn(console, "log");
     displayHelp();
-    expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options\nOptions: --help, --build, --serve, --diagnostics, --integrate, --crawl");
+    const helpMessage = `Usage: node src/lib/main.js [options]\nOptions: --help, --build, --serve, --diagnostics, --integrate, --crawl`;
+    expect(spy).toHaveBeenCalledWith(helpMessage);
     spy.mockRestore();
   });
 
