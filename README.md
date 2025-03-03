@@ -4,6 +4,7 @@
 
 ## Change Log
 - Enhanced main.js with additional library functions: buildOntology, serveWebInterface, and displayHelp to reflect the mission of automated ontology building and management as outlined in CONTRIBUTING.md.
+- Updated help message formatting in main.js to remove an extraneous closing bracket, ensuring consistency with test expectations.
 
 ## Repository Template
 
@@ -58,6 +59,7 @@ node src/lib/main.js --help
 
 - Added new functions in main.js to build an ontology, simulate starting a web server, and display help instructions.
 - Extended test coverage to ensure all CLI modes are handled and the core functionalities work as expected.
+- Refined help message formatting in main.js to remove an extraneous closing bracket, aligning output with test expectations.
 
 ## Contributing
 
