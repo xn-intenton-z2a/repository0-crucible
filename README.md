@@ -1,12 +1,14 @@
 # owl-builder
 
-`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology. The recent update extends functionalities with ontology validation, export, and import features.
+`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology. The recent update extends functionalities with ontology validation, export, and import features, as well as new utility functions for ontology summary, refreshing, and analysis.
 
 ## Change Log
 - Extended ontology management functions: added persist, load, query, validate, export, and import features.
-- Updated CLI help message to include new options: --validate, --export, --import.
-- Refreshed documentation and examples to reflect new ontology management features.
-- Improved test coverage in unit tests including additional tests for new features.
+- Added new utility functions: getOntologySummary, refreshOntology (now guarantees a new creation date), and analyzeOntology for providing summary and analysis of ontologies.
+- Updated CLI help message to include new options: --validate, --export, --import, --summary, --refresh, and --analyze.
+- Updated lodash import to support CommonJS modules.
+- Refreshed documentation and examples to reflect new ontology management and analysis features.
+- Improved test coverage in unit tests including additional tests for new utility functions.
 
 ## Repository Template
 
@@ -41,6 +43,9 @@ npm install owl-builder
   - Validate Ontology: `--validate`
   - Export Ontology to XML: `--export`
   - Import Ontology from XML: `--import`
+  - Get Ontology Summary: `--summary`
+  - Refresh Ontology: `--refresh`
+  - Analyze Ontology: `--analyze`
 
 ## Usage
 
@@ -110,6 +115,21 @@ node src/lib/main.js --help
 - **Import Ontology from XML:**
   ```bash
   node src/lib/main.js --import
+  ```
+
+- **Get Ontology Summary:**
+  ```bash
+  node src/lib/main.js --summary
+  ```
+
+- **Refresh Ontology:**
+  ```bash
+  node src/lib/main.js --refresh
+  ```
+
+- **Analyze Ontology:**
+  ```bash
+  node src/lib/main.js --analyze
   ```
 
 ## Contributing
