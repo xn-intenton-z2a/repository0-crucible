@@ -39,6 +39,8 @@ edge-cache-cli bridges the gap between local development and production‑grade 
 
 ## Agentic contribution house choice options (programmatically parsed): START
 
+Workflow schedule: schedule-2
+
 ## Issue House Choice Options
 
 repository specific activities:

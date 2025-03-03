@@ -57,6 +57,8 @@ There are many ways to get involved:
 
 ## Agentic contribution house choice options (programmatically parsed): START
 
+Workflow schedule: schedule-2
+
 ## Issue House Choice Options
 
 repository specific activities:

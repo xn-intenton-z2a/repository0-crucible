@@ -39,6 +39,8 @@ Thank you for your interest in contributing to **json‑schema‑diff**! This do
 
 ## Agentic contribution house choice options (programmatically parsed): START
 
+Workflow schedule: schedule-2
+
 ## Issue House Choice Options
 
 repository specific activities:
