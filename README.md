@@ -1,28 +1,29 @@
-# repository0-crucible
+# owl-builder
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows and serve as a base for ontology-based JavaScript libraries.
+`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, and even serve a web interface for interactive querying and visualization.
 
 ## Change Log
-- Fixed linting errors by updating single quotes to double quotes in CLI option checks within main.js.
-- Refactored help message formatting in main.js to correctly display usage instructions and align with the ontology management mission outlined in CONTRIBUTING.md.
-- Enhanced CLI function implementations to better reflect ontology building, diagnostics, integration, and crawling functionalities.
-- Extended test coverage in tests/unit/main.test.js to cover all CLI options and ensure consistency with updated help message formats.
+- Updated README to align with CONTRIBUTING guidelines.
+- Refreshed documentation and examples to accurately reflect owl-builder's mission of ontology management.
+- Standardized help message and CLI output across commands.
+- Improved test coverage in the unit tests.
 
 ## Repository Template
 
-The repository is intended as a template that includes:
-* A Template Base: A starting point for new projects.
-* A Running Experiment: An example implementation that demonstrates one way to use the template.
-* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+This repository serves as a template to:
 
-See [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
+* Kickstart new projects with ontology management capabilities.
+* Demonstrate best practices for CLI and web interface based applications.
+* Provide an example implementation using automated CI/CD workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib).
+
+See [TEMPLATE-README.md](./TEMPLATE-README.md) for additional details.
 
 ## Installation
 
 Install via npm:
 
 ```bash
-npm install repository0-crucible
+npm install owl-builder
 ```
 
 ## Features
@@ -37,7 +38,7 @@ npm install repository0-crucible
 
 ## Usage
 
-To run the CLI tool and see help instructions:
+Run the CLI tool to see help instructions:
 
 ```bash
 node src/lib/main.js --help
@@ -75,16 +76,9 @@ node src/lib/main.js --help
   node src/lib/main.js --crawl
   ```
 
-## Incremental Changes Plan
-
-- Fixed linting issues by ensuring consistent quoting and formatting in main.js.
-- Updated CLI options: Refactored the help message and enhanced function implementations to align with the ontology management mission.
-- Improved test cases to reflect changes in CLI output and format.
-- Refined documentation and usage examples in this README.
-
 ## Contributing
 
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively. Your input helps make owl-builder a more robust tool for ontology management.
 
 ## License
 
