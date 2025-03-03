@@ -1,6 +1,6 @@
-# repository0
+# repository0-crucible
 
-`repository0` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
+`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
 
 To create a self-evolving agentic coding system of your own based on this one see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
@@ -20,7 +20,7 @@ The repository is intended as a template that includes:
 Install via npm:
 
 ```bash
-npm install repository0
+npm install repository0-crucible
 ```
 
 ## Features

@@ -70,7 +70,7 @@ function handleDiagnostics() {
 }
 
 function handleGreet() {
-  console.log("Hello, welcome to repository0!");
+  console.log("Hello, welcome to repository0-crucible!");
 }
 
 function handleSum(args) {

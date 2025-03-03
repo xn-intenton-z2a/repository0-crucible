@@ -1,5 +1,5 @@
 {
-  "name": "@xn-intenton-z2a/repository0",
+  "name": "@xn-intenton-z2a/repository0-crucible",
   "version": "1.3.1-9",
   "description": "Demo repository showcasing agentic‑lib workflows with a minimal CLI demonstration. Updated to align the mission statement, enhance error handling, and streamline demo arithmetic operations, including a new exponentiation feature.",
   "type": "module",

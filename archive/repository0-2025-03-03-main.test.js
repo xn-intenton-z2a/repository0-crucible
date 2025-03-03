@@ -69,7 +69,7 @@ describe("CLI Behavior", () => {
   test("displays greeting message when --greet flag is provided", async () => {
     const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--greet"]);
-    expect(consoleSpy).toHaveBeenCalledWith("Hello, welcome to repository0!");
+    expect(consoleSpy).toHaveBeenCalledWith("Hello, welcome to repository0-crucible!");
     consoleSpy.mockRestore();
   });
 
@@ -228,7 +228,7 @@ describe("CLI Behavior", () => {
     const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--sum", "2", "3", "--greet"]);
     expect(consoleSpy).toHaveBeenCalledWith("Sum: 5");
-    expect(consoleSpy).not.toHaveBeenCalledWith("Hello, welcome to repository0!");
+    expect(consoleSpy).not.toHaveBeenCalledWith("Hello, welcome to repository0-crucible!");
     consoleSpy.mockRestore();
   });
 

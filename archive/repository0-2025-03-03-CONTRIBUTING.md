@@ -1,4 +1,4 @@
-# repository0
+# repository0-crucible
 
 Thank you for your interest in contributing to **agentic‑lib**! This document outlines our guidelines for human and
 automated contributions, ensuring that our core library remains robust, testable, and efficient in powering our reusable
@@ -6,7 +6,7 @@ GitHub workflows.
 
 ## Mission Statement
 
-`repository0` is a demo repository that showcases the GitHub workflows imported from intentïon `agentic‑lib`. Its 
+`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon `agentic‑lib`. Its 
 primary purpose is to demonstrate these automated CI/CD workflows. The source file, test file, README.md and package.json
 are maintained by the repository's workflows.
 
@@ -1482,7 +1482,7 @@ undocumented chores:
 # Ensure README.md begins like this:
 
 START_README_BEGINNING
-# `repository0`
+# `repository0-crucible`
 
 The repository is intended as a template that includes:
 * A Template Base: A starting point for new projects.
@@ -1490,7 +1490,7 @@ The repository is intended as a template that includes:
 * Workflows from `agentic‑lib` which reference reusable workflows.
 
 ## Overview
-`repository0` is a demo repository that showcases the GitHub workflows imported from intentïon `agentic‑lib`. Its primary purpose is to demonstrate these automated CI/CD workflows.
+`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon `agentic‑lib`. Its primary purpose is to demonstrate these automated CI/CD workflows.
 
 ## What’s Inside
 

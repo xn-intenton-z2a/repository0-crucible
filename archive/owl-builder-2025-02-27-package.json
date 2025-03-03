@@ -1,5 +1,5 @@
 {
-  "name": "@xn-intenton-z2a/repository0",
+  "name": "@xn-intenton-z2a/repository0-crucible",
   "version": "1.2.3-8",
   "description": "owl-builder: A versatile CLI tool and JavaScript library for building, managing, and querying OWL ontologies.",
   "type": "module",
