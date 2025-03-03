@@ -3,9 +3,9 @@
 `repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows and serve as a base for ontology-based JavaScript libraries.
 
 ## Change Log
-- Enhanced main.js with additional functions: buildOntology, serveWebInterface, displayHelp, diagnostics, integrateOntology, and crawlData to align with the mission of automated ontology building and management as outlined in CONTRIBUTING.md.
-- Updated help message formatting in main.js to remove an extra closing bracket and include new options: --diagnostics, --integrate, and --crawl.
-- Extended test coverage in tests/unit/main.test.js to cover new CLI options and functionalities.
+- Refactored CLI help message in main.js for proper formatting.
+- Enhanced main.js with functionalities aligned with the ontology management mission including buildOntology, serveWebInterface, displayHelp, diagnostics, integrateOntology, and crawlData.
+- Extended test coverage in tests/unit/main.test.js to cover all CLI options and functionalities.
 
 ## Repository Template
 
@@ -76,9 +76,9 @@ node src/lib/main.js --help
 
 ## Incremental Changes Plan
 
-- Added new CLI options: --diagnostics, --integrate, and --crawl for better alignment with the mission of ontology management and public data integration.
-- Extended test coverage to ensure reliability of all new functionalities.
-- Refined help message and documentation to reflect these enhancements.
+- Refactored CLI help message to correctly display usage instructions.
+- Added better alignment with the mission of ontology management and public data integration.
+- Extended test coverage to ensure all CLI functionalities are validated.
 
 ## Contributing
 
