@@ -1,4 +1,6 @@
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import fs from "fs";
+import path from "path";
 import {
   main,
   buildOntology,
@@ -7,26 +9,31 @@ import {
   diagnostics,
   integrateOntology,
   crawlData,
+  persistOntology,
+  loadOntology,
+  queryOntology,
 } from "@src/lib/main.js";
+
+const ontologyPath = path.resolve(process.cwd(), "ontology.json");
 
 describe("Main Module General Functions", () => {
   test("main without args prints default message", () => {
-    const spy = vi.spyOn(console, "log");
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main([]);
     expect(spy).toHaveBeenCalledWith("Run with: []");
     spy.mockRestore();
   });
 
   test("main with --help prints help details", () => {
-    const spy = vi.spyOn(console, "log");
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--help"]);
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query");
     spy.mockRestore();
   });
 
   test("main with --build calls buildOntology and returns ontology", () => {
-    const spy = vi.spyOn(console, "log");
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const ontology = main(["--build"]);
     expect(spy).toHaveBeenCalledWith("Ontology built:", ontology);
     expect(ontology).toHaveProperty("title", "Sample Ontology");
@@ -34,21 +41,21 @@ describe("Main Module General Functions", () => {
   });
 
   test("main with --serve calls serveWebInterface", () => {
-    const spy = vi.spyOn(console, "log");
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--serve"]);
     expect(spy).toHaveBeenCalledWith("Starting web server on port 8080...");
     spy.mockRestore();
   });
 
   test("main with --diagnostics calls diagnostics", () => {
-    const spy = vi.spyOn(console, "log");
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--diagnostics"]);
     expect(spy).toHaveBeenCalledWith("Diagnostics:");
     spy.mockRestore();
   });
 
   test("main with --integrate returns integrated ontology", () => {
-    const spy = vi.spyOn(console, "log");
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const integrated = main(["--integrate"]);
     expect(spy).toHaveBeenCalledWith("Ontology integrated:", integrated);
     expect(integrated).toHaveProperty("integrated", true);
@@ -57,10 +64,50 @@ describe("Main Module General Functions", () => {
   });
 
   test("main with --crawl returns crawled data", () => {
-    const spy = vi.spyOn(console, "log");
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const crawled = main(["--crawl"]);
     expect(spy).toHaveBeenCalledWith("Public data crawled:", crawled);
     expect(crawled).toHaveProperty("source", "PublicDataSource");
+    spy.mockRestore();
+  });
+});
+
+describe("Extended Functionality", () => {
+  beforeEach(() => {
+    if (fs.existsSync(ontologyPath)) {
+      fs.unlinkSync(ontologyPath);
+    }
+  });
+
+  afterEach(() => {
+    if (fs.existsSync(ontologyPath)) {
+      fs.unlinkSync(ontologyPath);
+    }
+  });
+
+  test("main with --persist persists the ontology to file", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const result = main(["--persist"]);
+    expect(result).toHaveProperty("success", true);
+    expect(fs.existsSync(ontologyPath)).toBe(true);
+    spy.mockRestore();
+  });
+
+  test("main with --load loads the persisted ontology", () => {
+    const ontology = buildOntology();
+    const persistResult = persistOntology(ontology);
+    expect(persistResult).toHaveProperty("success", true);
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const loaded = main(["--load"]);
+    expect(loaded).toHaveProperty("title", "Sample Ontology");
+    spy.mockRestore();
+  });
+
+  test("main with --query returns query results", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const result = main(["--query"]);
+    expect(result).toHaveProperty("searchTerm", "Concept1");
+    expect(result.results).toContain("Concept1");
     spy.mockRestore();
   });
 });
@@ -74,22 +121,22 @@ describe("Utility Functions", () => {
   });
 
   test("serveWebInterface logs the server start message", () => {
-    const spy = vi.spyOn(console, "log");
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     serveWebInterface();
     expect(spy).toHaveBeenCalledWith("Starting web server on port 8080...");
     spy.mockRestore();
   });
 
   test("displayHelp prints the correct usage message", () => {
-    const spy = vi.spyOn(console, "log");
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     displayHelp();
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query");
     spy.mockRestore();
   });
 
   test("diagnostics logs Node.js version and platform", () => {
-    const spy = vi.spyOn(console, "log");
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     diagnostics();
     expect(spy).toHaveBeenCalledWith(expect.stringContaining("Diagnostics:"));
     spy.mockRestore();
@@ -108,5 +155,27 @@ describe("Utility Functions", () => {
     expect(data).toHaveProperty("source", "PublicDataSource");
     expect(data).toHaveProperty("data");
     expect(Array.isArray(data.data)).toBe(true);
+  });
+
+  test("persistOntology writes the ontology to file", () => {
+    if (fs.existsSync(ontologyPath)) {
+      fs.unlinkSync(ontologyPath);
+    }
+    const ontology = buildOntology();
+    const result = persistOntology(ontology);
+    expect(result).toHaveProperty("success", true);
+    expect(fs.existsSync(ontologyPath)).toBe(true);
+  });
+
+  test("loadOntology reads the ontology from file", () => {
+    const ontology = buildOntology();
+    persistOntology(ontology);
+    const loaded = loadOntology();
+    expect(loaded).toHaveProperty("title", "Sample Ontology");
+  });
+
+  test("queryOntology returns correct search results", () => {
+    const result = queryOntology("Concept2");
+    expect(result.results).toContain("Concept2");
   });
 });

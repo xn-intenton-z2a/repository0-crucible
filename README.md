@@ -1,16 +1,15 @@
 # owl-builder
 
-`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, and even serve a web interface for interactive querying and visualization.
+`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology.
 
 ## Change Log
 - Updated README to align with CONTRIBUTING guidelines.
 - Refreshed documentation and examples to accurately reflect owl-builder's mission of ontology management.
 - Standardized help message and CLI output across commands.
 - Improved test coverage in the unit tests.
-- Fixed linting errors by updating CLI option quotes in main.js.
-- Refactored help message formatting in main.js to correctly display usage instructions and align with the ontology management mission outlined in CONTRIBUTING.md.
-- Enhanced CLI function implementations to better reflect ontology building, diagnostics, integration, and crawling functionalities.
-- Extended test coverage in tests/unit/main.test.js to cover all CLI options and ensure consistency with updated help message formats.
+- Added new functions for persisting ontologies to a file, loading persisted ontologies, and querying the ontology.
+- Extended CLI functionality with new commands: --persist, --load, and --query.
+- Enhanced diagnostics, integration, and public data crawling functionalities.
 - Excluded archived files from linting by updating the ESLint configuration in package.json.
 
 ## Repository Template
@@ -40,6 +39,9 @@ npm install owl-builder
   - Diagnostics: `--diagnostics`
   - Integrate Supplemental Ontologies: `--integrate`
   - Crawl Public Data: `--crawl`
+  - Persist Ontology to File: `--persist`
+  - Load Persisted Ontology: `--load`
+  - Query Ontology: `--query`
 
 ## Usage
 
@@ -79,6 +81,21 @@ node src/lib/main.js --help
 - **Crawl Public Data:**
   ```bash
   node src/lib/main.js --crawl
+  ```
+
+- **Persist Ontology to File:**
+  ```bash
+  node src/lib/main.js --persist
+  ```
+
+- **Load Persisted Ontology:**
+  ```bash
+  node src/lib/main.js --load
+  ```
+
+- **Query Ontology (demo search for 'Concept1') :**
+  ```bash
+  node src/lib/main.js --query
   ```
 
 ## Contributing
