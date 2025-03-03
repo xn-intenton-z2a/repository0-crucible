@@ -9,24 +9,24 @@ import os from "os";
  * @param {string[]} args - The CLI arguments.
  */
 export function main(args = []) {
-  if (args.includes('--help')) {
+  if (args.includes("--help")) {
     displayHelp();
     return;
-  } else if (args.includes('--build')) {
+  } else if (args.includes("--build")) {
     const ontology = buildOntology();
     console.log("Ontology built:", ontology);
     return ontology;
-  } else if (args.includes('--serve')) {
+  } else if (args.includes("--serve")) {
     serveWebInterface();
     return;
-  } else if (args.includes('--diagnostics')) {
+  } else if (args.includes("--diagnostics")) {
     diagnostics();
     return;
-  } else if (args.includes('--integrate')) {
+  } else if (args.includes("--integrate")) {
     const integrated = integrateOntology();
     console.log("Ontology integrated:", integrated);
     return integrated;
-  } else if (args.includes('--crawl')) {
+  } else if (args.includes("--crawl")) {
     const crawledData = crawlData();
     console.log("Public data crawled:", crawledData);
     return crawledData;
