@@ -4,7 +4,7 @@
 
 ## Change Log
 - Enhanced main.js with additional functions: buildOntology, serveWebInterface, displayHelp, diagnostics, integrateOntology, and crawlData to align with the mission of automated ontology building and management as outlined in CONTRIBUTING.md.
-- Updated help message formatting in main.js to include new options: --diagnostics, --integrate, and --crawl.
+- Updated help message formatting in main.js to remove an extra closing bracket and include new options: --diagnostics, --integrate, and --crawl.
 - Extended test coverage in tests/unit/main.test.js to cover new CLI options and functionalities.
 
 ## Repository Template

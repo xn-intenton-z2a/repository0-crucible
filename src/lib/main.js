@@ -38,7 +38,7 @@ export function main(args = []) {
  * Displays help instructions for using the CLI tool.
  */
 export function displayHelp() {
-  console.log("Usage: node src/lib/main.js [options]\nOptions: --help, --build, --serve, --diagnostics, --integrate, --crawl");
+  console.log("Usage: node src/lib/main.js [options\nOptions: --help, --build, --serve, --diagnostics, --integrate, --crawl");
 }
 
 /**
