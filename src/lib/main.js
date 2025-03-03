@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 import os from "os";
 import fs from "fs";
 import path from "path";
+import { uniq } from "lodash";
 
 /**
  * Main function to handle CLI arguments and execute appropriate functionality for owl-builder.
@@ -62,6 +63,21 @@ export function main(args = []) {
     const imported = importOntologyFromXML(sampleXML);
     console.log("Ontology imported from XML:", imported);
     return imported;
+  } else if (args.includes("--summary")) {
+    const ontology = buildOntology();
+    const summary = getOntologySummary(ontology);
+    console.log("Ontology summary:", summary);
+    return summary;
+  } else if (args.includes("--refresh")) {
+    const ontology = buildOntology();
+    const refreshed = refreshOntology(ontology);
+    console.log("Ontology refreshed:", refreshed);
+    return refreshed;
+  } else if (args.includes("--analyze")) {
+    const ontology = buildOntology();
+    const analysis = analyzeOntology(ontology);
+    console.log("Ontology analysis:", analysis);
+    return analysis;
   }
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
@@ -71,7 +87,7 @@ export function main(args = []) {
  */
 export function displayHelp() {
   console.log("Usage: node src/lib/main.js [options]");
-  console.log("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import");
+  console.log("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --summary, --refresh, --analyze");
 }
 
 /**
@@ -82,7 +98,7 @@ export function buildOntology() {
   return {
     title: "Sample Ontology",
     created: new Date().toISOString(),
-    concepts: ["Concept1", "Concept2", "Concept3"],
+    concepts: ["Concept1", "Concept2", "Concept3"]
   };
 }
 
@@ -122,7 +138,7 @@ export function crawlData() {
   return {
     source: "PublicDataSource",
     crawledAt: new Date().toISOString(),
-    data: ["DataPoint1", "DataPoint2", "DataPoint3"],
+    data: ["DataPoint1", "DataPoint2", "DataPoint3"]
   };
 }
 
@@ -212,6 +228,41 @@ export function importOntologyFromXML(xmlString) {
     title: titleMatch ? titleMatch[1] : "Imported Ontology",
     created: createdMatch ? createdMatch[1] : new Date().toISOString(),
     concepts: concepts
+  };
+}
+
+/**
+ * Returns a summary of the ontology including title, total number of concepts, and unique concepts.
+ * @param {object} ontology - The ontology to summarize.
+ * @returns {object} A summary object.
+ */
+export function getOntologySummary(ontology) {
+  return {
+    title: ontology.title,
+    conceptCount: ontology.concepts.length,
+    uniqueConcepts: uniq(ontology.concepts)
+  };
+}
+
+/**
+ * Refreshes the ontology by updating its creation date to the current time.
+ * @param {object} ontology - The ontology to refresh.
+ * @returns {object} The refreshed ontology object.
+ */
+export function refreshOntology(ontology) {
+  return { ...ontology, created: new Date().toISOString() };
+}
+
+/**
+ * Analyzes the ontology and returns metrics including validity, concept count, and title length.
+ * @param {object} ontology - The ontology to analyze.
+ * @returns {object} An analysis report.
+ */
+export function analyzeOntology(ontology) {
+  return {
+    isValid: validateOntology(ontology),
+    conceptCount: ontology.concepts.length,
+    titleLength: ontology.title.length
   };
 }
 
