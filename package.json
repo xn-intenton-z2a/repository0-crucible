@@ -1,7 +1,7 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
   "version": "0.0.1-1",
-  "description": "Extended CLI functionalities including diagnostics, integration, and public data crawling in line with CONTRIBUTING.md.",
+  "description": "Refactored CLI functionalities including improved help message formatting; enhanced diagnostics, integration, and public data crawling aligned with the ontology management mission outlined in CONTRIBUTING.md.",
   "type": "module",
   "main": "src/lib/main.js",
   "scripts": {
