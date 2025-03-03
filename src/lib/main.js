@@ -3,6 +3,8 @@
 
 import { fileURLToPath } from "url";
 import os from "os";
+import fs from "fs";
+import path from "path";
 
 /**
  * Main function to handle CLI arguments and execute appropriate functionality for owl-builder.
@@ -30,6 +32,20 @@ export function main(args = []) {
     const crawledData = crawlData();
     console.log("Public data crawled:", crawledData);
     return crawledData;
+  } else if (args.includes("--persist")) {
+    const ontology = buildOntology();
+    const saved = persistOntology(ontology);
+    console.log("Ontology persisted:", saved);
+    return saved;
+  } else if (args.includes("--load")) {
+    const loaded = loadOntology();
+    console.log("Ontology loaded:", loaded);
+    return loaded;
+  } else if (args.includes("--query")) {
+    // For demo purposes, we use a fixed search term
+    const results = queryOntology("Concept1");
+    console.log("Ontology query results:", results);
+    return results;
   }
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
@@ -39,7 +55,7 @@ export function main(args = []) {
  */
 export function displayHelp() {
   console.log("Usage: node src/lib/main.js [options]");
-  console.log("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl");
+  console.log("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query");
 }
 
 /**
@@ -92,6 +108,48 @@ export function crawlData() {
     crawledAt: new Date().toISOString(),
     data: ["DataPoint1", "DataPoint2", "DataPoint3"],
   };
+}
+
+/**
+ * Simulates persisting the ontology to a file.
+ * @param {object} ontology - The ontology to persist.
+ * @returns {object} An object indicating persistence success and file path.
+ */
+export function persistOntology(ontology) {
+  const filePath = path.resolve(process.cwd(), "ontology.json");
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(ontology, null, 2));
+    return { success: true, path: filePath };
+  } catch (error) {
+    console.error("Error persisting ontology:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Simulates loading the persisted ontology from a file.
+ * @returns {object} The loaded ontology object.
+ */
+export function loadOntology() {
+  const filePath = path.resolve(process.cwd(), "ontology.json");
+  try {
+    const data = fs.readFileSync(filePath, "utf-8");
+    return JSON.parse(data);
+  } catch (error) {
+    console.error("Error loading ontology:", error);
+    return { success: false, error: error.message };
+  }
+}
+
+/**
+ * Simulates querying the ontology.
+ * @param {string} searchTerm - The term to query in the ontology.
+ * @returns {object} The query results.
+ */
+export function queryOntology(searchTerm) {
+  const ontology = buildOntology();
+  const results = ontology.concepts.filter(concept => concept.includes(searchTerm));
+  return { searchTerm, results };
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
