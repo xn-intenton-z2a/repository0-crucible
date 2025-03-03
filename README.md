@@ -7,6 +7,11 @@
 - Refreshed documentation and examples to accurately reflect owl-builder's mission of ontology management.
 - Standardized help message and CLI output across commands.
 - Improved test coverage in the unit tests.
+- Fixed linting errors by updating CLI option quotes in main.js.
+- Refactored help message formatting in main.js to correctly display usage instructions and align with the ontology management mission outlined in CONTRIBUTING.md.
+- Enhanced CLI function implementations to better reflect ontology building, diagnostics, integration, and crawling functionalities.
+- Extended test coverage in tests/unit/main.test.js to cover all CLI options and ensure consistency with updated help message formats.
+- Excluded archived files from linting by updating the ESLint configuration in package.json.
 
 ## Repository Template
 
