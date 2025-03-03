@@ -3,8 +3,9 @@
 `repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows and serve as a base for ontology-based JavaScript libraries.
 
 ## Change Log
-- Enhanced main.js with additional library functions: buildOntology, serveWebInterface, and displayHelp to reflect the mission of automated ontology building and management as outlined in CONTRIBUTING.md.
-- Updated help message formatting in main.js to remove an extraneous closing bracket, ensuring consistency with test expectations.
+- Enhanced main.js with additional functions: buildOntology, serveWebInterface, displayHelp, diagnostics, integrateOntology, and crawlData to align with the mission of automated ontology building and management as outlined in CONTRIBUTING.md.
+- Updated help message formatting in main.js to include new options: --diagnostics, --integrate, and --crawl.
+- Extended test coverage in tests/unit/main.test.js to cover new CLI options and functionalities.
 
 ## Repository Template
 
@@ -29,6 +30,9 @@ npm install repository0-crucible
   - Help: `--help`
   - Build Ontology: `--build`
   - Serve Web Interface: `--serve`
+  - Diagnostics: `--diagnostics`
+  - Integrate Supplemental Ontologies: `--integrate`
+  - Crawl Public Data: `--crawl`
 
 ## Usage
 
@@ -55,11 +59,26 @@ node src/lib/main.js --help
   node src/lib/main.js --serve
   ```
 
+- **Diagnostics:**
+  ```bash
+  node src/lib/main.js --diagnostics
+  ```
+
+- **Integrate Ontology:**
+  ```bash
+  node src/lib/main.js --integrate
+  ```
+
+- **Crawl Public Data:**
+  ```bash
+  node src/lib/main.js --crawl
+  ```
+
 ## Incremental Changes Plan
 
-- Added new functions in main.js to build an ontology, simulate starting a web server, and display help instructions.
-- Extended test coverage to ensure all CLI modes are handled and the core functionalities work as expected.
-- Refined help message formatting in main.js to remove an extraneous closing bracket, aligning output with test expectations.
+- Added new CLI options: --diagnostics, --integrate, and --crawl for better alignment with the mission of ontology management and public data integration.
+- Extended test coverage to ensure reliability of all new functionalities.
+- Refined help message and documentation to reflect these enhancements.
 
 ## Contributing
 
