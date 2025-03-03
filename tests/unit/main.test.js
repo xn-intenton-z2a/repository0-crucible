@@ -6,7 +6,7 @@ import {
   displayHelp,
   diagnostics,
   integrateOntology,
-  crawlData
+  crawlData,
 } from "@src/lib/main.js";
 
 describe("Main Module General Functions", () => {
@@ -20,7 +20,8 @@ describe("Main Module General Functions", () => {
   test("main with --help prints help details", () => {
     const spy = vi.spyOn(console, "log");
     main(["--help"]);
-    expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]\nOptions: --help, --build, --serve, --diagnostics, --integrate, --crawl");
+    expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl");
     spy.mockRestore();
   });
 
@@ -82,7 +83,8 @@ describe("Utility Functions", () => {
   test("displayHelp prints the correct usage message", () => {
     const spy = vi.spyOn(console, "log");
     displayHelp();
-    expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]\nOptions: --help, --build, --serve, --diagnostics, --integrate, --crawl");
+    expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl");
     spy.mockRestore();
   });
 
@@ -96,7 +98,9 @@ describe("Utility Functions", () => {
   test("integrateOntology returns an integrated ontology object", () => {
     const integrated = integrateOntology();
     expect(integrated).toHaveProperty("integrated", true);
-    expect(integrated.integratedWith).toEqual(expect.arrayContaining(["Theme Ontology A", "Theme Ontology B"]));
+    expect(integrated.integratedWith).toEqual(
+      expect.arrayContaining(["Theme Ontology A", "Theme Ontology B"])
+    );
   });
 
   test("crawlData returns a valid crawled data object", () => {
