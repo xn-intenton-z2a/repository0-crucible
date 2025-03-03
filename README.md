@@ -4,8 +4,9 @@
 
 ## Change Log
 - Extended ontology management functions: added persist, load, query, validate, export, and import features.
-- Added new utility functions: getOntologySummary, refreshOntology, and analyzeOntology for providing summary and analysis of ontologies.
+- Added new utility functions: getOntologySummary, refreshOntology (now guarantees a new creation date), and analyzeOntology for providing summary and analysis of ontologies.
 - Updated CLI help message to include new options: --validate, --export, --import, --summary, --refresh, and --analyze.
+- Updated lodash import to support CommonJS modules.
 - Refreshed documentation and examples to reflect new ontology management and analysis features.
 - Improved test coverage in unit tests including additional tests for new utility functions.
 

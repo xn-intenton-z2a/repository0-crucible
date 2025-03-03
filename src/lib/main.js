@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 import os from "os";
 import fs from "fs";
 import path from "path";
-import { uniq } from "lodash";
+import _ from "lodash";
 
 /**
  * Main function to handle CLI arguments and execute appropriate functionality for owl-builder.
@@ -240,17 +240,23 @@ export function getOntologySummary(ontology) {
   return {
     title: ontology.title,
     conceptCount: ontology.concepts.length,
-    uniqueConcepts: uniq(ontology.concepts)
+    uniqueConcepts: _.uniq(ontology.concepts)
   };
 }
 
 /**
  * Refreshes the ontology by updating its creation date to the current time.
+ * Ensures that the new creation date is different from the old one.
  * @param {object} ontology - The ontology to refresh.
  * @returns {object} The refreshed ontology object.
  */
 export function refreshOntology(ontology) {
-  return { ...ontology, created: new Date().toISOString() };
+  let newCreated = new Date().toISOString();
+  // Ensure the new date is different. If equal (rare but possible), add 1 millisecond.
+  if (newCreated === ontology.created) {
+    newCreated = new Date(Date.now() + 1).toISOString();
+  }
+  return { ...ontology, created: newCreated };
 }
 
 /**
