@@ -12,6 +12,9 @@ import {
   persistOntology,
   loadOntology,
   queryOntology,
+  validateOntology,
+  exportOntologyToXML,
+  importOntologyFromXML
 } from "@src/lib/main.js";
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -28,7 +31,7 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--help"]);
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import");
     spy.mockRestore();
   });
 
@@ -110,6 +113,29 @@ describe("Extended Functionality", () => {
     expect(result.results).toContain("Concept1");
     spy.mockRestore();
   });
+
+  test("main with --validate validates the ontology correctly", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const isValid = main(["--validate"]);
+    expect(isValid).toBe(true);
+    spy.mockRestore();
+  });
+
+  test("main with --export exports the ontology to XML", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const xml = main(["--export"]);
+    expect(xml).toContain("<ontology>");
+    expect(xml).toContain("<title>Sample Ontology</title>");
+    spy.mockRestore();
+  });
+
+  test("main with --import imports ontology from XML", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const imported = main(["--import"]);
+    expect(imported).toHaveProperty("title");
+    expect(imported.concepts).toBeInstanceOf(Array);
+    spy.mockRestore();
+  });
 });
 
 describe("Utility Functions", () => {
@@ -131,7 +157,7 @@ describe("Utility Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     displayHelp();
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import");
     spy.mockRestore();
   });
 
@@ -177,5 +203,24 @@ describe("Utility Functions", () => {
   test("queryOntology returns correct search results", () => {
     const result = queryOntology("Concept2");
     expect(result.results).toContain("Concept2");
+  });
+
+  test("validateOntology correctly validates a valid ontology", () => {
+    const ontology = buildOntology();
+    expect(validateOntology(ontology)).toBe(true);
+  });
+
+  test("exportOntologyToXML returns a valid XML string", () => {
+    const ontology = buildOntology();
+    const xml = exportOntologyToXML(ontology);
+    expect(xml).toContain("<ontology>");
+    expect(xml).toContain("<title>Sample Ontology</title>");
+  });
+
+  test("importOntologyFromXML parses XML correctly", () => {
+    const sampleXML = `<ontology><title>Imported Ontology</title><created>2023-10-01T00:00:00.000Z</created><concepts><concept>ConceptA</concept><concept>ConceptB</concept></concepts></ontology>`;
+    const imported = importOntologyFromXML(sampleXML);
+    expect(imported.title).toBe("Imported Ontology");
+    expect(imported.concepts).toEqual(["ConceptA", "ConceptB"]);
   });
 });
