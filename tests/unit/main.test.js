@@ -14,10 +14,13 @@ import {
   queryOntology,
   validateOntology,
   exportOntologyToXML,
-  importOntologyFromXML
+  importOntologyFromXML,
+  syncOntology,
+  backupOntology
 } from "@src/lib/main.js";
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
+const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
 
 describe("Main Module General Functions", () => {
   test("main without args prints default message", () => {
@@ -31,7 +34,7 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--help"]);
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup");
     spy.mockRestore();
   });
 
@@ -80,11 +83,17 @@ describe("Extended Functionality", () => {
     if (fs.existsSync(ontologyPath)) {
       fs.unlinkSync(ontologyPath);
     }
+    if (fs.existsSync(backupPath)) {
+      fs.unlinkSync(backupPath);
+    }
   });
 
   afterEach(() => {
     if (fs.existsSync(ontologyPath)) {
       fs.unlinkSync(ontologyPath);
+    }
+    if (fs.existsSync(backupPath)) {
+      fs.unlinkSync(backupPath);
     }
   });
 
@@ -136,6 +145,25 @@ describe("Extended Functionality", () => {
     expect(imported.concepts).toBeInstanceOf(Array);
     spy.mockRestore();
   });
+
+  test("main with --sync synchronizes the ontology", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const synced = main(["--sync"]);
+    expect(synced).toHaveProperty("synced", true);
+    expect(synced).toHaveProperty("syncedAt");
+    spy.mockRestore();
+  });
+
+  test("main with --backup creates a backup of the ontology file", () => {
+    // First persist the original ontology
+    const ontology = buildOntology();
+    persistOntology(ontology);
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const backupResult = main(["--backup"]);
+    expect(backupResult).toHaveProperty("success", true);
+    expect(fs.existsSync(backupPath)).toBe(true);
+    spy.mockRestore();
+  });
 });
 
 describe("Utility Functions", () => {
@@ -157,7 +185,7 @@ describe("Utility Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     displayHelp();
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup");
     spy.mockRestore();
   });
 
