@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 import os from "os";
 
 /**
- * Main function to handle CLI arguments and execute appropriate functionality.
+ * Main function to handle CLI arguments and execute appropriate functionality for owl-builder.
  * @param {string[]} args - The CLI arguments.
  */
 export function main(args = []) {
@@ -35,7 +35,7 @@ export function main(args = []) {
 }
 
 /**
- * Displays help instructions for using the CLI tool.
+ * Displays help instructions for using the owl-builder CLI tool.
  */
 export function displayHelp() {
   console.log("Usage: node src/lib/main.js [options]");
