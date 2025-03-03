@@ -1,16 +1,12 @@
 # owl-builder
 
-`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology.
+`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology. The recent update extends functionalities with ontology validation, export, and import features.
 
 ## Change Log
-- Updated README to align with CONTRIBUTING guidelines.
-- Refreshed documentation and examples to accurately reflect owl-builder's mission of ontology management.
-- Standardized help message and CLI output across commands.
-- Improved test coverage in the unit tests.
-- Added new functions for persisting ontologies to a file, loading persisted ontologies, and querying the ontology.
-- Extended CLI functionality with new commands: --persist, --load, and --query.
-- Enhanced diagnostics, integration, and public data crawling functionalities.
-- Excluded archived files from linting by updating the ESLint configuration in package.json.
+- Extended ontology management functions: added persist, load, query, validate, export, and import features.
+- Updated CLI help message to include new options: --validate, --export, --import.
+- Refreshed documentation and examples to reflect new ontology management features.
+- Improved test coverage in unit tests including additional tests for new features.
 
 ## Repository Template
 
@@ -42,6 +38,9 @@ npm install owl-builder
   - Persist Ontology to File: `--persist`
   - Load Persisted Ontology: `--load`
   - Query Ontology: `--query`
+  - Validate Ontology: `--validate`
+  - Export Ontology to XML: `--export`
+  - Import Ontology from XML: `--import`
 
 ## Usage
 
@@ -93,9 +92,24 @@ node src/lib/main.js --help
   node src/lib/main.js --load
   ```
 
-- **Query Ontology (demo search for 'Concept1') :**
+- **Query Ontology:**
   ```bash
   node src/lib/main.js --query
+  ```
+
+- **Validate Ontology:**
+  ```bash
+  node src/lib/main.js --validate
+  ```
+
+- **Export Ontology to XML:**
+  ```bash
+  node src/lib/main.js --export
+  ```
+
+- **Import Ontology from XML:**
+  ```bash
+  node src/lib/main.js --import
   ```
 
 ## Contributing
