@@ -42,8 +42,9 @@ npm install owl-builder
   - Validate Ontology: `--validate`
   - Export Ontology to XML: `--export`
   - Import Ontology from XML: `--import`
-  - Synchronize Ontology: `--sync`
-  - Backup Ontology: `--backup`
+  - Get Ontology Summary: `--summary`
+  - Refresh Ontology: `--refresh`
+  - Analyze Ontology: `--analyze`
 
 ## Usage
 
@@ -115,14 +116,19 @@ node src/lib/main.js --help
   node src/lib/main.js --import
   ```
 
-- **Synchronize Ontology:**
+- **Get Ontology Summary:**
   ```bash
-  node src/lib/main.js --sync
+  node src/lib/main.js --summary
   ```
 
-- **Backup Ontology:**
+- **Refresh Ontology:**
   ```bash
-  node src/lib/main.js --backup
+  node src/lib/main.js --refresh
+  ```
+
+- **Analyze Ontology:**
+  ```bash
+  node src/lib/main.js --analyze
   ```
 
 ## Contributing

@@ -17,6 +17,9 @@ import {
   importOntologyFromXML,
   syncOntology,
   backupOntology
+  getOntologySummary,
+  refreshOntology,
+  analyzeOntology
 } from "@src/lib/main.js";
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -34,7 +37,7 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--help"]);
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --summary, --refresh, --analyze");
     spy.mockRestore();
   });
 
@@ -185,7 +188,7 @@ describe("Utility Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     displayHelp();
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --summary, --refresh, --analyze");
     spy.mockRestore();
   });
 
@@ -250,5 +253,27 @@ describe("Utility Functions", () => {
     const imported = importOntologyFromXML(sampleXML);
     expect(imported.title).toBe("Imported Ontology");
     expect(imported.concepts).toEqual(["ConceptA", "ConceptB"]);
+  });
+
+  test("getOntologySummary returns correct summary", () => {
+    const ontology = buildOntology();
+    const summary = getOntologySummary(ontology);
+    expect(summary).toHaveProperty("title", ontology.title);
+    expect(summary).toHaveProperty("conceptCount", ontology.concepts.length);
+    expect(summary.uniqueConcepts.length).toBeLessThanOrEqual(ontology.concepts.length);
+  });
+
+  test("refreshOntology updates the creation date", () => {
+    const ontology = buildOntology();
+    const refreshed = refreshOntology(ontology);
+    expect(refreshed.created).not.toBe(ontology.created);
+  });
+
+  test("analyzeOntology returns valid analysis report", () => {
+    const ontology = buildOntology();
+    const analysis = analyzeOntology(ontology);
+    expect(analysis).toHaveProperty("isValid", true);
+    expect(analysis).toHaveProperty("conceptCount", ontology.concepts.length);
+    expect(analysis).toHaveProperty("titleLength", ontology.title.length);
   });
 });

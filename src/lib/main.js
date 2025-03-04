@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 import os from "os";
 import fs from "fs";
 import path from "path";
+import _ from "lodash";
 
 /**
  * Main function to handle CLI arguments and execute appropriate functionality for owl-builder.
@@ -70,6 +71,21 @@ export function main(args = []) {
     const backupResult = backupOntology();
     console.log("Ontology backup created:", backupResult);
     return backupResult;
+  } else if (args.includes("--summary")) {
+    const ontology = buildOntology();
+    const summary = getOntologySummary(ontology);
+    console.log("Ontology summary:", summary);
+    return summary;
+  } else if (args.includes("--refresh")) {
+    const ontology = buildOntology();
+    const refreshed = refreshOntology(ontology);
+    console.log("Ontology refreshed:", refreshed);
+    return refreshed;
+  } else if (args.includes("--analyze")) {
+    const ontology = buildOntology();
+    const analysis = analyzeOntology(ontology);
+    console.log("Ontology analysis:", analysis);
+    return analysis;
   }
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
@@ -79,7 +95,7 @@ export function main(args = []) {
  */
 export function displayHelp() {
   console.log("Usage: node src/lib/main.js [options]");
-  console.log("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup");
+  console.log("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --summary, --refresh, --analyze");
 }
 
 /**
@@ -249,6 +265,45 @@ export function backupOntology() {
     console.error("Error creating ontology backup:", error);
     return { success: false, error: error.message };
   }
+
+ * Returns a summary of the ontology including title, total number of concepts, and unique concepts.
+ * @param {object} ontology - The ontology to summarize.
+ * @returns {object} A summary object.
+ */
+export function getOntologySummary(ontology) {
+  return {
+    title: ontology.title,
+    conceptCount: ontology.concepts.length,
+    uniqueConcepts: _.uniq(ontology.concepts)
+  };
+}
+
+/**
+ * Refreshes the ontology by updating its creation date to the current time.
+ * Ensures that the new creation date is different from the old one.
+ * @param {object} ontology - The ontology to refresh.
+ * @returns {object} The refreshed ontology object.
+ */
+export function refreshOntology(ontology) {
+  let newCreated = new Date().toISOString();
+  // Ensure the new date is different. If equal (rare but possible), add 1 millisecond.
+  if (newCreated === ontology.created) {
+    newCreated = new Date(Date.now() + 1).toISOString();
+  }
+  return { ...ontology, created: newCreated };
+}
+
+/**
+ * Analyzes the ontology and returns metrics including validity, concept count, and title length.
+ * @param {object} ontology - The ontology to analyze.
+ * @returns {object} An analysis report.
+ */
+export function analyzeOntology(ontology) {
+  return {
+    isValid: validateOntology(ontology),
+    conceptCount: ontology.concepts.length,
+    titleLength: ontology.title.length
+  };
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
