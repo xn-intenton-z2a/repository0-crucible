@@ -63,6 +63,14 @@ export function main(args = []) {
     const imported = importOntologyFromXML(sampleXML);
     console.log("Ontology imported from XML:", imported);
     return imported;
+  } else if (args.includes("--sync")) {
+    const synced = syncOntology();
+    console.log("Ontology synced:", synced);
+    return synced;
+  } else if (args.includes("--backup")) {
+    const backupResult = backupOntology();
+    console.log("Ontology backup created:", backupResult);
+    return backupResult;
   } else if (args.includes("--summary")) {
     const ontology = buildOntology();
     const summary = getOntologySummary(ontology);
@@ -229,6 +237,34 @@ export function importOntologyFromXML(xmlString) {
     created: createdMatch ? createdMatch[1] : new Date().toISOString(),
     concepts: concepts
   };
+}
+
+/**
+ * Simulates synchronizing the ontology with an external data source.
+ * @returns {object} A sample synced ontology object.
+ */
+export function syncOntology() {
+  const ontology = buildOntology();
+  ontology.synced = true;
+  ontology.syncedAt = new Date().toISOString();
+  return ontology;
+}
+
+/**
+ * Simulates creating a backup of the persisted ontology file.
+ * @returns {object} An object indicating backup success and backup file path.
+ */
+export function backupOntology() {
+  const originalPath = path.resolve(process.cwd(), "ontology.json");
+  const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
+  try {
+    const data = fs.readFileSync(originalPath, "utf-8");
+    fs.writeFileSync(backupPath, data);
+    return { success: true, backupPath };
+  } catch (error) {
+    console.error("Error creating ontology backup:", error);
+    return { success: false, error: error.message };
+  }
 }
 
 /**

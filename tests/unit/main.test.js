@@ -15,12 +15,15 @@ import {
   validateOntology,
   exportOntologyToXML,
   importOntologyFromXML,
+  syncOntology,
+  backupOntology,
   getOntologySummary,
   refreshOntology,
   analyzeOntology
 } from "@src/lib/main.js";
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
+const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
 
 describe("Main Module General Functions", () => {
   test("main without args prints default message", () => {
@@ -83,11 +86,17 @@ describe("Extended Functionality", () => {
     if (fs.existsSync(ontologyPath)) {
       fs.unlinkSync(ontologyPath);
     }
+    if (fs.existsSync(backupPath)) {
+      fs.unlinkSync(backupPath);
+    }
   });
 
   afterEach(() => {
     if (fs.existsSync(ontologyPath)) {
       fs.unlinkSync(ontologyPath);
+    }
+    if (fs.existsSync(backupPath)) {
+      fs.unlinkSync(backupPath);
     }
   });
 
@@ -137,6 +146,25 @@ describe("Extended Functionality", () => {
     const imported = main(["--import"]);
     expect(imported).toHaveProperty("title");
     expect(imported.concepts).toBeInstanceOf(Array);
+    spy.mockRestore();
+  });
+
+  test("main with --sync synchronizes the ontology", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const synced = main(["--sync"]);
+    expect(synced).toHaveProperty("synced", true);
+    expect(synced).toHaveProperty("syncedAt");
+    spy.mockRestore();
+  });
+
+  test("main with --backup creates a backup of the ontology file", () => {
+    // First persist the original ontology
+    const ontology = buildOntology();
+    persistOntology(ontology);
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const backupResult = main(["--backup"]);
+    expect(backupResult).toHaveProperty("success", true);
+    expect(fs.existsSync(backupPath)).toBe(true);
     spy.mockRestore();
   });
 });
