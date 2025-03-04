@@ -16,7 +16,7 @@ import {
   exportOntologyToXML,
   importOntologyFromXML,
   syncOntology,
-  backupOntology
+  backupOntology,
   getOntologySummary,
   refreshOntology,
   analyzeOntology

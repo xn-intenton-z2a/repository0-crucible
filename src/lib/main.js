@@ -265,7 +265,9 @@ export function backupOntology() {
     console.error("Error creating ontology backup:", error);
     return { success: false, error: error.message };
   }
+}
 
+/**
  * Returns a summary of the ontology including title, total number of concepts, and unique concepts.
  * @param {object} ontology - The ontology to summarize.
  * @returns {object} A summary object.
