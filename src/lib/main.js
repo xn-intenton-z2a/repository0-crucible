@@ -352,7 +352,7 @@ export function validateOntology(ontology) {
  * @returns {string} XML string representing the ontology.
  */
 export function exportOntologyToXML(ontology) {
-  const conceptsXML = ontology.concepts.map(concept => `<concept>${concept}</concept>`).join("");
+  const conceptsXML = ontology.concepts.map((concept) => `<concept>${concept}</concept>`).join("");
   return `<ontology><title>${ontology.title}</title><created>${ontology.created}</created><concepts>${conceptsXML}</concepts></ontology>`;
 }
 
@@ -362,12 +362,12 @@ export function exportOntologyToXML(ontology) {
  * @returns {object} The imported ontology object.
  */
 export function importOntologyFromXML(xmlString) {
-  const titleMatch = xmlString.match(/<title>(.*?)<\/?title>/);
-  const createdMatch = xmlString.match(/<created>(.*?)<\/?created>/);
-  const conceptsMatch = xmlString.match(/<concepts>(.*?)<\/?concepts>/);
+  const titleMatch = xmlString.match(/<title>(.*?)<\\/?title>/);
+  const createdMatch = xmlString.match(/<created>(.*?)<\\/?created>/);
+  const conceptsMatch = xmlString.match(/<concepts>(.*?)<\\/?concepts>/);
   let concepts = [];
   if (conceptsMatch && conceptsMatch[1]) {
-    const conceptRegex = /<concept>(.+?)<\/?concept>/g;
+    const conceptRegex = /<concept>(.+?)<\\/?concept>/g;
     let match;
     while ((match = conceptRegex.exec(conceptsMatch[1])) !== null) {
       concepts.push(match[1]);
