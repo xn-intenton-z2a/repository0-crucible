@@ -1,6 +1,7 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import fs from "fs";
 import path from "path";
+import { Readable } from "stream";
 import * as mainModule from "@src/lib/main.js";
 
 const {
@@ -31,6 +32,9 @@ const {
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
 const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
+
+// Import https module for simulating network errors
+import https from "https";
 
 describe("Main Module General Functions", () => {
   test("main without args prints default message", async () => {
@@ -137,7 +141,50 @@ describe("Main Module General Functions", () => {
     expect(result).toEqual(fakeData);
     spy.mockRestore();
   });
+
+  test("fetchPublicData handles non-200 response", async () => {
+    // Simulate a response with non-200 status code
+    const fakeResponse = new Readable({
+      read() {}
+    });
+    fakeResponse.statusCode = 500;
+    fakeResponse.setEncoding = () => {};
+    // Override on method to simulate data and end events
+    fakeResponse.on = (event, callback) => {
+      if (event === 'data') {
+        callback('error');
+      } else if (event === 'end') {
+        callback();
+      }
+    };
+
+    const originalGet = https.get;
+    https.get = (options, callback) => {
+      callback(fakeResponse);
+      return { on: () => {} };
+    };
+
+    await expect(fetchPublicData("http://example.com")).rejects.toThrow("Request failed with status code: 500");
+    // Restore original https.get
+    https.get = originalGet;
+  });
+
+  test("fetchPublicData handles network error", async () => {
+    const originalGet = https.get;
+    https.get = (options, callback) => {
+      const req = { on: (event, errCallback) => {
+        if (event === 'error') {
+          errCallback(new Error('Network error'));
+        }
+      } };
+      return req;
+    };
+
+    await expect(fetchPublicData("http://example.com")).rejects.toThrow("Network error");
+    https.get = originalGet;
+  });
 });
+
 
 describe("Extended Functionality", () => {
   beforeEach(() => {

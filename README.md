@@ -9,6 +9,7 @@
 - Extended ontology management functions: persist, load, query, validate, export, import, sync, backup, demo, monitor, and rebuild.
 - Enhanced XML import regex for improved concept extraction.
 - Updated CLI help message and modularized asynchronous command handling in the source file to align with our mission.
+- Improved test coverage with added unit tests for error scenarios in external resource calls (file system and network).
 - Pruned code drift by standardizing file path handling and error messaging.
 
 ## Repository Template
