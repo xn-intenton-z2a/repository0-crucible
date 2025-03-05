@@ -4,15 +4,12 @@
 
 ## Change Log
 - Version bumped to 0.0.5
-- Added new command "--fetch-public" to fetch data from real public endpoints with enhanced error handling for HTTP status codes.
-- Refactored the main CLI function to use a command mapping for reduced complexity.
-- Extended ontology management functions: added persist, load, query, validate, export, import, sync, backup, demo, monitor, and rebuild functionalities.
+- Added new command "--fetch-public" to fetch data from real public endpoints with enhanced error handling.
+- Refactored the main CLI function to use command mapping for reduced complexity.
+- Extended ontology management functions: persist, load, query, validate, export, import, sync, backup, demo, monitor, and rebuild.
 - Enhanced XML import regex for improved concept extraction.
-- Added new demo command (`--demo`) to illustrate a sample output without external calls.
-- Added new functionality to fetch detailed OWL schemas from remote data sources (`--fetch-schemas`).
-- Refactored file path handling for persistence and backup functionality to reduce code drift and improve consistency.
-- Updated CLI help message, source file, and test coverage to align with our mission.
-- Enhanced error handling for file operations and public data fetching.
+- Updated CLI help message and modularized asynchronous command handling in the source file to align with our mission.
+- Pruned code drift by standardizing file path handling and error messaging.
 
 ## Repository Template
 
@@ -58,11 +55,11 @@ npm install owl-builder
   - Rebuild Ontology: `--rebuild`
   - Demo Output: `--demo`
   - **Fetch Detailed OWL Schemas: `--fetch-schemas`**
-  - **Fetch Public Data from Real Endpoints: `--fetch-public`**
+  - **Fetch Public Data: `--fetch-public`**
 
 ## Public Data Endpoints
 
-owl-builder can fetch data from real public endpoints and convert them into OWL ontologies. Some recommended endpoints include:
+owl-builder can fetch data from real public endpoints and convert them into OWL ontologies. Recommended endpoints include:
 
 - https://api.publicapis.org/entries (A list of public APIs)
 - https://dog.ceo/api/breeds/image/random (Random dog images)
@@ -189,7 +186,7 @@ node src/lib/main.js --help
   node src/lib/main.js --fetch-schemas
   ```
 
-- **Fetch Public Data from Real Endpoints:**
+- **Fetch Public Data:**
   ```bash
   node src/lib/main.js --fetch-public
   ```
