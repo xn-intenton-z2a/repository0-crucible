@@ -198,7 +198,7 @@ export function displayHelp() {
   --rebuild,
   --demo,
   --fetch-schemas,
-  --fetch-public`);
+  --fetch-public");
 }
 
 /**
@@ -362,12 +362,12 @@ export function exportOntologyToXML(ontology) {
  * @returns {object} The imported ontology object.
  */
 export function importOntologyFromXML(xmlString) {
-  const titleMatch = xmlString.match(/<title>(.*?)<\/title>/);
-  const createdMatch = xmlString.match(/<created>(.*?)<\/created>/);
-  const conceptsMatch = xmlString.match(/<concepts>(.*?)<\/concepts>/);
+  const titleMatch = xmlString.match(/<title>(.*?)<\/?title>/);
+  const createdMatch = xmlString.match(/<created>(.*?)<\/?created>/);
+  const conceptsMatch = xmlString.match(/<concepts>(.*?)<\/?concepts>/);
   let concepts = [];
   if (conceptsMatch && conceptsMatch[1]) {
-    const conceptRegex = /<concept>(.+?)<\/concept>/g;
+    const conceptRegex = /<concept>(.+?)<\/?concept>/g;
     let match;
     while ((match = conceptRegex.exec(conceptsMatch[1])) !== null) {
       concepts.push(match[1]);
