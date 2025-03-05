@@ -4,15 +4,14 @@
 
 ## Change Log
 - Version bumped to 0.0.5
-- Added new command "--fetch-public" to fetch data from real public endpoints.
+- Added new command "--fetch-public" to fetch data from real public endpoints with enhanced error handling for HTTP status codes.
 - Refactored the main CLI function to use a command mapping for reduced complexity.
 - Extended ontology management functions: added persist, load, query, validate, export, import, sync, backup, demo, monitor, and rebuild functionalities.
 - Enhanced XML import regex for improved concept extraction.
 - Added new demo command (`--demo`) to illustrate a sample output without external calls.
 - Added new functionality to fetch detailed OWL schemas from remote data sources (`--fetch-schemas`).
-- Fixed fetchPublicData function to parse JSON regardless of the content-type header, improving compatibility in test environments.
 - Updated CLI help message, source file, and test coverage to align with our mission.
-- Enhanced error handling for file operations.
+- Enhanced error handling for file operations and public data fetching.
 
 ## Repository Template
 
