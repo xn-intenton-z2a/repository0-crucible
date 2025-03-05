@@ -37,7 +37,7 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--help"]);
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --summary, --refresh, --analyze");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
     spy.mockRestore();
   });
 
@@ -158,7 +158,6 @@ describe("Extended Functionality", () => {
   });
 
   test("main with --backup creates a backup of the ontology file", () => {
-    // First persist the original ontology
     const ontology = buildOntology();
     persistOntology(ontology);
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -188,7 +187,7 @@ describe("Utility Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     displayHelp();
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --summary, --refresh, --analyze");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
     spy.mockRestore();
   });
 

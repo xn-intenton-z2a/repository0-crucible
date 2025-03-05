@@ -4,11 +4,9 @@
 
 ## Change Log
 - Extended ontology management functions: added persist, load, query, validate, export, import, sync, and backup features.
-- Updated CLI help message to include new options: --validate, --export, --import, --sync, --backup.
-- Added new functions syncOntology and backupOntology to simulate real integration and backup operations.
-- Fixed syntax errors in backupOntology function and updated test imports.
-- Refreshed documentation and examples to reflect the expanded ontology management features.
-- Improved test coverage in unit tests including additional tests for new features.
+- Updated CLI help message and source file to align with the owl-builder mission statement and remove simulation drift.
+- Improved code documentation and modularity in source file, refactoring to adhere to contributing guidelines.
+- Updated test coverage to reflect new and refactored functionalities.
 
 ## Repository Template
 
@@ -43,6 +41,8 @@ npm install owl-builder
   - Validate Ontology: `--validate`
   - Export Ontology to XML: `--export`
   - Import Ontology from XML: `--import`
+  - Synchronize Ontology: `--sync`
+  - Backup Ontology: `--backup`
   - Get Ontology Summary: `--summary`
   - Refresh Ontology: `--refresh`
   - Analyze Ontology: `--analyze`
@@ -117,6 +117,16 @@ node src/lib/main.js --help
   node src/lib/main.js --import
   ```
 
+- **Synchronize Ontology:**
+  ```bash
+  node src/lib/main.js --sync
+  ```
+
+- **Backup Ontology:**
+  ```bash
+  node src/lib/main.js --backup
+  ```
+
 - **Get Ontology Summary:**
   ```bash
   node src/lib/main.js --summary
@@ -134,7 +144,7 @@ node src/lib/main.js --help
 
 ## Contributing
 
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively. Your input helps make owl-builder a more robust tool for ontology management.
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively. Your input helps make owl-builder a robust tool for ontology management.
 
 ## License
 
