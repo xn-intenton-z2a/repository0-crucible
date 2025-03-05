@@ -8,7 +8,7 @@
 - Refactored CLI command mappings to simplify the main function.
 - Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, and rebuild.
 - Applied linting and formatting fixes to improve code quality.
-- Fixed syntax error in exportOntologyToXML function by using a block arrow function.
+- Fixed syntax error in exportOntologyToXML function by switching to an inline arrow function in the map callback.
 - Updated documentation to align with the latest contributing guidelines.
 
 ## Installation

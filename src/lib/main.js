@@ -352,9 +352,7 @@ export function validateOntology(ontology) {
  * @returns {string} XML string representing the ontology.
  */
 export function exportOntologyToXML(ontology) {
-  const conceptsXML = ontology.concepts.map((concept) => {
-    return `<concept>${concept}</concept>`;
-  }).join("");
+  const conceptsXML = ontology.concepts.map(concept => `<concept>${concept}</concept>`).join("");
   return `<ontology><title>${ontology.title}</title><created>${ontology.created}</created><concepts>${conceptsXML}</concepts></ontology>`;
 }
 
