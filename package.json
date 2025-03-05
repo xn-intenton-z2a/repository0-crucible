@@ -1,7 +1,7 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
   "version": "0.0.2",
-  "description": "Refactored CLI functionalities including improved help message formatting; enhanced diagnostics, integration, and public data crawling; added persistence, querying, validation, export, import, sync, backup of ontologies, and new commands (--list, --version) inline with the ontology management mission.",
+  "description": "Refactored CLI functionalities including improved help message formatting; enhanced diagnostics, integration, and public data crawling; added persistence, querying, validation, export, import, sync, backup of ontologies, and new commands (--list, --version). Also updated test coverage with error handling tests for file system operations.",
   "type": "module",
   "main": "src/lib/main.js",
   "scripts": {
