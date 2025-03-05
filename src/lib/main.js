@@ -467,7 +467,7 @@ export function fetchOwlSchemas() {
 
 /**
  * Fetches public data from a real API endpoint.
- * Checks for JSON content type to ensure valid parsing.
+ * Checks the HTTP status code and parses the JSON response.
  * @param {string} endpoint - The URL to fetch data from.
  * @returns {Promise<object>} The fetched data.
  */
@@ -479,8 +479,10 @@ export function fetchPublicData(endpoint = "https://api.publicapis.org/entries")
         data += chunk;
       });
       res.on("end", () => {
+        if (res.statusCode !== 200) {
+          return reject(new Error(`Request failed with status code: ${res.statusCode}`));
+        }
         try {
-          // Removed content-type check to support diverse response headers in test and production environments
           const json = JSON.parse(data);
           resolve(json);
         } catch (e) {
