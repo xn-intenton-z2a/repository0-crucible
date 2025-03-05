@@ -1,26 +1,13 @@
 # owl-builder
 
-`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology.
+`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It provides a comprehensive suite of functions for ontology creation, persistence, querying, diagnostics, and integration with public data sources. Contributions are welcome following the guidelines in [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## Change Log
 - Version bumped to 0.0.5
-- Added new command "--fetch-public" to fetch data from real public endpoints with enhanced error handling.
-- Refactored the main CLI function to use command mapping for reduced complexity.
-- Extended ontology management functions: persist, load, query, validate, export, import, sync, backup, demo, monitor, and rebuild.
-- Enhanced XML import regex for improved concept extraction.
-- Updated CLI help message and modularized asynchronous command handling in the source file to align with our mission.
-- Improved test coverage with added unit tests for error scenarios in external resource calls (file system and network).
-- Pruned code drift by standardizing file path handling and error messaging.
-
-## Repository Template
-
-This repository serves as a template to:
-
-* Kickstart new projects with ontology management capabilities.
-* Demonstrate best practices for CLI and web interface based applications.
-* Provide an example implementation using automated CI/CD workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib).
-
-See [TEMPLATE-README.md](./TEMPLATE-README.md) for additional details.
+- Added new command "--fetch-public" to fetch real public data with enhanced error handling.
+- Refactored CLI command mappings to simplify the main function.
+- Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, and rebuild.
+- Updated documentation and examples to align with the latest contributing guidelines.
 
 ## Installation
 
@@ -32,7 +19,7 @@ npm install owl-builder
 
 ## Features
 
-- Command line interface with multiple modes:
+- **CLI Commands:**
   - Help: `--help`
   - Version: `--version`
   - List Commands: `--list`
@@ -52,7 +39,7 @@ npm install owl-builder
   - Get Ontology Summary: `--summary`
   - Refresh Ontology: `--refresh`
   - Analyze Ontology: `--analyze`
-  - Monitor System (Memory & Load): `--monitor`
+  - Monitor System Metrics: `--monitor`
   - Rebuild Ontology: `--rebuild`
   - Demo Output: `--demo`
   - **Fetch Detailed OWL Schemas: `--fetch-schemas`**
@@ -66,7 +53,7 @@ owl-builder can fetch data from real public endpoints and convert them into OWL 
 - https://dog.ceo/api/breeds/image/random (Random dog images)
 - https://jsonplaceholder.typicode.com/posts (Sample posts for demonstration)
 
-Use the following command to fetch public data:
+Example command:
 
 ```bash
 node src/lib/main.js --fetch-public
@@ -132,12 +119,12 @@ node src/lib/main.js --help
   node src/lib/main.js --validate
   ```
 
-- **Export Ontology to XML:**
+- **Export to XML:**
   ```bash
   node src/lib/main.js --export
   ```
 
-- **Import Ontology from XML:**
+- **Import from XML:**
   ```bash
   node src/lib/main.js --import
   ```
@@ -167,7 +154,7 @@ node src/lib/main.js --help
   node src/lib/main.js --analyze
   ```
 
-- **Monitor System Memory and Load:**
+- **Monitor System Metrics:**
   ```bash
   node src/lib/main.js --monitor
   ```
@@ -204,7 +191,7 @@ node src/lib/main.js --help
 
 ## Contributing
 
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively. Your input helps make owl-builder a robust tool for ontology management.
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively. Your input is vital to maintain and improve owl-builder.
 
 ## License
 
