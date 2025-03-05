@@ -4,6 +4,8 @@
 // owl-builder CLI and Library
 //
 // Mission Statement: This file implements the owl-builder CLI tool and JavaScript library to build robust, modular, and user-friendly ontology management functionalities. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+//
+// Note: Updated to reduce code drift and align with improved contributing guidelines.
 
 import { fileURLToPath } from "url";
 import os from "os";
