@@ -12,6 +12,7 @@
 - Added new functionality to fetch detailed OWL schemas from remote data sources (`--fetch-schemas`).
 - Updated CLI help message, source file, and test coverage to align with our mission.
 - Enhanced error handling for file operations.
+- Note: All commands implemented in the CLI are asynchronous; please use `await` when invoking the main function programmatically.
 
 ## Repository Template
 

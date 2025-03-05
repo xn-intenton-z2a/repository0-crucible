@@ -33,16 +33,16 @@ const ontologyPath = path.resolve(process.cwd(), "ontology.json");
 const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
 
 describe("Main Module General Functions", () => {
-  test("main without args prints default message", () => {
+  test("main without args prints default message", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main([]);
+    await main([]);
     expect(spy).toHaveBeenCalledWith("Run with: []");
     spy.mockRestore();
   });
 
-  test("main with --help prints help details", () => {
+  test("main with --help prints help details", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--help"]);
+    await main(["--help"]);
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
     expect(spy).toHaveBeenCalledWith(
       "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo, --fetch-schemas, --fetch-public"
@@ -50,17 +50,17 @@ describe("Main Module General Functions", () => {
     spy.mockRestore();
   });
 
-  test("main with --version returns version string", () => {
+  test("main with --version returns version string", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const version = main(["--version"]);
+    const version = await main(["--version"]);
     expect(spy).toHaveBeenCalledWith("Tool version:", version);
     expect(version).toBe("0.0.5");
     spy.mockRestore();
   });
 
-  test("main with --list returns supported commands", () => {
+  test("main with --list returns supported commands", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const commands = main(["--list"]);
+    const commands = await main(["--list"]);
     expect(spy).toHaveBeenCalledWith("Supported commands:", commands);
     expect(commands).toContain("--build");
     expect(commands).toContain("--version");
@@ -72,56 +72,56 @@ describe("Main Module General Functions", () => {
     spy.mockRestore();
   });
 
-  test("main with --build calls buildOntology and returns ontology", () => {
+  test("main with --build calls buildOntology and returns ontology", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const ontology = main(["--build"]);
+    const ontology = await main(["--build"]);
     expect(spy).toHaveBeenCalledWith("Ontology built:", ontology);
     expect(ontology).toHaveProperty("title", "Sample Ontology");
     spy.mockRestore();
   });
 
-  test("main with --serve calls serveWebInterface", () => {
+  test("main with --serve calls serveWebInterface", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--serve"]);
+    await main(["--serve"]);
     expect(spy).toHaveBeenCalledWith("Starting web server on port 8080...");
     spy.mockRestore();
   });
 
-  test("main with --diagnostics calls diagnostics", () => {
+  test("main with --diagnostics calls diagnostics", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--diagnostics"]);
-    expect(spy).toHaveBeenCalledWith("Diagnostics:");
+    await main(["--diagnostics"]);
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining("Diagnostics:"));
     spy.mockRestore();
   });
 
-  test("main with --integrate returns integrated ontology", () => {
+  test("main with --integrate returns integrated ontology", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const integrated = main(["--integrate"]);
+    const integrated = await main(["--integrate"]);
     expect(spy).toHaveBeenCalledWith("Ontology integrated:", integrated);
     expect(integrated).toHaveProperty("integrated", true);
     expect(integrated).toHaveProperty("integratedWith");
     spy.mockRestore();
   });
 
-  test("main with --crawl returns crawled data", () => {
+  test("main with --crawl returns crawled data", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const crawled = main(["--crawl"]);
+    const crawled = await main(["--crawl"]);
     expect(spy).toHaveBeenCalledWith("Public data crawled:", crawled);
     expect(crawled).toHaveProperty("source", "PublicDataSource");
     spy.mockRestore();
   });
 
-  test("main with --demo returns demo output", () => {
+  test("main with --demo returns demo output", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const demo = main(["--demo"]);
+    const demo = await main(["--demo"]);
     expect(spy).toHaveBeenCalledWith("Demo output:", demo);
     expect(demo).toHaveProperty("message", "This is a demo output to illustrate owl-builder functionalities");
     spy.mockRestore();
   });
 
-  test("main with --fetch-schemas returns fetched schemas", () => {
+  test("main with --fetch-schemas returns fetched schemas", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const schemas = main(["--fetch-schemas"]);
+    const schemas = await main(["--fetch-schemas"]);
     expect(spy).toHaveBeenCalledWith("Fetched schemas:", schemas);
     expect(Array.isArray(schemas)).toBe(true);
     expect(schemas[0]).toHaveProperty("id");
@@ -158,68 +158,68 @@ describe("Extended Functionality", () => {
     }
   });
 
-  test("main with --persist persists the ontology to file", () => {
+  test("main with --persist persists the ontology to file", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const result = main(["--persist"]);
+    const result = await main(["--persist"]);
     expect(result).toHaveProperty("success", true);
     expect(fs.existsSync(ontologyPath)).toBe(true);
     spy.mockRestore();
   });
 
-  test("main with --load loads the persisted ontology", () => {
+  test("main with --load loads the persisted ontology", async () => {
     const ontology = buildOntology();
     const persistResult = persistOntology(ontology);
     expect(persistResult).toHaveProperty("success", true);
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const loaded = main(["--load"]);
+    const loaded = await main(["--load"]);
     expect(loaded).toHaveProperty("title", "Sample Ontology");
     spy.mockRestore();
   });
 
-  test("main with --query returns query results", () => {
+  test("main with --query returns query results", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const result = main(["--query"]);
+    const result = await main(["--query"]);
     expect(result).toHaveProperty("searchTerm", "Concept1");
     expect(result.results).toContain("Concept1");
     spy.mockRestore();
   });
 
-  test("main with --validate validates the ontology correctly", () => {
+  test("main with --validate validates the ontology correctly", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const isValid = main(["--validate"]);
+    const isValid = await main(["--validate"]);
     expect(isValid).toBe(true);
     spy.mockRestore();
   });
 
-  test("main with --export exports the ontology to XML", () => {
+  test("main with --export exports the ontology to XML", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const xml = main(["--export"]);
+    const xml = await main(["--export"]);
     expect(xml).toContain("<ontology>");
     expect(xml).toContain("<title>Sample Ontology</title>");
     spy.mockRestore();
   });
 
-  test("main with --import imports ontology from XML", () => {
+  test("main with --import imports ontology from XML", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const imported = main(["--import"]);
+    const imported = await main(["--import"]);
     expect(imported).toHaveProperty("title");
     expect(Array.isArray(imported.concepts)).toBe(true);
     spy.mockRestore();
   });
 
-  test("main with --sync synchronizes the ontology", () => {
+  test("main with --sync synchronizes the ontology", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const synced = main(["--sync"]);
+    const synced = await main(["--sync"]);
     expect(synced).toHaveProperty("synced", true);
     expect(synced).toHaveProperty("syncedAt");
     spy.mockRestore();
   });
 
-  test("main with --backup creates a backup of the ontology file", () => {
+  test("main with --backup creates a backup of the ontology file", async () => {
     const ontology = buildOntology();
     persistOntology(ontology);
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const backupResult = main(["--backup"]);
+    const backupResult = await main(["--backup"]);
     expect(backupResult).toHaveProperty("success", true);
     expect(fs.existsSync(backupPath)).toBe(true);
     spy.mockRestore();

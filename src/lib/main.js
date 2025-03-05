@@ -153,9 +153,6 @@ export async function main(args = []) {
   for (const arg of args) {
     if (commandActions[arg]) {
       const result = commandActions[arg]();
-      if (result instanceof Promise) {
-        return await result;
-      }
       return result;
     }
   }
