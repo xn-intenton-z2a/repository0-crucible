@@ -4,15 +4,16 @@
 // owl-builder CLI and Library
 //
 // Mission Statement:
-// This file implements the owl-builder CLI tool and JavaScript library in-line with our mission to build robust, modular,
+// This file implements the owl-builder CLI tool and JavaScript library to build robust, modular,
 // and user-friendly ontology management functionalities. Contributions are welcome following the guidelines in CONTRIBUTING.md.
-//
 
 import { fileURLToPath } from "url";
 import os from "os";
 import fs from "fs";
 import path from "path";
 import _ from "lodash";
+
+const PACKAGE_VERSION = "0.0.1-2";
 
 /**
  * Main function to handle CLI arguments and execute appropriate functionality for owl-builder.
@@ -21,6 +22,12 @@ import _ from "lodash";
 export function main(args = []) {
   if (args.includes("--help")) {
     displayHelp();
+    return;
+  } else if (args.includes("--version")) {
+    displayVersion();
+    return;
+  } else if (args.includes("--list")) {
+    listCommands();
     return;
   } else if (args.includes("--build")) {
     const ontology = buildOntology();
@@ -66,7 +73,7 @@ export function main(args = []) {
     return xml;
   } else if (args.includes("--import")) {
     // For demonstration, we use a sample XML string. Replace with real XML input as needed.
-    const sampleXML = `<ontology><title>Imported Ontology</title><concepts><concept>ConceptA</concept><concept>ConceptB</concept></concepts></ontology>`;
+    const sampleXML = `<ontology><title>Imported Ontology</title><created>${new Date().toISOString()}</created><concepts><concept>ConceptA</concept><concept>ConceptB</concept></concepts></ontology>`;
     const imported = importOntologyFromXML(sampleXML);
     console.log("Ontology imported from XML:", imported);
     return imported;
@@ -102,24 +109,65 @@ export function main(args = []) {
  */
 export function displayHelp() {
   console.log("Usage: node src/lib/main.js [options]");
-  console.log("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
+  console.log("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
 }
 
 /**
- * Simulates building an ontology by returning a sample ontology object.
+ * Displays the current version of the owl-builder tool.
+ */
+export function displayVersion() {
+  console.log(`owl-builder version ${PACKAGE_VERSION}`);
+}
+
+/**
+ * Lists all available CLI commands.
+ */
+export function listCommands() {
+  const commands = [
+    "--help: Display help instructions.",
+    "--version: Displays the current version of owl-builder.",
+    "--list: Lists all available commands.",
+    "--build: Build a sample ontology.",
+    "--serve: Start the web interface server.",
+    "--diagnostics: Display diagnostic information.",
+    "--integrate: Integrate supplemental theme ontologies.",
+    "--crawl: Crawl public data for ontological information.",
+    "--persist: Persist the ontology to a file.",
+    "--load: Load the persisted ontology.",
+    "--query: Query the ontology for a specific term.",
+    "--validate: Validate the structure of the ontology.",
+    "--export: Export the ontology to an XML format.",
+    "--import: Import an ontology from an XML format.",
+    "--sync: Synchronize the ontology with an external source.",
+    "--backup: Create a backup of the ontology file.",
+    "--summary: Get a summary of the ontology.",
+    "--refresh: Refresh the ontology's creation timestamp.",
+    "--analyze: Analyze ontology metrics."
+  ];
+  console.log("Available Commands:");
+  commands.forEach(cmd => console.log(cmd));
+}
+
+/**
+ * Simulates building an ontology by returning a sample ontology object with extended metadata.
  * @returns {object} A sample ontology object.
  */
 export function buildOntology() {
   return {
     title: "Sample Ontology",
     created: new Date().toISOString(),
-    concepts: ["Concept1", "Concept2", "Concept3"]
+    concepts: ["Concept1", "Concept2", "Concept3"],
+    metadata: {
+      mission: "Build robust and modular ontology management functionalities.",
+      version: PACKAGE_VERSION,
+      contributor: "Community"
+    }
   };
 }
 
 /**
  * Starts a simple web server for demonstration purposes.
- * In a production scenario, replace this with a robust server implementation.
+ * In production, replace this with a robust server implementation.
  */
 export function serveWebInterface() {
   console.log("Starting web server on port 8080...");

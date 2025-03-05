@@ -1,12 +1,14 @@
 # owl-builder
 
-`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology. The tool now also includes functionalities such as ontology validation, export, import, synchronization, and backup.
+`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology. The tool now also includes functionalities such as ontology validation, export, import, synchronization, backup, and new commands for listing available options and displaying the tool version.
 
 ## Change Log
 - Extended ontology management functions: added persist, load, query, validate, export, import, sync, and backup features.
-- Updated CLI help message and source file to align with the owl-builder mission statement and remove simulation drift.
-- Improved code documentation and modularity in source file, refactoring to adhere to contributing guidelines.
-- Updated test coverage to reflect new and refactored functionalities.
+- Added new commands: `--list` to display all available commands and `--version` to display the current version.
+- Extended ontology metadata to include mission and version information in line with the mission statement.
+- Updated CLI help message and source file to adhere to contributing guidelines.
+- Improved code documentation and modularity.
+- Updated test coverage to reflect new commands and functions.
 
 ## Repository Template
 
@@ -30,6 +32,8 @@ npm install owl-builder
 
 - Command line interface with multiple modes:
   - Help: `--help`
+  - Version: `--version` (displays package version)
+  - List: `--list` (displays available commands)
   - Build Ontology: `--build`
   - Serve Web Interface: `--serve`
   - Diagnostics: `--diagnostics`
@@ -140,6 +144,16 @@ node src/lib/main.js --help
 - **Analyze Ontology:**
   ```bash
   node src/lib/main.js --analyze
+  ```
+
+- **List Available Commands:**
+  ```bash
+  node src/lib/main.js --list
+  ```
+
+- **Display Version:**
+  ```bash
+  node src/lib/main.js --version
   ```
 
 ## Contributing

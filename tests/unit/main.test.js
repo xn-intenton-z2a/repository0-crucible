@@ -6,6 +6,8 @@ import {
   buildOntology,
   serveWebInterface,
   displayHelp,
+  displayVersion,
+  listCommands,
   diagnostics,
   integrateOntology,
   crawlData,
@@ -37,7 +39,22 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--help"]);
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
+    spy.mockRestore();
+  });
+
+  test("main with --version displays version", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--version"]);
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining("owl-builder version"));
+    spy.mockRestore();
+  });
+
+  test("main with --list prints list of commands", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--list"]);
+    expect(spy).toHaveBeenCalledWith("Available Commands:");
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining("--build"));
     spy.mockRestore();
   });
 
@@ -169,11 +186,13 @@ describe("Extended Functionality", () => {
 });
 
 describe("Utility Functions", () => {
-  test("buildOntology returns a valid ontology object", () => {
+  test("buildOntology returns a valid ontology object with metadata", () => {
     const ontology = buildOntology();
     expect(ontology).toHaveProperty("title", "Sample Ontology");
     expect(ontology).toHaveProperty("concepts");
     expect(Array.isArray(ontology.concepts)).toBe(true);
+    expect(ontology).toHaveProperty("metadata");
+    expect(ontology.metadata).toHaveProperty("mission");
   });
 
   test("serveWebInterface logs the server start message", () => {
@@ -187,7 +206,14 @@ describe("Utility Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     displayHelp();
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
+    spy.mockRestore();
+  });
+
+  test("displayVersion prints the version message", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    displayVersion();
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining("owl-builder version"));
     spy.mockRestore();
   });
 
