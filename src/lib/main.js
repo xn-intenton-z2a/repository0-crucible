@@ -127,6 +127,11 @@ export function main(args = []) {
       const rebuilt = rebuildOntology();
       console.log("Ontology rebuilt:", rebuilt);
       return rebuilt;
+    },
+    "--demo": () => {
+      const demo = demoOntology();
+      console.log("Demo output:", demo);
+      return demo;
     }
   };
 
@@ -143,7 +148,7 @@ export function main(args = []) {
  */
 export function displayHelp() {
   console.log("Usage: node src/lib/main.js [options]");
-  console.log("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild");
+  console.log("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo");
 }
 
 /**
@@ -151,7 +156,7 @@ export function displayHelp() {
  * @returns {string} Version string.
  */
 export function getVersion() {
-  return "0.0.2";
+  return "0.0.3";
 }
 
 /**
@@ -180,7 +185,8 @@ export function listCommands() {
     "--refresh",
     "--analyze",
     "--monitor",
-    "--rebuild"
+    "--rebuild",
+    "--demo"
   ];
 }
 
@@ -309,7 +315,7 @@ export function importOntologyFromXML(xmlString) {
   const conceptsMatch = xmlString.match(/<concepts>(.*?)<\/concepts>/);
   let concepts = [];
   if (conceptsMatch && conceptsMatch[1]) {
-    const conceptRegex = /<concept>(.*?)<\/concept>/g;
+    const conceptRegex = /<concept>(.+?)<\/concept>/g;
     let match;
     while ((match = conceptRegex.exec(conceptsMatch[1])) !== null) {
       concepts.push(match[1]);
@@ -414,6 +420,18 @@ export function rebuildOntology() {
   const ontology = buildOntology();
   const refreshed = refreshOntology(ontology);
   return refreshed;
+}
+
+/**
+ * Returns a demo ontology output for demonstration purposes.
+ * @returns {object} Demo output object.
+ */
+export function demoOntology() {
+  return {
+    id: "demo-" + Math.floor(Math.random() * 10000),
+    message: "This is a demo output to illustrate owl-builder functionalities",
+    timestamp: new Date().toISOString()
+  };
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
