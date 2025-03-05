@@ -465,6 +465,7 @@ export function fetchOwlSchemas() {
 
 /**
  * Fetches public data from a real API endpoint.
+ * Checks for JSON content type to ensure valid parsing.
  * @param {string} endpoint - The URL to fetch data from.
  * @returns {Promise<object>} The fetched data.
  */
@@ -477,6 +478,10 @@ export function fetchPublicData(endpoint = "https://api.publicapis.org/entries")
       });
       res.on("end", () => {
         try {
+          const contentType = res.headers["content-type"] || "";
+          if (!contentType.includes("application/json")) {
+            throw new Error(`Invalid content-type: ${contentType}`);
+          }
           const json = JSON.parse(data);
           resolve(json);
         } catch (e) {
