@@ -6,7 +6,6 @@
 // Mission Statement:
 // This file implements the owl-builder CLI tool and JavaScript library in-line with our mission to build robust, modular,
 // and user-friendly ontology management functionalities. Contributions are welcome following the guidelines in CONTRIBUTING.md.
-//
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -22,6 +21,14 @@ export function main(args = []) {
   if (args.includes("--help")) {
     displayHelp();
     return;
+  } else if (args.includes("--version")) {
+    const version = getVersion();
+    console.log("Tool version:", version);
+    return version;
+  } else if (args.includes("--list")) {
+    const commands = listCommands();
+    console.log("Supported commands:", commands);
+    return commands;
   } else if (args.includes("--build")) {
     const ontology = buildOntology();
     console.log("Ontology built:", ontology);
@@ -66,7 +73,7 @@ export function main(args = []) {
     return xml;
   } else if (args.includes("--import")) {
     // For demonstration, we use a sample XML string. Replace with real XML input as needed.
-    const sampleXML = `<ontology><title>Imported Ontology</title><concepts><concept>ConceptA</concept><concept>ConceptB</concept></concepts></ontology>`;
+    const sampleXML = `<ontology><title>Imported Ontology</title><created>${new Date().toISOString()}</created><concepts><concept>ConceptA</concept><concept>ConceptB</concept></concepts></ontology>`;
     const imported = importOntologyFromXML(sampleXML);
     console.log("Ontology imported from XML:", imported);
     return imported;
@@ -102,16 +109,55 @@ export function main(args = []) {
  */
 export function displayHelp() {
   console.log("Usage: node src/lib/main.js [options]");
-  console.log("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
+  console.log("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
 }
 
 /**
- * Simulates building an ontology by returning a sample ontology object.
+ * Returns the version of the tool.
+ * @returns {string} Version string.
+ */
+export function getVersion() {
+  // In a real implementation, you may read from a package.json file; here, we return a static version.
+  return '0.0.2';
+}
+
+/**
+ * Lists all supported commands.
+ * @returns {string[]} Array of supported command strings.
+ */
+export function listCommands() {
+  return [
+    "--help",
+    "--version",
+    "--list",
+    "--build",
+    "--serve",
+    "--diagnostics",
+    "--integrate",
+    "--crawl",
+    "--persist",
+    "--load",
+    "--query",
+    "--validate",
+    "--export",
+    "--import",
+    "--sync",
+    "--backup",
+    "--summary",
+    "--refresh",
+    "--analyze"
+  ];
+}
+
+/**
+ * Simulates building an ontology by returning a sample ontology object with extended details.
  * @returns {object} A sample ontology object.
  */
 export function buildOntology() {
   return {
+    id: 'ont-' + Math.floor(Math.random() * 10000),
     title: "Sample Ontology",
+    description: "An ontology built to demonstrate owl-builder functionalities.",
     created: new Date().toISOString(),
     concepts: ["Concept1", "Concept2", "Concept3"]
   };
@@ -123,7 +169,7 @@ export function buildOntology() {
  */
 export function serveWebInterface() {
   console.log("Starting web server on port 8080...");
-  // Example: integrate a real HTTP server if needed.
+  // This is a placeholder for a real server implementation.
 }
 
 /**

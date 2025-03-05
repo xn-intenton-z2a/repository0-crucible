@@ -1,12 +1,13 @@
 # owl-builder
 
-`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology. The tool now also includes functionalities such as ontology validation, export, import, synchronization, and backup.
+`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology. Recent updates include additional commands for listing available functionalities and retrieving the tool version.
 
 ## Change Log
 - Extended ontology management functions: added persist, load, query, validate, export, import, sync, and backup features.
-- Updated CLI help message and source file to align with the owl-builder mission statement and remove simulation drift.
-- Improved code documentation and modularity in source file, refactoring to adhere to contributing guidelines.
-- Updated test coverage to reflect new and refactored functionalities.
+- Updated CLI help message and source file to align with the owl-builder mission statement.
+- Refined code to remove simulation drift and added robust logging for new commands: --list and --version.
+- Extended the ontology object structure with additional metadata fields.
+- Updated test coverage to include new commands and functionalities.
 
 ## Repository Template
 
@@ -30,6 +31,8 @@ npm install owl-builder
 
 - Command line interface with multiple modes:
   - Help: `--help`
+  - Version: `--version`
+  - List Commands: `--list`
   - Build Ontology: `--build`
   - Serve Web Interface: `--serve`
   - Diagnostics: `--diagnostics`
@@ -140,6 +143,16 @@ node src/lib/main.js --help
 - **Analyze Ontology:**
   ```bash
   node src/lib/main.js --analyze
+  ```
+
+- **List Supported Commands:**
+  ```bash
+  node src/lib/main.js --list
+  ```
+
+- **Retrieve Tool Version:**
+  ```bash
+  node src/lib/main.js --version
   ```
 
 ## Contributing
