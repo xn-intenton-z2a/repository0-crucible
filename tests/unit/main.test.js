@@ -295,7 +295,6 @@ describe("Extended Functionality", () => {
   });
 });
 
-
 describe("Utility Functions", () => {
   test("buildOntology returns a valid ontology object", () => {
     const ontology = buildOntology();
