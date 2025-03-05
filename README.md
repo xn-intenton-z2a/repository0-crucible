@@ -3,11 +3,12 @@
 `owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology.
 
 ## Change Log
-- Version bumped to 0.0.3
+- Version bumped to 0.0.4
 - Refactored the main CLI function to use a command mapping for reduced complexity.
-- Extended ontology management functions: added persist, load, query, validate, export, import, sync, backup, demo command, monitor, and rebuild functionalities.
+- Extended ontology management functions: added persist, load, query, validate, export, import, sync, backup, demo, monitor, and rebuild functionalities.
 - Enhanced XML import regex for improved concept extraction.
 - Added new demo command (`--demo`) to illustrate a sample output without external calls.
+- Added new functionality to fetch detailed OWL schemas from remote data sources (`--fetch-schemas`).
 - Updated CLI help message, source file, and test coverage to align with our mission.
 - Enhanced error handling for file operations.
 
@@ -54,6 +55,7 @@ npm install owl-builder
   - Monitor System (Memory & Load): `--monitor`
   - Rebuild Ontology: `--rebuild`
   - Demo Output: `--demo`
+  - **Fetch Detailed OWL Schemas: `--fetch-schemas`**
 
 ## Usage
 
@@ -163,6 +165,11 @@ node src/lib/main.js --help
 - **Demo Output:**
   ```bash
   node src/lib/main.js --demo
+  ```
+
+- **Fetch Detailed OWL Schemas:**
+  ```bash
+  node src/lib/main.js --fetch-schemas
   ```
 
 - **List Supported Commands:**

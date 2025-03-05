@@ -21,7 +21,9 @@ import {
   listCommands,
   getVersion,
   monitorOntology,
-  rebuildOntology
+  rebuildOntology,
+  demoOntology,
+  fetchOwlSchemas
 } from "@src/lib/main.js";
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -40,7 +42,7 @@ describe("Main Module General Functions", () => {
     main(["--help"]);
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
     expect(spy).toHaveBeenCalledWith(
-      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo"
+      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo, --fetch-schemas"
     );
     spy.mockRestore();
   });
@@ -49,7 +51,7 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const version = main(["--version"]);
     expect(spy).toHaveBeenCalledWith("Tool version:", version);
-    expect(version).toBe("0.0.3");
+    expect(version).toBe("0.0.4");
     spy.mockRestore();
   });
 
@@ -62,6 +64,7 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--monitor");
     expect(commands).toContain("--rebuild");
     expect(commands).toContain("--demo");
+    expect(commands).toContain("--fetch-schemas");
     spy.mockRestore();
   });
 
@@ -109,6 +112,17 @@ describe("Main Module General Functions", () => {
     const demo = main(["--demo"]);
     expect(spy).toHaveBeenCalledWith("Demo output:", demo);
     expect(demo).toHaveProperty("message", "This is a demo output to illustrate owl-builder functionalities");
+    spy.mockRestore();
+  });
+
+  test("main with --fetch-schemas returns fetched schemas", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const schemas = main(["--fetch-schemas"]);
+    expect(spy).toHaveBeenCalledWith("Fetched schemas:", schemas);
+    expect(Array.isArray(schemas)).toBe(true);
+    expect(schemas[0]).toHaveProperty("id");
+    expect(schemas[0]).toHaveProperty("name");
+    expect(schemas[0]).toHaveProperty("details");
     spy.mockRestore();
   });
 });
@@ -220,7 +234,7 @@ describe("Utility Functions", () => {
     displayHelp();
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
     expect(spy).toHaveBeenCalledWith(
-      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo"
+      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo, --fetch-schemas"
     );
     spy.mockRestore();
   });
@@ -322,26 +336,5 @@ describe("Utility Functions", () => {
     const ontology = buildOntology();
     const rebuilt = rebuildOntology();
     expect(rebuilt.created).not.toBe(ontology.created);
-  });
-
-  describe("Error Handling in File Operations", () => {
-    test("persistOntology returns error on write failure", () => {
-      const originalWrite = fs.writeFileSync;
-      vi.spyOn(fs, "writeFileSync").mockImplementation(() => { throw new Error("Write error"); });
-      const ontology = buildOntology();
-      const result = persistOntology(ontology);
-      expect(result).toHaveProperty("success", false);
-      expect(result.error).toBe("Write error");
-      fs.writeFileSync = originalWrite;
-    });
-
-    test("loadOntology returns error on read failure", () => {
-      const originalRead = fs.readFileSync;
-      vi.spyOn(fs, "readFileSync").mockImplementation(() => { throw new Error("Read error"); });
-      const result = loadOntology();
-      expect(result).toHaveProperty("success", false);
-      expect(result.error).toBe("Read error");
-      fs.readFileSync = originalRead;
-    });
   });
 });

@@ -132,6 +132,11 @@ export function main(args = []) {
       const demo = demoOntology();
       console.log("Demo output:", demo);
       return demo;
+    },
+    "--fetch-schemas": () => {
+      const schemas = fetchOwlSchemas();
+      console.log("Fetched schemas:", schemas);
+      return schemas;
     }
   };
 
@@ -148,7 +153,7 @@ export function main(args = []) {
  */
 export function displayHelp() {
   console.log("Usage: node src/lib/main.js [options]");
-  console.log("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo");
+  console.log("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo, --fetch-schemas");
 }
 
 /**
@@ -156,7 +161,7 @@ export function displayHelp() {
  * @returns {string} Version string.
  */
 export function getVersion() {
-  return "0.0.3";
+  return "0.0.4";
 }
 
 /**
@@ -186,7 +191,8 @@ export function listCommands() {
     "--analyze",
     "--monitor",
     "--rebuild",
-    "--demo"
+    "--demo",
+    "--fetch-schemas"
   ];
 }
 
@@ -432,6 +438,18 @@ export function demoOntology() {
     message: "This is a demo output to illustrate owl-builder functionalities",
     timestamp: new Date().toISOString()
   };
+}
+
+/**
+ * Fetches detailed OWL schemas from a remote data source (simulated).
+ * @returns {object[]} Array of OWL schema objects.
+ */
+export function fetchOwlSchemas() {
+  // Simulated remote fetch operation returning detailed owl schemas
+  return [
+    { id: "owl1", name: "Basic OWL Schema", details: "A basic schema for ontology creation." },
+    { id: "owl2", name: "Advanced OWL Schema", details: "A detailed schema including classes, properties, and relationships." }
+  ];
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
