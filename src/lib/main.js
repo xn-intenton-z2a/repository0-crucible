@@ -1,5 +1,12 @@
 #!/usr/bin/env node
 // src/lib/main.js
+//
+// owl-builder CLI and Library
+//
+// Mission Statement:
+// This file implements the owl-builder CLI tool and JavaScript library in-line with our mission to build robust, modular,
+// and user-friendly ontology management functionalities. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+//
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -43,7 +50,7 @@ export function main(args = []) {
     console.log("Ontology loaded:", loaded);
     return loaded;
   } else if (args.includes("--query")) {
-    // For demo purposes, we use a fixed search term
+    // For demo purposes, we use a fixed search term. In a real-world scenario, the term may be passed via args.
     const results = queryOntology("Concept1");
     console.log("Ontology query results:", results);
     return results;
@@ -58,7 +65,7 @@ export function main(args = []) {
     console.log("Ontology exported to XML:", xml);
     return xml;
   } else if (args.includes("--import")) {
-    // For demonstration, we use a sample XML string
+    // For demonstration, we use a sample XML string. Replace with real XML input as needed.
     const sampleXML = `<ontology><title>Imported Ontology</title><concepts><concept>ConceptA</concept><concept>ConceptB</concept></concepts></ontology>`;
     const imported = importOntologyFromXML(sampleXML);
     console.log("Ontology imported from XML:", imported);
@@ -95,7 +102,7 @@ export function main(args = []) {
  */
 export function displayHelp() {
   console.log("Usage: node src/lib/main.js [options]");
-  console.log("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --summary, --refresh, --analyze");
+  console.log("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
 }
 
 /**
@@ -111,15 +118,16 @@ export function buildOntology() {
 }
 
 /**
- * Simulates starting a web server for ontology querying and visualization.
+ * Starts a simple web server for demonstration purposes.
+ * In a production scenario, replace this with a robust server implementation.
  */
 export function serveWebInterface() {
   console.log("Starting web server on port 8080...");
-  // In a real implementation, this would start an actual web server.
+  // Example: integrate a real HTTP server if needed.
 }
 
 /**
- * Displays diagnostic information including system platform and Node.js version.
+ * Logs diagnostic information including system platform and Node.js version.
  */
 export function diagnostics() {
   console.log("Diagnostics:");
@@ -128,8 +136,8 @@ export function diagnostics() {
 }
 
 /**
- * Simulates integrating supplemental theme ontologies into the main ontology.
- * @returns {object} A sample integrated ontology object.
+ * Integrates supplemental theme ontologies into the main ontology.
+ * @returns {object} An integrated ontology object.
  */
 export function integrateOntology() {
   const base = buildOntology();
@@ -139,7 +147,7 @@ export function integrateOntology() {
 }
 
 /**
- * Simulates crawling public data sources for ontological data.
+ * Simulates crawling public data for ontological information.
  * @returns {object} A sample crawled data object.
  */
 export function crawlData() {
@@ -151,9 +159,9 @@ export function crawlData() {
 }
 
 /**
- * Simulates persisting the ontology to a file.
+ * Persists the ontology to a file in the current working directory.
  * @param {object} ontology - The ontology to persist.
- * @returns {object} An object indicating persistence success and file path.
+ * @returns {object} Result object indicating success and file path.
  */
 export function persistOntology(ontology) {
   const filePath = path.resolve(process.cwd(), "ontology.json");
@@ -167,8 +175,8 @@ export function persistOntology(ontology) {
 }
 
 /**
- * Simulates loading the persisted ontology from a file.
- * @returns {object} The loaded ontology object.
+ * Loads a persisted ontology from a file.
+ * @returns {object} The loaded ontology object or an error object on failure.
  */
 export function loadOntology() {
   const filePath = path.resolve(process.cwd(), "ontology.json");
@@ -182,9 +190,9 @@ export function loadOntology() {
 }
 
 /**
- * Simulates querying the ontology.
- * @param {string} searchTerm - The term to query in the ontology.
- * @returns {object} The query results.
+ * Queries the ontology for a given search term.
+ * @param {string} searchTerm - Term to search in concepts.
+ * @returns {object} The query results containing the search term and matched concepts.
  */
 export function queryOntology(searchTerm) {
   const ontology = buildOntology();
@@ -193,9 +201,9 @@ export function queryOntology(searchTerm) {
 }
 
 /**
- * Validates the ontology object.
+ * Validates the ontology object structure.
  * @param {object} ontology - The ontology to validate.
- * @returns {boolean} True if the ontology is valid, false otherwise.
+ * @returns {boolean} True if valid, else false.
  */
 export function validateOntology(ontology) {
   if (!ontology.title || !Array.isArray(ontology.concepts)) {
@@ -205,9 +213,9 @@ export function validateOntology(ontology) {
 }
 
 /**
- * Simulates exporting the ontology to an XML string.
- * @param {object} ontology - The ontology to export.
- * @returns {string} An XML string representing the ontology.
+ * Exports the ontology to an XML representation.
+ * @param {object} ontology - The ontology object to export.
+ * @returns {string} XML string representing the ontology.
  */
 export function exportOntologyToXML(ontology) {
   const conceptsXML = ontology.concepts.map(concept => `<concept>${concept}</concept>`).join("");
@@ -215,12 +223,12 @@ export function exportOntologyToXML(ontology) {
 }
 
 /**
- * Simulates importing an ontology from an XML string.
- * @param {string} xmlString - The XML string representing the ontology.
+ * Imports an ontology from an XML string.
+ * NOTE: This is a simplified parser intended for demonstration purposes only.
+ * @param {string} xmlString - XML string of the ontology.
  * @returns {object} The imported ontology object.
  */
 export function importOntologyFromXML(xmlString) {
-  // NOTE: This is a simplified parser for demonstration purposes
   const titleMatch = xmlString.match(/<title>(.*?)<\/title>/);
   const createdMatch = xmlString.match(/<created>(.*?)<\/created>/);
   const conceptsMatch = xmlString.match(/<concepts>(.*?)<\/concepts>/);
@@ -240,7 +248,7 @@ export function importOntologyFromXML(xmlString) {
 }
 
 /**
- * Simulates synchronizing the ontology with an external data source.
+ * Synchronizes the ontology with an external source (simulated).
  * @returns {object} A sample synced ontology object.
  */
 export function syncOntology() {
@@ -251,8 +259,8 @@ export function syncOntology() {
 }
 
 /**
- * Simulates creating a backup of the persisted ontology file.
- * @returns {object} An object indicating backup success and backup file path.
+ * Creates a backup of the ontology file.
+ * @returns {object} Result object indicating backup success and backup file path.
  */
 export function backupOntology() {
   const originalPath = path.resolve(process.cwd(), "ontology.json");
@@ -268,9 +276,9 @@ export function backupOntology() {
 }
 
 /**
- * Returns a summary of the ontology including title, total number of concepts, and unique concepts.
+ * Provides a summary of the ontology including title, concept count, and unique concepts.
  * @param {object} ontology - The ontology to summarize.
- * @returns {object} A summary object.
+ * @returns {object} Summary object.
  */
 export function getOntologySummary(ontology) {
   return {
@@ -281,14 +289,12 @@ export function getOntologySummary(ontology) {
 }
 
 /**
- * Refreshes the ontology by updating its creation date to the current time.
- * Ensures that the new creation date is different from the old one.
+ * Refreshes the ontology by updating the creation timestamp ensuring it differs from the original.
  * @param {object} ontology - The ontology to refresh.
  * @returns {object} The refreshed ontology object.
  */
 export function refreshOntology(ontology) {
   let newCreated = new Date().toISOString();
-  // Ensure the new date is different. If equal (rare but possible), add 1 millisecond.
   if (newCreated === ontology.created) {
     newCreated = new Date(Date.now() + 1).toISOString();
   }
@@ -296,9 +302,9 @@ export function refreshOntology(ontology) {
 }
 
 /**
- * Analyzes the ontology and returns metrics including validity, concept count, and title length.
+ * Analyzes the ontology and returns metrics including validity and concept details.
  * @param {object} ontology - The ontology to analyze.
- * @returns {object} An analysis report.
+ * @returns {object} Analysis report.
  */
 export function analyzeOntology(ontology) {
   return {
