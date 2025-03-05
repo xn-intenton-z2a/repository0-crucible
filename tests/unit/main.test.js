@@ -15,8 +15,6 @@ import {
   validateOntology,
   exportOntologyToXML,
   importOntologyFromXML,
-  syncOntology,
-  backupOntology,
   getOntologySummary,
   refreshOntology,
   analyzeOntology,
@@ -39,7 +37,9 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--help"]);
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
+    expect(spy).toHaveBeenCalledWith(
+      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze"
+    );
     spy.mockRestore();
   });
 
@@ -164,7 +164,7 @@ describe("Extended Functionality", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const imported = main(["--import"]);
     expect(imported).toHaveProperty("title");
-    expect(imported.concepts).toBeInstanceOf(Array);
+    expect(Array.isArray(imported.concepts)).toBe(true);
     spy.mockRestore();
   });
 
@@ -206,7 +206,9 @@ describe("Utility Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     displayHelp();
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
+    expect(spy).toHaveBeenCalledWith(
+      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze"
+    );
     spy.mockRestore();
   });
 
@@ -295,7 +297,6 @@ describe("Utility Functions", () => {
     expect(analysis).toHaveProperty("titleLength", ontology.title.length);
   });
 
-  // New tests for error handling in file system operations
   describe("Error Handling in File Operations", () => {
     test("persistOntology returns error on write failure", () => {
       const originalWrite = fs.writeFileSync;

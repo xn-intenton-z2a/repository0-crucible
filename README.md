@@ -1,12 +1,12 @@
 # owl-builder
 
-`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology. Recent updates include additional commands for listing available functionalities and retrieving the tool version.
+`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology. Recent updates include additional commands for listing available functionalities and retrieving the tool version, as well as a refactored CLI implementation to reduce complexity and improve maintainability.
 
 ## Change Log
+- Refactored the main CLI function to use a command mapping for reduced complexity.
 - Extended ontology management functions: added persist, load, query, validate, export, import, sync, and backup features.
 - Updated CLI help message and source file to align with the owl-builder mission statement.
 - Refined code to remove simulation drift and added robust logging for new commands: --list and --version.
-- Extended the ontology object structure with additional metadata fields.
 - Updated test coverage to include new error handling tests for file system operations and to improve overall robustness.
 
 ## Repository Template
