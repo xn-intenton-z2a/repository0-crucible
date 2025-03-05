@@ -1,13 +1,14 @@
 # owl-builder
 
-`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology. Recent updates include additional commands for listing available functionalities and retrieving the tool version, as well as a refactored CLI implementation to reduce complexity and improve maintainability.
+`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology. Recent updates include additional commands for listing available functionalities, retrieving the tool version, and a new demo command to showcase extended ontology metadata. The CLI has been refactored to reduce complexity and improve maintainability.
 
 ## Change Log
 - Refactored the main CLI function to use a command mapping for reduced complexity.
 - Extended ontology management functions: added persist, load, query, validate, export, import, sync, and backup features.
-- Updated CLI help message and source file to align with the owl-builder mission statement.
-- Refined code to remove simulation drift and added robust logging for new commands: --list and --version.
-- Updated test coverage to include new error handling tests for file system operations and to improve overall robustness.
+- Added a new demo command (--demo) that displays a detailed ontology with extended metadata.
+- Enhanced XML import function by refining the regular expression pattern.
+- Updated error handling in file operations for persistence and loading of ontology.
+- Updated version bump to 0.0.3.
 
 ## Repository Template
 
@@ -49,6 +50,7 @@ npm install owl-builder
   - Get Ontology Summary: `--summary`
   - Refresh Ontology: `--refresh`
   - Analyze Ontology: `--analyze`
+  - **Demo Ontology (Extended Metadata): `--demo`**
 
 ## Usage
 
@@ -153,6 +155,11 @@ node src/lib/main.js --help
 - **Retrieve Tool Version:**
   ```bash
   node src/lib/main.js --version
+  ```
+
+- **Display Demo (Detailed Ontology with Extended Metadata):**
+  ```bash
+  node src/lib/main.js --demo
   ```
 
 ## Contributing

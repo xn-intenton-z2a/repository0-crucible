@@ -38,7 +38,7 @@ describe("Main Module General Functions", () => {
     main(["--help"]);
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
     expect(spy).toHaveBeenCalledWith(
-      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze"
+      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --demo"
     );
     spy.mockRestore();
   });
@@ -47,7 +47,7 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const version = main(["--version"]);
     expect(spy).toHaveBeenCalledWith("Tool version:", version);
-    expect(version).toBe("0.0.2");
+    expect(version).toBe("0.0.3");
     spy.mockRestore();
   });
 
@@ -57,6 +57,7 @@ describe("Main Module General Functions", () => {
     expect(spy).toHaveBeenCalledWith("Supported commands:", commands);
     expect(commands).toContain("--build");
     expect(commands).toContain("--version");
+    expect(commands).toContain("--demo");
     spy.mockRestore();
   });
 
@@ -96,6 +97,15 @@ describe("Main Module General Functions", () => {
     const crawled = main(["--crawl"]);
     expect(spy).toHaveBeenCalledWith("Public data crawled:", crawled);
     expect(crawled).toHaveProperty("source", "PublicDataSource");
+    spy.mockRestore();
+  });
+
+  test("main with --demo prints demo details", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const demo = main(["--demo"]);
+    expect(spy).toHaveBeenCalledWith("Demo Output:");
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining("Detailed Ontology:"));
+    expect(demo).toHaveProperty("details");
     spy.mockRestore();
   });
 });
@@ -207,7 +217,7 @@ describe("Utility Functions", () => {
     displayHelp();
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
     expect(spy).toHaveBeenCalledWith(
-      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze"
+      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --demo"
     );
     spy.mockRestore();
   });

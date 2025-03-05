@@ -117,6 +117,10 @@ export function main(args = []) {
       const analysis = analyzeOntology(ontology);
       console.log("Ontology analysis:", analysis);
       return analysis;
+    },
+    "--demo": () => {
+      const demo = displayDemo();
+      return demo;
     }
   };
 
@@ -133,7 +137,7 @@ export function main(args = []) {
  */
 export function displayHelp() {
   console.log("Usage: node src/lib/main.js [options]");
-  console.log("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
+  console.log("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --demo");
 }
 
 /**
@@ -141,7 +145,7 @@ export function displayHelp() {
  * @returns {string} Version string.
  */
 export function getVersion() {
-  return "0.0.2";
+  return "0.0.3";
 }
 
 /**
@@ -168,7 +172,8 @@ export function listCommands() {
     "--backup",
     "--summary",
     "--refresh",
-    "--analyze"
+    "--analyze",
+    "--demo"
   ];
 }
 
@@ -184,6 +189,29 @@ export function buildOntology() {
     created: new Date().toISOString(),
     concepts: ["Concept1", "Concept2", "Concept3"]
   };
+}
+
+/**
+ * Builds a detailed ontology by extending the basic ontology with additional metadata.
+ * @returns {object} Detailed ontology object.
+ */
+export function buildDetailedOntology() {
+  const ontology = buildOntology();
+  ontology.details = {
+    note: "Enhanced with additional metadata for demonstration purposes.",
+    timestamp: new Date().toISOString()
+  };
+  return ontology;
+}
+
+/**
+ * Displays a demonstration output showcasing a detailed ontology.
+ */
+export function displayDemo() {
+  console.log("Demo Output:");
+  const detailedOntology = buildDetailedOntology();
+  console.log("Detailed Ontology:", detailedOntology);
+  return detailedOntology;
 }
 
 /**
@@ -297,7 +325,7 @@ export function importOntologyFromXML(xmlString) {
   const conceptsMatch = xmlString.match(/<concepts>(.*?)<\/concepts>/);
   let concepts = [];
   if (conceptsMatch && conceptsMatch[1]) {
-    const conceptRegex = /<concept>(.*?)<\/+concept>/g;
+    const conceptRegex = /<concept>(.*?)<\/concept>/g;
     let match;
     while ((match = conceptRegex.exec(conceptsMatch[1])) !== null) {
       concepts.push(match[1]);
