@@ -13,6 +13,15 @@ import path from "path";
 import _ from "lodash";
 import https from "https";
 
+// Helper functions to get file paths for ontology persistence, improving consistency and reducing code drift
+function getOntologyFilePath() {
+  return path.resolve(process.cwd(), "ontology.json");
+}
+
+function getBackupFilePath() {
+  return path.resolve(process.cwd(), "ontology-backup.json");
+}
+
 /**
  * Main function to handle CLI arguments and execute appropriate functionality for owl-builder.
  * @param {string[]} args - The CLI arguments.
@@ -269,7 +278,7 @@ export function crawlData() {
  * @returns {object} Result object indicating success and file path.
  */
 export function persistOntology(ontology) {
-  const filePath = path.resolve(process.cwd(), "ontology.json");
+  const filePath = getOntologyFilePath();
   try {
     fs.writeFileSync(filePath, JSON.stringify(ontology, null, 2));
     return { success: true, path: filePath };
@@ -284,7 +293,7 @@ export function persistOntology(ontology) {
  * @returns {object} The loaded ontology object or an error object on failure.
  */
 export function loadOntology() {
-  const filePath = path.resolve(process.cwd(), "ontology.json");
+  const filePath = getOntologyFilePath();
   try {
     const data = fs.readFileSync(filePath, "utf-8");
     return JSON.parse(data);
@@ -364,8 +373,8 @@ export function syncOntology() {
  * @returns {object} Result object indicating backup success and backup file path.
  */
 export function backupOntology() {
-  const originalPath = path.resolve(process.cwd(), "ontology.json");
-  const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
+  const originalPath = getOntologyFilePath();
+  const backupPath = getBackupFilePath();
   try {
     const data = fs.readFileSync(originalPath, "utf-8");
     fs.writeFileSync(backupPath, data);

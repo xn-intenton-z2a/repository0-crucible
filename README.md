@@ -10,6 +10,7 @@
 - Enhanced XML import regex for improved concept extraction.
 - Added new demo command (`--demo`) to illustrate a sample output without external calls.
 - Added new functionality to fetch detailed OWL schemas from remote data sources (`--fetch-schemas`).
+- Refactored file path handling for persistence and backup functionality to reduce code drift and improve consistency.
 - Updated CLI help message, source file, and test coverage to align with our mission.
 - Enhanced error handling for file operations and public data fetching.
 
