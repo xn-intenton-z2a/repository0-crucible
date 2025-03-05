@@ -19,7 +19,9 @@ import {
   backupOntology,
   getOntologySummary,
   refreshOntology,
-  analyzeOntology
+  analyzeOntology,
+  listCommands,
+  getVersion
 } from "@src/lib/main.js";
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -37,7 +39,24 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--help"]);
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
+    spy.mockRestore();
+  });
+
+  test("main with --version returns version string", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const version = main(["--version"]);
+    expect(spy).toHaveBeenCalledWith("Tool version:", version);
+    expect(version).toBe("0.0.2");
+    spy.mockRestore();
+  });
+
+  test("main with --list returns supported commands", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const commands = main(["--list"]);
+    expect(spy).toHaveBeenCalledWith("Supported commands:", commands);
+    expect(commands).toContain("--build");
+    expect(commands).toContain("--version");
     spy.mockRestore();
   });
 
@@ -187,7 +206,7 @@ describe("Utility Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     displayHelp();
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith("Options: --help, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
+    expect(spy).toHaveBeenCalledWith("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
     spy.mockRestore();
   });
 
