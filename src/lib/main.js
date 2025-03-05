@@ -3,8 +3,7 @@
 //
 // owl-builder CLI and Library
 //
-// Mission Statement: This file implements the owl-builder CLI tool and JavaScript library in-line with our mission to build robust, modular,
-// and user-friendly ontology management functionalities. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+// Mission Statement: This file implements the owl-builder CLI tool and JavaScript library to build robust, modular, and user-friendly ontology management functionalities. Contributions are welcome following the guidelines in CONTRIBUTING.md.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -13,7 +12,7 @@ import path from "path";
 import _ from "lodash";
 import https from "https";
 
-// Helper functions to get file paths for ontology persistence, improving consistency and reducing code drift
+// Helper functions for file path resolution to reduce code drift
 function getOntologyFilePath() {
   return path.resolve(process.cwd(), "ontology.json");
 }
@@ -23,133 +22,131 @@ function getBackupFilePath() {
 }
 
 /**
- * Main function to handle CLI arguments and execute appropriate functionality for owl-builder.
- * @param {string[]} args - The CLI arguments.
+ * Main function to handle CLI arguments and execute the corresponding functionality.
+ * @param {string[]} args - CLI arguments
  */
 export async function main(args = []) {
+  // Mapping CLI options to corresponding functions
   const commandActions = {
-    "--help": () => {
+    "--help": async () => {
       displayHelp();
-      return;
     },
-    "--version": () => {
+    "--version": async () => {
       const version = getVersion();
       console.log("Tool version:", version);
       return version;
     },
-    "--list": () => {
+    "--list": async () => {
       const commands = listCommands();
       console.log("Supported commands:", commands);
       return commands;
     },
-    "--build": () => {
+    "--build": async () => {
       const ontology = buildOntology();
       console.log("Ontology built:", ontology);
       return ontology;
     },
-    "--serve": () => {
+    "--serve": async () => {
       serveWebInterface();
-      return;
     },
-    "--diagnostics": () => {
+    "--diagnostics": async () => {
       diagnostics();
-      return;
     },
-    "--integrate": () => {
+    "--integrate": async () => {
       const integrated = integrateOntology();
       console.log("Ontology integrated:", integrated);
       return integrated;
     },
-    "--crawl": () => {
+    "--crawl": async () => {
       const crawledData = crawlData();
       console.log("Public data crawled:", crawledData);
       return crawledData;
     },
-    "--persist": () => {
+    "--persist": async () => {
       const ontology = buildOntology();
       const saved = persistOntology(ontology);
       console.log("Ontology persisted:", saved);
       return saved;
     },
-    "--load": () => {
+    "--load": async () => {
       const loaded = loadOntology();
       console.log("Ontology loaded:", loaded);
       return loaded;
     },
-    "--query": () => {
+    "--query": async () => {
       const results = queryOntology("Concept1");
       console.log("Ontology query results:", results);
       return results;
     },
-    "--validate": () => {
+    "--validate": async () => {
       const ontology = buildOntology();
       const isValid = validateOntology(ontology);
       console.log("Ontology validation result:", isValid);
       return isValid;
     },
-    "--export": () => {
+    "--export": async () => {
       const ontology = buildOntology();
       const xml = exportOntologyToXML(ontology);
       console.log("Ontology exported to XML:", xml);
       return xml;
     },
-    "--import": () => {
+    "--import": async () => {
       const sampleXML = `<ontology><title>Imported Ontology</title><created>${new Date().toISOString()}</created><concepts><concept>ConceptA</concept><concept>ConceptB</concept></concepts></ontology>`;
       const imported = importOntologyFromXML(sampleXML);
       console.log("Ontology imported from XML:", imported);
       return imported;
     },
-    "--sync": () => {
+    "--sync": async () => {
       const synced = syncOntology();
       console.log("Ontology synced:", synced);
       return synced;
     },
-    "--backup": () => {
+    "--backup": async () => {
       const backupResult = backupOntology();
       console.log("Ontology backup created:", backupResult);
       return backupResult;
     },
-    "--summary": () => {
+    "--summary": async () => {
       const ontology = buildOntology();
       const summary = getOntologySummary(ontology);
       console.log("Ontology summary:", summary);
       return summary;
     },
-    "--refresh": () => {
+    "--refresh": async () => {
       const ontology = buildOntology();
       const refreshed = refreshOntology(ontology);
       console.log("Ontology refreshed:", refreshed);
       return refreshed;
     },
-    "--analyze": () => {
+    "--analyze": async () => {
       const ontology = buildOntology();
       const analysis = analyzeOntology(ontology);
       console.log("Ontology analysis:", analysis);
       return analysis;
     },
-    "--monitor": () => {
+    "--monitor": async () => {
       const usage = monitorOntology();
       console.log("System memory usage:", usage);
       return usage;
     },
-    "--rebuild": () => {
+    "--rebuild": async () => {
       const rebuilt = rebuildOntology();
       console.log("Ontology rebuilt:", rebuilt);
       return rebuilt;
     },
-    "--demo": () => {
+    "--demo": async () => {
       const demo = demoOntology();
       console.log("Demo output:", demo);
       return demo;
     },
-    "--fetch-schemas": () => {
+    "--fetch-schemas": async () => {
       const schemas = fetchOwlSchemas();
       console.log("Fetched schemas:", schemas);
       return schemas;
     },
     "--fetch-public": async () => {
       try {
-        // Dynamically import the module to get the live binding of fetchPublicData for proper test mocking
+        // Dynamically import to ensure live binding of fetchPublicData
         const mod = await import(fileURLToPath(import.meta.url));
         const data = await mod.fetchPublicData();
         console.log("Fetched public data:", data);
@@ -163,7 +160,7 @@ export async function main(args = []) {
 
   for (const arg of args) {
     if (commandActions[arg]) {
-      const result = commandActions[arg]();
+      const result = await commandActions[arg]();
       return result;
     }
   }
@@ -220,7 +217,7 @@ export function listCommands() {
 }
 
 /**
- * Simulates building an ontology by returning a sample ontology object with extended details.
+ * Simulates building an ontology by returning a sample ontology object.
  * @returns {object} A sample ontology object.
  */
 export function buildOntology() {
@@ -234,14 +231,14 @@ export function buildOntology() {
 }
 
 /**
- * Starts a simple web server for demonstration purposes.
+ * Starts a web server for demonstration purposes.
  */
 export function serveWebInterface() {
   console.log("Starting web server on port 8080...");
 }
 
 /**
- * Logs diagnostic information including system platform and Node.js version.
+ * Logs diagnostic information including Node.js version and platform.
  */
 export function diagnostics() {
   console.log("Diagnostics:");
@@ -250,7 +247,7 @@ export function diagnostics() {
 }
 
 /**
- * Integrates supplemental theme ontologies into the main ontology.
+ * Integrates supplemental ontologies into the main ontology.
  * @returns {object} An integrated ontology object.
  */
 export function integrateOntology() {
@@ -262,7 +259,7 @@ export function integrateOntology() {
 
 /**
  * Simulates crawling public data for ontological information.
- * @returns {object} A sample crawled data object.
+ * @returns {object} A crawled data object.
  */
 export function crawlData() {
   return {
@@ -306,11 +303,11 @@ export function loadOntology() {
 /**
  * Queries the ontology for a given search term.
  * @param {string} searchTerm - Term to search in concepts.
- * @returns {object} The query results containing the search term and matched concepts.
+ * @returns {object} Query results containing the search term and matched concepts.
  */
 export function queryOntology(searchTerm) {
   const ontology = buildOntology();
-  const results = ontology.concepts.filter((concept) => concept.includes(searchTerm));
+  const results = ontology.concepts.filter(concept => concept.includes(searchTerm));
   return { searchTerm, results };
 }
 
@@ -329,7 +326,7 @@ export function validateOntology(ontology) {
  * @returns {string} XML string representing the ontology.
  */
 export function exportOntologyToXML(ontology) {
-  const conceptsXML = ontology.concepts.map((concept) => `<concept>${concept}</concept>`).join("");
+  const conceptsXML = ontology.concepts.map(concept => `<concept>${concept}</concept>`).join("");
   return `<ontology><title>${ontology.title}</title><created>${ontology.created}</created><concepts>${conceptsXML}</concepts></ontology>`;
 }
 
@@ -359,7 +356,7 @@ export function importOntologyFromXML(xmlString) {
 
 /**
  * Synchronizes the ontology with an external source (simulated).
- * @returns {object} A sample synced ontology object.
+ * @returns {object} A synced ontology object.
  */
 export function syncOntology() {
   const ontology = buildOntology();
@@ -399,7 +396,7 @@ export function getOntologySummary(ontology) {
 }
 
 /**
- * Refreshes the ontology by updating the creation timestamp ensuring it differs from the original.
+ * Refreshes the ontology by updating the creation timestamp to ensure a new time value.
  * @param {object} ontology - The ontology to refresh.
  * @returns {object} The refreshed ontology object.
  */
@@ -432,17 +429,16 @@ export function monitorOntology() {
   const freeMem = os.freemem();
   const totalMem = os.totalmem();
   const loadAvg = os.loadavg();
-  const usage = {
+  return {
     freeMem,
     totalMem,
     loadAvg,
     usedMem: totalMem - freeMem
   };
-  return usage;
 }
 
 /**
- * Rebuilds the ontology by constructing a new ontology and refreshing its timestamp.
+ * Rebuilds the ontology by generating a new ontology and refreshing its timestamp.
  * @returns {object} The rebuilt ontology object.
  */
 export function rebuildOntology() {
@@ -475,8 +471,7 @@ export function fetchOwlSchemas() {
 }
 
 /**
- * Fetches public data from a real API endpoint.
- * Checks the HTTP status code and parses the JSON response.
+ * Fetches public data from a real API endpoint with proper error handling.
  * @param {string} endpoint - The URL to fetch data from.
  * @returns {Promise<object>} The fetched data.
  */
