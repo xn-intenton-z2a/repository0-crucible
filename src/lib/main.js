@@ -117,6 +117,16 @@ export function main(args = []) {
       const analysis = analyzeOntology(ontology);
       console.log("Ontology analysis:", analysis);
       return analysis;
+    },
+    "--monitor": () => {
+      const usage = monitorOntology();
+      console.log("System memory usage:", usage);
+      return usage;
+    },
+    "--rebuild": () => {
+      const rebuilt = rebuildOntology();
+      console.log("Ontology rebuilt:", rebuilt);
+      return rebuilt;
     }
   };
 
@@ -133,7 +143,7 @@ export function main(args = []) {
  */
 export function displayHelp() {
   console.log("Usage: node src/lib/main.js [options]");
-  console.log("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze");
+  console.log("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild");
 }
 
 /**
@@ -168,7 +178,9 @@ export function listCommands() {
     "--backup",
     "--summary",
     "--refresh",
-    "--analyze"
+    "--analyze",
+    "--monitor",
+    "--rebuild"
   ];
 }
 
@@ -297,7 +309,7 @@ export function importOntologyFromXML(xmlString) {
   const conceptsMatch = xmlString.match(/<concepts>(.*?)<\/concepts>/);
   let concepts = [];
   if (conceptsMatch && conceptsMatch[1]) {
-    const conceptRegex = /<concept>(.*?)<\/+concept>/g;
+    const conceptRegex = /<concept>(.*?)<\/concept>/g;
     let match;
     while ((match = conceptRegex.exec(conceptsMatch[1])) !== null) {
       concepts.push(match[1]);
@@ -375,6 +387,33 @@ export function analyzeOntology(ontology) {
     conceptCount: ontology.concepts.length,
     titleLength: ontology.title.length
   };
+}
+
+/**
+ * Monitors system memory usage and load average.
+ * @returns {object} Object containing memory usage details.
+ */
+export function monitorOntology() {
+  const freeMem = os.freemem();
+  const totalMem = os.totalmem();
+  const loadAvg = os.loadavg();
+  const usage = {
+    freeMem,
+    totalMem,
+    loadAvg,
+    usedMem: totalMem - freeMem
+  };
+  return usage;
+}
+
+/**
+ * Rebuilds the ontology by constructing a new ontology and refreshing its timestamp.
+ * @returns {object} The rebuilt ontology object.
+ */
+export function rebuildOntology() {
+  const ontology = buildOntology();
+  const refreshed = refreshOntology(ontology);
+  return refreshed;
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
