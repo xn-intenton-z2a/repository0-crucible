@@ -5,7 +5,7 @@
 //
 // Mission Statement: This file implements the owl-builder CLI tool and JavaScript library to build robust, modular, and user-friendly ontology management functionalities. Contributions are welcome following the guidelines in CONTRIBUTING.md.
 //
-// Note: Updated to reduce code drift and align with improved contributing guidelines.
+// Note: Updated to reduce code drift, fix formatting issues, and align with improved contributing guidelines.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -174,7 +174,31 @@ export async function main(args = []) {
  */
 export function displayHelp() {
   console.log("Usage: node src/lib/main.js [options]");
-  console.log("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo, --fetch-schemas, --fetch-public");
+  console.log(`Options:
+  --help,
+  --version,
+  --list,
+  --build,
+  --serve,
+  --diagnostics,
+  --integrate,
+  --crawl,
+  --persist,
+  --load,
+  --query,
+  --validate,
+  --export,
+  --import,
+  --sync,
+  --backup,
+  --summary,
+  --refresh,
+  --analyze,
+  --monitor,
+  --rebuild,
+  --demo,
+  --fetch-schemas,
+  --fetch-public`);
 }
 
 /**

@@ -7,7 +7,8 @@
 - Added new command "--fetch-public" to fetch real public data with enhanced error handling.
 - Refactored CLI command mappings to simplify the main function.
 - Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, and rebuild.
-- Updated documentation and examples to align with the latest contributing guidelines.
+- Applied linting and formatting fixes to improve code quality.
+- Updated documentation to align with the latest contributing guidelines.
 
 ## Installation
 
