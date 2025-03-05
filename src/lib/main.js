@@ -4,8 +4,6 @@
 // owl-builder CLI and Library
 //
 // Mission Statement: This file implements the owl-builder CLI tool and JavaScript library to build robust, modular, and user-friendly ontology management functionalities. Contributions are welcome following the guidelines in CONTRIBUTING.md.
-//
-// Note: Updated to reduce code drift, fix formatting issues, and align with improved contributing guidelines.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -148,9 +146,7 @@ export async function main(args = []) {
     },
     "--fetch-public": async () => {
       try {
-        // Dynamically import to ensure live binding of fetchPublicData
-        const mod = await import(fileURLToPath(import.meta.url));
-        const data = await mod.fetchPublicData();
+        const data = await fetchPublicData();
         console.log("Fetched public data:", data);
         return data;
       } catch (e) {
@@ -198,7 +194,7 @@ export function displayHelp() {
   --rebuild,
   --demo,
   --fetch-schemas,
-  --fetch-public");
+  --fetch-public`);
 }
 
 /**
