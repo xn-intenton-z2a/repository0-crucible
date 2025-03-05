@@ -3,12 +3,14 @@
 `owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology.
 
 ## Change Log
-- Version bumped to 0.0.4
+- Version bumped to 0.0.5
+- Added new command "--fetch-public" to fetch data from real public endpoints.
 - Refactored the main CLI function to use a command mapping for reduced complexity.
 - Extended ontology management functions: added persist, load, query, validate, export, import, sync, backup, demo, monitor, and rebuild functionalities.
 - Enhanced XML import regex for improved concept extraction.
 - Added new demo command (`--demo`) to illustrate a sample output without external calls.
 - Added new functionality to fetch detailed OWL schemas from remote data sources (`--fetch-schemas`).
+- Fixed fetchPublicData function to parse JSON regardless of the content-type header, improving compatibility in test environments.
 - Updated CLI help message, source file, and test coverage to align with our mission.
 - Enhanced error handling for file operations.
 
@@ -56,6 +58,21 @@ npm install owl-builder
   - Rebuild Ontology: `--rebuild`
   - Demo Output: `--demo`
   - **Fetch Detailed OWL Schemas: `--fetch-schemas`**
+  - **Fetch Public Data from Real Endpoints: `--fetch-public`**
+
+## Public Data Endpoints
+
+owl-builder can fetch data from real public endpoints and convert them into OWL ontologies. Some recommended endpoints include:
+
+- https://api.publicapis.org/entries (A list of public APIs)
+- https://dog.ceo/api/breeds/image/random (Random dog images)
+- https://jsonplaceholder.typicode.com/posts (Sample posts for demonstration)
+
+Use the following command to fetch public data:
+
+```bash
+node src/lib/main.js --fetch-public
+```
 
 ## Usage
 
@@ -170,6 +187,11 @@ node src/lib/main.js --help
 - **Fetch Detailed OWL Schemas:**
   ```bash
   node src/lib/main.js --fetch-schemas
+  ```
+
+- **Fetch Public Data from Real Endpoints:**
+  ```bash
+  node src/lib/main.js --fetch-public
   ```
 
 - **List Supported Commands:**
