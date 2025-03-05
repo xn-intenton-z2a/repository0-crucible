@@ -19,7 +19,9 @@ import {
   refreshOntology,
   analyzeOntology,
   listCommands,
-  getVersion
+  getVersion,
+  monitorOntology,
+  rebuildOntology
 } from "@src/lib/main.js";
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -38,7 +40,7 @@ describe("Main Module General Functions", () => {
     main(["--help"]);
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
     expect(spy).toHaveBeenCalledWith(
-      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze"
+      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild"
     );
     spy.mockRestore();
   });
@@ -57,6 +59,8 @@ describe("Main Module General Functions", () => {
     expect(spy).toHaveBeenCalledWith("Supported commands:", commands);
     expect(commands).toContain("--build");
     expect(commands).toContain("--version");
+    expect(commands).toContain("--monitor");
+    expect(commands).toContain("--rebuild");
     spy.mockRestore();
   });
 
@@ -207,7 +211,7 @@ describe("Utility Functions", () => {
     displayHelp();
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
     expect(spy).toHaveBeenCalledWith(
-      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze"
+      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild"
     );
     spy.mockRestore();
   });
@@ -295,6 +299,20 @@ describe("Utility Functions", () => {
     expect(analysis).toHaveProperty("isValid", true);
     expect(analysis).toHaveProperty("conceptCount", ontology.concepts.length);
     expect(analysis).toHaveProperty("titleLength", ontology.title.length);
+  });
+
+  test("monitorOntology returns memory usage details", () => {
+    const usage = monitorOntology();
+    expect(usage).toHaveProperty("freeMem");
+    expect(usage).toHaveProperty("totalMem");
+    expect(usage).toHaveProperty("loadAvg");
+    expect(usage).toHaveProperty("usedMem");
+  });
+
+  test("rebuildOntology returns an ontology with updated creation date", () => {
+    const ontology = buildOntology();
+    const rebuilt = rebuildOntology();
+    expect(rebuilt.created).not.toBe(ontology.created);
   });
 
   describe("Error Handling in File Operations", () => {

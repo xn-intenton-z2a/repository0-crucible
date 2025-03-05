@@ -1,13 +1,13 @@
 # owl-builder
 
-`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology. Recent updates include additional commands for listing available functionalities and retrieving the tool version, as well as a refactored CLI implementation to reduce complexity and improve maintainability.
+`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It offers a suite of functions to build an ontology from public data sources, integrate supplemental theme ontologies, run diagnostics, serve a web interface for interactive querying and visualization, persist ontologies to disk, and perform query operations on the ontology.
 
 ## Change Log
 - Refactored the main CLI function to use a command mapping for reduced complexity.
-- Extended ontology management functions: added persist, load, query, validate, export, import, sync, and backup features.
-- Updated CLI help message and source file to align with the owl-builder mission statement.
-- Refined code to remove simulation drift and added robust logging for new commands: --list and --version.
-- Updated test coverage to include new error handling tests for file system operations and to improve overall robustness.
+- Extended ontology management functions: added persist, load, query, validate, export, import, sync, backup, and new commands --monitor and --rebuild.
+- Added new library functions: monitorOntology (to check system memory and load) and rebuildOntology (to rebuild and refresh ontology timestamp).
+- Updated CLI help message, source file, and test coverage to align with our mission.
+- Enhanced error handling for file operations.
 
 ## Repository Template
 
@@ -49,6 +49,8 @@ npm install owl-builder
   - Get Ontology Summary: `--summary`
   - Refresh Ontology: `--refresh`
   - Analyze Ontology: `--analyze`
+  - Monitor System (Memory & Load): `--monitor`
+  - Rebuild Ontology: `--rebuild`
 
 ## Usage
 
@@ -143,6 +145,16 @@ node src/lib/main.js --help
 - **Analyze Ontology:**
   ```bash
   node src/lib/main.js --analyze
+  ```
+
+- **Monitor System Memory and Load:**
+  ```bash
+  node src/lib/main.js --monitor
+  ```
+
+- **Rebuild Ontology:**
+  ```bash
+  node src/lib/main.js --rebuild
   ```
 
 - **List Supported Commands:**
