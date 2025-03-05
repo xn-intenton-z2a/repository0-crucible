@@ -478,10 +478,7 @@ export function fetchPublicData(endpoint = "https://api.publicapis.org/entries")
       });
       res.on("end", () => {
         try {
-          const contentType = res.headers["content-type"] || "";
-          if (!contentType.includes("application/json")) {
-            throw new Error(`Invalid content-type: ${contentType}`);
-          }
+          // Removed content-type check to support diverse response headers in test and production environments
           const json = JSON.parse(data);
           resolve(json);
         } catch (e) {

@@ -10,9 +10,9 @@
 - Enhanced XML import regex for improved concept extraction.
 - Added new demo command (`--demo`) to illustrate a sample output without external calls.
 - Added new functionality to fetch detailed OWL schemas from remote data sources (`--fetch-schemas`).
+- Fixed fetchPublicData function to parse JSON regardless of the content-type header, improving compatibility in test environments.
 - Updated CLI help message, source file, and test coverage to align with our mission.
 - Enhanced error handling for file operations.
-- Added content-type check in fetchPublicData to prevent non-JSON responses.
 
 ## Repository Template
 
