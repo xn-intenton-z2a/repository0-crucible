@@ -145,8 +145,10 @@ export async function main(args = []) {
       return schemas;
     },
     "--fetch-public": async () => {
+      // Use dynamic import to ensure live binding of fetchPublicData for proper testing overrides
       try {
-        const data = await fetchPublicData();
+        const mod = await import(import.meta.url);
+        const data = await mod.fetchPublicData();
         console.log("Fetched public data:", data);
         return data;
       } catch (e) {
@@ -194,7 +196,7 @@ export function displayHelp() {
   --rebuild,
   --demo,
   --fetch-schemas,
-  --fetch-public`);
+  --fetch-public");
 }
 
 /**

@@ -5,7 +5,7 @@
 ## Change Log
 - Version bumped to 0.0.5
 - Added new command "--fetch-public" to fetch real public data with enhanced error handling.
-- Refactored CLI command mappings to simplify the main function and removed circular dynamic import in the --fetch-public command.
+- Updated CLI '--fetch-public' command to use dynamic import for fetchPublicData, ensuring proper function mocking in tests.
 - Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, and rebuild.
 - Applied linting and formatting fixes to improve code quality.
 - Updated documentation to align with the latest contributing guidelines.
