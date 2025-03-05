@@ -140,7 +140,9 @@ export async function main(args = []) {
     },
     "--fetch-public": async () => {
       try {
-        const data = await fetchPublicData();
+        // Dynamically import the module to get the live binding of fetchPublicData for proper test mocking
+        const mod = await import(fileURLToPath(import.meta.url));
+        const data = await mod.fetchPublicData();
         console.log("Fetched public data:", data);
         return data;
       } catch (e) {
