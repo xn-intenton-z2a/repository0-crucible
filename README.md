@@ -7,7 +7,7 @@
 - Updated CLI help message and source file to align with the owl-builder mission statement.
 - Refined code to remove simulation drift and added robust logging for new commands: --list and --version.
 - Extended the ontology object structure with additional metadata fields.
-- Updated test coverage to include new commands and functionalities.
+- Updated test coverage to include new error handling tests for file system operations and to improve overall robustness.
 
 ## Repository Template
 

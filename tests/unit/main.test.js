@@ -294,4 +294,26 @@ describe("Utility Functions", () => {
     expect(analysis).toHaveProperty("conceptCount", ontology.concepts.length);
     expect(analysis).toHaveProperty("titleLength", ontology.title.length);
   });
+
+  // New tests for error handling in file system operations
+  describe("Error Handling in File Operations", () => {
+    test("persistOntology returns error on write failure", () => {
+      const originalWrite = fs.writeFileSync;
+      vi.spyOn(fs, "writeFileSync").mockImplementation(() => { throw new Error("Write error"); });
+      const ontology = buildOntology();
+      const result = persistOntology(ontology);
+      expect(result).toHaveProperty("success", false);
+      expect(result.error).toBe("Write error");
+      fs.writeFileSync = originalWrite;
+    });
+
+    test("loadOntology returns error on read failure", () => {
+      const originalRead = fs.readFileSync;
+      vi.spyOn(fs, "readFileSync").mockImplementation(() => { throw new Error("Read error"); });
+      const result = loadOntology();
+      expect(result).toHaveProperty("success", false);
+      expect(result.error).toBe("Read error");
+      fs.readFileSync = originalRead;
+    });
+  });
 });
