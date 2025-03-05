@@ -207,6 +207,7 @@ describe("Main Module General Functions", () => {
   });
 });
 
+
 describe("Extended Functionality", () => {
   beforeEach(() => {
     if (fs.existsSync(ontologyPath)) {
@@ -293,6 +294,7 @@ describe("Extended Functionality", () => {
     spy.mockRestore();
   });
 });
+
 
 describe("Utility Functions", () => {
   test("buildOntology returns a valid ontology object", () => {
