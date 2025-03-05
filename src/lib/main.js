@@ -18,88 +18,112 @@ import _ from "lodash";
  * @param {string[]} args - The CLI arguments.
  */
 export function main(args = []) {
-  if (args.includes("--help")) {
-    displayHelp();
-    return;
-  } else if (args.includes("--version")) {
-    const version = getVersion();
-    console.log("Tool version:", version);
-    return version;
-  } else if (args.includes("--list")) {
-    const commands = listCommands();
-    console.log("Supported commands:", commands);
-    return commands;
-  } else if (args.includes("--build")) {
-    const ontology = buildOntology();
-    console.log("Ontology built:", ontology);
-    return ontology;
-  } else if (args.includes("--serve")) {
-    serveWebInterface();
-    return;
-  } else if (args.includes("--diagnostics")) {
-    diagnostics();
-    return;
-  } else if (args.includes("--integrate")) {
-    const integrated = integrateOntology();
-    console.log("Ontology integrated:", integrated);
-    return integrated;
-  } else if (args.includes("--crawl")) {
-    const crawledData = crawlData();
-    console.log("Public data crawled:", crawledData);
-    return crawledData;
-  } else if (args.includes("--persist")) {
-    const ontology = buildOntology();
-    const saved = persistOntology(ontology);
-    console.log("Ontology persisted:", saved);
-    return saved;
-  } else if (args.includes("--load")) {
-    const loaded = loadOntology();
-    console.log("Ontology loaded:", loaded);
-    return loaded;
-  } else if (args.includes("--query")) {
-    // For demo purposes, we use a fixed search term. In a real-world scenario, the term may be passed via args.
-    const results = queryOntology("Concept1");
-    console.log("Ontology query results:", results);
-    return results;
-  } else if (args.includes("--validate")) {
-    const ontology = buildOntology();
-    const isValid = validateOntology(ontology);
-    console.log("Ontology validation result:", isValid);
-    return isValid;
-  } else if (args.includes("--export")) {
-    const ontology = buildOntology();
-    const xml = exportOntologyToXML(ontology);
-    console.log("Ontology exported to XML:", xml);
-    return xml;
-  } else if (args.includes("--import")) {
-    // For demonstration, we use a sample XML string. Replace with real XML input as needed.
-    const sampleXML = `<ontology><title>Imported Ontology</title><created>${new Date().toISOString()}</created><concepts><concept>ConceptA</concept><concept>ConceptB</concept></concepts></ontology>`;
-    const imported = importOntologyFromXML(sampleXML);
-    console.log("Ontology imported from XML:", imported);
-    return imported;
-  } else if (args.includes("--sync")) {
-    const synced = syncOntology();
-    console.log("Ontology synced:", synced);
-    return synced;
-  } else if (args.includes("--backup")) {
-    const backupResult = backupOntology();
-    console.log("Ontology backup created:", backupResult);
-    return backupResult;
-  } else if (args.includes("--summary")) {
-    const ontology = buildOntology();
-    const summary = getOntologySummary(ontology);
-    console.log("Ontology summary:", summary);
-    return summary;
-  } else if (args.includes("--refresh")) {
-    const ontology = buildOntology();
-    const refreshed = refreshOntology(ontology);
-    console.log("Ontology refreshed:", refreshed);
-    return refreshed;
-  } else if (args.includes("--analyze")) {
-    const ontology = buildOntology();
-    const analysis = analyzeOntology(ontology);
-    console.log("Ontology analysis:", analysis);
-    return analysis;
+  const commandActions = {
+    "--help": () => {
+      displayHelp();
+      return;
+    },
+    "--version": () => {
+      const version = getVersion();
+      console.log("Tool version:", version);
+      return version;
+    },
+    "--list": () => {
+      const commands = listCommands();
+      console.log("Supported commands:", commands);
+      return commands;
+    },
+    "--build": () => {
+      const ontology = buildOntology();
+      console.log("Ontology built:", ontology);
+      return ontology;
+    },
+    "--serve": () => {
+      serveWebInterface();
+      return;
+    },
+    "--diagnostics": () => {
+      diagnostics();
+      return;
+    },
+    "--integrate": () => {
+      const integrated = integrateOntology();
+      console.log("Ontology integrated:", integrated);
+      return integrated;
+    },
+    "--crawl": () => {
+      const crawledData = crawlData();
+      console.log("Public data crawled:", crawledData);
+      return crawledData;
+    },
+    "--persist": () => {
+      const ontology = buildOntology();
+      const saved = persistOntology(ontology);
+      console.log("Ontology persisted:", saved);
+      return saved;
+    },
+    "--load": () => {
+      const loaded = loadOntology();
+      console.log("Ontology loaded:", loaded);
+      return loaded;
+    },
+    "--query": () => {
+      const results = queryOntology("Concept1");
+      console.log("Ontology query results:", results);
+      return results;
+    },
+    "--validate": () => {
+      const ontology = buildOntology();
+      const isValid = validateOntology(ontology);
+      console.log("Ontology validation result:", isValid);
+      return isValid;
+    },
+    "--export": () => {
+      const ontology = buildOntology();
+      const xml = exportOntologyToXML(ontology);
+      console.log("Ontology exported to XML:", xml);
+      return xml;
+    },
+    "--import": () => {
+      const sampleXML = `<ontology><title>Imported Ontology</title><created>${new Date().toISOString()}</created><concepts><concept>ConceptA</concept><concept>ConceptB</concept></concepts></ontology>`;
+      const imported = importOntologyFromXML(sampleXML);
+      console.log("Ontology imported from XML:", imported);
+      return imported;
+    },
+    "--sync": () => {
+      const synced = syncOntology();
+      console.log("Ontology synced:", synced);
+      return synced;
+    },
+    "--backup": () => {
+      const backupResult = backupOntology();
+      console.log("Ontology backup created:", backupResult);
+      return backupResult;
+    },
+    "--summary": () => {
+      const ontology = buildOntology();
+      const summary = getOntologySummary(ontology);
+      console.log("Ontology summary:", summary);
+      return summary;
+    },
+    "--refresh": () => {
+      const ontology = buildOntology();
+      const refreshed = refreshOntology(ontology);
+      console.log("Ontology refreshed:", refreshed);
+      return refreshed;
+    },
+    "--analyze": () => {
+      const ontology = buildOntology();
+      const analysis = analyzeOntology(ontology);
+      console.log("Ontology analysis:", analysis);
+      return analysis;
+    }
+  };
+
+  for (const arg of args) {
+    if (commandActions[arg]) {
+      return commandActions[arg]();
+    }
   }
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
@@ -117,8 +141,7 @@ export function displayHelp() {
  * @returns {string} Version string.
  */
 export function getVersion() {
-  // In a real implementation, you may read from a package.json file; here, we return a static version.
-  return '0.0.2';
+  return "0.0.2";
 }
 
 /**
@@ -155,7 +178,7 @@ export function listCommands() {
  */
 export function buildOntology() {
   return {
-    id: 'ont-' + Math.floor(Math.random() * 10000),
+    id: "ont-" + Math.floor(Math.random() * 10000),
     title: "Sample Ontology",
     description: "An ontology built to demonstrate owl-builder functionalities.",
     created: new Date().toISOString(),
@@ -165,11 +188,9 @@ export function buildOntology() {
 
 /**
  * Starts a simple web server for demonstration purposes.
- * In a production scenario, replace this with a robust server implementation.
  */
 export function serveWebInterface() {
   console.log("Starting web server on port 8080...");
-  // This is a placeholder for a real server implementation.
 }
 
 /**
@@ -242,7 +263,7 @@ export function loadOntology() {
  */
 export function queryOntology(searchTerm) {
   const ontology = buildOntology();
-  const results = ontology.concepts.filter(concept => concept.includes(searchTerm));
+  const results = ontology.concepts.filter((concept) => concept.includes(searchTerm));
   return { searchTerm, results };
 }
 
@@ -252,10 +273,7 @@ export function queryOntology(searchTerm) {
  * @returns {boolean} True if valid, else false.
  */
 export function validateOntology(ontology) {
-  if (!ontology.title || !Array.isArray(ontology.concepts)) {
-    return false;
-  }
-  return true;
+  return !!(ontology.title && Array.isArray(ontology.concepts));
 }
 
 /**
@@ -264,13 +282,12 @@ export function validateOntology(ontology) {
  * @returns {string} XML string representing the ontology.
  */
 export function exportOntologyToXML(ontology) {
-  const conceptsXML = ontology.concepts.map(concept => `<concept>${concept}</concept>`).join("");
+  const conceptsXML = ontology.concepts.map((concept) => `<concept>${concept}</concept>`).join("");
   return `<ontology><title>${ontology.title}</title><created>${ontology.created}</created><concepts>${conceptsXML}</concepts></ontology>`;
 }
 
 /**
  * Imports an ontology from an XML string.
- * NOTE: This is a simplified parser intended for demonstration purposes only.
  * @param {string} xmlString - XML string of the ontology.
  * @returns {object} The imported ontology object.
  */
@@ -280,7 +297,7 @@ export function importOntologyFromXML(xmlString) {
   const conceptsMatch = xmlString.match(/<concepts>(.*?)<\/concepts>/);
   let concepts = [];
   if (conceptsMatch && conceptsMatch[1]) {
-    const conceptRegex = /<concept>(.*?)<\/concept>/g;
+    const conceptRegex = /<concept>(.*?)<\/+concept>/g;
     let match;
     while ((match = conceptRegex.exec(conceptsMatch[1])) !== null) {
       concepts.push(match[1]);
