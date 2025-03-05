@@ -8,6 +8,7 @@
 - Added a new demo command (--demo) that displays a detailed ontology with extended metadata.
 - Enhanced XML import function by refining the regular expression pattern.
 - Updated error handling in file operations for persistence and loading of ontology.
+- Updated demo log output to concatenate detailed ontology into a single string for clearer output in tests.
 - Updated version bump to 0.0.3.
 
 ## Repository Template

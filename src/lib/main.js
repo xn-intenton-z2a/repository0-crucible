@@ -210,7 +210,8 @@ export function buildDetailedOntology() {
 export function displayDemo() {
   console.log("Demo Output:");
   const detailedOntology = buildDetailedOntology();
-  console.log("Detailed Ontology:", detailedOntology);
+  // Updated log output to concatenate details into a single string for easier testing
+  console.log("Detailed Ontology: " + JSON.stringify(detailedOntology));
   return detailedOntology;
 }
 
