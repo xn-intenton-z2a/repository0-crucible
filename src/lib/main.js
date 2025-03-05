@@ -3,8 +3,7 @@
 //
 // owl-builder CLI and Library
 //
-// Mission Statement:
-// This file implements the owl-builder CLI tool and JavaScript library in-line with our mission to build robust, modular,
+// Mission Statement: This file implements the owl-builder CLI tool and JavaScript library in-line with our mission to build robust, modular,
 // and user-friendly ontology management functionalities. Contributions are welcome following the guidelines in CONTRIBUTING.md.
 
 import { fileURLToPath } from "url";
@@ -12,12 +11,13 @@ import os from "os";
 import fs from "fs";
 import path from "path";
 import _ from "lodash";
+import https from "https";
 
 /**
  * Main function to handle CLI arguments and execute appropriate functionality for owl-builder.
  * @param {string[]} args - The CLI arguments.
  */
-export function main(args = []) {
+export async function main(args = []) {
   const commandActions = {
     "--help": () => {
       displayHelp();
@@ -137,12 +137,26 @@ export function main(args = []) {
       const schemas = fetchOwlSchemas();
       console.log("Fetched schemas:", schemas);
       return schemas;
+    },
+    "--fetch-public": async () => {
+      try {
+        const data = await fetchPublicData();
+        console.log("Fetched public data:", data);
+        return data;
+      } catch (e) {
+        console.error("Error fetching public data:", e);
+        return { success: false, error: e.message };
+      }
     }
   };
 
   for (const arg of args) {
     if (commandActions[arg]) {
-      return commandActions[arg]();
+      const result = commandActions[arg]();
+      if (result instanceof Promise) {
+        return await result;
+      }
+      return result;
     }
   }
   console.log(`Run with: ${JSON.stringify(args)}`);
@@ -153,7 +167,7 @@ export function main(args = []) {
  */
 export function displayHelp() {
   console.log("Usage: node src/lib/main.js [options]");
-  console.log("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo, --fetch-schemas");
+  console.log("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo, --fetch-schemas, --fetch-public");
 }
 
 /**
@@ -161,7 +175,7 @@ export function displayHelp() {
  * @returns {string} Version string.
  */
 export function getVersion() {
-  return "0.0.4";
+  return "0.0.5";
 }
 
 /**
@@ -192,7 +206,8 @@ export function listCommands() {
     "--monitor",
     "--rebuild",
     "--demo",
-    "--fetch-schemas"
+    "--fetch-schemas",
+    "--fetch-public"
   ];
 }
 
@@ -445,11 +460,34 @@ export function demoOntology() {
  * @returns {object[]} Array of OWL schema objects.
  */
 export function fetchOwlSchemas() {
-  // Simulated remote fetch operation returning detailed owl schemas
   return [
     { id: "owl1", name: "Basic OWL Schema", details: "A basic schema for ontology creation." },
     { id: "owl2", name: "Advanced OWL Schema", details: "A detailed schema including classes, properties, and relationships." }
   ];
+}
+
+/**
+ * Fetches public data from a real API endpoint.
+ * @param {string} endpoint - The URL to fetch data from.
+ * @returns {Promise<object>} The fetched data.
+ */
+export function fetchPublicData(endpoint = "https://api.publicapis.org/entries") {
+  return new Promise((resolve, reject) => {
+    https.get(endpoint, (res) => {
+      let data = "";
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+      res.on("end", () => {
+        try {
+          const json = JSON.parse(data);
+          resolve(json);
+        } catch (e) {
+          reject(e);
+        }
+      });
+    }).on("error", (err) => reject(err));
+  });
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

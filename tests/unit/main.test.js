@@ -1,7 +1,9 @@
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, test, expect, vi } from "vitest";
 import fs from "fs";
 import path from "path";
-import {
+import * as mainModule from "@src/lib/main.js";
+
+const {
   main,
   buildOntology,
   serveWebInterface,
@@ -23,8 +25,9 @@ import {
   monitorOntology,
   rebuildOntology,
   demoOntology,
-  fetchOwlSchemas
-} from "@src/lib/main.js";
+  fetchOwlSchemas,
+  fetchPublicData
+} = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
 const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
@@ -42,7 +45,7 @@ describe("Main Module General Functions", () => {
     main(["--help"]);
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
     expect(spy).toHaveBeenCalledWith(
-      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo, --fetch-schemas"
+      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo, --fetch-schemas, --fetch-public"
     );
     spy.mockRestore();
   });
@@ -51,7 +54,7 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const version = main(["--version"]);
     expect(spy).toHaveBeenCalledWith("Tool version:", version);
-    expect(version).toBe("0.0.4");
+    expect(version).toBe("0.0.5");
     spy.mockRestore();
   });
 
@@ -65,6 +68,7 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--rebuild");
     expect(commands).toContain("--demo");
     expect(commands).toContain("--fetch-schemas");
+    expect(commands).toContain("--fetch-public");
     spy.mockRestore();
   });
 
@@ -123,6 +127,14 @@ describe("Main Module General Functions", () => {
     expect(schemas[0]).toHaveProperty("id");
     expect(schemas[0]).toHaveProperty("name");
     expect(schemas[0]).toHaveProperty("details");
+    spy.mockRestore();
+  });
+
+  test("main with --fetch-public returns fetched public data", async () => {
+    const fakeData = { count: 1, entries: [{ API: "Test API" }] };
+    const spy = vi.spyOn(mainModule, "fetchPublicData").mockResolvedValue(fakeData);
+    const result = await main(["--fetch-public"]);
+    expect(result).toEqual(fakeData);
     spy.mockRestore();
   });
 });
@@ -234,7 +246,7 @@ describe("Utility Functions", () => {
     displayHelp();
     expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
     expect(spy).toHaveBeenCalledWith(
-      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo, --fetch-schemas"
+      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo, --fetch-schemas, --fetch-public"
     );
     spy.mockRestore();
   });
