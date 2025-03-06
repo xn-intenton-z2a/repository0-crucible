@@ -1,11 +1,10 @@
 #!/usr/bin/env node
+
 // src/lib/main.js
 //
 // owl-builder CLI and Library
 //
 // Mission Statement: This file implements the owl-builder CLI tool and JavaScript library to build robust, modular, and user-friendly ontology management functionalities. Contributions are welcome following the guidelines in CONTRIBUTING.md.
-//
-// Note: Updated to reduce code drift and align with improved contributing guidelines.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -147,9 +146,9 @@ export async function main(args = []) {
       return schemas;
     },
     "--fetch-public": async () => {
+      // Use dynamic import to ensure live binding of fetchPublicData for proper testing overrides
       try {
-        // Dynamically import to ensure live binding of fetchPublicData
-        const mod = await import(fileURLToPath(import.meta.url));
+        const mod = await import(import.meta.url);
         const data = await mod.fetchPublicData();
         console.log("Fetched public data:", data);
         return data;
@@ -174,7 +173,31 @@ export async function main(args = []) {
  */
 export function displayHelp() {
   console.log("Usage: node src/lib/main.js [options]");
-  console.log("Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo, --fetch-schemas, --fetch-public");
+  console.log(`Options:
+  --help,
+  --version,
+  --list,
+  --build,
+  --serve,
+  --diagnostics,
+  --integrate,
+  --crawl,
+  --persist,
+  --load,
+  --query,
+  --validate,
+  --export,
+  --import,
+  --sync,
+  --backup,
+  --summary,
+  --refresh,
+  --analyze,
+  --monitor,
+  --rebuild,
+  --demo,
+  --fetch-schemas,
+  --fetch-public`);
 }
 
 /**
@@ -328,8 +351,10 @@ export function validateOntology(ontology) {
  * @returns {string} XML string representing the ontology.
  */
 export function exportOntologyToXML(ontology) {
-  const conceptsXML = ontology.concepts.map(concept => `<concept>${concept}</concept>`).join("");
-  return `<ontology><title>${ontology.title}</title><created>${ontology.created}</created><concepts>${conceptsXML}</concepts></ontology>`;
+  const conceptsXML = ontology.concepts.map((concept) => {
+    return "<concept>" + concept + "</concept>";
+  }).join("");
+  return "<ontology><title>" + ontology.title + "</title><created>" + ontology.created + "</created><concepts>" + conceptsXML + "</concepts></ontology>";
 }
 
 /**
@@ -343,7 +368,7 @@ export function importOntologyFromXML(xmlString) {
   const conceptsMatch = xmlString.match(/<concepts>(.*?)<\/concepts>/);
   let concepts = [];
   if (conceptsMatch && conceptsMatch[1]) {
-    const conceptRegex = /<concept>(.+?)<\/concept>/g;
+    const conceptRegex = /<concept>(.*?)<\/concept>/g;
     let match;
     while ((match = conceptRegex.exec(conceptsMatch[1])) !== null) {
       concepts.push(match[1]);

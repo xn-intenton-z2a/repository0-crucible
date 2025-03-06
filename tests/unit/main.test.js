@@ -1,8 +1,8 @@
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
 import fs from "fs";
 import path from "path";
 import { Readable } from "stream";
-import * as mainModule from "@src/lib/main.js";
+import * as mainModule from "../../src/lib/main.js";
 
 const {
   main,
@@ -47,10 +47,34 @@ describe("Main Module General Functions", () => {
   test("main with --help prints help details", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--help"]);
-    expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith(
-      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo, --fetch-schemas, --fetch-public"
-    );
+    const expectedUsage = "Usage: node src/lib/main.js [options]";
+    const expectedOptions = `Options:
+  --help,
+  --version,
+  --list,
+  --build,
+  --serve,
+  --diagnostics,
+  --integrate,
+  --crawl,
+  --persist,
+  --load,
+  --query,
+  --validate,
+  --export,
+  --import,
+  --sync,
+  --backup,
+  --summary,
+  --refresh,
+  --analyze,
+  --monitor,
+  --rebuild,
+  --demo,
+  --fetch-schemas,
+  --fetch-public`;
+    expect(spy).toHaveBeenCalledWith(expectedUsage);
+    expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
   });
 
@@ -149,7 +173,6 @@ describe("Main Module General Functions", () => {
     });
     fakeResponse.statusCode = 500;
     fakeResponse.setEncoding = () => {};
-    // Override on method to simulate data and end events
     fakeResponse.on = (event, callback) => {
       if (event === 'data') {
         callback('error');
@@ -165,7 +188,6 @@ describe("Main Module General Functions", () => {
     };
 
     await expect(fetchPublicData("http://example.com")).rejects.toThrow("Request failed with status code: 500");
-    // Restore original https.get
     https.get = originalGet;
   });
 
@@ -184,6 +206,7 @@ describe("Main Module General Functions", () => {
     https.get = originalGet;
   });
 });
+
 
 describe("Extended Functionality", () => {
   beforeEach(() => {
@@ -290,10 +313,34 @@ describe("Utility Functions", () => {
   test("displayHelp prints the correct usage message", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     displayHelp();
-    expect(spy).toHaveBeenCalledWith("Usage: node src/lib/main.js [options]");
-    expect(spy).toHaveBeenCalledWith(
-      "Options: --help, --version, --list, --build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --summary, --refresh, --analyze, --monitor, --rebuild, --demo, --fetch-schemas, --fetch-public"
-    );
+    const expectedUsage = "Usage: node src/lib/main.js [options]";
+    const expectedOptions = `Options:
+  --help,
+  --version,
+  --list,
+  --build,
+  --serve,
+  --diagnostics,
+  --integrate,
+  --crawl,
+  --persist,
+  --load,
+  --query,
+  --validate,
+  --export,
+  --import,
+  --sync,
+  --backup,
+  --summary,
+  --refresh,
+  --analyze,
+  --monitor,
+  --rebuild,
+  --demo,
+  --fetch-schemas,
+  --fetch-public`;
+    expect(spy).toHaveBeenCalledWith(expectedUsage);
+    expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
   });
 
@@ -307,9 +354,7 @@ describe("Utility Functions", () => {
   test("integrateOntology returns an integrated ontology object", () => {
     const integrated = integrateOntology();
     expect(integrated).toHaveProperty("integrated", true);
-    expect(integrated.integratedWith).toEqual(
-      expect.arrayContaining(["Theme Ontology A", "Theme Ontology B"])
-    );
+    expect(integrated.integratedWith).toEqual(expect.arrayContaining(["Theme Ontology A", "Theme Ontology B"]));
   });
 
   test("crawlData returns a valid crawled data object", () => {
