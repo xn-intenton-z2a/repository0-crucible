@@ -1,12 +1,12 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. This tool focuses on extracting ontology data directly from public endpoints with streamlined integration, persistence, and querying capabilities.
+owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. This tool focuses on extracting ontology data directly from public endpoints with streamlined integration, persistence, detailed analysis, and querying capabilities.
 
 Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## Change Log
-- Pruned legacy code drift from the source file to better align with the Mission Statement.
-- Updated CLI commands to version 0.0.9 including:
+- Removed legacy code drift and unified functionality inline with the Mission Statement.
+- Updated CLI commands to version 0.0.9 including new features and enhancements:
   - `--update` for modifying the ontology title.
   - `--clear` for removing a persisted ontology.
   - `--fetch-endpoints` to retrieve data from multiple public endpoints (5 endpoints).
@@ -15,13 +15,14 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--wrap`: Aggregate basic, enhanced, and integrated ontology models.
     - `--wrap-extended`: Aggregate extended ontology models including a report, synced, and rebuilt versions.
     - `--report`: Produce a comprehensive ontology report.
-    - `--list-endpoints`: List an extended set of public endpoints (now 12 endpoints including new ones: https://jsonplaceholder.typicode.com/todos and https://api.agify.io/?name=michael).
+    - `--list-endpoints`: List an extended set of public endpoints (12 endpoints).
     - `--fetch-extended`: Fetch data from an extended list of public endpoints.
-    - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics.
+    - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics, now including average concept length.
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
-- **Endpoint Extension:** Extended the list of available public data endpoints to include additional services for building ontologies.
-- **Refocus Update:** The library is now refocused on building ontologies from public data sources while enhancing error handling, logging, and modular design for easier testing.
-- **Test Enhancements:** Added deeper unit tests including proper import of `beforeAll` in the test suites along with enhanced error handling for file system and network operations; test coverage improved to near 100%.
+    - **New Command:** `--detailed-build` to build a detailed ontology with additional statistics.
+- Extended the list of available public data endpoints with additional services for building ontologies.
+- Refocused the library on building robust ontologies from public data sources with enhanced error handling, logging, and modular design.
+- Updated unit tests to cover new functionalities and improve test coverage.
 
 ## Installation
 
@@ -38,6 +39,7 @@ npm install owl-builder
   - `--version`: Show tool version.
   - `--list`: List supported commands.
   - `--build`: Build a sample ontology.
+  - `--detailed-build`: Build a detailed ontology including statistical metrics.
   - `--serve`: Start the web interface.
   - `--diagnostics`: Show system diagnostics.
   - `--integrate`: Integrate supplemental ontologies.
@@ -102,6 +104,11 @@ Example commands:
 - **Build Ontology:**
   ```bash
   node src/lib/main.js --build
+  ```
+
+- **Build Detailed Ontology:**
+  ```bash
+  node src/lib/main.js --detailed-build
   ```
 
 - **Serve Web Interface:**

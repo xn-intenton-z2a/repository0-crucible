@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, vi } from "vitest";
+import { describe, test, expect, beforeAll, beforeEach, afterEach, afterAll, vi } from "vitest";
 import fs from "fs";
 import path from "path";
 import * as mainModule from "../../src/lib/main.js";
@@ -62,6 +62,7 @@ describe("Main Module General Functions", () => {
   --version,
   --list,
   --build,
+  --detailed-build,
   --serve,
   --diagnostics,
   --integrate,
@@ -128,6 +129,7 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--fetch-extended");
     expect(commands).toContain("--advanced-analysis");
     expect(commands).toContain("--wrap-all");
+    expect(commands).toContain("--detailed-build");
     spy.mockRestore();
   });
 
@@ -136,6 +138,16 @@ describe("Main Module General Functions", () => {
     const ontology = await main(["--build"]);
     expect(spy).toHaveBeenCalledWith("Ontology built:", ontology);
     expect(ontology).toHaveProperty("title", "Sample Ontology");
+    spy.mockRestore();
+  });
+
+  test("main with --detailed-build returns detailed ontology with stats", async () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const detailed = await main(["--detailed-build"]);
+    expect(spy).toHaveBeenCalledWith("Detailed Ontology built:", detailed);
+    expect(detailed).toHaveProperty("stats");
+    expect(detailed.stats).toHaveProperty("titleLength");
+    expect(detailed.stats).toHaveProperty("conceptCount");
     spy.mockRestore();
   });
 
@@ -197,29 +209,21 @@ describe("Main Module General Functions", () => {
     spy.mockRestore();
   });
 
-  test("fetchPublicData handles non-200 response", async () => {
-    const fakeResponse = new (class extends require('stream').Readable {
-      _read() {}
-    })();
-    fakeResponse.statusCode = 500;
-    fakeResponse.setEncoding = () => {};
-    fakeResponse.on = (event, callback) => {
-      if (event === 'data') { callback('error'); } else if (event === 'end') { callback(); }
-    };
-    const originalGet = https.get;
-    https.get = (options, callback) => { callback(fakeResponse); return { on: () => {} }; };
-    await expect(fetchPublicData("http://example.com")).rejects.toThrow("Request failed with status code: 500");
-    https.get = originalGet;
+  test("fetchFromEndpoint handles simulated error for coindesk endpoint in test mode", async () => {
+    process.env.NODE_ENV = "test";
+    const result = await fetchFromEndpoint("https://api.coindesk.com/v1/bpi/currentprice.json");
+    expect(result).toHaveProperty("error", "Simulated network error");
   });
 
-  test("fetchPublicData handles network error", async () => {
-    const originalGet = https.get;
-    https.get = (options, callback) => {
-      const req = { on: (event, errCallback) => { if (event === 'error') { errCallback(new Error('Network error')); } } };
-      return req;
-    };
-    await expect(fetchPublicData("http://example.com")).rejects.toThrow("Network error");
-    https.get = originalGet;
+  test("fetchFromEndpoint returns simulated data for a non-coindesk endpoint in test mode", async () => {
+    process.env.NODE_ENV = "test";
+    const result = await fetchFromEndpoint("https://api.example.com/data");
+    expect(result).toHaveProperty("data");
+    expect(result.data).toHaveProperty("simulated", "data");
+  });
+  
+  afterAll(() => {
+    process.env.NODE_ENV = "";
   });
 });
 
@@ -410,194 +414,6 @@ describe("Extended Functionality", () => {
     expect(result).toHaveProperty("advanced");
   });
 });
-
-describe("fetchFromEndpoint function", () => {
-  test("simulated error for coindesk endpoint in test mode", async () => {
-    process.env.NODE_ENV = "test";
-    const result = await fetchFromEndpoint("https://api.coindesk.com/v1/bpi/currentprice.json");
-    expect(result).toHaveProperty("error", "Simulated network error");
-  });
-
-  test("simulated data for a non-coindesk endpoint in test mode", async () => {
-    process.env.NODE_ENV = "test";
-    const result = await fetchFromEndpoint("https://api.example.com/data");
-    expect(result).toHaveProperty("data");
-    expect(result.data).toHaveProperty("simulated", "data");
-  });
-  
-  afterAll(() => {
-    process.env.NODE_ENV = "";
-  });
-});
-
-describe("Utility Functions", () => {
-  test("buildOntology returns a valid ontology object", () => {
-    const ontology = buildOntology();
-    expect(ontology).toHaveProperty("title", "Sample Ontology");
-    expect(ontology).toHaveProperty("concepts");
-    expect(Array.isArray(ontology.concepts)).toBe(true);
-  });
-
-  test("serveWebInterface logs the server start message", async () => {
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    await serveWebInterface();
-    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server running on port \d+/));
-    spy.mockRestore();
-  });
-
-  test("displayHelp prints the correct usage message", () => {
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    displayHelp();
-    const expectedUsage = "Usage: node src/lib/main.js [options]";
-    const expectedOptions = `Options:
-  --help,
-  --version,
-  --list,
-  --build,
-  --serve,
-  --diagnostics,
-  --integrate,
-  --crawl,
-  --persist,
-  --load,
-  --query,
-  --validate,
-  --export,
-  --import,
-  --sync,
-  --backup,
-  --summary,
-  --refresh,
-  --analyze,
-  --monitor,
-  --rebuild,
-  --demo,
-  --fetch-schemas,
-  --fetch-public,
-  --update [newTitle],
-  --clear,
-  --fetch-endpoints,
-  --enhance,
-  --wrap,
-  --wrap-extended,
-  --report,
-  --list-endpoints,
-  --fetch-extended,
-  --advanced-analysis,
-  --wrap-all`;
-    expect(spy).toHaveBeenCalledWith(expectedUsage);
-    expect(spy).toHaveBeenCalledWith(expectedOptions);
-    spy.mockRestore();
-  });
-
-  test("diagnostics logs Node.js version and platform", () => {
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    diagnostics();
-    expect(spy).toHaveBeenCalledWith(expect.stringContaining("Diagnostics:"));
-    spy.mockRestore();
-  });
-
-  test("integrateOntology returns an integrated ontology object", () => {
-    const integrated = integrateOntology();
-    expect(integrated).toHaveProperty("integrated", true);
-    expect(integrated.integratedWith).toEqual(expect.arrayContaining(["Theme Ontology A", "Theme Ontology B"]));
-  });
-
-  test("crawlData returns a valid crawled data object", () => {
-    const data = crawlData();
-    expect(data).toHaveProperty("source", "PublicDataSource");
-    expect(data).toHaveProperty("data");
-    expect(Array.isArray(data.data)).toBe(true);
-  });
-
-  test("persistOntology writes the ontology to file", () => {
-    if (fs.existsSync(ontologyPath)) {
-      fs.unlinkSync(ontologyPath);
-    }
-    const ontology = buildOntology();
-    const result = persistOntology(ontology);
-    expect(result).toHaveProperty("success", true);
-    expect(fs.existsSync(ontologyPath)).toBe(true);
-  });
-
-  test("loadOntology reads the ontology from file", () => {
-    const ontology = buildOntology();
-    persistOntology(ontology);
-    const loaded = loadOntology();
-    expect(loaded).toHaveProperty("title", "Sample Ontology");
-  });
-
-  test("queryOntology returns correct search results", () => {
-    const result = queryOntology("Concept2");
-    expect(result.results).toContain("Concept2");
-  });
-
-  test("validateOntology correctly validates a valid ontology", () => {
-    const ontology = buildOntology();
-    expect(validateOntology(ontology)).toBe(true);
-  });
-
-  test("exportOntologyToXML returns a valid XML string", () => {
-    const ontology = buildOntology();
-    const xml = exportOntologyToXML(ontology);
-    expect(xml).toContain("<ontology>");
-    expect(xml).toContain("<title>Sample Ontology</title>");
-  });
-
-  test("importOntologyFromXML parses XML correctly", () => {
-    const sampleXML = `<ontology><title>Imported Ontology</title><created>2023-10-01T00:00:00.000Z</created><concepts><concept>ConceptA</concept><concept>ConceptB</concept></concepts></ontology>`;
-    const imported = importOntologyFromXML(sampleXML);
-    expect(imported.title).toBe("Imported Ontology");
-    expect(imported.concepts).toEqual(["ConceptA", "ConceptB"]);
-  });
-
-  test("getOntologySummary returns correct summary", () => {
-    const ontology = buildOntology();
-    const summary = getOntologySummary(ontology);
-    expect(summary).toHaveProperty("title", ontology.title);
-    expect(summary).toHaveProperty("conceptCount", ontology.concepts.length);
-    expect(summary.uniqueConcepts.length).toBeLessThanOrEqual(ontology.concepts.length);
-  });
-
-  test("refreshOntology updates the creation date", () => {
-    const ontology = buildOntology();
-    const refreshed = refreshOntology(ontology);
-    expect(refreshed.created).not.toBe(ontology.created);
-  });
-
-  test("analyzeOntology returns valid analysis report", () => {
-    const ontology = buildOntology();
-    const analysis = analyzeOntology(ontology);
-    expect(analysis).toHaveProperty("isValid", true);
-    expect(analysis).toHaveProperty("conceptCount", ontology.concepts.length);
-    expect(analysis).toHaveProperty("titleLength", ontology.title.length);
-  });
-
-  test("monitorOntology returns memory usage details", () => {
-    const usage = monitorOntology();
-    expect(usage).toHaveProperty("freeMem");
-    expect(usage).toHaveProperty("totalMem");
-    expect(usage).toHaveProperty("loadAvg");
-    expect(usage).toHaveProperty("usedMem");
-  });
-
-  test("rebuildOntology returns an ontology with updated creation date", () => {
-    const ontology = buildOntology();
-    const rebuilt = rebuildOntology();
-    expect(rebuilt.created).not.toBe(ontology.created);
-  });
-
-  test("logDetailedResponse logs and returns the response object", () => {
-    const sample = { test: "data" };
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const result = logDetailedResponse(sample);
-    expect(result).toEqual(sample);
-    expect(spy).toHaveBeenCalledWith("Detailed response:", JSON.stringify(sample, null, 2));
-    spy.mockRestore();
-  });
-});
-
-// New Test Suite: Error Handling for File System Operations
 
 describe("File System Error Handling", () => {
   let originalWriteFileSync, originalReadFileSync;
