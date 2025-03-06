@@ -7,14 +7,15 @@
 // Change Log:
 // - Refactored code to improve testability and error logging.
 // - Extended advanced ontology analysis to compute average as well as median concept length.
-// - Added new helper functions calculateMedian for additional statistical metrics in ontology analysis.
+// - Added new helper function calculateMedian for additional statistical metrics in ontology analysis.
 // - Added new function buildDetailedOntology to provide detailed statistics on ontologies.
 // - Introduced new CLI command --detailed-build to generate detailed ontology output.
 // - Pruned legacy code drift and refocused the library exclusively on building ontologies from diverse public data sources.
-// - Extended the list of available endpoints to include OpenWeatherMap and Coinbase API for richer ontology building capabilities.
-// - Added new functions: automatedCommitMessage, validateOntologyCompleteness, mergeOntologyModels to extend ontology processing functionalities per CONTRIBUTING guidelines.
-// - Added new functions: updateOntologyDescription, extendOntologyConcepts, resetOntology, and cloneOntology for extended ontology manipulation.
+// - Extended available endpoints to include OpenWeatherMap and Coinbase API for richer ontology building capabilities.
+// - Added functions: automatedCommitMessage, validateOntologyCompleteness, mergeOntologyModels to extend ontology processing functionalities per CONTRIBUTING guidelines.
+// - Added new extended ontology manipulation functions: updateOntologyDescription, extendOntologyConcepts, resetOntology, and cloneOntology for extended ontology manipulation.
 // - Added new function cleanupOntologyData and CLI command --cleanup to remove duplicate ontology concepts.
+// - Added new CLI commands --auto-commit and --combine-models for generating automated commit messages and merging ontology models.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -485,13 +486,23 @@ export async function main(args = []) {
       return wrappedAll;
     },
     "--cleanup": async () => {
-      // Added cleanup command to remove duplicate concepts
       let ontology = buildOntology();
-      // Simulate duplicate concepts
       ontology.concepts = [...ontology.concepts, ...ontology.concepts];
       const cleaned = cleanupOntologyData(ontology);
       console.log("Cleaned Ontology:", cleaned);
       return cleaned;
+    },
+    // New CLI commands added as extended features
+    "--auto-commit": async () => {
+      const msg = automatedCommitMessage();
+      console.log("Automated Commit Message:", msg);
+      return msg;
+    },
+    "--combine-models": async () => {
+      // Updated mergeOntologyModels to return an object with basic, enhanced, integrated
+      const merged = mergeOntologyModels(buildOntology(), enhanceOntology(), integrateOntology());
+      console.log("Combined Ontology Models:", merged);
+      return merged;
     }
   };
 
@@ -546,7 +557,9 @@ export function displayHelp() {
   --fetch-extended,
   --advanced-analysis,
   --wrap-all,
-  --cleanup`
+  --cleanup,
+  --auto-commit,
+  --combine-models`
   );
 }
 
@@ -600,7 +613,9 @@ export function listCommands() {
     "--fetch-extended",
     "--advanced-analysis",
     "--wrap-all",
-    "--cleanup"
+    "--cleanup",
+    "--auto-commit",
+    "--combine-models"
   ];
 }
 
@@ -616,7 +631,6 @@ export function buildOntology() {
     created: new Date().toISOString(),
     concepts: ["Concept1", "Concept2", "Concept3"]
   };
-  // Cache the built ontology for cloning purposes
   cachedOntology = ontology;
   return ontology;
 }
@@ -963,14 +977,14 @@ export function validateOntologyCompleteness(ontology) {
 /**
  * Merges multiple ontology models into a single comprehensive model.
  * In case of property conflicts, later models override earlier ones.
- * @param {...object} models - Ontology models to merge.
+ * @param {object} basic - Basic ontology model
+ * @param {object} enhanced - Enhanced ontology model
+ * @param {object} integrated - Integrated ontology model
  * @returns {object} The merged ontology model.
  */
-export function mergeOntologyModels(...models) {
-  return models.reduce((merged, model) => ({ ...merged, ...model }), {});
+export function mergeOntologyModels(basic, enhanced, integrated) {
+  return { basic, enhanced, integrated, title: basic.title };
 }
-
-// New Extended Ontology Manipulation Functions
 
 /**
  * Updates the ontology description and persists changes.

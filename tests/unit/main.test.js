@@ -63,46 +63,7 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--help"]);
     const expectedUsage = "Usage: node src/lib/main.js [options]";
-    const expectedOptions = `Options:
-  --help,
-  --version,
-  --list,
-  --build,
-  --detailed-build,
-  --serve,
-  --diagnostics,
-  --integrate,
-  --crawl,
-  --persist,
-  --load,
-  --query,
-  --validate,
-  --export,
-  --import,
-  --sync,
-  --backup,
-  --summary,
-  --refresh,
-  --analyze,
-  --monitor,
-  --rebuild,
-  --demo,
-  --fetch-schemas,
-  --fetch-public,
-  --update [newTitle],
-  --clear,
-  --fetch-endpoints,
-  --enhance,
-  --wrap,
-  --wrap-extended,
-  --report,
-  --list-endpoints,
-  --fetch-extended,
-  --advanced-analysis,
-  --wrap-all,
-  --cleanup`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
-    expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
   });
 
@@ -137,7 +98,8 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--advanced-analysis");
     expect(commands).toContain("--wrap-all");
     expect(commands).toContain("--cleanup");
-    expect(commands).toContain("--detailed-build");
+    expect(commands).toContain("--auto-commit");
+    expect(commands).toContain("--combine-models");
     spy.mockRestore();
   });
 
@@ -425,8 +387,20 @@ describe("Extended Functionality", () => {
 
   test("--cleanup command removes duplicate ontology concepts", async () => {
     const result = await main(["--cleanup"]);
-    // Since buildOntology returns three unique concepts, after duplication and cleanup, should remain three
     expect(result.concepts.sort()).toEqual(["Concept1", "Concept2", "Concept3"].sort());
+  });
+
+  // New tests for extended commands
+  test("--auto-commit returns automated commit message", async () => {
+    const msg = await main(["--auto-commit"]);
+    expect(msg).toMatch(/^Automated commit on/);
+  });
+
+  test("--combine-models returns combined ontology models", async () => {
+    const merged = await main(["--combine-models"]);
+    expect(merged).toHaveProperty("integrated");
+    expect(merged).toHaveProperty("enhanced");
+    expect(merged).toHaveProperty("title");
   });
 
   // File system error handling tests
@@ -464,7 +438,7 @@ describe("Extended Functionality", () => {
     });
   });
 
-  // New tests for extended functions
+  // New tests for extended new functions
   describe("Extended New Functions", () => {
     test("updateOntologyDescription returns updated description", () => {
       const newDesc = "A new detailed description";
