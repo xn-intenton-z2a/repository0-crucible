@@ -3,17 +3,16 @@
 `owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. The tool has been refocused on building ontologies from various public data sources via multiple endpoints. Contributions are welcome following the guidelines in [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## Change Log
-- Version bumped to 0.0.6
+- Version bumped to 0.0.7
 - Fixed a syntax error in the fetchFromEndpoint function within the CLI tool.
 - Added new commands "--update" to update the ontology title and "--clear" to clear the persisted ontology file.
 - Extended CLI with new command "--fetch-endpoints" which now fetches data from 5 diverse public endpoints including SpaceX and Coindesk APIs.
 - Enhanced the CLI "--fetch-public" command to use dynamic import for function mocking in tests.
 - Exported the fetchFromEndpoint function to allow direct testing of network mocks.
-- Refocused the overall library mission to build ontologies from public data sources and integrated additional endpoints.
+- **Added tests for file system error handling and network mocks to improve test coverage.**
 - Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, rebuild, update, and clear ontology features.
 - Updated the web interface to launch a simple HTTP server for demonstration purposes.
 - Applied linting and formatting fixes to improve code quality.
-- Improved test coverage by adding network mocks and refining tests to simulate external resource calls without hitting real endpoints.
 
 ## Installation
 
@@ -217,7 +216,7 @@ node src/lib/main.js --help
 
 ## Contributing
 
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively. Recent updates have increased test coverage by adding network mocks and refining tests to simulate external resource calls without hitting real endpoints.
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively. Recent updates have increased test coverage by adding file system and network error handling tests and refining mocks to simulate external resource calls without hitting real endpoints.
 
 ## License
 
