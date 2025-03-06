@@ -330,7 +330,6 @@ describe("Extended Functionality", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const endpointsData = await main(["--fetch-endpoints"]);
     expect(Array.isArray(endpointsData)).toBe(true);
-    // Originally expected 5 endpoints as per fetchOntologyEndpoints
     expect(endpointsData.length).toBe(5);
     endpointsData.forEach(item => {
       expect(item).toHaveProperty("endpoint");
@@ -386,7 +385,6 @@ describe("Extended Functionality", () => {
   test("main with --list-endpoints returns extended endpoint list", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const endpoints = await main(["--list-endpoints"]);
-    // Updated to reflect extended list which now has 14 endpoints
     expect(Array.isArray(endpoints)).toBe(true);
     expect(endpoints.length).toBe(14);
     spy.mockRestore();
