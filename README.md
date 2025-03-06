@@ -6,7 +6,7 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
 
 ## Change Log
 - Pruned drift from the source file to align with the Mission Statement.
-- Updated the Mission Statement to focus on building robust ontologies from public data sources.
+- Updated the Mission Statement to focus on building robust ontologies from public data sources with enhanced integration and querying capabilities.
 - Retained and enhanced CLI commands including "--update" for modifying the ontology title and "--clear" for removing a persisted ontology.
 - Added command "--fetch-endpoints" to retrieve data from five public endpoints.
 - **New Feature:** Added "--enhance" command to generate an enhanced ontology with additional OWL model details.
