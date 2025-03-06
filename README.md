@@ -1,17 +1,13 @@
 # owl-builder
 
-`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. The tool has been refocused on building ontologies from various public data sources via multiple endpoints. Contributions are welcome following the guidelines in [CONTRIBUTING.md](./CONTRIBUTING.md).
+owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. It leverages multiple endpoints and robust error handling to offer a scalable and user-friendly solution. Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## Change Log
-- Version bumped to 0.0.7
-- Fixed a parsing error and formatting issues in the source and test files.
-- Removed unused module exports in the test file to eliminate linting warnings.
-- Added and extended commands "--update" to update the ontology title and "--clear" to clear the persisted ontology file.
-- Extended CLI with new command "--fetch-endpoints" which now fetches data from 5 diverse public endpoints including SpaceX and Coindesk APIs.
-- Enhanced the CLI "--fetch-public" command to use dynamic import for function mocking in tests.
-- Exported the fetchFromEndpoint function to allow direct testing of network mocks.
-- **Improved test coverage by adding file system error handling and network mock tests.**
-- Applied linting and formatting fixes to improve code quality.
+- Refreshed the README to align with CONTRIBUTING.md guidelines.
+- Enhanced error handling and network mock tests.
+- Extended CLI commands with "--update" for modifying the ontology title and "--clear" for removing the persisted ontology.
+- Introduced a new command "--fetch-endpoints" to retrieve data from five public endpoints.
+- Maintained comprehensive test coverage for file system and network error scenarios.
 
 ## Installation
 
@@ -24,199 +20,79 @@ npm install owl-builder
 ## Features
 
 - **CLI Commands:**
-  - Help: `--help`
-  - Version: `--version`
-  - List Commands: `--list`
-  - Build Ontology: `--build`
-  - Serve Web Interface: `--serve`
-  - Diagnostics: `--diagnostics`
-  - Integrate Supplemental Ontologies: `--integrate`
-  - Crawl Public Data: `--crawl`
-  - Persist Ontology to File: `--persist`
-  - Load Persisted Ontology: `--load`
-  - Query Ontology: `--query`
-  - Validate Ontology: `--validate`
-  - Export Ontology to XML: `--export`
-  - Import Ontology from XML: `--import`
-  - Synchronize Ontology: `--sync`
-  - Backup Ontology: `--backup`
-  - Get Ontology Summary: `--summary`
-  - Refresh Ontology: `--refresh`
-  - Analyze Ontology: `--analyze`
-  - Monitor System Metrics: `--monitor`
-  - Rebuild Ontology: `--rebuild`
-  - Demo Output: `--demo`
-  - **Fetch Detailed OWL Schemas:** `--fetch-schemas`
-  - **Fetch Public Data:** `--fetch-public`
-  - **Update Ontology Title:** `--update [newTitle]`
-  - **Clear Persisted Ontology:** `--clear`
-  - **Fetch Ontology Endpoints:** `--fetch-endpoints`
+  - --help: Display help instructions.
+  - --version: Show tool version.
+  - --list: List supported commands.
+  - --build: Build a sample ontology.
+  - --serve: Start the web interface.
+  - --diagnostics: Show system diagnostics.
+  - --integrate: Integrate supplemental ontologies.
+  - --crawl: Crawl public data sources.
+  - --persist: Save the ontology to a file.
+  - --load: Load a persisted ontology.
+  - --query: Query the ontology.
+  - --validate: Validate the ontology structure.
+  - --export: Export the ontology to XML.
+  - --import: Import an ontology from XML.
+  - --sync: Synchronize the ontology.
+  - --backup: Backup the ontology file.
+  - --summary: Summarize the ontology.
+  - --refresh: Refresh the ontology timestamp.
+  - --analyze: Analyze ontology metrics.
+  - --monitor: Monitor system metrics.
+  - --rebuild: Rebuild the ontology.
+  - --demo: Display demo output.
+  - --fetch-schemas: Retrieve detailed OWL schemas.
+  - --fetch-public: Fetch public data.
+  - --update [newTitle]: Update the ontology title.
+  - --clear: Clear the persisted ontology file.
+  - --fetch-endpoints: Retrieve data from multiple public endpoints.
 
 ## Public Data Endpoints
 
-owl-builder now fetches data from multiple public endpoints to build ontologies. Among these endpoints are:
+owl-builder fetches data from the following endpoints:
 
-- https://api.publicapis.org/entries (A list of public APIs)
-- https://dog.ceo/api/breeds/image/random (Random dog images)
-- https://jsonplaceholder.typicode.com/posts (Sample posts for demonstration)
-- https://api.spacexdata.com/v4/launches/latest (Latest SpaceX launch data)
-- https://api.coindesk.com/v1/bpi/currentprice.json (Current Bitcoin price index) *(Note: In test mode, this endpoint simulates a network error)*
-
-Example command:
-
-```bash
-node src/lib/main.js --fetch-endpoints
-```
+- https://api.publicapis.org/entries
+- https://dog.ceo/api/breeds/image/random
+- https://jsonplaceholder.typicode.com/posts
+- https://api.spacexdata.com/v4/launches/latest
+- https://api.coindesk.com/v1/bpi/currentprice.json *(Simulated network error in test mode)*
 
 ## Usage
 
-Run the CLI tool to see help instructions:
+Display help instructions:
 
 ```bash
 node src/lib/main.js --help
 ```
 
-### Example Commands
+Example commands:
 
-- **Default Demo Output:**
-  ```bash
-  npm run start
-  ```
-
-- **Build Ontology:**
+- Build Ontology:
   ```bash
   node src/lib/main.js --build
   ```
-
-- **Serve Web Interface:**
+- Serve Web Interface:
   ```bash
   node src/lib/main.js --serve
   ```
-
-- **Diagnostics:**
+- Update Ontology Title:
   ```bash
-  node src/lib/main.js --diagnostics
+  node src/lib/main.js --update "New Title"
   ```
-
-- **Integrate Ontology:**
-  ```bash
-  node src/lib/main.js --integrate
-  ```
-
-- **Crawl Public Data:**
-  ```bash
-  node src/lib/main.js --crawl
-  ```
-
-- **Persist Ontology to File:**
-  ```bash
-  node src/lib/main.js --persist
-  ```
-
-- **Load Persisted Ontology:**
-  ```bash
-  node src/lib/main.js --load
-  ```
-
-- **Query Ontology:**
-  ```bash
-  node src/lib/main.js --query
-  ```
-
-- **Validate Ontology:**
-  ```bash
-  node src/lib/main.js --validate
-  ```
-
-- **Export to XML:**
-  ```bash
-  node src/lib/main.js --export
-  ```
-
-- **Import from XML:**
-  ```bash
-  node src/lib/main.js --import
-  ```
-
-- **Synchronize Ontology:**
-  ```bash
-  node src/lib/main.js --sync
-  ```
-
-- **Backup Ontology:**
-  ```bash
-  node src/lib/main.js --backup
-  ```
-
-- **Get Ontology Summary:**
-  ```bash
-  node src/lib/main.js --summary
-  ```
-
-- **Refresh Ontology:**
-  ```bash
-  node src/lib/main.js --refresh
-  ```
-
-- **Analyze Ontology:**
-  ```bash
-  node src/lib/main.js --analyze
-  ```
-
-- **Monitor System Metrics:**
-  ```bash
-  node src/lib/main.js --monitor
-  ```
-
-- **Rebuild Ontology:**
-  ```bash
-  node src/lib/main.js --rebuild
-  ```
-
-- **Demo Output:**
-  ```bash
-  node src/lib/main.js --demo
-  ```
-
-- **Fetch Detailed OWL Schemas:**
-  ```bash
-  node src/lib/main.js --fetch-schemas
-  ```
-
-- **Fetch Public Data:**
-  ```bash
-  node src/lib/main.js --fetch-public
-  ```
-
-- **Update Ontology Title:**
-  ```bash
-  node src/lib/main.js --update "New Ontology Title"
-  ```
-
-- **Clear Persisted Ontology:**
+- Clear Persisted Ontology:
   ```bash
   node src/lib/main.js --clear
   ```
-
-- **Fetch Ontology Endpoints:**
+- Fetch Data from Multiple Endpoints:
   ```bash
   node src/lib/main.js --fetch-endpoints
   ```
 
-- **List Supported Commands:**
-  ```bash
-  node src/lib/main.js --list
-  ```
-
-- **Retrieve Tool Version:**
-  ```bash
-  node src/lib/main.js --version
-  ```
-
 ## Contributing
 
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively. Recent updates have increased test coverage by adding file system and network error handling tests, refining mocks, and applying code quality improvements based on linting feedback.
+Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. When contributing, ensure that tests pass and documentation is updated to maintain clarity around functionality.
 
 ## License
 
-Released under the MIT License (see [LICENSE](./LICENSE)).
+Released under the MIT License.
