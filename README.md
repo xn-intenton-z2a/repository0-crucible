@@ -5,7 +5,7 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
 Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## Change Log
-- Removed legacy code drift and unified functionality inline with the Mission Statement.
+- Removed legacy code drift and refocused the library on building robust ontologies from public data sources in line with the Mission Statement.
 - Updated CLI commands to version 0.0.9 including new features and enhancements:
   - `--update` for modifying the ontology title.
   - `--clear` for removing a persisted ontology.
@@ -17,12 +17,11 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--report`: Produce a comprehensive ontology report.
     - `--list-endpoints`: List an extended set of public endpoints (12 endpoints).
     - `--fetch-extended`: Fetch data from an extended list of public endpoints.
-    - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics, now including average and median concept length.
+    - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics, including average and median concept length.
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
     - **New Command:** `--detailed-build` to build a detailed ontology with additional statistical metrics.
 - Extended the list of available public data endpoints with additional services for building ontologies.
-- Refocused the library on building robust ontologies from public data sources with enhanced error handling, logging, modular design, and new statistical metrics (median concept length calculation via a new helper function).
-- Updated unit tests to cover new functionalities and improve test coverage.
+- Refocused the library on building robust ontologies from public data sources with enhanced error handling, logging, and modular design.
 
 ## Installation
 

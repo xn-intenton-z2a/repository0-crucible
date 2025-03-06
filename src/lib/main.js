@@ -2,7 +2,7 @@
 
 // src/lib/main.js
 // owl-builder CLI Tool
-// Mission Statement: Build robust ontologies directly extracted from diverse public data sources. This tool focuses on streamlined extraction, integration, detailed analysis and querying of ontology data. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+// Mission Statement: Build robust ontologies directly extracted from diverse public data sources. This tool is dedicated to the streamlined extraction, integration, and detailed analysis of ontology data. Contributions are welcome following the guidelines in CONTRIBUTING.md.
 
 // Change Log:
 // - Refactored code to improve testability and error logging.
@@ -10,7 +10,7 @@
 // - Added new helper function calculateMedian for additional statistical metrics in ontology analysis.
 // - Added new function buildDetailedOntology to provide detailed statistics on ontologies.
 // - Introduced new CLI command --detailed-build to generate detailed ontology output.
-// - Pruned legacy code drift and ensured all simulated demos remain only in test mode.
+// - Pruned legacy code drift and refocused the library on building ontologies from public data sources in line with the mission statement.
 
 import { fileURLToPath } from "url";
 import os from "os";
