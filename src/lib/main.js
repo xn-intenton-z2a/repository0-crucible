@@ -276,14 +276,16 @@ export function buildOntology() {
  * Starts a web server for demonstration purposes using a simple HTTP server.
  */
 export function serveWebInterface() {
-  const port = 8080;
+  // Use an ephemeral port when in the test environment to avoid conflicts
+  const port = process.env.NODE_ENV === "test" ? 0 : 8080;
   const server = http.createServer((req, res) => {
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end("owl-builder Web Interface\n");
   });
   server.listen(port, () => {
-    console.log(`Web server running on port ${port}`);
-    // In test environment, immediately close the server to avoid port conflicts
+    // Get the actual listening port in case an ephemeral port was used
+    const actualPort = server.address().port;
+    console.log(`Web server running on port ${actualPort}`);
     if (process.env.NODE_ENV === "test") {
       server.close();
     }

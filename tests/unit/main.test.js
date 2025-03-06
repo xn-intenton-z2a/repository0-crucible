@@ -117,7 +117,8 @@ describe("Main Module General Functions", () => {
   test("main with --serve calls serveWebInterface", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--serve"]);
-    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server running on port 8080/));
+    // Expect log message with any port number
+    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server running on port \d+/));
     spy.mockRestore();
   });
 
@@ -325,7 +326,7 @@ describe("Utility Functions", () => {
   test("serveWebInterface logs the server start message", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     serveWebInterface();
-    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server running on port 8080/));
+    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server running on port \d+/));
     spy.mockRestore();
   });
 
