@@ -24,7 +24,7 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="owl-builder" href="#owl-builder"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>owl-builder</h1>
-<p class="md-github">owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. It leverages multiple endpoints with robust error handling to construct ontologies accurately and efficiently. In this release, the tool has been enhanced to generate an advanced ontology model that integrates additional OWL schema details and wraps multiple model versions for deeper analysis.</p>
+<p class="md-github">owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. It leverages multiple endpoints with robust error handling to construct ontologies accurately and efficiently. In this release, the tool has been enhanced to generate an advanced ontology model that integrates additional OWL schema details, wraps multiple model versions for deeper analysis, and now provides new extended functions for generating comprehensive ontology reports, listing an extended set of public data endpoints, and wrapping extended ontology models.</p>
 <p class="md-github">Contributions are welcome – please see <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="change-log" href="#change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change Log</h2>
 <ul class="md-github">
@@ -33,7 +33,11 @@
 <li class="md-github">Retained and enhanced CLI commands including &quot;--update&quot; for modifying the ontology title and &quot;--clear&quot; for removing a persisted ontology.</li>
 <li class="md-github">Added command &quot;--fetch-endpoints&quot; to retrieve data from five public endpoints.</li>
 <li class="md-github"><strong class="md-github">New Feature:</strong> Added &quot;--enhance&quot; command to generate an enhanced ontology with additional OWL model details.</li>
-<li class="md-github"><strong class="md-github">New Feature:</strong> Added &quot;--wrap&quot; command to aggregate multiple ontology model versions (basic, enhanced, integrated) into a wrapped ontology object, including data source details.</li>
+<li class="md-github"><strong class="md-github">New Feature:</strong> Added &quot;--wrap&quot; command to aggregate basic, enhanced, and integrated ontology models.</li>
+<li class="md-github"><strong class="md-github">New Feature:</strong> Added &quot;--wrap-extended&quot; command to aggregate extended ontology models including report, synced and rebuilt versions along with basic, enhanced and integrated models.</li>
+<li class="md-github"><strong class="md-github">New Feature:</strong> Added &quot;--report&quot; command to generate a comprehensive ontology report including summary and analysis.</li>
+<li class="md-github"><strong class="md-github">New Feature:</strong> Added &quot;--list-endpoints&quot; command to list an extended set of public endpoints.</li>
+<li class="md-github"><strong class="md-github">Fix:</strong> Standardized CLI option quotes to double quotes in source files and updated ESLint configuration to exclude archived files from linting.</li>
 <li class="md-github">Ensured comprehensive test coverage for file system and network error scenarios.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
@@ -72,7 +76,10 @@
 <li class="md-github">--clear: Clear the persisted ontology file.</li>
 <li class="md-github">--fetch-endpoints: Retrieve data from multiple public endpoints.</li>
 <li class="md-github">--enhance: Generate an enhanced ontology with additional OWL model details.</li>
-<li class="md-github">--wrap: Wrap multiple ontology models (basic, enhanced, integrated) into an aggregated result with source details.</li>
+<li class="md-github">--wrap: Wrap basic, enhanced, and integrated ontology models.</li>
+<li class="md-github">--wrap-extended: Wrap extended ontology models including report, synced and rebuilt versions.</li>
+<li class="md-github">--report: Generate a comprehensive ontology report.</li>
+<li class="md-github">--list-endpoints: List an extended set of public endpoints.</li>
 </ul>
 </li>
 </ul>
@@ -84,6 +91,12 @@
 <li class="md-github">https://jsonplaceholder.typicode.com/posts</li>
 <li class="md-github">https://api.spacexdata.com/v4/launches/latest</li>
 <li class="md-github">https://api.coindesk.com/v1/bpi/currentprice.json <em class="md-github">(Simulated network error in test mode)</em></li>
+<li class="md-github"><strong class="md-github">Extended Endpoints:</strong>
+<ul class="md-github">
+<li class="md-github">https://api.github.com</li>
+<li class="md-github">https://jsonplaceholder.typicode.com/comments</li>
+</ul>
+</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">Display help instructions:</p>
@@ -112,6 +125,15 @@
 <li class="md-github">Wrap Ontology Models:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap
 </code></pre>
 </li>
+<li class="md-github">Wrap Extended Ontology Models:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-extended
+</code></pre>
+</li>
+<li class="md-github">Generate Ontology Report:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --report
+</code></pre>
+</li>
+<li class="md-github">List Extended Public Endpoints:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --list-endpoints
+</code></pre>
+</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
 <p class="md-github">Contributions are welcome! Please review <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for detailed guidelines. Ensure that tests pass and documentation is updated to maintain clarity around functionality.</p>
@@ -120,7 +142,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-03-06T05:36:38.548Z</p>
+    <p>Generated on 2025-03-06T06:09:03.316Z</p>
   </footer>
 </body>
 </html>
