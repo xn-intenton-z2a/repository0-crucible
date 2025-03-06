@@ -1,13 +1,13 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. It leverages multiple endpoints and robust error handling to offer a scalable and user-friendly solution. Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. It leverages multiple endpoints with robust error handling to construct ontologies accurately and efficiently. Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## Change Log
-- Refreshed the README to align with CONTRIBUTING.md guidelines.
-- Enhanced error handling and network mock tests.
-- Extended CLI commands with "--update" for modifying the ontology title and "--clear" for removing the persisted ontology.
-- Introduced a new command "--fetch-endpoints" to retrieve data from five public endpoints.
-- Maintained comprehensive test coverage for file system and network error scenarios.
+- Pruned drift from the source file to align with the Mission Statement.
+- Updated the Mission Statement to focus on building robust ontologies from public data sources.
+- Retained and enhanced CLI commands including "--update" for modifying the ontology title and "--clear" for removing a persisted ontology.
+- Added command "--fetch-endpoints" to retrieve data from five public endpoints.
+- Ensured comprehensive test coverage for file system and network error scenarios.
 
 ## Installation
 
@@ -91,7 +91,7 @@ Example commands:
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. When contributing, ensure that tests pass and documentation is updated to maintain clarity around functionality.
+Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation is updated to maintain clarity around functionality.
 
 ## License
 
