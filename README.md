@@ -21,7 +21,8 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
 - **Refocus Update:** The library is now refocused on building ontologies from public data sources while enhancing error handling, logging, and modular design for easier testing.
 - **Test Enhancements:** Added deeper unit tests by mocking external dependencies to improve coverage.
-- **Bug Fixes:** Removed duplicate export of `fetchFromEndpoint` and refined inline documentation.
+- **Bug Fixes:**
+  - Removed duplicate dynamic module import in the `--fetch-public` command to avoid potential circular dependency issues and improve module resolution in test mode.
 
 ## Installation
 

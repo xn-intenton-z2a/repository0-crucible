@@ -358,8 +358,7 @@ export async function main(args = []) {
     },
     "--fetch-public": async () => {
       try {
-        const mod = await import(import.meta.url);
-        const data = await mod.fetchPublicData();
+        const data = await fetchPublicData();
         console.log("Fetched public data:", data);
         return data;
       } catch (e) {
