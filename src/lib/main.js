@@ -12,6 +12,7 @@ import fs from "fs";
 import path from "path";
 import _ from "lodash";
 import https from "https";
+import http from "http";
 
 // Helper functions for file path resolution to reduce code drift
 function getOntologyFilePath() {
@@ -146,7 +147,6 @@ export async function main(args = []) {
       return schemas;
     },
     "--fetch-public": async () => {
-      // Use dynamic import to ensure live binding of fetchPublicData for proper testing overrides
       try {
         const mod = await import(import.meta.url);
         const data = await mod.fetchPublicData();
@@ -156,6 +156,18 @@ export async function main(args = []) {
         console.error("Error fetching public data:", e);
         return { success: false, error: e.message };
       }
+    },
+    "--update": async () => {
+      const idx = args.indexOf("--update");
+      const newTitle = (idx !== -1 && args.length > idx + 1) ? args[idx + 1] : "Updated Ontology";
+      const updated = updateOntology(newTitle);
+      console.log("Ontology updated:", updated);
+      return updated;
+    },
+    "--clear": async () => {
+      const result = clearOntology();
+      console.log(result.success ? "Ontology cleared, file removed." : "Ontology clear failed:", result);
+      return result;
     }
   };
 
@@ -197,7 +209,10 @@ export function displayHelp() {
   --rebuild,
   --demo,
   --fetch-schemas,
-  --fetch-public`);
+  --fetch-public,
+  --update [newTitle],
+  --clear`
+  );
 }
 
 /**
@@ -205,7 +220,7 @@ export function displayHelp() {
  * @returns {string} Version string.
  */
 export function getVersion() {
-  return "0.0.5";
+  return "0.0.6";
 }
 
 /**
@@ -237,7 +252,9 @@ export function listCommands() {
     "--rebuild",
     "--demo",
     "--fetch-schemas",
-    "--fetch-public"
+    "--fetch-public",
+    "--update",
+    "--clear"
   ];
 }
 
@@ -256,10 +273,17 @@ export function buildOntology() {
 }
 
 /**
- * Starts a web server for demonstration purposes.
+ * Starts a web server for demonstration purposes using a simple HTTP server.
  */
 export function serveWebInterface() {
-  console.log("Starting web server on port 8080...");
+  const port = 8080;
+  const server = http.createServer((req, res) => {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("owl-builder Web Interface\n");
+  });
+  server.listen(port, () => {
+    console.log(`Web server running on port ${port}`);
+  });
 }
 
 /**
@@ -522,6 +546,37 @@ export function fetchPublicData(endpoint = "https://api.publicapis.org/entries")
       });
     }).on("error", (err) => reject(err));
   });
+}
+
+/**
+ * Updates the ontology with a new title and persists it.
+ * @param {string} newTitle - The new title for the ontology.
+ * @returns {object} The updated ontology object.
+ */
+export function updateOntology(newTitle = "Updated Ontology") {
+  const ontology = buildOntology();
+  ontology.title = newTitle;
+  persistOntology(ontology);
+  return ontology;
+}
+
+/**
+ * Clears the ontology by removing the persisted ontology file.
+ * @returns {object} Result object indicating success or failure.
+ */
+export function clearOntology() {
+  const filePath = getOntologyFilePath();
+  try {
+    if (fs.existsSync(filePath)) {
+      fs.unlinkSync(filePath);
+      return { success: true, message: "Ontology file cleared." };
+    } else {
+      return { success: false, message: "Ontology file does not exist." };
+    }
+  } catch (error) {
+    console.error("Error clearing ontology file:", error);
+    return { success: false, error: error.message };
+  }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
