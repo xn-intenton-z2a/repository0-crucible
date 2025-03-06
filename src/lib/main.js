@@ -2,9 +2,8 @@
 
 // src/lib/main.js
 // owl-builder CLI Tool
-// Mission Statement: Refocused on building robust ontologies directly extracted from diverse public data sources. This tool now emphasizes the extraction, integration, and querying of ontology data from multiple public endpoints, ensuring improved persistence and error handling. Contributions are welcome following the guidelines in CONTRIBUTING.md.
-// Refactored to extend core functionalities, improve error handling, detailed logging, and enhanced testability via dependency injection for external resources.
-// Note: In test mode, endpoints simulate responses to avoid external network dependencies.
+// Mission Statement: Build robust ontologies directly extracted from diverse public data sources. This tool focuses on streamlined extraction, integration, and querying of ontology data. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+// Refactored to remove legacy drift, extend core functionalities, improve error handling, detailed logging, and enhance testability via dependency injection for external resources.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -14,7 +13,7 @@ import _ from "lodash";
 import https from "https";
 import http from "http";
 
-// Helper functions for file path resolution to reduce code drift
+// Helper functions for file path resolution
 function getOntologyFilePath() {
   return path.resolve(process.cwd(), "ontology.json");
 }
@@ -91,7 +90,7 @@ export async function fetchOntologyEndpoints() {
 }
 
 /**
- * Fetches data from an extended list of endpoints including additional public data sources.
+ * Fetches data from extended public endpoints.
  * @returns {Promise<object[]>} Array of responses from extended endpoints
  */
 export function fetchFromExtendedEndpoints() {
@@ -150,7 +149,7 @@ export function wrapOntologyModels() {
 }
 
 /**
- * Extended wrapper that aggregates additional ontology models including a report, synced and rebuilt versions.
+ * Extended wrapper that aggregates ontology models including a report, synced and rebuilt versions.
  * @returns {object} Extended aggregated ontology object
  */
 export function wrapOntologyModelsExtended() {
@@ -173,7 +172,7 @@ export function wrapOntologyModelsExtended() {
 }
 
 /**
- * New wrapper that aggregates all ontology models including an advanced analysis.
+ * New wrapper that aggregates all ontology models including advanced analysis.
  * @returns {object} Aggregated ontology object with advanced metrics.
  */
 export function wrapAllOntologyModels() {
@@ -191,21 +190,20 @@ export function wrapAllOntologyModels() {
 }
 
 /**
- * Generates a comprehensive ontology report by combining summary, analysis, and enhanced ontology details.
+ * Generates a comprehensive ontology report including summary, analysis, and enhanced details.
  * @returns {object} Report object containing various ontology metrics
  */
 export function generateOntologyReport() {
   const ontology = buildOntology();
   const summary = getOntologySummary(ontology);
   const analysis = analyzeOntology(ontology);
-  const report = {
+  return {
     title: ontology.title,
     created: ontology.created,
     summary,
     analysis,
     enhanced: enhanceOntology()
   };
-  return report;
 }
 
 /**
@@ -213,7 +211,7 @@ export function generateOntologyReport() {
  * @returns {string[]} List of endpoints
  */
 export function listAvailableEndpoints() {
-  const endpoints = [
+  return [
     "https://api.publicapis.org/entries",
     "https://dog.ceo/api/breeds/image/random",
     "https://jsonplaceholder.typicode.com/posts",
@@ -222,11 +220,10 @@ export function listAvailableEndpoints() {
     "https://api.github.com",
     "https://jsonplaceholder.typicode.com/comments"
   ];
-  return endpoints;
 }
 
 /**
- * Provides advanced ontology analysis metrics including additional custom measures.
+ * Provides advanced ontology analysis metrics including custom measures.
  * @returns {object} Advanced analysis report.
  */
 export function advancedOntologyAnalysis() {
@@ -243,14 +240,12 @@ export function advancedOntologyAnalysis() {
 }
 
 /**
- * Main function to handle CLI arguments and execute the corresponding functionality.
+ * Main CLI function handling arguments and executing functionalities.
  * @param {string[]} args - CLI arguments
  */
 export async function main(args = []) {
   const commandActions = {
-    "--help": async () => {
-      displayHelp();
-    },
+    "--help": async () => { displayHelp(); },
     "--version": async () => {
       const version = getVersion();
       console.log("Tool version:", version);
@@ -266,12 +261,8 @@ export async function main(args = []) {
       console.log("Ontology built:", ontology);
       return ontology;
     },
-    "--serve": async () => {
-      await serveWebInterface();
-    },
-    "--diagnostics": async () => {
-      diagnostics();
-    },
+    "--serve": async () => { await serveWebInterface(); },
+    "--diagnostics": async () => { diagnostics(); },
     "--integrate": async () => {
       const integrated = integrateOntology();
       console.log("Ontology integrated:", integrated);
@@ -367,8 +358,9 @@ export async function main(args = []) {
     },
     "--fetch-public": async () => {
       try {
-        const mod = await import(import.meta.url);
-        const data = await mod.fetchPublicData();
+        // Use dynamic import to obtain the live binding for fetchPublicData so that test spies can override it
+        const { fetchPublicData } = await import(import.meta.url);
+        const data = await fetchPublicData();
         console.log("Fetched public data:", data);
         return data;
       } catch (e) {
@@ -385,7 +377,11 @@ export async function main(args = []) {
     },
     "--clear": async () => {
       const result = clearOntology();
-      console.log(result.success ? "Ontology cleared, file removed." : "Ontology clear failed:", result);
+      if (result.success) {
+        console.log("Ontology cleared, file removed.", result);
+      } else {
+        console.log("Ontology clear failed:", result);
+      }
       return result;
     },
     "--fetch-endpoints": async () => {
@@ -493,7 +489,7 @@ export function displayHelp() {
  * @returns {string} Version string.
  */
 export function getVersion() {
-  return "0.0.9"; // Updated version to align with package.json release
+  return "0.0.9";
 }
 
 /**
@@ -556,7 +552,7 @@ export function buildOntology() {
 
 /**
  * Starts a web server for demonstration purposes using a simple HTTP server.
- * Returns a Promise that resolves with the actual port once the server has started.
+ * @returns {Promise<number>} Resolves with the server port.
  */
 export async function serveWebInterface() {
   const port = process.env.NODE_ENV === "test" ? 0 : 8080;
@@ -628,7 +624,7 @@ export function persistOntology(ontology) {
 
 /**
  * Loads a persisted ontology from a file.
- * @returns {object} The loaded ontology object or an error object on failure.
+ * @returns {object} The loaded ontology or error object on failure.
  */
 export function loadOntology() {
   const filePath = getOntologyFilePath();
@@ -648,7 +644,7 @@ export function loadOntology() {
  */
 export function queryOntology(searchTerm) {
   const ontology = buildOntology();
-  const results = ontology.concepts.filter((concept) => concept.includes(searchTerm));
+  const results = ontology.concepts.filter(concept => concept.includes(searchTerm));
   return { searchTerm, results };
 }
 
@@ -667,7 +663,7 @@ export function validateOntology(ontology) {
  * @returns {string} XML string representing the ontology.
  */
 export function exportOntologyToXML(ontology) {
-  const conceptsXML = ontology.concepts.map((concept) => `<concept>${concept}</concept>`).join("");
+  const conceptsXML = ontology.concepts.map(concept => `<concept>${concept}</concept>`).join("");
   return `<ontology><title>${ontology.title}</title><created>${ontology.created}</created><concepts>${conceptsXML}</concepts></ontology>`;
 }
 
@@ -708,7 +704,7 @@ export function syncOntology() {
 
 /**
  * Creates a backup of the ontology file.
- * @returns {object} Result object indicating backup success and backup file path.
+ * @returns {object} Result indicating backup success and backup file path.
  */
 export function backupOntology() {
   const originalPath = getOntologyFilePath();
@@ -737,7 +733,7 @@ export function getOntologySummary(ontology) {
 }
 
 /**
- * Refreshes the ontology by updating the creation timestamp to ensure a new time value.
+ * Refreshes the ontology by updating the created timestamp.
  * @param {object} ontology - The ontology to refresh.
  * @returns {object} The refreshed ontology object.
  */
@@ -750,7 +746,7 @@ export function refreshOntology(ontology) {
 }
 
 /**
- * Analyzes the ontology and returns metrics including validity and concept details.
+ * Analyzes the ontology and returns metrics.
  * @param {object} ontology - The ontology to analyze.
  * @returns {object} Analysis report.
  */
@@ -764,7 +760,7 @@ export function analyzeOntology(ontology) {
 
 /**
  * Monitors system memory usage and load average.
- * @returns {object} Object containing memory usage details.
+ * @returns {object} Memory usage details.
  */
 export function monitorOntology() {
   const freeMem = os.freemem();
@@ -799,28 +795,26 @@ export function demoOntology() {
 }
 
 /**
- * Fetches detailed OWL schemas from a remote data source (simulated).
+ * Fetches detailed OWL schemas from a remote source (simulated).
  * @returns {object[]} Array of OWL schema objects.
  */
 export function fetchOwlSchemas() {
   return [
     { id: "owl1", name: "Basic OWL Schema", details: "A basic schema for ontology creation." },
-    { id: "owl2", name: "Advanced OWL Schema", details: "A detailed schema including classes, properties, and relationships." }
+    { id: "owl2", name: "Advanced OWL Schema", details: "Detailed schema with classes, properties, and relationships." }
   ];
 }
 
 /**
  * Fetches public data from a real API endpoint with proper error handling.
- * @param {string} endpoint - The URL to fetch data from.
+ * @param {string} endpoint - URL to fetch data from.
  * @returns {Promise<object>} The fetched data.
  */
 export function fetchPublicData(endpoint = "https://api.publicapis.org/entries") {
   return new Promise((resolve, reject) => {
     https.get(endpoint, (res) => {
       let data = "";
-      res.on("data", (chunk) => {
-        data += chunk;
-      });
+      res.on("data", (chunk) => { data += chunk; });
       res.on("end", () => {
         if (res.statusCode !== 200) {
           return reject(new Error(`Request failed with status code: ${res.statusCode}`));
@@ -849,7 +843,7 @@ export function updateOntology(newTitle = "Updated Ontology") {
 }
 
 /**
- * Clears the ontology by removing the persisted ontology file.
+ * Clears the ontology by removing the persisted file.
  * @returns {object} Result object indicating success or failure.
  */
 export function clearOntology() {
@@ -866,5 +860,3 @@ export function clearOntology() {
     return { success: false, error: error.message };
   }
 }
-
-// End of file. Removed duplicate export of fetchFromEndpoint as it was already exported above.

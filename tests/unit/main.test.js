@@ -40,7 +40,7 @@ const {
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
 const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
 
-// Import https module for simulating network errors
+// Import https for simulating network errors
 import https from "https";
 
 
@@ -203,19 +203,10 @@ describe("Main Module General Functions", () => {
     fakeResponse.statusCode = 500;
     fakeResponse.setEncoding = () => {};
     fakeResponse.on = (event, callback) => {
-      if (event === 'data') {
-        callback('error');
-      } else if (event === 'end') {
-        callback();
-      }
+      if (event === 'data') { callback('error'); } else if (event === 'end') { callback(); }
     };
-
     const originalGet = https.get;
-    https.get = (options, callback) => {
-      callback(fakeResponse);
-      return { on: () => {} };
-    };
-
+    https.get = (options, callback) => { callback(fakeResponse); return { on: () => {} }; };
     await expect(fetchPublicData("http://example.com")).rejects.toThrow("Request failed with status code: 500");
     https.get = originalGet;
   });
@@ -223,14 +214,9 @@ describe("Main Module General Functions", () => {
   test("fetchPublicData handles network error", async () => {
     const originalGet = https.get;
     https.get = (options, callback) => {
-      const req = { on: (event, errCallback) => {
-        if (event === 'error') {
-          errCallback(new Error('Network error'));
-        }
-      } };
+      const req = { on: (event, errCallback) => { if (event === 'error') { errCallback(new Error('Network error')); } } };
       return req;
     };
-
     await expect(fetchPublicData("http://example.com")).rejects.toThrow("Network error");
     https.get = originalGet;
   });

@@ -1,11 +1,11 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. This tool emphasizes the extraction of ontology data directly from public endpoints with robust integration, persistence, and querying capabilities.
+owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. This tool focuses on extracting ontology data directly from public endpoints with streamlined integration, persistence, and querying capabilities.
 
 Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## Change Log
-- Refreshed README content and updated Mission Statement.
+- Pruned legacy code drift from the source file to better align with the Mission Statement.
 - Updated CLI commands to version 0.0.9 including:
   - `--update` for modifying the ontology title.
   - `--clear` for removing a persisted ontology.
@@ -19,12 +19,10 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--fetch-extended`: Fetch data from an extended list of public endpoints.
     - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics.
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
-- **Refocus Update:** Refocused the library on extracting and building ontologies from public data sources, improving handling of diverse endpoints and data integration.
-- **Test Enhancements:**
-  - Added deeper unit tests mocking external network and file system dependencies to improve test coverage toward 100%.
+- **Refocus Update:** The library is now refocused on building ontologies from public data sources while enhancing error handling, logging, and modular design for easier testing.
+- **Test Enhancements:** Added deeper unit tests by mocking external dependencies to improve coverage.
 - **Bug Fixes:**
-  - Removed duplicate export of `fetchFromEndpoint` in source file.
-  - Fixed test issues by importing `afterAll` from vitest.
+  - Updated the `--fetch-public` command to use dynamic import for obtaining a live binding of `fetchPublicData`, ensuring that test spies correctly override the network call.
 
 ## Installation
 
@@ -167,7 +165,7 @@ Example commands:
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation accurately reflects the current functionality.
+Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality.
 
 ## License
 
