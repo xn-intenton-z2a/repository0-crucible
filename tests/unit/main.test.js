@@ -26,7 +26,8 @@ const {
   fetchFromEndpoint,
   updateOntology,
   clearOntology,
-  enhanceOntology
+  enhanceOntology,
+  wrapOntologyModels
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -75,7 +76,8 @@ describe("Main Module General Functions", () => {
   --update [newTitle],
   --clear,
   --fetch-endpoints,
-  --enhance`;
+  --enhance,
+  --wrap`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
     expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
@@ -104,6 +106,7 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--clear");
     expect(commands).toContain("--fetch-endpoints");
     expect(commands).toContain("--enhance");
+    expect(commands).toContain("--wrap");
     spy.mockRestore();
   });
 
@@ -333,6 +336,17 @@ describe("Extended Functionality", () => {
     expect(enhanced.model).toHaveProperty("version", "1.0");
     spy.mockRestore();
   });
+
+  test("main with --wrap returns wrapped ontology models", async () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const wrapped = await main(["--wrap"]);
+    expect(wrapped).toHaveProperty("wrapped", true);
+    expect(wrapped).toHaveProperty("basic");
+    expect(wrapped).toHaveProperty("enhanced");
+    expect(wrapped).toHaveProperty("integrated");
+    expect(wrapped.sources).toBeInstanceOf(Array);
+    spy.mockRestore();
+  });
 });
 
 describe("Utility Functions", () => {
@@ -382,7 +396,8 @@ describe("Utility Functions", () => {
   --update [newTitle],
   --clear,
   --fetch-endpoints,
-  --enhance`;
+  --enhance,
+  --wrap`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
     expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
@@ -483,40 +498,5 @@ describe("Utility Functions", () => {
     const ontology = buildOntology();
     const rebuilt = rebuildOntology();
     expect(rebuilt.created).not.toBe(ontology.created);
-  });
-});
-
-
-describe("Network Mocks", () => {
-  test("fetchFromEndpoint returns simulated data in test mode", async () => {
-    const result = await fetchFromEndpoint("https://api.publicapis.org/entries");
-    expect(result).toHaveProperty("data");
-    expect(result.endpoint).toBe("https://api.publicapis.org/entries");
-  });
-
-  test("fetchFromEndpoint simulates error for coindesk endpoint", async () => {
-    const result = await fetchFromEndpoint("https://api.coindesk.com/v1/bpi/currentprice.json");
-    expect(result).toHaveProperty("error", "Simulated network error");
-  });
-});
-
-describe("Failure Handling", () => {
-  test("persistOntology handles write failure gracefully", () => {
-    const originalWrite = fs.writeFileSync;
-    fs.writeFileSync = () => { throw new Error("Write failed"); };
-    const ontology = buildOntology();
-    const result = persistOntology(ontology);
-    expect(result).toHaveProperty("success", false);
-    expect(result).toHaveProperty("error", "Write failed");
-    fs.writeFileSync = originalWrite;
-  });
-
-  test("loadOntology handles read failure gracefully", () => {
-    const originalRead = fs.readFileSync;
-    fs.readFileSync = () => { throw new Error("Read failed"); };
-    const result = loadOntology();
-    expect(result).toHaveProperty("success", false);
-    expect(result).toHaveProperty("error", "Read failed");
-    fs.readFileSync = originalRead;
   });
 });

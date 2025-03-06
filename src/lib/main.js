@@ -3,7 +3,7 @@
 // src/lib/main.js
 //
 // owl-builder CLI Tool
-// Mission Statement: This tool is dedicated to building robust ontologies from diverse public data sources. It provides a JavaScript library and CLI that extracts, builds, enhances, and manages ontologies directly from real endpoints. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+// Mission Statement: This tool is dedicated to building robust ontologies from diverse public data sources. It provides a JavaScript library and CLI that extracts, builds, enhances, wraps, and manages ontologies directly from real endpoints. Contributions are welcome following the guidelines in CONTRIBUTING.md.
 // Note: In test mode, endpoints simulate responses to avoid external network dependencies.
 
 import { fileURLToPath } from "url";
@@ -92,6 +92,30 @@ export function enhanceOntology() {
     additionalConcepts: ["EnhancedConcept1", "EnhancedConcept2"]
   };
   return ontology;
+}
+
+/**
+ * Wraps multiple ontology models including basic, enhanced, and integrated versions into an aggregated model.
+ * @returns {object} Aggregated ontology object with multiple models and source details.
+ */
+export function wrapOntologyModels() {
+  const basic = buildOntology();
+  const enhanced = enhanceOntology();
+  const integrated = integrateOntology();
+  const aggregated = {
+    basic,
+    enhanced,
+    integrated,
+    sources: [
+      "https://api.publicapis.org/entries",
+      "https://dog.ceo/api/breeds/image/random",
+      "https://jsonplaceholder.typicode.com/posts",
+      "https://api.spacexdata.com/v4/launches/latest",
+      "https://api.coindesk.com/v1/bpi/currentprice.json"
+    ],
+    wrapped: true
+  };
+  return aggregated;
 }
 
 /**
@@ -248,6 +272,11 @@ export async function main(args = []) {
       const enhanced = enhanceOntology();
       console.log("Enhanced ontology:", enhanced);
       return enhanced;
+    },
+    "--wrap": async () => {
+      const wrapped = wrapOntologyModels();
+      console.log("Wrapped ontology models:", wrapped);
+      return wrapped;
     }
   };
 
@@ -293,7 +322,8 @@ export function displayHelp() {
   --update [newTitle],
   --clear,
   --fetch-endpoints,
-  --enhance`
+  --enhance,
+  --wrap`
   );
 }
 
@@ -338,7 +368,8 @@ export function listCommands() {
     "--update",
     "--clear",
     "--fetch-endpoints",
-    "--enhance"
+    "--enhance",
+    "--wrap"
   ];
 }
 
