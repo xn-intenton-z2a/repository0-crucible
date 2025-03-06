@@ -2,9 +2,9 @@
 
 // src/lib/main.js
 //
-// owl-builder CLI and Library
+// Public Data Driven Ontology Builder
 //
-// Mission Statement: This file implements the owl-builder CLI tool and JavaScript library to build robust, modular, and user-friendly ontology management functionalities. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+// Mission Statement: This file implements the owl-builder CLI tool and JavaScript library refocused on building robust ontologies directly from public data sources. Contributions are welcome following the guidelines in CONTRIBUTING.md.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -62,7 +62,9 @@ export async function fetchOntologyEndpoints() {
   const endpoints = [
     "https://api.publicapis.org/entries",
     "https://dog.ceo/api/breeds/image/random",
-    "https://jsonplaceholder.typicode.com/posts"
+    "https://jsonplaceholder.typicode.com/posts",
+    "https://api.spacexdata.com/v4/launches/latest",
+    "https://api.coindesk.com/v1/bpi/currentprice.json"
   ];
   const results = await Promise.all(endpoints.map(ep => fetchFromEndpoint(ep)));
   return results;
