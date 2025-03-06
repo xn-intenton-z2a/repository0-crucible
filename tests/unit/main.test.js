@@ -30,7 +30,8 @@ const {
   fetchPublicData,
   updateOntology,
   clearOntology,
-  fetchOntologyEndpoints
+  fetchOntologyEndpoints,
+  fetchFromEndpoint
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -474,5 +475,18 @@ describe("Utility Functions", () => {
     const ontology = buildOntology();
     const rebuilt = rebuildOntology();
     expect(rebuilt.created).not.toBe(ontology.created);
+  });
+});
+
+describe("Network Mocks", () => {
+  test("fetchFromEndpoint returns simulated data in test mode", async () => {
+    const result = await fetchFromEndpoint("https://api.publicapis.org/entries");
+    expect(result).toHaveProperty("data");
+    expect(result.endpoint).toBe("https://api.publicapis.org/entries");
+  });
+
+  test("fetchFromEndpoint simulates error for coindesk endpoint", async () => {
+    const result = await fetchFromEndpoint("https://api.coindesk.com/v1/bpi/currentprice.json");
+    expect(result).toHaveProperty("error", "Simulated network error");
   });
 });
