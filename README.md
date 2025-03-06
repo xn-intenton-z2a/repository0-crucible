@@ -1,21 +1,23 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. The tool is designed to integrate robust data from multiple endpoints, generate enhanced ontology models, and provide a suite of CLI commands for various ontology operations. This release focuses on refactoring the builder to emphasize real data integration with improved error handling and modular design.
+owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. The tool is designed to integrate robust data from multiple endpoints, generate enhanced ontology models, and provide a suite of CLI commands for various ontology operations. This release refocuses the builder on building robust ontologies with improved error handling, detailed logging, and extended integration capabilities.
 
 Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## Change Log
 - Refreshed README content and pruned outdated descriptions to align with CONTRIBUTING guidelines.
-- Updated Mission Statement to emphasize building robust ontologies from public data sources with enhanced integration and querying capabilities.
+- Updated Mission Statement to emphasize building robust ontologies from public data sources with enhanced integration, persistence, and querying capabilities.
 - Retained and enhanced CLI commands including "--update" for modifying the ontology title and "--clear" for removing a persisted ontology.
 - Added command "--fetch-endpoints" to retrieve data from five public endpoints.
 - **New Feature:** Added "--enhance" command to generate an enhanced ontology with additional OWL model details.
 - **New Feature:** Added "--wrap" command to aggregate basic, enhanced, and integrated ontology models.
-- **New Feature:** Added "--wrap-extended" command to aggregate extended ontology models including report, synced and rebuilt versions along with basic, enhanced and integrated models.
+- **New Feature:** Added "--wrap-extended" command to aggregate extended ontology models including report, synced and rebuilt versions along with basic, enhanced, and integrated models.
 - **New Feature:** Added "--report" command to generate a comprehensive ontology report.
 - **New Feature:** Added "--list-endpoints" command to list an extended set of public endpoints.
-- **Fix:** Standardized CLI option quotes and updated version to "0.0.8".
-- Maintained comprehensive test coverage for both file system and network error scenarios.
+- **Enhancement:** Extended core functionalities in the source file to improve error handling and detailed logging for better integration and debugging.
+- **New Utility:** Introduced a helper function `logDetailedResponse` to facilitate consistent logging of responses.
+- **Fix:** Standardized CLI option quotes and maintained version "0.0.8".
+- Retained comprehensive test coverage for both file system and network error scenarios.
 
 ## Installation
 
@@ -57,7 +59,7 @@ npm install owl-builder
   - --fetch-endpoints: Retrieve data from multiple public endpoints.
   - --enhance: Generate an enhanced ontology with additional OWL model details.
   - --wrap: Wrap basic, enhanced, and integrated ontology models.
-  - --wrap-extended: Wrap extended ontology models including report, synced and rebuilt versions.
+  - --wrap-extended: Wrap extended ontology models including report, synced, and rebuilt versions.
   - --report: Generate a comprehensive ontology report.
   - --list-endpoints: List an extended set of public endpoints.
 

@@ -30,7 +30,8 @@ const {
   wrapOntologyModels,
   wrapOntologyModelsExtended,
   generateOntologyReport,
-  listAvailableEndpoints
+  listAvailableEndpoints,
+  logDetailedResponse
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -542,5 +543,14 @@ describe("Utility Functions", () => {
     const ontology = buildOntology();
     const rebuilt = rebuildOntology();
     expect(rebuilt.created).not.toBe(ontology.created);
+  });
+
+  test("logDetailedResponse logs and returns the response object", () => {
+    const sample = { test: "data" };
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const result = logDetailedResponse(sample);
+    expect(result).toEqual(sample);
+    expect(spy).toHaveBeenCalledWith("Detailed response:", JSON.stringify(sample, null, 2));
+    spy.mockRestore();
   });
 });
