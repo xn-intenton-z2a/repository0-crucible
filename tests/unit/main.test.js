@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
+import { describe, test, expect, beforeEach, afterEach, afterAll, vi } from "vitest";
 import fs from "fs";
 import path from "path";
 import * as mainModule from "../../src/lib/main.js";
@@ -42,6 +42,7 @@ const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
 
 // Import https module for simulating network errors
 import https from "https";
+
 
 describe("Main Module General Functions", () => {
   test("main without args prints default message", async () => {
@@ -100,7 +101,7 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const version = await main(["--version"]);
     expect(spy).toHaveBeenCalledWith("Tool version:", version);
-    expect(version).toBe("0.0.8");
+    expect(version).toBe("0.0.9");
     spy.mockRestore();
   });
 
@@ -420,6 +421,25 @@ describe("Extended Functionality", () => {
     const result = await main(["--wrap-all"]);
     expect(result).toHaveProperty("totalModels", 4);
     expect(result).toHaveProperty("advanced");
+  });
+});
+
+describe("fetchFromEndpoint function", () => {
+  test("simulated error for coindesk endpoint in test mode", async () => {
+    process.env.NODE_ENV = "test";
+    const result = await fetchFromEndpoint("https://api.coindesk.com/v1/bpi/currentprice.json");
+    expect(result).toHaveProperty("error", "Simulated network error");
+  });
+
+  test("simulated data for a non-coindesk endpoint in test mode", async () => {
+    process.env.NODE_ENV = "test";
+    const result = await fetchFromEndpoint("https://api.example.com/data");
+    expect(result).toHaveProperty("data");
+    expect(result.data).toHaveProperty("simulated", "data");
+  });
+  
+  afterAll(() => {
+    process.env.NODE_ENV = "";
   });
 });
 
