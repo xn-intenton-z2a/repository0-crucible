@@ -2,7 +2,7 @@
 
 // src/lib/main.js
 // owl-builder CLI Tool
-// Mission Statement: Build robust ontologies directly extracted from diverse public data sources. This tool is dedicated to the streamlined extraction, integration, and detailed analysis of ontology data. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+// Mission Statement: Build robust ontologies directly extracted from diverse public data sources. This tool is dedicated to the streamlined extraction, integration, and detailed analysis of ontology data from public APIs. Contributions are welcome following the guidelines in CONTRIBUTING.md.
 
 // Change Log:
 // - Refactored code to improve testability and error logging.
@@ -10,7 +10,7 @@
 // - Added new helper function calculateMedian for additional statistical metrics in ontology analysis.
 // - Added new function buildDetailedOntology to provide detailed statistics on ontologies.
 // - Introduced new CLI command --detailed-build to generate detailed ontology output.
-// - Pruned legacy code drift and refocused the library on building ontologies from public data sources in line with the mission statement.
+// - Pruned legacy code drift and refocused the library exclusively on building ontologies from diverse public data sources.
 // - Extended the list of available endpoints to include OpenWeatherMap and Coinbase API for richer ontology building capabilities.
 
 import { fileURLToPath } from "url";
@@ -595,7 +595,7 @@ export function buildOntology() {
   return {
     id: "ont-" + Math.floor(Math.random() * 10000),
     title: "Sample Ontology",
-    description: "An ontology built to demonstrate owl-builder functionalities.",
+    description: "An ontology built from diverse public data sources for robust integration and analysis.",
     created: new Date().toISOString(),
     concepts: ["Concept1", "Concept2", "Concept3"]
   };

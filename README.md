@@ -5,7 +5,7 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
 Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## Change Log
-- Removed legacy code drift and refocused the library on building robust ontologies from public data sources in line with the Mission Statement.
+- Refocused the library exclusively on building robust ontologies from public data sources, eliminating legacy code drift.
 - Updated CLI commands to version 0.0.9 including new features and enhancements:
   - `--update` for modifying the ontology title.
   - `--clear` for removing a persisted ontology.
