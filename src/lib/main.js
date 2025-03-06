@@ -31,7 +31,6 @@ function getBackupFilePath() {
  * @returns {Promise<object>} The fetched data or error message.
  */
 function fetchFromEndpoint(endpoint) {
-  // In test environment, simulate responses for consistency
   if (process.env.NODE_ENV === "test") {
     if (endpoint === "https://api.coindesk.com/v1/bpi/currentprice.json") {
       console.error(`Error fetching ${endpoint}: Simulated network error`);
@@ -41,7 +40,6 @@ function fetchFromEndpoint(endpoint) {
     console.log(`Fetched data from ${endpoint}:`, dummyData);
     return Promise.resolve({ endpoint, data: dummyData });
   }
-
   return new Promise((resolve) => {
     const parsedUrl = new URL(endpoint);
     const protocol = parsedUrl.protocol === "https:" ? https : http;
@@ -79,7 +77,7 @@ export async function fetchOntologyEndpoints() {
     "https://api.spacexdata.com/v4/launches/latest",
     "https://api.coindesk.com/v1/bpi/currentprice.json"
   ];
-  const results = await Promise.all(endpoints.map(ep => fetchFromEndpoint(ep)));
+  const results = await Promise.all(endpoints.map((ep) => fetchFromEndpoint(ep)));
   return results;
 }
 
@@ -88,7 +86,6 @@ export async function fetchOntologyEndpoints() {
  * @param {string[]} args - CLI arguments
  */
 export async function main(args = []) {
-  // Mapping CLI options to corresponding functions
   const commandActions = {
     "--help": async () => {
       displayHelp();
@@ -219,7 +216,7 @@ export async function main(args = []) {
     },
     "--update": async () => {
       const idx = args.indexOf("--update");
-      const newTitle = (idx !== -1 && args.length > idx + 1) ? args[idx + 1] : "Updated Ontology";
+      const newTitle = idx !== -1 && args.length > idx + 1 ? args[idx + 1] : "Updated Ontology";
       const updated = updateOntology(newTitle);
       console.log("Ontology updated:", updated);
       return updated;
@@ -433,7 +430,7 @@ export function loadOntology() {
  */
 export function queryOntology(searchTerm) {
   const ontology = buildOntology();
-  const results = ontology.concepts.filter(concept => concept.includes(searchTerm));
+  const results = ontology.concepts.filter((concept) => concept.includes(searchTerm));
   return { searchTerm, results };
 }
 
@@ -476,7 +473,7 @@ export function importOntologyFromXML(xmlString) {
   return {
     title: titleMatch ? titleMatch[1] : "Imported Ontology",
     created: createdMatch ? createdMatch[1] : new Date().toISOString(),
-    concepts: concepts
+    concepts
   };
 }
 
@@ -554,11 +551,10 @@ export function analyzeOntology(ontology) {
 export function monitorOntology() {
   const freeMem = os.freemem();
   const totalMem = os.totalmem();
-  const loadAvg = os.loadavg();
   return {
     freeMem,
     totalMem,
-    loadAvg,
+    loadAvg: os.loadavg(),
     usedMem: totalMem - freeMem
   };
 }
@@ -569,8 +565,7 @@ export function monitorOntology() {
  */
 export function rebuildOntology() {
   const ontology = buildOntology();
-  const refreshed = refreshOntology(ontology);
-  return refreshed;
+  return refreshOntology(ontology);
 }
 
 /**
@@ -654,7 +649,7 @@ export function clearOntology() {
   }
 }
 
-// Export fetchFromEndpoint function to allow testing
+// Export fetchFromEndpoint to allow direct testing of network mocks
 export { fetchFromEndpoint };
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
