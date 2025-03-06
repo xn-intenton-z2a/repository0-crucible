@@ -1,7 +1,7 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
   "version": "0.0.9",
-  "description": "Refactored CLI functionalities and refocused the ontology builder on extracting and building robust ontologies from diverse public data sources, with pruned legacy drift and enhanced error handling.",
+  "description": "Refactored CLI functionalities and refocused the ontology builder on extracting and building robust ontologies from diverse public data sources, with pruned legacy drift, enhanced error handling and an extended list of endpoints.",
   "type": "module",
   "main": "src/lib/main.js",
   "scripts": {
