@@ -3,7 +3,7 @@
 // src/lib/main.js
 //
 // owl-builder CLI Tool
-// Mission Statement: This tool is dedicated to building robust ontologies from diverse public data sources. It provides a JavaScript library and CLI that extracts, builds, enhances, wraps, and manages ontologies directly from real endpoints. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+// Mission Statement: This tool builds robust ontologies from diverse public data sources with enhanced features for integration, persistence, and querying. Contributions are welcome following the guidelines in CONTRIBUTING.md.
 // Note: In test mode, endpoints simulate responses to avoid external network dependencies.
 
 import { fileURLToPath } from "url";
@@ -87,7 +87,7 @@ export async function fetchOntologyEndpoints() {
 export function enhanceOntology() {
   const ontology = buildOntology();
   ontology.model = {
-    description: "Enhanced OWL Ontology Model for robust ontologies built from public data sources.",
+    description: "Enhanced OWL Ontology Model for robust ontologies built from diverse public data sources.",
     version: "1.0",
     additionalConcepts: ["EnhancedConcept1", "EnhancedConcept2"]
   };
