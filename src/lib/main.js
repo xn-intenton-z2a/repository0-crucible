@@ -14,6 +14,7 @@
 // - Extended the list of available endpoints to include OpenWeatherMap and Coinbase API for richer ontology building capabilities.
 // - Added new functions: automatedCommitMessage, validateOntologyCompleteness, mergeOntologyModels to extend ontology processing functionalities per CONTRIBUTING guidelines.
 // - Added new functions: updateOntologyDescription, extendOntologyConcepts, resetOntology, and cloneOntology for extended ontology manipulation.
+// - Added new function cleanupOntologyData and CLI command --cleanup to remove duplicate ontology concepts.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -482,6 +483,15 @@ export async function main(args = []) {
       const wrappedAll = wrapAllOntologyModels();
       console.log("Wrapped All Ontology Models:", wrappedAll);
       return wrappedAll;
+    },
+    "--cleanup": async () => {
+      // Added cleanup command to remove duplicate concepts
+      let ontology = buildOntology();
+      // Simulate duplicate concepts
+      ontology.concepts = [...ontology.concepts, ...ontology.concepts];
+      const cleaned = cleanupOntologyData(ontology);
+      console.log("Cleaned Ontology:", cleaned);
+      return cleaned;
     }
   };
 
@@ -535,7 +545,8 @@ export function displayHelp() {
   --list-endpoints,
   --fetch-extended,
   --advanced-analysis,
-  --wrap-all`
+  --wrap-all,
+  --cleanup`
   );
 }
 
@@ -588,7 +599,8 @@ export function listCommands() {
     "--list-endpoints",
     "--fetch-extended",
     "--advanced-analysis",
-    "--wrap-all"
+    "--wrap-all",
+    "--cleanup"
   ];
 }
 
@@ -1009,4 +1021,17 @@ export function cloneOntology() {
     cachedOntology = buildOntology();
   }
   return JSON.parse(JSON.stringify(cachedOntology));
+}
+
+/**
+ * Cleans up the ontology by removing duplicate concepts.
+ * @param {object} ontology - The ontology to clean up.
+ * @returns {object} The cleaned ontology with unique concepts, persisted to file.
+ */
+export function cleanupOntologyData(ontology) {
+  if (Array.isArray(ontology.concepts)) {
+    ontology.concepts = _.uniq(ontology.concepts);
+  }
+  persistOntology(ontology);
+  return ontology;
 }
