@@ -37,7 +37,7 @@ function fetchFromEndpoint(endpoint) {
       return Promise.resolve({ endpoint, error: "Simulated network error" });
     }
     const dummyData = { simulated: "data", endpoint };
-    console.log(`Fetched data from ${endpoint}:`, dummyData);
+    console.log(`Fetched data from ${endpoint}:", dummyData);
     return Promise.resolve({ endpoint, data: dummyData });
   }
 
@@ -652,6 +652,9 @@ export function clearOntology() {
     return { success: false, error: error.message };
   }
 }
+
+// Export fetchFromEndpoint function to allow testing
+export { fetchFromEndpoint };
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);

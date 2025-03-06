@@ -7,6 +7,7 @@
 - Added new commands "--update" to update the ontology title and "--clear" to clear the persisted ontology file.
 - Extended CLI with new command "--fetch-endpoints" which now fetches data from 5 diverse public endpoints including SpaceX and Coindesk APIs.
 - Enhanced the CLI "--fetch-public" command to use dynamic import for function mocking in tests.
+- Exported the fetchFromEndpoint function to allow direct testing of network mocks.
 - Refocused the overall library mission to build ontologies from public data sources and integrated additional endpoints.
 - Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, rebuild, update, and clear ontology features.
 - Updated the web interface to launch a simple HTTP server for demonstration purposes.
