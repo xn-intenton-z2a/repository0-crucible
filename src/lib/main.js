@@ -119,6 +119,29 @@ export function wrapOntologyModels() {
 }
 
 /**
+ * Extended wrapper that aggregates additional ontology models including a report, synced and rebuilt versions.
+ * @returns {object} Extended aggregated ontology object
+ */
+export function wrapOntologyModelsExtended() {
+  const basic = buildOntology();
+  const enhanced = enhanceOntology();
+  const integrated = integrateOntology();
+  const report = generateOntologyReport();
+  const synced = syncOntology();
+  const rebuilt = rebuildOntology();
+  return {
+    basic,
+    enhanced,
+    integrated,
+    report,
+    synced,
+    rebuilt,
+    modelCount: 6,
+    aggregated: true
+  };
+}
+
+/**
  * Generates a comprehensive ontology report by combining summary, analysis, and enhanced ontology details.
  * @returns {object} Report object containing various ontology metrics
  */
@@ -314,6 +337,11 @@ export async function main(args = []) {
       console.log("Wrapped ontology models:", wrapped);
       return wrapped;
     },
+    "--wrap-extended": async () => {
+      const wrappedExtended = wrapOntologyModelsExtended();
+      console.log("Extended wrapped ontology models:", wrappedExtended);
+      return wrappedExtended;
+    },
     "--report": async () => {
       const report = generateOntologyReport();
       console.log("Ontology Report:", report);
@@ -370,6 +398,7 @@ export function displayHelp() {
   --fetch-endpoints,
   --enhance,
   --wrap,
+  --wrap-extended,
   --report,
   --list-endpoints`
   );
@@ -418,6 +447,7 @@ export function listCommands() {
     "--fetch-endpoints",
     "--enhance",
     "--wrap",
+    "--wrap-extended",
     "--report",
     "--list-endpoints"
   ];
