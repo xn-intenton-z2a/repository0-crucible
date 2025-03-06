@@ -3,12 +3,12 @@
 `owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It provides a comprehensive suite of functions for ontology creation, persistence, querying, diagnostics, and integration with public data sources. Contributions are welcome following the guidelines in [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## Change Log
-- Version bumped to 0.0.5
-- Added new command "--fetch-public" to fetch real public data with enhanced error handling.
-- Updated CLI '--fetch-public' command to use dynamic import for fetchPublicData, ensuring proper function mocking in tests.
-- Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, and rebuild.
-- Added a new line after the shebang in the CLI source file to improve compatibility with test tools.
-- Updated test import paths to use relative paths instead of alias '@src'.
+- Version bumped to 0.0.6
+- Added new commands "--update" to update the ontology title and "--clear" to clear the persisted ontology file.
+- Enhanced the CLI '--fetch-public' command to use dynamic import for function mocking in tests.
+- Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, rebuild, update, and clear.
+- Updated web interface to launch a simple HTTP server for demonstration purposes.
+- Updated serveWebInterface to be asynchronous and use an ephemeral port in the test environment, preventing port conflicts and ensuring logs indicate the actual listening port. (This change also resolves issues with asynchronous logging in tests.)
 - Applied linting and formatting fixes to improve code quality.
 
 ## Installation
@@ -44,8 +44,10 @@ npm install owl-builder
   - Monitor System Metrics: `--monitor`
   - Rebuild Ontology: `--rebuild`
   - Demo Output: `--demo`
-  - **Fetch Detailed OWL Schemas: `--fetch-schemas`**
-  - **Fetch Public Data: `--fetch-public`**
+  - **Fetch Detailed OWL Schemas:** `--fetch-schemas`
+  - **Fetch Public Data:** `--fetch-public`
+  - **Update Ontology Title:** `--update [newTitle]`
+  - **Clear Persisted Ontology:** `--clear`
 
 ## Public Data Endpoints
 
@@ -179,6 +181,16 @@ node src/lib/main.js --help
 - **Fetch Public Data:**
   ```bash
   node src/lib/main.js --fetch-public
+  ```
+
+- **Update Ontology Title:**
+  ```bash
+  node src/lib/main.js --update "New Ontology Title"
+  ```
+
+- **Clear Persisted Ontology:**
+  ```bash
+  node src/lib/main.js --clear
   ```
 
 - **List Supported Commands:**

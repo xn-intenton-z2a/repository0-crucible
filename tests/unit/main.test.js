@@ -27,7 +27,9 @@ const {
   rebuildOntology,
   demoOntology,
   fetchOwlSchemas,
-  fetchPublicData
+  fetchPublicData,
+  updateOntology,
+  clearOntology
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -72,7 +74,9 @@ describe("Main Module General Functions", () => {
   --rebuild,
   --demo,
   --fetch-schemas,
-  --fetch-public`;
+  --fetch-public,
+  --update [newTitle],
+  --clear`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
     expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
@@ -82,7 +86,7 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const version = await main(["--version"]);
     expect(spy).toHaveBeenCalledWith("Tool version:", version);
-    expect(version).toBe("0.0.5");
+    expect(version).toBe("0.0.6");
     spy.mockRestore();
   });
 
@@ -97,6 +101,8 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--demo");
     expect(commands).toContain("--fetch-schemas");
     expect(commands).toContain("--fetch-public");
+    expect(commands).toContain("--update");
+    expect(commands).toContain("--clear");
     spy.mockRestore();
   });
 
@@ -111,7 +117,8 @@ describe("Main Module General Functions", () => {
   test("main with --serve calls serveWebInterface", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--serve"]);
-    expect(spy).toHaveBeenCalledWith("Starting web server on port 8080...");
+    // Expect log message with any port number
+    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server running on port \d+/));
     spy.mockRestore();
   });
 
@@ -207,7 +214,6 @@ describe("Main Module General Functions", () => {
   });
 });
 
-
 describe("Extended Functionality", () => {
   beforeEach(() => {
     if (fs.existsSync(ontologyPath)) {
@@ -293,6 +299,20 @@ describe("Extended Functionality", () => {
     expect(fs.existsSync(backupPath)).toBe(true);
     spy.mockRestore();
   });
+
+  test("main with --update updates the ontology title", async () => {
+    const newTitle = "Custom Updated Title";
+    const result = await main(["--update", newTitle]);
+    expect(result.title).toBe(newTitle);
+  });
+
+  test("main with --clear deletes the ontology file if exists", async () => {
+    const ontology = buildOntology();
+    persistOntology(ontology);
+    expect(fs.existsSync(ontologyPath)).toBe(true);
+    const result = await main(["--clear"]);
+    expect(fs.existsSync(ontologyPath)).toBe(false);
+  });
 });
 
 describe("Utility Functions", () => {
@@ -303,10 +323,10 @@ describe("Utility Functions", () => {
     expect(Array.isArray(ontology.concepts)).toBe(true);
   });
 
-  test("serveWebInterface logs the server start message", () => {
+  test("serveWebInterface logs the server start message", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    serveWebInterface();
-    expect(spy).toHaveBeenCalledWith("Starting web server on port 8080...");
+    await serveWebInterface();
+    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server running on port \d+/));
     spy.mockRestore();
   });
 
@@ -338,7 +358,9 @@ describe("Utility Functions", () => {
   --rebuild,
   --demo,
   --fetch-schemas,
-  --fetch-public`;
+  --fetch-public,
+  --update [newTitle],
+  --clear`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
     expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
