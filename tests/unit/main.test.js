@@ -34,7 +34,8 @@ const {
   logDetailedResponse,
   advancedOntologyAnalysis,
   fetchFromExtendedEndpoints,
-  wrapAllOntologyModels
+  wrapAllOntologyModels,
+  backupOntology
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -221,7 +222,6 @@ describe("Main Module General Functions", () => {
     https.get = originalGet;
   });
 });
-
 
 describe("Extended Functionality", () => {
   beforeEach(() => {
@@ -411,7 +411,6 @@ describe("Extended Functionality", () => {
   });
 });
 
-
 describe("fetchFromEndpoint function", () => {
   test("simulated error for coindesk endpoint in test mode", async () => {
     process.env.NODE_ENV = "test";
@@ -430,7 +429,6 @@ describe("fetchFromEndpoint function", () => {
     process.env.NODE_ENV = "";
   });
 });
-
 
 describe("Utility Functions", () => {
   test("buildOntology returns a valid ontology object", () => {
@@ -634,8 +632,6 @@ describe("File System Error Handling", () => {
     expect(result.error).toBe("Backup read error");
   });
 });
-
-// New Test Suite: Endpoint Response Logging Test
 
 describe("Endpoint Response Logging Test", () => {
   test("should make a request to each endpoint in the extended list and log the response", async () => {
