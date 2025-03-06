@@ -28,6 +28,7 @@ const {
   clearOntology,
   enhanceOntology,
   wrapOntologyModels,
+  wrapOntologyModelsExtended,
   generateOntologyReport,
   listAvailableEndpoints
 } = mainModule;
@@ -80,6 +81,7 @@ describe("Main Module General Functions", () => {
   --fetch-endpoints,
   --enhance,
   --wrap,
+  --wrap-extended,
   --report,
   --list-endpoints`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
@@ -111,6 +113,7 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--fetch-endpoints");
     expect(commands).toContain("--enhance");
     expect(commands).toContain("--wrap");
+    expect(commands).toContain("--wrap-extended");
     expect(commands).toContain("--report");
     expect(commands).toContain("--list-endpoints");
     spy.mockRestore();
@@ -354,6 +357,20 @@ describe("Extended Functionality", () => {
     spy.mockRestore();
   });
 
+  test("main with --wrap-extended returns extended wrapped ontology models", async () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const extendedWrapped = await main(["--wrap-extended"]);
+    expect(extendedWrapped).toHaveProperty("aggregated", true);
+    expect(extendedWrapped).toHaveProperty("basic");
+    expect(extendedWrapped).toHaveProperty("enhanced");
+    expect(extendedWrapped).toHaveProperty("integrated");
+    expect(extendedWrapped).toHaveProperty("report");
+    expect(extendedWrapped).toHaveProperty("synced");
+    expect(extendedWrapped).toHaveProperty("rebuilt");
+    expect(extendedWrapped.modelCount).toBe(6);
+    spy.mockRestore();
+  });
+
   test("main with --report returns ontology report", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const report = await main(["--report"]);
@@ -422,6 +439,7 @@ describe("Utility Functions", () => {
   --fetch-endpoints,
   --enhance,
   --wrap,
+  --wrap-extended,
   --report,
   --list-endpoints`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
