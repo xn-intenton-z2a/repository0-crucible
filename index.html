@@ -29,10 +29,11 @@
 <ul class="md-github">
 <li class="md-github">Version bumped to 0.0.6</li>
 <li class="md-github">Added new commands &quot;--update&quot; to update the ontology title and &quot;--clear&quot; to clear the persisted ontology file.</li>
+<li class="md-github">Extended CLI with new command &quot;--fetch-endpoints&quot; which fetches data from multiple public endpoints and logs the responses.</li>
 <li class="md-github">Enhanced the CLI '--fetch-public' command to use dynamic import for function mocking in tests.</li>
-<li class="md-github">Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, rebuild, update, and clear.</li>
+<li class="md-github">Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, rebuild, update, and clear ontology features.</li>
 <li class="md-github">Updated web interface to launch a simple HTTP server for demonstration purposes.</li>
-<li class="md-github">Updated serveWebInterface to be asynchronous and use an ephemeral port in the test environment, preventing port conflicts and ensuring logs indicate the actual listening port. (This change also resolves issues with asynchronous logging in tests.)</li>
+<li class="md-github">Updated asynchronous functions to improve test stability and output logging.</li>
 <li class="md-github">Applied linting and formatting fixes to improve code quality.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
@@ -69,6 +70,7 @@
 <li class="md-github"><strong class="md-github">Fetch Public Data:</strong> <code class="md-github">--fetch-public</code></li>
 <li class="md-github"><strong class="md-github">Update Ontology Title:</strong> <code class="md-github">--update [newTitle]</code></li>
 <li class="md-github"><strong class="md-github">Clear Persisted Ontology:</strong> <code class="md-github">--clear</code></li>
+<li class="md-github"><strong class="md-github">Fetch Ontology Endpoints:</strong> <code class="md-github">--fetch-endpoints</code></li>
 </ul>
 </li>
 </ul>
@@ -80,7 +82,7 @@
 <li class="md-github">https://jsonplaceholder.typicode.com/posts (Sample posts for demonstration)</li>
 </ul>
 <p class="md-github">Example command:</p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --fetch-public
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --fetch-endpoints
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">Run the CLI tool to see help instructions:</p>
@@ -209,6 +211,11 @@
 </code></pre>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">Fetch Ontology Endpoints:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --fetch-endpoints
+</code></pre>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">List Supported Commands:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --list
 </code></pre>
@@ -226,7 +233,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-03-06T02:49:59.778Z</p>
+    <p>Generated on 2025-03-06T03:14:09.016Z</p>
   </footer>
 </body>
 </html>
