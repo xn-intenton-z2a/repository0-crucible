@@ -274,7 +274,8 @@ export function displayHelp() {
   --fetch-public,
   --update [newTitle],
   --clear,
-  --fetch-endpoints`);
+  --fetch-endpoints`
+  );
 }
 
 /**
@@ -647,6 +648,9 @@ export function clearOntology() {
     return { success: false, error: error.message };
   }
 }
+
+// Export fetchFromEndpoint to allow direct testing of network mocks
+export { fetchFromEndpoint };
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
