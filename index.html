@@ -24,21 +24,23 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="owl-builder" href="#owl-builder"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>owl-builder</h1>
-<p class="md-github">owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. The tool is designed to integrate robust data from multiple endpoints, generate enhanced ontology models, and provide a suite of CLI commands for various ontology operations. This release focuses on refactoring the builder to emphasize real data integration with improved error handling and modular design.</p>
+<p class="md-github">owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. The tool is designed to integrate robust data from multiple endpoints, generate enhanced ontology models, and provide a suite of CLI commands for various ontology operations. This release refocuses the builder on building robust ontologies with improved error handling, detailed logging, and extended integration capabilities.</p>
 <p class="md-github">Contributions are welcome – please see <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="change-log" href="#change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change Log</h2>
 <ul class="md-github">
 <li class="md-github">Refreshed README content and pruned outdated descriptions to align with CONTRIBUTING guidelines.</li>
-<li class="md-github">Updated Mission Statement to emphasize building robust ontologies from public data sources with enhanced integration and querying capabilities.</li>
+<li class="md-github">Updated Mission Statement to emphasize building robust ontologies from public data sources with enhanced integration, persistence, and querying capabilities.</li>
 <li class="md-github">Retained and enhanced CLI commands including &quot;--update&quot; for modifying the ontology title and &quot;--clear&quot; for removing a persisted ontology.</li>
 <li class="md-github">Added command &quot;--fetch-endpoints&quot; to retrieve data from five public endpoints.</li>
 <li class="md-github"><strong class="md-github">New Feature:</strong> Added &quot;--enhance&quot; command to generate an enhanced ontology with additional OWL model details.</li>
 <li class="md-github"><strong class="md-github">New Feature:</strong> Added &quot;--wrap&quot; command to aggregate basic, enhanced, and integrated ontology models.</li>
-<li class="md-github"><strong class="md-github">New Feature:</strong> Added &quot;--wrap-extended&quot; command to aggregate extended ontology models including report, synced and rebuilt versions along with basic, enhanced and integrated models.</li>
+<li class="md-github"><strong class="md-github">New Feature:</strong> Added &quot;--wrap-extended&quot; command to aggregate extended ontology models including report, synced and rebuilt versions along with basic, enhanced, and integrated models.</li>
 <li class="md-github"><strong class="md-github">New Feature:</strong> Added &quot;--report&quot; command to generate a comprehensive ontology report.</li>
 <li class="md-github"><strong class="md-github">New Feature:</strong> Added &quot;--list-endpoints&quot; command to list an extended set of public endpoints.</li>
-<li class="md-github"><strong class="md-github">Fix:</strong> Standardized CLI option quotes and updated version to &quot;0.0.8&quot;.</li>
-<li class="md-github">Maintained comprehensive test coverage for both file system and network error scenarios.</li>
+<li class="md-github"><strong class="md-github">Enhancement:</strong> Extended core functionalities in the source file to improve error handling and detailed logging for better integration and debugging.</li>
+<li class="md-github"><strong class="md-github">New Utility:</strong> Introduced a helper function <code class="md-github">logDetailedResponse</code> to facilitate consistent logging of responses.</li>
+<li class="md-github"><strong class="md-github">Fix:</strong> Standardized CLI option quotes and maintained version &quot;0.0.8&quot;.</li>
+<li class="md-github">Retained comprehensive test coverage for both file system and network error scenarios.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
 <p class="md-github">Install via npm:</p>
@@ -77,7 +79,7 @@
 <li class="md-github">--fetch-endpoints: Retrieve data from multiple public endpoints.</li>
 <li class="md-github">--enhance: Generate an enhanced ontology with additional OWL model details.</li>
 <li class="md-github">--wrap: Wrap basic, enhanced, and integrated ontology models.</li>
-<li class="md-github">--wrap-extended: Wrap extended ontology models including report, synced and rebuilt versions.</li>
+<li class="md-github">--wrap-extended: Wrap extended ontology models including report, synced, and rebuilt versions.</li>
 <li class="md-github">--report: Generate a comprehensive ontology report.</li>
 <li class="md-github">--list-endpoints: List an extended set of public endpoints.</li>
 </ul>
@@ -142,7 +144,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-03-06T07:06:36.203Z</p>
+    <p>Generated on 2025-03-06T07:35:04.836Z</p>
   </footer>
 </body>
 </html>
