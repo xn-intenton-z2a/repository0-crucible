@@ -4,7 +4,7 @@
 //
 // owl-builder CLI Tool
 // Mission Statement: This tool builds robust ontologies from diverse public data sources with enhanced integration, persistence, and querying features. Contributions are welcome following the guidelines in CONTRIBUTING.md.
-// Refactored to extend core functionalities, improve error handling, and provide detailed logging inline with the mission statement.
+// Refactored to extend core functionalities, improve error handling, detailed logging, and now with an updated version and improved testability via dependency injection for external resources.
 // Note: In test mode, endpoints simulate responses to avoid external network dependencies.
 
 import { fileURLToPath } from "url";
@@ -40,7 +40,7 @@ export function logDetailedResponse(response) {
  * @param {string} endpoint 
  * @returns {Promise<object>} The fetched data or error message.
  */
-function fetchFromEndpoint(endpoint) {
+export function fetchFromEndpoint(endpoint) {
   if (process.env.NODE_ENV === "test") {
     if (endpoint === "https://api.coindesk.com/v1/bpi/currentprice.json") {
       console.error(`Error fetching ${endpoint}: Simulated network error`);
@@ -494,7 +494,7 @@ export function displayHelp() {
  * @returns {string} Version string.
  */
 export function getVersion() {
-  return "0.0.8"; // Updated version to align with package.json release
+  return "0.0.9"; // Updated version to align with package.json release
 }
 
 /**

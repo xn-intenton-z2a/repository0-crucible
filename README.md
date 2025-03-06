@@ -5,9 +5,8 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
 Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## Change Log
-- Refreshed README content to align with CONTRIBUTING.md guidelines.
-- Updated Mission Statement to emphasize robust ontology building from public data sources.
-- Enhanced CLI commands including:
+- Refreshed README content and updated Mission Statement.
+- Updated CLI commands to version 0.0.9 including:
   - `--update` for modifying the ontology title.
   - `--clear` for removing a persisted ontology.
   - `--fetch-endpoints` to retrieve data from multiple public endpoints.
@@ -20,8 +19,8 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--fetch-extended`: Fetch data from an extended list of public endpoints.
     - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics.
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
-- **Test Results Update:**
-  - Endpoints functionality has been verified via unit tests. In test mode, the endpoint "https://api.coindesk.com/v1/bpi/currentprice.json" returns a simulated network error, while other endpoints return simulated data as expected.
+- **Test Enhancements:**
+  - Added deeper unit tests mocking external network and file system dependencies to improve test coverage towards 100%.
 
 ## Installation
 
