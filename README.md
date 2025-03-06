@@ -13,6 +13,7 @@
 - Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, rebuild, update, and clear ontology features.
 - Updated the web interface to launch a simple HTTP server for demonstration purposes.
 - Applied linting and formatting fixes to improve code quality.
+- **Verified test outputs from endpoints: in test mode, the Coindesk endpoint returns a simulated network error.**
 
 ## Installation
 
@@ -61,7 +62,7 @@ owl-builder now fetches data from multiple public endpoints to build ontologies.
 - https://dog.ceo/api/breeds/image/random (Random dog images)
 - https://jsonplaceholder.typicode.com/posts (Sample posts for demonstration)
 - https://api.spacexdata.com/v4/launches/latest (Latest SpaceX launch data)
-- https://api.coindesk.com/v1/bpi/currentprice.json (Current Bitcoin price index)
+- https://api.coindesk.com/v1/bpi/currentprice.json (Current Bitcoin price index) *(Note: In test mode, this endpoint simulates a network error)*
 
 Example command:
 
