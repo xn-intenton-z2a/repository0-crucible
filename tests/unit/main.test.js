@@ -1,7 +1,6 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
 import fs from "fs";
 import path from "path";
-import { Readable } from "stream";
 import * as mainModule from "../../src/lib/main.js";
 
 const {
@@ -21,17 +20,12 @@ const {
   getOntologySummary,
   refreshOntology,
   analyzeOntology,
-  listCommands,
-  getVersion,
   monitorOntology,
   rebuildOntology,
-  demoOntology,
-  fetchOwlSchemas,
   fetchPublicData,
+  fetchFromEndpoint,
   updateOntology,
-  clearOntology,
-  fetchOntologyEndpoints,
-  fetchFromEndpoint
+  clearOntology
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -177,9 +171,9 @@ describe("Main Module General Functions", () => {
   });
 
   test("fetchPublicData handles non-200 response", async () => {
-    const fakeResponse = new Readable({
-      read() {}
-    });
+    const fakeResponse = new (class extends require('stream').Readable {
+      _read() {}
+    })();
     fakeResponse.statusCode = 500;
     fakeResponse.setEncoding = () => {};
     fakeResponse.on = (event, callback) => {
@@ -491,7 +485,6 @@ describe("Network Mocks", () => {
   });
 });
 
-// Additional tests for error handling and file system operations
 describe("Failure Handling", () => {
   test("persistOntology handles write failure gracefully", () => {
     const originalWrite = fs.writeFileSync;

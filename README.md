@@ -4,16 +4,14 @@
 
 ## Change Log
 - Version bumped to 0.0.7
-- Fixed a syntax error in the fetchFromEndpoint function within the CLI tool.
-- Added new commands "--update" to update the ontology title and "--clear" to clear the persisted ontology file.
+- Fixed a parsing error and formatting issues in the source and test files.
+- Removed unused module exports in the test file to eliminate linting warnings.
+- Added and extended commands "--update" to update the ontology title and "--clear" to clear the persisted ontology file.
 - Extended CLI with new command "--fetch-endpoints" which now fetches data from 5 diverse public endpoints including SpaceX and Coindesk APIs.
 - Enhanced the CLI "--fetch-public" command to use dynamic import for function mocking in tests.
 - Exported the fetchFromEndpoint function to allow direct testing of network mocks.
-- **Added tests for file system error handling and network mocks to improve test coverage.**
-- Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, rebuild, update, and clear ontology features.
-- Updated the web interface to launch a simple HTTP server for demonstration purposes.
+- **Improved test coverage by adding file system error handling and network mock tests.**
 - Applied linting and formatting fixes to improve code quality.
-- **Verified test outputs from endpoints: in test mode, the Coindesk endpoint returns a simulated network error.**
 
 ## Installation
 
@@ -217,7 +215,7 @@ node src/lib/main.js --help
 
 ## Contributing
 
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively. Recent updates have increased test coverage by adding file system and network error handling tests and refining mocks to simulate external resource calls without hitting real endpoints.
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively. Recent updates have increased test coverage by adding file system and network error handling tests, refining mocks, and applying code quality improvements based on linting feedback.
 
 ## License
 
