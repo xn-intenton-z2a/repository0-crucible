@@ -2,9 +2,14 @@
 
 // src/lib/main.js
 // owl-builder CLI Tool
-// Mission Statement: Build robust ontologies directly extracted from diverse public data sources. This tool focuses on streamlined extraction, integration, and querying of ontology data. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+// Mission Statement: Build robust ontologies directly extracted from diverse public data sources. This tool focuses on streamlined extraction, integration, detailed analysis and querying of ontology data. Contributions are welcome following the guidelines in CONTRIBUTING.md.
 //
-// Refactored to improve testability and error logging. Additional error paths are now better covered via unit tests.
+// Change Log:
+// - Refactored code to improve testability and error logging.
+// - Extended advanced ontology analysis to compute average concept length.
+// - Added new function buildDetailedOntology to provide detailed statistics on ontologies.
+// - Introduced new CLI command --detailed-build to generate detailed ontology output.
+// - Pruned legacy code drift and ensured all simulated demos remain only in test mode.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -235,14 +240,30 @@ export function listAvailableEndpoints() {
 export function advancedOntologyAnalysis() {
   const ontology = buildOntology();
   const analysis = analyzeOntology(ontology);
+  const lengths = ontology.concepts.map(c => c.length);
+  const average = lengths.reduce((acc, len) => acc + len, 0) / (lengths.length || 1);
   return {
     ...analysis,
     advanced: true,
     timestamp: new Date().toISOString(),
     additionalMetrics: {
-      conceptWordLengths: ontology.concepts.map(c => c.length)
+      conceptWordLengths: lengths,
+      averageConceptLength: average
     }
   };
+}
+
+/**
+ * Generates a detailed ontology object including additional statistics.
+ * @returns {object} The detailed ontology object with extra statistical properties.
+ */
+export function buildDetailedOntology() {
+  const ontology = buildOntology();
+  ontology.stats = {
+    titleLength: ontology.title.length,
+    conceptCount: ontology.concepts.length
+  };
+  return ontology;
 }
 
 /**
@@ -266,6 +287,11 @@ export async function main(args = []) {
       const ontology = buildOntology();
       console.log("Ontology built:", ontology);
       return ontology;
+    },
+    "--detailed-build": async () => {
+      const detailed = buildDetailedOntology();
+      console.log("Detailed Ontology built:", detailed);
+      return detailed;
     },
     "--serve": async () => { await serveWebInterface(); },
     "--diagnostics": async () => { diagnostics(); },
@@ -456,6 +482,7 @@ export function displayHelp() {
   --version,
   --list,
   --build,
+  --detailed-build,
   --serve,
   --diagnostics,
   --integrate,
@@ -508,6 +535,7 @@ export function listCommands() {
     "--version",
     "--list",
     "--build",
+    "--detailed-build",
     "--serve",
     "--diagnostics",
     "--integrate",
