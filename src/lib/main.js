@@ -3,7 +3,7 @@
 // src/lib/main.js
 //
 // owl-builder CLI Tool
-// Mission Statement: This tool builds robust ontologies from diverse public data sources with enhanced features for integration, persistence, and querying. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+// Mission Statement: This tool builds robust ontologies from diverse public data sources with enhanced integration, persistence, and querying features. Contributions are welcome following the guidelines in CONTRIBUTING.md.
 // Note: In test mode, endpoints simulate responses to avoid external network dependencies.
 
 import { fileURLToPath } from "url";
@@ -409,7 +409,7 @@ export function displayHelp() {
  * @returns {string} Version string.
  */
 export function getVersion() {
-  return "0.0.7";
+  return "0.0.8"; // Updated version to align with package.json release
 }
 
 /**

@@ -1,21 +1,21 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. It leverages multiple endpoints with robust error handling to construct ontologies accurately and efficiently. In this release, the tool has been enhanced to generate an advanced ontology model that integrates additional OWL schema details, wraps multiple model versions for deeper analysis, and now provides new extended functions for generating comprehensive ontology reports, listing an extended set of public data endpoints, and wrapping extended ontology models.
+owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. The tool is designed to integrate robust data from multiple endpoints, generate enhanced ontology models, and provide a suite of CLI commands for various ontology operations. This release focuses on refactoring the builder to emphasize real data integration with improved error handling and modular design.
 
 Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## Change Log
-- Pruned drift from the source file to align with the Mission Statement.
-- Updated the Mission Statement to focus on building robust ontologies from public data sources with enhanced integration and querying capabilities.
+- Refreshed README content and pruned outdated descriptions to align with CONTRIBUTING guidelines.
+- Updated Mission Statement to emphasize building robust ontologies from public data sources with enhanced integration and querying capabilities.
 - Retained and enhanced CLI commands including "--update" for modifying the ontology title and "--clear" for removing a persisted ontology.
 - Added command "--fetch-endpoints" to retrieve data from five public endpoints.
 - **New Feature:** Added "--enhance" command to generate an enhanced ontology with additional OWL model details.
 - **New Feature:** Added "--wrap" command to aggregate basic, enhanced, and integrated ontology models.
 - **New Feature:** Added "--wrap-extended" command to aggregate extended ontology models including report, synced and rebuilt versions along with basic, enhanced and integrated models.
-- **New Feature:** Added "--report" command to generate a comprehensive ontology report including summary and analysis.
+- **New Feature:** Added "--report" command to generate a comprehensive ontology report.
 - **New Feature:** Added "--list-endpoints" command to list an extended set of public endpoints.
-- **Fix:** Standardized CLI option quotes to double quotes in source files and updated ESLint configuration to exclude archived files from linting.
-- Ensured comprehensive test coverage for file system and network error scenarios.
+- **Fix:** Standardized CLI option quotes and updated version to "0.0.8".
+- Maintained comprehensive test coverage for both file system and network error scenarios.
 
 ## Installation
 
