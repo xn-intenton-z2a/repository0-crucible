@@ -31,7 +31,10 @@ const {
   wrapOntologyModelsExtended,
   generateOntologyReport,
   listAvailableEndpoints,
-  logDetailedResponse
+  logDetailedResponse,
+  advancedOntologyAnalysis,
+  fetchFromExtendedEndpoints,
+  wrapAllOntologyModels
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -84,7 +87,10 @@ describe("Main Module General Functions", () => {
   --wrap,
   --wrap-extended,
   --report,
-  --list-endpoints`;
+  --list-endpoints,
+  --fetch-extended,
+  --advanced-analysis,
+  --wrap-all`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
     expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
@@ -117,6 +123,9 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--wrap-extended");
     expect(commands).toContain("--report");
     expect(commands).toContain("--list-endpoints");
+    expect(commands).toContain("--fetch-extended");
+    expect(commands).toContain("--advanced-analysis");
+    expect(commands).toContain("--wrap-all");
     spy.mockRestore();
   });
 
@@ -389,6 +398,29 @@ describe("Extended Functionality", () => {
     expect(endpoints.length).toBeGreaterThan(5);
     spy.mockRestore();
   });
+
+  test("main with --fetch-extended returns data from extended endpoints", async () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const extendedData = await main(["--fetch-extended"]);
+    expect(Array.isArray(extendedData)).toBe(true);
+    expect(extendedData.length).toBe(10);
+    extendedData.forEach(item => {
+      expect(item).toHaveProperty("endpoint");
+    });
+    spy.mockRestore();
+  });
+
+  test("main with --advanced-analysis returns advanced analysis report", async () => {
+    const result = await main(["--advanced-analysis"]);
+    expect(result).toHaveProperty("advanced", true);
+    expect(result).toHaveProperty("additionalMetrics");
+  });
+
+  test("main with --wrap-all returns aggregated ontology with advanced metrics", async () => {
+    const result = await main(["--wrap-all"]);
+    expect(result).toHaveProperty("totalModels", 4);
+    expect(result).toHaveProperty("advanced");
+  });
 });
 
 describe("Utility Functions", () => {
@@ -442,7 +474,10 @@ describe("Utility Functions", () => {
   --wrap,
   --wrap-extended,
   --report,
-  --list-endpoints`;
+  --list-endpoints,
+  --fetch-extended,
+  --advanced-analysis,
+  --wrap-all`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
     expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
