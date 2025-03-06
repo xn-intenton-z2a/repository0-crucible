@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeAll, beforeEach, afterEach, afterAll, vi } from "vitest";
+import { describe, test, expect, beforeAll, beforeEach, afterEach, vi } from "vitest";
 import fs from "fs";
 import path from "path";
 import * as mainModule from "../../src/lib/main.js";
@@ -43,7 +43,6 @@ const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
 
 // Import https for simulating network errors
 import https from "https";
-
 
 describe("Main Module General Functions", () => {
   test("main without args prints default message", async () => {
@@ -221,7 +220,7 @@ describe("Main Module General Functions", () => {
     expect(result).toHaveProperty("data");
     expect(result.data).toHaveProperty("simulated", "data");
   });
-  
+
   afterAll(() => {
     process.env.NODE_ENV = "";
   });
@@ -406,6 +405,7 @@ describe("Extended Functionality", () => {
     const result = await main(["--advanced-analysis"]);
     expect(result).toHaveProperty("advanced", true);
     expect(result).toHaveProperty("additionalMetrics");
+    expect(result.additionalMetrics).toHaveProperty("medianConceptLength");
   });
 
   test("main with --wrap-all returns aggregated ontology with advanced metrics", async () => {

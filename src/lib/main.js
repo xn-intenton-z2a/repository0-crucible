@@ -3,10 +3,11 @@
 // src/lib/main.js
 // owl-builder CLI Tool
 // Mission Statement: Build robust ontologies directly extracted from diverse public data sources. This tool focuses on streamlined extraction, integration, detailed analysis and querying of ontology data. Contributions are welcome following the guidelines in CONTRIBUTING.md.
-//
+
 // Change Log:
 // - Refactored code to improve testability and error logging.
-// - Extended advanced ontology analysis to compute average concept length.
+// - Extended advanced ontology analysis to compute average as well as median concept length.
+// - Added new helper function calculateMedian for additional statistical metrics in ontology analysis.
 // - Added new function buildDetailedOntology to provide detailed statistics on ontologies.
 // - Introduced new CLI command --detailed-build to generate detailed ontology output.
 // - Pruned legacy code drift and ensured all simulated demos remain only in test mode.
@@ -234,6 +235,18 @@ export function listAvailableEndpoints() {
 }
 
 /**
+ * Helper function to calculate the median of an array of numbers.
+ * @param {number[]} arr 
+ * @returns {number} median value
+ */
+export function calculateMedian(arr) {
+  if (arr.length === 0) return 0;
+  const sorted = [...arr].sort((a, b) => a - b);
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 === 0 ? (sorted[mid - 1] + sorted[mid]) / 2 : sorted[mid];
+}
+
+/**
  * Provides advanced ontology analysis metrics including custom measures.
  * @returns {object} Advanced analysis report.
  */
@@ -242,13 +255,15 @@ export function advancedOntologyAnalysis() {
   const analysis = analyzeOntology(ontology);
   const lengths = ontology.concepts.map(c => c.length);
   const average = lengths.reduce((acc, len) => acc + len, 0) / (lengths.length || 1);
+  const median = calculateMedian(lengths);
   return {
     ...analysis,
     advanced: true,
     timestamp: new Date().toISOString(),
     additionalMetrics: {
       conceptWordLengths: lengths,
-      averageConceptLength: average
+      averageConceptLength: average,
+      medianConceptLength: median
     }
   };
 }
@@ -390,7 +405,6 @@ export async function main(args = []) {
     },
     "--fetch-public": async () => {
       try {
-        // Use dynamic import to obtain the live binding for fetchPublicData so that test spies can override it
         const { fetchPublicData } = await import(import.meta.url);
         const data = await fetchPublicData();
         console.log("Fetched public data:", data);
