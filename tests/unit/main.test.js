@@ -43,7 +43,6 @@ const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
 // Import https for simulating network errors
 import https from "https";
 
-
 describe("Main Module General Functions", () => {
   test("main without args prints default message", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -593,5 +592,19 @@ describe("Utility Functions", () => {
     expect(result).toEqual(sample);
     expect(spy).toHaveBeenCalledWith("Detailed response:", JSON.stringify(sample, null, 2));
     spy.mockRestore();
+  });
+});
+
+// New Test Suite: Endpoint Response Logging Test
+describe("Endpoint Response Logging Test", () => {
+  test("should make a request to each endpoint in the extended list and log the response", async () => {
+    process.env.NODE_ENV = "test";
+    const endpoints = listAvailableEndpoints();
+    const responses = await Promise.all(endpoints.map(ep => fetchFromEndpoint(ep)));
+    responses.forEach(response => {
+      console.log("Endpoint Response:", response);
+      expect(response).toHaveProperty("endpoint");
+    });
+    process.env.NODE_ENV = "";
   });
 });

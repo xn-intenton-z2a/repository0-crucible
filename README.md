@@ -9,18 +9,19 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
 - Updated CLI commands to version 0.0.9 including:
   - `--update` for modifying the ontology title.
   - `--clear` for removing a persisted ontology.
-  - `--fetch-endpoints` to retrieve data from multiple public endpoints.
+  - `--fetch-endpoints` to retrieve data from multiple public endpoints (5 endpoints).
   - **New Features:**
     - `--enhance`: Generate an enhanced ontology with additional OWL model details.
     - `--wrap`: Aggregate basic, enhanced, and integrated ontology models.
     - `--wrap-extended`: Aggregate extended ontology models including a report, synced, and rebuilt versions.
     - `--report`: Produce a comprehensive ontology report.
-    - `--list-endpoints`: List an extended set of public endpoints.
+    - `--list-endpoints`: List an extended set of public endpoints (now 12 endpoints including new ones: https://jsonplaceholder.typicode.com/todos and https://api.agify.io/?name=michael).
     - `--fetch-extended`: Fetch data from an extended list of public endpoints.
     - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics.
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
+- **Endpoint Extension:** Extended the list of available public data endpoints to include additional services for building ontologies.
 - **Refocus Update:** The library is now refocused on building ontologies from public data sources while enhancing error handling, logging, and modular design for easier testing.
-- **Test Enhancements:** Added deeper unit tests by mocking external dependencies to improve coverage.
+- **Test Enhancements:** Added deeper unit tests including requests to all endpoints and logging of responses to improve coverage.
 - **Bug Fixes:**
   - Updated the `--fetch-public` command to use dynamic import for obtaining a live binding of `fetchPublicData`, ensuring that test spies correctly override the network call.
 
@@ -87,6 +88,8 @@ owl-builder retrieves data from several public data sources, including:
 - https://dummyjson.com/products
 - https://randomuser.me/api/
 - https://catfact.ninja/fact
+- https://jsonplaceholder.typicode.com/todos
+- https://api.agify.io/?name=michael
 
 ## Usage
 
