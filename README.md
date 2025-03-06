@@ -33,8 +33,8 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
         - `cloneOntology`: Create a deep copy of the ontology.
         - `cleanupOntologyData`: Remove duplicate concepts from the ontology.
     - **New CLI Commands:**
-      - `--auto-commit`: Generate an automated commit message based on recent changes.
-      - `--combine-models`: Merge basic, enhanced, and integrated ontology models into a single comprehensive model.
+      - `--auto-commit`: Generate an automated commit message.
+      - `--combine-models`: Merge ontology models into one comprehensive model. (Updated to include separate properties for basic, enhanced, and integrated models.)
 - **Extended Endpoints:**
   - Added new endpoints to the available list: `https://api/openweathermap.org/data/2.5/weather?q=London` and `https://api/coinbase.com/v2/exchange-rates` to enhance the range of public data sources for ontology building.
 

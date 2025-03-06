@@ -499,6 +499,7 @@ export async function main(args = []) {
       return msg;
     },
     "--combine-models": async () => {
+      // Updated mergeOntologyModels to return an object with basic, enhanced, integrated
       const merged = mergeOntologyModels(buildOntology(), enhanceOntology(), integrateOntology());
       console.log("Combined Ontology Models:", merged);
       return merged;
@@ -976,11 +977,13 @@ export function validateOntologyCompleteness(ontology) {
 /**
  * Merges multiple ontology models into a single comprehensive model.
  * In case of property conflicts, later models override earlier ones.
- * @param {...object} models - Ontology models to merge.
+ * @param {object} basic - Basic ontology model
+ * @param {object} enhanced - Enhanced ontology model
+ * @param {object} integrated - Integrated ontology model
  * @returns {object} The merged ontology model.
  */
-export function mergeOntologyModels(...models) {
-  return models.reduce((merged, model) => ({ ...merged, ...model }), {});
+export function mergeOntologyModels(basic, enhanced, integrated) {
+  return { basic, enhanced, integrated, title: basic.title };
 }
 
 /**
