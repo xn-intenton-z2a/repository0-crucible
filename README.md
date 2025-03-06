@@ -7,8 +7,9 @@
 - Added new command "--fetch-public" to fetch real public data with enhanced error handling.
 - Updated CLI '--fetch-public' command to use dynamic import for fetchPublicData, ensuring proper function mocking in tests.
 - Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, and rebuild.
+- Added a new line after the shebang in the CLI source file to improve compatibility with test tools.
+- Updated test import paths to use relative paths instead of alias '@src'.
 - Applied linting and formatting fixes to improve code quality.
-- Updated documentation to align with the latest contributing guidelines.
 
 ## Installation
 

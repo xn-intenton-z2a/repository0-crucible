@@ -2,7 +2,7 @@ import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
 import fs from "fs";
 import path from "path";
 import { Readable } from "stream";
-import * as mainModule from "@src/lib/main.js";
+import * as mainModule from "../../src/lib/main.js";
 
 const {
   main,

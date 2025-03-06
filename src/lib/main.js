@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 // src/lib/main.js
 //
 // owl-builder CLI and Library
@@ -196,7 +197,7 @@ export function displayHelp() {
   --rebuild,
   --demo,
   --fetch-schemas,
-  --fetch-public");
+  --fetch-public`);
 }
 
 /**
