@@ -1,6 +1,6 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. It leverages multiple endpoints with robust error handling to construct ontologies accurately and efficiently. In this release, the tool has been enhanced to generate an advanced ontology model that integrates additional OWL schema details.
+owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. It leverages multiple endpoints with robust error handling to construct ontologies accurately and efficiently. In this release, the tool has been enhanced to generate an advanced ontology model that integrates additional OWL schema details and wraps multiple model versions for deeper analysis.
 
 Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
@@ -10,6 +10,7 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
 - Retained and enhanced CLI commands including "--update" for modifying the ontology title and "--clear" for removing a persisted ontology.
 - Added command "--fetch-endpoints" to retrieve data from five public endpoints.
 - **New Feature:** Added "--enhance" command to generate an enhanced ontology with additional OWL model details.
+- **New Feature:** Added "--wrap" command to aggregate multiple ontology model versions (basic, enhanced, integrated) into a wrapped ontology object, including data source details.
 - Ensured comprehensive test coverage for file system and network error scenarios.
 
 ## Installation
@@ -51,6 +52,7 @@ npm install owl-builder
   - --clear: Clear the persisted ontology file.
   - --fetch-endpoints: Retrieve data from multiple public endpoints.
   - --enhance: Generate an enhanced ontology with additional OWL model details.
+  - --wrap: Wrap multiple ontology models (basic, enhanced, integrated) into an aggregated result with source details.
 
 ## Public Data Endpoints
 
@@ -95,6 +97,10 @@ Example commands:
 - Generate Enhanced Ontology:
   ```bash
   node src/lib/main.js --enhance
+  ```
+- Wrap Ontology Models:
+  ```bash
+  node src/lib/main.js --wrap
   ```
 
 ## Contributing
