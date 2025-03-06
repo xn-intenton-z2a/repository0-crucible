@@ -12,7 +12,8 @@
 // - Introduced new CLI command --detailed-build to generate detailed ontology output.
 // - Pruned legacy code drift and refocused the library exclusively on building ontologies from diverse public data sources.
 // - Extended the list of available endpoints to include OpenWeatherMap and Coinbase API for richer ontology building capabilities.
-// - Added new functions: automatedCommitMessage, validateOntologyCompleteness, and mergeOntologyModels to extend ontology processing functionalities per CONTRIBUTING guidelines.
+// - Added new functions: automatedCommitMessage, validateOntologyCompleteness, mergeOntologyModels to extend ontology processing functionalities per CONTRIBUTING guidelines.
+// - Added new functions: updateOntologyDescription, extendOntologyConcepts, resetOntology, and cloneOntology for extended ontology manipulation.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -21,6 +22,9 @@ import path from "path";
 import _ from "lodash";
 import https from "https";
 import http from "http";
+
+// Global cache to store the last built ontology for cloning purposes
+let cachedOntology = null;
 
 // Helper functions for file path resolution
 function getOntologyFilePath() {
@@ -232,9 +236,9 @@ export function listAvailableEndpoints() {
     "https://randomuser.me/api/",
     "https://catfact.ninja/fact",
     "https://jsonplaceholder.typicode.com/todos",
-    "https://api.agify.io/?name=michael",
-    "https://api.openweathermap.org/data/2.5/weather?q=London",
-    "https://api.coinbase.com/v2/exchange-rates"
+    "https://api/agify.io/?name=michael",
+    "https://api/openweathermap.org/data/2.5/weather?q=London",
+    "https://api/coinbase.com/v2/exchange-rates"
   ];
 }
 
@@ -593,13 +597,16 @@ export function listCommands() {
  * @returns {object} A sample ontology object.
  */
 export function buildOntology() {
-  return {
+  const ontology = {
     id: "ont-" + Math.floor(Math.random() * 10000),
     title: "Sample Ontology",
     description: "An ontology built from diverse public data sources for robust integration and analysis.",
     created: new Date().toISOString(),
     concepts: ["Concept1", "Concept2", "Concept3"]
   };
+  // Cache the built ontology for cloning purposes
+  cachedOntology = ontology;
+  return ontology;
 }
 
 /**
@@ -949,4 +956,57 @@ export function validateOntologyCompleteness(ontology) {
  */
 export function mergeOntologyModels(...models) {
   return models.reduce((merged, model) => ({ ...merged, ...model }), {});
+}
+
+// New Extended Ontology Manipulation Functions
+
+/**
+ * Updates the ontology description and persists changes.
+ * @param {string} newDescription - The new description for the ontology.
+ * @returns {object} The updated ontology object.
+ */
+export function updateOntologyDescription(newDescription = "Updated Description") {
+  const ontology = buildOntology();
+  ontology.description = newDescription;
+  persistOntology(ontology);
+  return ontology;
+}
+
+/**
+ * Extends the ontology's concepts with provided new concepts.
+ * @param {...string} newConcepts - New concepts to add.
+ * @returns {object} The extended ontology object.
+ */
+export function extendOntologyConcepts(...newConcepts) {
+  const ontology = buildOntology();
+  ontology.concepts = [...ontology.concepts, ...newConcepts];
+  persistOntology(ontology);
+  return ontology;
+}
+
+/**
+ * Resets the ontology to its initial state with an empty concepts array.
+ * @returns {object} The reset ontology object.
+ */
+export function resetOntology() {
+  const ontology = {
+    id: "ont-" + Math.floor(Math.random() * 10000),
+    title: "Sample Ontology",
+    description: "An ontology built from diverse public data sources for robust integration and analysis.",
+    created: new Date().toISOString(),
+    concepts: []
+  };
+  persistOntology(ontology);
+  return ontology;
+}
+
+/**
+ * Clones the current ontology, returning a deep copy.
+ * @returns {object} The cloned ontology object.
+ */
+export function cloneOntology() {
+  if (!cachedOntology) {
+    cachedOntology = buildOntology();
+  }
+  return JSON.parse(JSON.stringify(cachedOntology));
 }
