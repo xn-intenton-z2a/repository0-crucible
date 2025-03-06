@@ -5,10 +5,11 @@
 ## Change Log
 - Version bumped to 0.0.6
 - Added new commands "--update" to update the ontology title and "--clear" to clear the persisted ontology file.
+- Extended CLI with new command "--fetch-endpoints" which fetches data from multiple public endpoints and logs the responses.
 - Enhanced the CLI '--fetch-public' command to use dynamic import for function mocking in tests.
-- Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, rebuild, update, and clear.
+- Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, rebuild, update, and clear ontology features.
 - Updated web interface to launch a simple HTTP server for demonstration purposes.
-- Updated serveWebInterface to be asynchronous and use an ephemeral port in the test environment, preventing port conflicts and ensuring logs indicate the actual listening port. (This change also resolves issues with asynchronous logging in tests.)
+- Updated asynchronous functions to improve test stability and output logging.
 - Applied linting and formatting fixes to improve code quality.
 
 ## Installation
@@ -48,6 +49,7 @@ npm install owl-builder
   - **Fetch Public Data:** `--fetch-public`
   - **Update Ontology Title:** `--update [newTitle]`
   - **Clear Persisted Ontology:** `--clear`
+  - **Fetch Ontology Endpoints:** `--fetch-endpoints`
 
 ## Public Data Endpoints
 
@@ -60,7 +62,7 @@ owl-builder can fetch data from real public endpoints and convert them into OWL 
 Example command:
 
 ```bash
-node src/lib/main.js --fetch-public
+node src/lib/main.js --fetch-endpoints
 ```
 
 ## Usage
@@ -191,6 +193,11 @@ node src/lib/main.js --help
 - **Clear Persisted Ontology:**
   ```bash
   node src/lib/main.js --clear
+  ```
+
+- **Fetch Ontology Endpoints:**
+  ```bash
+  node src/lib/main.js --fetch-endpoints
   ```
 
 - **List Supported Commands:**

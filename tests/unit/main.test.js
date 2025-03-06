@@ -29,7 +29,8 @@ const {
   fetchOwlSchemas,
   fetchPublicData,
   updateOntology,
-  clearOntology
+  clearOntology,
+  fetchOntologyEndpoints
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -76,7 +77,8 @@ describe("Main Module General Functions", () => {
   --fetch-schemas,
   --fetch-public,
   --update [newTitle],
-  --clear`;
+  --clear,
+  --fetch-endpoints`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
     expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
@@ -103,6 +105,7 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--fetch-public");
     expect(commands).toContain("--update");
     expect(commands).toContain("--clear");
+    expect(commands).toContain("--fetch-endpoints");
     spy.mockRestore();
   });
 
@@ -117,7 +120,6 @@ describe("Main Module General Functions", () => {
   test("main with --serve calls serveWebInterface", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--serve"]);
-    // Expect log message with any port number
     expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server running on port \d+/));
     spy.mockRestore();
   });
@@ -174,7 +176,6 @@ describe("Main Module General Functions", () => {
   });
 
   test("fetchPublicData handles non-200 response", async () => {
-    // Simulate a response with non-200 status code
     const fakeResponse = new Readable({
       read() {}
     });
@@ -213,6 +214,7 @@ describe("Main Module General Functions", () => {
     https.get = originalGet;
   });
 });
+
 
 describe("Extended Functionality", () => {
   beforeEach(() => {
@@ -313,6 +315,17 @@ describe("Extended Functionality", () => {
     const result = await main(["--clear"]);
     expect(fs.existsSync(ontologyPath)).toBe(false);
   });
+
+  test("main with --fetch-endpoints fetches data from multiple endpoints", async () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const endpointsData = await main(["--fetch-endpoints"]);
+    expect(Array.isArray(endpointsData)).toBe(true);
+    expect(endpointsData.length).toBe(3);
+    endpointsData.forEach(item => {
+      expect(item).toHaveProperty("endpoint");
+    });
+    spy.mockRestore();
+  });
 });
 
 describe("Utility Functions", () => {
@@ -360,7 +373,8 @@ describe("Utility Functions", () => {
   --fetch-schemas,
   --fetch-public,
   --update [newTitle],
-  --clear`;
+  --clear,
+  --fetch-endpoints`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
     expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();

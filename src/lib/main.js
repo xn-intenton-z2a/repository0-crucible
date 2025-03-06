@@ -24,6 +24,51 @@ function getBackupFilePath() {
 }
 
 /**
+ * Fetches data from a given endpoint using the appropriate protocol.
+ * @param {string} endpoint 
+ * @returns {Promise<object>} The fetched data or error message.
+ */
+function fetchFromEndpoint(endpoint) {
+  return new Promise((resolve) => {
+    const parsedUrl = new URL(endpoint);
+    const protocol = parsedUrl.protocol === "https:" ? https : http;
+    protocol.get(endpoint, (res) => {
+      let data = "";
+      res.on("data", (chunk) => {
+        data += chunk;
+      });
+      res.on("end", () => {
+        try {
+          const json = JSON.parse(data);
+          console.log(`Fetched data from ${endpoint}:`, json);
+          resolve({ endpoint, data: json });
+        } catch (e) {
+          console.log(`Fetched data from ${endpoint}:`, data);
+          resolve({ endpoint, data });
+        }
+      });
+    }).on("error", (err) => {
+      console.error(`Error fetching ${endpoint}:`, err.message);
+      resolve({ endpoint, error: err.message });
+    });
+  });
+}
+
+/**
+ * Fetches ontology data from a list of public endpoints and logs the responses.
+ * @returns {Promise<object[]>} Array of endpoint responses
+ */
+export async function fetchOntologyEndpoints() {
+  const endpoints = [
+    "https://api.publicapis.org/entries",
+    "https://dog.ceo/api/breeds/image/random",
+    "https://jsonplaceholder.typicode.com/posts"
+  ];
+  const results = await Promise.all(endpoints.map(ep => fetchFromEndpoint(ep)));
+  return results;
+}
+
+/**
  * Main function to handle CLI arguments and execute the corresponding functionality.
  * @param {string[]} args - CLI arguments
  */
@@ -168,6 +213,11 @@ export async function main(args = []) {
       const result = clearOntology();
       console.log(result.success ? "Ontology cleared, file removed." : "Ontology clear failed:", result);
       return result;
+    },
+    "--fetch-endpoints": async () => {
+      const endpointsData = await fetchOntologyEndpoints();
+      console.log("Fetched ontology endpoints:", endpointsData);
+      return endpointsData;
     }
   };
 
@@ -211,7 +261,8 @@ export function displayHelp() {
   --fetch-schemas,
   --fetch-public,
   --update [newTitle],
-  --clear`
+  --clear,
+  --fetch-endpoints`
   );
 }
 
@@ -254,7 +305,8 @@ export function listCommands() {
     "--fetch-schemas",
     "--fetch-public",
     "--update",
-    "--clear"
+    "--clear",
+    "--fetch-endpoints"
   ];
 }
 
@@ -385,10 +437,8 @@ export function validateOntology(ontology) {
  * @returns {string} XML string representing the ontology.
  */
 export function exportOntologyToXML(ontology) {
-  const conceptsXML = ontology.concepts.map((concept) => {
-    return "<concept>" + concept + "</concept>";
-  }).join("");
-  return "<ontology><title>" + ontology.title + "</title><created>" + ontology.created + "</created><concepts>" + conceptsXML + "</concepts></ontology>";
+  const conceptsXML = ontology.concepts.map((concept) => `<concept>${concept}</concept>`).join("");
+  return `<ontology><title>${ontology.title}</title><created>${ontology.created}</created><concepts>${conceptsXML}</concepts></ontology>`;
 }
 
 /**
