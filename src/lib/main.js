@@ -11,6 +11,7 @@
 // - Added new function buildDetailedOntology to provide detailed statistics on ontologies.
 // - Introduced new CLI command --detailed-build to generate detailed ontology output.
 // - Pruned legacy code drift and refocused the library on building ontologies from public data sources in line with the mission statement.
+// - Extended the list of available endpoints to include OpenWeatherMap and Coinbase API for richer ontology building capabilities.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -230,7 +231,9 @@ export function listAvailableEndpoints() {
     "https://randomuser.me/api/",
     "https://catfact.ninja/fact",
     "https://jsonplaceholder.typicode.com/todos",
-    "https://api.agify.io/?name=michael"
+    "https://api.agify.io/?name=michael",
+    "https://api.openweathermap.org/data/2.5/weather?q=London",
+    "https://api.coinbase.com/v2/exchange-rates"
   ];
 }
 

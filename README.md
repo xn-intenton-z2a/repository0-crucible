@@ -15,13 +15,13 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--wrap`: Aggregate basic, enhanced, and integrated ontology models.
     - `--wrap-extended`: Aggregate extended ontology models including a report, synced, and rebuilt versions.
     - `--report`: Produce a comprehensive ontology report.
-    - `--list-endpoints`: List an extended set of public endpoints (12 endpoints).
+    - `--list-endpoints`: List an extended set of public endpoints (now 14 endpoints).
     - `--fetch-extended`: Fetch data from an extended list of public endpoints.
     - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics, including average and median concept length.
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
     - **New Command:** `--detailed-build` to build a detailed ontology with additional statistical metrics.
-- Extended the list of available public data endpoints with additional services for building ontologies.
-- Refocused the library on building robust ontologies from public data sources with enhanced error handling, logging, and modular design.
+- **Extended Endpoints:**
+  - Added new endpoints to the available list: `https://api.openweathermap.org/data/2.5/weather?q=London` and `https://api.coinbase.com/v2/exchange-rates` to enhance the range of public data sources for ontology building.
 
 ## Installation
 
@@ -89,6 +89,8 @@ owl-builder retrieves data from several public data sources, including:
 - https://catfact.ninja/fact
 - https://jsonplaceholder.typicode.com/todos
 - https://api.agify.io/?name=michael
+- https://api.openweathermap.org/data/2.5/weather?q=London
+- https://api.coinbase.com/v2/exchange-rates
 
 ## Usage
 
