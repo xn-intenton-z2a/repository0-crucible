@@ -213,7 +213,6 @@ describe("Main Module General Functions", () => {
   });
 });
 
-
 describe("Extended Functionality", () => {
   beforeEach(() => {
     if (fs.existsSync(ontologyPath)) {

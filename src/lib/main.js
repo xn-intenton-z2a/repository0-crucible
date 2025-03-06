@@ -283,6 +283,10 @@ export function serveWebInterface() {
   });
   server.listen(port, () => {
     console.log(`Web server running on port ${port}`);
+    // In test environment, immediately close the server to avoid port conflicts
+    if (process.env.NODE_ENV === "test") {
+      server.close();
+    }
   });
 }
 
