@@ -11,6 +11,7 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
   - `--clear` for removing a persisted ontology.
   - `--fetch-endpoints` to retrieve data from multiple public endpoints (5 endpoints).
   - **New Features:**
+    - `--detailed-build`: Build a detailed ontology with additional statistical metrics.
     - `--enhance`: Generate an enhanced ontology with additional OWL model details.
     - `--wrap`: Aggregate basic, enhanced, and integrated ontology models.
     - `--wrap-extended`: Aggregate extended ontology models including a report, synced, and rebuilt versions.
@@ -19,7 +20,7 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--fetch-extended`: Fetch data from an extended list of public endpoints.
     - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics, including average and median concept length.
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
-    - **New Command:** `--detailed-build` to build a detailed ontology with additional statistical metrics.
+    - **New Command:** `--cleanup` to remove duplicate ontology concepts, ensuring data consistency.
 - **Extended Library Functions:**
   - `automatedCommitMessage`: Generate automated commit messages for integration with knowledge base operations.
   - `validateOntologyCompleteness`: Check ontology for required fields.
@@ -28,7 +29,8 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `updateOntologyDescription`: Update the ontology description.
     - `extendOntologyConcepts`: Add additional concepts to the ontology.
     - `resetOntology`: Reset the ontology to its initial state.
-    - `cloneOntology`: Create a deep copy of the ontology. (Now ensures cloned ontology matches the originally built ontology for test consistency.)
+    - `cloneOntology`: Create a deep copy of the ontology.
+    - `cleanupOntologyData`: Remove duplicate concepts from the ontology.
 - **Extended Endpoints:**
   - Added new endpoints to the available list: `https://api/openweathermap.org/data/2.5/weather?q=London` and `https://api/coinbase.com/v2/exchange-rates` to enhance the range of public data sources for ontology building.
 
@@ -79,6 +81,7 @@ npm install owl-builder
   - `--fetch-extended`: Fetch data from an extended list of public endpoints.
   - `--advanced-analysis`: Perform advanced ontology analysis.
   - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
+  - **`--cleanup`**: Remove duplicate ontology concepts to ensure clean and unique data.
 
 ## Public Data Endpoints
 
@@ -181,9 +184,14 @@ Example commands:
   node src/lib/main.js --list-endpoints
   ```
 
+- **Cleanup Ontology:**
+  ```bash
+  node src/lib/main.js --cleanup
+  ```
+
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging and enhanced ontology processing, including extended ontology manipulation functions such as updating the description, extending concepts, resetting, and cloning the ontology.
+Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging and enhanced ontology processing, including extended ontology manipulation functions such as updating the description, extending concepts, resetting, cloning, and cleaning up duplicate concepts.
 
 ## License
 

@@ -99,7 +99,8 @@ describe("Main Module General Functions", () => {
   --list-endpoints,
   --fetch-extended,
   --advanced-analysis,
-  --wrap-all`;
+  --wrap-all,
+  --cleanup`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
     expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
@@ -135,6 +136,7 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--fetch-extended");
     expect(commands).toContain("--advanced-analysis");
     expect(commands).toContain("--wrap-all");
+    expect(commands).toContain("--cleanup");
     expect(commands).toContain("--detailed-build");
     spy.mockRestore();
   });
@@ -419,6 +421,12 @@ describe("Extended Functionality", () => {
     const result = await main(["--wrap-all"]);
     expect(result).toHaveProperty("totalModels", 4);
     expect(result).toHaveProperty("advanced");
+  });
+
+  test("--cleanup command removes duplicate ontology concepts", async () => {
+    const result = await main(["--cleanup"]);
+    // Since buildOntology returns three unique concepts, after duplication and cleanup, should remain three
+    expect(result.concepts.sort()).toEqual(["Concept1", "Concept2", "Concept3"].sort());
   });
 
   // File system error handling tests
