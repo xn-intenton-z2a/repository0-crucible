@@ -28,7 +28,7 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `updateOntologyDescription`: Update the ontology description.
     - `extendOntologyConcepts`: Add additional concepts to the ontology.
     - `resetOntology`: Reset the ontology to its initial state.
-    - `cloneOntology`: Create a deep copy of the ontology.
+    - `cloneOntology`: Create a deep copy of the ontology. (Now ensures cloned ontology matches the originally built ontology for test consistency.)
 - **Extended Endpoints:**
   - Added new endpoints to the available list: `https://api/openweathermap.org/data/2.5/weather?q=London` and `https://api/coinbase.com/v2/exchange-rates` to enhance the range of public data sources for ontology building.
 

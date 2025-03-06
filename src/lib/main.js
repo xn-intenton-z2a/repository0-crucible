@@ -23,6 +23,9 @@ import _ from "lodash";
 import https from "https";
 import http from "http";
 
+// Global cache to store the last built ontology for cloning purposes
+let cachedOntology = null;
+
 // Helper functions for file path resolution
 function getOntologyFilePath() {
   return path.resolve(process.cwd(), "ontology.json");
@@ -594,13 +597,16 @@ export function listCommands() {
  * @returns {object} A sample ontology object.
  */
 export function buildOntology() {
-  return {
+  const ontology = {
     id: "ont-" + Math.floor(Math.random() * 10000),
     title: "Sample Ontology",
     description: "An ontology built from diverse public data sources for robust integration and analysis.",
     created: new Date().toISOString(),
     concepts: ["Concept1", "Concept2", "Concept3"]
   };
+  // Cache the built ontology for cloning purposes
+  cachedOntology = ontology;
+  return ontology;
 }
 
 /**
@@ -999,6 +1005,8 @@ export function resetOntology() {
  * @returns {object} The cloned ontology object.
  */
 export function cloneOntology() {
-  const ontology = buildOntology();
-  return JSON.parse(JSON.stringify(ontology));
+  if (!cachedOntology) {
+    cachedOntology = buildOntology();
+  }
+  return JSON.parse(JSON.stringify(cachedOntology));
 }
