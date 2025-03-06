@@ -2,10 +2,9 @@
 
 // src/lib/main.js
 //
-// Public Data Driven Ontology Builder
-//
-// Mission Statement: This file implements the owl-builder CLI tool and JavaScript library refocused on building robust ontologies directly from public data sources. Contributions are welcome following the guidelines in CONTRIBUTING.md.
-// Note: In test mode, some endpoints are simulated; for example, https://api.coindesk.com/v1/bpi/currentprice.json returns a simulated network error.
+// owl-builder CLI Tool
+// Mission Statement: This tool is dedicated to building robust ontologies from diverse public data sources. It provides a JavaScript library and CLI that extracts, builds, and manages ontologies directly from real endpoints. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+// Note: In test mode, endpoints simulate responses to avoid external network dependencies.
 
 import { fileURLToPath } from "url";
 import os from "os";
