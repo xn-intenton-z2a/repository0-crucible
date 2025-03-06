@@ -490,4 +490,3 @@ describe("Network Mocks", () => {
     expect(result).toHaveProperty("error", "Simulated network error");
   });
 });
-

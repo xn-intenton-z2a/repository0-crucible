@@ -37,7 +37,7 @@ function fetchFromEndpoint(endpoint) {
       return Promise.resolve({ endpoint, error: "Simulated network error" });
     }
     const dummyData = { simulated: "data", endpoint };
-    console.log(`Fetched data from ${endpoint}:", dummyData);
+    console.log(`Fetched data from ${endpoint}:`, dummyData);
     return Promise.resolve({ endpoint, data: dummyData });
   }
 
