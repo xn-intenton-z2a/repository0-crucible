@@ -1,7 +1,7 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
-  "version": "0.0.9",
-  "description": "Refactored CLI functionalities and refocused the ontology builder on extracting and building robust ontologies from diverse public data sources, with pruned legacy drift and enhanced error handling.",
+  "version": "0.0.10",
+  "description": "Refactored CLI functionalities and refocused the ontology builder on extracting and building robust ontologies from diverse public data sources, with pruned legacy drift, enhanced error handling and extended ontology processing functions.",
   "type": "module",
   "main": "src/lib/main.js",
   "scripts": {
@@ -37,6 +37,7 @@
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-security": "^3.0.1",
     "eslint-plugin-sonarjs": "^3.0.2",
+    "eslint": "^9.21.0",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "markdown-it": "^14.1.0",
     "markdown-it-github": "^0.5.0",

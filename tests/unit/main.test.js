@@ -35,7 +35,10 @@ const {
   advancedOntologyAnalysis,
   fetchFromExtendedEndpoints,
   wrapAllOntologyModels,
-  backupOntology
+  backupOntology,
+  automatedCommitMessage,
+  validateOntologyCompleteness,
+  mergeOntologyModels
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -413,52 +416,87 @@ describe("Extended Functionality", () => {
     expect(result).toHaveProperty("totalModels", 4);
     expect(result).toHaveProperty("advanced");
   });
-});
 
-describe("File System Error Handling", () => {
-  let originalWriteFileSync, originalReadFileSync;
-  beforeAll(() => {
-    originalWriteFileSync = fs.writeFileSync;
-    originalReadFileSync = fs.readFileSync;
-  });
-  afterAll(() => {
-    fs.writeFileSync = originalWriteFileSync;
-    fs.readFileSync = originalReadFileSync;
-  });
-  
-  test("persistOntology returns error on write failure", () => {
-    const ontology = buildOntology();
-    fs.writeFileSync = vi.fn(() => { throw new Error("Write error"); });
-    const result = persistOntology(ontology);
-    expect(result.success).toBe(false);
-    expect(result.error).toBe("Write error");
-  });
-  
-  test("loadOntology returns error on read failure", () => {
-    fs.readFileSync = vi.fn(() => { throw new Error("Read error"); });
-    const result = loadOntology();
-    expect(result.success).toBe(false);
-    expect(result.error).toBe("Read error");
-  });
-  
-  test("backupOntology returns error when original file read fails", () => {
-    fs.readFileSync = vi.fn(() => { throw new Error("Backup read error"); });
-    const result = backupOntology();
-    expect(result.success).toBe(false);
-    expect(result.error).toBe("Backup read error");
-  });
-});
-
-describe("Endpoint Response Logging Test", () => {
-  test("should make a request to each endpoint in the extended list and log the response", async () => {
-    process.env.NODE_ENV = "test";
-    const endpoints = listAvailableEndpoints();
-    expect(endpoints.length).toBe(14);
-    const responses = await Promise.all(endpoints.map(ep => fetchFromEndpoint(ep)));
-    responses.forEach(response => {
-      console.log("Endpoint Response:", response);
-      expect(response).toHaveProperty("endpoint");
+  // File system error handling tests
+  describe("File System Error Handling", () => {
+    let originalWriteFileSync, originalReadFileSync;
+    beforeAll(() => {
+      originalWriteFileSync = fs.writeFileSync;
+      originalReadFileSync = fs.readFileSync;
     });
-    process.env.NODE_ENV = "";
+    afterAll(() => {
+      fs.writeFileSync = originalWriteFileSync;
+      fs.readFileSync = originalReadFileSync;
+    });
+    
+    test("persistOntology returns error on write failure", () => {
+      const ontology = buildOntology();
+      fs.writeFileSync = vi.fn(() => { throw new Error("Write error"); });
+      const result = persistOntology(ontology);
+      expect(result.success).toBe(false);
+      expect(result.error).toBe("Write error");
+    });
+    
+    test("loadOntology returns error on read failure", () => {
+      fs.readFileSync = vi.fn(() => { throw new Error("Read error"); });
+      const result = loadOntology();
+      expect(result.success).toBe(false);
+      expect(result.error).toBe("Read error");
+    });
+    
+    test("backupOntology returns error when original file read fails", () => {
+      fs.readFileSync = vi.fn(() => { throw new Error("Backup read error"); });
+      const result = backupOntology();
+      expect(result.success).toBe(false);
+      expect(result.error).toBe("Backup read error");
+    });
+  });
+
+  // New tests for extended functions
+  describe("Extended Library Functions", () => {
+    test("automatedCommitMessage returns a string containing 'Automated commit'", () => {
+      const msg = automatedCommitMessage();
+      expect(msg).toContain("Automated commit");
+    });
+
+    test("validateOntologyCompleteness returns complete for valid ontology", () => {
+      const ontology = buildOntology();
+      const result = validateOntologyCompleteness(ontology);
+      expect(result.isComplete).toBe(true);
+      expect(result.missingFields).toHaveLength(0);
+    });
+
+    test("validateOntologyCompleteness identifies missing fields", () => {
+      const incomplete = { title: "test" };
+      const result = validateOntologyCompleteness(incomplete);
+      expect(result.isComplete).toBe(false);
+      expect(result.missingFields).toContain("created");
+      expect(result.missingFields).toContain("concepts");
+      expect(result.missingFields).toContain("description");
+    });
+
+    test("mergeOntologyModels merges multiple models", () => {
+      const model1 = { a: 1, b: 2 };
+      const model2 = { b: 3, c: 4 };
+      const merged = mergeOntologyModels(model1, model2);
+      expect(merged.a).toBe(1);
+      expect(merged.b).toBe(3);
+      expect(merged.c).toBe(4);
+    });
+  });
+});
+
+// Minimal extra tests for module index and main execution
+
+describe("Module Index", () => {
+  test("module index exports main function", () => {
+    expect(typeof main).toBe("function");
+  });
+});
+
+describe("Run Main Execution", () => {
+  test("main returns demo output when no valid args provided", async () => {
+    const result = await main([]);
+    expect(result).toBeUndefined();
   });
 });

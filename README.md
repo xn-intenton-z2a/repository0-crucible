@@ -20,8 +20,12 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics, including average and median concept length.
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
     - **New Command:** `--detailed-build` to build a detailed ontology with additional statistical metrics.
+    - **Extended Library Functions:**
+      - `automatedCommitMessage`: Generate automated commit messages for integration with knowledge base operations.
+      - `validateOntologyCompleteness`: Check ontology for required fields.
+      - `mergeOntologyModels`: Merge multiple ontology models into one comprehensive model.
 - **Extended Endpoints:**
-  - Added new endpoints to the available list: `https://api.openweathermap.org/data/2.5/weather?q=London` and `https://api.coinbase.com/v2/exchange-rates` to enhance the range of public data sources for ontology building.
+  - Added new endpoints to the available list: `https://api/openweathermap.org/data/2.5/weather?q=London` and `https://api/coinbase.com/v2/exchange-rates` to enhance the range of public data sources for ontology building.
 
 ## Installation
 
@@ -88,9 +92,9 @@ owl-builder retrieves data from several public data sources, including:
 - https://randomuser.me/api/
 - https://catfact.ninja/fact
 - https://jsonplaceholder.typicode.com/todos
-- https://api.agify.io/?name=michael
-- https://api.openweathermap.org/data/2.5/weather?q=London
-- https://api.coinbase.com/v2/exchange-rates
+- https://api/agify.io/?name=michael
+- https://api/openweathermap.org/data/2.5/weather?q=London
+- https://api/coinbase.com/v2/exchange-rates
 
 ## Usage
 
@@ -174,7 +178,7 @@ Example commands:
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality.
+Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging and enhanced ontology processing, in line with our CONTRIBUTING guidelines.
 
 ## License
 
