@@ -25,7 +25,8 @@ const {
   fetchPublicData,
   fetchFromEndpoint,
   updateOntology,
-  clearOntology
+  clearOntology,
+  enhanceOntology
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -73,7 +74,8 @@ describe("Main Module General Functions", () => {
   --fetch-public,
   --update [newTitle],
   --clear,
-  --fetch-endpoints`;
+  --fetch-endpoints,
+  --enhance`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
     expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
@@ -101,6 +103,7 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--update");
     expect(commands).toContain("--clear");
     expect(commands).toContain("--fetch-endpoints");
+    expect(commands).toContain("--enhance");
     spy.mockRestore();
   });
 
@@ -320,6 +323,16 @@ describe("Extended Functionality", () => {
     });
     spy.mockRestore();
   });
+
+  test("main with --enhance returns enhanced ontology", async () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const enhanced = await main(["--enhance"]);
+    expect(spy).toHaveBeenCalledWith("Enhanced ontology:", enhanced);
+    expect(enhanced).toHaveProperty("model");
+    expect(enhanced.model).toHaveProperty("description");
+    expect(enhanced.model).toHaveProperty("version", "1.0");
+    spy.mockRestore();
+  });
 });
 
 describe("Utility Functions", () => {
@@ -368,7 +381,8 @@ describe("Utility Functions", () => {
   --fetch-public,
   --update [newTitle],
   --clear,
-  --fetch-endpoints`;
+  --fetch-endpoints,
+  --enhance`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
     expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
@@ -471,6 +485,7 @@ describe("Utility Functions", () => {
     expect(rebuilt.created).not.toBe(ontology.created);
   });
 });
+
 
 describe("Network Mocks", () => {
   test("fetchFromEndpoint returns simulated data in test mode", async () => {

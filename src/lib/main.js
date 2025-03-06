@@ -3,7 +3,7 @@
 // src/lib/main.js
 //
 // owl-builder CLI Tool
-// Mission Statement: This tool is dedicated to building robust ontologies from diverse public data sources. It provides a JavaScript library and CLI that extracts, builds, and manages ontologies directly from real endpoints. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+// Mission Statement: This tool is dedicated to building robust ontologies from diverse public data sources. It provides a JavaScript library and CLI that extracts, builds, enhances, and manages ontologies directly from real endpoints. Contributions are welcome following the guidelines in CONTRIBUTING.md.
 // Note: In test mode, endpoints simulate responses to avoid external network dependencies.
 
 import { fileURLToPath } from "url";
@@ -78,6 +78,20 @@ export async function fetchOntologyEndpoints() {
   ];
   const results = await Promise.all(endpoints.map((ep) => fetchFromEndpoint(ep)));
   return results;
+}
+
+/**
+ * Generates an enhanced ontology by integrating additional OWL model details.
+ * @returns {object} The enhanced ontology object.
+ */
+export function enhanceOntology() {
+  const ontology = buildOntology();
+  ontology.model = {
+    description: "Enhanced OWL Ontology Model for robust ontologies built from public data sources.",
+    version: "1.0",
+    additionalConcepts: ["EnhancedConcept1", "EnhancedConcept2"]
+  };
+  return ontology;
 }
 
 /**
@@ -229,6 +243,11 @@ export async function main(args = []) {
       const endpointsData = await fetchOntologyEndpoints();
       console.log("Fetched ontology endpoints:", endpointsData);
       return endpointsData;
+    },
+    "--enhance": async () => {
+      const enhanced = enhanceOntology();
+      console.log("Enhanced ontology:", enhanced);
+      return enhanced;
     }
   };
 
@@ -273,7 +292,8 @@ export function displayHelp() {
   --fetch-public,
   --update [newTitle],
   --clear,
-  --fetch-endpoints`
+  --fetch-endpoints,
+  --enhance`
   );
 }
 
@@ -317,7 +337,8 @@ export function listCommands() {
     "--fetch-public",
     "--update",
     "--clear",
-    "--fetch-endpoints"
+    "--fetch-endpoints",
+    "--enhance"
   ];
 }
 
