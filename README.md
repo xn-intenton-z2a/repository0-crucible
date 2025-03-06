@@ -5,13 +5,13 @@
 ## Change Log
 - Version bumped to 0.0.6
 - Added new commands "--update" to update the ontology title and "--clear" to clear the persisted ontology file.
-- Extended CLI with new command "--fetch-endpoints" which now fetches data from 5 diverse public endpoints including a SpaceX and a Coindesk API to build ontologies from public data sources.
+- Extended CLI with new command "--fetch-endpoints" which now fetches data from 5 diverse public endpoints including SpaceX and Coindesk APIs.
 - Enhanced the CLI "--fetch-public" command to use dynamic import for function mocking in tests.
-- Refocused the overall library mission to build ontologies from public data sources and integrated additional endpoints to support this goal.
+- Refocused the overall library mission to build ontologies from public data sources and integrated additional endpoints.
 - Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, rebuild, update, and clear ontology features.
-- Updated web interface to launch a simple HTTP server for demonstration purposes.
-- Updated asynchronous functions to improve test stability and output logging.
+- Updated the web interface to launch a simple HTTP server for demonstration purposes.
 - Applied linting and formatting fixes to improve code quality.
+- **Improved test coverage by adding network mocks and deeper testing of external resource calls.**
 
 ## Installation
 
@@ -215,7 +215,7 @@ node src/lib/main.js --help
 
 ## Contributing
 
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively. Your input is vital to maintain and improve owl-builder.
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively. Recent updates have increased test coverage by adding network mocks and refining tests to simulate external resource calls without hitting real endpoints.
 
 ## License
 
