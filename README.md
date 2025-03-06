@@ -1,12 +1,13 @@
 # owl-builder
 
-`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. It provides a comprehensive suite of functions for ontology creation, persistence, querying, diagnostics, and integration with public data sources. Contributions are welcome following the guidelines in [CONTRIBUTING.md](./CONTRIBUTING.md).
+`owl-builder` is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies. The tool has been refocused on building ontologies from various public data sources via multiple endpoints. Contributions are welcome following the guidelines in [CONTRIBUTING.md](./CONTRIBUTING.md).
 
 ## Change Log
 - Version bumped to 0.0.6
 - Added new commands "--update" to update the ontology title and "--clear" to clear the persisted ontology file.
-- Extended CLI with new command "--fetch-endpoints" which fetches data from multiple public endpoints and logs the responses.
-- Enhanced the CLI '--fetch-public' command to use dynamic import for function mocking in tests.
+- Extended CLI with new command "--fetch-endpoints" which now fetches data from 5 diverse public endpoints including a SpaceX and a Coindesk API to build ontologies from public data sources.
+- Enhanced the CLI "--fetch-public" command to use dynamic import for function mocking in tests.
+- Refocused the overall library mission to build ontologies from public data sources and integrated additional endpoints to support this goal.
 - Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, rebuild, update, and clear ontology features.
 - Updated web interface to launch a simple HTTP server for demonstration purposes.
 - Updated asynchronous functions to improve test stability and output logging.
@@ -53,11 +54,13 @@ npm install owl-builder
 
 ## Public Data Endpoints
 
-owl-builder can fetch data from real public endpoints and convert them into OWL ontologies. Recommended endpoints include:
+owl-builder now fetches data from multiple public endpoints to build ontologies. Among these endpoints are:
 
 - https://api.publicapis.org/entries (A list of public APIs)
 - https://dog.ceo/api/breeds/image/random (Random dog images)
 - https://jsonplaceholder.typicode.com/posts (Sample posts for demonstration)
+- https://api.spacexdata.com/v4/launches/latest (Latest SpaceX launch data)
+- https://api.coindesk.com/v1/bpi/currentprice.json (Current Bitcoin price index)
 
 Example command:
 

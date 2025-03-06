@@ -1,7 +1,7 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
   "version": "0.0.6",
-  "description": "Refactored CLI functionalities including a streamlined main function using command mapping, improved help message formatting; enhanced diagnostics, integration, public data crawling; added persistence, querying, validation, export, import, sync, backup, demo, monitor, rebuild, update, clear ontology features; added --fetch-endpoints command to fetch public ontology endpoints.",
+  "description": "Refactored CLI functionalities and refocused the ontology builder on extracting and building ontologies from diverse public data sources, with extended endpoints and enhanced features.",
   "type": "module",
   "main": "src/lib/main.js",
   "scripts": {

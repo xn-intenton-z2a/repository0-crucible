@@ -215,7 +215,6 @@ describe("Main Module General Functions", () => {
   });
 });
 
-
 describe("Extended Functionality", () => {
   beforeEach(() => {
     if (fs.existsSync(ontologyPath)) {
@@ -320,7 +319,7 @@ describe("Extended Functionality", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const endpointsData = await main(["--fetch-endpoints"]);
     expect(Array.isArray(endpointsData)).toBe(true);
-    expect(endpointsData.length).toBe(3);
+    expect(endpointsData.length).toBe(5);
     endpointsData.forEach(item => {
       expect(item).toHaveProperty("endpoint");
     });
