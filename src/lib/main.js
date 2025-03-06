@@ -7,11 +7,12 @@
 // Change Log:
 // - Refactored code to improve testability and error logging.
 // - Extended advanced ontology analysis to compute average as well as median concept length.
-// - Added new helper function calculateMedian for additional statistical metrics in ontology analysis.
+// - Added new helper functions calculateMedian for additional statistical metrics in ontology analysis.
 // - Added new function buildDetailedOntology to provide detailed statistics on ontologies.
 // - Introduced new CLI command --detailed-build to generate detailed ontology output.
 // - Pruned legacy code drift and refocused the library exclusively on building ontologies from diverse public data sources.
 // - Extended the list of available endpoints to include OpenWeatherMap and Coinbase API for richer ontology building capabilities.
+// - Added new functions: automatedCommitMessage, validateOntologyCompleteness, and mergeOntologyModels to extend ontology processing functionalities per CONTRIBUTING guidelines.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -910,4 +911,42 @@ export function clearOntology() {
     console.error("Error clearing ontology file:", error);
     return { success: false, error: error.message };
   }
+}
+
+// Extended functions as per CONTRIBUTING guidelines
+
+/**
+ * Automatically generates a commit message based on recent changes.
+ * @returns {string} The generated commit message.
+ */
+export function automatedCommitMessage() {
+  const dateStr = new Date().toISOString();
+  return `Automated commit on ${dateStr}: Extended ontology functions per CONTRIBUTING guidelines.`;
+}
+
+/**
+ * Validates the completeness of the ontology by ensuring required fields exist.
+ * @param {object} ontology - The ontology object to validate.
+ * @returns {object} An object containing a boolean 'isComplete' and an array 'missingFields'.
+ */
+export function validateOntologyCompleteness(ontology) {
+  let missing = [];
+  if (!ontology.title) missing.push("title");
+  if (!ontology.created) missing.push("created");
+  if (!Array.isArray(ontology.concepts)) missing.push("concepts");
+  if (!ontology.description) missing.push("description");
+  return {
+    isComplete: missing.length === 0,
+    missingFields: missing
+  };
+}
+
+/**
+ * Merges multiple ontology models into a single comprehensive model.
+ * In case of property conflicts, later models override earlier ones.
+ * @param {...object} models - Ontology models to merge.
+ * @returns {object} The merged ontology model.
+ */
+export function mergeOntologyModels(...models) {
+  return models.reduce((merged, model) => ({ ...merged, ...model }), {});
 }
