@@ -17,11 +17,11 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--report`: Produce a comprehensive ontology report.
     - `--list-endpoints`: List an extended set of public endpoints (12 endpoints).
     - `--fetch-extended`: Fetch data from an extended list of public endpoints.
-    - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics, now including average concept length.
+    - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics, now including average and median concept length.
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
-    - **New Command:** `--detailed-build` to build a detailed ontology with additional statistics.
+    - **New Command:** `--detailed-build` to build a detailed ontology with additional statistical metrics.
 - Extended the list of available public data endpoints with additional services for building ontologies.
-- Refocused the library on building robust ontologies from public data sources with enhanced error handling, logging, and modular design.
+- Refocused the library on building robust ontologies from public data sources with enhanced error handling, logging, modular design, and new statistical metrics (median concept length calculation via a new helper function).
 - Updated unit tests to cover new functionalities and improve test coverage.
 
 ## Installation
