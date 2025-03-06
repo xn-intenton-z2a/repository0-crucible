@@ -20,10 +20,15 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics, including average and median concept length.
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
     - **New Command:** `--detailed-build` to build a detailed ontology with additional statistical metrics.
-    - **Extended Library Functions:**
-      - `automatedCommitMessage`: Generate automated commit messages for integration with knowledge base operations.
-      - `validateOntologyCompleteness`: Check ontology for required fields.
-      - `mergeOntologyModels`: Merge multiple ontology models into one comprehensive model.
+- **Extended Library Functions:**
+  - `automatedCommitMessage`: Generate automated commit messages for integration with knowledge base operations.
+  - `validateOntologyCompleteness`: Check ontology for required fields.
+  - `mergeOntologyModels`: Merge multiple ontology models into one comprehensive model.
+  - **New Extended Functions:**
+    - `updateOntologyDescription`: Update the ontology description.
+    - `extendOntologyConcepts`: Add additional concepts to the ontology.
+    - `resetOntology`: Reset the ontology to its initial state.
+    - `cloneOntology`: Create a deep copy of the ontology.
 - **Extended Endpoints:**
   - Added new endpoints to the available list: `https://api/openweathermap.org/data/2.5/weather?q=London` and `https://api/coinbase.com/v2/exchange-rates` to enhance the range of public data sources for ontology building.
 
@@ -178,7 +183,7 @@ Example commands:
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging and enhanced ontology processing, in line with our CONTRIBUTING guidelines.
+Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging and enhanced ontology processing, including extended ontology manipulation functions such as updating the description, extending concepts, resetting, and cloning the ontology.
 
 ## License
 

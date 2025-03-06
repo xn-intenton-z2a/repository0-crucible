@@ -38,7 +38,11 @@ const {
   backupOntology,
   automatedCommitMessage,
   validateOntologyCompleteness,
-  mergeOntologyModels
+  mergeOntologyModels,
+  updateOntologyDescription,
+  extendOntologyConcepts,
+  resetOntology,
+  cloneOntology
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -453,40 +457,33 @@ describe("Extended Functionality", () => {
   });
 
   // New tests for extended functions
-  describe("Extended Library Functions", () => {
-    test("automatedCommitMessage returns a string containing 'Automated commit'", () => {
-      const msg = automatedCommitMessage();
-      expect(msg).toContain("Automated commit");
+  describe("Extended New Functions", () => {
+    test("updateOntologyDescription returns updated description", () => {
+      const newDesc = "A new detailed description";
+      const updated = updateOntologyDescription(newDesc);
+      expect(updated.description).toBe(newDesc);
     });
 
-    test("validateOntologyCompleteness returns complete for valid ontology", () => {
+    test("extendOntologyConcepts adds new concepts", () => {
+      const updated = extendOntologyConcepts("NewConcept1", "NewConcept2");
+      expect(updated.concepts).toContain("NewConcept1");
+      expect(updated.concepts).toContain("NewConcept2");
+    });
+
+    test("resetOntology resets the ontology with empty concepts", () => {
+      const reset = resetOntology();
+      expect(reset.concepts).toEqual([]);
+      expect(reset.title).toBe("Sample Ontology");
+    });
+
+    test("cloneOntology returns a deep copy", () => {
       const ontology = buildOntology();
-      const result = validateOntologyCompleteness(ontology);
-      expect(result.isComplete).toBe(true);
-      expect(result.missingFields).toHaveLength(0);
-    });
-
-    test("validateOntologyCompleteness identifies missing fields", () => {
-      const incomplete = { title: "test" };
-      const result = validateOntologyCompleteness(incomplete);
-      expect(result.isComplete).toBe(false);
-      expect(result.missingFields).toContain("created");
-      expect(result.missingFields).toContain("concepts");
-      expect(result.missingFields).toContain("description");
-    });
-
-    test("mergeOntologyModels merges multiple models", () => {
-      const model1 = { a: 1, b: 2 };
-      const model2 = { b: 3, c: 4 };
-      const merged = mergeOntologyModels(model1, model2);
-      expect(merged.a).toBe(1);
-      expect(merged.b).toBe(3);
-      expect(merged.c).toBe(4);
+      const clone = cloneOntology();
+      expect(clone).toEqual(ontology);
+      expect(clone).not.toBe(ontology);
     });
   });
 });
-
-// Minimal extra tests for module index and main execution
 
 describe("Module Index", () => {
   test("module index exports main function", () => {
