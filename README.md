@@ -1,12 +1,15 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. It leverages multiple endpoints with robust error handling to construct ontologies accurately and efficiently. Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. It leverages multiple endpoints with robust error handling to construct ontologies accurately and efficiently. In this release, the tool has been enhanced to generate an advanced ontology model that integrates additional OWL schema details.
+
+Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## Change Log
 - Pruned drift from the source file to align with the Mission Statement.
 - Updated the Mission Statement to focus on building robust ontologies from public data sources.
 - Retained and enhanced CLI commands including "--update" for modifying the ontology title and "--clear" for removing a persisted ontology.
 - Added command "--fetch-endpoints" to retrieve data from five public endpoints.
+- **New Feature:** Added "--enhance" command to generate an enhanced ontology with additional OWL model details.
 - Ensured comprehensive test coverage for file system and network error scenarios.
 
 ## Installation
@@ -47,6 +50,7 @@ npm install owl-builder
   - --update [newTitle]: Update the ontology title.
   - --clear: Clear the persisted ontology file.
   - --fetch-endpoints: Retrieve data from multiple public endpoints.
+  - --enhance: Generate an enhanced ontology with additional OWL model details.
 
 ## Public Data Endpoints
 
@@ -87,6 +91,10 @@ Example commands:
 - Fetch Data from Multiple Endpoints:
   ```bash
   node src/lib/main.js --fetch-endpoints
+  ```
+- Generate Enhanced Ontology:
+  ```bash
+  node src/lib/main.js --enhance
   ```
 
 ## Contributing
