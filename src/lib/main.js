@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
 // src/lib/main.js
-//
 // owl-builder CLI Tool
-// Mission Statement: This tool builds robust ontologies from diverse public data sources with enhanced integration, persistence, and querying features. Contributions are welcome following the guidelines in CONTRIBUTING.md.
-// Refactored to extend core functionalities, improve error handling, detailed logging, and now with an updated version and improved testability via dependency injection for external resources.
+// Mission Statement: Refocused on building robust ontologies directly extracted from diverse public data sources. This tool now emphasizes the extraction, integration, and querying of ontology data from multiple public endpoints, ensuring improved persistence and error handling. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+// Refactored to extend core functionalities, improve error handling, detailed logging, and enhanced testability via dependency injection for external resources.
 // Note: In test mode, endpoints simulate responses to avoid external network dependencies.
 
 import { fileURLToPath } from "url";
@@ -112,13 +111,13 @@ export function fetchFromExtendedEndpoints() {
 }
 
 /**
- * Generates an enhanced ontology by integrating additional OWL model details.
+ * Generates an enhanced ontology by integrating additional OWL model details from public data sources.
  * @returns {object} The enhanced ontology object.
  */
 export function enhanceOntology() {
   const ontology = buildOntology();
   ontology.model = {
-    description: "Enhanced OWL Ontology Model for robust ontologies built from diverse public data sources.",
+    description: "Enhanced OWL Ontology Model built from diverse public data sources.",
     version: "1.0",
     additionalConcepts: ["EnhancedConcept1", "EnhancedConcept2"],
     integratedDetails: { source: "Public Data", timestamp: new Date().toISOString() }

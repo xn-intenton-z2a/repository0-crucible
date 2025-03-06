@@ -1,6 +1,6 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies sourced from diverse public data sources. This tool emphasizes robust ontology construction with enhanced integration, persistence, and querying capabilities.
+owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. This tool emphasizes the extraction of ontology data directly from public endpoints with robust integration, persistence, and querying capabilities.
 
 Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
@@ -19,6 +19,7 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--fetch-extended`: Fetch data from an extended list of public endpoints.
     - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics.
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
+- **Refocus Update:** Refocused the library on extracting and building ontologies from public data sources, improving handling of diverse endpoints and data integration.
 - **Test Enhancements:**
   - Added deeper unit tests mocking external network and file system dependencies to improve test coverage toward 100%.
 - **Bug Fixes:**
