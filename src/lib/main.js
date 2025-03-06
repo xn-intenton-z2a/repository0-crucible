@@ -358,6 +358,8 @@ export async function main(args = []) {
     },
     "--fetch-public": async () => {
       try {
+        // Use dynamic import to obtain the live binding for fetchPublicData so that test spies can override it
+        const { fetchPublicData } = await import(import.meta.url);
         const data = await fetchPublicData();
         console.log("Fetched public data:", data);
         return data;

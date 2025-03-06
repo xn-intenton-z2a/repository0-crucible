@@ -22,7 +22,7 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
 - **Refocus Update:** The library is now refocused on building ontologies from public data sources while enhancing error handling, logging, and modular design for easier testing.
 - **Test Enhancements:** Added deeper unit tests by mocking external dependencies to improve coverage.
 - **Bug Fixes:**
-  - Removed duplicate dynamic module import in the `--fetch-public` command to avoid potential circular dependency issues and improve module resolution in test mode.
+  - Updated the `--fetch-public` command to use dynamic import for obtaining a live binding of `fetchPublicData`, ensuring that test spies correctly override the network call.
 
 ## Installation
 
