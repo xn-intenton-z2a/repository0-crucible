@@ -221,6 +221,7 @@ describe("Main Module General Functions", () => {
   });
 });
 
+
 describe("Extended Functionality", () => {
   beforeEach(() => {
     if (fs.existsSync(ontologyPath)) {
@@ -409,6 +410,7 @@ describe("Extended Functionality", () => {
   });
 });
 
+
 describe("fetchFromEndpoint function", () => {
   test("simulated error for coindesk endpoint in test mode", async () => {
     process.env.NODE_ENV = "test";
@@ -427,6 +429,7 @@ describe("fetchFromEndpoint function", () => {
     process.env.NODE_ENV = "";
   });
 });
+
 
 describe("Utility Functions", () => {
   test("buildOntology returns a valid ontology object", () => {
@@ -595,7 +598,44 @@ describe("Utility Functions", () => {
   });
 });
 
+// New Test Suite: Error Handling for File System Operations
+
+describe("File System Error Handling", () => {
+  let originalWriteFileSync, originalReadFileSync;
+  beforeAll(() => {
+    originalWriteFileSync = fs.writeFileSync;
+    originalReadFileSync = fs.readFileSync;
+  });
+  afterAll(() => {
+    fs.writeFileSync = originalWriteFileSync;
+    fs.readFileSync = originalReadFileSync;
+  });
+  
+  test("persistOntology returns error on write failure", () => {
+    const ontology = buildOntology();
+    fs.writeFileSync = vi.fn(() => { throw new Error("Write error"); });
+    const result = persistOntology(ontology);
+    expect(result.success).toBe(false);
+    expect(result.error).toBe("Write error");
+  });
+  
+  test("loadOntology returns error on read failure", () => {
+    fs.readFileSync = vi.fn(() => { throw new Error("Read error"); });
+    const result = loadOntology();
+    expect(result.success).toBe(false);
+    expect(result.error).toBe("Read error");
+  });
+  
+  test("backupOntology returns error when original file read fails", () => {
+    fs.readFileSync = vi.fn(() => { throw new Error("Backup read error"); });
+    const result = backupOntology();
+    expect(result.success).toBe(false);
+    expect(result.error).toBe("Backup read error");
+  });
+});
+
 // New Test Suite: Endpoint Response Logging Test
+
 describe("Endpoint Response Logging Test", () => {
   test("should make a request to each endpoint in the extended list and log the response", async () => {
     process.env.NODE_ENV = "test";
