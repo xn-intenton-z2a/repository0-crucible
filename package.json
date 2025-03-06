@@ -59,6 +59,12 @@
     "registry": "https://npm.pkg.github.com"
   },
   "eslintIgnore": [
-    "archive/"
+    "archive/**",
+    "build/",
+    "coverage/",
+    "dist/",
+    "exports/",
+    "node_modules/",
+    "eslint.config.js"
   ]
 }

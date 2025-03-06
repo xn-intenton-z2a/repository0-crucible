@@ -195,6 +195,7 @@ export async function main(args = []) {
     },
     "--persist": async () => {
       const ontology = buildOntology();
+      console.log("Ontology built:", ontology);
       const saved = persistOntology(ontology);
       console.log("Ontology persisted:", saved);
       return saved;
@@ -456,7 +457,7 @@ export async function serveWebInterface() {
         resolve(actualPort);
       }
     });
-    server.on('error', err => reject(err));
+    server.on("error", err => reject(err));
   });
 }
 
