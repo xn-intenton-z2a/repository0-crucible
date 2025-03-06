@@ -89,7 +89,7 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const version = await main(["--version"]);
     expect(spy).toHaveBeenCalledWith("Tool version:", version);
-    expect(version).toBe("0.0.6");
+    expect(version).toBe("0.0.7");
     spy.mockRestore();
   });
 
@@ -488,5 +488,27 @@ describe("Network Mocks", () => {
   test("fetchFromEndpoint simulates error for coindesk endpoint", async () => {
     const result = await fetchFromEndpoint("https://api.coindesk.com/v1/bpi/currentprice.json");
     expect(result).toHaveProperty("error", "Simulated network error");
+  });
+});
+
+// Additional tests for error handling and file system operations
+describe("Failure Handling", () => {
+  test("persistOntology handles write failure gracefully", () => {
+    const originalWrite = fs.writeFileSync;
+    fs.writeFileSync = () => { throw new Error("Write failed"); };
+    const ontology = buildOntology();
+    const result = persistOntology(ontology);
+    expect(result).toHaveProperty("success", false);
+    expect(result).toHaveProperty("error", "Write failed");
+    fs.writeFileSync = originalWrite;
+  });
+
+  test("loadOntology handles read failure gracefully", () => {
+    const originalRead = fs.readFileSync;
+    fs.readFileSync = () => { throw new Error("Read failed"); };
+    const result = loadOntology();
+    expect(result).toHaveProperty("success", false);
+    expect(result).toHaveProperty("error", "Read failed");
+    fs.readFileSync = originalRead;
   });
 });
