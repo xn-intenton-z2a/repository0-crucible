@@ -119,6 +119,41 @@ export function wrapOntologyModels() {
 }
 
 /**
+ * Generates a comprehensive ontology report by combining summary, analysis, and enhanced ontology details.
+ * @returns {object} Report object containing various ontology metrics
+ */
+export function generateOntologyReport() {
+  const ontology = buildOntology();
+  const summary = getOntologySummary(ontology);
+  const analysis = analyzeOntology(ontology);
+  const report = {
+    title: ontology.title,
+    created: ontology.created,
+    summary,
+    analysis,
+    enhanced: enhanceOntology()
+  };
+  return report;
+}
+
+/**
+ * Returns an extended list of public endpoints useful for building ontologies.
+ * @returns {string[]} List of endpoints
+ */
+export function listAvailableEndpoints() {
+  const endpoints = [
+    "https://api.publicapis.org/entries",
+    "https://dog.ceo/api/breeds/image/random",
+    "https://jsonplaceholder.typicode.com/posts",
+    "https://api.spacexdata.com/v4/launches/latest",
+    "https://api.coindesk.com/v1/bpi/currentprice.json",
+    "https://api.github.com",
+    "https://jsonplaceholder.typicode.com/comments"
+  ];
+  return endpoints;
+}
+
+/**
  * Main function to handle CLI arguments and execute the corresponding functionality.
  * @param {string[]} args - CLI arguments
  */
@@ -277,6 +312,16 @@ export async function main(args = []) {
       const wrapped = wrapOntologyModels();
       console.log("Wrapped ontology models:", wrapped);
       return wrapped;
+    },
+    "--report": async () => {
+      const report = generateOntologyReport();
+      console.log("Ontology Report:", report);
+      return report;
+    },
+    "--list-endpoints": async () => {
+      const endpoints = listAvailableEndpoints();
+      console.log("Available endpoints:", endpoints);
+      return endpoints;
     }
   };
 
@@ -323,7 +368,9 @@ export function displayHelp() {
   --clear,
   --fetch-endpoints,
   --enhance,
-  --wrap`
+  --wrap,
+  --report,
+  --list-endpoints`
   );
 }
 
@@ -369,7 +416,9 @@ export function listCommands() {
     "--clear",
     "--fetch-endpoints",
     "--enhance",
-    "--wrap"
+    "--wrap",
+    "--report",
+    "--list-endpoints"
   ];
 }
 

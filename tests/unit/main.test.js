@@ -27,7 +27,9 @@ const {
   updateOntology,
   clearOntology,
   enhanceOntology,
-  wrapOntologyModels
+  wrapOntologyModels,
+  generateOntologyReport,
+  listAvailableEndpoints
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -77,7 +79,9 @@ describe("Main Module General Functions", () => {
   --clear,
   --fetch-endpoints,
   --enhance,
-  --wrap`;
+  --wrap,
+  --report,
+  --list-endpoints`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
     expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
@@ -107,6 +111,8 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--fetch-endpoints");
     expect(commands).toContain("--enhance");
     expect(commands).toContain("--wrap");
+    expect(commands).toContain("--report");
+    expect(commands).toContain("--list-endpoints");
     spy.mockRestore();
   });
 
@@ -347,6 +353,25 @@ describe("Extended Functionality", () => {
     expect(wrapped.sources).toBeInstanceOf(Array);
     spy.mockRestore();
   });
+
+  test("main with --report returns ontology report", async () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const report = await main(["--report"]);
+    expect(report).toHaveProperty("title");
+    expect(report).toHaveProperty("summary");
+    expect(report).toHaveProperty("analysis");
+    expect(report).toHaveProperty("enhanced");
+    spy.mockRestore();
+  });
+
+  test("main with --list-endpoints returns extended endpoint list", async () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const endpoints = await main(["--list-endpoints"]);
+    expect(Array.isArray(endpoints)).toBe(true);
+    // Extended list should have more than the 5 default endpoints
+    expect(endpoints.length).toBeGreaterThan(5);
+    spy.mockRestore();
+  });
 });
 
 describe("Utility Functions", () => {
@@ -397,7 +422,9 @@ describe("Utility Functions", () => {
   --clear,
   --fetch-endpoints,
   --enhance,
-  --wrap`;
+  --wrap,
+  --report,
+  --list-endpoints`;
     expect(spy).toHaveBeenCalledWith(expectedUsage);
     expect(spy).toHaveBeenCalledWith(expectedOptions);
     spy.mockRestore();
