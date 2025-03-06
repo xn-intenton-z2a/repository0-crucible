@@ -92,6 +92,26 @@ export async function fetchOntologyEndpoints() {
 }
 
 /**
+ * Fetches data from an extended list of endpoints including additional public data sources.
+ * @returns {Promise<object[]>} Array of responses from extended endpoints
+ */
+export function fetchFromExtendedEndpoints() {
+  const endpoints = [
+    "https://api.publicapis.org/entries",
+    "https://dog.ceo/api/breeds/image/random",
+    "https://jsonplaceholder.typicode.com/posts",
+    "https://api.spacexdata.com/v4/launches/latest",
+    "https://api.coindesk.com/v1/bpi/currentprice.json",
+    "https://api.github.com",
+    "https://jsonplaceholder.typicode.com/comments",
+    "https://dummyjson.com/products",
+    "https://randomuser.me/api/",
+    "https://catfact.ninja/fact"
+  ];
+  return Promise.all(endpoints.map((ep) => fetchFromEndpoint(ep)));
+}
+
+/**
  * Generates an enhanced ontology by integrating additional OWL model details.
  * @returns {object} The enhanced ontology object.
  */
@@ -154,6 +174,24 @@ export function wrapOntologyModelsExtended() {
 }
 
 /**
+ * New wrapper that aggregates all ontology models including an advanced analysis.
+ * @returns {object} Aggregated ontology object with advanced metrics.
+ */
+export function wrapAllOntologyModels() {
+  const basic = buildOntology();
+  const enhanced = enhanceOntology();
+  const integrated = integrateOntology();
+  const advanced = advancedOntologyAnalysis();
+  return {
+    basic,
+    enhanced,
+    integrated,
+    advanced,
+    totalModels: 4
+  };
+}
+
+/**
  * Generates a comprehensive ontology report by combining summary, analysis, and enhanced ontology details.
  * @returns {object} Report object containing various ontology metrics
  */
@@ -186,6 +224,23 @@ export function listAvailableEndpoints() {
     "https://jsonplaceholder.typicode.com/comments"
   ];
   return endpoints;
+}
+
+/**
+ * Provides advanced ontology analysis metrics including additional custom measures.
+ * @returns {object} Advanced analysis report.
+ */
+export function advancedOntologyAnalysis() {
+  const ontology = buildOntology();
+  const analysis = analyzeOntology(ontology);
+  return {
+    ...analysis,
+    advanced: true,
+    timestamp: new Date().toISOString(),
+    additionalMetrics: {
+      conceptWordLengths: ontology.concepts.map(c => c.length)
+    }
+  };
 }
 
 /**
@@ -363,6 +418,21 @@ export async function main(args = []) {
       const endpoints = listAvailableEndpoints();
       console.log("Available endpoints:", endpoints);
       return endpoints;
+    },
+    "--fetch-extended": async () => {
+      const extendedData = await fetchFromExtendedEndpoints();
+      console.log("Fetched data from extended endpoints:", extendedData);
+      return extendedData;
+    },
+    "--advanced-analysis": async () => {
+      const advanced = advancedOntologyAnalysis();
+      console.log("Advanced Ontology Analysis:", advanced);
+      return advanced;
+    },
+    "--wrap-all": async () => {
+      const wrappedAll = wrapAllOntologyModels();
+      console.log("Wrapped All Ontology Models:", wrappedAll);
+      return wrappedAll;
     }
   };
 
@@ -412,7 +482,10 @@ export function displayHelp() {
   --wrap,
   --wrap-extended,
   --report,
-  --list-endpoints`
+  --list-endpoints,
+  --fetch-extended,
+  --advanced-analysis,
+  --wrap-all`
   );
 }
 
@@ -461,7 +534,10 @@ export function listCommands() {
     "--wrap",
     "--wrap-extended",
     "--report",
-    "--list-endpoints"
+    "--list-endpoints",
+    "--fetch-extended",
+    "--advanced-analysis",
+    "--wrap-all"
   ];
 }
 

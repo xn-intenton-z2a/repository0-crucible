@@ -17,6 +17,9 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--wrap-extended`: Aggregate extended ontology models including a report, synced, and rebuilt versions.
     - `--report`: Produce a comprehensive ontology report.
     - `--list-endpoints`: List an extended set of public endpoints.
+    - `--fetch-extended`: Fetch data from an extended list of public endpoints.
+    - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics.
+    - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
 - Improved error handling and detailed logging in the tool.
 
 ## Installation
@@ -62,6 +65,9 @@ npm install owl-builder
   - `--wrap-extended`: Wrap extended ontology models including a report, synced, and rebuilt versions.
   - `--report`: Produce a comprehensive ontology report.
   - `--list-endpoints`: List an extended set of public endpoints.
+  - `--fetch-extended`: Fetch data from an extended list of public endpoints.
+  - `--advanced-analysis`: Perform advanced ontology analysis.
+  - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
 
 ## Public Data Endpoints
 
@@ -76,6 +82,9 @@ owl-builder retrieves data from several public data sources, including:
 **Extended Endpoints:**
 - https://api.github.com
 - https://jsonplaceholder.typicode.com/comments
+- https://dummyjson.com/products
+- https://randomuser.me/api/
+- https://catfact.ninja/fact
 
 ## Usage
 
@@ -112,6 +121,11 @@ Example commands:
   node src/lib/main.js --fetch-endpoints
   ```
 
+- **Fetch Data from Extended Endpoints:**
+  ```bash
+  node src/lib/main.js --fetch-extended
+  ```
+
 - **Generate Enhanced Ontology:**
   ```bash
   node src/lib/main.js --enhance
@@ -125,6 +139,16 @@ Example commands:
 - **Wrap Extended Ontology Models:**
   ```bash
   node src/lib/main.js --wrap-extended
+  ```
+
+- **Perform Advanced Analysis:**
+  ```bash
+  node src/lib/main.js --advanced-analysis
+  ```
+
+- **Wrap All Ontology Models:**
+  ```bash
+  node src/lib/main.js --wrap-all
   ```
 
 - **Generate Ontology Report:**
