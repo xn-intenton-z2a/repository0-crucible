@@ -20,17 +20,21 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--fetch-extended`: Fetch data from an extended list of public endpoints.
     - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics, including average and median concept length.
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
-    - **New Command:** `--cleanup` to remove duplicate ontology concepts, ensuring data consistency.
-- **Extended Library Functions:**
-  - `automatedCommitMessage`: Generate automated commit messages for integration with knowledge base operations.
-  - `validateOntologyCompleteness`: Check ontology for required fields.
-  - `mergeOntologyModels`: Merge multiple ontology models into one comprehensive model.
-  - **New Extended Functions:**
-    - `updateOntologyDescription`: Update the ontology description.
-    - `extendOntologyConcepts`: Add additional concepts to the ontology.
-    - `resetOntology`: Reset the ontology to its initial state.
-    - `cloneOntology`: Create a deep copy of the ontology.
-    - `cleanupOntologyData`: Remove duplicate concepts from the ontology.
+    - **New Command:**
+      - `--cleanup`: Remove duplicate ontology concepts to ensure clean and unique data.
+    - **Extended Library Functions:**
+      - `automatedCommitMessage`: Generate automated commit messages for integration with knowledge base operations.
+      - `validateOntologyCompleteness`: Check ontology for required fields.
+      - `mergeOntologyModels`: Merge multiple ontology models into one comprehensive model.
+      - **New Extended Functions:**
+        - `updateOntologyDescription`: Update the ontology description.
+        - `extendOntologyConcepts`: Add additional concepts to the ontology.
+        - `resetOntology`: Reset the ontology to its initial state.
+        - `cloneOntology`: Create a deep copy of the ontology.
+        - `cleanupOntologyData`: Remove duplicate concepts from the ontology.
+    - **New CLI Commands:**
+      - `--auto-commit`: Generate an automated commit message based on recent changes.
+      - `--combine-models`: Merge basic, enhanced, and integrated ontology models into a single comprehensive model.
 - **Extended Endpoints:**
   - Added new endpoints to the available list: `https://api/openweathermap.org/data/2.5/weather?q=London` and `https://api/coinbase.com/v2/exchange-rates` to enhance the range of public data sources for ontology building.
 
@@ -81,7 +85,10 @@ npm install owl-builder
   - `--fetch-extended`: Fetch data from an extended list of public endpoints.
   - `--advanced-analysis`: Perform advanced ontology analysis.
   - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
-  - **`--cleanup`**: Remove duplicate ontology concepts to ensure clean and unique data.
+  - `--cleanup`: Remove duplicate ontology concepts.
+  - **New Commands:**
+    - `--auto-commit`: Generate an automated commit message.
+    - `--combine-models`: Merge ontology models into one comprehensive model.
 
 ## Public Data Endpoints
 
@@ -187,6 +194,16 @@ Example commands:
 - **Cleanup Ontology:**
   ```bash
   node src/lib/main.js --cleanup
+  ```
+
+- **Generate Automated Commit Message:**
+  ```bash
+  node src/lib/main.js --auto-commit
+  ```
+
+- **Combine Ontology Models:**
+  ```bash
+  node src/lib/main.js --combine-models
   ```
 
 ## Contributing
