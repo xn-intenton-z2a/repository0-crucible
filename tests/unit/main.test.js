@@ -368,7 +368,6 @@ describe("Extended Functionality", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const endpoints = await main(["--list-endpoints"]);
     expect(Array.isArray(endpoints)).toBe(true);
-    // Extended list should have more than the 5 default endpoints
     expect(endpoints.length).toBeGreaterThan(5);
     spy.mockRestore();
   });
