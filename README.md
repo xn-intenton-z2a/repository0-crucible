@@ -20,7 +20,8 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--fetch-extended`: Fetch data from an extended list of public endpoints.
     - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics.
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
-- Improved error handling and detailed logging in the tool.
+- **Test Results Update:**
+  - Endpoints functionality has been verified via unit tests. In test mode, the endpoint "https://api.coindesk.com/v1/bpi/currentprice.json" returns a simulated network error, while other endpoints return simulated data as expected.
 
 ## Installation
 
