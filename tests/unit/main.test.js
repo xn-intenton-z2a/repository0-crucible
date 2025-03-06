@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, afterAll, vi } from "vitest";
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, vi } from "vitest";
 import fs from "fs";
 import path from "path";
 import * as mainModule from "../../src/lib/main.js";
@@ -42,6 +42,7 @@ const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
 
 // Import https for simulating network errors
 import https from "https";
+
 
 describe("Main Module General Functions", () => {
   test("main without args prints default message", async () => {
