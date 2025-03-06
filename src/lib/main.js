@@ -868,10 +868,4 @@ export function clearOntology() {
   }
 }
 
-// Export fetchFromEndpoint to allow direct testing of network mocks
-export { fetchFromEndpoint };
-
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const args = process.argv.slice(2);
-  main(args);
-}
+// End of file. Removed duplicate export of fetchFromEndpoint as it was already exported above.

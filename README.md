@@ -20,7 +20,10 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics.
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
 - **Test Enhancements:**
-  - Added deeper unit tests mocking external network and file system dependencies to improve test coverage towards 100%.
+  - Added deeper unit tests mocking external network and file system dependencies to improve test coverage toward 100%.
+- **Bug Fixes:**
+  - Removed duplicate export of `fetchFromEndpoint` in source file.
+  - Fixed test issues by importing `afterAll` from vitest.
 
 ## Installation
 
