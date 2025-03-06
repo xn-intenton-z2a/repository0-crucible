@@ -49,7 +49,7 @@ export async function main(args = []) {
       return ontology;
     },
     "--serve": async () => {
-      serveWebInterface();
+      await serveWebInterface();
     },
     "--diagnostics": async () => {
       diagnostics();
@@ -274,21 +274,25 @@ export function buildOntology() {
 
 /**
  * Starts a web server for demonstration purposes using a simple HTTP server.
+ * Returns a Promise that resolves with the actual port once the server has started.
  */
-export function serveWebInterface() {
-  // Use an ephemeral port when in the test environment to avoid conflicts
+export async function serveWebInterface() {
   const port = process.env.NODE_ENV === "test" ? 0 : 8080;
-  const server = http.createServer((req, res) => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("owl-builder Web Interface\n");
-  });
-  server.listen(port, () => {
-    // Get the actual listening port in case an ephemeral port was used
-    const actualPort = server.address().port;
-    console.log(`Web server running on port ${actualPort}`);
-    if (process.env.NODE_ENV === "test") {
-      server.close();
-    }
+  return new Promise((resolve, reject) => {
+    const server = http.createServer((req, res) => {
+      res.writeHead(200, { "Content-Type": "text/plain" });
+      res.end("owl-builder Web Interface\n");
+    });
+    server.listen(port, () => {
+      const actualPort = server.address().port;
+      console.log(`Web server running on port ${actualPort}`);
+      if (process.env.NODE_ENV === "test") {
+        server.close(() => resolve(actualPort));
+      } else {
+        resolve(actualPort);
+      }
+    });
+    server.on('error', err => reject(err));
   });
 }
 

@@ -323,9 +323,9 @@ describe("Utility Functions", () => {
     expect(Array.isArray(ontology.concepts)).toBe(true);
   });
 
-  test("serveWebInterface logs the server start message", () => {
+  test("serveWebInterface logs the server start message", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    serveWebInterface();
+    await serveWebInterface();
     expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server running on port \d+/));
     spy.mockRestore();
   });

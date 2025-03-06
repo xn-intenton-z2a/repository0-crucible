@@ -8,7 +8,7 @@
 - Enhanced the CLI '--fetch-public' command to use dynamic import for function mocking in tests.
 - Extended ontology management functions including persist, load, query, validate, export, import, sync, backup, demo, monitor, rebuild, update, and clear.
 - Updated web interface to launch a simple HTTP server for demonstration purposes.
-- Updated serveWebInterface to use an ephemeral port in the test environment, preventing port conflicts and ensuring logs indicate the actual listening port.
+- Updated serveWebInterface to be asynchronous and use an ephemeral port in the test environment, preventing port conflicts and ensuring logs indicate the actual listening port. (This change also resolves issues with asynchronous logging in tests.)
 - Applied linting and formatting fixes to improve code quality.
 
 ## Installation
