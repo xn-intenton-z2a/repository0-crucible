@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, afterEach, afterAll, vi } from "vitest";
+import { describe, test, expect, beforeEach, afterEach, beforeAll, afterAll, vi } from "vitest";
 import fs from "fs";
 import path from "path";
 import * as mainModule from "../../src/lib/main.js";
@@ -34,7 +34,8 @@ const {
   logDetailedResponse,
   advancedOntologyAnalysis,
   fetchFromExtendedEndpoints,
-  wrapAllOntologyModels
+  wrapAllOntologyModels,
+  backupOntology
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -42,6 +43,7 @@ const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
 
 // Import https for simulating network errors
 import https from "https";
+
 
 describe("Main Module General Functions", () => {
   test("main without args prints default message", async () => {
@@ -595,7 +597,42 @@ describe("Utility Functions", () => {
   });
 });
 
-// New Test Suite: Endpoint Response Logging Test
+// New Test Suite: Error Handling for File System Operations
+
+describe("File System Error Handling", () => {
+  let originalWriteFileSync, originalReadFileSync;
+  beforeAll(() => {
+    originalWriteFileSync = fs.writeFileSync;
+    originalReadFileSync = fs.readFileSync;
+  });
+  afterAll(() => {
+    fs.writeFileSync = originalWriteFileSync;
+    fs.readFileSync = originalReadFileSync;
+  });
+  
+  test("persistOntology returns error on write failure", () => {
+    const ontology = buildOntology();
+    fs.writeFileSync = vi.fn(() => { throw new Error("Write error"); });
+    const result = persistOntology(ontology);
+    expect(result.success).toBe(false);
+    expect(result.error).toBe("Write error");
+  });
+  
+  test("loadOntology returns error on read failure", () => {
+    fs.readFileSync = vi.fn(() => { throw new Error("Read error"); });
+    const result = loadOntology();
+    expect(result.success).toBe(false);
+    expect(result.error).toBe("Read error");
+  });
+  
+  test("backupOntology returns error when original file read fails", () => {
+    fs.readFileSync = vi.fn(() => { throw new Error("Backup read error"); });
+    const result = backupOntology();
+    expect(result.success).toBe(false);
+    expect(result.error).toBe("Backup read error");
+  });
+});
+
 describe("Endpoint Response Logging Test", () => {
   test("should make a request to each endpoint in the extended list and log the response", async () => {
     process.env.NODE_ENV = "test";

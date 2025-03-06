@@ -21,9 +21,7 @@ Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) fo
     - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
 - **Endpoint Extension:** Extended the list of available public data endpoints to include additional services for building ontologies.
 - **Refocus Update:** The library is now refocused on building ontologies from public data sources while enhancing error handling, logging, and modular design for easier testing.
-- **Test Enhancements:** Added deeper unit tests including requests to all endpoints and logging of responses to improve coverage.
-- **Bug Fixes:**
-  - Updated the `--fetch-public` command to use dynamic import for obtaining a live binding of `fetchPublicData`, ensuring that test spies correctly override the network call.
+- **Test Enhancements:** Added deeper unit tests including proper import of `beforeAll` in the test suites along with enhanced error handling for file system and network operations; test coverage improved to near 100%.
 
 ## Installation
 

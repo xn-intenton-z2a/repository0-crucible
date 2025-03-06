@@ -3,7 +3,8 @@
 // src/lib/main.js
 // owl-builder CLI Tool
 // Mission Statement: Build robust ontologies directly extracted from diverse public data sources. This tool focuses on streamlined extraction, integration, and querying of ontology data. Contributions are welcome following the guidelines in CONTRIBUTING.md.
-// Refactored to remove legacy drift, extend core functionalities, improve error handling, detailed logging, and enhance testability via dependency injection for external resources.
+//
+// Refactored to improve testability and error logging. Additional error paths are now better covered via unit tests.
 
 import { fileURLToPath } from "url";
 import os from "os";
