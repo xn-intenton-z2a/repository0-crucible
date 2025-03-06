@@ -218,7 +218,12 @@ export function listAvailableEndpoints() {
     "https://api.spacexdata.com/v4/launches/latest",
     "https://api.coindesk.com/v1/bpi/currentprice.json",
     "https://api.github.com",
-    "https://jsonplaceholder.typicode.com/comments"
+    "https://jsonplaceholder.typicode.com/comments",
+    "https://dummyjson.com/products",
+    "https://randomuser.me/api/",
+    "https://catfact.ninja/fact",
+    "https://jsonplaceholder.typicode.com/todos",
+    "https://api.agify.io/?name=michael"
   ];
 }
 
