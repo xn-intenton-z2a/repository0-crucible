@@ -12,9 +12,10 @@
 // - Extended features inline with the Mission Statement:
 //      * Added new commands --refresh-details and --extend-concepts for enhanced ontology processing.
 // - Refocused library exclusively on building ontologies from public data sources; legacy functionalities removed.
-// - New functions added per CONTRIBUTING guidelines: fetchDataWithRetry, getChangeLog, extendOntologyDetails.
+// - New functions added per CONTRIBUTING guidelines: fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus.
 // - Extended CLI commands added: --fetch-retry, --changelog, --extend-details.
 // - New wrappers added: --wrap-simple, --wrap-comprehensive, --wrap-random to aggregate various ontology models in different configurations.
+// - Updated Change Log to include new transformation and debugging functions.
 // - Updated version to 0.0.14.
 
 import { fileURLToPath } from "url";
@@ -239,7 +240,12 @@ export function wrapOntologyModelsComprehensive() {
  * @returns {object} A randomly chosen ontology model wrapper.
  */
 export function wrapOntologyModelsRandom() {
-  const wrappers = [wrapOntologyModelsSimple(), wrapOntologyModelsExtended(), wrapOntologyModelsComprehensive(), wrapAllOntologyModels()];
+  const wrappers = [
+    wrapOntologyModelsSimple(),
+    wrapOntologyModelsExtended(),
+    wrapOntologyModelsComprehensive(),
+    wrapAllOntologyModels()
+  ];
   return wrappers[Math.floor(Math.random() * wrappers.length)];
 }
 
@@ -279,7 +285,7 @@ export function listAvailableEndpoints() {
     "https://jsonplaceholder.typicode.com/todos",
     "https://api/agify.io/?name=michael",
     "https://api/openweathermap.org/data/2.5/weather?q=London",
-    "https://api.coinbase.com/v2/exchange-rates"
+    "https://api/coinbase.com/v2/exchange-rates"
   ];
 }
 
@@ -1065,7 +1071,7 @@ export async function fetchDataWithRetry(endpoint, retries = 3) {
  * @returns {string} Change log message.
  */
 export function getChangeLog() {
-  return "Extended functions added including fetchDataWithRetry, getChangeLog, extendOntologyDetails, and new wrapper functions (wrap-simple, wrap-comprehensive, wrap-random) as per CONTRIBUTING guidelines.\nRefocused on building ontologies from public data sources and updated endpoint URLs.";
+  return "Extended functions added including fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus, and new wrapper functions (wrap-simple, wrap-comprehensive, wrap-random) as per CONTRIBUTING guidelines.\nRefocused on building ontologies from public data sources and updated endpoint URLs.";
 }
 
 /**
@@ -1183,4 +1189,49 @@ export function cleanupOntologyData(ontology) {
   }
   persistOntology(ontology);
   return ontology;
+}
+
+// Additional functions as per CONTRIBUTING guidelines
+
+/**
+ * Transforms the ontology data with additional attributes.
+ * @returns {object} The transformed ontology object.
+ */
+export function transformOntologyData() {
+  const ontology = buildOntology();
+  ontology.transformed = true;
+  ontology.transformationDetails = {
+    transformedAt: new Date().toISOString(),
+    message: "Ontology data transformed successfully."
+  };
+  persistOntology(ontology);
+  return ontology;
+}
+
+/**
+ * Logs and returns debugging metrics for the ontology.
+ * @returns {object} Debug metrics including concept count, title, and description length.
+ */
+export function debugOntologyMetrics() {
+  const ontology = buildOntology();
+  const metrics = {
+    conceptCount: ontology.concepts.length,
+    title: ontology.title,
+    descriptionLength: ontology.description.length
+  };
+  console.log("Debug Metrics:", metrics);
+  return metrics;
+}
+
+/**
+ * Reflects the current status of the ontology including validation and completeness.
+ * @returns {object} Status object containing validity and completeness metrics.
+ */
+export function reflectOntologyStatus() {
+  const ontology = buildOntology();
+  return {
+    valid: validateOntology(ontology),
+    completeness: validateOntologyCompleteness(ontology),
+    lastUpdated: ontology.created
+  };
 }
