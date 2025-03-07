@@ -1,4 +1,4 @@
-# plot-code-lib
+# repository0-plot-code-lib
 
 Contributing guidelines here apply to human and chat completion developers.
 This repository uses the intentïon agentic‑lib for automated workflows. See: [intentïon agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib)
