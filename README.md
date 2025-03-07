@@ -1,42 +1,20 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. This tool focuses on extracting ontology data directly from public endpoints with streamlined integration, persistence, detailed analysis, and querying capabilities.
-
-Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. The library has been refocused exclusively on extracting ontology data directly from public endpoints, ensuring robust integration, persistence, detailed analysis, and querying capabilities. Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## Change Log
-- Refocused the library exclusively on building robust ontologies from public data sources, eliminating legacy code drift.
-- Updated CLI commands to version 0.0.9 including new features and enhancements:
-  - `--update` for modifying the ontology title.
-  - `--clear` for removing a persisted ontology.
-  - `--fetch-endpoints` to retrieve data from multiple public endpoints (5 endpoints).
-  - **New Features:**
-    - `--detailed-build`: Build a detailed ontology with additional statistical metrics.
-    - `--enhance`: Generate an enhanced ontology with additional OWL model details.
-    - `--wrap`: Aggregate basic, enhanced, and integrated ontology models.
-    - `--wrap-extended`: Aggregate extended ontology models including a report, synced, and rebuilt versions.
-    - `--report`: Produce a comprehensive ontology report.
-    - `--list-endpoints`: List an extended set of public endpoints (now 14 endpoints).
-    - `--fetch-extended`: Fetch data from an extended list of public endpoints.
-    - `--advanced-analysis`: Perform advanced ontology analysis with additional metrics, including average and median concept length.
-    - `--wrap-all`: Wrap all ontology models including advanced analysis metrics.
-    - **New Command:**
-      - `--cleanup`: Remove duplicate ontology concepts to ensure clean and unique data.
-    - **Extended Library Functions:**
-      - `automatedCommitMessage`: Generate automated commit messages for integration with knowledge base operations.
-      - `validateOntologyCompleteness`: Check ontology for required fields.
-      - `mergeOntologyModels`: Merge multiple ontology models into one comprehensive model.
-      - **New Extended Functions:**
-        - `updateOntologyDescription`: Update the ontology description.
-        - `extendOntologyConcepts`: Add additional concepts to the ontology.
-        - `resetOntology`: Reset the ontology to its initial state.
-        - `cloneOntology`: Create a deep copy of the ontology.
-        - `cleanupOntologyData`: Remove duplicate concepts from the ontology.
-    - **New CLI Commands:**
-      - `--auto-commit`: Generate an automated commit message.
-      - `--combine-models`: Merge ontology models into one comprehensive model. (Updated to include separate properties for basic, enhanced, and integrated models.)
-- **Extended Endpoints:**
-  - Added new endpoints to the available list: `https://api/openweathermap.org/data/2.5/weather?q=London` and `https://api/coinbase.com/v2/exchange-rates` to enhance the range of public data sources for ontology building.
+- Updated to version 0.0.12.
+- Refocused the library exclusively on building robust ontologies from public data sources; legacy code drift has been pruned.
+- Updated CLI commands to include new features:
+  - `--detailed-build`: Build a detailed ontology with additional statistical metrics.
+  - `--enhance`: Generate an enhanced ontology with additional OWL model details.
+  - `--wrap` and `--wrap-extended`: Aggregate various ontology models.
+  - `--advanced-analysis`: Perform advanced ontology analysis with average and median concept length.
+  - `--cleanup`: Remove duplicate ontology concepts.
+  - **New Commands:**
+    - `--auto-commit`: Generate an automated commit message.
+    - `--combine-models`: Merge ontology models into one comprehensive model.
+- Updated internal functions and error handling to better support public API interactions.
 
 ## Installation
 
@@ -208,7 +186,7 @@ Example commands:
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging and enhanced ontology processing, including extended ontology manipulation functions such as updating the description, extending concepts, resetting, cloning, and cleaning up duplicate concepts.
+Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging and enhanced ontology processing, with a focus exclusively on extracting and building ontologies from public data sources.
 
 ## License
 
