@@ -9,6 +9,8 @@
 // - Extended ontology analysis including average and median concept lengths.
 // - Added helper functions calculateMedian, buildDetailedOntology.
 // - Introduced new CLI commands: --detailed-build, --cleanup, --auto-commit, --combine-models.
+// - Extended features inline with the Mission Statement:
+//      * Added new commands --refresh-details and --extend-concepts for enhanced ontology processing.
 // - Refocused library exclusively on building ontologies from public data sources; legacy functionalities removed.
 // - Updated version to 0.0.13.
 
@@ -225,9 +227,9 @@ export function listAvailableEndpoints() {
     "https://api.publicapis.org/entries",
     "https://dog.ceo/api/breeds/image/random",
     "https://jsonplaceholder.typicode.com/posts",
-    "https://api.spacexdata.com/v4/launches/latest",
+    "https://api/spacexdata.com/v4/launches/latest",
     "https://api.coindesk.com/v1/bpi/currentprice.json",
-    "https://api.github.com",
+    "https://api/github.com",
     "https://jsonplaceholder.typicode.com/comments",
     "https://dummyjson.com/products",
     "https://randomuser.me/api/",
@@ -496,6 +498,16 @@ export async function main(args = []) {
       const merged = mergeOntologyModels(buildOntology(), enhanceOntology(), integrateOntology());
       console.log("Combined Ontology Models:", merged);
       return merged;
+    },
+    "--refresh-details": async () => {
+      const refreshedDetails = updateOntologyDescription("Refreshed ontology with additional details.");
+      console.log("Ontology refreshed with details:", refreshedDetails);
+      return refreshedDetails;
+    },
+    "--extend-concepts": async () => {
+      const extended = extendOntologyConcepts("ExtendedConcept1", "ExtendedConcept2");
+      console.log("Extended ontology concepts:", extended);
+      return extended;
     }
   };
 
@@ -552,7 +564,9 @@ export function displayHelp() {
   --wrap-all,
   --cleanup,
   --auto-commit,
-  --combine-models`
+  --combine-models,
+  --refresh-details,
+  --extend-concepts`
   );
 }
 
@@ -608,7 +622,9 @@ export function listCommands() {
     "--wrap-all",
     "--cleanup",
     "--auto-commit",
-    "--combine-models"
+    "--combine-models",
+    "--refresh-details",
+    "--extend-concepts"
   ];
 }
 
