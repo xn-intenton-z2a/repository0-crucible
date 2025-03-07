@@ -4,6 +4,7 @@
 // Mission Statement: Build robust OWL ontologies from diverse public data sources.
 // Refocused to eliminate legacy endpoints and redundant code, aligning functionality with CONTRIBUTING guidelines.
 // Note: Endpoint tests confirmed valid dummy responses for all extended endpoints.
+// (No functional changes were needed in the source; external dependencies are now primarily tested via mocks in the test suite.)
 
 import fs from 'fs';
 import path from 'path';
@@ -519,7 +520,7 @@ export async function main(args = process.argv.slice(2)) {
 
 // Helper functions for CLI
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize, --wrap-tabular, --wrap-html, --wrap-markdown, --fetch-multiple, --validate-optimize`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize, --wrap-tabular, --wrap-html, --wrap-markdown, --fetch-multiple, --validate-optimize");
 }
 
 export function getVersion() {
