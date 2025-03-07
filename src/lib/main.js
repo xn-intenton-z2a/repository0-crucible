@@ -14,7 +14,7 @@
 // - Refocused library exclusively on building ontologies from public data sources; legacy functionalities removed.
 // - New functions added per CONTRIBUTING guidelines: fetchDataWithRetry, getChangeLog, extendOntologyDetails.
 // - Extended CLI commands added: --fetch-retry, --changelog, --extend-details.
-// - Updated version to 0.0.13.
+// - Updated version to 0.0.14, refocused on public data sources, and updated endpoint URLs in extended functions.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -96,7 +96,7 @@ export async function fetchOntologyEndpoints() {
     "https://api.publicapis.org/entries",
     "https://dog.ceo/api/breeds/image/random",
     "https://jsonplaceholder.typicode.com/posts",
-    "https://api.spacexdata.com/v4/launches/latest",
+    "https://api/spacexdata.com/v4/launches/latest",
     "https://api.coindesk.com/v1/bpi/currentprice.json"
   ];
   const results = await Promise.all(endpoints.map((ep) => fetchFromEndpoint(ep)));
@@ -114,7 +114,7 @@ export function fetchFromExtendedEndpoints() {
     "https://jsonplaceholder.typicode.com/posts",
     "https://api/spacexdata.com/v4/launches/latest",
     "https://api.coindesk.com/v1/bpi/currentprice.json",
-    "https://api/github.com",
+    "https://api.github.com",
     "https://jsonplaceholder.typicode.com/comments",
     "https://dummyjson.com/products",
     "https://randomuser.me/api/",
@@ -230,8 +230,8 @@ export function listAvailableEndpoints() {
     "https://dog.ceo/api/breeds/image/random",
     "https://jsonplaceholder.typicode.com/posts",
     "https://api/spacexdata.com/v4/launches/latest",
-    "https://api/coindesk.com/v1/bpi/currentprice.json",
-    "https://api/github.com",
+    "https://api.coindesk.com/v1/bpi/currentprice.json",
+    "https://api.github.com",
     "https://jsonplaceholder.typicode.com/comments",
     "https://dummyjson.com/products",
     "https://randomuser.me/api/",
@@ -239,7 +239,7 @@ export function listAvailableEndpoints() {
     "https://jsonplaceholder.typicode.com/todos",
     "https://api/agify.io/?name=michael",
     "https://api/openweathermap.org/data/2.5/weather?q=London",
-    "https://api/coinbase.com/v2/exchange-rates"
+    "https://api.coinbase.com/v2/exchange-rates"
   ];
 }
 
@@ -596,7 +596,7 @@ export function displayHelp() {
  * @returns {string} Version string.
  */
 export function getVersion() {
-  return "0.0.13";
+  return "0.0.14";
 }
 
 /**
@@ -1004,7 +1004,7 @@ export async function fetchDataWithRetry(endpoint, retries = 3) {
  * @returns {string} Change log message.
  */
 export function getChangeLog() {
-  return "Extended functions added including fetchDataWithRetry, getChangeLog, and extendOntologyDetails as per CONTRIBUTING guidelines.";
+  return "Extended functions added including fetchDataWithRetry, getChangeLog, and extendOntologyDetails as per CONTRIBUTING guidelines.\nRefocused on building ontologies from public data sources and updated endpoint URLs.";
 }
 
 /**
