@@ -1,16 +1,14 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. This tool refocuses on streamlined public API integration and extended ontology processing commands, while legacy functionalities have been pruned.
+owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. This tool has been refocused on streamlined public API integration and extended ontology processing commands. Legacy functionalities have been pruned and the documentation has been refreshed in accordance with the CONTRIBUTING guidelines.
 
 ## Changelog
 
-- **Version 0.0.17**
-  - Refocused on public data source integration and removed legacy endpoints.
+- **Version 0.0.18**
+  - Refreshed the README to align with CONTRIBUTING guidelines, updating and pruning outdated details.
   - Extended ontology processing functions and added new wrapper commands: `wrapOntologyModelsJSON`, `wrapOntologyModelsCustom`, `wrapOntologyModelsGraph`, `wrapOntologyModelsTree`, and `wrapOntologyModelsMatrix`.
-  - Extended the list of public endpoints used for building ontologies by adding additional endpoints: `https://api.sample.com/ontology` and `https://api.ontologybuilder.com/data` along with the existing ones.
-  - Added a new CLI command `--test-endpoints` to make requests to each endpoint and log dummy responses for testing purposes. **Verified endpoint responses using dummy mode.**
-  - Fixed a bug where a missing closing brace in the main function caused a build error.
-  - Updated documentation and tests per CONTRIBUTING guidelines.
+  - Extended the public endpoints list and added a new CLI command `--test-endpoints` for verifying endpoint responses in dummy mode.
+  - Removed legacy endpoints and pruned redundant documentation details.
 
 ## Public Data Endpoints
 
@@ -105,11 +103,11 @@ Run tests with:
 npm test
 ```
 
-The tests now include a verification for endpoint responses based on dummy data and error simulation, as well as tests for the new model wrapper functions and the new endpoint testing command.
+The tests include verifications for endpoint responses (using dummy data), model wrapper functions, and various CLI commands.
 
 ## Contributing
 
-Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to owl-builder. Contributions including feature enhancements, bug fixes, and documentation improvements are welcome.
+Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to owl-builder. Contributions in the form of feature enhancements, bug fixes, or documentation improvements are welcome.
 
 ## License
 
