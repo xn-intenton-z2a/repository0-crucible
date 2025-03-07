@@ -268,6 +268,15 @@ export function mergeOntologyModels(ont1, ont2, ont3) {
   return Object.assign({}, ont1, ont2, ont3, { merged: true });
 }
 
+// New Wrapper Functions for OWL Ontology Models
+export function wrapOntologyModelsJSON() {
+  return { jsonWrapped: true, models: ['Basic', 'Enhanced', 'Integrated'] };
+}
+
+export function wrapOntologyModelsCustom(order = 'asc') {
+  return { customWrapped: true, order, additionalData: 'custom' };
+}
+
 // Global command actions mapping
 const commandActions = {
   "--help": async (args) => { displayHelp(); },
@@ -482,6 +491,18 @@ const commandActions = {
     const mergedWrapped = wrapMergedOntologyModels();
     console.log("Merged wrapped ontology models:", mergedWrapped);
     return mergedWrapped;
+  },
+  "--wrap-json": async (args) => {
+    const jsonWrapped = wrapOntologyModelsJSON();
+    console.log("JSON Wrapped Ontology Models:", jsonWrapped);
+    return jsonWrapped;
+  },
+  "--wrap-custom": async (args) => {
+    const idx = args.indexOf("--wrap-custom");
+    const order = idx !== -1 && args.length > idx + 1 ? args[idx + 1] : 'asc';
+    const customWrapped = wrapOntologyModelsCustom(order);
+    console.log("Custom Wrapped Ontology Models:", customWrapped);
+    return customWrapped;
   }
 };
 
@@ -498,7 +519,7 @@ export async function main(args = process.argv.slice(2)) {
 
 // Helper functions for CLI
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom`);
 }
 
 export function getVersion() {

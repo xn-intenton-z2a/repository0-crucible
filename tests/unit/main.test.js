@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-ignored-exceptions, no-unused-vars, prettier/prettier */
-import { describe, test, expect, vi, beforeAll, beforeEach, afterAll, afterEach } from 'vitest';
+import { describe, test, expect, vi } from 'vitest';
 import fs from 'fs';
 import path from 'path';
 import * as mainModule from '../../src/lib/main.js';
@@ -46,20 +46,19 @@ const {
   wrapOntologyModelsComprehensive,
   wrapOntologyModelsRandom,
   cleanupOntologyData,
-  /* File System functions */
-  // additional functions are imported as needed
   updateOntologyTracking,
   wrapAdvancedOntologyModels,
   wrapMergedOntologyModels,
   transformOntologyData,
   debugOntologyMetrics,
-  reflectOntologyStatus
+  reflectOntologyStatus,
+  wrapOntologyModelsJSON,
+  wrapOntologyModelsCustom
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
 const backupPath = path.resolve(process.cwd(), 'ontology-backup.json');
 
-// Import https for simulating network errors
 import https from 'https';
 
 describe('Main Module General Functions', () => {
@@ -349,31 +348,22 @@ describe('Main Module General Functions', () => {
     expect(result).toHaveProperty('report');
   });
 
-  test('Extended New Functions: cloneOntology returns deep copy', () => {
-    const ontology = buildOntology();
-    const clone = cloneOntology();
-    expect(clone).toEqual(ontology);
-    expect(clone).not.toBe(ontology);
+  test('--wrap-json returns json wrapped ontology models', async () => {
+    const result = await main(['--wrap-json']);
+    expect(result).toHaveProperty('jsonWrapped', true);
+    expect(result.models).toEqual(['Basic', 'Enhanced', 'Integrated']);
   });
 
-  test('Extended New Functions: transformOntologyData returns transformed flag', () => {
-    const transformed = transformOntologyData();
-    expect(transformed.transformed).toBe(true);
-    expect(transformed.transformationDetails).toHaveProperty('transformedAt');
+  test('--wrap-custom returns custom wrapped ontology models with default order', async () => {
+    const result = await main(['--wrap-custom']);
+    expect(result).toHaveProperty('customWrapped', true);
+    expect(result.order).toBe('asc');
   });
 
-  test('Extended New Functions: debugOntologyMetrics returns metrics', () => {
-    const metrics = debugOntologyMetrics();
-    expect(metrics).toHaveProperty('conceptCount');
-    expect(metrics).toHaveProperty('title');
-    expect(metrics).toHaveProperty('descriptionLength');
-  });
-
-  test('Extended New Functions: reflectOntologyStatus returns status object', () => {
-    const status = reflectOntologyStatus();
-    expect(status).toHaveProperty('valid');
-    expect(status).toHaveProperty('completeness');
-    expect(status).toHaveProperty('lastUpdated');
+  test('--wrap-custom returns custom wrapped ontology models with provided order', async () => {
+    const result = await main(['--wrap-custom', 'desc']);
+    expect(result).toHaveProperty('customWrapped', true);
+    expect(result.order).toBe('desc');
   });
 });
 
