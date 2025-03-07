@@ -4,22 +4,23 @@
  * owl-builder CLI Tool
  *
  * Mission Statement:
- *   owl-builder is dedicated to building OWL ontologies from verified public data sources. Our goal is to provide an intuitive and extensible platform for ontology building, management, and querying with a strong focus on integrating real public data into ontology models.
+ *   owl-builder builds OWL ontologies directly from live, verified public data sources.
+ *   Our goal is to provide an intuitive and extensible platform for ontology building,
+ *   management, and querying with a focus on real-time public data integration.
  *
  * Features:
- *   - Build and persist ontology models built from verified public data
+ *   - Build and persist ontology models from verified public data
  *   - Query and validate ontology concepts
  *   - Export/import OWL (XML) representations
- *   - Crawl public endpoints and create backups for enriched ontologies
- *   - Wrap and enrich ontology models with additional metadata
- *   - Serve a simple web interface for monitoring and diagnostics
- *   - Build custom ontologies with extended functions
+ *   - Crawl public endpoints for enriched ontologies
+ *   - Extended OWL ontology model wrappers for basic, advanced, and custom models
+ *   - Simple web server for diagnostic monitoring
  *
  * For Developers:
- *   Follow the CONTRIBUTING guidelines to extend or modify functionalities. Ensure to update tests and documentation when changes are made.
+ *   Follow CONTRIBUTING guidelines. Update tests and documentation as needed.
  *
  * For Users:
- *   Enjoy a robust CLI and library tool that is refocused on generating rich ontologies from verified public data sources. Use the --help command for usage information.
+ *   Use the robust CLI to generate rich, data-driven ontologies. Run --help for usage.
  */
 
 import fs from 'fs';
