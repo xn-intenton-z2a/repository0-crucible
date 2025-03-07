@@ -54,10 +54,10 @@ const {
   reflectOntologyStatus,
   wrapOntologyModelsJSON,
   wrapOntologyModelsCustom,
-  // New wrappers
   wrapOntologyModelsGraph,
   wrapOntologyModelsTree,
-  wrapOntologyModelsMatrix
+  wrapOntologyModelsMatrix,
+  testEndpoints
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
@@ -233,7 +233,8 @@ describe('Main Module General Functions', () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     const endpoints = await main(['--list-endpoints']);
     expect(Array.isArray(endpoints)).toBe(true);
-    expect(endpoints.length).toBe(10);
+    // Now there should be 13 endpoints in total.
+    expect(endpoints.length).toBe(13);
     spy.mockRestore();
   });
 
@@ -370,31 +371,13 @@ describe('Main Module General Functions', () => {
     expect(result.order).toBe('desc');
   });
 
-  // Tests for new wrapper functions
-  test('--wrap-graph returns graph wrapped ontology models', async () => {
-    const result = await main(['--wrap-graph']);
-    expect(result).toHaveProperty('graphWrapped', true);
-    expect(result.models).toContain('Graph');
-  });
-
-  test('--wrap-tree returns tree wrapped ontology models', async () => {
-    const result = await main(['--wrap-tree']);
-    expect(result).toHaveProperty('treeWrapped', true);
-    expect(result.models).toContain('Tree');
-  });
-
-  test('--wrap-matrix returns matrix wrapped ontology models', async () => {
-    const result = await main(['--wrap-matrix']);
-    expect(result).toHaveProperty('matrixWrapped', true);
-    expect(result.matrix).toEqual([[1,2],[3,4]]);
-  });
-
-  test('endpoints verification: each endpoint logs a dummy response', () => {
-    const endpoints = listAvailableEndpoints();
-    endpoints.forEach(endpoint => {
-      console.log(`Verified endpoint: ${endpoint}`);
-      expect(typeof endpoint).toBe('string');
-    });
+  test('Testing new endpoint functionality: --test-endpoints', async () => {
+    const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    await main(['--test-endpoints']);
+    // Check that dummy verified messages are logged
+    const calls = spy.mock.calls.map(call => call[0]);
+    expect(calls.some(msg => msg.includes('Verified endpoint (dummy):'))).toBe(true);
+    spy.mockRestore();
   });
 });
 

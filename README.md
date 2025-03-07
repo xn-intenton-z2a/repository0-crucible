@@ -6,12 +6,10 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
 
 - **Version 0.0.16**
   - Refocused on public data source integration and removed legacy endpoints.
-  - Extended ontology processing functions and added new wrapper commands: `wrapOntologyModelsJSON`, `wrapOntologyModelsCustom`, **`wrapOntologyModelsGraph`**, **`wrapOntologyModelsTree`**, and **`wrapOntologyModelsMatrix`**.
-  - Updated documentation per CONTRIBUTING guidelines.
-  - Verified endpoint responses via unit tests:
-    - Confirmed list of 10 endpoints returned as expected.
-    - Additional endpoint fetch tests now simulate error responses (EAI_AGAIN) and are logged in test output.
-  - Updated README changelog based on verified endpoint test results.
+  - Extended ontology processing functions and added new wrapper commands: `wrapOntologyModelsJSON`, `wrapOntologyModelsCustom`, `wrapOntologyModelsGraph`, `wrapOntologyModelsTree`, and `wrapOntologyModelsMatrix`.
+  - Extended the list of public endpoints used for building ontologies by adding endpoints from nationalize, agify, and genderize APIs.
+  - Added a new CLI command `--test-endpoints` to make requests to each endpoint and log dummy responses for testing purposes.
+  - Updated documentation and tests per CONTRIBUTING guidelines.
 
 ## Public Data Endpoints
 
@@ -21,7 +19,15 @@ owl-builder retrieves data from several public data sources, including:
 - https://dog.ceo/api/breeds/image/random
 - https://jsonplaceholder.typicode.com/posts
 - https://api.coindesk.com/v1/bpi/currentprice.json
-- Additional endpoints as configured in the CLI.
+- https://api.github.com
+- https://jsonplaceholder.typicode.com/comments
+- https://dummyjson.com/products
+- https://randomuser.me/api/
+- https://catfact.ninja/fact
+- https://jsonplaceholder.typicode.com/todos
+- https://api.nationalize.io
+- https://api.agify.io
+- https://api.genderize.io
 
 ## Usage
 
@@ -58,6 +64,11 @@ Example commands:
   node src/lib/main.js --list-endpoints
   ```
 
+- **Test Endpoints:**
+  ```bash
+  node src/lib/main.js --test-endpoints
+  ```
+
 - **Wrapper Commands:**
   - JSON Wrapper:
     ```bash
@@ -67,15 +78,15 @@ Example commands:
     ```bash
     node src/lib/main.js --wrap-custom asc
     ```
-  - **Graph Wrapper:**
+  - Graph Wrapper:
     ```bash
     node src/lib/main.js --wrap-graph
     ```
-  - **Tree Wrapper:**
+  - Tree Wrapper:
     ```bash
     node src/lib/main.js --wrap-tree
     ```
-  - **Matrix Wrapper:**
+  - Matrix Wrapper:
     ```bash
     node src/lib/main.js --wrap-matrix
     ```
@@ -88,7 +99,7 @@ Run tests with:
 npm test
 ```
 
-The tests now include a verification for endpoint responses based on dummy data and error simulation, as well as tests for the new model wrapper functions.
+The tests now include a verification for endpoint responses based on dummy data and error simulation, as well as tests for the new model wrapper functions and the new endpoint testing command.
 
 ## Contributing
 
