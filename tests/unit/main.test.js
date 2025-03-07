@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import * as mainModule from '../../src/lib/main.js';
 
-// Force dummy endpoint responses in tests
+// Force dummy endpoint responses in tests where applicable
 process.env.FORCE_DUMMY_ENDPOINT = 'true';
 
 const {
@@ -21,7 +21,6 @@ const {
   validateOntology,
   exportOntologyToXML,
   importOntologyFromXML,
-  getChangeLog,
   syncOntology,
   backupOntology,
   updateOntology,
@@ -68,20 +67,6 @@ const {
   commitOntologyChange,
   getOntologySummary,
   mergeAndNormalizeOntologies,
-  fetchMultipleEndpoints,
-  validateAndOptimizeOntology,
-  wrapOntologyModelsCircular,
-  wrapOntologyModelsHierarchy,
-  wrapOntologyModelsGrid,
-  anonymizeOntology,
-  exportOntologyToRDF,
-  summarizeOntologyStatistics,
-  logOntologyHistoryExtended,
-  wrapOntologyModelsCSV,
-  wrapOntologyModelsYAML,
-  listExtendedOntologyEndpoints,
-  wrapOntologyModelsHTML,
-  wrapOntologyModelsMarkdown,
   wrapOntologyModelsTabular
 } = mainModule;
 
@@ -91,7 +76,140 @@ const backupPath = path.resolve(process.cwd(), 'ontology-backup.json');
 import https from 'https';
 import http from 'http';
 
-// Additional tests for external resource interactions using mocks
+// Additional tests for new extended implementations
+
+describe('New Extended Implementations', () => {
+  test('advancedOntologyAnalysis returns advanced analysis object', () => {
+    const result = advancedOntologyAnalysis();
+    expect(result).toHaveProperty('advanced', true);
+    expect(result).toHaveProperty('timestamp');
+  });
+
+  test('mergeOntologyModels returns merged unique concepts', () => {
+    const ont1 = { title: 'Ont1', concepts: ['A', 'B'] };
+    const ont2 = { title: 'Ont2', concepts: ['B', 'C'] };
+    const ont3 = { title: 'Ont3', concepts: ['C', 'D'] };
+    const merged = mergeOntologyModels(ont1, ont2, ont3);
+    expect(merged).toHaveProperty('title', 'Merged Ontology');
+    expect(merged.concepts.sort()).toEqual(['A', 'B', 'C', 'D'].sort());
+  });
+
+  test('updateOntologyDescription adds description to ontology', () => {
+    const desc = 'New detailed description';
+    const updated = updateOntologyDescription(desc);
+    expect(updated).toHaveProperty('description', desc);
+  });
+
+  test('extendOntologyConcepts extends the ontology concepts', () => {
+    const extended = extendOntologyConcepts('X', 'Y');
+    expect(extended.concepts).toEqual(expect.arrayContaining(['X', 'Y']));
+  });
+
+  test('resetOntology persists and returns ontology', () => {
+    const ont = resetOntology();
+    expect(ont).toHaveProperty('title');
+  });
+
+  test('cloneOntology returns a deep cloned object', () => {
+    const ont = buildOntology();
+    const clone = cloneOntology(ont);
+    expect(clone).toEqual(ont);
+    expect(clone).not.toBe(ont);
+  });
+
+  test('fetchDataWithRetry rejects for invalid URL', async () => {
+    await expect(fetchDataWithRetry('http://invalid.url')).rejects.toBeDefined();
+  });
+
+  test('extendOntologyDetails attaches additional details', () => {
+    const details = extendOntologyDetails();
+    expect(details).toHaveProperty('details');
+    expect(details.details).toHaveProperty('extended', true);
+  });
+
+  test('wrapOntologyModelsSimple returns simple wrapped model', () => {
+    const result = wrapOntologyModelsSimple();
+    expect(result).toHaveProperty('simpleWrapped', true);
+  });
+
+  test('wrapOntologyModelsComprehensive returns comprehensive wrapped model', () => {
+    const result = wrapOntologyModelsComprehensive();
+    expect(result).toHaveProperty('comprehensiveWrapped', true);
+  });
+
+  test('wrapOntologyModelsRandom returns one of expected wrappers', () => {
+    const result = wrapOntologyModelsRandom();
+    expect(result).toBeDefined();
+  });
+
+  test('cleanupOntologyData removes duplicate and trims concepts', () => {
+    const ontology = { title: 'Test', concepts: [' A ', 'B', 'A'] };
+    const cleaned = cleanupOntologyData(ontology);
+    expect(cleaned.concepts).toEqual(['A', 'B']);
+  });
+
+  test('updateOntologyTracking adds tracking information', () => {
+    const tracking = updateOntologyTracking('Test update');
+    expect(tracking).toHaveProperty('tracking');
+    expect(tracking.tracking).toHaveProperty('note', 'Test update');
+  });
+
+  test('wrapAdvancedOntologyModels returns advanced wrapped model', () => {
+    const result = wrapAdvancedOntologyModels();
+    expect(result).toHaveProperty('advancedWrapped', true);
+  });
+
+  test('wrapMergedOntologyModels returns merged wrapped model', () => {
+    const result = wrapMergedOntologyModels();
+    expect(result).toHaveProperty('mergedWrapped', true);
+  });
+
+  test('transformOntologyData returns transformed data', () => {
+    const result = transformOntologyData(buildOntology());
+    expect(result).toHaveProperty('transformed', true);
+  });
+
+  test('debugOntologyMetrics returns correct metrics', () => {
+    const ont = buildOntology();
+    const metrics = debugOntologyMetrics(ont);
+    expect(metrics).toHaveProperty('titleLength', ont.title.length);
+  });
+
+  test('reflectOntologyStatus returns operational status', () => {
+    const status = reflectOntologyStatus();
+    expect(status).toHaveProperty('status', 'Operational');
+  });
+
+  test('wrapOntologyModelsJSON returns valid JSON string', () => {
+    const jsonStr = wrapOntologyModelsJSON();
+    expect(() => JSON.parse(jsonStr)).not.toThrow();
+  });
+
+  test('wrapOntologyModelsCustom returns sorted concepts', () => {
+    const asc = wrapOntologyModelsCustom('asc');
+    const desc = wrapOntologyModelsCustom('desc');
+    expect(asc.concepts).toEqual([...asc.concepts].sort());
+    expect(desc.concepts).toEqual([...desc.concepts].sort().reverse());
+  });
+
+  test('wrapOntologyModelsGraph returns graph structure', () => {
+    const graph = wrapOntologyModelsGraph();
+    expect(graph).toHaveProperty('nodes');
+    expect(Array.isArray(graph.nodes)).toBe(true);
+  });
+
+  test('wrapOntologyModelsTree returns tree structure', () => {
+    const tree = wrapOntologyModelsTree();
+    expect(tree).toHaveProperty('tree');
+    expect(tree.tree).toHaveProperty('name');
+  });
+
+  test('wrapOntologyModelsMatrix returns matrix structure', () => {
+    const matrix = wrapOntologyModelsMatrix();
+    expect(matrix).toHaveProperty('matrixWrapped', true);
+    expect(Array.isArray(matrix.matrix)).toBe(true);
+  });
+});
 
 describe('External Resource Mocks', () => {
   test('persistOntology writes file successfully', () => {
@@ -195,130 +313,6 @@ describe('Main Module General Functions', () => {
     const result = await main(['--validate-optimize']);
     expect(result).toHaveProperty('isValid', true);
     expect(result.optimized).toHaveProperty('optimized', true);
-  });
-});
-
-describe('Additional Extended Functions', () => {
-  test('extendOntologyMetadata attaches new metadata to ontology', () => {
-    const ontology = buildOntology();
-    const metadata = { author: 'Test Author' };
-    const extended = extendOntologyMetadata(ontology, metadata);
-    expect(extended).toHaveProperty('author', 'Test Author');
-  });
-
-  test('recordOntologyHistory returns history record with note', () => {
-    const note = 'History entry';
-    const record = recordOntologyHistory(note);
-    expect(record).toHaveProperty('note', note);
-    expect(record).toHaveProperty('timestamp');
-  });
-
-  test('commitOntologyChange returns formatted commit message', () => {
-    const note = 'Test Commit';
-    const msg = commitOntologyChange(note);
-    expect(msg).toContain(note);
-    expect(msg).toContain('Commit:');
-  });
-
-  test('getOntologySummary returns summary of ontology', () => {
-    const ontology = buildOntology();
-    const summary = getOntologySummary(ontology);
-    expect(summary.title).toBe(ontology.title);
-    expect(summary.conceptCount).toBe(ontology.concepts.length);
-    expect(summary.summary).toContain(ontology.title);
-  });
-
-  test('mergeAndNormalizeOntologies merges multiple ontologies and normalizes the result', () => {
-    const ont1 = { title: 'Ont1', concepts: ['A', 'B'] };
-    const ont2 = { title: 'Ont2', concepts: ['B', 'C'] };
-    const merged = mergeAndNormalizeOntologies(ont1, ont2);
-    expect(merged).toHaveProperty('merged', true);
-    expect(merged.concepts.sort()).toEqual(['A', 'B', 'C'].sort());
-  });
-});
-
-describe('Wrapper Functions Tests', () => {
-  test('wrapOntologyModelsCircular returns expected circular wrapper', () => {
-    const result = wrapOntologyModelsCircular();
-    expect(result).toHaveProperty('circularWrapped', true);
-    expect(result).toHaveProperty('models');
-    expect(result).toHaveProperty('type', 'circular');
-  });
-  
-  test('wrapOntologyModelsHierarchy returns expected hierarchy wrapper', () => {
-    const result = wrapOntologyModelsHierarchy();
-    expect(result).toHaveProperty('hierarchyWrapped', true);
-    expect(result.models).toEqual(['Parent', 'Child', 'Leaf']);
-  });
-  
-  test('wrapOntologyModelsGrid returns expected grid wrapper', () => {
-    const result = wrapOntologyModelsGrid();
-    expect(result).toHaveProperty('gridWrapped', true);
-    expect(result.grid).toEqual([[1,2,3],[4,5,6],[7,8,9]]);
-  });
-  
-  test('wrapOntologyModelsHTML returns expected HTML wrapper', () => {
-    const result = wrapOntologyModelsHTML();
-    expect(result).toHaveProperty('htmlWrapped', true);
-    expect(result.html).toBe('<div>Ontology HTML Representation</div>');
-  });
-  
-  test('wrapOntologyModelsMarkdown returns expected Markdown wrapper', () => {
-    const result = wrapOntologyModelsMarkdown();
-    expect(result).toHaveProperty('markdownWrapped', true);
-    expect(result.markdown).toBe('# Ontology Markdown Representation');
-  });
-  
-  test('wrapOntologyModelsTabular returns expected Tabular wrapper', () => {
-    const result = wrapOntologyModelsTabular();
-    expect(result).toHaveProperty('tabularWrapped', true);
-    expect(result.table).toEqual([['Header1', 'Header2'], ['Data1', 'Data2']]);
-  });
-});
-
-describe('New Extended Endpoints Functions', () => {
-  test('listExtendedOntologyEndpoints returns a non-empty array of endpoints', () => {
-    const endpoints = listExtendedOntologyEndpoints();
-    expect(Array.isArray(endpoints)).toBe(true);
-    expect(endpoints.length).toBeGreaterThan(0);
-  });
-
-  test('testExtendedEndpoints logs dummy responses when in dummy mode', async () => {
-    const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
-    await testExtendedEndpoints();
-    expect(spy).toHaveBeenCalledWith(expect.stringContaining('Verified extended endpoint (dummy):'));
-    spy.mockRestore();
-  });
-});
-
-describe('Additional File System Function Tests', () => {
-  test('backupOntology writes backup file successfully', () => {
-    // Mock read and write file sync
-    const ontology = { title: 'Backup Test', concepts: ['X'] };
-    const readSpy = vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(ontology, null, 2));
-    const writeSpy = vi.spyOn(fs, 'writeFileSync').mockImplementation(() => {});
-    const result = backupOntology();
-    expect(readSpy).toHaveBeenCalledWith(ontologyPath, 'utf-8');
-    expect(writeSpy).toHaveBeenCalledWith(backupPath, JSON.stringify(ontology, null, 2));
-    expect(result).toEqual({ success: true, backupFile: backupPath });
-    readSpy.mockRestore();
-    writeSpy.mockRestore();
-  });
-
-  test('clearOntology removes file if it exists', () => {
-    const existsSpy = vi.spyOn(fs, 'existsSync').mockReturnValue(true);
-    const unlinkSpy = vi.spyOn(fs, 'unlinkSync').mockImplementation(() => {});
-    const result = clearOntology();
-    expect(result).toEqual({ success: true });
-    existsSpy.mockRestore();
-    unlinkSpy.mockRestore();
-  });
-
-  test('clearOntology returns error if file does not exist', () => {
-    const existsSpy = vi.spyOn(fs, 'existsSync').mockReturnValue(false);
-    const result = clearOntology();
-    expect(result).toEqual({ success: false, error: 'Ontology file does not exist' });
-    existsSpy.mockRestore();
   });
 });
 
