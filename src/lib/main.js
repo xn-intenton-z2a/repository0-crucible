@@ -1,8 +1,9 @@
 #!/usr/bin/env node
 
 // owl-builder CLI Tool
-// Refactored to align with our mission statement: Building robust OWL ontologies exclusively from verified public data sources. Any drift from legacy simulation endpoints or redundant demo code has been pruned.
-// All functions now strictly focus on ontology building, integration, analysis, and enhanced metadata management.
+// Refactored to align with our mission statement: Building robust OWL ontologies exclusively from verified public data sources.
+// Legacy simulation endpoints and redundant/demo code have been pruned.
+// Enhanced inline documentation added for maintainability and testing.
 
 import fs from 'fs';
 import path from 'path';
@@ -297,7 +298,7 @@ export function displayHelp() {
 }
 
 export function getVersion() {
-  return '0.0.21';
+  return '0.0.22';
 }
 
 export function listCommands() {
