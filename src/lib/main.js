@@ -12,6 +12,7 @@
  *   - Export/import OWL (XML) representations
  *   - Crawl public endpoints and create backups
  *   - Wrap and enrich ontology models with additional metadata
+ *   - Serve a simple web interface for monitoring and diagnostics
  *
  * For Developers:
  *   Follow the CONTRIBUTING guidelines to extend or modify functionalities. Ensure to update tests and documentation when changes are made.
@@ -210,6 +211,18 @@ export function wrapOntologyModel(model) {
   return model;
 }
 
+// Starts a simple web server to serve minimal diagnostic info and status
+export function serveWebServer() {
+  const port = process.env.PORT || 3000;
+  const server = http.createServer((req, res) => {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('owl-builder Web Server Running\n');
+  });
+  server.listen(port, () => {
+    console.log(`Web server started at http://localhost:${port}`);
+  });
+}
+
 // CLI Command Actions
 const commandActions = {
   "--help": async (args) => { displayHelp(); },
@@ -326,6 +339,10 @@ const commandActions = {
     const diag = { FORCE_DUMMY: process.env.FORCE_DUMMY_ENDPOINT || 'not set' };
     console.log("Diagnostics:", diag);
     return diag;
+  },
+  "--serve": async (args) => {
+    serveWebServer();
+    return 'Web server started';
   }
 };
 
@@ -342,7 +359,7 @@ export async function main(args = process.argv.slice(2)) {
 
 // Displays help information for using the CLI.
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --diagnostics`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --diagnostics, --serve`);
 }
 
 export function getVersion() {
