@@ -16,11 +16,12 @@
 // - Added new function cleanupAndTransformOntology and CLI command --clean-transform to combine cleanup and transformation of ontology data.
 // - Extended library with new functions: fetchAdditionalEndpointData, combineOntologyMetrics, updateOntologyTracking.
 // - New CLI commands added: --fetch-additional, --combine-metrics, and --update-tracking.
-// 
+//
 // UPDATED CHANGE LOG:
 // - Refocused the library exclusively on building ontologies from public data sources.
 // - Pruned legacy endpoints and code drift to concentrate on public API integration.
 // - Updated version to 0.0.14.
+// - README refreshed per CONTRIBUTING guidelines, with outdated content pruned and examples updated.
 
 import os from "os";
 import fs from "fs";
