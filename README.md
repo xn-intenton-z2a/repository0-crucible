@@ -11,6 +11,7 @@ owl-builder is a powerful CLI tool and JavaScript library designed to help you b
 - [Installation](#installation)
 - [Usage](#usage)
   - [For Casual Users](#for-casual-users)
+  - [Using Real Endpoints for Meaningful OWL Output](#using-real-endpoints-for-meaningful-owl-output)
   - [For Developers](#for-developers)
   - [Running the Web Server](#running-the-web-server)
   - [For the Scientific Community](#for-the-scientific-community)
@@ -35,7 +36,7 @@ owl-builder is a CLI tool and library refocused on building OWL ontologies by le
 - **Data Persistence:** Persist, load, backup, and clear ontology data stored in JSON files.
 - **Querying:** Perform queries against ontology concepts.
 - **OWL Export/Import:** Convert ontology objects to a simple OWL XML format and import from XML strings.
-- **Data Crawling:** Crawl multiple public endpoints to collect data and generate OWL representations. (Endpoints include the following and return dummy data when FORCE_DUMMY_ENDPOINT is set to true: https://api.publicapis.org/entries, https://dog.ceo/api/breeds/image/random, https://jsonplaceholder.typicode.com/posts, https://api.coindesk.com/v1/bpi/currentprice.json, https://api.github.com, https://jsonplaceholder.typicode.com/comments, https://dummyjson.com/products, https://randomuser.me/api/, https://catfact.ninja/fact, https://jsonplaceholder.typicode.com/todos)
+- **Data Crawling:** Crawl multiple public endpoints to collect data and generate OWL representations. (*By default, dummy data is used. Set `FORCE_DUMMY_ENDPOINT` to `false` for real data.*)
 - **Ontology Model Wrappers:** Offers both basic and advanced OWL model wrappers with additional metadata support.
 - **Diagnostics:** Output environment diagnostics for troubleshooting.
 - **Web Server:** Built-in web server for real-time ontology status and monitoring.
@@ -76,16 +77,38 @@ node src/lib/main.js --help
   node src/lib/main.js --export
   ```
 
-- **Run Data Crawling (with dummy data by default):**
+- **Run Data Crawling with Dummy Data (default):**
   ```bash
   node src/lib/main.js --crawl
   ```
 
-Set `FORCE_DUMMY_ENDPOINT` to `false` to perform real network requests:
+### Using Real Endpoints for Meaningful OWL Output
+
+To retrieve real data from public endpoints and generate meaningful OWL XML output, disable the dummy data mode by setting the environment variable `FORCE_DUMMY_ENDPOINT` to `false`. For example:
 
 ```bash
 FORCE_DUMMY_ENDPOINT=false node src/lib/main.js --crawl
 ```
+
+**Expected output:**
+
+```json
+[
+  {
+    "endpoint": "https://api.publicapis.org/entries",
+    "data": "{...actual response data...}",
+    "owlContent": "<ontology><title>Public Data Ontology</title></ontology>"
+  },
+  {
+    "endpoint": "https://dog.ceo/api/breeds/image/random",
+    "data": "{...actual response data...}",
+    "owlContent": "<ontology><title>Public Data Ontology</title></ontology>"
+  }
+  // ... additional endpoints
+]
+```
+
+This output demonstrates that the tool is fetching live data from real endpoints and converting the ontology to a standard OWL XML format.
 
 ### For Developers
 
@@ -226,6 +249,7 @@ Please review the [CONTRIBUTING.md](CONTRIBUTING.md) file before contributing. W
   - Updated mission statement and documentation to reflect the new focus.
   - Updated sample ontology title to "Public Data Ontology" in core functions and tests.
   - Extended OWL model wrappers and updated changelog.
+  - **Documentation Update:** Added detailed CLI execution examples demonstrating how to obtain meaningful OWL output from real endpoints.
 
 - **Version 0.0.26**
   - Previous changes and additions.
