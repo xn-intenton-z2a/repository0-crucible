@@ -78,12 +78,11 @@ npm test
 
 ## Changelog
 
-- **Version 0.0.20**
-  - Refocused the library solely on building OWL ontologies from verified public data sources.
-  - Removed legacy endpoints and redundant simulated implementations.
-  - Extended functionality with enhanced wrappers, metadata management, and advanced analysis commands.
+- **Version 0.0.21**
+  - Refocused the library solely on building robust OWL ontologies from verified public data sources.
+  - Removed legacy simulation endpoints and redundant/demo code in alignment with our contributing guidelines.
+  - Updated extended functionalities including wrappers, metadata management, and advanced analysis commands.
   - **New:** Added functions: validateAndOptimizeOntology, anonymizeOntology, exportOntologyToRDF, summarizeOntologyStatistics, logOntologyHistoryExtended, and fetchMultipleEndpoints.
-  - Updated changelog to reflect these refocusing changes.
 
 ## Contributing
 
