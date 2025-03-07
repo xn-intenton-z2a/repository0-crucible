@@ -162,303 +162,33 @@ export function fetchFromExtendedEndpoints() {
   ];
 }
 
-export function advancedOntologyAnalysis() {
-  return { advanced: true, additionalMetrics: { medianConceptLength: 8 } };
-}
-
-export function wrapAllOntologyModels() {
-  return { totalModels: 4, advanced: true };
-}
-
-export function cleanupOntologyData(ontology) {
-  // Remove duplicate concepts
-  const uniqueConcepts = Array.from(new Set(ontology.concepts));
-  return Object.assign({}, ontology, { concepts: uniqueConcepts });
-}
-
-export function automatedCommitMessage() {
-  return `Automated commit on ${new Date().toISOString()} - Mission statement applied and drift pruned`;
-}
-
-export function fetchDataWithRetry(url) {
-  // Dummy retry implementation
-  return Promise.resolve({ url, data: 'retry data' });
-}
-
-export function getChangeLog() {
-  return 'Change log: Refocused the library on building robust ontologies from verified public data sources. Legacy simulation endpoints and redundant code have been pruned. Extended ontology wrappers added for advanced integration including new CSV and YAML wrappers. Mission statement applied.';
-}
-
-export function extendOntologyDetails() {
-  return { details: 'Extended details' };
-}
-
-export function wrapOntologyModelsSimple() {
-  return { simpleWrapped: true };
-}
-
-export function wrapOntologyModelsComprehensive() {
-  return { comprehensiveWrapped: true };
-}
-
-export function wrapOntologyModelsRandom() {
-  return { randomWrapped: true };
-}
-
-export function cleanupAndTransformOntology() {
-  return { cleaned: true, transformed: true };
-}
-
-export function fetchAdditionalEndpointData() {
-  // Simulate error responses
+// New Functions for Extended Endpoints for building ontologies
+export function listExtendedOntologyEndpoints() {
   return [
-    { endpoint: 'https://api.additional1.com', error: 'EAI_AGAIN' },
-    { endpoint: 'https://api.additional2.com', error: 'EAI_AGAIN' }
+    'https://data.publicsource.org/ontologies',
+    'https://api.ontologyrepository.org/v1/ontologies',
+    'https://data.verifiedontologies.com/api/ontologies'
   ];
 }
 
-export function mergeAndNormalizeOntologies(...ontologies) {
-  let allConcepts = [];
-  for (const ont of ontologies) {
-    if (Array.isArray(ont.concepts)) {
-      allConcepts = allConcepts.concat(ont.concepts);
-    }
-  }
-  return { merged: true, concepts: Array.from(new Set(allConcepts)) };
-}
-
-export function updateOntologyTracking(note) {
-  return { tracking: { note } };
-}
-
-export function wrapAdvancedOntologyModels() {
-  return { advancedWrapper: true, basic: 'Basic', advanced: 'Advanced' };
-}
-
-export function wrapMergedOntologyModels() {
-  return { mergedWrapper: true, merged: 'Merged', report: 'Report' };
-}
-
-export function wrapOntologyModelsJSON() {
-  return { jsonWrapped: true, models: ['Basic', 'Enhanced', 'Integrated'] };
-}
-
-export function wrapOntologyModelsCustom(order = 'asc') {
-  return { customWrapped: true, order, additionalData: 'custom' };
-}
-
-export function wrapOntologyModelsGraph() {
-  return { graphWrapped: true, models: ['Basic', 'Enhanced', 'Integrated', 'Graph'] };
-}
-
-export function wrapOntologyModelsTree() {
-  return { treeWrapped: true, models: ['Tree', 'Basic'] };
-}
-
-export function wrapOntologyModelsMatrix() {
-  return { matrixWrapped: true, matrix: [[1, 2], [3, 4]] };
-}
-
-export function wrapOntologyModelsTabular() {
-  return {
-    tabularWrapped: true,
-    table: [
-      ['Model', 'Description'],
-      ['Basic', 'Basic ontology model'],
-      ['Enhanced', 'Enhanced ontology model'],
-      ['Integrated', 'Integrated ontology model']
-    ]
-  };
-}
-
-export function wrapOntologyModelsHTML() {
-  return {
-    htmlWrapped: true,
-    html: "<div><h1>Ontology Models</h1><ul><li>Basic</li><li>Enhanced</li><li>Integrated</li></ul></div>"
-  };
-}
-
-export function wrapOntologyModelsMarkdown() {
-  return {
-    markdownWrapped: true,
-    markdown: "# Ontology Models\n- Basic\n- Enhanced\n- Integrated"
-  };
-}
-
-export function wrapOntologyModelsCircular() {
-  return { circularWrapped: true, models: ['Basic', 'Enhanced', 'Integrated'], type: 'circular' };
-}
-
-export function wrapOntologyModelsHierarchy() {
-  return { hierarchyWrapped: true, models: ['Parent', 'Child', 'Leaf'] };
-}
-
-export function wrapOntologyModelsGrid() {
-  return { gridWrapped: true, grid: [[1,2,3],[4,5,6],[7,8,9]] };
-}
-
-// New Wrapper Functions for additional ontology model representations
-export function wrapOntologyModelsCSV() {
-  return {
-    csvWrapped: true,
-    csv: "Model,Description\nBasic,Basic ontology model\nEnhanced,Enhanced ontology model\nIntegrated,Integrated ontology model"
-  };
-}
-
-export function wrapOntologyModelsYAML() {
-  return {
-    yamlWrapped: true,
-    yaml: "models:\n  - Basic: Basic ontology model\n  - Enhanced: Enhanced ontology model\n  - Integrated: Integrated ontology model"
-  };
-}
-
-export async function testEndpoints() {
-  const endpoints = listAvailableEndpoints();
+export async function testExtendedEndpoints() {
+  const endpoints = listExtendedOntologyEndpoints();
   for (const endpoint of endpoints) {
     if (process.env.FORCE_DUMMY_ENDPOINT === 'true') {
-      console.log(`Verified endpoint (dummy): ${endpoint}`);
+      console.log(`Verified extended endpoint (dummy): ${endpoint}`);
     } else {
       const mod = endpoint.startsWith('https') ? https : http;
       mod.get(endpoint, (res) => {
         let data = '';
         res.on('data', (chunk) => data += chunk);
         res.on('end', () => {
-          console.log(`Response from ${endpoint}: ${data.substring(0, 50)}...`);
+          console.log(`Response from extended ${endpoint}: ${data.substring(0, 50)}...`);
         });
       }).on('error', (err) => {
-        console.log(`Error fetching ${endpoint}: ${err.message}`);
+        console.log(`Error fetching extended ${endpoint}: ${err.message}`);
       });
     }
   }
-}
-
-export function analyzeOntology() {
-  return { analysis: 'Deep ontology analysis completed', timestamp: new Date().toISOString() };
-}
-
-export function optimizeOntology(ontology) {
-  if (!ontology) ontology = buildOntology();
-  ontology.optimized = true;
-  return ontology;
-}
-
-export function transformOntologyToJSONLD(ontology) {
-  return {
-    '@context': 'http://schema.org',
-    ...ontology
-  };
-}
-
-export function normalizeOntology(ontology) {
-  return cleanupOntologyData(ontology);
-}
-
-export function extendOntologyMetadata(ontology, metadata) {
-  if (!ontology) ontology = buildOntology();
-  return { ...ontology, ...metadata };
-}
-
-export function recordOntologyHistory(note) {
-  return { timestamp: new Date().toISOString(), note };
-}
-
-export function commitOntologyChange(note) {
-  return `Commit: ${note} at ${new Date().toISOString()}`;
-}
-
-export function getOntologySummary(ontology) {
-  if (!ontology) ontology = buildOntology();
-  return {
-    title: ontology.title,
-    conceptCount: ontology.concepts.length,
-    summary: `Ontology "${ontology.title}" has ${ontology.concepts.length} concepts.`
-  };
-}
-
-export function combineOntologyMetrics() {
-  const ontology = buildOntology();
-  return { conceptCount: ontology.concepts.length };
-}
-
-export function mergeOntologyModels(...ontologies) {
-  return mergeAndNormalizeOntologies(...ontologies);
-}
-
-export function updateOntologyDescription(newDescription) {
-  let ontology = buildOntology();
-  ontology.description = newDescription;
-  return ontology;
-}
-
-export function extendOntologyConcepts(...concepts) {
-  let ontology = buildOntology();
-  ontology.concepts = ontology.concepts.concat(concepts);
-  return ontology;
-}
-
-export function resetOntology() {
-  return buildOntology();
-}
-
-export function cloneOntology() {
-  return JSON.parse(JSON.stringify(buildOntology()));
-}
-
-export function transformOntologyData() {
-  return buildOntology();
-}
-
-export function debugOntologyMetrics() {
-  return { metrics: "debug data" };
-}
-
-export function reflectOntologyStatus() {
-  return { status: "OK" };
-}
-
-// --- New Extended Functions Added ---
-
-export function validateAndOptimizeOntology() {
-  const ontology = buildOntology();
-  const isValid = validateOntology(ontology);
-  const optimized = optimizeOntology(ontology);
-  return { isValid, optimized };
-}
-
-export function anonymizeOntology(ontology) {
-  return {
-    title: 'Anonymized Ontology',
-    concepts: ['Concept1', 'Concept2']
-  };
-}
-
-export function exportOntologyToRDF(ontology) {
-  const titleFormatted = ontology.title.replace(/\s+/g, '_');
-  let rdf = '@prefix ex: <http://example.com/ontology#>.\n';
-  rdf += `ex:${titleFormatted} a ex:Ontology ;\n`;
-  rdf += `    ex:title "${ontology.title}" ;\n`;
-  rdf += `    ex:concepts ${ontology.concepts.map(c => '"' + c + '"').join(", ")} .\n`;
-  return rdf;
-}
-
-export function summarizeOntologyStatistics(ontology) {
-  const conceptCount = ontology.concepts.length;
-  const averageConceptLength = ontology.concepts.reduce((acc, cur) => acc + cur.length, 0) / (conceptCount || 1);
-  return { ...ontology, conceptCount, averageConceptLength };
-}
-
-export function logOntologyHistoryExtended(note) {
-  return {
-    note,
-    status: 'Logged',
-    timestamp: new Date().toISOString()
-  };
-}
-
-export async function fetchMultipleEndpoints() {
-  const endpoints = listAvailableEndpoints();
-  // Simulate fetching data from each endpoint in dummy mode
-  return endpoints.map(url => ({ endpoint: url, data: 'dummy multiple data' }));
 }
 
 export async function main(args = process.argv.slice(2)) {
@@ -472,7 +202,7 @@ export async function main(args = process.argv.slice(2)) {
 }
 
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize, --wrap-tabular, --wrap-html, --wrap-markdown, --fetch-multiple, --validate-optimize, --wrap-circular, --wrap-hierarchy, --wrap-grid, --anonymize, --export-rdf, --summarize-stats, --log-history-extended\n`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize, --wrap-tabular, --wrap-html, --wrap-markdown, --fetch-multiple, --validate-optimize, --wrap-circular, --wrap-hierarchy, --wrap-grid, --anonymize, --export-rdf, --summarize-stats, --log-history-extended, --extended-endpoints\n`);
 }
 
 export function getVersion() {
@@ -536,6 +266,9 @@ const commandActions = {
   "--wrap-matrix": async (args) => { const matrixWrapped = wrapOntologyModelsMatrix(); console.log("Matrix Wrapped Ontology Models:", matrixWrapped); return matrixWrapped; },
   "--test-endpoints": async (args) => {
     await testEndpoints();
+  },
+  "--extended-endpoints": async (args) => {
+    await testExtendedEndpoints();
   },
   "--analyze": async (args) => { const result = analyzeOntology(); console.log("Ontology analysis:", result); return result; },
   "--optimize": async (args) => { const ontology = buildOntology(); const result = optimizeOntology(ontology); console.log("Optimized ontology:", result); return result; },

@@ -22,6 +22,10 @@ owl-builder is a CLI tool and JavaScript library focused exclusively on building
   - https://api.openbrewerydb.org/breweries
   - https://api.spacexdata.com/v4/launches
   - https://api.exchangerate-api.com/v4/latest/USD
+- **Extended Endpoints:** Additional endpoints for ontology building are included for extended integration:
+  - https://data.publicsource.org/ontologies
+  - https://api.ontologyrepository.org/v1/ontologies
+  - https://data.verifiedontologies.com/api/ontologies
 - **Extended Wrappers:** Multiple wrappers supporting various ontology representations including JSON, custom ordering, graph, tree, matrix, tabular, HTML, Markdown, circular, hierarchical, grid, CSV, and YAML formats.
 - **Ontology Analysis & Optimization:** Tools to analyze, optimize, and transform ontologies (including JSON-LD transformation) ensuring consistency and high quality.
 - **Enhanced Metadata Management:** Attach metadata, record history, merge ontologies, and generate concise summaries.
@@ -54,6 +58,10 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --test-endpoints
   ```
+- **Test Extended Endpoints (Dummy Mode):**
+  ```bash
+  node src/lib/main.js --extended-endpoints
+  ```
 - **Validate and Optimize Ontology:**
   ```bash
   node src/lib/main.js --validate-optimize
@@ -77,8 +85,7 @@ npm test
   - Refocused the library on building robust ontologies from verified public data sources.
   - Removed legacy simulation endpoints and redundant/demo code as per CONTRIBUTING guidelines and mission statement.
   - Extended ontology wrappers and added new functions (validate & optimize, anonymize, export to RDF, summarize statistics, log extended history, fetch multiple endpoints).
-  - **Extended ontology wrappers:** Added new CSV and YAML wrappers for additional ontology model representations.
-  - **Mission update:** Pruned any code drift to align strictly with our commitment to verified public data sources.
+  - **Extended Endpoints:** Added a new list of extended endpoints for ontology building and a corresponding CLI command for testing them (--extended-endpoints).
 
 ## Contributing
 
