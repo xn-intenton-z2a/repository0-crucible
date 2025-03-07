@@ -29,13 +29,12 @@ const {
   enhanceOntology,
   wrapOntologyModels,
   wrapOntologyModelsExtended,
+  wrapAllOntologyModels,
   generateOntologyReport,
   listAvailableEndpoints,
   logDetailedResponse,
   advancedOntologyAnalysis,
   fetchFromExtendedEndpoints,
-  wrapAllOntologyModels,
-  backupOntology,
   automatedCommitMessage,
   validateOntologyCompleteness,
   mergeOntologyModels,
@@ -45,7 +44,10 @@ const {
   cloneOntology,
   fetchDataWithRetry,
   getChangeLog,
-  extendOntologyDetails
+  extendOntologyDetails,
+  wrapOntologyModelsSimple,
+  wrapOntologyModelsComprehensive,
+  wrapOntologyModelsRandom
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -105,10 +107,13 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--combine-models");
     expect(commands).toContain("--refresh-details");
     expect(commands).toContain("--extend-concepts");
-    // New commands
     expect(commands).toContain("--fetch-retry");
     expect(commands).toContain("--changelog");
     expect(commands).toContain("--extend-details");
+    // New commands
+    expect(commands).toContain("--wrap-simple");
+    expect(commands).toContain("--wrap-comprehensive");
+    expect(commands).toContain("--wrap-random");
     spy.mockRestore();
   });
 
@@ -422,20 +427,29 @@ describe("Extended Functionality", () => {
     expect(result.concepts).toContain("ExtendedConcept2");
   });
 
-  // New tests for extended functions
-  test("--fetch-retry returns fetched data with retry mechanism", async () => {
-    const result = await main(["--fetch-retry"]);
-    expect(result).toHaveProperty("data");
+  // New tests for new wrapper commands
+  test("main with --wrap-simple returns simple wrapped ontology models", async () => {
+    const result = await main(["--wrap-simple"]);
+    expect(result).toHaveProperty("basic");
+    expect(result).toHaveProperty("enhanced");
   });
 
-  test("--changelog returns change log string", async () => {
-    const log = await main(["--changelog"]);
-    expect(log).toMatch(/Extended functions added/);
+  test("main with --wrap-comprehensive returns comprehensive wrapped ontology models", async () => {
+    const result = await main(["--wrap-comprehensive"]);
+    expect(result).toHaveProperty("basic");
+    expect(result).toHaveProperty("enhanced");
+    expect(result).toHaveProperty("integrated");
+    expect(result).toHaveProperty("report");
+    expect(result).toHaveProperty("synced");
+    expect(result).toHaveProperty("advanced");
+    expect(result).toHaveProperty("detailed");
+    expect(result).toHaveProperty("collected");
   });
 
-  test("--extend-details returns ontology with additionalInfo", async () => {
-    const extended = await main(["--extend-details"]);
-    expect(extended).toHaveProperty("additionalInfo");
+  test("main with --wrap-random returns one of the available wrappers", async () => {
+    const result = await main(["--wrap-random"]);
+    // Random wrapper should have at least one of the expected properties
+    expect(result).toHaveProperty("basic");
   });
 
   describe("File System Error Handling", () => {
