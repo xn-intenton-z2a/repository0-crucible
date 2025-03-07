@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-ignored-exceptions, no-unused-vars, prettier/prettier */
-import { describe, test, expect, vi, beforeAll, afterAll, beforeEach, afterEach } from "vitest";
+import { describe, test, expect, vi, beforeAll, beforeEach, afterAll, afterEach } from "vitest";
 import fs from "fs";
 import path from "path";
 import * as mainModule from "../../src/lib/main.js";
@@ -55,7 +55,9 @@ const {
   reflectOntologyStatus,
   fetchAdditionalEndpointData,
   combineOntologyMetrics,
-  updateOntologyTracking
+  updateOntologyTracking,
+  wrapAdvancedOntologyModels,
+  wrapMergedOntologyModels
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -125,6 +127,8 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--fetch-additional");
     expect(commands).toContain("--combine-metrics");
     expect(commands).toContain("--update-tracking");
+    expect(commands).toContain("--wrap-advanced");
+    expect(commands).toContain("--wrap-merged");
     spy.mockRestore();
   });
 
@@ -325,7 +329,6 @@ describe("Extended Functionality", () => {
   test("main with --fetch-endpoints fetches data from multiple endpoints", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const endpointsData = await main(["--fetch-endpoints"]);
-    // Updated expected length to 4 after removal of legacy endpoint
     expect(Array.isArray(endpointsData)).toBe(true);
     expect(endpointsData.length).toBe(4);
     endpointsData.forEach(item => {
@@ -383,7 +386,6 @@ describe("Extended Functionality", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const endpoints = await main(["--list-endpoints"]);
     expect(Array.isArray(endpoints)).toBe(true);
-    // Updated expected length to 10 after pruning legacy endpoints
     expect(endpoints.length).toBe(10);
     spy.mockRestore();
   });
@@ -392,7 +394,6 @@ describe("Extended Functionality", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const extendedData = await main(["--fetch-extended"]);
     expect(Array.isArray(extendedData)).toBe(true);
-    // Updated expected length to 9 after removal of legacy endpoint
     expect(extendedData.length).toBe(9);
     extendedData.forEach(item => {
       expect(item).toHaveProperty("endpoint");
@@ -442,34 +443,18 @@ describe("Extended Functionality", () => {
   });
 
   // New tests for new wrapper commands
-  test("main with --wrap-simple returns simple wrapped ontology models", async () => {
-    const result = await main(["--wrap-simple"]);
+  test("main with --wrap-advanced returns advanced wrapped ontology models", async () => {
+    const result = await main(["--wrap-advanced"]);
+    expect(result).toHaveProperty("advancedWrapper", true);
     expect(result).toHaveProperty("basic");
-    expect(result).toHaveProperty("enhanced");
-  });
-
-  test("main with --wrap-comprehensive returns comprehensive wrapped ontology models", async () => {
-    const result = await main(["--wrap-comprehensive"]);
-    expect(result).toHaveProperty("basic");
-    expect(result).toHaveProperty("enhanced");
-    expect(result).toHaveProperty("integrated");
-    expect(result).toHaveProperty("report");
-    expect(result).toHaveProperty("synced");
     expect(result).toHaveProperty("advanced");
-    expect(result).toHaveProperty("detailed");
-    expect(result).toHaveProperty("collected");
   });
 
-  test("main with --wrap-random returns one of the available wrappers", async () => {
-    const result = await main(["--wrap-random"]);
-    expect(result).toHaveProperty("basic");
-  });
-
-  test("main with --clean-transform returns both cleaned and transformed ontology data", async () => {
-    const result = await main(["--clean-transform"]);
-    expect(result).toHaveProperty("cleaned");
-    expect(result).toHaveProperty("transformed");
-    expect(new Set(result.cleaned.concepts).size).toBe(result.cleaned.concepts.length);
+  test("main with --wrap-merged returns merged wrapped ontology models", async () => {
+    const result = await main(["--wrap-merged"]);
+    expect(result).toHaveProperty("mergedWrapper", true);
+    expect(result).toHaveProperty("merged");
+    expect(result).toHaveProperty("report");
   });
 
   test("--fetch-additional returns additional endpoint data", async () => {

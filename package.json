@@ -1,7 +1,7 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
-  "version": "0.0.14",
-  "description": "Refocused CLI functionalities exclusively on building robust ontologies from public data sources. Legacy functionalities and endpoints have been pruned and extended ontology processing commands added per CONTRIBUTING guidelines. README refreshed accordingly.",
+  "version": "0.0.15",
+  "description": "Refocused CLI functionalities exclusively on building robust ontologies from public data sources. Legacy functionalities and endpoints have been pruned and extended ontology processing commands, including new wrappers, added per CONTRIBUTING guidelines. README refreshed accordingly.",
   "type": "module",
   "main": "src/lib/main.js",
   "scripts": {
