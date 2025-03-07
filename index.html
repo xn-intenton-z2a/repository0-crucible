@@ -23,22 +23,17 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="owl-builder" href="#owl-builder"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>owl-builder</h1>
-<p class="md-github">owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. This tool has been refocused on streamlined public API integration and extended ontology processing commands. Legacy functionalities have been pruned and the documentation has been refreshed in accordance with the CONTRIBUTING guidelines.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="changelog" href="#changelog"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Changelog</h2>
+<p class="md-github">owl-builder is a versatile CLI tool and JavaScript library designed for building, managing, and querying OWL ontologies extracted from diverse public data sources. The focus has been refactored to enhance public API integration and to provide extended ontology processing commands. Legacy implementations are pruned, and documentation is refreshed in accordance with our CONTRIBUTING guidelines.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Version 0.0.19</strong>
-<ul class="md-github">
-<li class="md-github">Pruned legacy drift by removing unused code and refactored comments to align with the Mission Statement.</li>
-<li class="md-github">Refreshed the README to align with CONTRIBUTING guidelines, updating and pruning outdated details.</li>
-<li class="md-github">Extended ontology processing functions and added new wrapper commands: <code class="md-github">wrapOntologyModelsJSON</code>, <code class="md-github">wrapOntologyModelsCustom</code>, <code class="md-github">wrapOntologyModelsGraph</code>, <code class="md-github">wrapOntologyModelsTree</code>, and <code class="md-github">wrapOntologyModelsMatrix</code>.</li>
-<li class="md-github">Extended the public endpoints list and added a new CLI command <code class="md-github">--test-endpoints</code> for verifying endpoint responses in dummy mode.</li>
-<li class="md-github">Added new ontology functions: <code class="md-github">analyzeOntology</code>, <code class="md-github">optimizeOntology</code>, <code class="md-github">transformOntologyToJSONLD</code>, and <code class="md-github">normalizeOntology</code> along with corresponding CLI commands: <code class="md-github">--analyze</code>, <code class="md-github">--optimize</code>, <code class="md-github">--transform</code>, and <code class="md-github">--normalize</code>.</li>
-<li class="md-github">Removed legacy functionalities and pruned redundant code to better align with the Mission Statement.</li>
-</ul>
-</li>
+<li class="md-github"><strong class="md-github">Ontology Building:</strong> Create basic and detailed ontology models with built-in functions.</li>
+<li class="md-github"><strong class="md-github">Public Data Integration:</strong> Automatically crawl and integrate data from various public endpoints.</li>
+<li class="md-github"><strong class="md-github">Extended Wrappers:</strong> Multiple wrapper functions for different ontology models (JSON, custom order, graph, tree, matrix, etc.).</li>
+<li class="md-github"><strong class="md-github">Ontology Analysis:</strong> New functions to analyze and optimize ontology structures, including transformation to JSON-LD.</li>
+<li class="md-github"><strong class="md-github">Robust CLI:</strong> Comprehensive command-line interface supporting a wide range of commands for ontology operations.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="public-data-endpoints" href="#public-data-endpoints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Public Data Endpoints</h2>
-<p class="md-github">owl-builder retrieves data from several public data sources, including:</p>
+<p class="md-github">owl-builder retrieves data from several endpoints, including:</p>
 <ul class="md-github">
 <li class="md-github">https://api.publicapis.org/entries</li>
 <li class="md-github">https://dog.ceo/api/breeds/image/random</li>
@@ -60,7 +55,7 @@
 <li class="md-github">https://api.ontologybuilder.com/data</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
-<p class="md-github">Display help instructions:</p>
+<p class="md-github">Display help:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
 </code></pre>
 <p class="md-github">Example commands:</p>
@@ -86,37 +81,12 @@
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Fetch Data Endpoints:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --list-endpoints
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Test Endpoints:</strong></p>
+<p class="md-github"><strong class="md-github">Test Endpoints (Dummy Mode):</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --test-endpoints
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Wrapper Commands:</strong></p>
-<ul class="md-github">
-<li class="md-github">JSON Wrapper:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-json
-</code></pre>
-</li>
-<li class="md-github">Custom Wrapper:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-custom asc
-</code></pre>
-</li>
-<li class="md-github">Graph Wrapper:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-graph
-</code></pre>
-</li>
-<li class="md-github">Tree Wrapper:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-tree
-</code></pre>
-</li>
-<li class="md-github">Matrix Wrapper:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-matrix
-</code></pre>
-</li>
-</ul>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">New Ontology Analysis Commands:</strong></p>
+<p class="md-github"><strong class="md-github">Ontology Analysis Commands:</strong></p>
 <ul class="md-github">
 <li class="md-github">Analyze Ontology:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --analyze
 </code></pre>
@@ -124,7 +94,7 @@
 <li class="md-github">Optimize Ontology:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --optimize
 </code></pre>
 </li>
-<li class="md-github">Transform Ontology to JSON-LD:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --transform
+<li class="md-github">Transform to JSON-LD:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --transform
 </code></pre>
 </li>
 <li class="md-github">Normalize Ontology:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --normalize
@@ -134,18 +104,29 @@
 </li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="testing" href="#testing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Testing</h2>
-<p class="md-github">Run tests with:</p>
+<p class="md-github">Run tests using:</p>
 <pre class="md-github"><code class="md-github language-bash">npm test
 </code></pre>
-<p class="md-github">The tests include verifications for endpoint responses (using dummy data), model wrapper functions, various CLI commands, and the newly added ontology analysis and transformation commands.</p>
+<p class="md-github">The test suite includes validation for all CLI commands, endpoint responses (using dummy mode), and ontology wrappers.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
-<p class="md-github">Please refer to <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines on how to contribute to owl-builder. Contributions in the form of feature enhancements, bug fixes, or documentation improvements are welcome.</p>
+<p class="md-github">We welcome contributions ranging from feature enhancements and bug fixes to documentation improvements. Please see <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines and our development workflow.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="changelog" href="#changelog"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Changelog</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Version 0.0.19</strong>
+<ul class="md-github">
+<li class="md-github">Removed legacy endpoints and pruned redundant code to align with the Mission Statement.</li>
+<li class="md-github">Extended functionality with new ontology analysis, optimization, and transformation functions.</li>
+<li class="md-github">Added a set of new wrapper commands for various OWL Ontology models.</li>
+<li class="md-github">Refreshed the documentation to better reflect current capabilities and contribution guidelines.</li>
+</ul>
+</li>
+</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
 <p class="md-github">Released under the MIT License.</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T11:28:44.677Z</p>
+    <p>Generated on 2025-03-07T11:35:38.009Z</p>
   </footer>
 </body>
 </html>
