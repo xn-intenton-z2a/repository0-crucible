@@ -34,6 +34,8 @@ owl-builder retrieves data from several endpoints, including:
 - https://api.sample.com/ontology
 - https://api.ontologybuilder.com/data
 
+*Note: Extended endpoint testing has confirmed valid dummy responses for all endpoints when using the FORCE_DUMMY_ENDPOINT flag.*
+
 ## Usage
 
 Display help:
@@ -125,17 +127,18 @@ npm test
 
 The test suite includes validation for all CLI commands, endpoint responses (using dummy mode), ontology wrappers, and the newly extended metadata and processing functions.
 
-## Contributing
-
-We welcome contributions ranging from feature enhancements and bug fixes to documentation improvements. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and our development workflow.
-
 ## Changelog
 
 - **Version 0.0.19**
   - Refocused ontology builder on building OWL ontologies exclusively from diverse public data sources.
   - Removed legacy code and endpoints that were not in line with the new mission statement.
   - Extended functionality with new ontology analysis, optimization, transformation, and metadata management commands.
+  - **Validated endpoint integration tests:** Dummy endpoints responded as expected during testing (including extended endpoints, retry, and additional fetch endpoints).
   - Documentation and test cases updated to reflect the new focus.
+
+## Contributing
+
+We welcome contributions ranging from feature enhancements and bug fixes to documentation improvements. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and our development workflow.
 
 ## License
 

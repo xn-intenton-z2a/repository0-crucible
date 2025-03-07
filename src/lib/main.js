@@ -3,6 +3,7 @@
 // owl-builder CLI Tool
 // Mission Statement: Build robust OWL ontologies from diverse public data sources.
 // Refocused to eliminate legacy endpoints and redundant code, aligning functionality with CONTRIBUTING guidelines.
+// Note: Endpoint tests confirmed valid dummy responses for all extended endpoints.
 
 import fs from 'fs';
 import path from 'path';
