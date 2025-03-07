@@ -71,7 +71,7 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const version = await main(["--version"]);
     expect(spy).toHaveBeenCalledWith("Tool version:", version);
-    expect(version).toBe("0.0.12");
+    expect(version).toBe("0.0.13");
     spy.mockRestore();
   });
 
@@ -390,7 +390,6 @@ describe("Extended Functionality", () => {
     expect(result.concepts.sort()).toEqual(["Concept1", "Concept2", "Concept3"].sort());
   });
 
-  // New tests for extended commands
   test("--auto-commit returns automated commit message", async () => {
     const msg = await main(["--auto-commit"]);
     expect(msg).toMatch(/^Automated commit on/);
@@ -403,7 +402,6 @@ describe("Extended Functionality", () => {
     expect(merged).toHaveProperty("title");
   });
 
-  // File system error handling tests
   describe("File System Error Handling", () => {
     let originalWriteFileSync, originalReadFileSync;
     beforeAll(() => {
@@ -438,7 +436,6 @@ describe("Extended Functionality", () => {
     });
   });
 
-  // New tests for extended new functions
   describe("Extended New Functions", () => {
     test("updateOntologyDescription returns updated description", () => {
       const newDesc = "A new detailed description";
