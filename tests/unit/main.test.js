@@ -78,6 +78,7 @@ import https from 'https';
 import http from 'http';
 
 // Additional tests for external resource interactions using mocks
+
 describe('External Resource Mocks', () => {
   test('persistOntology writes file successfully', () => {
     const ontology = { title: 'Test Ontology', concepts: ['A'] };
@@ -115,16 +116,24 @@ describe('External Resource Mocks', () => {
   });
 
   test('HTTP get is mocked for network requests', async () => {
-    const fakeResponse = { on: vi.fn((event, cb) => { if (event === 'end') cb(); }),
-                           statusCode: 200 };
+    // Override FORCE_DUMMY_ENDPOINT for this test to trigger real network branch
+    const originalForceDummy = process.env.FORCE_DUMMY_ENDPOINT;
+    process.env.FORCE_DUMMY_ENDPOINT = 'false';
+    const fakeResponse = { 
+      on: vi.fn((event, cb) => { 
+        if(event === 'data') { cb('dummy data'); } 
+        if(event === 'end') { cb(); }
+      }),
+      statusCode: 200
+    };
     const getSpy = vi.spyOn(http, 'get').mockImplementation((url, callback) => {
       callback(fakeResponse);
       return { on: vi.fn() };
     });
-    // Call a network related command
     await main(['--test-endpoints']);
     expect(getSpy).toHaveBeenCalled();
     getSpy.mockRestore();
+    process.env.FORCE_DUMMY_ENDPOINT = originalForceDummy;
   });
 });
 
