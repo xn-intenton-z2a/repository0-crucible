@@ -1,6 +1,6 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library focused exclusively on building robust OWL ontologies from verified public data sources. This tool has been refactored to remove legacy simulation endpoints and redundant/demo code, in line with our CONTRIBUTING guidelines.
+owl-builder is a CLI tool and JavaScript library focused exclusively on building robust OWL ontologies from verified public data sources. This tool has been refactored to remove legacy simulation endpoints and redundant/demo code, in line with our CONTRIBUTING guidelines and mission statement.
 
 ## Features
 
@@ -75,9 +75,10 @@ npm test
 
 - **Version 0.0.21**
   - Refocused the library on building robust ontologies from verified public data sources.
-  - Removed legacy simulation endpoints and redundant/demo code as per CONTRIBUTING guidelines.
+  - Removed legacy simulation endpoints and redundant/demo code as per CONTRIBUTING guidelines and mission statement.
   - Extended ontology wrappers and added new functions (validate & optimize, anonymize, export to RDF, summarize statistics, log extended history, fetch multiple endpoints).
   - **Extended ontology wrappers:** Added new CSV and YAML wrappers for additional ontology model representations.
+  - **Mission update:** Pruned any code drift to align strictly with our commitment to verified public data sources.
 
 ## Contributing
 
