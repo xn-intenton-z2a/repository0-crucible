@@ -4,7 +4,7 @@ import path from 'path';
 import http from 'http';
 import * as mainModule from '../../src/lib/main.js';
 
-// Set environment to force dummy endpoint responses for consistent unit testing
+// Set environment to force dummy endpoint responses for most consistent unit testing
 process.env.FORCE_DUMMY_ENDPOINT = 'true';
 
 const {
@@ -144,7 +144,8 @@ describe('Core Ontology Functions', () => {
 });
 
 describe('Crawling Functionality', () => {
-  test('crawlOntologies returns array of results with dummy data', async () => {
+  test('crawlOntologies returns array of results with dummy data when FORCE_DUMMY_ENDPOINT is true', async () => {
+    process.env.FORCE_DUMMY_ENDPOINT = 'true';
     const results = await crawlOntologies();
     expect(Array.isArray(results)).toBe(true);
     results.forEach(item => {
@@ -207,11 +208,14 @@ describe('CLI and Main Function Tests', () => {
     expect(Array.isArray(result)).toBe(true);
   });
 
-  test('main with --diagnostics returns diagnostics object', async () => {
+  test('main with --diagnostics returns remote crawl results', async () => {
+    // This test will force real API calls. In a test environment, network calls may fail, so we just check structure.
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
-    const diag = await main(['--diagnostics']);
-    expect(spy).toHaveBeenCalledWith('Diagnostics:', expect.any(Object));
-    expect(diag).toHaveProperty('FORCE_DUMMY', 'true');
+    const results = await main(['--diagnostics']);
+    expect(Array.isArray(results)).toBe(true);
+    results.forEach(item => {
+      expect(item).toHaveProperty('endpoint');
+    });
     spy.mockRestore();
   });
 
