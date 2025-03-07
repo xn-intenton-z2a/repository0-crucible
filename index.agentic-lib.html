@@ -32,6 +32,12 @@
 <li class="md-github"><strong class="md-github">Ontology Analysis &amp; Optimization:</strong> Functions to analyze, optimize, and transform ontologies, including transformation to JSON-LD.</li>
 <li class="md-github"><strong class="md-github">Enhanced Metadata Management:</strong> Functions for attaching metadata, recording change history, generating summaries, merging ontologies, and now extended functions such as merging models, updating descriptions, and extending ontology concepts.</li>
 <li class="md-github"><strong class="md-github">Robust CLI:</strong> Comprehensive command-line interface supporting a wide range of commands for ontology operations.</li>
+<li class="md-github"><strong class="md-github">New Extended Features:</strong>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Concurrent Fetching:</strong> Use <code class="md-github">--fetch-multiple</code> to concurrently fetch data from multiple public endpoints.</li>
+<li class="md-github"><strong class="md-github">Validation &amp; Optimization:</strong> Use <code class="md-github">--validate-optimize</code> to validate and optimize an ontology in one step.</li>
+</ul>
+</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="public-data-endpoints" href="#public-data-endpoints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Public Data Endpoints</h2>
 <p class="md-github">owl-builder retrieves data from several endpoints, including:</p>
@@ -133,6 +139,17 @@
 </ul>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">New Extended Features:</strong></p>
+<ul class="md-github">
+<li class="md-github">Concurrently Fetch Endpoints:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --fetch-multiple
+</code></pre>
+</li>
+<li class="md-github">Validate and Optimize Ontology:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --validate-optimize
+</code></pre>
+</li>
+</ul>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">New Ontology Model Wrappers:</strong></p>
 <ul class="md-github">
 <li class="md-github">Tabular Representation:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-tabular
@@ -151,18 +168,27 @@
 <p class="md-github">Run tests using:</p>
 <pre class="md-github"><code class="md-github language-bash">npm test
 </code></pre>
-<p class="md-github">The test suite includes validation for all CLI commands, endpoint responses (using dummy mode), ontology wrappers (including the newly added tabular, HTML, and markdown wrappers), and the extended metadata and processing functions.</p>
+<p class="md-github">The test suite includes validation for all CLI commands, endpoint responses (using dummy mode), ontology wrappers (including the newly added tabular, HTML, and markdown wrappers), extended metadata and processing functions, as well as the new extended features.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="changelog" href="#changelog"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Changelog</h2>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Version 0.0.19</strong>
+<li class="md-github"><strong class="md-github">Version 0.0.20</strong>
 <ul class="md-github">
 <li class="md-github">Refocused ontology builder on building OWL ontologies exclusively from diverse public data sources.</li>
 <li class="md-github">Removed legacy code and endpoints that were not in line with the new mission statement.</li>
 <li class="md-github">Extended functionality with new ontology analysis, optimization, transformation, and metadata management commands.</li>
 <li class="md-github"><strong class="md-github">Extended Wrappers Added:</strong> New wrappers for ontology models have been added including JSON, custom, graph, tree, matrix, tabular, HTML, and markdown representations.</li>
-<li class="md-github"><strong class="md-github">New Functions Added:</strong> Added missing functions: mergeOntologyModels, updateOntologyDescription, extendOntologyConcepts, as well as stubs for resetOntology, cloneOntology, transformOntologyData, debugOntologyMetrics, and reflectOntologyStatus to support extended CLI commands.</li>
-<li class="md-github"><strong class="md-github">Validated endpoint integration tests:</strong> Dummy endpoints responded as expected during testing (including extended endpoints, retry, and additional fetch endpoints).</li>
-<li class="md-github">Documentation and test cases updated to reflect the new focus.</li>
+<li class="md-github"><strong class="md-github">New Functions Added:</strong>
+<ul class="md-github">
+<li class="md-github">Added missing functions: mergeOntologyModels, updateOntologyDescription, extendOntologyConcepts, and stubs for resetOntology, cloneOntology, transformOntologyData, debugOntologyMetrics, and reflectOntologyStatus.</li>
+<li class="md-github"><strong class="md-github">New Extended Features:</strong>
+<ul class="md-github">
+<li class="md-github">Added fetchMultipleEndpoints for concurrent endpoint fetching (--fetch-multiple).</li>
+<li class="md-github">Added validateAndOptimizeOntology to combine validation and optimization (--validate-optimize).</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="md-github">Documentation and test cases updated to reflect the new focus and extended features.</li>
 </ul>
 </li>
 </ul>
@@ -173,7 +199,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T13:40:04.578Z</p>
+    <p>Generated on 2025-03-07T13:46:12.318Z</p>
   </footer>
 </body>
 </html>
