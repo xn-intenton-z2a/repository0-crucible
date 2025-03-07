@@ -8,8 +8,7 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
   - Refocused on public data source integration; legacy endpoints removed.
   - Extended ontology processing functions and wrapper commands added:
     - New functions: `buildOntology`, `buildDetailedOntology`, `serveWebInterface`, `diagnostics`, `integrateOntology`, `crawlData`, `persistOntology`, `loadOntology`, `queryOntology`, `validateOntology`, `exportOntologyToXML`, `importOntologyFromXML`, `syncOntology`, `backupOntology`, `updateOntology`, `clearOntology`, `enhanceOntology`, `wrapOntologyModels`, `wrapOntologyModelsExtended`, `generateOntologyReport`, `listAvailableEndpoints`, `fetchFromExtendedEndpoints`, `advancedOntologyAnalysis`, `wrapAllOntologyModels`, `cleanupOntologyData`, `automatedCommitMessage`, `fetchDataWithRetry`, `getChangeLog`, `extendOntologyDetails`, `wrapOntologyModelsSimple`, `wrapOntologyModelsComprehensive`, `wrapOntologyModelsRandom`, `updateOntologyTracking`, `wrapAdvancedOntologyModels`, `wrapMergedOntologyModels`, as well as extended new functions: `extendOntologyConcepts`, `resetOntology`, `cloneOntology`, `transformOntologyData`, `debugOntologyMetrics`, `reflectOntologyStatus`, and `updateOntologyDescription`, `mergeOntologyModels`.
-  - These functions are implemented as stubs to simulate real operations.
-  - Test mode dummy data is returned where applicable.
+  - **Bug Fix:** Fixed the `--list` command by moving the command actions to a global scope, ensuring that `listCommands()` functions correctly.
 
 ## Public Data Endpoints
 
