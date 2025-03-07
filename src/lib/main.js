@@ -154,6 +154,43 @@ export async function crawlOntologies() {
   return results;
 }
 
+/* Extended OWL Ontology Model Wrappers */
+
+// Builds a basic OWL model wrapper with minimal properties
+export function buildBasicOWLModel() {
+  return {
+    id: 'basic',
+    title: 'Basic OWL Ontology',
+    concepts: ['Class1', 'Class2'],
+    properties: []
+  };
+}
+
+// Builds an advanced OWL model wrapper with additional details
+export function buildAdvancedOWLModel() {
+  return {
+    id: 'advanced',
+    title: 'Advanced OWL Ontology',
+    classes: ['Person', 'Organization'],
+    properties: [
+      { name: 'hasName', type: 'string' },
+      { name: 'hasAge', type: 'integer' }
+    ],
+    metadata: {
+      created: new Date().toISOString()
+    }
+  };
+}
+
+// Wraps an ontology model to include additional metadata
+export function wrapOntologyModel(model) {
+  if (!model || !model.title) {
+    model = { title: 'Default Title' };
+  }
+  model.timestamp = new Date().toISOString();
+  return model;
+}
+
 // Main CLI function that dispatches commands based on provided arguments.
 export async function main(args = process.argv.slice(2)) {
   for (const arg of args) {
@@ -167,11 +204,11 @@ export async function main(args = process.argv.slice(2)) {
 
 // Displays help information for using the CLI.
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model`);
 }
 
 export function getVersion() {
-  return '0.0.24';
+  return '0.0.25';
 }
 
 export function listCommands() {
@@ -214,34 +251,34 @@ const commandActions = {
   },
   "--validate": async (args) => { 
     const ontology = buildOntology(); 
-    const isValid = validateOntology(ontology); 
-    console.log("Ontology validation result:", isValid); 
+    const isValid = validateOntology(ontology);
+    console.log("Ontology validation result:", isValid);
     return isValid; 
   },
   "--export": async (args) => { 
     const ontology = buildOntology(); 
-    const xml = exportOntologyToXML(ontology); 
+    const xml = exportOntologyToXML(ontology);
     console.log("Ontology exported to XML:", xml); 
-    return xml; 
+    return xml;
   },
   "--import": async (args) => { 
     const sampleXML = `<ontology><title>Imported Ontology</title></ontology>`;
-    const imported = importOntologyFromXML(sampleXML); 
-    console.log("Ontology imported from XML:", imported); 
+    const imported = importOntologyFromXML(sampleXML);
+    console.log("Ontology imported from XML:", imported);
     return imported; 
   },
   "--backup": async (args) => { 
     const ontology = buildOntology(); 
     persistOntology(ontology);
     const backupResult = backupOntology(); 
-    console.log("Ontology backup created:", backupResult); 
+    console.log("Ontology backup created:", backupResult);
     return backupResult; 
   },
   "--update": async (args) => { 
     const idx = args.indexOf("--update"); 
-    const newTitle = idx !== -1 && args.length > idx + 1 ? args[idx + 1] : "Updated Ontology"; 
-    const updated = updateOntology(newTitle); 
-    console.log("Ontology updated:", updated); 
+    const newTitle = idx !== -1 && args.length > idx + 1 ? args[idx + 1] : "Updated Ontology";
+    const updated = updateOntology(newTitle);
+    console.log("Ontology updated:", updated);
     return updated; 
   },
   "--clear": async (args) => { 
@@ -267,6 +304,27 @@ const commandActions = {
       console.log("Fetch with retry failed:", err.message);
       return err.message;
     }
+  },
+  "--build-basic": async (args) => {
+    const model = buildBasicOWLModel();
+    console.log("Basic OWL Model:", model);
+    return model;
+  },
+  "--build-advanced": async (args) => {
+    const model = buildAdvancedOWLModel();
+    console.log("Advanced OWL Model:", model);
+    return model;
+  },
+  "--wrap-model": async (args) => {
+    let model;
+    try {
+      model = args[1] ? JSON.parse(args[1]) : buildBasicOWLModel();
+    } catch (e) {
+      model = buildBasicOWLModel();
+    }
+    const wrapped = wrapOntologyModel(model);
+    console.log("Wrapped Model:", wrapped);
+    return wrapped;
   }
 };
 
