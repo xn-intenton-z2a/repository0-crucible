@@ -60,6 +60,7 @@ const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
 // Import https for simulating network errors
 import https from "https";
 
+
 describe("Main Module General Functions", () => {
   test("main without args prints default message", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
