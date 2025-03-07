@@ -4,6 +4,7 @@
 // Refactored to align with our mission statement: Building robust OWL ontologies exclusively from verified public data sources.
 // Legacy simulation endpoints and redundant/demo code have been pruned.
 // Enhanced inline documentation added for maintainability and testing, and real implementations added for previously simulated methods.
+// Note: Extended endpoints return dummy data in test mode (controlled by FORCE_DUMMY_ENDPOINT environment variable).
 
 import fs from 'fs';
 import path from 'path';
@@ -181,6 +182,7 @@ export function listExtendedOntologyEndpoints() {
 }
 
 export async function testExtendedEndpoints() {
+  // Extended endpoints test: verifying dummy responses in dummy mode
   if (typeof process.env.FORCE_DUMMY_ENDPOINT === 'undefined') {
     process.env.FORCE_DUMMY_ENDPOINT = 'true';
   }
@@ -468,7 +470,7 @@ const commandActions = {
   "--refresh-details": async (args) => { const refreshedDetails = updateOntologyDescription("Refreshed ontology with additional details."); console.log("Ontology refreshed with details:", refreshedDetails); return refreshedDetails; },
   "--extend-concepts": async (args) => { const extended = extendOntologyConcepts("ExtendedConcept1", "ExtendedConcept2"); console.log("Extended ontology concepts:", extended); return extended; },
   "--fetch-retry": async (args) => { try { const result = await fetchDataWithRetry("https://api.publicapis.org/entries"); console.log("Fetched data with retry:", result); return result; } catch (err) { console.log("Fetch with retry failed:", err.message); return err.message; } },
-  "--changelog": async (args) => { const log = 'Change Log updated with new extended implementations.'; console.log("Change Log:", log); return log; },
+  "--changelog": async (args) => { const log = 'Change Log updated with new extended implementations and verified endpoint dummy responses.'; console.log("Change Log:", log); return log; },
   "--extend-details": async (args) => { const extendedDetails = extendOntologyDetails(); console.log("Extended Ontology Details:", extendedDetails); return extendedDetails; },
   "--wrap-simple": async (args) => { const simple = wrapOntologyModelsSimple(); console.log("Simple Wrapped Ontology Models:", simple); return simple; },
   "--wrap-comprehensive": async (args) => { const comp = wrapOntologyModelsComprehensive(); console.log("Comprehensive Wrapped Ontology Models:", comp); return comp; },
