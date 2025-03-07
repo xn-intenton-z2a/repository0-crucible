@@ -4,11 +4,12 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
 
 ## Changelog
 
-- **Version 0.0.18**
+- **Version 0.0.19**
   - Pruned legacy functionalities and removed drift from previous implementations to better align with the Mission Statement.
   - Refreshed the README to align with CONTRIBUTING guidelines, updating and pruning outdated details.
   - Extended ontology processing functions and added new wrapper commands: `wrapOntologyModelsJSON`, `wrapOntologyModelsCustom`, `wrapOntologyModelsGraph`, `wrapOntologyModelsTree`, and `wrapOntologyModelsMatrix`.
   - Extended the public endpoints list and added a new CLI command `--test-endpoints` for verifying endpoint responses in dummy mode.
+  - Added new ontology functions: `analyzeOntology`, `optimizeOntology`, `transformOntologyToJSONLD`, and `normalizeOntology` along with corresponding CLI commands: `--analyze`, `--optimize`, `--transform`, and `--normalize`.
   - Removed legacy endpoints and pruned redundant documentation details.
 
 ## Public Data Endpoints
@@ -96,6 +97,24 @@ Example commands:
     node src/lib/main.js --wrap-matrix
     ```
 
+- **New Ontology Analysis Commands:**
+  - Analyze Ontology:
+    ```bash
+    node src/lib/main.js --analyze
+    ```
+  - Optimize Ontology:
+    ```bash
+    node src/lib/main.js --optimize
+    ```
+  - Transform Ontology to JSON-LD:
+    ```bash
+    node src/lib/main.js --transform
+    ```
+  - Normalize Ontology:
+    ```bash
+    node src/lib/main.js --normalize
+    ```
+
 ## Testing
 
 Run tests with:
@@ -104,7 +123,7 @@ Run tests with:
 npm test
 ```
 
-The tests include verifications for endpoint responses (using dummy data), model wrapper functions, and various CLI commands.
+The tests include verifications for endpoint responses (using dummy data), model wrapper functions, various CLI commands, and the newly added ontology analysis and transformation commands.
 
 ## Contributing
 

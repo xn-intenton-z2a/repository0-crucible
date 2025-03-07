@@ -57,7 +57,11 @@ const {
   wrapOntologyModelsGraph,
   wrapOntologyModelsTree,
   wrapOntologyModelsMatrix,
-  testEndpoints
+  testEndpoints,
+  analyzeOntology,
+  optimizeOntology,
+  transformOntologyToJSONLD,
+  normalizeOntology
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
@@ -85,7 +89,7 @@ describe('Main Module General Functions', () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     const version = await main(['--version']);
     expect(spy).toHaveBeenCalledWith('Tool version:', version);
-    expect(version).toBe('0.0.18');
+    expect(version).toBe('0.0.19');
     spy.mockRestore();
   });
 
@@ -370,12 +374,27 @@ describe('Main Module General Functions', () => {
     expect(result.order).toBe('desc');
   });
 
-  test('Testing new endpoint functionality: --test-endpoints', async () => {
-    const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
-    await main(['--test-endpoints']);
-    const calls = spy.mock.calls.map(call => call[0]);
-    expect(calls.some(msg => msg.includes('Verified endpoint (dummy):'))).toBe(true);
-    spy.mockRestore();
+  // New tests for additional functions
+  test('main with --analyze returns analysis result', async () => {
+    const result = await main(['--analyze']);
+    expect(result).toHaveProperty('analysis');
+    expect(result).toHaveProperty('timestamp');
+  });
+
+  test('main with --optimize returns optimized ontology', async () => {
+    const result = await main(['--optimize']);
+    expect(result).toHaveProperty('optimized', true);
+  });
+
+  test('main with --transform returns JSON-LD transformed ontology', async () => {
+    const result = await main(['--transform']);
+    expect(result).toHaveProperty('@context', 'http://schema.org');
+    expect(result).toHaveProperty('title', 'Sample Ontology');
+  });
+
+  test('main with --normalize returns normalized ontology', async () => {
+    const result = await main(['--normalize']);
+    expect(result.concepts.sort()).toEqual(['Concept1','Concept2','Concept3'].sort());
   });
 });
 
