@@ -2,7 +2,7 @@
 
 // owl-builder CLI Tool
 // Mission: Build robust OWL ontologies from verified public data sources.
-// Legacy simulation endpoints and redundant code have been pruned in alignment with the CONTRIBUTING guidelines.
+// Legacy simulation endpoints and redundant demo code have been pruned in alignment with the CONTRIBUTING guidelines.
 
 import fs from 'fs';
 import path from 'path';
@@ -186,7 +186,7 @@ export function fetchDataWithRetry(url) {
 }
 
 export function getChangeLog() {
-  return 'Change log: Refocused ontology builder on verified public data sources. Legacy endpoints removed.';
+  return 'Change log: Refocused ontology builder on verified public data sources. Legacy simulation endpoints and redundant code have been pruned.';
 }
 
 export function extendOntologyDetails() {
@@ -463,7 +463,7 @@ export function displayHelp() {
 }
 
 export function getVersion() {
-  return '0.0.20';
+  return '0.0.21';
 }
 
 export function listCommands() {
