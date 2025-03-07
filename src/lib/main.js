@@ -10,7 +10,7 @@
 // - Added helper functions calculateMedian, buildDetailedOntology.
 // - Introduced new CLI commands: --detailed-build, --cleanup, --auto-commit, --combine-models.
 // - Refocused the library exclusively on building ontologies from diverse public data sources and pruned legacy code drift.
-// - Updated version to 0.0.12 to reflect latest changes and public API focus.
+// - Updated version to 0.0.13 to reflect latest changes and public API focus.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -561,7 +561,7 @@ export function displayHelp() {
  * @returns {string} Version string.
  */
 export function getVersion() {
-  return "0.0.12";
+  return "0.0.13";
 }
 
 /**
