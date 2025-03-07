@@ -454,8 +454,7 @@ const commandActions = {
   "--wrap-custom": async (args) => { const idx = args.indexOf("--wrap-custom"); const order = idx !== -1 && args.length > idx + 1 ? args[idx + 1] : 'asc'; const customWrapped = wrapOntologyModelsCustom(order); console.log("Custom Wrapped Ontology Models:", customWrapped); return customWrapped; },
   "--wrap-graph": async (args) => { const graphWrapped = wrapOntologyModelsGraph(); console.log("Graph Wrapped Ontology Models:", graphWrapped); return graphWrapped; },
   "--wrap-tree": async (args) => { const treeWrapped = wrapOntologyModelsTree(); console.log("Tree Wrapped Ontology Models:", treeWrapped); return treeWrapped; },
-  "--wrap-matrix": async (args) => { const matrixWrapped = wrapOntologyModelsMatrix(); console.log("Matrix Wrapped Ontology Models:
-", matrixWrapped); return matrixWrapped; },
+  "--wrap-matrix": async (args) => { const matrixWrapped = wrapOntologyModelsMatrix(); console.log("Matrix Wrapped Ontology Models:", matrixWrapped); return matrixWrapped; },
   "--test-endpoints": async (args) => {
     await testEndpoints();
   },
