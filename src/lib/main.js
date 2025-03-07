@@ -2,7 +2,7 @@
 
 // src/lib/main.js
 // owl-builder CLI Tool
-// Mission Statement: Build robust ontologies directly extracted from diverse public data sources. This tool is dedicated exclusively to streamlined extraction, integration, and detailed analysis of ontology data from public APIs. Legacy functionalities have been pruned to refocus the library solely on public data source based ontology building. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+// Mission Statement: Build robust ontologies directly extracted from diverse public data sources. This tool is dedicated exclusively to streamlined extraction, integration, and detailed analysis of ontology data from public APIs. Legacy functionalities and endpoints have been pruned to refocus the library solely on public data source based ontology building. Contributions are welcome following the guidelines in CONTRIBUTING.md.
 
 // Change Log:
 // - Refactored code to improve testability and error logging.
@@ -11,17 +11,9 @@
 // - Introduced new CLI commands: --detailed-build, --cleanup, --auto-commit, --combine-models.
 // - Extended features inline with the Mission Statement:
 //      * Added new commands --refresh-details and --extend-concepts for enhanced ontology processing.
-// - Refocused library exclusively on building ontologies from public data sources; legacy functionalities removed.
-// - New functions added per CONTRIBUTING guidelines: fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus.
-// - Added new function cleanupAndTransformOntology and CLI command --clean-transform to combine cleanup and transformation of ontology data.
-// - Extended library with new functions: fetchAdditionalEndpointData, combineOntologyMetrics, updateOntologyTracking.
-// - New CLI commands added: --fetch-additional, --combine-metrics, and --update-tracking.
-//
-// UPDATED CHANGE LOG:
-// - Refocused the library exclusively on building ontologies from public data sources.
-// - Pruned legacy endpoints and code drift to concentrate on public API integration.
+// - Refocused library exclusively on building ontologies from public data sources; legacy endpoints removed.
 // - Updated version to 0.0.14.
-// - README refreshed per CONTRIBUTING guidelines, with outdated content pruned and examples updated.
+// - README refreshed per CONTRIBUTING guidelines.
 
 import os from "os";
 import fs from "fs";
@@ -98,11 +90,11 @@ export function fetchFromEndpoint(endpoint) {
  * @returns {Promise<object[]>} Array of endpoint responses
  */
 export async function fetchOntologyEndpoints() {
+  // Removed legacy endpoint https://api/spacexdata.com/v4/launches/latest
   const endpoints = [
     "https://api.publicapis.org/entries",
     "https://dog.ceo/api/breeds/image/random",
     "https://jsonplaceholder.typicode.com/posts",
-    "https://api/spacexdata.com/v4/launches/latest",
     "https://api.coindesk.com/v1/bpi/currentprice.json"
   ];
   const results = await Promise.all(endpoints.map((ep) => fetchFromEndpoint(ep)));
@@ -114,11 +106,11 @@ export async function fetchOntologyEndpoints() {
  * @returns {Promise<object[]>} Array of responses from extended endpoints
  */
 export function fetchFromExtendedEndpoints() {
+  // Removed legacy endpoint https://api/spacexdata.com/v4/launches/latest
   const endpoints = [
     "https://api.publicapis.org/entries",
     "https://dog.ceo/api/breeds/image/random",
     "https://jsonplaceholder.typicode.com/posts",
-    "https://api/spacexdata.com/v4/launches/latest",
     "https://api.coindesk.com/v1/bpi/currentprice.json",
     "https://api.github.com",
     "https://jsonplaceholder.typicode.com/comments",
@@ -160,7 +152,6 @@ export function wrapOntologyModels() {
       "https://api.publicapis.org/entries",
       "https://dog.ceo/api/breeds/image/random",
       "https://jsonplaceholder.typicode.com/posts",
-      "https://api/spacexdata.com/v4/launches/latest",
       "https://api.coindesk.com/v1/bpi/currentprice.json"
     ],
     wrapped: true
@@ -275,21 +266,18 @@ export function generateOntologyReport() {
  * @returns {string[]} List of endpoints
  */
 export function listAvailableEndpoints() {
+  // Updated endpoint list exclusively with public data sources
   return [
     "https://api.publicapis.org/entries",
     "https://dog.ceo/api/breeds/image/random",
     "https://jsonplaceholder.typicode.com/posts",
-    "https://api/spacexdata.com/v4/launches/latest",
-    "https://api.coindesk.com/v1/bpi/currentprice.json",
-    "https://api/github.com",
     "https://jsonplaceholder.typicode.com/comments",
     "https://dummyjson.com/products",
     "https://randomuser.me/api/",
     "https://catfact.ninja/fact",
     "https://jsonplaceholder.typicode.com/todos",
     "https://api/agify.io/?name=michael",
-    "https://api/openweathermap.org/data/2.5/weather?q=London",
-    "https://api/coinbase.com/v2/exchange-rates"
+    "https://api/openweathermap.org/data/2.5/weather?q=London"
   ];
 }
 

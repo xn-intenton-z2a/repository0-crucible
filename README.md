@@ -4,12 +4,12 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
 
 ## Change Log
 - **Version 0.0.14**
-  - Refocused on public data source integration.
-  - Legacy functionalities and endpoints have been pruned.
+  - Refocused on public data source integration. Legacy endpoints (e.g. SpaceX data) have been pruned.
   - Extended ontology processing functions and wrapper commands added:
     - `--detailed-build`, `--enhance`, `--wrap`, `--wrap-extended`, `--advanced-analysis`, `--cleanup`
     - New wrapper commands: `--wrap-simple`, `--wrap-comprehensive`, `--wrap-random`
     - Other new commands: `--auto-commit`, `--combine-models`, `--refresh-details`, `--extend-concepts`, `--fetch-retry`, `--changelog`, `--extend-details`, `--clean-transform`, `--fetch-additional`, `--combine-metrics`, `--update-tracking`
+  - Public endpoints updated to include only endpoints deemed robust and publicly accessible.
   - README refreshed per CONTRIBUTING guidelines.
 
 ## Public Data Endpoints
@@ -19,11 +19,10 @@ owl-builder retrieves data from several public data sources, including:
 - https://api.publicapis.org/entries
 - https://dog.ceo/api/breeds/image/random
 - https://jsonplaceholder.typicode.com/posts
-- https://api/spacexdata.com/v4/launches/latest
 - https://api.coindesk.com/v1/bpi/currentprice.json *(Simulated error in test mode)*
 
 **Extended Endpoints:**
-- https://api/github.com
+- https://api.github.com
 - https://jsonplaceholder.typicode.com/comments
 - https://dummyjson.com/products
 - https://randomuser.me/api/
@@ -31,7 +30,6 @@ owl-builder retrieves data from several public data sources, including:
 - https://jsonplaceholder.typicode.com/todos
 - https://api/agify.io/?name=michael
 - https://api/openweathermap.org/data/2.5/weather?q=London
-- https://api/coinbase.com/v2/exchange-rates
 
 ## Usage
 

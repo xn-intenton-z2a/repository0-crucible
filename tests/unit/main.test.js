@@ -325,8 +325,9 @@ describe("Extended Functionality", () => {
   test("main with --fetch-endpoints fetches data from multiple endpoints", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const endpointsData = await main(["--fetch-endpoints"]);
+    // Updated expected length to 4 after removal of legacy endpoint
     expect(Array.isArray(endpointsData)).toBe(true);
-    expect(endpointsData.length).toBe(5);
+    expect(endpointsData.length).toBe(4);
     endpointsData.forEach(item => {
       expect(item).toHaveProperty("endpoint");
     });
@@ -382,7 +383,8 @@ describe("Extended Functionality", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const endpoints = await main(["--list-endpoints"]);
     expect(Array.isArray(endpoints)).toBe(true);
-    expect(endpoints.length).toBe(14);
+    // Updated expected length to 10 after pruning legacy endpoints
+    expect(endpoints.length).toBe(10);
     spy.mockRestore();
   });
 
@@ -390,7 +392,8 @@ describe("Extended Functionality", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const extendedData = await main(["--fetch-extended"]);
     expect(Array.isArray(extendedData)).toBe(true);
-    expect(extendedData.length).toBe(10);
+    // Updated expected length to 9 after removal of legacy endpoint
+    expect(extendedData.length).toBe(9);
     extendedData.forEach(item => {
       expect(item).toHaveProperty("endpoint");
     });
