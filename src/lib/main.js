@@ -13,7 +13,8 @@
 //      * Added new commands --refresh-details and --extend-concepts for enhanced ontology processing.
 // - Refocused library exclusively on building ontologies from public data sources; legacy endpoints removed.
 // - Added new wrappers: wrapAdvancedOntologyModels and wrapMergedOntologyModels with CLI commands --wrap-advanced and --wrap-merged.
-// - Updated version to 0.0.14.
+// - Updated test mode to force dummy endpoint responses when FORCE_DUMMY_ENDPOINT env variable is set.
+// - Updated version to 0.0.16.
 // - README refreshed per CONTRIBUTING guidelines.
 
 import os from "os";
@@ -48,11 +49,13 @@ export function logDetailedResponse(response) {
 /**
  * Fetches data from a given endpoint using the appropriate protocol.
  * In test mode, returns simulated responses to avoid external network dependencies.
+ * The test mode is active if NODE_ENV is set to "test" or FORCE_DUMMY_ENDPOINT variable is "true".
  * @param {string} endpoint 
  * @returns {Promise<object>} The fetched data or error message.
  */
 export function fetchFromEndpoint(endpoint) {
-  if (process.env.NODE_ENV === "test") {
+  const testMode = process.env.NODE_ENV === "test" || process.env.FORCE_DUMMY_ENDPOINT === "true";
+  if (testMode) {
     if (endpoint === "https://api.coindesk.com/v1/bpi/currentprice.json") {
       console.error(`Error fetching ${endpoint}: Simulated network error`);
       return Promise.resolve({ endpoint, error: "Simulated network error" });
@@ -688,7 +691,7 @@ export function displayHelp() {
  * @returns {string} Version string.
  */
 export function getVersion() {
-  return "0.0.14";
+  return "0.0.16";
 }
 
 /**
