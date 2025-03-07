@@ -129,7 +129,8 @@ We welcome contributions ranging from feature enhancements and bug fixes to docu
   - Removed legacy endpoints and pruned redundant code to align with the Mission Statement.
   - Extended functionality with new ontology analysis, optimization, and transformation functions.
   - Added a set of new wrapper commands for various OWL Ontology models.
-  - **Extended new functions:** Added extendOntologyMetadata, recordOntologyHistory, commitOntologyChange, getOntologySummary, and mergeAndNormalizeOntologies to enhance ontology metadata management and processing.
+  - Extended new functions: Added extendOntologyMetadata, recordOntologyHistory, commitOntologyChange, getOntologySummary, and mergeAndNormalizeOntologies to enhance ontology metadata management and processing.
+  - **Fixed mergeAndNormalizeOntologies:** Now correctly merges multiple ontologies by taking the union of their concepts.
   - Refreshed the documentation to better reflect current capabilities and contribution guidelines.
 
 ## License

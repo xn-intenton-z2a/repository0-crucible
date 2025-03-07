@@ -219,8 +219,15 @@ export function fetchAdditionalEndpointData() {
   ];
 }
 
-export function combineOntologyMetrics() {
-  return { conceptCount: 3 };
+// Updated mergeAndNormalizeOntologies to merge concepts arrays correctly
+export function mergeAndNormalizeOntologies(...ontologies) {
+  let allConcepts = [];
+  for (const ont of ontologies) {
+    if (Array.isArray(ont.concepts)) {
+      allConcepts = allConcepts.concat(ont.concepts);
+    }
+  }
+  return { merged: true, concepts: Array.from(new Set(allConcepts)) };
 }
 
 export function updateOntologyTracking(note) {
@@ -366,15 +373,7 @@ export function getOntologySummary(ontology) {
   };
 }
 
-export function mergeAndNormalizeOntologies(...ontologies) {
-  const merged = Object.assign({}, ...ontologies, { merged: true });
-  if (merged.concepts) {
-    merged.concepts = Array.from(new Set(merged.concepts));
-  }
-  return merged;
-}
-
-// Extended CLI Command Actions Mapping
+// CLI Command Actions Mapping
 const commandActions = {
   "--help": async (args) => { displayHelp(); },
   "--version": async (args) => { console.log("Tool version:", getVersion()); return getVersion(); },

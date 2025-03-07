@@ -403,8 +403,6 @@ describe('Main Module General Functions', () => {
   });
 });
 
-// Additional tests for extended functions
-
 describe('Additional Extended Functions', () => {
   test('extendOntologyMetadata attaches new metadata to ontology', () => {
     const ontology = buildOntology();
