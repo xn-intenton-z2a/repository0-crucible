@@ -71,7 +71,11 @@ const {
   validateAndOptimizeOntology,
   wrapOntologyModelsCircular,
   wrapOntologyModelsHierarchy,
-  wrapOntologyModelsGrid
+  wrapOntologyModelsGrid,
+  anonymizeOntology,
+  exportOntologyToRDF,
+  summarizeOntologyStatistics,
+  logOntologyHistoryExtended
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
@@ -119,7 +123,6 @@ describe('External Resource Mocks', () => {
   });
 
   test('HTTP get is mocked for network requests', async () => {
-    // Override FORCE_DUMMY_ENDPOINT for this test to trigger real network branch
     const originalForceDummy = process.env.FORCE_DUMMY_ENDPOINT;
     process.env.FORCE_DUMMY_ENDPOINT = 'false';
     const fakeResponse = { 
@@ -129,7 +132,6 @@ describe('External Resource Mocks', () => {
       }),
       statusCode: 200
     };
-    // Spy on https.get instead of http.get
     const getSpy = vi.spyOn(https, 'get').mockImplementation((url, callback) => {
       callback(fakeResponse);
       return { on: vi.fn() };
@@ -246,6 +248,38 @@ describe('Wrapper Functions Tests', () => {
     const result = wrapOntologyModelsGrid();
     expect(result).toHaveProperty('gridWrapped', true);
     expect(result.grid).toEqual([[1,2,3],[4,5,6],[7,8,9]]);
+  });
+});
+
+describe('New Extended Functions Tests', () => {
+  test('anonymizeOntology returns an anonymized ontology', () => {
+    const ontology = { title: 'Secret Ontology', concepts: ['Alpha', 'Beta'] };
+    const anonymized = anonymizeOntology(ontology);
+    expect(anonymized.title).toBe('Anonymized Ontology');
+    expect(anonymized.concepts).toEqual(['Concept1', 'Concept2']);
+  });
+
+  test('exportOntologyToRDF returns a Turtle formatted string', () => {
+    const ontology = { title: 'Test Ontology', concepts: ['X', 'Y'] };
+    const rdf = exportOntologyToRDF(ontology);
+    expect(rdf).toContain('@prefix ex:');
+    expect(rdf).toContain('Test_Ontology');
+    expect(rdf).toContain('"X"');
+  });
+
+  test('summarizeOntologyStatistics returns correct statistics', () => {
+    const ontology = { title: 'Stats Ontology', concepts: ['LongConcept', 'Short'] };
+    const stats = summarizeOntologyStatistics(ontology);
+    expect(stats.title).toBe('Stats Ontology');
+    expect(stats.conceptCount).toBe(2);
+    expect(stats.averageConceptLength).toBe(("LongConcept".length + "Short".length) / 2);
+  });
+
+  test('logOntologyHistoryExtended returns extended history record', () => {
+    const record = logOntologyHistoryExtended('Extended note');
+    expect(record).toHaveProperty('note', 'Extended note');
+    expect(record).toHaveProperty('status', 'Logged');
+    expect(record).toHaveProperty('timestamp');
   });
 });
 
