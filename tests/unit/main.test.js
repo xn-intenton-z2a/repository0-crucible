@@ -4,7 +4,7 @@ import path from 'path';
 import http from 'http';
 import * as mainModule from '../../src/lib/main.js';
 
-// Set environment to force dummy endpoint responses
+// Set environment to force dummy endpoint responses for consistent unit testing
 process.env.FORCE_DUMMY_ENDPOINT = 'true';
 
 const {
