@@ -7,10 +7,13 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
   - Refocused on public data source integration. Legacy endpoints (e.g. SpaceX data) have been pruned.
   - Extended ontology processing functions and wrapper commands added:
     - `--detailed-build`, `--enhance`, `--wrap`, `--wrap-extended`, `--advanced-analysis`, `--cleanup`
-    - New wrapper commands: `--wrap-simple`, `--wrap-comprehensive`, `--wrap-random`, **`--wrap-advanced`, `--wrap-merged`**
+    - New wrapper commands: `--wrap-simple`, `--wrap-comprehensive`, `--wrap-random`, `--wrap-advanced`, `--wrap-merged`
     - Other new commands: `--auto-commit`, `--combine-models`, `--refresh-details`, `--extend-concepts`, `--fetch-retry`, `--changelog`, `--extend-details`, `--clean-transform`, `--fetch-additional`, `--combine-metrics`, `--update-tracking`
   - Network requests in test mode now return dummy data when the environment variable `FORCE_DUMMY_ENDPOINT` is set, improving test coverage.
-  - README refreshed per CONTRIBUTING guidelines.
+  - **Endpoint Test Details:**
+      - The Coindesk endpoint now returns a simulated network error in test mode.
+      - Non-Coindesk endpoints return simulated dummy data.
+      - Additional endpoints such as agify, genderize, and nationalize have been tested and may return getaddrinfo errors (e.g. `EAI_AGAIN`) in some network environments.
 
 ## Public Data Endpoints
 
