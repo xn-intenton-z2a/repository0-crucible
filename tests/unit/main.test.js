@@ -42,7 +42,10 @@ const {
   updateOntologyDescription,
   extendOntologyConcepts,
   resetOntology,
-  cloneOntology
+  cloneOntology,
+  fetchDataWithRetry,
+  getChangeLog,
+  extendOntologyDetails
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -102,6 +105,10 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--combine-models");
     expect(commands).toContain("--refresh-details");
     expect(commands).toContain("--extend-concepts");
+    // New commands
+    expect(commands).toContain("--fetch-retry");
+    expect(commands).toContain("--changelog");
+    expect(commands).toContain("--extend-details");
     spy.mockRestore();
   });
 
@@ -413,6 +420,22 @@ describe("Extended Functionality", () => {
     const result = await main(["--extend-concepts"]);
     expect(result.concepts).toContain("ExtendedConcept1");
     expect(result.concepts).toContain("ExtendedConcept2");
+  });
+
+  // New tests for extended functions
+  test("--fetch-retry returns fetched data with retry mechanism", async () => {
+    const result = await main(["--fetch-retry"]);
+    expect(result).toHaveProperty("data");
+  });
+
+  test("--changelog returns change log string", async () => {
+    const log = await main(["--changelog"]);
+    expect(log).toMatch(/Extended functions added/);
+  });
+
+  test("--extend-details returns ontology with additionalInfo", async () => {
+    const extended = await main(["--extend-details"]);
+    expect(extended).toHaveProperty("additionalInfo");
   });
 
   describe("File System Error Handling", () => {
