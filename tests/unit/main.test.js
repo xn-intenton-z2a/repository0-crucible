@@ -75,7 +75,9 @@ const {
   anonymizeOntology,
   exportOntologyToRDF,
   summarizeOntologyStatistics,
-  logOntologyHistoryExtended
+  logOntologyHistoryExtended,
+  wrapOntologyModelsCSV,
+  wrapOntologyModelsYAML
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
@@ -280,6 +282,18 @@ describe('New Extended Functions Tests', () => {
     expect(record).toHaveProperty('note', 'Extended note');
     expect(record).toHaveProperty('status', 'Logged');
     expect(record).toHaveProperty('timestamp');
+  });
+
+  test('wrapOntologyModelsCSV returns CSV formatted wrapper', () => {
+    const result = wrapOntologyModelsCSV();
+    expect(result).toHaveProperty('csvWrapped', true);
+    expect(result.csv).toContain('Model,Description');
+  });
+
+  test('wrapOntologyModelsYAML returns YAML formatted wrapper', () => {
+    const result = wrapOntologyModelsYAML();
+    expect(result).toHaveProperty('yamlWrapped', true);
+    expect(result.yaml).toContain('models:');
   });
 });
 

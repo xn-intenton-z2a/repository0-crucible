@@ -186,7 +186,7 @@ export function fetchDataWithRetry(url) {
 }
 
 export function getChangeLog() {
-  return 'Change log: Refocused the library on building robust ontologies from verified public data sources. Legacy simulation endpoints and redundant code have been pruned. Extended ontology wrappers added for advanced integration.';
+  return 'Change log: Refocused the library on building robust ontologies from verified public data sources. Legacy simulation endpoints and redundant code have been pruned. Extended ontology wrappers added for advanced integration, including new CSV and YAML wrappers.';
 }
 
 export function extendOntologyDetails() {
@@ -295,6 +295,21 @@ export function wrapOntologyModelsHierarchy() {
 
 export function wrapOntologyModelsGrid() {
   return { gridWrapped: true, grid: [[1,2,3],[4,5,6],[7,8,9]] };
+}
+
+// New Wrapper Functions for additional ontology model representations
+export function wrapOntologyModelsCSV() {
+  return {
+    csvWrapped: true,
+    csv: "Model,Description\nBasic,Basic ontology model\nEnhanced,Enhanced ontology model\nIntegrated,Integrated ontology model"
+  };
+}
+
+export function wrapOntologyModelsYAML() {
+  return {
+    yamlWrapped: true,
+    yaml: "models:\n  - Basic: Basic ontology model\n  - Enhanced: Enhanced ontology model\n  - Integrated: Integrated ontology model"
+  };
 }
 
 export async function testEndpoints() {
@@ -445,8 +460,6 @@ export async function fetchMultipleEndpoints() {
   // Simulate fetching data from each endpoint in dummy mode
   return endpoints.map(url => ({ endpoint: url, data: 'dummy multiple data' }));
 }
-
-// --- End of New Functions ---
 
 export async function main(args = process.argv.slice(2)) {
   for (const arg of args) {

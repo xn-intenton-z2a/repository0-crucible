@@ -22,11 +22,11 @@ owl-builder is a CLI tool and JavaScript library focused exclusively on building
   - https://api.openbrewerydb.org/breweries
   - https://api.spacexdata.com/v4/launches
   - https://api.exchangerate-api.com/v4/latest/USD
-- **Extended Wrappers:** Multiple wrappers supporting various ontology representations (JSON, custom ordering, graph, tree, matrix, tabular, HTML, Markdown, circular, hierarchical, and grid formats).
+- **Extended Wrappers:** Multiple wrappers supporting various ontology representations including JSON, custom ordering, graph, tree, matrix, tabular, HTML, Markdown, circular, hierarchical, grid, CSV, and YAML formats.
 - **Ontology Analysis & Optimization:** Tools to analyze, optimize, and transform ontologies (including JSON-LD transformation) ensuring consistency and high quality.
 - **Enhanced Metadata Management:** Attach metadata, record history, merge ontologies, and generate concise summaries.
 - **Robust CLI:** A comprehensive command-line interface that is easy to use for building, managing, and querying ontologies.
-- **New Extended Functions:** Features such as validate and optimize, anonymize, export to RDF (Turtle format), summarize statistics, log extended history, and fetch multiple endpoints.
+- **New Extended Functions:** Features such as validate and optimize, anonymize, export to RDF (Turtle format), summarize statistics, log extended history, fetch multiple endpoints, and additional wrappers for CSV and YAML representations.
 
 ## Usage
 
@@ -77,6 +77,7 @@ npm test
   - Refocused the library on building robust ontologies from verified public data sources.
   - Removed legacy simulation endpoints and redundant/demo code as per CONTRIBUTING guidelines.
   - Extended ontology wrappers and added new functions (validate & optimize, anonymize, export to RDF, summarize statistics, log extended history, fetch multiple endpoints).
+  - **Extended ontology wrappers:** Added new CSV and YAML wrappers for additional ontology model representations.
 
 ## Contributing
 
