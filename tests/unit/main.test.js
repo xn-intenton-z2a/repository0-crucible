@@ -233,7 +233,6 @@ describe('Main Module General Functions', () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     const endpoints = await main(['--list-endpoints']);
     expect(Array.isArray(endpoints)).toBe(true);
-    // There should be 18 endpoints in total now.
     expect(endpoints.length).toBe(18);
     spy.mockRestore();
   });
@@ -374,7 +373,6 @@ describe('Main Module General Functions', () => {
   test('Testing new endpoint functionality: --test-endpoints', async () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     await main(['--test-endpoints']);
-    // Check that dummy verified messages are logged
     const calls = spy.mock.calls.map(call => call[0]);
     expect(calls.some(msg => msg.includes('Verified endpoint (dummy):'))).toBe(true);
     spy.mockRestore();
