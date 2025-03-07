@@ -4,9 +4,6 @@ import path from 'path';
 import http from 'http';
 import * as mainModule from '../../src/lib/main.js';
 
-// Set environment to force dummy endpoint responses for most consistent unit testing
-process.env.FORCE_DUMMY_ENDPOINT = 'true';
-
 const {
   main,
   buildOntology,
@@ -53,7 +50,6 @@ function simulateNetworkFailure(mod) {
     return req;
   };
 }
-
 
 describe('Core Ontology Functions', () => {
   test('buildOntology returns public data ontology', () => {
@@ -144,14 +140,16 @@ describe('Core Ontology Functions', () => {
 });
 
 describe('Crawling Functionality', () => {
-  test('crawlOntologies returns array of results with dummy data when FORCE_DUMMY_ENDPOINT is true', async () => {
-    process.env.FORCE_DUMMY_ENDPOINT = 'true';
+  test('crawlOntologies returns array of results with real data', async () => {
     const results = await crawlOntologies();
     expect(Array.isArray(results)).toBe(true);
     results.forEach(item => {
       expect(item).toHaveProperty('endpoint');
-      expect(item).toHaveProperty('data', 'dummy data');
-      expect(item).toHaveProperty('owlContent');
+      if (!item.error) {
+        expect(typeof item.data).toBe('string');
+        expect(item.data.length).toBeGreaterThan(0);
+        expect(item).toHaveProperty('owlContent', '<ontology><title>Public Data Ontology</title></ontology>');
+      }
     });
   });
 
@@ -209,7 +207,6 @@ describe('CLI and Main Function Tests', () => {
   });
 
   test('main with --diagnostics returns remote crawl results', async () => {
-    // This test will force real API calls. In a test environment, network calls may fail, so we just check structure.
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     const results = await main(['--diagnostics']);
     expect(Array.isArray(results)).toBe(true);
