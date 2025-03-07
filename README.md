@@ -110,6 +110,7 @@ node src/lib/main.js --help
     - wrapOntologyModelsGraph
     - wrapOntologyModelsTree
     - wrapOntologyModelsMatrix
+  - **Verified external extended endpoints return dummy data in FORCE_DUMMY_ENDPOINT mode.**
   - Improved test coverage with additional unit tests for new functionalities.
 
 ## Contributing
