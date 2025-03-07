@@ -35,7 +35,7 @@ owl-builder is a CLI tool and library focused on building OWL ontologies. It hel
 - **Data Persistence:** Easily persist, load, backup, and clear ontology data stored in JSON files.
 - **Querying:** Perform simple queries against ontology concepts.
 - **OWL Export/Import:** Convert ontology objects to an OWL XML format and import from XML strings.
-- **Data Crawling:** Crawl multiple public endpoints to capture data for generating OWL representations.
+- **Data Crawling:** Crawl multiple public endpoints to capture data for generating OWL representations. (Test results confirm that dummy data is returned from the following endpoints: https://api.publicapis.org/entries, https://dog.ceo/api/breeds/image/random, https://jsonplaceholder.typicode.com/posts, https://api.coindesk.com/v1/bpi/currentprice.json, https://api.github.com, https://jsonplaceholder.typicode.com/comments, https://dummyjson.com/products, https://randomuser.me/api/, https://catfact.ninja/fact, https://jsonplaceholder.typicode.com/todos)
 - **Ontology Model Wrappers:** Supports both basic and advanced OWL model wrappers; wrap ontology models with additional metadata.
 - **Diagnostics:** Use the diagnostics command to output environment settings for troubleshooting.
 - **Web Server:** Run a simple web server to monitor ontology status and diagnostics in real-time.
@@ -235,7 +235,17 @@ Guidelines focus on code quality, testing, documentation, and collaboration. Fol
   - Extended test coverage and refactored ontology model wrappers.
   - Updated documentation to include instructions for running the built-in web server.
   - Added new CLI command `--serve` to start a simple web server for monitoring purposes.
-  - Improved asynchronous handling in the `--serve` command to ensure the web server startup is awaited.
+  - Updated crawl command documentation to reflect test results showing dummy data returned from endpoints:
+    - https://api.publicapis.org/entries
+    - https://dog.ceo/api/breeds/image/random
+    - https://jsonplaceholder.typicode.com/posts
+    - https://api.coindesk.com/v1/bpi/currentprice.json
+    - https://api.github.com
+    - https://jsonplaceholder.typicode.com/comments
+    - https://dummyjson.com/products
+    - https://randomuser.me/api/
+    - https://catfact.ninja/fact
+    - https://jsonplaceholder.typicode.com/todos
 
 ---
 

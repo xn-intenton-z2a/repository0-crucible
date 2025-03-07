@@ -217,7 +217,6 @@ describe('CLI and Main Function Tests', () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     const result = await main(['--serve']);
     expect(result).toBe('Web server started');
-    // Check that the log includes the web server started message
     expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server started at http:\/\/localhost:\d+/));
     spy.mockRestore();
   });
