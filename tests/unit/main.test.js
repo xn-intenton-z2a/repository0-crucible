@@ -401,6 +401,28 @@ describe('Main Module General Functions', () => {
     const result = await main(['--normalize']);
     expect(result.concepts.sort()).toEqual(['Concept1','Concept2','Concept3'].sort());
   });
+
+  // Tests for new wrapper commands
+  test('--wrap-tabular returns tabular wrapped ontology models', async () => {
+    const result = await main(['--wrap-tabular']);
+    expect(result).toHaveProperty('tabularWrapped', true);
+    expect(result).toHaveProperty('table');
+    expect(Array.isArray(result.table)).toBe(true);
+  });
+
+  test('--wrap-html returns HTML wrapped ontology models', async () => {
+    const result = await main(['--wrap-html']);
+    expect(result).toHaveProperty('htmlWrapped', true);
+    expect(result).toHaveProperty('html');
+    expect(result.html).toContain('<div>');
+  });
+
+  test('--wrap-markdown returns Markdown wrapped ontology models', async () => {
+    const result = await main(['--wrap-markdown']);
+    expect(result).toHaveProperty('markdownWrapped', true);
+    expect(result).toHaveProperty('markdown');
+    expect(result.markdown).toContain('# Ontology Models');
+  });
 });
 
 describe('Additional Extended Functions', () => {

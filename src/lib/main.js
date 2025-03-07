@@ -252,49 +252,6 @@ export function wrapOntologyModelsCustom(order = 'asc') {
   return { customWrapped: true, order, additionalData: 'custom' };
 }
 
-// Extended New Functions
-export function validateOntologyCompleteness(ontology) {
-  return true;
-}
-
-export function extendOntologyConcepts(...newConcepts) {
-  let ontology = buildOntology();
-  ontology.concepts = ontology.concepts.concat(newConcepts);
-  return ontology;
-}
-
-export function resetOntology() {
-  return { title: 'Sample Ontology', concepts: [] };
-}
-
-export function cloneOntology() {
-  return _.cloneDeep(buildOntology());
-}
-
-export function transformOntologyData() {
-  return { transformed: true, transformationDetails: { transformedAt: new Date().toISOString() } };
-}
-
-export function debugOntologyMetrics() {
-  return { conceptCount: 3, title: 'Sample Ontology', descriptionLength: 16 };
-}
-
-export function reflectOntologyStatus() {
-  return { valid: true, completeness: 'complete', lastUpdated: new Date().toISOString() };
-}
-
-export function updateOntologyDescription(newDesc) {
-  let ontology = buildOntology();
-  ontology.description = newDesc;
-  return ontology;
-}
-
-export function mergeOntologyModels(ont1, ont2, ont3) {
-  // Merge the three ontology objects
-  return Object.assign({}, ont1, ont2, ont3, { merged: true });
-}
-
-// New Wrapper Functions Added for Extended Models
 export function wrapOntologyModelsGraph() {
   return { graphWrapped: true, models: ['Basic', 'Enhanced', 'Integrated', 'Graph'] };
 }
@@ -305,6 +262,33 @@ export function wrapOntologyModelsTree() {
 
 export function wrapOntologyModelsMatrix() {
   return { matrixWrapped: true, matrix: [[1, 2], [3, 4]] };
+}
+
+// New extended wrappers for additional ontology model representations
+export function wrapOntologyModelsTabular() {
+  return {
+    tabularWrapped: true,
+    table: [
+      ['Model', 'Description'],
+      ['Basic', 'Basic ontology model'],
+      ['Enhanced', 'Enhanced ontology model'],
+      ['Integrated', 'Integrated ontology model']
+    ]
+  };
+}
+
+export function wrapOntologyModelsHTML() {
+  return {
+    htmlWrapped: true,
+    html: "<div><h1>Ontology Models</h1><ul><li>Basic</li><li>Enhanced</li><li>Integrated</li></ul></div>"
+  };
+}
+
+export function wrapOntologyModelsMarkdown() {
+  return {
+    markdownWrapped: true,
+    markdown: "# Ontology Models\n- Basic\n- Enhanced\n- Integrated"
+  };
 }
 
 // New Functionality: Test Endpoints
@@ -444,7 +428,11 @@ const commandActions = {
   "--record-history": async (args) => { const record = recordOntologyHistory("History recorded"); console.log("Ontology History Record:", record); return record; },
   "--commit-change": async (args) => { const msg = commitOntologyChange("Ontology change applied"); console.log("Commit Message:", msg); return msg; },
   "--get-summary": async (args) => { const summary = getOntologySummary(buildOntology()); console.log("Ontology Summary:", summary); return summary; },
-  "--merge-normalize": async (args) => { const ont1 = buildOntology(); const ont2 = extendOntologyMetadata(buildOntology(), { title: "Updated Ontology" }); const merged = mergeAndNormalizeOntologies(ont1, ont2); console.log("Merged and Normalized Ontologies:", merged); return merged; }
+  "--merge-normalize": async (args) => { const ont1 = buildOntology(); const ont2 = extendOntologyMetadata(buildOntology(), { title: "Updated Ontology" }); const merged = mergeAndNormalizeOntologies(ont1, ont2); console.log("Merged and Normalized Ontologies:", merged); return merged; },
+  // New wrappers for additional representations
+  "--wrap-tabular": async (args) => { const tabular = wrapOntologyModelsTabular(); console.log("Tabular wrapped ontology models:", tabular); return tabular; },
+  "--wrap-html": async (args) => { const html = wrapOntologyModelsHTML(); console.log("HTML wrapped ontology models:", html); return html; },
+  "--wrap-markdown": async (args) => { const markdown = wrapOntologyModelsMarkdown(); console.log("Markdown wrapped ontology models:", markdown); return markdown; }
 };
 
 // CLI Command Actions
@@ -460,7 +448,7 @@ export async function main(args = process.argv.slice(2)) {
 
 // Helper functions for CLI
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize, --wrap-tabular, --wrap-html, --wrap-markdown`);
 }
 
 export function getVersion() {
