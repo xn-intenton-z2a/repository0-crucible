@@ -12,6 +12,7 @@ owl-builder is a powerful CLI tool and JavaScript library designed to help you b
 - [Usage](#usage)
   - [For Casual Users](#for-casual-users)
   - [For Developers](#for-developers)
+  - [Running the Web Server](#running-the-web-server)
   - [For the Scientific Community](#for-the-scientific-community)
 - [CLI Commands](#cli-commands)
 - [SDK Documentation](#sdk-documentation)
@@ -37,6 +38,7 @@ owl-builder is a CLI tool and library focused on building OWL ontologies. It hel
 - **Data Crawling:** Crawl multiple public endpoints to capture data for generating OWL representations.
 - **Ontology Model Wrappers:** Supports both basic and advanced OWL model wrappers; wrap ontology models with additional metadata.
 - **Diagnostics:** Use the diagnostics command to output environment settings for troubleshooting.
+- **Web Server:** Run a simple web server to monitor ontology status and diagnostics in real-time.
 
 ---
 
@@ -105,6 +107,24 @@ npm run formatting
 
 For more detailed information, refer to the inline comments in `src/lib/main.js` and the [CONTRIBUTING.md](CONTRIBUTING.md) file.
 
+### Running the Web Server
+
+owl-builder now includes a simple built-in web server for real-time monitoring and diagnostics. This is particularly useful for developers who wish to integrate a web-based interface for observing ontology statuses or for debugging purposes.
+
+To start the web server, run:
+
+```bash
+npm run serve
+```
+
+By default, the server listens on port 3000. To use a different port, set the `PORT` environment variable:
+
+```bash
+PORT=4000 npm run serve
+```
+
+When running, the web server will display a message indicating it is active and provide the URL. You can visit this URL in your browser to confirm that the server is running.
+
 ### For the Scientific Community
 
 owl-builder can support AI experiments and ontology-driven research projects:
@@ -130,12 +150,13 @@ Here are some key CLI commands:
 - `--backup`: Creates a backup of the ontology file.
 - `--update "New Title"`: Updates the ontology title.
 - `--clear`: Clears the ontology file.
-- `--crawl`: Crawls public endpoints (dummy or real based on the FORCE_DUMMY_ENDPOINT setting).
-- `--fetch-retry`: Fetches data with retry logic.
+- `--crawl`: Crawls public endpoints (using dummy or real data based on the FORCE_DUMMY_ENDPOINT setting).
+- `--fetch-retry`: Demonstrates data fetching with retry logic.
 - `--build-basic`: Builds a basic OWL model.
 - `--build-advanced`: Builds an advanced OWL model.
 - `--wrap-model`: Wraps an ontology model with additional metadata.
 - `--diagnostics`: Outputs environment diagnostic information.
+- `--serve`: Starts the built-in web server for monitoring.
 
 ---
 
@@ -151,24 +172,25 @@ When imported as a JavaScript library, owl-builder exports the following functio
 - **exportOntologyToXML(ontology)**: Exports the provided ontology object to a simple OWL XML representation.
 - **importOntologyFromXML(xml)**: Imports an ontology from an OWL XML formatted string.
 - **backupOntology()**: Creates a backup of the current ontology file.
-- **updateOntology(newTitle)**: Updates the ontology title and returns the updated ontology object.
+- **updateOntology(newTitle)**: Updates the ontology's title and returns the updated object.
 - **clearOntology()**: Clears the ontology file if it exists.
-- **listAvailableEndpoints()**: Returns a list of public endpoints preset for crawling data.
+- **listAvailableEndpoints()**: Returns a list of preset public endpoints for crawling data.
 - **fetchDataWithRetry(url, retries)**: Attempts to fetch data from a given URL with a specified number of retries.
 - **crawlOntologies()**: Crawls preset endpoints and generates OWL XML representations of the sample ontology.
 - **buildBasicOWLModel()**: Returns a basic OWL model wrapper.
 - **buildAdvancedOWLModel()**: Returns an advanced OWL model wrapper with extra details.
-- **wrapOntologyModel(model)**: Wraps an ontology model by adding additional metadata (such as a timestamp).
+- **wrapOntologyModel(model)**: Wraps a provided ontology model with additional metadata (such as a timestamp).
 - **displayHelp()**: Prints help information regarding CLI usage.
 - **getVersion()**: Returns the current version of owl-builder.
 - **listCommands()**: Returns a list of supported CLI commands.
 - **main(args)**: The main CLI function that dispatches commands based on provided arguments.
+- **serveWebServer()**: Starts a simple HTTP web server to provide real-time monitoring and diagnostics.
 
 ---
 
 ## API Documentation
 
-While owl-builder is primarily a CLI tool, its CLI commands can be considered as API endpoints when the tool is executed. Below is an overview of the exposed endpoints:
+While owl-builder is primarily a CLI tool, its CLI commands can be considered as API endpoints when executed. Overview of the exposed endpoints:
 
 - **--help**: Displays a help message detailing usage and available options.
 - **--version**: Returns the current version of the tool.
@@ -176,19 +198,20 @@ While owl-builder is primarily a CLI tool, its CLI commands can be considered as
 - **--build**: Generates a sample ontology and prints it.
 - **--persist**: Builds and persists the sample ontology to a file.
 - **--load**: Loads and prints the persisted ontology from the file.
-- **--query [searchTerm]**: Searches for ontology concepts that match the provided term.
+- **--query [searchTerm]**: Searches for ontology concepts matching the provided term.
 - **--validate**: Validates the structure of the sample ontology object.
 - **--export**: Exports the ontology to an OWL XML format and prints the XML string.
 - **--import**: Imports a sample ontology from an OWL XML string and prints the imported object.
 - **--backup**: Creates a backup of the current ontology file.
 - **--update [New Title]**: Updates the ontology's title and returns the updated object.
 - **--clear**: Deletes the ontology file if it exists.
-- **--crawl**: Initiates a crawl of public endpoints (using dummy data by default) and returns the results.
+- **--crawl**: Initiates a crawl of public endpoints (using dummy or real data based on settings) and returns the results.
 - **--fetch-retry**: Demonstrates data fetching with retry logic for a given URL.
 - **--build-basic**: Generates and prints a basic OWL model.
 - **--build-advanced**: Generates and prints an advanced OWL model.
 - **--wrap-model [JSON]**: Wraps a provided or default ontology model with additional metadata.
 - **--diagnostics**: Outputs environment diagnostic information.
+- **--serve**: Starts a simple web server for monitoring.
 
 ---
 
@@ -210,8 +233,9 @@ Guidelines focus on code quality, testing, documentation, and collaboration. Fol
 - **Version 0.0.26**
   - Added new CLI command `--diagnostics` for environment diagnostics.
   - Extended test coverage and refactored ontology model wrappers.
-  - Regenerated documentation and project README to align with contributing guidelines.
-  - **Added SDK and API documentation sections to README.**
+  - Updated documentation to include instructions for running the built-in web server.
+  - Added new CLI command `--serve` to start a simple web server for monitoring purposes.
+  - Improved asynchronous handling in the `--serve` command to ensure the web server startup is awaited.
 
 ---
 
