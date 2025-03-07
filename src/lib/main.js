@@ -1,11 +1,31 @@
 #!/usr/bin/env node
 
+/*
+ * owl-builder CLI Tool
+ *
+ * Mission Statement:
+ *   owl-builder is dedicated to building OWL ontologies from verified public data sources. Our goal is to provide an intuitive and extensible platform for ontology building, management, and querying.
+ *
+ * Features:
+ *   - Build and persist basic ontology models
+ *   - Query and validate ontology concepts
+ *   - Export/import OWL (XML) representations
+ *   - Crawl public endpoints and create backups
+ *   - Wrap and enrich ontology models with additional metadata
+ *
+ * For Developers:
+ *   Follow the CONTRIBUTING guidelines to extend or modify functionalities. Ensure to update tests and documentation when changes are made.
+ *
+ * For Users:
+ *   Enjoy a robust CLI and library tool that is easy to set up and use for generating rich ontology outputs. Use the --help command for usage information.
+ */
+
 import fs from 'fs';
 import path from 'path';
 import https from 'https';
 import http from 'http';
 
-// File paths for ontology files
+// Define file paths for ontology data
 const ontologyFilePath = path.resolve(process.cwd(), 'ontology.json');
 const backupFilePath = path.resolve(process.cwd(), 'ontology-backup.json');
 
@@ -111,7 +131,7 @@ export function listAvailableEndpoints() {
   ];
 }
 
-// Attempts to fetch data with retry logic based on the URL protocol.
+// Attempts to fetch data with retry using the provided protocol.
 export async function fetchDataWithRetry(url, retries = 3) {
   const mod = url.startsWith('https') ? https : http;
   return new Promise((resolve, reject) => {
@@ -144,7 +164,6 @@ export async function crawlOntologies() {
       } else {
         data = await fetchDataWithRetry(endpoint);
       }
-      // For demonstration, convert the sample ontology to an OWL XML format
       const owlContent = exportOntologyToXML(buildOntology());
       results.push({ endpoint, data, owlContent });
     } catch (err) {
@@ -191,30 +210,7 @@ export function wrapOntologyModel(model) {
   return model;
 }
 
-// Main CLI function that dispatches commands based on provided arguments.
-export async function main(args = process.argv.slice(2)) {
-  for (const arg of args) {
-    if (commandActions[arg]) {
-      const result = await commandActions[arg](args);
-      return result;
-    }
-  }
-  console.log(`Run with: ${JSON.stringify(args)}`);
-}
-
-// Displays help information for using the CLI.
-export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --diagnostics`);
-}
-
-export function getVersion() {
-  return '0.0.26';
-}
-
-export function listCommands() {
-  return Object.keys(commandActions);
-}
-
+// CLI Command Actions
 const commandActions = {
   "--help": async (args) => { displayHelp(); },
   "--version": async (args) => { 
@@ -332,5 +328,29 @@ const commandActions = {
     return diag;
   }
 };
+
+// Main CLI function that dispatches commands based on provided arguments.
+export async function main(args = process.argv.slice(2)) {
+  for (const arg of args) {
+    if (commandActions[arg]) {
+      const result = await commandActions[arg](args);
+      return result;
+    }
+  }
+  console.log(`Run with: ${JSON.stringify(args)}`);
+}
+
+// Displays help information for using the CLI.
+export function displayHelp() {
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --diagnostics`);
+}
+
+export function getVersion() {
+  return '0.0.26';
+}
+
+export function listCommands() {
+  return Object.keys(commandActions);
+}
 
 console.log("owl-builder CLI loaded");
