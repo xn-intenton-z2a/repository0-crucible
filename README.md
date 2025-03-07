@@ -80,7 +80,7 @@ owl-builder leverages multiple verified public endpoints. During testing, dummy 
 
 ## Testing
 
-Tests cover file operations, network request handling (using dummy mode or mocked network responses), and CLI command execution. Run tests using:
+Tests now include comprehensive coverage for file system operations and network request mocks to ensure robust behavior. Run tests using:
 
 ```bash
 npm test
@@ -88,7 +88,7 @@ npm test
 
 ## Changelog
 
-- **Version 0.0.21**
+- **Version 0.0.22**
   - Refocused the library on building robust ontologies from verified public data sources.
   - Removed legacy simulation endpoints and redundant/demo code as per CONTRIBUTING guidelines and mission statement.
   - Extended ontology wrappers and added new functions including:
@@ -103,7 +103,7 @@ npm test
     - wrapOntologyModelsGrid
     - testEndpoints
     - testExtendedEndpoints
-  - Fixed network request tests by modifying testExtendedEndpoints to allow real network calls when FORCE_DUMMY_ENDPOINT is set to false.
+  - **Improved test coverage** by adding additional tests for file system and network operations.
   - Updated internal functions to support extended CLI commands and ensure comprehensive test coverage.
 
 ## Contributing

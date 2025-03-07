@@ -140,7 +140,6 @@ describe('External Resource Mocks', () => {
       callback(fakeResponse);
       return { on: vi.fn() };
     });
-    // Call extended endpoints to trigger network behavior
     await main(['--extended-endpoints']);
     expect(getSpy).toHaveBeenCalled();
     getSpy.mockRestore();
@@ -168,7 +167,7 @@ describe('Main Module General Functions', () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     const version = await main(['--version']);
     expect(spy).toHaveBeenCalledWith('Tool version:', version);
-    expect(version).toBe('0.0.21');
+    expect(version).toBe('0.0.22');
     spy.mockRestore();
   });
 
@@ -268,6 +267,37 @@ describe('New Extended Endpoints Functions', () => {
     await testExtendedEndpoints();
     expect(spy).toHaveBeenCalledWith(expect.stringContaining('Verified extended endpoint (dummy):'));
     spy.mockRestore();
+  });
+});
+
+describe('Additional File System Function Tests', () => {
+  test('backupOntology writes backup file successfully', () => {
+    // Mock read and write file sync
+    const ontology = { title: 'Backup Test', concepts: ['X'] };
+    const readSpy = vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(ontology, null, 2));
+    const writeSpy = vi.spyOn(fs, 'writeFileSync').mockImplementation(() => {});
+    const result = backupOntology();
+    expect(readSpy).toHaveBeenCalledWith(ontologyPath, 'utf-8');
+    expect(writeSpy).toHaveBeenCalledWith(backupPath, JSON.stringify(ontology, null, 2));
+    expect(result).toEqual({ success: true, backupFile: backupPath });
+    readSpy.mockRestore();
+    writeSpy.mockRestore();
+  });
+
+  test('clearOntology removes file if it exists', () => {
+    const existsSpy = vi.spyOn(fs, 'existsSync').mockReturnValue(true);
+    const unlinkSpy = vi.spyOn(fs, 'unlinkSync').mockImplementation(() => {});
+    const result = clearOntology();
+    expect(result).toEqual({ success: true });
+    existsSpy.mockRestore();
+    unlinkSpy.mockRestore();
+  });
+
+  test('clearOntology returns error if file does not exist', () => {
+    const existsSpy = vi.spyOn(fs, 'existsSync').mockReturnValue(false);
+    const result = clearOntology();
+    expect(result).toEqual({ success: false, error: 'Ontology file does not exist' });
+    existsSpy.mockRestore();
   });
 });
 
