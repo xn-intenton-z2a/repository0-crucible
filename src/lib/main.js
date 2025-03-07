@@ -154,7 +154,9 @@ export function listAvailableEndpoints() {
     'https://api.genderize.io',
     'https://api.openbrewerydb.org/breweries',
     'https://api.spacexdata.com/v4/launches',
-    'https://api.exchangerate-api.com/v4/latest/USD'
+    'https://api.exchangerate-api.com/v4/latest/USD',
+    'https://api.sample.com/ontology',
+    'https://api.ontologybuilder.com/data'
   ];
 }
 
@@ -395,7 +397,7 @@ export function displayHelp() {
 }
 
 export function getVersion() {
-  return '0.0.16';
+  return '0.0.17';
 }
 
 export function listCommands() {

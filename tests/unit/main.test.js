@@ -85,7 +85,7 @@ describe('Main Module General Functions', () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     const version = await main(['--version']);
     expect(spy).toHaveBeenCalledWith('Tool version:', version);
-    expect(version).toBe('0.0.16');
+    expect(version).toBe('0.0.17');
     spy.mockRestore();
   });
 
@@ -233,8 +233,8 @@ describe('Main Module General Functions', () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     const endpoints = await main(['--list-endpoints']);
     expect(Array.isArray(endpoints)).toBe(true);
-    // Now there should be 16 endpoints in total.
-    expect(endpoints.length).toBe(16);
+    // There should be 18 endpoints in total now.
+    expect(endpoints.length).toBe(18);
     spy.mockRestore();
   });
 
