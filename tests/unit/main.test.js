@@ -53,7 +53,11 @@ const {
   debugOntologyMetrics,
   reflectOntologyStatus,
   wrapOntologyModelsJSON,
-  wrapOntologyModelsCustom
+  wrapOntologyModelsCustom,
+  // New wrappers
+  wrapOntologyModelsGraph,
+  wrapOntologyModelsTree,
+  wrapOntologyModelsMatrix
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
@@ -366,11 +370,28 @@ describe('Main Module General Functions', () => {
     expect(result.order).toBe('desc');
   });
 
-  // New test: Verify endpoint responses logging (dummy verification)
+  // Tests for new wrapper functions
+  test('--wrap-graph returns graph wrapped ontology models', async () => {
+    const result = await main(['--wrap-graph']);
+    expect(result).toHaveProperty('graphWrapped', true);
+    expect(result.models).toContain('Graph');
+  });
+
+  test('--wrap-tree returns tree wrapped ontology models', async () => {
+    const result = await main(['--wrap-tree']);
+    expect(result).toHaveProperty('treeWrapped', true);
+    expect(result.models).toContain('Tree');
+  });
+
+  test('--wrap-matrix returns matrix wrapped ontology models', async () => {
+    const result = await main(['--wrap-matrix']);
+    expect(result).toHaveProperty('matrixWrapped', true);
+    expect(result.matrix).toEqual([[1,2],[3,4]]);
+  });
+
   test('endpoints verification: each endpoint logs a dummy response', () => {
     const endpoints = listAvailableEndpoints();
     endpoints.forEach(endpoint => {
-      // Simulate logging the endpoint; in real scenarios an HTTP call would be made
       console.log(`Verified endpoint: ${endpoint}`);
       expect(typeof endpoint).toBe('string');
     });

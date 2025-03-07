@@ -6,9 +6,9 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
 
 - **Version 0.0.16**
   - Refocused on public data source integration and removed legacy endpoints.
-  - Extended ontology processing functions and added new wrapper commands: `wrapOntologyModelsJSON` and `wrapOntologyModelsCustom`.
+  - Extended ontology processing functions and added new wrapper commands: `wrapOntologyModelsJSON`, `wrapOntologyModelsCustom`, **`wrapOntologyModelsGraph`**, **`wrapOntologyModelsTree`**, and **`wrapOntologyModelsMatrix`**.
   - Updated documentation per CONTRIBUTING guidelines.
-  - **Verified endpoint responses via unit tests:**
+  - Verified endpoint responses via unit tests:
     - Confirmed list of 10 endpoints returned as expected.
     - Additional endpoint fetch tests now simulate error responses (EAI_AGAIN) and are logged in test output.
   - Updated README changelog based on verified endpoint test results.
@@ -67,6 +67,18 @@ Example commands:
     ```bash
     node src/lib/main.js --wrap-custom asc
     ```
+  - **Graph Wrapper:**
+    ```bash
+    node src/lib/main.js --wrap-graph
+    ```
+  - **Tree Wrapper:**
+    ```bash
+    node src/lib/main.js --wrap-tree
+    ```
+  - **Matrix Wrapper:**
+    ```bash
+    node src/lib/main.js --wrap-matrix
+    ```
 
 ## Testing
 
@@ -76,7 +88,7 @@ Run tests with:
 npm test
 ```
 
-The tests now include a verification for endpoint responses based on dummy data and error simulation.
+The tests now include a verification for endpoint responses based on dummy data and error simulation, as well as tests for the new model wrapper functions.
 
 ## Contributing
 
