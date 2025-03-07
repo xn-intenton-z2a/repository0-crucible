@@ -33,6 +33,7 @@
 <li class="md-github"><a href="#usage" class="md-github">Usage</a>
 <ul class="md-github">
 <li class="md-github"><a href="#for-casual-users" class="md-github">For Casual Users</a></li>
+<li class="md-github"><a href="#using-real-endpoints-for-meaningful-owl-output" class="md-github">Using Real Endpoints for Meaningful OWL Output</a></li>
 <li class="md-github"><a href="#for-developers" class="md-github">For Developers</a></li>
 <li class="md-github"><a href="#running-the-web-server" class="md-github">Running the Web Server</a></li>
 <li class="md-github"><a href="#for-the-scientific-community" class="md-github">For the Scientific Community</a></li>
@@ -55,7 +56,7 @@
 <li class="md-github"><strong class="md-github">Data Persistence:</strong> Persist, load, backup, and clear ontology data stored in JSON files.</li>
 <li class="md-github"><strong class="md-github">Querying:</strong> Perform queries against ontology concepts.</li>
 <li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontology objects to a simple OWL XML format and import from XML strings.</li>
-<li class="md-github"><strong class="md-github">Data Crawling:</strong> Crawl multiple public endpoints to collect data and generate OWL representations. (Endpoints include the following and return dummy data when FORCE_DUMMY_ENDPOINT is set to true: https://api.publicapis.org/entries, https://dog.ceo/api/breeds/image/random, https://jsonplaceholder.typicode.com/posts, https://api.coindesk.com/v1/bpi/currentprice.json, https://api.github.com, https://jsonplaceholder.typicode.com/comments, https://dummyjson.com/products, https://randomuser.me/api/, https://catfact.ninja/fact, https://jsonplaceholder.typicode.com/todos)</li>
+<li class="md-github"><strong class="md-github">Data Crawling:</strong> Crawl multiple public endpoints to collect data and generate OWL representations. (<em class="md-github">By default, dummy data is used. Set <code class="md-github">FORCE_DUMMY_ENDPOINT</code> to <code class="md-github">false</code> for real data.</em>)</li>
 <li class="md-github"><strong class="md-github">Ontology Model Wrappers:</strong> Offers both basic and advanced OWL model wrappers with additional metadata support.</li>
 <li class="md-github"><strong class="md-github">Diagnostics:</strong> Output environment diagnostics for troubleshooting.</li>
 <li class="md-github"><strong class="md-github">Web Server:</strong> Built-in web server for real-time ontology status and monitoring.</li>
@@ -86,14 +87,31 @@ npm install
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Run Data Crawling (with dummy data by default):</strong></p>
+<p class="md-github"><strong class="md-github">Run Data Crawling with Dummy Data (default):</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --crawl
 </code></pre>
 </li>
 </ul>
-<p class="md-github">Set <code class="md-github">FORCE_DUMMY_ENDPOINT</code> to <code class="md-github">false</code> to perform real network requests:</p>
+<h3 class="md-github"><a class="md-github__anchor" name="using-real-endpoints-for-meaningful-owl-output" href="#using-real-endpoints-for-meaningful-owl-output"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using Real Endpoints for Meaningful OWL Output</h3>
+<p class="md-github">To retrieve real data from public endpoints and generate meaningful OWL XML output, disable the dummy data mode by setting the environment variable <code class="md-github">FORCE_DUMMY_ENDPOINT</code> to <code class="md-github">false</code>. For example:</p>
 <pre class="md-github"><code class="md-github language-bash">FORCE_DUMMY_ENDPOINT=false node src/lib/main.js --crawl
 </code></pre>
+<p class="md-github"><strong class="md-github">Expected output:</strong></p>
+<pre class="md-github"><code class="md-github language-json">[
+  {
+    &quot;endpoint&quot;: &quot;https://api.publicapis.org/entries&quot;,
+    &quot;data&quot;: &quot;{...actual response data...}&quot;,
+    &quot;owlContent&quot;: &quot;&lt;ontology&gt;&lt;title&gt;Public Data Ontology&lt;/title&gt;&lt;/ontology&gt;&quot;
+  },
+  {
+    &quot;endpoint&quot;: &quot;https://dog.ceo/api/breeds/image/random&quot;,
+    &quot;data&quot;: &quot;{...actual response data...}&quot;,
+    &quot;owlContent&quot;: &quot;&lt;ontology&gt;&lt;title&gt;Public Data Ontology&lt;/title&gt;&lt;/ontology&gt;&quot;
+  }
+  // ... additional endpoints
+]
+</code></pre>
+<p class="md-github">This output demonstrates that the tool is fetching live data from real endpoints and converting the ontology to a standard OWL XML format.</p>
 <h3 class="md-github"><a class="md-github__anchor" name="for-developers" href="#for-developers"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>For Developers</h3>
 <p class="md-github">owl-builder is built for testability and extendability. Its modular source code adheres to high-quality standards:</p>
 <ul class="md-github">
@@ -211,6 +229,7 @@ npm run formatting
 <li class="md-github">Updated mission statement and documentation to reflect the new focus.</li>
 <li class="md-github">Updated sample ontology title to &quot;Public Data Ontology&quot; in core functions and tests.</li>
 <li class="md-github">Extended OWL model wrappers and updated changelog.</li>
+<li class="md-github"><strong class="md-github">Documentation Update:</strong> Added detailed CLI execution examples demonstrating how to obtain meaningful OWL output from real endpoints.</li>
 </ul>
 </li>
 <li class="md-github">
@@ -226,7 +245,7 @@ npm run formatting
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T21:23:40.713Z</p>
+    <p>Generated on 2025-03-07T21:29:36.574Z</p>
   </footer>
 </body>
 </html>
