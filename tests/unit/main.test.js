@@ -61,7 +61,13 @@ const {
   analyzeOntology,
   optimizeOntology,
   transformOntologyToJSONLD,
-  normalizeOntology
+  normalizeOntology,
+  // Extended functions
+  extendOntologyMetadata,
+  recordOntologyHistory,
+  commitOntologyChange,
+  getOntologySummary,
+  mergeAndNormalizeOntologies
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
@@ -394,6 +400,45 @@ describe('Main Module General Functions', () => {
   test('main with --normalize returns normalized ontology', async () => {
     const result = await main(['--normalize']);
     expect(result.concepts.sort()).toEqual(['Concept1','Concept2','Concept3'].sort());
+  });
+});
+
+describe('Additional Extended Functions', () => {
+  test('extendOntologyMetadata attaches new metadata to ontology', () => {
+    const ontology = buildOntology();
+    const metadata = { author: 'Test Author' };
+    const extended = extendOntologyMetadata(ontology, metadata);
+    expect(extended).toHaveProperty('author', 'Test Author');
+  });
+
+  test('recordOntologyHistory returns history record with note', () => {
+    const note = 'History entry';
+    const record = recordOntologyHistory(note);
+    expect(record).toHaveProperty('note', note);
+    expect(record).toHaveProperty('timestamp');
+  });
+
+  test('commitOntologyChange returns formatted commit message', () => {
+    const note = 'Test Commit';
+    const msg = commitOntologyChange(note);
+    expect(msg).toContain(note);
+    expect(msg).toContain('Commit:');
+  });
+
+  test('getOntologySummary returns summary of ontology', () => {
+    const ontology = buildOntology();
+    const summary = getOntologySummary(ontology);
+    expect(summary.title).toBe(ontology.title);
+    expect(summary.conceptCount).toBe(ontology.concepts.length);
+    expect(summary.summary).toContain(ontology.title);
+  });
+
+  test('mergeAndNormalizeOntologies merges multiple ontologies and normalizes the result', () => {
+    const ont1 = { title: 'Ont1', concepts: ['A', 'B'] };
+    const ont2 = { title: 'Ont2', concepts: ['B', 'C'] };
+    const merged = mergeAndNormalizeOntologies(ont1, ont2);
+    expect(merged).toHaveProperty('merged', true);
+    expect(merged.concepts.sort()).toEqual(['A', 'B', 'C'].sort());
   });
 });
 

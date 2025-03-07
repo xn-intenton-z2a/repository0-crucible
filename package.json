@@ -1,7 +1,7 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
   "version": "0.0.19",
-  "description": "CLI tool refocused on building robust ontologies from public data sources with extended endpoint list, improved documentation, pruned legacy endpoints, verified endpoint responses, and extended with new ontology analysis and transformation functions.",
+  "description": "CLI tool refocused on building robust ontologies from public data sources with extended endpoint list, improved documentation, pruned legacy endpoints, verified endpoint responses, and extended with new functions for metadata management, history recording, summary generation, and ontology merging.",
   "type": "module",
   "main": "src/lib/main.js",
   "scripts": {
