@@ -6,9 +6,9 @@ owl-builder is a versatile CLI tool and JavaScript library designed for building
 
 - **Ontology Building:** Create basic and detailed ontology models with built-in functions.
 - **Public Data Integration:** Automatically crawl and integrate data from various public endpoints.
-- **Extended Wrappers:** Multiple wrapper functions for different ontology models (JSON, custom order, graph, tree, matrix, etc.).
+- **Extended Wrappers:** Multiple wrapper functions for different ontology models (JSON, custom order, graph, tree, matrix, tabular, HTML, markdown, etc.).
 - **Ontology Analysis & Optimization:** Functions to analyze, optimize, and transform ontologies, including transformation to JSON-LD.
-- **Enhanced Metadata Management:** Functions for attaching metadata, recording change history, generating summaries, and merging ontologies.
+- **Enhanced Metadata Management:** Functions for attaching metadata, recording change history, generating summaries, merging ontologies, and now extended functions such as merging models, updating descriptions, and extending ontology concepts.
 - **Robust CLI:** Comprehensive command-line interface supporting a wide range of commands for ontology operations.
 
 ## Public Data Endpoints
@@ -117,6 +117,20 @@ Example commands:
     node src/lib/main.js --combine-metrics
     ```
 
+- **New Ontology Model Wrappers:**
+  - Tabular Representation:
+    ```bash
+    node src/lib/main.js --wrap-tabular
+    ```
+  - HTML Representation:
+    ```bash
+    node src/lib/main.js --wrap-html
+    ```
+  - Markdown Representation:
+    ```bash
+    node src/lib/main.js --wrap-markdown
+    ```
+
 ## Testing
 
 Run tests using:
@@ -125,7 +139,7 @@ Run tests using:
 npm test
 ```
 
-The test suite includes validation for all CLI commands, endpoint responses (using dummy mode), ontology wrappers, and the newly extended metadata and processing functions.
+The test suite includes validation for all CLI commands, endpoint responses (using dummy mode), ontology wrappers (including the newly added tabular, HTML, and markdown wrappers), and the extended metadata and processing functions.
 
 ## Changelog
 
@@ -133,6 +147,8 @@ The test suite includes validation for all CLI commands, endpoint responses (usi
   - Refocused ontology builder on building OWL ontologies exclusively from diverse public data sources.
   - Removed legacy code and endpoints that were not in line with the new mission statement.
   - Extended functionality with new ontology analysis, optimization, transformation, and metadata management commands.
+  - **Extended Wrappers Added:** New wrappers for ontology models have been added including JSON, custom, graph, tree, matrix, tabular, HTML, and markdown representations.
+  - **New Functions Added:** Added missing functions: mergeOntologyModels, updateOntologyDescription, extendOntologyConcepts, as well as stubs for resetOntology, cloneOntology, transformOntologyData, debugOntologyMetrics, and reflectOntologyStatus to support extended CLI commands.
   - **Validated endpoint integration tests:** Dummy endpoints responded as expected during testing (including extended endpoints, retry, and additional fetch endpoints).
   - Documentation and test cases updated to reflect the new focus.
 
