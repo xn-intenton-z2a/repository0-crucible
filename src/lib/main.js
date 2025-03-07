@@ -403,6 +403,35 @@ export function reflectOntologyStatus() {
 }
 // ----- End of added functions -----
 
+// New Extended Features:
+// Function to concurrently fetch all endpoints
+export async function fetchMultipleEndpoints() {
+  const endpoints = listAvailableEndpoints();
+  const fetchEndpoint = (endpoint) => {
+    return new Promise((resolve) => {
+      const mod = endpoint.startsWith('https') ? https : http;
+      if (process.env.FORCE_DUMMY_ENDPOINT === 'true') {
+        resolve({ endpoint, data: 'dummy response' });
+      } else {
+        mod.get(endpoint, (res) => {
+          let data = '';
+          res.on('data', chunk => data += chunk);
+          res.on('end', () => resolve({ endpoint, data: data.substring(0, 50) }));
+        }).on('error', (err) => resolve({ endpoint, error: err.message }));
+      }
+    });
+  };
+  return Promise.all(endpoints.map(ep => fetchEndpoint(ep)));
+}
+
+// New Function: Validate and Optimize Ontology
+export function validateAndOptimizeOntology(ontology) {
+  if (!ontology) ontology = buildOntology();
+  const isValid = validateOntology(ontology);
+  const optimized = optimizeOntology(ontology);
+  return { isValid, optimized };
+}
+
 // CLI Command Actions Mapping
 const commandActions = {
   "--help": async (args) => { displayHelp(); },
@@ -471,7 +500,10 @@ const commandActions = {
   // New wrappers for additional representations
   "--wrap-tabular": async (args) => { const tabular = wrapOntologyModelsTabular(); console.log("Tabular wrapped ontology models:", tabular); return tabular; },
   "--wrap-html": async (args) => { const html = wrapOntologyModelsHTML(); console.log("HTML wrapped ontology models:", html); return html; },
-  "--wrap-markdown": async (args) => { const markdown = wrapOntologyModelsMarkdown(); console.log("Markdown wrapped ontology models:", markdown); return markdown; }
+  "--wrap-markdown": async (args) => { const markdown = wrapOntologyModelsMarkdown(); console.log("Markdown wrapped ontology models:", markdown); return markdown; },
+  // New commands added inline with mission statement
+  "--fetch-multiple": async (args) => { const data = await fetchMultipleEndpoints(); console.log("Fetched multiple endpoints:", data); return data; },
+  "--validate-optimize": async (args) => { const result = validateAndOptimizeOntology(); console.log("Ontology valid and optimized:", result); return result; }
 };
 
 // CLI Command Actions
@@ -487,11 +519,11 @@ export async function main(args = process.argv.slice(2)) {
 
 // Helper functions for CLI
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize, --wrap-tabular, --wrap-html, --wrap-markdown`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize, --wrap-tabular, --wrap-html, --wrap-markdown, --fetch-multiple, --validate-optimize`);
 }
 
 export function getVersion() {
-  return '0.0.19';
+  return '0.0.20';
 }
 
 export function listCommands() {

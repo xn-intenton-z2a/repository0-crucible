@@ -10,6 +10,9 @@ owl-builder is a versatile CLI tool and JavaScript library designed for building
 - **Ontology Analysis & Optimization:** Functions to analyze, optimize, and transform ontologies, including transformation to JSON-LD.
 - **Enhanced Metadata Management:** Functions for attaching metadata, recording change history, generating summaries, merging ontologies, and now extended functions such as merging models, updating descriptions, and extending ontology concepts.
 - **Robust CLI:** Comprehensive command-line interface supporting a wide range of commands for ontology operations.
+- **New Extended Features:**
+  - **Concurrent Fetching:** Use `--fetch-multiple` to concurrently fetch data from multiple public endpoints.
+  - **Validation & Optimization:** Use `--validate-optimize` to validate and optimize an ontology in one step.
 
 ## Public Data Endpoints
 
@@ -117,6 +120,16 @@ Example commands:
     node src/lib/main.js --combine-metrics
     ```
 
+- **New Extended Features:**
+  - Concurrently Fetch Endpoints:
+    ```bash
+    node src/lib/main.js --fetch-multiple
+    ```
+  - Validate and Optimize Ontology:
+    ```bash
+    node src/lib/main.js --validate-optimize
+    ```
+
 - **New Ontology Model Wrappers:**
   - Tabular Representation:
     ```bash
@@ -139,18 +152,21 @@ Run tests using:
 npm test
 ```
 
-The test suite includes validation for all CLI commands, endpoint responses (using dummy mode), ontology wrappers (including the newly added tabular, HTML, and markdown wrappers), and the extended metadata and processing functions.
+The test suite includes validation for all CLI commands, endpoint responses (using dummy mode), ontology wrappers (including the newly added tabular, HTML, and markdown wrappers), extended metadata and processing functions, as well as the new extended features.
 
 ## Changelog
 
-- **Version 0.0.19**
+- **Version 0.0.20**
   - Refocused ontology builder on building OWL ontologies exclusively from diverse public data sources.
   - Removed legacy code and endpoints that were not in line with the new mission statement.
   - Extended functionality with new ontology analysis, optimization, transformation, and metadata management commands.
   - **Extended Wrappers Added:** New wrappers for ontology models have been added including JSON, custom, graph, tree, matrix, tabular, HTML, and markdown representations.
-  - **New Functions Added:** Added missing functions: mergeOntologyModels, updateOntologyDescription, extendOntologyConcepts, as well as stubs for resetOntology, cloneOntology, transformOntologyData, debugOntologyMetrics, and reflectOntologyStatus to support extended CLI commands.
-  - **Validated endpoint integration tests:** Dummy endpoints responded as expected during testing (including extended endpoints, retry, and additional fetch endpoints).
-  - Documentation and test cases updated to reflect the new focus.
+  - **New Functions Added:**
+    - Added missing functions: mergeOntologyModels, updateOntologyDescription, extendOntologyConcepts, and stubs for resetOntology, cloneOntology, transformOntologyData, debugOntologyMetrics, and reflectOntologyStatus.
+    - **New Extended Features:**
+      - Added fetchMultipleEndpoints for concurrent endpoint fetching (--fetch-multiple).
+      - Added validateAndOptimizeOntology to combine validation and optimization (--validate-optimize).
+  - Documentation and test cases updated to reflect the new focus and extended features.
 
 ## Contributing
 

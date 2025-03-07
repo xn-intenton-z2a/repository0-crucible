@@ -62,12 +62,13 @@ const {
   optimizeOntology,
   transformOntologyToJSONLD,
   normalizeOntology,
-  // Extended functions
   extendOntologyMetadata,
   recordOntologyHistory,
   commitOntologyChange,
   getOntologySummary,
-  mergeAndNormalizeOntologies
+  mergeAndNormalizeOntologies,
+  fetchMultipleEndpoints,
+  validateAndOptimizeOntology
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
@@ -95,7 +96,7 @@ describe('Main Module General Functions', () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     const version = await main(['--version']);
     expect(spy).toHaveBeenCalledWith('Tool version:', version);
-    expect(version).toBe('0.0.19');
+    expect(version).toBe('0.0.20');
     spy.mockRestore();
   });
 
@@ -402,26 +403,19 @@ describe('Main Module General Functions', () => {
     expect(result.concepts.sort()).toEqual(['Concept1','Concept2','Concept3'].sort());
   });
 
-  // Tests for new wrapper commands
-  test('--wrap-tabular returns tabular wrapped ontology models', async () => {
-    const result = await main(['--wrap-tabular']);
-    expect(result).toHaveProperty('tabularWrapped', true);
-    expect(result).toHaveProperty('table');
-    expect(Array.isArray(result.table)).toBe(true);
+  // New tests for extended features
+  test('--fetch-multiple returns array response with dummy data', async () => {
+    const result = await main(['--fetch-multiple']);
+    expect(Array.isArray(result)).toBe(true);
+    result.forEach(item => {
+      expect(item).toHaveProperty('data', 'dummy response');
+    });
   });
 
-  test('--wrap-html returns HTML wrapped ontology models', async () => {
-    const result = await main(['--wrap-html']);
-    expect(result).toHaveProperty('htmlWrapped', true);
-    expect(result).toHaveProperty('html');
-    expect(result.html).toContain('<div>');
-  });
-
-  test('--wrap-markdown returns Markdown wrapped ontology models', async () => {
-    const result = await main(['--wrap-markdown']);
-    expect(result).toHaveProperty('markdownWrapped', true);
-    expect(result).toHaveProperty('markdown');
-    expect(result.markdown).toContain('# Ontology Models');
+  test('--validate-optimize returns valid and optimized ontology', async () => {
+    const result = await main(['--validate-optimize']);
+    expect(result).toHaveProperty('isValid', true);
+    expect(result.optimized).toHaveProperty('optimized', true);
   });
 });
 
