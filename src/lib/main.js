@@ -570,7 +570,7 @@ export async function main(args = []) {
       console.log("Extended Ontology Details:", extended);
       return extended;
     },
-    // New commands added for new wrappers
+    // New commands added for new wrapper commands
     "--wrap-simple": async () => {
       const simple = wrapOntologyModelsSimple();
       console.log("Simple Wrapped Ontology Models:", simple);

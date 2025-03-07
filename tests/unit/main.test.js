@@ -1,5 +1,5 @@
 /* eslint-disable sonarjs/no-ignored-exceptions, no-unused-vars, prettier/prettier */
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect, vi, afterAll } from "vitest";
 import fs from "fs";
 import path from "path";
 import * as mainModule from "../../src/lib/main.js";
