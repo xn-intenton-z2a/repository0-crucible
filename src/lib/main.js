@@ -373,6 +373,12 @@ export function getOntologySummary(ontology) {
   };
 }
 
+// NEW: Added combineOntologyMetrics function to satisfy the --combine-metrics command
+export function combineOntologyMetrics() {
+  const ontology = buildOntology();
+  return { conceptCount: ontology.concepts.length };
+}
+
 // CLI Command Actions Mapping
 const commandActions = {
   "--help": async (args) => { displayHelp(); },
