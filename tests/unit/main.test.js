@@ -100,6 +100,8 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--cleanup");
     expect(commands).toContain("--auto-commit");
     expect(commands).toContain("--combine-models");
+    expect(commands).toContain("--refresh-details");
+    expect(commands).toContain("--extend-concepts");
     spy.mockRestore();
   });
 
@@ -400,6 +402,17 @@ describe("Extended Functionality", () => {
     expect(merged).toHaveProperty("integrated");
     expect(merged).toHaveProperty("enhanced");
     expect(merged).toHaveProperty("title");
+  });
+
+  test("--refresh-details returns updated ontology description", async () => {
+    const result = await main(["--refresh-details"]);
+    expect(result.description).toBe("Refreshed ontology with additional details.");
+  });
+
+  test("--extend-concepts adds new concepts", async () => {
+    const result = await main(["--extend-concepts"]);
+    expect(result.concepts).toContain("ExtendedConcept1");
+    expect(result.concepts).toContain("ExtendedConcept2");
   });
 
   describe("File System Error Handling", () => {

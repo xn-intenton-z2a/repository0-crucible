@@ -14,6 +14,8 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
   - **New Commands:**
     - `--auto-commit`: Generate an automated commit message.
     - `--combine-models`: Merge ontology models into one comprehensive model.
+    - `--refresh-details`: Update the ontology description with additional details.
+    - `--extend-concepts`: Extend the ontology by adding new concepts.
 - Updated internal functions and error handling to better support public API interactions.
 
 ## Installation
@@ -67,6 +69,8 @@ npm install owl-builder
   - **New Commands:**
     - `--auto-commit`: Generate an automated commit message.
     - `--combine-models`: Merge ontology models into one comprehensive model.
+    - `--refresh-details`: Update the ontology description with additional details.
+    - `--extend-concepts`: Extend the ontology by adding new concepts.
 
 ## Public Data Endpoints
 
@@ -182,6 +186,16 @@ Example commands:
 - **Combine Ontology Models:**
   ```bash
   node src/lib/main.js --combine-models
+  ```
+
+- **Refresh Ontology Details:**
+  ```bash
+  node src/lib/main.js --refresh-details
+  ```
+
+- **Extend Ontology Concepts:**
+  ```bash
+  node src/lib/main.js --extend-concepts
   ```
 
 ## Contributing
