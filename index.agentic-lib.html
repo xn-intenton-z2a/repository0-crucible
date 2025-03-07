@@ -41,6 +41,9 @@
 <li class="md-github"><code class="md-github">--combine-models</code>: Merge ontology models into one comprehensive model.</li>
 <li class="md-github"><code class="md-github">--refresh-details</code>: Update the ontology description with additional details.</li>
 <li class="md-github"><code class="md-github">--extend-concepts</code>: Extend the ontology by adding new concepts.</li>
+<li class="md-github"><code class="md-github">--fetch-retry</code>: Fetch data with a retry mechanism.</li>
+<li class="md-github"><code class="md-github">--changelog</code>: Display the change log detailing extended functions.</li>
+<li class="md-github"><code class="md-github">--extend-details</code>: Extend the ontology with additional information and metrics.</li>
 </ul>
 </li>
 </ul>
@@ -98,6 +101,9 @@
 <li class="md-github"><code class="md-github">--combine-models</code>: Merge ontology models into one comprehensive model.</li>
 <li class="md-github"><code class="md-github">--refresh-details</code>: Update the ontology description with additional details.</li>
 <li class="md-github"><code class="md-github">--extend-concepts</code>: Extend the ontology by adding new concepts.</li>
+<li class="md-github"><code class="md-github">--fetch-retry</code>: Fetch data with a retry mechanism.</li>
+<li class="md-github"><code class="md-github">--changelog</code>: Display the change log for extended functions.</li>
+<li class="md-github"><code class="md-github">--extend-details</code>: Extend the ontology with additional details and metrics.</li>
 </ul>
 </li>
 </ul>
@@ -109,12 +115,12 @@
 <li class="md-github">https://api.publicapis.org/entries</li>
 <li class="md-github">https://dog.ceo/api/breeds/image/random</li>
 <li class="md-github">https://jsonplaceholder.typicode.com/posts</li>
-<li class="md-github">https://api.spacexdata.com/v4/launches/latest</li>
-<li class="md-github">https://api.coindesk.com/v1/bpi/currentprice.json <em class="md-github">(Simulated network error in test mode)</em></li>
+<li class="md-github">https://api/spacexdata.com/v4/launches/latest</li>
+<li class="md-github">https://api/coindesk.com/v1/bpi/currentprice.json <em class="md-github">(Simulated network error in test mode)</em></li>
 </ul>
 <p class="md-github"><strong class="md-github">Extended Endpoints:</strong></p>
 <ul class="md-github">
-<li class="md-github">https://api.github.com</li>
+<li class="md-github">https://api/github.com</li>
 <li class="md-github">https://jsonplaceholder.typicode.com/comments</li>
 <li class="md-github">https://dummyjson.com/products</li>
 <li class="md-github">https://randomuser.me/api/</li>
@@ -225,6 +231,21 @@
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --extend-concepts
 </code></pre>
 </li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Fetch Data with Retry:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --fetch-retry
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Display Change Log:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --changelog
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Extend Ontology Details:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --extend-details
+</code></pre>
+</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
 <p class="md-github">Contributions are welcome! Please review <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging and enhanced ontology processing, with a focus exclusively on extracting and building ontologies from public data sources.</p>
@@ -233,7 +254,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T03:28:00.998Z</p>
+    <p>Generated on 2025-03-07T03:40:05.151Z</p>
   </footer>
 </body>
 </html>
