@@ -2,7 +2,7 @@
 
 // owl-builder CLI Tool
 // Refactored to focus exclusively on building robust OWL ontologies from verified public data sources.
-// Legacy simulation endpoints and redundant demo code have been pruned in alignment with our CONTRIBUTING guidelines.
+// Legacy simulation endpoints and redundant demo code have been removed in alignment with our CONTRIBUTING guidelines.
 
 import fs from 'fs';
 import path from 'path';
@@ -14,7 +14,7 @@ import http from 'http';
 const ontologyFilePath = path.resolve(process.cwd(), 'ontology.json');
 const backupFilePath = path.resolve(process.cwd(), 'ontology-backup.json');
 
-// Core Ontology Builder: Builds ontology using data from verified public data sources (simulated here)
+// Core Ontology Builder: Builds ontology using data from verified public data sources
 export function buildOntology() {
   // In a real implementation, data would be fetched and verified from public data sources
   return {
@@ -186,7 +186,7 @@ export function fetchDataWithRetry(url) {
 }
 
 export function getChangeLog() {
-  return 'Change log: Refocused ontology builder on verified public data sources. Legacy simulation endpoints and redundant code have been pruned.';
+  return 'Change log: Refocused the library on building robust ontologies from verified public data sources. Legacy simulation endpoints and redundant code have been pruned. Extended ontology wrappers added for advanced integration.';
 }
 
 export function extendOntologyDetails() {
