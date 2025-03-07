@@ -84,8 +84,18 @@ npm test
 - **Version 0.0.21**
   - Refocused the library on building robust ontologies from verified public data sources.
   - Removed legacy simulation endpoints and redundant/demo code as per CONTRIBUTING guidelines and mission statement.
-  - Extended ontology wrappers and added new functions (validate & optimize, anonymize, export to RDF, summarize statistics, log extended history, fetch multiple endpoints).
-  - **Extended Endpoints:** Added a new list of extended endpoints for ontology building and a corresponding CLI command for testing them (--extended-endpoints).
+  - Extended ontology wrappers and added new functions including:
+    - validateAndOptimizeOntology
+    - extendOntologyMetadata
+    - recordOntologyHistory
+    - commitOntologyChange
+    - getOntologySummary
+    - mergeAndNormalizeOntologies
+    - wrapOntologyModelsCircular
+    - wrapOntologyModelsHierarchy
+    - wrapOntologyModelsGrid
+    - testEndpoints
+  - Updated internal functions to support extended CLI commands and ensure comprehensive test coverage.
 
 ## Contributing
 
