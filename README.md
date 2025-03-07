@@ -29,8 +29,8 @@ owl-builder is a CLI tool and JavaScript library focused exclusively on building
 - **Extended Wrappers:** Multiple wrappers supporting various ontology representations including JSON, HTML, Markdown, Tabular, custom ordering, graph, tree, matrix, CSV, YAML, circular, hierarchical, and grid formats.
 - **Ontology Analysis & Optimization:** Tools to analyze, optimize, and transform ontologies (including JSON-LD transformation) ensuring consistency and high quality.
 - **Enhanced Metadata Management:** Attach metadata, record history, merge ontologies, and generate concise summaries.
+- **New Extended Functions:** Real implementations for previously simulated methods have been added, including functions for advanced analysis, merging models, updating descriptions, extending concepts, resetting, cloning, retrying data fetches, and various wrappers.
 - **Robust CLI:** A comprehensive command-line interface that is easy to use for building, managing, and querying ontologies.
-- **New Extended Functions:** Features such as validate and optimize, anonymize, export to RDF (Turtle format), summarize statistics, log extended history, fetch multiple endpoints, and additional wrappers for HTML, Markdown, and Tabular representations.
 
 ## Usage
 
@@ -81,36 +81,36 @@ node src/lib/main.js --help
     node src/lib/main.js --wrap-tabular
     ```
 
-For testing real network responses (when not in dummy mode), you can run:
-
-```bash
-FORCE_DUMMY_ENDPOINT=false node src/lib/main.js --extended-endpoints
-```
-
-## Public Endpoints
-
-owl-builder leverages multiple verified public endpoints. During testing, dummy responses are used when the FORCE_DUMMY_ENDPOINT flag is enabled.
-
-## Testing
-
-Tests now include comprehensive coverage for file system operations and network request mocks to ensure robust behavior. Run tests using:
-
-```bash
-npm test
-```
-
 ## Changelog
 
 - **Version 0.0.23**
   - Refocused the library on building robust ontologies from verified public data sources.
   - Removed legacy simulation endpoints and redundant/demo code as per CONTRIBUTING guidelines and mission statement.
-  - Extended ontology wrappers and added new wrapper functions for HTML, Markdown, and Tabular representations.
-  - Extended new functions including:
-    - wrapOntologyModelsHTML
-    - wrapOntologyModelsMarkdown
-    - wrapOntologyModelsTabular
-  - **Improved test coverage** by adding additional tests for the new wrapper functions and file system/network operations.
-  - Updated internal functions and command actions to support extended CLI commands and ensure comprehensive test coverage.
+  - Added and implemented new extended methods including:
+    - advancedOntologyAnalysis
+    - mergeOntologyModels
+    - updateOntologyDescription
+    - extendOntologyConcepts
+    - resetOntology
+    - cloneOntology
+    - fetchDataWithRetry
+    - extendOntologyDetails
+    - wrapOntologyModelsSimple
+    - wrapOntologyModelsComprehensive
+    - wrapOntologyModelsRandom
+    - cleanupOntologyData
+    - updateOntologyTracking
+    - wrapAdvancedOntologyModels
+    - wrapMergedOntologyModels
+    - transformOntologyData
+    - debugOntologyMetrics
+    - reflectOntologyStatus
+    - wrapOntologyModelsJSON
+    - wrapOntologyModelsCustom
+    - wrapOntologyModelsGraph
+    - wrapOntologyModelsTree
+    - wrapOntologyModelsMatrix
+  - Improved test coverage with additional unit tests for new functionalities.
 
 ## Contributing
 
