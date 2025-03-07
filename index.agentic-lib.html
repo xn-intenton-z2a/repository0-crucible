@@ -35,6 +35,7 @@
 <li class="md-github"><a href="#for-casual-users" class="md-github">For Casual Users</a></li>
 <li class="md-github"><a href="#using-real-endpoints-for-meaningful-owl-output" class="md-github">Using Real Endpoints for Meaningful OWL Output</a></li>
 <li class="md-github"><a href="#for-developers" class="md-github">For Developers</a></li>
+<li class="md-github"><a href="#extended-custom-ontology-functions" class="md-github">Extended Custom Ontology Functions</a></li>
 <li class="md-github"><a href="#running-the-web-server" class="md-github">Running the Web Server</a></li>
 <li class="md-github"><a href="#for-the-scientific-community" class="md-github">For the Scientific Community</a></li>
 </ul>
@@ -57,7 +58,8 @@
 <li class="md-github"><strong class="md-github">Querying:</strong> Perform queries against ontology concepts.</li>
 <li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontology objects to a simple OWL XML format and import from XML strings.</li>
 <li class="md-github"><strong class="md-github">Data Crawling:</strong> Crawl multiple public endpoints to collect data and generate OWL representations. (<em class="md-github">By default, dummy data is used. Set <code class="md-github">FORCE_DUMMY_ENDPOINT</code> to <code class="md-github">false</code> for real data.</em>)</li>
-<li class="md-github"><strong class="md-github">Ontology Model Wrappers:</strong> Offers both basic and advanced OWL model wrappers with additional metadata support.</li>
+<li class="md-github"><strong class="md-github">Ontology Model Wrappers:</strong> Offers basic, advanced, and now custom ontology builders with extended functionality.</li>
+<li class="md-github"><strong class="md-github">Custom Ontology Functions:</strong> Build custom ontologies and extend existing ones with additional concepts.</li>
 <li class="md-github"><strong class="md-github">Diagnostics:</strong> Output environment diagnostics for troubleshooting.</li>
 <li class="md-github"><strong class="md-github">Web Server:</strong> Built-in web server for real-time ontology status and monitoring.</li>
 </ul>
@@ -103,15 +105,9 @@ npm install
     &quot;data&quot;: &quot;{...actual response data...}&quot;,
     &quot;owlContent&quot;: &quot;&lt;ontology&gt;&lt;title&gt;Public Data Ontology&lt;/title&gt;&lt;/ontology&gt;&quot;
   },
-  {
-    &quot;endpoint&quot;: &quot;https://dog.ceo/api/breeds/image/random&quot;,
-    &quot;data&quot;: &quot;{...actual response data...}&quot;,
-    &quot;owlContent&quot;: &quot;&lt;ontology&gt;&lt;title&gt;Public Data Ontology&lt;/title&gt;&lt;/ontology&gt;&quot;
-  }
   // ... additional endpoints
 ]
 </code></pre>
-<p class="md-github">This output demonstrates that the tool is fetching live data from real endpoints and converting the ontology to a standard OWL XML format.</p>
 <h3 class="md-github"><a class="md-github__anchor" name="for-developers" href="#for-developers"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>For Developers</h3>
 <p class="md-github">owl-builder is built for testability and extendability. Its modular source code adheres to high-quality standards:</p>
 <ul class="md-github">
@@ -127,6 +123,22 @@ npm install
 npm run formatting
 </code></pre>
 <p class="md-github">For more detailed information, refer to the inline comments in <code class="md-github">src/lib/main.js</code> and the <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> file.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="extended-custom-ontology-functions" href="#extended-custom-ontology-functions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Extended Custom Ontology Functions</h3>
+<p class="md-github">Two new functions have been added to extend the ontology building capabilities:</p>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Build Custom Ontology:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-custom '{&quot;concepts&quot;: [&quot;CustomConcept&quot;], &quot;extraInfo&quot;: &quot;value&quot;}'
+</code></pre>
+<p class="md-github">This command builds an ontology with user-provided customizations.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Extend Ontology Concepts:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --extend-concepts &quot;NewConcept1,NewConcept2&quot;
+</code></pre>
+<p class="md-github">This command extends an existing ontology by adding the specified concepts.</p>
+</li>
+</ul>
 <h3 class="md-github"><a class="md-github__anchor" name="running-the-web-server" href="#running-the-web-server"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Running the Web Server</h3>
 <p class="md-github">owl-builder includes a simple web server for real-time monitoring and diagnostics. To start the web server, run:</p>
 <pre class="md-github"><code class="md-github language-bash">npm run serve
@@ -139,7 +151,7 @@ npm run formatting
 <p class="md-github">owl-builder supports AI experiments and ontology-driven research projects by:</p>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Leveraging Public Data:</strong> Crawl real public endpoints to enrich ontology models.</li>
-<li class="md-github"><strong class="md-github">Custom Models:</strong> Extend or modify the basic and advanced OWL model wrappers to meet your research needs.</li>
+<li class="md-github"><strong class="md-github">Custom Models:</strong> Extend or modify the basic, advanced, and custom ontology wrappers to meet your research needs.</li>
 <li class="md-github"><strong class="md-github">Reproducibility:</strong> Built-in diagnostics (<code class="md-github">--diagnostics</code>) and consistent coding practices ensure traceable research outputs.</li>
 </ul>
 <hr class="md-github">
@@ -155,13 +167,15 @@ npm run formatting
 <li class="md-github"><code class="md-github">--export</code>: Exports the ontology to an OWL XML representation.</li>
 <li class="md-github"><code class="md-github">--import</code>: Imports an ontology from an OWL XML string.</li>
 <li class="md-github"><code class="md-github">--backup</code>: Creates a backup of the ontology file.</li>
-<li class="md-github"><code class="md-github">--update &quot;New Title&quot;</code>: Updates the ontology title.</li>
+<li class="md-github"><code class="md-github">--update &quot;New Title&quot;</code>: Updates the ontology's title.</li>
 <li class="md-github"><code class="md-github">--clear</code>: Deletes the ontology file if it exists.</li>
 <li class="md-github"><code class="md-github">--crawl</code>: Crawls public endpoints and returns the results.</li>
 <li class="md-github"><code class="md-github">--fetch-retry</code>: Demonstrates fetching data with retry logic.</li>
 <li class="md-github"><code class="md-github">--build-basic</code>: Builds a basic OWL model.</li>
 <li class="md-github"><code class="md-github">--build-advanced</code>: Builds an advanced OWL model.</li>
 <li class="md-github"><code class="md-github">--wrap-model</code>: Wraps an ontology model with additional metadata.</li>
+<li class="md-github"><code class="md-github">--build-custom</code>: Builds a custom ontology based on user-defined customizations.</li>
+<li class="md-github"><code class="md-github">--extend-concepts</code>: Extends the current ontology with additional concepts.</li>
 <li class="md-github"><code class="md-github">--diagnostics</code>: Outputs diagnostic information about the environment.</li>
 <li class="md-github"><code class="md-github">--serve</code>: Starts the built-in web server for monitoring.</li>
 </ul>
@@ -185,6 +199,8 @@ npm run formatting
 <li class="md-github"><strong class="md-github">buildBasicOWLModel()</strong>: Returns a basic OWL model wrapper.</li>
 <li class="md-github"><strong class="md-github">buildAdvancedOWLModel()</strong>: Returns an advanced OWL model wrapper.</li>
 <li class="md-github"><strong class="md-github">wrapOntologyModel(model)</strong>: Wraps a provided ontology model with additional metadata (e.g., a timestamp).</li>
+<li class="md-github"><strong class="md-github">buildCustomOntology(customizations)</strong>: Builds an ontology with custom parameters.</li>
+<li class="md-github"><strong class="md-github">extendOntologyConcepts(ontology, additionalConcepts)</strong>: Extends an ontology by adding new concepts.</li>
 <li class="md-github"><strong class="md-github">displayHelp()</strong>: Prints CLI usage instructions.</li>
 <li class="md-github"><strong class="md-github">getVersion()</strong>: Returns the current version of owl-builder.</li>
 <li class="md-github"><strong class="md-github">listCommands()</strong>: Lists all supported CLI commands.</li>
@@ -213,29 +229,30 @@ npm run formatting
 <li class="md-github"><strong class="md-github">--build-basic</strong>: Creates and prints a basic OWL model.</li>
 <li class="md-github"><strong class="md-github">--build-advanced</strong>: Creates and prints an advanced OWL model.</li>
 <li class="md-github"><strong class="md-github">--wrap-model [JSON]</strong>: Wraps the provided or default ontology model with additional metadata.</li>
+<li class="md-github"><strong class="md-github">--build-custom</strong>: Builds a custom ontology with user-defined options.</li>
+<li class="md-github"><strong class="md-github">--extend-concepts</strong>: Extends an existing ontology with additional concepts.</li>
 <li class="md-github"><strong class="md-github">--diagnostics</strong>: Outputs environment diagnostic info.</li>
 <li class="md-github"><strong class="md-github">--serve</strong>: Starts the web server for monitoring.</li>
 </ul>
 <hr class="md-github">
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
-<p class="md-github">Please review the <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> file before contributing. We welcome enhancements that improve code quality, test coverage, and documentation. Follow the described workflows and guidelines.</p>
+<p class="md-github">Please review the <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> file before contributing. We welcome enhancements that improve code quality, test coverage, and documentation. Follow the described workflows and guidelines. In this release, additional functions were introduced to build and extend ontologies reflecting the evolving mission of owl-builder.</p>
 <hr class="md-github">
 <h2 class="md-github"><a class="md-github__anchor" name="changelog" href="#changelog"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Changelog</h2>
 <ul class="md-github">
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Version 0.0.27</strong></p>
+<li class="md-github"><strong class="md-github">Version 0.0.28</strong>
+<ul class="md-github">
+<li class="md-github">Extended library functions by adding buildCustomOntology and extendOntologyConcepts.</li>
+<li class="md-github">Added new CLI commands: --build-custom and --extend-concepts.</li>
+<li class="md-github">Updated documentation to reflect extended functionality for custom ontology building and concept extension.</li>
+</ul>
+</li>
+<li class="md-github"><strong class="md-github">Version 0.0.27</strong>
 <ul class="md-github">
 <li class="md-github">Refocused the library on building ontologies from verified public data sources.</li>
 <li class="md-github">Updated mission statement and documentation to reflect the new focus.</li>
 <li class="md-github">Updated sample ontology title to &quot;Public Data Ontology&quot; in core functions and tests.</li>
-<li class="md-github">Extended OWL model wrappers and updated changelog.</li>
-<li class="md-github"><strong class="md-github">Documentation Update:</strong> Added detailed CLI execution examples demonstrating how to obtain meaningful OWL output from real endpoints.</li>
-</ul>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Version 0.0.26</strong></p>
-<ul class="md-github">
-<li class="md-github">Previous changes and additions.</li>
+<li class="md-github">Extended OWL model wrappers.</li>
 </ul>
 </li>
 </ul>
@@ -245,7 +262,7 @@ npm run formatting
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T21:41:50.980Z</p>
+    <p>Generated on 2025-03-07T21:47:49.265Z</p>
   </footer>
 </body>
 </html>
