@@ -2,9 +2,8 @@
 
 // src/lib/main.js
 // owl-builder CLI Tool
-// Mission Statement: Build robust ontologies directly extracted from diverse public data sources.
-// This tool supports ontology building, integration, analysis, persistence, and more.
-// Legacy functionalities have been pruned.
+// Mission Statement: Build robust OWL ontologies extracted from diverse public data sources.
+// This version refocuses on public API integration and streamlined ontology processing. Legacy functionalities have been pruned and documentation updated per CONTRIBUTING guidelines.
 
 import os from 'os';
 import fs from 'fs';
@@ -226,6 +225,15 @@ export function wrapMergedOntologyModels() {
   return { mergedWrapper: true, merged: 'Merged', report: 'Report' };
 }
 
+// New Wrapper Functions for OWL Ontology Models
+export function wrapOntologyModelsJSON() {
+  return { jsonWrapped: true, models: ['Basic', 'Enhanced', 'Integrated'] };
+}
+
+export function wrapOntologyModelsCustom(order = 'asc') {
+  return { customWrapped: true, order, additionalData: 'custom' };
+}
+
 // Extended New Functions
 export function validateOntologyCompleteness(ontology) {
   return true;
@@ -266,15 +274,6 @@ export function updateOntologyDescription(newDesc) {
 export function mergeOntologyModels(ont1, ont2, ont3) {
   // Merge the three ontology objects
   return Object.assign({}, ont1, ont2, ont3, { merged: true });
-}
-
-// New Wrapper Functions for OWL Ontology Models
-export function wrapOntologyModelsJSON() {
-  return { jsonWrapped: true, models: ['Basic', 'Enhanced', 'Integrated'] };
-}
-
-export function wrapOntologyModelsCustom(order = 'asc') {
-  return { customWrapped: true, order, additionalData: 'custom' };
 }
 
 // Global command actions mapping
@@ -529,3 +528,5 @@ export function getVersion() {
 export function listCommands() {
   return Object.keys(commandActions);
 }
+
+// End of file
