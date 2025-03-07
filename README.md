@@ -1,16 +1,14 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. The library has been refocused exclusively on extracting ontology data directly from public APIs, ensuring robust integration, persistence, detailed analysis, and querying capabilities.
+owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. This version focuses exclusively on public API data.
 
 ## Change Log
+
 - **Version 0.0.16**
-  - Refocused on public data source integration. Legacy endpoints (e.g. SpaceX data) have been pruned.
+  - Refocused on public data source integration; legacy endpoints removed.
   - Extended ontology processing functions and wrapper commands added:
-    - `--detailed-build`, `--enhance`, `--wrap`, `--wrap-extended`, `--advanced-analysis`, `--cleanup`
-    - New wrapper commands: `--wrap-simple`, `--wrap-comprehensive`, `--wrap-random`, **`--wrap-advanced`, `--wrap-merged`**
-    - Other new commands: `--auto-commit`, `--combine-models`, `--refresh-details`, `--extend-concepts`, `--fetch-retry`, `--changelog`, `--extend-details`, `--clean-transform`, `--fetch-additional`, `--combine-metrics`, `--update-tracking`
-  - Network requests in test mode now return dummy data when the environment variable `FORCE_DUMMY_ENDPOINT` is set, improving test coverage.
-  - README refreshed per CONTRIBUTING guidelines.
+    - New functions: `buildOntology`, `buildDetailedOntology`, `serveWebInterface`, `diagnostics`, `integrateOntology`, `crawlData`, `persistOntology`, `loadOntology`, `queryOntology`, `validateOntology`, `exportOntologyToXML`, `importOntologyFromXML`, `syncOntology`, `backupOntology`, `updateOntology`, `clearOntology`, `enhanceOntology`, `wrapOntologyModels`, `wrapOntologyModelsExtended`, `generateOntologyReport`, `listAvailableEndpoints`, `fetchFromExtendedEndpoints`, `advancedOntologyAnalysis`, `wrapAllOntologyModels`, `cleanupOntologyData`, `automatedCommitMessage`, `fetchDataWithRetry`, `getChangeLog`, `extendOntologyDetails`, `wrapOntologyModelsSimple`, `wrapOntologyModelsComprehensive`, `wrapOntologyModelsRandom`, `updateOntologyTracking`, `wrapAdvancedOntologyModels`, `wrapMergedOntologyModels`, as well as extended new functions: `extendOntologyConcepts`, `resetOntology`, `cloneOntology`, `transformOntologyData`, `debugOntologyMetrics`, `reflectOntologyStatus`, and `updateOntologyDescription`, `mergeOntologyModels`.
+  - **Bug Fix:** Fixed the `--list` command by moving the command actions to a global scope, ensuring that `listCommands()` functions correctly.
 
 ## Public Data Endpoints
 
@@ -19,7 +17,7 @@ owl-builder retrieves data from several public data sources, including:
 - https://api.publicapis.org/entries
 - https://dog.ceo/api/breeds/image/random
 - https://jsonplaceholder.typicode.com/posts
-- https://api.coindesk.com/v1/bpi/currentprice.json *(Simulated error in test mode)*
+- https://api.coindesk.com/v1/bpi/currentprice.json (Simulated error in test mode)
 
 **Extended Endpoints:**
 - https://api.github.com
@@ -28,8 +26,6 @@ owl-builder retrieves data from several public data sources, including:
 - https://randomuser.me/api/
 - https://catfact.ninja/fact
 - https://jsonplaceholder.typicode.com/todos
-- https://api/agify.io/?name=michael
-- https://api/openweathermap.org/data/2.5/weather?q=London
 
 ## Usage
 
@@ -68,7 +64,7 @@ Example commands:
 
 - **Fetch Data from Multiple Endpoints:**
   ```bash
-  node src/lib/main.js --fetch-endpoints
+  node src/lib/main.js --list-endpoints
   ```
 
 - **Fetch Data from Extended Endpoints:**
@@ -86,109 +82,20 @@ Example commands:
   node src/lib/main.js --wrap
   ```
 
-- **Extended Wrapper Commands:**
-  - **Simple Wrapper:**
-    ```bash
-    node src/lib/main.js --wrap-simple
-    ```
-  - **Comprehensive Wrapper:**
-    ```bash
-    node src/lib/main.js --wrap-comprehensive
-    ```
-  - **Random Wrapper:**
-    ```bash
-    node src/lib/main.js --wrap-random
-    ```
-  - **Advanced Wrapper:**
-    ```bash
-    node src/lib/main.js --wrap-advanced
-    ```
-  - **Merged Wrapper:**
-    ```bash
-    node src/lib/main.js --wrap-merged
-    ```
-
-- **Perform Advanced Analysis:**
-  ```bash
-  node src/lib/main.js --advanced-analysis
-  ```
-
-- **Generate Ontology Report:**
-  ```bash
-  node src/lib/main.js --report
-  ```
-
-- **List Extended Public Endpoints:**
-  ```bash
-  node src/lib/main.js --list-endpoints
-  ```
-
-- **Cleanup Ontology:**
-  ```bash
-  node src/lib/main.js --cleanup
-  ```
-
-- **Generate Automated Commit Message:**
-  ```bash
-  node src/lib/main.js --auto-commit
-  ```
-
-- **Combine Ontology Models:**
-  ```bash
-  node src/lib/main.js --combine-models
-  ```
-
-- **Refresh Ontology Details:**
-  ```bash
-  node src/lib/main.js --refresh-details
-  ```
-
-- **Extend Ontology Concepts:**
-  ```bash
-  node src/lib/main.js --extend-concepts
-  ```
-
-- **Fetch Data with Retry:**
-  ```bash
-  node src/lib/main.js --fetch-retry
-  ```
-
-- **Display Change Log:**
-  ```bash
-  node src/lib/main.js --changelog
-  ```
-
-- **Extend Ontology Details:**
-  ```bash
-  node src/lib/main.js --extend-details
-  ```
-
-- **Clean and Transform Ontology:**
-  ```bash
-  node src/lib/main.js --clean-transform
-  ```
-
-- **New Commands:**
-  - **Fetch Additional Endpoint Data:**
-    ```bash
-    node src/lib/main.js --fetch-additional
-    ```
-  - **Combine Ontology Metrics:**
-    ```bash
-    node src/lib/main.js --combine-metrics
-    ```
-  - **Update Ontology Tracking:**
-    ```bash
-    node src/lib/main.js --update-tracking
-    ```
+- **Other Commands:**
+  - `--auto-commit`, `--combine-models`, `--refresh-details`, `--extend-concepts`, `--fetch-retry`, `--changelog`, `--extend-details`, `--wrap-simple`, `--wrap-comprehensive`, `--wrap-random`, `--clean-transform`, `--fetch-additional`, `--combine-metrics`, `--update-tracking`, `--wrap-advanced`, `--wrap-merged`
 
 ## Testing
 
-When running tests, the environment variable `FORCE_DUMMY_ENDPOINT` is set to ensure that network calls return simulated data, thereby increasing test coverage and avoiding external network dependencies.
+Tests use dummy data responses to avoid external network dependencies. Run tests with:
+
+```bash
+npm test
+```
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. The library has been refactored to focus exclusively on extracting and building ontologies from public data sources, and the README has been refreshed to remove outdated content and improve clarity.
+Contributions are welcome. Please refer to CONTRIBUTING.md for guidelines, ensure complete test coverage and follow our coding standards.
 
 ## License
 
