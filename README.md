@@ -164,6 +164,15 @@ Diagnostics mode performs real HTTP calls to remote endpoints and returns consol
 npm run diagnostics
 ```
 
+### Extended Endpoints Testing
+
+A new test has been added to fetch data from an extended list of endpoints including:
+
+- https://api.chucknorris.io/jokes/random
+- https://api.agify.io?name=michael
+
+This test logs a snippet of the response from each endpoint to help verify connectivity and data integrity.
+
 ### For the Scientific Community
 
 owl-builder supports scientific and AI experiments by:
@@ -186,7 +195,7 @@ Key CLI commands include:
 - `--load`: Loads and prints the saved ontology.
 - `--query "searchTerm"`: Searches ontology concepts by the given term.
 - `--export`: Exports the ontology to an OWL XML format and prints it.
-- `--import`: Imports an ontology from an OWL XML string and prints it.
+- `--import`: Imports a sample ontology from an OWL XML string and prints it.
 - `--backup`: Creates a backup of the current ontology file.
 - `--update "New Title"`: Updates the ontology's title.
 - `--clear`: Deletes the ontology file if it exists.
@@ -216,7 +225,7 @@ When used as a library, owl-builder exports the following functions:
 - **backupOntology()**: Creates a backup of the ontology file.
 - **updateOntology(newTitle)**: Updates the ontology's title and returns the updated object.
 - **clearOntology()**: Deletes the ontology file if it exists.
-- **listAvailableEndpoints()**: Returns a list of preset public endpoints for crawling data.
+- **listAvailableEndpoints()**: Returns an extended list of public endpoints for crawling data.
 - **fetchDataWithRetry(url, retries)**: Fetches data from a URL with a specified number of retries.
 - **crawlOntologies()**: Crawls public endpoints and produces OWL XML representations.
 - **buildBasicOWLModel()**: Returns a basic OWL model wrapper.
@@ -265,16 +274,16 @@ While primarily a CLI tool, owl-builder's commands can serve as API endpoints. O
 
 Please review the [CONTRIBUTING.md](CONTRIBUTING.md) file before contributing. We welcome enhancements that improve code quality, test coverage, and documentation. Follow the described workflows and guidelines.
 
-In this release, the tool has been refocused on integrating real public data sources for ontology building.
+In this release, the tool has been refocused on integrating real public data sources for ontology building, and the list of endpoints has been extended.
 
 ---
 
 ## Changelog
 
-- **Version 0.0.29**
-  - Refocused the library on building ontologies from verified public data sources.
-  - Updated the CLI commands and documentation to reflect real API calls.
-  - Extended endpoints list and improved ontology model wrappers.
+- **Version 0.0.30**
+  - Extended the list of public endpoints with additional URLs: https://api.chucknorris.io/jokes/random and https://api.agify.io?name=michael.
+  - Added a new test to iterate over all endpoints and log a snippet of their responses.
+  - Refocused the library on building ontologies from public data sources.
 
 ---
 
