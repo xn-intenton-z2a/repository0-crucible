@@ -26,7 +26,7 @@
 <p class="md-github">owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. The library has been refocused exclusively on extracting ontology data directly from public endpoints, ensuring robust integration, persistence, detailed analysis, and querying capabilities. Contributions are welcome – please see <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="change-log" href="#change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change Log</h2>
 <ul class="md-github">
-<li class="md-github">Updated to version 0.0.13.</li>
+<li class="md-github">Updated to version 0.0.14.</li>
 <li class="md-github">Refocused the library exclusively on building robust ontologies from public data sources; legacy code drift has been pruned and removed.</li>
 <li class="md-github">Updated CLI commands to include new features:
 <ul class="md-github">
@@ -48,7 +48,8 @@
 </li>
 </ul>
 </li>
-<li class="md-github">Updated internal functions and error handling to better support public API interactions.</li>
+<li class="md-github">Updated public data endpoints to reflect correct API URLs (e.g., GitHub and Coinbase).</li>
+<li class="md-github">Enhanced error handling for file operations and network requests.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
 <p class="md-github">Install via npm:</p>
@@ -116,11 +117,11 @@
 <li class="md-github">https://dog.ceo/api/breeds/image/random</li>
 <li class="md-github">https://jsonplaceholder.typicode.com/posts</li>
 <li class="md-github">https://api/spacexdata.com/v4/launches/latest</li>
-<li class="md-github">https://api/coindesk.com/v1/bpi/currentprice.json <em class="md-github">(Simulated network error in test mode)</em></li>
+<li class="md-github">https://api.coindesk.com/v1/bpi/currentprice.json <em class="md-github">(Simulated network error in test mode)</em></li>
 </ul>
 <p class="md-github"><strong class="md-github">Extended Endpoints:</strong></p>
 <ul class="md-github">
-<li class="md-github">https://api/github.com</li>
+<li class="md-github">https://api.github.com</li>
 <li class="md-github">https://jsonplaceholder.typicode.com/comments</li>
 <li class="md-github">https://dummyjson.com/products</li>
 <li class="md-github">https://randomuser.me/api/</li>
@@ -128,7 +129,7 @@
 <li class="md-github">https://jsonplaceholder.typicode.com/todos</li>
 <li class="md-github">https://api/agify.io/?name=michael</li>
 <li class="md-github">https://api/openweathermap.org/data/2.5/weather?q=London</li>
-<li class="md-github">https://api/coinbase.com/v2/exchange-rates</li>
+<li class="md-github">https://api.coinbase.com/v2/exchange-rates</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">Display help instructions:</p>
@@ -254,7 +255,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T03:40:05.151Z</p>
+    <p>Generated on 2025-03-07T03:48:44.376Z</p>
   </footer>
 </body>
 </html>
