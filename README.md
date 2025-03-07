@@ -7,7 +7,8 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
 - **Version 0.0.16**
   - Refocused on public data source integration; legacy endpoints removed.
   - Extended ontology processing functions and wrapper commands added:
-    - New functions: `buildOntology`, `buildDetailedOntology`, `serveWebInterface`, `diagnostics`, `integrateOntology`, `crawlData`, `persistOntology`, `loadOntology`, `queryOntology`, `validateOntology`, `exportOntologyToXML`, `importOntologyFromXML`, `syncOntology`, `backupOntology`, `updateOntology`, `clearOntology`, `enhanceOntology`, `wrapOntologyModels`, `wrapOntologyModelsExtended`, `generateOntologyReport`, `listAvailableEndpoints`, `fetchFromExtendedEndpoints`, `advancedOntologyAnalysis`, `wrapAllOntologyModels`, `cleanupOntologyData`, `automatedCommitMessage`, `fetchDataWithRetry`, `getChangeLog`, `extendOntologyDetails`, `wrapOntologyModelsSimple`, `wrapOntologyModelsComprehensive`, `wrapOntologyModelsRandom`, `updateOntologyTracking`, `wrapAdvancedOntologyModels`, `wrapMergedOntologyModels`, as well as extended new functions: `extendOntologyConcepts`, `resetOntology`, `cloneOntology`, `transformOntologyData`, `debugOntologyMetrics`, `reflectOntologyStatus`, and `updateOntologyDescription`, `mergeOntologyModels`.
+    - New functions: `buildOntology`, `buildDetailedOntology`, `serveWebInterface`, `diagnostics`, `integrateOntology`, `crawlData`, `persistOntology`, `loadOntology`, `queryOntology`, `validateOntology`, `exportOntologyToXML`, `importOntologyFromXML`, `syncOntology`, `backupOntology`, `updateOntology`, `clearOntology`, `enhanceOntology`, `wrapOntologyModels`, `wrapOntologyModelsExtended`, `generateOntologyReport`, `listAvailableEndpoints`, `fetchFromExtendedEndpoints`, `advancedOntologyAnalysis`, `wrapAllOntologyModels`, `cleanupOntologyData`, `automatedCommitMessage`, `fetchDataWithRetry`, `getChangeLog`, `extendOntologyDetails`, `wrapOntologyModelsSimple`, `wrapOntologyModelsComprehensive`, `wrapOntologyModelsRandom`, `updateOntologyTracking`, `wrapAdvancedOntologyModels`, `wrapMergedOntologyModels`, as well as extended new functions: `extendOntologyConcepts`, `resetOntology`, `cloneOntology`, `transformOntologyData`, `debugOntologyMetrics`, `reflectOntologyStatus`, `updateOntologyDescription`, `mergeOntologyModels`.
+    - **Wrapper Enhancements:** Added new wrappers `wrapOntologyModelsJSON` and `wrapOntologyModelsCustom` with corresponding CLI commands `--wrap-json` and `--wrap-custom`.
   - **Bug Fix:** Fixed the `--list` command by moving the command actions to a global scope, ensuring that `listCommands()` functions correctly.
 
 ## Public Data Endpoints
@@ -81,6 +82,16 @@ Example commands:
   ```bash
   node src/lib/main.js --wrap
   ```
+
+- **Additional Wrapper Commands:**
+  - **JSON Wrapper:**
+    ```bash
+    node src/lib/main.js --wrap-json
+    ```
+  - **Custom Wrapper:**
+    ```bash
+    node src/lib/main.js --wrap-custom desc
+    ```
 
 - **Other Commands:**
   - `--auto-commit`, `--combine-models`, `--refresh-details`, `--extend-concepts`, `--fetch-retry`, `--changelog`, `--extend-details`, `--wrap-simple`, `--wrap-comprehensive`, `--wrap-random`, `--clean-transform`, `--fetch-additional`, `--combine-metrics`, `--update-tracking`, `--wrap-advanced`, `--wrap-merged`
