@@ -1,10 +1,10 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. The library has been refocused exclusively on extracting ontology data directly from public endpoints, ensuring robust integration, persistence, detailed analysis, and querying capabilities. Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
+owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. The library is now refocused exclusively on extracting ontology data directly from public endpoints, ensuring robust integration, persistence, detailed analysis, and querying capabilities. Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## Change Log
 - Updated to version 0.0.14.
-- Refocused the library exclusively on building robust ontologies from public data sources; legacy code drift has been pruned and removed.
+- Refocused the library exclusively on building robust ontologies from public data sources; legacy functionalities and endpoints have been pruned.
 - Updated CLI commands to include new features:
   - `--detailed-build`: Build a detailed ontology with additional statistical metrics.
   - `--enhance`: Generate an enhanced ontology with additional OWL model details.
@@ -205,7 +205,7 @@ Example commands:
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging, enhanced ontology processing with debugging and transformation features, and multiple wrappers to aggregate ontology models in various configurations, with a focus exclusively on extracting and building ontologies from public data sources. Additionally, new functions for fetching additional endpoint data, combining metrics, and updating tracking information have been introduced.
+Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. The library has been refactored to focus exclusively on extracting and building ontologies from public data sources. New functions for automated commit messaging, enhanced ontology processing, multiple model wrappers, additional endpoint data fetching, metric combination, and tracking updates have been implemented following our guidelines.
 
 ## License
 
