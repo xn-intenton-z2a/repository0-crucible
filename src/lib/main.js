@@ -3,9 +3,8 @@
 // src/lib/main.js
 // owl-builder CLI Tool
 // Mission Statement: Build robust OWL ontologies extracted from diverse public data sources.
-// NOTE: Endpoints and related functionalities have been verified via unit tests, including dummy endpoint responses.
 // This version refocuses on public API integration, extends the list of endpoints, adds a new test command for endpoints,
-// and streamlines ontology processing. Legacy functionalities have been pruned and documentation updated per CONTRIBUTING guidelines.
+// streamlines ontology processing, and prunes legacy functionalities in accordance with CONTRIBUTING guidelines.
 
 import os from 'os';
 import fs from 'fs';
@@ -397,7 +396,7 @@ export function displayHelp() {
 }
 
 export function getVersion() {
-  return '0.0.17';
+  return '0.0.18';
 }
 
 export function listCommands() {
