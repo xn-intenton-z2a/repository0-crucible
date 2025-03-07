@@ -68,7 +68,10 @@ const {
   getOntologySummary,
   mergeAndNormalizeOntologies,
   fetchMultipleEndpoints,
-  validateAndOptimizeOntology
+  validateAndOptimizeOntology,
+  wrapOntologyModelsCircular,
+  wrapOntologyModelsHierarchy,
+  wrapOntologyModelsGrid
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
@@ -181,8 +184,6 @@ describe('Main Module General Functions', () => {
     spy.mockRestore();
   });
 
-  // ... (other existing tests remain unchanged) ...
-
   test('--validate-optimize returns valid and optimized ontology', async () => {
     const result = await main(['--validate-optimize']);
     expect(result).toHaveProperty('isValid', true);
@@ -226,6 +227,27 @@ describe('Additional Extended Functions', () => {
     const merged = mergeAndNormalizeOntologies(ont1, ont2);
     expect(merged).toHaveProperty('merged', true);
     expect(merged.concepts.sort()).toEqual(['A', 'B', 'C'].sort());
+  });
+});
+
+describe('Wrapper Functions Tests', () => {
+  test('wrapOntologyModelsCircular returns expected circular wrapper', () => {
+    const result = wrapOntologyModelsCircular();
+    expect(result).toHaveProperty('circularWrapped', true);
+    expect(result).toHaveProperty('models');
+    expect(result).toHaveProperty('type', 'circular');
+  });
+  
+  test('wrapOntologyModelsHierarchy returns expected hierarchy wrapper', () => {
+    const result = wrapOntologyModelsHierarchy();
+    expect(result).toHaveProperty('hierarchyWrapped', true);
+    expect(result.models).toEqual(['Parent', 'Child', 'Leaf']);
+  });
+  
+  test('wrapOntologyModelsGrid returns expected grid wrapper', () => {
+    const result = wrapOntologyModelsGrid();
+    expect(result).toHaveProperty('gridWrapped', true);
+    expect(result.grid).toEqual([[1,2,3],[4,5,6],[7,8,9]]);
   });
 });
 

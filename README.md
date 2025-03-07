@@ -6,7 +6,7 @@ owl-builder is a versatile CLI tool and JavaScript library designed for building
 
 - **Ontology Building:** Create basic and detailed ontology models with built-in functions.
 - **Public Data Integration:** Automatically crawl and integrate data from various public endpoints.
-- **Extended Wrappers:** Multiple wrapper functions for different ontology models (JSON, custom order, graph, tree, matrix, tabular, HTML, markdown, etc.).
+- **Extended Wrappers:** Multiple wrapper functions for different ontology models including JSON, custom order, graph, tree, matrix, tabular, HTML, markdown, and newly added circular, hierarchical, and grid representations.
 - **Ontology Analysis & Optimization:** Functions to analyze, optimize, and transform ontologies, including transformation to JSON-LD.
 - **Enhanced Metadata Management:** Functions for attaching metadata, recording change history, generating summaries, merging ontologies, and now extended functions such as merging models, updating descriptions, and extending ontology concepts.
 - **Robust CLI:** Comprehensive command-line interface supporting a wide range of commands for ontology operations.
@@ -153,6 +153,18 @@ Example commands:
     ```bash
     node src/lib/main.js --wrap-markdown
     ```
+  - Circular Representation (New):
+    ```bash
+    node src/lib/main.js --wrap-circular
+    ```
+  - Hierarchical Representation (New):
+    ```bash
+    node src/lib/main.js --wrap-hierarchy
+    ```
+  - Grid Representation (New):
+    ```bash
+    node src/lib/main.js --wrap-grid
+    ```
 
 ## Changelog
 
@@ -160,12 +172,13 @@ Example commands:
   - Refocused ontology builder on building OWL ontologies exclusively from diverse public data sources.
   - Removed legacy code and endpoints not in line with the new mission statement.
   - Extended functionality with new ontology analysis, optimization, transformation, and metadata management commands.
-  - **Extended Wrappers Added:** New wrappers for ontology models have been added including JSON, custom, graph, tree, matrix, tabular, HTML, and markdown representations.
+  - **Extended Wrappers Added:** New wrappers for ontology models have been added including JSON, custom, graph, tree, matrix, tabular, HTML, markdown representations, and newly added circular, hierarchical, and grid wrappers.
   - **New Functions Added:**
     - mergeOntologyModels, updateOntologyDescription, extendOntologyConcepts, plus stubs for resetOntology, cloneOntology, transformOntologyData, debugOntologyMetrics, and reflectOntologyStatus.
     - **New Extended Features:**
       - fetchMultipleEndpoints for concurrent endpoint fetching (--fetch-multiple).
       - validateAndOptimizeOntology to combine validation and optimization (--validate-optimize).
+      - **New Wrappers:** wrapOntologyModelsCircular, wrapOntologyModelsHierarchy, wrapOntologyModelsGrid.
   - **Testing Enhancements:** Test coverage increased with mocks for file system and network operations.
   - Documentation and test cases updated accordingly.
 
