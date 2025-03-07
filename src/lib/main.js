@@ -8,11 +8,16 @@
  *   Our goal is to provide an intuitive and extensible platform for ontology building,
  *   management, and querying with a focus on real-time public data integration.
  *
+ * Refocused Update:
+ *   This release refocuses the library on capturing and building OWL ontologies directly
+ *   from verified external data sources. Public endpoints are now prioritized for crawling
+ *   and integration, ensuring reliable and live data feeds for enhanced ontology models.
+ *
  * Features:
  *   - Build and persist ontology models from verified public data
  *   - Query and validate ontology concepts
  *   - Export/import OWL (XML) representations
- *   - Crawl public endpoints for enriched ontologies
+ *   - Crawl public endpoints with robust error handling
  *   - Extended OWL ontology model wrappers for basic, advanced, and custom models
  *   - Simple web server for diagnostic monitoring
  *
@@ -126,7 +131,6 @@ export function listAvailableEndpoints() {
 
 export async function fetchDataWithRetry(url, retries = 3) {
   const mod = url.startsWith('https') ? https : http;
-  // Add default User-Agent header to avoid request issues (e.g., with GitHub API)
   const options = { headers: { 'User-Agent': 'owl-builder CLI tool' } };
   return new Promise((resolve, reject) => {
     function attempt(n) {

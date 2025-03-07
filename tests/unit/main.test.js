@@ -4,6 +4,7 @@ import path from 'path';
 import http from 'http';
 import * as mainModule from '../../src/lib/main.js';
 
+// Test suite for owl-builder, refocused on live public data sources
 const {
   main,
   buildOntology,
