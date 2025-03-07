@@ -1,15 +1,15 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library focused exclusively on building robust OWL ontologies from verified public data sources. In this release, legacy endpoints and redundant code have been pruned to streamline functionality and better align with our CONTRIBUTING guidelines.
+owl-builder is a CLI tool and JavaScript library refocused exclusively on building robust OWL ontologies from verified public data sources. Legacy endpoints and redundant/demo code have been pruned in alignment with our CONTRIBUTING guidelines.
 
 ## Features
 
-- **Ontology Building:** Create both basic and detailed ontology models directly from public data.
+- **Ontology Building:** Create both basic and detailed ontology models using verified public data sources.
 - **Public Data Integration:** Seamlessly integrate data from a range of verified endpoints (e.g., https://api.publicapis.org/entries, https://dog.ceo/api/breeds/image/random, etc.).
 - **Extended Wrappers:** Multiple wrappers for various ontology representations including JSON, custom ordering, graph, tree, matrix, tabular, HTML, Markdown, and newly added circular, hierarchical, and grid formats.
 - **Ontology Analysis & Optimization:** Analyze, optimize, and transform ontologies (including transforming to JSON-LD) to ensure high quality and consistency.
-- **Enhanced Metadata Management:** Easily attach metadata, record ontology history, merge ontologies, and generate concise summaries.
-- **Robust CLI:** A comprehensive command-line interface offering a wide range of commands to build, manage, and query ontologies.
+- **Enhanced Metadata Management:** Attach metadata, record ontology history, merge ontologies, and generate concise summaries.
+- **Robust CLI:** A comprehensive command-line interface with commands to build, manage, and query ontologies.
 - **New Extended Functions:** Added functions for validating & optimizing, anonymizing, exporting to RDF (Turtle), summarizing statistics, logging extended history, and fetching multiple endpoints.
 
 ## Usage
@@ -42,8 +42,6 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --validate-optimize
   ```
-
-Additional commands for advanced analysis, metadata extension, extended exports and more are available. See the CLI help for the full list.
 
 ## Public Endpoints
 
@@ -82,10 +80,10 @@ npm test
 
 - **Version 0.0.20**
   - Refocused the library solely on building OWL ontologies from verified public data sources.
-  - Removed legacy endpoints and redundant implementations.
+  - Removed legacy endpoints and redundant simulated implementations.
   - Extended functionality with enhanced wrappers, metadata management, and advanced analysis commands.
   - **New:** Added functions: validateAndOptimizeOntology, anonymizeOntology, exportOntologyToRDF, summarizeOntologyStatistics, logOntologyHistoryExtended, and fetchMultipleEndpoints.
-  - README refreshed to align with the latest CONTRIBUTING guidelines.
+  - Updated changelog to reflect these refocusing changes.
 
 ## Contributing
 

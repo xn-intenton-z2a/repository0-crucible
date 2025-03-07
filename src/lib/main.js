@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 // owl-builder CLI Tool
-// Mission Update: Focus exclusively on building OWL ontologies from verified public data sources.
-// Legacy endpoints and redundant code have been pruned in alignment with the CONTRIBUTING guidelines.
+// Mission: Build robust OWL ontologies from verified public data sources.
+// Legacy simulation endpoints and redundant code have been pruned in alignment with the CONTRIBUTING guidelines.
 
 import fs from 'fs';
 import path from 'path';
@@ -14,8 +14,9 @@ import http from 'http';
 const ontologyFilePath = path.resolve(process.cwd(), 'ontology.json');
 const backupFilePath = path.resolve(process.cwd(), 'ontology-backup.json');
 
-// Utility Functions (Ontology Operations)
+// Core Ontology Builder: Builds ontology using data from verified public data sources (simulated here)
 export function buildOntology() {
+  // In a real implementation, data would be fetched and verified from public data sources
   return {
     title: 'Sample Ontology',
     concepts: ['Concept1', 'Concept2', 'Concept3']
@@ -185,7 +186,7 @@ export function fetchDataWithRetry(url) {
 }
 
 export function getChangeLog() {
-  return 'Change log content';
+  return 'Change log: Refocused ontology builder on verified public data sources. Legacy endpoints removed.';
 }
 
 export function extendOntologyDetails() {
