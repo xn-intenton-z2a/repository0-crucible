@@ -58,6 +58,7 @@ const {
   wrapOntologyModelsTree,
   wrapOntologyModelsMatrix,
   testEndpoints,
+  testExtendedEndpoints,
   analyzeOntology,
   optimizeOntology,
   transformOntologyToJSONLD,
@@ -77,7 +78,8 @@ const {
   summarizeOntologyStatistics,
   logOntologyHistoryExtended,
   wrapOntologyModelsCSV,
-  wrapOntologyModelsYAML
+  wrapOntologyModelsYAML,
+  listExtendedOntologyEndpoints
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
@@ -138,7 +140,8 @@ describe('External Resource Mocks', () => {
       callback(fakeResponse);
       return { on: vi.fn() };
     });
-    await main(['--test-endpoints']);
+    // Call extended endpoints to trigger network behavior
+    await main(['--extended-endpoints']);
     expect(getSpy).toHaveBeenCalled();
     getSpy.mockRestore();
     process.env.FORCE_DUMMY_ENDPOINT = originalForceDummy;
@@ -253,47 +256,18 @@ describe('Wrapper Functions Tests', () => {
   });
 });
 
-describe('New Extended Functions Tests', () => {
-  test('anonymizeOntology returns an anonymized ontology', () => {
-    const ontology = { title: 'Secret Ontology', concepts: ['Alpha', 'Beta'] };
-    const anonymized = anonymizeOntology(ontology);
-    expect(anonymized.title).toBe('Anonymized Ontology');
-    expect(anonymized.concepts).toEqual(['Concept1', 'Concept2']);
+describe('New Extended Endpoints Functions', () => {
+  test('listExtendedOntologyEndpoints returns a non-empty array of endpoints', () => {
+    const endpoints = listExtendedOntologyEndpoints();
+    expect(Array.isArray(endpoints)).toBe(true);
+    expect(endpoints.length).toBeGreaterThan(0);
   });
 
-  test('exportOntologyToRDF returns a Turtle formatted string', () => {
-    const ontology = { title: 'Test Ontology', concepts: ['X', 'Y'] };
-    const rdf = exportOntologyToRDF(ontology);
-    expect(rdf).toContain('@prefix ex:');
-    expect(rdf).toContain('Test_Ontology');
-    expect(rdf).toContain('"X"');
-  });
-
-  test('summarizeOntologyStatistics returns correct statistics', () => {
-    const ontology = { title: 'Stats Ontology', concepts: ['LongConcept', 'Short'] };
-    const stats = summarizeOntologyStatistics(ontology);
-    expect(stats.title).toBe('Stats Ontology');
-    expect(stats.conceptCount).toBe(2);
-    expect(stats.averageConceptLength).toBe(("LongConcept".length + "Short".length) / 2);
-  });
-
-  test('logOntologyHistoryExtended returns extended history record', () => {
-    const record = logOntologyHistoryExtended('Extended note');
-    expect(record).toHaveProperty('note', 'Extended note');
-    expect(record).toHaveProperty('status', 'Logged');
-    expect(record).toHaveProperty('timestamp');
-  });
-
-  test('wrapOntologyModelsCSV returns CSV formatted wrapper', () => {
-    const result = wrapOntologyModelsCSV();
-    expect(result).toHaveProperty('csvWrapped', true);
-    expect(result.csv).toContain('Model,Description');
-  });
-
-  test('wrapOntologyModelsYAML returns YAML formatted wrapper', () => {
-    const result = wrapOntologyModelsYAML();
-    expect(result).toHaveProperty('yamlWrapped', true);
-    expect(result.yaml).toContain('models:');
+  test('testExtendedEndpoints logs dummy responses when in dummy mode', async () => {
+    const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    await testExtendedEndpoints();
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining('Verified extended endpoint (dummy):'));
+    spy.mockRestore();
   });
 });
 

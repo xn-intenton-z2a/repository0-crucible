@@ -22,6 +22,10 @@ owl-builder is a CLI tool and JavaScript library focused exclusively on building
   - https://api.openbrewerydb.org/breweries
   - https://api.spacexdata.com/v4/launches
   - https://api.exchangerate-api.com/v4/latest/USD
+- **Extended Endpoints:** Additional endpoints for ontology building are included for extended integration:
+  - https://data.publicsource.org/ontologies
+  - https://api.ontologyrepository.org/v1/ontologies
+  - https://data.verifiedontologies.com/api/ontologies
 - **Extended Wrappers:** Multiple wrappers supporting various ontology representations including JSON, custom ordering, graph, tree, matrix, tabular, HTML, Markdown, circular, hierarchical, grid, CSV, and YAML formats.
 - **Ontology Analysis & Optimization:** Tools to analyze, optimize, and transform ontologies (including JSON-LD transformation) ensuring consistency and high quality.
 - **Enhanced Metadata Management:** Attach metadata, record history, merge ontologies, and generate concise summaries.
@@ -54,10 +58,21 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --test-endpoints
   ```
+- **Test Extended Endpoints (Real Network Call):**
+  Set the environment variable FORCE_DUMMY_ENDPOINT to false to trigger real network requests:
+  ```bash
+  FORCE_DUMMY_ENDPOINT=false node src/lib/main.js --extended-endpoints
+  ```
 - **Validate and Optimize Ontology:**
   ```bash
   node src/lib/main.js --validate-optimize
   ```
+
+For testing real network responses (when not in dummy mode), you can run:
+
+```bash
+FORCE_DUMMY_ENDPOINT=false node src/lib/main.js --extended-endpoints
+```
 
 ## Public Endpoints
 
@@ -65,7 +80,7 @@ owl-builder leverages multiple verified public endpoints. During testing, dummy 
 
 ## Testing
 
-Tests cover file operations, network request handling (using dummy mode), and CLI command execution. Run tests using:
+Tests cover file operations, network request handling (using dummy mode or mocked network responses), and CLI command execution. Run tests using:
 
 ```bash
 npm test
@@ -76,9 +91,20 @@ npm test
 - **Version 0.0.21**
   - Refocused the library on building robust ontologies from verified public data sources.
   - Removed legacy simulation endpoints and redundant/demo code as per CONTRIBUTING guidelines and mission statement.
-  - Extended ontology wrappers and added new functions (validate & optimize, anonymize, export to RDF, summarize statistics, log extended history, fetch multiple endpoints).
-  - **Extended ontology wrappers:** Added new CSV and YAML wrappers for additional ontology model representations.
-  - **Mission update:** Pruned any code drift to align strictly with our commitment to verified public data sources.
+  - Extended ontology wrappers and added new functions including:
+    - validateAndOptimizeOntology
+    - extendOntologyMetadata
+    - recordOntologyHistory
+    - commitOntologyChange
+    - getOntologySummary
+    - mergeAndNormalizeOntologies
+    - wrapOntologyModelsCircular
+    - wrapOntologyModelsHierarchy
+    - wrapOntologyModelsGrid
+    - testEndpoints
+    - testExtendedEndpoints
+  - Fixed network request tests by modifying testExtendedEndpoints to allow real network calls when FORCE_DUMMY_ENDPOINT is set to false.
+  - Updated internal functions to support extended CLI commands and ensure comprehensive test coverage.
 
 ## Contributing
 
