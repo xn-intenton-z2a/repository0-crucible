@@ -28,11 +28,9 @@ import path from 'path';
 import https from 'https';
 import http from 'http';
 
-// Define file paths for ontology data
 const ontologyFilePath = path.resolve(process.cwd(), 'ontology.json');
 const backupFilePath = path.resolve(process.cwd(), 'ontology-backup.json');
 
-// Basic Ontology Builder: Constructs a simple ontology object using public data as seed.
 export function buildOntology() {
   return {
     title: 'Public Data Ontology',
@@ -40,7 +38,6 @@ export function buildOntology() {
   };
 }
 
-// Persists the provided ontology object to a file.
 export function persistOntology(ontology) {
   try {
     fs.writeFileSync(ontologyFilePath, JSON.stringify(ontology, null, 2));
@@ -50,7 +47,6 @@ export function persistOntology(ontology) {
   }
 }
 
-// Loads and parses the ontology file.
 export function loadOntology() {
   try {
     const content = fs.readFileSync(ontologyFilePath, 'utf-8');
@@ -60,7 +56,6 @@ export function loadOntology() {
   }
 }
 
-// Queries the ontology for a search term among its concepts.
 export function queryOntology(searchTerm) {
   const ontology = loadOntology();
   if (ontology.success === false) {
@@ -70,23 +65,19 @@ export function queryOntology(searchTerm) {
   return { searchTerm, results };
 }
 
-// Validates that the ontology object has a title.
 export function validateOntology(ontology) {
   return ontology && ontology.title ? true : false;
 }
 
-// Exports the ontology to a simple OWL-like XML representation.
 export function exportOntologyToXML(ontology) {
   return `<ontology><title>${ontology.title}</title></ontology>`;
 }
 
-// Imports an ontology from a provided OWL-like XML string.
 export function importOntologyFromXML(xml) {
   const titleMatch = xml.match(/<title>(.*?)<\/title>/);
   return { title: titleMatch ? titleMatch[1] : 'Imported Ontology', concepts: [] };
 }
 
-// Creates a backup of the current ontology file.
 export function backupOntology() {
   try {
     const content = fs.readFileSync(ontologyFilePath, 'utf-8');
@@ -97,14 +88,12 @@ export function backupOntology() {
   }
 }
 
-// Updates the ontology title and returns the updated ontology object.
 export function updateOntology(newTitle) {
   let ontology = buildOntology();
   ontology.title = newTitle;
   return ontology;
 }
 
-// Clears the ontology file if it exists.
 export function clearOntology() {
   try {
     if (fs.existsSync(ontologyFilePath)) {
@@ -118,7 +107,6 @@ export function clearOntology() {
   }
 }
 
-// Returns a list of available public endpoints to crawl data from.
 export function listAvailableEndpoints() {
   return [
     'https://api.publicapis.org/entries',
@@ -136,12 +124,13 @@ export function listAvailableEndpoints() {
   ];
 }
 
-// Attempts to fetch data with retry using the provided protocol.
 export async function fetchDataWithRetry(url, retries = 3) {
   const mod = url.startsWith('https') ? https : http;
+  // Add default User-Agent header to avoid request issues (e.g., with GitHub API)
+  const options = { headers: { 'User-Agent': 'owl-builder CLI tool' } };
   return new Promise((resolve, reject) => {
     function attempt(n) {
-      mod.get(url, (res) => {
+      mod.get(url, options, (res) => {
         let data = '';
         res.on('data', (chunk) => data += chunk);
         res.on('end', () => resolve(data));
@@ -157,7 +146,6 @@ export async function fetchDataWithRetry(url, retries = 3) {
   });
 }
 
-// Crawls public endpoints to capture data and convert ontology to an OWL XML representation.
 export async function crawlOntologies() {
   const endpoints = listAvailableEndpoints();
   const results = [];
@@ -173,9 +161,6 @@ export async function crawlOntologies() {
   return results;
 }
 
-/* Extended OWL Ontology Model Wrappers */
-
-// Builds a basic OWL model wrapper with minimal properties
 export function buildBasicOWLModel() {
   return {
     id: 'basic',
@@ -185,7 +170,6 @@ export function buildBasicOWLModel() {
   };
 }
 
-// Builds an advanced OWL model wrapper with additional details
 export function buildAdvancedOWLModel() {
   return {
     id: 'advanced',
@@ -201,7 +185,6 @@ export function buildAdvancedOWLModel() {
   };
 }
 
-// Wraps an ontology model to include additional metadata
 export function wrapOntologyModel(model) {
   if (!model || !model.title) {
     model = { title: 'Default Title' };
@@ -210,20 +193,17 @@ export function wrapOntologyModel(model) {
   return model;
 }
 
-// Builds a custom ontology by applying user defined customizations
 export function buildCustomOntology(customizations = {}) {
   const baseOntology = buildOntology();
   return { ...baseOntology, ...customizations, customized: true };
 }
 
-// Extends ontology concepts by adding additional ones
 export function extendOntologyConcepts(ontology, additionalConcepts = []) {
   if (!ontology.concepts) ontology.concepts = [];
   ontology.concepts = ontology.concepts.concat(additionalConcepts);
   return ontology;
 }
 
-// Starts a simple web server to serve minimal diagnostic info and status
 export function serveWebServer() {
   const port = process.env.PORT || 3000;
   const server = http.createServer((req, res) => {
@@ -239,7 +219,6 @@ export function serveWebServer() {
   });
 }
 
-// CLI Command Actions
 const commandActions = {
   "--help": async (args) => { displayHelp(); },
   "--version": async (args) => { 
@@ -388,37 +367,26 @@ const commandActions = {
   }
 };
 
-// Demo function to show default ontology functionality
 async function demo() {
   console.log('Running demo of ontology functions:');
-
-  // Build Ontology and persist it
   const ontology = buildOntology();
   console.log('Demo - built ontology:', ontology);
   const persistResult = persistOntology(ontology);
   console.log('Demo - persisted ontology:', persistResult);
-
-  // Load and query
   const loadedOntology = loadOntology();
   console.log('Demo - loaded ontology:', loadedOntology);
   const queryResult = queryOntology('Concept');
   console.log('Demo - query result:', queryResult);
-
-  // Validate, export, import
   const isValid = validateOntology(ontology);
   console.log('Demo - ontology valid:', isValid);
   const xml = exportOntologyToXML(ontology);
   console.log('Demo - exported XML:', xml);
   const importedOntology = importOntologyFromXML(xml);
   console.log('Demo - imported ontology:', importedOntology);
-
-  // Backup and update
   const backupResult = backupOntology();
   console.log('Demo - backup result:', backupResult);
   const updatedOntology = updateOntology('Demo Updated Ontology');
   console.log('Demo - updated ontology:', updatedOntology);
-
-  // List endpoints and fetch data with retry (using a single endpoint for demo)
   const endpoints = listAvailableEndpoints();
   console.log('Demo - available endpoints:', endpoints);
   try {
@@ -427,12 +395,8 @@ async function demo() {
   } catch (err) {
     console.log(`Demo - error fetching ${endpoints[0]}:`, err.message);
   }
-
-  // Crawl ontologies (limited demo, may include errors)
   const crawlResults = await crawlOntologies();
   console.log('Demo - crawl results:', crawlResults);
-
-  // Ontology model wrappers
   const basicModel = buildBasicOWLModel();
   console.log('Demo - basic OWL model:', basicModel);
   const advancedModel = buildAdvancedOWLModel();
@@ -443,11 +407,9 @@ async function demo() {
   console.log('Demo - custom ontology:', customOntology);
   const extendedOntology = extendOntologyConcepts(ontology, ['ExtraConcept']);
   console.log('Demo - extended ontology:', extendedOntology);
-
   console.log('Demo completed successfully.');
 }
 
-// Main CLI function that dispatches commands based on provided arguments.
 export async function main(args = process.argv.slice(2)) {
   if (args.length === 0) {
     await demo();
@@ -462,7 +424,6 @@ export async function main(args = process.argv.slice(2)) {
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 
-// Displays help information for using the CLI.
 export function displayHelp() {
   console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve`);
 }

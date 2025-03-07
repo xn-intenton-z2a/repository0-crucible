@@ -32,7 +32,6 @@ const {
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
 const backupPath = path.resolve(process.cwd(), 'ontology-backup.json');
 
-// Helper to simulate network failure for fetchDataWithRetry
 function simulateNetworkFailure(mod) {
   return function(url, callback) {
     const error = new Error('Network error');
@@ -262,7 +261,6 @@ describe('Custom Ontology Functions', () => {
   });
 });
 
-// New test for extended endpoints
 describe('Extended Endpoints Test', () => {
   test('fetch data from all endpoints and log response snippet', async () => {
     const endpoints = listAvailableEndpoints();
