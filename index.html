@@ -38,6 +38,8 @@
 </ul>
 </li>
 <li class="md-github"><a href="#cli-commands" class="md-github">CLI Commands</a></li>
+<li class="md-github"><a href="#sdk-documentation" class="md-github">SDK Documentation</a></li>
+<li class="md-github"><a href="#api-documentation" class="md-github">API Documentation</a></li>
 <li class="md-github"><a href="#contributing" class="md-github">Contributing</a></li>
 <li class="md-github"><a href="#changelog" class="md-github">Changelog</a></li>
 <li class="md-github"><a href="#license" class="md-github">License</a></li>
@@ -52,7 +54,7 @@
 <li class="md-github"><strong class="md-github">Data Persistence:</strong> Easily persist, load, backup, and clear ontology data stored in JSON files.</li>
 <li class="md-github"><strong class="md-github">Querying:</strong> Perform simple queries against ontology concepts.</li>
 <li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontology objects to an OWL XML format and import from XML strings.</li>
-<li class="md-github"><strong class="md-github">Data Crawling:</strong> Crawl multiple public endpoints to capture data and generate OWL representations.</li>
+<li class="md-github"><strong class="md-github">Data Crawling:</strong> Crawl multiple public endpoints to capture data for generating OWL representations.</li>
 <li class="md-github"><strong class="md-github">Ontology Model Wrappers:</strong> Supports both basic and advanced OWL model wrappers; wrap ontology models with additional metadata.</li>
 <li class="md-github"><strong class="md-github">Diagnostics:</strong> Use the diagnostics command to output environment settings for troubleshooting.</li>
 </ul>
@@ -109,8 +111,8 @@ npm run formatting
 <p class="md-github">owl-builder can support AI experiments and ontology-driven research projects:</p>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Rich Data Crawling:</strong> Leverage multiple public endpoints to collect data for modeling complex ontologies.</li>
-<li class="md-github"><strong class="md-github">Custom Models:</strong> Extend the basic OWL model wrappers or create advanced wrappers to match your experimental needs.</li>
-<li class="md-github"><strong class="md-github">Reproducibility:</strong> With built-in diagnostics (<code class="md-github">--diagnostics</code>) and consistent code practices, your research outputs are traceable and reliable.</li>
+<li class="md-github"><strong class="md-github">Custom Models:</strong> Extend the basic OWL model wrappers or create advanced wrappers tailored to your research needs.</li>
+<li class="md-github"><strong class="md-github">Reproducibility:</strong> With built-in diagnostics (<code class="md-github">--diagnostics</code>) and consistent coding practices, your research outputs remain traceable.</li>
 </ul>
 <hr class="md-github">
 <h2 class="md-github"><a class="md-github__anchor" name="cli-commands" href="#cli-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Commands</h2>
@@ -135,6 +137,55 @@ npm run formatting
 <li class="md-github"><code class="md-github">--diagnostics</code>: Outputs environment diagnostic information.</li>
 </ul>
 <hr class="md-github">
+<h2 class="md-github"><a class="md-github__anchor" name="sdk-documentation" href="#sdk-documentation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SDK Documentation</h2>
+<p class="md-github">When imported as a JavaScript library, owl-builder exports the following functions. Below is a brief description of each:</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">buildOntology()</strong>: Returns a sample ontology object.</li>
+<li class="md-github"><strong class="md-github">persistOntology(ontology)</strong>: Persists the given ontology object to a JSON file and returns a status object.</li>
+<li class="md-github"><strong class="md-github">loadOntology()</strong>: Loads and parses the persisted ontology JSON file.</li>
+<li class="md-github"><strong class="md-github">queryOntology(searchTerm)</strong>: Queries the ontology's concepts for the given search term and returns matching results.</li>
+<li class="md-github"><strong class="md-github">validateOntology(ontology)</strong>: Validates if the provided ontology object has a title.</li>
+<li class="md-github"><strong class="md-github">exportOntologyToXML(ontology)</strong>: Exports the provided ontology object to a simple OWL XML representation.</li>
+<li class="md-github"><strong class="md-github">importOntologyFromXML(xml)</strong>: Imports an ontology from an OWL XML formatted string.</li>
+<li class="md-github"><strong class="md-github">backupOntology()</strong>: Creates a backup of the current ontology file.</li>
+<li class="md-github"><strong class="md-github">updateOntology(newTitle)</strong>: Updates the ontology title and returns the updated ontology object.</li>
+<li class="md-github"><strong class="md-github">clearOntology()</strong>: Clears the ontology file if it exists.</li>
+<li class="md-github"><strong class="md-github">listAvailableEndpoints()</strong>: Returns a list of public endpoints preset for crawling data.</li>
+<li class="md-github"><strong class="md-github">fetchDataWithRetry(url, retries)</strong>: Attempts to fetch data from a given URL with a specified number of retries.</li>
+<li class="md-github"><strong class="md-github">crawlOntologies()</strong>: Crawls preset endpoints and generates OWL XML representations of the sample ontology.</li>
+<li class="md-github"><strong class="md-github">buildBasicOWLModel()</strong>: Returns a basic OWL model wrapper.</li>
+<li class="md-github"><strong class="md-github">buildAdvancedOWLModel()</strong>: Returns an advanced OWL model wrapper with extra details.</li>
+<li class="md-github"><strong class="md-github">wrapOntologyModel(model)</strong>: Wraps an ontology model by adding additional metadata (such as a timestamp).</li>
+<li class="md-github"><strong class="md-github">displayHelp()</strong>: Prints help information regarding CLI usage.</li>
+<li class="md-github"><strong class="md-github">getVersion()</strong>: Returns the current version of owl-builder.</li>
+<li class="md-github"><strong class="md-github">listCommands()</strong>: Returns a list of supported CLI commands.</li>
+<li class="md-github"><strong class="md-github">main(args)</strong>: The main CLI function that dispatches commands based on provided arguments.</li>
+</ul>
+<hr class="md-github">
+<h2 class="md-github"><a class="md-github__anchor" name="api-documentation" href="#api-documentation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Documentation</h2>
+<p class="md-github">While owl-builder is primarily a CLI tool, its CLI commands can be considered as API endpoints when the tool is executed. Below is an overview of the exposed endpoints:</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">--help</strong>: Displays a help message detailing usage and available options.</li>
+<li class="md-github"><strong class="md-github">--version</strong>: Returns the current version of the tool.</li>
+<li class="md-github"><strong class="md-github">--list</strong>: Lists all supported CLI commands.</li>
+<li class="md-github"><strong class="md-github">--build</strong>: Generates a sample ontology and prints it.</li>
+<li class="md-github"><strong class="md-github">--persist</strong>: Builds and persists the sample ontology to a file.</li>
+<li class="md-github"><strong class="md-github">--load</strong>: Loads and prints the persisted ontology from the file.</li>
+<li class="md-github"><strong class="md-github">--query [searchTerm]</strong>: Searches for ontology concepts that match the provided term.</li>
+<li class="md-github"><strong class="md-github">--validate</strong>: Validates the structure of the sample ontology object.</li>
+<li class="md-github"><strong class="md-github">--export</strong>: Exports the ontology to an OWL XML format and prints the XML string.</li>
+<li class="md-github"><strong class="md-github">--import</strong>: Imports a sample ontology from an OWL XML string and prints the imported object.</li>
+<li class="md-github"><strong class="md-github">--backup</strong>: Creates a backup of the current ontology file.</li>
+<li class="md-github"><strong class="md-github">--update [New Title]</strong>: Updates the ontology's title and returns the updated object.</li>
+<li class="md-github"><strong class="md-github">--clear</strong>: Deletes the ontology file if it exists.</li>
+<li class="md-github"><strong class="md-github">--crawl</strong>: Initiates a crawl of public endpoints (using dummy data by default) and returns the results.</li>
+<li class="md-github"><strong class="md-github">--fetch-retry</strong>: Demonstrates data fetching with retry logic for a given URL.</li>
+<li class="md-github"><strong class="md-github">--build-basic</strong>: Generates and prints a basic OWL model.</li>
+<li class="md-github"><strong class="md-github">--build-advanced</strong>: Generates and prints an advanced OWL model.</li>
+<li class="md-github"><strong class="md-github">--wrap-model [JSON]</strong>: Wraps a provided or default ontology model with additional metadata.</li>
+<li class="md-github"><strong class="md-github">--diagnostics</strong>: Outputs environment diagnostic information.</li>
+</ul>
+<hr class="md-github">
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
 <p class="md-github">Please review the <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> file before submitting contributions. We welcome all enhancements that improve code quality, expand functionality, and update documentation.</p>
 <p class="md-github">Workflow:</p>
@@ -152,6 +203,7 @@ npm run formatting
 <li class="md-github">Added new CLI command <code class="md-github">--diagnostics</code> for environment diagnostics.</li>
 <li class="md-github">Extended test coverage and refactored ontology model wrappers.</li>
 <li class="md-github">Regenerated documentation and project README to align with contributing guidelines.</li>
+<li class="md-github"><strong class="md-github">Added SDK and API documentation sections to README.</strong></li>
 </ul>
 </li>
 </ul>
@@ -161,7 +213,7 @@ npm run formatting
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T20:16:03.766Z</p>
+    <p>Generated on 2025-03-07T20:27:40.557Z</p>
   </footer>
 </body>
 </html>
