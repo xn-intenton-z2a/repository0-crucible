@@ -126,7 +126,8 @@ describe('External Resource Mocks', () => {
       }),
       statusCode: 200
     };
-    const getSpy = vi.spyOn(http, 'get').mockImplementation((url, callback) => {
+    // Spy on https.get instead of http.get
+    const getSpy = vi.spyOn(https, 'get').mockImplementation((url, callback) => {
       callback(fakeResponse);
       return { on: vi.fn() };
     });
