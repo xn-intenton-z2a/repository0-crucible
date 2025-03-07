@@ -413,6 +413,38 @@ export function reflectOntologyStatus() {
 }
 // ----- End of added functions -----
 
+// Extended Functions for Enhanced Ontology Representations and Metadata Management
+export function anonymizeOntology(ontology) {
+  // Returns a version of the ontology with anonymized title and generic concept names
+  let anonymized = { ...ontology };
+  anonymized.title = 'Anonymized Ontology';
+  anonymized.concepts = anonymized.concepts.map((concept, index) => `Concept${index + 1}`);
+  return anonymized;
+}
+
+export function exportOntologyToRDF(ontology) {
+  // Dummy conversion to RDF in Turtle format
+  const safeTitle = ontology.title.replace(/\s/g, '_');
+  const concepts = ontology.concepts.map(concept => `"${concept}"`).join(", ");
+  return `@prefix ex: <http://example.com/> .\nex:${safeTitle} a ex:Ontology;\n  ex:hasConcept ${concepts} .`;
+}
+
+export function summarizeOntologyStatistics(ontology) {
+  // Returns enhanced statistics about the ontology
+  const totalConcepts = ontology.concepts.length;
+  const averageLength = totalConcepts > 0 ? ontology.concepts.reduce((acc, curr) => acc + curr.length, 0) / totalConcepts : 0;
+  return {
+    title: ontology.title,
+    conceptCount: totalConcepts,
+    averageConceptLength: averageLength
+  };
+}
+
+export function logOntologyHistoryExtended(note) {
+  // Extended history logging including a fixed status
+  return { ...recordOntologyHistory(note), status: 'Logged' };
+}
+
 // New Extended Features:
 // Function to concurrently fetch all endpoints
 export async function fetchMultipleEndpoints() {
@@ -511,10 +543,15 @@ const commandActions = {
   "--wrap-markdown": async (args) => { const markdown = wrapOntologyModelsMarkdown(); console.log("Markdown wrapped ontology models:", markdown); return markdown; },
   "--fetch-multiple": async (args) => { const data = await fetchMultipleEndpoints(); console.log("Fetched multiple endpoints:", data); return data; },
   "--validate-optimize": async (args) => { const result = validateAndOptimizeOntology(); console.log("Ontology valid and optimized:", result); return result; },
-  // New CLI commands for additional wrappers
+  // New CLI commands for additional wrappers and extended functions
   "--wrap-circular": async (args) => { const circular = wrapOntologyModelsCircular(); console.log("Circular wrapped ontology models:", circular); return circular; },
   "--wrap-hierarchy": async (args) => { const hierarchy = wrapOntologyModelsHierarchy(); console.log("Hierarchy wrapped ontology models:", hierarchy); return hierarchy; },
-  "--wrap-grid": async (args) => { const grid = wrapOntologyModelsGrid(); console.log("Grid wrapped ontology models:", grid); return grid; }
+  "--wrap-grid": async (args) => { const grid = wrapOntologyModelsGrid(); console.log("Grid wrapped ontology models:", grid); return grid; },
+  // New commands for enhanced metadata and representations
+  "--anonymize": async (args) => { const ontology = buildOntology(); const anon = anonymizeOntology(ontology); console.log("Anonymized Ontology:", anon); return anon; },
+  "--export-rdf": async (args) => { const ontology = buildOntology(); const rdf = exportOntologyToRDF(ontology); console.log("Ontology exported to RDF:", rdf); return rdf; },
+  "--summarize-stats": async (args) => { const ontology = buildOntology(); const stats = summarizeOntologyStatistics(ontology); console.log("Ontology Statistics:", stats); return stats; },
+  "--log-history-extended": async (args) => { const record = logOntologyHistoryExtended("Extended history recorded"); console.log("Extended Ontology History Record:", record); return record; }
 };
 
 // CLI Command Actions
@@ -530,7 +567,7 @@ export async function main(args = process.argv.slice(2)) {
 
 // Helper functions for CLI
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize, --wrap-tabular, --wrap-html, --wrap-markdown, --fetch-multiple, --validate-optimize, --wrap-circular, --wrap-hierarchy, --wrap-grid\n`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize, --wrap-tabular, --wrap-html, --wrap-markdown, --fetch-multiple, --validate-optimize, --wrap-circular, --wrap-hierarchy, --wrap-grid, --anonymize, --export-rdf, --summarize-stats, --log-history-extended\n`);
 }
 
 export function getVersion() {

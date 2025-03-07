@@ -8,8 +8,9 @@ owl-builder is a versatile CLI tool and JavaScript library designed for building
 - **Public Data Integration:** Automatically crawl and integrate data from various public endpoints.
 - **Extended Wrappers:** Multiple wrapper functions for different ontology models including JSON, custom order, graph, tree, matrix, tabular, HTML, markdown, and newly added circular, hierarchical, and grid representations.
 - **Ontology Analysis & Optimization:** Functions to analyze, optimize, and transform ontologies, including transformation to JSON-LD.
-- **Enhanced Metadata Management:** Functions for attaching metadata, recording change history, generating summaries, merging ontologies, and now extended functions such as merging models, updating descriptions, and extending ontology concepts.
-- **Robust CLI:** Comprehensive command-line interface supporting a wide range of commands for ontology operations.
+- **Enhanced Metadata Management:** Functions for attaching metadata, recording change history, generating summaries, merging ontologies, and extended functionalities such as merging models, updating descriptions, and extending ontology concepts.
+- **Additional Extended Functions:** New functions such as anonymizeOntology, exportOntologyToRDF, summarizeOntologyStatistics, and logOntologyHistoryExtended provide enhanced ontology representations and metadata management.
+- **Robust CLI:** Comprehensive command-line interface supporting a wide range of commands for ontology operations, including new commands: --anonymize, --export-rdf, --summarize-stats, and --log-history-extended.
 - **New Extended Features:**
   - **Concurrent Fetching:** Use `--fetch-multiple` to concurrently fetch data from multiple public endpoints.
   - **Validation & Optimization:** Use `--validate-optimize` to validate and optimize an ontology in one step.
@@ -164,6 +165,24 @@ Example commands:
     node src/lib/main.js --wrap-grid
     ```
 
+- **Enhanced Ontology Representations and Metadata Management:**
+  - Anonymize Ontology:
+    ```bash
+    node src/lib/main.js --anonymize
+    ```
+  - Export Ontology to RDF (Turtle):
+    ```bash
+    node src/lib/main.js --export-rdf
+    ```
+  - Summarize Ontology Statistics:
+    ```bash
+    node src/lib/main.js --summarize-stats
+    ```
+  - Log Extended Ontology History:
+    ```bash
+    node src/lib/main.js --log-history-extended
+    ```
+
 ## Changelog
 
 - **Version 0.0.20**
@@ -172,12 +191,12 @@ Example commands:
   - Extended functionality with new ontology analysis, optimization, transformation, and metadata management commands.
   - **Extended Wrappers Added:** New wrappers for ontology models have been added including JSON, custom, graph, tree, matrix, tabular, HTML, markdown representations, and newly added circular, hierarchical, and grid wrappers.
   - **New Functions Added:**
-    - mergeOntologyModels, updateOntologyDescription, extendOntologyConcepts, plus stubs for resetOntology, cloneOntology, transformOntologyData, debugOntologyMetrics, and reflectOntologyStatus.
-    - **New Extended Features:**
-      - fetchMultipleEndpoints for concurrent endpoint fetching (--fetch-multiple).
-      - validateAndOptimizeOntology to combine validation and optimization (--validate-optimize).
-      - **New Wrappers:** wrapOntologyModelsCircular, wrapOntologyModelsHierarchy, wrapOntologyModelsGrid.
-  - **Testing Enhancements:** Test coverage increased with mocks for file system and network operations. External endpoint tests now log dummy responses ("dummy data") for all endpoints in dummy mode.
+    - mergeOntologyModels, updateOntologyDescription, extendOntologyConcepts, and additional stubs for resetOntology, cloneOntology, transformOntologyData, debugOntologyMetrics, and reflectOntologyStatus.
+    - **Enhanced Metadata and Representations:** Added anonymizeOntology, exportOntologyToRDF, summarizeOntologyStatistics, and logOntologyHistoryExtended for improved ontology handling.
+  - **New Extended Features:**
+    - fetchMultipleEndpoints for concurrent endpoint fetching (--fetch-multiple).
+    - validateAndOptimizeOntology to combine validation and optimization (--validate-optimize).
+  - **Testing Enhancements:** Test coverage increased with mocks for file system and network operations. External endpoint tests now log dummy responses ("dummy data") when in dummy mode.
   - **Mission Refocus:** Library functionality is now exclusively centered on building ontologies from public data sources.
 
 ## Contributing
