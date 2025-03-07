@@ -57,8 +57,8 @@
 <li class="md-github"><strong class="md-github">Extended Wrappers:</strong> Multiple wrappers supporting various ontology representations including JSON, HTML, Markdown, Tabular, custom ordering, graph, tree, matrix, CSV, YAML, circular, hierarchical, and grid formats.</li>
 <li class="md-github"><strong class="md-github">Ontology Analysis &amp; Optimization:</strong> Tools to analyze, optimize, and transform ontologies (including JSON-LD transformation) ensuring consistency and high quality.</li>
 <li class="md-github"><strong class="md-github">Enhanced Metadata Management:</strong> Attach metadata, record history, merge ontologies, and generate concise summaries.</li>
+<li class="md-github"><strong class="md-github">New Extended Functions:</strong> Real implementations for previously simulated methods have been added, including functions for advanced analysis, merging models, updating descriptions, extending concepts, resetting, cloning, retrying data fetches, and various wrappers.</li>
 <li class="md-github"><strong class="md-github">Robust CLI:</strong> A comprehensive command-line interface that is easy to use for building, managing, and querying ontologies.</li>
-<li class="md-github"><strong class="md-github">New Extended Functions:</strong> Features such as validate and optimize, anonymize, export to RDF (Turtle format), summarize statistics, log extended history, fetch multiple endpoints, and additional wrappers for HTML, Markdown, and Tabular representations.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">Display help:</p>
@@ -99,31 +99,40 @@ Set the environment variable FORCE_DUMMY_ENDPOINT to false to trigger real netwo
 </ul>
 </li>
 </ul>
-<p class="md-github">For testing real network responses (when not in dummy mode), you can run:</p>
-<pre class="md-github"><code class="md-github language-bash">FORCE_DUMMY_ENDPOINT=false node src/lib/main.js --extended-endpoints
-</code></pre>
-<h2 class="md-github"><a class="md-github__anchor" name="public-endpoints" href="#public-endpoints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Public Endpoints</h2>
-<p class="md-github">owl-builder leverages multiple verified public endpoints. During testing, dummy responses are used when the FORCE_DUMMY_ENDPOINT flag is enabled.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="testing" href="#testing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Testing</h2>
-<p class="md-github">Tests now include comprehensive coverage for file system operations and network request mocks to ensure robust behavior. Run tests using:</p>
-<pre class="md-github"><code class="md-github language-bash">npm test
-</code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="changelog" href="#changelog"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Changelog</h2>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Version 0.0.23</strong>
 <ul class="md-github">
 <li class="md-github">Refocused the library on building robust ontologies from verified public data sources.</li>
 <li class="md-github">Removed legacy simulation endpoints and redundant/demo code as per CONTRIBUTING guidelines and mission statement.</li>
-<li class="md-github">Extended ontology wrappers and added new wrapper functions for HTML, Markdown, and Tabular representations.</li>
-<li class="md-github">Extended new functions including:
+<li class="md-github">Added and implemented new extended methods including:
 <ul class="md-github">
-<li class="md-github">wrapOntologyModelsHTML</li>
-<li class="md-github">wrapOntologyModelsMarkdown</li>
-<li class="md-github">wrapOntologyModelsTabular</li>
+<li class="md-github">advancedOntologyAnalysis</li>
+<li class="md-github">mergeOntologyModels</li>
+<li class="md-github">updateOntologyDescription</li>
+<li class="md-github">extendOntologyConcepts</li>
+<li class="md-github">resetOntology</li>
+<li class="md-github">cloneOntology</li>
+<li class="md-github">fetchDataWithRetry</li>
+<li class="md-github">extendOntologyDetails</li>
+<li class="md-github">wrapOntologyModelsSimple</li>
+<li class="md-github">wrapOntologyModelsComprehensive</li>
+<li class="md-github">wrapOntologyModelsRandom</li>
+<li class="md-github">cleanupOntologyData</li>
+<li class="md-github">updateOntologyTracking</li>
+<li class="md-github">wrapAdvancedOntologyModels</li>
+<li class="md-github">wrapMergedOntologyModels</li>
+<li class="md-github">transformOntologyData</li>
+<li class="md-github">debugOntologyMetrics</li>
+<li class="md-github">reflectOntologyStatus</li>
+<li class="md-github">wrapOntologyModelsJSON</li>
+<li class="md-github">wrapOntologyModelsCustom</li>
+<li class="md-github">wrapOntologyModelsGraph</li>
+<li class="md-github">wrapOntologyModelsTree</li>
+<li class="md-github">wrapOntologyModelsMatrix</li>
 </ul>
 </li>
-<li class="md-github"><strong class="md-github">Improved test coverage</strong> by adding additional tests for the new wrapper functions and file system/network operations.</li>
-<li class="md-github">Updated internal functions and command actions to support extended CLI commands and ensure comprehensive test coverage.</li>
+<li class="md-github">Improved test coverage with additional unit tests for new functionalities.</li>
 </ul>
 </li>
 </ul>
@@ -134,7 +143,7 @@ Set the environment variable FORCE_DUMMY_ENDPOINT to false to trigger real netwo
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T18:52:00.068Z</p>
+    <p>Generated on 2025-03-07T18:57:49.515Z</p>
   </footer>
 </body>
 </html>
