@@ -58,9 +58,10 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --test-endpoints
   ```
-- **Test Extended Endpoints (Dummy Mode):**
+- **Test Extended Endpoints (Real Network Call):**
+  Set the environment variable FORCE_DUMMY_ENDPOINT to false to trigger real network requests:
   ```bash
-  node src/lib/main.js --extended-endpoints
+  FORCE_DUMMY_ENDPOINT=false node src/lib/main.js --extended-endpoints
   ```
 - **Validate and Optimize Ontology:**
   ```bash
@@ -102,7 +103,7 @@ npm test
     - wrapOntologyModelsGrid
     - testEndpoints
     - testExtendedEndpoints
-  - Fixed network request tests by forcing dummy mode in testExtendedEndpoints and updating CLI command mappings for testing extended endpoints.
+  - Fixed network request tests by modifying testExtendedEndpoints to allow real network calls when FORCE_DUMMY_ENDPOINT is set to false.
   - Updated internal functions to support extended CLI commands and ensure comprehensive test coverage.
 
 ## Contributing

@@ -172,8 +172,8 @@ export function listExtendedOntologyEndpoints() {
 }
 
 export async function testExtendedEndpoints() {
-  // Force dummy mode for testing if not already set
-  if (!process.env.FORCE_DUMMY_ENDPOINT || process.env.FORCE_DUMMY_ENDPOINT !== 'true') {
+  // Only force dummy mode if FORCE_DUMMY_ENDPOINT is not explicitly set
+  if (typeof process.env.FORCE_DUMMY_ENDPOINT === 'undefined') {
     process.env.FORCE_DUMMY_ENDPOINT = 'true';
   }
   const endpoints = listExtendedOntologyEndpoints();
