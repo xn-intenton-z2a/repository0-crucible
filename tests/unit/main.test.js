@@ -118,6 +118,7 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--wrap-simple");
     expect(commands).toContain("--wrap-comprehensive");
     expect(commands).toContain("--wrap-random");
+    expect(commands).toContain("--clean-transform");
     spy.mockRestore();
   });
 
@@ -453,6 +454,14 @@ describe("Extended Functionality", () => {
   test("main with --wrap-random returns one of the available wrappers", async () => {
     const result = await main(["--wrap-random"]);
     expect(result).toHaveProperty("basic");
+  });
+
+  test("main with --clean-transform returns both cleaned and transformed ontology data", async () => {
+    const result = await main(["--clean-transform"]);
+    expect(result).toHaveProperty("cleaned");
+    expect(result).toHaveProperty("transformed");
+    // Ensure no duplicates in cleaned concepts
+    expect(new Set(result.cleaned.concepts).size).toBe(result.cleaned.concepts.length);
   });
 
   describe("File System Error Handling", () => {
