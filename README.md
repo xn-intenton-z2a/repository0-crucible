@@ -14,6 +14,8 @@ owl-builder is a powerful CLI tool and JavaScript library designed to help you b
   - [For Developers](#for-developers)
   - [For the Scientific Community](#for-the-scientific-community)
 - [CLI Commands](#cli-commands)
+- [SDK Documentation](#sdk-documentation)
+- [API Documentation](#api-documentation)
 - [Contributing](#contributing)
 - [Changelog](#changelog)
 - [License](#license)
@@ -32,7 +34,7 @@ owl-builder is a CLI tool and library focused on building OWL ontologies. It hel
 - **Data Persistence:** Easily persist, load, backup, and clear ontology data stored in JSON files.
 - **Querying:** Perform simple queries against ontology concepts.
 - **OWL Export/Import:** Convert ontology objects to an OWL XML format and import from XML strings.
-- **Data Crawling:** Crawl multiple public endpoints to capture data and generate OWL representations.
+- **Data Crawling:** Crawl multiple public endpoints to capture data for generating OWL representations.
 - **Ontology Model Wrappers:** Supports both basic and advanced OWL model wrappers; wrap ontology models with additional metadata.
 - **Diagnostics:** Use the diagnostics command to output environment settings for troubleshooting.
 
@@ -108,8 +110,8 @@ For more detailed information, refer to the inline comments in `src/lib/main.js`
 owl-builder can support AI experiments and ontology-driven research projects:
 
 - **Rich Data Crawling:** Leverage multiple public endpoints to collect data for modeling complex ontologies.
-- **Custom Models:** Extend the basic OWL model wrappers or create advanced wrappers to match your experimental needs.
-- **Reproducibility:** With built-in diagnostics (`--diagnostics`) and consistent code practices, your research outputs are traceable and reliable.
+- **Custom Models:** Extend the basic OWL model wrappers or create advanced wrappers tailored to your research needs.
+- **Reproducibility:** With built-in diagnostics (`--diagnostics`) and consistent coding practices, your research outputs remain traceable.
 
 ---
 
@@ -137,6 +139,59 @@ Here are some key CLI commands:
 
 ---
 
+## SDK Documentation
+
+When imported as a JavaScript library, owl-builder exports the following functions. Below is a brief description of each:
+
+- **buildOntology()**: Returns a sample ontology object.
+- **persistOntology(ontology)**: Persists the given ontology object to a JSON file and returns a status object.
+- **loadOntology()**: Loads and parses the persisted ontology JSON file.
+- **queryOntology(searchTerm)**: Queries the ontology's concepts for the given search term and returns matching results.
+- **validateOntology(ontology)**: Validates if the provided ontology object has a title.
+- **exportOntologyToXML(ontology)**: Exports the provided ontology object to a simple OWL XML representation.
+- **importOntologyFromXML(xml)**: Imports an ontology from an OWL XML formatted string.
+- **backupOntology()**: Creates a backup of the current ontology file.
+- **updateOntology(newTitle)**: Updates the ontology title and returns the updated ontology object.
+- **clearOntology()**: Clears the ontology file if it exists.
+- **listAvailableEndpoints()**: Returns a list of public endpoints preset for crawling data.
+- **fetchDataWithRetry(url, retries)**: Attempts to fetch data from a given URL with a specified number of retries.
+- **crawlOntologies()**: Crawls preset endpoints and generates OWL XML representations of the sample ontology.
+- **buildBasicOWLModel()**: Returns a basic OWL model wrapper.
+- **buildAdvancedOWLModel()**: Returns an advanced OWL model wrapper with extra details.
+- **wrapOntologyModel(model)**: Wraps an ontology model by adding additional metadata (such as a timestamp).
+- **displayHelp()**: Prints help information regarding CLI usage.
+- **getVersion()**: Returns the current version of owl-builder.
+- **listCommands()**: Returns a list of supported CLI commands.
+- **main(args)**: The main CLI function that dispatches commands based on provided arguments.
+
+---
+
+## API Documentation
+
+While owl-builder is primarily a CLI tool, its CLI commands can be considered as API endpoints when the tool is executed. Below is an overview of the exposed endpoints:
+
+- **--help**: Displays a help message detailing usage and available options.
+- **--version**: Returns the current version of the tool.
+- **--list**: Lists all supported CLI commands.
+- **--build**: Generates a sample ontology and prints it.
+- **--persist**: Builds and persists the sample ontology to a file.
+- **--load**: Loads and prints the persisted ontology from the file.
+- **--query [searchTerm]**: Searches for ontology concepts that match the provided term.
+- **--validate**: Validates the structure of the sample ontology object.
+- **--export**: Exports the ontology to an OWL XML format and prints the XML string.
+- **--import**: Imports a sample ontology from an OWL XML string and prints the imported object.
+- **--backup**: Creates a backup of the current ontology file.
+- **--update [New Title]**: Updates the ontology's title and returns the updated object.
+- **--clear**: Deletes the ontology file if it exists.
+- **--crawl**: Initiates a crawl of public endpoints (using dummy data by default) and returns the results.
+- **--fetch-retry**: Demonstrates data fetching with retry logic for a given URL.
+- **--build-basic**: Generates and prints a basic OWL model.
+- **--build-advanced**: Generates and prints an advanced OWL model.
+- **--wrap-model [JSON]**: Wraps a provided or default ontology model with additional metadata.
+- **--diagnostics**: Outputs environment diagnostic information.
+
+---
+
 ## Contributing
 
 Please review the [CONTRIBUTING.md](CONTRIBUTING.md) file before submitting contributions. We welcome all enhancements that improve code quality, expand functionality, and update documentation.
@@ -156,6 +211,7 @@ Guidelines focus on code quality, testing, documentation, and collaboration. Fol
   - Added new CLI command `--diagnostics` for environment diagnostics.
   - Extended test coverage and refactored ontology model wrappers.
   - Regenerated documentation and project README to align with contributing guidelines.
+  - **Added SDK and API documentation sections to README.**
 
 ---
 
