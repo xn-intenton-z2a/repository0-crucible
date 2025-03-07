@@ -11,14 +11,18 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
   - `--wrap` and `--wrap-extended`: Aggregate various ontology models.
   - `--advanced-analysis`: Perform advanced ontology analysis with average and median concept length.
   - `--cleanup`: Remove duplicate ontology concepts.
-  - **New Commands:**
+  - **New Wrapper Commands:**
+    - `--wrap-simple`: Wrap and return basic and enhanced ontology models.
+    - `--wrap-comprehensive`: Wrap and aggregate a comprehensive set of ontology models including report, synced, advanced, and detailed data.
+    - `--wrap-random`: Return a randomly selected wrapper among available options.
+  - **Other New Commands:**
     - `--auto-commit`: Generate an automated commit message.
     - `--combine-models`: Merge ontology models into one comprehensive model.
     - `--refresh-details`: Update the ontology description with additional details.
     - `--extend-concepts`: Extend the ontology by adding new concepts.
     - `--fetch-retry`: Fetch data with a retry mechanism.
-    - `--changelog`: Display the change log detailing extended functions.
-    - `--extend-details`: Extend the ontology with additional information and metrics.
+    - `--changelog`: Display the change log for extended functions.
+    - `--extend-details`: Extend the ontology with additional details and metrics.
 - Updated public data endpoints to reflect correct API URLs (e.g., GitHub and Coinbase).
 - Enhanced error handling for file operations and network requests.
 
@@ -78,6 +82,9 @@ npm install owl-builder
     - `--fetch-retry`: Fetch data with a retry mechanism.
     - `--changelog`: Display the change log for extended functions.
     - `--extend-details`: Extend the ontology with additional details and metrics.
+    - `--wrap-simple`: Wrap and return basic and enhanced ontology models.
+    - `--wrap-comprehensive`: Wrap and aggregate a comprehensive set of ontology models.
+    - `--wrap-random`: Return a randomly selected wrapper among available options.
 
 ## Public Data Endpoints
 
@@ -160,6 +167,20 @@ Example commands:
   node src/lib/main.js --wrap-extended
   ```
 
+- **New Wrapper Commands:**
+  - **Simple Wrapper:**
+    ```bash
+    node src/lib/main.js --wrap-simple
+    ```
+  - **Comprehensive Wrapper:**
+    ```bash
+    node src/lib/main.js --wrap-comprehensive
+    ```
+  - **Random Wrapper:**
+    ```bash
+    node src/lib/main.js --wrap-random
+    ```
+
 - **Perform Advanced Analysis:**
   ```bash
   node src/lib/main.js --advanced-analysis
@@ -222,7 +243,7 @@ Example commands:
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging and enhanced ontology processing, with a focus exclusively on extracting and building ontologies from public data sources.
+Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging, enhanced ontology processing, and multiple wrappers to aggregate ontology models in various configurations, with a focus exclusively on extracting and building ontologies from public data sources.
 
 ## License
 

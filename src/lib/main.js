@@ -14,7 +14,8 @@
 // - Refocused library exclusively on building ontologies from public data sources; legacy functionalities removed.
 // - New functions added per CONTRIBUTING guidelines: fetchDataWithRetry, getChangeLog, extendOntologyDetails.
 // - Extended CLI commands added: --fetch-retry, --changelog, --extend-details.
-// - Updated version to 0.0.14, refocused on public data sources, and updated endpoint URLs in extended functions.
+// - New wrappers added: --wrap-simple, --wrap-comprehensive, --wrap-random to aggregate various ontology models in different configurations.
+// - Updated version to 0.0.14.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -201,6 +202,45 @@ export function wrapAllOntologyModels() {
     advanced,
     totalModels: 4
   };
+}
+
+// New wrappers added as per CONTRIBUTING guidelines
+
+/**
+ * Simple wrapper that returns only basic and enhanced ontology models.
+ * @returns {object} Object containing basic and enhanced models.
+ */
+export function wrapOntologyModelsSimple() {
+  return {
+    basic: buildOntology(),
+    enhanced: enhanceOntology()
+  };
+}
+
+/**
+ * Comprehensive wrapper that aggregates a wide range of ontology models and detailed analysis.
+ * @returns {object} Aggregated comprehensive ontology model.
+ */
+export function wrapOntologyModelsComprehensive() {
+  return {
+    basic: buildOntology(),
+    enhanced: enhanceOntology(),
+    integrated: integrateOntology(),
+    report: generateOntologyReport(),
+    synced: syncOntology(),
+    advanced: advancedOntologyAnalysis(),
+    detailed: buildDetailedOntology(),
+    collected: mergeOntologyModels(buildOntology(), enhanceOntology(), integrateOntology())
+  };
+}
+
+/**
+ * Randomly selects one of the available wrappers for ontology models.
+ * @returns {object} A randomly chosen ontology model wrapper.
+ */
+export function wrapOntologyModelsRandom() {
+  const wrappers = [wrapOntologyModelsSimple(), wrapOntologyModelsExtended(), wrapOntologyModelsComprehensive(), wrapAllOntologyModels()];
+  return wrappers[Math.floor(Math.random() * wrappers.length)];
 }
 
 /**
@@ -511,7 +551,6 @@ export async function main(args = []) {
       console.log("Extended ontology concepts:", extended);
       return extended;
     },
-    // New commands added per CONTRIBUTING guidelines
     "--fetch-retry": async () => {
       const result = await fetchDataWithRetry("https://api.publicapis.org/entries");
       console.log("Fetched data with retry:", result);
@@ -526,6 +565,22 @@ export async function main(args = []) {
       const extended = extendOntologyDetails();
       console.log("Extended Ontology Details:", extended);
       return extended;
+    },
+    // New commands added for new wrappers
+    "--wrap-simple": async () => {
+      const simple = wrapOntologyModelsSimple();
+      console.log("Simple Wrapped Ontology Models:", simple);
+      return simple;
+    },
+    "--wrap-comprehensive": async () => {
+      const comp = wrapOntologyModelsComprehensive();
+      console.log("Comprehensive Wrapped Ontology Models:", comp);
+      return comp;
+    },
+    "--wrap-random": async () => {
+      const randomWrapper = wrapOntologyModelsRandom();
+      console.log("Random Wrapped Ontology Model:", randomWrapper);
+      return randomWrapper;
     }
   };
 
@@ -587,8 +642,11 @@ export function displayHelp() {
   --extend-concepts,
   --fetch-retry,
   --changelog,
-  --extend-details`
-  );
+  --extend-details,
+  --wrap-simple,
+  --wrap-comprehensive,
+  --wrap-random
+`);
 }
 
 /**
@@ -648,7 +706,10 @@ export function listCommands() {
     "--extend-concepts",
     "--fetch-retry",
     "--changelog",
-    "--extend-details"
+    "--extend-details",
+    "--wrap-simple",
+    "--wrap-comprehensive",
+    "--wrap-random"
   ];
 }
 
@@ -1004,7 +1065,7 @@ export async function fetchDataWithRetry(endpoint, retries = 3) {
  * @returns {string} Change log message.
  */
 export function getChangeLog() {
-  return "Extended functions added including fetchDataWithRetry, getChangeLog, and extendOntologyDetails as per CONTRIBUTING guidelines.\nRefocused on building ontologies from public data sources and updated endpoint URLs.";
+  return "Extended functions added including fetchDataWithRetry, getChangeLog, extendOntologyDetails, and new wrapper functions (wrap-simple, wrap-comprehensive, wrap-random) as per CONTRIBUTING guidelines.\nRefocused on building ontologies from public data sources and updated endpoint URLs.";
 }
 
 /**
@@ -1028,7 +1089,7 @@ export function extendOntologyDetails() {
  */
 export function automatedCommitMessage() {
   const dateStr = new Date().toISOString();
-  return `Automated commit on ${dateStr}: Extended ontology functions per CONTRIBUTING guidelines.`;
+  return `Automated commit on ${dateStr}: Extended ontology functions and wrappers per CONTRIBUTING guidelines.`;
 }
 
 /**
