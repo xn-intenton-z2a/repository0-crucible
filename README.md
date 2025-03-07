@@ -26,11 +26,11 @@ owl-builder is a CLI tool and JavaScript library focused exclusively on building
   - https://data.publicsource.org/ontologies
   - https://api.ontologyrepository.org/v1/ontologies
   - https://data.verifiedontologies.com/api/ontologies
-- **Extended Wrappers:** Multiple wrappers supporting various ontology representations including JSON, custom ordering, graph, tree, matrix, tabular, HTML, Markdown, circular, hierarchical, grid, CSV, and YAML formats.
+- **Extended Wrappers:** Multiple wrappers supporting various ontology representations including JSON, HTML, Markdown, Tabular, custom ordering, graph, tree, matrix, CSV, YAML, circular, hierarchical, and grid formats.
 - **Ontology Analysis & Optimization:** Tools to analyze, optimize, and transform ontologies (including JSON-LD transformation) ensuring consistency and high quality.
 - **Enhanced Metadata Management:** Attach metadata, record history, merge ontologies, and generate concise summaries.
 - **Robust CLI:** A comprehensive command-line interface that is easy to use for building, managing, and querying ontologies.
-- **New Extended Functions:** Features such as validate and optimize, anonymize, export to RDF (Turtle format), summarize statistics, log extended history, fetch multiple endpoints, and additional wrappers for CSV and YAML representations.
+- **New Extended Functions:** Features such as validate and optimize, anonymize, export to RDF (Turtle format), summarize statistics, log extended history, fetch multiple endpoints, and additional wrappers for HTML, Markdown, and Tabular representations.
 
 ## Usage
 
@@ -67,6 +67,19 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --validate-optimize
   ```
+- **New Wrappers:**
+  - HTML Representation:
+    ```bash
+    node src/lib/main.js --wrap-html
+    ```
+  - Markdown Representation:
+    ```bash
+    node src/lib/main.js --wrap-markdown
+    ```
+  - Tabular Representation:
+    ```bash
+    node src/lib/main.js --wrap-tabular
+    ```
 
 For testing real network responses (when not in dummy mode), you can run:
 
@@ -88,23 +101,16 @@ npm test
 
 ## Changelog
 
-- **Version 0.0.22**
+- **Version 0.0.23**
   - Refocused the library on building robust ontologies from verified public data sources.
   - Removed legacy simulation endpoints and redundant/demo code as per CONTRIBUTING guidelines and mission statement.
-  - Extended ontology wrappers and added new functions including:
-    - validateAndOptimizeOntology
-    - extendOntologyMetadata
-    - recordOntologyHistory
-    - commitOntologyChange
-    - getOntologySummary
-    - mergeAndNormalizeOntologies
-    - wrapOntologyModelsCircular
-    - wrapOntologyModelsHierarchy
-    - wrapOntologyModelsGrid
-    - testEndpoints
-    - testExtendedEndpoints
-  - **Improved test coverage** by adding additional tests for file system and network operations.
-  - Updated internal functions to support extended CLI commands and ensure comprehensive test coverage.
+  - Extended ontology wrappers and added new wrapper functions for HTML, Markdown, and Tabular representations.
+  - Extended new functions including:
+    - wrapOntologyModelsHTML
+    - wrapOntologyModelsMarkdown
+    - wrapOntologyModelsTabular
+  - **Improved test coverage** by adding additional tests for the new wrapper functions and file system/network operations.
+  - Updated internal functions and command actions to support extended CLI commands and ensure comprehensive test coverage.
 
 ## Contributing
 
