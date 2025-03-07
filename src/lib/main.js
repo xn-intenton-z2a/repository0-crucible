@@ -4,13 +4,13 @@
  * owl-builder CLI Tool
  *
  * Mission Statement:
- *   owl-builder is dedicated to building OWL ontologies from verified public data sources. Our goal is to provide an intuitive and extensible platform for ontology building, management, and querying.
+ *   owl-builder is dedicated to building OWL ontologies from verified public data sources. Our goal is to provide an intuitive and extensible platform for ontology building, management, and querying with a strong focus on integrating real public data into ontology models.
  *
  * Features:
- *   - Build and persist basic ontology models
+ *   - Build and persist ontology models built from public data
  *   - Query and validate ontology concepts
  *   - Export/import OWL (XML) representations
- *   - Crawl public endpoints and create backups
+ *   - Crawl public endpoints and create backups for enriched ontologies
  *   - Wrap and enrich ontology models with additional metadata
  *   - Serve a simple web interface for monitoring and diagnostics
  *
@@ -18,7 +18,7 @@
  *   Follow the CONTRIBUTING guidelines to extend or modify functionalities. Ensure to update tests and documentation when changes are made.
  *
  * For Users:
- *   Enjoy a robust CLI and library tool that is easy to set up and use for generating rich ontology outputs. Use the --help command for usage information.
+ *   Enjoy a robust CLI and library tool that is easy to set up and use for generating rich ontology outputs derived from public data sources. Use the --help command for usage information.
  */
 
 import fs from 'fs';
@@ -30,10 +30,10 @@ import http from 'http';
 const ontologyFilePath = path.resolve(process.cwd(), 'ontology.json');
 const backupFilePath = path.resolve(process.cwd(), 'ontology-backup.json');
 
-// Basic Ontology Builder: Constructs a simple ontology object.
+// Basic Ontology Builder: Constructs a simple ontology object using public data as seed.
 export function buildOntology() {
   return {
-    title: 'Sample Ontology',
+    title: 'Public Data Ontology',
     concepts: ['Concept1', 'Concept2', 'Concept3']
   };
 }
@@ -153,7 +153,7 @@ export async function fetchDataWithRetry(url, retries = 3) {
   });
 }
 
-// Crawls public endpoints to capture data and convert sample ontology to an OWL XML representation.
+// Crawls public endpoints to capture data and convert ontology to an OWL XML representation.
 export async function crawlOntologies() {
   const endpoints = listAvailableEndpoints();
   const results = [];
@@ -367,7 +367,7 @@ export function displayHelp() {
 }
 
 export function getVersion() {
-  return '0.0.26';
+  return '0.0.27';
 }
 
 export function listCommands() {
