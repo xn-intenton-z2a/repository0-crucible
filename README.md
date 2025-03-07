@@ -24,6 +24,10 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
     - `--changelog`: Display the change log for extended functions.
     - `--extend-details`: Extend the ontology with additional details and metrics.
     - `--clean-transform`: Clean duplicate ontology concepts and transform ontology data in one step.
+    - **New Commands Added:**
+      - `--fetch-additional`: Fetch additional data from supplementary endpoints.
+      - `--combine-metrics`: Combine various ontology metrics into one report.
+      - `--update-tracking`: Update the ontology with tracking information.
 
 ## Public Data Endpoints
 
@@ -36,7 +40,7 @@ owl-builder retrieves data from several public data sources, including:
 - https://api.coindesk.com/v1/bpi/currentprice.json *(Simulated network error in test mode)*
 
 **Extended Endpoints:**
-- https://api.github.com
+- https://api/github.com
 - https://jsonplaceholder.typicode.com/comments
 - https://dummyjson.com/products
 - https://randomuser.me/api/
@@ -185,9 +189,23 @@ Example commands:
   node src/lib/main.js --clean-transform
   ```
 
+- **New Commands:**
+  - **Fetch Additional Endpoint Data:**
+    ```bash
+    node src/lib/main.js --fetch-additional
+    ```
+  - **Combine Ontology Metrics:**
+    ```bash
+    node src/lib/main.js --combine-metrics
+    ```
+  - **Update Ontology Tracking:**
+    ```bash
+    node src/lib/main.js --update-tracking
+    ```
+
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging, enhanced ontology processing with debugging and transformation features, and multiple wrappers to aggregate ontology models in various configurations, with a focus exclusively on extracting and building ontologies from public data sources.
+Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging, enhanced ontology processing with debugging and transformation features, and multiple wrappers to aggregate ontology models in various configurations, with a focus exclusively on extracting and building ontologies from public data sources. Additionally, new functions for fetching additional endpoint data, combining metrics, and updating tracking information have been introduced.
 
 ## License
 

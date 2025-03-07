@@ -52,7 +52,10 @@ const {
   backupOntology,
   transformOntologyData,
   debugOntologyMetrics,
-  reflectOntologyStatus
+  reflectOntologyStatus,
+  fetchAdditionalEndpointData,
+  combineOntologyMetrics,
+  updateOntologyTracking
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -119,6 +122,9 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--wrap-comprehensive");
     expect(commands).toContain("--wrap-random");
     expect(commands).toContain("--clean-transform");
+    expect(commands).toContain("--fetch-additional");
+    expect(commands).toContain("--combine-metrics");
+    expect(commands).toContain("--update-tracking");
     spy.mockRestore();
   });
 
@@ -462,6 +468,24 @@ describe("Extended Functionality", () => {
     expect(result).toHaveProperty("transformed");
     // Ensure no duplicates in cleaned concepts
     expect(new Set(result.cleaned.concepts).size).toBe(result.cleaned.concepts.length);
+  });
+
+  test("--fetch-additional returns additional endpoint data", async () => {
+    const result = await main(["--fetch-additional"]);
+    expect(Array.isArray(result)).toBe(true);
+    // Expect at least one result from additional endpoints
+    expect(result.length).toBeGreaterThan(0);
+  });
+
+  test("--combine-metrics returns combined ontology metrics", async () => {
+    const result = await main(["--combine-metrics"]);
+    expect(result).toHaveProperty("conceptCount");
+  });
+
+  test("--update-tracking returns ontology with tracking info", async () => {
+    const result = await main(["--update-tracking"]);
+    expect(result).toHaveProperty("tracking");
+    expect(result.tracking).toHaveProperty("note", "Tracking updated via CLI");
   });
 
   describe("File System Error Handling", () => {
