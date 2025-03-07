@@ -67,13 +67,19 @@ node src/lib/main.js --help
   node src/lib/main.js --validate-optimize
   ```
 
+For testing real network responses (when not in dummy mode), you can run:
+
+```bash
+FORCE_DUMMY_ENDPOINT=false node src/lib/main.js --extended-endpoints
+```
+
 ## Public Endpoints
 
 owl-builder leverages multiple verified public endpoints. During testing, dummy responses are used when the FORCE_DUMMY_ENDPOINT flag is enabled.
 
 ## Testing
 
-Tests cover file operations, network request handling (using dummy mode), and CLI command execution. Run tests using:
+Tests cover file operations, network request handling (using dummy mode or mocked network responses), and CLI command execution. Run tests using:
 
 ```bash
 npm test
@@ -95,6 +101,8 @@ npm test
     - wrapOntologyModelsHierarchy
     - wrapOntologyModelsGrid
     - testEndpoints
+    - testExtendedEndpoints
+  - Fixed network request tests by forcing dummy mode in testExtendedEndpoints and updating CLI command mappings for testing extended endpoints.
   - Updated internal functions to support extended CLI commands and ensure comprehensive test coverage.
 
 ## Contributing

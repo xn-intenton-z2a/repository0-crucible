@@ -140,7 +140,8 @@ describe('External Resource Mocks', () => {
       callback(fakeResponse);
       return { on: vi.fn() };
     });
-    await main(['--test-endpoints']);
+    // Call extended endpoints to trigger network behavior
+    await main(['--extended-endpoints']);
     expect(getSpy).toHaveBeenCalled();
     getSpy.mockRestore();
     process.env.FORCE_DUMMY_ENDPOINT = originalForceDummy;
