@@ -26,12 +26,13 @@
 <p class="md-github">owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. This tool has been refocused on streamlined public API integration and extended ontology processing commands. Legacy functionalities have been pruned and the documentation has been refreshed in accordance with the CONTRIBUTING guidelines.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="changelog" href="#changelog"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Changelog</h2>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Version 0.0.18</strong>
+<li class="md-github"><strong class="md-github">Version 0.0.19</strong>
 <ul class="md-github">
 <li class="md-github">Pruned legacy functionalities and removed drift from previous implementations to better align with the Mission Statement.</li>
 <li class="md-github">Refreshed the README to align with CONTRIBUTING guidelines, updating and pruning outdated details.</li>
 <li class="md-github">Extended ontology processing functions and added new wrapper commands: <code class="md-github">wrapOntologyModelsJSON</code>, <code class="md-github">wrapOntologyModelsCustom</code>, <code class="md-github">wrapOntologyModelsGraph</code>, <code class="md-github">wrapOntologyModelsTree</code>, and <code class="md-github">wrapOntologyModelsMatrix</code>.</li>
 <li class="md-github">Extended the public endpoints list and added a new CLI command <code class="md-github">--test-endpoints</code> for verifying endpoint responses in dummy mode.</li>
+<li class="md-github">Added new ontology functions: <code class="md-github">analyzeOntology</code>, <code class="md-github">optimizeOntology</code>, <code class="md-github">transformOntologyToJSONLD</code>, and <code class="md-github">normalizeOntology</code> along with corresponding CLI commands: <code class="md-github">--analyze</code>, <code class="md-github">--optimize</code>, <code class="md-github">--transform</code>, and <code class="md-github">--normalize</code>.</li>
 <li class="md-github">Removed legacy endpoints and pruned redundant documentation details.</li>
 </ul>
 </li>
@@ -114,12 +115,29 @@
 </li>
 </ul>
 </li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">New Ontology Analysis Commands:</strong></p>
+<ul class="md-github">
+<li class="md-github">Analyze Ontology:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --analyze
+</code></pre>
+</li>
+<li class="md-github">Optimize Ontology:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --optimize
+</code></pre>
+</li>
+<li class="md-github">Transform Ontology to JSON-LD:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --transform
+</code></pre>
+</li>
+<li class="md-github">Normalize Ontology:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --normalize
+</code></pre>
+</li>
+</ul>
+</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="testing" href="#testing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Testing</h2>
 <p class="md-github">Run tests with:</p>
 <pre class="md-github"><code class="md-github language-bash">npm test
 </code></pre>
-<p class="md-github">The tests include verifications for endpoint responses (using dummy data), model wrapper functions, and various CLI commands.</p>
+<p class="md-github">The tests include verifications for endpoint responses (using dummy data), model wrapper functions, various CLI commands, and the newly added ontology analysis and transformation commands.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
 <p class="md-github">Please refer to <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines on how to contribute to owl-builder. Contributions in the form of feature enhancements, bug fixes, or documentation improvements are welcome.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
@@ -127,7 +145,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T10:51:40.682Z</p>
+    <p>Generated on 2025-03-07T10:57:40.544Z</p>
   </footer>
 </body>
 </html>
