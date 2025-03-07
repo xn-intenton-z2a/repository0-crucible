@@ -39,7 +39,7 @@
 </ul>
 </li>
 </ul>
-<h2 class="md-github"><a class="md-github__anchor" name="public-data-endpoints" href="#public-data-endpoints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Public Data Endpoints</h2>
+<h2 class="md-github"><a class="md-github__anchor" name="external-endpoints" href="#external-endpoints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>External Endpoints</h2>
 <p class="md-github">owl-builder retrieves data from several endpoints, including:</p>
 <ul class="md-github">
 <li class="md-github">https://api.publicapis.org/entries</li>
@@ -62,6 +62,11 @@
 <li class="md-github">https://api.ontologybuilder.com/data</li>
 </ul>
 <p class="md-github"><em class="md-github">Note: Extended endpoint testing has confirmed valid dummy responses for all endpoints when using the FORCE_DUMMY_ENDPOINT flag.</em></p>
+<h2 class="md-github"><a class="md-github__anchor" name="testing" href="#testing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Testing</h2>
+<p class="md-github">Tests have been expanded to improve coverage close to 100%. External dependencies such as file system operations and network requests are mocked in the test suite to provide single-layer tests for core functionality, ensuring reliable and fast tests.</p>
+<p class="md-github">Run tests using:</p>
+<pre class="md-github"><code class="md-github language-bash">npm test
+</code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">Display help:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
@@ -164,31 +169,27 @@
 </ul>
 </li>
 </ul>
-<h2 class="md-github"><a class="md-github__anchor" name="testing" href="#testing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Testing</h2>
-<p class="md-github">Run tests using:</p>
-<pre class="md-github"><code class="md-github language-bash">npm test
-</code></pre>
-<p class="md-github">The test suite includes validation for all CLI commands, endpoint responses (using dummy mode), ontology wrappers (including the newly added tabular, HTML, and markdown wrappers), extended metadata and processing functions, as well as the new extended features.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="changelog" href="#changelog"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Changelog</h2>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Version 0.0.20</strong>
 <ul class="md-github">
 <li class="md-github">Refocused ontology builder on building OWL ontologies exclusively from diverse public data sources.</li>
-<li class="md-github">Removed legacy code and endpoints that were not in line with the new mission statement.</li>
+<li class="md-github">Removed legacy code and endpoints not in line with the new mission statement.</li>
 <li class="md-github">Extended functionality with new ontology analysis, optimization, transformation, and metadata management commands.</li>
 <li class="md-github"><strong class="md-github">Extended Wrappers Added:</strong> New wrappers for ontology models have been added including JSON, custom, graph, tree, matrix, tabular, HTML, and markdown representations.</li>
 <li class="md-github"><strong class="md-github">New Functions Added:</strong>
 <ul class="md-github">
-<li class="md-github">Added missing functions: mergeOntologyModels, updateOntologyDescription, extendOntologyConcepts, and stubs for resetOntology, cloneOntology, transformOntologyData, debugOntologyMetrics, and reflectOntologyStatus.</li>
+<li class="md-github">mergeOntologyModels, updateOntologyDescription, extendOntologyConcepts, plus stubs for resetOntology, cloneOntology, transformOntologyData, debugOntologyMetrics, and reflectOntologyStatus.</li>
 <li class="md-github"><strong class="md-github">New Extended Features:</strong>
 <ul class="md-github">
-<li class="md-github">Added fetchMultipleEndpoints for concurrent endpoint fetching (--fetch-multiple).</li>
-<li class="md-github">Added validateAndOptimizeOntology to combine validation and optimization (--validate-optimize).</li>
+<li class="md-github">fetchMultipleEndpoints for concurrent endpoint fetching (--fetch-multiple).</li>
+<li class="md-github">validateAndOptimizeOntology to combine validation and optimization (--validate-optimize).</li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="md-github">Documentation and test cases updated to reflect the new focus and extended features.</li>
+<li class="md-github"><strong class="md-github">Testing Enhancements:</strong> Test coverage increased with mocks for file system and network operations.</li>
+<li class="md-github">Documentation and test cases updated accordingly.</li>
 </ul>
 </li>
 </ul>
@@ -199,7 +200,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T15:09:48.418Z</p>
+    <p>Generated on 2025-03-07T15:20:34.021Z</p>
   </footer>
 </body>
 </html>
