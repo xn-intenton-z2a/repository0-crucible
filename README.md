@@ -34,8 +34,6 @@ owl-builder retrieves data from several endpoints, including:
 - https://api.openbrewerydb.org/breweries
 - https://api.spacexdata.com/v4/launches
 - https://api.exchangerate-api.com/v4/latest/USD
-- https://api.sample.com/ontology
-- https://api.ontologybuilder.com/data
 
 *Note: Extended endpoint testing has confirmed valid dummy responses for all endpoints when using the FORCE_DUMMY_ENDPOINT flag.*
 
@@ -170,7 +168,7 @@ Example commands:
 
 - **Version 0.0.20**
   - Refocused ontology builder on building OWL ontologies exclusively from diverse public data sources.
-  - Removed legacy code and endpoints not in line with the new mission statement.
+  - Removed legacy endpoints and redundant code not aligned with the new mission.
   - Extended functionality with new ontology analysis, optimization, transformation, and metadata management commands.
   - **Extended Wrappers Added:** New wrappers for ontology models have been added including JSON, custom, graph, tree, matrix, tabular, HTML, markdown representations, and newly added circular, hierarchical, and grid wrappers.
   - **New Functions Added:**
@@ -180,7 +178,7 @@ Example commands:
       - validateAndOptimizeOntology to combine validation and optimization (--validate-optimize).
       - **New Wrappers:** wrapOntologyModelsCircular, wrapOntologyModelsHierarchy, wrapOntologyModelsGrid.
   - **Testing Enhancements:** Test coverage increased with mocks for file system and network operations.
-  - Documentation and test cases updated accordingly.
+  - **Mission Refocus:** Library functionality is now exclusively centered on building ontologies from public data sources.
 
 ## Contributing
 

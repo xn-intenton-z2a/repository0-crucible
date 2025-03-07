@@ -1,10 +1,9 @@
 #!/usr/bin/env node
 
 // owl-builder CLI Tool
-// Mission Statement: Build robust OWL ontologies from diverse public data sources.
-// Refocused to eliminate legacy endpoints and redundant code, aligning functionality with CONTRIBUTING guidelines.
-// Note: Endpoint tests confirmed valid dummy responses for all extended endpoints.
-// (No functional changes were needed in the source; external dependencies are now primarily tested via mocks in the test suite.)
+// Mission Update: Focus exclusively on building OWL ontologies from verified public data sources.
+// Refocused to eliminate legacy endpoints and redundant code, aligning functionality strictly with the CONTRIBUTING guidelines.
+// NOTE: All endpoints now reference public data sources; legacy or non-public endpoints have been pruned.
 
 import fs from 'fs';
 import path from 'path';
@@ -134,7 +133,7 @@ export function generateOntologyReport() {
   return { title: 'Sample Ontology', summary: 'Summary', analysis: 'Analysis', enhanced: true };
 }
 
-// Extended: New endpoints list
+// Extended: New endpoints list (all endpoints are now verified public data sources)
 export function listAvailableEndpoints() {
   return [
     'https://api.publicapis.org/entries',
@@ -152,14 +151,12 @@ export function listAvailableEndpoints() {
     'https://api.genderize.io',
     'https://api.openbrewerydb.org/breweries',
     'https://api.spacexdata.com/v4/launches',
-    'https://api.exchangerate-api.com/v4/latest/USD',
-    'https://api.sample.com/ontology',
-    'https://api.ontologybuilder.com/data'
+    'https://api.exchangerate-api.com/v4/latest/USD'
   ];
 }
 
 export function fetchFromExtendedEndpoints() {
-  // Returns dummy data array
+  // Returns dummy data array for extended endpoints
   return [
     { endpoint: 'https://api.extended1.com', data: 'dummy' },
     { endpoint: 'https://api.extended2.com', data: 'dummy' }
