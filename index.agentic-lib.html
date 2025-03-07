@@ -28,7 +28,7 @@
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Ontology Building:</strong> Create basic and detailed ontology models with built-in functions.</li>
 <li class="md-github"><strong class="md-github">Public Data Integration:</strong> Automatically crawl and integrate data from various public endpoints.</li>
-<li class="md-github"><strong class="md-github">Extended Wrappers:</strong> Multiple wrapper functions for different ontology models (JSON, custom order, graph, tree, matrix, tabular, HTML, markdown, etc.).</li>
+<li class="md-github"><strong class="md-github">Extended Wrappers:</strong> Multiple wrapper functions for different ontology models including JSON, custom order, graph, tree, matrix, tabular, HTML, markdown, and newly added circular, hierarchical, and grid representations.</li>
 <li class="md-github"><strong class="md-github">Ontology Analysis &amp; Optimization:</strong> Functions to analyze, optimize, and transform ontologies, including transformation to JSON-LD.</li>
 <li class="md-github"><strong class="md-github">Enhanced Metadata Management:</strong> Functions for attaching metadata, recording change history, generating summaries, merging ontologies, and now extended functions such as merging models, updating descriptions, and extending ontology concepts.</li>
 <li class="md-github"><strong class="md-github">Robust CLI:</strong> Comprehensive command-line interface supporting a wide range of commands for ontology operations.</li>
@@ -166,6 +166,15 @@
 <li class="md-github">Markdown Representation:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-markdown
 </code></pre>
 </li>
+<li class="md-github">Circular Representation (New):<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-circular
+</code></pre>
+</li>
+<li class="md-github">Hierarchical Representation (New):<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-hierarchy
+</code></pre>
+</li>
+<li class="md-github">Grid Representation (New):<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-grid
+</code></pre>
+</li>
 </ul>
 </li>
 </ul>
@@ -176,7 +185,7 @@
 <li class="md-github">Refocused ontology builder on building OWL ontologies exclusively from diverse public data sources.</li>
 <li class="md-github">Removed legacy code and endpoints not in line with the new mission statement.</li>
 <li class="md-github">Extended functionality with new ontology analysis, optimization, transformation, and metadata management commands.</li>
-<li class="md-github"><strong class="md-github">Extended Wrappers Added:</strong> New wrappers for ontology models have been added including JSON, custom, graph, tree, matrix, tabular, HTML, and markdown representations.</li>
+<li class="md-github"><strong class="md-github">Extended Wrappers Added:</strong> New wrappers for ontology models have been added including JSON, custom, graph, tree, matrix, tabular, HTML, markdown representations, and newly added circular, hierarchical, and grid wrappers.</li>
 <li class="md-github"><strong class="md-github">New Functions Added:</strong>
 <ul class="md-github">
 <li class="md-github">mergeOntologyModels, updateOntologyDescription, extendOntologyConcepts, plus stubs for resetOntology, cloneOntology, transformOntologyData, debugOntologyMetrics, and reflectOntologyStatus.</li>
@@ -184,6 +193,7 @@
 <ul class="md-github">
 <li class="md-github">fetchMultipleEndpoints for concurrent endpoint fetching (--fetch-multiple).</li>
 <li class="md-github">validateAndOptimizeOntology to combine validation and optimization (--validate-optimize).</li>
+<li class="md-github"><strong class="md-github">New Wrappers:</strong> wrapOntologyModelsCircular, wrapOntologyModelsHierarchy, wrapOntologyModelsGrid.</li>
 </ul>
 </li>
 </ul>
@@ -200,7 +210,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T15:29:48.840Z</p>
+    <p>Generated on 2025-03-07T15:37:06.058Z</p>
   </footer>
 </body>
 </html>
