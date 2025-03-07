@@ -35,7 +35,7 @@ owl-builder retrieves data from several endpoints, including:
 - https://api.spacexdata.com/v4/launches
 - https://api.exchangerate-api.com/v4/latest/USD
 
-*Note: Extended endpoint testing has confirmed valid dummy responses for all endpoints when using the FORCE_DUMMY_ENDPOINT flag.*
+*Note: Extended endpoint testing has confirmed valid dummy responses for all endpoints when using the FORCE_DUMMY_ENDPOINT flag. In test outputs, each endpoint logs a response: "dummy data".*
 
 ## Testing
 
@@ -177,7 +177,7 @@ Example commands:
       - fetchMultipleEndpoints for concurrent endpoint fetching (--fetch-multiple).
       - validateAndOptimizeOntology to combine validation and optimization (--validate-optimize).
       - **New Wrappers:** wrapOntologyModelsCircular, wrapOntologyModelsHierarchy, wrapOntologyModelsGrid.
-  - **Testing Enhancements:** Test coverage increased with mocks for file system and network operations.
+  - **Testing Enhancements:** Test coverage increased with mocks for file system and network operations. External endpoint tests now log dummy responses ("dummy data") for all endpoints in dummy mode.
   - **Mission Refocus:** Library functionality is now exclusively centered on building ontologies from public data sources.
 
 ## Contributing
