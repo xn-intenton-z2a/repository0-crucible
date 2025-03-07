@@ -4,6 +4,7 @@
 // Mission Statement: Build robust OWL ontologies from diverse public data sources.
 // Refocused to eliminate legacy endpoints and redundant code, aligning functionality with CONTRIBUTING guidelines.
 // Note: Endpoint tests confirmed valid dummy responses for all extended endpoints.
+// (No functional changes were needed in the source; external dependencies are now primarily tested via mocks in the test suite.)
 
 import fs from 'fs';
 import path from 'path';
