@@ -29,9 +29,9 @@
 <li class="md-github"><strong class="md-github">Version 0.0.16</strong>
 <ul class="md-github">
 <li class="md-github">Refocused on public data source integration and removed legacy endpoints.</li>
-<li class="md-github">Extended ontology processing functions and added new wrapper commands: <code class="md-github">wrapOntologyModelsJSON</code> and <code class="md-github">wrapOntologyModelsCustom</code>.</li>
+<li class="md-github">Extended ontology processing functions and added new wrapper commands: <code class="md-github">wrapOntologyModelsJSON</code>, <code class="md-github">wrapOntologyModelsCustom</code>, <strong class="md-github"><code class="md-github">wrapOntologyModelsGraph</code></strong>, <strong class="md-github"><code class="md-github">wrapOntologyModelsTree</code></strong>, and <strong class="md-github"><code class="md-github">wrapOntologyModelsMatrix</code></strong>.</li>
 <li class="md-github">Updated documentation per CONTRIBUTING guidelines.</li>
-<li class="md-github"><strong class="md-github">Verified endpoint responses via unit tests:</strong>
+<li class="md-github">Verified endpoint responses via unit tests:
 <ul class="md-github">
 <li class="md-github">Confirmed list of 10 endpoints returned as expected.</li>
 <li class="md-github">Additional endpoint fetch tests now simulate error responses (EAI_AGAIN) and are logged in test output.</li>
@@ -90,6 +90,15 @@
 <li class="md-github">Custom Wrapper:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-custom asc
 </code></pre>
 </li>
+<li class="md-github"><strong class="md-github">Graph Wrapper:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-graph
+</code></pre>
+</li>
+<li class="md-github"><strong class="md-github">Tree Wrapper:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-tree
+</code></pre>
+</li>
+<li class="md-github"><strong class="md-github">Matrix Wrapper:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-matrix
+</code></pre>
+</li>
 </ul>
 </li>
 </ul>
@@ -97,7 +106,7 @@
 <p class="md-github">Run tests with:</p>
 <pre class="md-github"><code class="md-github language-bash">npm test
 </code></pre>
-<p class="md-github">The tests now include a verification for endpoint responses based on dummy data and error simulation.</p>
+<p class="md-github">The tests now include a verification for endpoint responses based on dummy data and error simulation, as well as tests for the new model wrapper functions.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
 <p class="md-github">Please refer to <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines on how to contribute to owl-builder. Contributions including feature enhancements, bug fixes, and documentation improvements are welcome.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
@@ -105,7 +114,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T09:04:35.975Z</p>
+    <p>Generated on 2025-03-07T09:14:06.892Z</p>
   </footer>
 </body>
 </html>
