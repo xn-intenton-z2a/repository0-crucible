@@ -12,6 +12,8 @@
 // - Extended features inline with the Mission Statement:
 //      * Added new commands --refresh-details and --extend-concepts for enhanced ontology processing.
 // - Refocused library exclusively on building ontologies from public data sources; legacy functionalities removed.
+// - New functions added per CONTRIBUTING guidelines: fetchDataWithRetry, getChangeLog, extendOntologyDetails.
+// - Extended CLI commands added: --fetch-retry, --changelog, --extend-details.
 // - Updated version to 0.0.13.
 
 import { fileURLToPath } from "url";
@@ -110,9 +112,9 @@ export function fetchFromExtendedEndpoints() {
     "https://api.publicapis.org/entries",
     "https://dog.ceo/api/breeds/image/random",
     "https://jsonplaceholder.typicode.com/posts",
-    "https://api.spacexdata.com/v4/launches/latest",
+    "https://api/spacexdata.com/v4/launches/latest",
     "https://api.coindesk.com/v1/bpi/currentprice.json",
-    "https://api.github.com",
+    "https://api/github.com",
     "https://jsonplaceholder.typicode.com/comments",
     "https://dummyjson.com/products",
     "https://randomuser.me/api/",
@@ -152,7 +154,7 @@ export function wrapOntologyModels() {
       "https://api.publicapis.org/entries",
       "https://dog.ceo/api/breeds/image/random",
       "https://jsonplaceholder.typicode.com/posts",
-      "https://api.spacexdata.com/v4/launches/latest",
+      "https://api/spacexdata.com/v4/launches/latest",
       "https://api.coindesk.com/v1/bpi/currentprice.json"
     ],
     wrapped: true
@@ -228,7 +230,7 @@ export function listAvailableEndpoints() {
     "https://dog.ceo/api/breeds/image/random",
     "https://jsonplaceholder.typicode.com/posts",
     "https://api/spacexdata.com/v4/launches/latest",
-    "https://api.coindesk.com/v1/bpi/currentprice.json",
+    "https://api/coindesk.com/v1/bpi/currentprice.json",
     "https://api/github.com",
     "https://jsonplaceholder.typicode.com/comments",
     "https://dummyjson.com/products",
@@ -508,6 +510,22 @@ export async function main(args = []) {
       const extended = extendOntologyConcepts("ExtendedConcept1", "ExtendedConcept2");
       console.log("Extended ontology concepts:", extended);
       return extended;
+    },
+    // New commands added per CONTRIBUTING guidelines
+    "--fetch-retry": async () => {
+      const result = await fetchDataWithRetry("https://api.publicapis.org/entries");
+      console.log("Fetched data with retry:", result);
+      return result;
+    },
+    "--changelog": async () => {
+      const log = getChangeLog();
+      console.log("Change Log:", log);
+      return log;
+    },
+    "--extend-details": async () => {
+      const extended = extendOntologyDetails();
+      console.log("Extended Ontology Details:", extended);
+      return extended;
     }
   };
 
@@ -566,7 +584,10 @@ export function displayHelp() {
   --auto-commit,
   --combine-models,
   --refresh-details,
-  --extend-concepts`
+  --extend-concepts,
+  --fetch-retry,
+  --changelog,
+  --extend-details`
   );
 }
 
@@ -624,7 +645,10 @@ export function listCommands() {
     "--auto-commit",
     "--combine-models",
     "--refresh-details",
-    "--extend-concepts"
+    "--extend-concepts",
+    "--fetch-retry",
+    "--changelog",
+    "--extend-details"
   ];
 }
 
@@ -711,7 +735,7 @@ export function persistOntology(ontology) {
     fs.writeFileSync(filePath, JSON.stringify(ontology, null, 2));
     return { success: true, path: filePath };
   } catch (error) {
-    console.error("Error persisting ontology:", error);
+    console.error("Error persisting ontology:", error.message);
     return { success: false, error: error.message };
   }
 }
@@ -726,7 +750,7 @@ export function loadOntology() {
     const data = fs.readFileSync(filePath, "utf-8");
     return JSON.parse(data);
   } catch (error) {
-    console.error("Error loading ontology:", error);
+    console.error("Error loading ontology:", error.message);
     return { success: false, error: error.message };
   }
 }
@@ -808,7 +832,7 @@ export function backupOntology() {
     fs.writeFileSync(backupPath, data);
     return { success: true, backupPath };
   } catch (error) {
-    console.error("Error creating ontology backup:", error);
+    console.error("Error creating ontology backup:", error.message);
     return { success: false, error: error.message };
   }
 }
@@ -950,12 +974,53 @@ export function clearOntology() {
       return { success: false, message: "Ontology file does not exist." };
     }
   } catch (error) {
-    console.error("Error clearing ontology file:", error);
+    console.error("Error clearing ontology file:", error.message);
     return { success: false, error: error.message };
   }
 }
 
 // Extended functions as per CONTRIBUTING guidelines
+
+/**
+ * Fetches data from an endpoint with a retry mechanism.
+ * @param {string} endpoint - The URL to fetch.
+ * @param {number} retries - Number of retry attempts.
+ * @returns {Promise<object>} Result object from fetchFromEndpoint
+ */
+export async function fetchDataWithRetry(endpoint, retries = 3) {
+  let attempt = 0;
+  while (attempt < retries) {
+    const result = await fetchFromEndpoint(endpoint);
+    if (!result.error) {
+      return result;
+    }
+    attempt++;
+  }
+  return { endpoint, error: `Failed after ${retries} attempts` };
+}
+
+/**
+ * Returns a change log message summarizing recent extensions.
+ * @returns {string} Change log message.
+ */
+export function getChangeLog() {
+  return "Extended functions added including fetchDataWithRetry, getChangeLog, and extendOntologyDetails as per CONTRIBUTING guidelines.";
+}
+
+/**
+ * Extends the ontology details by adding additional properties and metrics.
+ * @returns {object} The extended ontology object.
+ */
+export function extendOntologyDetails() {
+  const ontology = buildOntology();
+  ontology.additionalInfo = {
+    updatedBy: "Automated extension",
+    updateTimestamp: new Date().toISOString(),
+    metrics: advancedOntologyAnalysis().additionalMetrics
+  };
+  persistOntology(ontology);
+  return ontology;
+}
 
 /**
  * Automatically generates a commit message based on recent changes.

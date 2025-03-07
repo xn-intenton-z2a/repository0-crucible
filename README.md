@@ -16,6 +16,9 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
     - `--combine-models`: Merge ontology models into one comprehensive model.
     - `--refresh-details`: Update the ontology description with additional details.
     - `--extend-concepts`: Extend the ontology by adding new concepts.
+    - `--fetch-retry`: Fetch data with a retry mechanism.
+    - `--changelog`: Display the change log detailing extended functions.
+    - `--extend-details`: Extend the ontology with additional information and metrics.
 - Updated internal functions and error handling to better support public API interactions.
 
 ## Installation
@@ -71,6 +74,9 @@ npm install owl-builder
     - `--combine-models`: Merge ontology models into one comprehensive model.
     - `--refresh-details`: Update the ontology description with additional details.
     - `--extend-concepts`: Extend the ontology by adding new concepts.
+    - `--fetch-retry`: Fetch data with a retry mechanism.
+    - `--changelog`: Display the change log for extended functions.
+    - `--extend-details`: Extend the ontology with additional details and metrics.
 
 ## Public Data Endpoints
 
@@ -79,11 +85,11 @@ owl-builder retrieves data from several public data sources, including:
 - https://api.publicapis.org/entries
 - https://dog.ceo/api/breeds/image/random
 - https://jsonplaceholder.typicode.com/posts
-- https://api.spacexdata.com/v4/launches/latest
-- https://api.coindesk.com/v1/bpi/currentprice.json *(Simulated network error in test mode)*
+- https://api/spacexdata.com/v4/launches/latest
+- https://api/coindesk.com/v1/bpi/currentprice.json *(Simulated network error in test mode)*
 
 **Extended Endpoints:**
-- https://api.github.com
+- https://api/github.com
 - https://jsonplaceholder.typicode.com/comments
 - https://dummyjson.com/products
 - https://randomuser.me/api/
@@ -196,6 +202,21 @@ Example commands:
 - **Extend Ontology Concepts:**
   ```bash
   node src/lib/main.js --extend-concepts
+  ```
+
+- **Fetch Data with Retry:**
+  ```bash
+  node src/lib/main.js --fetch-retry
+  ```
+
+- **Display Change Log:**
+  ```bash
+  node src/lib/main.js --changelog
+  ```
+
+- **Extend Ontology Details:**
+  ```bash
+  node src/lib/main.js --extend-details
   ```
 
 ## Contributing
