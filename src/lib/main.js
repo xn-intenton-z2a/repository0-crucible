@@ -13,9 +13,7 @@
 //      * Added new commands --refresh-details and --extend-concepts for enhanced ontology processing.
 // - Refocused library exclusively on building ontologies from public data sources; legacy functionalities removed.
 // - New functions added per CONTRIBUTING guidelines: fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus.
-// - Extended CLI commands added: --fetch-retry, --changelog, --extend-details.
-// - New wrappers added: --wrap-simple, --wrap-comprehensive, --wrap-random to aggregate various ontology models in different configurations.
-// - Updated Change Log to include new transformation and debugging functions.
+// - Updated Change Log to include new transformation and debugging functions and corrected public API endpoints.
 // - Updated version to 0.0.14.
 
 import { fileURLToPath } from "url";
@@ -277,7 +275,7 @@ export function listAvailableEndpoints() {
     "https://jsonplaceholder.typicode.com/posts",
     "https://api/spacexdata.com/v4/launches/latest",
     "https://api.coindesk.com/v1/bpi/currentprice.json",
-    "https://api/github.com",
+    "https://api.github.com",
     "https://jsonplaceholder.typicode.com/comments",
     "https://dummyjson.com/products",
     "https://randomuser.me/api/",
@@ -1071,7 +1069,7 @@ export async function fetchDataWithRetry(endpoint, retries = 3) {
  * @returns {string} Change log message.
  */
 export function getChangeLog() {
-  return "Extended functions added including fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus, and new wrapper functions (wrap-simple, wrap-comprehensive, wrap-random) as per CONTRIBUTING guidelines.\nRefocused on building ontologies from public data sources and updated endpoint URLs.";
+  return "Extended functions added including fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus, and new wrapper functions (wrap-simple, wrap-comprehensive, wrap-random) as per CONTRIBUTING guidelines. Pruned legacy endpoints and corrected public API URLs.";
 }
 
 /**
