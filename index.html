@@ -23,21 +23,18 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="owl-builder" href="#owl-builder"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>owl-builder</h1>
-<p class="md-github">owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. The library has been refocused exclusively on extracting ontology data directly from public APIs, ensuring robust integration, persistence, detailed analysis, and querying capabilities.</p>
+<p class="md-github">owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. This version focuses exclusively on public API data.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="change-log" href="#change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change Log</h2>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Version 0.0.16</strong>
 <ul class="md-github">
-<li class="md-github">Refocused on public data source integration. Legacy endpoints (e.g. SpaceX data) have been pruned.</li>
+<li class="md-github">Refocused on public data source integration; legacy endpoints removed.</li>
 <li class="md-github">Extended ontology processing functions and wrapper commands added:
 <ul class="md-github">
-<li class="md-github"><code class="md-github">--detailed-build</code>, <code class="md-github">--enhance</code>, <code class="md-github">--wrap</code>, <code class="md-github">--wrap-extended</code>, <code class="md-github">--advanced-analysis</code>, <code class="md-github">--cleanup</code></li>
-<li class="md-github">New wrapper commands: <code class="md-github">--wrap-simple</code>, <code class="md-github">--wrap-comprehensive</code>, <code class="md-github">--wrap-random</code>, <strong class="md-github"><code class="md-github">--wrap-advanced</code>, <code class="md-github">--wrap-merged</code></strong></li>
-<li class="md-github">Other new commands: <code class="md-github">--auto-commit</code>, <code class="md-github">--combine-models</code>, <code class="md-github">--refresh-details</code>, <code class="md-github">--extend-concepts</code>, <code class="md-github">--fetch-retry</code>, <code class="md-github">--changelog</code>, <code class="md-github">--extend-details</code>, <code class="md-github">--clean-transform</code>, <code class="md-github">--fetch-additional</code>, <code class="md-github">--combine-metrics</code>, <code class="md-github">--update-tracking</code></li>
+<li class="md-github">New functions: <code class="md-github">buildOntology</code>, <code class="md-github">buildDetailedOntology</code>, <code class="md-github">serveWebInterface</code>, <code class="md-github">diagnostics</code>, <code class="md-github">integrateOntology</code>, <code class="md-github">crawlData</code>, <code class="md-github">persistOntology</code>, <code class="md-github">loadOntology</code>, <code class="md-github">queryOntology</code>, <code class="md-github">validateOntology</code>, <code class="md-github">exportOntologyToXML</code>, <code class="md-github">importOntologyFromXML</code>, <code class="md-github">syncOntology</code>, <code class="md-github">backupOntology</code>, <code class="md-github">updateOntology</code>, <code class="md-github">clearOntology</code>, <code class="md-github">enhanceOntology</code>, <code class="md-github">wrapOntologyModels</code>, <code class="md-github">wrapOntologyModelsExtended</code>, <code class="md-github">generateOntologyReport</code>, <code class="md-github">listAvailableEndpoints</code>, <code class="md-github">fetchFromExtendedEndpoints</code>, <code class="md-github">advancedOntologyAnalysis</code>, <code class="md-github">wrapAllOntologyModels</code>, <code class="md-github">cleanupOntologyData</code>, <code class="md-github">automatedCommitMessage</code>, <code class="md-github">fetchDataWithRetry</code>, <code class="md-github">getChangeLog</code>, <code class="md-github">extendOntologyDetails</code>, <code class="md-github">wrapOntologyModelsSimple</code>, <code class="md-github">wrapOntologyModelsComprehensive</code>, <code class="md-github">wrapOntologyModelsRandom</code>, <code class="md-github">updateOntologyTracking</code>, <code class="md-github">wrapAdvancedOntologyModels</code>, <code class="md-github">wrapMergedOntologyModels</code>, as well as extended new functions: <code class="md-github">extendOntologyConcepts</code>, <code class="md-github">resetOntology</code>, <code class="md-github">cloneOntology</code>, <code class="md-github">transformOntologyData</code>, <code class="md-github">debugOntologyMetrics</code>, <code class="md-github">reflectOntologyStatus</code>, and <code class="md-github">updateOntologyDescription</code>, <code class="md-github">mergeOntologyModels</code>.</li>
 </ul>
 </li>
-<li class="md-github">Network requests in test mode now return dummy data when the environment variable <code class="md-github">FORCE_DUMMY_ENDPOINT</code> is set, improving test coverage.</li>
-<li class="md-github">README refreshed per CONTRIBUTING guidelines.</li>
+<li class="md-github"><strong class="md-github">Bug Fix:</strong> Fixed the <code class="md-github">--list</code> command by moving the command actions to a global scope, ensuring that <code class="md-github">listCommands()</code> functions correctly.</li>
 </ul>
 </li>
 </ul>
@@ -47,7 +44,7 @@
 <li class="md-github">https://api.publicapis.org/entries</li>
 <li class="md-github">https://dog.ceo/api/breeds/image/random</li>
 <li class="md-github">https://jsonplaceholder.typicode.com/posts</li>
-<li class="md-github">https://api.coindesk.com/v1/bpi/currentprice.json <em class="md-github">(Simulated error in test mode)</em></li>
+<li class="md-github">https://api.coindesk.com/v1/bpi/currentprice.json (Simulated error in test mode)</li>
 </ul>
 <p class="md-github"><strong class="md-github">Extended Endpoints:</strong></p>
 <ul class="md-github">
@@ -57,8 +54,6 @@
 <li class="md-github">https://randomuser.me/api/</li>
 <li class="md-github">https://catfact.ninja/fact</li>
 <li class="md-github">https://jsonplaceholder.typicode.com/todos</li>
-<li class="md-github">https://api/agify.io/?name=michael</li>
-<li class="md-github">https://api/openweathermap.org/data/2.5/weather?q=London</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">Display help instructions:</p>
@@ -93,7 +88,7 @@
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Fetch Data from Multiple Endpoints:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --fetch-endpoints
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --list-endpoints
 </code></pre>
 </li>
 <li class="md-github">
@@ -112,110 +107,24 @@
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Extended Wrapper Commands:</strong></p>
+<p class="md-github"><strong class="md-github">Other Commands:</strong></p>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Simple Wrapper:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-simple
-</code></pre>
-</li>
-<li class="md-github"><strong class="md-github">Comprehensive Wrapper:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-comprehensive
-</code></pre>
-</li>
-<li class="md-github"><strong class="md-github">Random Wrapper:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-random
-</code></pre>
-</li>
-<li class="md-github"><strong class="md-github">Advanced Wrapper:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-advanced
-</code></pre>
-</li>
-<li class="md-github"><strong class="md-github">Merged Wrapper:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-merged
-</code></pre>
-</li>
-</ul>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Perform Advanced Analysis:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --advanced-analysis
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Generate Ontology Report:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --report
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">List Extended Public Endpoints:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --list-endpoints
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Cleanup Ontology:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --cleanup
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Generate Automated Commit Message:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --auto-commit
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Combine Ontology Models:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --combine-models
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Refresh Ontology Details:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --refresh-details
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Extend Ontology Concepts:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --extend-concepts
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Fetch Data with Retry:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --fetch-retry
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Display Change Log:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --changelog
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Extend Ontology Details:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --extend-details
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Clean and Transform Ontology:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --clean-transform
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">New Commands:</strong></p>
-<ul class="md-github">
-<li class="md-github"><strong class="md-github">Fetch Additional Endpoint Data:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --fetch-additional
-</code></pre>
-</li>
-<li class="md-github"><strong class="md-github">Combine Ontology Metrics:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --combine-metrics
-</code></pre>
-</li>
-<li class="md-github"><strong class="md-github">Update Ontology Tracking:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --update-tracking
-</code></pre>
-</li>
+<li class="md-github"><code class="md-github">--auto-commit</code>, <code class="md-github">--combine-models</code>, <code class="md-github">--refresh-details</code>, <code class="md-github">--extend-concepts</code>, <code class="md-github">--fetch-retry</code>, <code class="md-github">--changelog</code>, <code class="md-github">--extend-details</code>, <code class="md-github">--wrap-simple</code>, <code class="md-github">--wrap-comprehensive</code>, <code class="md-github">--wrap-random</code>, <code class="md-github">--clean-transform</code>, <code class="md-github">--fetch-additional</code>, <code class="md-github">--combine-metrics</code>, <code class="md-github">--update-tracking</code>, <code class="md-github">--wrap-advanced</code>, <code class="md-github">--wrap-merged</code></li>
 </ul>
 </li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="testing" href="#testing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Testing</h2>
-<p class="md-github">When running tests, the environment variable <code class="md-github">FORCE_DUMMY_ENDPOINT</code> is set to ensure that network calls return simulated data, thereby increasing test coverage and avoiding external network dependencies.</p>
+<p class="md-github">Tests use dummy data responses to avoid external network dependencies. Run tests with:</p>
+<pre class="md-github"><code class="md-github language-bash">npm test
+</code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
-<p class="md-github">Contributions are welcome! Please review <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. The library has been refactored to focus exclusively on extracting and building ontologies from public data sources, and the README has been refreshed to remove outdated content and improve clarity.</p>
+<p class="md-github">Contributions are welcome. Please refer to CONTRIBUTING.md for guidelines, ensure complete test coverage and follow our coding standards.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
 <p class="md-github">Released under the MIT License.</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T08:03:15.430Z</p>
+    <p>Generated on 2025-03-07T08:13:00.054Z</p>
   </footer>
 </body>
 </html>
