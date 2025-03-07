@@ -136,7 +136,7 @@ export function generateOntologyReport() {
   return { title: 'Sample Ontology', summary: 'Summary', analysis: 'Analysis', enhanced: true };
 }
 
-// Extended: New endpoints list (extended from the original 10 endpoints)
+// Extended: New endpoints list (extended from the original endpoints)
 export function listAvailableEndpoints() {
   return [
     'https://api.publicapis.org/entries',
@@ -151,13 +151,19 @@ export function listAvailableEndpoints() {
     'https://jsonplaceholder.typicode.com/todos',
     'https://api.nationalize.io',
     'https://api.agify.io',
-    'https://api.genderize.io'
+    'https://api.genderize.io',
+    'https://api.openbrewerydb.org/breweries',
+    'https://api.spacexdata.com/v4/launches',
+    'https://api.exchangerate-api.com/v4/latest/USD'
   ];
 }
 
 export function fetchFromExtendedEndpoints() {
   // Returns dummy data array
-  return [{ endpoint: 'https://api.extended1.com', data: 'dummy' }, { endpoint: 'https://api.extended2.com', data: 'dummy' }];
+  return [
+    { endpoint: 'https://api.extended1.com', data: 'dummy' },
+    { endpoint: 'https://api.extended2.com', data: 'dummy' }
+  ];
 }
 
 export function advancedOntologyAnalysis() {
@@ -576,7 +582,7 @@ export async function main(args = process.argv.slice(2)) {
 
 // Helper functions for CLI
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints");
 }
 
 export function getVersion() {
