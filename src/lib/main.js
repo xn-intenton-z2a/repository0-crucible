@@ -501,7 +501,8 @@ const commandActions = {
   // New wrappers for additional representations
   "--wrap-tabular": async (args) => { const tabular = wrapOntologyModelsTabular(); console.log("Tabular wrapped ontology models:", tabular); return tabular; },
   "--wrap-html": async (args) => { const html = wrapOntologyModelsHTML(); console.log("HTML wrapped ontology models:", html); return html; },
-  "--wrap-markdown": async (args) => { const markdown = wrapOntologyModelsMarkdown(); console.log("Markdown wrapped ontology models:", markdown); return markdown; },
+  "--wrap-markdown": async (args) => { const markdown = wrapOntologyModelsMarkdown(); console.log("Markdown wrapped ontology models:
+", markdown); return markdown; },
   // New commands added inline with mission statement
   "--fetch-multiple": async (args) => { const data = await fetchMultipleEndpoints(); console.log("Fetched multiple endpoints:", data); return data; },
   "--validate-optimize": async (args) => { const result = validateAndOptimizeOntology(); console.log("Ontology valid and optimized:", result); return result; }
@@ -520,7 +521,7 @@ export async function main(args = process.argv.slice(2)) {
 
 // Helper functions for CLI
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize, --wrap-tabular, --wrap-html, --wrap-markdown, --fetch-multiple, --validate-optimize");
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize, --wrap-tabular, --wrap-html, --wrap-markdown, --fetch-multiple, --validate-optimize`);
 }
 
 export function getVersion() {
