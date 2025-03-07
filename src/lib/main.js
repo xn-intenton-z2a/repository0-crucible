@@ -160,13 +160,7 @@ export async function crawlOntologies() {
   const results = [];
   for (const endpoint of endpoints) {
     try {
-      let data;
-      // Use FORCE_DUMMY_ENDPOINT flag only if explicitly set to true
-      if (process.env.FORCE_DUMMY_ENDPOINT === 'true') {
-        data = 'dummy data';
-      } else {
-        data = await fetchDataWithRetry(endpoint);
-      }
+      let data = await fetchDataWithRetry(endpoint);
       const owlContent = exportOntologyToXML(buildOntology());
       results.push({ endpoint, data, owlContent });
     } catch (err) {
@@ -376,8 +370,6 @@ const commandActions = {
     return extended;
   },
   "--diagnostics": async (args) => { 
-    // Override dummy data mode to perform real HTTP calls for diagnostics
-    process.env.FORCE_DUMMY_ENDPOINT = 'false';
     try {
       const crawlResults = await crawlOntologies();
       console.log("Diagnostic crawl results:", JSON.stringify(crawlResults, null, 2));

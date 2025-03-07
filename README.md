@@ -11,7 +11,7 @@ owl-builder is a powerful CLI tool and JavaScript library designed to help you b
 - [Installation](#installation)
 - [Usage](#usage)
   - [For Casual Users](#for-casual-users)
-  - [Using Real Endpoints for Meaningful OWL Output](#using-real-endpoints-for-meaningful-owl-output)
+  - [Crawling Public Endpoints for OWL Output](#crawling-public-endpoints-for-owl-output)
   - [For Developers](#for-developers)
   - [Extended Custom Ontology Functions](#extended-custom-ontology-functions)
   - [Running the Web Server](#running-the-web-server)
@@ -28,7 +28,7 @@ owl-builder is a powerful CLI tool and JavaScript library designed to help you b
 
 ## Overview
 
-owl-builder is a CLI tool and library refocused on building OWL ontologies by leveraging verified public data sources. It assists in generating, persisting, querying, and exporting ontologies in various formats, including a simple OWL XML representation. The tool is optimized for integrating real public endpoints to enrich your ontology models.
+owl-builder is a CLI tool and library focused on building OWL ontologies by leveraging verified public data sources. It provides features to generate, persist, query, and export ontologies in various formats, including a simple OWL XML representation. The tool is optimized for integrating real public endpoints to enrich your ontology models.
 
 ---
 
@@ -38,10 +38,10 @@ owl-builder is a CLI tool and library refocused on building OWL ontologies by le
 - **Data Persistence:** Persist, load, backup, and clear ontology data stored in JSON files.
 - **Querying:** Perform queries against ontology concepts.
 - **OWL Export/Import:** Convert ontology objects to a simple OWL XML format and import from XML strings.
-- **Data Crawling:** Crawl multiple public endpoints to collect data and generate OWL representations. (By default, dummy data is used; disable dummy mode for real data.)
+- **Data Crawling:** Crawl multiple public endpoints to collect data and generate OWL representations.
 - **Ontology Model Wrappers:** Offers basic, advanced, and custom ontology builders with extended functionality.
 - **Custom Ontology Functions:** Build custom ontologies and extend existing ones with additional concepts.
-- **Diagnostics:** Fetch and output aggregated ontology data from real remote API endpoints as JSON. 
+- **Diagnostics:** Fetch and output aggregated ontology data from real remote API endpoints as JSON.
 - **Web Server:** Built-in web server for real-time monitoring and diagnostics.
 
 ---
@@ -80,7 +80,7 @@ node src/lib/main.js --help
   node src/lib/main.js --export
   ```
 
-- **Run Data Crawling with Dummy Data (default):**
+- **Data Crawling:**
   ```bash
   node src/lib/main.js --crawl
   ```
@@ -92,24 +92,19 @@ node src/lib/main.js --help
 
 ### Using Real Endpoints for Meaningful OWL Output
 
-To retrieve real data from public endpoints and generate meaningful OWL XML output, disable the dummy data mode by setting the environment variable `FORCE_DUMMY_ENDPOINT` to `false`. For example:
+The data crawling feature fetches live data from public endpoints to generate meaningful OWL XML output. Simply run:
 
 ```bash
-FORCE_DUMMY_ENDPOINT=false node src/lib/main.js --crawl
+node src/lib/main.js --crawl
 ```
 
 **Expected output:**
 
-```json
-[
-  {
-    "endpoint": "https://api.publicapis.org/entries",
-    "data": "{...actual response data...}",
-    "owlContent": "<ontology><title>Public Data Ontology</title></ontology>"
-  }
-  // ... additional endpoints
-]
-```
+A JSON array with objects for each endpoint containing:
+
+- `endpoint`: The URL of the public API endpoint.
+- `data`: The live response data as a string.
+- `owlContent`: A generated OWL XML representation, e.g., `<ontology><title>Public Data Ontology</title></ontology>`
 
 ### For Developers
 
@@ -133,7 +128,7 @@ For more detailed information, refer to the inline comments in `src/lib/main.js`
 
 ### Extended Custom Ontology Functions
 
-Two new functions have been added to extend the ontology building capabilities:
+Two new functions extend the ontology building capabilities:
 
 - **Build Custom Ontology:**
   ```bash
@@ -161,24 +156,22 @@ By default, the server listens on port 3000. To use a different port, set the `P
 PORT=4000 npm run serve
 ```
 
-When running, the web server will display a message indicating it is active along with the URL, which you can visit in your browser.
+When running, the web server displays a message indicating the active URL, which you can visit in your browser.
 
 ### Diagnostics Mode
 
-The diagnostics mode now performs real HTTP calls to remote endpoints and returns the consolidated OWL data as JSON. To execute diagnostics:
+Diagnostics mode performs real HTTP calls to remote endpoints and returns consolidated OWL JSON output:
 
 ```bash
 npm run diagnostics
 ```
 
-This command fetches data from configured public API endpoints (with dummy mode disabled) and outputs the results in JSON format.
-
 ### For the Scientific Community
 
-owl-builder supports AI experiments and ontology-driven research projects by:
+owl-builder supports scientific and AI experiments by:
 
-- **Leveraging Public Data:** Crawl real public endpoints to enrich ontology models.
-- **Custom Models:** Extend or modify the basic, advanced, and custom ontology wrappers to meet your research needs.
+- **Leveraging Public Data:** Crawling real public endpoints to enrich ontology models.
+- **Custom Models:** Extending or modifying basic, advanced, and custom ontology wrappers to meet research needs.
 - **Reproducibility:** Built-in diagnostics and consistent coding practices ensure traceable research outputs.
 
 ---
@@ -272,22 +265,18 @@ While primarily a CLI tool, owl-builder's commands can serve as API endpoints. O
 
 ## Contributing
 
-Please review the [CONTRIBUTING.md](CONTRIBUTING.md) file before contributing. We welcome enhancements that improve code quality, test coverage, and documentation. Follow the described workflows and guidelines. In this release, the diagnostics command was updated to perform real remote API calls to output real OWL JSON, reinforcing our commitment to building ontologies from verified public data sources.
+Please review the [CONTRIBUTING.md](CONTRIBUTING.md) file before contributing. We welcome enhancements that improve code quality, test coverage, and documentation. Follow the described workflows and guidelines.
+
+In this release, dummy implementations have been removed to ensure that real API calls are made and real data is utilized.
 
 ---
 
 ## Changelog
 
 - **Version 0.0.28**
-  - Extended library functions by adding buildCustomOntology and extendOntologyConcepts.
-  - Added new CLI commands: --build-custom, --extend-concepts, and --list.
-  - Updated diagnostics command to perform real HTTP calls and log OWL JSON output.
-  - Updated documentation to reflect extended functionality for custom ontology building, concept extension, and diagnostics enhancements.
-- **Version 0.0.27**
-  - Refocused the library on building ontologies from verified public data sources.
-  - Updated mission statement and documentation to reflect the new focus.
-  - Updated sample ontology title to "Public Data Ontology" in core functions and tests.
-  - Extended OWL model wrappers.
+  - Removed simulated/dummy implementations for data crawling and diagnostics.
+  - Updated CLI commands and documentation to reflect real API calls.
+  - Enhanced tests to validate real data responses from public endpoints.
 
 ---
 
