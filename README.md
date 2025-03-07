@@ -7,9 +7,10 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
   - Refocused on public data source integration. Legacy endpoints (e.g. SpaceX data) have been pruned.
   - Extended ontology processing functions and wrapper commands added:
     - `--detailed-build`, `--enhance`, `--wrap`, `--wrap-extended`, `--advanced-analysis`, `--cleanup`
-    - New wrapper commands: `--wrap-simple`, `--wrap-comprehensive`, `--wrap-random`
+    - New wrapper commands: `--wrap-simple`, `--wrap-comprehensive`, `--wrap-random`, **`--wrap-advanced`, `--wrap-merged`**
     - Other new commands: `--auto-commit`, `--combine-models`, `--refresh-details`, `--extend-concepts`, `--fetch-retry`, `--changelog`, `--extend-details`, `--clean-transform`, `--fetch-additional`, `--combine-metrics`, `--update-tracking`
   - Public endpoints updated to include only endpoints deemed robust and publicly accessible.
+  - **New wrappers `wrapAdvancedOntologyModels` and `wrapMergedOntologyModels` have been added with corresponding CLI commands `--wrap-advanced` and `--wrap-merged`.**
   - README refreshed per CONTRIBUTING guidelines.
 
 ## Public Data Endpoints
@@ -98,6 +99,14 @@ Example commands:
   - **Random Wrapper:**
     ```bash
     node src/lib/main.js --wrap-random
+    ```
+  - **Advanced Wrapper:**
+    ```bash
+    node src/lib/main.js --wrap-advanced
+    ```
+  - **Merged Wrapper:**
+    ```bash
+    node src/lib/main.js --wrap-merged
     ```
 
 - **Perform Advanced Analysis:**

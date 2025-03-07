@@ -12,6 +12,7 @@
 // - Extended features inline with the Mission Statement:
 //      * Added new commands --refresh-details and --extend-concepts for enhanced ontology processing.
 // - Refocused library exclusively on building ontologies from public data sources; legacy endpoints removed.
+// - Added new wrappers: wrapAdvancedOntologyModels and wrapMergedOntologyModels with CLI commands --wrap-advanced and --wrap-merged.
 // - Updated version to 0.0.14.
 // - README refreshed per CONTRIBUTING guidelines.
 
@@ -598,6 +599,16 @@ export async function main(args = []) {
       const updated = updateOntologyTracking("Tracking updated via CLI");
       console.log("Ontology tracking updated:", updated);
       return updated;
+    },
+    "--wrap-advanced": async () => {
+      const advancedWrapped = wrapAdvancedOntologyModels();
+      console.log("Advanced wrapped ontology models:", advancedWrapped);
+      return advancedWrapped;
+    },
+    "--wrap-merged": async () => {
+      const mergedWrapped = wrapMergedOntologyModels();
+      console.log("Merged wrapped ontology models:", mergedWrapped);
+      return mergedWrapped;
     }
   };
 
@@ -666,7 +677,9 @@ export function displayHelp() {
   --clean-transform,
   --fetch-additional,
   --combine-metrics,
-  --update-tracking
+  --update-tracking,
+  --wrap-advanced,
+  --wrap-merged
 `);
 }
 
@@ -734,7 +747,9 @@ export function listCommands() {
     "--clean-transform",
     "--fetch-additional",
     "--combine-metrics",
-    "--update-tracking"
+    "--update-tracking",
+    "--wrap-advanced",
+    "--wrap-merged"
   ];
 }
 
@@ -1092,7 +1107,7 @@ export async function fetchDataWithRetry(endpoint, retries = 3) {
  * @returns {string} Change log message.
  */
 export function getChangeLog() {
-  return "Refocused library exclusively on public data sources; legacy endpoints pruned. Extended functions added including fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus, cleanupAndTransformOntology, and new wrapper functions (wrap-simple, wrap-comprehensive, wrap-random, clean-transform, fetch-additional, combine-metrics, update-tracking) as per CONTRIBUTING guidelines.";
+  return "Refocused library exclusively on public data sources; legacy endpoints pruned. Extended functions added including fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus, cleanupAndTransformOntology, and new wrapper functions (wrap-simple, wrap-comprehensive, wrap-random, clean-transform, fetch-additional, combine-metrics, update-tracking, wrap-advanced, wrap-merged) as per CONTRIBUTING guidelines.";
 }
 
 /**
@@ -1306,4 +1321,26 @@ export function updateOntologyTracking(note = "Updated tracking") {
   };
   persistOntology(ontology);
   return ontology;
+}
+
+// New wrapper functions as per issue requirements
+
+/**
+ * Advanced wrapper that aggregates ontology models with enhanced metrics.
+ * @returns {object} The advanced wrapped ontology object.
+ */
+export function wrapAdvancedOntologyModels() {
+  const basic = buildOntology();
+  const advanced = advancedOntologyAnalysis();
+  return { basic, advanced, advancedWrapper: true };
+}
+
+/**
+ * Merged wrapper that combines merged ontology and report.
+ * @returns {object} Aggregated merged ontology object.
+ */
+export function wrapMergedOntologyModels() {
+  const merged = mergeOntologyModels(buildOntology(), enhanceOntology(), integrateOntology());
+  const report = generateOntologyReport();
+  return { merged, report, mergedWrapper: true };
 }
