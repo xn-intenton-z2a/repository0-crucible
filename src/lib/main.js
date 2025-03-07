@@ -265,7 +265,6 @@ export function wrapOntologyModelsMatrix() {
   return { matrixWrapped: true, matrix: [[1, 2], [3, 4]] };
 }
 
-// New extended wrappers for additional ontology model representations
 export function wrapOntologyModelsTabular() {
   return {
     tabularWrapped: true,
@@ -290,6 +289,19 @@ export function wrapOntologyModelsMarkdown() {
     markdownWrapped: true,
     markdown: "# Ontology Models\n- Basic\n- Enhanced\n- Integrated"
   };
+}
+
+// New wrappers added as part of extended functionality for OWL Ontology models
+export function wrapOntologyModelsCircular() {
+  return { circularWrapped: true, models: ['Basic', 'Enhanced', 'Integrated'], type: 'circular' };
+}
+
+export function wrapOntologyModelsHierarchy() {
+  return { hierarchyWrapped: true, models: ['Parent', 'Child', 'Leaf'] };
+}
+
+export function wrapOntologyModelsGrid() {
+  return { gridWrapped: true, grid: [[1,2,3],[4,5,6],[7,8,9]] };
 }
 
 // New Functionality: Test Endpoints
@@ -492,19 +504,20 @@ const commandActions = {
   "--optimize": async (args) => { const ontology = buildOntology(); const result = optimizeOntology(ontology); console.log("Optimized ontology:", result); return result; },
   "--transform": async (args) => { const ontology = buildOntology(); const result = transformOntologyToJSONLD(ontology); console.log("Transformed ontology to JSON-LD:", result); return result; },
   "--normalize": async (args) => { const ontology = buildOntology(); const result = normalizeOntology(ontology); console.log("Normalized ontology:", result); return result; },
-  // New extended commands aligned with CONTRIBUTING guidelines
   "--extend-metadata": async (args) => { const metadata = { updated: true, contributor: "CLI" }; const extended = extendOntologyMetadata(buildOntology(), metadata); console.log("Extended Ontology Metadata:", extended); return extended; },
   "--record-history": async (args) => { const record = recordOntologyHistory("History recorded"); console.log("Ontology History Record:", record); return record; },
   "--commit-change": async (args) => { const msg = commitOntologyChange("Ontology change applied"); console.log("Commit Message:", msg); return msg; },
   "--get-summary": async (args) => { const summary = getOntologySummary(buildOntology()); console.log("Ontology Summary:", summary); return summary; },
   "--merge-normalize": async (args) => { const ont1 = buildOntology(); const ont2 = extendOntologyMetadata(buildOntology(), { title: "Updated Ontology" }); const merged = mergeAndNormalizeOntologies(ont1, ont2); console.log("Merged and Normalized Ontologies:", merged); return merged; },
-  // New wrappers for additional representations
   "--wrap-tabular": async (args) => { const tabular = wrapOntologyModelsTabular(); console.log("Tabular wrapped ontology models:", tabular); return tabular; },
   "--wrap-html": async (args) => { const html = wrapOntologyModelsHTML(); console.log("HTML wrapped ontology models:", html); return html; },
   "--wrap-markdown": async (args) => { const markdown = wrapOntologyModelsMarkdown(); console.log("Markdown wrapped ontology models:", markdown); return markdown; },
-  // New commands added inline with mission statement
   "--fetch-multiple": async (args) => { const data = await fetchMultipleEndpoints(); console.log("Fetched multiple endpoints:", data); return data; },
-  "--validate-optimize": async (args) => { const result = validateAndOptimizeOntology(); console.log("Ontology valid and optimized:", result); return result; }
+  "--validate-optimize": async (args) => { const result = validateAndOptimizeOntology(); console.log("Ontology valid and optimized:", result); return result; },
+  // New CLI commands for additional wrappers
+  "--wrap-circular": async (args) => { const circular = wrapOntologyModelsCircular(); console.log("Circular wrapped ontology models:", circular); return circular; },
+  "--wrap-hierarchy": async (args) => { const hierarchy = wrapOntologyModelsHierarchy(); console.log("Hierarchy wrapped ontology models:", hierarchy); return hierarchy; },
+  "--wrap-grid": async (args) => { const grid = wrapOntologyModelsGrid(); console.log("Grid wrapped ontology models:", grid); return grid; }
 };
 
 // CLI Command Actions
@@ -520,7 +533,7 @@ export async function main(args = process.argv.slice(2)) {
 
 // Helper functions for CLI
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize, --wrap-tabular, --wrap-html, --wrap-markdown, --fetch-multiple, --validate-optimize`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize, --wrap-tabular, --wrap-html, --wrap-markdown, --fetch-multiple, --validate-optimize, --wrap-circular, --wrap-hierarchy, --wrap-grid\n`);
 }
 
 export function getVersion() {
