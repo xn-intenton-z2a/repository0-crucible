@@ -6,16 +6,11 @@
 
 // Change Log:
 // - Refactored code to improve testability and error logging.
-// - Extended advanced ontology analysis to compute average as well as median concept length.
-// - Added new helper function calculateMedian for additional statistical metrics in ontology analysis.
-// - Added new function buildDetailedOntology to provide detailed statistics on ontologies.
-// - Introduced new CLI command --detailed-build to generate detailed ontology output.
-// - Pruned legacy code drift and refocused the library exclusively on building ontologies from diverse public data sources.
-// - Extended available endpoints to include OpenWeatherMap and Coinbase API for richer ontology building capabilities.
-// - Added functions: automatedCommitMessage, validateOntologyCompleteness, mergeOntologyModels to extend ontology processing functionalities per CONTRIBUTING guidelines.
-// - Added new extended ontology manipulation functions: updateOntologyDescription, extendOntologyConcepts, resetOntology, and cloneOntology for extended ontology manipulation.
-// - Added new function cleanupOntologyData and CLI command --cleanup to remove duplicate ontology concepts.
-// - Added new CLI commands --auto-commit and --combine-models for generating automated commit messages and merging ontology models.
+// - Extended ontology analysis including average and median concept lengths.
+// - Added helper functions calculateMedian, buildDetailedOntology.
+// - Introduced new CLI commands: --detailed-build, --cleanup, --auto-commit, --combine-models.
+// - Refocused the library exclusively on building ontologies from diverse public data sources and pruned legacy code drift.
+// - Updated version to 0.0.12 to reflect latest changes and public API focus.
 
 import { fileURLToPath } from "url";
 import os from "os";
@@ -492,14 +487,12 @@ export async function main(args = []) {
       console.log("Cleaned Ontology:", cleaned);
       return cleaned;
     },
-    // New CLI commands added as extended features
     "--auto-commit": async () => {
       const msg = automatedCommitMessage();
       console.log("Automated Commit Message:", msg);
       return msg;
     },
     "--combine-models": async () => {
-      // Updated mergeOntologyModels to return an object with basic, enhanced, integrated
       const merged = mergeOntologyModels(buildOntology(), enhanceOntology(), integrateOntology());
       console.log("Combined Ontology Models:", merged);
       return merged;
@@ -568,7 +561,7 @@ export function displayHelp() {
  * @returns {string} Version string.
  */
 export function getVersion() {
-  return "0.0.9";
+  return "0.0.12";
 }
 
 /**

@@ -71,7 +71,7 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const version = await main(["--version"]);
     expect(spy).toHaveBeenCalledWith("Tool version:", version);
-    expect(version).toBe("0.0.9");
+    expect(version).toBe("0.0.12");
     spy.mockRestore();
   });
 
