@@ -11,6 +11,7 @@ owl-builder is a CLI tool and JavaScript library focused on building and capturi
 - **Data Crawling:** Crawl multiple public endpoints to capture data and generate OWL representations.
 - **Backup:** Create backups of your ontology files.
 - **Ontology Model Wrappers:** New wrappers for creating basic and advanced OWL ontology models, and a function to wrap/enrich any ontology model with additional metadata.
+- **Diagnostics:** A new CLI command (`--diagnostics`) to output environment diagnostics, useful for debugging external resource connectivity.
 
 ## Usage
 
@@ -83,14 +84,19 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --wrap-model '{"title":"Custom Model"}'
   ```
+- **Diagnostics:**
+  ```bash
+  node src/lib/main.js --diagnostics
+  ```
+  This command outputs diagnostic information regarding environment settings.
 
 ## Changelog
 
-- **Version 0.0.25**
-  - Added wrappers for OWL ontology models including basic and advanced models.
-  - Introduced CLI commands: --build-basic, --build-advanced, and --wrap-model to facilitate ontology model creation and enrichment.
-  - Updated test coverage with new tests for the ontology model wrappers.
-  - Updated documentation to reflect these changes.
+- **Version 0.0.26**
+  - Added a new CLI command `--diagnostics` to output environment diagnostics.
+  - Extended test coverage with deeper mocks for filesystem and network interactions to improve reliability.
+  - Updated ontology model wrappers and added more tests for comprehensive coverage.
+  - Refactored code to enhance modularity and testability.
 
 ## Contributing
 

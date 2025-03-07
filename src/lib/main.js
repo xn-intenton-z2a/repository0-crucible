@@ -204,11 +204,11 @@ export async function main(args = process.argv.slice(2)) {
 
 // Displays help information for using the CLI.
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --diagnostics`);
 }
 
 export function getVersion() {
-  return '0.0.25';
+  return '0.0.26';
 }
 
 export function listCommands() {
@@ -325,6 +325,11 @@ const commandActions = {
     const wrapped = wrapOntologyModel(model);
     console.log("Wrapped Model:", wrapped);
     return wrapped;
+  },
+  "--diagnostics": async (args) => {
+    const diag = { FORCE_DUMMY: process.env.FORCE_DUMMY_ENDPOINT || 'not set' };
+    console.log("Diagnostics:", diag);
+    return diag;
   }
 };
 

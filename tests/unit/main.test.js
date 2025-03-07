@@ -204,6 +204,14 @@ describe('CLI and Main Function Tests', () => {
     const result = await main(['--crawl']);
     expect(Array.isArray(result)).toBe(true);
   });
+
+  test('main with --diagnostics returns diagnostics object', async () => {
+    const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    const diag = await main(['--diagnostics']);
+    expect(spy).toHaveBeenCalledWith('Diagnostics:', expect.any(Object));
+    expect(diag).toHaveProperty('FORCE_DUMMY', 'true');
+    spy.mockRestore();
+  });
 });
 
 describe('Ontology Model Wrappers', () => {
