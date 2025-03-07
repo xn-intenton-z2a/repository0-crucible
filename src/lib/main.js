@@ -13,6 +13,7 @@
  *   - Crawl public endpoints and create backups for enriched ontologies
  *   - Wrap and enrich ontology models with additional metadata
  *   - Serve a simple web interface for monitoring and diagnostics
+ *   - Build custom ontologies with extended functions
  *
  * For Developers:
  *   Follow the CONTRIBUTING guidelines to extend or modify functionalities. Ensure to update tests and documentation when changes are made.
@@ -211,6 +212,19 @@ export function wrapOntologyModel(model) {
   return model;
 }
 
+// NEW FUNCTION: Builds a custom ontology by applying user defined customizations
+export function buildCustomOntology(customizations = {}) {
+  const baseOntology = buildOntology();
+  return { ...baseOntology, ...customizations, customized: true };
+}
+
+// NEW FUNCTION: Extends ontology concepts by adding additional ones
+export function extendOntologyConcepts(ontology, additionalConcepts = []) {
+  if (!ontology.concepts) ontology.concepts = [];
+  ontology.concepts = ontology.concepts.concat(additionalConcepts);
+  return ontology;
+}
+
 // Starts a simple web server to serve minimal diagnostic info and status
 export function serveWebServer() {
   const port = process.env.PORT || 3000;
@@ -339,6 +353,27 @@ const commandActions = {
     console.log("Wrapped Model:", wrapped);
     return wrapped;
   },
+  "--build-custom": async (args) => {
+    let custom = {};
+    try {
+      custom = args[1] ? JSON.parse(args[1]) : {};
+    } catch (e) {
+      console.log('Invalid JSON input for custom ontology, using default');
+    }
+    const customOntology = buildCustomOntology(custom);
+    console.log("Custom Ontology:", customOntology);
+    return customOntology;
+  },
+  "--extend-concepts": async (args) => {
+    const additional = args[1] ? args[1].split(',') : ['ExtraConcept'];
+    let ontology = loadOntology();
+    if (ontology.success === false) {
+      ontology = buildOntology();
+    }
+    const extended = extendOntologyConcepts(ontology, additional);
+    console.log("Extended Ontology:", extended);
+    return extended;
+  },
   "--diagnostics": async (args) => {
     const diag = { FORCE_DUMMY: process.env.FORCE_DUMMY_ENDPOINT || 'not set' };
     console.log("Diagnostics:", diag);
@@ -363,11 +398,11 @@ export async function main(args = process.argv.slice(2)) {
 
 // Displays help information for using the CLI.
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --diagnostics, --serve`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve`);
 }
 
 export function getVersion() {
-  return '0.0.27';
+  return '0.0.28';
 }
 
 export function listCommands() {
