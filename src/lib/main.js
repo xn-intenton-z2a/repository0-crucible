@@ -343,7 +343,38 @@ export function normalizeOntology(ontology) {
   return cleanupOntologyData(ontology);
 }
 
-// Global command actions mapping
+// Extended Functions for Enhanced Ontology Processing
+export function extendOntologyMetadata(ontology, metadata) {
+  if (!ontology) ontology = buildOntology();
+  return { ...ontology, ...metadata };
+}
+
+export function recordOntologyHistory(note) {
+  return { timestamp: new Date().toISOString(), note };
+}
+
+export function commitOntologyChange(note) {
+  return `Commit: ${note} at ${new Date().toISOString()}`;
+}
+
+export function getOntologySummary(ontology) {
+  if (!ontology) ontology = buildOntology();
+  return {
+    title: ontology.title,
+    conceptCount: ontology.concepts.length,
+    summary: `Ontology "${ontology.title}" has ${ontology.concepts.length} concepts.`
+  };
+}
+
+export function mergeAndNormalizeOntologies(...ontologies) {
+  const merged = Object.assign({}, ...ontologies, { merged: true });
+  if (merged.concepts) {
+    merged.concepts = Array.from(new Set(merged.concepts));
+  }
+  return merged;
+}
+
+// Extended CLI Command Actions Mapping
 const commandActions = {
   "--help": async (args) => { displayHelp(); },
   "--version": async (args) => { console.log("Tool version:", getVersion()); return getVersion(); },
@@ -401,7 +432,13 @@ const commandActions = {
   "--analyze": async (args) => { const result = analyzeOntology(); console.log("Ontology analysis:", result); return result; },
   "--optimize": async (args) => { const ontology = buildOntology(); const result = optimizeOntology(ontology); console.log("Optimized ontology:", result); return result; },
   "--transform": async (args) => { const ontology = buildOntology(); const result = transformOntologyToJSONLD(ontology); console.log("Transformed ontology to JSON-LD:", result); return result; },
-  "--normalize": async (args) => { const ontology = buildOntology(); const result = normalizeOntology(ontology); console.log("Normalized ontology:", result); return result; }
+  "--normalize": async (args) => { const ontology = buildOntology(); const result = normalizeOntology(ontology); console.log("Normalized ontology:", result); return result; },
+  // New extended commands aligned with CONTRIBUTING guidelines
+  "--extend-metadata": async (args) => { const metadata = { updated: true, contributor: "CLI" }; const extended = extendOntologyMetadata(buildOntology(), metadata); console.log("Extended Ontology Metadata:", extended); return extended; },
+  "--record-history": async (args) => { const record = recordOntologyHistory("History recorded"); console.log("Ontology History Record:", record); return record; },
+  "--commit-change": async (args) => { const msg = commitOntologyChange("Ontology change applied"); console.log("Commit Message:", msg); return msg; },
+  "--get-summary": async (args) => { const summary = getOntologySummary(buildOntology()); console.log("Ontology Summary:", summary); return summary; },
+  "--merge-normalize": async (args) => { const ont1 = buildOntology(); const ont2 = extendOntologyMetadata(buildOntology(), { title: "Updated Ontology" }); const merged = mergeAndNormalizeOntologies(ont1, ont2); console.log("Merged and Normalized Ontologies:", merged); return merged; }
 };
 
 // CLI Command Actions
@@ -417,7 +454,7 @@ export async function main(args = process.argv.slice(2)) {
 
 // Helper functions for CLI
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize, --extend-metadata, --record-history, --commit-change, --get-summary, --merge-normalize`);
 }
 
 export function getVersion() {
@@ -430,4 +467,3 @@ export function listCommands() {
 
 console.log("owl-builder CLI loaded");
 // End of file
-

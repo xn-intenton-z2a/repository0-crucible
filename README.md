@@ -7,7 +7,8 @@ owl-builder is a versatile CLI tool and JavaScript library designed for building
 - **Ontology Building:** Create basic and detailed ontology models with built-in functions.
 - **Public Data Integration:** Automatically crawl and integrate data from various public endpoints.
 - **Extended Wrappers:** Multiple wrapper functions for different ontology models (JSON, custom order, graph, tree, matrix, etc.).
-- **Ontology Analysis:** New functions to analyze and optimize ontology structures, including transformation to JSON-LD.
+- **Ontology Analysis & Optimization:** New functions to analyze, optimize, and transform ontologies, including transformation to JSON-LD.
+- **Enhanced Metadata Management:** Extended functions for attaching metadata, recording change history, generating summaries, and merging ontologies.
 - **Robust CLI:** Comprehensive command-line interface supporting a wide range of commands for ontology operations.
 
 ## Public Data Endpoints
@@ -86,6 +87,28 @@ Example commands:
     node src/lib/main.js --normalize
     ```
 
+- **Extended Metadata & Processing Commands:**
+  - Extend Metadata:
+    ```bash
+    node src/lib/main.js --extend-metadata
+    ```
+  - Record History:
+    ```bash
+    node src/lib/main.js --record-history
+    ```
+  - Commit Change:
+    ```bash
+    node src/lib/main.js --commit-change
+    ```
+  - Get Ontology Summary:
+    ```bash
+    node src/lib/main.js --get-summary
+    ```
+  - Merge and Normalize Ontologies:
+    ```bash
+    node src/lib/main.js --merge-normalize
+    ```
+
 ## Testing
 
 Run tests using:
@@ -94,7 +117,7 @@ Run tests using:
 npm test
 ```
 
-The test suite includes validation for all CLI commands, endpoint responses (using dummy mode), and ontology wrappers.
+The test suite includes validation for all CLI commands, endpoint responses (using dummy mode), ontology wrappers, and the newly extended metadata and processing functions.
 
 ## Contributing
 
@@ -106,6 +129,7 @@ We welcome contributions ranging from feature enhancements and bug fixes to docu
   - Removed legacy endpoints and pruned redundant code to align with the Mission Statement.
   - Extended functionality with new ontology analysis, optimization, and transformation functions.
   - Added a set of new wrapper commands for various OWL Ontology models.
+  - **Extended new functions:** Added extendOntologyMetadata, recordOntologyHistory, commitOntologyChange, getOntologySummary, and mergeAndNormalizeOntologies to enhance ontology metadata management and processing.
   - Refreshed the documentation to better reflect current capabilities and contribution guidelines.
 
 ## License
