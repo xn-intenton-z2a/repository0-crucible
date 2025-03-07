@@ -55,7 +55,7 @@
 <li class="md-github"><strong class="md-github">Data Persistence:</strong> Easily persist, load, backup, and clear ontology data stored in JSON files.</li>
 <li class="md-github"><strong class="md-github">Querying:</strong> Perform simple queries against ontology concepts.</li>
 <li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontology objects to an OWL XML format and import from XML strings.</li>
-<li class="md-github"><strong class="md-github">Data Crawling:</strong> Crawl multiple public endpoints to capture data for generating OWL representations.</li>
+<li class="md-github"><strong class="md-github">Data Crawling:</strong> Crawl multiple public endpoints to capture data for generating OWL representations. (Test results confirm that dummy data is returned from the following endpoints: https://api.publicapis.org/entries, https://dog.ceo/api/breeds/image/random, https://jsonplaceholder.typicode.com/posts, https://api.coindesk.com/v1/bpi/currentprice.json, https://api.github.com, https://jsonplaceholder.typicode.com/comments, https://dummyjson.com/products, https://randomuser.me/api/, https://catfact.ninja/fact, https://jsonplaceholder.typicode.com/todos)</li>
 <li class="md-github"><strong class="md-github">Ontology Model Wrappers:</strong> Supports both basic and advanced OWL model wrappers; wrap ontology models with additional metadata.</li>
 <li class="md-github"><strong class="md-github">Diagnostics:</strong> Use the diagnostics command to output environment settings for troubleshooting.</li>
 <li class="md-github"><strong class="md-github">Web Server:</strong> Run a simple web server to monitor ontology status and diagnostics in real-time.</li>
@@ -218,7 +218,20 @@ npm run formatting
 <li class="md-github">Extended test coverage and refactored ontology model wrappers.</li>
 <li class="md-github">Updated documentation to include instructions for running the built-in web server.</li>
 <li class="md-github">Added new CLI command <code class="md-github">--serve</code> to start a simple web server for monitoring purposes.</li>
-<li class="md-github">Improved asynchronous handling in the <code class="md-github">--serve</code> command to ensure the web server startup is awaited.</li>
+<li class="md-github">Updated crawl command documentation to reflect test results showing dummy data returned from endpoints:
+<ul class="md-github">
+<li class="md-github">https://api.publicapis.org/entries</li>
+<li class="md-github">https://dog.ceo/api/breeds/image/random</li>
+<li class="md-github">https://jsonplaceholder.typicode.com/posts</li>
+<li class="md-github">https://api.coindesk.com/v1/bpi/currentprice.json</li>
+<li class="md-github">https://api.github.com</li>
+<li class="md-github">https://jsonplaceholder.typicode.com/comments</li>
+<li class="md-github">https://dummyjson.com/products</li>
+<li class="md-github">https://randomuser.me/api/</li>
+<li class="md-github">https://catfact.ninja/fact</li>
+<li class="md-github">https://jsonplaceholder.typicode.com/todos</li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>
@@ -228,7 +241,7 @@ npm run formatting
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T20:58:19.050Z</p>
+    <p>Generated on 2025-03-07T21:06:50.174Z</p>
   </footer>
 </body>
 </html>
