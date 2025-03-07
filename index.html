@@ -23,14 +23,14 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="owl-builder" href="#owl-builder"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>owl-builder</h1>
-<p class="md-github">owl-builder is a versatile CLI tool and JavaScript library designed for building, managing, and querying OWL ontologies extracted from diverse public data sources. The focus has been refactored to enhance public API integration and to provide extended ontology processing commands. Legacy implementations are pruned, and documentation is refreshed in accordance with our CONTRIBUTING guidelines.</p>
+<p class="md-github">owl-builder is a versatile CLI tool and JavaScript library designed for building, managing, and querying OWL ontologies extracted from diverse public data sources. The focus has been refactored to enhance public API integration and to provide extended ontology processing commands. Legacy implementations have been pruned to concentrate solely on building ontologies from public data sources, in alignment with our CONTRIBUTING guidelines.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Ontology Building:</strong> Create basic and detailed ontology models with built-in functions.</li>
 <li class="md-github"><strong class="md-github">Public Data Integration:</strong> Automatically crawl and integrate data from various public endpoints.</li>
 <li class="md-github"><strong class="md-github">Extended Wrappers:</strong> Multiple wrapper functions for different ontology models (JSON, custom order, graph, tree, matrix, etc.).</li>
-<li class="md-github"><strong class="md-github">Ontology Analysis &amp; Optimization:</strong> New functions to analyze, optimize, and transform ontologies, including transformation to JSON-LD.</li>
-<li class="md-github"><strong class="md-github">Enhanced Metadata Management:</strong> Extended functions for attaching metadata, recording change history, generating summaries, and merging ontologies.</li>
+<li class="md-github"><strong class="md-github">Ontology Analysis &amp; Optimization:</strong> Functions to analyze, optimize, and transform ontologies, including transformation to JSON-LD.</li>
+<li class="md-github"><strong class="md-github">Enhanced Metadata Management:</strong> Functions for attaching metadata, recording change history, generating summaries, and merging ontologies.</li>
 <li class="md-github"><strong class="md-github">Robust CLI:</strong> Comprehensive command-line interface supporting a wide range of commands for ontology operations.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="public-data-endpoints" href="#public-data-endpoints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Public Data Endpoints</h2>
@@ -143,12 +143,10 @@
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Version 0.0.19</strong>
 <ul class="md-github">
-<li class="md-github">Removed legacy endpoints and pruned redundant code to align with the Mission Statement.</li>
-<li class="md-github">Extended functionality with new ontology analysis, optimization, and transformation functions.</li>
-<li class="md-github">Added a set of new wrapper commands for various OWL Ontology models.</li>
-<li class="md-github">Extended new functions: Added extendOntologyMetadata, recordOntologyHistory, commitOntologyChange, getOntologySummary, mergeAndNormalizeOntologies, and <strong class="md-github">combineOntologyMetrics</strong> to enhance ontology metadata management, processing, and metrics extraction.</li>
-<li class="md-github"><strong class="md-github">Fixed mergeAndNormalizeOntologies:</strong> Now correctly merges multiple ontologies by taking the union of their concepts.</li>
-<li class="md-github">Refreshed the documentation to better reflect current capabilities and contribution guidelines.</li>
+<li class="md-github">Refocused ontology builder on building OWL ontologies exclusively from diverse public data sources.</li>
+<li class="md-github">Removed legacy code and endpoints that were not in line with the new mission statement.</li>
+<li class="md-github">Extended functionality with new ontology analysis, optimization, transformation, and metadata management commands.</li>
+<li class="md-github">Documentation and test cases updated to reflect the new focus.</li>
 </ul>
 </li>
 </ul>
@@ -157,7 +155,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T12:43:40.888Z</p>
+    <p>Generated on 2025-03-07T12:57:50.854Z</p>
   </footer>
 </body>
 </html>
