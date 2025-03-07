@@ -151,7 +151,7 @@ Here are some key CLI commands:
 - `--update "New Title"`: Updates the ontology title.
 - `--clear`: Clears the ontology file.
 - `--crawl`: Crawls public endpoints (using dummy or real data based on the FORCE_DUMMY_ENDPOINT setting).
-- `--fetch-retry`: Fetches data with retry logic.
+- `--fetch-retry`: Demonstrates data fetching with retry logic.
 - `--build-basic`: Builds a basic OWL model.
 - `--build-advanced`: Builds an advanced OWL model.
 - `--wrap-model`: Wraps an ontology model with additional metadata.
@@ -179,7 +179,7 @@ When imported as a JavaScript library, owl-builder exports the following functio
 - **crawlOntologies()**: Crawls preset endpoints and generates OWL XML representations of the sample ontology.
 - **buildBasicOWLModel()**: Returns a basic OWL model wrapper.
 - **buildAdvancedOWLModel()**: Returns an advanced OWL model wrapper with extra details.
-- **wrapOntologyModel(model)**: Wraps an ontology model by adding additional metadata (such as a timestamp).
+- **wrapOntologyModel(model)**: Wraps a provided ontology model with additional metadata (such as a timestamp).
 - **displayHelp()**: Prints help information regarding CLI usage.
 - **getVersion()**: Returns the current version of owl-builder.
 - **listCommands()**: Returns a list of supported CLI commands.
@@ -235,6 +235,7 @@ Guidelines focus on code quality, testing, documentation, and collaboration. Fol
   - Extended test coverage and refactored ontology model wrappers.
   - Updated documentation to include instructions for running the built-in web server.
   - Added new CLI command `--serve` to start a simple web server for monitoring purposes.
+  - Improved asynchronous handling in the `--serve` command to ensure the web server startup is awaited.
 
 ---
 

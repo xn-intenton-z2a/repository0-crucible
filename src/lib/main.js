@@ -218,8 +218,12 @@ export function serveWebServer() {
     res.writeHead(200, { 'Content-Type': 'text/plain' });
     res.end('owl-builder Web Server Running\n');
   });
-  server.listen(port, () => {
-    console.log(`Web server started at http://localhost:${port}`);
+  return new Promise((resolve, reject) => {
+    server.listen(port, () => {
+      const logMsg = `Web server started at http://localhost:${port}`;
+      console.log(logMsg);
+      resolve('Web server started');
+    });
   });
 }
 
@@ -340,9 +344,9 @@ const commandActions = {
     console.log("Diagnostics:", diag);
     return diag;
   },
-  "--serve": async (args) => {
-    serveWebServer();
-    return 'Web server started';
+  "--serve": async (args) => { 
+    const msg = await serveWebServer();
+    return msg;
   }
 };
 
