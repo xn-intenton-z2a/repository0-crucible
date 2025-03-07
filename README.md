@@ -1,20 +1,18 @@
 # owl-builder
 
-owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. This tool has been refocused on streamlined public API integration and extended ontology processing commands. Legacy functionalities have been pruned and the documentation has been refreshed in accordance with the CONTRIBUTING guidelines.
+owl-builder is a versatile CLI tool and JavaScript library designed for building, managing, and querying OWL ontologies extracted from diverse public data sources. The focus has been refactored to enhance public API integration and to provide extended ontology processing commands. Legacy implementations are pruned, and documentation is refreshed in accordance with our CONTRIBUTING guidelines.
 
-## Changelog
+## Features
 
-- **Version 0.0.19**
-  - Pruned legacy drift by removing unused code and refactored comments to align with the Mission Statement.
-  - Refreshed the README to align with CONTRIBUTING guidelines, updating and pruning outdated details.
-  - Extended ontology processing functions and added new wrapper commands: `wrapOntologyModelsJSON`, `wrapOntologyModelsCustom`, `wrapOntologyModelsGraph`, `wrapOntologyModelsTree`, and `wrapOntologyModelsMatrix`.
-  - Extended the public endpoints list and added a new CLI command `--test-endpoints` for verifying endpoint responses in dummy mode.
-  - Added new ontology functions: `analyzeOntology`, `optimizeOntology`, `transformOntologyToJSONLD`, and `normalizeOntology` along with corresponding CLI commands: `--analyze`, `--optimize`, `--transform`, and `--normalize`.
-  - Removed legacy functionalities and pruned redundant code to better align with the Mission Statement.
+- **Ontology Building:** Create basic and detailed ontology models with built-in functions.
+- **Public Data Integration:** Automatically crawl and integrate data from various public endpoints.
+- **Extended Wrappers:** Multiple wrapper functions for different ontology models (JSON, custom order, graph, tree, matrix, etc.).
+- **Ontology Analysis:** New functions to analyze and optimize ontology structures, including transformation to JSON-LD.
+- **Robust CLI:** Comprehensive command-line interface supporting a wide range of commands for ontology operations.
 
 ## Public Data Endpoints
 
-owl-builder retrieves data from several public data sources, including:
+owl-builder retrieves data from several endpoints, including:
 
 - https://api.publicapis.org/entries
 - https://dog.ceo/api/breeds/image/random
@@ -37,7 +35,7 @@ owl-builder retrieves data from several public data sources, including:
 
 ## Usage
 
-Display help instructions:
+Display help:
 
 ```bash
 node src/lib/main.js --help
@@ -65,39 +63,12 @@ Example commands:
   node src/lib/main.js --clear
   ```
 
-- **Fetch Data Endpoints:**
-  ```bash
-  node src/lib/main.js --list-endpoints
-  ```
-
-- **Test Endpoints:**
+- **Test Endpoints (Dummy Mode):**
   ```bash
   node src/lib/main.js --test-endpoints
   ```
 
-- **Wrapper Commands:**
-  - JSON Wrapper:
-    ```bash
-    node src/lib/main.js --wrap-json
-    ```
-  - Custom Wrapper:
-    ```bash
-    node src/lib/main.js --wrap-custom asc
-    ```
-  - Graph Wrapper:
-    ```bash
-    node src/lib/main.js --wrap-graph
-    ```
-  - Tree Wrapper:
-    ```bash
-    node src/lib/main.js --wrap-tree
-    ```
-  - Matrix Wrapper:
-    ```bash
-    node src/lib/main.js --wrap-matrix
-    ```
-
-- **New Ontology Analysis Commands:**
+- **Ontology Analysis Commands:**
   - Analyze Ontology:
     ```bash
     node src/lib/main.js --analyze
@@ -106,7 +77,7 @@ Example commands:
     ```bash
     node src/lib/main.js --optimize
     ```
-  - Transform Ontology to JSON-LD:
+  - Transform to JSON-LD:
     ```bash
     node src/lib/main.js --transform
     ```
@@ -117,17 +88,25 @@ Example commands:
 
 ## Testing
 
-Run tests with:
+Run tests using:
 
 ```bash
 npm test
 ```
 
-The tests include verifications for endpoint responses (using dummy data), model wrapper functions, various CLI commands, and the newly added ontology analysis and transformation commands.
+The test suite includes validation for all CLI commands, endpoint responses (using dummy mode), and ontology wrappers.
 
 ## Contributing
 
-Please refer to [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute to owl-builder. Contributions in the form of feature enhancements, bug fixes, or documentation improvements are welcome.
+We welcome contributions ranging from feature enhancements and bug fixes to documentation improvements. Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines and our development workflow.
+
+## Changelog
+
+- **Version 0.0.19**
+  - Removed legacy endpoints and pruned redundant code to align with the Mission Statement.
+  - Extended functionality with new ontology analysis, optimization, and transformation functions.
+  - Added a set of new wrapper commands for various OWL Ontology models.
+  - Refreshed the documentation to better reflect current capabilities and contribution guidelines.
 
 ## License
 
