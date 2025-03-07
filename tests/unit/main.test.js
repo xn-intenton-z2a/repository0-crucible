@@ -27,7 +27,9 @@ const {
   listCommands,
   buildBasicOWLModel,
   buildAdvancedOWLModel,
-  wrapOntologyModel
+  wrapOntologyModel,
+  buildCustomOntology,
+  extendOntologyConcepts
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
@@ -241,5 +243,20 @@ describe('Ontology Model Wrappers', () => {
     const wrapped = wrapOntologyModel(model);
     expect(wrapped).toHaveProperty('timestamp');
     expect(wrapped.title).toBe('Default Title');
+  });
+});
+
+describe('Custom Ontology Functions', () => {
+  test('buildCustomOntology returns a customized ontology', () => {
+    const custom = { concepts: ['CustomConcept'] };
+    const ont = buildCustomOntology(custom);
+    expect(ont.customized).toBe(true);
+    expect(ont.concepts).toContain('CustomConcept');
+  });
+
+  test('extendOntologyConcepts adds new concepts', () => {
+    const base = { title: 'Public Data Ontology', concepts: ['Concept1'] };
+    const extended = extendOntologyConcepts(base, ['NewConcept']);
+    expect(extended.concepts).toContain('NewConcept');
   });
 });

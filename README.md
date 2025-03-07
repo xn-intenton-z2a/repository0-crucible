@@ -13,6 +13,7 @@ owl-builder is a powerful CLI tool and JavaScript library designed to help you b
   - [For Casual Users](#for-casual-users)
   - [Using Real Endpoints for Meaningful OWL Output](#using-real-endpoints-for-meaningful-owl-output)
   - [For Developers](#for-developers)
+  - [Extended Custom Ontology Functions](#extended-custom-ontology-functions)
   - [Running the Web Server](#running-the-web-server)
   - [For the Scientific Community](#for-the-scientific-community)
 - [CLI Commands](#cli-commands)
@@ -37,7 +38,8 @@ owl-builder is a CLI tool and library refocused on building OWL ontologies by le
 - **Querying:** Perform queries against ontology concepts.
 - **OWL Export/Import:** Convert ontology objects to a simple OWL XML format and import from XML strings.
 - **Data Crawling:** Crawl multiple public endpoints to collect data and generate OWL representations. (*By default, dummy data is used. Set `FORCE_DUMMY_ENDPOINT` to `false` for real data.*)
-- **Ontology Model Wrappers:** Offers both basic and advanced OWL model wrappers with additional metadata support.
+- **Ontology Model Wrappers:** Offers basic, advanced, and now custom ontology builders with extended functionality. 
+- **Custom Ontology Functions:** Build custom ontologies and extend existing ones with additional concepts.
 - **Diagnostics:** Output environment diagnostics for troubleshooting.
 - **Web Server:** Built-in web server for real-time ontology status and monitoring.
 
@@ -99,16 +101,9 @@ FORCE_DUMMY_ENDPOINT=false node src/lib/main.js --crawl
     "data": "{...actual response data...}",
     "owlContent": "<ontology><title>Public Data Ontology</title></ontology>"
   },
-  {
-    "endpoint": "https://dog.ceo/api/breeds/image/random",
-    "data": "{...actual response data...}",
-    "owlContent": "<ontology><title>Public Data Ontology</title></ontology>"
-  }
   // ... additional endpoints
 ]
 ```
-
-This output demonstrates that the tool is fetching live data from real endpoints and converting the ontology to a standard OWL XML format.
 
 ### For Developers
 
@@ -129,6 +124,22 @@ npm run formatting
 ```
 
 For more detailed information, refer to the inline comments in `src/lib/main.js` and the [CONTRIBUTING.md](CONTRIBUTING.md) file.
+
+### Extended Custom Ontology Functions
+
+Two new functions have been added to extend the ontology building capabilities:
+
+- **Build Custom Ontology:**
+  ```bash
+  node src/lib/main.js --build-custom '{"concepts": ["CustomConcept"], "extraInfo": "value"}'
+  ```
+  This command builds an ontology with user-provided customizations.
+
+- **Extend Ontology Concepts:**
+  ```bash
+  node src/lib/main.js --extend-concepts "NewConcept1,NewConcept2"
+  ```
+  This command extends an existing ontology by adding the specified concepts.
 
 ### Running the Web Server
 
@@ -151,7 +162,7 @@ When running, the web server will display a message indicating it is active alon
 owl-builder supports AI experiments and ontology-driven research projects by:
 
 - **Leveraging Public Data:** Crawl real public endpoints to enrich ontology models.
-- **Custom Models:** Extend or modify the basic and advanced OWL model wrappers to meet your research needs.
+- **Custom Models:** Extend or modify the basic, advanced, and custom ontology wrappers to meet your research needs.
 - **Reproducibility:** Built-in diagnostics (`--diagnostics`) and consistent coding practices ensure traceable research outputs.
 
 ---
@@ -169,13 +180,15 @@ Key CLI commands include:
 - `--export`: Exports the ontology to an OWL XML representation.
 - `--import`: Imports an ontology from an OWL XML string.
 - `--backup`: Creates a backup of the ontology file.
-- `--update "New Title"`: Updates the ontology title.
+- `--update "New Title"`: Updates the ontology's title.
 - `--clear`: Deletes the ontology file if it exists.
 - `--crawl`: Crawls public endpoints and returns the results.
 - `--fetch-retry`: Demonstrates fetching data with retry logic.
 - `--build-basic`: Builds a basic OWL model.
 - `--build-advanced`: Builds an advanced OWL model.
 - `--wrap-model`: Wraps an ontology model with additional metadata.
+- `--build-custom`: Builds a custom ontology based on user-defined customizations.
+- `--extend-concepts`: Extends the current ontology with additional concepts.
 - `--diagnostics`: Outputs diagnostic information about the environment.
 - `--serve`: Starts the built-in web server for monitoring.
 
@@ -201,6 +214,8 @@ When used as a library, owl-builder exports the following functions:
 - **buildBasicOWLModel()**: Returns a basic OWL model wrapper.
 - **buildAdvancedOWLModel()**: Returns an advanced OWL model wrapper.
 - **wrapOntologyModel(model)**: Wraps a provided ontology model with additional metadata (e.g., a timestamp).
+- **buildCustomOntology(customizations)**: Builds an ontology with custom parameters.
+- **extendOntologyConcepts(ontology, additionalConcepts)**: Extends an ontology by adding new concepts.
 - **displayHelp()**: Prints CLI usage instructions.
 - **getVersion()**: Returns the current version of owl-builder.
 - **listCommands()**: Lists all supported CLI commands.
@@ -231,6 +246,8 @@ While primarily a CLI tool, owl-builder's commands can serve as API endpoints. O
 - **--build-basic**: Creates and prints a basic OWL model.
 - **--build-advanced**: Creates and prints an advanced OWL model.
 - **--wrap-model [JSON]**: Wraps the provided or default ontology model with additional metadata.
+- **--build-custom**: Builds a custom ontology with user-defined options.
+- **--extend-concepts**: Extends an existing ontology with additional concepts.
 - **--diagnostics**: Outputs environment diagnostic info.
 - **--serve**: Starts the web server for monitoring.
 
@@ -238,21 +255,21 @@ While primarily a CLI tool, owl-builder's commands can serve as API endpoints. O
 
 ## Contributing
 
-Please review the [CONTRIBUTING.md](CONTRIBUTING.md) file before contributing. We welcome enhancements that improve code quality, test coverage, and documentation. Follow the described workflows and guidelines.
+Please review the [CONTRIBUTING.md](CONTRIBUTING.md) file before contributing. We welcome enhancements that improve code quality, test coverage, and documentation. Follow the described workflows and guidelines. In this release, additional functions were introduced to build and extend ontologies reflecting the evolving mission of owl-builder.
 
 ---
 
 ## Changelog
 
+- **Version 0.0.28**
+  - Extended library functions by adding buildCustomOntology and extendOntologyConcepts.
+  - Added new CLI commands: --build-custom and --extend-concepts.
+  - Updated documentation to reflect extended functionality for custom ontology building and concept extension.
 - **Version 0.0.27**
   - Refocused the library on building ontologies from verified public data sources.
   - Updated mission statement and documentation to reflect the new focus.
   - Updated sample ontology title to "Public Data Ontology" in core functions and tests.
-  - Extended OWL model wrappers and updated changelog.
-  - **Documentation Update:** Added detailed CLI execution examples demonstrating how to obtain meaningful OWL output from real endpoints.
-
-- **Version 0.0.26**
-  - Previous changes and additions.
+  - Extended OWL model wrappers.
 
 ---
 
