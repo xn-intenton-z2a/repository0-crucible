@@ -1,6 +1,7 @@
 import { describe, test, expect, vi } from 'vitest';
 import fs from 'fs';
 import path from 'path';
+import http from 'http';
 import * as mainModule from '../../src/lib/main.js';
 
 // Force dummy responses during testing
@@ -29,6 +30,25 @@ const {
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
 const backupPath = path.resolve(process.cwd(), 'ontology-backup.json');
 
+// Helper function to simulate network failure for fetch retry
+function simulateNetworkFailure(mod) {
+  return function(url, callback) {
+    // simulate error
+    const error = new Error('Network error');
+    const req = {
+      on: (event, handler) => {
+        if (event === 'error') {
+          handler(error);
+        }
+        return req;
+      }
+    };
+    process.nextTick(() => {
+      req.on('error', () => {});
+    });
+    return req;
+  };
+}
 
 describe('Core Ontology Functions', () => {
   test('buildOntology returns sample ontology', () => {
@@ -109,6 +129,13 @@ describe('Core Ontology Functions', () => {
     existsSpy.mockRestore();
     unlinkSpy.mockRestore();
   });
+
+  test('clearOntology returns error when file does not exist', () => {
+    const existsSpy = vi.spyOn(fs, 'existsSync').mockReturnValue(false);
+    const result = clearOntology();
+    expect(result).toEqual({ success: false, error: 'Ontology file does not exist' });
+    existsSpy.mockRestore();
+  });
 });
 
 describe('Crawling Functionality', () => {
@@ -123,7 +150,11 @@ describe('Crawling Functionality', () => {
   });
 
   test('fetchDataWithRetry rejects for invalid URL', async () => {
-    await expect(fetchDataWithRetry('http://invalid.url')).rejects.toBeDefined();
+    // Override the http.get method to simulate failure
+    const originalGet = http.get;
+    http.get = simulateNetworkFailure(http);
+    await expect(fetchDataWithRetry('http://invalid.url', 2)).rejects.toBeDefined();
+    http.get = originalGet;
   });
 });
 
