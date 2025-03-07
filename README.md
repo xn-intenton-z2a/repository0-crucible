@@ -5,12 +5,12 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
 ## Changelog
 
 - **Version 0.0.19**
-  - Pruned legacy functionalities and removed drift from previous implementations to better align with the Mission Statement.
+  - Pruned legacy drift by removing unused code (e.g. removed unused OS import) and refactored comments to align with the Mission Statement.
   - Refreshed the README to align with CONTRIBUTING guidelines, updating and pruning outdated details.
   - Extended ontology processing functions and added new wrapper commands: `wrapOntologyModelsJSON`, `wrapOntologyModelsCustom`, `wrapOntologyModelsGraph`, `wrapOntologyModelsTree`, and `wrapOntologyModelsMatrix`.
   - Extended the public endpoints list and added a new CLI command `--test-endpoints` for verifying endpoint responses in dummy mode.
   - Added new ontology functions: `analyzeOntology`, `optimizeOntology`, `transformOntologyToJSONLD`, and `normalizeOntology` along with corresponding CLI commands: `--analyze`, `--optimize`, `--transform`, and `--normalize`.
-  - Removed legacy endpoints and pruned redundant documentation details.
+  - Removed legacy functionalities and pruned redundant code to better align with the Mission Statement.
 
 ## Public Data Endpoints
 

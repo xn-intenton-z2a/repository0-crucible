@@ -3,10 +3,8 @@
 // src/lib/main.js
 // owl-builder CLI Tool
 // Mission Statement: Build robust OWL ontologies extracted from diverse public data sources.
-// This version refocuses on public API integration, extends the list of endpoints, adds new test commands for endpoints,
-// streamlines ontology processing, prunes legacy functionalities, and now includes additional ontology analysis and transformation functions in accordance with CONTRIBUTING guidelines.
+// This update prunes legacy drift by removing unused imports and refocusing code inline with CONTRIBUTING guidelines.
 
-import os from 'os';
 import fs from 'fs';
 import path from 'path';
 import _ from 'lodash';
@@ -135,7 +133,7 @@ export function generateOntologyReport() {
   return { title: 'Sample Ontology', summary: 'Summary', analysis: 'Analysis', enhanced: true };
 }
 
-// Extended: New endpoints list (extended from the original endpoints)
+// Extended: New endpoints list
 export function listAvailableEndpoints() {
   return [
     'https://api.publicapis.org/entries',
@@ -421,7 +419,7 @@ export async function main(args = process.argv.slice(2)) {
 
 // Helper functions for CLI
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints, --analyze, --optimize, --transform, --normalize");
 }
 
 export function getVersion() {
