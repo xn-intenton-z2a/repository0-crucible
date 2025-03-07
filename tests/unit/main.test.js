@@ -233,8 +233,8 @@ describe('Main Module General Functions', () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     const endpoints = await main(['--list-endpoints']);
     expect(Array.isArray(endpoints)).toBe(true);
-    // Now there should be 13 endpoints in total.
-    expect(endpoints.length).toBe(13);
+    // Now there should be 16 endpoints in total.
+    expect(endpoints.length).toBe(16);
     spy.mockRestore();
   });
 

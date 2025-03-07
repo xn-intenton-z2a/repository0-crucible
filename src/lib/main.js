@@ -136,7 +136,7 @@ export function generateOntologyReport() {
   return { title: 'Sample Ontology', summary: 'Summary', analysis: 'Analysis', enhanced: true };
 }
 
-// Extended: New endpoints list (extended from the original 10 endpoints)
+// Extended: New endpoints list (extended from the original endpoints)
 export function listAvailableEndpoints() {
   return [
     'https://api.publicapis.org/entries',
@@ -151,13 +151,19 @@ export function listAvailableEndpoints() {
     'https://jsonplaceholder.typicode.com/todos',
     'https://api.nationalize.io',
     'https://api.agify.io',
-    'https://api.genderize.io'
+    'https://api.genderize.io',
+    'https://api.openbrewerydb.org/breweries',
+    'https://api.spacexdata.com/v4/launches',
+    'https://api.exchangerate-api.com/v4/latest/USD'
   ];
 }
 
 export function fetchFromExtendedEndpoints() {
   // Returns dummy data array
-  return [{ endpoint: 'https://api.extended1.com', data: 'dummy' }, { endpoint: 'https://api.extended2.com', data: 'dummy' }];
+  return [
+    { endpoint: 'https://api.extended1.com', data: 'dummy' },
+    { endpoint: 'https://api.extended2.com', data: 'dummy' }
+  ];
 }
 
 export function advancedOntologyAnalysis() {
@@ -321,243 +327,52 @@ const commandActions = {
   "--help": async (args) => { displayHelp(); },
   "--version": async (args) => { console.log("Tool version:", getVersion()); return getVersion(); },
   "--list": async (args) => { const commands = listCommands(); console.log("Supported commands:", commands); return commands; },
-  "--build": async (args) => {
-    const ontology = buildOntology();
-    console.log("Ontology built:", ontology);
-    return ontology;
-  },
-  "--detailed-build": async (args) => {
-    const detailed = buildDetailedOntology();
-    console.log("Detailed Ontology built:", detailed);
-    return detailed;
-  },
+  "--build": async (args) => { const ontology = buildOntology(); console.log("Ontology built:", ontology); return ontology; },
+  "--detailed-build": async (args) => { const detailed = buildDetailedOntology(); console.log("Detailed Ontology built:", detailed); return detailed; },
   "--serve": async (args) => { await serveWebInterface(); },
   "--diagnostics": async (args) => { diagnostics(); },
-  "--integrate": async (args) => {
-    const integrated = integrateOntology();
-    console.log("Ontology integrated:", integrated);
-    return integrated;
-  },
-  "--crawl": async (args) => {
-    const crawledData = crawlData();
-    console.log("Public data crawled:", crawledData);
-    return crawledData;
-  },
-  "--persist": async (args) => {
-    const ontology = buildOntology();
-    console.log("Ontology built:", ontology);
-    const saved = persistOntology(ontology);
-    console.log("Ontology persisted:", saved);
-    return saved;
-  },
-  "--load": async (args) => {
-    const loaded = loadOntology();
-    console.log("Ontology loaded:", loaded);
-    return loaded;
-  },
-  "--query": async (args) => {
-    const results = queryOntology("Concept1");
-    console.log("Ontology query results:", results);
-    return results;
-  },
-  "--validate": async (args) => {
-    const ontology = buildOntology();
-    const isValid = validateOntology(ontology);
-    console.log("Ontology validation result:", isValid);
-    return isValid;
-  },
-  "--export": async (args) => {
-    const ontology = buildOntology();
-    const xml = exportOntologyToXML(ontology);
-    console.log("Ontology exported to XML:", xml);
-    return xml;
-  },
-  "--import": async (args) => {
-    const sampleXML = `<ontology><title>Imported Ontology</title></ontology>`;
-    const imported = importOntologyFromXML(sampleXML);
-    console.log("Ontology imported from XML:", imported);
-    return imported;
-  },
-  "--sync": async (args) => {
-    const synced = syncOntology();
-    console.log("Ontology synced:", synced);
-    return synced;
-  },
-  "--backup": async (args) => {
-    const backupResult = backupOntology();
-    console.log("Ontology backup created:", backupResult);
-    return backupResult;
-  },
-  "--update": async (args) => {
-    const idx = args.indexOf("--update");
-    const newTitle = idx !== -1 && args.length > idx + 1 ? args[idx + 1] : "Updated Ontology";
-    const updated = updateOntology(newTitle);
-    console.log("Ontology updated:", updated);
-    return updated;
-  },
-  "--clear": async (args) => {
-    const result = clearOntology();
-    if (result.success) {
-      console.log("Ontology cleared, file removed.", result);
-    } else {
-      console.log("Ontology clear failed:", result);
-    }
-    return result;
-  },
-  "--enhance": async (args) => {
-    const enhanced = enhanceOntology();
-    console.log("Enhanced ontology:", enhanced);
-    return enhanced;
-  },
-  "--wrap": async (args) => {
-    const wrapped = wrapOntologyModels();
-    console.log("Wrapped ontology models:", wrapped);
-    return wrapped;
-  },
-  "--wrap-extended": async (args) => {
-    const wrappedExtended = wrapOntologyModelsExtended();
-    console.log("Extended wrapped ontology models:", wrappedExtended);
-    return wrappedExtended;
-  },
-  "--report": async (args) => {
-    const report = generateOntologyReport();
-    console.log("Ontology Report:", report);
-    return report;
-  },
-  "--list-endpoints": async (args) => {
-    const endpoints = listAvailableEndpoints();
-    console.log("Available endpoints:", endpoints);
-    return endpoints;
-  },
-  "--fetch-extended": async (args) => {
-    const extendedData = await fetchFromExtendedEndpoints();
-    console.log("Fetched data from extended endpoints:", extendedData);
-    return extendedData;
-  },
-  "--advanced-analysis": async (args) => {
-    const advanced = advancedOntologyAnalysis();
-    console.log("Advanced Ontology Analysis:", advanced);
-    return advanced;
-  },
-  "--wrap-all": async (args) => {
-    const wrappedAll = wrapAllOntologyModels();
-    console.log("Wrapped All Ontology Models:", wrappedAll);
-    return wrappedAll;
-  },
-  "--cleanup": async (args) => {
-    let ontology = buildOntology();
-    ontology.concepts = [...ontology.concepts, ...ontology.concepts];
-    const cleaned = cleanupOntologyData(ontology);
-    console.log("Cleaned Ontology:", cleaned);
-    return cleaned;
-  },
-  "--auto-commit": async (args) => {
-    const msg = automatedCommitMessage();
-    console.log("Automated Commit Message:", msg);
-    return msg;
-  },
-  "--combine-models": async (args) => {
-    const merged = mergeOntologyModels(buildOntology(), enhanceOntology(), integrateOntology());
-    console.log("Combined Ontology Models:", merged);
-    return merged;
-  },
-  "--refresh-details": async (args) => {
-    const refreshedDetails = updateOntologyDescription("Refreshed ontology with additional details.");
-    console.log("Ontology refreshed with details:", refreshedDetails);
-    return refreshedDetails;
-  },
-  "--extend-concepts": async (args) => {
-    const extended = extendOntologyConcepts("ExtendedConcept1", "ExtendedConcept2");
-    console.log("Extended ontology concepts:", extended);
-    return extended;
-  },
-  "--fetch-retry": async (args) => {
-    const result = await fetchDataWithRetry("https://api.publicapis.org/entries");
-    console.log("Fetched data with retry:", result);
-    return result;
-  },
-  "--changelog": async (args) => {
-    const log = getChangeLog();
-    console.log("Change Log:", log);
-    return log;
-  },
-  "--extend-details": async (args) => {
-    const extendedDetails = extendOntologyDetails();
-    console.log("Extended Ontology Details:", extendedDetails);
-    return extendedDetails;
-  },
-  "--wrap-simple": async (args) => {
-    const simple = wrapOntologyModelsSimple();
-    console.log("Simple Wrapped Ontology Models:", simple);
-    return simple;
-  },
-  "--wrap-comprehensive": async (args) => {
-    const comp = wrapOntologyModelsComprehensive();
-    console.log("Comprehensive Wrapped Ontology Models:", comp);
-    return comp;
-  },
-  "--wrap-random": async (args) => {
-    const randomWrapper = wrapOntologyModelsRandom();
-    console.log("Random Wrapped Ontology Model:", randomWrapper);
-    return randomWrapper;
-  },
-  "--clean-transform": async (args) => {
-    const result = cleanupAndTransformOntology();
-    console.log("Cleaned and transformed ontology:", result);
-    return result;
-  },
-  "--fetch-additional": async (args) => {
-    const additional = await fetchAdditionalEndpointData();
-    console.log("Fetched additional endpoint data:", additional);
-    return additional;
-  },
-  "--combine-metrics": async (args) => {
-    const metrics = combineOntologyMetrics();
-    console.log("Combined ontology metrics:", metrics);
-    return metrics;
-  },
-  "--update-tracking": async (args) => {
-    const updated = updateOntologyTracking("Tracking updated via CLI");
-    console.log("Ontology tracking updated:", updated);
-    return updated;
-  },
-  "--wrap-advanced": async (args) => {
-    const advancedWrapped = wrapAdvancedOntologyModels();
-    console.log("Advanced wrapped ontology models:", advancedWrapped);
-    return advancedWrapped;
-  },
-  "--wrap-merged": async (args) => {
-    const mergedWrapped = wrapMergedOntologyModels();
-    console.log("Merged wrapped ontology models:", mergedWrapped);
-    return mergedWrapped;
-  },
-  "--wrap-json": async (args) => {
-    const jsonWrapped = wrapOntologyModelsJSON();
-    console.log("JSON Wrapped Ontology Models:", jsonWrapped);
-    return jsonWrapped;
-  },
-  "--wrap-custom": async (args) => {
-    const idx = args.indexOf("--wrap-custom");
-    const order = idx !== -1 && args.length > idx + 1 ? args[idx + 1] : 'asc';
-    const customWrapped = wrapOntologyModelsCustom(order);
-    console.log("Custom Wrapped Ontology Models:", customWrapped);
-    return customWrapped;
-  },
-  "--wrap-graph": async (args) => {
-    const graphWrapped = wrapOntologyModelsGraph();
-    console.log("Graph Wrapped Ontology Models:", graphWrapped);
-    return graphWrapped;
-  },
-  "--wrap-tree": async (args) => {
-    const treeWrapped = wrapOntologyModelsTree();
-    console.log("Tree Wrapped Ontology Models:", treeWrapped);
-    return treeWrapped;
-  },
-  "--wrap-matrix": async (args) => {
-    const matrixWrapped = wrapOntologyModelsMatrix();
-    console.log("Matrix Wrapped Ontology Models:", matrixWrapped);
-    return matrixWrapped;
-  },
+  "--integrate": async (args) => { const integrated = integrateOntology(); console.log("Ontology integrated:", integrated); return integrated; },
+  "--crawl": async (args) => { const crawledData = crawlData(); console.log("Public data crawled:", crawledData); return crawledData; },
+  "--persist": async (args) => { const ontology = buildOntology(); console.log("Ontology built:", ontology); const saved = persistOntology(ontology); console.log("Ontology persisted:", saved); return saved; },
+  "--load": async (args) => { const loaded = loadOntology(); console.log("Ontology loaded:", loaded); return loaded; },
+  "--query": async (args) => { const results = queryOntology("Concept1"); console.log("Ontology query results:", results); return results; },
+  "--validate": async (args) => { const ontology = buildOntology(); const isValid = validateOntology(ontology); console.log("Ontology validation result:", isValid); return isValid; },
+  "--export": async (args) => { const ontology = buildOntology(); const xml = exportOntologyToXML(ontology); console.log("Ontology exported to XML:", xml); return xml; },
+  "--import": async (args) => { const sampleXML = `<ontology><title>Imported Ontology</title></ontology>`; const imported = importOntologyFromXML(sampleXML); console.log("Ontology imported from XML:", imported); return imported; },
+  "--sync": async (args) => { const synced = syncOntology(); console.log("Ontology synced:", synced); return synced; },
+  "--backup": async (args) => { const backupResult = backupOntology(); console.log("Ontology backup created:", backupResult); return backupResult; },
+  "--update": async (args) => { const idx = args.indexOf("--update"); const newTitle = idx !== -1 && args.length > idx + 1 ? args[idx + 1] : "Updated Ontology"; const updated = updateOntology(newTitle); console.log("Ontology updated:", updated); return updated; },
+  "--clear": async (args) => { const result = clearOntology(); if (result.success) { console.log("Ontology cleared, file removed.", result); } else { console.log("Ontology clear failed:", result); } return result; },
+  "--enhance": async (args) => { const enhanced = enhanceOntology(); console.log("Enhanced ontology:", enhanced); return enhanced; },
+  "--wrap": async (args) => { const wrapped = wrapOntologyModels(); console.log("Wrapped ontology models:", wrapped); return wrapped; },
+  "--wrap-extended": async (args) => { const wrappedExtended = wrapOntologyModelsExtended(); console.log("Extended wrapped ontology models:", wrappedExtended); return wrappedExtended; },
+  "--report": async (args) => { const report = generateOntologyReport(); console.log("Ontology Report:", report); return report; },
+  "--list-endpoints": async (args) => { const endpoints = listAvailableEndpoints(); console.log("Available endpoints:", endpoints); return endpoints; },
+  "--fetch-extended": async (args) => { const extendedData = await fetchFromExtendedEndpoints(); console.log("Fetched data from extended endpoints:", extendedData); return extendedData; },
+  "--advanced-analysis": async (args) => { const advanced = advancedOntologyAnalysis(); console.log("Advanced Ontology Analysis:", advanced); return advanced; },
+  "--wrap-all": async (args) => { const wrappedAll = wrapAllOntologyModels(); console.log("Wrapped All Ontology Models:", wrappedAll); return wrappedAll; },
+  "--cleanup": async (args) => { let ontology = buildOntology(); ontology.concepts = [...ontology.concepts, ...ontology.concepts]; const cleaned = cleanupOntologyData(ontology); console.log("Cleaned Ontology:", cleaned); return cleaned; },
+  "--auto-commit": async (args) => { const msg = automatedCommitMessage(); console.log("Automated Commit Message:", msg); return msg; },
+  "--combine-models": async (args) => { const merged = mergeOntologyModels(buildOntology(), enhanceOntology(), integrateOntology()); console.log("Combined Ontology Models:", merged); return merged; },
+  "--refresh-details": async (args) => { const refreshedDetails = updateOntologyDescription("Refreshed ontology with additional details."); console.log("Ontology refreshed with details:", refreshedDetails); return refreshedDetails; },
+  "--extend-concepts": async (args) => { const extended = extendOntologyConcepts("ExtendedConcept1", "ExtendedConcept2"); console.log("Extended ontology concepts:", extended); return extended; },
+  "--fetch-retry": async (args) => { const result = await fetchDataWithRetry("https://api.publicapis.org/entries"); console.log("Fetched data with retry:", result); return result; },
+  "--changelog": async (args) => { const log = getChangeLog(); console.log("Change Log:", log); return log; },
+  "--extend-details": async (args) => { const extendedDetails = extendOntologyDetails(); console.log("Extended Ontology Details:", extendedDetails); return extendedDetails; },
+  "--wrap-simple": async (args) => { const simple = wrapOntologyModelsSimple(); console.log("Simple Wrapped Ontology Models:", simple); return simple; },
+  "--wrap-comprehensive": async (args) => { const comp = wrapOntologyModelsComprehensive(); console.log("Comprehensive Wrapped Ontology Models:", comp); return comp; },
+  "--wrap-random": async (args) => { const randomWrapper = wrapOntologyModelsRandom(); console.log("Random Wrapped Ontology Model:", randomWrapper); return randomWrapper; },
+  "--clean-transform": async (args) => { const result = cleanupAndTransformOntology(); console.log("Cleaned and transformed ontology:", result); return result; },
+  "--fetch-additional": async (args) => { const additional = await fetchAdditionalEndpointData(); console.log("Fetched additional endpoint data:", additional); return additional; },
+  "--combine-metrics": async (args) => { const metrics = combineOntologyMetrics(); console.log("Combined ontology metrics:", metrics); return metrics; },
+  "--update-tracking": async (args) => { const updated = updateOntologyTracking("Tracking updated via CLI"); console.log("Ontology tracking updated:", updated); return updated; },
+  "--wrap-advanced": async (args) => { const advancedWrapped = wrapAdvancedOntologyModels(); console.log("Advanced wrapped ontology models:", advancedWrapped); return advancedWrapped; },
+  "--wrap-merged": async (args) => { const mergedWrapped = wrapMergedOntologyModels(); console.log("Merged wrapped ontology models:", mergedWrapped); return mergedWrapped; },
+  "--wrap-json": async (args) => { const jsonWrapped = wrapOntologyModelsJSON(); console.log("JSON Wrapped Ontology Models:", jsonWrapped); return jsonWrapped; },
+  "--wrap-custom": async (args) => { const idx = args.indexOf("--wrap-custom"); const order = idx !== -1 && args.length > idx + 1 ? args[idx + 1] : 'asc'; const customWrapped = wrapOntologyModelsCustom(order); console.log("Custom Wrapped Ontology Models:", customWrapped); return customWrapped; },
+  "--wrap-graph": async (args) => { const graphWrapped = wrapOntologyModelsGraph(); console.log("Graph Wrapped Ontology Models:", graphWrapped); return graphWrapped; },
+  "--wrap-tree": async (args) => { const treeWrapped = wrapOntologyModelsTree(); console.log("Tree Wrapped Ontology Models:", treeWrapped); return treeWrapped; },
+  "--wrap-matrix": async (args) => { const matrixWrapped = wrapOntologyModelsMatrix(); console.log("Matrix Wrapped Ontology Models:", matrixWrapped); return matrixWrapped; },
   "--test-endpoints": async (args) => {
     await testEndpoints();
   }
