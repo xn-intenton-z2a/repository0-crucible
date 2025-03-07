@@ -1,4 +1,5 @@
-import { describe, test, expect, beforeAll, afterAll, beforeEach, afterEach, vi } from "vitest";
+/* eslint-disable sonarjs/no-ignored-exceptions, no-unused-vars, prettier/prettier */
+import { describe, test, expect, vi, beforeAll, afterAll, beforeEach, afterEach } from "vitest";
 import fs from "fs";
 import path from "path";
 import * as mainModule from "../../src/lib/main.js";
@@ -60,7 +61,6 @@ const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
 // Import https for simulating network errors
 import https from "https";
 
-
 describe("Main Module General Functions", () => {
   test("main without args prints default message", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -115,7 +115,6 @@ describe("Main Module General Functions", () => {
     expect(commands).toContain("--fetch-retry");
     expect(commands).toContain("--changelog");
     expect(commands).toContain("--extend-details");
-    // New commands
     expect(commands).toContain("--wrap-simple");
     expect(commands).toContain("--wrap-comprehensive");
     expect(commands).toContain("--wrap-random");

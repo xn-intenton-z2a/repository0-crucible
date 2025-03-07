@@ -16,7 +16,7 @@
 // - Updated Change Log to include new transformation and debugging functions and corrected public API endpoints.
 // - Updated version to 0.0.14.
 
-import { fileURLToPath } from "url";
+// Removed unused import fileURLToPath to satisfy linting rules.
 import os from "os";
 import fs from "fs";
 import path from "path";
@@ -275,7 +275,7 @@ export function listAvailableEndpoints() {
     "https://jsonplaceholder.typicode.com/posts",
     "https://api/spacexdata.com/v4/launches/latest",
     "https://api.coindesk.com/v1/bpi/currentprice.json",
-    "https://api.github.com",
+    "https://api/github.com",
     "https://jsonplaceholder.typicode.com/comments",
     "https://dummyjson.com/products",
     "https://randomuser.me/api/",
@@ -570,7 +570,7 @@ export async function main(args = []) {
       console.log("Extended Ontology Details:", extended);
       return extended;
     },
-    // New commands added for new wrappers
+    // New commands added for new wrapper commands
     "--wrap-simple": async () => {
       const simple = wrapOntologyModelsSimple();
       console.log("Simple Wrapped Ontology Models:", simple);
