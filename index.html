@@ -153,6 +153,13 @@ npm run formatting
 <p class="md-github">Diagnostics mode performs real HTTP calls to remote endpoints and returns consolidated OWL JSON output:</p>
 <pre class="md-github"><code class="md-github language-bash">npm run diagnostics
 </code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="extended-endpoints-testing" href="#extended-endpoints-testing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Extended Endpoints Testing</h3>
+<p class="md-github">A new test has been added to fetch data from an extended list of endpoints including:</p>
+<ul class="md-github">
+<li class="md-github">https://api.chucknorris.io/jokes/random</li>
+<li class="md-github">https://api.agify.io?name=michael</li>
+</ul>
+<p class="md-github">This test logs a snippet of the response from each endpoint to help verify connectivity and data integrity.</p>
 <h3 class="md-github"><a class="md-github__anchor" name="for-the-scientific-community" href="#for-the-scientific-community"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>For the Scientific Community</h3>
 <p class="md-github">owl-builder supports scientific and AI experiments by:</p>
 <ul class="md-github">
@@ -172,7 +179,7 @@ npm run formatting
 <li class="md-github"><code class="md-github">--load</code>: Loads and prints the saved ontology.</li>
 <li class="md-github"><code class="md-github">--query &quot;searchTerm&quot;</code>: Searches ontology concepts by the given term.</li>
 <li class="md-github"><code class="md-github">--export</code>: Exports the ontology to an OWL XML format and prints it.</li>
-<li class="md-github"><code class="md-github">--import</code>: Imports an ontology from an OWL XML string and prints it.</li>
+<li class="md-github"><code class="md-github">--import</code>: Imports a sample ontology from an OWL XML string and prints it.</li>
 <li class="md-github"><code class="md-github">--backup</code>: Creates a backup of the current ontology file.</li>
 <li class="md-github"><code class="md-github">--update &quot;New Title&quot;</code>: Updates the ontology's title.</li>
 <li class="md-github"><code class="md-github">--clear</code>: Deletes the ontology file if it exists.</li>
@@ -200,7 +207,7 @@ npm run formatting
 <li class="md-github"><strong class="md-github">backupOntology()</strong>: Creates a backup of the ontology file.</li>
 <li class="md-github"><strong class="md-github">updateOntology(newTitle)</strong>: Updates the ontology's title and returns the updated object.</li>
 <li class="md-github"><strong class="md-github">clearOntology()</strong>: Deletes the ontology file if it exists.</li>
-<li class="md-github"><strong class="md-github">listAvailableEndpoints()</strong>: Returns a list of preset public endpoints for crawling data.</li>
+<li class="md-github"><strong class="md-github">listAvailableEndpoints()</strong>: Returns an extended list of public endpoints for crawling data.</li>
 <li class="md-github"><strong class="md-github">fetchDataWithRetry(url, retries)</strong>: Fetches data from a URL with a specified number of retries.</li>
 <li class="md-github"><strong class="md-github">crawlOntologies()</strong>: Crawls public endpoints and produces OWL XML representations.</li>
 <li class="md-github"><strong class="md-github">buildBasicOWLModel()</strong>: Returns a basic OWL model wrapper.</li>
@@ -244,15 +251,15 @@ npm run formatting
 <hr class="md-github">
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
 <p class="md-github">Please review the <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> file before contributing. We welcome enhancements that improve code quality, test coverage, and documentation. Follow the described workflows and guidelines.</p>
-<p class="md-github">In this release, the tool has been refocused on integrating real public data sources for ontology building.</p>
+<p class="md-github">In this release, the tool has been refocused on integrating real public data sources for ontology building, and the list of endpoints has been extended.</p>
 <hr class="md-github">
 <h2 class="md-github"><a class="md-github__anchor" name="changelog" href="#changelog"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Changelog</h2>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Version 0.0.29</strong>
+<li class="md-github"><strong class="md-github">Version 0.0.30</strong>
 <ul class="md-github">
-<li class="md-github">Refocused the library on building ontologies from verified public data sources.</li>
-<li class="md-github">Updated the CLI commands and documentation to reflect real API calls.</li>
-<li class="md-github">Extended endpoints list and improved ontology model wrappers.</li>
+<li class="md-github">Extended the list of public endpoints with additional URLs: https://api.chucknorris.io/jokes/random and https://api.agify.io?name=michael.</li>
+<li class="md-github">Added a new test to iterate over all endpoints and log a snippet of their responses.</li>
+<li class="md-github">Refocused the library on building ontologies from public data sources.</li>
 </ul>
 </li>
 </ul>
@@ -262,7 +269,7 @@ npm run formatting
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T22:49:13.289Z</p>
+    <p>Generated on 2025-03-07T22:55:25.281Z</p>
   </footer>
 </body>
 </html>
