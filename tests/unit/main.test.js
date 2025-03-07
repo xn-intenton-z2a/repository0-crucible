@@ -365,6 +365,16 @@ describe('Main Module General Functions', () => {
     expect(result).toHaveProperty('customWrapped', true);
     expect(result.order).toBe('desc');
   });
+
+  // New test: Verify endpoint responses logging (dummy verification)
+  test('endpoints verification: each endpoint logs a dummy response', () => {
+    const endpoints = listAvailableEndpoints();
+    endpoints.forEach(endpoint => {
+      // Simulate logging the endpoint; in real scenarios an HTTP call would be made
+      console.log(`Verified endpoint: ${endpoint}`);
+      expect(typeof endpoint).toBe('string');
+    });
+  });
 });
 
 describe('Module Index', () => {
