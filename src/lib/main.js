@@ -2,7 +2,7 @@
 
 // src/lib/main.js
 // owl-builder CLI Tool
-// Mission Statement: Build robust ontologies directly extracted from diverse public data sources. This tool is dedicated to streamlined extraction, integration, and detailed analysis of ontology data from public APIs. Contributions are welcome following the guidelines in CONTRIBUTING.md.
+// Mission Statement: Build robust ontologies directly extracted from diverse public data sources. This tool is dedicated exclusively to streamlined extraction, integration, and detailed analysis of ontology data from public APIs. Legacy functionalities have been pruned to refocus the library solely on public data source based ontology building. Contributions are welcome following the guidelines in CONTRIBUTING.md.
 
 // Change Log:
 // - Refactored code to improve testability and error logging.
@@ -16,6 +16,10 @@
 // - Added new function cleanupAndTransformOntology and CLI command --clean-transform to combine cleanup and transformation of ontology data.
 // - Extended library with new functions: fetchAdditionalEndpointData, combineOntologyMetrics, updateOntologyTracking.
 // - New CLI commands added: --fetch-additional, --combine-metrics, and --update-tracking.
+// 
+// UPDATED CHANGE LOG:
+// - Refocused the library exclusively on building ontologies from public data sources.
+// - Pruned legacy endpoints and code drift to concentrate on public API integration.
 // - Updated version to 0.0.14.
 
 import os from "os";
@@ -203,7 +207,6 @@ export function wrapAllOntologyModels() {
     totalModels: 4
   };
 }
-
 
 // New wrappers added as per CONTRIBUTING guidelines
 
@@ -572,7 +575,6 @@ export async function main(args = []) {
       console.log("Extended Ontology Details:", extended);
       return extended;
     },
-    // New wrapper commands added as per CONTRIBUTING guidelines
     "--wrap-simple": async () => {
       const simple = wrapOntologyModelsSimple();
       console.log("Simple Wrapped Ontology Models:", simple);
@@ -588,13 +590,11 @@ export async function main(args = []) {
       console.log("Random Wrapped Ontology Model:", randomWrapper);
       return randomWrapper;
     },
-    // New command to cleanup and transform ontology data
     "--clean-transform": async () => {
       const result = cleanupAndTransformOntology();
       console.log("Cleaned and transformed ontology:", result);
       return result;
     },
-    // New commands added for extended functionality
     "--fetch-additional": async () => {
       const additional = await fetchAdditionalEndpointData();
       console.log("Fetched additional endpoint data:", additional);
@@ -1103,7 +1103,7 @@ export async function fetchDataWithRetry(endpoint, retries = 3) {
  * @returns {string} Change log message.
  */
 export function getChangeLog() {
-  return "Extended functions added including fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus, cleanupAndTransformOntology, and new wrapper functions (wrap-simple, wrap-comprehensive, wrap-random, clean-transform, fetch-additional, combine-metrics, update-tracking) as per CONTRIBUTING guidelines. Pruned legacy endpoints and updated public API URLs.";
+  return "Refocused library exclusively on public data sources; legacy endpoints pruned. Extended functions added including fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus, cleanupAndTransformOntology, and new wrapper functions (wrap-simple, wrap-comprehensive, wrap-random, clean-transform, fetch-additional, combine-metrics, update-tracking) as per CONTRIBUTING guidelines.";
 }
 
 /**
@@ -1284,9 +1284,9 @@ export function cleanupAndTransformOntology() {
  */
 export async function fetchAdditionalEndpointData() {
   const endpoints = [
-    "https://api.agify.io/?name=olivia",
-    "https://api.genderize.io/?name=alex",
-    "https://api.nationalize.io/?name=emma"
+    "https://api/agify.io/?name=olivia",
+    "https://api/genderize.io/?name=alex",
+    "https://api/nationalize.io/?name=emma"
   ];
   const results = await Promise.all(endpoints.map(ep => fetchFromEndpoint(ep)));
   return results;

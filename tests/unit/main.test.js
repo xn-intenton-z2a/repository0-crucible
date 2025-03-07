@@ -466,14 +466,12 @@ describe("Extended Functionality", () => {
     const result = await main(["--clean-transform"]);
     expect(result).toHaveProperty("cleaned");
     expect(result).toHaveProperty("transformed");
-    // Ensure no duplicates in cleaned concepts
     expect(new Set(result.cleaned.concepts).size).toBe(result.cleaned.concepts.length);
   });
 
   test("--fetch-additional returns additional endpoint data", async () => {
     const result = await main(["--fetch-additional"]);
     expect(Array.isArray(result)).toBe(true);
-    // Expect at least one result from additional endpoints
     expect(result.length).toBeGreaterThan(0);
   });
 
