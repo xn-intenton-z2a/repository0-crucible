@@ -129,7 +129,9 @@ export function listAvailableEndpoints() {
     'https://dummyjson.com/products',
     'https://randomuser.me/api/',
     'https://catfact.ninja/fact',
-    'https://jsonplaceholder.typicode.com/todos'
+    'https://jsonplaceholder.typicode.com/todos',
+    'https://api.chucknorris.io/jokes/random',
+    'https://api.agify.io?name=michael'
   ];
 }
 
@@ -402,7 +404,7 @@ export function displayHelp() {
 }
 
 export function getVersion() {
-  return '0.0.29';
+  return '0.0.30';
 }
 
 export function listCommands() {

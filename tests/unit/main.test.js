@@ -261,3 +261,18 @@ describe('Custom Ontology Functions', () => {
     expect(extended.concepts).toContain('NewConcept');
   });
 });
+
+// New test for extended endpoints
+describe('Extended Endpoints Test', () => {
+  test('fetch data from all endpoints and log response snippet', async () => {
+    const endpoints = listAvailableEndpoints();
+    for (const endpoint of endpoints) {
+      try {
+        const response = await fetchDataWithRetry(endpoint, 1);
+        console.log(`Response from ${endpoint}:`, response.substring(0, 100));
+      } catch (e) {
+        console.log(`Error fetching ${endpoint}:`, e.message);
+      }
+    }
+  }, 30000);
+});
