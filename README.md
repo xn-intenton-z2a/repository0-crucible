@@ -23,6 +23,10 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
     - `--fetch-retry`: Fetch data with a retry mechanism.
     - `--changelog`: Display the change log for extended functions.
     - `--extend-details`: Extend the ontology with additional details and metrics.
+- **New Functions Added:**
+  - `transformOntologyData`: Transforms and augments ontology data.
+  - `debugOntologyMetrics`: Provides debugging metrics for the ontology.
+  - `reflectOntologyStatus`: Returns the current status and completeness of the ontology.
 - Updated public data endpoints to reflect correct API URLs (e.g., GitHub and Coinbase).
 - Enhanced error handling for file operations and network requests.
 
@@ -105,7 +109,7 @@ owl-builder retrieves data from several public data sources, including:
 - https://jsonplaceholder.typicode.com/todos
 - https://api/agify.io/?name=michael
 - https://api/openweathermap.org/data/2.5/weather?q=London
-- https://api.coinbase.com/v2/exchange-rates
+- https://api/coinbase.com/v2/exchange-rates
 
 ## Usage
 
@@ -243,7 +247,7 @@ Example commands:
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging, enhanced ontology processing, and multiple wrappers to aggregate ontology models in various configurations, with a focus exclusively on extracting and building ontologies from public data sources.
+Contributions are welcome! Please review [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging, enhanced ontology processing with debugging and transformation features, and multiple wrappers to aggregate ontology models in various configurations, with a focus exclusively on extracting and building ontologies from public data sources.
 
 ## License
 

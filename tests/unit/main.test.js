@@ -48,7 +48,10 @@ const {
   wrapOntologyModelsSimple,
   wrapOntologyModelsComprehensive,
   wrapOntologyModelsRandom,
-  backupOntology
+  backupOntology,
+  transformOntologyData,
+  debugOntologyMetrics,
+  reflectOntologyStatus
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -449,7 +452,6 @@ describe("Extended Functionality", () => {
 
   test("main with --wrap-random returns one of the available wrappers", async () => {
     const result = await main(["--wrap-random"]);
-    // Random wrapper should have at least one of the expected properties
     expect(result).toHaveProperty("basic");
   });
 
@@ -511,6 +513,26 @@ describe("Extended Functionality", () => {
       const clone = cloneOntology();
       expect(clone).toEqual(ontology);
       expect(clone).not.toBe(ontology);
+    });
+
+    test("transformOntologyData returns ontology with transformed flag", () => {
+      const transformed = transformOntologyData();
+      expect(transformed.transformed).toBe(true);
+      expect(transformed.transformationDetails).toHaveProperty("transformedAt");
+    });
+
+    test("debugOntologyMetrics returns metrics with conceptCount, title, and descriptionLength", () => {
+      const metrics = debugOntologyMetrics();
+      expect(metrics).toHaveProperty("conceptCount");
+      expect(metrics).toHaveProperty("title");
+      expect(metrics).toHaveProperty("descriptionLength");
+    });
+
+    test("reflectOntologyStatus returns valid status object", () => {
+      const status = reflectOntologyStatus();
+      expect(status).toHaveProperty("valid");
+      expect(status).toHaveProperty("completeness");
+      expect(status).toHaveProperty("lastUpdated");
     });
   });
 });
