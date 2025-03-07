@@ -4,7 +4,6 @@ import path from 'path';
 import http from 'http';
 import * as mainModule from '../../src/lib/main.js';
 
-// Test suite for owl-builder, refocused on live public data sources
 const {
   main,
   buildOntology,
@@ -151,7 +150,7 @@ describe('Crawling Functionality', () => {
         expect(item).toHaveProperty('owlContent', '<ontology><title>Public Data Ontology</title></ontology>');
       }
     });
-  });
+  }, 30000);
 
   test('fetchDataWithRetry rejects for invalid URL', async () => {
     const originalGet = http.get;

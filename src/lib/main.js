@@ -5,19 +5,19 @@
  *
  * Mission Statement:
  *   owl-builder builds OWL ontologies directly from live, verified public data sources.
- *   Our goal is to provide an intuitive and extensible platform for ontology building,
- *   management, and querying with a focus on real-time public data integration.
+ *   This release refocuses the library on integrating real-time public endpoints to ensure
+ *   that ontology models are built with up-to-date and trusted external data.
  *
- * Refocused Update:
- *   This release refocuses the library on capturing and building OWL ontologies directly
- *   from verified external data sources. Public endpoints are now prioritized for crawling
- *   and integration, ensuring reliable and live data feeds for enhanced ontology models.
+ * Changelog:
+ *   - Refocused on using live public data sources for ontology building.
+ *   - Extended list of endpoints and enhanced diagnostic logging for network operations.
+ *   - Updated demo mode to better showcase real data fetching and integration.
  *
  * Features:
- *   - Build and persist ontology models from verified public data
+ *   - Build and persist ontology models from verified public data sources
  *   - Query and validate ontology concepts
  *   - Export/import OWL (XML) representations
- *   - Crawl public endpoints with robust error handling
+ *   - Crawl updated public endpoints with robust error handling
  *   - Extended OWL ontology model wrappers for basic, advanced, and custom models
  *   - Simple web server for diagnostic monitoring
  *
@@ -113,6 +113,7 @@ export function clearOntology() {
 }
 
 export function listAvailableEndpoints() {
+  // Extended list of public endpoints for building ontologies
   return [
     'https://api.publicapis.org/entries',
     'https://dog.ceo/api/breeds/image/random',
