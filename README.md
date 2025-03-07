@@ -196,8 +196,9 @@ Please review [CONTRIBUTING.md](CONTRIBUTING.md) before contributing. We welcome
 ## Changelog
 
 - **Version 0.0.30**
-  - Refocused on integrating real public data sources for ontology building.
+  - Integrated real public data sources for ontology building.
   - Extended list of public endpoints.
+  - Added a default User-Agent header for API requests to improve compatibility with services like GitHub.
   - Added a comprehensive demo mode as the default main execution to showcase all ontology functions.
   - README refreshed per CONTRIBUTING guidelines.
 
