@@ -1,6 +1,7 @@
 import { describe, test, expect, vi } from 'vitest';
 import fs from 'fs';
 import path from 'path';
+import http from 'http';
 import * as mainModule from '../../src/lib/main.js';
 
 // Force dummy responses during testing

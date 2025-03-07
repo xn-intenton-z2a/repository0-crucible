@@ -75,6 +75,7 @@ node src/lib/main.js --help
 - **Version 0.0.24**
   - Increased test coverage by adding tests for error conditions in clearOntology and for retry logic in fetchDataWithRetry.
   - Updated CLI version to 0.0.24 across the tool and tests.
+  - Fixed ReferenceError in tests for fetchDataWithRetry by importing the 'http' module in the test file.
 
 ## Contributing
 

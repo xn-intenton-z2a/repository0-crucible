@@ -210,7 +210,7 @@ const commandActions = {
     const searchTerm = args[1] || "Concept1";
     const results = queryOntology(searchTerm);
     console.log("Ontology query results:", results);
-    return results;
+    return results; 
   },
   "--validate": async (args) => { 
     const ontology = buildOntology(); 
