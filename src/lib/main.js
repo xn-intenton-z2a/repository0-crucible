@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 // owl-builder CLI Tool
-// Mission: Build robust OWL ontologies from verified public data sources.
-// Legacy simulation endpoints and redundant demo code have been pruned in alignment with the CONTRIBUTING guidelines.
+// Refactored to focus exclusively on building robust OWL ontologies from verified public data sources.
+// Legacy simulation endpoints and redundant demo code have been pruned in alignment with our CONTRIBUTING guidelines.
 
 import fs from 'fs';
 import path from 'path';
