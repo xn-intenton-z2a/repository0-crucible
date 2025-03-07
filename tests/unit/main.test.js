@@ -374,7 +374,6 @@ describe('Main Module General Functions', () => {
     expect(result.order).toBe('desc');
   });
 
-  // New tests for additional functions
   test('main with --analyze returns analysis result', async () => {
     const result = await main(['--analyze']);
     expect(result).toHaveProperty('analysis');
