@@ -23,12 +23,11 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
     - `--fetch-retry`: Fetch data with a retry mechanism.
     - `--changelog`: Display the change log for extended functions.
     - `--extend-details`: Extend the ontology with additional details and metrics.
+- Pruned legacy endpoints and corrected public API URLs (e.g. updated GitHub endpoint to `https://api.github.com`).
 - **New Functions Added:**
   - `transformOntologyData`: Transforms and augments ontology data.
   - `debugOntologyMetrics`: Provides debugging metrics for the ontology.
   - `reflectOntologyStatus`: Returns the current status and completeness of the ontology.
-- Updated public data endpoints to reflect correct API URLs (e.g., GitHub and Coinbase).
-- Enhanced error handling for file operations and network requests.
 
 ## Installation
 
