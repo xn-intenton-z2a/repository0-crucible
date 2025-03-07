@@ -54,9 +54,9 @@ function simulateNetworkFailure(mod) {
 
 
 describe('Core Ontology Functions', () => {
-  test('buildOntology returns sample ontology', () => {
+  test('buildOntology returns public data ontology', () => {
     const ont = buildOntology();
-    expect(ont).toHaveProperty('title', 'Sample Ontology');
+    expect(ont).toHaveProperty('title', 'Public Data Ontology');
     expect(Array.isArray(ont.concepts)).toBe(true);
   });
 
@@ -87,7 +87,7 @@ describe('Core Ontology Functions', () => {
   });
 
   test('queryOntology returns matching concepts', () => {
-    const ontology = { title: 'Sample Ontology', concepts: ['Concept1', 'Concept2', 'ExtraConcept'] };
+    const ontology = { title: 'Public Data Ontology', concepts: ['Concept1', 'Concept2', 'ExtraConcept'] };
     const readSpy = vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(ontology, null, 2));
     const results = queryOntology('Extra');
     expect(results.results).toEqual(['ExtraConcept']);
@@ -196,7 +196,7 @@ describe('CLI and Main Function Tests', () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     const ontology = await main(['--build']);
     expect(spy).toHaveBeenCalledWith('Ontology built:', ontology);
-    expect(ontology).toHaveProperty('title', 'Sample Ontology');
+    expect(ontology).toHaveProperty('title', 'Public Data Ontology');
     spy.mockRestore();
   });
 
