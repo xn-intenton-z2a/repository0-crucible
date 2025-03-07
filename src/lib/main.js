@@ -4,7 +4,8 @@
 // owl-builder CLI Tool
 // Mission Statement: Build robust OWL ontologies extracted from diverse public data sources.
 // NOTE: Endpoints and related functionalities have been verified via unit tests.
-// This version refocuses on public API integration and streamlined ontology processing. Legacy functionalities have been pruned and documentation updated per CONTRIBUTING guidelines.
+// This version refocuses on public API integration, extends the list of endpoints, adds a new test command for endpoints,
+// and streamlines ontology processing. Legacy functionalities have been pruned and documentation updated per CONTRIBUTING guidelines.
 
 import os from 'os';
 import fs from 'fs';
@@ -135,8 +136,7 @@ export function generateOntologyReport() {
   return { title: 'Sample Ontology', summary: 'Summary', analysis: 'Analysis', enhanced: true };
 }
 
-// The listAvailableEndpoints function returns a fixed list of endpoints. 
-// Verified via unit tests to return 10 endpoints as expected.
+// Extended: New endpoints list (extended from the original 10 endpoints)
 export function listAvailableEndpoints() {
   return [
     'https://api.publicapis.org/entries',
@@ -148,7 +148,10 @@ export function listAvailableEndpoints() {
     'https://dummyjson.com/products',
     'https://randomuser.me/api/',
     'https://catfact.ninja/fact',
-    'https://jsonplaceholder.typicode.com/todos'
+    'https://jsonplaceholder.typicode.com/todos',
+    'https://api.nationalize.io',
+    'https://api.agify.io',
+    'https://api.genderize.io'
   ];
 }
 
@@ -290,6 +293,27 @@ export function wrapOntologyModelsTree() {
 
 export function wrapOntologyModelsMatrix() {
   return { matrixWrapped: true, matrix: [[1, 2], [3, 4]] };
+}
+
+// New Functionality: Test Endpoints
+export async function testEndpoints() {
+  const endpoints = listAvailableEndpoints();
+  for (const endpoint of endpoints) {
+    if (process.env.FORCE_DUMMY_ENDPOINT === 'true') {
+      console.log(`Verified endpoint (dummy): ${endpoint}`);
+    } else {
+      const mod = endpoint.startsWith('https') ? https : http;
+      mod.get(endpoint, (res) => {
+        let data = '';
+        res.on('data', (chunk) => data += chunk);
+        res.on('end', () => {
+          console.log(`Response from ${endpoint}: ${data.substring(0, 50)}...`);
+        });
+      }).on('error', (err) => {
+        console.log(`Error fetching ${endpoint}: ${err.message}`);
+      });
+    }
+  }
 }
 
 // Global command actions mapping
@@ -533,6 +557,9 @@ const commandActions = {
     const matrixWrapped = wrapOntologyModelsMatrix();
     console.log("Matrix Wrapped Ontology Models:", matrixWrapped);
     return matrixWrapped;
+  },
+  "--test-endpoints": async (args) => {
+    await testEndpoints();
   }
 };
 
@@ -549,7 +576,7 @@ export async function main(args = process.argv.slice(2)) {
 
 // Helper functions for CLI
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints`);
 }
 
 export function getVersion() {
