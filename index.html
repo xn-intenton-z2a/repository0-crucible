@@ -93,6 +93,11 @@ npm install
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --crawl
 </code></pre>
 </li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">List Available Commands:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --list
+</code></pre>
+</li>
 </ul>
 <h3 class="md-github"><a class="md-github__anchor" name="using-real-endpoints-for-meaningful-owl-output" href="#using-real-endpoints-for-meaningful-owl-output"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using Real Endpoints for Meaningful OWL Output</h3>
 <p class="md-github">To retrieve real data from public endpoints and generate meaningful OWL XML output, disable the dummy data mode by setting the environment variable <code class="md-github">FORCE_DUMMY_ENDPOINT</code> to <code class="md-github">false</code>. For example:</p>
@@ -160,24 +165,25 @@ npm run formatting
 <ul class="md-github">
 <li class="md-github"><code class="md-github">--help</code>: Displays usage instructions.</li>
 <li class="md-github"><code class="md-github">--version</code>: Shows the tool version.</li>
-<li class="md-github"><code class="md-github">--build</code>: Builds an ontology from public data sources.</li>
+<li class="md-github"><code class="md-github">--list</code>: Lists all supported CLI commands.</li>
+<li class="md-github"><code class="md-github">--build</code>: Generates an ontology using public data and prints it.</li>
 <li class="md-github"><code class="md-github">--persist</code>: Persists the ontology to a file.</li>
-<li class="md-github"><code class="md-github">--load</code>: Loads the persisted ontology from the file.</li>
-<li class="md-github"><code class="md-github">--query &quot;searchTerm&quot;</code>: Queries ontology concepts by a given term.</li>
-<li class="md-github"><code class="md-github">--export</code>: Exports the ontology to an OWL XML representation.</li>
-<li class="md-github"><code class="md-github">--import</code>: Imports an ontology from an OWL XML string.</li>
-<li class="md-github"><code class="md-github">--backup</code>: Creates a backup of the ontology file.</li>
+<li class="md-github"><code class="md-github">--load</code>: Loads and prints the saved ontology.</li>
+<li class="md-github"><code class="md-github">--query &quot;searchTerm&quot;</code>: Searches ontology concepts by the given term.</li>
+<li class="md-github"><code class="md-github">--export</code>: Exports the ontology to an OWL XML format and prints it.</li>
+<li class="md-github"><code class="md-github">--import</code>: Imports an ontology from an OWL XML string and prints it.</li>
+<li class="md-github"><code class="md-github">--backup</code>: Creates a backup of the current ontology file.</li>
 <li class="md-github"><code class="md-github">--update &quot;New Title&quot;</code>: Updates the ontology's title.</li>
 <li class="md-github"><code class="md-github">--clear</code>: Deletes the ontology file if it exists.</li>
-<li class="md-github"><code class="md-github">--crawl</code>: Crawls public endpoints and returns the results.</li>
-<li class="md-github"><code class="md-github">--fetch-retry</code>: Demonstrates fetching data with retry logic.</li>
-<li class="md-github"><code class="md-github">--build-basic</code>: Builds a basic OWL model.</li>
-<li class="md-github"><code class="md-github">--build-advanced</code>: Builds an advanced OWL model.</li>
-<li class="md-github"><code class="md-github">--wrap-model</code>: Wraps an ontology model with additional metadata.</li>
-<li class="md-github"><code class="md-github">--build-custom</code>: Builds a custom ontology based on user-defined customizations.</li>
-<li class="md-github"><code class="md-github">--extend-concepts</code>: Extends the current ontology with additional concepts.</li>
-<li class="md-github"><code class="md-github">--diagnostics</code>: Outputs diagnostic information about the environment.</li>
-<li class="md-github"><code class="md-github">--serve</code>: Starts the built-in web server for monitoring.</li>
+<li class="md-github"><code class="md-github">--crawl</code>: Initiates crawling of public endpoints and returns the results.</li>
+<li class="md-github"><code class="md-github">--fetch-retry</code>: Demonstrates data fetching with retry logic.</li>
+<li class="md-github"><code class="md-github">--build-basic</code>: Creates and prints a basic OWL model.</li>
+<li class="md-github"><code class="md-github">--build-advanced</code>: Creates and prints an advanced OWL model.</li>
+<li class="md-github"><code class="md-github">--wrap-model [JSON]</code>: Wraps the provided or default ontology model with additional metadata.</li>
+<li class="md-github"><code class="md-github">--build-custom</code>: Builds a custom ontology with user-defined options.</li>
+<li class="md-github"><code class="md-github">--extend-concepts</code>: Extends an existing ontology with additional concepts.</li>
+<li class="md-github"><code class="md-github">--diagnostics</code>: Outputs environment diagnostic info.</li>
+<li class="md-github"><code class="md-github">--serve</code>: Starts the web server for monitoring.</li>
 </ul>
 <hr class="md-github">
 <h2 class="md-github"><a class="md-github__anchor" name="sdk-documentation" href="#sdk-documentation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SDK Documentation</h2>
@@ -213,7 +219,7 @@ npm run formatting
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">--help</strong>: Displays detailed usage information.</li>
 <li class="md-github"><strong class="md-github">--version</strong>: Returns the current tool version.</li>
-<li class="md-github"><strong class="md-github">--list</strong>: Lists all available CLI commands.</li>
+<li class="md-github"><strong class="md-github">--list</strong>: Returns a list of all available CLI commands.</li>
 <li class="md-github"><strong class="md-github">--build</strong>: Generates an ontology using public data and prints it.</li>
 <li class="md-github"><strong class="md-github">--persist</strong>: Builds and saves the ontology.</li>
 <li class="md-github"><strong class="md-github">--load</strong>: Loads and prints the saved ontology.</li>
@@ -243,8 +249,8 @@ npm run formatting
 <li class="md-github"><strong class="md-github">Version 0.0.28</strong>
 <ul class="md-github">
 <li class="md-github">Extended library functions by adding buildCustomOntology and extendOntologyConcepts.</li>
-<li class="md-github">Added new CLI commands: --build-custom and --extend-concepts.</li>
-<li class="md-github">Updated documentation to reflect extended functionality for custom ontology building and concept extension.</li>
+<li class="md-github">Added new CLI commands: --build-custom, --extend-concepts, and --list.</li>
+<li class="md-github">Updated documentation to reflect extended functionality for custom ontology building, concept extension, and listing available commands.</li>
 </ul>
 </li>
 <li class="md-github"><strong class="md-github">Version 0.0.27</strong>
@@ -262,7 +268,7 @@ npm run formatting
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T21:53:54.854Z</p>
+    <p>Generated on 2025-03-07T21:59:38.996Z</p>
   </footer>
 </body>
 </html>
