@@ -501,8 +501,7 @@ const commandActions = {
   // New wrappers for additional representations
   "--wrap-tabular": async (args) => { const tabular = wrapOntologyModelsTabular(); console.log("Tabular wrapped ontology models:", tabular); return tabular; },
   "--wrap-html": async (args) => { const html = wrapOntologyModelsHTML(); console.log("HTML wrapped ontology models:", html); return html; },
-  "--wrap-markdown": async (args) => { const markdown = wrapOntologyModelsMarkdown(); console.log("Markdown wrapped ontology models:
-", markdown); return markdown; },
+  "--wrap-markdown": async (args) => { const markdown = wrapOntologyModelsMarkdown(); console.log("Markdown wrapped ontology models:", markdown); return markdown; },
   // New commands added inline with mission statement
   "--fetch-multiple": async (args) => { const data = await fetchMultipleEndpoints(); console.log("Fetched multiple endpoints:", data); return data; },
   "--validate-optimize": async (args) => { const result = validateAndOptimizeOntology(); console.log("Ontology valid and optimized:", result); return result; }
