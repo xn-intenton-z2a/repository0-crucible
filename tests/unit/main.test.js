@@ -47,7 +47,8 @@ const {
   extendOntologyDetails,
   wrapOntologyModelsSimple,
   wrapOntologyModelsComprehensive,
-  wrapOntologyModelsRandom
+  wrapOntologyModelsRandom,
+  backupOntology
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");

@@ -14,14 +14,14 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
   - **New Wrapper Commands:**
     - `--wrap-simple`: Wrap and return basic and enhanced ontology models.
     - `--wrap-comprehensive`: Wrap and aggregate a comprehensive set of ontology models including report, synced, advanced, and detailed data.
-    - `--wrap-random`: Return a randomly chosen ontology model wrapper from available options.
+    - `--wrap-random`: Return a randomly selected wrapper among available options.
   - **Other New Commands:**
     - `--auto-commit`: Generate an automated commit message.
     - `--combine-models`: Merge ontology models into one comprehensive model.
     - `--refresh-details`: Update the ontology description with additional details.
     - `--extend-concepts`: Extend the ontology by adding new concepts.
     - `--fetch-retry`: Fetch data with a retry mechanism.
-    - `--changelog`: Display the change log detailing extended functions.
+    - `--changelog`: Display the change log for extended functions.
     - `--extend-details`: Extend the ontology with additional details and metrics.
 - Updated public data endpoints to reflect correct API URLs (e.g., GitHub and Coinbase).
 - Enhanced error handling for file operations and network requests.
