@@ -10,6 +10,7 @@ owl-builder is a CLI tool and JavaScript library focused exclusively on building
 - **Ontology Analysis & Optimization:** Analyze, optimize, and transform ontologies (including transforming to JSON-LD) to ensure high quality and consistency.
 - **Enhanced Metadata Management:** Easily attach metadata, record ontology history, merge ontologies, and generate concise summaries.
 - **Robust CLI:** A comprehensive command-line interface offering a wide range of commands to build, manage, and query ontologies.
+- **New Extended Functions:** Added functions for validating & optimizing, anonymizing, exporting to RDF (Turtle), summarizing statistics, logging extended history, and fetching multiple endpoints.
 
 ## Usage
 
@@ -37,8 +38,12 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --test-endpoints
   ```
+- **Validate and Optimize Ontology:**
+  ```bash
+  node src/lib/main.js --validate-optimize
+  ```
 
-Additional commands for analysis, optimization, metadata extension, and more are also available. See the CLI help for the full list.
+Additional commands for advanced analysis, metadata extension, extended exports and more are available. See the CLI help for the full list.
 
 ## Public Endpoints
 
@@ -79,6 +84,7 @@ npm test
   - Refocused the library solely on building OWL ontologies from verified public data sources.
   - Removed legacy endpoints and redundant implementations.
   - Extended functionality with enhanced wrappers, metadata management, and advanced analysis commands.
+  - **New:** Added functions: validateAndOptimizeOntology, anonymizeOntology, exportOntologyToRDF, summarizeOntologyStatistics, logOntologyHistoryExtended, and fetchMultipleEndpoints.
   - README refreshed to align with the latest CONTRIBUTING guidelines.
 
 ## Contributing

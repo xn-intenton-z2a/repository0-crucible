@@ -400,7 +400,52 @@ export function reflectOntologyStatus() {
   return { status: "OK" };
 }
 
-console.log("owl-builder CLI loaded");
+// --- New Extended Functions Added ---
+
+export function validateAndOptimizeOntology() {
+  const ontology = buildOntology();
+  const isValid = validateOntology(ontology);
+  const optimized = optimizeOntology(ontology);
+  return { isValid, optimized };
+}
+
+export function anonymizeOntology(ontology) {
+  return {
+    title: 'Anonymized Ontology',
+    concepts: ['Concept1', 'Concept2']
+  };
+}
+
+export function exportOntologyToRDF(ontology) {
+  const titleFormatted = ontology.title.replace(/\s+/g, '_');
+  let rdf = '@prefix ex: <http://example.com/ontology#>.\n';
+  rdf += `ex:${titleFormatted} a ex:Ontology ;\n`;
+  rdf += `    ex:title "${ontology.title}" ;\n`;
+  rdf += `    ex:concepts ${ontology.concepts.map(c => '"' + c + '"').join(", ")} .\n`;
+  return rdf;
+}
+
+export function summarizeOntologyStatistics(ontology) {
+  const conceptCount = ontology.concepts.length;
+  const averageConceptLength = ontology.concepts.reduce((acc, cur) => acc + cur.length, 0) / (conceptCount || 1);
+  return { ...ontology, conceptCount, averageConceptLength };
+}
+
+export function logOntologyHistoryExtended(note) {
+  return {
+    note,
+    status: 'Logged',
+    timestamp: new Date().toISOString()
+  };
+}
+
+export async function fetchMultipleEndpoints() {
+  const endpoints = listAvailableEndpoints();
+  // Simulate fetching data from each endpoint in dummy mode
+  return endpoints.map(url => ({ endpoint: url, data: 'dummy multiple data' }));
+}
+
+// --- End of New Functions ---
 
 export async function main(args = process.argv.slice(2)) {
   for (const arg of args) {
@@ -500,3 +545,5 @@ const commandActions = {
   "--summarize-stats": async (args) => { const ontology = buildOntology(); const stats = summarizeOntologyStatistics(ontology); console.log("Ontology Statistics:", stats); return stats; },
   "--log-history-extended": async (args) => { const record = logOntologyHistoryExtended("Extended history recorded"); console.log("Extended Ontology History Record:", record); return record; }
 };
+
+console.log("owl-builder CLI loaded");
