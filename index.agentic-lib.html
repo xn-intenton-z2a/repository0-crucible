@@ -31,7 +31,8 @@
 <li class="md-github">Refocused on public data source integration; legacy endpoints removed.</li>
 <li class="md-github">Extended ontology processing functions and wrapper commands added:
 <ul class="md-github">
-<li class="md-github">New functions: <code class="md-github">buildOntology</code>, <code class="md-github">buildDetailedOntology</code>, <code class="md-github">serveWebInterface</code>, <code class="md-github">diagnostics</code>, <code class="md-github">integrateOntology</code>, <code class="md-github">crawlData</code>, <code class="md-github">persistOntology</code>, <code class="md-github">loadOntology</code>, <code class="md-github">queryOntology</code>, <code class="md-github">validateOntology</code>, <code class="md-github">exportOntologyToXML</code>, <code class="md-github">importOntologyFromXML</code>, <code class="md-github">syncOntology</code>, <code class="md-github">backupOntology</code>, <code class="md-github">updateOntology</code>, <code class="md-github">clearOntology</code>, <code class="md-github">enhanceOntology</code>, <code class="md-github">wrapOntologyModels</code>, <code class="md-github">wrapOntologyModelsExtended</code>, <code class="md-github">generateOntologyReport</code>, <code class="md-github">listAvailableEndpoints</code>, <code class="md-github">fetchFromExtendedEndpoints</code>, <code class="md-github">advancedOntologyAnalysis</code>, <code class="md-github">wrapAllOntologyModels</code>, <code class="md-github">cleanupOntologyData</code>, <code class="md-github">automatedCommitMessage</code>, <code class="md-github">fetchDataWithRetry</code>, <code class="md-github">getChangeLog</code>, <code class="md-github">extendOntologyDetails</code>, <code class="md-github">wrapOntologyModelsSimple</code>, <code class="md-github">wrapOntologyModelsComprehensive</code>, <code class="md-github">wrapOntologyModelsRandom</code>, <code class="md-github">updateOntologyTracking</code>, <code class="md-github">wrapAdvancedOntologyModels</code>, <code class="md-github">wrapMergedOntologyModels</code>, as well as extended new functions: <code class="md-github">extendOntologyConcepts</code>, <code class="md-github">resetOntology</code>, <code class="md-github">cloneOntology</code>, <code class="md-github">transformOntologyData</code>, <code class="md-github">debugOntologyMetrics</code>, <code class="md-github">reflectOntologyStatus</code>, and <code class="md-github">updateOntologyDescription</code>, <code class="md-github">mergeOntologyModels</code>.</li>
+<li class="md-github">New functions: <code class="md-github">buildOntology</code>, <code class="md-github">buildDetailedOntology</code>, <code class="md-github">serveWebInterface</code>, <code class="md-github">diagnostics</code>, <code class="md-github">integrateOntology</code>, <code class="md-github">crawlData</code>, <code class="md-github">persistOntology</code>, <code class="md-github">loadOntology</code>, <code class="md-github">queryOntology</code>, <code class="md-github">validateOntology</code>, <code class="md-github">exportOntologyToXML</code>, <code class="md-github">importOntologyFromXML</code>, <code class="md-github">syncOntology</code>, <code class="md-github">backupOntology</code>, <code class="md-github">updateOntology</code>, <code class="md-github">clearOntology</code>, <code class="md-github">enhanceOntology</code>, <code class="md-github">wrapOntologyModels</code>, <code class="md-github">wrapOntologyModelsExtended</code>, <code class="md-github">generateOntologyReport</code>, <code class="md-github">listAvailableEndpoints</code>, <code class="md-github">fetchFromExtendedEndpoints</code>, <code class="md-github">advancedOntologyAnalysis</code>, <code class="md-github">wrapAllOntologyModels</code>, <code class="md-github">cleanupOntologyData</code>, <code class="md-github">automatedCommitMessage</code>, <code class="md-github">fetchDataWithRetry</code>, <code class="md-github">getChangeLog</code>, <code class="md-github">extendOntologyDetails</code>, <code class="md-github">wrapOntologyModelsSimple</code>, <code class="md-github">wrapOntologyModelsComprehensive</code>, <code class="md-github">wrapOntologyModelsRandom</code>, <code class="md-github">updateOntologyTracking</code>, <code class="md-github">wrapAdvancedOntologyModels</code>, <code class="md-github">wrapMergedOntologyModels</code>, as well as extended new functions: <code class="md-github">extendOntologyConcepts</code>, <code class="md-github">resetOntology</code>, <code class="md-github">cloneOntology</code>, <code class="md-github">transformOntologyData</code>, <code class="md-github">debugOntologyMetrics</code>, <code class="md-github">reflectOntologyStatus</code>, <code class="md-github">updateOntologyDescription</code>, <code class="md-github">mergeOntologyModels</code>.</li>
+<li class="md-github"><strong class="md-github">Wrapper Enhancements:</strong> Added new wrappers <code class="md-github">wrapOntologyModelsJSON</code> and <code class="md-github">wrapOntologyModelsCustom</code> with corresponding CLI commands <code class="md-github">--wrap-json</code> and <code class="md-github">--wrap-custom</code>.</li>
 </ul>
 </li>
 <li class="md-github"><strong class="md-github">Bug Fix:</strong> Fixed the <code class="md-github">--list</code> command by moving the command actions to a global scope, ensuring that <code class="md-github">listCommands()</code> functions correctly.</li>
@@ -107,6 +108,17 @@
 </code></pre>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">Additional Wrapper Commands:</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">JSON Wrapper:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-json
+</code></pre>
+</li>
+<li class="md-github"><strong class="md-github">Custom Wrapper:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-custom desc
+</code></pre>
+</li>
+</ul>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">Other Commands:</strong></p>
 <ul class="md-github">
 <li class="md-github"><code class="md-github">--auto-commit</code>, <code class="md-github">--combine-models</code>, <code class="md-github">--refresh-details</code>, <code class="md-github">--extend-concepts</code>, <code class="md-github">--fetch-retry</code>, <code class="md-github">--changelog</code>, <code class="md-github">--extend-details</code>, <code class="md-github">--wrap-simple</code>, <code class="md-github">--wrap-comprehensive</code>, <code class="md-github">--wrap-random</code>, <code class="md-github">--clean-transform</code>, <code class="md-github">--fetch-additional</code>, <code class="md-github">--combine-metrics</code>, <code class="md-github">--update-tracking</code>, <code class="md-github">--wrap-advanced</code>, <code class="md-github">--wrap-merged</code></li>
@@ -124,7 +136,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T08:13:00.054Z</p>
+    <p>Generated on 2025-03-07T08:25:14.016Z</p>
   </footer>
 </body>
 </html>
