@@ -162,10 +162,10 @@ describe('Crawling Functionality', () => {
 });
 
 describe('CLI and Main Function Tests', () => {
-  test('main without args prints default message', async () => {
+  test('main without args runs demo and logs demo output', async () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     await main([]);
-    expect(spy).toHaveBeenCalledWith('Run with: []');
+    expect(spy).toHaveBeenCalledWith('Running demo of ontology functions:');
     spy.mockRestore();
   });
 

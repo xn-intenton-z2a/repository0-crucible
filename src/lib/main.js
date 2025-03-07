@@ -388,8 +388,71 @@ const commandActions = {
   }
 };
 
+// Demo function to show default ontology functionality
+async function demo() {
+  console.log('Running demo of ontology functions:');
+
+  // Build Ontology and persist it
+  const ontology = buildOntology();
+  console.log('Demo - built ontology:', ontology);
+  const persistResult = persistOntology(ontology);
+  console.log('Demo - persisted ontology:', persistResult);
+
+  // Load and query
+  const loadedOntology = loadOntology();
+  console.log('Demo - loaded ontology:', loadedOntology);
+  const queryResult = queryOntology('Concept');
+  console.log('Demo - query result:', queryResult);
+
+  // Validate, export, import
+  const isValid = validateOntology(ontology);
+  console.log('Demo - ontology valid:', isValid);
+  const xml = exportOntologyToXML(ontology);
+  console.log('Demo - exported XML:', xml);
+  const importedOntology = importOntologyFromXML(xml);
+  console.log('Demo - imported ontology:', importedOntology);
+
+  // Backup and update
+  const backupResult = backupOntology();
+  console.log('Demo - backup result:', backupResult);
+  const updatedOntology = updateOntology('Demo Updated Ontology');
+  console.log('Demo - updated ontology:', updatedOntology);
+
+  // List endpoints and fetch data with retry (using a single endpoint for demo)
+  const endpoints = listAvailableEndpoints();
+  console.log('Demo - available endpoints:', endpoints);
+  try {
+    const fetchData = await fetchDataWithRetry(endpoints[0], 1);
+    console.log(`Demo - fetched data from ${endpoints[0]}:`, fetchData.substring(0, 100));
+  } catch (err) {
+    console.log(`Demo - error fetching ${endpoints[0]}:`, err.message);
+  }
+
+  // Crawl ontologies (limited demo, may include errors)
+  const crawlResults = await crawlOntologies();
+  console.log('Demo - crawl results:', crawlResults);
+
+  // Ontology model wrappers
+  const basicModel = buildBasicOWLModel();
+  console.log('Demo - basic OWL model:', basicModel);
+  const advancedModel = buildAdvancedOWLModel();
+  console.log('Demo - advanced OWL model:', advancedModel);
+  const wrappedModel = wrapOntologyModel({ title: 'Demo Model' });
+  console.log('Demo - wrapped model:', wrappedModel);
+  const customOntology = buildCustomOntology({ concepts: ['CustomConcept'] });
+  console.log('Demo - custom ontology:', customOntology);
+  const extendedOntology = extendOntologyConcepts(ontology, ['ExtraConcept']);
+  console.log('Demo - extended ontology:', extendedOntology);
+
+  console.log('Demo completed successfully.');
+}
+
 // Main CLI function that dispatches commands based on provided arguments.
 export async function main(args = process.argv.slice(2)) {
+  if (args.length === 0) {
+    await demo();
+    return;
+  }
   for (const arg of args) {
     if (commandActions[arg]) {
       const result = await commandActions[arg](args);
