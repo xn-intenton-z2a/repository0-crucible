@@ -3,7 +3,7 @@
 owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. The library has been refocused exclusively on extracting ontology data directly from public endpoints, ensuring robust integration, persistence, detailed analysis, and querying capabilities. Contributions are welcome – please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## Change Log
-- Updated to version 0.0.13.
+- Updated to version 0.0.14.
 - Refocused the library exclusively on building robust ontologies from public data sources; legacy code drift has been pruned and removed.
 - Updated CLI commands to include new features:
   - `--detailed-build`: Build a detailed ontology with additional statistical metrics.
@@ -19,7 +19,8 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
     - `--fetch-retry`: Fetch data with a retry mechanism.
     - `--changelog`: Display the change log detailing extended functions.
     - `--extend-details`: Extend the ontology with additional information and metrics.
-- Updated internal functions and error handling to better support public API interactions.
+- Updated public data endpoints to reflect correct API URLs (e.g., GitHub and Coinbase).
+- Enhanced error handling for file operations and network requests.
 
 ## Installation
 
@@ -86,10 +87,10 @@ owl-builder retrieves data from several public data sources, including:
 - https://dog.ceo/api/breeds/image/random
 - https://jsonplaceholder.typicode.com/posts
 - https://api/spacexdata.com/v4/launches/latest
-- https://api/coindesk.com/v1/bpi/currentprice.json *(Simulated network error in test mode)*
+- https://api.coindesk.com/v1/bpi/currentprice.json *(Simulated network error in test mode)*
 
 **Extended Endpoints:**
-- https://api/github.com
+- https://api.github.com
 - https://jsonplaceholder.typicode.com/comments
 - https://dummyjson.com/products
 - https://randomuser.me/api/
@@ -97,7 +98,7 @@ owl-builder retrieves data from several public data sources, including:
 - https://jsonplaceholder.typicode.com/todos
 - https://api/agify.io/?name=michael
 - https://api/openweathermap.org/data/2.5/weather?q=London
-- https://api/coinbase.com/v2/exchange-rates
+- https://api.coinbase.com/v2/exchange-rates
 
 ## Usage
 
