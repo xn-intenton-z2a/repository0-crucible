@@ -33,6 +33,7 @@
 <li class="md-github"><strong class="md-github">Data Crawling:</strong> Crawl multiple public endpoints to capture data and generate OWL representations.</li>
 <li class="md-github"><strong class="md-github">Backup:</strong> Create backups of your ontology files.</li>
 <li class="md-github"><strong class="md-github">Ontology Model Wrappers:</strong> New wrappers for creating basic and advanced OWL ontology models, and a function to wrap/enrich any ontology model with additional metadata.</li>
+<li class="md-github"><strong class="md-github">Diagnostics:</strong> A new CLI command (<code class="md-github">--diagnostics</code>) to output environment diagnostics, useful for debugging external resource connectivity.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">Display help:</p>
@@ -85,15 +86,18 @@ To perform real network requests, set the environment variable <code class="md-g
 Provide a JSON model as argument or it will default to the basic model<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --wrap-model '{&quot;title&quot;:&quot;Custom Model&quot;}'
 </code></pre>
 </li>
+<li class="md-github"><strong class="md-github">Diagnostics:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --diagnostics
+</code></pre>
+This command outputs diagnostic information regarding environment settings.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="changelog" href="#changelog"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Changelog</h2>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Version 0.0.25</strong>
+<li class="md-github"><strong class="md-github">Version 0.0.26</strong>
 <ul class="md-github">
-<li class="md-github">Added wrappers for OWL ontology models including basic and advanced models.</li>
-<li class="md-github">Introduced CLI commands: --build-basic, --build-advanced, and --wrap-model to facilitate ontology model creation and enrichment.</li>
-<li class="md-github">Updated test coverage with new tests for the ontology model wrappers.</li>
-<li class="md-github">Updated documentation to reflect these changes.</li>
+<li class="md-github">Added a new CLI command <code class="md-github">--diagnostics</code> to output environment diagnostics.</li>
+<li class="md-github">Extended test coverage with deeper mocks for filesystem and network interactions to improve reliability.</li>
+<li class="md-github">Updated ontology model wrappers and added more tests for comprehensive coverage.</li>
+<li class="md-github">Refactored code to enhance modularity and testability.</li>
 </ul>
 </li>
 </ul>
@@ -104,7 +108,7 @@ Provide a JSON model as argument or it will default to the basic model<pre class
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T19:57:29.058Z</p>
+    <p>Generated on 2025-03-07T20:06:06.559Z</p>
   </footer>
 </body>
 </html>
