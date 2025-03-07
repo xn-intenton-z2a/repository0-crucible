@@ -14,7 +14,8 @@
 // - Refocused library exclusively on building ontologies from public data sources; legacy functionalities removed.
 // - New functions added per CONTRIBUTING guidelines: fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus.
 // - Added new function cleanupAndTransformOntology and CLI command --clean-transform to combine cleanup and transformation of ontology data.
-// - Updated Change Log to include new transformation, debugging functions and wrapper commands (wrap-simple, wrap-comprehensive, wrap-random).
+// - Extended library with new functions: fetchAdditionalEndpointData, combineOntologyMetrics, updateOntologyTracking.
+// - New CLI commands added: --fetch-additional, --combine-metrics, and --update-tracking.
 // - Updated version to 0.0.14.
 
 import os from "os";
@@ -202,6 +203,7 @@ export function wrapAllOntologyModels() {
     totalModels: 4
   };
 }
+
 
 // New wrappers added as per CONTRIBUTING guidelines
 
@@ -570,7 +572,7 @@ export async function main(args = []) {
       console.log("Extended Ontology Details:", extended);
       return extended;
     },
-    // New wrapper commands
+    // New wrapper commands added as per CONTRIBUTING guidelines
     "--wrap-simple": async () => {
       const simple = wrapOntologyModelsSimple();
       console.log("Simple Wrapped Ontology Models:", simple);
@@ -591,6 +593,22 @@ export async function main(args = []) {
       const result = cleanupAndTransformOntology();
       console.log("Cleaned and transformed ontology:", result);
       return result;
+    },
+    // New commands added for extended functionality
+    "--fetch-additional": async () => {
+      const additional = await fetchAdditionalEndpointData();
+      console.log("Fetched additional endpoint data:", additional);
+      return additional;
+    },
+    "--combine-metrics": async () => {
+      const metrics = combineOntologyMetrics();
+      console.log("Combined ontology metrics:", metrics);
+      return metrics;
+    },
+    "--update-tracking": async () => {
+      const updated = updateOntologyTracking("Tracking updated via CLI");
+      console.log("Ontology tracking updated:", updated);
+      return updated;
     }
   };
 
@@ -656,7 +674,10 @@ export function displayHelp() {
   --wrap-simple,
   --wrap-comprehensive,
   --wrap-random,
-  --clean-transform
+  --clean-transform,
+  --fetch-additional,
+  --combine-metrics,
+  --update-tracking
 `);
 }
 
@@ -721,7 +742,10 @@ export function listCommands() {
     "--wrap-simple",
     "--wrap-comprehensive",
     "--wrap-random",
-    "--clean-transform"
+    "--clean-transform",
+    "--fetch-additional",
+    "--combine-metrics",
+    "--update-tracking"
   ];
 }
 
@@ -1052,7 +1076,9 @@ export function clearOntology() {
   }
 }
 
-// Extended functions as per CONTRIBUTING guidelines
+/**
+ * Extended functions as per CONTRIBUTING guidelines
+ */
 
 /**
  * Fetches data from an endpoint with a retry mechanism.
@@ -1077,7 +1103,7 @@ export async function fetchDataWithRetry(endpoint, retries = 3) {
  * @returns {string} Change log message.
  */
 export function getChangeLog() {
-  return "Extended functions added including fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus, and new wrapper functions (wrap-simple, wrap-comprehensive, wrap-random, clean-transform) as per CONTRIBUTING guidelines. Pruned legacy endpoints and corrected public API URLs.";
+  return "Extended functions added including fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus, cleanupAndTransformOntology, and new wrapper functions (wrap-simple, wrap-comprehensive, wrap-random, clean-transform, fetch-additional, combine-metrics, update-tracking) as per CONTRIBUTING guidelines. Pruned legacy endpoints and updated public API URLs.";
 }
 
 /**
@@ -1250,4 +1276,45 @@ export function cleanupAndTransformOntology() {
   const ontology = cleanupOntologyData(buildOntology());
   const transformed = transformOntologyData();
   return { cleaned: ontology, transformed };
+}
+
+/**
+ * Fetches additional endpoint data from supplementary public APIs.
+ * @returns {Promise<object[]>} Array of fetched data objects.
+ */
+export async function fetchAdditionalEndpointData() {
+  const endpoints = [
+    "https://api.agify.io/?name=olivia",
+    "https://api.genderize.io/?name=alex",
+    "https://api.nationalize.io/?name=emma"
+  ];
+  const results = await Promise.all(endpoints.map(ep => fetchFromEndpoint(ep)));
+  return results;
+}
+
+/**
+ * Combines various ontology metrics into one comprehensive report.
+ * @returns {object} An object containing combined metrics.
+ */
+export function combineOntologyMetrics() {
+  const ontology = buildOntology();
+  const summary = getOntologySummary(ontology);
+  const advanced = advancedOntologyAnalysis();
+  const debugMetrics = debugOntologyMetrics();
+  return { ...summary, ...advanced, ...debugMetrics };
+}
+
+/**
+ * Updates the ontology with tracking information and persists it.
+ * @param {string} note - A note for tracking updates.
+ * @returns {object} The updated ontology object.
+ */
+export function updateOntologyTracking(note = "Updated tracking") {
+  const ontology = buildOntology();
+  ontology.tracking = {
+    updatedAt: new Date().toISOString(),
+    note
+  };
+  persistOntology(ontology);
+  return ontology;
 }
