@@ -30,8 +30,9 @@
 <li class="md-github"><strong class="md-github">Public Data Integration:</strong> Automatically crawl and integrate data from various public endpoints.</li>
 <li class="md-github"><strong class="md-github">Extended Wrappers:</strong> Multiple wrapper functions for different ontology models including JSON, custom order, graph, tree, matrix, tabular, HTML, markdown, and newly added circular, hierarchical, and grid representations.</li>
 <li class="md-github"><strong class="md-github">Ontology Analysis &amp; Optimization:</strong> Functions to analyze, optimize, and transform ontologies, including transformation to JSON-LD.</li>
-<li class="md-github"><strong class="md-github">Enhanced Metadata Management:</strong> Functions for attaching metadata, recording change history, generating summaries, merging ontologies, and now extended functions such as merging models, updating descriptions, and extending ontology concepts.</li>
-<li class="md-github"><strong class="md-github">Robust CLI:</strong> Comprehensive command-line interface supporting a wide range of commands for ontology operations.</li>
+<li class="md-github"><strong class="md-github">Enhanced Metadata Management:</strong> Functions for attaching metadata, recording change history, generating summaries, merging ontologies, and extended functionalities such as merging models, updating descriptions, and extending ontology concepts.</li>
+<li class="md-github"><strong class="md-github">Additional Extended Functions:</strong> New functions such as anonymizeOntology, exportOntologyToRDF, summarizeOntologyStatistics, and logOntologyHistoryExtended provide enhanced ontology representations and metadata management.</li>
+<li class="md-github"><strong class="md-github">Robust CLI:</strong> Comprehensive command-line interface supporting a wide range of commands for ontology operations, including new commands: --anonymize, --export-rdf, --summarize-stats, and --log-history-extended.</li>
 <li class="md-github"><strong class="md-github">New Extended Features:</strong>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Concurrent Fetching:</strong> Use <code class="md-github">--fetch-multiple</code> to concurrently fetch data from multiple public endpoints.</li>
@@ -175,6 +176,23 @@
 </li>
 </ul>
 </li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Enhanced Ontology Representations and Metadata Management:</strong></p>
+<ul class="md-github">
+<li class="md-github">Anonymize Ontology:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --anonymize
+</code></pre>
+</li>
+<li class="md-github">Export Ontology to RDF (Turtle):<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-rdf
+</code></pre>
+</li>
+<li class="md-github">Summarize Ontology Statistics:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --summarize-stats
+</code></pre>
+</li>
+<li class="md-github">Log Extended Ontology History:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --log-history-extended
+</code></pre>
+</li>
+</ul>
+</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="changelog" href="#changelog"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Changelog</h2>
 <ul class="md-github">
@@ -186,17 +204,17 @@
 <li class="md-github"><strong class="md-github">Extended Wrappers Added:</strong> New wrappers for ontology models have been added including JSON, custom, graph, tree, matrix, tabular, HTML, markdown representations, and newly added circular, hierarchical, and grid wrappers.</li>
 <li class="md-github"><strong class="md-github">New Functions Added:</strong>
 <ul class="md-github">
-<li class="md-github">mergeOntologyModels, updateOntologyDescription, extendOntologyConcepts, plus stubs for resetOntology, cloneOntology, transformOntologyData, debugOntologyMetrics, and reflectOntologyStatus.</li>
+<li class="md-github">mergeOntologyModels, updateOntologyDescription, extendOntologyConcepts, and additional stubs for resetOntology, cloneOntology, transformOntologyData, debugOntologyMetrics, and reflectOntologyStatus.</li>
+<li class="md-github"><strong class="md-github">Enhanced Metadata and Representations:</strong> Added anonymizeOntology, exportOntologyToRDF, summarizeOntologyStatistics, and logOntologyHistoryExtended for improved ontology handling.</li>
+</ul>
+</li>
 <li class="md-github"><strong class="md-github">New Extended Features:</strong>
 <ul class="md-github">
 <li class="md-github">fetchMultipleEndpoints for concurrent endpoint fetching (--fetch-multiple).</li>
 <li class="md-github">validateAndOptimizeOntology to combine validation and optimization (--validate-optimize).</li>
-<li class="md-github"><strong class="md-github">New Wrappers:</strong> wrapOntologyModelsCircular, wrapOntologyModelsHierarchy, wrapOntologyModelsGrid.</li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="md-github"><strong class="md-github">Testing Enhancements:</strong> Test coverage increased with mocks for file system and network operations. External endpoint tests now log dummy responses (&quot;dummy data&quot;) for all endpoints in dummy mode.</li>
+<li class="md-github"><strong class="md-github">Testing Enhancements:</strong> Test coverage increased with mocks for file system and network operations. External endpoint tests now log dummy responses (&quot;dummy data&quot;) when in dummy mode.</li>
 <li class="md-github"><strong class="md-github">Mission Refocus:</strong> Library functionality is now exclusively centered on building ontologies from public data sources.</li>
 </ul>
 </li>
@@ -208,7 +226,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T16:02:07.812Z</p>
+    <p>Generated on 2025-03-07T16:11:37.159Z</p>
   </footer>
 </body>
 </html>
