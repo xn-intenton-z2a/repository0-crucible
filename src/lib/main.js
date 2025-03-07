@@ -241,31 +241,18 @@ export function wrapOntologyModelsGrid() {
   return { gridWrapped: true, grid: [[1,2,3],[4,5,6],[7,8,9]] };
 }
 
-// Additional dummy implementations for functions referenced in commands but not used in tests
-export function getChangeLog() { return 'Change Log: Updated functions'; }
-export function advancedOntologyAnalysis() { return { analysis: 'advanced' }; }
-export function mergeOntologyModels(...models) { return { mergedModels: models }; }
-export function updateOntologyDescription(newDesc) { return { updated: newDesc }; }
-export function extendOntologyConcepts(...concepts) { return { extendedConcepts: concepts }; }
-export function resetOntology() { return { reset: true }; }
-export function cloneOntology(ontology) { return { ...ontology }; }
-export async function fetchDataWithRetry(url) { return { url, data: 'dummy' }; }
-export function extendOntologyDetails() { return { extended: true }; }
-export function wrapOntologyModelsSimple() { return { simple: true }; }
-export function wrapOntologyModelsComprehensive() { return { comprehensive: true }; }
-export function wrapOntologyModelsRandom() { return { random: 'value' }; }
-export function cleanupOntologyData(ontology) { return { cleaned: true, ontology }; }
-export function updateOntologyTracking(msg) { return { tracking: msg }; }
-export function wrapAdvancedOntologyModels() { return { advancedWrapped: true }; }
-export function wrapMergedOntologyModels() { return { mergedWrapped: true }; }
-export function transformOntologyData(ontology) { return { transformed: true, ontology }; }
-export function debugOntologyMetrics(ontology) { return { metrics: 'debug' }; }
-export function reflectOntologyStatus(ontology) { return { status: 'reflected' }; }
-export function wrapOntologyModelsJSON() { return { jsonWrapped: true }; }
-export function wrapOntologyModelsCustom(order) { return { customWrapped: true, order }; }
-export function wrapOntologyModelsGraph() { return { graphWrapped: true }; }
-export function wrapOntologyModelsTree() { return { treeWrapped: true }; }
-export function wrapOntologyModelsMatrix() { return { matrixWrapped: true }; }
+// New Extended Wrappers for different representations
+export function wrapOntologyModelsHTML() {
+  return { htmlWrapped: true, html: '<div>Ontology HTML Representation</div>' };
+}
+
+export function wrapOntologyModelsMarkdown() {
+  return { markdownWrapped: true, markdown: '# Ontology Markdown Representation' };
+}
+
+export function wrapOntologyModelsTabular() {
+  return { tabularWrapped: true, table: [['Header1', 'Header2'], ['Data1', 'Data2']] };
+}
 
 // More additional functions
 export function analyzeOntology() { return { analysis: 'basic' }; }
@@ -298,7 +285,7 @@ export function displayHelp() {
 }
 
 export function getVersion() {
-  return '0.0.22';
+  return '0.0.23';
 }
 
 export function listCommands() {
@@ -371,9 +358,9 @@ const commandActions = {
   "--commit-change": async (args) => { const msg = commitOntologyChange("Ontology change applied"); console.log("Commit Message:", msg); return msg; },
   "--get-summary": async (args) => { const summary = getOntologySummary(buildOntology()); console.log("Ontology Summary:", summary); return summary; },
   "--merge-normalize": async (args) => { const ont1 = buildOntology(); const ont2 = extendOntologyMetadata(buildOntology(), { title: "Updated Ontology" }); const merged = mergeAndNormalizeOntologies(ont1, ont2); console.log("Merged and Normalized Ontologies:", merged); return merged; },
-  "--wrap-tabular": async (args) => { const tabular = { tabularWrapped: true }; console.log("Tabular wrapped ontology models:", tabular); return tabular; },
-  "--wrap-html": async (args) => { const html = { htmlWrapped: true }; console.log("HTML wrapped ontology models:", html); return html; },
-  "--wrap-markdown": async (args) => { const markdown = { markdownWrapped: true }; console.log("Markdown wrapped ontology models:", markdown); return markdown; },
+  "--wrap-tabular": async (args) => { const tabular = wrapOntologyModelsTabular(); console.log("Tabular wrapped ontology models:", tabular); return tabular; },
+  "--wrap-html": async (args) => { const html = wrapOntologyModelsHTML(); console.log("HTML wrapped ontology models:", html); return html; },
+  "--wrap-markdown": async (args) => { const markdown = wrapOntologyModelsMarkdown(); console.log("Markdown wrapped ontology models:", markdown); return markdown; },
   "--fetch-multiple": async (args) => { const data = await fetchMultipleEndpoints(); console.log("Fetched multiple endpoints:", data); return data; },
   "--validate-optimize": async (args) => { const result = validateAndOptimizeOntology(buildOntology()); console.log("Ontology valid and optimized:", result); return result; },
   "--wrap-circular": async (args) => { const circular = wrapOntologyModelsCircular(); console.log("Circular wrapped ontology models:", circular); return circular; },

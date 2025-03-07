@@ -79,7 +79,10 @@ const {
   logOntologyHistoryExtended,
   wrapOntologyModelsCSV,
   wrapOntologyModelsYAML,
-  listExtendedOntologyEndpoints
+  listExtendedOntologyEndpoints,
+  wrapOntologyModelsHTML,
+  wrapOntologyModelsMarkdown,
+  wrapOntologyModelsTabular
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
@@ -167,7 +170,7 @@ describe('Main Module General Functions', () => {
     const spy = vi.spyOn(console, 'log').mockImplementation(() => {});
     const version = await main(['--version']);
     expect(spy).toHaveBeenCalledWith('Tool version:', version);
-    expect(version).toBe('0.0.22');
+    expect(version).toBe('0.0.23');
     spy.mockRestore();
   });
 
@@ -252,6 +255,24 @@ describe('Wrapper Functions Tests', () => {
     const result = wrapOntologyModelsGrid();
     expect(result).toHaveProperty('gridWrapped', true);
     expect(result.grid).toEqual([[1,2,3],[4,5,6],[7,8,9]]);
+  });
+  
+  test('wrapOntologyModelsHTML returns expected HTML wrapper', () => {
+    const result = wrapOntologyModelsHTML();
+    expect(result).toHaveProperty('htmlWrapped', true);
+    expect(result.html).toBe('<div>Ontology HTML Representation</div>');
+  });
+  
+  test('wrapOntologyModelsMarkdown returns expected Markdown wrapper', () => {
+    const result = wrapOntologyModelsMarkdown();
+    expect(result).toHaveProperty('markdownWrapped', true);
+    expect(result.markdown).toBe('# Ontology Markdown Representation');
+  });
+  
+  test('wrapOntologyModelsTabular returns expected Tabular wrapper', () => {
+    const result = wrapOntologyModelsTabular();
+    expect(result).toHaveProperty('tabularWrapped', true);
+    expect(result.table).toEqual([['Header1', 'Header2'], ['Data1', 'Data2']]);
   });
 });
 
