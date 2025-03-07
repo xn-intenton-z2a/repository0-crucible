@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
 // owl-builder CLI Tool
-// Mission Statement: Build robust OWL ontologies extracted from diverse public data sources
-// This update prunes legacy drift by removing unused code paths and refocusing functionality in alignment with CONTRIBUTING guidelines.
+// Mission Statement: Build robust OWL ontologies from diverse public data sources.
+// Refocused to eliminate legacy endpoints and redundant code, aligning functionality with CONTRIBUTING guidelines.
 
 import fs from 'fs';
 import path from 'path';
@@ -350,7 +350,7 @@ export function normalizeOntology(ontology) {
   return cleanupOntologyData(ontology);
 }
 
-// Extended Functions for Enhanced Ontology Processing
+// New extended commands aligned with CONTRIBUTING guidelines
 export function extendOntologyMetadata(ontology, metadata) {
   if (!ontology) ontology = buildOntology();
   return { ...ontology, ...metadata };

@@ -1,14 +1,14 @@
 # owl-builder
 
-owl-builder is a versatile CLI tool and JavaScript library designed for building, managing, and querying OWL ontologies extracted from diverse public data sources. The focus has been refactored to enhance public API integration and to provide extended ontology processing commands. Legacy implementations are pruned, and documentation is refreshed in accordance with our CONTRIBUTING guidelines.
+owl-builder is a versatile CLI tool and JavaScript library designed for building, managing, and querying OWL ontologies extracted from diverse public data sources. The focus has been refactored to enhance public API integration and to provide extended ontology processing commands. Legacy implementations have been pruned to concentrate solely on building ontologies from public data sources, in alignment with our CONTRIBUTING guidelines.
 
 ## Features
 
 - **Ontology Building:** Create basic and detailed ontology models with built-in functions.
 - **Public Data Integration:** Automatically crawl and integrate data from various public endpoints.
 - **Extended Wrappers:** Multiple wrapper functions for different ontology models (JSON, custom order, graph, tree, matrix, etc.).
-- **Ontology Analysis & Optimization:** New functions to analyze, optimize, and transform ontologies, including transformation to JSON-LD.
-- **Enhanced Metadata Management:** Extended functions for attaching metadata, recording change history, generating summaries, and merging ontologies.
+- **Ontology Analysis & Optimization:** Functions to analyze, optimize, and transform ontologies, including transformation to JSON-LD.
+- **Enhanced Metadata Management:** Functions for attaching metadata, recording change history, generating summaries, and merging ontologies.
 - **Robust CLI:** Comprehensive command-line interface supporting a wide range of commands for ontology operations.
 
 ## Public Data Endpoints
@@ -132,12 +132,10 @@ We welcome contributions ranging from feature enhancements and bug fixes to docu
 ## Changelog
 
 - **Version 0.0.19**
-  - Removed legacy endpoints and pruned redundant code to align with the Mission Statement.
-  - Extended functionality with new ontology analysis, optimization, and transformation functions.
-  - Added a set of new wrapper commands for various OWL Ontology models.
-  - Extended new functions: Added extendOntologyMetadata, recordOntologyHistory, commitOntologyChange, getOntologySummary, mergeAndNormalizeOntologies, and **combineOntologyMetrics** to enhance ontology metadata management, processing, and metrics extraction.
-  - **Fixed mergeAndNormalizeOntologies:** Now correctly merges multiple ontologies by taking the union of their concepts.
-  - Refreshed the documentation to better reflect current capabilities and contribution guidelines.
+  - Refocused ontology builder on building OWL ontologies exclusively from diverse public data sources.
+  - Removed legacy code and endpoints that were not in line with the new mission statement.
+  - Extended functionality with new ontology analysis, optimization, transformation, and metadata management commands.
+  - Documentation and test cases updated to reflect the new focus.
 
 ## License
 
