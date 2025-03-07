@@ -10,6 +10,7 @@ owl-builder is a CLI tool and JavaScript library focused on building and capturi
 - **OWL Export/Import:** Convert ontology objects to XML (OWL) format and import from XML.
 - **Data Crawling:** Crawl multiple public endpoints to capture data and generate OWL representations.
 - **Backup:** Create backups of your ontology files.
+- **Ontology Model Wrappers:** New wrappers for creating basic and advanced OWL ontology models, and a function to wrap/enrich any ontology model with additional metadata.
 
 ## Usage
 
@@ -69,13 +70,27 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --fetch-retry
   ```
+- **Build Basic OWL Model:**
+  ```bash
+  node src/lib/main.js --build-basic
+  ```
+- **Build Advanced OWL Model:**
+  ```bash
+  node src/lib/main.js --build-advanced
+  ```
+- **Wrap an Ontology Model:**
+  Provide a JSON model as argument or it will default to the basic model
+  ```bash
+  node src/lib/main.js --wrap-model '{"title":"Custom Model"}'
+  ```
 
 ## Changelog
 
-- **Version 0.0.24**
-  - Increased test coverage by adding tests for error conditions in clearOntology and for retry logic in fetchDataWithRetry.
-  - Updated CLI version to 0.0.24 across the tool and tests.
-  - Fixed ReferenceError in tests for fetchDataWithRetry by importing the 'http' module in the test file.
+- **Version 0.0.25**
+  - Added wrappers for OWL ontology models including basic and advanced models.
+  - Introduced CLI commands: --build-basic, --build-advanced, and --wrap-model to facilitate ontology model creation and enrichment.
+  - Updated test coverage with new tests for the ontology model wrappers.
+  - Updated documentation to reflect these changes.
 
 ## Contributing
 

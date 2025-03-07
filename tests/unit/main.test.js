@@ -24,7 +24,10 @@ const {
   crawlOntologies,
   displayHelp,
   getVersion,
-  listCommands
+  listCommands,
+  buildBasicOWLModel,
+  buildAdvancedOWLModel,
+  wrapOntologyModel
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
@@ -33,7 +36,6 @@ const backupPath = path.resolve(process.cwd(), 'ontology-backup.json');
 // Helper function to simulate network failure for fetch retry
 function simulateNetworkFailure(mod) {
   return function(url, callback) {
-    // simulate error
     const error = new Error('Network error');
     const req = {
       on: (event, handler) => {
@@ -49,6 +51,7 @@ function simulateNetworkFailure(mod) {
     return req;
   };
 }
+
 
 describe('Core Ontology Functions', () => {
   test('buildOntology returns sample ontology', () => {
@@ -150,7 +153,6 @@ describe('Crawling Functionality', () => {
   });
 
   test('fetchDataWithRetry rejects for invalid URL', async () => {
-    // Override the http.get method to simulate failure
     const originalGet = http.get;
     http.get = simulateNetworkFailure(http);
     await expect(fetchDataWithRetry('http://invalid.url', 2)).rejects.toBeDefined();
@@ -201,5 +203,27 @@ describe('CLI and Main Function Tests', () => {
   test('main with --crawl returns crawl results', async () => {
     const result = await main(['--crawl']);
     expect(Array.isArray(result)).toBe(true);
+  });
+});
+
+describe('Ontology Model Wrappers', () => {
+  test('buildBasicOWLModel returns a basic model', () => {
+    const model = buildBasicOWLModel();
+    expect(model).toHaveProperty('id', 'basic');
+    expect(model).toHaveProperty('title', 'Basic OWL Ontology');
+  });
+
+  test('buildAdvancedOWLModel returns an advanced model', () => {
+    const model = buildAdvancedOWLModel();
+    expect(model).toHaveProperty('id', 'advanced');
+    expect(model).toHaveProperty('classes');
+    expect(Array.isArray(model.properties)).toBe(true);
+  });
+
+  test('wrapOntologyModel adds a timestamp and default title if missing', () => {
+    const model = { someProp: 'value' };
+    const wrapped = wrapOntologyModel(model);
+    expect(wrapped).toHaveProperty('timestamp');
+    expect(wrapped.title).toBe('Default Title');
   });
 });
