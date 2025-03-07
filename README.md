@@ -51,7 +51,13 @@ npm install
 
 ## Usage
 
-Display the help information:
+By default, running the tool without any command line arguments runs a comprehensive demo that exercises most of the ontology functionalities. This demo builds, persists, loads, queries, exports, imports, backs up, updates, and extends an ontology, as well as crawling a set of public endpoints and demonstrating ontology model wrappers. You can run the demo with:
+
+```bash
+npm run start
+```
+
+Display the help information at any time with:
 
 ```bash
 node src/lib/main.js --help
@@ -192,8 +198,8 @@ Please review [CONTRIBUTING.md](CONTRIBUTING.md) before contributing. We welcome
 - **Version 0.0.30**
   - Refocused on integrating real public data sources for ontology building.
   - Extended list of public endpoints.
-  - Added diagnostics tests for endpoint connectivity.
-  - README refreshed per CONTRIBUTING guidelines to emphasize live data integration and streamlined documentation.
+  - Added a comprehensive demo mode as the default main execution to showcase all ontology functions.
+  - README refreshed per CONTRIBUTING guidelines.
 
 ## License
 
