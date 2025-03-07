@@ -23,9 +23,7 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
     - `--fetch-retry`: Fetch data with a retry mechanism.
     - `--changelog`: Display the change log for extended functions.
     - `--extend-details`: Extend the ontology with additional details and metrics.
-    - `--wrap-simple`: Wrap and return basic and enhanced ontology models.
-    - `--wrap-comprehensive`: Wrap and aggregate a comprehensive set of ontology models.
-    - `--wrap-random`: Return a randomly selected wrapper among available options.
+    - `--clean-transform`: Clean duplicate ontology concepts and transform ontology data in one step.
 
 ## Public Data Endpoints
 
@@ -180,6 +178,11 @@ Example commands:
 - **Extend Ontology Details:**
   ```bash
   node src/lib/main.js --extend-details
+  ```
+
+- **Clean and Transform Ontology:**
+  ```bash
+  node src/lib/main.js --clean-transform
   ```
 
 ## Contributing

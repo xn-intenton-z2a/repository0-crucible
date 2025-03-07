@@ -13,10 +13,10 @@
 //      * Added new commands --refresh-details and --extend-concepts for enhanced ontology processing.
 // - Refocused library exclusively on building ontologies from public data sources; legacy functionalities removed.
 // - New functions added per CONTRIBUTING guidelines: fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus.
-// - Updated Change Log to include new transformation and debugging functions and corrected public API endpoints.
+// - Added new function cleanupAndTransformOntology and CLI command --clean-transform to combine cleanup and transformation of ontology data.
+// - Updated Change Log to include new transformation, debugging functions and wrapper commands (wrap-simple, wrap-comprehensive, wrap-random).
 // - Updated version to 0.0.14.
 
-// Removed unused import fileURLToPath to satisfy linting rules.
 import os from "os";
 import fs from "fs";
 import path from "path";
@@ -570,7 +570,7 @@ export async function main(args = []) {
       console.log("Extended Ontology Details:", extended);
       return extended;
     },
-    // New commands added for new wrapper commands
+    // New wrapper commands
     "--wrap-simple": async () => {
       const simple = wrapOntologyModelsSimple();
       console.log("Simple Wrapped Ontology Models:", simple);
@@ -585,6 +585,12 @@ export async function main(args = []) {
       const randomWrapper = wrapOntologyModelsRandom();
       console.log("Random Wrapped Ontology Model:", randomWrapper);
       return randomWrapper;
+    },
+    // New command to cleanup and transform ontology data
+    "--clean-transform": async () => {
+      const result = cleanupAndTransformOntology();
+      console.log("Cleaned and transformed ontology:", result);
+      return result;
     }
   };
 
@@ -649,7 +655,8 @@ export function displayHelp() {
   --extend-details,
   --wrap-simple,
   --wrap-comprehensive,
-  --wrap-random
+  --wrap-random,
+  --clean-transform
 `);
 }
 
@@ -713,7 +720,8 @@ export function listCommands() {
     "--extend-details",
     "--wrap-simple",
     "--wrap-comprehensive",
-    "--wrap-random"
+    "--wrap-random",
+    "--clean-transform"
   ];
 }
 
@@ -1069,7 +1077,7 @@ export async function fetchDataWithRetry(endpoint, retries = 3) {
  * @returns {string} Change log message.
  */
 export function getChangeLog() {
-  return "Extended functions added including fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus, and new wrapper functions (wrap-simple, wrap-comprehensive, wrap-random) as per CONTRIBUTING guidelines. Pruned legacy endpoints and corrected public API URLs.";
+  return "Extended functions added including fetchDataWithRetry, getChangeLog, extendOntologyDetails, transformOntologyData, debugOntologyMetrics, reflectOntologyStatus, and new wrapper functions (wrap-simple, wrap-comprehensive, wrap-random, clean-transform) as per CONTRIBUTING guidelines. Pruned legacy endpoints and corrected public API URLs.";
 }
 
 /**
@@ -1232,4 +1240,14 @@ export function reflectOntologyStatus() {
     completeness: validateOntologyCompleteness(ontology),
     lastUpdated: ontology.created
   };
+}
+
+/**
+ * New function that cleans up duplicate ontology concepts and then applies a data transformation.
+ * @returns {object} Object containing both the cleaned and transformed ontology.
+ */
+export function cleanupAndTransformOntology() {
+  const ontology = cleanupOntologyData(buildOntology());
+  const transformed = transformOntologyData();
+  return { cleaned: ontology, transformed };
 }
