@@ -23,63 +23,27 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="owl-builder" href="#owl-builder"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>owl-builder</h1>
-<p class="md-github">owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. This tool focuses on extracting ontology data directly from public endpoints with streamlined integration, persistence, detailed analysis, and querying capabilities.</p>
-<p class="md-github">Contributions are welcome – please see <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines.</p>
+<p class="md-github">owl-builder is a CLI tool and JavaScript library for building, managing, and querying OWL ontologies extracted from diverse public data sources. The library has been refocused exclusively on extracting ontology data directly from public endpoints, ensuring robust integration, persistence, detailed analysis, and querying capabilities. Contributions are welcome – please see <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="change-log" href="#change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change Log</h2>
 <ul class="md-github">
-<li class="md-github">Refocused the library exclusively on building robust ontologies from public data sources, eliminating legacy code drift.</li>
-<li class="md-github">Updated CLI commands to version 0.0.9 including new features and enhancements:
-<ul class="md-github">
-<li class="md-github"><code class="md-github">--update</code> for modifying the ontology title.</li>
-<li class="md-github"><code class="md-github">--clear</code> for removing a persisted ontology.</li>
-<li class="md-github"><code class="md-github">--fetch-endpoints</code> to retrieve data from multiple public endpoints (5 endpoints).</li>
-<li class="md-github"><strong class="md-github">New Features:</strong>
+<li class="md-github">Updated to version 0.0.13.</li>
+<li class="md-github">Refocused the library exclusively on building robust ontologies from public data sources; legacy code drift has been pruned.</li>
+<li class="md-github">Updated CLI commands to include new features:
 <ul class="md-github">
 <li class="md-github"><code class="md-github">--detailed-build</code>: Build a detailed ontology with additional statistical metrics.</li>
 <li class="md-github"><code class="md-github">--enhance</code>: Generate an enhanced ontology with additional OWL model details.</li>
-<li class="md-github"><code class="md-github">--wrap</code>: Aggregate basic, enhanced, and integrated ontology models.</li>
-<li class="md-github"><code class="md-github">--wrap-extended</code>: Aggregate extended ontology models including a report, synced, and rebuilt versions.</li>
-<li class="md-github"><code class="md-github">--report</code>: Produce a comprehensive ontology report.</li>
-<li class="md-github"><code class="md-github">--list-endpoints</code>: List an extended set of public endpoints (now 14 endpoints).</li>
-<li class="md-github"><code class="md-github">--fetch-extended</code>: Fetch data from an extended list of public endpoints.</li>
-<li class="md-github"><code class="md-github">--advanced-analysis</code>: Perform advanced ontology analysis with additional metrics, including average and median concept length.</li>
-<li class="md-github"><code class="md-github">--wrap-all</code>: Wrap all ontology models including advanced analysis metrics.</li>
-<li class="md-github"><strong class="md-github">New Command:</strong>
-<ul class="md-github">
-<li class="md-github"><code class="md-github">--cleanup</code>: Remove duplicate ontology concepts to ensure clean and unique data.</li>
-</ul>
-</li>
-<li class="md-github"><strong class="md-github">Extended Library Functions:</strong>
-<ul class="md-github">
-<li class="md-github"><code class="md-github">automatedCommitMessage</code>: Generate automated commit messages for integration with knowledge base operations.</li>
-<li class="md-github"><code class="md-github">validateOntologyCompleteness</code>: Check ontology for required fields.</li>
-<li class="md-github"><code class="md-github">mergeOntologyModels</code>: Merge multiple ontology models into one comprehensive model.</li>
-<li class="md-github"><strong class="md-github">New Extended Functions:</strong>
-<ul class="md-github">
-<li class="md-github"><code class="md-github">updateOntologyDescription</code>: Update the ontology description.</li>
-<li class="md-github"><code class="md-github">extendOntologyConcepts</code>: Add additional concepts to the ontology.</li>
-<li class="md-github"><code class="md-github">resetOntology</code>: Reset the ontology to its initial state.</li>
-<li class="md-github"><code class="md-github">cloneOntology</code>: Create a deep copy of the ontology.</li>
-<li class="md-github"><code class="md-github">cleanupOntologyData</code>: Remove duplicate concepts from the ontology.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="md-github"><strong class="md-github">New CLI Commands:</strong>
+<li class="md-github"><code class="md-github">--wrap</code> and <code class="md-github">--wrap-extended</code>: Aggregate various ontology models.</li>
+<li class="md-github"><code class="md-github">--advanced-analysis</code>: Perform advanced ontology analysis with average and median concept length.</li>
+<li class="md-github"><code class="md-github">--cleanup</code>: Remove duplicate ontology concepts.</li>
+<li class="md-github"><strong class="md-github">New Commands:</strong>
 <ul class="md-github">
 <li class="md-github"><code class="md-github">--auto-commit</code>: Generate an automated commit message.</li>
-<li class="md-github"><code class="md-github">--combine-models</code>: Merge ontology models into one comprehensive model. (Updated to include separate properties for basic, enhanced, and integrated models.)</li>
+<li class="md-github"><code class="md-github">--combine-models</code>: Merge ontology models into one comprehensive model.</li>
 </ul>
 </li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="md-github"><strong class="md-github">Extended Endpoints:</strong>
-<ul class="md-github">
-<li class="md-github">Added new endpoints to the available list: <code class="md-github">https://api/openweathermap.org/data/2.5/weather?q=London</code> and <code class="md-github">https://api/coinbase.com/v2/exchange-rates</code> to enhance the range of public data sources for ontology building.</li>
-</ul>
-</li>
+<li class="md-github">Updated internal functions and error handling to better support public API interactions.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
 <p class="md-github">Install via npm:</p>
@@ -249,13 +213,13 @@
 </li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
-<p class="md-github">Contributions are welcome! Please review <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging and enhanced ontology processing, including extended ontology manipulation functions such as updating the description, extending concepts, resetting, cloning, and cleaning up duplicate concepts.</p>
+<p class="md-github">Contributions are welcome! Please review <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for detailed guidelines. Ensure that tests pass and documentation reflects current functionality. New library functions have been added to facilitate automated commit messaging and enhanced ontology processing, with a focus exclusively on extracting and building ontologies from public data sources.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
 <p class="md-github">Released under the MIT License.</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T00:33:59.460Z</p>
+    <p>Generated on 2025-03-07T01:14:17.683Z</p>
   </footer>
 </body>
 </html>
