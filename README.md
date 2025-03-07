@@ -84,6 +84,11 @@ node src/lib/main.js --help
   node src/lib/main.js --crawl
   ```
 
+- **List Available Commands:**
+  ```bash
+  node src/lib/main.js --list
+  ```
+
 ### Using Real Endpoints for Meaningful OWL Output
 
 To retrieve real data from public endpoints and generate meaningful OWL XML output, disable the dummy data mode by setting the environment variable `FORCE_DUMMY_ENDPOINT` to `false`. For example:
@@ -173,24 +178,25 @@ Key CLI commands include:
 
 - `--help`: Displays usage instructions.
 - `--version`: Shows the tool version.
-- `--build`: Builds an ontology from public data sources.
+- `--list`: Lists all supported CLI commands.
+- `--build`: Generates an ontology using public data and prints it.
 - `--persist`: Persists the ontology to a file.
-- `--load`: Loads the persisted ontology from the file.
-- `--query "searchTerm"`: Queries ontology concepts by a given term.
-- `--export`: Exports the ontology to an OWL XML representation.
-- `--import`: Imports an ontology from an OWL XML string.
-- `--backup`: Creates a backup of the ontology file.
+- `--load`: Loads and prints the saved ontology.
+- `--query "searchTerm"`: Searches ontology concepts by the given term.
+- `--export`: Exports the ontology to an OWL XML format and prints it.
+- `--import`: Imports an ontology from an OWL XML string and prints it.
+- `--backup`: Creates a backup of the current ontology file.
 - `--update "New Title"`: Updates the ontology's title.
 - `--clear`: Deletes the ontology file if it exists.
-- `--crawl`: Crawls public endpoints and returns the results.
-- `--fetch-retry`: Demonstrates fetching data with retry logic.
-- `--build-basic`: Builds a basic OWL model.
-- `--build-advanced`: Builds an advanced OWL model.
-- `--wrap-model`: Wraps an ontology model with additional metadata.
-- `--build-custom`: Builds a custom ontology based on user-defined customizations.
-- `--extend-concepts`: Extends the current ontology with additional concepts.
-- `--diagnostics`: Outputs diagnostic information about the environment.
-- `--serve`: Starts the built-in web server for monitoring.
+- `--crawl`: Initiates crawling of public endpoints and returns the results.
+- `--fetch-retry`: Demonstrates data fetching with retry logic.
+- `--build-basic`: Creates and prints a basic OWL model.
+- `--build-advanced`: Creates and prints an advanced OWL model.
+- `--wrap-model [JSON]`: Wraps the provided or default ontology model with additional metadata.
+- `--build-custom`: Builds a custom ontology with user-defined options.
+- `--extend-concepts`: Extends an existing ontology with additional concepts.
+- `--diagnostics`: Outputs environment diagnostic info.
+- `--serve`: Starts the web server for monitoring.
 
 ---
 
@@ -230,7 +236,7 @@ While primarily a CLI tool, owl-builder's commands can serve as API endpoints. O
 
 - **--help**: Displays detailed usage information.
 - **--version**: Returns the current tool version.
-- **--list**: Lists all available CLI commands.
+- **--list**: Returns a list of all available CLI commands.
 - **--build**: Generates an ontology using public data and prints it.
 - **--persist**: Builds and saves the ontology.
 - **--load**: Loads and prints the saved ontology.
@@ -263,8 +269,8 @@ Please review the [CONTRIBUTING.md](CONTRIBUTING.md) file before contributing. W
 
 - **Version 0.0.28**
   - Extended library functions by adding buildCustomOntology and extendOntologyConcepts.
-  - Added new CLI commands: --build-custom and --extend-concepts.
-  - Updated documentation to reflect extended functionality for custom ontology building and concept extension.
+  - Added new CLI commands: --build-custom, --extend-concepts, and --list.
+  - Updated documentation to reflect extended functionality for custom ontology building, concept extension, and listing available commands.
 - **Version 0.0.27**
   - Refocused the library on building ontologies from verified public data sources.
   - Updated mission statement and documentation to reflect the new focus.
