@@ -2,9 +2,8 @@
 
 // src/lib/main.js
 // owl-builder CLI Tool
-// Mission Statement: Build robust ontologies directly extracted from diverse public data sources.
-// This tool supports ontology building, integration, analysis, persistence, and more.
-// Legacy functionalities have been pruned.
+// Mission Statement: Build robust OWL ontologies extracted from diverse public data sources.
+// This version refocuses on public API integration and streamlined ontology processing. Legacy functionalities have been pruned and documentation updated per CONTRIBUTING guidelines.
 
 import os from 'os';
 import fs from 'fs';
@@ -226,6 +225,15 @@ export function wrapMergedOntologyModels() {
   return { mergedWrapper: true, merged: 'Merged', report: 'Report' };
 }
 
+// New Wrapper Functions for OWL Ontology Models
+export function wrapOntologyModelsJSON() {
+  return { jsonWrapped: true, models: ['Basic', 'Enhanced', 'Integrated'] };
+}
+
+export function wrapOntologyModelsCustom(order = 'asc') {
+  return { customWrapped: true, order, additionalData: 'custom' };
+}
+
 // Extended New Functions
 export function validateOntologyCompleteness(ontology) {
   return true;
@@ -266,15 +274,6 @@ export function updateOntologyDescription(newDesc) {
 export function mergeOntologyModels(ont1, ont2, ont3) {
   // Merge the three ontology objects
   return Object.assign({}, ont1, ont2, ont3, { merged: true });
-}
-
-// New Wrapper Functions for OWL Ontology Models
-export function wrapOntologyModelsJSON() {
-  return { jsonWrapped: true, models: ['Basic', 'Enhanced', 'Integrated'] };
-}
-
-export function wrapOntologyModelsCustom(order = 'asc') {
-  return { customWrapped: true, order, additionalData: 'custom' };
 }
 
 // Global command actions mapping
@@ -519,7 +518,7 @@ export async function main(args = process.argv.slice(2)) {
 
 // Helper functions for CLI
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom");
 }
 
 export function getVersion() {
