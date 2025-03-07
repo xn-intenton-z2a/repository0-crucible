@@ -1,6 +1,6 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
-  "version": "0.0.17",
+  "version": "0.0.18",
   "description": "CLI tool refocused on building robust ontologies from public data sources with extended endpoint list, improved documentation, pruned legacy endpoints, and verified endpoint responses.",
   "type": "module",
   "main": "src/lib/main.js",

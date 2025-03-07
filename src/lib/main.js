@@ -3,7 +3,7 @@
 // src/lib/main.js
 // owl-builder CLI Tool
 // Mission Statement: Build robust OWL ontologies extracted from diverse public data sources.
-// NOTE: Endpoints and related functionalities have been verified via unit tests.
+// NOTE: Endpoints and related functionalities have been verified via unit tests, including dummy endpoint responses.
 // This version refocuses on public API integration, extends the list of endpoints, adds a new test command for endpoints,
 // and streamlines ontology processing. Legacy functionalities have been pruned and documentation updated per CONTRIBUTING guidelines.
 
@@ -393,7 +393,7 @@ export async function main(args = process.argv.slice(2)) {
 
 // Helper functions for CLI
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --detailed-build, --serve, --diagnostics, --integrate, --crawl, --persist, --load, --query, --validate, --export, --import, --sync, --backup, --update, --clear, --enhance, --wrap, --wrap-extended, --report, --list-endpoints, --fetch-extended, --advanced-analysis, --wrap-all, --cleanup, --auto-commit, --combine-models, --refresh-details, --extend-concepts, --fetch-retry, --changelog, --extend-details, --wrap-simple, --wrap-comprehensive, --wrap-random, --clean-transform, --fetch-additional, --combine-metrics, --update-tracking, --wrap-advanced, --wrap-merged, --wrap-json, --wrap-custom, --wrap-graph, --wrap-tree, --wrap-matrix, --test-endpoints");
 }
 
 export function getVersion() {
