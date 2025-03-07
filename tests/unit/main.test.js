@@ -4,6 +4,9 @@ import fs from "fs";
 import path from "path";
 import * as mainModule from "../../src/lib/main.js";
 
+// Force dummy endpoint responses in tests
+process.env.FORCE_DUMMY_ENDPOINT = "true";
+
 const {
   main,
   buildOntology,
@@ -86,7 +89,7 @@ describe("Main Module General Functions", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const version = await main(["--version"]);
     expect(spy).toHaveBeenCalledWith("Tool version:", version);
-    expect(version).toBe("0.0.14");
+    expect(version).toBe("0.0.16");
     spy.mockRestore();
   });
 
@@ -223,6 +226,7 @@ describe("Main Module General Functions", () => {
 
   afterAll(() => {
     process.env.NODE_ENV = "";
+    delete process.env.FORCE_DUMMY_ENDPOINT;
   });
 });
 
