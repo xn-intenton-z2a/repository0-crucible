@@ -4,10 +4,10 @@ owl-builder is a CLI tool and JavaScript library for building, managing, and que
 
 ## Changelog
 
-- **Version 0.0.16**
+- **Version 0.0.17**
   - Refocused on public data source integration and removed legacy endpoints.
   - Extended ontology processing functions and added new wrapper commands: `wrapOntologyModelsJSON`, `wrapOntologyModelsCustom`, `wrapOntologyModelsGraph`, `wrapOntologyModelsTree`, and `wrapOntologyModelsMatrix`.
-  - Extended the list of public endpoints used for building ontologies by adding endpoints from nationalize, agify, genderize APIs, as well as additional endpoints: `https://api.openbrewerydb.org/breweries`, `https://api.spacexdata.com/v4/launches`, and `https://api.exchangerate-api.com/v4/latest/USD`.
+  - Extended the list of public endpoints used for building ontologies by adding additional endpoints: `https://api.sample.com/ontology` and `https://api.ontologybuilder.com/data` along with the existing ones.
   - Added a new CLI command `--test-endpoints` to make requests to each endpoint and log dummy responses for testing purposes.
   - Updated documentation and tests per CONTRIBUTING guidelines.
 
@@ -31,6 +31,8 @@ owl-builder retrieves data from several public data sources, including:
 - https://api.openbrewerydb.org/breweries
 - https://api.spacexdata.com/v4/launches
 - https://api.exchangerate-api.com/v4/latest/USD
+- https://api.sample.com/ontology
+- https://api.ontologybuilder.com/data
 
 ## Usage
 
