@@ -167,11 +167,11 @@ export async function main(args = process.argv.slice(2)) {
 
 // Displays help information for using the CLI.
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry`);
 }
 
 export function getVersion() {
-  return '0.0.23';
+  return '0.0.24';
 }
 
 export function listCommands() {
