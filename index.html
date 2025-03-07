@@ -51,73 +51,6 @@
 <li class="md-github"><code class="md-github">--fetch-retry</code>: Fetch data with a retry mechanism.</li>
 <li class="md-github"><code class="md-github">--changelog</code>: Display the change log for extended functions.</li>
 <li class="md-github"><code class="md-github">--extend-details</code>: Extend the ontology with additional details and metrics.</li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="md-github">Pruned legacy endpoints and corrected public API URLs (e.g. updated GitHub endpoint to <code class="md-github">https://api.github.com</code>).</li>
-<li class="md-github"><strong class="md-github">New Functions Added:</strong>
-<ul class="md-github">
-<li class="md-github"><code class="md-github">transformOntologyData</code>: Transforms and augments ontology data.</li>
-<li class="md-github"><code class="md-github">debugOntologyMetrics</code>: Provides debugging metrics for the ontology.</li>
-<li class="md-github"><code class="md-github">reflectOntologyStatus</code>: Returns the current status and completeness of the ontology.</li>
-</ul>
-</li>
-</ul>
-<h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
-<p class="md-github">Install via npm:</p>
-<pre class="md-github"><code class="md-github language-bash">npm install owl-builder
-</code></pre>
-<h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
-<ul class="md-github">
-<li class="md-github"><strong class="md-github">CLI Commands:</strong>
-<ul class="md-github">
-<li class="md-github"><code class="md-github">--help</code>: Display help instructions.</li>
-<li class="md-github"><code class="md-github">--version</code>: Show tool version.</li>
-<li class="md-github"><code class="md-github">--list</code>: List supported commands.</li>
-<li class="md-github"><code class="md-github">--build</code>: Build a sample ontology.</li>
-<li class="md-github"><code class="md-github">--detailed-build</code>: Build a detailed ontology including statistical metrics.</li>
-<li class="md-github"><code class="md-github">--serve</code>: Start the web interface.</li>
-<li class="md-github"><code class="md-github">--diagnostics</code>: Show system diagnostics.</li>
-<li class="md-github"><code class="md-github">--integrate</code>: Integrate supplemental ontologies.</li>
-<li class="md-github"><code class="md-github">--crawl</code>: Crawl public data sources.</li>
-<li class="md-github"><code class="md-github">--persist</code>: Save the ontology to a file.</li>
-<li class="md-github"><code class="md-github">--load</code>: Load a persisted ontology.</li>
-<li class="md-github"><code class="md-github">--query</code>: Query the ontology.</li>
-<li class="md-github"><code class="md-github">--validate</code>: Validate the ontology structure.</li>
-<li class="md-github"><code class="md-github">--export</code>: Export the ontology to XML.</li>
-<li class="md-github"><code class="md-github">--import</code>: Import an ontology from XML.</li>
-<li class="md-github"><code class="md-github">--sync</code>: Synchronize the ontology.</li>
-<li class="md-github"><code class="md-github">--backup</code>: Backup the ontology file.</li>
-<li class="md-github"><code class="md-github">--summary</code>: Summarize the ontology.</li>
-<li class="md-github"><code class="md-github">--refresh</code>: Refresh the ontology timestamp.</li>
-<li class="md-github"><code class="md-github">--analyze</code>: Analyze ontology metrics.</li>
-<li class="md-github"><code class="md-github">--monitor</code>: Monitor system metrics.</li>
-<li class="md-github"><code class="md-github">--rebuild</code>: Rebuild the ontology.</li>
-<li class="md-github"><code class="md-github">--demo</code>: Display demo output.</li>
-<li class="md-github"><code class="md-github">--fetch-schemas</code>: Retrieve detailed OWL schemas.</li>
-<li class="md-github"><code class="md-github">--fetch-public</code>: Fetch public data.</li>
-<li class="md-github"><code class="md-github">--update [newTitle]</code>: Update the ontology title.</li>
-<li class="md-github"><code class="md-github">--clear</code>: Clear the persisted ontology file.</li>
-<li class="md-github"><code class="md-github">--fetch-endpoints</code>: Retrieve data from multiple public endpoints.</li>
-<li class="md-github"><code class="md-github">--enhance</code>: Generate an enhanced ontology with additional OWL model details.</li>
-<li class="md-github"><code class="md-github">--wrap</code>: Wrap basic, enhanced, and integrated ontology models.</li>
-<li class="md-github"><code class="md-github">--wrap-extended</code>: Wrap extended ontology models including a report, synced, and rebuilt versions.</li>
-<li class="md-github"><code class="md-github">--report</code>: Produce a comprehensive ontology report.</li>
-<li class="md-github"><code class="md-github">--list-endpoints</code>: List an extended set of public endpoints.</li>
-<li class="md-github"><code class="md-github">--fetch-extended</code>: Fetch data from an extended list of public endpoints.</li>
-<li class="md-github"><code class="md-github">--advanced-analysis</code>: Perform advanced ontology analysis.</li>
-<li class="md-github"><code class="md-github">--wrap-all</code>: Wrap all ontology models including advanced analysis metrics.</li>
-<li class="md-github"><code class="md-github">--cleanup</code>: Remove duplicate ontology concepts.</li>
-<li class="md-github"><strong class="md-github">New Commands:</strong>
-<ul class="md-github">
-<li class="md-github"><code class="md-github">--auto-commit</code>: Generate an automated commit message.</li>
-<li class="md-github"><code class="md-github">--combine-models</code>: Merge ontology models into one comprehensive model.</li>
-<li class="md-github"><code class="md-github">--refresh-details</code>: Update the ontology description with additional details.</li>
-<li class="md-github"><code class="md-github">--extend-concepts</code>: Extend the ontology by adding new concepts.</li>
-<li class="md-github"><code class="md-github">--fetch-retry</code>: Fetch data with a retry mechanism.</li>
-<li class="md-github"><code class="md-github">--changelog</code>: Display the change log for extended functions.</li>
-<li class="md-github"><code class="md-github">--extend-details</code>: Extend the ontology with additional details and metrics.</li>
 <li class="md-github"><code class="md-github">--wrap-simple</code>: Wrap and return basic and enhanced ontology models.</li>
 <li class="md-github"><code class="md-github">--wrap-comprehensive</code>: Wrap and aggregate a comprehensive set of ontology models.</li>
 <li class="md-github"><code class="md-github">--wrap-random</code>: Return a randomly selected wrapper among available options.</li>
@@ -285,7 +218,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-03-07T05:08:14.858Z</p>
+    <p>Generated on 2025-03-07T05:18:22.178Z</p>
   </footer>
 </body>
 </html>
