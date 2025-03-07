@@ -26,7 +26,7 @@ owl-builder is a robust CLI tool and JavaScript library built to construct OWL o
 
 ## Overview
 
-owl-builder is focused on leveraging live public data to generate OWL ontologies. It integrates data from multiple verified endpoints, ensuring that your ontological models reflect real-world information.
+owl-builder is focused on leveraging live public data to generate OWL ontologies. It integrates data from multiple verified endpoints, ensuring that your ontological models reflect real-world information. This release has refocused the library to prioritize data from verified external sources, improving the accuracy and relevance of built ontologies.
 
 ## Features
 
@@ -34,7 +34,7 @@ owl-builder is focused on leveraging live public data to generate OWL ontologies
 - **Data Persistence:** Easily persist, load, backup, and clear ontology data stored in JSON files.
 - **Querying:** Search and validate ontology concepts.
 - **OWL Export/Import:** Convert ontology objects to a simple OWL XML format and import from XML strings.
-- **Data Crawling:** Crawl an extended list of public endpoints to gather real data and generate OWL representations.
+- **Data Crawling:** Crawl an extended list of verified public endpoints to gather real data and generate OWL representations.
 - **Ontology Model Wrappers:** Build basic, advanced, and custom ontology models with extended capabilities.
 - **Diagnostics:** Execute remote API calls to verify connectivity and data integrity.
 - **Web Server:** A built-in web server for monitoring and diagnostics.
@@ -197,9 +197,9 @@ Please review [CONTRIBUTING.md](CONTRIBUTING.md) before contributing. We welcome
 
 - **Version 0.0.30**
   - Integrated real public data sources for ontology building.
-  - Extended list of public endpoints.
-  - Added a default User-Agent header for API requests to improve compatibility with services like GitHub.
-  - Added a comprehensive demo mode as the default main execution to showcase all ontology functions.
+  - Extended and verified list of public endpoints.
+  - Refocused library on building ontologies from live, trusted data using robust network operations.
+  - Updated demo mode to showcase these functions.
   - README refreshed per CONTRIBUTING guidelines.
 
 ## License
