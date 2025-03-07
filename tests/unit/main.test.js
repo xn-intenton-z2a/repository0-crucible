@@ -296,7 +296,6 @@ describe('Run Main Execution', () => {
   });
 });
 
-// Added test to log endpoint dummy responses as per test output
 describe('Endpoint Dummy Responses', () => {
   test('all endpoints return dummy data in dummy mode', async () => {
     const endpoints = listAvailableEndpoints();
