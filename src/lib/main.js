@@ -7,7 +7,7 @@
  *   owl-builder is dedicated to building OWL ontologies from verified public data sources. Our goal is to provide an intuitive and extensible platform for ontology building, management, and querying with a strong focus on integrating real public data into ontology models.
  *
  * Features:
- *   - Build and persist ontology models built from public data
+ *   - Build and persist ontology models built from verified public data
  *   - Query and validate ontology concepts
  *   - Export/import OWL (XML) representations
  *   - Crawl public endpoints and create backups for enriched ontologies
@@ -19,7 +19,7 @@
  *   Follow the CONTRIBUTING guidelines to extend or modify functionalities. Ensure to update tests and documentation when changes are made.
  *
  * For Users:
- *   Enjoy a robust CLI and library tool that is easy to set up and use for generating rich ontology outputs derived from public data sources. Use the --help command for usage information.
+ *   Enjoy a robust CLI and library tool that is refocused on generating rich ontologies from verified public data sources. Use the --help command for usage information.
  */
 
 import fs from 'fs';
@@ -207,13 +207,13 @@ export function wrapOntologyModel(model) {
   return model;
 }
 
-// NEW FUNCTION: Builds a custom ontology by applying user defined customizations
+// Builds a custom ontology by applying user defined customizations
 export function buildCustomOntology(customizations = {}) {
   const baseOntology = buildOntology();
   return { ...baseOntology, ...customizations, customized: true };
 }
 
-// NEW FUNCTION: Extends ontology concepts by adding additional ones
+// Extends ontology concepts by adding additional ones
 export function extendOntologyConcepts(ontology, additionalConcepts = []) {
   if (!ontology.concepts) ontology.concepts = [];
   ontology.concepts = ontology.concepts.concat(additionalConcepts);
@@ -360,7 +360,7 @@ const commandActions = {
     return customOntology;
   },
   "--extend-concepts": async (args) => {
-    const additional = args[1] ? args[1].split(',') : ['ExtraConcept'];
+    const additional = args[1] ? args[1].split(",") : ['ExtraConcept'];
     let ontology = loadOntology();
     if (ontology.success === false) {
       ontology = buildOntology();
@@ -402,7 +402,7 @@ export function displayHelp() {
 }
 
 export function getVersion() {
-  return '0.0.28';
+  return '0.0.29';
 }
 
 export function listCommands() {
