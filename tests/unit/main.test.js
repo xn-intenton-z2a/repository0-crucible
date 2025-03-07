@@ -4,7 +4,7 @@ import path from 'path';
 import http from 'http';
 import * as mainModule from '../../src/lib/main.js';
 
-// Force dummy responses during testing
+// Set environment to force dummy endpoint responses
 process.env.FORCE_DUMMY_ENDPOINT = 'true';
 
 const {
@@ -33,7 +33,7 @@ const {
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
 const backupPath = path.resolve(process.cwd(), 'ontology-backup.json');
 
-// Helper function to simulate network failure for fetch retry
+// Helper to simulate network failure for fetchDataWithRetry
 function simulateNetworkFailure(mod) {
   return function(url, callback) {
     const error = new Error('Network error');
