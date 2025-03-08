@@ -37,6 +37,8 @@ const {
   buildOntologyFromLiveDataWithLog,
   buildMinimalOWLModel,
   buildComplexOntologyModel,
+  buildScientificOntologyModel,
+  buildEducationalOntologyModel,
   fetcher
 } = mainModule;
 
@@ -274,6 +276,20 @@ describe("Ontology Model Wrappers", () => {
     expect(Array.isArray(model.properties)).toBe(true);
     expect(Array.isArray(model.concepts)).toBe(true);
     expect(model.metadata).toHaveProperty("created");
+  });
+
+  test("buildScientificOntologyModel returns scientific model", () => {
+    const model = buildScientificOntologyModel();
+    expect(model).toHaveProperty("id", "scientific");
+    expect(model).toHaveProperty("disciplines");
+    expect(Array.isArray(model.concepts)).toBe(true);
+  });
+
+  test("buildEducationalOntologyModel returns educational model", () => {
+    const model = buildEducationalOntologyModel();
+    expect(model).toHaveProperty("id", "educational");
+    expect(model).toHaveProperty("subjects");
+    expect(Array.isArray(model.concepts)).toBe(true);
   });
 });
 
