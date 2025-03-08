@@ -9,11 +9,11 @@
  * Changelog:
  *   - Refocused library on live public data sources for ontology building.
  *   - Enhanced diagnostic logging and refined network operations.
- *   - Updated demo mode to reflect live data integration.
+ *   - Updated demo mode to include timestamped logging and live data integration diagnostics.
  *   - Removed legacy demo code drift and pruned simulated outputs.
- *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, and buildOntologyFromLiveData for real-time ontology models.
- *   - Added new CLI commands: --build-intermediate, --build-enhanced, and --build-live.
- *   - Version updated from 0.0.32 to 0.0.33
+ *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, and logDiagnostic for enhanced diagnostic logging.
+ *   - Added new CLI command updates in --build-live to output diagnostic logs.
+ *   - Version updated from 0.0.33 to 0.0.34
  *   - Verified external endpoints responses via diagnostics tests and updated documentation in the README.
  *
  * For Developers:
@@ -45,12 +45,11 @@ export async function buildOntologyFromLiveData() {
   try {
     const data = await fetchDataWithRetry("https://api.publicapis.org/entries");
     const parsed = JSON.parse(data);
-    // Use live data to construct ontology, e.g., use first API's name as title and some descriptions as concepts
+    // Use live data to construct ontology, use first API's name as title and descriptions as concepts
     const title = parsed && parsed.entries && parsed.entries.length > 0 ? parsed.entries[0].API : "Live Data Ontology";
-    const concepts =
-      parsed && parsed.entries
-        ? parsed.entries.slice(0, 3).map((entry) => entry.Description)
-        : ["Concept1", "Concept2", "Concept3"];
+    const concepts = parsed && parsed.entries
+      ? parsed.entries.slice(0, 3).map((entry) => entry.Description)
+      : ["Concept1", "Concept2", "Concept3"];
     return { title, concepts };
   } catch (e) {
     // Fallback to static ontology in case of error
@@ -143,7 +142,7 @@ export function listAvailableEndpoints() {
     "https://jsonplaceholder.typicode.com/todos",
     "https://api.chucknorris.io/jokes/random",
     "https://api.agify.io?name=michael",
-    "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity",
+    "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity"
   ];
 }
 
@@ -265,6 +264,15 @@ export async function buildEnhancedOntology() {
     ontology.image = null;
   }
   return ontology;
+}
+
+// New Diagnostic Logging Functions
+export function getCurrentTimestamp() {
+  return new Date().toISOString();
+}
+
+export function logDiagnostic(message) {
+  console.log(`[${getCurrentTimestamp()}] DIAGNOSTIC: ${message}`);
 }
 
 // Exporting fetcher object to allow test spies
@@ -428,15 +436,17 @@ const commandActions = {
     console.log("Enhanced Ontology:", model);
     return model;
   },
-  // New CLI command for live data integration
+  // Updated CLI command for live data integration with diagnostic logging
   "--build-live": async (args) => {
     const model = await buildOntologyFromLiveData();
+    logDiagnostic("Live data ontology built successfully");
     console.log("Live Data Ontology:", model);
     return model;
   },
 };
 
 async function demo() {
+  logDiagnostic("Demo started");
   console.log("Running demo of ontology functions:");
   const ontology = buildOntology();
   console.log("Demo - built ontology:", ontology);
@@ -484,7 +494,7 @@ async function demo() {
   // Also demo live data integration function
   const liveModel = await buildOntologyFromLiveData();
   console.log("Demo - live data ontology:", liveModel);
-  console.log("Demo completed successfully.");
+  logDiagnostic("Demo completed successfully");
 }
 
 export async function main(args = process.argv.slice(2)) {
@@ -503,12 +513,12 @@ export async function main(args = process.argv.slice(2)) {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live`,
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live`
   );
 }
 
 export function getVersion() {
-  return "0.0.33";
+  return "0.0.34";
 }
 
 export function listCommands() {
