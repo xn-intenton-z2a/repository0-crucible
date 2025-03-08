@@ -341,6 +341,7 @@ describe("Extended Custom Functions", () => {
 describe("Extended Endpoints Test", () => {
   test("fetch data from all endpoints and log response snippet", async () => {
     const endpoints = listAvailableEndpoints();
+    expect(endpoints.length).toBeGreaterThan(13);
     for (const endpoint of endpoints) {
       try {
         const response = await fetchDataWithRetry(endpoint, 1);

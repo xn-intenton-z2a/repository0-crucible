@@ -15,6 +15,7 @@
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
  *   - Added new functions: buildOntologyFromCustomData, mergeOntologies, buildOntologyFromLiveDataWithLog for extended customization and diagnostic logging.
  *   - Updated CLI commands: --build-live, --build-custom-data, --merge-ontologies, and --build-live-log.
+ *   - Extended endpoints list to include additional live data sources for ontology building.
  *   - Version updated to 0.0.34
  *
  * For Developers:
@@ -127,6 +128,7 @@ export function clearOntology() {
 }
 
 export function listAvailableEndpoints() {
+  // Extended list of endpoints to widen the scope for ontology building
   return [
     "https://api.publicapis.org/entries",
     "https://dog.ceo/api/breeds/image/random",
@@ -140,7 +142,10 @@ export function listAvailableEndpoints() {
     "https://jsonplaceholder.typicode.com/todos",
     "https://api.chucknorris.io/jokes/random",
     "https://api.agify.io?name=michael",
-    "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity"
+    "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity",
+    "https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json",
+    "https://api.spacexdata.com/v4/launches/latest",
+    "https://random-data-api.com/api/commerce/random_commerce"
   ];
 }
 

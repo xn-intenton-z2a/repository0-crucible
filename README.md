@@ -12,7 +12,7 @@ owl-builder leverages real-time public endpoints to build dynamic ontology model
 - **Data Persistence:** Save, load, backup, and clear ontology JSON files.
 - **Query & Validation:** Search through ontology concepts and validate models.
 - **OWL Export/Import:** Convert ontologies to and from a minimal OWL XML format.
-- **Data Crawling:** Retrieve live data from a curated list of public endpoints.
+- **Data Crawling:** Retrieve live data from a curated and extended list of public endpoints for broader ontology construction.
 - **Model Wrappers:** Generate various ontology models including basic, advanced, intermediate, and enhanced versions.
 - **Extended Customization:** Build and merge custom ontologies.
 - **Enhanced Diagnostics:** Timestamped logging to support monitoring and debugging.
@@ -68,6 +68,10 @@ node src/lib/main.js --help
 - `--diagnostics`: Run diagnostics against public endpoints.
 - `--list`, `--version`, `--help`: Additional utilities.
 
+## Extended Endpoints
+
+The library now includes an extended list of live endpoints to broaden the scope of ontology building. New endpoints include data sources from Open Library, SpaceX, and random commerce data. This enriches the diversity of accessible information for constructing ontologies.
+
 ## For Developers
 
 - **Testing:** Run unit tests with:
@@ -93,7 +97,8 @@ Please refer to our [CONTRIBUTING](CONTRIBUTING.md) guidelines for details on co
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
 - Added functions for custom ontology building and merging.
 - Removed legacy and simulated demo implementations.
-- Updated test regex for --serve to correctly match the log output.
+- **Extended endpoints list with additional live data sources for broader ontology construction.**
+- Updated test expectations to accommodate extended endpoints.
 - Documentation refreshed to align with current best practices and contributing guidelines.
 
 ## License
