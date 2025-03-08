@@ -6,7 +6,7 @@ owl-builder is a versatile CLI tool and JavaScript library for constructing real
 
 ## Overview
 
-owl-builder leverages live public data endpoints to build dynamic ontology models that remain current and accurate. With features like data persistence, querying, and multiple ontology model builders (basic, advanced, intermediate, enhanced, and live-data based), owl-builder is tailored for both casual users and developers.
+owl-builder leverages live public data endpoints to build dynamic ontology models that remain current and accurate. With features like data persistence, querying, and multiple ontology model builders (basic, advanced, intermediate, enhanced, live-data based, and custom merging), owl-builder is tailored for both casual users and developers.
 
 ## Features
 
@@ -16,6 +16,7 @@ owl-builder leverages live public data endpoints to build dynamic ontology model
 - **OWL Export/Import:** Convert ontologies to a minimal OWL XML format.
 - **Data Crawling:** Retrieve live data from a curated list of public endpoints.
 - **Model Wrappers:** Generate various ontology models, including intermediate, enhanced, and live-data integrated models.
+- **Extended Customization:** New functions allow building ontologies from custom data and merging multiple ontologies.
 - **Enhanced Diagnostic Logging:** New functions provide timestamped logging (getCurrentTimestamp and logDiagnostic) to aid in diagnostics and monitoring.
 - **Web Server & Diagnostics:** Built-in support for launching a monitoring web server and running diagnostics.
 
@@ -62,11 +63,16 @@ npm install
   node src/lib/main.js --crawl
   ```
 
-- **Build Intermediate/Enhanced/Live Ontologies:**
+- **Build Various Ontologies:**
   ```bash
+  node src/lib/main.js --build-basic
+  node src/lib/main.js --build-advanced
   node src/lib/main.js --build-intermediate
   node src/lib/main.js --build-enhanced
   node src/lib/main.js --build-live
+  node src/lib/main.js --build-custom-data '{"title":"My Custom Ontology", "concepts":["CustomConcept"]}'
+  node src/lib/main.js --merge-ontologies
+  node src/lib/main.js --build-live-log
   ```
 
 ### For Developers
@@ -109,16 +115,20 @@ Key commands include:
 - `--serve`: Launch the integrated web server
 - `--build-intermediate`: Build an intermediate ontology model
 - `--build-enhanced`: Build an enhanced ontology model enriched with live data
-- `--build-live`: Build an ontology directly integrated with live public data (now with diagnostic logging)
+- `--build-live`: Build an ontology directly integrated with live public data (with diagnostic logging)
+- `--build-custom-data`: Build an ontology from provided custom data
+- `--merge-ontologies`: Merge static and live data ontologies into one
+- `--build-live-log`: Build live data ontology with additional diagnostic logs
 
 ## Change Log
 
 **Version 0.0.34**
 - Refocused ontology building to leverage live, verified public data endpoints.
 - Enhanced diagnostic messaging with new functions: **getCurrentTimestamp** and **logDiagnostic**.
-- Updated demo and CLI commands (especially --build-live) to output timestamped diagnostics.
+- Added new functions: **buildOntologyFromCustomData**, **mergeOntologies**, and **buildOntologyFromLiveDataWithLog** for extended customization and merging capabilities.
+- Updated CLI commands to include --build-custom-data, --merge-ontologies, and --build-live-log.
 - Removed simulated demo outputs in favor of live data calls where possible.
-- Resolved linting issues by updating catch blocks for unused exception parameters and improving code formatting.
+- Resolved linting issues by updating catch blocks and code formatting.
 - Verified responses from external endpoints via diagnostics tests.
 
 ## License
