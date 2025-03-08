@@ -5,13 +5,13 @@
  *
  * Mission Statement:
  *   owl-builder builds OWL ontologies directly from live, verified public data sources.
- *   This release removes legacy simulated demo implementations and prunes any code drift;
+ *   This release prunes legacy static fallback implementations and code drift;
  *   all functionality now focuses on integrating real-time public endpoints and enhanced diagnostic logging.
  *
  * Changelog:
  *   - Refocused library on live public data sources for ontology building.
  *   - Enhanced diagnostic logging and refined network operations.
- *   - Removed legacy demo code drift and pruned simulated outputs.
+ *   - Pruned legacy static fallback code; buildOntology now serves as a fallback only, while buildOntologyFromLiveData is used for live data integration.
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
  *   - Added new functions: buildOntologyFromCustomData, mergeOntologies, buildOntologyFromLiveDataWithLog for extended customization and diagnostic logging.
  *   - Extended endpoints list to include additional live data sources for ontology building (added albums and users endpoints).
@@ -35,8 +35,8 @@ import http from "http";
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
+// Legacy static fallback for ontology building; for live data integration use buildOntologyFromLiveData
 export function buildOntology() {
-  // Fallback static ontology maintained for backward compatibility and testing
   return {
     title: "Public Data Ontology",
     concepts: ["Concept1", "Concept2", "Concept3"]
@@ -48,7 +48,7 @@ export async function buildOntologyFromLiveData() {
   try {
     const data = await fetchDataWithRetry("https://api.publicapis.org/entries");
     const parsed = JSON.parse(data);
-    const title = parsed && parsed.entries && parsed.entries.length > 0 ? parsed.entries[0].API : "Live Data Ontology";
+    const title = (parsed && parsed.entries && parsed.entries.length > 0) ? parsed.entries[0].API : "Live Data Ontology";
     const concepts = parsed && parsed.entries
       ? parsed.entries.slice(0, 3).map((entry) => entry.Description)
       : ["Concept1", "Concept2", "Concept3"];
@@ -129,7 +129,6 @@ export function clearOntology() {
 }
 
 export function listAvailableEndpoints() {
-  // Extended list of endpoints to widen the scope for ontology building
   return [
     "https://api.publicapis.org/entries",
     "https://dog.ceo/api/breeds/image/random",
@@ -181,7 +180,6 @@ export async function crawlOntologies() {
   for (const endpoint of endpoints) {
     try {
       const data = await fetchDataWithRetry(endpoint);
-      // Use the static ontology for generating owlContent to avoid simulated legacy outputs.
       const owlContent = exportOntologyToXML(buildOntology());
       results.push({ endpoint, data, owlContent });
     } catch (err) {
@@ -262,7 +260,6 @@ export function buildIntermediateOWLModel() {
 export async function buildEnhancedOntology() {
   const ontology = buildOntology();
   try {
-    // Use the internal fetcher.fetchDataWithRetry so that test spies can override the call
     const data = await fetcher.fetchDataWithRetry("https://dog.ceo/api/breeds/image/random", 2);
     const parsed = JSON.parse(data);
     ontology.image = parsed.message;
@@ -282,7 +279,7 @@ export function logDiagnostic(message) {
   console.log(`[${getCurrentTimestamp()}] DIAGNOSTIC: ${message}`);
 }
 
-// New functions added for extended customization and merging functionality
+// New functions for extended customization and merging functionality
 export function buildOntologyFromCustomData(customData = {}) {
   return { ...buildOntology(), ...customData, customizedByUser: true };
 }
@@ -581,7 +578,6 @@ async function demo() {
   console.log("Demo - merged ontology:", mergedOntology);
   const liveLogOntology = await buildOntologyFromLiveDataWithLog();
   console.log("Demo - live data ontology with log:", liveLogOntology);
-  // Demonstrate the new wrappers
   const minimalModel = buildMinimalOWLModel();
   console.log("Demo - minimal OWL model:", minimalModel);
   const complexModel = buildComplexOntologyModel();

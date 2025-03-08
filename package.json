@@ -1,7 +1,7 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
   "version": "0.0.35",
-  "description": "Refreshed documentation; CLI tool refocused on building OWL ontologies from live, verified public data sources with enhanced persistence, diagnostics, updated ontology model wrappers, and extended endpoints list. Legacy simulated demo outputs and code drift have been removed.",
+  "description": "Refreshed documentation; CLI tool refocused on building OWL ontologies from live, verified public data sources with enhanced persistence, diagnostics, updated ontology model wrappers, and extended endpoints list. Legacy simulated demo outputs and code drift have been pruned.",
   "type": "module",
   "main": "src/lib/main.js",
   "scripts": {
@@ -40,7 +40,6 @@
     "eslint-plugin-react": "^7.37.4",
     "eslint-plugin-security": "^3.0.1",
     "eslint-plugin-sonarjs": "^3.0.2",
-    "eslint": "^9.21.0",
     "@microsoft/eslint-formatter-sarif": "^3.1.0",
     "markdown-it": "^14.1.0",
     "markdown-it-github": "^0.5.0",
