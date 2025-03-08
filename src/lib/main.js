@@ -5,27 +5,19 @@
  *
  * Mission Statement:
  *   owl-builder builds OWL ontologies directly from live, verified public data sources.
- *   This release refocuses the library on integrating real-time public endpoints to ensure
- *   that ontology models are built with up-to-date and trusted external data.
+ *   This release focuses on integrating real-time public endpoints for generating up-to-date ontology models.
  *
  * Changelog:
- *   - Refocused on using live public data sources for ontology building.
- *   - Extended list of endpoints and enhanced diagnostic logging for network operations.
- *   - Updated demo mode to better showcase real data fetching and integration.
- *
- * Features:
- *   - Build and persist ontology models from verified public data sources
- *   - Query and validate ontology concepts
- *   - Export/import OWL (XML) representations
- *   - Crawl updated public endpoints with robust error handling
- *   - Extended OWL ontology model wrappers for basic, advanced, and custom models
- *   - Simple web server for diagnostic monitoring
+ *   - Refocused on live public data sources for ontology building.
+ *   - Enhanced diagnostic logging and refined network operations.
+ *   - Updated demo mode to reflect real data integration.
+ *   - Maintained clean separation of core logic for ease of testing and contributions.
  *
  * For Developers:
- *   Follow CONTRIBUTING guidelines. Update tests and documentation as needed.
+ *   Follow CONTRIBUTING guidelines. Please update tests and documentation as needed.
  *
  * For Users:
- *   Use the robust CLI to generate rich, data-driven ontologies. Run --help for usage.
+ *   Use the CLI to build, manage, and query rich ontology models. Run --help for usage instructions.
  */
 
 import fs from 'fs';
