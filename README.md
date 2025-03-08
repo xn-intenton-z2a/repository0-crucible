@@ -1,14 +1,14 @@
 # owl-builder
 
-owl-builder is a versatile CLI tool and JavaScript library for constructing real-time OWL ontologies from live, verified public data sources. This documentation has been refreshed in line with our [CONTRIBUTING](CONTRIBUTING.md) guidelines to provide clear, concise, and up-to-date information.
+owl-builder is a versatile CLI tool and JavaScript library for constructing real-time OWL ontologies from live, verified public data sources. This documentation has been refreshed in accordance with our [CONTRIBUTING](CONTRIBUTING.md) guidelines to provide clear, concise, and up-to-date information.
 
 ## Overview
 
-owl-builder leverages real-time public endpoints to build dynamic ontology models. It provides features for data persistence, querying, diagnostics, and generating multiple ontology models (basic, advanced, intermediate, enhanced, minimal, complex, and custom). Legacy static fallback implementations have been pruned to ensure a focus on live data integration and enhanced diagnostic logging.
+owl-builder leverages real-time public endpoints to build dynamic ontology models. It provides features for data persistence, querying, diagnostics, and generating multiple ontology models (basic, advanced, intermediate, enhanced, minimal, complex, and custom). Legacy static fallback implementations have been pruned to focus on live data integration and enhanced diagnostic logging. The static fallback remains only as an emergency option.
 
 ## Features
 
-- **Ontology Building:** Create ontologies using live public data. A legacy static fallback is available only as a backup.
+- **Ontology Building:** Create ontologies using live public data with real-time API integration. The legacy static fallback is available only as a backup.
 - **Data Persistence:** Save, load, backup, and clear ontology JSON files.
 - **Query & Validation:** Search through ontology concepts and validate models.
 - **OWL Export/Import:** Convert ontologies to and from a minimal OWL XML format.
@@ -32,7 +32,7 @@ npm install
 
 ### Run Demo
 
-This demo showcases core functionalities such as ontology building, persistence, querying, and diagnostic logging. Note that live API calls are performed where applicable.
+This demo showcases core functionalities such as ontology building, persistence, querying, and diagnostic logging. Live API calls are performed where applicable.
 
 ```bash
 npm run start
@@ -48,7 +48,8 @@ node src/lib/main.js --help
 
 ### Key CLI Commands
 
-- `--build`: Generate an ontology using the legacy static fallback.
+- `--build`: Generate a fallback ontology using static data (for emergency use only).
+- `--build-live`: Build an ontology using live data with diagnostic logging.
 - `--persist`: Save the ontology to a JSON file.
 - `--load`: Load the saved ontology.
 - `--query "term"`: Search for ontology concepts.
@@ -60,7 +61,6 @@ node src/lib/main.js --help
 - `--crawl`: Crawl public endpoints for live data.
 - `--fetch-retry`: Fetch data with retry logic.
 - `--build-basic`, `--build-advanced`, `--build-intermediate`, `--build-enhanced`: Build various ontology models.
-- `--build-live`: Build an ontology using live data with diagnostics.
 - `--build-custom-data`: Build an ontology from provided custom data.
 - `--merge-ontologies`: Merge multiple ontology models.
 - `--build-live-log`: Build a live data ontology with additional diagnostic logging.
@@ -100,13 +100,11 @@ Please refer to our [CONTRIBUTING](CONTRIBUTING.md) guidelines for details on co
 
 **Version 0.0.35**
 
-- Refocused ontology building on live public data sources.
+- Refocused ontology building on live public data sources; static fallback is now retained only as an emergency option.
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
-- Pruned legacy static fallback code; static buildOntology is now solely a fallback.
-- Added functions for custom ontology building and merging.
-- **Extended endpoints list:** Added endpoints for albums and users to widen data sources.
-- **Added new model wrappers:** Implemented `buildMinimalOWLModel` and `buildComplexOntologyModel` for additional OWL ontology model representations.
-- Documentation refreshed to align with current best practices and contributing guidelines.
+- Added functions for custom ontology building (`buildOntologyFromCustomData`) and merging (`mergeOntologies`).
+- Extended endpoints list: added endpoints for albums and users to diversify data sources.
+- Updated CLI commands to better differentiate live data integration from legacy fallback.
 
 ## License
 

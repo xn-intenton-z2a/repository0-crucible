@@ -1,7 +1,7 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
   "version": "0.0.35",
-  "description": "Refreshed documentation; CLI tool refocused on building OWL ontologies from live, verified public data sources with enhanced persistence, diagnostics, updated ontology model wrappers, and extended endpoints list. Legacy simulated demo outputs and code drift have been pruned.",
+  "description": "CLI tool refocused on building OWL ontologies from live, verified public data sources with enhanced persistence, diagnostics, updated ontology model wrappers, and extended endpoints list.",
   "type": "module",
   "main": "src/lib/main.js",
   "scripts": {
