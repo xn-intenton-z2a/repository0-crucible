@@ -118,6 +118,7 @@ Key commands include:
 - Enhanced diagnostic messaging with new functions: **getCurrentTimestamp** and **logDiagnostic**.
 - Updated demo and CLI commands (especially --build-live) to output timestamped diagnostics.
 - Removed simulated demo outputs in favor of live data calls where possible.
+- Resolved linting issues by updating catch blocks for unused exception parameters and improving code formatting.
 - Verified responses from external endpoints via diagnostics tests.
 
 ## License
