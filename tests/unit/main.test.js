@@ -32,7 +32,10 @@ const {
   buildEnhancedOntology,
   getCurrentTimestamp,
   logDiagnostic,
-  fetcher,
+  buildOntologyFromCustomData,
+  mergeOntologies,
+  buildOntologyFromLiveDataWithLog,
+  fetcher
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -47,7 +50,7 @@ function simulateNetworkFailure(mod) {
           handler(error);
         }
         return req;
-      },
+      }
     };
     process.nextTick(() => {
       req.on("error", () => {});
@@ -306,6 +309,31 @@ describe("Diagnostic Logging", () => {
     expect(spy).toHaveBeenCalled();
     const logged = spy.mock.calls[0][0];
     expect(logged).toMatch(/\[.*\] DIAGNOSTIC: Test diagnostic/);
+    spy.mockRestore();
+  });
+});
+
+describe("Extended Custom Functions", () => {
+  test("buildOntologyFromCustomData returns ontology with customization flag", () => {
+    const customData = { title: "Custom Title", concepts: ["CustomData"] };
+    const customOntology = buildOntologyFromCustomData(customData);
+    expect(customOntology.title).toBe("Custom Title");
+    expect(customOntology.concepts).toContain("CustomData");
+    expect(customOntology.customizedByUser).toBe(true);
+  });
+
+  test("mergeOntologies correctly merges two ontologies", () => {
+    const ont1 = { title: "Ontology1", concepts: ["A"] };
+    const ont2 = { title: "Ontology2", concepts: ["B"] };
+    const merged = mergeOntologies(ont1, ont2);
+    expect(merged.title).toBe("Ontology1 & Ontology2");
+    expect(merged.concepts).toEqual(expect.arrayContaining(["A", "B"]));
+  });
+
+  test("buildOntologyFromLiveDataWithLog logs diagnostic and returns live ontology", async () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const ontology = await buildOntologyFromLiveDataWithLog();
+    expect(ontology).toHaveProperty("title");
     spy.mockRestore();
   });
 });

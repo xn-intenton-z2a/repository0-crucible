@@ -11,8 +11,9 @@
  *   - Enhanced diagnostic logging and refined network operations.
  *   - Updated demo mode to include timestamped logging and live data integration diagnostics.
  *   - Removed legacy demo code drift and pruned simulated outputs.
- *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, and logDiagnostic for enhanced diagnostic logging.
- *   - Added new CLI command updates in --build-live to output diagnostic logs.
+ *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
+ *   - Added new functions: buildOntologyFromCustomData, mergeOntologies, buildOntologyFromLiveDataWithLog for extended customization and diagnostic logging.
+ *   - Updated CLI commands: --build-live, --build-custom-data, --merge-ontologies, and --build-live-log.
  *   - Version updated from 0.0.33 to 0.0.34
  *   - Verified external endpoints responses via diagnostics tests and updated documentation in the README.
  *
@@ -275,6 +276,23 @@ export function logDiagnostic(message) {
   console.log(`[${getCurrentTimestamp()}] DIAGNOSTIC: ${message}`);
 }
 
+// New functions added for extended customization and merging functionality
+export function buildOntologyFromCustomData(customData = {}) {
+  return { ...buildOntology(), ...customData, customizedByUser: true };
+}
+
+export function mergeOntologies(...ontologies) {
+  const merged = { title: ontologies.map(o => o.title).join(" & "), concepts: [] };
+  ontologies.forEach(o => { if(o.concepts) { merged.concepts.push(...o.concepts); } });
+  return merged;
+}
+
+export async function buildOntologyFromLiveDataWithLog() {
+  const ontology = await buildOntologyFromLiveData();
+  logDiagnostic("Live data ontology built with additional diagnostics");
+  return ontology;
+}
+
 // Exporting fetcher object to allow test spies
 export const fetcher = { fetchDataWithRetry };
 
@@ -442,6 +460,34 @@ const commandActions = {
     logDiagnostic("Live data ontology built successfully");
     console.log("Live Data Ontology:", model);
     return model;
+  },
+  // New CLI command: Build ontology from custom data
+  "--build-custom-data": async (args) => {
+    let data = {};
+    try {
+      data = args[1] ? JSON.parse(args[1]) : {};
+    } catch (_) {
+      console.log("Invalid JSON input for custom data, using default");
+    }
+    const customOntology = buildOntologyFromCustomData(data);
+    logDiagnostic("Built custom data ontology");
+    console.log("Custom Data Ontology:", customOntology);
+    return customOntology;
+  },
+  // New CLI command: Merge ontologies from static and live data
+  "--merge-ontologies": async (args) => {
+    const ont1 = buildOntology();
+    const ont2 = await buildOntologyFromLiveData();
+    const merged = mergeOntologies(ont1, ont2);
+    logDiagnostic("Merged ontologies from static and live data");
+    console.log("Merged Ontology:", merged);
+    return merged;
+  },
+  // New CLI command: Build live data ontology with additional diagnostic log
+  "--build-live-log": async (args) => {
+    const ont = await buildOntologyFromLiveDataWithLog();
+    console.log("Live Data Ontology with Log:", ont);
+    return ont;
   }
 };
 
@@ -494,6 +540,13 @@ async function demo() {
   // Also demo live data integration function
   const liveModel = await buildOntologyFromLiveData();
   console.log("Demo - live data ontology:", liveModel);
+  // Demo new functions
+  const customDataOntology = buildOntologyFromCustomData({ concepts: ["CustomDataConcept"] });
+  console.log("Demo - custom data ontology:", customDataOntology);
+  const mergedOntology = mergeOntologies(ontology, liveModel);
+  console.log("Demo - merged ontology:", mergedOntology);
+  const liveLogOntology = await buildOntologyFromLiveDataWithLog();
+  console.log("Demo - live data ontology with log:", liveLogOntology);
   logDiagnostic("Demo completed successfully");
 }
 
@@ -513,7 +566,7 @@ export async function main(args = process.argv.slice(2)) {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live`
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log`
   );
 }
 
