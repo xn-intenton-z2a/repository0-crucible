@@ -4,15 +4,15 @@ owl-builder is a versatile CLI tool and JavaScript library for constructing real
 
 ## Overview
 
-owl-builder leverages real-time public endpoints to build dynamic ontology models. It provides features for data persistence, querying, diagnostics, and generating multiple ontology models (basic, advanced, intermediate, enhanced, minimal, complex, and custom). Legacy simulated demo implementations have been removed to ensure a focus on live data integration and enhanced diagnostic logging.
+owl-builder leverages real-time public endpoints to build dynamic ontology models. It provides features for data persistence, querying, diagnostics, and generating multiple ontology models (basic, advanced, intermediate, enhanced, minimal, complex, and custom). Legacy static fallback implementations have been pruned to ensure a focus on live data integration and enhanced diagnostic logging.
 
 ## Features
 
-- **Ontology Building:** Create ontologies using live public data.
+- **Ontology Building:** Create ontologies using live public data. A legacy static fallback is available only as a backup.
 - **Data Persistence:** Save, load, backup, and clear ontology JSON files.
 - **Query & Validation:** Search through ontology concepts and validate models.
 - **OWL Export/Import:** Convert ontologies to and from a minimal OWL XML format.
-- **Data Crawling:** Retrieve live data from a curated and extended list of public endpoints for broader ontology construction.
+- **Data Crawling:** Retrieve live data from an extended list of public endpoints for broader ontology construction.
 - **Model Wrappers:** Generate various ontology models including basic, advanced, intermediate, enhanced, minimal, and complex versions.
 - **Extended Customization:** Build and merge custom ontologies.
 - **Enhanced Diagnostics:** Timestamped logging to support monitoring and debugging.
@@ -48,7 +48,7 @@ node src/lib/main.js --help
 
 ### Key CLI Commands
 
-- `--build`: Generate an ontology using static fallback data.
+- `--build`: Generate an ontology using the legacy static fallback.
 - `--persist`: Save the ontology to a JSON file.
 - `--load`: Load the saved ontology.
 - `--query "term"`: Search for ontology concepts.
@@ -72,7 +72,7 @@ node src/lib/main.js --help
 
 ## Extended Endpoints
 
-The library now includes an extended list of live endpoints to broaden the scope of ontology building. New endpoints added include:
+The library now includes an extended list of live endpoints. New endpoints added include:
 
 - `https://jsonplaceholder.typicode.com/albums`
 - `https://jsonplaceholder.typicode.com/users`
@@ -102,10 +102,9 @@ Please refer to our [CONTRIBUTING](CONTRIBUTING.md) guidelines for details on co
 
 - Refocused ontology building on live public data sources.
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
-- Removed legacy simulated demo outputs and pruned code drift.
-- Refactored `buildEnhancedOntology` to use `fetcher.fetchDataWithRetry` for better testability.
+- Pruned legacy static fallback code; static buildOntology is now solely a fallback.
 - Added functions for custom ontology building and merging.
-- **Extended endpoints list:** Added endpoints for albums and users to widen data sources for extended ontology construction.
+- **Extended endpoints list:** Added endpoints for albums and users to widen data sources.
 - **Added new model wrappers:** Implemented `buildMinimalOWLModel` and `buildComplexOntologyModel` for additional OWL ontology model representations.
 - Documentation refreshed to align with current best practices and contributing guidelines.
 
