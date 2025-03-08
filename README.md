@@ -93,6 +93,7 @@ Please refer to our [CONTRIBUTING](CONTRIBUTING.md) guidelines for details on co
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
 - Added functions for custom ontology building and merging.
 - Removed legacy and simulated demo implementations.
+- Updated test regex for --serve to correctly match the log output.
 - Documentation refreshed to align with current best practices and contributing guidelines.
 
 ## License
