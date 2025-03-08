@@ -96,7 +96,7 @@ Please refer to our [CONTRIBUTING](CONTRIBUTING.md) guidelines for details on co
 - Refocused ontology building on live public data sources.
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
 - Removed legacy simulated demo outputs and pruned code drift.
-- Refactored `buildEnhancedOntology` to use internal `fetchDataWithRetry`.
+- Refactored `buildEnhancedOntology` to use `fetcher.fetchDataWithRetry` for better testability.
 - Added functions for custom ontology building and merging.
 - Extended endpoints list with additional live data sources for broader ontology construction.
 - Documentation refreshed to align with current best practices and contributing guidelines.
