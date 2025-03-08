@@ -11,11 +11,11 @@
  *   - Refocused library on live public data sources for ontology building.
  *   - Enhanced diagnostic logging and refined network operations.
  *   - Updated demo mode to reflect real data integration.
- *   - Removed demo code drift and added new endpoints for richer data responses.
+ *   - Removed legacy demo code drift and integrated real-time endpoint data processing.
  *   - Added new functions: buildIntermediateOWLModel and buildEnhancedOntology for additional ontology models.
  *   - Added new CLI commands: --build-intermediate and --build-enhanced.
  *   - Updated buildEnhancedOntology to use an exported fetcher object to allow proper test mocking.
- *   - Version updated from 0.0.31 to 0.0.32
+ *   - Version updated from 0.0.32 to 0.0.33
  *
  * For Developers:
  *   Follow CONTRIBUTING guidelines. Please update tests and documentation as needed.
@@ -76,7 +76,8 @@ export function exportOntologyToXML(ontology) {
 }
 
 export function importOntologyFromXML(xml) {
-  const titleMatch = xml.match(/<title>(.*?)<\/title>/);
+  // Updated regex to be more robust in case of additional tags
+  const titleMatch = xml.match(/<title>([^<]+)<\/title>/);
   return { title: titleMatch ? titleMatch[1] : 'Imported Ontology', concepts: [] };
 }
 
@@ -474,7 +475,7 @@ export function displayHelp() {
 }
 
 export function getVersion() {
-  return '0.0.32';
+  return '0.0.33';
 }
 
 export function listCommands() {

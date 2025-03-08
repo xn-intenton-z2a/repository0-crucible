@@ -116,13 +116,12 @@ Contributions are welcome! Please review our [CONTRIBUTING.md](CONTRIBUTING.md) 
 
 ## Change Log
 
-**Version 0.0.32**
+**Version 0.0.33**
 - Refocused ontology building to leverage live, verified public data endpoints.
 - Enhanced diagnostic messaging and updated network operations for real-time data integration.
+- Removed legacy demo code drift and refined demo functionalities to reflect live data integration.
 - Added new ontology model builders: **buildIntermediateOWLModel** and **buildEnhancedOntology**.
 - Introduced new CLI commands: **--build-intermediate** and **--build-enhanced**.
-- Fixed regex in importOntologyFromXML to resolve build issues.
-- Version updated from 0.0.31 to 0.0.32.
 
 ## License
 
