@@ -311,7 +311,6 @@ describe("Diagnostic Logging", () => {
 });
 
 describe("Extended Endpoints Test", () => {
-  // Verified endpoints responses are logged for review
   test("fetch data from all endpoints and log response snippet", async () => {
     const endpoints = listAvailableEndpoints();
     for (const endpoint of endpoints) {

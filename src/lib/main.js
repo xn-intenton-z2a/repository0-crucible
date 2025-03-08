@@ -36,7 +36,7 @@ export function buildOntology() {
   // Static fallback ontology, maintained for backward compatibility and testing
   return {
     title: "Public Data Ontology",
-    concepts: ["Concept1", "Concept2", "Concept3"],
+    concepts: ["Concept1", "Concept2", "Concept3"]
   };
 }
 
@@ -51,7 +51,7 @@ export async function buildOntologyFromLiveData() {
       ? parsed.entries.slice(0, 3).map((entry) => entry.Description)
       : ["Concept1", "Concept2", "Concept3"];
     return { title, concepts };
-  } catch (e) {
+  } catch (_) {
     // Fallback to static ontology in case of error
     return buildOntology();
   }
@@ -122,8 +122,8 @@ export function clearOntology() {
     } else {
       return { success: false, error: "Ontology file does not exist" };
     }
-  } catch (e) {
-    return { success: false, error: e.message };
+  } catch (_) {
+    return { success: false, error: "Error clearing ontology file" };
   }
 }
 
@@ -189,7 +189,7 @@ export function buildBasicOWLModel() {
     id: "basic",
     title: "Basic OWL Ontology",
     concepts: ["Class1", "Class2"],
-    properties: [],
+    properties: []
   };
 }
 
@@ -200,11 +200,11 @@ export function buildAdvancedOWLModel() {
     classes: ["Person", "Organization"],
     properties: [
       { name: "hasName", type: "string" },
-      { name: "hasAge", type: "integer" },
+      { name: "hasAge", type: "integer" }
     ],
     metadata: {
-      created: new Date().toISOString(),
-    },
+      created: new Date().toISOString()
+    }
   };
 }
 
@@ -248,7 +248,7 @@ export function buildIntermediateOWLModel() {
     id: "intermediate",
     title: "Intermediate OWL Ontology",
     concepts: ["IntermediateConcept1", "IntermediateConcept2"],
-    annotations: { version: "intermediate" },
+    annotations: { version: "intermediate" }
   };
 }
 
@@ -260,7 +260,7 @@ export async function buildEnhancedOntology() {
     const parsed = JSON.parse(data);
     ontology.image = parsed.message;
     ontology.concepts.push("EnhancedConcept");
-  } catch (e) {
+  } catch (_) {
     ontology.image = null;
   }
   return ontology;
@@ -384,7 +384,7 @@ const commandActions = {
     let model;
     try {
       model = args[1] ? JSON.parse(args[1]) : buildBasicOWLModel();
-    } catch (e) {
+    } catch (_) {
       model = buildBasicOWLModel();
     }
     const wrapped = wrapOntologyModel(model);
@@ -395,7 +395,7 @@ const commandActions = {
     let custom = {};
     try {
       custom = args[1] ? JSON.parse(args[1]) : {};
-    } catch (e) {
+    } catch (_) {
       console.log("Invalid JSON input for custom ontology, using default");
     }
     const customOntology = buildCustomOntology(custom);
@@ -442,7 +442,7 @@ const commandActions = {
     logDiagnostic("Live data ontology built successfully");
     console.log("Live Data Ontology:", model);
     return model;
-  },
+  }
 };
 
 async function demo() {
