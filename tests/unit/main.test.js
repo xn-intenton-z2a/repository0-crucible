@@ -35,6 +35,8 @@ const {
   buildOntologyFromCustomData,
   mergeOntologies,
   buildOntologyFromLiveDataWithLog,
+  buildMinimalOWLModel,
+  buildComplexOntologyModel,
   fetcher
 } = mainModule;
 
@@ -254,6 +256,24 @@ describe("Ontology Model Wrappers", () => {
     const wrapped = wrapOntologyModel(model);
     expect(wrapped).toHaveProperty("timestamp");
     expect(wrapped.title).toBe("Default Title");
+  });
+
+  test("buildMinimalOWLModel returns a minimal model", () => {
+    const model = buildMinimalOWLModel();
+    expect(model).toHaveProperty("id", "minimal");
+    expect(model).toHaveProperty("title", "Minimal OWL Ontology");
+    expect(model.concepts).toEqual([]);
+    expect(model.metadata).toMatchObject({ version: "minimal" });
+  });
+
+  test("buildComplexOntologyModel returns a complex model", () => {
+    const model = buildComplexOntologyModel();
+    expect(model).toHaveProperty("id", "complex");
+    expect(model).toHaveProperty("title", "Complex OWL Ontology");
+    expect(Array.isArray(model.classes)).toBe(true);
+    expect(Array.isArray(model.properties)).toBe(true);
+    expect(Array.isArray(model.concepts)).toBe(true);
+    expect(model.metadata).toHaveProperty("created");
   });
 });
 

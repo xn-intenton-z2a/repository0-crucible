@@ -15,8 +15,8 @@
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
  *   - Added new functions: buildOntologyFromCustomData, mergeOntologies, buildOntologyFromLiveDataWithLog for extended customization and diagnostic logging.
  *   - Extended endpoints list to include additional live data sources for ontology building (added albums and users endpoints).
- *   - Updated CLI commands: --build-live, --build-custom-data, --merge-ontologies, and --build-live-log.
- *   - Refactored buildEnhancedOntology to use internal fetcher.fetchDataWithRetry to allow test spying instead of direct fetchDataWithRetry call.
+ *   - Added new wrappers for OWL ontology models: buildMinimalOWLModel and buildComplexOntologyModel.
+ *   - Updated CLI commands: --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, and --build-complex.
  *   - Version updated to 0.0.35
  *
  * For Developers:
@@ -299,6 +299,31 @@ export async function buildOntologyFromLiveDataWithLog() {
   return ontology;
 }
 
+// New Wrapper Functions for Additional OWL Ontology Models
+export function buildMinimalOWLModel() {
+  return {
+    id: "minimal",
+    title: "Minimal OWL Ontology",
+    concepts: [],
+    metadata: { version: "minimal" }
+  };
+}
+
+export function buildComplexOntologyModel() {
+  return {
+    id: "complex",
+    title: "Complex OWL Ontology",
+    classes: ["ClassA", "ClassB", "ClassC"],
+    properties: [
+      { name: "hasA", type: "string" },
+      { name: "hasB", type: "number" },
+      { name: "hasC", type: "boolean" }
+    ],
+    concepts: ["ConceptA", "ConceptB", "ConceptC"],
+    metadata: { created: new Date().toISOString() }
+  };
+}
+
 // Exporting fetcher object to allow test spies
 export const fetcher = { fetchDataWithRetry };
 
@@ -490,6 +515,16 @@ const commandActions = {
     const ont = await buildOntologyFromLiveDataWithLog();
     console.log("Live Data Ontology with Log:", ont);
     return ont;
+  },
+  "--build-minimal": async (args) => {
+    const model = buildMinimalOWLModel();
+    console.log("Minimal OWL Model:", model);
+    return model;
+  },
+  "--build-complex": async (args) => {
+    const model = buildComplexOntologyModel();
+    console.log("Complex OWL Model:", model);
+    return model;
   }
 };
 
@@ -546,6 +581,11 @@ async function demo() {
   console.log("Demo - merged ontology:", mergedOntology);
   const liveLogOntology = await buildOntologyFromLiveDataWithLog();
   console.log("Demo - live data ontology with log:", liveLogOntology);
+  // Demonstrate the new wrappers
+  const minimalModel = buildMinimalOWLModel();
+  console.log("Demo - minimal OWL model:", minimalModel);
+  const complexModel = buildComplexOntologyModel();
+  console.log("Demo - complex OWL model:", complexModel);
   logDiagnostic("Demo completed successfully");
 }
 
@@ -565,7 +605,7 @@ export async function main(args = process.argv.slice(2)) {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log`
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex`
   );
 }
 
