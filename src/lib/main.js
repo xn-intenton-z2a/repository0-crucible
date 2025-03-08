@@ -5,13 +5,15 @@
  *
  * Mission Statement:
  *   owl-builder builds OWL ontologies directly from live, verified public data sources.
- *   This release refocuses on integrating real-time public endpoints to generate accurate ontology models.
+ *   This release refocuses the tool to integrate real-time public endpoints, ensuring that the ontology models reflect current external data.
  *
  * Changelog:
- *   - Refocused on live public data sources for ontology building.
+ *   - Refocused library on live public data sources for ontology building.
  *   - Enhanced diagnostic logging and refined network operations.
  *   - Updated demo mode to reflect real data integration.
- *   - Updated documentation and version information to align with CONTRIBUTING guidelines.
+ *   - Removed demo code drift and added new endpoints for richer data responses.
+ *   - Updated version information and changelog to reflect refocusing.
+ *   - Version updated from 0.0.31 to 0.0.32
  *
  * For Developers:
  *   Follow CONTRIBUTING guidelines. Please update tests and documentation as needed.
@@ -119,7 +121,8 @@ export function listAvailableEndpoints() {
     'https://catfact.ninja/fact',
     'https://jsonplaceholder.typicode.com/todos',
     'https://api.chucknorris.io/jokes/random',
-    'https://api.agify.io?name=michael'
+    'https://api.agify.io?name=michael',
+    'https://api.stackexchange.com/2.2/questions?order=desc&sort=activity'
   ];
 }
 
@@ -427,7 +430,7 @@ export function displayHelp() {
 }
 
 export function getVersion() {
-  return '0.0.31';
+  return '0.0.32';
 }
 
 export function listCommands() {
