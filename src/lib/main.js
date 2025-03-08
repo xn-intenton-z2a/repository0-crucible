@@ -76,7 +76,7 @@ export function exportOntologyToXML(ontology) {
 }
 
 export function importOntologyFromXML(xml) {
-  const titleMatch = xml.match(/<title>(.*?)<\/title>/);
+  const titleMatch = xml.match(/<title>(.*?)<\\/title>/);
   return { title: titleMatch ? titleMatch[1] : 'Imported Ontology', concepts: [] };
 }
 
