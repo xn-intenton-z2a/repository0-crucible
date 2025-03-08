@@ -23,30 +23,33 @@
  *   Use the CLI to build, manage, and query rich ontology models. Run --help for usage instructions.
  */
 
-import fs from 'fs';
-import path from 'path';
-import https from 'https';
-import http from 'http';
+import fs from "fs";
+import path from "path";
+import https from "https";
+import http from "http";
 
-const ontologyFilePath = path.resolve(process.cwd(), 'ontology.json');
-const backupFilePath = path.resolve(process.cwd(), 'ontology-backup.json');
+const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
+const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
 export function buildOntology() {
   // Static fallback ontology, maintained for backward compatibility and testing
   return {
-    title: 'Public Data Ontology',
-    concepts: ['Concept1', 'Concept2', 'Concept3']
+    title: "Public Data Ontology",
+    concepts: ["Concept1", "Concept2", "Concept3"],
   };
 }
 
 // New function that builds an ontology using live data from a public API endpoint
 export async function buildOntologyFromLiveData() {
   try {
-    const data = await fetchDataWithRetry('https://api.publicapis.org/entries');
+    const data = await fetchDataWithRetry("https://api.publicapis.org/entries");
     const parsed = JSON.parse(data);
     // Use live data to construct ontology, e.g., use first API's name as title and some descriptions as concepts
-    const title = parsed && parsed.entries && parsed.entries.length > 0 ? parsed.entries[0].API : 'Live Data Ontology';
-    const concepts = parsed && parsed.entries ? parsed.entries.slice(0, 3).map(entry => entry.Description) : ['Concept1', 'Concept2', 'Concept3'];
+    const title = parsed && parsed.entries && parsed.entries.length > 0 ? parsed.entries[0].API : "Live Data Ontology";
+    const concepts =
+      parsed && parsed.entries
+        ? parsed.entries.slice(0, 3).map((entry) => entry.Description)
+        : ["Concept1", "Concept2", "Concept3"];
     return { title, concepts };
   } catch (e) {
     // Fallback to static ontology in case of error
@@ -65,7 +68,7 @@ export function persistOntology(ontology) {
 
 export function loadOntology() {
   try {
-    const content = fs.readFileSync(ontologyFilePath, 'utf-8');
+    const content = fs.readFileSync(ontologyFilePath, "utf-8");
     return JSON.parse(content);
   } catch (e) {
     return { success: false, error: e.message };
@@ -77,7 +80,7 @@ export function queryOntology(searchTerm) {
   if (ontology.success === false) {
     return { searchTerm, results: [] };
   }
-  const results = ontology.concepts.filter(c => c.includes(searchTerm));
+  const results = ontology.concepts.filter((c) => c.includes(searchTerm));
   return { searchTerm, results };
 }
 
@@ -92,12 +95,12 @@ export function exportOntologyToXML(ontology) {
 export function importOntologyFromXML(xml) {
   // Updated regex to be more robust in case of additional tags
   const titleMatch = xml.match(/<title>([^<]+)<\/title>/);
-  return { title: titleMatch ? titleMatch[1] : 'Imported Ontology', concepts: [] };
+  return { title: titleMatch ? titleMatch[1] : "Imported Ontology", concepts: [] };
 }
 
 export function backupOntology() {
   try {
-    const content = fs.readFileSync(ontologyFilePath, 'utf-8');
+    const content = fs.readFileSync(ontologyFilePath, "utf-8");
     fs.writeFileSync(backupFilePath, content);
     return { success: true, backupFile: backupFilePath };
   } catch (e) {
@@ -106,7 +109,7 @@ export function backupOntology() {
 }
 
 export function updateOntology(newTitle) {
-  let ontology = buildOntology();
+  const ontology = buildOntology();
   ontology.title = newTitle;
   return ontology;
 }
@@ -117,7 +120,7 @@ export function clearOntology() {
       fs.unlinkSync(ontologyFilePath);
       return { success: true };
     } else {
-      return { success: false, error: 'Ontology file does not exist' };
+      return { success: false, error: "Ontology file does not exist" };
     }
   } catch (e) {
     return { success: false, error: e.message };
@@ -127,38 +130,40 @@ export function clearOntology() {
 export function listAvailableEndpoints() {
   // Extended list of public endpoints for building ontologies
   return [
-    'https://api.publicapis.org/entries',
-    'https://dog.ceo/api/breeds/image/random',
-    'https://jsonplaceholder.typicode.com/posts',
-    'https://api.coindesk.com/v1/bpi/currentprice.json',
-    'https://api.github.com',
-    'https://jsonplaceholder.typicode.com/comments',
-    'https://dummyjson.com/products',
-    'https://randomuser.me/api/',
-    'https://catfact.ninja/fact',
-    'https://jsonplaceholder.typicode.com/todos',
-    'https://api.chucknorris.io/jokes/random',
-    'https://api.agify.io?name=michael',
-    'https://api.stackexchange.com/2.2/questions?order=desc&sort=activity'
+    "https://api.publicapis.org/entries",
+    "https://dog.ceo/api/breeds/image/random",
+    "https://jsonplaceholder.typicode.com/posts",
+    "https://api.coindesk.com/v1/bpi/currentprice.json",
+    "https://api.github.com",
+    "https://jsonplaceholder.typicode.com/comments",
+    "https://dummyjson.com/products",
+    "https://randomuser.me/api/",
+    "https://catfact.ninja/fact",
+    "https://jsonplaceholder.typicode.com/todos",
+    "https://api.chucknorris.io/jokes/random",
+    "https://api.agify.io?name=michael",
+    "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity",
   ];
 }
 
 export async function fetchDataWithRetry(url, retries = 3) {
-  const mod = url.startsWith('https') ? https : http;
-  const options = { headers: { 'User-Agent': 'owl-builder CLI tool' } };
+  const mod = url.startsWith("https") ? https : http;
+  const options = { headers: { "User-Agent": "owl-builder CLI tool" } };
   return new Promise((resolve, reject) => {
     function attempt(n) {
-      mod.get(url, options, (res) => {
-        let data = '';
-        res.on('data', (chunk) => data += chunk);
-        res.on('end', () => resolve(data));
-      }).on('error', (err) => {
-        if (n > 0) {
-          attempt(n - 1);
-        } else {
-          reject(err);
-        }
-      });
+      mod
+        .get(url, options, (res) => {
+          let data = "";
+          res.on("data", (chunk) => (data += chunk));
+          res.on("end", () => resolve(data));
+        })
+        .on("error", (err) => {
+          if (n > 0) {
+            attempt(n - 1);
+          } else {
+            reject(err);
+          }
+        });
     }
     attempt(retries);
   });
@@ -169,7 +174,7 @@ export async function crawlOntologies() {
   const results = [];
   for (const endpoint of endpoints) {
     try {
-      let data = await fetchDataWithRetry(endpoint);
+      const data = await fetchDataWithRetry(endpoint);
       const owlContent = exportOntologyToXML(buildOntology());
       results.push({ endpoint, data, owlContent });
     } catch (err) {
@@ -181,31 +186,31 @@ export async function crawlOntologies() {
 
 export function buildBasicOWLModel() {
   return {
-    id: 'basic',
-    title: 'Basic OWL Ontology',
-    concepts: ['Class1', 'Class2'],
-    properties: []
+    id: "basic",
+    title: "Basic OWL Ontology",
+    concepts: ["Class1", "Class2"],
+    properties: [],
   };
 }
 
 export function buildAdvancedOWLModel() {
   return {
-    id: 'advanced',
-    title: 'Advanced OWL Ontology',
-    classes: ['Person', 'Organization'],
+    id: "advanced",
+    title: "Advanced OWL Ontology",
+    classes: ["Person", "Organization"],
     properties: [
-      { name: 'hasName', type: 'string' },
-      { name: 'hasAge', type: 'integer' }
+      { name: "hasName", type: "string" },
+      { name: "hasAge", type: "integer" },
     ],
     metadata: {
-      created: new Date().toISOString()
-    }
+      created: new Date().toISOString(),
+    },
   };
 }
 
 export function wrapOntologyModel(model) {
   if (!model || !model.title) {
-    model = { title: 'Default Title' };
+    model = { title: "Default Title" };
   }
   model.timestamp = new Date().toISOString();
   return model;
@@ -225,14 +230,14 @@ export function extendOntologyConcepts(ontology, additionalConcepts = []) {
 export function serveWebServer() {
   const port = process.env.PORT || 3000;
   const server = http.createServer((req, res) => {
-    res.writeHead(200, { 'Content-Type': 'text/plain' });
-    res.end('owl-builder Web Server Running\n');
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("owl-builder Web Server Running\n");
   });
   return new Promise((resolve, reject) => {
     server.listen(port, () => {
       const logMsg = `Web server started at http://localhost:${port}`;
       console.log(logMsg);
-      resolve('Web server started');
+      resolve("Web server started");
     });
   });
 }
@@ -240,10 +245,10 @@ export function serveWebServer() {
 // New Functions for Enhanced Ontology Models
 export function buildIntermediateOWLModel() {
   return {
-    id: 'intermediate',
-    title: 'Intermediate OWL Ontology',
-    concepts: ['IntermediateConcept1', 'IntermediateConcept2'],
-    annotations: { version: 'intermediate' }
+    id: "intermediate",
+    title: "Intermediate OWL Ontology",
+    concepts: ["IntermediateConcept1", "IntermediateConcept2"],
+    annotations: { version: "intermediate" },
   };
 }
 
@@ -251,10 +256,10 @@ export async function buildEnhancedOntology() {
   const ontology = buildOntology();
   try {
     // Use the exported fetcher to allow proper testing override
-    const data = await fetcher.fetchDataWithRetry('https://dog.ceo/api/breeds/image/random', 2);
+    const data = await fetcher.fetchDataWithRetry("https://dog.ceo/api/breeds/image/random", 2);
     const parsed = JSON.parse(data);
     ontology.image = parsed.message;
-    ontology.concepts.push('EnhancedConcept');
+    ontology.concepts.push("EnhancedConcept");
   } catch (e) {
     ontology.image = null;
   }
@@ -265,20 +270,22 @@ export async function buildEnhancedOntology() {
 export const fetcher = { fetchDataWithRetry };
 
 const commandActions = {
-  "--help": async (args) => { displayHelp(); },
-  "--version": async (args) => { 
-    console.log("Tool version:", getVersion()); 
-    return getVersion(); 
+  "--help": async (args) => {
+    displayHelp();
   },
-  "--list": async (args) => { 
-    const commands = listCommands(); 
-    console.log("Supported commands:", commands); 
-    return commands; 
+  "--version": async (args) => {
+    console.log("Tool version:", getVersion());
+    return getVersion();
   },
-  "--build": async (args) => { 
-    const ontology = buildOntology(); 
-    console.log("Ontology built:", ontology); 
-    return ontology; 
+  "--list": async (args) => {
+    const commands = listCommands();
+    console.log("Supported commands:", commands);
+    return commands;
+  },
+  "--build": async (args) => {
+    const ontology = buildOntology();
+    console.log("Ontology built:", ontology);
+    return ontology;
   },
   "--persist": async (args) => {
     const ontology = buildOntology();
@@ -287,64 +294,64 @@ const commandActions = {
     console.log("Ontology persisted:", saved);
     return saved;
   },
-  "--load": async (args) => { 
-    const loaded = loadOntology(); 
-    console.log("Ontology loaded:", loaded); 
-    return loaded; 
+  "--load": async (args) => {
+    const loaded = loadOntology();
+    console.log("Ontology loaded:", loaded);
+    return loaded;
   },
-  "--query": async (args) => { 
+  "--query": async (args) => {
     const searchTerm = args[1] || "Concept1";
     const results = queryOntology(searchTerm);
     console.log("Ontology query results:", results);
-    return results; 
+    return results;
   },
-  "--validate": async (args) => { 
-    const ontology = buildOntology(); 
+  "--validate": async (args) => {
+    const ontology = buildOntology();
     const isValid = validateOntology(ontology);
     console.log("Ontology validation result:", isValid);
-    return isValid; 
+    return isValid;
   },
-  "--export": async (args) => { 
-    const ontology = buildOntology(); 
+  "--export": async (args) => {
+    const ontology = buildOntology();
     const xml = exportOntologyToXML(ontology);
-    console.log("Ontology exported to XML:", xml); 
+    console.log("Ontology exported to XML:", xml);
     return xml;
   },
-  "--import": async (args) => { 
+  "--import": async (args) => {
     const sampleXML = `<ontology><title>Imported Ontology</title></ontology>`;
     const imported = importOntologyFromXML(sampleXML);
     console.log("Ontology imported from XML:", imported);
-    return imported; 
+    return imported;
   },
-  "--backup": async (args) => { 
-    const ontology = buildOntology(); 
+  "--backup": async (args) => {
+    const ontology = buildOntology();
     persistOntology(ontology);
-    const backupResult = backupOntology(); 
+    const backupResult = backupOntology();
     console.log("Ontology backup created:", backupResult);
-    return backupResult; 
+    return backupResult;
   },
-  "--update": async (args) => { 
-    const idx = args.indexOf("--update"); 
+  "--update": async (args) => {
+    const idx = args.indexOf("--update");
     const newTitle = idx !== -1 && args.length > idx + 1 ? args[idx + 1] : "Updated Ontology";
     const updated = updateOntology(newTitle);
     console.log("Ontology updated:", updated);
-    return updated; 
+    return updated;
   },
-  "--clear": async (args) => { 
-    const result = clearOntology(); 
-    if (result.success) { 
+  "--clear": async (args) => {
+    const result = clearOntology();
+    if (result.success) {
       console.log("Ontology cleared, file removed.", result);
-    } else { 
+    } else {
       console.log("Ontology clear failed:", result);
-    } 
-    return result; 
+    }
+    return result;
   },
   "--crawl": async (args) => {
     const crawlResults = await crawlOntologies();
     console.log("Crawled ontology data:", crawlResults);
     return crawlResults;
   },
-  "--fetch-retry": async (args) => { 
+  "--fetch-retry": async (args) => {
     try {
       const result = await fetchDataWithRetry("https://api.publicapis.org/entries");
       console.log("Fetched data with retry:", result);
@@ -354,17 +361,17 @@ const commandActions = {
       return err.message;
     }
   },
-  "--build-basic": async (args) => { 
+  "--build-basic": async (args) => {
     const model = buildBasicOWLModel();
     console.log("Basic OWL Model:", model);
     return model;
   },
-  "--build-advanced": async (args) => { 
+  "--build-advanced": async (args) => {
     const model = buildAdvancedOWLModel();
     console.log("Advanced OWL Model:", model);
-    return model; 
+    return model;
   },
-  "--wrap-model": async (args) => { 
+  "--wrap-model": async (args) => {
     let model;
     try {
       model = args[1] ? JSON.parse(args[1]) : buildBasicOWLModel();
@@ -375,19 +382,19 @@ const commandActions = {
     console.log("Wrapped Model:", wrapped);
     return wrapped;
   },
-  "--build-custom": async (args) => { 
+  "--build-custom": async (args) => {
     let custom = {};
     try {
       custom = args[1] ? JSON.parse(args[1]) : {};
     } catch (e) {
-      console.log('Invalid JSON input for custom ontology, using default');
+      console.log("Invalid JSON input for custom ontology, using default");
     }
     const customOntology = buildCustomOntology(custom);
     console.log("Custom Ontology:", customOntology);
     return customOntology;
   },
-  "--extend-concepts": async (args) => { 
-    const additional = args[1] ? args[1].split(",") : ['ExtraConcept'];
+  "--extend-concepts": async (args) => {
+    const additional = args[1] ? args[1].split(",") : ["ExtraConcept"];
     let ontology = loadOntology();
     if (ontology.success === false) {
       ontology = buildOntology();
@@ -396,7 +403,7 @@ const commandActions = {
     console.log("Extended Ontology:", extended);
     return extended;
   },
-  "--diagnostics": async (args) => { 
+  "--diagnostics": async (args) => {
     try {
       const crawlResults = await crawlOntologies();
       console.log("Diagnostic crawl results:", JSON.stringify(crawlResults, null, 2));
@@ -406,7 +413,7 @@ const commandActions = {
       return { error: err.message };
     }
   },
-  "--serve": async (args) => { 
+  "--serve": async (args) => {
     const msg = await serveWebServer();
     return msg;
   },
@@ -415,7 +422,7 @@ const commandActions = {
     console.log("Intermediate OWL Model:", model);
     return model;
   },
-  "--build-enhanced": async (args) => { 
+  "--build-enhanced": async (args) => {
     const model = await buildEnhancedOntology();
     console.log("Enhanced Ontology:", model);
     return model;
@@ -425,31 +432,31 @@ const commandActions = {
     const model = await buildOntologyFromLiveData();
     console.log("Live Data Ontology:", model);
     return model;
-  }
+  },
 };
 
 async function demo() {
-  console.log('Running demo of ontology functions:');
+  console.log("Running demo of ontology functions:");
   const ontology = buildOntology();
-  console.log('Demo - built ontology:', ontology);
+  console.log("Demo - built ontology:", ontology);
   const persistResult = persistOntology(ontology);
-  console.log('Demo - persisted ontology:', persistResult);
+  console.log("Demo - persisted ontology:", persistResult);
   const loadedOntology = loadOntology();
-  console.log('Demo - loaded ontology:', loadedOntology);
-  const queryResult = queryOntology('Concept');
-  console.log('Demo - query result:', queryResult);
+  console.log("Demo - loaded ontology:", loadedOntology);
+  const queryResult = queryOntology("Concept");
+  console.log("Demo - query result:", queryResult);
   const isValid = validateOntology(ontology);
-  console.log('Demo - ontology valid:', isValid);
+  console.log("Demo - ontology valid:", isValid);
   const xml = exportOntologyToXML(ontology);
-  console.log('Demo - exported XML:', xml);
+  console.log("Demo - exported XML:", xml);
   const importedOntology = importOntologyFromXML(xml);
-  console.log('Demo - imported ontology:', importedOntology);
+  console.log("Demo - imported ontology:", importedOntology);
   const backupResult = backupOntology();
-  console.log('Demo - backup result:', backupResult);
-  const updatedOntology = updateOntology('Demo Updated Ontology');
-  console.log('Demo - updated ontology:', updatedOntology);
+  console.log("Demo - backup result:", backupResult);
+  const updatedOntology = updateOntology("Demo Updated Ontology");
+  console.log("Demo - updated ontology:", updatedOntology);
   const endpoints = listAvailableEndpoints();
-  console.log('Demo - available endpoints:', endpoints);
+  console.log("Demo - available endpoints:", endpoints);
   try {
     const fetchData = await fetchDataWithRetry(endpoints[0], 1);
     console.log(`Demo - fetched data from ${endpoints[0]}:`, fetchData.substring(0, 100));
@@ -457,26 +464,26 @@ async function demo() {
     console.log(`Demo - error fetching ${endpoints[0]}:`, err.message);
   }
   const crawlResults = await crawlOntologies();
-  console.log('Demo - crawl results:', crawlResults);
+  console.log("Demo - crawl results:", crawlResults);
   const basicModel = buildBasicOWLModel();
-  console.log('Demo - basic OWL model:', basicModel);
+  console.log("Demo - basic OWL model:", basicModel);
   const advancedModel = buildAdvancedOWLModel();
-  console.log('Demo - advanced OWL model:', advancedModel);
-  const wrappedModel = wrapOntologyModel({ title: 'Demo Model' });
-  console.log('Demo - wrapped model:', wrappedModel);
-  const customOntology = buildCustomOntology({ concepts: ['CustomConcept'] });
-  console.log('Demo - custom ontology:', customOntology);
-  const extendedOntology = extendOntologyConcepts(ontology, ['ExtraConcept']);
-  console.log('Demo - extended ontology:', extendedOntology);
+  console.log("Demo - advanced OWL model:", advancedModel);
+  const wrappedModel = wrapOntologyModel({ title: "Demo Model" });
+  console.log("Demo - wrapped model:", wrappedModel);
+  const customOntology = buildCustomOntology({ concepts: ["CustomConcept"] });
+  console.log("Demo - custom ontology:", customOntology);
+  const extendedOntology = extendOntologyConcepts(ontology, ["ExtraConcept"]);
+  console.log("Demo - extended ontology:", extendedOntology);
   // New feature demos
   const intermediateModel = buildIntermediateOWLModel();
-  console.log('Demo - intermediate OWL model:', intermediateModel);
+  console.log("Demo - intermediate OWL model:", intermediateModel);
   const enhancedModel = await buildEnhancedOntology();
-  console.log('Demo - enhanced ontology:', enhancedModel);
+  console.log("Demo - enhanced ontology:", enhancedModel);
   // Also demo live data integration function
   const liveModel = await buildOntologyFromLiveData();
-  console.log('Demo - live data ontology:', liveModel);
-  console.log('Demo completed successfully.');
+  console.log("Demo - live data ontology:", liveModel);
+  console.log("Demo completed successfully.");
 }
 
 export async function main(args = process.argv.slice(2)) {
@@ -494,11 +501,13 @@ export async function main(args = process.argv.slice(2)) {
 }
 
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live`);
+  console.log(
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live`,
+  );
 }
 
 export function getVersion() {
-  return '0.0.33';
+  return "0.0.33";
 }
 
 export function listCommands() {
