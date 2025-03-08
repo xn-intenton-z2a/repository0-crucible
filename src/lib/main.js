@@ -5,19 +5,16 @@
  *
  * Mission Statement:
  *   owl-builder builds OWL ontologies directly from live, verified public data sources.
- *   This release prunes legacy static fallback implementations and code drift;
- *   all functionality now focuses on integrating real-time public endpoints and enhanced diagnostic logging.
+ *   This release removes outdated static demo implementations and focuses on integrating real-time public endpoints with enhanced diagnostic logging.
  *
  * Changelog:
- *   - Refocused library on live public data sources for ontology building.
+ *   - Refocused ontology building on live public data sources. Legacy static fallback (buildOntology) is retained only as an emergency fallback.
  *   - Enhanced diagnostic logging and refined network operations.
- *   - Pruned legacy static fallback code; buildOntology now serves as a fallback only, while buildOntologyFromLiveData is used for live data integration.
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
- *   - Added new functions: buildOntologyFromCustomData, mergeOntologies, buildOntologyFromLiveDataWithLog for extended customization and diagnostic logging.
- *   - Extended endpoints list to include additional live data sources for ontology building (added albums and users endpoints).
- *   - Added new wrappers for OWL ontology models: buildMinimalOWLModel and buildComplexOntologyModel.
- *   - Updated CLI commands: --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, and --build-complex.
- *   - Version updated to 0.0.35
+ *   - Extended functionality for custom ontology creation and merging via buildOntologyFromCustomData and mergeOntologies.
+ *   - Extended endpoints list now includes albums and users endpoints along with other live sources.
+ *   - Updated CLI commands to clearly separate live data integration (--build-live, --build-live-log) from static fallback (--build).
+ *   - Version remains at 0.0.35.
  *
  * For Developers:
  *   Follow CONTRIBUTING guidelines. Please update tests and documentation as needed.
@@ -247,7 +244,7 @@ export function serveWebServer() {
   });
 }
 
-// New Functions for Enhanced Ontology Models
+// Enhanced Functions for Advanced Ontology Models
 export function buildIntermediateOWLModel() {
   return {
     id: "intermediate",
