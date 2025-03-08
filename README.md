@@ -70,7 +70,12 @@ node src/lib/main.js --help
 
 ## Extended Endpoints
 
-The library now includes an extended list of live endpoints to broaden the scope of ontology building. New endpoints include data sources from Open Library, SpaceX, and random commerce data. This enriches the diversity of accessible information for constructing ontologies.
+The library now includes an extended list of live endpoints to broaden the scope of ontology building. New endpoints added include:
+
+- `https://jsonplaceholder.typicode.com/albums`
+- `https://jsonplaceholder.typicode.com/users`
+
+These additions enrich the diversity of accessible information for constructing ontologies.
 
 ## For Developers
 
@@ -91,14 +96,14 @@ Please refer to our [CONTRIBUTING](CONTRIBUTING.md) guidelines for details on co
 
 ## Change Log
 
-**Version 0.0.34**
+**Version 0.0.35**
 
 - Refocused ontology building on live public data sources.
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
 - Removed legacy simulated demo outputs and pruned code drift.
 - Refactored `buildEnhancedOntology` to use `fetcher.fetchDataWithRetry` for better testability.
 - Added functions for custom ontology building and merging.
-- Extended endpoints list with additional live data sources for broader ontology construction.
+- **Extended endpoints list:** Added endpoints for albums and users to widen data sources for extended ontology construction.
 - Documentation refreshed to align with current best practices and contributing guidelines.
 
 ## License

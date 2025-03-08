@@ -339,6 +339,12 @@ describe("Extended Custom Functions", () => {
 });
 
 describe("Extended Endpoints Test", () => {
+  test("listAvailableEndpoints includes new endpoints", () => {
+    const endpoints = listAvailableEndpoints();
+    expect(endpoints).toContain("https://jsonplaceholder.typicode.com/albums");
+    expect(endpoints).toContain("https://jsonplaceholder.typicode.com/users");
+  });
+
   test("fetch data from all endpoints and log response snippet", async () => {
     const endpoints = listAvailableEndpoints();
     expect(endpoints.length).toBeGreaterThan(13);
