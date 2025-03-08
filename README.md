@@ -114,12 +114,26 @@ Key commands include:
 
 ## Change Log
 
-**Version 0.0.33**
+**Version 0.0.34**
 - Refocused ontology building to leverage live, verified public data endpoints.
 - Enhanced diagnostic messaging and updated network operations for real-time data integration.
 - Removed legacy demo code drift and pruned simulated outputs in favor of live data calls.
 - Added new ontology model builders: **buildIntermediateOWLModel**, **buildEnhancedOntology**, and **buildOntologyFromLiveData**.
 - Introduced new CLI command: **--build-live** for generating ontology models from live data.
+- Verified responses from external endpoints via diagnostics tests. Summary: 
+   - *https://api.publicapis.org/entries*: returns a 404 HTML response (as fallback).
+   - *https://dog.ceo/api/breeds/image/random*: returns a valid JSON with an image URL.
+   - *https://jsonplaceholder.typicode.com/posts*: returns a JSON array of posts.
+   - *https://api.coindesk.com/v1/bpi/currentprice.json*: network error (ENOTFOUND).
+   - *https://api.github.com*: returns valid GitHub API JSON data.
+   - *https://jsonplaceholder.typicode.com/comments*: returns a JSON array of comments.
+   - *https://dummyjson.com/products*: returns product data in JSON.
+   - *https://randomuser.me/api/*: returns a random user JSON.
+   - *https://catfact.ninja/fact*: returns a cat fact in JSON.
+   - *https://jsonplaceholder.typicode.com/todos*: returns a JSON array of todos.
+   - *https://api.chucknorris.io/jokes/random*: returns a Chuck Norris joke.
+   - *https://api.agify.io?name=michael*: returns an age prediction (age 64).
+   - *https://api.stackexchange.com/2.2/questions?order=desc&sort=activity*: error due to bad parameter.
 
 ## License
 

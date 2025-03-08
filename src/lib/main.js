@@ -12,8 +12,9 @@
  *   - Updated demo mode to reflect live data integration.
  *   - Removed legacy demo code drift and pruned simulated outputs.
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, and buildOntologyFromLiveData for real-time ontology models.
- *   - Added new CLI commands: --build-intermediate, --build-enhanced.
+ *   - Added new CLI commands: --build-intermediate, --build-enhanced, and --build-live.
  *   - Version updated from 0.0.32 to 0.0.33
+ *   - Verified external endpoints responses via diagnostics tests and updated documentation in the README.
  *
  * For Developers:
  *   Follow CONTRIBUTING guidelines. Please update tests and documentation as needed.
