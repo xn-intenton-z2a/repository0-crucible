@@ -5,16 +5,17 @@
  *
  * Mission Statement:
  *   owl-builder builds OWL ontologies directly from live, verified public data sources.
- *   This release focuses on integrating real-time public endpoints for generating up-to-date ontology models.
+ *   This release refocuses on integrating real-time public endpoints to generate accurate ontology models.
  *
  * Changelog:
  *   - Refocused on live public data sources for ontology building.
  *   - Enhanced diagnostic logging and refined network operations.
  *   - Updated demo mode to reflect real data integration.
- *   - Maintained clean separation of core logic for ease of testing and contributions.
+ *   - Updated documentation and version information to align with CONTRIBUTING guidelines.
  *
  * For Developers:
  *   Follow CONTRIBUTING guidelines. Please update tests and documentation as needed.
+ *   See CONTRIBUTING.md for details on workflow improvements.
  *
  * For Users:
  *   Use the CLI to build, manage, and query rich ontology models. Run --help for usage instructions.
@@ -296,7 +297,7 @@ const commandActions = {
     console.log("Crawled ontology data:", crawlResults);
     return crawlResults;
   },
-  "--fetch-retry": async (args) => {
+  "--fetch-retry": async (args) => { 
     try {
       const result = await fetchDataWithRetry("https://api.publicapis.org/entries");
       console.log("Fetched data with retry:", result);
@@ -306,17 +307,17 @@ const commandActions = {
       return err.message;
     }
   },
-  "--build-basic": async (args) => {
+  "--build-basic": async (args) => { 
     const model = buildBasicOWLModel();
     console.log("Basic OWL Model:", model);
     return model;
   },
-  "--build-advanced": async (args) => {
+  "--build-advanced": async (args) => { 
     const model = buildAdvancedOWLModel();
     console.log("Advanced OWL Model:", model);
     return model;
   },
-  "--wrap-model": async (args) => {
+  "--wrap-model": async (args) => { 
     let model;
     try {
       model = args[1] ? JSON.parse(args[1]) : buildBasicOWLModel();
@@ -327,7 +328,7 @@ const commandActions = {
     console.log("Wrapped Model:", wrapped);
     return wrapped;
   },
-  "--build-custom": async (args) => {
+  "--build-custom": async (args) => { 
     let custom = {};
     try {
       custom = args[1] ? JSON.parse(args[1]) : {};
@@ -338,7 +339,7 @@ const commandActions = {
     console.log("Custom Ontology:", customOntology);
     return customOntology;
   },
-  "--extend-concepts": async (args) => {
+  "--extend-concepts": async (args) => { 
     const additional = args[1] ? args[1].split(",") : ['ExtraConcept'];
     let ontology = loadOntology();
     if (ontology.success === false) {
@@ -426,7 +427,7 @@ export function displayHelp() {
 }
 
 export function getVersion() {
-  return '0.0.30';
+  return '0.0.31';
 }
 
 export function listCommands() {

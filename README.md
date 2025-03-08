@@ -1,6 +1,6 @@
 # owl-builder
 
-owl-builder is a robust CLI tool and JavaScript library for constructing OWL ontologies using live, verified public data sources. This tool allows users to build, persist, load, query, and export ontologies, ensuring that models reflect current real-world data.
+owl-builder is a versatile CLI tool and JavaScript library focused on constructing OWL ontologies using live, verified public data sources. With a strong emphasis on real-time data integration, owl-builder ensures that your ontology models are current and accurate.
 
 ---
 
@@ -12,7 +12,6 @@ owl-builder is a robust CLI tool and JavaScript library for constructing OWL ont
 - [Usage](#usage)
   - [For Casual Users](#for-casual-users)
   - [For Developers](#for-developers)
-  - [Extended Commands](#extended-commands)
 - [CLI Commands](#cli-commands)
 - [Contributing](#contributing)
 - [Changelog](#changelog)
@@ -22,17 +21,17 @@ owl-builder is a robust CLI tool and JavaScript library for constructing OWL ont
 
 ## Overview
 
-owl-builder leverages live public data to generate ontology models. Its refocused mission is to ensure your ontologies are built with up-to-date and trusted external data from multiple verified endpoints.
+owl-builder leverages verified public endpoints to build dynamic ontology models in real-time. Its refocused mission is to enable users to seamlessly construct, persist, query, and export ontologies that mirror current external data, ensuring both reliability and traceability.
 
 ## Features
 
-- **Ontology Building:** Construct ontology models from real-time data.
+- **Ontology Building:** Create ontology models from live public data.
 - **Data Persistence:** Save, load, backup, and clear ontology JSON files.
-- **Querying and Validation:** Search for ontology concepts and verify model integrity.
-- **OWL Export/Import:** Convert ontologies to a simple OWL XML format.
-- **Data Crawling:** Retrieve live data from an extended list of public endpoints.
-- **Ontology Model Wrappers:** Build basic, advanced, and custom ontology models.
-- **Diagnostics & Web Server:** Monitor and diagnose operations via a built-in web server.
+- **Querying and Validation:** Search ontology concepts and verify model integrity.
+- **OWL Export/Import:** Convert ontologies to a minimal OWL XML format.
+- **Data Crawling:** Retrieve live data from an extensive list of verified endpoints.
+- **Ontology Model Wrappers:** Generate basic, advanced, and custom ontology models.
+- **Diagnostics & Web Server:** Built-in diagnostics and web server for monitoring operations.
 
 ## Installation
 
@@ -48,7 +47,7 @@ npm install
 
 - **Run Demo:**
 
-  Running the tool without arguments executes a demo showcasing building, persisting, querying, and more:
+  Execute the demo to showcase core functionality including building, persisting, and querying ontologies:
 
   ```bash
   npm run start
@@ -92,30 +91,30 @@ npm install
   npm run formatting
   ```
 
-Refer to the inline code comments for API documentation.
+Refer to inline code comments for API documentation.
 
 ### Extended Commands
 
-owl-builder supports additional commands for customizations and diagnostics. Some key commands include:
+owl-builder supports several advanced commands for customization and diagnostics, including:
 
-- `--build-custom`: Build a custom ontology with user-defined options.
+- `--build-custom`: Build a custom ontology using user-defined options.
 - `--extend-concepts`: Add extra concepts to an existing ontology.
-- `--diagnostics`: Execute live diagnostics via public endpoints.
-- `--serve`: Start the built-in web server for monitoring.
+- `--diagnostics`: Run diagnostics via live endpoint tests.
+- `--serve`: Start the integrated web server.
 
 ## CLI Commands
 
-Key commands:
+Key commands include:
 
-- `--help`: Show usage instructions.
+- `--help`: Display usage information.
 - `--version`: Display the tool version.
 - `--list`: List available commands.
-- `--build`: Generate an ontology.
+- `--build`: Generate an ontology from live data.
 - `--persist`: Save the ontology to a JSON file.
 - `--load`: Load a saved ontology.
 - `--query "term"`: Search for ontology concepts.
-- `--export`: Export ontology in OWL XML format.
-- `--import`: Import ontology from an OWL XML string.
+- `--export`: Export the ontology as OWL XML.
+- `--import`: Import an ontology from an OWL XML string.
 - `--backup`: Create a backup of the ontology file.
 - `--update "New Title"`: Update the ontology title.
 - `--clear`: Delete the ontology file.
@@ -124,19 +123,25 @@ Key commands:
 - `--build-basic`, `--build-advanced`, `--wrap-model`: Build various ontology models.
 - `--build-custom`: Build a customized ontology.
 - `--extend-concepts`: Extend the ontology with new concepts.
-- `--diagnostics`: Run diagnostics and connectivity tests.
+- `--diagnostics`: Run diagnostics against public endpoints.
 - `--serve`: Launch the web server.
 
 ## Contributing
 
-Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute. We welcome code quality improvements, added test coverage, and documentation updates.
+Contributions are welcome! See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on code quality, testing, and documentation.
+
+When contributing, please ensure:
+
+- Tests are updated or added as needed.
+- Documentation (both inline and in external files) is kept current.
+- Changes align with our mission of real-time ontology building.
 
 ## Changelog
 
 - **Version 0.0.31**
   - README refreshed to align with CONTRIBUTING guidelines.
-  - Minor documentation tweaks and cleanup.
-  - Refactored messaging to better reflect the mission of building ontologies from live public data sources.
+  - Documentation updated to better reflect live data integration.
+  - getVersion updated for consistency across the project.
 
 ## License
 
