@@ -124,20 +124,37 @@ npm run formatting
 <li class="md-github"><code class="md-github">--build-live</code>: Build an ontology directly integrated with live public data</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="change-log" href="#change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change Log</h2>
-<p class="md-github"><strong class="md-github">Version 0.0.33</strong></p>
+<p class="md-github"><strong class="md-github">Version 0.0.34</strong></p>
 <ul class="md-github">
 <li class="md-github">Refocused ontology building to leverage live, verified public data endpoints.</li>
 <li class="md-github">Enhanced diagnostic messaging and updated network operations for real-time data integration.</li>
 <li class="md-github">Removed legacy demo code drift and pruned simulated outputs in favor of live data calls.</li>
 <li class="md-github">Added new ontology model builders: <strong class="md-github">buildIntermediateOWLModel</strong>, <strong class="md-github">buildEnhancedOntology</strong>, and <strong class="md-github">buildOntologyFromLiveData</strong>.</li>
 <li class="md-github">Introduced new CLI command: <strong class="md-github">--build-live</strong> for generating ontology models from live data.</li>
+<li class="md-github">Verified responses from external endpoints via diagnostics tests. Summary:
+<ul class="md-github">
+<li class="md-github"><em class="md-github">https://api.publicapis.org/entries</em>: returns a 404 HTML response (as fallback).</li>
+<li class="md-github"><em class="md-github">https://dog.ceo/api/breeds/image/random</em>: returns a valid JSON with an image URL.</li>
+<li class="md-github"><em class="md-github">https://jsonplaceholder.typicode.com/posts</em>: returns a JSON array of posts.</li>
+<li class="md-github"><em class="md-github">https://api.coindesk.com/v1/bpi/currentprice.json</em>: network error (ENOTFOUND).</li>
+<li class="md-github"><em class="md-github">https://api.github.com</em>: returns valid GitHub API JSON data.</li>
+<li class="md-github"><em class="md-github">https://jsonplaceholder.typicode.com/comments</em>: returns a JSON array of comments.</li>
+<li class="md-github"><em class="md-github">https://dummyjson.com/products</em>: returns product data in JSON.</li>
+<li class="md-github"><em class="md-github">https://randomuser.me/api/</em>: returns a random user JSON.</li>
+<li class="md-github"><em class="md-github">https://catfact.ninja/fact</em>: returns a cat fact in JSON.</li>
+<li class="md-github"><em class="md-github">https://jsonplaceholder.typicode.com/todos</em>: returns a JSON array of todos.</li>
+<li class="md-github"><em class="md-github">https://api.chucknorris.io/jokes/random</em>: returns a Chuck Norris joke.</li>
+<li class="md-github"><em class="md-github">https://api.agify.io?name=michael</em>: returns an age prediction (age 64).</li>
+<li class="md-github"><em class="md-github">https://api.stackexchange.com/2.2/questions?order=desc&amp;sort=activity</em>: error due to bad parameter.</li>
+</ul>
+</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
 <p class="md-github">Released under the MIT License.</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-03-08T03:41:41.581Z</p>
+    <p>Generated on 2025-03-08T03:47:50.013Z</p>
   </footer>
 </body>
 </html>
