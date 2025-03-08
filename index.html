@@ -25,7 +25,7 @@
     <h1 class="md-github"><a class="md-github__anchor" name="owl-builder" href="#owl-builder"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>owl-builder</h1>
 <p class="md-github">owl-builder is a versatile CLI tool and JavaScript library for constructing real-time OWL ontologies from live, verified public data sources. This documentation has been refreshed in accordance with our <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING</a> guidelines to provide clear, concise, and up-to-date information.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="overview" href="#overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
-<p class="md-github">owl-builder leverages real-time public endpoints to build dynamic ontology models. It provides features for data persistence, querying, diagnostics, and generating multiple ontology models (basic, advanced, intermediate, enhanced, minimal, complex, and custom). Legacy static fallback implementations have been pruned to focus on live data integration and enhanced diagnostic logging. The static fallback remains only as an emergency option.</p>
+<p class="md-github">owl-builder leverages real-time public endpoints to build dynamic ontology models. It provides features for data persistence, querying, diagnostics, and generating multiple ontology models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, and custom). Legacy static fallback implementations have been pruned to focus on live data integration and enhanced diagnostic logging. The static fallback remains only as an emergency option.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Ontology Building:</strong> Create ontologies using live public data with real-time API integration. The legacy static fallback is available only as a backup.</li>
@@ -33,7 +33,7 @@
 <li class="md-github"><strong class="md-github">Query &amp; Validation:</strong> Search through ontology concepts and validate models.</li>
 <li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontologies to and from a minimal OWL XML format.</li>
 <li class="md-github"><strong class="md-github">Data Crawling:</strong> Retrieve live data from an extended list of public endpoints for broader ontology construction.</li>
-<li class="md-github"><strong class="md-github">Model Wrappers:</strong> Generate various ontology models including basic, advanced, intermediate, enhanced, minimal, and complex versions.</li>
+<li class="md-github"><strong class="md-github">Model Wrappers:</strong> Generate various ontology models including basic, advanced, intermediate, enhanced, minimal, complex, scientific, and educational versions.</li>
 <li class="md-github"><strong class="md-github">Extended Customization:</strong> Build and merge custom ontologies.</li>
 <li class="md-github"><strong class="md-github">Enhanced Diagnostics:</strong> Timestamped logging to support monitoring and debugging.</li>
 <li class="md-github"><strong class="md-github">Web Server:</strong> Integrated web server for monitoring.</li>
@@ -68,6 +68,8 @@ npm install
 <li class="md-github"><code class="md-github">--crawl</code>: Crawl public endpoints for live data.</li>
 <li class="md-github"><code class="md-github">--fetch-retry</code>: Fetch data with retry logic.</li>
 <li class="md-github"><code class="md-github">--build-basic</code>, <code class="md-github">--build-advanced</code>, <code class="md-github">--build-intermediate</code>, <code class="md-github">--build-enhanced</code>: Build various ontology models.</li>
+<li class="md-github"><code class="md-github">--build-scientific</code>: Build a scientific ontology model with disciplines and scientific concepts.</li>
+<li class="md-github"><code class="md-github">--build-educational</code>: Build an educational ontology model with subjects and educational concepts.</li>
 <li class="md-github"><code class="md-github">--build-custom-data</code>: Build an ontology from provided custom data.</li>
 <li class="md-github"><code class="md-github">--merge-ontologies</code>: Merge multiple ontology models.</li>
 <li class="md-github"><code class="md-github">--build-live-log</code>: Build a live data ontology with additional diagnostic logging.</li>
@@ -84,6 +86,18 @@ npm install
 <li class="md-github"><code class="md-github">https://jsonplaceholder.typicode.com/users</code></li>
 </ul>
 <p class="md-github">These additions enrich the diversity of accessible information for constructing ontologies.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="owl-ontology-models" href="#owl-ontology-models"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OWL Ontology Models</h2>
+<p class="md-github">The following model wrappers are provided:</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">buildBasicOWLModel:</strong> Constructs a basic ontology model.</li>
+<li class="md-github"><strong class="md-github">buildAdvancedOWLModel:</strong> Constructs an advanced ontology model with classes and properties.</li>
+<li class="md-github"><strong class="md-github">buildIntermediateOWLModel:</strong> Constructs an intermediate-level ontology model.</li>
+<li class="md-github"><strong class="md-github">buildEnhancedOntology:</strong> Constructs an enhanced ontology, integrating live data (e.g., images).</li>
+<li class="md-github"><strong class="md-github">buildMinimalOWLModel:</strong> Constructs a minimal ontology model.</li>
+<li class="md-github"><strong class="md-github">buildComplexOntologyModel:</strong> Constructs a complex ontology model with classes, properties, and concepts.</li>
+<li class="md-github"><strong class="md-github">buildScientificOntologyModel:</strong> Constructs a scientific ontology including disciplines such as Biology, Chemistry, and Physics, with associated academic concepts.</li>
+<li class="md-github"><strong class="md-github">buildEducationalOntologyModel:</strong> Constructs an educational ontology model featuring subjects like Mathematics, History, and Literature, with learning concepts.</li>
+</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="for-developers" href="#for-developers"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>For Developers</h2>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Testing:</strong> Run unit tests with:</li>
@@ -105,13 +119,14 @@ npm run formatting
 <li class="md-github">Added functions for custom ontology building (<code class="md-github">buildOntologyFromCustomData</code>) and merging (<code class="md-github">mergeOntologies</code>).</li>
 <li class="md-github">Extended endpoints list: added endpoints for albums and users to diversify data sources.</li>
 <li class="md-github">Updated CLI commands to better differentiate live data integration from legacy fallback.</li>
+<li class="md-github"><strong class="md-github">Extended OWL model wrappers:</strong> Added <code class="md-github">buildScientificOntologyModel</code> and <code class="md-github">buildEducationalOntologyModel</code> for specialized ontology modeling.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
 <p class="md-github">Released under the MIT License.</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-03-08T08:58:02.000Z</p>
+    <p>Generated on 2025-03-08T09:06:43.907Z</p>
   </footer>
 </body>
 </html>
