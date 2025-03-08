@@ -31,10 +31,14 @@ function printHelp() {
   console.log("  --sum        : Compute the sum of provided numbers (demo arithmetic)");
   console.log("  --multiply   : Compute the product of provided numbers (demo arithmetic)");
   console.log("  --subtract   : Subtract each subsequent number from the first provided number (demo arithmetic)");
-  console.log("  --divide     : Divide the first number by each of the subsequent numbers sequentially (demo arithmetic)");
+  console.log(
+    "  --divide     : Divide the first number by each of the subsequent numbers sequentially (demo arithmetic)",
+  );
   console.log("  --modulo     : Compute the modulo of provided numbers (first % second % ... ) (demo arithmetic)");
   console.log("  --average    : Compute the arithmetic average of provided numbers (demo arithmetic)");
-  console.log("  --power      : Compute exponentiation; first number raised to the power of the second, and chain if more numbers provided (demo arithmetic)");
+  console.log(
+    "  --power      : Compute exponentiation; first number raised to the power of the second, and chain if more numbers provided (demo arithmetic)",
+  );
 }
 
 function getNumbers(args, flag) {
@@ -176,7 +180,7 @@ export async function main(args = []) {
     "--divide": () => handleDivide(args),
     "--modulo": () => handleModulo(args),
     "--average": () => handleAverage(args),
-    "--power": () => handlePower(args)
+    "--power": () => handlePower(args),
   };
 
   for (const arg of args) {
