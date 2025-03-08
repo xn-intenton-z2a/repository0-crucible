@@ -26,7 +26,7 @@
 <p class="md-github">owl-builder is a versatile CLI tool and JavaScript library for constructing real-time OWL ontologies using live, verified public data sources.</p>
 <hr class="md-github">
 <h2 class="md-github"><a class="md-github__anchor" name="overview" href="#overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
-<p class="md-github">owl-builder leverages live public data endpoints to build dynamic ontology models that remain current and accurate. With features like data persistence, querying, and multiple ontology model builders (basic, advanced, intermediate, enhanced, and live-data based), owl-builder is tailored for both casual users and developers.</p>
+<p class="md-github">owl-builder leverages live public data endpoints to build dynamic ontology models that remain current and accurate. With features like data persistence, querying, and multiple ontology model builders (basic, advanced, intermediate, enhanced, live-data based, and custom merging), owl-builder is tailored for both casual users and developers.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Ontology Building:</strong> Create ontologies based on live, real-time public data.</li>
@@ -35,6 +35,7 @@
 <li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontologies to a minimal OWL XML format.</li>
 <li class="md-github"><strong class="md-github">Data Crawling:</strong> Retrieve live data from a curated list of public endpoints.</li>
 <li class="md-github"><strong class="md-github">Model Wrappers:</strong> Generate various ontology models, including intermediate, enhanced, and live-data integrated models.</li>
+<li class="md-github"><strong class="md-github">Extended Customization:</strong> New functions allow building ontologies from custom data and merging multiple ontologies.</li>
 <li class="md-github"><strong class="md-github">Enhanced Diagnostic Logging:</strong> New functions provide timestamped logging (getCurrentTimestamp and logDiagnostic) to aid in diagnostics and monitoring.</li>
 <li class="md-github"><strong class="md-github">Web Server &amp; Diagnostics:</strong> Built-in support for launching a monitoring web server and running diagnostics.</li>
 </ul>
@@ -76,10 +77,15 @@ npm install
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Build Intermediate/Enhanced/Live Ontologies:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-intermediate
+<p class="md-github"><strong class="md-github">Build Various Ontologies:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-basic
+node src/lib/main.js --build-advanced
+node src/lib/main.js --build-intermediate
 node src/lib/main.js --build-enhanced
 node src/lib/main.js --build-live
+node src/lib/main.js --build-custom-data '{&quot;title&quot;:&quot;My Custom Ontology&quot;, &quot;concepts&quot;:[&quot;CustomConcept&quot;]}'
+node src/lib/main.js --merge-ontologies
+node src/lib/main.js --build-live-log
 </code></pre>
 </li>
 </ul>
@@ -121,16 +127,20 @@ npm run formatting
 <li class="md-github"><code class="md-github">--serve</code>: Launch the integrated web server</li>
 <li class="md-github"><code class="md-github">--build-intermediate</code>: Build an intermediate ontology model</li>
 <li class="md-github"><code class="md-github">--build-enhanced</code>: Build an enhanced ontology model enriched with live data</li>
-<li class="md-github"><code class="md-github">--build-live</code>: Build an ontology directly integrated with live public data (now with diagnostic logging)</li>
+<li class="md-github"><code class="md-github">--build-live</code>: Build an ontology directly integrated with live public data (with diagnostic logging)</li>
+<li class="md-github"><code class="md-github">--build-custom-data</code>: Build an ontology from provided custom data</li>
+<li class="md-github"><code class="md-github">--merge-ontologies</code>: Merge static and live data ontologies into one</li>
+<li class="md-github"><code class="md-github">--build-live-log</code>: Build live data ontology with additional diagnostic logs</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="change-log" href="#change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change Log</h2>
 <p class="md-github"><strong class="md-github">Version 0.0.34</strong></p>
 <ul class="md-github">
 <li class="md-github">Refocused ontology building to leverage live, verified public data endpoints.</li>
 <li class="md-github">Enhanced diagnostic messaging with new functions: <strong class="md-github">getCurrentTimestamp</strong> and <strong class="md-github">logDiagnostic</strong>.</li>
-<li class="md-github">Updated demo and CLI commands (especially --build-live) to output timestamped diagnostics.</li>
+<li class="md-github">Added new functions: <strong class="md-github">buildOntologyFromCustomData</strong>, <strong class="md-github">mergeOntologies</strong>, and <strong class="md-github">buildOntologyFromLiveDataWithLog</strong> for extended customization and merging capabilities.</li>
+<li class="md-github">Updated CLI commands to include --build-custom-data, --merge-ontologies, and --build-live-log.</li>
 <li class="md-github">Removed simulated demo outputs in favor of live data calls where possible.</li>
-<li class="md-github">Resolved linting issues by updating catch blocks for unused exception parameters and improving code formatting.</li>
+<li class="md-github">Resolved linting issues by updating catch blocks and code formatting.</li>
 <li class="md-github">Verified responses from external endpoints via diagnostics tests.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
@@ -138,7 +148,7 @@ npm run formatting
 
   </section>
   <footer>
-    <p>Generated on 2025-03-08T04:39:07.171Z</p>
+    <p>Generated on 2025-03-08T04:45:03.796Z</p>
   </footer>
 </body>
 </html>
