@@ -1,6 +1,6 @@
 # owl-builder
 
-owl-builder is a robust CLI tool and JavaScript library built to construct OWL ontologies using live, verified public data sources. Leveraging real-time data, it offers an intuitive interface to build, manage, and query rich ontology models.
+owl-builder is a robust CLI tool and JavaScript library for constructing OWL ontologies using live, verified public data sources. This tool allows users to build, persist, load, query, and export ontologies, ensuring that models reflect current real-world data.
 
 ---
 
@@ -11,13 +11,9 @@ owl-builder is a robust CLI tool and JavaScript library built to construct OWL o
 - [Installation](#installation)
 - [Usage](#usage)
   - [For Casual Users](#for-casual-users)
-  - [Using Real Endpoints](#using-real-endpoints)
   - [For Developers](#for-developers)
-  - [Extended Ontology Functions](#extended-ontology-functions)
-  - [Running the Web Server](#running-the-web-server)
-  - [Diagnostics](#diagnostics)
+  - [Extended Commands](#extended-commands)
 - [CLI Commands](#cli-commands)
-- [API Documentation](#api-documentation)
 - [Contributing](#contributing)
 - [Changelog](#changelog)
 - [License](#license)
@@ -26,22 +22,21 @@ owl-builder is a robust CLI tool and JavaScript library built to construct OWL o
 
 ## Overview
 
-owl-builder is focused on leveraging live public data to generate OWL ontologies. It integrates data from multiple verified endpoints, ensuring that your ontological models reflect the most current real-world information. This release has refocused the library to prioritize data from trusted external sources, with enhanced diagnostics and robust network operations.
+owl-builder leverages live public data to generate ontology models. Its refocused mission is to ensure your ontologies are built with up-to-date and trusted external data from multiple verified endpoints.
 
 ## Features
 
-- **Ontology Building:** Create ontology models derived from live public data sources.
-- **Data Persistence:** Easily persist, load, backup, and clear ontology data stored in JSON files.
-- **Querying:** Search and validate ontology concepts.
-- **OWL Export/Import:** Convert ontology objects to a simple OWL XML format and import from XML strings.
-- **Data Crawling:** Crawl an extended list of verified public endpoints to gather live data and generate OWL representations.
-- **Ontology Model Wrappers:** Build basic, advanced, and custom ontology models with extended capabilities.
-- **Diagnostics:** Execute remote API calls to verify connectivity and data integrity.
-- **Web Server:** A built-in web server for monitoring and diagnostics.
+- **Ontology Building:** Construct ontology models from real-time data.
+- **Data Persistence:** Save, load, backup, and clear ontology JSON files.
+- **Querying and Validation:** Search for ontology concepts and verify model integrity.
+- **OWL Export/Import:** Convert ontologies to a simple OWL XML format.
+- **Data Crawling:** Retrieve live data from an extended list of public endpoints.
+- **Ontology Model Wrappers:** Build basic, advanced, and custom ontology models.
+- **Diagnostics & Web Server:** Monitor and diagnose operations via a built-in web server.
 
 ## Installation
 
-Ensure you have Node.js v20 or later installed. Clone the repository and install dependencies:
+Ensure Node.js v20 or later is installed. Clone the repository and install dependencies:
 
 ```bash
 git clone https://github.com/yourusername/owl-builder.git
@@ -51,17 +46,19 @@ npm install
 
 ## Usage
 
-By default, running the tool without any command line arguments runs a comprehensive demo that exercises most of the ontology functionalities. This demo builds, persists, loads, queries, exports, imports, backs up, updates, and extends an ontology, as well as crawling a set of public endpoints and demonstrating ontology model wrappers. You can run the demo with:
+- **Run Demo:**
 
-```bash
-npm run start
-```
+  Running the tool without arguments executes a demo showcasing building, persisting, querying, and more:
 
-Display the help information at any time with:
+  ```bash
+  npm run start
+  ```
 
-```bash
-node src/lib/main.js --help
-```
+- **Help Information:**
+
+  ```bash
+  node src/lib/main.js --help
+  ```
 
 ### For Casual Users
 
@@ -75,131 +72,71 @@ node src/lib/main.js --help
   node src/lib/main.js --export
   ```
 
-- **Data Crawling:**
+- **Crawl Data:**
   ```bash
   node src/lib/main.js --crawl
   ```
 
-- **List Available Commands:**
-  ```bash
-  node src/lib/main.js --list
-  ```
-
-### Using Real Endpoints
-
-owl-builder crawls multiple verified public endpoints to generate meaningful OWL XML output. Simply run:
-
-```bash
-node src/lib/main.js --crawl
-```
-
-The output will be a JSON array with objects for each endpoint containing:
-
-- `endpoint`: The API URL.
-- `data`: The live response as a string.
-- `owlContent`: The generated OWL XML, e.g., `<ontology><title>Public Data Ontology</title></ontology>`
-
 ### For Developers
 
-- **Build and Persist:** Use CLI commands to build and save ontologies directly from public data.
 - **Testing:** Run unit tests with:
 
-```bash
-npm run test:unit
-```
+  ```bash
+  npm run test:unit
+  ```
 
 - **Linting and Formatting:**
 
-```bash
-npm run linting
-npm run formatting
-```
-
-Refer to inline comments in `src/lib/main.js` and [CONTRIBUTING.md](CONTRIBUTING.md) for more details.
-
-### Extended Ontology Functions
-
-- **Build Custom Ontology:**
   ```bash
-  node src/lib/main.js --build-custom '{"concepts": ["CustomConcept"], "extraInfo": "value"}'
+  npm run linting
+  npm run formatting
   ```
 
-- **Extend Ontology Concepts:**
-  ```bash
-  node src/lib/main.js --extend-concepts "NewConcept1,NewConcept2"
-  ```
+Refer to the inline code comments for API documentation.
 
-### Running the Web Server
+### Extended Commands
 
-Start the diagnostic web server:
+owl-builder supports additional commands for customizations and diagnostics. Some key commands include:
 
-```bash
-npm run serve
-```
-
-Server listens on port 3000 by default. To change the port:
-
-```bash
-PORT=4000 npm run serve
-```
-
-### Diagnostics
-
-Diagnostics mode performs real API calls and returns consolidated OWL JSON output:
-
-```bash
-npm run diagnostics
-```
-
-### For the Scientific Community
-
-owl-builder supports experiments by:
-
-- **Leveraging Real Data:** Integrate data from verified public endpoints to enrich ontology models.
-- **Custom Models:** Extend basic, advanced, and custom ontology wrappers to meet research needs.
-- **Reproducibility:** Consistent coding and diagnostics ensure traceable research outputs.
+- `--build-custom`: Build a custom ontology with user-defined options.
+- `--extend-concepts`: Add extra concepts to an existing ontology.
+- `--diagnostics`: Execute live diagnostics via public endpoints.
+- `--serve`: Start the built-in web server for monitoring.
 
 ## CLI Commands
 
-Key commands include:
+Key commands:
 
-- `--help`: Displays usage instructions.
-- `--version`: Shows the tool version.
-- `--list`: Lists all supported CLI commands.
-- `--build`: Generates an ontology using live data.
-- `--persist`: Persists the generated ontology to a file.
-- `--load`: Loads the saved ontology from file.
-- `--query "searchTerm"`: Searches ontology concepts by the provided term.
-- `--export`: Exports the ontology to OWL XML.
-- `--import`: Imports an ontology from an OWL XML string.
-- `--backup`: Creates a backup of the current ontology file.
-- `--update "New Title"`: Updates the ontology's title.
-- `--clear`: Deletes the ontology file if it exists.
-- `--crawl`: Crawls public endpoints and returns the results.
-- `--fetch-retry`: Demonstrates secure data fetching with retry logic.
-- `--build-basic`: Creates a basic OWL model.
-- `--build-advanced`: Creates an advanced OWL model.
-- `--wrap-model [JSON]`: Wraps an ontology model with additional metadata.
-- `--build-custom`: Builds a custom ontology with user-defined options.
-- `--extend-concepts`: Extends an ontology by adding extra concepts.
-- `--diagnostics`: Fetches remote API data and outputs consolidated OWL JSON.
-- `--serve`: Starts the built-in web server.
-
-## API Documentation
-
-When used as a library, owl-builder exports functions to build, persist, load, query, and manipulate ontologies. Refer to inline comments in `src/lib/main.js` for detailed API documentation.
+- `--help`: Show usage instructions.
+- `--version`: Display the tool version.
+- `--list`: List available commands.
+- `--build`: Generate an ontology.
+- `--persist`: Save the ontology to a JSON file.
+- `--load`: Load a saved ontology.
+- `--query "term"`: Search for ontology concepts.
+- `--export`: Export ontology in OWL XML format.
+- `--import`: Import ontology from an OWL XML string.
+- `--backup`: Create a backup of the ontology file.
+- `--update "New Title"`: Update the ontology title.
+- `--clear`: Delete the ontology file.
+- `--crawl`: Crawl public endpoints for live data.
+- `--fetch-retry`: Fetch data with retry logic.
+- `--build-basic`, `--build-advanced`, `--wrap-model`: Build various ontology models.
+- `--build-custom`: Build a customized ontology.
+- `--extend-concepts`: Extend the ontology with new concepts.
+- `--diagnostics`: Run diagnostics and connectivity tests.
+- `--serve`: Launch the web server.
 
 ## Contributing
 
-Please review [CONTRIBUTING.md](CONTRIBUTING.md) before contributing. We welcome improvements that enhance code quality, test coverage, and documentation.
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines on how to contribute. We welcome code quality improvements, added test coverage, and documentation updates.
 
 ## Changelog
 
-- **Version 0.0.30**
-  - Integrated real public data sources for ontology building.
-  - Extended and verified list of public endpoints.
-  - Refocused library on building ontologies from live, trusted data using robust network operations.
-  - Updated demo mode to showcase these functions with real data integration.
+- **Version 0.0.31**
+  - README refreshed to align with CONTRIBUTING guidelines.
+  - Minor documentation tweaks and cleanup.
+  - Refactored messaging to better reflect the mission of building ontologies from live public data sources.
 
 ## License
 
