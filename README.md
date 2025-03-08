@@ -4,11 +4,11 @@ owl-builder is a versatile CLI tool and JavaScript library for constructing real
 
 ## Overview
 
-owl-builder leverages real-time public endpoints to build dynamic ontology models. It provides features for data persistence, querying, diagnostics, and generating multiple ontology models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, and custom). Legacy static fallback implementations have been pruned to focus on live data integration and enhanced diagnostic logging. The static fallback remains only as an emergency option.
+owl-builder leverages live public endpoints to build dynamic ontology models. It provides features for data persistence, querying, diagnostics, and generating multiple ontology models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, and custom). The legacy static fallback is now deprecated and retained only for emergency use.
 
 ## Features
 
-- **Ontology Building:** Create ontologies using live public data with real-time API integration. The legacy static fallback is available only as a backup.
+- **Ontology Building:** Create ontologies using live public data with real-time API integration. The deprecated static fallback is available only as an emergency option.
 - **Data Persistence:** Save, load, backup, and clear ontology JSON files.
 - **Query & Validation:** Search through ontology concepts and validate models.
 - **OWL Export/Import:** Convert ontologies to and from a minimal OWL XML format.
@@ -48,7 +48,7 @@ node src/lib/main.js --help
 
 ### Key CLI Commands
 
-- `--build`: Generate a fallback ontology using static data (for emergency use only).
+- `--build`: Generate a deprecated fallback ontology using static data (emergency use only).
 - `--build-live`: Build an ontology using live data with diagnostic logging.
 - `--persist`: Save the ontology to a JSON file.
 - `--load`: Load the saved ontology.
@@ -91,8 +91,8 @@ The following model wrappers are provided:
 - **buildEnhancedOntology:** Constructs an enhanced ontology, integrating live data (e.g., images).
 - **buildMinimalOWLModel:** Constructs a minimal ontology model.
 - **buildComplexOntologyModel:** Constructs a complex ontology model with classes, properties, and concepts.
-- **buildScientificOntologyModel:** Constructs a scientific ontology including disciplines such as Biology, Chemistry, and Physics, with associated academic concepts.
-- **buildEducationalOntologyModel:** Constructs an educational ontology model featuring subjects like Mathematics, History, and Literature, with learning concepts.
+- **buildScientificOntologyModel:** Constructs a scientific ontology including disciplines with academic concepts.
+- **buildEducationalOntologyModel:** Constructs an educational ontology model featuring subjects and learning concepts.
 
 ## For Developers
 
@@ -115,12 +115,12 @@ Please refer to our [CONTRIBUTING](CONTRIBUTING.md) guidelines for details on co
 
 **Version 0.0.35**
 
-- Refocused ontology building on live public data sources; static fallback is now retained only as an emergency option.
+- Refocused ontology building on live public data sources; static fallback is now deprecated and retained only for emergency use.
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
 - Added functions for custom ontology building (`buildOntologyFromCustomData`) and merging (`mergeOntologies`).
 - Extended endpoints list: added endpoints for albums and users to diversify data sources.
-- Updated CLI commands to better differentiate live data integration from legacy fallback.
-- **Extended OWL model wrappers:** Added `buildScientificOntologyModel` and `buildEducationalOntologyModel` for specialized ontology modeling.
+- Updated CLI commands to delineate between live data integration and deprecated static fallback methods.
+- Extended OWL model wrappers: added `buildScientificOntologyModel` and `buildEducationalOntologyModel` for specialized ontology modeling.
 
 ## License
 

@@ -5,16 +5,16 @@
  *
  * Mission Statement:
  *   owl-builder builds OWL ontologies directly from live, verified public data sources.
- *   This release removes outdated static demo implementations and focuses on integrating real-time public endpoints with enhanced diagnostic logging.
+ *   In this release, building from live endpoints is the primary mode. The legacy static fallback (buildOntology) is now deprecated and retained only for emergency fallback situations.
  *
  * Changelog:
- *   - Refocused ontology building on live public data sources. Legacy static fallback (buildOntology) is retained only as an emergency fallback.
+ *   - Refocused ontology building on live public data sources; static fallback is now deprecated (emergency use only).
  *   - Enhanced diagnostic logging and refined network operations.
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
  *   - Extended functionality for custom ontology creation and merging via buildOntologyFromCustomData and mergeOntologies.
- *   - Extended endpoints list now includes albums and users endpoints along with other live sources.
- *   - Added new OWL ontology model wrappers: buildScientificOntologyModel and buildEducationalOntologyModel.
- *   - Updated CLI commands to clearly separate live data integration (--build-live, --build-live-log) from static fallback (--build) and added commands for the new model wrappers (--build-scientific and --build-educational).
+ *   - Extended endpoints list now includes albums and users endpoints among other live sources.
+ *   - Added new OWL model wrappers: buildScientificOntologyModel and buildEducationalOntologyModel.
+ *   - Updated CLI commands to clearly separate live data integration (--build-live, --build-live-log) from the deprecated static fallback (--build).
  *   - Version remains at 0.0.35.
  *
  * For Developers:
@@ -33,7 +33,7 @@ import http from "http";
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
-// Legacy static fallback for ontology building; for live data integration use buildOntologyFromLiveData
+// Deprecated static fallback for ontology building; for live data integration use buildOntologyFromLiveData
 export function buildOntology() {
   return {
     title: "Public Data Ontology",
@@ -52,7 +52,7 @@ export async function buildOntologyFromLiveData() {
       : ["Concept1", "Concept2", "Concept3"];
     return { title, concepts };
   } catch (_) {
-    // Fallback to static ontology in case of error
+    // Fallback to deprecated static ontology in case of error
     return buildOntology();
   }
 }
@@ -611,7 +611,6 @@ async function demo() {
   console.log("Demo - minimal OWL model:", minimalModel);
   const complexModel = buildComplexOntologyModel();
   console.log("Demo - complex OWL model:", complexModel);
-  // Demonstrate new model wrappers
   const scientificModel = buildScientificOntologyModel();
   console.log("Demo - scientific OWL model:", scientificModel);
   const educationalModel = buildEducationalOntologyModel();
