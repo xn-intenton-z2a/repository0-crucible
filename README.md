@@ -4,7 +4,7 @@ owl-builder is a versatile CLI tool and JavaScript library for constructing real
 
 ## Overview
 
-owl-builder leverages real-time public endpoints to build dynamic ontology models. It provides features for data persistence, querying, diagnostics, and generating multiple ontology models (basic, advanced, intermediate, enhanced, and custom). Legacy and simulated demo implementations have been removed to ensure a focus on live data integration and enhanced diagnostic logging.
+owl-builder leverages real-time public endpoints to build dynamic ontology models. It provides features for data persistence, querying, diagnostics, and generating multiple ontology models (basic, advanced, intermediate, enhanced, and custom). Legacy simulated demo implementations have been removed to ensure a focus on live data integration and enhanced diagnostic logging.
 
 ## Features
 
@@ -95,10 +95,10 @@ Please refer to our [CONTRIBUTING](CONTRIBUTING.md) guidelines for details on co
 
 - Refocused ontology building on live public data sources.
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
+- Removed legacy simulated demo outputs and pruned code drift.
+- Refactored `buildEnhancedOntology` to use internal `fetchDataWithRetry`.
 - Added functions for custom ontology building and merging.
-- Removed legacy and simulated demo implementations.
-- **Extended endpoints list with additional live data sources for broader ontology construction.**
-- Updated test expectations to accommodate extended endpoints.
+- Extended endpoints list with additional live data sources for broader ontology construction.
 - Documentation refreshed to align with current best practices and contributing guidelines.
 
 ## License

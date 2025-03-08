@@ -16,6 +16,7 @@
  *   - Added new functions: buildOntologyFromCustomData, mergeOntologies, buildOntologyFromLiveDataWithLog for extended customization and diagnostic logging.
  *   - Updated CLI commands: --build-live, --build-custom-data, --merge-ontologies, and --build-live-log.
  *   - Extended endpoints list to include additional live data sources for ontology building.
+ *   - Refactored buildEnhancedOntology to use internal fetchDataWithRetry instead of redundant fetcher call.
  *   - Version updated to 0.0.34
  *
  * For Developers:
@@ -259,7 +260,8 @@ export function buildIntermediateOWLModel() {
 export async function buildEnhancedOntology() {
   const ontology = buildOntology();
   try {
-    const data = await fetcher.fetchDataWithRetry("https://dog.ceo/api/breeds/image/random", 2);
+    // Use the internal fetchDataWithRetry directly instead of fetcher.fetchDataWithRetry
+    const data = await fetchDataWithRetry("https://dog.ceo/api/breeds/image/random", 2);
     const parsed = JSON.parse(data);
     ontology.image = parsed.message;
     ontology.concepts.push("EnhancedConcept");
@@ -291,7 +293,7 @@ export function mergeOntologies(...ontologies) {
 
 export async function buildOntologyFromLiveDataWithLog() {
   const ontology = await buildOntologyFromLiveData();
-  logDiagnostic("Live data ontology built with additional diagnostics");
+  logDiagnostic("Live data ontology built successfully");
   return ontology;
 }
 
