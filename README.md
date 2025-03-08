@@ -16,6 +16,7 @@ owl-builder leverages live public data endpoints to build dynamic ontology model
 - **OWL Export/Import:** Convert ontologies to a minimal OWL XML format.
 - **Data Crawling:** Retrieve live data from a curated list of public endpoints.
 - **Model Wrappers:** Generate various ontology models, including intermediate, enhanced, and live-data integrated models.
+- **Enhanced Diagnostic Logging:** New functions provide timestamped logging (getCurrentTimestamp and logDiagnostic) to aid in diagnostics and monitoring.
 - **Web Server & Diagnostics:** Built-in support for launching a monitoring web server and running diagnostics.
 
 ## Installation
@@ -32,7 +33,7 @@ npm install
 
 - **Run Demo:**
 
-  Execute the demo to showcase core functions of ontology building, persistence, and querying:
+  Execute the demo to showcase core functions of ontology building, persistence, querying, and enhanced diagnostic logging:
   
   ```bash
   npm run start
@@ -83,8 +84,6 @@ npm install
   npm run formatting
   ```
 
-Refer to the inline code documentation for detailed API usage.
-
 ## CLI Commands
 
 Key commands include:
@@ -110,30 +109,16 @@ Key commands include:
 - `--serve`: Launch the integrated web server
 - `--build-intermediate`: Build an intermediate ontology model
 - `--build-enhanced`: Build an enhanced ontology model enriched with live data
-- `--build-live`: Build an ontology directly integrated with live public data
+- `--build-live`: Build an ontology directly integrated with live public data (now with diagnostic logging)
 
 ## Change Log
 
 **Version 0.0.34**
 - Refocused ontology building to leverage live, verified public data endpoints.
-- Enhanced diagnostic messaging and updated network operations for real-time data integration.
-- Removed legacy demo code drift and pruned simulated outputs in favor of live data calls.
-- Added new ontology model builders: **buildIntermediateOWLModel**, **buildEnhancedOntology**, and **buildOntologyFromLiveData**.
-- Introduced new CLI command: **--build-live** for generating ontology models from live data.
-- Verified responses from external endpoints via diagnostics tests. Summary: 
-   - *https://api.publicapis.org/entries*: returns a 404 HTML response (as fallback).
-   - *https://dog.ceo/api/breeds/image/random*: returns a valid JSON with an image URL.
-   - *https://jsonplaceholder.typicode.com/posts*: returns a JSON array of posts.
-   - *https://api.coindesk.com/v1/bpi/currentprice.json*: network error (ENOTFOUND).
-   - *https://api.github.com*: returns valid GitHub API JSON data.
-   - *https://jsonplaceholder.typicode.com/comments*: returns a JSON array of comments.
-   - *https://dummyjson.com/products*: returns product data in JSON.
-   - *https://randomuser.me/api/*: returns a random user JSON.
-   - *https://catfact.ninja/fact*: returns a cat fact in JSON.
-   - *https://jsonplaceholder.typicode.com/todos*: returns a JSON array of todos.
-   - *https://api.chucknorris.io/jokes/random*: returns a Chuck Norris joke.
-   - *https://api.agify.io?name=michael*: returns an age prediction (age 64).
-   - *https://api.stackexchange.com/2.2/questions?order=desc&sort=activity*: error due to bad parameter.
+- Enhanced diagnostic messaging with new functions: **getCurrentTimestamp** and **logDiagnostic**.
+- Updated demo and CLI commands (especially --build-live) to output timestamped diagnostics.
+- Removed simulated demo outputs in favor of live data calls where possible.
+- Verified responses from external endpoints via diagnostics tests.
 
 ## License
 

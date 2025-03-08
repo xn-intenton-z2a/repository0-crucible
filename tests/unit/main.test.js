@@ -30,6 +30,8 @@ const {
   extendOntologyConcepts,
   buildIntermediateOWLModel,
   buildEnhancedOntology,
+  getCurrentTimestamp,
+  logDiagnostic,
   fetcher,
 } = mainModule;
 
@@ -276,9 +278,7 @@ describe("New Features", () => {
   });
 
   test("buildEnhancedOntology returns enhanced ontology with image and enhanced concept", async () => {
-    const spy = vi
-      .spyOn(fetcher, "fetchDataWithRetry")
-      .mockResolvedValue(JSON.stringify({ message: "http://example.com/image.jpg" }));
+    const spy = vi.spyOn(fetcher, "fetchDataWithRetry").mockResolvedValue(JSON.stringify({ message: "http://example.com/image.jpg" }));
     const ontology = await buildEnhancedOntology();
     expect(ontology.image).toBe("http://example.com/image.jpg");
     expect(ontology.concepts).toContain("EnhancedConcept");
@@ -291,6 +291,22 @@ describe("Live Data Functions", () => {
     const liveOntology = await buildOntologyFromLiveData();
     expect(liveOntology).toHaveProperty("title");
     expect(Array.isArray(liveOntology.concepts)).toBe(true);
+  });
+});
+
+describe("Diagnostic Logging", () => {
+  test("getCurrentTimestamp returns valid ISO string", () => {
+    const ts = getCurrentTimestamp();
+    expect(new Date(ts).toISOString()).toBe(ts);
+  });
+
+  test("logDiagnostic logs message with timestamp", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    logDiagnostic("Test diagnostic");
+    expect(spy).toHaveBeenCalled();
+    const logged = spy.mock.calls[0][0];
+    expect(logged).toMatch(/\[.*\] DIAGNOSTIC: Test diagnostic/);
+    spy.mockRestore();
   });
 });
 
