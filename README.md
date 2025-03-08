@@ -112,7 +112,7 @@ owl-builder supports several advanced commands for customization and diagnostics
 - `--diagnostics`: Run diagnostics via live endpoint tests.
 - `--serve`: Launch the integrated web server.
 - `--build-intermediate`: Build an intermediate-level OWL ontology model.
-- `--build-enhanced`: Build an enhanced OWL ontology model enriched with live external data.
+- `--build-enhanced`: Build an enhanced OWL ontology model enriched with live data.
 
 ## CLI Commands
 
@@ -157,7 +157,7 @@ When contributing, please ensure:
   - Enhanced diagnostic messaging and updated network operations for real-time data integration.
   - Added new functions: **buildIntermediateOWLModel** and **buildEnhancedOntology**.
   - Added new CLI commands: **--build-intermediate** and **--build-enhanced**.
-  - The enhanced ontology now incorporates live external data (e.g., an image from Dog CEO API) and appends an extra concept.
+  - Updated buildEnhancedOntology to use an exported fetcher, allowing tests to properly mock network responses. 
   - Version updated from 0.0.31 to 0.0.32.
 
 - **Version 0.0.31** (Previous)

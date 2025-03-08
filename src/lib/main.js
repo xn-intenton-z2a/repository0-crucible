@@ -14,6 +14,7 @@
  *   - Removed demo code drift and added new endpoints for richer data responses.
  *   - Added new functions: buildIntermediateOWLModel and buildEnhancedOntology for additional ontology models.
  *   - Added new CLI commands: --build-intermediate and --build-enhanced.
+ *   - Updated buildEnhancedOntology to use an exported fetcher object to allow proper test mocking.
  *   - Version updated from 0.0.31 to 0.0.32
  *
  * For Developers:
@@ -234,7 +235,8 @@ export function buildIntermediateOWLModel() {
 export async function buildEnhancedOntology() {
   const ontology = buildOntology();
   try {
-    const data = await fetchDataWithRetry('https://dog.ceo/api/breeds/image/random', 2);
+    // Use the exported fetcher to allow proper testing override
+    const data = await fetcher.fetchDataWithRetry('https://dog.ceo/api/breeds/image/random', 2);
     const parsed = JSON.parse(data);
     ontology.image = parsed.message;
     ontology.concepts.push('EnhancedConcept');
@@ -243,6 +245,9 @@ export async function buildEnhancedOntology() {
   }
   return ontology;
 }
+
+// Exporting fetcher object to allow test spies
+export const fetcher = { fetchDataWithRetry };
 
 const commandActions = {
   "--help": async (args) => { displayHelp(); },
@@ -342,7 +347,7 @@ const commandActions = {
   "--build-advanced": async (args) => { 
     const model = buildAdvancedOWLModel();
     console.log("Advanced OWL Model:", model);
-    return model;
+    return model; 
   },
   "--wrap-model": async (args) => { 
     let model;
@@ -395,7 +400,7 @@ const commandActions = {
     console.log("Intermediate OWL Model:", model);
     return model;
   },
-  "--build-enhanced": async (args) => {
+  "--build-enhanced": async (args) => { 
     const model = await buildEnhancedOntology();
     console.log("Enhanced Ontology:", model);
     return model;
