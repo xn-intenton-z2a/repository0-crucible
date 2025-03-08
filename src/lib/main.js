@@ -14,10 +14,10 @@
  *   - Removed legacy demo code drift and pruned simulated outputs.
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
  *   - Added new functions: buildOntologyFromCustomData, mergeOntologies, buildOntologyFromLiveDataWithLog for extended customization and diagnostic logging.
+ *   - Extended endpoints list to include additional live data sources for ontology building (added albums and users endpoints).
  *   - Updated CLI commands: --build-live, --build-custom-data, --merge-ontologies, and --build-live-log.
- *   - Extended endpoints list to include additional live data sources for ontology building.
  *   - Refactored buildEnhancedOntology to use internal fetcher.fetchDataWithRetry to allow test spying instead of direct fetchDataWithRetry call.
- *   - Version updated to 0.0.34
+ *   - Version updated to 0.0.35
  *
  * For Developers:
  *   Follow CONTRIBUTING guidelines. Please update tests and documentation as needed.
@@ -146,7 +146,9 @@ export function listAvailableEndpoints() {
     "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity",
     "https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json",
     "https://api.spacexdata.com/v4/launches/latest",
-    "https://random-data-api.com/api/commerce/random_commerce"
+    "https://random-data-api.com/api/commerce/random_commerce",
+    "https://jsonplaceholder.typicode.com/albums",
+    "https://jsonplaceholder.typicode.com/users"
   ];
 }
 
@@ -568,7 +570,7 @@ export function displayHelp() {
 }
 
 export function getVersion() {
-  return "0.0.34";
+  return "0.0.35";
 }
 
 export function listCommands() {
