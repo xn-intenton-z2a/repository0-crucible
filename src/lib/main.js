@@ -13,7 +13,8 @@
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
  *   - Extended functionality for custom ontology creation and merging via buildOntologyFromCustomData and mergeOntologies.
  *   - Extended endpoints list now includes albums and users endpoints along with other live sources.
- *   - Updated CLI commands to clearly separate live data integration (--build-live, --build-live-log) from static fallback (--build).
+ *   - Added new OWL ontology model wrappers: buildScientificOntologyModel and buildEducationalOntologyModel.
+ *   - Updated CLI commands to clearly separate live data integration (--build-live, --build-live-log) from static fallback (--build) and added commands for the new model wrappers (--build-scientific and --build-educational).
  *   - Version remains at 0.0.35.
  *
  * For Developers:
@@ -318,6 +319,27 @@ export function buildComplexOntologyModel() {
   };
 }
 
+// Extended OWL Model Wrappers
+export function buildScientificOntologyModel() {
+  return {
+    id: "scientific",
+    title: "Scientific OWL Ontology",
+    disciplines: ["Biology", "Chemistry", "Physics"],
+    concepts: ["Hypothesis", "Experiment", "Data Analysis"],
+    metadata: { source: "Scientific Publications", created: new Date().toISOString() }
+  };
+}
+
+export function buildEducationalOntologyModel() {
+  return {
+    id: "educational",
+    title: "Educational OWL Ontology",
+    subjects: ["Mathematics", "History", "Literature"],
+    concepts: ["Curriculum", "Lesson Plan", "Assessment"],
+    metadata: { notes: "Developed for educational institutions", created: new Date().toISOString() }
+  };
+}
+
 // Exporting fetcher object to allow test spies
 export const fetcher = { fetchDataWithRetry };
 
@@ -519,6 +541,16 @@ const commandActions = {
     const model = buildComplexOntologyModel();
     console.log("Complex OWL Model:", model);
     return model;
+  },
+  "--build-scientific": async (args) => {
+    const model = buildScientificOntologyModel();
+    console.log("Scientific OWL Model:", model);
+    return model;
+  },
+  "--build-educational": async (args) => {
+    const model = buildEducationalOntologyModel();
+    console.log("Educational OWL Model:", model);
+    return model;
   }
 };
 
@@ -579,6 +611,11 @@ async function demo() {
   console.log("Demo - minimal OWL model:", minimalModel);
   const complexModel = buildComplexOntologyModel();
   console.log("Demo - complex OWL model:", complexModel);
+  // Demonstrate new model wrappers
+  const scientificModel = buildScientificOntologyModel();
+  console.log("Demo - scientific OWL model:", scientificModel);
+  const educationalModel = buildEducationalOntologyModel();
+  console.log("Demo - educational OWL model:", educationalModel);
   logDiagnostic("Demo completed successfully");
 }
 
@@ -598,7 +635,7 @@ export async function main(args = process.argv.slice(2)) {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex`
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational`
   );
 }
 

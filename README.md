@@ -4,7 +4,7 @@ owl-builder is a versatile CLI tool and JavaScript library for constructing real
 
 ## Overview
 
-owl-builder leverages real-time public endpoints to build dynamic ontology models. It provides features for data persistence, querying, diagnostics, and generating multiple ontology models (basic, advanced, intermediate, enhanced, minimal, complex, and custom). Legacy static fallback implementations have been pruned to focus on live data integration and enhanced diagnostic logging. The static fallback remains only as an emergency option.
+owl-builder leverages real-time public endpoints to build dynamic ontology models. It provides features for data persistence, querying, diagnostics, and generating multiple ontology models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, and custom). Legacy static fallback implementations have been pruned to focus on live data integration and enhanced diagnostic logging. The static fallback remains only as an emergency option.
 
 ## Features
 
@@ -13,7 +13,7 @@ owl-builder leverages real-time public endpoints to build dynamic ontology model
 - **Query & Validation:** Search through ontology concepts and validate models.
 - **OWL Export/Import:** Convert ontologies to and from a minimal OWL XML format.
 - **Data Crawling:** Retrieve live data from an extended list of public endpoints for broader ontology construction.
-- **Model Wrappers:** Generate various ontology models including basic, advanced, intermediate, enhanced, minimal, and complex versions.
+- **Model Wrappers:** Generate various ontology models including basic, advanced, intermediate, enhanced, minimal, complex, scientific, and educational versions.
 - **Extended Customization:** Build and merge custom ontologies.
 - **Enhanced Diagnostics:** Timestamped logging to support monitoring and debugging.
 - **Web Server:** Integrated web server for monitoring.
@@ -61,6 +61,8 @@ node src/lib/main.js --help
 - `--crawl`: Crawl public endpoints for live data.
 - `--fetch-retry`: Fetch data with retry logic.
 - `--build-basic`, `--build-advanced`, `--build-intermediate`, `--build-enhanced`: Build various ontology models.
+- `--build-scientific`: Build a scientific ontology model with disciplines and scientific concepts.
+- `--build-educational`: Build an educational ontology model with subjects and educational concepts.
 - `--build-custom-data`: Build an ontology from provided custom data.
 - `--merge-ontologies`: Merge multiple ontology models.
 - `--build-live-log`: Build a live data ontology with additional diagnostic logging.
@@ -78,6 +80,19 @@ The library now includes an extended list of live endpoints. New endpoints added
 - `https://jsonplaceholder.typicode.com/users`
 
 These additions enrich the diversity of accessible information for constructing ontologies.
+
+## OWL Ontology Models
+
+The following model wrappers are provided:
+
+- **buildBasicOWLModel:** Constructs a basic ontology model.
+- **buildAdvancedOWLModel:** Constructs an advanced ontology model with classes and properties.
+- **buildIntermediateOWLModel:** Constructs an intermediate-level ontology model.
+- **buildEnhancedOntology:** Constructs an enhanced ontology, integrating live data (e.g., images).
+- **buildMinimalOWLModel:** Constructs a minimal ontology model.
+- **buildComplexOntologyModel:** Constructs a complex ontology model with classes, properties, and concepts.
+- **buildScientificOntologyModel:** Constructs a scientific ontology including disciplines such as Biology, Chemistry, and Physics, with associated academic concepts.
+- **buildEducationalOntologyModel:** Constructs an educational ontology model featuring subjects like Mathematics, History, and Literature, with learning concepts.
 
 ## For Developers
 
@@ -105,6 +120,7 @@ Please refer to our [CONTRIBUTING](CONTRIBUTING.md) guidelines for details on co
 - Added functions for custom ontology building (`buildOntologyFromCustomData`) and merging (`mergeOntologies`).
 - Extended endpoints list: added endpoints for albums and users to diversify data sources.
 - Updated CLI commands to better differentiate live data integration from legacy fallback.
+- **Extended OWL model wrappers:** Added `buildScientificOntologyModel` and `buildEducationalOntologyModel` for specialized ontology modeling.
 
 ## License
 
