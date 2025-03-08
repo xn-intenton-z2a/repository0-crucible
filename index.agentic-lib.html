@@ -23,131 +23,87 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="owl-builder" href="#owl-builder"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>owl-builder</h1>
-<p class="md-github">owl-builder is a versatile CLI tool and JavaScript library for constructing real-time OWL ontologies using live, verified public data sources.</p>
-<hr class="md-github">
+<p class="md-github">owl-builder is a versatile CLI tool and JavaScript library for constructing real-time OWL ontologies from live, verified public data sources. This documentation has been refreshed in line with our <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING</a> guidelines to provide clear, concise, and up-to-date information.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="overview" href="#overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
-<p class="md-github">owl-builder leverages live public data endpoints to build dynamic ontology models that remain current and accurate. The tool provides functionality for data persistence, querying, multiple ontology model builders (basic, advanced, intermediate, enhanced, live-data based, and custom merging), as well as enhanced diagnostic logging. This release prunes legacy simulated demo implementations in favor of real-time public data integration.</p>
+<p class="md-github">owl-builder leverages real-time public endpoints to build dynamic ontology models. It provides features for data persistence, querying, diagnostics, and generating multiple ontology models (basic, advanced, intermediate, enhanced, and custom). Legacy and simulated demo implementations have been removed to ensure a focus on live data integration and enhanced diagnostic logging.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Ontology Building:</strong> Create ontologies based on live, real-time public data using verified endpoints.</li>
+<li class="md-github"><strong class="md-github">Ontology Building:</strong> Create ontologies using live public data.</li>
 <li class="md-github"><strong class="md-github">Data Persistence:</strong> Save, load, backup, and clear ontology JSON files.</li>
-<li class="md-github"><strong class="md-github">Query and Validation:</strong> Search through ontology concepts and validate model integrity.</li>
-<li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontologies to a minimal OWL XML format.</li>
+<li class="md-github"><strong class="md-github">Query &amp; Validation:</strong> Search through ontology concepts and validate models.</li>
+<li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontologies to and from a minimal OWL XML format.</li>
 <li class="md-github"><strong class="md-github">Data Crawling:</strong> Retrieve live data from a curated list of public endpoints.</li>
-<li class="md-github"><strong class="md-github">Model Wrappers:</strong> Generate various ontology models including intermediate, enhanced, and live-data integrated models.</li>
-<li class="md-github"><strong class="md-github">Extended Customization:</strong> Build ontologies from custom data and merge multiple ontologies.</li>
-<li class="md-github"><strong class="md-github">Enhanced Diagnostic Logging:</strong> Timestamped logging via <strong class="md-github">getCurrentTimestamp</strong> and <strong class="md-github">logDiagnostic</strong> to support monitoring and diagnostics.</li>
-<li class="md-github"><strong class="md-github">Web Server &amp; Diagnostics:</strong> Integrated support for launching a monitoring web server and running diagnostics.</li>
+<li class="md-github"><strong class="md-github">Model Wrappers:</strong> Generate various ontology models including basic, advanced, intermediate, and enhanced versions.</li>
+<li class="md-github"><strong class="md-github">Extended Customization:</strong> Build and merge custom ontologies.</li>
+<li class="md-github"><strong class="md-github">Enhanced Diagnostics:</strong> Timestamped logging to support monitoring and debugging.</li>
+<li class="md-github"><strong class="md-github">Web Server:</strong> Integrated web server for monitoring.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
-<p class="md-github">Ensure you have Node.js v20 or later installed. Then, clone the repository and install dependencies:</p>
+<p class="md-github">Ensure you have Node.js version 20 or later installed. Then, clone the repository and install dependencies:</p>
 <pre class="md-github"><code class="md-github language-bash">git clone https://github.com/yourusername/owl-builder.git
 cd owl-builder
 npm install
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
-<ul class="md-github">
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Run Demo:</strong></p>
-<p class="md-github">This demo showcases the core functionalities including ontology building, persistence, querying, and diagnostic logging. Note that live API calls are performed where applicable.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="run-demo" href="#run-demo"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run Demo</h3>
+<p class="md-github">This demo showcases core functionalities such as ontology building, persistence, querying, and diagnostic logging. Note that live API calls are performed where applicable.</p>
 <pre class="md-github"><code class="md-github language-bash">npm run start
 </code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Help Information:</strong></p>
+<h3 class="md-github"><a class="md-github__anchor" name="cli-help" href="#cli-help"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Help</h3>
+<p class="md-github">For usage instructions and available commands, run:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
 </code></pre>
-</li>
-</ul>
-<h3 class="md-github"><a class="md-github__anchor" name="for-users" href="#for-users"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>For Users</h3>
+<h3 class="md-github"><a class="md-github__anchor" name="key-cli-commands" href="#key-cli-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Key CLI Commands</h3>
 <ul class="md-github">
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Build Ontology:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Export to OWL (XML):</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Crawl Data:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --crawl
-</code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Build Various Ontologies:</strong></p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-basic
-node src/lib/main.js --build-advanced
-node src/lib/main.js --build-intermediate
-node src/lib/main.js --build-enhanced
-node src/lib/main.js --build-live
-node src/lib/main.js --build-custom-data '{&quot;title&quot;:&quot;My Custom Ontology&quot;, &quot;concepts&quot;:[&quot;CustomConcept&quot;]}'
-node src/lib/main.js --merge-ontologies
-node src/lib/main.js --build-live-log
-</code></pre>
-</li>
+<li class="md-github"><code class="md-github">--build</code>: Generate an ontology using static fallback data.</li>
+<li class="md-github"><code class="md-github">--persist</code>: Save the ontology to a JSON file.</li>
+<li class="md-github"><code class="md-github">--load</code>: Load the saved ontology.</li>
+<li class="md-github"><code class="md-github">--query &quot;term&quot;</code>: Search for ontology concepts.</li>
+<li class="md-github"><code class="md-github">--export</code>: Export the ontology as OWL XML.</li>
+<li class="md-github"><code class="md-github">--import</code>: Import an ontology from an OWL XML string.</li>
+<li class="md-github"><code class="md-github">--backup</code>: Create a backup of the ontology file.</li>
+<li class="md-github"><code class="md-github">--update &quot;New Title&quot;</code>: Update the ontology title.</li>
+<li class="md-github"><code class="md-github">--clear</code>: Delete the ontology file.</li>
+<li class="md-github"><code class="md-github">--crawl</code>: Crawl public endpoints for live data.</li>
+<li class="md-github"><code class="md-github">--fetch-retry</code>: Fetch data with retry logic.</li>
+<li class="md-github"><code class="md-github">--build-basic</code>, <code class="md-github">--build-advanced</code>, <code class="md-github">--build-intermediate</code>, <code class="md-github">--build-enhanced</code>: Build various ontology models.</li>
+<li class="md-github"><code class="md-github">--build-live</code>: Build an ontology using live data with diagnostics.</li>
+<li class="md-github"><code class="md-github">--build-custom-data</code>: Build an ontology from provided custom data.</li>
+<li class="md-github"><code class="md-github">--merge-ontologies</code>: Merge multiple ontology models.</li>
+<li class="md-github"><code class="md-github">--build-live-log</code>: Build a live data ontology with additional diagnostic logging.</li>
+<li class="md-github"><code class="md-github">--serve</code>: Launch the integrated web server.</li>
+<li class="md-github"><code class="md-github">--diagnostics</code>: Run diagnostics against public endpoints.</li>
+<li class="md-github"><code class="md-github">--list</code>, <code class="md-github">--version</code>, <code class="md-github">--help</code>: Additional utilities.</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="for-developers" href="#for-developers"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>For Developers</h3>
+<h2 class="md-github"><a class="md-github__anchor" name="for-developers" href="#for-developers"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>For Developers</h2>
 <ul class="md-github">
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Testing:</strong> Run unit tests with:</p>
+<li class="md-github"><strong class="md-github">Testing:</strong> Run unit tests with:</li>
+</ul>
 <pre class="md-github"><code class="md-github language-bash">npm run test:unit
 </code></pre>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Linting and Formatting:</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Linting &amp; Formatting:</strong></li>
+</ul>
 <pre class="md-github"><code class="md-github language-bash">npm run linting
 npm run formatting
 </code></pre>
-</li>
-</ul>
-<h2 class="md-github"><a class="md-github__anchor" name="cli-commands" href="#cli-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Commands</h2>
-<p class="md-github">Key commands include:</p>
-<ul class="md-github">
-<li class="md-github"><code class="md-github">--help</code>: Display usage instructions</li>
-<li class="md-github"><code class="md-github">--version</code>: Show tool version</li>
-<li class="md-github"><code class="md-github">--list</code>: List available commands</li>
-<li class="md-github"><code class="md-github">--build</code>: Generate an ontology from fallback static data</li>
-<li class="md-github"><code class="md-github">--persist</code>: Save the ontology to a JSON file</li>
-<li class="md-github"><code class="md-github">--load</code>: Load a saved ontology</li>
-<li class="md-github"><code class="md-github">--query &quot;term&quot;</code>: Search for ontology concepts</li>
-<li class="md-github"><code class="md-github">--export</code>: Export the ontology as OWL XML</li>
-<li class="md-github"><code class="md-github">--import</code>: Import an ontology from an OWL XML string</li>
-<li class="md-github"><code class="md-github">--backup</code>: Create a backup of the ontology file</li>
-<li class="md-github"><code class="md-github">--update &quot;New Title&quot;</code>: Update the ontology title</li>
-<li class="md-github"><code class="md-github">--clear</code>: Delete the ontology file</li>
-<li class="md-github"><code class="md-github">--crawl</code>: Crawl public endpoints for live data</li>
-<li class="md-github"><code class="md-github">--fetch-retry</code>: Fetch data with retry logic</li>
-<li class="md-github"><code class="md-github">--build-basic</code>, <code class="md-github">--build-advanced</code>, <code class="md-github">--wrap-model</code>: Build various ontology models</li>
-<li class="md-github"><code class="md-github">--build-custom</code>: Build a customized ontology</li>
-<li class="md-github"><code class="md-github">--extend-concepts</code>: Extend the ontology with new concepts</li>
-<li class="md-github"><code class="md-github">--diagnostics</code>: Run diagnostics against public endpoints</li>
-<li class="md-github"><code class="md-github">--serve</code>: Launch the integrated web server</li>
-<li class="md-github"><code class="md-github">--build-intermediate</code>: Build an intermediate ontology model</li>
-<li class="md-github"><code class="md-github">--build-enhanced</code>: Build an enhanced ontology model enriched with live data</li>
-<li class="md-github"><code class="md-github">--build-live</code>: Build an ontology using live data with diagnostic logging</li>
-<li class="md-github"><code class="md-github">--build-custom-data</code>: Build an ontology from provided custom data</li>
-<li class="md-github"><code class="md-github">--merge-ontologies</code>: Merge static and live data ontologies into one</li>
-<li class="md-github"><code class="md-github">--build-live-log</code>: Build live data ontology with additional diagnostic logs</li>
-</ul>
+<p class="md-github">Please refer to our <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING</a> guidelines for details on code quality, testing practices, and documentation standards.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="change-log" href="#change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change Log</h2>
 <p class="md-github"><strong class="md-github">Version 0.0.34</strong></p>
 <ul class="md-github">
-<li class="md-github">Refocused ontology building to leverage live, verified public data endpoints.</li>
-<li class="md-github">Enhanced diagnostic messaging with new functions <strong class="md-github">getCurrentTimestamp</strong> and <strong class="md-github">logDiagnostic</strong>.</li>
-<li class="md-github">Added new functions <strong class="md-github">buildOntologyFromCustomData</strong>, <strong class="md-github">mergeOntologies</strong>, and <strong class="md-github">buildOntologyFromLiveDataWithLog</strong> for extended customization and merging capabilities.</li>
-<li class="md-github">Updated CLI commands to include --build-custom-data, --merge-ontologies, and --build-live-log.</li>
-<li class="md-github">Removed legacy simulated demo implementations and pruned code drift.</li>
-<li class="md-github">Verified responses from external endpoints via diagnostics tests.</li>
+<li class="md-github">Refocused ontology building on live public data sources.</li>
+<li class="md-github">Enhanced diagnostic logging with new functions <code class="md-github">getCurrentTimestamp</code> and <code class="md-github">logDiagnostic</code>.</li>
+<li class="md-github">Added functions for custom ontology building and merging.</li>
+<li class="md-github">Removed legacy and simulated demo implementations.</li>
+<li class="md-github">Updated test regex for --serve to correctly match the log output.</li>
+<li class="md-github">Documentation refreshed to align with current best practices and contributing guidelines.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
 <p class="md-github">Released under the MIT License.</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-03-08T05:40:42.649Z</p>
+    <p>Generated on 2025-03-08T05:46:48.553Z</p>
   </footer>
 </body>
 </html>
