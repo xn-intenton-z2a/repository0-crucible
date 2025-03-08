@@ -4,18 +4,18 @@
  * owl-builder CLI Tool
  *
  * Mission Statement:
- *   owl-builder builds OWL ontologies directly from live, verified public data sources. In alignment with our mission, this release prunes simulated legacy demo implementations and refocuses all functionality to integrate real-time public endpoints for dynamic ontology models.
+ *   owl-builder builds OWL ontologies directly from live, verified public data sources.
+ *   This release removes legacy simulated demo implementations and prunes any code drift;
+ *   all functionality now focuses on integrating real-time public endpoints and enhanced diagnostic logging.
  *
  * Changelog:
  *   - Refocused library on live public data sources for ontology building.
  *   - Enhanced diagnostic logging and refined network operations.
- *   - Updated demo mode to include timestamped logging and live data integration diagnostics.
  *   - Removed legacy demo code drift and pruned simulated outputs.
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
  *   - Added new functions: buildOntologyFromCustomData, mergeOntologies, buildOntologyFromLiveDataWithLog for extended customization and diagnostic logging.
  *   - Updated CLI commands: --build-live, --build-custom-data, --merge-ontologies, and --build-live-log.
- *   - Version updated from 0.0.33 to 0.0.34
- *   - Verified external endpoints responses via diagnostics tests and updated documentation in the README.
+ *   - Version updated to 0.0.34
  *
  * For Developers:
  *   Follow CONTRIBUTING guidelines. Please update tests and documentation as needed.
@@ -34,19 +34,18 @@ const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
 export function buildOntology() {
-  // Static fallback ontology, maintained for backward compatibility and testing
+  // Fallback static ontology maintained for backward compatibility and testing
   return {
     title: "Public Data Ontology",
     concepts: ["Concept1", "Concept2", "Concept3"]
   };
 }
 
-// New function that builds an ontology using live data from a public API endpoint
+// Builds an ontology using live data from a public API endpoint
 export async function buildOntologyFromLiveData() {
   try {
     const data = await fetchDataWithRetry("https://api.publicapis.org/entries");
     const parsed = JSON.parse(data);
-    // Use live data to construct ontology, use first API's name as title and descriptions as concepts
     const title = parsed && parsed.entries && parsed.entries.length > 0 ? parsed.entries[0].API : "Live Data Ontology";
     const concepts = parsed && parsed.entries
       ? parsed.entries.slice(0, 3).map((entry) => entry.Description)
@@ -94,7 +93,6 @@ export function exportOntologyToXML(ontology) {
 }
 
 export function importOntologyFromXML(xml) {
-  // Updated regex to be more robust in case of additional tags
   const titleMatch = xml.match(/<title>([^<]+)<\/title>/);
   return { title: titleMatch ? titleMatch[1] : "Imported Ontology", concepts: [] };
 }
@@ -129,7 +127,6 @@ export function clearOntology() {
 }
 
 export function listAvailableEndpoints() {
-  // Extended list of public endpoints for building ontologies
   return [
     "https://api.publicapis.org/entries",
     "https://dog.ceo/api/breeds/image/random",
@@ -176,6 +173,7 @@ export async function crawlOntologies() {
   for (const endpoint of endpoints) {
     try {
       const data = await fetchDataWithRetry(endpoint);
+      // Use the static ontology for generating owlContent to avoid simulated legacy outputs.
       const owlContent = exportOntologyToXML(buildOntology());
       results.push({ endpoint, data, owlContent });
     } catch (err) {
@@ -256,7 +254,6 @@ export function buildIntermediateOWLModel() {
 export async function buildEnhancedOntology() {
   const ontology = buildOntology();
   try {
-    // Use the exported fetcher to allow proper testing override
     const data = await fetcher.fetchDataWithRetry("https://dog.ceo/api/breeds/image/random", 2);
     const parsed = JSON.parse(data);
     ontology.image = parsed.message;
@@ -454,14 +451,12 @@ const commandActions = {
     console.log("Enhanced Ontology:", model);
     return model;
   },
-  // Updated CLI command for live data integration with diagnostic logging
   "--build-live": async (args) => {
     const model = await buildOntologyFromLiveData();
     logDiagnostic("Live data ontology built successfully");
     console.log("Live Data Ontology:", model);
     return model;
   },
-  // New CLI command: Build ontology from custom data
   "--build-custom-data": async (args) => {
     let data = {};
     try {
@@ -474,7 +469,6 @@ const commandActions = {
     console.log("Custom Data Ontology:", customOntology);
     return customOntology;
   },
-  // New CLI command: Merge ontologies from static and live data
   "--merge-ontologies": async (args) => {
     const ont1 = buildOntology();
     const ont2 = await buildOntologyFromLiveData();
@@ -483,7 +477,6 @@ const commandActions = {
     console.log("Merged Ontology:", merged);
     return merged;
   },
-  // New CLI command: Build live data ontology with additional diagnostic log
   "--build-live-log": async (args) => {
     const ont = await buildOntologyFromLiveDataWithLog();
     console.log("Live Data Ontology with Log:", ont);
@@ -532,15 +525,12 @@ async function demo() {
   console.log("Demo - custom ontology:", customOntology);
   const extendedOntology = extendOntologyConcepts(ontology, ["ExtraConcept"]);
   console.log("Demo - extended ontology:", extendedOntology);
-  // New feature demos
   const intermediateModel = buildIntermediateOWLModel();
   console.log("Demo - intermediate OWL model:", intermediateModel);
   const enhancedModel = await buildEnhancedOntology();
   console.log("Demo - enhanced ontology:", enhancedModel);
-  // Also demo live data integration function
   const liveModel = await buildOntologyFromLiveData();
   console.log("Demo - live data ontology:", liveModel);
-  // Demo new functions
   const customDataOntology = buildOntologyFromCustomData({ concepts: ["CustomDataConcept"] });
   console.log("Demo - custom data ontology:", customDataOntology);
   const mergedOntology = mergeOntologies(ontology, liveModel);
