@@ -35,6 +35,7 @@
 <li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontologies to a minimal OWL XML format.</li>
 <li class="md-github"><strong class="md-github">Data Crawling:</strong> Retrieve live data from a curated list of public endpoints.</li>
 <li class="md-github"><strong class="md-github">Model Wrappers:</strong> Generate various ontology models, including intermediate, enhanced, and live-data integrated models.</li>
+<li class="md-github"><strong class="md-github">Enhanced Diagnostic Logging:</strong> New functions provide timestamped logging (getCurrentTimestamp and logDiagnostic) to aid in diagnostics and monitoring.</li>
 <li class="md-github"><strong class="md-github">Web Server &amp; Diagnostics:</strong> Built-in support for launching a monitoring web server and running diagnostics.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
@@ -47,7 +48,7 @@ npm install
 <ul class="md-github">
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Run Demo:</strong></p>
-<p class="md-github">Execute the demo to showcase core functions of ontology building, persistence, and querying:</p>
+<p class="md-github">Execute the demo to showcase core functions of ontology building, persistence, querying, and enhanced diagnostic logging:</p>
 <pre class="md-github"><code class="md-github language-bash">npm run start
 </code></pre>
 </li>
@@ -96,7 +97,6 @@ npm run formatting
 </code></pre>
 </li>
 </ul>
-<p class="md-github">Refer to the inline code documentation for detailed API usage.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="cli-commands" href="#cli-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Commands</h2>
 <p class="md-github">Key commands include:</p>
 <ul class="md-github">
@@ -121,40 +121,23 @@ npm run formatting
 <li class="md-github"><code class="md-github">--serve</code>: Launch the integrated web server</li>
 <li class="md-github"><code class="md-github">--build-intermediate</code>: Build an intermediate ontology model</li>
 <li class="md-github"><code class="md-github">--build-enhanced</code>: Build an enhanced ontology model enriched with live data</li>
-<li class="md-github"><code class="md-github">--build-live</code>: Build an ontology directly integrated with live public data</li>
+<li class="md-github"><code class="md-github">--build-live</code>: Build an ontology directly integrated with live public data (now with diagnostic logging)</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="change-log" href="#change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change Log</h2>
 <p class="md-github"><strong class="md-github">Version 0.0.34</strong></p>
 <ul class="md-github">
 <li class="md-github">Refocused ontology building to leverage live, verified public data endpoints.</li>
-<li class="md-github">Enhanced diagnostic messaging and updated network operations for real-time data integration.</li>
-<li class="md-github">Removed legacy demo code drift and pruned simulated outputs in favor of live data calls.</li>
-<li class="md-github">Added new ontology model builders: <strong class="md-github">buildIntermediateOWLModel</strong>, <strong class="md-github">buildEnhancedOntology</strong>, and <strong class="md-github">buildOntologyFromLiveData</strong>.</li>
-<li class="md-github">Introduced new CLI command: <strong class="md-github">--build-live</strong> for generating ontology models from live data.</li>
-<li class="md-github">Verified responses from external endpoints via diagnostics tests. Summary:
-<ul class="md-github">
-<li class="md-github"><em class="md-github">https://api.publicapis.org/entries</em>: returns a 404 HTML response (as fallback).</li>
-<li class="md-github"><em class="md-github">https://dog.ceo/api/breeds/image/random</em>: returns a valid JSON with an image URL.</li>
-<li class="md-github"><em class="md-github">https://jsonplaceholder.typicode.com/posts</em>: returns a JSON array of posts.</li>
-<li class="md-github"><em class="md-github">https://api.coindesk.com/v1/bpi/currentprice.json</em>: network error (ENOTFOUND).</li>
-<li class="md-github"><em class="md-github">https://api.github.com</em>: returns valid GitHub API JSON data.</li>
-<li class="md-github"><em class="md-github">https://jsonplaceholder.typicode.com/comments</em>: returns a JSON array of comments.</li>
-<li class="md-github"><em class="md-github">https://dummyjson.com/products</em>: returns product data in JSON.</li>
-<li class="md-github"><em class="md-github">https://randomuser.me/api/</em>: returns a random user JSON.</li>
-<li class="md-github"><em class="md-github">https://catfact.ninja/fact</em>: returns a cat fact in JSON.</li>
-<li class="md-github"><em class="md-github">https://jsonplaceholder.typicode.com/todos</em>: returns a JSON array of todos.</li>
-<li class="md-github"><em class="md-github">https://api.chucknorris.io/jokes/random</em>: returns a Chuck Norris joke.</li>
-<li class="md-github"><em class="md-github">https://api.agify.io?name=michael</em>: returns an age prediction (age 64).</li>
-<li class="md-github"><em class="md-github">https://api.stackexchange.com/2.2/questions?order=desc&amp;sort=activity</em>: error due to bad parameter.</li>
-</ul>
-</li>
+<li class="md-github">Enhanced diagnostic messaging with new functions: <strong class="md-github">getCurrentTimestamp</strong> and <strong class="md-github">logDiagnostic</strong>.</li>
+<li class="md-github">Updated demo and CLI commands (especially --build-live) to output timestamped diagnostics.</li>
+<li class="md-github">Removed simulated demo outputs in favor of live data calls where possible.</li>
+<li class="md-github">Verified responses from external endpoints via diagnostics tests.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
 <p class="md-github">Released under the MIT License.</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-03-08T04:07:54.665Z</p>
+    <p>Generated on 2025-03-08T04:17:51.698Z</p>
   </footer>
 </body>
 </html>
