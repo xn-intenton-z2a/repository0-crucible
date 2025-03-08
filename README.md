@@ -121,6 +121,7 @@ Please refer to our [CONTRIBUTING](CONTRIBUTING.md) guidelines for details on co
 - Extended endpoints list: added endpoints for albums and users to diversify data sources.
 - Updated CLI commands to delineate between live data integration and deprecated static fallback methods.
 - Extended OWL model wrappers: added `buildScientificOntologyModel` and `buildEducationalOntologyModel` for specialized ontology modeling.
+- Verified live endpoints responses via integration tests and updated documentation with response snippets.
 
 ## License
 
