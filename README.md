@@ -6,16 +6,16 @@ owl-builder is a versatile CLI tool and JavaScript library for constructing real
 
 ## Overview
 
-owl-builder leverages live public data endpoints to build dynamic ontology models that remain current and accurate. With features like data persistence, querying, and multiple ontology model builders (basic, advanced, intermediate, and enhanced), owl-builder is tailored for both casual users and developers.
+owl-builder leverages live public data endpoints to build dynamic ontology models that remain current and accurate. With features like data persistence, querying, and multiple ontology model builders (basic, advanced, intermediate, enhanced, and live-data based), owl-builder is tailored for both casual users and developers.
 
 ## Features
 
-- **Ontology Building:** Create ontologies based on real-time public data.
+- **Ontology Building:** Create ontologies based on live, real-time public data.
 - **Data Persistence:** Save, load, backup, and clear ontology JSON files.
 - **Query and Validation:** Search through ontology concepts and validate model integrity.
 - **OWL Export/Import:** Convert ontologies to a minimal OWL XML format.
 - **Data Crawling:** Retrieve live data from a curated list of public endpoints.
-- **Model Wrappers:** Generate various ontology models, including intermediate and enhanced models enriched with live data.
+- **Model Wrappers:** Generate various ontology models, including intermediate, enhanced, and live-data integrated models.
 - **Web Server & Diagnostics:** Built-in support for launching a monitoring web server and running diagnostics.
 
 ## Installation
@@ -61,10 +61,11 @@ npm install
   node src/lib/main.js --crawl
   ```
 
-- **Build Intermediate/Enhanced Ontologies:**
+- **Build Intermediate/Enhanced/Live Ontologies:**
   ```bash
   node src/lib/main.js --build-intermediate
   node src/lib/main.js --build-enhanced
+  node src/lib/main.js --build-live
   ```
 
 ### For Developers
@@ -91,7 +92,7 @@ Key commands include:
 - `--help`: Display usage instructions
 - `--version`: Show tool version
 - `--list`: List available commands
-- `--build`: Generate an ontology from live data
+- `--build`: Generate an ontology from static data (fallback)
 - `--persist`: Save the ontology to a JSON file
 - `--load`: Load a saved ontology
 - `--query "term"`: Search for ontology concepts
@@ -109,19 +110,16 @@ Key commands include:
 - `--serve`: Launch the integrated web server
 - `--build-intermediate`: Build an intermediate ontology model
 - `--build-enhanced`: Build an enhanced ontology model enriched with live data
-
-## Contributing
-
-Contributions are welcome! Please review our [CONTRIBUTING.md](CONTRIBUTING.md) guidelines for best practices in coding, testing, and documentation. Ensure that any new changes are accompanied by appropriate tests and updates to the documentation.
+- `--build-live`: Build an ontology directly integrated with live public data
 
 ## Change Log
 
 **Version 0.0.33**
 - Refocused ontology building to leverage live, verified public data endpoints.
 - Enhanced diagnostic messaging and updated network operations for real-time data integration.
-- Removed legacy demo code drift and refined demo functionalities to reflect live data integration.
-- Added new ontology model builders: **buildIntermediateOWLModel** and **buildEnhancedOntology**.
-- Introduced new CLI commands: **--build-intermediate** and **--build-enhanced**.
+- Removed legacy demo code drift and pruned simulated outputs in favor of live data calls.
+- Added new ontology model builders: **buildIntermediateOWLModel**, **buildEnhancedOntology**, and **buildOntologyFromLiveData**.
+- Introduced new CLI command: **--build-live** for generating ontology models from live data.
 
 ## License
 

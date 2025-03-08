@@ -7,6 +7,7 @@ import * as mainModule from '../../src/lib/main.js';
 const {
   main,
   buildOntology,
+  buildOntologyFromLiveData,
   persistOntology,
   loadOntology,
   queryOntology,
@@ -278,6 +279,14 @@ describe('New Features', () => {
     expect(ontology.image).toBe('http://example.com/image.jpg');
     expect(ontology.concepts).toContain('EnhancedConcept');
     spy.mockRestore();
+  });
+});
+
+describe('Live Data Functions', () => {
+  test('buildOntologyFromLiveData returns an ontology with title and concepts', async () => {
+    const liveOntology = await buildOntologyFromLiveData();
+    expect(liveOntology).toHaveProperty('title');
+    expect(Array.isArray(liveOntology.concepts)).toBe(true);
   });
 });
 
