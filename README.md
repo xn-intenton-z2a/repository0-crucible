@@ -121,7 +121,7 @@ Contributions are welcome! Please review our [CONTRIBUTING.md](CONTRIBUTING.md) 
 - Enhanced diagnostic messaging and updated network operations for real-time data integration.
 - Added new ontology model builders: **buildIntermediateOWLModel** and **buildEnhancedOntology**.
 - Introduced new CLI commands: **--build-intermediate** and **--build-enhanced**.
-- **Refreshed README** to clearly reflect the mission and features per CONTRIBUTING guidelines.
+- Fixed regex in importOntologyFromXML to resolve build issues.
 - Version updated from 0.0.31 to 0.0.32.
 
 ## License
