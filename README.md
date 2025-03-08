@@ -6,19 +6,19 @@ owl-builder is a versatile CLI tool and JavaScript library for constructing real
 
 ## Overview
 
-owl-builder leverages live public data endpoints to build dynamic ontology models that remain current and accurate. With features like data persistence, querying, and multiple ontology model builders (basic, advanced, intermediate, enhanced, live-data based, and custom merging), owl-builder is tailored for both casual users and developers.
+owl-builder leverages live public data endpoints to build dynamic ontology models that remain current and accurate. The tool provides functionality for data persistence, querying, multiple ontology model builders (basic, advanced, intermediate, enhanced, live-data based, and custom merging), as well as enhanced diagnostic logging. This release prunes legacy simulated demo implementations in favor of real-time public data integration.
 
 ## Features
 
-- **Ontology Building:** Create ontologies based on live, real-time public data.
+- **Ontology Building:** Create ontologies based on live, real-time public data using verified endpoints.
 - **Data Persistence:** Save, load, backup, and clear ontology JSON files.
 - **Query and Validation:** Search through ontology concepts and validate model integrity.
 - **OWL Export/Import:** Convert ontologies to a minimal OWL XML format.
 - **Data Crawling:** Retrieve live data from a curated list of public endpoints.
-- **Model Wrappers:** Generate various ontology models, including intermediate, enhanced, and live-data integrated models.
-- **Extended Customization:** New functions allow building ontologies from custom data and merging multiple ontologies.
-- **Enhanced Diagnostic Logging:** New functions provide timestamped logging (getCurrentTimestamp and logDiagnostic) to aid in diagnostics and monitoring.
-- **Web Server & Diagnostics:** Built-in support for launching a monitoring web server and running diagnostics.
+- **Model Wrappers:** Generate various ontology models including intermediate, enhanced, and live-data integrated models.
+- **Extended Customization:** Build ontologies from custom data and merge multiple ontologies.
+- **Enhanced Diagnostic Logging:** Timestamped logging via **getCurrentTimestamp** and **logDiagnostic** to support monitoring and diagnostics.
+- **Web Server & Diagnostics:** Integrated support for launching a monitoring web server and running diagnostics.
 
 ## Installation
 
@@ -34,7 +34,7 @@ npm install
 
 - **Run Demo:**
 
-  Execute the demo to showcase core functions of ontology building, persistence, querying, and enhanced diagnostic logging:
+  This demo showcases the core functionalities including ontology building, persistence, querying, and diagnostic logging. Note that live API calls are performed where applicable.
   
   ```bash
   npm run start
@@ -97,7 +97,7 @@ Key commands include:
 - `--help`: Display usage instructions
 - `--version`: Show tool version
 - `--list`: List available commands
-- `--build`: Generate an ontology from static data (fallback)
+- `--build`: Generate an ontology from fallback static data
 - `--persist`: Save the ontology to a JSON file
 - `--load`: Load a saved ontology
 - `--query "term"`: Search for ontology concepts
@@ -115,7 +115,7 @@ Key commands include:
 - `--serve`: Launch the integrated web server
 - `--build-intermediate`: Build an intermediate ontology model
 - `--build-enhanced`: Build an enhanced ontology model enriched with live data
-- `--build-live`: Build an ontology directly integrated with live public data (with diagnostic logging)
+- `--build-live`: Build an ontology using live data with diagnostic logging
 - `--build-custom-data`: Build an ontology from provided custom data
 - `--merge-ontologies`: Merge static and live data ontologies into one
 - `--build-live-log`: Build live data ontology with additional diagnostic logs
@@ -124,11 +124,10 @@ Key commands include:
 
 **Version 0.0.34**
 - Refocused ontology building to leverage live, verified public data endpoints.
-- Enhanced diagnostic messaging with new functions: **getCurrentTimestamp** and **logDiagnostic**.
-- Added new functions: **buildOntologyFromCustomData**, **mergeOntologies**, and **buildOntologyFromLiveDataWithLog** for extended customization and merging capabilities.
+- Enhanced diagnostic messaging with new functions **getCurrentTimestamp** and **logDiagnostic**.
+- Added new functions **buildOntologyFromCustomData**, **mergeOntologies**, and **buildOntologyFromLiveDataWithLog** for extended customization and merging capabilities.
 - Updated CLI commands to include --build-custom-data, --merge-ontologies, and --build-live-log.
-- Removed simulated demo outputs in favor of live data calls where possible.
-- Resolved linting issues by updating catch blocks and code formatting.
+- Removed legacy simulated demo implementations and pruned code drift.
 - Verified responses from external endpoints via diagnostics tests.
 
 ## License
