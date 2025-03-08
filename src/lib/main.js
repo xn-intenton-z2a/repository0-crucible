@@ -12,7 +12,8 @@
  *   - Enhanced diagnostic logging and refined network operations.
  *   - Updated demo mode to reflect real data integration.
  *   - Removed demo code drift and added new endpoints for richer data responses.
- *   - Updated version information and changelog to reflect refocusing.
+ *   - Added new functions: buildIntermediateOWLModel and buildEnhancedOntology for additional ontology models.
+ *   - Added new CLI commands: --build-intermediate and --build-enhanced.
  *   - Version updated from 0.0.31 to 0.0.32
  *
  * For Developers:
@@ -220,6 +221,29 @@ export function serveWebServer() {
   });
 }
 
+// New Functions for Enhanced Ontology Models
+export function buildIntermediateOWLModel() {
+  return {
+    id: 'intermediate',
+    title: 'Intermediate OWL Ontology',
+    concepts: ['IntermediateConcept1', 'IntermediateConcept2'],
+    annotations: { version: 'intermediate' }
+  };
+}
+
+export async function buildEnhancedOntology() {
+  const ontology = buildOntology();
+  try {
+    const data = await fetchDataWithRetry('https://dog.ceo/api/breeds/image/random', 2);
+    const parsed = JSON.parse(data);
+    ontology.image = parsed.message;
+    ontology.concepts.push('EnhancedConcept');
+  } catch (e) {
+    ontology.image = null;
+  }
+  return ontology;
+}
+
 const commandActions = {
   "--help": async (args) => { displayHelp(); },
   "--version": async (args) => { 
@@ -365,6 +389,16 @@ const commandActions = {
   "--serve": async (args) => { 
     const msg = await serveWebServer();
     return msg;
+  },
+  "--build-intermediate": async (args) => {
+    const model = buildIntermediateOWLModel();
+    console.log("Intermediate OWL Model:", model);
+    return model;
+  },
+  "--build-enhanced": async (args) => {
+    const model = await buildEnhancedOntology();
+    console.log("Enhanced Ontology:", model);
+    return model;
   }
 };
 
@@ -408,6 +442,11 @@ async function demo() {
   console.log('Demo - custom ontology:', customOntology);
   const extendedOntology = extendOntologyConcepts(ontology, ['ExtraConcept']);
   console.log('Demo - extended ontology:', extendedOntology);
+  // New feature demos
+  const intermediateModel = buildIntermediateOWLModel();
+  console.log('Demo - intermediate OWL model:', intermediateModel);
+  const enhancedModel = await buildEnhancedOntology();
+  console.log('Demo - enhanced ontology:', enhancedModel);
   console.log('Demo completed successfully.');
 }
 
@@ -426,7 +465,7 @@ export async function main(args = process.argv.slice(2)) {
 }
 
 export function displayHelp() {
-  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve`);
+  console.log(`Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced`);
 }
 
 export function getVersion() {
