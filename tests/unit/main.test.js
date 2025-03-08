@@ -26,7 +26,10 @@ const {
   buildAdvancedOWLModel,
   wrapOntologyModel,
   buildCustomOntology,
-  extendOntologyConcepts
+  extendOntologyConcepts,
+  buildIntermediateOWLModel,
+  buildEnhancedOntology,
+  fetcher
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), 'ontology.json');
@@ -258,6 +261,23 @@ describe('Custom Ontology Functions', () => {
     const base = { title: 'Public Data Ontology', concepts: ['Concept1'] };
     const extended = extendOntologyConcepts(base, ['NewConcept']);
     expect(extended.concepts).toContain('NewConcept');
+  });
+});
+
+describe('New Features', () => {
+  test('buildIntermediateOWLModel returns intermediate model', () => {
+    const model = buildIntermediateOWLModel();
+    expect(model.id).toBe('intermediate');
+    expect(model.title).toBe('Intermediate OWL Ontology');
+    expect(model.concepts).toEqual(expect.arrayContaining(['IntermediateConcept1', 'IntermediateConcept2']));
+  });
+
+  test('buildEnhancedOntology returns enhanced ontology with image and enhanced concept', async () => {
+    const spy = vi.spyOn(fetcher, 'fetchDataWithRetry').mockResolvedValue(JSON.stringify({ message: 'http://example.com/image.jpg' }));
+    const ontology = await buildEnhancedOntology();
+    expect(ontology.image).toBe('http://example.com/image.jpg');
+    expect(ontology.concepts).toContain('EnhancedConcept');
+    spy.mockRestore();
   });
 });
 

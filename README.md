@@ -29,8 +29,8 @@ owl-builder leverages verified public endpoints to build dynamic ontology models
 - **Data Persistence:** Save, load, backup, and clear ontology JSON files.
 - **Querying and Validation:** Search ontology concepts and verify model integrity.
 - **OWL Export/Import:** Convert ontologies to a minimal OWL XML format.
-- **Data Crawling:** Retrieve live data from an extensive list of verified endpoints (including newly added public endpoints).
-- **Ontology Model Wrappers:** Generate basic, advanced, and custom ontology models.
+- **Data Crawling:** Retrieve live data from an extensive list of verified endpoints.
+- **Ontology Model Wrappers:** Generate basic, advanced, intermediate, and enhanced ontology models. The enhanced model integrates live data (e.g. image from a dog API) to enrich the ontology.
 - **Diagnostics & Web Server:** Built-in diagnostics and web server for monitoring operations.
 
 ## Installation
@@ -76,6 +76,16 @@ npm install
   node src/lib/main.js --crawl
   ```
 
+- **Build Intermediate Ontology:**
+  ```bash
+  node src/lib/main.js --build-intermediate
+  ```
+
+- **Build Enhanced Ontology:**
+  ```bash
+  node src/lib/main.js --build-enhanced
+  ```
+
 ### For Developers
 
 - **Testing:** Run unit tests with:
@@ -100,7 +110,9 @@ owl-builder supports several advanced commands for customization and diagnostics
 - `--build-custom`: Build a custom ontology using user-defined options.
 - `--extend-concepts`: Add extra concepts to an existing ontology.
 - `--diagnostics`: Run diagnostics via live endpoint tests.
-- `--serve`: Start the integrated web server.
+- `--serve`: Launch the integrated web server.
+- `--build-intermediate`: Build an intermediate-level OWL ontology model.
+- `--build-enhanced`: Build an enhanced OWL ontology model enriched with live data.
 
 ## CLI Commands
 
@@ -125,6 +137,8 @@ Key commands include:
 - `--extend-concepts`: Extend the ontology with new concepts.
 - `--diagnostics`: Run diagnostics against public endpoints.
 - `--serve`: Launch the web server.
+- `--build-intermediate`: Build an intermediate ontology model.
+- `--build-enhanced`: Build an enhanced ontology model enriched with live data.
 
 ## Contributing
 
@@ -139,9 +153,12 @@ When contributing, please ensure:
 ## Changelog
 
 - **Version 0.0.32**
-  - Refocused ontology building to leverage live, verified public data endpoints (including a newly added StackExchange endpoint).
+  - Refocused ontology building to leverage live, verified public data endpoints.
   - Enhanced diagnostic messaging and updated network operations for real-time data integration.
-  - Updated version information from 0.0.31 to 0.0.32.
+  - Added new functions: **buildIntermediateOWLModel** and **buildEnhancedOntology**.
+  - Added new CLI commands: **--build-intermediate** and **--build-enhanced**.
+  - Updated buildEnhancedOntology to use an exported fetcher, allowing tests to properly mock network responses. 
+  - Version updated from 0.0.31 to 0.0.32.
 
 - **Version 0.0.31** (Previous)
   - README refreshed to align with CONTRIBUTING guidelines.
