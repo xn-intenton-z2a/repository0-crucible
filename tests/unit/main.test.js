@@ -182,7 +182,7 @@ describe("CLI and Main Function Tests", () => {
     await main([]);
     expect(spy).toHaveBeenCalledWith("Running demo of ontology functions:");
     spy.mockRestore();
-  });
+  }, 10000);
 
   test("main with --help prints help details", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -219,7 +219,7 @@ describe("CLI and Main Function Tests", () => {
   test("main with --crawl returns crawl results", async () => {
     const result = await main(["--crawl"]);
     expect(Array.isArray(result)).toBe(true);
-  });
+  }, 10000);
 
   test("main with --diagnostics returns remote crawl results", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -229,7 +229,7 @@ describe("CLI and Main Function Tests", () => {
       expect(item).toHaveProperty("endpoint");
     });
     spy.mockRestore();
-  });
+  }, 10000);
 
   test("main with --serve starts web server", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -385,13 +385,16 @@ describe("Extended Endpoints Test", () => {
   test("fetch data from all endpoints and log response snippet", async () => {
     const endpoints = listAvailableEndpoints();
     expect(endpoints.length).toBeGreaterThan(13);
-    for (const endpoint of endpoints) {
-      try {
-        const response = await fetchDataWithRetry(endpoint, 1);
-        console.log(`Response from ${endpoint}:`, response.substring(0, 100));
-      } catch (e) {
-        console.log(`Error fetching ${endpoint}:`, e.message);
-      }
-    }
+    const responses = await Promise.all(
+      endpoints.map(async endpoint => {
+        try {
+          const response = await fetchDataWithRetry(endpoint, 1);
+          return `Response from ${endpoint}: ${response.substring(0, 100)}`;
+        } catch (e) {
+          return `Error fetching ${endpoint}: ${e.message}`;
+        }
+      })
+    );
+    responses.forEach(msg => console.log(msg));
   }, 30000);
 });

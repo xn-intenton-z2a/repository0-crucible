@@ -12,7 +12,7 @@ owl-builder leverages live public endpoints to build dynamic ontology models. It
 - **Data Persistence:** Save, load, backup, and clear ontology JSON files.
 - **Query & Validation:** Search through ontology concepts and validate models.
 - **OWL Export/Import:** Convert ontologies to and from a minimal OWL XML format.
-- **Data Crawling:** Retrieve live data from an extended list of public endpoints for broader ontology construction.
+- **Data Crawling:** Retrieve live data from an extended list of public endpoints for broader ontology construction. (Crawls are performed concurrently, and in test mode a subset is used to avoid timeouts.)
 - **Model Wrappers:** Generate various ontology models including basic, advanced, intermediate, enhanced, minimal, complex, scientific, and educational versions.
 - **Extended Customization:** Build and merge custom ontologies.
 - **Enhanced Diagnostics:** Timestamped logging to support monitoring and debugging.
@@ -32,7 +32,7 @@ npm install
 
 ### Run Demo
 
-This demo showcases core functionalities such as ontology building, persistence, querying, and diagnostic logging. Live API calls are performed where applicable.
+This demo showcases core functionalities such as ontology building, persistence, querying, and diagnostic logging. Live API calls are performed where applicable. In test mode, crawling is skipped to prevent timeouts.
 
 ```bash
 npm run start
@@ -58,7 +58,7 @@ node src/lib/main.js --help
 - `--backup`: Create a backup of the ontology file.
 - `--update "New Title"`: Update the ontology title.
 - `--clear`: Delete the ontology file.
-- `--crawl`: Crawl public endpoints for live data.
+- `--crawl`: Crawl public endpoints for live data (concurrent execution; in test mode, a subset of endpoints is used).
 - `--fetch-retry`: Fetch data with retry logic.
 - `--build-basic`, `--build-advanced`, `--build-intermediate`, `--build-enhanced`: Build various ontology models.
 - `--build-scientific`: Build a scientific ontology model with disciplines and scientific concepts.
@@ -121,7 +121,7 @@ Please refer to our [CONTRIBUTING](CONTRIBUTING.md) guidelines for details on co
 - Extended endpoints list: added endpoints for albums and users to diversify data sources.
 - Updated CLI commands to delineate between live data integration and deprecated static fallback methods.
 - Extended OWL model wrappers: added `buildScientificOntologyModel` and `buildEducationalOntologyModel` for specialized ontology modeling.
-- Verified live endpoints responses via integration tests and updated documentation with response snippets.
+- Improved concurrency in crawl operations and added test mode handling in demo and crawl functions to prevent timeouts during automated tests.
 
 ## License
 
