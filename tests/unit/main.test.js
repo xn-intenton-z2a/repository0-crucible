@@ -63,6 +63,7 @@ function simulateNetworkFailure(mod) {
   };
 }
 
+
 describe("Core Ontology Functions", () => {
   test("buildOntology returns public data ontology", () => {
     const ont = buildOntology();
