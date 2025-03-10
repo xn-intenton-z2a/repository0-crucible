@@ -48,7 +48,7 @@ node src/lib/main.js --help
 
 ### Key CLI Commands
 
-- `--build`: Generate a deprecated fallback ontology using static data (emergency use only).
+- `--build`: Generate a deprecated fallback ontology using static data (emergency use only). **Deprecated: Use `--build-live` for live data integration.**
 - `--build-live`: Build an ontology using live data with diagnostic logging.
 - `--persist`: Save the ontology to a JSON file.
 - `--load`: Load the saved ontology.
@@ -62,7 +62,7 @@ node src/lib/main.js --help
 - `--fetch-retry`: Fetch data with retry logic.
 - `--build-basic`, `--build-advanced`, `--build-intermediate`, `--build-enhanced`: Build various ontology models.
 - `--build-scientific`: Build a scientific ontology model with disciplines and scientific concepts.
-- `--build-educational`: Build an educational ontology model with subjects and educational concepts.
+- `--build-educational`: Build an educational ontology model with subjects and learning concepts.
 - `--build-custom-data`: Build an ontology from provided custom data.
 - `--merge-ontologies`: Merge multiple ontology models.
 - `--build-live-log`: Build a live data ontology with additional diagnostic logging.
@@ -76,8 +76,13 @@ node src/lib/main.js --help
 
 The library now includes an extended list of live endpoints. In addition to the previously available endpoints, the following new endpoints have been added to enrich the diversity of accessible data:
 
-- `https://api/genderize.io`
-- `https://api/nationalize.io`
+- `https://api/publicapis.org/entries`
+- `https://dog.ceo/api/breeds/image/random`
+- `https://jsonplaceholder.typicode.com/posts`
+- `https://jsonplaceholder.typicode.com/albums`
+- `https://jsonplaceholder.typicode.com/users`
+- `https://api.genderize.io`
+- `https://api.nationalize.io`
 - `https://api/covid19api.com/summary`
 
 These additions provide further opportunities for constructing diverse ontologies.
@@ -106,6 +111,7 @@ The following model wrappers are provided:
 - Updated CLI commands to delineate between live data integration and deprecated static fallback methods.
 - Extended OWL model wrappers: added `buildScientificOntologyModel` and `buildEducationalOntologyModel` for specialized ontology modeling.
 - Improved concurrency in crawl operations and added test mode handling in demo and crawl functions to prevent timeouts during automated tests.
+- **Pruned drift from the source file** to align with the Mission Statement; static fallback functionality is clearly marked as deprecated.
 
 ## License
 
