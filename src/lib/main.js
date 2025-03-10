@@ -5,7 +5,8 @@
  *
  * Mission Statement:
  *   owl-builder builds OWL ontologies directly from live, verified public data sources.
- *   In this release, building from live endpoints is the primary mode. The legacy static fallback (buildOntology) is now deprecated and retained only for emergency fallback situations.
+ *   In this release, the primary mode is live data integration. The legacy static fallback (buildOntology) is now deprecated,
+ *   and is retained only for emergency fallback situations. Use buildOntologyFromLiveData for production use.
  *
  * Changelog:
  *   - Refocused ontology building on live public data sources; static fallback is now deprecated (emergency use only).
@@ -16,6 +17,7 @@
  *   - Added new OWL model wrappers: buildScientificOntologyModel and buildEducationalOntologyModel.
  *   - Updated CLI commands to clearly separate live data integration (--build-live, --build-live-log) from the deprecated static fallback (--build).
  *   - Improved concurrency in crawl operations and added test mode checks to avoid timeouts during automated testing.
+ *   - [Update] Pruned drift from the source file to align with the Mission Statement. Static fallback functions are marked deprecated.
  *   - Version remains at 0.0.35.
  *
  * For Developers:
@@ -34,8 +36,13 @@ import http from "http";
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
-// Deprecated static fallback for ontology building; for live data integration use buildOntologyFromLiveData
+/**
+ * @deprecated Use buildOntologyFromLiveData for live data integration. This static fallback is retained only for emergencies.
+ */
 export function buildOntology() {
+  if (process.env.NODE_ENV !== "test") {
+    console.warn("Warning: buildOntology (static fallback) is deprecated. Use buildOntologyFromLiveData for live data integration in production.");
+  }
   return {
     title: "Public Data Ontology",
     concepts: ["Concept1", "Concept2", "Concept3"]
@@ -364,6 +371,7 @@ const commandActions = {
   },
   "--build": async (args) => {
     const ontology = buildOntology();
+    console.warn("Note: --build uses the deprecated static fallback. Use --build-live for live data integration.");
     console.log("Ontology built:", ontology);
     return ontology;
   },
