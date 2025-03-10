@@ -74,12 +74,13 @@ node src/lib/main.js --help
 
 ## Extended Endpoints
 
-The library now includes an extended list of live endpoints. New endpoints added include:
+The library now includes an extended list of live endpoints. In addition to the previously available endpoints, the following new endpoints have been added to enrich the diversity of accessible data:
 
-- `https://jsonplaceholder.typicode.com/albums`
-- `https://jsonplaceholder.typicode.com/users`
+- `https://api/genderize.io`
+- `https://api/nationalize.io`
+- `https://api/covid19api.com/summary`
 
-These additions enrich the diversity of accessible information for constructing ontologies.
+These additions provide further opportunities for constructing diverse ontologies.
 
 ## OWL Ontology Models
 
@@ -94,23 +95,6 @@ The following model wrappers are provided:
 - **buildScientificOntologyModel:** Constructs a scientific ontology including disciplines with academic concepts.
 - **buildEducationalOntologyModel:** Constructs an educational ontology model featuring subjects and learning concepts.
 
-## For Developers
-
-- **Testing:** Run unit tests with:
-
-```bash
-npm run test:unit
-```
-
-- **Linting & Formatting:**
-
-```bash
-npm run linting
-npm run formatting
-```
-
-Please refer to our [CONTRIBUTING](CONTRIBUTING.md) guidelines for details on code quality, testing practices, and documentation standards.
-
 ## Change Log
 
 **Version 0.0.35**
@@ -118,7 +102,7 @@ Please refer to our [CONTRIBUTING](CONTRIBUTING.md) guidelines for details on co
 - Refocused ontology building on live public data sources; static fallback is now deprecated and retained only for emergency use.
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
 - Added functions for custom ontology building (`buildOntologyFromCustomData`) and merging (`mergeOntologies`).
-- Extended endpoints list: added endpoints for albums and users to diversify data sources.
+- Extended endpoints list: added endpoints for albums, users, **genderize**, **nationalize**, and **covid19api** to diversify data sources.
 - Updated CLI commands to delineate between live data integration and deprecated static fallback methods.
 - Extended OWL model wrappers: added `buildScientificOntologyModel` and `buildEducationalOntologyModel` for specialized ontology modeling.
 - Improved concurrency in crawl operations and added test mode handling in demo and crawl functions to prevent timeouts during automated tests.

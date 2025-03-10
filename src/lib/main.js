@@ -12,7 +12,7 @@
  *   - Enhanced diagnostic logging and refined network operations.
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
  *   - Extended functionality for custom ontology creation and merging via buildOntologyFromCustomData and mergeOntologies.
- *   - Extended endpoints list now includes albums and users endpoints among other live sources.
+ *   - Extended endpoints list now includes albums, users, and new endpoints such as genderize, nationalize, and covid19api among other live sources.
  *   - Added new OWL model wrappers: buildScientificOntologyModel and buildEducationalOntologyModel.
  *   - Updated CLI commands to clearly separate live data integration (--build-live, --build-live-log) from the deprecated static fallback (--build).
  *   - Improved concurrency in crawl operations and added test mode checks to avoid timeouts during automated testing.
@@ -146,7 +146,10 @@ export function listAvailableEndpoints() {
     "https://api.spacexdata.com/v4/launches/latest",
     "https://random-data-api.com/api/commerce/random_commerce",
     "https://jsonplaceholder.typicode.com/albums",
-    "https://jsonplaceholder.typicode.com/users"
+    "https://jsonplaceholder.typicode.com/users",
+    "https://api.genderize.io",
+    "https://api.nationalize.io",
+    "https://api.covid19api.com/summary"
   ];
 }
 
