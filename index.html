@@ -77,14 +77,40 @@ npm install
 <h2 class="md-github"><a class="md-github__anchor" name="extended-endpoints" href="#extended-endpoints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Extended Endpoints</h2>
 <p class="md-github">The library now includes an extended list of live endpoints. In addition to the previously available endpoints, the following new endpoints have been added to enrich the diversity of accessible data:</p>
 <ul class="md-github">
+<li class="md-github">Original endpoints including:
+<ul class="md-github">
 <li class="md-github"><code class="md-github">https://api.publicapis.org/entries</code></li>
 <li class="md-github"><code class="md-github">https://dog.ceo/api/breeds/image/random</code></li>
 <li class="md-github"><code class="md-github">https://jsonplaceholder.typicode.com/posts</code></li>
+<li class="md-github"><code class="md-github">https://api.coindesk.com/v1/bpi/currentprice.json</code></li>
+<li class="md-github"><code class="md-github">https://api.github.com</code></li>
+<li class="md-github"><code class="md-github">https://jsonplaceholder.typicode.com/comments</code></li>
+<li class="md-github"><code class="md-github">https://dummyjson.com/products</code></li>
+<li class="md-github"><code class="md-github">https://randomuser.me/api/</code></li>
+<li class="md-github"><code class="md-github">https://catfact.ninja/fact</code></li>
+<li class="md-github"><code class="md-github">https://jsonplaceholder.typicode.com/todos</code></li>
+<li class="md-github"><code class="md-github">https://api.chucknorris.io/jokes/random</code></li>
+<li class="md-github"><code class="md-github">https://api.agify.io?name=michael</code></li>
+<li class="md-github"><code class="md-github">https://api.stackexchange.com/2.2/questions?order=desc&amp;sort=activity</code></li>
+<li class="md-github"><code class="md-github">https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&amp;format=json</code></li>
+<li class="md-github"><code class="md-github">https://api/spacexdata.com/v4/launches/latest</code></li>
+<li class="md-github"><code class="md-github">https://random-data-api.com/api/commerce/random_commerce</code></li>
 <li class="md-github"><code class="md-github">https://jsonplaceholder.typicode.com/albums</code></li>
 <li class="md-github"><code class="md-github">https://jsonplaceholder.typicode.com/users</code></li>
 <li class="md-github"><code class="md-github">https://api.genderize.io</code></li>
-<li class="md-github"><code class="md-github">https://api.nationalize.io</code></li>
+<li class="md-github"><code class="md-github">https://api/nationalize.io</code></li>
 <li class="md-github"><code class="md-github">https://api/covid19api.com/summary</code></li>
+</ul>
+</li>
+<li class="md-github"><strong class="md-github">Newly added endpoints:</strong>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">https://dog.ceo/api/breed/husky/images/random</code></li>
+<li class="md-github"><code class="md-github">https://quotes.rest/qod</code></li>
+<li class="md-github"><code class="md-github">https://type.fit/api/quotes</code></li>
+<li class="md-github"><code class="md-github">https://api.exchangerate-api.com/v4/latest/USD</code></li>
+<li class="md-github"><code class="md-github">https://api/spacexdata.com/v4/rockets</code></li>
+</ul>
+</li>
 </ul>
 <p class="md-github">These additions provide further opportunities for constructing diverse ontologies.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="owl-ontology-models" href="#owl-ontology-models"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OWL Ontology Models</h2>
@@ -107,7 +133,12 @@ npm install
 <li class="md-github">Refocused ontology building on live public data sources; static fallback retained for emergencies and now marked deprecated.</li>
 <li class="md-github">Enhanced diagnostic logging with new functions <code class="md-github">getCurrentTimestamp</code> and <code class="md-github">logDiagnostic</code>.</li>
 <li class="md-github">Added functions for custom ontology building (<code class="md-github">buildOntologyFromCustomData</code>) and merging (<code class="md-github">mergeOntologies</code>).</li>
-<li class="md-github">Extended endpoints list: added endpoints for albums, users, <strong class="md-github">genderize</strong>, <strong class="md-github">nationalize</strong>, and <strong class="md-github">covid19api</strong> to diversify data sources.</li>
+<li class="md-github">Extended endpoints list:
+<ul class="md-github">
+<li class="md-github">Added endpoints for albums, users, genderize, nationalize, and covid19api.</li>
+<li class="md-github"><strong class="md-github">New endpoints added:</strong> husky image, quotes of the day, quotes collection, exchange rate data, and SpaceX rockets.</li>
+</ul>
+</li>
 <li class="md-github">Added new OWL model wrappers: <strong class="md-github">buildScientificOntologyModel</strong>, <strong class="md-github">buildEducationalOntologyModel</strong>, <strong class="md-github">buildPhilosophicalOntologyModel</strong>, and <strong class="md-github">buildEconomicOntologyModel</strong>.</li>
 <li class="md-github">Updated CLI commands to clearly separate live data integration from deprecated static fallback methods.</li>
 <li class="md-github">Improved concurrency in crawl operations and added test mode handling to prevent timeouts during automated tests.</li>
@@ -118,7 +149,7 @@ npm install
 
   </section>
   <footer>
-    <p>Generated on 2025-03-11T08:04:51.912Z</p>
+    <p>Generated on 2025-03-11T08:32:55.925Z</p>
   </footer>
 </body>
 </html>
