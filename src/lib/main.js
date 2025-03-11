@@ -9,17 +9,17 @@
  *   and is retained only for emergency fallback situations. Use buildOntologyFromLiveData for production use.
  *
  * Changelog:
+ *   - Version updated to 0.0.36.
  *   - Refocused ontology building on live public data sources; static fallback is now deprecated (emergency use only).
  *   - Enhanced diagnostic logging and refined network operations.
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
  *   - Extended functionality for custom ontology creation and merging via buildOntologyFromCustomData and mergeOntologies.
- *   - Extended endpoints list now includes albums, users, and new endpoints such as genderize, nationalize, and covid19api among other live sources.
+ *   - Extended endpoints list now includes albums, users, genderize, nationalize, and covid19api among other live sources.
  *   - Added new OWL model wrappers: buildScientificOntologyModel, buildEducationalOntologyModel.
  *   - Added additional OWL model wrappers: buildPhilosophicalOntologyModel and buildEconomicOntologyModel.
  *   - Updated CLI commands to clearly separate live data integration (--build-live, --build-live-log) from the deprecated static fallback (--build).
  *   - Improved concurrency in crawl operations and added test mode checks to avoid timeouts during automated testing.
- *   - [Update] Pruned drift from the source file to align with the Mission Statement. Static fallback functions are marked deprecated.
- *   - Version remains at 0.0.35.
+ *   - Pruned drift from the source file in accordance with our Mission Statement.
  *
  * For Developers:
  *   Follow CONTRIBUTING guidelines. Please update tests and documentation as needed.
@@ -692,7 +692,7 @@ export function displayHelp() {
 }
 
 export function getVersion() {
-  return "0.0.35";
+  return "0.0.36";
 }
 
 export function listCommands() {

@@ -71,7 +71,7 @@ node src/lib/main.js --help
 
 The library now includes an extended list of live endpoints. In addition to the previously available endpoints, the following new endpoints have been added to enrich the diversity of accessible data:
 
-- `https://api/publicapis.org/entries`
+- `https://api.publicapis.org/entries`
 - `https://dog.ceo/api/breeds/image/random`
 - `https://jsonplaceholder.typicode.com/posts`
 - `https://jsonplaceholder.typicode.com/albums`
@@ -99,15 +99,15 @@ The following model wrappers are provided:
 
 ## Change Log
 
-**Version 0.0.35**
+**Version 0.0.36**
 
-- Refocused ontology building on live public data sources; static fallback is now deprecated and retained only for emergency use.
+- Refocused ontology building on live public data sources; static fallback retained for emergencies and now marked deprecated.
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
 - Added functions for custom ontology building (`buildOntologyFromCustomData`) and merging (`mergeOntologies`).
 - Extended endpoints list: added endpoints for albums, users, **genderize**, **nationalize**, and **covid19api** to diversify data sources.
 - Added new OWL model wrappers: **buildScientificOntologyModel**, **buildEducationalOntologyModel**, **buildPhilosophicalOntologyModel**, and **buildEconomicOntologyModel**.
-- Updated CLI commands to delineate between live data integration and deprecated static fallback methods.
-- Improved concurrency in crawl operations and added test mode handling in demo and crawl functions to prevent timeouts during automated tests.
+- Updated CLI commands to clearly separate live data integration from deprecated static fallback methods.
+- Improved concurrency in crawl operations and added test mode handling to prevent timeouts during automated tests.
 - Pruned drift from the source file to align with the Mission Statement.
 
 ## License
