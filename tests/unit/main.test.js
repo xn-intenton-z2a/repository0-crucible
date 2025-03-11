@@ -39,6 +39,8 @@ const {
   buildComplexOntologyModel,
   buildScientificOntologyModel,
   buildEducationalOntologyModel,
+  buildPhilosophicalOntologyModel,
+  buildEconomicOntologyModel,
   fetcher
 } = mainModule;
 
@@ -292,6 +294,24 @@ describe("Ontology Model Wrappers", () => {
     expect(model).toHaveProperty("subjects");
     expect(Array.isArray(model.concepts)).toBe(true);
   });
+
+  test("buildPhilosophicalOntologyModel returns philosophical model", () => {
+    const model = buildPhilosophicalOntologyModel();
+    expect(model).toHaveProperty("id", "philosophical");
+    expect(model).toHaveProperty("title", "Philosophical OWL Ontology");
+    expect(Array.isArray(model.themes)).toBe(true);
+    expect(Array.isArray(model.concepts)).toBe(true);
+    expect(model.metadata).toHaveProperty("category", "philosophy");
+  });
+
+  test("buildEconomicOntologyModel returns economic model", () => {
+    const model = buildEconomicOntologyModel();
+    expect(model).toHaveProperty("id", "economic");
+    expect(model).toHaveProperty("title", "Economic OWL Ontology");
+    expect(Array.isArray(model.sectors)).toBe(true);
+    expect(Array.isArray(model.concepts)).toBe(true);
+    expect(model.metadata).toHaveProperty("category", "economics");
+  });
 });
 
 describe("Custom Ontology Functions", () => {
@@ -382,7 +402,7 @@ describe("Extended Endpoints Test", () => {
     expect(endpoints).toContain("https://jsonplaceholder.typicode.com/users");
     expect(endpoints).toContain("https://api.genderize.io");
     expect(endpoints).toContain("https://api.nationalize.io");
-    expect(endpoints).toContain("https://api.covid19api.com/summary");
+    expect(endpoints).toContain("https://api/covid19api.com/summary");
   });
 
   test("fetch data from all endpoints and log response snippet", async () => {

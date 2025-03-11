@@ -14,7 +14,8 @@
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
  *   - Extended functionality for custom ontology creation and merging via buildOntologyFromCustomData and mergeOntologies.
  *   - Extended endpoints list now includes albums, users, and new endpoints such as genderize, nationalize, and covid19api among other live sources.
- *   - Added new OWL model wrappers: buildScientificOntologyModel and buildEducationalOntologyModel.
+ *   - Added new OWL model wrappers: buildScientificOntologyModel, buildEducationalOntologyModel.
+ *   - Added additional OWL model wrappers: buildPhilosophicalOntologyModel and buildEconomicOntologyModel.
  *   - Updated CLI commands to clearly separate live data integration (--build-live, --build-live-log) from the deprecated static fallback (--build).
  *   - Improved concurrency in crawl operations and added test mode checks to avoid timeouts during automated testing.
  *   - [Update] Pruned drift from the source file to align with the Mission Statement. Static fallback functions are marked deprecated.
@@ -156,7 +157,7 @@ export function listAvailableEndpoints() {
     "https://jsonplaceholder.typicode.com/users",
     "https://api.genderize.io",
     "https://api.nationalize.io",
-    "https://api.covid19api.com/summary"
+    "https://api/covid19api.com/summary"
   ];
 }
 
@@ -332,7 +333,6 @@ export function buildComplexOntologyModel() {
   };
 }
 
-// Extended OWL Model Wrappers
 export function buildScientificOntologyModel() {
   return {
     id: "scientific",
@@ -350,6 +350,27 @@ export function buildEducationalOntologyModel() {
     subjects: ["Mathematics", "History", "Literature"],
     concepts: ["Curriculum", "Lesson Plan", "Assessment"],
     metadata: { notes: "Developed for educational institutions", created: new Date().toISOString() }
+  };
+}
+
+// Additional New Wrapper Functions for OWL Ontology Models
+export function buildPhilosophicalOntologyModel() {
+  return {
+    id: "philosophical",
+    title: "Philosophical OWL Ontology",
+    themes: ["Existence", "Ethics", "Epistemology"],
+    concepts: ["Socrates", "Plato", "Aristotle"],
+    metadata: { created: new Date().toISOString(), category: "philosophy" }
+  };
+}
+
+export function buildEconomicOntologyModel() {
+  return {
+    id: "economic",
+    title: "Economic OWL Ontology",
+    sectors: ["Finance", "Manufacturing", "Services"],
+    concepts: ["Supply", "Demand", "Market"],
+    metadata: { created: new Date().toISOString(), category: "economics" }
   };
 }
 
@@ -565,6 +586,16 @@ const commandActions = {
     const model = buildEducationalOntologyModel();
     console.log("Educational OWL Model:", model);
     return model;
+  },
+  "--build-philosophical": async (args) => {
+    const model = buildPhilosophicalOntologyModel();
+    console.log("Philosophical OWL Model:", model);
+    return model;
+  },
+  "--build-economic": async (args) => {
+    const model = buildEconomicOntologyModel();
+    console.log("Economic OWL Model:", model);
+    return model;
   }
 };
 
@@ -633,6 +664,10 @@ async function demo() {
   console.log("Demo - scientific OWL model:", scientificModel);
   const educationalModel = buildEducationalOntologyModel();
   console.log("Demo - educational OWL model:", educationalModel);
+  const philosophicalModel = buildPhilosophicalOntologyModel();
+  console.log("Demo - philosophical OWL model:", philosophicalModel);
+  const economicModel = buildEconomicOntologyModel();
+  console.log("Demo - economic OWL model:", economicModel);
   logDiagnostic("Demo completed successfully");
 }
 
@@ -652,7 +687,7 @@ export async function main(args = process.argv.slice(2)) {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational`
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic`
   );
 }
 
