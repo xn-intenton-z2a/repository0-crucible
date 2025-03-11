@@ -152,7 +152,7 @@ export function listAvailableEndpoints() {
     "https://api.agify.io?name=michael",
     "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity",
     "https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json",
-    "https://api.spacexdata.com/v4/launches/latest",
+    "https://api/spacexdata.com/v4/launches/latest",
     "https://random-data-api.com/api/commerce/random_commerce",
     "https://jsonplaceholder.typicode.com/albums",
     "https://jsonplaceholder.typicode.com/users",

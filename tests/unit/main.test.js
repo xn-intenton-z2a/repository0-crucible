@@ -407,7 +407,7 @@ describe("Extended Endpoints Test", () => {
     expect(endpoints).toContain("https://dog.ceo/api/breed/husky/images/random");
     expect(endpoints).toContain("https://quotes.rest/qod");
     expect(endpoints).toContain("https://type.fit/api/quotes");
-    expect(endpoints).toContain("https://api/exchangerate-api.com/v4/latest/USD");
+    expect(endpoints).toContain("https://api.exchangerate-api.com/v4/latest/USD");
     expect(endpoints).toContain("https://api/spacexdata.com/v4/rockets");
   });
 

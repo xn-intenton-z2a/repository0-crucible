@@ -97,7 +97,7 @@ The library now includes an extended list of live endpoints. In addition to the 
   - `https://dog.ceo/api/breed/husky/images/random`
   - `https://quotes.rest/qod`
   - `https://type.fit/api/quotes`
-  - `https://api/exchangerate-api.com/v4/latest/USD`
+  - `https://api.exchangerate-api.com/v4/latest/USD`
   - `https://api/spacexdata.com/v4/rockets`
 
 These additions provide further opportunities for constructing diverse ontologies.
