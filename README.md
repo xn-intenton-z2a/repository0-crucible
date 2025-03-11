@@ -71,14 +71,34 @@ node src/lib/main.js --help
 
 The library now includes an extended list of live endpoints. In addition to the previously available endpoints, the following new endpoints have been added to enrich the diversity of accessible data:
 
-- `https://api.publicapis.org/entries`
-- `https://dog.ceo/api/breeds/image/random`
-- `https://jsonplaceholder.typicode.com/posts`
-- `https://jsonplaceholder.typicode.com/albums`
-- `https://jsonplaceholder.typicode.com/users`
-- `https://api.genderize.io`
-- `https://api.nationalize.io`
-- `https://api/covid19api.com/summary`
+- Original endpoints including:
+  - `https://api.publicapis.org/entries`
+  - `https://dog.ceo/api/breeds/image/random`
+  - `https://jsonplaceholder.typicode.com/posts`
+  - `https://api.coindesk.com/v1/bpi/currentprice.json`
+  - `https://api.github.com`
+  - `https://jsonplaceholder.typicode.com/comments`
+  - `https://dummyjson.com/products`
+  - `https://randomuser.me/api/`
+  - `https://catfact.ninja/fact`
+  - `https://jsonplaceholder.typicode.com/todos`
+  - `https://api.chucknorris.io/jokes/random`
+  - `https://api.agify.io?name=michael`
+  - `https://api.stackexchange.com/2.2/questions?order=desc&sort=activity`
+  - `https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json`
+  - `https://api.spacexdata.com/v4/launches/latest`
+  - `https://random-data-api.com/api/commerce/random_commerce`
+  - `https://jsonplaceholder.typicode.com/albums`
+  - `https://jsonplaceholder.typicode.com/users`
+  - `https://api.genderize.io`
+  - `https://api.nationalize.io`
+  - `https://api/covid19api.com/summary`
+- **Newly added endpoints:**
+  - `https://dog.ceo/api/breed/husky/images/random`
+  - `https://quotes.rest/qod`
+  - `https://type.fit/api/quotes`
+  - `https://api.exchangerate-api.com/v4/latest/USD`
+  - `https://api/spacexdata.com/v4/rockets`
 
 These additions provide further opportunities for constructing diverse ontologies.
 
@@ -104,7 +124,9 @@ The following model wrappers are provided:
 - Refocused ontology building on live public data sources; static fallback retained for emergencies and now marked deprecated.
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
 - Added functions for custom ontology building (`buildOntologyFromCustomData`) and merging (`mergeOntologies`).
-- Extended endpoints list: added endpoints for albums, users, **genderize**, **nationalize**, and **covid19api** to diversify data sources.
+- Extended endpoints list:
+  - Added endpoints for albums, users, genderize, nationalize, and covid19api.
+  - **New endpoints added:** husky image, quotes of the day, quotes collection, exchange rate data, and SpaceX rockets.
 - Added new OWL model wrappers: **buildScientificOntologyModel**, **buildEducationalOntologyModel**, **buildPhilosophicalOntologyModel**, and **buildEconomicOntologyModel**.
 - Updated CLI commands to clearly separate live data integration from deprecated static fallback methods.
 - Improved concurrency in crawl operations and added test mode handling to prevent timeouts during automated tests.

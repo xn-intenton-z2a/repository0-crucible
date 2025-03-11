@@ -14,12 +14,13 @@
  *   - Enhanced diagnostic logging and refined network operations.
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
  *   - Extended functionality for custom ontology creation and merging via buildOntologyFromCustomData and mergeOntologies.
- *   - Extended endpoints list now includes albums, users, genderize, nationalize, and covid19api among other live sources.
+ *   - Extended endpoints list now includes albums, users, genderize, nationalize, covid19api, and new endpoints for quotes, exchange rates, SpaceX rockets, and a husky image endpoint among other live sources.
  *   - Added new OWL model wrappers: buildScientificOntologyModel, buildEducationalOntologyModel.
  *   - Added additional OWL model wrappers: buildPhilosophicalOntologyModel and buildEconomicOntologyModel.
  *   - Updated CLI commands to clearly separate live data integration (--build-live, --build-live-log) from the deprecated static fallback (--build).
  *   - Improved concurrency in crawl operations and added test mode checks to avoid timeouts during automated testing.
  *   - Pruned drift from the source file in accordance with our Mission Statement.
+ *   - Extended endpoints list to include additional data sources for enriched ontology building.
  *
  * For Developers:
  *   Follow CONTRIBUTING guidelines. Please update tests and documentation as needed.
@@ -157,7 +158,13 @@ export function listAvailableEndpoints() {
     "https://jsonplaceholder.typicode.com/users",
     "https://api.genderize.io",
     "https://api.nationalize.io",
-    "https://api/covid19api.com/summary"
+    "https://api/covid19api.com/summary",
+    // Extended endpoints for enhanced ontology data
+    "https://dog.ceo/api/breed/husky/images/random",
+    "https://quotes.rest/qod",
+    "https://type.fit/api/quotes",
+    "https://api.exchangerate-api.com/v4/latest/USD",
+    "https://api.spacexdata.com/v4/rockets"
   ];
 }
 
