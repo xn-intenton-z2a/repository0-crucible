@@ -401,8 +401,14 @@ describe("Extended Endpoints Test", () => {
     expect(endpoints).toContain("https://jsonplaceholder.typicode.com/albums");
     expect(endpoints).toContain("https://jsonplaceholder.typicode.com/users");
     expect(endpoints).toContain("https://api.genderize.io");
-    expect(endpoints).toContain("https://api.nationalize.io");
+    expect(endpoints).toContain("https://api/nationalize.io");
     expect(endpoints).toContain("https://api/covid19api.com/summary");
+    // New endpoints
+    expect(endpoints).toContain("https://dog.ceo/api/breed/husky/images/random");
+    expect(endpoints).toContain("https://quotes.rest/qod");
+    expect(endpoints).toContain("https://type.fit/api/quotes");
+    expect(endpoints).toContain("https://api.exchangerate-api.com/v4/latest/USD");
+    expect(endpoints).toContain("https://api/spacexdata.com/v4/rockets");
   });
 
   test("fetch data from all endpoints and log response snippet", async () => {
