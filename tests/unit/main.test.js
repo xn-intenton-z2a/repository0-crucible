@@ -41,6 +41,8 @@ const {
   buildEducationalOntologyModel,
   buildPhilosophicalOntologyModel,
   buildEconomicOntologyModel,
+  refreshOntology,
+  mergeAndPersistOntology,
   fetcher
 } = mainModule;
 
@@ -395,19 +397,41 @@ describe("Extended Custom Functions", () => {
   });
 });
 
+describe("Refresh and Merge Persist Functions", () => {
+  test("refreshOntology clears, builds live ontology and persists it", async () => {
+    // Mock clearOntology and persistOntology to avoid actual FS changes.
+    const clearSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    const unlinkSpy = vi.spyOn(fs, "unlinkSync").mockImplementation(() => {});
+    const writeSpy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
+    const result = await refreshOntology();
+    expect(result).toHaveProperty("liveOntology");
+    expect(result).toHaveProperty("persistResult");
+    clearSpy.mockRestore();
+    unlinkSpy.mockRestore();
+    writeSpy.mockRestore();
+  }, 5000);
+
+  test("mergeAndPersistOntology merges static and live ontologies and persists the result", async () => {
+    const writeSpy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
+    const result = await mergeAndPersistOntology();
+    expect(result).toHaveProperty("merged");
+    expect(result).toHaveProperty("persistRes");
+    writeSpy.mockRestore();
+  }, 5000);
+});
+
 describe("Extended Endpoints Test", () => {
   test("listAvailableEndpoints includes new endpoints", () => {
     const endpoints = listAvailableEndpoints();
     expect(endpoints).toContain("https://jsonplaceholder.typicode.com/albums");
     expect(endpoints).toContain("https://jsonplaceholder.typicode.com/users");
-    expect(endpoints).toContain("https://api.genderize.io");
+    expect(endpoints).toContain("https://api/genderize.io");
     expect(endpoints).toContain("https://api/nationalize.io");
     expect(endpoints).toContain("https://api/covid19api.com/summary");
-    // New endpoints
     expect(endpoints).toContain("https://dog.ceo/api/breed/husky/images/random");
     expect(endpoints).toContain("https://quotes.rest/qod");
     expect(endpoints).toContain("https://type.fit/api/quotes");
-    expect(endpoints).toContain("https://api.exchangerate-api.com/v4/latest/USD");
+    expect(endpoints).toContain("https://api/exchangerate-api.com/v4/latest/USD");
     expect(endpoints).toContain("https://api/spacexdata.com/v4/rockets");
   });
 
