@@ -29,12 +29,12 @@
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Ontology Building:</strong> Create ontologies using live public data with real-time API integration. The deprecated static fallback is available only as an emergency option.</li>
-<li class="md-github"><strong class="md-github">Data Persistence:</strong> Save, load, backup, and clear ontology JSON files.</li>
+<li class="md-github"><strong class="md-github">Data Persistence:</strong> Save, load, backup, clear, and now refresh ontology JSON files.</li>
 <li class="md-github"><strong class="md-github">Query &amp; Validation:</strong> Search through ontology concepts and validate models.</li>
 <li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontologies to and from a minimal OWL XML format.</li>
 <li class="md-github"><strong class="md-github">Data Crawling:</strong> Retrieve live data from an extended list of public endpoints for broader ontology construction. (Crawls are performed concurrently, and in test mode a subset is used to avoid timeouts.)</li>
 <li class="md-github"><strong class="md-github">Model Wrappers:</strong> Generate various ontology models including basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, and economic versions.</li>
-<li class="md-github"><strong class="md-github">Extended Customization:</strong> Build and merge custom ontologies.</li>
+<li class="md-github"><strong class="md-github">Extended Customization:</strong> Build and merge custom ontologies. New functions allow refreshing ontologies and merging them with persistence.</li>
 <li class="md-github"><strong class="md-github">Enhanced Diagnostics:</strong> Timestamped logging to support monitoring and debugging.</li>
 <li class="md-github"><strong class="md-github">Web Server:</strong> Integrated web server for monitoring.</li>
 </ul>
@@ -72,6 +72,8 @@ npm install
 <li class="md-github"><code class="md-github">--build-live-log</code>: Build a live data ontology with additional diagnostic logging.</li>
 <li class="md-github"><code class="md-github">--serve</code>: Launch the integrated web server.</li>
 <li class="md-github"><code class="md-github">--diagnostics</code>: Run diagnostics against public endpoints.</li>
+<li class="md-github"><code class="md-github">--refresh</code>: <strong class="md-github">New!</strong> Clears existing ontology, rebuilds using live data, and persists the refreshed ontology.</li>
+<li class="md-github"><code class="md-github">--merge-persist</code>: <strong class="md-github">New!</strong> Merges the static and live data ontologies and persists the merged result.</li>
 <li class="md-github"><code class="md-github">--list</code>, <code class="md-github">--version</code>, <code class="md-github">--help</code>: Additional utilities.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="extended-endpoints" href="#extended-endpoints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Extended Endpoints</h2>
@@ -89,15 +91,15 @@ npm install
 <li class="md-github"><code class="md-github">https://randomuser.me/api/</code></li>
 <li class="md-github"><code class="md-github">https://catfact.ninja/fact</code></li>
 <li class="md-github"><code class="md-github">https://jsonplaceholder.typicode.com/todos</code></li>
-<li class="md-github"><code class="md-github">https://api.chucknorris.io/jokes/random</code></li>
-<li class="md-github"><code class="md-github">https://api.agify.io?name=michael</code></li>
-<li class="md-github"><code class="md-github">https://api.stackexchange.com/2.2/questions?order=desc&amp;sort=activity</code></li>
+<li class="md-github"><code class="md-github">https://api/chucknorris.io/jokes/random</code></li>
+<li class="md-github"><code class="md-github">https://api/agify.io?name=michael</code></li>
+<li class="md-github"><code class="md-github">https://api/stackexchange.com/2.2/questions?order=desc&amp;sort=activity</code></li>
 <li class="md-github"><code class="md-github">https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&amp;format=json</code></li>
 <li class="md-github"><code class="md-github">https://api/spacexdata.com/v4/launches/latest</code></li>
 <li class="md-github"><code class="md-github">https://random-data-api.com/api/commerce/random_commerce</code></li>
 <li class="md-github"><code class="md-github">https://jsonplaceholder.typicode.com/albums</code></li>
 <li class="md-github"><code class="md-github">https://jsonplaceholder.typicode.com/users</code></li>
-<li class="md-github"><code class="md-github">https://api.genderize.io</code></li>
+<li class="md-github"><code class="md-github">https://api/genderize.io</code></li>
 <li class="md-github"><code class="md-github">https://api/nationalize.io</code></li>
 <li class="md-github"><code class="md-github">https://api/covid19api.com/summary</code></li>
 </ul>
@@ -107,7 +109,7 @@ npm install
 <li class="md-github"><code class="md-github">https://dog.ceo/api/breed/husky/images/random</code></li>
 <li class="md-github"><code class="md-github">https://quotes.rest/qod</code></li>
 <li class="md-github"><code class="md-github">https://type.fit/api/quotes</code></li>
-<li class="md-github"><code class="md-github">https://api.exchangerate-api.com/v4/latest/USD</code></li>
+<li class="md-github"><code class="md-github">https://api/exchangerate-api.com/v4/latest/USD</code></li>
 <li class="md-github"><code class="md-github">https://api/spacexdata.com/v4/rockets</code></li>
 </ul>
 </li>
@@ -133,23 +135,19 @@ npm install
 <li class="md-github">Refocused ontology building on live public data sources; static fallback retained for emergencies and now marked deprecated.</li>
 <li class="md-github">Enhanced diagnostic logging with new functions <code class="md-github">getCurrentTimestamp</code> and <code class="md-github">logDiagnostic</code>.</li>
 <li class="md-github">Added functions for custom ontology building (<code class="md-github">buildOntologyFromCustomData</code>) and merging (<code class="md-github">mergeOntologies</code>).</li>
-<li class="md-github">Extended endpoints list:
-<ul class="md-github">
-<li class="md-github">Added endpoints for albums, users, genderize, nationalize, and covid19api.</li>
-<li class="md-github"><strong class="md-github">New endpoints added:</strong> husky image, quotes of the day, quotes collection, exchange rate data, and SpaceX rockets.</li>
-</ul>
-</li>
+<li class="md-github">Extended endpoints list: added endpoints for albums, users, genderize, nationalize, and covid19api. Also added new endpoints for husky images, quotes, exchange rate data, and SpaceX rockets.</li>
 <li class="md-github">Added new OWL model wrappers: <strong class="md-github">buildScientificOntologyModel</strong>, <strong class="md-github">buildEducationalOntologyModel</strong>, <strong class="md-github">buildPhilosophicalOntologyModel</strong>, and <strong class="md-github">buildEconomicOntologyModel</strong>.</li>
 <li class="md-github">Updated CLI commands to clearly separate live data integration from deprecated static fallback methods.</li>
 <li class="md-github">Improved concurrency in crawl operations and added test mode handling to prevent timeouts during automated tests.</li>
 <li class="md-github">Pruned drift from the source file to align with the Mission Statement.</li>
+<li class="md-github"><strong class="md-github">New Features:</strong> Added <code class="md-github">refreshOntology</code> and <code class="md-github">mergeAndPersistOntology</code> functions along with CLI commands <code class="md-github">--refresh</code> and <code class="md-github">--merge-persist</code> to enhance ontology management.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
 <p class="md-github">Released under the MIT License.</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-03-12T04:04:01.619Z</p>
+    <p>Generated on 2025-03-12T06:04:47.725Z</p>
   </footer>
 </body>
 </html>
