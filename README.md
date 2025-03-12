@@ -9,12 +9,12 @@ owl-builder leverages live public endpoints to build dynamic ontology models. It
 ## Features
 
 - **Ontology Building:** Create ontologies using live public data with real-time API integration. The deprecated static fallback is available only as an emergency option.
-- **Data Persistence:** Save, load, backup, and clear ontology JSON files.
+- **Data Persistence:** Save, load, backup, clear, and now refresh ontology JSON files.
 - **Query & Validation:** Search through ontology concepts and validate models.
 - **OWL Export/Import:** Convert ontologies to and from a minimal OWL XML format.
 - **Data Crawling:** Retrieve live data from an extended list of public endpoints for broader ontology construction. (Crawls are performed concurrently, and in test mode a subset is used to avoid timeouts.)
 - **Model Wrappers:** Generate various ontology models including basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, and economic versions.
-- **Extended Customization:** Build and merge custom ontologies.
+- **Extended Customization:** Build and merge custom ontologies. New functions allow refreshing ontologies and merging them with persistence.
 - **Enhanced Diagnostics:** Timestamped logging to support monitoring and debugging.
 - **Web Server:** Integrated web server for monitoring.
 
@@ -65,6 +65,8 @@ node src/lib/main.js --help
 - `--build-live-log`: Build a live data ontology with additional diagnostic logging.
 - `--serve`: Launch the integrated web server.
 - `--diagnostics`: Run diagnostics against public endpoints.
+- `--refresh`: **New!** Clears existing ontology, rebuilds using live data, and persists the refreshed ontology.
+- `--merge-persist`: **New!** Merges the static and live data ontologies and persists the merged result.
 - `--list`, `--version`, `--help`: Additional utilities.
 
 ## Extended Endpoints
@@ -82,22 +84,22 @@ The library now includes an extended list of live endpoints. In addition to the 
   - `https://randomuser.me/api/`
   - `https://catfact.ninja/fact`
   - `https://jsonplaceholder.typicode.com/todos`
-  - `https://api.chucknorris.io/jokes/random`
-  - `https://api.agify.io?name=michael`
-  - `https://api.stackexchange.com/2.2/questions?order=desc&sort=activity`
+  - `https://api/chucknorris.io/jokes/random`
+  - `https://api/agify.io?name=michael`
+  - `https://api/stackexchange.com/2.2/questions?order=desc&sort=activity`
   - `https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json`
   - `https://api/spacexdata.com/v4/launches/latest`
   - `https://random-data-api.com/api/commerce/random_commerce`
   - `https://jsonplaceholder.typicode.com/albums`
   - `https://jsonplaceholder.typicode.com/users`
-  - `https://api.genderize.io`
+  - `https://api/genderize.io`
   - `https://api/nationalize.io`
   - `https://api/covid19api.com/summary`
 - **Newly added endpoints:**
   - `https://dog.ceo/api/breed/husky/images/random`
   - `https://quotes.rest/qod`
   - `https://type.fit/api/quotes`
-  - `https://api.exchangerate-api.com/v4/latest/USD`
+  - `https://api/exchangerate-api.com/v4/latest/USD`
   - `https://api/spacexdata.com/v4/rockets`
 
 These additions provide further opportunities for constructing diverse ontologies.
@@ -124,13 +126,12 @@ The following model wrappers are provided:
 - Refocused ontology building on live public data sources; static fallback retained for emergencies and now marked deprecated.
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
 - Added functions for custom ontology building (`buildOntologyFromCustomData`) and merging (`mergeOntologies`).
-- Extended endpoints list:
-  - Added endpoints for albums, users, genderize, nationalize, and covid19api.
-  - **New endpoints added:** husky image, quotes of the day, quotes collection, exchange rate data, and SpaceX rockets.
+- Extended endpoints list: added endpoints for albums, users, genderize, nationalize, and covid19api. Also added new endpoints for husky images, quotes, exchange rate data, and SpaceX rockets.
 - Added new OWL model wrappers: **buildScientificOntologyModel**, **buildEducationalOntologyModel**, **buildPhilosophicalOntologyModel**, and **buildEconomicOntologyModel**.
 - Updated CLI commands to clearly separate live data integration from deprecated static fallback methods.
 - Improved concurrency in crawl operations and added test mode handling to prevent timeouts during automated tests.
 - Pruned drift from the source file to align with the Mission Statement.
+- **New Features:** Added `refreshOntology` and `mergeAndPersistOntology` functions along with CLI commands `--refresh` and `--merge-persist` to enhance ontology management.
 
 ## License
 

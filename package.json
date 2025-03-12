@@ -19,7 +19,9 @@
     "diagnostics": "node src/lib/main.js --diagnostics",
     "serve": "node src/lib/main.js --serve",
     "build-intermediate": "node src/lib/main.js --build-intermediate",
-    "build-enhanced": "node src/lib/main.js --build-enhanced"
+    "build-enhanced": "node src/lib/main.js --build-enhanced",
+    "refresh": "node src/lib/main.js --refresh",
+    "merge-persist": "node src/lib/main.js --merge-persist"
   },
   "keywords": [],
   "author": "",
