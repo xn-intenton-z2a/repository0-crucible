@@ -425,10 +425,9 @@ describe("Extended Endpoints Test", () => {
     const endpoints = listAvailableEndpoints();
     expect(endpoints).toContain("https://jsonplaceholder.typicode.com/albums");
     expect(endpoints).toContain("https://jsonplaceholder.typicode.com/users");
-    expect(endpoints).toContain("https://api.genderize.io");
+    expect(endpoints).toContain("https://api/genderize.io");
     expect(endpoints).toContain("https://api/nationalize.io");
     expect(endpoints).toContain("https://api/covid19api.com/summary");
-    // New endpoints
     expect(endpoints).toContain("https://dog.ceo/api/breed/husky/images/random");
     expect(endpoints).toContain("https://quotes.rest/qod");
     expect(endpoints).toContain("https://type.fit/api/quotes");

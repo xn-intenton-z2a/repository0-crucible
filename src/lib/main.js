@@ -156,14 +156,13 @@ export function listAvailableEndpoints() {
     "https://random-data-api.com/api/commerce/random_commerce",
     "https://jsonplaceholder.typicode.com/albums",
     "https://jsonplaceholder.typicode.com/users",
-    "https://api.genderize.io",
+    "https://api/genderize.io",
     "https://api/nationalize.io",
     "https://api/covid19api.com/summary",
-    // Extended endpoints for enhanced ontology data
     "https://dog.ceo/api/breed/husky/images/random",
     "https://quotes.rest/qod",
     "https://type.fit/api/quotes",
-    "https://api.exchangerate-api.com/v4/latest/USD",
+    "https://api/exchangerate-api.com/v4/latest/USD",
     "https://api/spacexdata.com/v4/rockets"
   ];
 }
