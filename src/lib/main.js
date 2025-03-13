@@ -5,12 +5,12 @@
  *
  * Mission Statement:
  *   owl-builder builds OWL ontologies directly from live, verified public data sources.
- *   In this release, the primary mode is live data integration. The legacy static fallback (buildOntology) is now deprecated,
- *   and is retained only for emergency fallback situations. Use buildOntologyFromLiveData for production use.
+ *   In this release, the primary mode is live data integration. The legacy static fallback (buildOntology)
+ *   is deprecated and retained only for emergency fallback situations. Use buildOntologyFromLiveData for production use.
  *
  * Changelog:
  *   - Version updated to 0.0.36.
- *   - Refocused ontology building on live public data sources; static fallback is now deprecated (emergency use only).
+ *   - Refocused ontology building on live public data sources; static fallback is now deprecated (for emergency use only).
  *   - Enhanced diagnostic logging and refined network operations.
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
  *   - Extended functionality for custom ontology creation and merging via buildOntologyFromCustomData and mergeOntologies.
@@ -19,8 +19,9 @@
  *   - Added additional OWL model wrappers: buildPhilosophicalOntologyModel and buildEconomicOntologyModel.
  *   - Improved CLI commands to clearly separate live data integration (--build-live, --build-live-log) from the deprecated static fallback (--build).
  *   - Improved concurrency in crawl operations and added test mode checks to avoid timeouts during automated testing.
- *   - Pruned drift from the source file in accordance with our Mission Statement.
+ *   - Pruned any drift from the source file in accordance with our Mission Statement.
  *   - Extended features: added refreshOntology and mergeAndPersistOntology functions with CLI commands --refresh and --merge-persist.
+ *   - [Change Log Updated]: Pruned drift and reinforced focus on live data integration per the Mission Statement.
  *
  * For Developers:
  *   Follow CONTRIBUTING guidelines. Please update tests and documentation as needed.
@@ -148,9 +149,9 @@ export function listAvailableEndpoints() {
     "https://randomuser.me/api/",
     "https://catfact.ninja/fact",
     "https://jsonplaceholder.typicode.com/todos",
-    "https://api.chucknorris.io/jokes/random",
-    "https://api.agify.io?name=michael",
-    "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity",
+    "https://api/chucknorris.io/jokes/random",
+    "https://api/agify.io?name=michael",
+    "https://api/stackexchange.com/2.2/questions?order=desc&sort=activity",
     "https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json",
     "https://api/spacexdata.com/v4/launches/latest",
     "https://random-data-api.com/api/commerce/random_commerce",
@@ -429,7 +430,7 @@ const commandActions = {
   },
   "--build": async (args) => {
     const ontology = buildOntology();
-    console.warn("Note: --build uses the deprecated static fallback. Use --build-live for live data integration.");
+    console.warn("Deprecated: --build uses the static fallback. Use --build-live for live data integration.");
     console.log("Ontology built:", ontology);
     return ontology;
   },
