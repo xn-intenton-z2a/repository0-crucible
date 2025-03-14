@@ -126,11 +126,11 @@ The following model wrappers are provided:
 - Refocused ontology building on live public data sources; static fallback retained for emergencies and now marked deprecated.
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
 - Added functions for custom ontology building (`buildOntologyFromCustomData`) and merging (`mergeOntologies`).
-- Extended endpoints list: added endpoints for albums, users, genderize, nationalize, and covid19api, as well as new endpoints for husky images, quotes, exchange rate data, and SpaceX rockets.
-- Added new OWL model wrappers: **buildScientificOntologyModel**, **buildEducationalOntologyModel**, **buildPhilosophicalOntologyModel**, and **buildEconomicOntologyModel**.
+- Extended endpoints list: added endpoints for albums, users, genderize, nationalize, covid19api, and new endpoints for husky images, quotes, exchange rate data, and SpaceX rockets.
 - Updated CLI commands to clearly separate live data integration from deprecated static fallback methods.
 - Improved concurrency in crawl operations and added test mode handling to prevent timeouts during automated tests.
-- Pruned drift and enforced focus on live data integration in line with our Mission Statement.
+- **Pruned drift from the source file to align with our Mission Statement, ensuring deprecated code paths are minimized.**
+- Added new functions `refreshOntology` and `mergeAndPersistOntology` for refreshing and merging ontologies.
 
 ## License
 
