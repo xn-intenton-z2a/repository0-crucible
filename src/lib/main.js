@@ -19,8 +19,8 @@
  *   - Added additional OWL model wrappers: buildPhilosophicalOntologyModel and buildEconomicOntologyModel.
  *   - Improved CLI commands to clearly separate live data integration (--build-live, --build-live-log) from the deprecated static fallback (--build).
  *   - Improved concurrency in crawl operations and added test mode checks to avoid timeouts during automated testing.
- *   - Pruned any drift from the source file in accordance with our Mission Statement.
- *   - Extended features: added refreshOntology and mergeAndPersistOntology functions with CLI commands --refresh and --merge-persist.
+ *   - Pruned drift in accordance with our Mission Statement to remove obsolete code paths.
+ *   - Added refreshOntology and mergeAndPersistOntology functions with CLI commands --refresh and --merge-persist.
  *   - [Change Log Updated]: Pruned drift and reinforced focus on live data integration per the Mission Statement.
  *
  * For Developers:
@@ -312,6 +312,7 @@ export function mergeOntologies(...ontologies) {
 export async function buildOntologyFromLiveDataWithLog() {
   const ontology = await buildOntologyFromLiveData();
   logDiagnostic("Live data ontology built successfully");
+  console.log("Live Data Ontology:", ontology);
   return ontology;
 }
 
