@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars, sonarjs/no-ignored-exceptions */
 import { describe, test, expect, vi } from "vitest";
 import fs from "fs";
 import path from "path";
@@ -447,7 +448,7 @@ describe("Extended Endpoints Test", () => {
         } catch (e) {
           return `Error fetching ${endpoint}: ${e.message}`;
         }
-      }),
+      })
     );
     responses.forEach((msg) => console.log(msg));
   }, 30000);
