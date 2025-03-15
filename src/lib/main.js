@@ -19,9 +19,9 @@
  *   - Added additional OWL model wrappers: buildPhilosophicalOntologyModel and buildEconomicOntologyModel.
  *   - Improved CLI commands to clearly separate live data integration (--build-live, --build-live-log) from the deprecated static fallback (--build).
  *   - Improved concurrency in crawl operations and added test mode checks to avoid timeouts during automated testing.
- *   - Pruned drift in accordance with our Mission Statement to remove obsolete code paths.
+ *   - Pruned obsolete code paths to focus on our Mission Statement of live data integration.
  *   - Added refreshOntology and mergeAndPersistOntology functions with CLI commands --refresh and --merge-persist.
- *   - Fixed lint issues by replacing unused catch parameters with catch blocks that omit the parameter.
+ *   - Updated Change Log to reflect the refocus on ontologies from public data sources.
  *
  * For Developers:
  *   Follow CONTRIBUTING guidelines. Please update tests and documentation as needed.

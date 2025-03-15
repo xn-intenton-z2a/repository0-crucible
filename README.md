@@ -102,7 +102,7 @@ The library now includes an extended list of live endpoints. In addition to the 
   - `https://api/exchangerate-api.com/v4/latest/USD`
   - `https://api/spacexdata.com/v4/rockets`
 
-These additions provide further opportunities for constructing diverse ontologies.
+These additions further support the refocused mission of integrating live, public data sources to build diverse ontologies.
 
 ## OWL Ontology Models
 
@@ -123,13 +123,14 @@ The following model wrappers are provided:
 
 **Version 0.0.37**
 
-- Refocused ontology building on live public data sources; static fallback retained for emergencies and now marked deprecated.
+- Refocused ontology building on live public data sources; static fallback retained for emergencies only.
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
 - Added functions for custom ontology building (`buildOntologyFromCustomData`) and merging (`mergeOntologies`).
 - Extended endpoints list: added endpoints for albums, users, genderize, nationalize, covid19api, and new endpoints for husky images, quotes, exchange rate data, and SpaceX rockets.
 - Updated CLI commands to clearly separate live data integration from deprecated static fallback methods.
 - Improved concurrency in crawl operations and added test mode handling to prevent timeouts during automated tests.
-- Fixed lint issues by removing unused catch parameters and adding eslint-disable directives in test files.
+- Pruned obsolete code paths to adhere strictly to our mission of using verified public data sources.
+- **Updated Change Log to reflect library refocus on live data integration.**
 
 ## License
 
