@@ -43,7 +43,7 @@ const {
   buildEconomicOntologyModel,
   refreshOntology,
   mergeAndPersistOntology,
-  fetcher
+  fetcher,
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -58,7 +58,7 @@ function simulateNetworkFailure(mod) {
           handler(error);
         }
         return req;
-      }
+      },
     };
     process.nextTick(() => {
       req.on("error", () => {});
@@ -66,7 +66,6 @@ function simulateNetworkFailure(mod) {
     return req;
   };
 }
-
 
 describe("Core Ontology Functions", () => {
   test("buildOntology returns public data ontology", () => {
@@ -340,7 +339,9 @@ describe("New Features", () => {
   });
 
   test("buildEnhancedOntology returns enhanced ontology with image and enhanced concept", async () => {
-    const spy = vi.spyOn(fetcher, "fetchDataWithRetry").mockResolvedValue(JSON.stringify({ message: "http://example.com/image.jpg" }));
+    const spy = vi
+      .spyOn(fetcher, "fetchDataWithRetry")
+      .mockResolvedValue(JSON.stringify({ message: "http://example.com/image.jpg" }));
     const ontology = await buildEnhancedOntology();
     expect(ontology.image).toBe("http://example.com/image.jpg");
     expect(ontology.concepts).toContain("EnhancedConcept");
@@ -439,15 +440,15 @@ describe("Extended Endpoints Test", () => {
     const endpoints = listAvailableEndpoints();
     expect(endpoints.length).toBeGreaterThan(13);
     const responses = await Promise.all(
-      endpoints.map(async endpoint => {
+      endpoints.map(async (endpoint) => {
         try {
           const response = await fetchDataWithRetry(endpoint, 1);
           return `Response from ${endpoint}: ${response.substring(0, 100)}`;
         } catch (e) {
           return `Error fetching ${endpoint}: ${e.message}`;
         }
-      })
+      }),
     );
-    responses.forEach(msg => console.log(msg));
+    responses.forEach((msg) => console.log(msg));
   }, 30000);
 });
