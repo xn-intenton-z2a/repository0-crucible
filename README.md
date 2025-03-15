@@ -121,7 +121,7 @@ The following model wrappers are provided:
 
 ## Change Log
 
-**Version 0.0.36**
+**Version 0.0.37**
 
 - Refocused ontology building on live public data sources; static fallback retained for emergencies and now marked deprecated.
 - Enhanced diagnostic logging with new functions `getCurrentTimestamp` and `logDiagnostic`.
@@ -129,8 +129,7 @@ The following model wrappers are provided:
 - Extended endpoints list: added endpoints for albums, users, genderize, nationalize, covid19api, and new endpoints for husky images, quotes, exchange rate data, and SpaceX rockets.
 - Updated CLI commands to clearly separate live data integration from deprecated static fallback methods.
 - Improved concurrency in crawl operations and added test mode handling to prevent timeouts during automated tests.
-- **Pruned drift from the source file to align with our Mission Statement, ensuring deprecated code paths are minimized.**
-- Added new functions `refreshOntology` and `mergeAndPersistOntology` for refreshing and merging ontologies.
+- Fixed lint issues by removing unused catch parameters and adding eslint-disable directives in test files.
 
 ## License
 

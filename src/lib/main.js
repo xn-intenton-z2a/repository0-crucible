@@ -9,7 +9,7 @@
  *   is deprecated and retained only for emergency fallback situations. Use buildOntologyFromLiveData for production use.
  *
  * Changelog:
- *   - Version updated to 0.0.36.
+ *   - Version updated to 0.0.37.
  *   - Refocused ontology building on live public data sources; static fallback is now deprecated (for emergency use only).
  *   - Enhanced diagnostic logging and refined network operations.
  *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
@@ -21,7 +21,7 @@
  *   - Improved concurrency in crawl operations and added test mode checks to avoid timeouts during automated testing.
  *   - Pruned drift in accordance with our Mission Statement to remove obsolete code paths.
  *   - Added refreshOntology and mergeAndPersistOntology functions with CLI commands --refresh and --merge-persist.
- *   - [Change Log Updated]: Pruned drift and reinforced focus on live data integration per the Mission Statement.
+ *   - Fixed lint issues by replacing unused catch parameters with catch blocks that omit the parameter.
  *
  * For Developers:
  *   Follow CONTRIBUTING guidelines. Please update tests and documentation as needed.
@@ -45,7 +45,7 @@ const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 export function buildOntology() {
   if (process.env.NODE_ENV !== "test") {
     console.warn(
-      "Warning: buildOntology (static fallback) is deprecated. Use buildOntologyFromLiveData for live data integration in production.",
+      "Warning: buildOntology (static fallback) is deprecated. Use buildOntologyFromLiveData for live data integration in production."
     );
   }
   return {
@@ -65,7 +65,7 @@ export async function buildOntologyFromLiveData() {
         ? parsed.entries.slice(0, 3).map((entry) => entry.Description)
         : ["Concept1", "Concept2", "Concept3"];
     return { title, concepts };
-  } catch (_) {
+  } catch {
     // Fallback to deprecated static ontology in case of error
     return buildOntology();
   }
@@ -135,7 +135,7 @@ export function clearOntology() {
     } else {
       return { success: false, error: "Ontology file does not exist" };
     }
-  } catch (_) {
+  } catch {
     return { success: false, error: "Error clearing ontology file" };
   }
 }
@@ -167,7 +167,7 @@ export function listAvailableEndpoints() {
     "https://quotes.rest/qod",
     "https://type.fit/api/quotes",
     "https://api/exchangerate-api.com/v4/latest/USD",
-    "https://api/spacexdata.com/v4/rockets",
+    "https://api/spacexdata.com/v4/rockets"
   ];
 }
 
@@ -286,7 +286,7 @@ export async function buildEnhancedOntology() {
     const parsed = JSON.parse(data);
     ontology.image = parsed.message;
     ontology.concepts.push("EnhancedConcept");
-  } catch (_) {
+  } catch {
     ontology.image = null;
   }
   return ontology;
@@ -530,7 +530,7 @@ const commandActions = {
     let model;
     try {
       model = args[1] ? JSON.parse(args[1]) : buildBasicOWLModel();
-    } catch (_) {
+    } catch {
       model = buildBasicOWLModel();
     }
     const wrapped = wrapOntologyModel(model);
@@ -541,7 +541,7 @@ const commandActions = {
     let custom = {};
     try {
       custom = args[1] ? JSON.parse(args[1]) : {};
-    } catch (_) {
+    } catch {
       console.log("Invalid JSON input for custom ontology, using default");
     }
     const customOntology = buildCustomOntology(custom);
@@ -592,7 +592,7 @@ const commandActions = {
     let data = {};
     try {
       data = args[1] ? JSON.parse(args[1]) : {};
-    } catch (_) {
+    } catch {
       console.log("Invalid JSON input for custom data, using default");
     }
     const customOntology = buildOntologyFromCustomData(data);
@@ -743,12 +743,12 @@ export async function main(args = process.argv.slice(2)) {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist`,
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist`
   );
 }
 
 export function getVersion() {
-  return "0.0.36";
+  return "0.0.37";
 }
 
 export function listCommands() {
