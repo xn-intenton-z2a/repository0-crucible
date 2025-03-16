@@ -401,7 +401,6 @@ describe("Extended Custom Functions", () => {
 
 describe("Refresh and Merge Persist Functions", () => {
   test("refreshOntology clears, builds live ontology and persists it", async () => {
-    // Mock clearOntology and persistOntology to avoid actual FS changes.
     const clearSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
     const unlinkSpy = vi.spyOn(fs, "unlinkSync").mockImplementation(() => {});
     const writeSpy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
