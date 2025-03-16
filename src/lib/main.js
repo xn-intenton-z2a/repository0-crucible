@@ -5,30 +5,16 @@
  *
  * Mission Statement:
  *   owl-builder builds OWL ontologies directly from live, verified public data sources.
- *   In this release, the primary mode is live data integration. The legacy static fallback (buildOntology)
- *   is deprecated and retained only for emergency fallback situations. Use buildOntologyFromLiveData for production use.
+ *   For production use, please use buildOntologyFromLiveData. The legacy static fallback is deprecated.
  *
- * Changelog:
- *   - Version updated to 0.0.37.
- *   - Refocused ontology building on live public data sources; static fallback is now deprecated (for emergency use only).
- *   - Enhanced diagnostic logging and refined network operations.
- *   - Added new functions: buildIntermediateOWLModel, buildEnhancedOntology, buildOntologyFromLiveData, getCurrentTimestamp, logDiagnostic.
- *   - Extended functionality for custom ontology creation and merging via buildOntologyFromCustomData and mergeOntologies.
- *   - Extended endpoints list now includes albums, users, genderize, nationalize, covid19api, and new endpoints for quotes, exchange rates, SpaceX rockets, and a husky image endpoint among other live sources.
- *   - Added new OWL model wrappers: buildScientificOntologyModel, buildEducationalOntologyModel.
- *   - Added additional OWL model wrappers: buildPhilosophicalOntologyModel and buildEconomicOntologyModel.
- *   - Improved CLI commands to clearly separate live data integration (--build-live, --build-live-log) from the deprecated static fallback (--build).
- *   - Improved concurrency in crawl operations and added test mode checks to avoid timeouts during automated testing.
- *   - Pruned obsolete code paths to focus on our Mission Statement of live data integration.
- *   - Added refreshOntology and mergeAndPersistOntology functions with CLI commands --refresh and --merge-persist.
- *   - Updated Change Log to reflect the refocus on ontologies from public data sources.
+ * Change Log:
+ *   - Version 0.0.37
+ *   - Refocused on live data integration and pruned obsolete code paths
+ *   - Enhanced diagnostic logging and extended endpoints
+ *   - Updated documentation and guidelines according to CONTRIBUTING.md
  *
- * For Developers:
- *   Follow CONTRIBUTING guidelines. Please update tests and documentation as needed.
- *   See CONTRIBUTING.md for details on workflow improvements.
- *
- * For Users:
- *   Use the CLI to build, manage, and query rich ontology models. Run --help for usage instructions.
+ * Note for Contributors:
+ *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
  */
 
 import fs from "fs";
