@@ -134,9 +134,9 @@ describe("Core Ontology Functions", () => {
     writeSpy.mockRestore();
   });
 
-  test("updateOntology returns updated ontology", () => {
+  test("updateOntology returns updated ontology", async () => {
     const newTitle = "Updated Title";
-    const updated = updateOntology(newTitle);
+    const updated = await updateOntology(newTitle);
     expect(updated.title).toBe(newTitle);
   });
 

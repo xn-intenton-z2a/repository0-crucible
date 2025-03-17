@@ -6,7 +6,7 @@ owl-builder is a versatile CLI tool and JavaScript library designed to build dyn
 
 owl-builder leverages a broad array of public endpoints to create rich, real-time ontology models. Key features include:
 
-- **Live Data Integration:** Build ontologies using up-to-date information from trusted public endpoints.
+- **Live Data Integration:** Build ontologies using up-to-date information from trusted public endpoints. Live data integration is now the default for demonstrations and updates.
 - **Data Persistence:** Save, load, backup, clear, and refresh your ontology JSON files with ease.
 - **Query & Validation:** Efficiently search and validate ontology concepts.
 - **OWL Export/Import:** Convert ontologies to and from a minimal OWL XML format.
@@ -29,7 +29,7 @@ npm install
 
 ### Run Demo
 
-This demo highlights core functionalities such as ontology building, persistence, querying, and diagnostic logging:
+This demo highlights core functionalities such as live ontology building, persistence, querying, and diagnostic logging:
 
 ```bash
 npm run start
@@ -46,14 +46,14 @@ node src/lib/main.js --help
 ### Key CLI Commands
 
 - `--build`: Generates a deprecated fallback ontology using static data (**deprecated: use `--build-live` for live data integration**).
-- `--build-live`: Builds an ontology with live data and logs diagnostic information.
+- `--build-live`: Builds an ontology with live data integration and logs diagnostic information. This is now the default approach in demos and updates.
 - `--persist`: Saves the current ontology to a JSON file.
 - `--load`: Loads the saved ontology.
 - `--query "term"`: Searches for matching ontology concepts.
 - `--export`: Exports your ontology as OWL XML.
 - `--import`: Imports an ontology from OWL XML content.
 - `--backup`: Creates a backup of your ontology file.
-- `--update "New Title"`: Updates the title of the current ontology.
+- `--update "New Title"`: Updates the title of the current ontology using live data.
 - `--clear`: Deletes the ontology file.
 - `--crawl`: Concurrently crawls public endpoints to gather live data for ontology building.
 - `--fetch-retry`: Fetches data using retry logic.
@@ -106,12 +106,11 @@ The library supports a variety of ontology models through wrapper functions:
 
 **Version 0.0.37**
 
-- Refocused ontology building on live public data sources. Static fallback now for emergency use only.
+- Refocused ontology building on live public data sources. Static fallback now exists solely as an emergency option.
 - Enhanced diagnostic logging with functions `getCurrentTimestamp` and `logDiagnostic`.
-- Added functions for custom ontology creation and merging (`buildOntologyFromCustomData`, `mergeOntologies`).
+- Updated demo and update functions to use live data integration by default.
 - Extended the list of live endpoints to enrich available data sources.
-- Updated CLI commands to clearly demarcate live data integration from the deprecated static fallback.
-- Freshly updated this README according to CONTRIBUTING guidelines to improve clarity and remove extraneous information.
+- Updated CLI commands in documentation to clearly delineate live data integration from deprecated static fallback.
 
 ## Contributing
 
