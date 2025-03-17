@@ -5,13 +5,14 @@
  *
  * Mission Statement:
  *   owl-builder builds OWL ontologies directly from live, verified public data sources.
- *   For production use, please use buildOntologyFromLiveData. The legacy static fallback is deprecated.
+ *   For production use, please use buildOntologyFromLiveData. The legacy static fallback (buildOntology) is deprecated and retained only for emergencies.
  *
  * Change Log:
  *   - Version 0.0.37
- *   - Refocused on live data integration and pruned obsolete code paths
+ *   - Refocused on live data integration from public data sources
  *   - Enhanced diagnostic logging and extended endpoints
- *   - Updated documentation and guidelines according to CONTRIBUTING.md
+ *   - Updated demo and update functions to use live data integration as default
+ *   - Updated documentation according to CONTRIBUTING.md
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -107,8 +108,9 @@ export function backupOntology() {
   }
 }
 
-export function updateOntology(newTitle) {
-  const ontology = buildOntology();
+// Updated updateOntology to use live data integration and made it async
+export async function updateOntology(newTitle) {
+  const ontology = await buildOntologyFromLiveData();
   ontology.title = newTitle;
   return ontology;
 }
@@ -188,7 +190,7 @@ export async function crawlOntologies() {
   const fetchPromises = endpoints.map(async (endpoint) => {
     try {
       const data = await fetchDataWithRetry(endpoint);
-      const owlContent = exportOntologyToXML(buildOntology());
+      const owlContent = exportOntologyToXML(await buildOntologyFromLiveData());
       return { endpoint, data, owlContent };
     } catch (err) {
       return { endpoint, error: err.message };
@@ -474,7 +476,7 @@ const commandActions = {
   "--update": async (args) => {
     const idx = args.indexOf("--update");
     const newTitle = idx !== -1 && args.length > idx + 1 ? args[idx + 1] : "Updated Ontology";
-    const updated = updateOntology(newTitle);
+    const updated = await updateOntology(newTitle);
     console.log("Ontology updated:", updated);
     return updated;
   },
@@ -644,7 +646,8 @@ const commandActions = {
 async function demo() {
   logDiagnostic("Demo started");
   console.log("Running demo of ontology functions:");
-  const ontology = buildOntology();
+  // Refocused demo to use live data integration
+  const ontology = await buildOntologyFromLiveData();
   console.log("Demo - built ontology:", ontology);
   const persistResult = persistOntology(ontology);
   console.log("Demo - persisted ontology:", persistResult);
@@ -660,7 +663,7 @@ async function demo() {
   console.log("Demo - imported ontology:", importedOntology);
   const backupResult = backupOntology();
   console.log("Demo - backup result:", backupResult);
-  const updatedOntology = updateOntology("Demo Updated Ontology");
+  const updatedOntology = await updateOntology("Demo Updated Ontology");
   console.log("Demo - updated ontology:", updatedOntology);
   const endpoints = listAvailableEndpoints();
   console.log("Demo - available endpoints:", endpoints);
