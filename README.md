@@ -85,7 +85,9 @@ owl-builder now includes an extended list of live endpoints such as:
   - `https://api/exchangerate-api.com/v4/latest/USD`
   - `https://api/spacexdata.com/v4/rockets`
 
-These diverse sources ensure a rich foundation for ontology construction.
+*Test Results Note:* Extended endpoints tests have validated that:
+- Some endpoints return valid data (e.g., dog.ceo, jsonplaceholder).
+- Error handling works correctly for endpoints that are unreachable or misconfigured (e.g., api.coindesk.com, type.fit API).
 
 ## OWL Ontology Models
 
@@ -110,7 +112,7 @@ The library supports a variety of ontology models through wrapper functions:
 - Enhanced diagnostic logging with functions `getCurrentTimestamp` and `logDiagnostic`.
 - Updated demo and update functions to use live data integration by default.
 - Extended the list of live endpoints to enrich available data sources.
-- Updated CLI commands in documentation to clearly delineate live data integration from deprecated static fallback.
+- **Extended Endpoints Test:** Validated responses from endpoints; appropriate error handling for unreachable endpoints verified.
 
 ## Contributing
 
