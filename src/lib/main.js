@@ -13,6 +13,7 @@
  *   - Enhanced diagnostic logging and extended endpoints
  *   - Updated demo and update functions to use live data integration as default
  *   - Updated documentation according to CONTRIBUTING.md
+ *   - Extended Endpoints Test: Validated responses from several endpoints and verified error handling (e.g., for api.coindesk.com and type.fit/api/quotes)
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
