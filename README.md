@@ -1,19 +1,19 @@
 # owl-builder
 
-owl-builder is a versatile CLI tool and JavaScript library designed to build dynamic OWL ontologies from live, verified public data sources. In this refocused release, live data integration is paramount, while the legacy static fallback is retained solely for emergencies.
+owl-builder is a versatile CLI tool and JavaScript library designed to build dynamic OWL ontologies from live, verified public data sources. In this release, live data integration is the default for building, updating, and demonstrating ontologies, while the legacy static fallback is retained solely for emergencies.
 
 ## Overview
 
 owl-builder leverages a broad array of public endpoints to create rich, real-time ontology models. Key features include:
 
-- **Live Data Integration:** Build ontologies using up-to-date information from trusted public endpoints. Live data integration is now the default for demonstrations and updates.
-- **Data Persistence:** Save, load, backup, clear, and refresh your ontology JSON files with ease.
+- **Live Data Integration:** Build ontologies using up-to-date information from trusted public endpoints. Live data integration is now the default.
+- **Data Persistence:** Save, load, backup, clear, refresh, and merge your ontology JSON files effortlessly.
 - **Query & Validation:** Efficiently search and validate ontology concepts.
 - **OWL Export/Import:** Convert ontologies to and from a minimal OWL XML format.
-- **Concurrent Data Crawling:** Retrieve data concurrently from an extended list of public endpoints.
+- **Concurrent Data Crawling:** Retrieve real-time data concurrently from an extended list of public endpoints.
 - **Diverse Model Wrappers:** Generate various ontology models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, and economic).
-- **Enhanced Diagnostics:** Detailed timestamped logging to support monitoring and troubleshooting.
-- **Web Server:** Integrated server for simple monitoring of ontology status.
+- **Enhanced Diagnostics:** Detailed timestamped logging for monitoring and troubleshooting.
+- **Web Server:** Integrated server for simple ontology status monitoring.
 
 ## Installation
 
@@ -29,7 +29,7 @@ npm install
 
 ### Run Demo
 
-This demo highlights core functionalities such as live ontology building, persistence, querying, and diagnostic logging:
+A demo highlighting core functionalities such as live ontology building, persistence, querying and diagnostic logging:
 
 ```bash
 npm run start
@@ -46,7 +46,7 @@ node src/lib/main.js --help
 ### Key CLI Commands
 
 - `--build`: Generates a deprecated fallback ontology using static data (**deprecated: use `--build-live` for live data integration**).
-- `--build-live`: Builds an ontology with live data integration and logs diagnostic information. This is now the default approach in demos and updates.
+- `--build-live`: Builds an ontology with live data integration and logs diagnostic information.
 - `--persist`: Saves the current ontology to a JSON file.
 - `--load`: Loads the saved ontology.
 - `--query "term"`: Searches for matching ontology concepts.
@@ -55,68 +55,64 @@ node src/lib/main.js --help
 - `--backup`: Creates a backup of your ontology file.
 - `--update "New Title"`: Updates the title of the current ontology using live data.
 - `--clear`: Deletes the ontology file.
-- `--crawl`: Concurrently crawls public endpoints to gather live data for ontology building.
+- `--crawl`: Concurrently crawls public endpoints to gather data for ontology building.
 - `--fetch-retry`: Fetches data using retry logic.
 - `--merge-ontologies`: Merges static and live ontology models.
 - `--build-live-log`: Builds a live ontology with additional diagnostic logging.
 - `--serve`: Launches the integrated web server.
 - `--diagnostics`: Runs diagnostics using various public endpoints.
-- `--refresh`: Clears the existing ontology, rebuilds using live data, and persists the refreshed ontology.
+- `--refresh`: Clears the existing ontology, rebuilds it using live data, and persists the refreshed ontology.
 - `--merge-persist`: Merges static and live ontologies and saves the merged result.
 
-Other commands include wrappers for building diverse ontology models, as detailed in the help instructions.
+Additional commands include wrappers for building diverse ontology models. See the help output for a complete list.
 
 ## Extended Endpoints
 
-owl-builder now includes an extended list of live endpoints such as:
+owl-builder now includes a broadened list of live endpoints such as:
 
 - Traditional endpoints like:
   - `https://api.publicapis.org/entries`
   - `https://dog.ceo/api/breeds/image/random`
   - `https://jsonplaceholder.typicode.com/posts`
-  - `https://api/coindesk.com/v1/bpi/currentprice.json`
-  - `https://api/github.com`
-  - etc.
+  - ...
 
-- **Newly added endpoints:**
+- **New endpoints:**
   - `https://dog.ceo/api/breed/husky/images/random`
   - `https://quotes.rest/qod`
   - `https://type.fit/api/quotes`
   - `https://api/exchangerate-api.com/v4/latest/USD`
   - `https://api/spacexdata.com/v4/rockets`
 
-*Test Results Note:* Extended endpoints tests have validated that:
-- Some endpoints return valid data (e.g., dog.ceo, jsonplaceholder).
-- Error handling works correctly for endpoints that are unreachable or misconfigured (e.g., api.coindesk.com, type.fit API).
+*Test Results Note:* Extended endpoints tests have confirmed valid data responses from many endpoints while handling errors appropriately when endpoints are unreachable.
 
 ## OWL Ontology Models
 
-The library supports a variety of ontology models through wrapper functions:
+The library supports a range of ontology models via wrapper functions:
 
 - **buildBasicOWLModel:** Constructs a basic ontology model.
 - **buildAdvancedOWLModel:** Builds an advanced model with classes and properties.
-- **buildIntermediateOWLModel:** An intermediate-level ontology model.
-- **buildEnhancedOntology:** An enhanced ontology integrating live data such as images.
-- **buildMinimalOWLModel:** Constructs a minimal ontology.
-- **buildComplexOntologyModel:** Builds a complex model with comprehensive features.
-- **buildScientificOntologyModel:** Focused on scientific disciplines and academic concepts.
+- **buildIntermediateOWLModel:** Provides an intermediate-level ontology model.
+- **buildEnhancedOntology:** Offers an enhanced ontology using live data, such as images.
+- **buildMinimalOWLModel:** Constructs a minimal ontology model.
+- **buildComplexOntologyModel:** Creates a complex model with comprehensive features.
+- **buildScientificOntologyModel:** Targets scientific disciplines and academic concepts.
 - **buildEducationalOntologyModel:** Tailored for educational content.
 - **buildPhilosophicalOntologyModel:** Centers on philosophical themes.
-- **buildEconomicOntologyModel:** Emphasizes economic and market concepts.
+- **buildEconomicOntologyModel:** Focuses on economic and market concepts.
 
 ## Change Log
 
 **Version 0.0.37**
 
-- Refocused ontology building on live public data sources. Static fallback now exists solely as an emergency option.
-- Enhanced diagnostic logging with functions `getCurrentTimestamp` and `logDiagnostic`.
+- Refocused ontology building on live public data sources. Static fallback is retained only for emergencies.
+- Enhanced diagnostic logging with `getCurrentTimestamp` and `logDiagnostic` functions.
 - Updated demo and update functions to use live data integration by default.
 - Extended the list of live endpoints to enrich available data sources.
-- **Extended Endpoints Test:** Validated responses from endpoints; appropriate error handling for unreachable endpoints verified.
+- **Refreshed README documentation as per CONTRIBUTING.md guidelines.**
 
 ## Contributing
 
-Contributions are welcome! For details, please review [CONTRIBUTING.md](CONTRIBUTING.md) which outlines our workflow, coding standards, and testing requirements. We encourage community input to enhance owl-builder further.
+Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for detailed workflow, coding standards, and testing requirements. We welcome community input to further enhance owl-builder.
 
 ## License
 
