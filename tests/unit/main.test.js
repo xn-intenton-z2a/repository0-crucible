@@ -44,7 +44,7 @@ const {
   buildEconomicOntologyModel,
   refreshOntology,
   mergeAndPersistOntology,
-  fetcher,
+  fetcher
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -59,7 +59,7 @@ function simulateNetworkFailure(mod) {
           handler(error);
         }
         return req;
-      },
+      }
     };
     process.nextTick(() => {
       req.on("error", () => {});
@@ -239,7 +239,7 @@ describe("CLI and Main Function Tests", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const result = await main(["--serve"]);
     expect(result).toBe("Web server started");
-    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server started at http:\/\/localhost:\d+/));
+    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server started at http:\/\/localhost:\/\d+/));
     spy.mockRestore();
   });
 });
@@ -340,9 +340,7 @@ describe("New Features", () => {
   });
 
   test("buildEnhancedOntology returns enhanced ontology with image and enhanced concept", async () => {
-    const spy = vi
-      .spyOn(fetcher, "fetchDataWithRetry")
-      .mockResolvedValue(JSON.stringify({ message: "http://example.com/image.jpg" }));
+    const spy = vi.spyOn(fetcher, "fetchDataWithRetry").mockResolvedValue(JSON.stringify({ message: "http://example.com/image.jpg" }));
     const ontology = await buildEnhancedOntology();
     expect(ontology.image).toBe("http://example.com/image.jpg");
     expect(ontology.concepts).toContain("EnhancedConcept");
@@ -434,6 +432,8 @@ describe("Extended Endpoints Test", () => {
     expect(endpoints).toContain("https://type.fit/api/quotes");
     expect(endpoints).toContain("https://api/exchangerate-api.com/v4/latest/USD");
     expect(endpoints).toContain("https://api/spacexdata.com/v4/rockets");
+    // New endpoint check
+    expect(endpoints).toContain("https://api.quotable.io/random");
   });
 
   test("fetch data from all endpoints and log response snippet", async () => {
