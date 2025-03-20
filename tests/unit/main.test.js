@@ -239,7 +239,8 @@ describe("CLI and Main Function Tests", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const result = await main(["--serve"]);
     expect(result).toBe("Web server started");
-    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server started at http:\/\/localhost:\/\d+/));
+    // Update regex to remove extra slash after localhost:
+    expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server started at http:\/\/localhost:\d+/));
     spy.mockRestore();
   });
 });
@@ -424,8 +425,8 @@ describe("Extended Endpoints Test", () => {
     const endpoints = listAvailableEndpoints();
     expect(endpoints).toContain("https://jsonplaceholder.typicode.com/albums");
     expect(endpoints).toContain("https://jsonplaceholder.typicode.com/users");
-    expect(endpoints).toContain("https://api/genderize.io");
-    expect(endpoints).toContain("https://api/nationalize.io");
+    expect(endpoints).toContain("https://api.genderize.io");
+    expect(endpoints).toContain("https://api.nationalize.io");
     expect(endpoints).toContain("https://api/covid19api.com/summary");
     expect(endpoints).toContain("https://dog.ceo/api/breed/husky/images/random");
     expect(endpoints).toContain("https://quotes.rest/qod");
