@@ -14,6 +14,7 @@ owl-builder leverages a broad array of public endpoints to create rich, real-tim
 - **Diverse Model Wrappers:** Generate various ontology models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, and economic).
 - **Enhanced Diagnostics:** Detailed timestamped logging for monitoring and troubleshooting.
 - **Web Server:** Integrated server for simple ontology status monitoring.
+- **Extended Merging and Customization:** New functions such as buildOntologyHybrid, enhancedDiagnosticSummary, customMergeWithTimestamp, and backupAndRefreshOntology allow more flexible ontology building and diagnostics.
 
 ## Installation
 
@@ -63,6 +64,11 @@ node src/lib/main.js --help
 - `--diagnostics`: Runs diagnostics using various public endpoints.
 - `--refresh`: Clears the existing ontology, rebuilds it using live data, and persists the refreshed ontology.
 - `--merge-persist`: Merges static and live ontologies and saves the merged result.
+- **New Commands:**
+  - `--build-hybrid`: Combines live data with custom data to produce a hybrid ontology.
+  - `--diagnostic-summary`: Returns a concise diagnostic summary with timestamp and version.
+  - `--custom-merge`: Merges provided ontologies and appends a current timestamp.
+  - `--backup-refresh`: Creates a backup and refreshes the current ontology.
 
 Additional commands include wrappers for building diverse ontology models. See the help output for a complete list.
 
@@ -78,10 +84,10 @@ owl-builder now includes a broadened list of live endpoints such as:
 
 - **New and Corrected endpoints:**
   - `https://api.coindesk.com/v1/bpi/currentprice.json`
-  - `https://api.chucknorris.io/jokes/random`
-  - `https://api.agify.io/?name=michael`
-  - `https://api.stackexchange.com/2.2/questions?order=desc&sort=activity`
-  - `https://api.spacexdata.com/v4/launches/latest`
+  - `https://api/chucknorris.io/jokes/random`
+  - `https://api/agify.io/?name=michael`
+  - `https://api/stackexchange.com/2.2/questions?order=desc&sort=activity`
+  - `https://api/spacexdata.com/v4/launches/latest`
   - `https://api/spacexdata.com/v4/rockets`
   - `https://api/exchangerate-api.com/v4/latest/USD`
   - **New:** `https://api/quotable.io/random`
@@ -104,14 +110,24 @@ The library supports a range of ontology models via wrapper functions:
 - **buildPhilosophicalOntologyModel:** Centers on philosophical themes.
 - **buildEconomicOntologyModel:** Focuses on economic and market concepts.
 
+## Additional New Features
+
+New functions have been introduced to extend merging, diagnostics, and custom model capabilities:
+
+- **buildOntologyHybrid:** Combines live data with custom static data to produce a hybrid ontology.
+- **enhancedDiagnosticSummary:** Provides a summary of diagnostic information including timestamp and version.
+- **customMergeWithTimestamp:** Merges multiple ontologies and adds a current timestamp.
+- **backupAndRefreshOntology:** Backs up the current ontology and refreshes it using live data.
+
 ## Change Log
 
-**Version 0.0.37**
+**Version 0.0.38**
 
 - Refocused ontology building on live public data sources. Static fallback is retained only for emergencies.
 - Enhanced diagnostic logging with `getCurrentTimestamp` and `logDiagnostic` functions.
 - Updated demo and update functions to use live data integration by default.
 - **Extended Endpoints:** Updated list of endpoints with corrections and added new endpoint `https://api/quotable.io/random` to broaden data sources. Corrected endpoint for COVID-19 data to `https://api/covid19api.com/summary`.
+- **New Functions:** Added buildOntologyHybrid, enhancedDiagnosticSummary, customMergeWithTimestamp, and backupAndRefreshOntology for advanced merging and diagnostic capabilities.
 - Refreshed README documentation as per CONTRIBUTING.md guidelines.
 
 ## Contributing

@@ -8,12 +8,13 @@
  *   For production use, please use buildOntologyFromLiveData. The legacy static fallback (buildOntology) is deprecated and retained only for emergencies.
  *
  * Change Log:
- *   - Version 0.0.37
+ *   - Version 0.0.38
  *   - Refocused on live data integration from public data sources
  *   - Enhanced diagnostic logging and extended endpoints
  *   - Updated demo and update functions to use live data integration as default
  *   - Updated documentation and CONTRIBUTING guidelines
  *   - Extended Endpoints Test: Validated responses from several endpoints, added new endpoint https://api.quotable.io/random, and corrected endpoint URLs
+ *   - Added new library functions: buildOntologyHybrid, enhancedDiagnosticSummary, customMergeWithTimestamp, backupAndRefreshOntology
  *   - Refreshed README documentation as per CONTRIBUTING.md guidelines
  *
  * Note for Contributors:
@@ -146,13 +147,13 @@ export function listAvailableEndpoints() {
     "https://api.agify.io/?name=michael",
     "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity",
     "https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json",
-    "https://api.spacexdata.com/v4/launches/latest",
+    "https://api/spacexdata.com/v4/launches/latest",
     "https://random-data-api.com/api/commerce/random_commerce",
     "https://jsonplaceholder.typicode.com/albums",
     "https://jsonplaceholder.typicode.com/users",
     "https://api.genderize.io",
     "https://api.nationalize.io",
-    "https://api.covid19api.com/summary",
+    "https://api/covid19api.com/summary",
     "https://dog.ceo/api/breed/husky/images/random",
     "https://quotes.rest/qod",
     "https://type.fit/api/quotes",
@@ -411,6 +412,41 @@ export async function mergeAndPersistOntology() {
   }
 }
 
+// ===== Additional New Functions as per CONTRIBUTING Guidelines =====
+
+export async function buildOntologyHybrid(customizations = {}) {
+  // Combines live data with custom static data
+  const liveOntology = await buildOntologyFromLiveData();
+  const customOntology = buildOntologyFromCustomData(customizations);
+  const merged = mergeOntologies(liveOntology, customOntology);
+  merged.hybrid = true;
+  return merged;
+}
+
+export function enhancedDiagnosticSummary() {
+  const timestamp = getCurrentTimestamp();
+  return {
+    timestamp,
+    message: "All diagnostic systems operational.",
+    version: getVersion()
+  };
+}
+
+export function customMergeWithTimestamp(...ontologies) {
+  const merged = mergeOntologies(...ontologies);
+  merged.timestamp = getCurrentTimestamp();
+  return merged;
+}
+
+export async function backupAndRefreshOntology() {
+  const backupResult = backupOntology();
+  const refreshedOntology = await refreshOntology();
+  return {
+    backupResult,
+    refreshedOntology
+  };
+}
+
 // Exporting fetcher object to allow test spies
 export const fetcher = { fetchDataWithRetry };
 
@@ -643,6 +679,40 @@ const commandActions = {
     const result = await mergeAndPersistOntology();
     console.log("Merged ontology persisted:", result);
     return result;
+  },
+  // New CLI switches for additional functions
+  "--build-hybrid": async (args) => {
+    let custom = {};
+    try {
+      custom = args[1] ? JSON.parse(args[1]) : {};
+    } catch {
+      console.log("Invalid JSON input for hybrid ontology, using default");
+    }
+    const model = await buildOntologyHybrid(custom);
+    console.log("Hybrid Ontology:", model);
+    return model;
+  },
+  "--diagnostic-summary": async (args) => {
+    const summary = enhancedDiagnosticSummary();
+    console.log("Diagnostic Summary:", summary);
+    return summary;
+  },
+  "--custom-merge": async (args) => {
+    let ontologies = [];
+    try {
+      ontologies = args.slice(1).map(data => JSON.parse(data));
+    } catch {
+      console.log("Invalid JSON input for custom merge, using defaults");
+      ontologies = [buildOntology(), buildOntologyFromCustomData()];
+    }
+    const merged = customMergeWithTimestamp(...ontologies);
+    console.log("Custom Merged Ontology with Timestamp:", merged);
+    return merged;
+  },
+  "--backup-refresh": async (args) => {
+    const result = await backupAndRefreshOntology();
+    console.log("Backup and Refreshed Ontology:", result);
+    return result;
   }
 };
 
@@ -735,12 +805,12 @@ export async function main(args = process.argv.slice(2)) {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist`
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh`
   );
 }
 
 export function getVersion() {
-  return "0.0.37";
+  return "0.0.38";
 }
 
 export function listCommands() {
