@@ -35,6 +35,7 @@
 <li class="md-github"><strong class="md-github">Diverse Model Wrappers:</strong> Generate various ontology models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, and economic).</li>
 <li class="md-github"><strong class="md-github">Enhanced Diagnostics:</strong> Detailed timestamped logging for monitoring and troubleshooting.</li>
 <li class="md-github"><strong class="md-github">Web Server:</strong> Integrated server for simple ontology status monitoring.</li>
+<li class="md-github"><strong class="md-github">Extended Merging and Customization:</strong> New functions such as buildOntologyHybrid, enhancedDiagnosticSummary, customMergeWithTimestamp, and backupAndRefreshOntology allow more flexible ontology building and diagnostics.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
 <p class="md-github">Ensure Node.js version 20 or later is installed. Then, clone the repository and install dependencies:</p>
@@ -71,6 +72,14 @@ npm install
 <li class="md-github"><code class="md-github">--diagnostics</code>: Runs diagnostics using various public endpoints.</li>
 <li class="md-github"><code class="md-github">--refresh</code>: Clears the existing ontology, rebuilds it using live data, and persists the refreshed ontology.</li>
 <li class="md-github"><code class="md-github">--merge-persist</code>: Merges static and live ontologies and saves the merged result.</li>
+<li class="md-github"><strong class="md-github">New Commands:</strong>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">--build-hybrid</code>: Combines live data with custom data to produce a hybrid ontology.</li>
+<li class="md-github"><code class="md-github">--diagnostic-summary</code>: Returns a concise diagnostic summary with timestamp and version.</li>
+<li class="md-github"><code class="md-github">--custom-merge</code>: Merges provided ontologies and appends a current timestamp.</li>
+<li class="md-github"><code class="md-github">--backup-refresh</code>: Creates a backup and refreshes the current ontology.</li>
+</ul>
+</li>
 </ul>
 <p class="md-github">Additional commands include wrappers for building diverse ontology models. See the help output for a complete list.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="extended-endpoints" href="#extended-endpoints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Extended Endpoints</h2>
@@ -89,10 +98,10 @@ npm install
 <p class="md-github"><strong class="md-github">New and Corrected endpoints:</strong></p>
 <ul class="md-github">
 <li class="md-github"><code class="md-github">https://api.coindesk.com/v1/bpi/currentprice.json</code></li>
-<li class="md-github"><code class="md-github">https://api.chucknorris.io/jokes/random</code></li>
-<li class="md-github"><code class="md-github">https://api.agify.io/?name=michael</code></li>
-<li class="md-github"><code class="md-github">https://api.stackexchange.com/2.2/questions?order=desc&amp;sort=activity</code></li>
-<li class="md-github"><code class="md-github">https://api.spacexdata.com/v4/launches/latest</code></li>
+<li class="md-github"><code class="md-github">https://api/chucknorris.io/jokes/random</code></li>
+<li class="md-github"><code class="md-github">https://api/agify.io/?name=michael</code></li>
+<li class="md-github"><code class="md-github">https://api/stackexchange.com/2.2/questions?order=desc&amp;sort=activity</code></li>
+<li class="md-github"><code class="md-github">https://api/spacexdata.com/v4/launches/latest</code></li>
 <li class="md-github"><code class="md-github">https://api/spacexdata.com/v4/rockets</code></li>
 <li class="md-github"><code class="md-github">https://api/exchangerate-api.com/v4/latest/USD</code></li>
 <li class="md-github"><strong class="md-github">New:</strong> <code class="md-github">https://api/quotable.io/random</code></li>
@@ -115,13 +124,22 @@ npm install
 <li class="md-github"><strong class="md-github">buildPhilosophicalOntologyModel:</strong> Centers on philosophical themes.</li>
 <li class="md-github"><strong class="md-github">buildEconomicOntologyModel:</strong> Focuses on economic and market concepts.</li>
 </ul>
+<h2 class="md-github"><a class="md-github__anchor" name="additional-new-features" href="#additional-new-features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Additional New Features</h2>
+<p class="md-github">New functions have been introduced to extend merging, diagnostics, and custom model capabilities:</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">buildOntologyHybrid:</strong> Combines live data with custom static data to produce a hybrid ontology.</li>
+<li class="md-github"><strong class="md-github">enhancedDiagnosticSummary:</strong> Provides a summary of diagnostic information including timestamp and version.</li>
+<li class="md-github"><strong class="md-github">customMergeWithTimestamp:</strong> Merges multiple ontologies and adds a current timestamp.</li>
+<li class="md-github"><strong class="md-github">backupAndRefreshOntology:</strong> Backs up the current ontology and refreshes it using live data.</li>
+</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="change-log" href="#change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change Log</h2>
-<p class="md-github"><strong class="md-github">Version 0.0.37</strong></p>
+<p class="md-github"><strong class="md-github">Version 0.0.38</strong></p>
 <ul class="md-github">
 <li class="md-github">Refocused ontology building on live public data sources. Static fallback is retained only for emergencies.</li>
 <li class="md-github">Enhanced diagnostic logging with <code class="md-github">getCurrentTimestamp</code> and <code class="md-github">logDiagnostic</code> functions.</li>
 <li class="md-github">Updated demo and update functions to use live data integration by default.</li>
 <li class="md-github"><strong class="md-github">Extended Endpoints:</strong> Updated list of endpoints with corrections and added new endpoint <code class="md-github">https://api/quotable.io/random</code> to broaden data sources. Corrected endpoint for COVID-19 data to <code class="md-github">https://api/covid19api.com/summary</code>.</li>
+<li class="md-github"><strong class="md-github">New Functions:</strong> Added buildOntologyHybrid, enhancedDiagnosticSummary, customMergeWithTimestamp, and backupAndRefreshOntology for advanced merging and diagnostic capabilities.</li>
 <li class="md-github">Refreshed README documentation as per CONTRIBUTING.md guidelines.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
@@ -131,7 +149,7 @@ npm install
 
   </section>
   <footer>
-    <p>Generated on 2025-03-21T04:03:57.682Z</p>
+    <p>Generated on 2025-03-21T06:04:53.502Z</p>
   </footer>
 </body>
 </html>
