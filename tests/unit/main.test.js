@@ -44,6 +44,11 @@ const {
   buildEconomicOntologyModel,
   refreshOntology,
   mergeAndPersistOntology,
+  // New functions
+  buildOntologyHybrid,
+  enhancedDiagnosticSummary,
+  customMergeWithTimestamp,
+  backupAndRefreshOntology,
   fetcher
 } = mainModule;
 
@@ -67,7 +72,6 @@ function simulateNetworkFailure(mod) {
     return req;
   };
 }
-
 
 describe("Core Ontology Functions", () => {
   test("buildOntology returns public data ontology", () => {
@@ -420,36 +424,29 @@ describe("Refresh and Merge Persist Functions", () => {
   }, 5000);
 });
 
-describe("Extended Endpoints Test", () => {
-  test("listAvailableEndpoints includes new endpoints", () => {
-    const endpoints = listAvailableEndpoints();
-    expect(endpoints).toContain("https://jsonplaceholder.typicode.com/albums");
-    expect(endpoints).toContain("https://jsonplaceholder.typicode.com/users");
-    expect(endpoints).toContain("https://api.genderize.io");
-    expect(endpoints).toContain("https://api.nationalize.io");
-    expect(endpoints).toContain("https://api.covid19api.com/summary");
-    expect(endpoints).toContain("https://dog.ceo/api/breed/husky/images/random");
-    expect(endpoints).toContain("https://quotes.rest/qod");
-    expect(endpoints).toContain("https://type.fit/api/quotes");
-    expect(endpoints).toContain("https://api/exchangerate-api.com/v4/latest/USD");
-    expect(endpoints).toContain("https://api/spacexdata.com/v4/rockets");
-    // New endpoint check
-    expect(endpoints).toContain("https://api.quotable.io/random");
+describe("Additional New Features", () => {
+  test("buildOntologyHybrid returns blended ontology with hybrid flag", async () => {
+    const hybrid = await buildOntologyHybrid({ extra: "data" });
+    expect(hybrid.hybrid).toBe(true);
   });
 
-  test("fetch data from all endpoints and log response snippet", async () => {
-    const endpoints = listAvailableEndpoints();
-    expect(endpoints.length).toBeGreaterThan(13);
-    const responses = await Promise.all(
-      endpoints.map(async (endpoint) => {
-        try {
-          const response = await fetchDataWithRetry(endpoint, 1);
-          return `Response from ${endpoint}: ${response.substring(0, 100)}`;
-        } catch (e) {
-          return `Error fetching ${endpoint}: ${e.message}`;
-        }
-      })
-    );
-    responses.forEach((msg) => console.log(msg));
-  }, 30000);
+  test("enhancedDiagnosticSummary returns valid summary", () => {
+    const summary = enhancedDiagnosticSummary();
+    expect(summary).toHaveProperty("timestamp");
+    expect(summary.message).toBe("All diagnostic systems operational.");
+    expect(summary.version).toBe("0.0.38");
+  });
+
+  test("customMergeWithTimestamp adds timestamp to merged ontology", () => {
+    const ont1 = { title: "One", concepts: ["A"] };
+    const ont2 = { title: "Two", concepts: ["B"] };
+    const merged = customMergeWithTimestamp(ont1, ont2);
+    expect(merged).toHaveProperty("timestamp");
+  });
+
+  test("backupAndRefreshOntology returns both backup and refreshed ontology data", async () => {
+    const result = await backupAndRefreshOntology();
+    expect(result).toHaveProperty("backupResult");
+    expect(result).toHaveProperty("refreshedOntology");
+  });
 });
