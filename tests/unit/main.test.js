@@ -44,7 +44,7 @@ const {
   buildEconomicOntologyModel,
   refreshOntology,
   mergeAndPersistOntology,
-  fetcher,
+  fetcher
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -59,7 +59,7 @@ function simulateNetworkFailure(mod) {
           handler(error);
         }
         return req;
-      },
+      }
     };
     process.nextTick(() => {
       req.on("error", () => {});
@@ -67,6 +67,7 @@ function simulateNetworkFailure(mod) {
     return req;
   };
 }
+
 
 describe("Core Ontology Functions", () => {
   test("buildOntology returns public data ontology", () => {
@@ -340,9 +341,7 @@ describe("New Features", () => {
   });
 
   test("buildEnhancedOntology returns enhanced ontology with image and enhanced concept", async () => {
-    const spy = vi
-      .spyOn(fetcher, "fetchDataWithRetry")
-      .mockResolvedValue(JSON.stringify({ message: "http://example.com/image.jpg" }));
+    const spy = vi.spyOn(fetcher, "fetchDataWithRetry").mockResolvedValue(JSON.stringify({ message: "http://example.com/image.jpg" }));
     const ontology = await buildEnhancedOntology();
     expect(ontology.image).toBe("http://example.com/image.jpg");
     expect(ontology.concepts).toContain("EnhancedConcept");
@@ -426,14 +425,16 @@ describe("Extended Endpoints Test", () => {
     const endpoints = listAvailableEndpoints();
     expect(endpoints).toContain("https://jsonplaceholder.typicode.com/albums");
     expect(endpoints).toContain("https://jsonplaceholder.typicode.com/users");
-    expect(endpoints).toContain("https://api/genderize.io");
-    expect(endpoints).toContain("https://api/nationalize.io");
-    expect(endpoints).toContain("https://api/covid19api.com/summary");
+    expect(endpoints).toContain("https://api.genderize.io");
+    expect(endpoints).toContain("https://api.nationalize.io");
+    expect(endpoints).toContain("https://api.covid19api.com/summary");
     expect(endpoints).toContain("https://dog.ceo/api/breed/husky/images/random");
     expect(endpoints).toContain("https://quotes.rest/qod");
     expect(endpoints).toContain("https://type.fit/api/quotes");
     expect(endpoints).toContain("https://api/exchangerate-api.com/v4/latest/USD");
     expect(endpoints).toContain("https://api/spacexdata.com/v4/rockets");
+    // New endpoint check
+    expect(endpoints).toContain("https://api.quotable.io/random");
   });
 
   test("fetch data from all endpoints and log response snippet", async () => {

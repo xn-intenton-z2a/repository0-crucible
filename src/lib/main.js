@@ -12,8 +12,8 @@
  *   - Refocused on live data integration from public data sources
  *   - Enhanced diagnostic logging and extended endpoints
  *   - Updated demo and update functions to use live data integration as default
- *   - Updated documentation according to CONTRIBUTING.md
- *   - Extended Endpoints Test: Validated responses from several endpoints and verified error handling
+ *   - Updated documentation and CONTRIBUTING guidelines
+ *   - Extended Endpoints Test: Validated responses from several endpoints, added new endpoint https://api.quotable.io/random, and corrected endpoint URLs
  *   - Refreshed README documentation as per CONTRIBUTING.md guidelines
  *
  * Note for Contributors:
@@ -39,7 +39,7 @@ export function buildOntology() {
   }
   return {
     title: "Public Data Ontology",
-    concepts: ["Concept1", "Concept2", "Concept3"],
+    concepts: ["Concept1", "Concept2", "Concept3"]
   };
 }
 
@@ -142,22 +142,23 @@ export function listAvailableEndpoints() {
     "https://randomuser.me/api/",
     "https://catfact.ninja/fact",
     "https://jsonplaceholder.typicode.com/todos",
-    "https://api/chucknorris.io/jokes/random",
-    "https://api/agify.io?name=michael",
-    "https://api/stackexchange.com/2.2/questions?order=desc&sort=activity",
+    "https://api.chucknorris.io/jokes/random",
+    "https://api.agify.io/?name=michael",
+    "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity",
     "https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json",
-    "https://api/spacexdata.com/v4/launches/latest",
+    "https://api.spacexdata.com/v4/launches/latest",
     "https://random-data-api.com/api/commerce/random_commerce",
     "https://jsonplaceholder.typicode.com/albums",
     "https://jsonplaceholder.typicode.com/users",
-    "https://api/genderize.io",
-    "https://api/nationalize.io",
-    "https://api/covid19api.com/summary",
+    "https://api.genderize.io",
+    "https://api.nationalize.io",
+    "https://api.covid19api.com/summary",
     "https://dog.ceo/api/breed/husky/images/random",
     "https://quotes.rest/qod",
     "https://type.fit/api/quotes",
     "https://api/exchangerate-api.com/v4/latest/USD",
-    "https://api/spacexdata.com/v4/rockets"
+    "https://api/spacexdata.com/v4/rockets",
+    "https://api.quotable.io/random"
   ];
 }
 
@@ -206,7 +207,7 @@ export function buildBasicOWLModel() {
     id: "basic",
     title: "Basic OWL Ontology",
     concepts: ["Class1", "Class2"],
-    properties: [],
+    properties: []
   };
 }
 
@@ -217,11 +218,11 @@ export function buildAdvancedOWLModel() {
     classes: ["Person", "Organization"],
     properties: [
       { name: "hasName", type: "string" },
-      { name: "hasAge", type: "integer" },
+      { name: "hasAge", type: "integer" }
     ],
     metadata: {
-      created: new Date().toISOString(),
-    },
+      created: new Date().toISOString()
+    }
   };
 }
 
@@ -265,7 +266,7 @@ export function buildIntermediateOWLModel() {
     id: "intermediate",
     title: "Intermediate OWL Ontology",
     concepts: ["IntermediateConcept1", "IntermediateConcept2"],
-    annotations: { version: "intermediate" },
+    annotations: { version: "intermediate" }
   };
 }
 
@@ -319,7 +320,7 @@ export function buildMinimalOWLModel() {
     id: "minimal",
     title: "Minimal OWL Ontology",
     concepts: [],
-    metadata: { version: "minimal" },
+    metadata: { version: "minimal" }
   };
 }
 
@@ -331,10 +332,10 @@ export function buildComplexOntologyModel() {
     properties: [
       { name: "hasA", type: "string" },
       { name: "hasB", type: "number" },
-      { name: "hasC", type: "boolean" },
+      { name: "hasC", type: "boolean" }
     ],
     concepts: ["ConceptA", "ConceptB", "ConceptC"],
-    metadata: { created: new Date().toISOString() },
+    metadata: { created: new Date().toISOString() }
   };
 }
 
@@ -344,7 +345,7 @@ export function buildScientificOntologyModel() {
     title: "Scientific OWL Ontology",
     disciplines: ["Biology", "Chemistry", "Physics"],
     concepts: ["Hypothesis", "Experiment", "Data Analysis"],
-    metadata: { source: "Scientific Publications", created: new Date().toISOString() },
+    metadata: { source: "Scientific Publications", created: new Date().toISOString() }
   };
 }
 
@@ -354,7 +355,7 @@ export function buildEducationalOntologyModel() {
     title: "Educational OWL Ontology",
     subjects: ["Mathematics", "History", "Literature"],
     concepts: ["Curriculum", "Lesson Plan", "Assessment"],
-    metadata: { notes: "Developed for educational institutions", created: new Date().toISOString() },
+    metadata: { notes: "Developed for educational institutions", created: new Date().toISOString() }
   };
 }
 
@@ -365,7 +366,7 @@ export function buildPhilosophicalOntologyModel() {
     title: "Philosophical OWL Ontology",
     themes: ["Existence", "Ethics", "Epistemology"],
     concepts: ["Socrates", "Plato", "Aristotle"],
-    metadata: { created: new Date().toISOString(), category: "philosophy" },
+    metadata: { created: new Date().toISOString(), category: "philosophy" }
   };
 }
 
@@ -375,7 +376,7 @@ export function buildEconomicOntologyModel() {
     title: "Economic OWL Ontology",
     sectors: ["Finance", "Manufacturing", "Services"],
     concepts: ["Supply", "Demand", "Market"],
-    metadata: { created: new Date().toISOString(), category: "economics" },
+    metadata: { created: new Date().toISOString(), category: "economics" }
   };
 }
 
@@ -642,7 +643,7 @@ const commandActions = {
     const result = await mergeAndPersistOntology();
     console.log("Merged ontology persisted:", result);
     return result;
-  },
+  }
 };
 
 async function demo() {

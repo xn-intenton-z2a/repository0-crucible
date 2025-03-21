@@ -76,12 +76,16 @@ owl-builder now includes a broadened list of live endpoints such as:
   - `https://jsonplaceholder.typicode.com/posts`
   - ...
 
-- **New endpoints:**
-  - `https://dog.ceo/api/breed/husky/images/random`
-  - `https://quotes.rest/qod`
-  - `https://type.fit/api/quotes`
-  - `https://api/exchangerate-api.com/v4/latest/USD`
+- **New and Corrected endpoints:**
+  - `https://api.coindesk.com/v1/bpi/currentprice.json`
+  - `https://api.chucknorris.io/jokes/random`
+  - `https://api.agify.io/?name=michael`
+  - `https://api.stackexchange.com/2.2/questions?order=desc&sort=activity`
+  - `https://api.spacexdata.com/v4/launches/latest`
   - `https://api/spacexdata.com/v4/rockets`
+  - `https://api/exchangerate-api.com/v4/latest/USD`
+  - **New:** `https://api/quotable.io/random`
+  - **Corrected:** `https://api/covid19api.com/summary`
 
 *Test Results Note:* Extended endpoints tests have confirmed valid data responses from many endpoints while handling errors appropriately when endpoints are unreachable.
 
@@ -107,8 +111,8 @@ The library supports a range of ontology models via wrapper functions:
 - Refocused ontology building on live public data sources. Static fallback is retained only for emergencies.
 - Enhanced diagnostic logging with `getCurrentTimestamp` and `logDiagnostic` functions.
 - Updated demo and update functions to use live data integration by default.
-- Extended the list of live endpoints to enrich available data sources.
-- **Refreshed README documentation as per CONTRIBUTING.md guidelines.**
+- **Extended Endpoints:** Updated list of endpoints with corrections and added new endpoint `https://api/quotable.io/random` to broaden data sources. Corrected endpoint for COVID-19 data to `https://api/covid19api.com/summary`.
+- Refreshed README documentation as per CONTRIBUTING.md guidelines.
 
 ## Contributing
 
