@@ -1,4 +1,4 @@
-/* eslint-disable no-unused-vars, sonarjs/no-ignored-exceptions */
+/* eslint-disable no-unused-vars */
 import { describe, test, expect, vi } from "vitest";
 import fs from "fs";
 import path from "path";
@@ -49,7 +49,7 @@ const {
   enhancedDiagnosticSummary,
   customMergeWithTimestamp,
   backupAndRefreshOntology,
-  fetcher
+  fetcher,
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -64,7 +64,7 @@ function simulateNetworkFailure(mod) {
           handler(error);
         }
         return req;
-      }
+      },
     };
     process.nextTick(() => {
       req.on("error", () => {});
@@ -345,7 +345,9 @@ describe("New Features", () => {
   });
 
   test("buildEnhancedOntology returns enhanced ontology with image and enhanced concept", async () => {
-    const spy = vi.spyOn(fetcher, "fetchDataWithRetry").mockResolvedValue(JSON.stringify({ message: "http://example.com/image.jpg" }));
+    const spy = vi
+      .spyOn(fetcher, "fetchDataWithRetry")
+      .mockResolvedValue(JSON.stringify({ message: "http://example.com/image.jpg" }));
     const ontology = await buildEnhancedOntology();
     expect(ontology.image).toBe("http://example.com/image.jpg");
     expect(ontology.concepts).toContain("EnhancedConcept");
