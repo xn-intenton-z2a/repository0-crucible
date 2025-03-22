@@ -9,11 +9,15 @@
  *   owl-builder builds OWL ontologies directly from live, verified public data sources.
  *   For production use, please use buildOntologyFromLiveData. The legacy static fallback (buildOntology) is deprecated and retained only for emergencies.
  *
+ * Drift Pruning:
+ *   This version has been pruned to remove any drift and focus entirely on live data integration as per the Mission Statement.
+ *
  * Change Log:
  *   - Version 0.0.38
  *   - Refocused on live data integration from public data sources
  *   - Enhanced diagnostic logging and extended endpoints
  *   - Updated demo and update functions to use live data integration as default
+ *   - Pruned redundant legacy code to align with the Mission Statement
  *   - Updated documentation and CONTRIBUTING guidelines
  *   - Extended Endpoints Test: Validated responses from several endpoints, added new endpoint https://api.quotable.io/random, and corrected endpoint URLs
  *   - Added new library functions: buildOntologyHybrid, enhancedDiagnosticSummary, customMergeWithTimestamp, backupAndRefreshOntology
