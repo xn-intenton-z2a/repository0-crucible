@@ -35,12 +35,12 @@ const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 export function buildOntology() {
   if (process.env.NODE_ENV !== "test") {
     console.warn(
-      "Warning: buildOntology (static fallback) is deprecated. Use buildOntologyFromLiveData for live data integration in production."
+      "Warning: buildOntology (static fallback) is deprecated. Use buildOntologyFromLiveData for live data integration in production.",
     );
   }
   return {
     title: "Public Data Ontology",
-    concepts: ["Concept1", "Concept2", "Concept3"]
+    concepts: ["Concept1", "Concept2", "Concept3"],
   };
 }
 
@@ -159,7 +159,7 @@ export function listAvailableEndpoints() {
     "https://type.fit/api/quotes",
     "https://api/exchangerate-api.com/v4/latest/USD",
     "https://api/spacexdata.com/v4/rockets",
-    "https://api.quotable.io/random"
+    "https://api.quotable.io/random",
   ];
 }
 
@@ -208,7 +208,7 @@ export function buildBasicOWLModel() {
     id: "basic",
     title: "Basic OWL Ontology",
     concepts: ["Class1", "Class2"],
-    properties: []
+    properties: [],
   };
 }
 
@@ -219,11 +219,11 @@ export function buildAdvancedOWLModel() {
     classes: ["Person", "Organization"],
     properties: [
       { name: "hasName", type: "string" },
-      { name: "hasAge", type: "integer" }
+      { name: "hasAge", type: "integer" },
     ],
     metadata: {
-      created: new Date().toISOString()
-    }
+      created: new Date().toISOString(),
+    },
   };
 }
 
@@ -267,7 +267,7 @@ export function buildIntermediateOWLModel() {
     id: "intermediate",
     title: "Intermediate OWL Ontology",
     concepts: ["IntermediateConcept1", "IntermediateConcept2"],
-    annotations: { version: "intermediate" }
+    annotations: { version: "intermediate" },
   };
 }
 
@@ -321,7 +321,7 @@ export function buildMinimalOWLModel() {
     id: "minimal",
     title: "Minimal OWL Ontology",
     concepts: [],
-    metadata: { version: "minimal" }
+    metadata: { version: "minimal" },
   };
 }
 
@@ -333,10 +333,10 @@ export function buildComplexOntologyModel() {
     properties: [
       { name: "hasA", type: "string" },
       { name: "hasB", type: "number" },
-      { name: "hasC", type: "boolean" }
+      { name: "hasC", type: "boolean" },
     ],
     concepts: ["ConceptA", "ConceptB", "ConceptC"],
-    metadata: { created: new Date().toISOString() }
+    metadata: { created: new Date().toISOString() },
   };
 }
 
@@ -346,7 +346,7 @@ export function buildScientificOntologyModel() {
     title: "Scientific OWL Ontology",
     disciplines: ["Biology", "Chemistry", "Physics"],
     concepts: ["Hypothesis", "Experiment", "Data Analysis"],
-    metadata: { source: "Scientific Publications", created: new Date().toISOString() }
+    metadata: { source: "Scientific Publications", created: new Date().toISOString() },
   };
 }
 
@@ -356,7 +356,7 @@ export function buildEducationalOntologyModel() {
     title: "Educational OWL Ontology",
     subjects: ["Mathematics", "History", "Literature"],
     concepts: ["Curriculum", "Lesson Plan", "Assessment"],
-    metadata: { notes: "Developed for educational institutions", created: new Date().toISOString() }
+    metadata: { notes: "Developed for educational institutions", created: new Date().toISOString() },
   };
 }
 
@@ -367,7 +367,7 @@ export function buildPhilosophicalOntologyModel() {
     title: "Philosophical OWL Ontology",
     themes: ["Existence", "Ethics", "Epistemology"],
     concepts: ["Socrates", "Plato", "Aristotle"],
-    metadata: { created: new Date().toISOString(), category: "philosophy" }
+    metadata: { created: new Date().toISOString(), category: "philosophy" },
   };
 }
 
@@ -377,7 +377,7 @@ export function buildEconomicOntologyModel() {
     title: "Economic OWL Ontology",
     sectors: ["Finance", "Manufacturing", "Services"],
     concepts: ["Supply", "Demand", "Market"],
-    metadata: { created: new Date().toISOString(), category: "economics" }
+    metadata: { created: new Date().toISOString(), category: "economics" },
   };
 }
 
@@ -428,7 +428,7 @@ export function enhancedDiagnosticSummary() {
   return {
     timestamp,
     message: "All diagnostic systems operational.",
-    version: getVersion()
+    version: getVersion(),
   };
 }
 
@@ -443,7 +443,7 @@ export async function backupAndRefreshOntology() {
   const refreshedOntology = await refreshOntology();
   return {
     backupResult,
-    refreshedOntology
+    refreshedOntology,
   };
 }
 
@@ -700,7 +700,7 @@ const commandActions = {
   "--custom-merge": async (args) => {
     let ontologies = [];
     try {
-      ontologies = args.slice(1).map(data => JSON.parse(data));
+      ontologies = args.slice(1).map((data) => JSON.parse(data));
     } catch {
       console.log("Invalid JSON input for custom merge, using defaults");
       ontologies = [buildOntology(), buildOntologyFromCustomData()];
@@ -713,7 +713,7 @@ const commandActions = {
     const result = await backupAndRefreshOntology();
     console.log("Backup and Refreshed Ontology:", result);
     return result;
-  }
+  },
 };
 
 async function demo() {
@@ -805,7 +805,7 @@ export async function main(args = process.argv.slice(2)) {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh`
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh`,
   );
 }
 
