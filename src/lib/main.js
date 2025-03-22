@@ -767,8 +767,7 @@ async function demo() {
   const intermediateModel = buildIntermediateOWLModel();
   console.log("Demo - intermediate OWL model:", intermediateModel);
   const enhancedModel = await buildEnhancedOntology();
-  console.log("Demo - enhanced ontology:
-", enhancedModel);
+  console.log("Demo - enhanced ontology:", enhancedModel);
   const liveModel = await buildOntologyFromLiveData();
   console.log("Demo - live data ontology:", liveModel);
   const customDataOntology = buildOntologyFromCustomData({ concepts: ["CustomDataConcept"] });
