@@ -126,9 +126,8 @@ New functions have been introduced to extend merging, diagnostics, and custom mo
 - Refocused ontology building on live public data sources. Static fallback is retained only for emergencies.
 - Enhanced diagnostic logging with `getCurrentTimestamp` and `logDiagnostic` functions.
 - Updated demo and update functions to use live data integration by default.
-- **Extended Endpoints:** Updated list of endpoints with corrections and added new endpoint `https://api/quotable.io/random` to broaden data sources. Corrected endpoint for COVID-19 data to `https://api/covid19api.com/summary`.
-- **New Functions:** Added buildOntologyHybrid, enhancedDiagnosticSummary, customMergeWithTimestamp, and backupAndRefreshOntology for advanced merging and diagnostic capabilities.
-- Refactored command handlers to comply with linting rules, disabling certain nested function and complexity warnings as per project guidelines.
+- Extended endpoints list updated with corrections and new endpoints.
+- **Pruned drift from source file:** Removed redundant legacy code and ensured a clear focus on live data integration as per the Mission Statement.
 
 ## Contributing
 
