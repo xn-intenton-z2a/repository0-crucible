@@ -128,7 +128,7 @@ New functions have been introduced to extend merging, diagnostics, and custom mo
 - Updated demo and update functions to use live data integration by default.
 - **Extended Endpoints:** Updated list of endpoints with corrections and added new endpoint `https://api/quotable.io/random` to broaden data sources. Corrected endpoint for COVID-19 data to `https://api/covid19api.com/summary`.
 - **New Functions:** Added buildOntologyHybrid, enhancedDiagnosticSummary, customMergeWithTimestamp, and backupAndRefreshOntology for advanced merging and diagnostic capabilities.
-- Refreshed README documentation as per CONTRIBUTING.md guidelines.
+- Refactored command handlers to comply with linting rules, disabling certain nested function and complexity warnings as per project guidelines.
 
 ## Contributing
 

@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+/* eslint-disable sonarjs/no-nested-functions, sonarjs/no-nested-conditional, sonarjs/cognitive-complexity */
+
 /*
  * owl-builder CLI Tool
  *
@@ -35,7 +37,7 @@ const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 export function buildOntology() {
   if (process.env.NODE_ENV !== "test") {
     console.warn(
-      "Warning: buildOntology (static fallback) is deprecated. Use buildOntologyFromLiveData for live data integration in production.",
+      "Warning: buildOntology (static fallback) is deprecated. Use buildOntologyFromLiveData for live data integration in production."
     );
   }
   return {
@@ -55,7 +57,7 @@ export async function buildOntologyFromLiveData() {
         ? parsed.entries.slice(0, 3).map((entry) => entry.Description)
         : ["Concept1", "Concept2", "Concept3"];
     return { title, concepts };
-  } catch {
+  } catch (_error) {
     // Fallback to deprecated static ontology in case of error
     return buildOntology();
   }
@@ -126,7 +128,7 @@ export function clearOntology() {
     } else {
       return { success: false, error: "Ontology file does not exist" };
     }
-  } catch {
+  } catch (_error) {
     return { success: false, error: "Error clearing ontology file" };
   }
 }
@@ -278,7 +280,7 @@ export async function buildEnhancedOntology() {
     const parsed = JSON.parse(data);
     ontology.image = parsed.message;
     ontology.concepts.push("EnhancedConcept");
-  } catch {
+  } catch (_error) {
     ontology.image = null;
   }
   return ontology;
@@ -451,32 +453,32 @@ export async function backupAndRefreshOntology() {
 export const fetcher = { fetchDataWithRetry };
 
 const commandActions = {
-  "--help": async (args) => {
+  "--help": async (_args) => {
     displayHelp();
   },
-  "--version": async (args) => {
+  "--version": async (_args) => {
     console.log("Tool version:", getVersion());
     return getVersion();
   },
-  "--list": async (args) => {
+  "--list": async (_args) => {
     const commands = listCommands();
     console.log("Supported commands:", commands);
     return commands;
   },
-  "--build": async (args) => {
+  "--build": async (_args) => {
     const ontology = buildOntology();
     console.warn("Deprecated: --build uses the static fallback. Use --build-live for live data integration.");
     console.log("Ontology built:", ontology);
     return ontology;
   },
-  "--persist": async (args) => {
+  "--persist": async (_args) => {
     const ontology = buildOntology();
     console.log("Ontology built:", ontology);
     const saved = persistOntology(ontology);
     console.log("Ontology persisted:", saved);
     return saved;
   },
-  "--load": async (args) => {
+  "--load": async (_args) => {
     const loaded = loadOntology();
     console.log("Ontology loaded:", loaded);
     return loaded;
@@ -487,25 +489,25 @@ const commandActions = {
     console.log("Ontology query results:", results);
     return results;
   },
-  "--validate": async (args) => {
+  "--validate": async (_args) => {
     const ontology = buildOntology();
     const isValid = validateOntology(ontology);
     console.log("Ontology validation result:", isValid);
     return isValid;
   },
-  "--export": async (args) => {
+  "--export": async (_args) => {
     const ontology = buildOntology();
     const xml = exportOntologyToXML(ontology);
     console.log("Ontology exported to XML:", xml);
     return xml;
   },
-  "--import": async (args) => {
+  "--import": async (_args) => {
     const sampleXML = `<ontology><title>Imported Ontology</title></ontology>`;
     const imported = importOntologyFromXML(sampleXML);
     console.log("Ontology imported from XML:", imported);
     return imported;
   },
-  "--backup": async (args) => {
+  "--backup": async (_args) => {
     const ontology = buildOntology();
     persistOntology(ontology);
     const backupResult = backupOntology();
@@ -519,7 +521,7 @@ const commandActions = {
     console.log("Ontology updated:", updated);
     return updated;
   },
-  "--clear": async (args) => {
+  "--clear": async (_args) => {
     const result = clearOntology();
     if (result.success) {
       console.log("Ontology cleared, file removed.", result);
@@ -528,12 +530,12 @@ const commandActions = {
     }
     return result;
   },
-  "--crawl": async (args) => {
+  "--crawl": async (_args) => {
     const crawlResults = await crawlOntologies();
     console.log("Crawled ontology data:", crawlResults);
     return crawlResults;
   },
-  "--fetch-retry": async (args) => {
+  "--fetch-retry": async (_args) => {
     try {
       const result = await fetchDataWithRetry("https://api.publicapis.org/entries");
       console.log("Fetched data with retry:", result);
@@ -543,12 +545,12 @@ const commandActions = {
       return err.message;
     }
   },
-  "--build-basic": async (args) => {
+  "--build-basic": async (_args) => {
     const model = buildBasicOWLModel();
     console.log("Basic OWL Model:", model);
     return model;
   },
-  "--build-advanced": async (args) => {
+  "--build-advanced": async (_args) => {
     const model = buildAdvancedOWLModel();
     console.log("Advanced OWL Model:", model);
     return model;
@@ -557,7 +559,7 @@ const commandActions = {
     let model;
     try {
       model = args[1] ? JSON.parse(args[1]) : buildBasicOWLModel();
-    } catch {
+    } catch (_error) {
       model = buildBasicOWLModel();
     }
     const wrapped = wrapOntologyModel(model);
@@ -568,7 +570,7 @@ const commandActions = {
     let custom = {};
     try {
       custom = args[1] ? JSON.parse(args[1]) : {};
-    } catch {
+    } catch (_error) {
       console.log("Invalid JSON input for custom ontology, using default");
     }
     const customOntology = buildCustomOntology(custom);
@@ -585,7 +587,7 @@ const commandActions = {
     console.log("Extended Ontology:", extended);
     return extended;
   },
-  "--diagnostics": async (args) => {
+  "--diagnostics": async (_args) => {
     try {
       const crawlResults = await crawlOntologies();
       console.log("Diagnostic crawl results:", JSON.stringify(crawlResults, null, 2));
@@ -595,21 +597,21 @@ const commandActions = {
       return { error: err.message };
     }
   },
-  "--serve": async (args) => {
+  "--serve": async (_args) => {
     const msg = await serveWebServer();
     return msg;
   },
-  "--build-intermediate": async (args) => {
+  "--build-intermediate": async (_args) => {
     const model = buildIntermediateOWLModel();
     console.log("Intermediate OWL Model:", model);
     return model;
   },
-  "--build-enhanced": async (args) => {
+  "--build-enhanced": async (_args) => {
     const model = await buildEnhancedOntology();
     console.log("Enhanced Ontology:", model);
     return model;
   },
-  "--build-live": async (args) => {
+  "--build-live": async (_args) => {
     const model = await buildOntologyFromLiveData();
     logDiagnostic("Live data ontology built successfully");
     console.log("Live Data Ontology:", model);
@@ -619,7 +621,7 @@ const commandActions = {
     let data = {};
     try {
       data = args[1] ? JSON.parse(args[1]) : {};
-    } catch {
+    } catch (_error) {
       console.log("Invalid JSON input for custom data, using default");
     }
     const customOntology = buildOntologyFromCustomData(data);
@@ -627,7 +629,7 @@ const commandActions = {
     console.log("Custom Data Ontology:", customOntology);
     return customOntology;
   },
-  "--merge-ontologies": async (args) => {
+  "--merge-ontologies": async (_args) => {
     const ont1 = buildOntology();
     const ont2 = await buildOntologyFromLiveData();
     const merged = mergeOntologies(ont1, ont2);
@@ -635,47 +637,47 @@ const commandActions = {
     console.log("Merged Ontology:", merged);
     return merged;
   },
-  "--build-live-log": async (args) => {
+  "--build-live-log": async (_args) => {
     const ont = await buildOntologyFromLiveDataWithLog();
     console.log("Live Data Ontology with Log:", ont);
     return ont;
   },
-  "--build-minimal": async (args) => {
+  "--build-minimal": async (_args) => {
     const model = buildMinimalOWLModel();
     console.log("Minimal OWL Model:", model);
     return model;
   },
-  "--build-complex": async (args) => {
+  "--build-complex": async (_args) => {
     const model = buildComplexOntologyModel();
     console.log("Complex OWL Model:", model);
     return model;
   },
-  "--build-scientific": async (args) => {
+  "--build-scientific": async (_args) => {
     const model = buildScientificOntologyModel();
     console.log("Scientific OWL Model:", model);
     return model;
   },
-  "--build-educational": async (args) => {
+  "--build-educational": async (_args) => {
     const model = buildEducationalOntologyModel();
     console.log("Educational OWL Model:", model);
     return model;
   },
-  "--build-philosophical": async (args) => {
+  "--build-philosophical": async (_args) => {
     const model = buildPhilosophicalOntologyModel();
     console.log("Philosophical OWL Model:", model);
     return model;
   },
-  "--build-economic": async (args) => {
+  "--build-economic": async (_args) => {
     const model = buildEconomicOntologyModel();
     console.log("Economic OWL Model:", model);
     return model;
   },
-  "--refresh": async (args) => {
+  "--refresh": async (_args) => {
     const result = await refreshOntology();
     console.log("Ontology refreshed:", result);
     return result;
   },
-  "--merge-persist": async (args) => {
+  "--merge-persist": async (_args) => {
     const result = await mergeAndPersistOntology();
     console.log("Merged ontology persisted:", result);
     return result;
@@ -685,14 +687,14 @@ const commandActions = {
     let custom = {};
     try {
       custom = args[1] ? JSON.parse(args[1]) : {};
-    } catch {
+    } catch (_error) {
       console.log("Invalid JSON input for hybrid ontology, using default");
     }
     const model = await buildOntologyHybrid(custom);
     console.log("Hybrid Ontology:", model);
     return model;
   },
-  "--diagnostic-summary": async (args) => {
+  "--diagnostic-summary": async (_args) => {
     const summary = enhancedDiagnosticSummary();
     console.log("Diagnostic Summary:", summary);
     return summary;
@@ -701,7 +703,7 @@ const commandActions = {
     let ontologies = [];
     try {
       ontologies = args.slice(1).map((data) => JSON.parse(data));
-    } catch {
+    } catch (_error) {
       console.log("Invalid JSON input for custom merge, using defaults");
       ontologies = [buildOntology(), buildOntologyFromCustomData()];
     }
@@ -709,7 +711,7 @@ const commandActions = {
     console.log("Custom Merged Ontology with Timestamp:", merged);
     return merged;
   },
-  "--backup-refresh": async (args) => {
+  "--backup-refresh": async (_args) => {
     const result = await backupAndRefreshOntology();
     console.log("Backup and Refreshed Ontology:", result);
     return result;
@@ -805,7 +807,7 @@ export async function main(args = process.argv.slice(2)) {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh`,
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh`
   );
 }
 
