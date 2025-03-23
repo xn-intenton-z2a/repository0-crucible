@@ -434,7 +434,7 @@ describe("Additional New Features", () => {
     const summary = enhancedDiagnosticSummary();
     expect(summary).toHaveProperty("timestamp");
     expect(summary.message).toBe("All diagnostic systems operational.");
-    expect(summary.version).toBe("0.0.38");
+    expect(summary.version).toBe("0.0.39");
   });
 
   test("customMergeWithTimestamp adds timestamp to merged ontology", () => {

@@ -13,15 +13,12 @@
  *   This version has been pruned to remove any drift and focus entirely on live data integration as per the Mission Statement.
  *
  * Change Log:
- *   - Version 0.0.38
- *   - Refocused on live data integration from public data sources
- *   - Enhanced diagnostic logging and extended endpoints
- *   - Updated demo and update functions to use live data integration as default
- *   - Pruned redundant legacy code to align with the Mission Statement
- *   - Updated documentation and CONTRIBUTING guidelines
- *   - Extended Endpoints Test: Validated responses from several endpoints, added new endpoint https://api.quotable.io/random, and corrected endpoint URLs
- *   - Added new library functions: buildOntologyHybrid, enhancedDiagnosticSummary, customMergeWithTimestamp, backupAndRefreshOntology
- *   - Refreshed README documentation as per CONTRIBUTING.md guidelines
+ *   - Version 0.0.39
+ *   - Refocused ontology building on live public data sources with verified endpoints.
+ *   - Legacy static fallback retained only for emergencies.
+ *   - Enhanced diagnostic logging and extended endpoints.
+ *   - Pruned redundant legacy code to better align with the Mission Statement.
+ *   - Updated endpoint corrections and diagnostics as per CONTRIBUTING guidelines.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -816,7 +813,7 @@ export function displayHelp() {
 }
 
 export function getVersion() {
-  return "0.0.38";
+  return "0.0.39";
 }
 
 export function listCommands() {

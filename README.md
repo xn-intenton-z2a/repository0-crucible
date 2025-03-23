@@ -121,13 +121,12 @@ New functions have been introduced to extend merging, diagnostics, and custom mo
 
 ## Change Log
 
-**Version 0.0.38**
+**Version 0.0.39**
 
-- Refocused ontology building on live public data sources. Static fallback is retained only for emergencies.
-- Enhanced diagnostic logging with `getCurrentTimestamp` and `logDiagnostic` functions.
-- Updated demo and update functions to use live data integration by default.
-- Extended endpoints list updated with corrections and new endpoints.
-- **Pruned drift from source file:** Removed redundant legacy code and ensured a clear focus on live data integration as per the Mission Statement.
+- Refocused ontology building entirely on live public data sources; static fallback retained only for emergencies.
+- Enhanced diagnostic logging and updated endpoint corrections.
+- Pruned drift and removed redundant legacy code in alignment with the Mission Statement.
+- Updated demo, update, and diagnostics functions to use live data integration by default.
 
 ## Contributing
 
