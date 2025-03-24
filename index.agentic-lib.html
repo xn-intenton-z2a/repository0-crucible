@@ -54,25 +54,62 @@ npm install
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="key-cli-commands" href="#key-cli-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Key CLI Commands</h3>
 <ul class="md-github">
-<li class="md-github"><code class="md-github">--build</code>: Generates a deprecated fallback ontology using static data (<strong class="md-github">deprecated: use <code class="md-github">--build-live</code> for live data integration</strong>).</li>
-<li class="md-github"><code class="md-github">--build-live</code>: Builds an ontology with live data integration and logs diagnostic information.</li>
-<li class="md-github"><code class="md-github">--persist</code>: Saves the current ontology to a JSON file.</li>
-<li class="md-github"><code class="md-github">--load</code>: Loads the saved ontology.</li>
-<li class="md-github"><code class="md-github">--query &quot;term&quot;</code>: Searches for matching ontology concepts.</li>
-<li class="md-github"><code class="md-github">--export</code>: Exports your ontology as OWL XML.</li>
-<li class="md-github"><code class="md-github">--import</code>: Imports an ontology from OWL XML content.</li>
-<li class="md-github"><code class="md-github">--backup</code>: Creates a backup of your ontology file.</li>
-<li class="md-github"><code class="md-github">--update &quot;New Title&quot;</code>: Updates the title of the current ontology using live data.</li>
-<li class="md-github"><code class="md-github">--clear</code>: Deletes the ontology file.</li>
-<li class="md-github"><code class="md-github">--crawl</code>: Concurrently crawls public endpoints to gather data for ontology building.</li>
-<li class="md-github"><code class="md-github">--fetch-retry</code>: Fetches data using retry logic.</li>
-<li class="md-github"><code class="md-github">--merge-ontologies</code>: Merges static and live ontology models.</li>
-<li class="md-github"><code class="md-github">--build-live-log</code>: Builds a live ontology with additional diagnostic logging.</li>
-<li class="md-github"><code class="md-github">--serve</code>: Launches the integrated web server.</li>
-<li class="md-github"><code class="md-github">--diagnostics</code>: Runs diagnostics using various public endpoints.</li>
-<li class="md-github"><code class="md-github">--refresh</code>: Clears the existing ontology, rebuilds it using live data, and persists the refreshed ontology.</li>
-<li class="md-github"><code class="md-github">--merge-persist</code>: Merges static and live ontologies and saves the merged result.</li>
-<li class="md-github"><strong class="md-github">New Commands:</strong>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--build</code>: Generates a deprecated fallback ontology using static data (<strong class="md-github">deprecated: use <code class="md-github">--build-live</code> for live data integration</strong>).</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--build-live</code>: Builds an ontology with live data integration and logs diagnostic information.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--persist</code>: Saves the current ontology to a JSON file.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--load</code>: Loads the saved ontology.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--query &quot;term&quot;</code>: Searches for matching ontology concepts.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--export</code>: Exports your ontology as OWL XML.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--import</code>: Imports an ontology from OWL XML content.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--backup</code>: Creates a backup of your ontology file.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--update &quot;New Title&quot;</code>: Updates the title of the current ontology using live data.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--clear</code>: Deletes the ontology file.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--crawl</code>: Concurrently crawls public endpoints to gather data for ontology building.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--fetch-retry</code>: Fetches data using retry logic.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--merge-ontologies</code>: Merges static and live ontology models.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--build-live-log</code>: Builds a live ontology with additional diagnostic logging.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--serve</code>: Launches the integrated web server.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--diagnostics</code>: Runs diagnostics using various public endpoints.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--refresh</code>: Clears the existing ontology, rebuilds it using live data, and persists the refreshed ontology.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><code class="md-github">--merge-persist</code>: Merges static and live ontologies and saves the merged result.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">New Commands:</strong></p>
 <ul class="md-github">
 <li class="md-github"><code class="md-github">--build-hybrid</code>: Combines live data with custom data to produce a hybrid ontology.</li>
 <li class="md-github"><code class="md-github">--diagnostic-summary</code>: Returns a concise diagnostic summary with timestamp and version.</li>
@@ -109,7 +146,12 @@ npm install
 </ul>
 </li>
 </ul>
-<p class="md-github"><em class="md-github">Test Results Note:</em> Extended endpoints tests have confirmed valid data responses from many endpoints while handling errors appropriately when endpoints are unreachable.</p>
+<p class="md-github"><em class="md-github">Test Results Note:</em> End-to-end tests confirmed that the crawl functionality returns varying responses:</p>
+<ul class="md-github">
+<li class="md-github">The endpoint <code class="md-github">https://dog.ceo/api/breeds/image/random</code> returned valid JSON data with an image URL.</li>
+<li class="md-github">The <code class="md-github">https://jsonplaceholder.typicode.com/posts</code> endpoint returned a non-empty array of posts in JSON format.</li>
+<li class="md-github">The <code class="md-github">https://api.publicapis.org/entries</code> endpoint returned an HTML 404 response, which is noted for further review.</li>
+</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="owl-ontology-models" href="#owl-ontology-models"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OWL Ontology Models</h2>
 <p class="md-github">The library supports a range of ontology models via wrapper functions:</p>
 <ul class="md-github">
@@ -139,6 +181,7 @@ npm install
 <li class="md-github">Enhanced diagnostic logging and updated endpoint corrections.</li>
 <li class="md-github">Pruned drift and removed redundant legacy code in alignment with the Mission Statement.</li>
 <li class="md-github">Updated demo, update, and diagnostics functions to use live data integration by default.</li>
+<li class="md-github"><strong class="md-github">Endpoint Testing:</strong> Crawl functionality tests confirmed valid data responses from <code class="md-github">https://dog.ceo/api/breeds/image/random</code> and <code class="md-github">https://jsonplaceholder.typicode.com/posts</code>. The <code class="md-github">https://api.publicapis.org/entries</code> endpoint returned a 404 HTML response, which has been documented for further analysis.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
 <p class="md-github">Contributions are welcome! Please review <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for detailed workflow, coding standards, and testing requirements. We welcome community input to further enhance owl-builder.</p>
@@ -147,7 +190,7 @@ npm install
 
   </section>
   <footer>
-    <p>Generated on 2025-03-24T04:04:37.040Z</p>
+    <p>Generated on 2025-03-24T06:04:58.915Z</p>
   </footer>
 </body>
 </html>
