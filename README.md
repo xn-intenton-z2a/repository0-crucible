@@ -64,6 +64,7 @@ node src/lib/main.js --help
 - `--diagnostics`: Runs diagnostics using various public endpoints.
 - `--refresh`: Clears the existing ontology, rebuilds it using live data, and persists the refreshed ontology.
 - `--merge-persist`: Merges static and live ontologies and saves the merged result.
+
 - **New Commands:**
   - `--build-hybrid`: Combines live data with custom data to produce a hybrid ontology.
   - `--diagnostic-summary`: Returns a concise diagnostic summary with timestamp and version.
@@ -93,7 +94,10 @@ owl-builder now includes a broadened list of live endpoints such as:
   - **New:** `https://api/quotable.io/random`
   - **Corrected:** `https://api/covid19api.com/summary`
 
-*Test Results Note:* Extended endpoints tests have confirmed valid data responses from many endpoints while handling errors appropriately when endpoints are unreachable.
+*Test Results Note:* End-to-end tests confirmed that the crawl functionality returns varying responses:
+- The endpoint `https://dog.ceo/api/breeds/image/random` returned valid JSON data with an image URL.
+- The `https://jsonplaceholder.typicode.com/posts` endpoint returned a non-empty array of posts in JSON format.
+- The `https://api.publicapis.org/entries` endpoint returned an HTML 404 response, which is noted for further review.
 
 ## OWL Ontology Models
 
@@ -127,6 +131,7 @@ New functions have been introduced to extend merging, diagnostics, and custom mo
 - Enhanced diagnostic logging and updated endpoint corrections.
 - Pruned drift and removed redundant legacy code in alignment with the Mission Statement.
 - Updated demo, update, and diagnostics functions to use live data integration by default.
+- **Endpoint Testing:** Crawl functionality tests confirmed valid data responses from `https://dog.ceo/api/breeds/image/random` and `https://jsonplaceholder.typicode.com/posts`. The `https://api.publicapis.org/entries` endpoint returned a 404 HTML response, which has been documented for further analysis.
 
 ## Contributing
 
