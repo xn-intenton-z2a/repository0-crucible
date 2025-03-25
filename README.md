@@ -1,20 +1,20 @@
 # owl-builder
 
-owl-builder is a versatile CLI tool and JavaScript library designed to build dynamic OWL ontologies from live, verified public data sources. In this release, live data integration is the default for building, updating, and demonstrating ontologies, while the legacy static fallback is retained solely for emergencies.
+owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontologies from live, verified public data sources. In this release, live data integration is the default for building, updating, querying, and persisting ontologies, while the legacy static fallback remains for emergency use only.
 
 ## Overview
 
-owl-builder leverages a broad array of public endpoints to create rich, real-time ontology models. Key features include:
+Key features include:
 
-- **Live Data Integration:** Build ontologies using up-to-date information from trusted public endpoints. Live data integration is now the default.
-- **Data Persistence:** Save, load, backup, clear, refresh, and merge your ontology JSON files effortlessly.
-- **Query & Validation:** Efficiently search and validate ontology concepts.
+- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints.
+- **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files.
+- **Query & Validation:** Rapidly search for ontology concepts and validate your data.
 - **OWL Export/Import:** Convert ontologies to and from a minimal OWL XML format.
-- **Concurrent Data Crawling:** Retrieve real-time data concurrently from an extended list of public endpoints.
-- **Diverse Model Wrappers:** Generate various ontology models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, and economic).
-- **Enhanced Diagnostics:** Detailed timestamped logging for monitoring and troubleshooting.
-- **Web Server:** Integrated server for simple ontology status monitoring.
-- **Extended Merging and Customization:** New functions such as buildOntologyHybrid, enhancedDiagnosticSummary, customMergeWithTimestamp, and backupAndRefreshOntology allow more flexible ontology building and diagnostics.
+- **Concurrent Data Crawling:** Gather real-time data concurrently from a range of public endpoints.
+- **Diverse Ontology Models:** Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).
+- **Enhanced Diagnostics:** View timestamped logs for monitoring and troubleshooting.
+- **Web Server Integration:** Launch a simple web server for quick status checks.
+- **Custom Merging & Refreshing:** New functions provide extended merging and diagnostic capabilities.
 
 ## Installation
 
@@ -30,7 +30,7 @@ npm install
 
 ### Run Demo
 
-A demo highlighting core functionalities such as live ontology building, persistence, querying and diagnostic logging:
+Demonstrate core functionality using live data integration:
 
 ```bash
 npm run start
@@ -38,7 +38,7 @@ npm run start
 
 ### CLI Help
 
-For a complete list of commands and detailed usage instructions, run:
+Display a list of available commands and usage instructions:
 
 ```bash
 node src/lib/main.js --help
@@ -46,96 +46,64 @@ node src/lib/main.js --help
 
 ### Key CLI Commands
 
-- `--build`: Generates a deprecated fallback ontology using static data (**deprecated: use `--build-live` for live data integration**).
-- `--build-live`: Builds an ontology with live data integration and logs diagnostic information.
+- `--build`: Generates a deprecated fallback ontology using static data (**deprecated; use `--build-live` for live data integration**).
+- `--build-live`: Builds an ontology using live data and logs diagnostic information.
 - `--persist`: Saves the current ontology to a JSON file.
 - `--load`: Loads the saved ontology.
 - `--query "term"`: Searches for matching ontology concepts.
-- `--export`: Exports your ontology as OWL XML.
-- `--import`: Imports an ontology from OWL XML content.
-- `--backup`: Creates a backup of your ontology file.
-- `--update "New Title"`: Updates the title of the current ontology using live data.
-- `--clear`: Deletes the ontology file.
-- `--crawl`: Concurrently crawls public endpoints to gather data for ontology building.
+- `--export`: Exports the ontology as OWL XML.
+- `--import`: Imports an ontology from OWL XML.
+- `--backup`: Creates a backup of the ontology file.
+- `--update "New Title"`: Updates the ontology title using live data.
+- `--clear`: Deletes the local ontology file.
+- `--crawl`: Concurrently crawls multiple public endpoints to gather data.
 - `--fetch-retry`: Fetches data using retry logic.
 - `--merge-ontologies`: Merges static and live ontology models.
 - `--build-live-log`: Builds a live ontology with additional diagnostic logging.
 - `--serve`: Launches the integrated web server.
-- `--diagnostics`: Runs diagnostics using various public endpoints.
+- `--diagnostics`: Runs a diagnostic crawl of public endpoints.
 - `--refresh`: Clears the existing ontology, rebuilds it using live data, and persists the refreshed ontology.
-- `--merge-persist`: Merges static and live ontologies and saves the merged result.
+- `--merge-persist`: Merges static and live ontologies and saves the result.
 
-- **New Commands:**
-  - `--build-hybrid`: Combines live data with custom data to produce a hybrid ontology.
-  - `--diagnostic-summary`: Returns a concise diagnostic summary with timestamp and version.
-  - `--custom-merge`: Merges provided ontologies and appends a current timestamp.
-  - `--backup-refresh`: Creates a backup and refreshes the current ontology.
+**New Commands:**
 
-Additional commands include wrappers for building diverse ontology models. See the help output for a complete list.
+- `--build-hybrid`: Combines live data with custom static data to produce a hybrid ontology.
+- `--diagnostic-summary`: Provides a concise summary of diagnostic information (timestamp and version).
+- `--custom-merge`: Merges provided ontologies and appends a current timestamp.
+- `--backup-refresh`: Creates a backup and refreshes the ontology.
 
-## Extended Endpoints
+## Endpoints and Testing
 
-owl-builder now includes a broadened list of live endpoints such as:
+owl-builder uses a broad list of public endpoints to build ontologies. Examples include:
 
-- Traditional endpoints like:
-  - `https://api.publicapis.org/entries`
-  - `https://dog.ceo/api/breeds/image/random`
-  - `https://jsonplaceholder.typicode.com/posts`
-  - ...
+- `https://api.publicapis.org/entries`
+- `https://dog.ceo/api/breeds/image/random`
+- `https://jsonplaceholder.typicode.com/posts`
+- `https://api.coindesk.com/v1/bpi/currentprice.json`
+- `https://api/chucknorris.io/jokes/random`
+- `https://api/agify.io/?name=michael`
+- `https://api/stackexchange.com/2.2/questions?order=desc&sort=activity`
+- `https://api/spacexdata.com/v4/launches/latest`
+- `https://api/spacexdata.com/v4/rockets`
+- `https://api/exchangerate-api.com/v4/latest/USD`
+- `https://api/quotable.io/random`
+- `https://api/covid19api.com/summary`
 
-- **New and Corrected endpoints:**
-  - `https://api.coindesk.com/v1/bpi/currentprice.json`
-  - `https://api/chucknorris.io/jokes/random`
-  - `https://api/agify.io/?name=michael`
-  - `https://api/stackexchange.com/2.2/questions?order=desc&sort=activity`
-  - `https://api/spacexdata.com/v4/launches/latest`
-  - `https://api/spacexdata.com/v4/rockets`
-  - `https://api/exchangerate-api.com/v4/latest/USD`
-  - **New:** `https://api/quotable.io/random`
-  - **Corrected:** `https://api/covid19api.com/summary`
-
-*Test Results Note:* End-to-end tests confirmed that the crawl functionality returns varying responses:
-- The endpoint `https://dog.ceo/api/breeds/image/random` returned valid JSON data with an image URL.
-- The `https://jsonplaceholder.typicode.com/posts` endpoint returned a non-empty array of posts in JSON format.
-- The `https://api.publicapis.org/entries` endpoint returned an HTML 404 response, which is noted for further review.
-
-## OWL Ontology Models
-
-The library supports a range of ontology models via wrapper functions:
-
-- **buildBasicOWLModel:** Constructs a basic ontology model.
-- **buildAdvancedOWLModel:** Builds an advanced model with classes and properties.
-- **buildIntermediateOWLModel:** Provides an intermediate-level ontology model.
-- **buildEnhancedOntology:** Offers an enhanced ontology using live data, such as images.
-- **buildMinimalOWLModel:** Constructs a minimal ontology model.
-- **buildComplexOntologyModel:** Creates a complex model with comprehensive features.
-- **buildScientificOntologyModel:** Targets scientific disciplines and academic concepts.
-- **buildEducationalOntologyModel:** Tailored for educational content.
-- **buildPhilosophicalOntologyModel:** Centers on philosophical themes.
-- **buildEconomicOntologyModel:** Focuses on economic and market concepts.
-
-## Additional New Features
-
-New functions have been introduced to extend merging, diagnostics, and custom model capabilities:
-
-- **buildOntologyHybrid:** Combines live data with custom static data to produce a hybrid ontology.
-- **enhancedDiagnosticSummary:** Provides a summary of diagnostic information including timestamp and version.
-- **customMergeWithTimestamp:** Merges multiple ontologies and adds a current timestamp.
-- **backupAndRefreshOntology:** Backs up the current ontology and refreshes it using live data.
+End-to-end tests verify valid responses from multiple endpoints. Some endpoints may occasionally return unexpected results (e.g., an HTML 404 response), which are gracefully handled by falling back to the static ontology.
 
 ## Change Log
 
 **Version 0.0.39**
 
-- Refocused ontology building entirely on live public data sources; static fallback retained only for emergencies.
-- Enhanced diagnostic logging and updated endpoint corrections.
-- Pruned drift and removed redundant legacy code in alignment with the Mission Statement.
-- Updated demo, update, and diagnostics functions to use live data integration by default.
-- **Endpoint Testing:** Crawl functionality tests confirmed valid data responses from `https://dog.ceo/api/breeds/image/random` and `https://jsonplaceholder.typicode.com/posts`. The `https://api.publicapis.org/entries` endpoint returned a 404 HTML response, which has been documented for further analysis.
+- Refocused ontology building on live public data sources; static fallback remains only for emergencies.
+- Enhanced diagnostic logging and updated several endpoint corrections.
+- Pruned redundant legacy code to align with our mission.
+- Extended ontology model wrappers and introduced new merging and refreshing functions.
+- Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for detailed workflow, coding standards, and testing requirements. We welcome community input to further enhance owl-builder.
+Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for our coding standards, testing requirements, and workflow guidelines.
 
 ## License
 
