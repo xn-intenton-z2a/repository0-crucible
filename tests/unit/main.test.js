@@ -49,7 +49,7 @@ const {
   enhancedDiagnosticSummary,
   customMergeWithTimestamp,
   backupAndRefreshOntology,
-  fetcher,
+  fetcher
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -64,7 +64,7 @@ function simulateNetworkFailure(mod) {
           handler(error);
         }
         return req;
-      },
+      }
     };
     process.nextTick(() => {
       req.on("error", () => {});
