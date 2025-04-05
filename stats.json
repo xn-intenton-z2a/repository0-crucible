@@ -1,0 +1,75 @@
+{
+  "openIssues": 17,
+  "issuesClosedLastHour": 0,
+  "issuesClosedLastDay": 0,
+  "openPRs": 4,
+  "prDetails": [
+    {
+      "title": "chore: formatting fixes",
+      "ageMinutes": 6271
+    },
+    {
+      "title": "Bump @vitest/coverage-v8 from 3.0.8 to 3.1.1",
+      "ageMinutes": 7296
+    },
+    {
+      "title": "Bump openai from 4.87.3 to 4.90.0",
+      "ageMinutes": 7296
+    },
+    {
+      "title": "Bump vitest from 3.0.8 to 3.1.1",
+      "ageMinutes": 7296
+    }
+  ],
+  "diffMinutes": 23,
+  "diffMinutesMain": 23,
+  "commitsLastHour": 4,
+  "commitsLastDay": 5,
+  "lastFiveCommitMessages": [
+    {
+      "time": "11:41",
+      "message": "0.1.1-0"
+    },
+    {
+      "time": "11:41",
+      "message": "0.1.0"
+    },
+    {
+      "time": "11:29",
+      "message": "0.0.40-0"
+    },
+    {
+      "time": "11:22",
+      "message": "Update from agentic-lib"
+    },
+    {
+      "time": "02:05",
+      "message": "Add schedule configuration to GitHub workflow\n\nIntroduced `sched..."
+    }
+  ],
+  "branches": {
+    "count": 4,
+    "details": [
+      {
+        "branch": "agentic-lib-formatting",
+        "minutesSinceLastCommit": 6271
+      },
+      {
+        "branch": "dependabot/npm_and_yarn/openai-4.90.0",
+        "minutesSinceLastCommit": 7296
+      },
+      {
+        "branch": "dependabot/npm_and_yarn/vitest/coverage-v8-3.1.1",
+        "minutesSinceLastCommit": 7155
+      },
+      {
+        "branch": "dependabot/npm_and_yarn/vitest-3.1.1",
+        "minutesSinceLastCommit": 7156
+      }
+    ]
+  },
+  "averagePRAge": 7039,
+  "testStatus": "PASS",
+  "testsLastPassedMinutes": 15,
+  "generatedAt": "2025-04-05T12:04:54.473Z"
+}
