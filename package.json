@@ -1,6 +1,6 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
-  "version": "0.0.39",
+  "version": "0.0.40-0",
   "description": "CLI tool refocused on building OWL ontologies from live, verified public data sources with enhanced diagnostics, persistence, updated ontology model wrappers, extended endpoints list, and pruned drift. Static fallback remains only for emergencies.",
   "type": "module",
   "main": "src/lib/main.js",
@@ -59,7 +59,9 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "files": ["package.json"],
+  "files": [
+    "package.json"
+  ],
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
