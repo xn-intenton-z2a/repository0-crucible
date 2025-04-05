@@ -63,8 +63,6 @@ The README.md file can be edited and is provided to completions API requests so 
 
 ## Agentic contribution house choice options (programmatically parsed): START
 
-Workflow schedule: schedule-1
-
 ## Issue House Choice Options
 
 repository specific activities:
