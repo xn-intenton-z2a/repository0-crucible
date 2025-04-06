@@ -6,23 +6,23 @@
   "prDetails": [
     {
       "title": "chore: formatting fixes",
-      "ageMinutes": 6869
+      "ageMinutes": 7001
     },
     {
       "title": "Bump @vitest/coverage-v8 from 3.0.8 to 3.1.1",
-      "ageMinutes": 7894
+      "ageMinutes": 8026
     },
     {
       "title": "Bump openai from 4.87.3 to 4.90.0",
-      "ageMinutes": 7894
+      "ageMinutes": 8026
     },
     {
       "title": "Bump vitest from 3.0.8 to 3.1.1",
-      "ageMinutes": 7894
+      "ageMinutes": 8026
     }
   ],
-  "diffMinutes": 119,
-  "diffMinutesMain": 570,
+  "diffMinutes": 131,
+  "diffMinutesMain": 702,
   "commitsLastHour": 0,
   "commitsLastDay": 6,
   "lastFiveCommitMessages": [
@@ -52,24 +52,24 @@
     "details": [
       {
         "branch": "agentic-lib-formatting",
-        "minutesSinceLastCommit": 6869
+        "minutesSinceLastCommit": 7001
       },
       {
         "branch": "dependabot/npm_and_yarn/openai-4.90.0",
-        "minutesSinceLastCommit": 7894
+        "minutesSinceLastCommit": 8026
       },
       {
         "branch": "dependabot/npm_and_yarn/vitest/coverage-v8-3.1.1",
-        "minutesSinceLastCommit": 7754
+        "minutesSinceLastCommit": 7886
       },
       {
         "branch": "dependabot/npm_and_yarn/vitest-3.1.1",
-        "minutesSinceLastCommit": 7754
+        "minutesSinceLastCommit": 7886
       }
     ]
   },
-  "averagePRAge": 7637,
+  "averagePRAge": 7769,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-05T22:03:11.770Z"
+  "generatedAt": "2025-04-06T00:15:13.807Z"
 }
