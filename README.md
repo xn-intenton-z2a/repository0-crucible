@@ -9,7 +9,7 @@ Key features include:
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints.
 - **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files.
 - **Query & Validation:** Rapidly search for ontology concepts and validate your data.
-- **OWL Export/Import:** Convert ontologies to and from a minimal OWL XML format.
+- **OWL Export/Import:** Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).
 - **Concurrent Data Crawling:** Gather real-time data concurrently from a range of public endpoints.
 - **Diverse Ontology Models:** Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).
 - **Enhanced Diagnostics:** View timestamped logs for monitoring and troubleshooting.
@@ -51,8 +51,8 @@ node src/lib/main.js --help
 - `--persist`: Saves the current ontology to a JSON file.
 - `--load`: Loads the saved ontology.
 - `--query "term"`: Searches for matching ontology concepts.
-- `--export`: Exports the ontology as OWL XML.
-- `--import`: Imports an ontology from OWL XML.
+- `--export`: Exports the ontology as extended OWL XML.
+- `--import`: Imports an ontology from extended OWL XML.
 - `--backup`: Creates a backup of the ontology file.
 - `--update "New Title"`: Updates the ontology title using live data.
 - `--clear`: Deletes the local ontology file.
@@ -90,7 +90,7 @@ owl-builder uses a broad list of public endpoints to build ontologies. Examples 
 - `https://api/agify.io/?name=michael`
 - `https://api/stackexchange.com/2.2/questions?order=desc&sort=activity`
 - `https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json`
-- `https://api.spacexdata.com/v4/launches/latest`
+- `https://api/spacexdata.com/v4/launches/latest`
 - `https://random-data-api.com/api/commerce/random_commerce`
 - `https://jsonplaceholder.typicode.com/albums`
 - `https://jsonplaceholder.typicode.com/users`
@@ -101,8 +101,8 @@ owl-builder uses a broad list of public endpoints to build ontologies. Examples 
 - `https://quotes.rest/qod`
 - `https://type.fit/api/quotes`
 - `https://api/exchangerate-api.com/v4/latest/USD`
-- `https://api.spacexdata.com/v4/rockets`
-- `https://api.quotable.io/random`
+- `https://api/spacexdata.com/v4/rockets`
+- `https://api/quotable.io/random`
 
 Note: Ensure that your network environment allows access to these endpoints for successful data retrieval.
 
@@ -114,7 +114,7 @@ Note: Ensure that your network environment allows access to these endpoints for 
 - Enhanced diagnostic logging and updated several endpoint corrections.
 - Pruned redundant legacy code to align with our mission.
 - Extended ontology model wrappers and introduced new merging and refreshing functions.
-- Updated malformed endpoint URLs in the listAvailableEndpoints function to ensure proper resolution.
+- Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.
 - Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.
 
 ## Contributing
