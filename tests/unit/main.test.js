@@ -83,8 +83,6 @@ describe("Core Ontology Functions", () => {
     const ontology = { title: "Test Ontology", concepts: ["A"] };
     const writeSpy = vi.spyOn(fs, "writeFile").mockImplementation(() => {});
     const result = await persistOntology(ontology);
-    // Since persistOntology uses fs/promises, we cannot check fs.writeFile directly here,
-    // so we just check the result
     expect(result).toEqual({ success: true });
     writeSpy.mockRestore();
   });
@@ -202,7 +200,6 @@ describe("Crawling Functionality", () => {
       if (!item.error) {
         expect(typeof item.data).toBe("string");
         expect(item.data.length).toBeGreaterThan(0);
-        // The owlContent now contains extended XML, so check for title element
         expect(item.owlContent).toContain("<title>");
       }
     });
