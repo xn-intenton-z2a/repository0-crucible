@@ -19,6 +19,7 @@
  *   - Enhanced diagnostic logging and extended endpoints.
  *   - Pruned redundant legacy code to better align with the Mission Statement.
  *   - Updated endpoint corrections and diagnostics as per CONTRIBUTING guidelines.
+ *   - Enhanced XML export/import to support extended ontology models (concepts, classes, properties, metadata).
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -38,7 +39,7 @@ const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 export function buildOntology() {
   if (process.env.NODE_ENV !== "test") {
     console.warn(
-      "Warning: buildOntology (static fallback) is deprecated. Use buildOntologyFromLiveData for live data integration in production.",
+      "Warning: buildOntology (static fallback) is deprecated. Use buildOntologyFromLiveData for live data integration in production."
     );
   }
   return {
@@ -95,13 +96,97 @@ export function validateOntology(ontology) {
   return ontology && ontology.title ? true : false;
 }
 
+// Updated exportOntologyToXML to support extended ontology models including concepts, classes, properties, metadata
 export function exportOntologyToXML(ontology) {
-  return `<ontology><title>${ontology.title}</title></ontology>`;
+  let xml = `<ontology>`;
+  if (ontology.title) {
+    xml += `<title>${ontology.title}</title>`;
+  }
+  if (ontology.concepts) {
+    xml += `<concepts>`;
+    ontology.concepts.forEach((concept) => {
+      xml += `<concept>${concept}</concept>`;
+    });
+    xml += `</concepts>`;
+  }
+  if (ontology.classes) {
+    xml += `<classes>`;
+    ontology.classes.forEach((cls) => {
+      xml += `<class>${cls}</class>`;
+    });
+    xml += `</classes>`;
+  }
+  if (ontology.properties) {
+    xml += `<properties>`;
+    ontology.properties.forEach((prop) => {
+      xml += `<property>`;
+      if (prop.name) xml += `<name>${prop.name}</name>`;
+      if (prop.type) xml += `<type>${prop.type}</type>`;
+      xml += `</property>`;
+    });
+    xml += `</properties>`;
+  }
+  if (ontology.metadata) {
+    xml += `<metadata>`;
+    Object.keys(ontology.metadata).forEach((key) => {
+      xml += `<${key}>${ontology.metadata[key]}</${key}>`;
+    });
+    xml += `</metadata>`;
+  }
+  xml += `</ontology>`;
+  return xml;
 }
 
+// Updated importOntologyFromXML to parse extended XML into full ontology model
 export function importOntologyFromXML(xml) {
-  const titleMatch = xml.match(/<title>([^<]+)<\/title>/);
-  return { title: titleMatch ? titleMatch[1] : "Imported Ontology", concepts: [] };
+  const getTag = (tag) => {
+    const match = xml.match(new RegExp(`<${tag}>([^<]+)</${tag}>`));
+    return match ? match[1] : undefined;
+  };
+
+  const ontology = {};
+  ontology.title = getTag('title') || "Imported Ontology";
+
+  // Parse concepts
+  const conceptsBlock = xml.match(/<concepts>([\s\S]*?)<\/concepts>/);
+  if (conceptsBlock) {
+    const conceptMatches = conceptsBlock[1].matchAll(/<concept>([^<]+)<\/concept>/g);
+    ontology.concepts = Array.from(conceptMatches, m => m[1]);
+  } else {
+    ontology.concepts = [];
+  }
+
+  // Parse classes
+  const classesBlock = xml.match(/<classes>([\s\S]*?)<\/classes>/);
+  if (classesBlock) {
+    const classMatches = classesBlock[1].matchAll(/<class>([^<]+)<\/class>/g);
+    ontology.classes = Array.from(classMatches, m => m[1]);
+  }
+
+  // Parse properties
+  const propertiesBlock = xml.match(/<properties>([\s\S]*?)<\/properties>/);
+  if (propertiesBlock) {
+    const propertyMatches = propertiesBlock[1].matchAll(/<property>([\s\S]*?)<\/property>/g);
+    ontology.properties = Array.from(propertyMatches, m => {
+      const propXml = m[1];
+      const nameMatch = propXml.match(/<name>([^<]+)<\/name>/);
+      const typeMatch = propXml.match(/<type>([^<]+)<\/type>/);
+      return { name: nameMatch ? nameMatch[1] : undefined, type: typeMatch ? typeMatch[1] : undefined };
+    });
+  }
+
+  // Parse metadata
+  const metadataBlock = xml.match(/<metadata>([\s\S]*?)<\/metadata>/);
+  if (metadataBlock) {
+    ontology.metadata = {};
+    const metaRegex = /<([^>]+)>([^<]+)<\/\1>/g;
+    let metaMatch;
+    while ((metaMatch = metaRegex.exec(metadataBlock[1])) !== null) {
+      ontology.metadata[metaMatch[1]] = metaMatch[2];
+    }
+  }
+  
+  return ontology;
 }
 
 export function backupOntology() {
@@ -503,7 +588,7 @@ const commandActions = {
     return xml;
   },
   "--import": async (_args) => {
-    const sampleXML = `<ontology><title>Imported Ontology</title></ontology>`;
+    const sampleXML = `<ontology><title>Imported Ontology</title><concepts><concept>ConceptA</concept></concepts></ontology>`;
     const imported = importOntologyFromXML(sampleXML);
     console.log("Ontology imported from XML:", imported);
     return imported;
@@ -808,7 +893,7 @@ export async function main(args = process.argv.slice(2)) {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh`,
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh`
   );
 }
 

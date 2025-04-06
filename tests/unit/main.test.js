@@ -44,7 +44,6 @@ const {
   buildEconomicOntologyModel,
   refreshOntology,
   mergeAndPersistOntology,
-  // New functions
   buildOntologyHybrid,
   enhancedDiagnosticSummary,
   customMergeWithTimestamp,
@@ -116,17 +115,47 @@ describe("Core Ontology Functions", () => {
     readSpy.mockRestore();
   });
 
-  test("exportOntologyToXML returns valid XML string", () => {
-    const ontology = { title: "XML Ontology", concepts: [] };
+  test("exportOntologyToXML returns valid XML string with extended fields", () => {
+    const ontology = {
+      title: "XML Ontology",
+      concepts: ["A", "B"],
+      classes: ["C1", "C2"],
+      properties: [
+        { name: "prop1", type: "string" },
+        { name: "prop2", type: "number" },
+      ],
+      metadata: { created: "today", info: "demo" },
+    };
     const xml = exportOntologyToXML(ontology);
     expect(xml).toContain("<ontology>");
-    expect(xml).toContain("XML Ontology");
+    expect(xml).toContain("<title>XML Ontology</title>");
+    expect(xml).toContain("<concepts>");
+    expect(xml).toContain("<class>");
+    expect(xml).toContain("<properties>");
+    expect(xml).toContain("<metadata>");
   });
 
-  test("importOntologyFromXML parses XML correctly", () => {
-    const sampleXML = `<ontology><title>Imported Ontology</title></ontology>`;
+  test("importOntologyFromXML parses extended XML correctly", () => {
+    const sampleXML = `<ontology><title>Imported Ontology</title><concepts><concept>TestConcept</concept></concepts><classes><class>TestClass</class></classes><properties><property><name>name1</name><type>string</type></property></properties><metadata><created>today</created><info>demo</info></metadata></ontology>`;
     const imported = importOntologyFromXML(sampleXML);
     expect(imported).toHaveProperty("title", "Imported Ontology");
+    expect(imported.concepts).toEqual(["TestConcept"]);
+    expect(imported.classes).toEqual(["TestClass"]);
+    expect(imported.properties).toEqual([{ name: "name1", type: "string" }]);
+    expect(imported.metadata).toEqual({ created: "today", info: "demo" });
+  });
+
+  test("XML round-trip retains all ontology properties", () => {
+    const ontology = {
+      title: "RoundTrip Ontology",
+      concepts: ["ConceptX"],
+      classes: ["ClassX"],
+      properties: [{ name: "propX", type: "boolean" }],
+      metadata: { version: "1.0", tag: "roundtrip" },
+    };
+    const xml = exportOntologyToXML(ontology);
+    const imported = importOntologyFromXML(xml);
+    expect(imported).toEqual(ontology);
   });
 
   test("backupOntology writes backup file successfully", () => {
@@ -172,7 +201,8 @@ describe("Crawling Functionality", () => {
       if (!item.error) {
         expect(typeof item.data).toBe("string");
         expect(item.data.length).toBeGreaterThan(0);
-        expect(item).toHaveProperty("owlContent", "<ontology><title>Public Data Ontology</title></ontology>");
+        // The owlContent now contains extended XML, so check for title element
+        expect(item.owlContent).toContain("<title>");
       }
     });
   }, 30000);
