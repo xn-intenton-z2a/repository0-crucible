@@ -30,7 +30,7 @@
 <li class="md-github"><strong class="md-github">Live Data Integration:</strong> Ontologies are built using up-to-date data from trusted public endpoints.</li>
 <li class="md-github"><strong class="md-github">Data Persistence:</strong> Easily save, load, backup, clear, refresh, and merge ontologies as JSON files.</li>
 <li class="md-github"><strong class="md-github">Query &amp; Validation:</strong> Rapidly search for ontology concepts and validate your data.</li>
-<li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontologies to and from a minimal OWL XML format.</li>
+<li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).</li>
 <li class="md-github"><strong class="md-github">Concurrent Data Crawling:</strong> Gather real-time data concurrently from a range of public endpoints.</li>
 <li class="md-github"><strong class="md-github">Diverse Ontology Models:</strong> Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).</li>
 <li class="md-github"><strong class="md-github">Enhanced Diagnostics:</strong> View timestamped logs for monitoring and troubleshooting.</li>
@@ -59,8 +59,8 @@ npm install
 <li class="md-github"><code class="md-github">--persist</code>: Saves the current ontology to a JSON file.</li>
 <li class="md-github"><code class="md-github">--load</code>: Loads the saved ontology.</li>
 <li class="md-github"><code class="md-github">--query &quot;term&quot;</code>: Searches for matching ontology concepts.</li>
-<li class="md-github"><code class="md-github">--export</code>: Exports the ontology as OWL XML.</li>
-<li class="md-github"><code class="md-github">--import</code>: Imports an ontology from OWL XML.</li>
+<li class="md-github"><code class="md-github">--export</code>: Exports the ontology as extended OWL XML.</li>
+<li class="md-github"><code class="md-github">--import</code>: Imports an ontology from extended OWL XML.</li>
 <li class="md-github"><code class="md-github">--backup</code>: Creates a backup of the ontology file.</li>
 <li class="md-github"><code class="md-github">--update &quot;New Title&quot;</code>: Updates the ontology title using live data.</li>
 <li class="md-github"><code class="md-github">--clear</code>: Deletes the local ontology file.</li>
@@ -97,7 +97,7 @@ npm install
 <li class="md-github"><code class="md-github">https://api/agify.io/?name=michael</code></li>
 <li class="md-github"><code class="md-github">https://api/stackexchange.com/2.2/questions?order=desc&amp;sort=activity</code></li>
 <li class="md-github"><code class="md-github">https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&amp;format=json</code></li>
-<li class="md-github"><code class="md-github">https://api.spacexdata.com/v4/launches/latest</code></li>
+<li class="md-github"><code class="md-github">https://api/spacexdata.com/v4/launches/latest</code></li>
 <li class="md-github"><code class="md-github">https://random-data-api.com/api/commerce/random_commerce</code></li>
 <li class="md-github"><code class="md-github">https://jsonplaceholder.typicode.com/albums</code></li>
 <li class="md-github"><code class="md-github">https://jsonplaceholder.typicode.com/users</code></li>
@@ -108,8 +108,8 @@ npm install
 <li class="md-github"><code class="md-github">https://quotes.rest/qod</code></li>
 <li class="md-github"><code class="md-github">https://type.fit/api/quotes</code></li>
 <li class="md-github"><code class="md-github">https://api/exchangerate-api.com/v4/latest/USD</code></li>
-<li class="md-github"><code class="md-github">https://api.spacexdata.com/v4/rockets</code></li>
-<li class="md-github"><code class="md-github">https://api.quotable.io/random</code></li>
+<li class="md-github"><code class="md-github">https://api/spacexdata.com/v4/rockets</code></li>
+<li class="md-github"><code class="md-github">https://api/quotable.io/random</code></li>
 </ul>
 <p class="md-github">Note: Ensure that your network environment allows access to these endpoints for successful data retrieval.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="change-log" href="#change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change Log</h2>
@@ -119,7 +119,7 @@ npm install
 <li class="md-github">Enhanced diagnostic logging and updated several endpoint corrections.</li>
 <li class="md-github">Pruned redundant legacy code to align with our mission.</li>
 <li class="md-github">Extended ontology model wrappers and introduced new merging and refreshing functions.</li>
-<li class="md-github">Updated malformed endpoint URLs in the listAvailableEndpoints function to ensure proper resolution.</li>
+<li class="md-github">Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.</li>
 <li class="md-github">Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
@@ -129,7 +129,7 @@ npm install
 
   </section>
   <footer>
-    <p>Generated on 2025-04-06T23:39:06.076Z</p>
+    <p>Generated on 2025-04-06T23:47:27.189Z</p>
   </footer>
 </body>
 </html>
