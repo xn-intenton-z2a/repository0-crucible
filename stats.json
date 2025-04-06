@@ -1,14 +1,23 @@
 {
-  "openIssues": 2,
-  "issuesClosedLastHour": 24,
-  "issuesClosedLastDay": 24,
-  "openPRs": 0,
-  "prDetails": [],
-  "diffMinutes": 5,
+  "openIssues": 3,
+  "issuesClosedLastHour": 26,
+  "issuesClosedLastDay": 26,
+  "openPRs": 1,
+  "prDetails": [
+    {
+      "title": "Enhanced error handling and diagnostic logging in live data integration functions. (fixes #411)",
+      "ageMinutes": 0
+    }
+  ],
+  "diffMinutes": 1,
   "diffMinutesMain": 5,
-  "commitsLastHour": 9,
-  "commitsLastDay": 10,
+  "commitsLastHour": 10,
+  "commitsLastDay": 11,
   "lastFiveCommitMessages": [
+    {
+      "time": "23:49",
+      "message": "Refactor file system operations to use asynchronous APIs using f..."
+    },
     {
       "time": "23:41",
       "message": "Enhanced XML exportimport functions to support extended ontology..."
@@ -24,18 +33,19 @@
     {
       "time": "23:27",
       "message": "Merge pull request #403 from xn-intenton-z2a/agentic-lib-formatt..."
-    },
-    {
-      "time": "23:27",
-      "message": "Merge pull request #402 from xn-intenton-z2a/main\n\nsync"
     }
   ],
   "branches": {
-    "count": 0,
-    "details": []
+    "count": 1,
+    "details": [
+      {
+        "branch": "agentic-lib-issue-411",
+        "minutesSinceLastCommit": 1
+      }
+    ]
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-06T23:47:09.778Z"
+  "generatedAt": "2025-04-06T23:54:58.833Z"
 }
