@@ -1,75 +1,41 @@
 {
-  "openIssues": 18,
-  "issuesClosedLastHour": 0,
-  "issuesClosedLastDay": 0,
-  "openPRs": 4,
-  "prDetails": [
-    {
-      "title": "chore: formatting fixes",
-      "ageMinutes": 8309
-    },
-    {
-      "title": "Bump @vitest/coverage-v8 from 3.0.8 to 3.1.1",
-      "ageMinutes": 9334
-    },
-    {
-      "title": "Bump openai from 4.87.3 to 4.90.0",
-      "ageMinutes": 9334
-    },
-    {
-      "title": "Bump vitest from 3.0.8 to 3.1.1",
-      "ageMinutes": 9334
-    }
-  ],
-  "diffMinutes": 114,
-  "diffMinutesMain": 114,
-  "commitsLastHour": 0,
-  "commitsLastDay": 1,
+  "openIssues": 3,
+  "issuesClosedLastHour": 22,
+  "issuesClosedLastDay": 22,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 3,
+  "diffMinutesMain": 3,
+  "commitsLastHour": 8,
+  "commitsLastDay": 9,
   "lastFiveCommitMessages": [
     {
-      "time": "20:08",
-      "message": "Update from agentic-lib"
+      "time": "23:35",
+      "message": "Fixed malformed endpoint URLs in listAvailableEndpoints function..."
     },
     {
-      "time": "12:32",
-      "message": "Update from agentic-lib"
+      "time": "23:29",
+      "message": "Switch workflows to use schedule-3 cron settings\n\nUpdated all wo..."
     },
     {
-      "time": "11:41",
-      "message": "0.1.1-0"
+      "time": "23:27",
+      "message": "Merge pull request #403 from xn-intenton-z2a/agentic-lib-formatt..."
     },
     {
-      "time": "11:41",
-      "message": "0.1.0"
+      "time": "23:27",
+      "message": "Merge pull request #402 from xn-intenton-z2a/main\n\nsync"
     },
     {
-      "time": "11:29",
-      "message": "0.0.40-0"
+      "time": "23:25",
+      "message": "Merge pull request #393 from xn-intenton-z2a/dependabot/npm_and_..."
     }
   ],
   "branches": {
-    "count": 4,
-    "details": [
-      {
-        "branch": "agentic-lib-formatting",
-        "minutesSinceLastCommit": 8309
-      },
-      {
-        "branch": "dependabot/npm_and_yarn/openai-4.90.0",
-        "minutesSinceLastCommit": 9334
-      },
-      {
-        "branch": "dependabot/npm_and_yarn/vitest/coverage-v8-3.1.1",
-        "minutesSinceLastCommit": 9194
-      },
-      {
-        "branch": "dependabot/npm_and_yarn/vitest-3.1.1",
-        "minutesSinceLastCommit": 9194
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 9077,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-06T22:03:12.985Z"
+  "generatedAt": "2025-04-06T23:38:53.759Z"
 }
