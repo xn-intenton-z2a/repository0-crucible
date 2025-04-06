@@ -6,13 +6,13 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 
 Key features include:
 
-- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints.
+- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching.
 - **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)
 - **Query & Validation:** Rapidly search for ontology concepts and validate your data.
 - **OWL Export/Import:** Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).
 - **Concurrent Data Crawling:** Gather real-time data concurrently from a range of public endpoints.
 - **Diverse Ontology Models:** Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).
-- **Enhanced Diagnostics:** View timestamped logs for monitoring and troubleshooting.
+- **Enhanced Diagnostics:** View timestamped logs with detailed context for each operation, facilitating easier tracing and debugging.
 - **Web Server Integration:** Launch a simple web server for quick status checks.
 - **Custom Merging & Refreshing:** New functions provide extended merging and diagnostic capabilities.
 
@@ -47,7 +47,7 @@ node src/lib/main.js --help
 ### Key CLI Commands
 
 - `--build`: Generates a deprecated fallback ontology using static data (**deprecated; use `--build-live` for live data integration**).
-- `--build-live`: Builds an ontology using live data and logs diagnostic information.
+- `--build-live`: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt in case of errors.
 - `--persist`: Saves the current ontology to a JSON file.
 - `--load`: Loads the saved ontology.
 - `--query "term"`: Searches for matching ontology concepts.
@@ -57,7 +57,7 @@ node src/lib/main.js --help
 - `--update "New Title"`: Updates the ontology title using live data.
 - `--clear`: Deletes the local ontology file.
 - `--crawl`: Concurrently crawls multiple public endpoints to gather data.
-- `--fetch-retry`: Fetches data using retry logic.
+- `--fetch-retry`: Fetches data using retry logic with detailed logging per attempt.
 - `--merge-ontologies`: Merges static and live ontology models.
 - `--build-live-log`: Builds a live ontology with additional diagnostic logging.
 - `--serve`: Launches the integrated web server.
@@ -111,7 +111,7 @@ Note: Ensure that your network environment allows access to these endpoints for 
 **Version 0.0.39**
 
 - Refocused ontology building on live public data sources; static fallback remains only for emergencies.
-- Enhanced diagnostic logging and updated several endpoint corrections.
+- Enhanced diagnostic logging with detailed error messages and retry context in live data integration functions.
 - Pruned redundant legacy code to align with our mission.
 - Extended ontology model wrappers and introduced new merging and refreshing functions.
 - Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.

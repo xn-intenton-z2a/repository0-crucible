@@ -21,6 +21,7 @@
  *   - Updated endpoint corrections and diagnostics as per CONTRIBUTING guidelines.
  *   - Enhanced XML export/import to support extended ontology models (concepts, classes, properties, metadata).
  *   - Refactored file system operations to use asynchronous APIs.
+ *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -61,8 +62,8 @@ export async function buildOntologyFromLiveData() {
         ? parsed.entries.slice(0, 3).map((entry) => entry.Description)
         : ["Concept1", "Concept2", "Concept3"];
     return { title, concepts };
-  } catch (_error) {
-    // Fallback to deprecated static ontology in case of error
+  } catch (error) {
+    logDiagnostic(`buildOntologyFromLiveData encountered error fetching live data from https://api.publicapis.org/entries: ${error.message}. Falling back to static ontology.`);
     return buildOntology();
   }
 }
@@ -86,11 +87,6 @@ export async function loadOntology() {
 }
 
 export function queryOntology(searchTerm) {
-  // Since loadOntology is now async, we assume that sync usage in CLI still works with previously persisted file.
-  // For backward compatibility in CLI commands, we use a synchronous require of the file if possible.
-  // But here, for queryOntology, we simulate async load by using deconstructed ontology if available.
-  // In practice, queryOntology should be made async. For now, we call loadOntology() and check if it returned an error.
-  // This might be a limitation but kept for compatibility with CLI command usage.
   const ontology = fs.existsSync(ontologyFilePath) ? JSON.parse(fs.readFileSync(ontologyFilePath, "utf-8")) : { success: false };
   if (ontology.success === false) {
     return { searchTerm, results: [] };
@@ -242,12 +238,12 @@ export function listAvailableEndpoints() {
     "https://api.agify.io/?name=michael",
     "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity",
     "https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json",
-    "https://api.spacexdata.com/v4/launches/latest",
+    "https://api/spacexdata.com/v4/launches/latest",
     "https://random-data-api.com/api/commerce/random_commerce",
     "https://jsonplaceholder.typicode.com/albums",
     "https://jsonplaceholder.typicode.com/users",
-    "https://api.genderize.io",
-    "https://api.nationalize.io",
+    "https://api/genderize.io",
+    "https://api/nationalize.io",
     "https://api/covid19api.com/summary",
     "https://dog.ceo/api/breed/husky/images/random",
     "https://quotes.rest/qod",
@@ -262,21 +258,23 @@ export async function fetchDataWithRetry(url, retries = 3) {
   const mod = url.startsWith("https") ? https : http;
   const options = { headers: { "User-Agent": "owl-builder CLI tool" } };
   return new Promise((resolve, reject) => {
-    function attempt(n) {
+    function attempt(n, attemptNumber) {
+      logDiagnostic(`Attempt ${attemptNumber} for ${url} started.`);
       const req = mod.get(url, options, (res) => {
         let data = "";
         res.on("data", (chunk) => (data += chunk));
         res.on("end", () => resolve(data));
       });
       req.on("error", (err) => {
+        logDiagnostic(`Attempt ${attemptNumber} for ${url} failed: ${err.message}`);
         if (n > 0) {
-          attempt(n - 1);
+          attempt(n - 1, attemptNumber + 1);
         } else {
-          reject(err);
+          reject(new Error(`All retry attempts for ${url} failed. Last error: ${err.message}`));
         }
       });
     }
-    attempt(retries);
+    attempt(retries, 1);
   });
 }
 
