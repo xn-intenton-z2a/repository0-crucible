@@ -80,16 +80,31 @@ owl-builder uses a broad list of public endpoints to build ontologies. Examples 
 - `https://dog.ceo/api/breeds/image/random`
 - `https://jsonplaceholder.typicode.com/posts`
 - `https://api.coindesk.com/v1/bpi/currentprice.json`
+- `https://api/github.com`
+- `https://jsonplaceholder.typicode.com/comments`
+- `https://dummyjson.com/products`
+- `https://randomuser.me/api/`
+- `https://catfact.ninja/fact`
+- `https://jsonplaceholder.typicode.com/todos`
 - `https://api/chucknorris.io/jokes/random`
 - `https://api/agify.io/?name=michael`
 - `https://api/stackexchange.com/2.2/questions?order=desc&sort=activity`
-- `https://api/spacexdata.com/v4/launches/latest`
-- `https://api/spacexdata.com/v4/rockets`
-- `https://api/exchangerate-api.com/v4/latest/USD`
-- `https://api/quotable.io/random`
+- `https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json`
+- `https://api.spacexdata.com/v4/launches/latest`
+- `https://random-data-api.com/api/commerce/random_commerce`
+- `https://jsonplaceholder.typicode.com/albums`
+- `https://jsonplaceholder.typicode.com/users`
+- `https://api/genderize.io`
+- `https://api/nationalize.io`
 - `https://api/covid19api.com/summary`
+- `https://dog.ceo/api/breed/husky/images/random`
+- `https://quotes.rest/qod`
+- `https://type.fit/api/quotes`
+- `https://api/exchangerate-api.com/v4/latest/USD`
+- `https://api.spacexdata.com/v4/rockets`
+- `https://api.quotable.io/random`
 
-End-to-end tests verify valid responses from multiple endpoints. Some endpoints may occasionally return unexpected results (e.g., an HTML 404 response), which are gracefully handled by falling back to the static ontology.
+Note: Ensure that your network environment allows access to these endpoints for successful data retrieval.
 
 ## Change Log
 
@@ -99,6 +114,7 @@ End-to-end tests verify valid responses from multiple endpoints. Some endpoints 
 - Enhanced diagnostic logging and updated several endpoint corrections.
 - Pruned redundant legacy code to align with our mission.
 - Extended ontology model wrappers and introduced new merging and refreshing functions.
+- Updated malformed endpoint URLs in the listAvailableEndpoints function to ensure proper resolution.
 - Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.
 
 ## Contributing
