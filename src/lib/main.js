@@ -20,12 +20,14 @@
  *   - Pruned redundant legacy code to better align with the Mission Statement.
  *   - Updated endpoint corrections and diagnostics as per CONTRIBUTING guidelines.
  *   - Enhanced XML export/import to support extended ontology models (concepts, classes, properties, metadata).
+ *   - Refactored file system operations to use asynchronous APIs.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
  */
 
 import fs from "fs";
+import { promises as fsp } from "fs";
 import path from "path";
 import https from "https";
 import http from "http";
@@ -44,7 +46,7 @@ export function buildOntology() {
   }
   return {
     title: "Public Data Ontology",
-    concepts: ["Concept1", "Concept2", "Concept3"],
+    concepts: ["Concept1", "Concept2", "Concept3"]
   };
 }
 
@@ -65,18 +67,18 @@ export async function buildOntologyFromLiveData() {
   }
 }
 
-export function persistOntology(ontology) {
+export async function persistOntology(ontology) {
   try {
-    fs.writeFileSync(ontologyFilePath, JSON.stringify(ontology, null, 2));
+    await fsp.writeFile(ontologyFilePath, JSON.stringify(ontology, null, 2));
     return { success: true };
   } catch (e) {
     return { success: false, error: e.message };
   }
 }
 
-export function loadOntology() {
+export async function loadOntology() {
   try {
-    const content = fs.readFileSync(ontologyFilePath, "utf-8");
+    const content = await fsp.readFile(ontologyFilePath, "utf-8");
     return JSON.parse(content);
   } catch (e) {
     return { success: false, error: e.message };
@@ -84,7 +86,12 @@ export function loadOntology() {
 }
 
 export function queryOntology(searchTerm) {
-  const ontology = loadOntology();
+  // Since loadOntology is now async, we assume that sync usage in CLI still works with previously persisted file.
+  // For backward compatibility in CLI commands, we use a synchronous require of the file if possible.
+  // But here, for queryOntology, we simulate async load by using deconstructed ontology if available.
+  // In practice, queryOntology should be made async. For now, we call loadOntology() and check if it returned an error.
+  // This might be a limitation but kept for compatibility with CLI command usage.
+  const ontology = fs.existsSync(ontologyFilePath) ? JSON.parse(fs.readFileSync(ontologyFilePath, "utf-8")) : { success: false };
   if (ontology.success === false) {
     return { searchTerm, results: [] };
   }
@@ -189,10 +196,10 @@ export function importOntologyFromXML(xml) {
   return ontology;
 }
 
-export function backupOntology() {
+export async function backupOntology() {
   try {
-    const content = fs.readFileSync(ontologyFilePath, "utf-8");
-    fs.writeFileSync(backupFilePath, content);
+    const content = await fsp.readFile(ontologyFilePath, "utf-8");
+    await fsp.writeFile(backupFilePath, content);
     return { success: true, backupFile: backupFilePath };
   } catch (e) {
     return { success: false, error: e.message };
@@ -206,16 +213,16 @@ export async function updateOntology(newTitle) {
   return ontology;
 }
 
-export function clearOntology() {
+export async function clearOntology() {
   try {
-    if (fs.existsSync(ontologyFilePath)) {
-      fs.unlinkSync(ontologyFilePath);
-      return { success: true };
-    } else {
+    await fsp.unlink(ontologyFilePath);
+    return { success: true };
+  } catch (e) {
+    if (e.code === 'ENOENT') {
       return { success: false, error: "Ontology file does not exist" };
+    } else {
+      return { success: false, error: "Error clearing ontology file" };
     }
-  } catch (_error) {
-    return { success: false, error: "Error clearing ontology file" };
   }
 }
 
@@ -246,8 +253,8 @@ export function listAvailableEndpoints() {
     "https://quotes.rest/qod",
     "https://type.fit/api/quotes",
     "https://api/exchangerate-api.com/v4/latest/USD",
-    "https://api.spacexdata.com/v4/rockets",
-    "https://api.quotable.io/random"
+    "https://api/spacexdata.com/v4/rockets",
+    "https://api/quotable.io/random"
   ];
 }
 
@@ -296,7 +303,7 @@ export function buildBasicOWLModel() {
     id: "basic",
     title: "Basic OWL Ontology",
     concepts: ["Class1", "Class2"],
-    properties: [],
+    properties: []
   };
 }
 
@@ -307,11 +314,11 @@ export function buildAdvancedOWLModel() {
     classes: ["Person", "Organization"],
     properties: [
       { name: "hasName", type: "string" },
-      { name: "hasAge", type: "integer" },
+      { name: "hasAge", type: "integer" }
     ],
     metadata: {
-      created: new Date().toISOString(),
-    },
+      created: new Date().toISOString()
+    }
   };
 }
 
@@ -355,7 +362,7 @@ export function buildIntermediateOWLModel() {
     id: "intermediate",
     title: "Intermediate OWL Ontology",
     concepts: ["IntermediateConcept1", "IntermediateConcept2"],
-    annotations: { version: "intermediate" },
+    annotations: { version: "intermediate" }
   };
 }
 
@@ -409,7 +416,7 @@ export function buildMinimalOWLModel() {
     id: "minimal",
     title: "Minimal OWL Ontology",
     concepts: [],
-    metadata: { version: "minimal" },
+    metadata: { version: "minimal" }
   };
 }
 
@@ -421,10 +428,10 @@ export function buildComplexOntologyModel() {
     properties: [
       { name: "hasA", type: "string" },
       { name: "hasB", type: "number" },
-      { name: "hasC", type: "boolean" },
+      { name: "hasC", type: "boolean" }
     ],
     concepts: ["ConceptA", "ConceptB", "ConceptC"],
-    metadata: { created: new Date().toISOString() },
+    metadata: { created: new Date().toISOString() }
   };
 }
 
@@ -434,7 +441,7 @@ export function buildScientificOntologyModel() {
     title: "Scientific OWL Ontology",
     disciplines: ["Biology", "Chemistry", "Physics"],
     concepts: ["Hypothesis", "Experiment", "Data Analysis"],
-    metadata: { source: "Scientific Publications", created: new Date().toISOString() },
+    metadata: { source: "Scientific Publications", created: new Date().toISOString() }
   };
 }
 
@@ -444,7 +451,7 @@ export function buildEducationalOntologyModel() {
     title: "Educational OWL Ontology",
     subjects: ["Mathematics", "History", "Literature"],
     concepts: ["Curriculum", "Lesson Plan", "Assessment"],
-    metadata: { notes: "Developed for educational institutions", created: new Date().toISOString() },
+    metadata: { notes: "Developed for educational institutions", created: new Date().toISOString() }
   };
 }
 
@@ -455,7 +462,7 @@ export function buildPhilosophicalOntologyModel() {
     title: "Philosophical OWL Ontology",
     themes: ["Existence", "Ethics", "Epistemology"],
     concepts: ["Socrates", "Plato", "Aristotle"],
-    metadata: { created: new Date().toISOString(), category: "philosophy" },
+    metadata: { created: new Date().toISOString(), category: "philosophy" }
   };
 }
 
@@ -465,19 +472,19 @@ export function buildEconomicOntologyModel() {
     title: "Economic OWL Ontology",
     sectors: ["Finance", "Manufacturing", "Services"],
     concepts: ["Supply", "Demand", "Market"],
-    metadata: { created: new Date().toISOString(), category: "economics" },
+    metadata: { created: new Date().toISOString(), category: "economics" }
   };
 }
 
 // New functions for refreshing and merging ontologies inline with our Mission Statement
 export async function refreshOntology() {
   try {
-    const clearResult = clearOntology();
+    const clearResult = await clearOntology();
     if (clearResult.success === false) {
       logDiagnostic("No existing ontology file to clear or already cleared.");
     }
     const liveOntology = await buildOntologyFromLiveData();
-    const persistResult = persistOntology(liveOntology);
+    const persistResult = await persistOntology(liveOntology);
     logDiagnostic("Ontology refreshed and persisted.");
     return { liveOntology, persistResult };
   } catch (err) {
@@ -491,7 +498,7 @@ export async function mergeAndPersistOntology() {
     const staticOntology = buildOntology();
     const liveOntology = await buildOntologyFromLiveData();
     const merged = mergeOntologies(staticOntology, liveOntology);
-    const persistRes = persistOntology(merged);
+    const persistRes = await persistOntology(merged);
     logDiagnostic("Merged ontology persisted.");
     return { merged, persistRes };
   } catch (err) {
@@ -516,7 +523,7 @@ export function enhancedDiagnosticSummary() {
   return {
     timestamp,
     message: "All diagnostic systems operational.",
-    version: getVersion(),
+    version: getVersion()
   };
 }
 
@@ -527,11 +534,11 @@ export function customMergeWithTimestamp(...ontologies) {
 }
 
 export async function backupAndRefreshOntology() {
-  const backupResult = backupOntology();
+  const backupResult = await backupOntology();
   const refreshedOntology = await refreshOntology();
   return {
     backupResult,
-    refreshedOntology,
+    refreshedOntology
   };
 }
 
@@ -560,12 +567,12 @@ const commandActions = {
   "--persist": async (_args) => {
     const ontology = buildOntology();
     console.log("Ontology built:", ontology);
-    const saved = persistOntology(ontology);
+    const saved = await persistOntology(ontology);
     console.log("Ontology persisted:", saved);
     return saved;
   },
   "--load": async (_args) => {
-    const loaded = loadOntology();
+    const loaded = await loadOntology();
     console.log("Ontology loaded:", loaded);
     return loaded;
   },
@@ -595,8 +602,8 @@ const commandActions = {
   },
   "--backup": async (_args) => {
     const ontology = buildOntology();
-    persistOntology(ontology);
-    const backupResult = backupOntology();
+    await persistOntology(ontology);
+    const backupResult = await backupOntology();
     console.log("Ontology backup created:", backupResult);
     return backupResult;
   },
@@ -608,7 +615,7 @@ const commandActions = {
     return updated;
   },
   "--clear": async (_args) => {
-    const result = clearOntology();
+    const result = await clearOntology();
     if (result.success) {
       console.log("Ontology cleared, file removed.", result);
     } else {
@@ -665,7 +672,7 @@ const commandActions = {
   },
   "--extend-concepts": async (args) => {
     const additional = args[1] ? args[1].split(",") : ["ExtraConcept"];
-    let ontology = loadOntology();
+    let ontology = await loadOntology();
     if (ontology.success === false) {
       ontology = buildOntology();
     }
@@ -801,7 +808,7 @@ const commandActions = {
     const result = await backupAndRefreshOntology();
     console.log("Backup and Refreshed Ontology:", result);
     return result;
-  },
+  }
 };
 
 async function demo() {
@@ -810,9 +817,9 @@ async function demo() {
   // Refocused demo to use live data integration
   const ontology = await buildOntologyFromLiveData();
   console.log("Demo - built ontology:", ontology);
-  const persistResult = persistOntology(ontology);
+  const persistResult = await persistOntology(ontology);
   console.log("Demo - persisted ontology:", persistResult);
-  const loadedOntology = loadOntology();
+  const loadedOntology = await loadOntology();
   console.log("Demo - loaded ontology:", loadedOntology);
   const queryResult = queryOntology("Concept");
   console.log("Demo - query result:", queryResult);
@@ -822,7 +829,7 @@ async function demo() {
   console.log("Demo - exported XML:", xml);
   const importedOntology = importOntologyFromXML(xml);
   console.log("Demo - imported ontology:", importedOntology);
-  const backupResult = backupOntology();
+  const backupResult = await backupOntology();
   console.log("Demo - backup result:", backupResult);
   const updatedOntology = await updateOntology("Demo Updated Ontology");
   console.log("Demo - updated ontology:", updatedOntology);

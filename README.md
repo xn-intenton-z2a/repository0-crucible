@@ -7,7 +7,7 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 Key features include:
 
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints.
-- **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files.
+- **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)
 - **Query & Validation:** Rapidly search for ontology concepts and validate your data.
 - **OWL Export/Import:** Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).
 - **Concurrent Data Crawling:** Gather real-time data concurrently from a range of public endpoints.
@@ -115,6 +115,7 @@ Note: Ensure that your network environment allows access to these endpoints for 
 - Pruned redundant legacy code to align with our mission.
 - Extended ontology model wrappers and introduced new merging and refreshing functions.
 - Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.
+- Refactored file system operations to use asynchronous, non-blocking APIs.
 - Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.
 
 ## Contributing
