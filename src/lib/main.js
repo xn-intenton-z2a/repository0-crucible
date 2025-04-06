@@ -150,7 +150,7 @@ export function listAvailableEndpoints() {
     "https://api.agify.io/?name=michael",
     "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity",
     "https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json",
-    "https://api/spacexdata.com/v4/launches/latest",
+    "https://api.spacexdata.com/v4/launches/latest",
     "https://random-data-api.com/api/commerce/random_commerce",
     "https://jsonplaceholder.typicode.com/albums",
     "https://jsonplaceholder.typicode.com/users",
@@ -161,8 +161,8 @@ export function listAvailableEndpoints() {
     "https://quotes.rest/qod",
     "https://type.fit/api/quotes",
     "https://api/exchangerate-api.com/v4/latest/USD",
-    "https://api/spacexdata.com/v4/rockets",
-    "https://api.quotable.io/random",
+    "https://api.spacexdata.com/v4/rockets",
+    "https://api.quotable.io/random"
   ];
 }
 
