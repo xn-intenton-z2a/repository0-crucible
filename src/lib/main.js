@@ -28,6 +28,7 @@
  *     In strict mode, non-numeric inputs throw a clear error indicating that only valid numeric formats (integer, decimal, or scientific) are accepted. Allowed formats include integer, decimal or scientific notation.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter and CLI options (--livedata-retry-default and --livedata-delay-default).
  *   - Revised CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and default values.
+ *   - Simplified NaN input parsing and unified fallback logic to ensure only one warning per unique invalid input is logged, removing redundancy.
  *   - Refined diagnostic logging messages to clearly indicate non-strict mode fallback behavior.
  *
  * Note for Contributors:
@@ -111,15 +112,10 @@ export function buildOntology() {
  * @returns {number}
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
-  // Check CLI override first
-  if (varName === "LIVEDATA_RETRY_COUNT" && process.env.LIVEDATA_RETRY_DEFAULT) {
-    const cliValue = process.env.LIVEDATA_RETRY_DEFAULT;
-    const normalizedCli = normalizeEnvValue(cliValue);
-    if (normalizedCli && normalizedCli !== "nan" && !isNaN(Number(normalizedCli))) {
-      return Number(normalizedCli);
-    }
-  } else if (varName === "LIVEDATA_INITIAL_DELAY" && process.env.LIVEDATA_DELAY_DEFAULT) {
-    const cliValue = process.env.LIVEDATA_DELAY_DEFAULT;
+  // Handle CLI override for specific variables
+  if ((varName === "LIVEDATA_RETRY_COUNT" && process.env.LIVEDATA_RETRY_DEFAULT) ||
+      (varName === "LIVEDATA_INITIAL_DELAY" && process.env.LIVEDATA_DELAY_DEFAULT)) {
+    const cliValue = varName === "LIVEDATA_RETRY_COUNT" ? process.env.LIVEDATA_RETRY_DEFAULT : process.env.LIVEDATA_DELAY_DEFAULT;
     const normalizedCli = normalizeEnvValue(cliValue);
     if (normalizedCli && normalizedCli !== "nan" && !isNaN(Number(normalizedCli))) {
       return Number(normalizedCli);
@@ -144,9 +140,9 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
     return Number(normalized);
   }
 
+  // Non-strict mode: check for invalid or non-numeric values
   if (!normalized || normalized === "nan" || isNaN(Number(normalized))) {
     if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
-      // Optimize cache key using a consistent separator to ensure variants of whitespace and case result in the same key
       const warnKey = `${varName}:${normalized}`;
       if (!envWarningCache.has(warnKey)) {
         let unit = "";
