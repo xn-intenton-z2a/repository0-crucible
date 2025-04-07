@@ -326,7 +326,6 @@ describe("Environment Variable Parsing Tests", () => {
     logSpy.mockRestore();
   });
 
-  // New tests for additional whitespace variants normalized to the same value
   test("Unique warning is logged once for multiple raw inputs that normalize to the same value", () => {
     resetEnvWarningCache();
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -336,8 +335,8 @@ describe("Environment Variable Parsing Tests", () => {
     expect(_parseEnvNumber("TEST_MULTIPLE", 50)).toBe(50);
     process.env.TEST_MULTIPLE = " NaN";
     expect(_parseEnvNumber("TEST_MULTIPLE", 50)).toBe(50);
-    const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_MULTIPLE") && call[0].includes("received invalid input"));
-    expect(warnings.length).toBe(1);
+    const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_MULTIPLE") && call[0].includes("received invalid input")).length;
+    expect(warnings).toBe(1);
     logSpy.mockRestore();
   });
 
@@ -350,8 +349,8 @@ describe("Environment Variable Parsing Tests", () => {
     expect(_parseEnvNumber("TEST_VARIANT", 30)).toBe(30);
     process.env.TEST_VARIANT = "NaN   ";
     expect(_parseEnvNumber("TEST_VARIANT", 30)).toBe(30);
-    const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_VARIANT") && call[0].includes("received invalid input"));
-    expect(warnings.length).toBe(1);
+    const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_VARIANT") && call[0].includes("received invalid input")).length;
+    expect(warnings).toBe(1);
     logSpy.mockRestore();
   });
 });

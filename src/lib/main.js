@@ -141,6 +141,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   }
 
   if (isInvalid) {
+    // Only log a warning if warnings are not globally disabled
     if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
       const warnKey = `${varName}:${normalized}`;
       if (!envWarningCache.has(warnKey)) {
