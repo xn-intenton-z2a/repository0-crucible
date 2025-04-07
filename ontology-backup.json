@@ -1,8 +1,8 @@
 {
-  "title": "Public Data Ontology",
+  "title": "Live Data Ontology",
   "concepts": [
-    "Concept1",
-    "Concept2",
-    "Concept3"
+    "LiveConcept1",
+    "LiveConcept2",
+    "LiveConcept3"
   ]
 }

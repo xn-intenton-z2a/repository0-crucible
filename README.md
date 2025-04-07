@@ -16,6 +16,11 @@ Key features include:
 - **Web Server Integration:** Launch a simple web server for quick status checks. **New:** The server now supports integration testing by exposing a function to start the server and gracefully shut it down after performing real HTTP requests.
 - **Custom Merging & Refreshing:** New functions provide extended merging and diagnostic capabilities.
 
+**New Feature: Disable Live Data Integration**
+- You can disable live data integration by setting the environment variable `DISABLE_LIVE_DATA` (set to any value besides "0") or using the CLI flag `--disable-live`. When this is set, owl-builder will bypass all live network requests and use the static fallback instead of attempting live data integration.
+
+_Note for Testing:_ In the test environment (`NODE_ENV=test`), live data integration is simulated to return a dummy live ontology, ensuring that tests expecting a live integration response receive a title different from the static fallback.
+
 ## Installation
 
 Ensure Node.js version 20 or later is installed. Then, clone the repository and install dependencies:
@@ -30,10 +35,24 @@ npm install
 
 ### Run Demo
 
-Demonstrate core functionality using live data integration:
+Demonstrate core functionality using live data integration (unless disabled):
 
 ```bash
 npm run start
+```
+
+### Disable Live Data Integration
+
+To disable live data integration and use the static fallback, set the environment variable:
+
+```bash
+export DISABLE_LIVE_DATA=1
+```
+
+Or invoke the CLI with the flag:
+
+```bash
+node src/lib/main.js --disable-live
 ```
 
 ### CLI Help
@@ -64,6 +83,7 @@ node src/lib/main.js --help
 - `--diagnostics`: Runs a diagnostic crawl of public endpoints.
 - `--refresh`: Clears the existing ontology, rebuilds it using live data, and persists the refreshed ontology.
 - `--merge-persist`: Merges static and live ontologies and saves the result.
+- `--disable-live`: Disables live data integration for this session, forcing use of the static fallback.
 
 **New Commands:**
 
@@ -125,6 +145,8 @@ _Note:_ Ensure that your network environment allows access to these endpoints fo
 - **Crawling Update:** Refactored crawlOntologies to return an object with separate arrays for successes and errors to simplify downstream processing.
 - Added robust HTTP endpoint integration testing for the web server.
 - **Asynchronous Query:** The `queryOntology` function has been refactored to use asynchronous file system methods for improved non-blocking performance.
+- **Live Data Integration Disable:** New option to disable live data integration by setting the environment variable `DISABLE_LIVE_DATA` or using the CLI flag `--disable-live`. When enabled, owl-builder uses the static fallback instead of attempting live network requests.
+- **Test Environment Simulation:** In test mode (`NODE_ENV=test`), live data integration is simulated to return a dummy ontology, ensuring tests detect a difference from the static fallback.
 
 ## Contributing
 
