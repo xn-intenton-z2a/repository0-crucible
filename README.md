@@ -6,7 +6,7 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 
 Key features include:
 
-- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy with a randomized jitter to further improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a standardized helper function that silently applies default values when not set, and logs a diagnostic warning (with appropriate units) only once per variable when a non-numeric value is explicitly provided.
+- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy with a randomized jitter to further improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a standardized helper function that applies default values when not set. If non-numeric values are provided, the system falls back to defaults and logs a diagnostic warning only once per variable (with appropriate units).
 - **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)
 - **Query & Validation:** Rapidly search for ontology concepts and validate your data. Note: The function `queryOntology` has been refactored to operate asynchronously for improved performance.
 - **OWL Export/Import:** Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).
@@ -16,13 +16,19 @@ Key features include:
 - **Web Server Integration:** Launch a simple web server for quick status checks. **New:** The server now supports integration testing by exposing a function to start the server and gracefully shut it down after performing real HTTP requests.
 - **Custom Merging & Refreshing:** New functions provide extended merging and diagnostic capabilities.
 
-**New Feature: Disable Live Data Integration**
-- You can disable live data integration by setting the environment variable `DISABLE_LIVE_DATA` (set to any value besides "0") or using the CLI flag `--disable-live`. When this is set, owl-builder will bypass all live network requests and use the static fallback instead of attempting live data integration.
+### Environment Variable Parsing for Live Data Fetching
 
-**New Automated Tests for Environment Variable Parsing:**
-- Comprehensive tests have been added to ensure that the parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` behaves as expected, correctly falling back to default values and logging warnings only once for invalid inputs.
+owl-builder uses the environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` to configure the retry logic during live data fetching. The behavior is as follows:
 
-_Note for Testing:_ In the test environment (`NODE_ENV=test`), live data integration is simulated to return a dummy ontology, ensuring that tests expecting a live integration response receive a title different from the static fallback.
+- **Valid Numeric Inputs:** Standard numbers (e.g., `3`, `50`) and scientific notation (e.g., `1e3` for 1000) are accepted and used in the retry mechanism.
+- **Invalid or Non-Numeric Inputs:** If a non-numeric value (e.g., `NaN`, `abc`) or an empty value is provided, the function silently falls back to default values (`3` retries and `100ms` delay, respectively) and logs a diagnostic warning **only once per variable**. This prevents log spam while ensuring fallback behavior is consistent.
+
+Example:
+
+```bash
+export LIVEDATA_RETRY_COUNT=NaN      # Will default to 3 retries with a diagnostic warning
+export LIVEDATA_INITIAL_DELAY=abc      # Will default to 100ms with a diagnostic warning
+``` 
 
 ## Installation
 

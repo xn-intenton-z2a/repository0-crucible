@@ -170,7 +170,6 @@ describe("Live Data Configurability", () => {
     expect(attemptCount).toBe(4);
     const retryWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_RETRY_COUNT is non-numeric")).length;
     const delayWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_INITIAL_DELAY is non-numeric")).length;
-    // Since our helper logs a warning with a custom message, check if at least one warning was logged
     expect(retryWarnings + delayWarnings).toBeGreaterThanOrEqual(2);
     http.get = originalGet;
     process.env.LIVEDATA_RETRY_COUNT = originalEnvRetry;
@@ -211,8 +210,6 @@ describe("Environment Variable Parsing Tests", () => {
   const originalEnv = { ...process.env };
   afterEach(() => {
     process.env = { ...originalEnv };
-    // Reset the warning flags for testing purposes
-    // Note: This resets the private cache; in real scenarios, tests are isolated.
   });
 
   test("Returns default for undefined, empty, or whitespace-only values", () => {
@@ -232,11 +229,8 @@ describe("Environment Variable Parsing Tests", () => {
   test("Logs warning only once for non-numeric input", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     process.env.TEST_NON_NUM = "abc";
-    // First call should log warning
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
-    // Subsequent calls should not log warning again
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
-    // Check that warning was logged only once
     const warningCalls = logSpy.mock.calls.filter(call =>
       call[0].includes("TEST_NON_NUM is non-numeric")
     );
@@ -708,7 +702,6 @@ describe("Disable Live Data Integration", () => {
   test("buildOntologyFromLiveData performs live integration when DISABLE_LIVE is not set", async () => {
     delete process.env.DISABLE_LIVE_DATA;
     const liveOntology = await buildOntologyFromLiveData();
-    // In test mode, live integration is simulated and should return a title other than 'Public Data Ontology'
     expect(liveOntology.title).not.toBe("Public Data Ontology");
   });
 });
