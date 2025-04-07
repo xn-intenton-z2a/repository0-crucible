@@ -104,7 +104,11 @@ export function buildOntology() {
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const value = process.env[varName];
-  const trimmed = (typeof value === "string") ? value.trim() : "";
+  // If the environment variable is not a string, return fallback silently without logging warning
+  if (typeof value !== "string") {
+    return configurableFallback !== undefined ? configurableFallback : defaultVal;
+  }
+  const trimmed = value.trim();
   const normalized = trimmed.toLowerCase();
   const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
   
