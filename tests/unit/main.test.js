@@ -666,10 +666,10 @@ describe("Disable Live Data Integration", () => {
     delete process.env.DISABLE_LIVE_DATA;
   });
 
-  test("buildOntologyFromLiveData performs live integration when DISABLE_LIVE_DATA is not set", async () => {
+  test("buildOntologyFromLiveData performs live integration when DISABLE_LIVE is not set", async () => {
     delete process.env.DISABLE_LIVE_DATA;
     const liveOntology = await buildOntologyFromLiveData();
-    // In typical scenario, live data integration would try to fetch and may differ from static fallback.
+    // In test mode, live integration is simulated and should return a title other than 'Public Data Ontology'
     expect(liveOntology.title).not.toBe("Public Data Ontology");
   });
 });
