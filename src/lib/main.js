@@ -30,6 +30,7 @@
  *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
  *   - Enforced strict handling of 'NaN' values: In strict mode, any value that is not a valid numerical format (including variants like 'NaN' with extra whitespace) will throw an error immediately.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
+ *   - Refactored normalization of environment variable values into a dedicated helper function for consistent handling of variants like "NaN", empty strings, and whitespace-only inputs. This ensures one-time diagnostic warnings and simplifies future modifications.
  *   - Warning Cache Normalization: To avoid duplicate logging, a warning is logged only once per unique normalized input (trimmed and lowercased value).
  *
  * Note for Contributors:
@@ -53,6 +54,16 @@ const envWarningCache = new Map();
  */
 export function resetEnvWarningCache() {
   envWarningCache.clear();
+}
+
+/**
+ * Helper function to normalize environment variable values.
+ * Trims the value and converts to lower case. If the value is undefined, returns an empty string.
+ * @param {string | undefined} value 
+ * @returns {string}
+ */
+function normalizeEnvValue(value) {
+  return value !== undefined ? value.trim().toLowerCase() : "";
 }
 
 /**
@@ -87,7 +98,7 @@ export function buildOntology() {
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const value = process.env[varName];
   const trimmed = value !== undefined ? value.trim() : "";
-  const normalized = trimmed.toLowerCase();
+  const normalized = normalizeEnvValue(value);
   const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
   
   // Determine fallback: priority is CLI provided override, then configurableFallback, then defaultVal
