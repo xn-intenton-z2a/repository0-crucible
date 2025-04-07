@@ -23,7 +23,7 @@
  *   - Refactored file system operations to use asynchronous APIs.
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *   - Implemented exponential backoff in fetchDataWithRetry for improved network resilience with configurable retries and delay parameters.
- *     Now safely parses the LIVEDATA_INITIAL_DELAY environment variable and falls back to a default value if invalid.
+ *     Now safely parses the LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT environment variables and falls back to default values if invalid.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -259,7 +259,10 @@ export function listAvailableEndpoints() {
 // Updated fetchDataWithRetry to implement exponential backoff delays with configurable retry attempts and initial delay.
 export async function fetchDataWithRetry(url, retries) {
   // Use provided retries parameter, or override with environment variable LIVEDATA_RETRY_COUNT, defaulting to 3
-  retries = (typeof retries !== 'undefined') ? retries : (process.env.LIVEDATA_RETRY_COUNT ? parseInt(process.env.LIVEDATA_RETRY_COUNT, 10) : 3);
+  if (typeof retries === 'undefined') {
+    let envRetries = parseInt(process.env.LIVEDATA_RETRY_COUNT, 10);
+    retries = Number.isNaN(envRetries) ? 3 : envRetries;
+  }
   // Safely parse initial delay, default is 100ms if invalid or not provided
   const parsedDelay = parseInt(process.env.LIVEDATA_INITIAL_DELAY, 10);
   const initialDelay = Number.isNaN(parsedDelay) ? 100 : parsedDelay;
