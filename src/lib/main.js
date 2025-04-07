@@ -33,6 +33,7 @@
  *   - Enhanced handling of 'NaN' values in environment variable parsing to ensure consistent fallback behavior and suppress duplicate warnings for equivalent inputs.
  *   - Consolidated environment variable parsing and diagnostic logging to provide clearer and more actionable messages in both strict and non-strict modes.
  *   - Streamlined the fallback logic and standardized the warning messages for non-numeric environment variables to ensure only one warning per unique normalized input is logged.
+ *   - Enhanced unit tests for additional edge cases in non-numeric environment variable handling (including mixed-case, extra spaces, and null values).
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -63,12 +64,12 @@ export function resetEnvWarningCache() {
 
 /**
  * Helper function to normalize environment variable values.
- * Trims the value and converts to lower case. If the value is undefined, returns an empty string.
- * @param {string | undefined} value 
+ * Trims the value and converts to lower case. If the value is undefined or not a string, returns an empty string.
+ * @param {string | undefined | null} value 
  * @returns {string}
  */
 function normalizeEnvValue(value) {
-  return value !== undefined ? value.trim().toLowerCase() : "";
+  return (typeof value === "string") ? value.trim().toLowerCase() : "";
 }
 
 /**
