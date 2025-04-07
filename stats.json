@@ -1,19 +1,27 @@
 {
   "openIssues": 19,
-  "issuesClosedLastHour": 6,
+  "issuesClosedLastHour": 8,
   "issuesClosedLastDay": 100,
   "openPRs": 1,
   "prDetails": [
     {
-      "title": "Refined environment variable parsing to consolidate NaN handling and ensure warnings log only once per normalized invalid input updated docs accordingly. (fixes #554)",
+      "title": "Refined environment variable parsing to consolidate NaN handling and ensure a single warning per unique normalized input. (fixes #560)",
       "ageMinutes": 0
     }
   ],
-  "diffMinutes": 0,
-  "diffMinutesMain": 0,
-  "commitsLastHour": 4,
-  "commitsLastDay": 85,
+  "diffMinutes": 1,
+  "diffMinutesMain": 9,
+  "commitsLastHour": 6,
+  "commitsLastDay": 87,
   "lastFiveCommitMessages": [
+    {
+      "time": "22:04",
+      "message": "Refined environment variable parsing to consolidate NaN handling..."
+    },
+    {
+      "time": "22:02",
+      "message": "Update from agentic-lib"
+    },
     {
       "time": "22:01",
       "message": "Update from agentic-lib"
@@ -25,21 +33,13 @@
     {
       "time": "21:31",
       "message": "Extended tests for NaN and whitespace variants in environment va..."
-    },
-    {
-      "time": "21:21",
-      "message": "Harmonized NaN fallback behavior and CLI override precedence in ..."
-    },
-    {
-      "time": "20:58",
-      "message": "Simplified NaN input parsing and unified fallback mechanism in p..."
     }
   ],
   "branches": {
     "count": 1,
     "details": [
       {
-        "branch": "agentic-lib-issue-554",
+        "branch": "agentic-lib-issue-560",
         "minutesSinceLastCommit": 1
       }
     ]
@@ -47,5 +47,5 @@
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-07T22:02:04.834Z"
+  "generatedAt": "2025-04-07T22:13:44.857Z"
 }
