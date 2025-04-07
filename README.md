@@ -7,8 +7,8 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 Key features include:
 
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a consolidated helper function that applies default values when not set, empty, or when invalid non-numeric values (e.g., `NaN`, empty strings, or whitespace-only) are provided. Notably, if an environment variable is not a string (e.g., null or undefined), it is silently handled without logging unnecessary warnings.
-  - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid input is provided, a standardized one-time warning is logged (per unique composite key combining variable name and normalized input) indicating that the received input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. The fallback logic now robustly handles various whitespace variants (including non-breaking spaces, tabs, and extra spaces).
-  - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), only valid numeric inputs are accepted. Any deviation, such as variants of `NaN` with extra whitespace or unusual case, will cause an immediate error with guidance on valid formats (integer, decimal, or scientific notation).
+  - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid input is provided, a standardized one-time warning is logged (per unique composite key combining variable name and normalized input) indicating that the received input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. The normalization process now uniformly processes various whitespace variants, including non-breaking spaces, tabs, and extra spaces.
+  - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on providing a numeric value in integer, decimal, or scientific notation.
   - **CLI Overrides with Precedence:** The new CLI options `--livedata-retry-default` and `--livedata-delay-default` allow you to override fallback values at runtime. CLI override values now take precedence over any configurable fallback value and the default value, ensuring consistent behavior even when environment inputs are non-numeric.
   - **Global Warning Suppression:** You can disable all environment variable warning logs by setting the environment variable `DISABLE_ENV_WARNINGS` (set to any value other than "0").
 
@@ -24,7 +24,7 @@ Key features include:
 
 - **Diverse Ontology Models:** Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).
 
-- **Enhanced Diagnostics:** View timestamped logs with detailed context for each operation. Diagnostic messages now include detailed information on fallback values and their units. You can control the verbosity of diagnostic messages by setting the environment variable `DIAGNOSTIC_LOG_LEVEL` (possible values: `off`, `error`, `warn`, `info`, `debug`). For example, setting `DIAGNOSTIC_LOG_LEVEL=off` will suppress diagnostic logs.
+- **Enhanced Diagnostics:** View timestamped logs with detailed context for each operation. Diagnostic messages now include details on fallback values and their units. You can control the verbosity of diagnostic messages by setting the environment variable `DIAGNOSTIC_LOG_LEVEL` (possible values: `off`, `error`, `warn`, `info`, `debug`). For example, setting `DIAGNOSTIC_LOG_LEVEL=off` will suppress diagnostic logs.
 
 - **Web Server Integration:** Launch a simple web server for quick status checks. **New:** The server now supports integration testing by exposing a function to start and gracefully shut it down after performing actual HTTP requests.
 
@@ -32,7 +32,7 @@ Key features include:
 
 ### Enhanced Unit Test Coverage for Environment Variable Parsing
 
-Recent updates include expanded unit tests to ensure robust handling of non-numeric environment variable inputs. Tests now verify that various whitespace patterns (including non-breaking spaces, tabs, and extra spaces) are correctly processed, duplicate warnings are avoided for equivalent invalid inputs, and CLI override values are properly applied and prioritized above other fallback mechanisms.
+Recent updates include expanded unit tests to ensure robust handling of non-numeric environment variable inputs. Tests now verify that various whitespace patterns (including non-breaking spaces, tabs, and extra spaces) are uniformly processed, duplicate warnings are avoided for equivalent invalid inputs, and CLI override functionality works as expected, with CLI overrides taking precedence.
 
 ## Installation
 
@@ -148,11 +148,11 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag for using the deprecated static fallback. Use `--build-live` for live data integration.
 - **Exponential Backoff with Jitter:** Improved handling of environment variables by consolidating parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Invalid inputs trigger a standardized one-time warning (displaying the variable name, received and normalized input, and the fallback value with unit) and the fallback value (or CLI overrides) are applied. CLI override values now take precedence over other fallback mechanisms.
-- **Strict Environment Variable Parsing:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on valid formats (integer, decimal, or scientific notation).
+- **Strict Environment Variable Parsing:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on allowed formats (integer, decimal, or scientific notation).
 - **CLI Overrides:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow runtime override of fallback values without changing environment variables.
 - **Custom Endpoints:** Supports custom API endpoints via `CUSTOM_API_ENDPOINTS`. Only valid endpoints (beginning with "http://" or "https://") are accepted.
-- **Consolidated 'NaN' Handling:** Standardized environment variable parsing now logs a warning exactly once per unique composite key (variable name and normalized input) unless warnings are disabled by setting `DISABLE_ENV_WARNINGS`.
-- **Unit Test Enhancements:** Expanded test coverage now verifies that various whitespace patterns are uniformly handled and that CLI override functionality works as expected, with CLI overrides now taking precedence.
+- **Standardized NaN Handling:** Environment variable parsing now uniformly handles non-numeric values (including "NaN" with various whitespace variants), logging a warning exactly once per unique invalid input, unless warnings are disabled with `DISABLE_ENV_WARNINGS`.
+- **Unit Test Enhancements:** Expanded test coverage now verifies uniform processing of whitespace variants and proper application of CLI override functionality.
 - **Automated Tests:** Comprehensive tests now cover fallback behavior, strict mode, CLI override functionality, and suppression of warnings.
 - **Fetch Spy Availability:** The internal function used in `buildEnhancedOntology` is now exported as part of a `fetcher` object, allowing tests to successfully spy on it.
 - **Contributing Improvements:** Updated guidelines to reflect changes in environment variable handling and diagnostic logging.
