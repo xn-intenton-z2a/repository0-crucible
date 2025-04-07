@@ -24,7 +24,7 @@
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *   - Implemented exponential backoff in fetchDataWithRetry for improved network resilience with configurable retries and delay parameters.
  *     Now safely parses the LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT environment variables and falls back to default values if invalid.
- *     Additionally, warns via diagnostic logs when invalid values are encountered.
+ *     Additionally, warns via diagnostic logs when a non-numeric value is explicitly provided.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -49,7 +49,7 @@ export function buildOntology() {
   }
   return {
     title: "Public Data Ontology",
-    concepts: ["Concept1", "Concept2", "Concept3"],
+    concepts: ["Concept1", "Concept2", "Concept3"]
   };
 }
 
@@ -264,18 +264,31 @@ export function listAvailableEndpoints() {
 export async function fetchDataWithRetry(url, retries) {
   // Use provided retries parameter, or override with environment variable LIVEDATA_RETRY_COUNT, defaulting to 3
   if (typeof retries === "undefined") {
-    const envRetries = Number(process.env.LIVEDATA_RETRY_COUNT);
-    if (isNaN(envRetries)) {
-      logDiagnostic(`Warning: Invalid LIVEDATA_RETRY_COUNT value "${process.env.LIVEDATA_RETRY_COUNT}" provided (non-numeric input). Defaulting to 3 retries.`);
+    if (process.env.LIVEDATA_RETRY_COUNT !== undefined && process.env.LIVEDATA_RETRY_COUNT.trim() !== "") {
+      const envRetries = Number(process.env.LIVEDATA_RETRY_COUNT);
+      if (isNaN(envRetries)) {
+        logDiagnostic(`Warning: LIVEDATA_RETRY_COUNT is non-numeric. Using default value of 3 retries.`);
+        retries = 3;
+      } else {
+        retries = envRetries;
+      }
+    } else {
+      retries = 3;
     }
-    retries = isNaN(envRetries) ? 3 : envRetries;
   }
   // Safely parse initial delay, default is 100ms if invalid or not provided
-  const envDelay = Number(process.env.LIVEDATA_INITIAL_DELAY);
-  if (isNaN(envDelay)) {
-    logDiagnostic(`Warning: Invalid LIVEDATA_INITIAL_DELAY value "${process.env.LIVEDATA_INITIAL_DELAY}" provided (non-numeric input). Defaulting to 100ms delay.`);
+  let initialDelay;
+  if (process.env.LIVEDATA_INITIAL_DELAY !== undefined && process.env.LIVEDATA_INITIAL_DELAY.trim() !== "") {
+    const envDelay = Number(process.env.LIVEDATA_INITIAL_DELAY);
+    if (isNaN(envDelay)) {
+      logDiagnostic(`Warning: LIVEDATA_INITIAL_DELAY is non-numeric. Using default value of 100ms delay.`);
+      initialDelay = 100;
+    } else {
+      initialDelay = envDelay;
+    }
+  } else {
+    initialDelay = 100;
   }
-  const initialDelay = isNaN(envDelay) ? 100 : envDelay;
   const mod = url.startsWith("https") ? https : http;
   const options = { headers: { "User-Agent": "owl-builder CLI tool" } };
   function sleep(ms) {
@@ -328,7 +341,7 @@ export function buildBasicOWLModel() {
     id: "basic",
     title: "Basic OWL Ontology",
     concepts: ["Class1", "Class2"],
-    properties: [],
+    properties: []
   };
 }
 
@@ -339,11 +352,11 @@ export function buildAdvancedOWLModel() {
     classes: ["Person", "Organization"],
     properties: [
       { name: "hasName", type: "string" },
-      { name: "hasAge", type: "integer" },
+      { name: "hasAge", type: "integer" }
     ],
     metadata: {
-      created: new Date().toISOString(),
-    },
+      created: new Date().toISOString()
+    }
   };
 }
 
@@ -387,7 +400,7 @@ export function buildIntermediateOWLModel() {
     id: "intermediate",
     title: "Intermediate OWL Ontology",
     concepts: ["IntermediateConcept1", "IntermediateConcept2"],
-    annotations: { version: "intermediate" },
+    annotations: { version: "intermediate" }
   };
 }
 
@@ -441,7 +454,7 @@ export function buildMinimalOWLModel() {
     id: "minimal",
     title: "Minimal OWL Ontology",
     concepts: [],
-    metadata: { version: "minimal" },
+    metadata: { version: "minimal" }
   };
 }
 
@@ -453,10 +466,10 @@ export function buildComplexOntologyModel() {
     properties: [
       { name: "hasA", type: "string" },
       { name: "hasB", type: "number" },
-      { name: "hasC", type: "boolean" },
+      { name: "hasC", type: "boolean" }
     ],
     concepts: ["ConceptA", "ConceptB", "ConceptC"],
-    metadata: { created: new Date().toISOString() },
+    metadata: { created: new Date().toISOString() }
   };
 }
 
@@ -466,7 +479,7 @@ export function buildScientificOntologyModel() {
     title: "Scientific OWL Ontology",
     disciplines: ["Biology", "Chemistry", "Physics"],
     concepts: ["Hypothesis", "Experiment", "Data Analysis"],
-    metadata: { source: "Scientific Publications", created: new Date().toISOString() },
+    metadata: { source: "Scientific Publications", created: new Date().toISOString() }
   };
 }
 
@@ -476,7 +489,7 @@ export function buildEducationalOntologyModel() {
     title: "Educational OWL Ontology",
     subjects: ["Mathematics", "History", "Literature"],
     concepts: ["Curriculum", "Lesson Plan", "Assessment"],
-    metadata: { notes: "Developed for educational institutions", created: new Date().toISOString() },
+    metadata: { notes: "Developed for educational institutions", created: new Date().toISOString() }
   };
 }
 
@@ -487,7 +500,7 @@ export function buildPhilosophicalOntologyModel() {
     title: "Philosophical OWL Ontology",
     themes: ["Existence", "Ethics", "Epistemology"],
     concepts: ["Socrates", "Plato", "Aristotle"],
-    metadata: { created: new Date().toISOString(), category: "philosophy" },
+    metadata: { created: new Date().toISOString(), category: "philosophy" }
   };
 }
 
@@ -497,7 +510,7 @@ export function buildEconomicOntologyModel() {
     title: "Economic OWL Ontology",
     sectors: ["Finance", "Manufacturing", "Services"],
     concepts: ["Supply", "Demand", "Market"],
-    metadata: { created: new Date().toISOString(), category: "economics" },
+    metadata: { created: new Date().toISOString(), category: "economics" }
   };
 }
 
@@ -548,7 +561,7 @@ export function enhancedDiagnosticSummary() {
   return {
     timestamp,
     message: "All diagnostic systems operational.",
-    version: getVersion(),
+    version: getVersion()
   };
 }
 
@@ -563,7 +576,7 @@ export async function backupAndRefreshOntology() {
   const refreshedOntology = await refreshOntology();
   return {
     backupResult,
-    refreshedOntology,
+    refreshedOntology
   };
 }
 
@@ -840,7 +853,7 @@ const commandActions = {
     const result = await backupAndRefreshOntology();
     console.log("Backup and Refreshed Ontology:", result);
     return result;
-  },
+  }
 };
 
 async function demo() {

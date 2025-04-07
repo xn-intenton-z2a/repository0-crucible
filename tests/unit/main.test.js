@@ -185,9 +185,9 @@ describe("Core Ontology Functions", () => {
       classes: ["C1", "C2"],
       properties: [
         { name: "prop1", type: "string" },
-        { name: "prop2", type: "number" },
+        { name: "prop2", type: "number" }
       ],
-      metadata: { created: "today", info: "demo" },
+      metadata: { created: "today", info: "demo" }
     };
     const xml = exportOntologyToXML(ontology);
     expect(xml).toContain("<ontology>");
@@ -214,7 +214,7 @@ describe("Core Ontology Functions", () => {
       concepts: ["ConceptX"],
       classes: ["ClassX"],
       properties: [{ name: "propX", type: "boolean" }],
-      metadata: { version: "1.0", tag: "roundtrip" },
+      metadata: { version: "1.0", tag: "roundtrip" }
     };
     const xml = exportOntologyToXML(ontology);
     const imported = importOntologyFromXML(xml);

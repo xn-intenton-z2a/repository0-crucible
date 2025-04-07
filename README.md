@@ -6,7 +6,7 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 
 Key features include:
 
-- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy. You can configure the number of retry attempts and the initial backoff delay by using the environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. **Note:** If these variables are set to non-numeric values, a diagnostic warning is logged indicating the invalid input and default values (3 retries and 100ms delay) are used.
+- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy. You can configure the number of retry attempts and the initial backoff delay by using the environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. **Note:** If these variables are explicitly set to non-numeric values, a diagnostic warning is logged indicating the invalid input and default values (3 retries and 100ms delay) are used. If they are not set, defaults are silently applied.
 - **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)
 - **Query & Validation:** Rapidly search for ontology concepts and validate your data.
 - **OWL Export/Import:** Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).
@@ -117,7 +117,7 @@ Note: Ensure that your network environment allows access to these endpoints for 
 - Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag to use the deprecated static fallback. Without the flag, a warning is issued. Use `--build-live` for live data integration.
-- **Exponential Backoff:** Improved environment variable parsing in the live data fetch function. If non-numeric values are provided for `LIVEDATA_RETRY_COUNT` or `LIVEDATA_INITIAL_DELAY`, a warning is logged and the defaults of 3 retries and 100ms delay are used.
+- **Exponential Backoff:** Improved environment variable parsing in the live data fetch function. Now, warnings are logged only when a non-numeric value is explicitly provided; if the variable is not set, defaults are applied silently.
 - Removed duplicate ESLint key from package.json to avoid build warnings.
 - Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.
 
