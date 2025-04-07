@@ -118,7 +118,7 @@ Note: Ensure that your network environment allows access to these endpoints for 
 - Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag to use the deprecated static fallback. Without the flag, a warning is issued. Use `--build-live` for live data integration.
-- **Exponential Backoff:** Implemented exponential backoff delays for live data fetch retries with configurable parameters using `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` (with a safe fallback to 3 retries and 100ms delay if invalid).
+- **Exponential Backoff:** Improved environment variable parsing in the live data fetch function to robustly fallback to default values when provided non-numeric inputs. The defaults are 3 retries and 100ms delay if the environment variables are invalid.
 - Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.
 
 ## Contributing

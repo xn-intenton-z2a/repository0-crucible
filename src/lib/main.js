@@ -260,12 +260,12 @@ export function listAvailableEndpoints() {
 export async function fetchDataWithRetry(url, retries) {
   // Use provided retries parameter, or override with environment variable LIVEDATA_RETRY_COUNT, defaulting to 3
   if (typeof retries === 'undefined') {
-    let envRetries = parseInt(process.env.LIVEDATA_RETRY_COUNT, 10);
-    retries = Number.isNaN(envRetries) ? 3 : envRetries;
+    const envRetries = Number(process.env.LIVEDATA_RETRY_COUNT);
+    retries = isNaN(envRetries) ? 3 : envRetries;
   }
   // Safely parse initial delay, default is 100ms if invalid or not provided
-  const parsedDelay = parseInt(process.env.LIVEDATA_INITIAL_DELAY, 10);
-  const initialDelay = Number.isNaN(parsedDelay) ? 100 : parsedDelay;
+  const envDelay = Number(process.env.LIVEDATA_INITIAL_DELAY);
+  const initialDelay = isNaN(envDelay) ? 100 : envDelay;
   const mod = url.startsWith("https") ? https : http;
   const options = { headers: { "User-Agent": "owl-builder CLI tool" } };
   function sleep(ms) {
