@@ -27,7 +27,7 @@
  *   - Refactored crawlOntologies to return separate arrays for successful and failed crawl results.
  *   - Added configurable option to disable live data integration via the environment variable DISABLE_LIVE_DATA. When set (and not equal to "0"), live data requests are bypassed and the static fallback is used.
  *   - Introduced configurable diagnostic logging levels via the DIAGNOSTIC_LOG_LEVEL environment variable.
- *   - Allow custom configuration of public API endpoints via the CUSTOM_API_ENDPOINTS environment variable. When set with a comma-separated list, these endpoints are merged with the default list.
+ *   - Allow custom configuration of public API endpoints via the CUSTOM_API_ENDPOINTS environment variable. When set with a comma-separated list, these endpoints that are valid (starting with "http://" or "https://") are merged with the default list.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -315,9 +315,19 @@ export function listAvailableEndpoints() {
   ];
   
   if (process.env.CUSTOM_API_ENDPOINTS && process.env.CUSTOM_API_ENDPOINTS.trim() !== "") {
-    const customEndpoints = process.env.CUSTOM_API_ENDPOINTS.split(',').map(ep => ep.trim()).filter(ep => ep !== "");
+    const rawEndpoints = process.env.CUSTOM_API_ENDPOINTS.split(",");
+    const validCustomEndpoints = [];
+    rawEndpoints.forEach(ep => {
+      const trimmed = ep.trim();
+      if (trimmed === "") return;
+      if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
+        validCustomEndpoints.push(trimmed);
+      } else {
+        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with "http://" or "https://"`, "warn");
+      }
+    });
     // Merge unique endpoints
-    return Array.from(new Set([...defaultEndpoints, ...customEndpoints]));
+    return Array.from(new Set([...defaultEndpoints, ...validCustomEndpoints]));
   } else {
     return defaultEndpoints;
   }
