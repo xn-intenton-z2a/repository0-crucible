@@ -30,7 +30,7 @@
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Live Data Integration:</strong> Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code> are parsed using a consolidated helper function that applies default values when not set, empty, or when invalid non-numeric values (e.g., <code class="md-github">NaN</code>, empty strings, or whitespace-only) are provided. Notably, if an environment variable is not a string (e.g., null or undefined), it is silently handled without logging unnecessary warnings.</p>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Invalid Non-Numeric Values Handling:</strong> In non-strict mode, if an invalid non-numeric string is provided, a one-time warning is logged (per unique composite key combining variable name and normalized input) indicating that the input is invalid, and the system falls back to a default or configurable value. The fallback logic has been refined to also handle non-breaking spaces and other whitespace variants uniformly, ensuring consistent logging and behavior. Additional tests now cover various whitespace patterns including non-breaking spaces, tab characters, and extra spaces.</li>
+<li class="md-github"><strong class="md-github">Invalid Non-Numeric Values Handling:</strong> In non-strict mode, if an invalid non-numeric string is provided, a one-time warning is logged (per unique composite key combining variable name and normalized input) indicating that the input is invalid, and the system falls back to a default or configurable value. The fallback logic has been refined to also handle non-breaking spaces and other whitespace variants uniformly, ensuring consistent logging and behavior.</li>
 <li class="md-github"><strong class="md-github">Strict Mode:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or by setting <code class="md-github">STRICT_ENV=true</code>), only valid numeric inputs are accepted. Any deviation, such as variants of <code class="md-github">NaN</code> with extra whitespace or unusual case, will cause an immediate error with a clear message stating the allowed numeric formats (integer, decimal, or scientific notation).</li>
 <li class="md-github"><strong class="md-github">CLI Overrides:</strong> The CLI options <code class="md-github">--livedata-retry-default &lt;number&gt;</code> and <code class="md-github">--livedata-delay-default &lt;number&gt;</code> allow you to override the default fallback values for live data fetching at runtime without modifying your environment variables.</li>
 <li class="md-github"><strong class="md-github">Global Warning Suppression:</strong> You can disable all environment variable warning logs by setting the environment variable <code class="md-github">DISABLE_ENV_WARNINGS</code> (set to any value other than &quot;0&quot;).</li>
@@ -163,7 +163,7 @@ node src/lib/main.js --strict-env
 
   </section>
   <footer>
-    <p>Generated on 2025-04-07T17:41:52.669Z</p>
+    <p>Generated on 2025-04-07T17:50:01.054Z</p>
   </footer>
 </body>
 </html>
