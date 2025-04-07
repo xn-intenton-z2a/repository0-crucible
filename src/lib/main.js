@@ -146,7 +146,8 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
 
   if (!normalized || normalized === "nan" || isNaN(Number(normalized))) {
     if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
-      const warnKey = `${varName}-${normalized}`;
+      // Optimize cache key using a consistent separator to ensure variants of whitespace and case result in the same key
+      const warnKey = `${varName}:${normalized}`;
       if (!envWarningCache.has(warnKey)) {
         let unit = "";
         if (varName === "LIVEDATA_RETRY_COUNT") {
