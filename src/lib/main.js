@@ -32,7 +32,7 @@
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
  *   - Enhanced handling of 'NaN' values in environment variable parsing to ensure consistent fallback behavior and suppress duplicate warnings for equivalent inputs. The warning cache now logs a warning exactly once per unique composite key (variable name and normalized input).
  *   - Consolidated and standardized 'NaN' handling in environment variable parsing. A new configuration option (DISABLE_ENV_WARNINGS) allows disabling warnings in production.
- *   - Improved diagnostic messages and inline documentation for environment variable parsing to clearly indicate fallback values and valid formats.
+ *   - Refactored parseEnvNumber to further normalize whitespace (including non-breaking spaces) and to consolidate warning messages for each unique invalid input.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -105,16 +105,20 @@ export function buildOntology() {
  * Allows overriding fallback values via CLI options (e.g. --livedata-retry-default and --livedata-delay-default).
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
-  const value = process.env[varName];
-  // If the environment variable is not a string, return fallback silently without logging warning
-  if (typeof value !== "string") {
+  const rawValue = process.env[varName];
+  if (typeof rawValue !== "string") {
     return configurableFallback !== undefined ? configurableFallback : defaultVal;
   }
   // Replace non-breaking spaces and trim
-  const cleaned = value.replace(/\u00A0/g, ' ');
-  const trimmed = cleaned.trim();
+  const replaced = rawValue.replace(/\u00A0/g, ' ');
+  const trimmed = replaced.trim();
   const normalized = trimmed.toLowerCase();
-  const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
+  let unit = "";
+  if (varName === "LIVEDATA_RETRY_COUNT") {
+    unit = " retries";
+  } else if (varName === "LIVEDATA_INITIAL_DELAY") {
+    unit = "ms delay";
+  }
   
   // Determine fallback: priority is CLI provided override, then configurableFallback, then defaultVal
   let fallback = configurableFallback !== undefined ? configurableFallback : defaultVal;
@@ -129,24 +133,22 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
       fallback = cliDelay;
     }
   }
-  
+
   // Strict mode: when STRICT_ENV is true, input must strictly match numeric format.
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
     const numericRegex = /^-?\d+(\.\d+)?([eE][-+]?\d+)?$/;
     if (!numericRegex.test(trimmed)) {
-      throw new Error(`Strict mode: Environment variable ${varName} must be a valid numeric value (allowed formats: integer, decimal, or scientific notation). Received '${value}'.`);
+      throw new Error(`Strict mode: Environment variable ${varName} must be a valid numeric value (allowed formats: integer, decimal, or scientific notation). Received '${rawValue}'.`);
     }
     return Number(trimmed);
   }
-  
+
   // Non-strict mode handling: if input is empty, 'nan', or cannot be converted to a number
   if (!trimmed || normalized === "nan" || isNaN(Number(trimmed))) {
-    // Check if global warnings are disabled
     if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
-      // Use the normalized value in composite key to avoid duplicate warnings for equivalent inputs
       const warnKey = `${varName}-${normalized}`;
       if (!envWarningCache.has(warnKey)) {
-        logDiagnostic(`Warning: Environment variable ${varName} received invalid non-numeric input ('${value}'). Defaulting to ${fallback}${unit}.`, "warn");
+        logDiagnostic(`Warning: Environment variable ${varName} received invalid non-numeric input ('${rawValue}'). Defaulting to ${fallback}${unit}.`, "warn");
         envWarningCache.set(warnKey, true);
       }
     }
