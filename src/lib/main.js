@@ -30,6 +30,7 @@
  *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
  *   - Enforced strict handling of 'NaN' values: In strict mode, any value that is not a valid numerical format (including variants like 'NaN' with extra whitespace) will throw an error immediately.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
+ *   - Enhanced handling of 'NaN' values in environment variable parsing to ensure consistent fallback behavior and suppress duplicate warnings for equivalent inputs.
  *   - Consolidated environment variable parsing and diagnostic logging to provide clearer and more actionable messages in both strict and non-strict modes.
  *   - Updated inline documentation for environment variable parsing to clarify behavior in both strict and non-strict modes. In non-strict mode, non-numeric values (like 'NaN' or whitespace) trigger a one-time warning per normalized input and fall back to a default or configurable value, with duplicate warnings suppressed via caching.
  *
@@ -124,7 +125,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
     return Number(trimmed);
   }
 
-  // Non-strict mode handling - consolidate empty, 'NaN', or any non-numeric input
+  // Non-strict mode handling: if input is empty, 'NaN', or cannot be converted to a number
   const converted = Number(trimmed);
   if (trimmed === "" || normalized === "nan" || isNaN(converted)) {
     if (envWarningCache.get(varName) !== normalized) {

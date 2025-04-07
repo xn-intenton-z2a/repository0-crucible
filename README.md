@@ -8,7 +8,7 @@ Key features include:
 
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a consolidated helper function that applies default values when not set, empty, or when non-numeric values (e.g., `NaN`, empty strings, or whitespace-only) are provided.
   - **Non-Numeric Values Handling:** In non-strict mode, if a non-numeric value is provided, a one-time warning is logged (per unique normalized input) indicating that a non-numeric input was received, and the system falls back to a default or configurable value. Duplicate warnings for the same normalized input are prevented via caching.
-  - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), the environment variable must conform exactly to a valid numeric format (integer, decimal, or scientific notation). Any deviation, such as variants of `NaN` with extra whitespace, will cause an immediate error with a clear message.
+  - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), only valid numeric inputs are accepted. Any deviation, such as variants of `NaN` with extra whitespace, will cause an immediate error with a clear message.
   - **CLI Overrides:** The CLI options `--livedata-retry-default <number>` and `--livedata-delay-default <number>` allow you to override the default fallback values for live data fetching at runtime.
 
 - **Custom Endpoints:** Users can override or extend the default list of public API endpoints by setting the environment variable `CUSTOM_API_ENDPOINTS` to a comma-separated list of URLs. **Only endpoints starting with "http://" or "https://" are accepted.** Invalid endpoints will be ignored with a diagnostic warning.
@@ -28,6 +28,10 @@ Key features include:
 - **Web Server Integration:** Launch a simple web server for quick status checks. **New:** The server now supports integration testing by exposing a function to start and gracefully shut it down after performing actual HTTP requests.
 
 - **Custom Merging & Refreshing:** New functions provide extended merging and diagnostic capabilities.
+
+### Enhanced Handling of 'NaN' Values
+
+A recent enhancement ensures that when non-numeric values (including variants of "NaN") are provided for environment variables, the system logs a one-time, clear diagnostic message and uses a fallback value. CLI override options take precedence, and duplicate warnings for equivalent inputs (after normalization) are suppressed.
 
 ### Environment Variable Handling for Live Data Fetching
 
@@ -189,6 +193,7 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 - **Strict Environment Variable Parsing:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid values will cause an immediate error with a clear message indicating the offending input.
 - **CLI Overrides:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow runtime override of fallback values without changing environment variables.
 - **Custom Endpoints:** Supports custom API endpoints via `CUSTOM_API_ENDPOINTS`. Only valid endpoints (beginning with "http://" or "https://") are accepted.
+- **Enhanced 'NaN' Handling:** Environment variable parsing now robustly handles non-numeric inputs (including variants of "NaN") by logging a one-time, clear diagnostic message and applying a fallback value, with CLI overrides taking precedence.
 - **Warning Cache Normalization:** Ensures a single warning per normalized input.
 - **Automated Tests:** Comprehensive tests now cover fallback behavior, strict mode, and CLI override functionality.
 
