@@ -27,13 +27,13 @@
 <h2 class="md-github"><a class="md-github__anchor" name="overview" href="#overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
 <p class="md-github">Key features include:</p>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Live Data Integration:</strong> Ontologies are built using up-to-date data from trusted public endpoints.</li>
+<li class="md-github"><strong class="md-github">Live Data Integration:</strong> Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching.</li>
 <li class="md-github"><strong class="md-github">Data Persistence:</strong> Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)</li>
 <li class="md-github"><strong class="md-github">Query &amp; Validation:</strong> Rapidly search for ontology concepts and validate your data.</li>
 <li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).</li>
 <li class="md-github"><strong class="md-github">Concurrent Data Crawling:</strong> Gather real-time data concurrently from a range of public endpoints.</li>
 <li class="md-github"><strong class="md-github">Diverse Ontology Models:</strong> Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).</li>
-<li class="md-github"><strong class="md-github">Enhanced Diagnostics:</strong> View timestamped logs for monitoring and troubleshooting.</li>
+<li class="md-github"><strong class="md-github">Enhanced Diagnostics:</strong> View timestamped logs with detailed context for each operation, facilitating easier tracing and debugging.</li>
 <li class="md-github"><strong class="md-github">Web Server Integration:</strong> Launch a simple web server for quick status checks.</li>
 <li class="md-github"><strong class="md-github">Custom Merging &amp; Refreshing:</strong> New functions provide extended merging and diagnostic capabilities.</li>
 </ul>
@@ -55,7 +55,7 @@ npm install
 <h3 class="md-github"><a class="md-github__anchor" name="key-cli-commands" href="#key-cli-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Key CLI Commands</h3>
 <ul class="md-github">
 <li class="md-github"><code class="md-github">--build</code>: Generates a deprecated fallback ontology using static data (<strong class="md-github">deprecated; use <code class="md-github">--build-live</code> for live data integration</strong>).</li>
-<li class="md-github"><code class="md-github">--build-live</code>: Builds an ontology using live data and logs diagnostic information.</li>
+<li class="md-github"><code class="md-github">--build-live</code>: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt in case of errors.</li>
 <li class="md-github"><code class="md-github">--persist</code>: Saves the current ontology to a JSON file.</li>
 <li class="md-github"><code class="md-github">--load</code>: Loads the saved ontology.</li>
 <li class="md-github"><code class="md-github">--query &quot;term&quot;</code>: Searches for matching ontology concepts.</li>
@@ -65,7 +65,7 @@ npm install
 <li class="md-github"><code class="md-github">--update &quot;New Title&quot;</code>: Updates the ontology title using live data.</li>
 <li class="md-github"><code class="md-github">--clear</code>: Deletes the local ontology file.</li>
 <li class="md-github"><code class="md-github">--crawl</code>: Concurrently crawls multiple public endpoints to gather data.</li>
-<li class="md-github"><code class="md-github">--fetch-retry</code>: Fetches data using retry logic.</li>
+<li class="md-github"><code class="md-github">--fetch-retry</code>: Fetches data using retry logic with detailed logging per attempt.</li>
 <li class="md-github"><code class="md-github">--merge-ontologies</code>: Merges static and live ontology models.</li>
 <li class="md-github"><code class="md-github">--build-live-log</code>: Builds a live ontology with additional diagnostic logging.</li>
 <li class="md-github"><code class="md-github">--serve</code>: Launches the integrated web server.</li>
@@ -116,7 +116,7 @@ npm install
 <p class="md-github"><strong class="md-github">Version 0.0.39</strong></p>
 <ul class="md-github">
 <li class="md-github">Refocused ontology building on live public data sources; static fallback remains only for emergencies.</li>
-<li class="md-github">Enhanced diagnostic logging and updated several endpoint corrections.</li>
+<li class="md-github">Enhanced diagnostic logging with detailed error messages and retry context in live data integration functions.</li>
 <li class="md-github">Pruned redundant legacy code to align with our mission.</li>
 <li class="md-github">Extended ontology model wrappers and introduced new merging and refreshing functions.</li>
 <li class="md-github">Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.</li>
@@ -130,7 +130,7 @@ npm install
 
   </section>
   <footer>
-    <p>Generated on 2025-04-06T23:55:08.703Z</p>
+    <p>Generated on 2025-04-07T00:22:37.934Z</p>
   </footer>
 </body>
 </html>
