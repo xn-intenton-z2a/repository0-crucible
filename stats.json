@@ -1,24 +1,24 @@
 {
-  "openIssues": 9,
+  "openIssues": 10,
   "issuesClosedLastHour": 9,
   "issuesClosedLastDay": 100,
   "openPRs": 3,
   "prDetails": [
     {
       "title": "Bump eslint from 9.23.0 to 9.24.0",
-      "ageMinutes": 6
+      "ageMinutes": 14
     },
     {
       "title": "Bump eslint-plugin-prettier from 5.2.3 to 5.2.6",
-      "ageMinutes": 7
+      "ageMinutes": 15
     },
     {
       "title": "Bump openai from 4.90.0 to 4.91.1",
-      "ageMinutes": 11
+      "ageMinutes": 19
     }
   ],
-  "diffMinutes": 1,
-  "diffMinutesMain": 3,
+  "diffMinutes": 8,
+  "diffMinutesMain": 11,
   "commitsLastHour": 5,
   "commitsLastDay": 55,
   "lastFiveCommitMessages": [
@@ -48,20 +48,20 @@
     "details": [
       {
         "branch": "dependabot/npm_and_yarn/eslint-9.24.0",
-        "minutesSinceLastCommit": 1
+        "minutesSinceLastCommit": 10
       },
       {
         "branch": "dependabot/npm_and_yarn/eslint-plugin-prettier-5.2.6",
-        "minutesSinceLastCommit": 1
+        "minutesSinceLastCommit": 10
       },
       {
         "branch": "dependabot/npm_and_yarn/openai-4.91.1",
-        "minutesSinceLastCommit": 11
+        "minutesSinceLastCommit": 19
       }
     ]
   },
-  "averagePRAge": 8,
+  "averagePRAge": 16,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-07T11:46:56.732Z"
+  "generatedAt": "2025-04-07T11:55:21.085Z"
 }
