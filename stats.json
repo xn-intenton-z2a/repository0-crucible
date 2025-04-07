@@ -1,14 +1,23 @@
 {
-  "openIssues": 17,
-  "issuesClosedLastHour": 8,
+  "openIssues": 19,
+  "issuesClosedLastHour": 6,
   "issuesClosedLastDay": 100,
-  "openPRs": 0,
-  "prDetails": [],
-  "diffMinutes": 8,
-  "diffMinutesMain": 8,
+  "openPRs": 1,
+  "prDetails": [
+    {
+      "title": "Refined environment variable parsing to consolidate NaN handling and ensure warnings log only once per normalized invalid input updated docs accordingly. (fixes #554)",
+      "ageMinutes": 0
+    }
+  ],
+  "diffMinutes": 0,
+  "diffMinutesMain": 0,
   "commitsLastHour": 4,
-  "commitsLastDay": 84,
+  "commitsLastDay": 85,
   "lastFiveCommitMessages": [
+    {
+      "time": "22:01",
+      "message": "Update from agentic-lib"
+    },
     {
       "time": "21:45",
       "message": "Suppress duplicate NaN warnings by caching normalized invalid in..."
@@ -24,18 +33,19 @@
     {
       "time": "20:58",
       "message": "Simplified NaN input parsing and unified fallback mechanism in p..."
-    },
-    {
-      "time": "20:40",
-      "message": "Optimized NaN warning cache by using a consistent composite key ..."
     }
   ],
   "branches": {
-    "count": 0,
-    "details": []
+    "count": 1,
+    "details": [
+      {
+        "branch": "agentic-lib-issue-554",
+        "minutesSinceLastCommit": 1
+      }
+    ]
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-07T21:53:27.870Z"
+  "generatedAt": "2025-04-07T22:02:04.834Z"
 }
