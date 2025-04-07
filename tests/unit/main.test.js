@@ -172,10 +172,8 @@ describe("Live Data Configurability", () => {
       "All retry attempts for http://testenv-nonnumeric failed. Last error: Non-numeric test error"
     );
     expect(attemptCount).toBe(4);
-    const retryWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_RETRY_COUNT is non-numeric") || call[0].includes("received 'NaN'"))
-      .length;
-    const delayWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_INITIAL_DELAY is non-numeric") || call[0].includes("received 'NaN'"))
-      .length;
+    const retryWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_RETRY_COUNT is non-numeric") || call[0].includes("received 'NaN'")).length;
+    const delayWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_INITIAL_DELAY is non-numeric") || call[0].includes("received 'NaN'")).length;
     expect(retryWarnings + delayWarnings).toBeGreaterThanOrEqual(2);
     http.get = originalGet;
     process.env.LIVEDATA_RETRY_COUNT = originalEnvRetry;
@@ -249,6 +247,12 @@ describe("Environment Variable Parsing Tests", () => {
     const updatedWarningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM is non-numeric") || call[0].includes("received 'NaN'")).length;
     expect(updatedWarningCalls).toBe(2);
     logSpy.mockRestore();
+  });
+
+  test("Strict mode: throws error on non-numeric input", () => {
+    process.env.STRICT_ENV = "true";
+    process.env.TEST_STRICT = "NaN";
+    expect(() => _parseEnvNumber("TEST_STRICT", 42)).toThrow("Strict mode: Environment variable TEST_STRICT has invalid non-numeric value 'NaN'");
   });
 });
 
@@ -444,7 +448,6 @@ describe("Custom Endpoint Configuration", () => {
     const endpoints = listAvailableEndpoints();
     expect(endpoints).toContain("https://example.com/api");
     expect(endpoints).toContain("https://another.example.com");
-    // Ensure default endpoint still exists
     expect(endpoints).toContain("https://api.publicapis.org/entries");
   });
 
