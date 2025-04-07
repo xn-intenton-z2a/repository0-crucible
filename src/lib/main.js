@@ -29,6 +29,7 @@
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter and CLI options (--livedata-retry-default and --livedata-delay-default).
  *   - Revised CLI override precedence in environment variable parsing: CLI override values are now prioritized over configurable fallback values and default values.
  *   - Introduced additional diagnostic logging details in live data fetching functions, including reporting of exponential backoff base delay and jitter.
+ *   - Standardized NaN fallback logic across environment variable parsing to ensure warnings are logged exactly once per unique invalid input (unless disabled via DISABLE_ENV_WARNINGS).
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -101,8 +102,6 @@ export function buildOntology() {
  * Supports integers, decimals, and scientific notation.
  * Allows overriding fallback values via CLI options (e.g. --livedata-retry-default and --livedata-delay-default).
  *
- * Note: The diagnostic warning messages include the variable name, the received input (and its normalized form), and the fallback value along with its unit.
- *
  * CLI Override Precedence:
  *   When applicable, CLI override values (LIVEDATA_RETRY_DEFAULT and LIVEDATA_DELAY_DEFAULT) are strictly prioritized over any configurable fallback value or default.
  *
@@ -112,44 +111,19 @@ export function buildOntology() {
  * @returns {number}
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
-  const rawValue = process.env[varName];
-  // If rawValue is not a string, check for CLI overrides first
-  if (typeof rawValue !== "string") {
-    if (varName === "LIVEDATA_RETRY_COUNT" && process.env.LIVEDATA_RETRY_DEFAULT) {
-      const cliRetry = Number(process.env.LIVEDATA_RETRY_DEFAULT);
-      if (!isNaN(cliRetry)) {
-        return cliRetry;
-      }
-    } else if (varName === "LIVEDATA_INITIAL_DELAY" && process.env.LIVEDATA_DELAY_DEFAULT) {
-      const cliDelay = Number(process.env.LIVEDATA_DELAY_DEFAULT);
-      if (!isNaN(cliDelay)) {
-        return cliDelay;
-      }
-    }
-    return configurableFallback !== undefined ? configurableFallback : defaultVal;
-  }
-  const normalized = normalizeEnvValue(rawValue);
-
-  // Determine unit for logging
-  let unit = "";
-  if (varName === "LIVEDATA_RETRY_COUNT") {
-    unit = " retries";
-  } else if (varName === "LIVEDATA_INITIAL_DELAY") {
-    unit = "ms delay";
-  }
-
-  // CLI overrides take precedence
+  // Check CLI override first
   if (varName === "LIVEDATA_RETRY_COUNT" && process.env.LIVEDATA_RETRY_DEFAULT) {
     const cliRetry = Number(process.env.LIVEDATA_RETRY_DEFAULT);
-    if (!isNaN(cliRetry)) {
-      return cliRetry;
-    }
-  }
-  if (varName === "LIVEDATA_INITIAL_DELAY" && process.env.LIVEDATA_DELAY_DEFAULT) {
+    if (!isNaN(cliRetry)) return cliRetry;
+  } else if (varName === "LIVEDATA_INITIAL_DELAY" && process.env.LIVEDATA_DELAY_DEFAULT) {
     const cliDelay = Number(process.env.LIVEDATA_DELAY_DEFAULT);
-    if (!isNaN(cliDelay)) {
-      return cliDelay;
-    }
+    if (!isNaN(cliDelay)) return cliDelay;
+  }
+
+  const rawValue = process.env[varName];
+  let normalized = "";
+  if (typeof rawValue === "string") {
+    normalized = normalizeEnvValue(rawValue);
   }
 
   let fallback = configurableFallback !== undefined ? configurableFallback : defaultVal;
@@ -166,6 +140,12 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
     if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
       const warnKey = `${varName}-${normalized}`;
       if (!envWarningCache.has(warnKey)) {
+        let unit = "";
+        if (varName === "LIVEDATA_RETRY_COUNT") {
+          unit = " retries";
+        } else if (varName === "LIVEDATA_INITIAL_DELAY") {
+          unit = "ms delay";
+        }
         logDiagnostic(`Warning: Environment variable ${varName} received invalid input '${rawValue}' (normalized: '${normalized}') - fallback value ${fallback}${unit} applied.`, "warn");
         envWarningCache.set(warnKey, true);
       }
