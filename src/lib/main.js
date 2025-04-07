@@ -44,7 +44,7 @@ const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 export function buildOntology() {
   if (process.env.NODE_ENV !== "test") {
     console.warn(
-      "Warning: buildOntology (static fallback) is deprecated. Use buildOntologyFromLiveData for live data integration in production.",
+      "Warning: buildOntology (static fallback) is deprecated. Use buildOntologyFromLiveData for live data integration in production."
     );
   }
   return {
@@ -66,7 +66,7 @@ export async function buildOntologyFromLiveData() {
     return { title, concepts };
   } catch (error) {
     logDiagnostic(
-      `buildOntologyFromLiveData encountered error fetching live data from https://api.publicapis.org/entries: ${error.message}. Falling back to static ontology.`,
+      `buildOntologyFromLiveData encountered error fetching live data from https://api.publicapis.org/entries: ${error.message}. Falling back to static ontology.`
     );
     return buildOntology();
   }
@@ -266,18 +266,14 @@ export async function fetchDataWithRetry(url, retries) {
   if (typeof retries === "undefined") {
     const envRetries = Number(process.env.LIVEDATA_RETRY_COUNT);
     if (isNaN(envRetries)) {
-      logDiagnostic(
-        `Warning: Invalid LIVEDATA_RETRY_COUNT value "${process.env.LIVEDATA_RETRY_COUNT}" provided, defaulting to 3 retries.`,
-      );
+      logDiagnostic(`Warning: Invalid LIVEDATA_RETRY_COUNT value "${process.env.LIVEDATA_RETRY_COUNT}" provided (non-numeric input). Defaulting to 3 retries.`);
     }
     retries = isNaN(envRetries) ? 3 : envRetries;
   }
   // Safely parse initial delay, default is 100ms if invalid or not provided
   const envDelay = Number(process.env.LIVEDATA_INITIAL_DELAY);
   if (isNaN(envDelay)) {
-    logDiagnostic(
-      `Warning: Invalid LIVEDATA_INITIAL_DELAY value "${process.env.LIVEDATA_INITIAL_DELAY}" provided, defaulting to 100ms delay.`,
-    );
+    logDiagnostic(`Warning: Invalid LIVEDATA_INITIAL_DELAY value "${process.env.LIVEDATA_INITIAL_DELAY}" provided (non-numeric input). Defaulting to 100ms delay.`);
   }
   const initialDelay = isNaN(envDelay) ? 100 : envDelay;
   const mod = url.startsWith("https") ? https : http;
@@ -595,7 +591,7 @@ const commandActions = {
       return ontology;
     } else {
       console.warn(
-        "Error: --build command requires --allow-deprecated flag to use static fallback. Use --build-live for live data integration.",
+        "Error: --build command requires --allow-deprecated flag to use static fallback. Use --build-live for live data integration."
       );
       return;
     }
@@ -936,7 +932,7 @@ export async function main(args = process.argv.slice(2)) {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh`,
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh`
   );
 }
 

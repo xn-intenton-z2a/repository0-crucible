@@ -96,7 +96,7 @@ describe("Live Data Configurability", () => {
       return req;
     };
     await expect(fetchDataWithRetry("http://testenv")).rejects.toThrow(
-      "All retry attempts for http://testenv failed. Last error: Test error",
+      "All retry attempts for http://testenv failed. Last error: Test error"
     );
     expect(attemptCount).toBe(2);
     http.get = originalGet;
@@ -127,7 +127,7 @@ describe("Live Data Configurability", () => {
     };
     // Default retries fallback should be 3, so total attempts = 4
     await expect(fetchDataWithRetry("http://testenv-nonnumeric")).rejects.toThrow(
-      "All retry attempts for http://testenv-nonnumeric failed. Last error: Non-numeric test error",
+      "All retry attempts for http://testenv-nonnumeric failed. Last error: Non-numeric test error"
     );
     expect(attemptCount).toBe(4);
     http.get = originalGet;
@@ -350,7 +350,7 @@ describe("CLI and Main Function Tests", () => {
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     const ontology = await main(["--build"]);
     expect(warnSpy).toHaveBeenCalledWith(
-      "Error: --build command requires --allow-deprecated flag to use static fallback. Use --build-live for live data integration.",
+      "Error: --build command requires --allow-deprecated flag to use static fallback. Use --build-live for live data integration."
     );
     expect(ontology).toBeUndefined();
     warnSpy.mockRestore();
