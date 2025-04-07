@@ -31,7 +31,7 @@
 <li class="md-github"><strong class="md-github">Data Persistence:</strong> Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)</li>
 <li class="md-github"><strong class="md-github">Query &amp; Validation:</strong> Rapidly search for ontology concepts and validate your data.</li>
 <li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).</li>
-<li class="md-github"><strong class="md-github">Concurrent Data Crawling:</strong> Gather real-time data concurrently from a range of public endpoints.</li>
+<li class="md-github"><strong class="md-github">Concurrent Data Crawling:</strong> Gather real-time data concurrently from a range of public endpoints. The crawl functionality has been enhanced to return results with separate arrays for successful crawls and errors, simplifying downstream processing.</li>
 <li class="md-github"><strong class="md-github">Diverse Ontology Models:</strong> Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).</li>
 <li class="md-github"><strong class="md-github">Enhanced Diagnostics:</strong> View timestamped logs with detailed context for each operation, facilitating easier tracing and debugging.</li>
 <li class="md-github"><strong class="md-github">Web Server Integration:</strong> Launch a simple web server for quick status checks.</li>
@@ -64,7 +64,7 @@ npm install
 <li class="md-github"><code class="md-github">--backup</code>: Creates a backup of the ontology file.</li>
 <li class="md-github"><code class="md-github">--update &quot;New Title&quot;</code>: Updates the ontology title using live data.</li>
 <li class="md-github"><code class="md-github">--clear</code>: Deletes the local ontology file.</li>
-<li class="md-github"><code class="md-github">--crawl</code>: Concurrently crawls multiple public endpoints to gather data.</li>
+<li class="md-github"><code class="md-github">--crawl</code>: Concurrently crawls multiple public endpoints to gather data. The output is structured as an object with separate arrays for successful responses and errors.</li>
 <li class="md-github"><code class="md-github">--fetch-retry</code>: Fetches data using retry logic with detailed logging per attempt and exponential backoff delays.</li>
 <li class="md-github"><code class="md-github">--merge-ontologies</code>: Merges static and live ontology models.</li>
 <li class="md-github"><code class="md-github">--build-live-log</code>: Builds a live ontology with additional diagnostic logging.</li>
@@ -123,6 +123,7 @@ npm install
 <li class="md-github">Refactored file system operations to use asynchronous, non-blocking APIs.</li>
 <li class="md-github"><strong class="md-github">CLI Update:</strong> The <code class="md-github">--build</code> command now requires the <code class="md-github">--allow-deprecated</code> flag to use the deprecated static fallback. Without the flag, a warning is issued. Use <code class="md-github">--build-live</code> for live data integration.</li>
 <li class="md-github"><strong class="md-github">Exponential Backoff:</strong> Improved environment variable parsing in the live data fetch function by extracting the logic into a helper function. This ensures that diagnostic warnings are logged only when a non-numeric value is explicitly provided; otherwise default values are applied silently.</li>
+<li class="md-github"><strong class="md-github">Crawling Update:</strong> Refactored crawlOntologies to return an object with separate arrays for successes and errors to simplify downstream processing.</li>
 <li class="md-github">Removed duplicate ESLint key from package.json to avoid build warnings.</li>
 <li class="md-github">Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.</li>
 </ul>
@@ -133,7 +134,7 @@ npm install
 
   </section>
   <footer>
-    <p>Generated on 2025-04-07T04:41:10.533Z</p>
+    <p>Generated on 2025-04-07T04:49:54.646Z</p>
   </footer>
 </body>
 </html>
