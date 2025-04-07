@@ -8,7 +8,7 @@ Key features include:
 
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a consolidated helper function that applies default values when not set, empty, or when invalid non-numeric values (e.g., `NaN`, empty strings, or whitespace-only) are provided. Notably, if an environment variable is not a string (e.g., null or undefined), it is silently handled without logging unnecessary warnings.
   - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid input is provided, a unified diagnostic warning is logged exactly once per unique composite key (combining variable name and normalized input) indicating that the received non-numeric input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. Duplicate warnings for equivalent normalized inputs are suppressed.
-  - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on providing a numeric value in integer, decimal, or scientific notation.
+  - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), only valid numeric inputs are accepted. If a non-numeric input is encountered, an error is thrown with a clear message detailing that valid formats include an integer (e.g., 42), a decimal (e.g., 3.14), or scientific notation (e.g., 1e3). This enhanced messaging helps developers quickly understand the required input format.
   - **CLI Overrides with Precedence:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow you to override fallback values at runtime. CLI override values now take precedence over any configurable fallback and the default value, ensuring consistent behavior even when environment inputs are non-numeric.
   - **Global Warning Suppression:** You can disable all environment variable warning logs by setting the environment variable `DISABLE_ENV_WARNINGS` (set to any value other than "0").
 
@@ -37,6 +37,13 @@ Recent updates include expanded unit tests to ensure robust handling of non-nume
 ### Unified NaN Handling
 
 This release has unified the handling of "NaN" and similar non-numeric inputs. All variations now trigger a single diagnostic warning exactly once per unique normalized non-numeric input, providing clear and consistent feedback along with the fallback values (and respective units). CLI override values always supersede non-numeric environment variable values.
+
+### Strict Mode Error Messaging
+
+In strict mode, if a non-numeric input is received, the error message now provides clear guidance on what constitutes a valid number. For example, acceptable formats include:
+- Integer (e.g., 42)
+- Decimal (e.g., 3.14)
+- Scientific notation (e.g., 1e3)
 
 ### Automated Tests
 
@@ -85,6 +92,8 @@ export STRICT_ENV=true
 # or
 node src/lib/main.js --strict-env
 ```
+
+When strict mode is enabled, any non-numeric input will result in an error with guidance on acceptable formats.
 
 ### Override Fallback Values via CLI
 
@@ -156,7 +165,7 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag for using the deprecated static fallback. Use `--build-live` for live data integration.
 - **Exponential Backoff with Jitter:** Improved handling of environment variables by consolidating parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Non-numeric inputs now trigger a unified diagnostic warning exactly once per unique normalized non-numeric input, displaying the variable name, raw input, normalized input, and fallback value with unit. CLI override values now take precedence over other fallback mechanisms.
-- **Strict Environment Variable Parsing:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on allowed formats (integer, decimal, or scientific notation).
+- **Strict Environment Variable Parsing:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on allowed formats, for example: integer (e.g., 42), decimal (e.g., 3.14), or scientific notation (e.g., 1e3).
 - **CLI Overrides:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow runtime override of fallback values without changing environment variables.
 - **Custom Endpoints:** Supports custom API endpoints via `CUSTOM_API_ENDPOINTS`. Only valid endpoints (beginning with "http://" or "https://") are accepted.
 - **Unified NaN Handling:** Environment variable parsing now uniformly handles non-numeric values (including "NaN" with various whitespace variants), logging a unified warning exactly once per unique normalized non-numeric input, ensuring consistent fallback behavior.
