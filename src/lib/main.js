@@ -27,9 +27,8 @@
  *     In non-strict mode, an invalid input triggers a one-time diagnostic warning per unique composite key (variable name and normalized input) with fallback values (and units) applied.
  *     In strict mode, non-numeric inputs throw a clear error indicating that only valid numeric formats (integer, decimal, or scientific) are accepted. Allowed formats include integer, decimal or scientific notation.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter and CLI options (--livedata-retry-default and --livedata-delay-default).
- *   - Revised CLI override precedence in environment variable parsing: CLI override values are now prioritized over configurable fallback values and default values.
- *   - Introduced additional diagnostic logging details in live data fetching functions, including reporting of exponential backoff base delay and jitter.
- *   - Standardized NaN fallback logic across environment variable parsing to ensure warnings are logged exactly once per unique invalid input (unless disabled via DISABLE_ENV_WARNINGS).
+ *   - Revised CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and default values.
+ *   - Refined diagnostic logging messages to clearly indicate non-strict mode fallback behavior.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -90,6 +89,7 @@ export function buildOntology() {
  * Standardized helper function to parse numeric environment variables.
  *
  * Behavior:
+ * - CLI override values (--livedata-retry-default and --livedata-delay-default) always take precedence if valid.
  * - In non-strict mode: If the provided variable is undefined, empty, or contains only whitespace, or if after normalization
  *   it equals (case-insensitive) 'nan', a one-time warning is logged (per unique composite key) and the function returns the fallback value.
  *   Duplicate warnings for the same input are suppressed via a cache.
@@ -113,15 +113,21 @@ export function buildOntology() {
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
   // Check CLI override first
   if (varName === "LIVEDATA_RETRY_COUNT" && process.env.LIVEDATA_RETRY_DEFAULT) {
-    const cliRetry = Number(process.env.LIVEDATA_RETRY_DEFAULT);
-    if (!isNaN(cliRetry)) return cliRetry;
+    const cliValue = process.env.LIVEDATA_RETRY_DEFAULT;
+    const normalizedCli = normalizeEnvValue(cliValue);
+    if (normalizedCli && normalizedCli !== "nan" && !isNaN(Number(normalizedCli))) {
+      return Number(normalizedCli);
+    }
   } else if (varName === "LIVEDATA_INITIAL_DELAY" && process.env.LIVEDATA_DELAY_DEFAULT) {
-    const cliDelay = Number(process.env.LIVEDATA_DELAY_DEFAULT);
-    if (!isNaN(cliDelay)) return cliDelay;
+    const cliValue = process.env.LIVEDATA_DELAY_DEFAULT;
+    const normalizedCli = normalizeEnvValue(cliValue);
+    if (normalizedCli && normalizedCli !== "nan" && !isNaN(Number(normalizedCli))) {
+      return Number(normalizedCli);
+    }
   }
 
   const rawValue = process.env[varName];
-  let fallback = configurableFallback !== undefined ? configurableFallback : defaultVal;
+  const fallback = configurableFallback !== undefined ? configurableFallback : defaultVal;
 
   // If the raw value is not a string, return the fallback silently without logging
   if (typeof rawValue !== "string") {
@@ -133,7 +139,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
     const numericRegex = /^-?\d+(\.\d+)?([eE][-+]?\d+)?$/;
     if (!numericRegex.test(normalized)) {
-      throw new Error(`Strict mode: Environment variable ${varName} must be a valid numeric value (allowed formats: integer, decimal, or scientific notation). Received '${rawValue}' (normalized: '${normalized}').`);
+      throw new Error(`Strict mode: Environment variable ${varName} received invalid numeric input: '${rawValue}' (normalized: '${normalized}'). Allowed formats: integer, decimal, or scientific notation.`);
     }
     return Number(normalized);
   }
@@ -148,7 +154,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
         } else if (varName === "LIVEDATA_INITIAL_DELAY") {
           unit = "ms delay";
         }
-        logDiagnostic(`Warning: Environment variable ${varName} received invalid input '${rawValue}' (normalized: '${normalized}') - fallback value ${fallback}${unit} applied.`, "warn");
+        logDiagnostic(`Non-strict mode: Environment variable ${varName} received invalid input '${rawValue}' (normalized: '${normalized}') - fallback value ${fallback}${unit} applied.`, "warn");
         envWarningCache.set(warnKey, true);
       }
     }
