@@ -8,8 +8,8 @@ Key features include:
 
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy with a randomized jitter to further improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a standardized helper function that applies default values when not set. **Valid inputs include standard numeric values (e.g., `3`, `50`) and scientific notation (e.g., `1e3` for 1000).**
 
-  - **Non-Numeric Values Handling:** If a non-numeric value (such as `NaN`, `abc`, empty or whitespace-only strings) is provided, in non-strict mode the system logs a one-time diagnostic warning per unique erroneous input and falls back to default values (default of `3` retries and `100ms` delay), or to a custom fallback value if specified.
-  - **Strict Mode:** When strict mode is enabled (by setting `STRICT_ENV=true` or using the CLI flag `--strict-env`), any non-numeric value, including variations like `NaN` with extra whitespace, will immediately throw an error to enforce proper configuration.
+  - **Non-Numeric Values Handling:** If a non-numeric value (such as `NaN`, `abc`, empty or whitespace-only strings) is provided, in non-strict mode the system logs a one-time diagnostic warning per unique normalized erroneous input and falls back to default values (default of `3` retries and `100ms` delay) or to a custom fallback value if specified.
+  - **Strict Mode:** When strict mode is enabled (by setting `STRICT_ENV=true` or using the CLI flag `--strict-env`), any non-numeric value, including variations like `NaN` with extra whitespace, will cause an error to be thrown immediately to enforce proper configuration.
 
 - **Custom Endpoints:** Users can override or extend the default list of public API endpoints by setting the environment variable `CUSTOM_API_ENDPOINTS` to a comma-separated list of URLs. **Only endpoints starting with `http://` or `https://` are accepted.** Invalid endpoints are ignored with a diagnostic warning.
 
@@ -34,14 +34,14 @@ Key features include:
 owl-builder uses the environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` to configure the retry logic during live data fetching. The behavior is as follows:
 
 - **Valid Numeric Inputs:** Accepts standard numeric values and scientific notation. For example, `export LIVEDATA_RETRY_COUNT=3` or `export LIVEDATA_INITIAL_DELAY=1e2`.
-- **Invalid or Non-Numeric Inputs:** If a non-numeric value (e.g., `NaN`, `abc`, or empty values) is provided in non-strict mode, a one-time warning is logged per unique erroneous value and the system falls back to default values (`3` retries and `100ms` delay) or a provided custom fallback. 
+- **Invalid or Non-Numeric Inputs:** If a non-numeric value (e.g., `NaN`, `abc`, or empty values) is provided in non-strict mode, a one-time warning is logged for the normalized input and the system falls back to default values (`3` retries and `100ms` delay) or a provided custom fallback. 
 - **Strict Mode:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), any non-numeric value (including variations like `NaN` with extra whitespace) will cause an error to be thrown immediately.
 
 Example:
 
 ```bash
-export LIVEDATA_RETRY_COUNT=NaN      # In non-strict mode, defaults to 3 with a warning, or a custom fallback if provided
-export LIVEDATA_INITIAL_DELAY=abc     # In non-strict mode, defaults to 100ms with a warning, or a custom fallback if provided
+export LIVEDATA_RETRY_COUNT=NaN      # In non-strict mode, defaults to 3 with a warning
+export LIVEDATA_INITIAL_DELAY=abc     # In non-strict mode, defaults to 100ms with a warning
 
 export STRICT_ENV=true                # Enabling strict mode
 # In strict mode, the above settings would trigger an error
@@ -186,8 +186,8 @@ _Note:_ Ensure that your network environment allows access to these endpoints fo
 - Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag to use the deprecated static fallback. Without the flag, a warning is issued. Use `--build-live` for live data integration.
-- **Exponential Backoff with Jitter:** Improved environment variable parsing in the live data fetch function by standardizing the parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Non-numeric values, including explicit "NaN", now trigger a diagnostic warning once per unique value, while defaults are applied silently when not set. A new reset function (`resetEnvWarningCache`) is provided for testing purposes.
-- **Strict Environment Variable Parsing:** Enforced strict parsing mode (via the CLI flag `--strict-env` or `STRICT_ENV=true`) to immediately throw errors on invalid numeric configuration values, including any variant of "NaN".
+- **Exponential Backoff with Jitter:** Improved environment variable parsing in the live data fetch function by standardizing the parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Non-numeric values, including explicit "NaN", now trigger a diagnostic warning once per normalized value, while defaults are applied silently when not set. 
+- **Strict Environment Variable Parsing:** Enforced strict parsing mode (via the CLI flag `--strict-env` or `export STRICT_ENV=true`) to immediately throw errors on invalid numeric configuration values, including any variant of "NaN".
 - **Custom Fallback Values:** Added support for configurable fallback values in environment variable parsing. Developers can now provide an optional custom fallback value to override the hardcoded default when an environment variable is non-numeric.
 - **Custom Endpoints:** Added support for custom public API endpoints via the `CUSTOM_API_ENDPOINTS` environment variable. Only endpoints starting with "http://" or "https://" are accepted and merged with the defaults. Invalid endpoints are ignored with a diagnostic warning.
 - **Crawling Update:** Refactored crawlOntologies to return an object with separate arrays for successes and errors to simplify downstream processing.
@@ -195,6 +195,7 @@ _Note:_ Ensure that your network environment allows access to these endpoints fo
 - **Asynchronous Query:** The `queryOntology` function has been refactored to use asynchronous file system methods for improved non-blocking performance.
 - **Live Data Integration Disable:** New option to disable live data integration by setting the environment variable `DISABLE_LIVE_DATA` or using the CLI flag `--disable-live`. When enabled, owl-builder uses the static fallback instead of attempting live network requests.
 - **Configurable Diagnostic Logging:** Diagnostic messages can now be controlled via the `DIAGNOSTIC_LOG_LEVEL` environment variable. This feature allows users and automated systems to suppress or enable diagnostic logs based on the desired verbosity.
+- **Warning Cache Normalization:** The warning cache for non-numeric environment variables now uses a normalized value (trimmed and lower-cased) to avoid duplicate warnings for semantically equivalent inputs.
 - **Automated Tests:** Added comprehensive tests for environment variable parsing (including handling of "NaN" with whitespace) and configurable diagnostic logging to ensure correct functionality.
 - Updated documentation to clarify the behavior when non-numeric values are provided for environment variables, including explicit "NaN", and to explain the usage of strict mode, the configurable fallback values option, and the resetEnvWarningCache function.
 

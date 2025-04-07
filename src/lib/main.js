@@ -23,18 +23,19 @@
  *   - Refactored file system operations to use asynchronous APIs.
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *   - Implemented exponential backoff in fetchDataWithRetry with configurable retries, delay and randomized jitter.
- *   - Non-numeric environment variables for LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT fallback to defaults with a diagnostic warning logged only once per variable per unique value.
+ *   - Non-numeric environment variables for LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT fallback to defaults with a diagnostic warning logged only once per normalized value.
  *   - Added configurable option to disable live data integration via the environment variable DISABLE_LIVE_DATA. When set (and not equal to "0"), live data requests are bypassed and the static fallback is used.
  *   - Introduced configurable diagnostic logging levels via the DIAGNOSTIC_LOG_LEVEL environment variable.
  *   - Allow custom configuration of public API endpoints via the CUSTOM_API_ENDPOINTS environment variable. When set with a comma-separated list, these endpoints that are valid (starting with "http://" or "https://") are merged with the default list.
  *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
  *   - Enforced strict handling of 'NaN' values: In strict mode, any value equal to 'NaN' (including with extra whitespace) will throw an error immediately.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function.
+ *   - Normalized non-numeric warning caching to avoid duplicate warnings for equivalent values.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
  *
- * NOTE: Non-numeric values, such as 'NaN' (even with extra whitespace), will trigger a one-time diagnostic warning in non-strict mode and fall back to default values. In strict mode (STRICT_ENV=true or --strict-env), such values will immediately throw an error.
+ * NOTE: Non-numeric values, such as "NaN" (even with extra whitespace), will trigger a one-time diagnostic warning in non-strict mode and fall back to default values, whereas in strict mode (STRICT_ENV=true or --strict-env), such values will immediately throw an error.
  */
 
 import fs, { promises as fsp } from "fs";
@@ -45,7 +46,7 @@ import http from "http";
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
-// Cache for environment variable warning flags using a Map that stores the last seen raw value.
+// Cache for environment variable warning flags using a Map that stores the normalized value (trimmed and lower case).
 const envWarningCache = new Map();
 
 /**
@@ -76,7 +77,7 @@ export function buildOntology() {
  * If the variable is undefined, empty, or consists only of whitespace,
  * or if its trimmed value (case-insensitive) is exactly "nan", returns the fallback value.
  * If a non-numeric value is provided (including invalid strings, explicit "NaN", or empty) then:
- *   - In non-strict mode, logs a diagnostic warning exactly once per unique erroneous input and returns the fallback value.
+ *   - In non-strict mode, logs a diagnostic warning exactly once per unique normalized erroneous input and returns the fallback value.
  *   - In strict mode (STRICT_ENV=true or CLI flag --strict-env), throws an error.
  * Supported formats include standard numbers as well as scientific notation (e.g. '1e3').
  *
@@ -88,11 +89,12 @@ export function buildOntology() {
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const value = process.env[varName];
   const trimmed = value !== undefined ? value.trim() : "";
+  const normalized = trimmed.toLowerCase();
   const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
   
   // Strict mode check
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
-    if (trimmed === "" || trimmed.toLowerCase() === "nan" || isNaN(Number(trimmed))) {
+    if (normalized === "" || normalized === "nan" || isNaN(Number(trimmed))) {
       throw new Error(`Strict mode: Environment variable ${varName} is set to an invalid numerical value '${trimmed}'.`);
     } else {
       return Number(trimmed);
@@ -100,18 +102,18 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   }
 
   // Check if undefined, empty, or explicitly 'nan'
-  if (trimmed === "" || trimmed.toLowerCase() === "nan") {
-    if (envWarningCache.get(varName) !== value) { // use raw value for uniqueness
+  if (normalized === "" || normalized === "nan") {
+    if (envWarningCache.get(varName) !== normalized) { // use normalized value for uniqueness
       logDiagnostic(`Warning: ${varName} is non-numeric (received '${value}'). Using fallback value of ${(configurableFallback !== undefined ? configurableFallback : defaultVal)}${unit}.`, "warn");
-      envWarningCache.set(varName, value);
+      envWarningCache.set(varName, normalized);
     }
     return configurableFallback !== undefined ? configurableFallback : defaultVal;
   }
   const num = Number(trimmed);
   if (isNaN(num)) {
-    if (envWarningCache.get(varName) !== value) {
+    if (envWarningCache.get(varName) !== normalized) {
       logDiagnostic(`Warning: ${varName} is non-numeric. Using fallback value of ${(configurableFallback !== undefined ? configurableFallback : defaultVal)}${unit}.`, "warn");
-      envWarningCache.set(varName, value);
+      envWarningCache.set(varName, normalized);
     }
     return configurableFallback !== undefined ? configurableFallback : defaultVal;
   }
