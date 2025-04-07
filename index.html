@@ -29,7 +29,7 @@
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Live Data Integration:</strong> Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy with a randomized jitter to further improve network resilience and mitigate thundering herd issues. Environment variables <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code> are parsed using a standardized helper function that silently applies default values when not set, and logs a diagnostic warning (with appropriate units) only once per variable when a non-numeric value is explicitly provided.</li>
 <li class="md-github"><strong class="md-github">Data Persistence:</strong> Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)</li>
-<li class="md-github"><strong class="md-github">Query &amp; Validation:</strong> Rapidly search for ontology concepts and validate your data.</li>
+<li class="md-github"><strong class="md-github">Query &amp; Validation:</strong> Rapidly search for ontology concepts and validate your data. Note: The function <code class="md-github">queryOntology</code> has been refactored to operate asynchronously for improved performance.</li>
 <li class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).</li>
 <li class="md-github"><strong class="md-github">Concurrent Data Crawling:</strong> Gather real-time data concurrently from a range of public endpoints. The crawl functionality has been enhanced to return results with separate arrays for successful responses and errors, simplifying downstream processing.</li>
 <li class="md-github"><strong class="md-github">Diverse Ontology Models:</strong> Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).</li>
@@ -58,7 +58,7 @@ npm install
 <li class="md-github"><code class="md-github">--build-live</code>: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt, including the exponential backoff delay with randomized jitter.</li>
 <li class="md-github"><code class="md-github">--persist</code>: Saves the current ontology to a JSON file.</li>
 <li class="md-github"><code class="md-github">--load</code>: Loads the saved ontology.</li>
-<li class="md-github"><code class="md-github">--query &quot;term&quot;</code>: Searches for matching ontology concepts.</li>
+<li class="md-github"><code class="md-github">--query &quot;term&quot;</code>: Searches for matching ontology concepts. (This function is now asynchronous; use <code class="md-github">await</code> if using directly in code.)</li>
 <li class="md-github"><code class="md-github">--export</code>: Exports the ontology as extended OWL XML.</li>
 <li class="md-github"><code class="md-github">--import</code>: Imports an ontology from extended OWL XML.</li>
 <li class="md-github"><code class="md-github">--backup</code>: Creates a backup of the ontology file.</li>
@@ -127,6 +127,7 @@ npm install
 <li class="md-github"><strong class="md-github">Exponential Backoff with Jitter:</strong> Improved environment variable parsing in the live data fetch function by standardizing the parsing of <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code>. Non-numeric values now trigger a diagnostic warning once per variable, while defaults are applied silently when not set.</li>
 <li class="md-github"><strong class="md-github">Crawling Update:</strong> Refactored crawlOntologies to return an object with separate arrays for successes and errors to simplify downstream processing.</li>
 <li class="md-github">Added robust HTTP endpoint integration testing for the web server.</li>
+<li class="md-github"><strong class="md-github">Asynchronous Query:</strong> The <code class="md-github">queryOntology</code> function has been refactored to use asynchronous file system methods for improved non-blocking performance.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
 <p class="md-github">Contributions are welcome! Please review <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for our coding standards, testing requirements, and workflow guidelines.</p>
@@ -135,7 +136,7 @@ npm install
 
   </section>
   <footer>
-    <p>Generated on 2025-04-07T06:27:43.539Z</p>
+    <p>Generated on 2025-04-07T06:42:52.415Z</p>
   </footer>
 </body>
 </html>
