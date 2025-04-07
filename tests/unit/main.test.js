@@ -278,6 +278,20 @@ describe("Environment Variable Parsing Tests", () => {
     expect(_parseEnvNumber("LIVEDATA_RETRY_COUNT", 3)).toBe(5);
     expect(_parseEnvNumber("LIVEDATA_INITIAL_DELAY", 100)).toBe(250);
   });
+
+  // Additional tests for enhanced NaN handling and edge cases
+  test("Non-strict mode handles mixed-case ' nAn ' with extra spaces", () => {
+    process.env.TEST_MIXED = " nAn ";
+    resetEnvWarningCache();
+    expect(_parseEnvNumber("TEST_MIXED", 20)).toBe(20);
+    // Subsequent call with same normalized value should not log another warning
+    expect(_parseEnvNumber("TEST_MIXED", 20)).toBe(20);
+  });
+
+  test("Non-strict mode handles null environment variable by returning fallback", () => {
+    process.env.TEST_NULL = null;
+    expect(_parseEnvNumber("TEST_NULL", 30)).toBe(30);
+  });
 });
 
 // ... Additional tests remain unchanged as they cover core functionality and CLI behavior
