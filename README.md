@@ -6,7 +6,7 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 
 Key features include:
 
-- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy with a randomized jitter to further improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a standardized helper function that applies default values when not set. If non-numeric values are provided, including the explicit string `NaN`, the system falls back to defaults and logs a diagnostic warning **only once per variable** (with appropriate units).
+- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy with a randomized jitter to further improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a standardized helper function that applies default values when not set. If non-numeric values are provided, including the explicit string `NaN`, the system falls back to defaults and logs a diagnostic warning **only once per unique value per variable**. A new function (`resetEnvWarningCache`) is provided to clear warning state in test environments.
 - **Custom Endpoints:** Users can override or extend the default list of public API endpoints by setting the environment variable `CUSTOM_API_ENDPOINTS` to a comma-separated list of endpoints. **Note:** Only endpoints starting with `http://` or `https://` are considered valid. Invalid endpoints are ignored and a diagnostic warning is logged. This provides increased flexibility for diverse deployment scenarios.
 - **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)
 - **Query & Validation:** Rapidly search for ontology concepts and validate your data. Note: The function `queryOntology` has been refactored to operate asynchronously for improved performance.
@@ -22,13 +22,13 @@ Key features include:
 owl-builder uses the environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` to configure the retry logic during live data fetching. The behavior is as follows:
 
 - **Valid Numeric Inputs:** Standard numbers (e.g., `3`, `50`) and scientific notation (e.g., `1e3` for 1000) are accepted and used in the retry mechanism.
-- **Invalid or Non-Numeric Inputs:** If a non-numeric value (e.g., `NaN`, `abc`) or an empty value is provided, the function silently falls back to default values (`3` retries and `100ms` delay, respectively) and logs a diagnostic warning **only once per variable**. This prevents log spam while ensuring fallback behavior is consistent.
+- **Invalid or Non-Numeric Inputs:** If a non-numeric value (e.g., `NaN`, `abc`) or an empty value is provided, the function silently falls back to default values (`3` retries and `100ms` delay, respectively) and logs a diagnostic warning **only once per unique erroneous input** for a variable. This prevents log spam while ensuring fallback behavior is consistent. In test scenarios, the provided helper function `resetEnvWarningCache` allows resetting this state to ensure accurate warning logging.
 
 Example:
 
 ```bash
-export LIVEDATA_RETRY_COUNT=NaN      # Will default to 3 retries with a diagnostic warning (logged only once)
-export LIVEDATA_INITIAL_DELAY=abc      # Will default to 100ms with a diagnostic warning (logged only once)
+export LIVEDATA_RETRY_COUNT=NaN      # Will default to 3 retries with a diagnostic warning (logged only once for 'NaN')
+export LIVEDATA_INITIAL_DELAY=abc      # Will default to 100ms with a diagnostic warning (logged only once for 'abc')
 ```
 
 ### Custom API Endpoints
@@ -148,21 +148,7 @@ owl-builder uses a broad list of public endpoints to build ontologies. Examples 
 - `https://jsonplaceholder.typicode.com/todos`
 - `https://api/chucknorris.io/jokes/random`
 - `https://api/agify.io/?name=michael`
-- `https://api/stackexchange.com/2.2/questions?order=desc&sort=activity`
-- `https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json`
-- `https://api/spacexdata.com/v4/launches/latest`
-- `https://random-data-api.com/api/commerce/random_commerce`
-- `https://jsonplaceholder.typicode.com/albums`
-- `https://jsonplaceholder.typicode.com/users`
-- `https://api/genderize.io`
-- `https://api/nationalize.io`
-- `https://api/covid19api.com/summary`
-- `https://dog.ceo/api/breed/husky/images/random`
-- `https://quotes.rest/qod`
-- `https://type.fit/api/quotes`
-- `https://api/exchangerate-api.com/v4/latest/USD`
-- `https://api/spacexdata.com/v4/rockets`
-- `https://api/quotable.io/random`
+- ...
 
 _Note:_ Ensure that your network environment allows access to these endpoints for successful data retrieval.
 
@@ -177,7 +163,7 @@ _Note:_ Ensure that your network environment allows access to these endpoints fo
 - Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag to use the deprecated static fallback. Without the flag, a warning is issued. Use `--build-live` for live data integration.
-- **Exponential Backoff with Jitter:** Improved environment variable parsing in the live data fetch function by standardizing the parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Non-numeric values, including an explicit "NaN", now trigger a diagnostic warning once per variable, while defaults are applied silently when not set.
+- **Exponential Backoff with Jitter:** Improved environment variable parsing in the live data fetch function by standardizing the parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Non-numeric values, including an explicit "NaN", now trigger a diagnostic warning once per unique value, while defaults are applied silently when not set. A new reset function (`resetEnvWarningCache`) is provided for testing purposes.
 - **Custom Endpoints:** Added support for custom public API endpoints via the `CUSTOM_API_ENDPOINTS` environment variable. Only endpoints starting with "http://" or "https://" are accepted and merged with the defaults. Invalid endpoints are ignored with a diagnostic warning.
 - **Crawling Update:** Refactored crawlOntologies to return an object with separate arrays for successes and errors to simplify downstream processing.
 - Added robust HTTP endpoint integration testing for the web server.
@@ -185,7 +171,7 @@ _Note:_ Ensure that your network environment allows access to these endpoints fo
 - **Live Data Integration Disable:** New option to disable live data integration by setting the environment variable `DISABLE_LIVE_DATA` or using the CLI flag `--disable-live`. When enabled, owl-builder uses the static fallback instead of attempting live network requests.
 - **Configurable Diagnostic Logging:** Diagnostic messages can now be controlled via the `DIAGNOSTIC_LOG_LEVEL` environment variable. This feature allows users and automated systems to suppress or enable diagnostic logs based on the desired verbosity.
 - **Automated Tests:** Added comprehensive tests for environment variable parsing (including handling of "NaN") and configurable diagnostic logging to ensure correct functionality.
-- Updated documentation to reflect the handling of edge-case non-numeric inputs and custom endpoint configuration.
+- Updated documentation to reflect the handling of edge-case non-numeric inputs, the new reset functionality for diagnostic logging, and custom endpoint configuration.
 
 ## Contributing
 

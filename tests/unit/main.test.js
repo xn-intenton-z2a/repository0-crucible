@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { describe, test, expect, vi, afterEach } from "vitest";
+import { describe, test, expect, vi, afterEach, beforeEach } from "vitest";
 import fs from "fs";
 import path from "path";
 import http from "http";
@@ -50,7 +50,8 @@ const {
   backupAndRefreshOntology,
   fetcher,
   startWebServer,
-  _parseEnvNumber
+  _parseEnvNumber,
+  resetEnvWarningCache
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -112,6 +113,9 @@ describe("Robust HTTP Endpoint Testing for the Integrated Web Server", () => {
 
 // New test for configurable environment variables in fetchDataWithRetry with non-numeric values
 describe("Live Data Configurability", () => {
+  beforeEach(() => {
+    resetEnvWarningCache();
+  });
   test("fetchDataWithRetry respects environment configuration for retries and initial delay", async () => {
     const originalEnvRetry = process.env.LIVEDATA_RETRY_COUNT;
     const originalEnvDelay = process.env.LIVEDATA_INITIAL_DELAY;
@@ -208,6 +212,9 @@ describe("Live Data Configurability", () => {
 
 describe("Environment Variable Parsing Tests", () => {
   const originalEnv = { ...process.env };
+  beforeEach(() => {
+    resetEnvWarningCache();
+  });
   afterEach(() => {
     process.env = { ...originalEnv };
   });
@@ -230,9 +237,15 @@ describe("Environment Variable Parsing Tests", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     process.env.TEST_NON_NUM = "NaN";
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
+    // Calling again should not log again since value hasn't changed
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
     const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM is non-numeric") || call[0].includes("received 'nan'")).length;
     expect(warningCalls).toBe(1);
+    // Now change the value so warning is logged again
+    process.env.TEST_NON_NUM = "NaN ";
+    expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
+    const updatedWarningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM is non-numeric") || call[0].includes("received 'nan'")).length;
+    expect(updatedWarningCalls).toBe(2);
     logSpy.mockRestore();
   });
 });

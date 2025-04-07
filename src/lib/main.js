@@ -23,7 +23,7 @@
  *   - Refactored file system operations to use asynchronous APIs.
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *   - Implemented exponential backoff in fetchDataWithRetry with configurable retries, delay and randomized jitter.
- *   - Non-numeric environment variables for LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT fallback to defaults with a diagnostic warning logged only once per variable.
+ *   - Non-numeric environment variables for LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT fallback to defaults with a diagnostic warning logged only once per variable per unique value.
  *   - Refactored crawlOntologies to return separate arrays for successful and failed crawl results.
  *   - Added configurable option to disable live data integration via the environment variable DISABLE_LIVE_DATA. When set (and not equal to "0"), live data requests are bypassed and the static fallback is used.
  *   - Introduced configurable diagnostic logging levels via the DIAGNOSTIC_LOG_LEVEL environment variable.
@@ -41,8 +41,16 @@ import http from "http";
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
-// Cache for environment variable warning flags to deduplicate warnings
-const envWarningLogged = {};
+// Cache for environment variable warning flags using a Map that stores the last seen value.
+const envWarningCache = new Map();
+
+/**
+ * Resets the environment warning cache. This function is primarily intended for testing purposes
+ * to allow idempotent logging behavior when environment variables change.
+ */
+export function resetEnvWarningCache() {
+  envWarningCache.clear();
+}
 
 /**
  * @deprecated Use buildOntologyFromLiveData for live data integration. This static fallback is retained only for emergencies.
@@ -63,7 +71,7 @@ export function buildOntology() {
  * Standardized helper function to parse numeric environment variables.
  * If the variable is undefined, empty, or consists only of whitespace,
  * or if its trimmed value (case-insensitive) is exactly "nan", returns the default value.
- * If a non-numeric value is provided (including invalid strings), it logs a diagnostic warning (only once per variable) and returns the default value.
+ * If a non-numeric value is provided (including invalid strings), it logs a diagnostic warning (only once per unique input) and returns the default value.
  * Supported formats include standard numbers as well as scientific notation (e.g. '1e3').
  */
 function parseEnvNumber(varName, defaultVal) {
@@ -71,19 +79,19 @@ function parseEnvNumber(varName, defaultVal) {
   const trimmed = value !== undefined ? value.trim() : "";
   // Check if undefined, empty, or explicitly 'nan'
   if (trimmed === "" || trimmed.toLowerCase() === "nan") {
-    if (!envWarningLogged[varName] && trimmed.toLowerCase() === "nan") {
+    if (envWarningCache.get(varName) !== trimmed) {
       const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
       logDiagnostic(`Warning: ${varName} is non-numeric (received '${trimmed}'). Using default value of ${defaultVal}${unit}.`, "warn");
-      envWarningLogged[varName] = true;
+      envWarningCache.set(varName, trimmed);
     }
     return defaultVal;
   }
   const num = Number(trimmed);
   if (isNaN(num)) {
-    if (!envWarningLogged[varName]) {
+    if (envWarningCache.get(varName) !== trimmed) {
       const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
       logDiagnostic(`Warning: ${varName} is non-numeric. Using default value of ${defaultVal}${unit}.`, "warn");
-      envWarningLogged[varName] = true;
+      envWarningCache.set(varName, trimmed);
     }
     return defaultVal;
   }
