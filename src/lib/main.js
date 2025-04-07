@@ -152,7 +152,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
         } else if (varName === "LIVEDATA_INITIAL_DELAY") {
           unit = "ms delay";
         }
-        logDiagnostic(`Non-strict mode: Environment variable ${varName} received non-numeric input '${rawValue}' (normalized: '${normalized}'). Fallback value ${fallback}${unit} applied.`, "warn");
+        logDiagnostic(`Unified NaN Handling: Environment variable ${varName} received non-numeric input '${rawValue}' (normalized: '${normalized}'). Fallback value ${fallback}${unit} applied.`, "warn");
         envWarningCache.set(warnKey, true);
       }
     }
