@@ -1,41 +1,51 @@
 {
   "openIssues": 2,
-  "issuesClosedLastHour": 3,
-  "issuesClosedLastDay": 31,
-  "openPRs": 0,
-  "prDetails": [],
-  "diffMinutes": 32,
-  "diffMinutesMain": 41,
-  "commitsLastHour": 2,
-  "commitsLastDay": 14,
+  "issuesClosedLastHour": 4,
+  "issuesClosedLastDay": 35,
+  "openPRs": 1,
+  "prDetails": [
+    {
+      "title": "Fixed exponential backoff delay calculation to safely handle NaN values from LIVEDATA_INITIAL_DELAY. (fixes #418)",
+      "ageMinutes": 0
+    }
+  ],
+  "diffMinutes": 0,
+  "diffMinutesMain": 10,
+  "commitsLastHour": 4,
+  "commitsLastDay": 18,
   "lastFiveCommitMessages": [
+    {
+      "time": "01:52",
+      "message": "Update from agentic-lib"
+    },
+    {
+      "time": "01:43",
+      "message": "Update from agentic-lib"
+    },
+    {
+      "time": "01:40",
+      "message": "Enhance live data integration with configurable retry count and ..."
+    },
+    {
+      "time": "01:23",
+      "message": "Implemented exponential backoff in fetchDataWithRetry with corre..."
+    },
     {
       "time": "00:36",
       "message": "Require --allow-deprecated flag with --build to explicitly invok..."
-    },
-    {
-      "time": "00:22",
-      "message": "Add new features, prompts, and updates for owl-builder.\n\nThis co..."
-    },
-    {
-      "time": "23:56",
-      "message": "Enhanced error handling and diagnostic logging in live data inte..."
-    },
-    {
-      "time": "23:49",
-      "message": "Refactor file system operations to use asynchronous APIs using f..."
-    },
-    {
-      "time": "23:41",
-      "message": "Enhanced XML exportimport functions to support extended ontology..."
     }
   ],
   "branches": {
-    "count": 0,
-    "details": []
+    "count": 1,
+    "details": [
+      {
+        "branch": "agentic-lib-issue-418",
+        "minutesSinceLastCommit": 0
+      }
+    ]
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-07T01:18:06.260Z"
+  "generatedAt": "2025-04-07T02:03:09.653Z"
 }
