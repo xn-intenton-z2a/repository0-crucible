@@ -1,14 +1,18 @@
 {
-  "openIssues": 18,
+  "openIssues": 17,
   "issuesClosedLastHour": 8,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 8,
-  "diffMinutesMain": 13,
+  "diffMinutes": 5,
+  "diffMinutesMain": 5,
   "commitsLastHour": 4,
-  "commitsLastDay": 80,
+  "commitsLastDay": 81,
   "lastFiveCommitMessages": [
+    {
+      "time": "20:58",
+      "message": "Simplified NaN input parsing and unified fallback mechanism in p..."
+    },
     {
       "time": "20:40",
       "message": "Optimized NaN warning cache by using a consistent composite key ..."
@@ -24,10 +28,6 @@
     {
       "time": "19:55",
       "message": "Updated _parseEnvNumber to silently return fallback for non-stri..."
-    },
-    {
-      "time": "19:31",
-      "message": "Revise fallback precedence in parseEnvNumber to prioritize CLI o..."
     }
   ],
   "branches": {
@@ -37,5 +37,5 @@
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-07T20:54:13.431Z"
+  "generatedAt": "2025-04-07T21:03:43.350Z"
 }
