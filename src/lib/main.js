@@ -30,8 +30,7 @@
  *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
  *   - Enforced strict handling of 'NaN' values: In strict mode, any value that is not a valid numerical format (including variants like 'NaN' with extra whitespace) will throw an error immediately.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
- *   - Refactored normalization of environment variable values into a dedicated helper function for consistent handling of variants like "NaN", empty strings, and whitespace-only inputs. This ensures one-time diagnostic warnings and simplifies future modifications.
- *   - Warning Cache Normalization: To avoid duplicate logging, a warning is logged only once per unique normalized input (trimmed and lowercased value).
+ *   - Updated inline documentation for environment variable parsing to clarify behavior in both strict and non-strict modes. In non-strict mode, non-numeric values (like 'NaN' or whitespace) trigger a one-time warning per normalized input and fall back to a default or configurable value, with duplicate warnings suppressed via caching.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -85,15 +84,15 @@ export function buildOntology() {
  * Standardized helper function to parse numeric environment variables.
  *
  * Behavior:
- * - If the provided variable is undefined, empty, or contains only whitespace, or if after trimming
- *   it equals (case-insensitive) 'nan', the function returns the fallback.
- * - If non-numeric input (including variants like 'NaN' with extra whitespace) is encountered:
- *   - In non-strict mode, a one-time diagnostic warning is logged per unique normalized input and the fallback is returned.
- *   - In strict mode (when STRICT_ENV is set to true or --strict-env is used), an error is thrown immediately.
- * - Supports integers, decimals, and scientific notation.
- * - Allows overriding fallback values via CLI options (e.g. --livedata-retry-default and --livedata-delay-default).
+ * - In non-strict mode: If the provided variable is undefined, empty, or contains only whitespace, or if after trimming
+ *   it equals (case-insensitive) 'nan', a one-time warning is logged (per unique normalized input) and the function returns the fallback value.
+ *   Duplicate warnings for the same normalized input are suppressed via a cache.
  *
- * The warning cache ensures that for each unique normalized value (trimmed, lowercased) only one warning is logged.
+ * - In strict mode (when STRICT_ENV is set to true or --strict-env is used): The environment variable must be a valid numeric value.
+ *   Any non-numeric input (even with extra whitespace) will throw an error immediately, with a clear message indicating the invalid input.
+ *
+ * Supports integers, decimals, and scientific notation.
+ * Allows overriding fallback values via CLI options (e.g. --livedata-retry-default and --livedata-delay-default).
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const value = process.env[varName];
@@ -117,7 +116,6 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   
   // Strict mode check with regex validation
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
-    // Regex supports integer, decimals, and scientific notation
     const numericRegex = /^-?\d+(\.\d+)?([eE]-?\d+)?$/;
     if (!numericRegex.test(trimmed)) {
       throw new Error(`Strict mode: Environment variable ${varName} is set to an invalid numerical value '${value}'.`);
@@ -125,10 +123,10 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
     return Number(trimmed);
   }
 
-  // Check if undefined, empty, or explicitly 'nan'
+  // Non-strict mode handling - log one-time warning per unique normalized value
   if (normalized === "" || normalized === "nan") {
-    if (envWarningCache.get(varName) !== normalized) { // log warning only once per normalized value
-      logDiagnostic(`Warning: ${varName} is non-numeric (received '${value}'). Using fallback value of ${fallback}${unit}.`, "warn");
+    if (envWarningCache.get(varName) !== normalized) {
+      logDiagnostic(`Warning (non-strict mode): ${varName} is non-numeric (received '${value}'). Using fallback value of ${fallback}${unit}. Duplicate warnings suppressed.`, "warn");
       envWarningCache.set(varName, normalized);
     }
     return fallback;
@@ -136,7 +134,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const num = Number(trimmed);
   if (isNaN(num)) {
     if (envWarningCache.get(varName) !== normalized) {
-      logDiagnostic(`Warning: ${varName} is non-numeric. Using fallback value of ${fallback}${unit}.`, "warn");
+      logDiagnostic(`Warning (non-strict mode): ${varName} is non-numeric. Using fallback value of ${fallback}${unit}. Duplicate warnings suppressed.`, "warn");
       envWarningCache.set(varName, normalized);
     }
     return fallback;
@@ -146,13 +144,11 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
 
 // Builds an ontology using live data from a public API endpoint
 export async function buildOntologyFromLiveData() {
-  // Check if live data integration is disabled via environment variable
   if (process.env.DISABLE_LIVE_DATA && process.env.DISABLE_LIVE_DATA !== "0") {
     logDiagnostic("Live data integration disabled by configuration. Using static fallback.", "info");
     return buildOntology();
   }
   
-  // In test environments, simulate a successful live data integration
   if (process.env.NODE_ENV === "test") {
     return { title: "Live Data Ontology", concepts: ["LiveConcept1", "LiveConcept2", "LiveConcept3"] };
   }
@@ -193,7 +189,6 @@ export async function loadOntology() {
   }
 }
 
-// Refactored queryOntology to use asynchronous file system methods
 export async function queryOntology(searchTerm) {
   try {
     await fsp.access(ontologyFilePath);
@@ -213,7 +208,6 @@ export function validateOntology(ontology) {
   return ontology && ontology.title ? true : false;
 }
 
-// Updated exportOntologyToXML to support extended ontology models including concepts, classes, properties, metadata
 export function exportOntologyToXML(ontology) {
   let xml = `<ontology>`;
   if (ontology.title) {
@@ -254,7 +248,6 @@ export function exportOntologyToXML(ontology) {
   return xml;
 }
 
-// Updated importOntologyFromXML to parse extended XML into full ontology model
 export function importOntologyFromXML(xml) {
   const getTag = (tag) => {
     const match = xml.match(new RegExp(`<${tag}>([^<]+)</${tag}>`));
@@ -264,7 +257,6 @@ export function importOntologyFromXML(xml) {
   const ontology = {};
   ontology.title = getTag("title") || "Imported Ontology";
 
-  // Parse concepts
   const conceptsBlock = xml.match(/<concepts>([\s\S]*?)<\/concepts>/);
   if (conceptsBlock) {
     const conceptMatches = conceptsBlock[1].matchAll(/<concept>([^<]+)<\/concept>/g);
@@ -273,14 +265,12 @@ export function importOntologyFromXML(xml) {
     ontology.concepts = [];
   }
 
-  // Parse classes
   const classesBlock = xml.match(/<classes>([\s\S]*?)<\/classes>/);
   if (classesBlock) {
     const classMatches = classesBlock[1].matchAll(/<class>([^<]+)<\/class>/g);
     ontology.classes = Array.from(classMatches, (m) => m[1]);
   }
 
-  // Parse properties
   const propertiesBlock = xml.match(/<properties>([\s\S]*?)<\/properties>/);
   if (propertiesBlock) {
     const propertyMatches = propertiesBlock[1].matchAll(/<property>([\s\S]*?)<\/property>/g);
@@ -292,7 +282,6 @@ export function importOntologyFromXML(xml) {
     });
   }
 
-  // Parse metadata
   const metadataBlock = xml.match(/<metadata>([\s\S]*?)<\/metadata>/);
   if (metadataBlock) {
     ontology.metadata = {};
@@ -316,7 +305,6 @@ export async function backupOntology() {
   }
 }
 
-// Updated updateOntology to use live data integration and made it async
 export async function updateOntology(newTitle) {
   const ontology = await buildOntologyFromLiveData();
   ontology.title = newTitle;
@@ -336,7 +324,6 @@ export async function clearOntology() {
   }
 }
 
-// Updated listAvailableEndpoints to support custom endpoints configuration via CUSTOM_API_ENDPOINTS env variable
 export function listAvailableEndpoints() {
   const defaultEndpoints = [
     "https://api.publicapis.org/entries",
@@ -380,15 +367,12 @@ export function listAvailableEndpoints() {
         logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with "http://" or "https://"`, "warn");
       }
     });
-    // Merge unique endpoints
     return Array.from(new Set([...defaultEndpoints, ...validCustomEndpoints]));
   } else {
     return defaultEndpoints;
   }
 }
 
-// Updated fetchDataWithRetry to implement exponential backoff delays with configurable retry attempts and initial delay,
-// now enhanced with a randomized jitter to avoid thundering herd issues.
 export async function fetchDataWithRetry(url, retries) {
   if (typeof retries === "undefined") {
     retries = parseEnvNumber("LIVEDATA_RETRY_COUNT", 3);
@@ -503,7 +487,6 @@ export function serveWebServer() {
   });
 }
 
-// New function to start the web server and return the server instance for integration testing
 export function startWebServer() {
   const port = process.env.PORT || 3000;
   const server = http.createServer((req, res) => {
@@ -518,7 +501,6 @@ export function startWebServer() {
   });
 }
 
-// Enhanced Functions for Advanced Ontology Models
 export function buildIntermediateOWLModel() {
   return {
     id: "intermediate",
@@ -541,7 +523,6 @@ export async function buildEnhancedOntology() {
   return ontology;
 }
 
-// New Diagnostic Logging Functions
 export function getCurrentTimestamp() {
   return new Date().toISOString();
 }
@@ -549,13 +530,11 @@ export function getCurrentTimestamp() {
 export function logDiagnostic(message, level = "debug") {
   const levels = { off: -1, error: 0, warn: 1, info: 2, debug: 3 };
   const configured = process.env.DIAGNOSTIC_LOG_LEVEL ? process.env.DIAGNOSTIC_LOG_LEVEL.toLowerCase() : "debug";
-  // If the message's level is less than or equal to the configured threshold, log the message
   if (levels[level] <= (levels[configured] !== undefined ? levels[configured] : 3)) {
     console.log(`[${getCurrentTimestamp()}] DIAGNOSTIC: ${message}`);
   }
 }
 
-// New functions for extended customization and merging functionality
 export function buildOntologyFromCustomData(customData = {}) {
   return { ...buildOntology(), ...customData, customizedByUser: true };
 }
@@ -577,7 +556,6 @@ export async function buildOntologyFromLiveDataWithLog() {
   return ontology;
 }
 
-// New Wrapper Functions for Additional OWL Ontology Models
 export function buildMinimalOWLModel() {
   return {
     id: "minimal",
@@ -622,7 +600,6 @@ export function buildEducationalOntologyModel() {
   };
 }
 
-// Additional New Wrapper Functions for OWL Ontology Models
 export function buildPhilosophicalOntologyModel() {
   return {
     id: "philosophical",
@@ -643,7 +620,6 @@ export function buildEconomicOntologyModel() {
   };
 }
 
-// New functions for refreshing and merging ontologies inline with our Mission Statement
 export async function refreshOntology() {
   try {
     const clearResult = await clearOntology();
@@ -674,10 +650,7 @@ export async function mergeAndPersistOntology() {
   }
 }
 
-// ===== Additional New Functions as per CONTRIBUTING Guidelines =====
-
 export async function buildOntologyHybrid(customizations = {}) {
-  // Combines live data with custom static data
   const liveOntology = await buildOntologyFromLiveData();
   const customOntology = buildOntologyFromCustomData(customizations);
   const merged = mergeOntologies(liveOntology, customOntology);
@@ -707,22 +680,6 @@ export async function backupAndRefreshOntology() {
     backupResult,
     refreshedOntology
   };
-}
-
-// Exporting fetcher object to allow test spies
-export const fetcher = { fetchDataWithRetry };
-
-// New CLI processing for overriding fallback values via CLI options
-function processCLIFallbackOptions(args) {
-  for (let i = 0; i < args.length; i++) {
-    if (args[i] === "--livedata-retry-default" && args[i + 1]) {
-      process.env.LIVEDATA_RETRY_DEFAULT = args[i + 1];
-      i++;
-    } else if (args[i] === "--livedata-delay-default" && args[i + 1]) {
-      process.env.LIVEDATA_DELAY_DEFAULT = args[i + 1];
-      i++;
-    }
-  }
 }
 
 const commandActions = {
@@ -962,14 +919,12 @@ const commandActions = {
     console.log("Merged ontology persisted:", result);
     return result;
   },
-  // New CLI switch to disable live data integration
   "--disable-live": async (args) => {
     process.env.DISABLE_LIVE_DATA = "1";
     logDiagnostic("Live data integration has been disabled via CLI flag.", "info");
     console.log("Live data integration disabled.");
     return "Live data integration disabled";
   },
-  // New CLI switches for additional functions
   "--build-hybrid": async (args) => {
     let custom = {};
     try {
@@ -1004,16 +959,13 @@ const commandActions = {
     return result;
   },
   "--strict-env": async (_args) => {
-    // This flag is handled at the start of main
     console.log("Strict environment variable parsing enabled.");
     return "Strict mode enabled";
   }
 };
 
 export async function main(args = process.argv.slice(2)) {
-  // Process CLI fallback options to override default fallback values for live data fetch
   processCLIFallbackOptions(args);
-  
   if (args.includes("--strict-env")) {
     process.env.STRICT_ENV = "true";
   }
@@ -1033,7 +985,6 @@ export async function main(args = process.argv.slice(2)) {
 async function demo() {
   logDiagnostic("Demo started", "info");
   console.log("Running demo of ontology functions:");
-  // Refocused demo to use live data integration
   const ontology = await buildOntologyFromLiveData();
   console.log("Demo - built ontology:", ontology);
   const persistResult = await persistOntology(ontology);
@@ -1119,5 +1070,19 @@ export function listCommands() {
 
 console.log("owl-builder CLI loaded");
 
-// Export _parseEnvNumber for testing purposes
 export { parseEnvNumber as _parseEnvNumber };
+
+function processCLIFallbackOptions(args) {
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === "--livedata-retry-default" && args[i + 1]) {
+      process.env.LIVEDATA_RETRY_DEFAULT = args[i + 1];
+      i++;
+    } else if (args[i] === "--livedata-delay-default" && args[i + 1]) {
+      process.env.LIVEDATA_DELAY_DEFAULT = args[i + 1];
+      i++;
+    }
+  }
+}
+
+// Exporting fetcher to allow spying and modular access
+export const fetcher = { fetchDataWithRetry };

@@ -119,7 +119,7 @@ describe("Live Data Configurability", () => {
   test("fetchDataWithRetry respects environment configuration for retries and initial delay", async () => {
     const originalEnvRetry = process.env.LIVEDATA_RETRY_COUNT;
     const originalEnvDelay = process.env.LIVEDATA_INITIAL_DELAY;
-    process.env.LIVEDATA_RETRY_COUNT = "1"; // 1 retry => total attempts = 2
+    process.env.LIVEDATA_RETRY_COUNT = "1";
     process.env.LIVEDATA_INITIAL_DELAY = "50";
     let attemptCount = 0;
     const originalGet = http.get;
@@ -149,8 +149,8 @@ describe("Live Data Configurability", () => {
   test("fetchDataWithRetry uses default values when env variables are non-numeric and logs warning only once", async () => {
     const originalEnvRetry = process.env.LIVEDATA_RETRY_COUNT;
     const originalEnvDelay = process.env.LIVEDATA_INITIAL_DELAY;
-    process.env.LIVEDATA_RETRY_COUNT = "NaN"; // should fallback
-    process.env.LIVEDATA_INITIAL_DELAY = "NaN"; // should fallback
+    process.env.LIVEDATA_RETRY_COUNT = "NaN";
+    process.env.LIVEDATA_INITIAL_DELAY = "NaN";
     let attemptCount = 0;
     const originalGet = http.get;
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -172,8 +172,8 @@ describe("Live Data Configurability", () => {
       "All retry attempts for http://testenv-nonnumeric failed. Last error: Non-numeric test error"
     );
     expect(attemptCount).toBe(4);
-    const retryWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_RETRY_COUNT is non-numeric") || call[0].includes("received 'NaN'")).length;
-    const delayWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_INITIAL_DELAY is non-numeric") || call[0].includes("received 'NaN'")).length;
+    const retryWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_RETRY_COUNT") && call[0].includes("non-numeric")).length;
+    const delayWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_INITIAL_DELAY") && call[0].includes("non-numeric")).length;
     expect(retryWarnings + delayWarnings).toBeGreaterThanOrEqual(2);
     http.get = originalGet;
     process.env.LIVEDATA_RETRY_COUNT = originalEnvRetry;
@@ -183,7 +183,7 @@ describe("Live Data Configurability", () => {
 
   test("fetchDataWithRetry includes jitter in delay", async () => {
     const originalRandom = Math.random;
-    Math.random = () => 0.5; // fixed value for jitter
+    Math.random = () => 0.5;
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     let attemptCount = 0;
     const originalGet = http.get;
@@ -238,11 +238,11 @@ describe("Environment Variable Parsing Tests", () => {
     process.env.TEST_NON_NUM = "NaN";
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
-    const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM is non-numeric") || call[0].includes("received 'NaN'")).length;
+    const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM") && call[0].includes("non-numeric")).length;
     expect(warningCalls).toBe(1);
     process.env.TEST_NON_NUM = "NaN ";
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
-    const updatedWarningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM is non-numeric") || call[0].includes("received 'NaN'")).length;
+    const updatedWarningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM") && call[0].includes("non-numeric")).length;
     expect(updatedWarningCalls).toBe(1);
     logSpy.mockRestore();
   });
@@ -565,7 +565,6 @@ describe("CLI and Main Function Tests", () => {
     process.env.LIVEDATA_INITIAL_DELAY = "NaN";
     const args = ["--livedata-retry-default", "8", "--livedata-delay-default", "300", "--build-live"];
     const ontology = await main(args);
-    // The test ensures that when fetching, fallback values 8 and 300 are used, here indirectly tested via _parseEnvNumber
     expect(_parseEnvNumber("LIVEDATA_RETRY_COUNT", 3)).toBe(8);
     expect(_parseEnvNumber("LIVEDATA_INITIAL_DELAY", 100)).toBe(300);
   });
@@ -712,7 +711,7 @@ describe("Configurable Diagnostic Logging", () => {
   
   test("logDiagnostic logs only messages above the configured level", () => {
     const originalLevel = process.env.DIAGNOSTIC_LOG_LEVEL;
-    process.env.DIAGNOSTIC_LOG_LEVEL = "warn"; // will log error and warn, but not info and debug
+    process.env.DIAGNOSTIC_LOG_LEVEL = "warn";
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     logDiagnostic("Debug message", "debug");
     logDiagnostic("Info message", "info");
