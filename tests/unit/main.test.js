@@ -260,6 +260,11 @@ describe("Environment Variable Parsing Tests", () => {
     process.env.TEST_STRICT_WHITESPACE = "  NaN  ";
     expect(() => _parseEnvNumber("TEST_STRICT_WHITESPACE", 42)).toThrow("Strict mode: Environment variable TEST_STRICT_WHITESPACE is set to an invalid numerical value 'NaN'.");
   });
+
+  test("Returns configurable fallback value when provided", () => {
+    process.env.TEST_CONFIG = "NaN";
+    expect(_parseEnvNumber("TEST_CONFIG", 42, 100)).toBe(100);
+  });
 });
 
 // ... Additional tests remain unchanged as they cover core functionality and CLI behavior
