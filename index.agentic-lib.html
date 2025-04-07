@@ -30,7 +30,7 @@
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Live Data Integration:</strong> Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code> are parsed using a consolidated helper function that applies default values when not set, empty, or when invalid non-numeric values (e.g., <code class="md-github">NaN</code>, empty strings, or whitespace-only) are provided.</p>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Invalid Non-Numeric Values Handling:</strong> In non-strict mode, if an invalid input is provided, a unified diagnostic warning is logged exactly once per unique composite key (combining variable name and normalized input) indicating that the received non-numeric input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. Duplicate warnings for equivalent normalized inputs are suppressed.</li>
+<li class="md-github"><strong class="md-github">Invalid Non-Numeric Values Handling:</strong> In non-strict mode, if an invalid input is provided, a unified diagnostic warning is logged exactly once per unique composite key (combining variable name and normalized input) indicating that the received non-numeric input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. For example, raw inputs such as &quot; NaN &quot;, &quot;\tNaN&quot;, and &quot;\u00A0NaN\u00A0&quot; all normalize to &quot;nan&quot; and trigger a single warning. Duplicate warnings for equivalent normalized inputs are suppressed.</li>
 <li class="md-github"><strong class="md-github">Strict Mode:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or by setting <code class="md-github">STRICT_ENV=true</code>), only valid numeric inputs are accepted. If a non-numeric input is encountered, an error is thrown with clear guidance on acceptable formats, such as:
 <ul class="md-github">
 <li class="md-github">Integer (e.g., 42)</li>
@@ -112,7 +112,7 @@ node src/lib/main.js --build-live
 node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --build-live
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="automated-tests" href="#automated-tests"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Automated Tests</h3>
-<p class="md-github">Comprehensive tests verify the behavior of the environment variable handling, including different whitespace variants (now covering a broader set of Unicode whitespace), unified warning logging, and CLI override functionality. Run tests using:</p>
+<p class="md-github">Comprehensive tests verify the behavior of the environment variable handling, including different whitespace variants that normalize to &quot;nan&quot;, unified warning logging, and CLI override functionality. Run tests using:</p>
 <pre class="md-github"><code class="md-github language-bash">npm test
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="cli-help" href="#cli-help"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Help</h3>
@@ -120,45 +120,6 @@ node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --b
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="key-cli-commands" href="#key-cli-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Key CLI Commands</h3>
-<ul class="md-github">
-<li class="md-github"><code class="md-github">--build --allow-deprecated</code>: Generates a deprecated fallback ontology using static data (<strong class="md-github">deprecated; use <code class="md-github">--build-live</code> for live data integration</strong>).</li>
-<li class="md-github"><code class="md-github">--build-live</code>: Builds an ontology using live data using enhanced normalization and logs detailed diagnostic information for each retry attempt, including exponential backoff delay with jitter.</li>
-<li class="md-github">... (other commands remain as documented)</li>
-</ul>
-<h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
-<p class="md-github">Ensure Node.js version 20 or later is installed. Then, clone the repository and install dependencies:</p>
-<pre class="md-github"><code class="md-github language-bash">git clone https://github.com/yourusername/owl-builder.git
-cd owl-builder
-npm install
-</code></pre>
-<h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
-<h3 class="md-github"><a class="md-github__anchor" name="run-demo" href="#run-demo"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run Demo</h3>
-<p class="md-github">Demonstrate core functionality using live data integration (unless disabled):</p>
-<pre class="md-github"><code class="md-github language-bash">npm run start
-</code></pre>
-<h3 class="md-github"><a class="md-github__anchor" name="disable-live-data-integration" href="#disable-live-data-integration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Disable Live Data Integration</h3>
-<p class="md-github">To disable live data integration and use the static fallback, set the environment variable:</p>
-<pre class="md-github"><code class="md-github language-bash">export DISABLE_LIVE_DATA=1
-</code></pre>
-<p class="md-github">Or invoke the CLI with the flag:</p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --disable-live
-</code></pre>
-<h3 class="md-github"><a class="md-github__anchor" name="strict-environment-variable-parsing" href="#strict-environment-variable-parsing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Strict Environment Variable Parsing</h3>
-<p class="md-github">To enforce strict parsing of numeric environment variables, either set the environment variable or use the CLI flag:</p>
-<pre class="md-github"><code class="md-github language-bash">export STRICT_ENV=true
-# or
-node src/lib/main.js --strict-env
-</code></pre>
-<p class="md-github">When strict mode is enabled, any non-numeric input will result in an error with guidance on allowed formats.</p>
-<h3 class="md-github"><a class="md-github__anchor" name="override-fallback-values-via-cli" href="#override-fallback-values-via-cli"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Override Fallback Values via CLI</h3>
-<p class="md-github">Override the default fallback values for live data fetching without modifying your environment variables:</p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250
-</code></pre>
-<h3 class="md-github"><a class="md-github__anchor" name="cli-help-1" href="#cli-help-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Help</h3>
-<p class="md-github">Display a list of available commands and usage instructions:</p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
-</code></pre>
-<h3 class="md-github"><a class="md-github__anchor" name="key-cli-commands-1" href="#key-cli-commands-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Key CLI Commands</h3>
 <ul class="md-github">
 <li class="md-github"><code class="md-github">--build --allow-deprecated</code>: Generates a deprecated fallback ontology using static data (<strong class="md-github">deprecated; use <code class="md-github">--build-live</code> for live data integration</strong>).</li>
 <li class="md-github"><code class="md-github">--build-live</code>: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt, with robust normalization of environment variable inputs.</li>
@@ -220,7 +181,7 @@ node src/lib/main.js --strict-env
 
   </section>
   <footer>
-    <p>Generated on 2025-04-07T23:27:04.792Z</p>
+    <p>Generated on 2025-04-07T23:36:38.639Z</p>
   </footer>
 </body>
 </html>
