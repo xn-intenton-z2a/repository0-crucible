@@ -610,13 +610,44 @@ describe("Diagnostic Logging", () => {
 
   test("logDiagnostic logs message with timestamp", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    logDiagnostic("Test diagnostic");
+    logDiagnostic("Test diagnostic", "warn");
     expect(spy).toHaveBeenCalled();
     const logged = spy.mock.calls[0][0];
     expect(logged).toMatch(/\[.*\] DIAGNOSTIC: Test diagnostic/);
     spy.mockRestore();
   });
 });
+
+describe("Configurable Diagnostic Logging", () => {
+  test("logDiagnostic does not log when DIAGNOSTIC_LOG_LEVEL is set to off", () => {
+    const originalLevel = process.env.DIAGNOSTIC_LOG_LEVEL;
+    process.env.DIAGNOSTIC_LOG_LEVEL = "off";
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    logDiagnostic("This should not appear", "error");
+    expect(spy).not.toHaveBeenCalled();
+    process.env.DIAGNOSTIC_LOG_LEVEL = originalLevel;
+    spy.mockRestore();
+  });
+  
+  test("logDiagnostic logs only messages above the configured level", () => {
+    const originalLevel = process.env.DIAGNOSTIC_LOG_LEVEL;
+    process.env.DIAGNOSTIC_LOG_LEVEL = "warn"; // will log error and warn, but not info and debug
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    logDiagnostic("Debug message", "debug");
+    logDiagnostic("Info message", "info");
+    logDiagnostic("Warn message", "warn");
+    logDiagnostic("Error message", "error");
+    const calls = spy.mock.calls.map(call => call[0]);
+    expect(calls.some(msg => msg.includes("Debug message"))).toBe(false);
+    expect(calls.some(msg => msg.includes("Info message"))).toBe(false);
+    expect(calls.some(msg => msg.includes("Warn message"))).toBe(true);
+    expect(calls.some(msg => msg.includes("Error message"))).toBe(true);
+    process.env.DIAGNOSTIC_LOG_LEVEL = originalLevel;
+    spy.mockRestore();
+  });
+});
+
+// Extended Custom Functions Tests
 
 describe("Extended Custom Functions", () => {
   test("buildOntologyFromCustomData returns ontology with customization flag", () => {
