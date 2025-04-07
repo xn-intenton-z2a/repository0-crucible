@@ -260,35 +260,35 @@ export function importOntologyFromXML(xml) {
   const ontology = {};
   ontology.title = getTag("title") || "Imported Ontology";
 
-  const conceptsBlock = xml.match(/<concepts>([\s\S]*?)<\\/concepts>/);
+  const conceptsBlock = xml.match(/<concepts>([\s\S]*?)<\/concepts>/);
   if (conceptsBlock) {
-    const conceptMatches = conceptsBlock[1].matchAll(/<concept>([^<]+)<\\/concept>/g);
+    const conceptMatches = conceptsBlock[1].matchAll(/<concept>([^<]+)<\/concept>/g);
     ontology.concepts = Array.from(conceptMatches, (m) => m[1]);
   } else {
     ontology.concepts = [];
   }
 
-  const classesBlock = xml.match(/<classes>([\s\S]*?)<\\/classes>/);
+  const classesBlock = xml.match(/<classes>([\s\S]*?)<\/classes>/);
   if (classesBlock) {
-    const classMatches = classesBlock[1].matchAll(/<class>([^<]+)<\\/class>/g);
+    const classMatches = classesBlock[1].matchAll(/<class>([^<]+)<\/class>/g);
     ontology.classes = Array.from(classMatches, (m) => m[1]);
   }
 
-  const propertiesBlock = xml.match(/<properties>([\s\S]*?)<\\/properties>/);
+  const propertiesBlock = xml.match(/<properties>([\s\S]*?)<\/properties>/);
   if (propertiesBlock) {
-    const propertyMatches = propertiesBlock[1].matchAll(/<property>([\s\S]*?)<\\/property>/g);
+    const propertyMatches = propertiesBlock[1].matchAll(/<property>([\s\S]*?)<\/property>/g);
     ontology.properties = Array.from(propertyMatches, (m) => {
       const propXml = m[1];
-      const nameMatch = propXml.match(/<name>([^<]+)<\\/name>/);
-      const typeMatch = propXml.match(/<type>([^<]+)<\\/type>/);
+      const nameMatch = propXml.match(/<name>([^<]+)<\/name>/);
+      const typeMatch = propXml.match(/<type>([^<]+)<\/type>/);
       return { name: nameMatch ? nameMatch[1] : undefined, type: typeMatch ? typeMatch[1] : undefined };
     });
   }
 
-  const metadataBlock = xml.match(/<metadata>([\s\S]*?)<\\/metadata>/);
+  const metadataBlock = xml.match(/<metadata>([\s\S]*?)<\/metadata>/);
   if (metadataBlock) {
     ontology.metadata = {};
-    const metaRegex = /<([^>]+)>([^<]+)<\\/\1>/g;
+    const metaRegex = /<([^>]+)>([^<]+)<\/\1>/g;
     let metaMatch;
     while ((metaMatch = metaRegex.exec(metadataBlock[1])) !== null) {
       ontology.metadata[metaMatch[1]] = metaMatch[2];
