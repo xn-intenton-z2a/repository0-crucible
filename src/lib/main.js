@@ -132,7 +132,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
 
   // Non-strict mode handling: if input is empty, 'NaN', or cannot be converted to a number
   if (!trimmed || normalized === "nan" || isNaN(Number(trimmed))) {
-    if (envWarningCache.get(varName) !== normalized) {
+    if (typeof value === "string" && envWarningCache.get(varName) !== normalized) {
       logDiagnostic(`Warning: Environment variable ${varName} received non-numeric input ('${value}'). Defaulting to ${fallback}${unit}.`, "warn");
       envWarningCache.set(varName, normalized);
     }
