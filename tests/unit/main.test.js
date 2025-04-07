@@ -317,7 +317,7 @@ describe("Environment Variable Parsing Tests", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     process.env.TEST_UNIQUE = "NaN";
     _parseEnvNumber("TEST_UNIQUE", 100);
-    // Calling again with a same normalized value should not log another warning
+    // Calling again with the same input should not log another warning
     _parseEnvNumber("TEST_UNIQUE", 100);
     let warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_UNIQUE") && call[0].includes("invalid non-numeric")).length;
     expect(warnings).toBe(1);

@@ -151,7 +151,7 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 - **Strict Environment Variable Parsing:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on valid formats (integer, decimal, or scientific notation).
 - **CLI Overrides:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow runtime override of fallback values without changing environment variables.
 - **Custom Endpoints:** Supports custom API endpoints via `CUSTOM_API_ENDPOINTS`. Only valid endpoints (beginning with "http://" or "https://") are accepted.
-- **Consolidated 'NaN' Handling:** Standardized environment variable parsing now logs a warning exactly once per unique composite key (variable name and normalized input) unless warnings are disabled by setting `DISABLE_ENV_WARNINGS`.
+- **Consolidated 'NaN' Handling:** Standardized environment variable parsing now logs a warning exactly once per unique composite key (variable name and input) unless warnings are disabled by setting `DISABLE_ENV_WARNINGS`.
 - **Unit Test Enhancements:** Expanded test coverage to include various edge cases for invalid non-numeric inputs, unusual whitespace (including non-breaking spaces and tab characters), and the new global warning suppression option.
 - **Automated Tests:** Comprehensive tests now cover fallback behavior, strict mode, CLI override functionality, and suppression of warnings.
 - **Fetch Spy Availability:** The internal function used in `buildEnhancedOntology` is now exported as part of a `fetcher` object, allowing tests to successfully spy on it.
