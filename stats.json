@@ -1,27 +1,31 @@
 {
-  "openIssues": 10,
+  "openIssues": 9,
   "issuesClosedLastHour": 9,
   "issuesClosedLastDay": 100,
-  "openPRs": 3,
+  "openPRs": 2,
   "prDetails": [
     {
+      "title": "Update README to clearly document NaN fallback strict mode behavior and CLI override options for live data fetching. (fixes #495)",
+      "ageMinutes": 10
+    },
+    {
       "title": "Bump eslint from 9.23.0 to 9.24.0",
-      "ageMinutes": 14
-    },
-    {
-      "title": "Bump eslint-plugin-prettier from 5.2.3 to 5.2.6",
-      "ageMinutes": 15
-    },
-    {
-      "title": "Bump openai from 4.90.0 to 4.91.1",
-      "ageMinutes": 19
+      "ageMinutes": 28
     }
   ],
-  "diffMinutes": 8,
-  "diffMinutesMain": 11,
-  "commitsLastHour": 5,
-  "commitsLastDay": 55,
+  "diffMinutes": 7,
+  "diffMinutesMain": 8,
+  "commitsLastHour": 6,
+  "commitsLastDay": 57,
   "lastFiveCommitMessages": [
+    {
+      "time": "12:00",
+      "message": "Bump eslint-plugin-prettier from 5.2.3 to 5.2.6 (#493)\n\nBumps [e..."
+    },
+    {
+      "time": "11:59",
+      "message": "Bump openai from 4.90.0 to 4.91.1 (#492)\n\nBumps [openai](https:/..."
+    },
     {
       "time": "11:43",
       "message": "Bump eslint-plugin-react from 7.37.4 to 7.37.5 (#490)\n\nBumps [es..."
@@ -33,35 +37,23 @@
     {
       "time": "11:28",
       "message": "Improved strict mode enforcement for NaN env vars using regex va..."
-    },
-    {
-      "time": "11:14",
-      "message": "Added CLI options to override fallback values for LIVEDATA_RETRY..."
-    },
-    {
-      "time": "10:55",
-      "message": "Updated docs and inline comments to clarify NaN handling and fal..."
     }
   ],
   "branches": {
-    "count": 3,
+    "count": 2,
     "details": [
       {
+        "branch": "agentic-lib-issue-495",
+        "minutesSinceLastCommit": 11
+      },
+      {
         "branch": "dependabot/npm_and_yarn/eslint-9.24.0",
-        "minutesSinceLastCommit": 10
-      },
-      {
-        "branch": "dependabot/npm_and_yarn/eslint-plugin-prettier-5.2.6",
-        "minutesSinceLastCommit": 10
-      },
-      {
-        "branch": "dependabot/npm_and_yarn/openai-4.91.1",
-        "minutesSinceLastCommit": 19
+        "minutesSinceLastCommit": 7
       }
     ]
   },
-  "averagePRAge": 16,
+  "averagePRAge": 19,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-07T11:55:21.085Z"
+  "generatedAt": "2025-04-07T12:08:49.863Z"
 }
