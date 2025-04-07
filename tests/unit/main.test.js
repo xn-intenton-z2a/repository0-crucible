@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect, vi, afterEach } from "vitest";
 import fs from "fs";
 import path from "path";
 import http from "http";
@@ -73,7 +73,7 @@ function simulateNetworkFailure(mod) {
   };
 }
 
-// New test for robust HTTP endpoint integration on the web server
+// New test for robust HTTP endpoint integration on the integrated web server
 describe("Robust HTTP Endpoint Testing for the Integrated Web Server", () => {
   let server;
   const port = process.env.PORT || 3000;
