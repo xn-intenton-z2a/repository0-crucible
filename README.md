@@ -13,7 +13,7 @@ Key features include:
 - **Concurrent Data Crawling:** Gather real-time data concurrently from a range of public endpoints. The crawl functionality has been enhanced to return results with separate arrays for successful responses and errors, simplifying downstream processing.
 - **Diverse Ontology Models:** Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).
 - **Enhanced Diagnostics:** View timestamped logs with detailed context for each operation, facilitating easier tracing and debugging.
-- **Web Server Integration:** Launch a simple web server for quick status checks.
+- **Web Server Integration:** Launch a simple web server for quick status checks. **New:** The server now supports integration testing by exposing a function to start the server and gracefully shut it down after performing real HTTP requests.
 - **Custom Merging & Refreshing:** New functions provide extended merging and diagnostic capabilities.
 
 ## Installation
@@ -72,6 +72,10 @@ node src/lib/main.js --help
 - `--custom-merge`: Merges provided ontologies and appends a current timestamp.
 - `--backup-refresh`: Creates a backup and refreshes the ontology.
 
+## Robust Web Server Integration Test
+
+A new integration test has been added that starts the web server, sends an actual HTTP request, verifies that the response status code is 200 and that the response body matches "owl-builder Web Server Running\n", and gracefully shuts down the server after testing.
+
 ## Endpoints and Testing
 
 owl-builder uses a broad list of public endpoints to build ontologies. Examples include:
@@ -104,7 +108,7 @@ owl-builder uses a broad list of public endpoints to build ontologies. Examples 
 - `https://api/spacexdata.com/v4/rockets`
 - `https://api/quotable.io/random`
 
-Note: Ensure that your network environment allows access to these endpoints for successful data retrieval.
+_Note:_ Ensure that your network environment allows access to these endpoints for successful data retrieval.
 
 ## Change Log
 
@@ -119,8 +123,7 @@ Note: Ensure that your network environment allows access to these endpoints for 
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag to use the deprecated static fallback. Without the flag, a warning is issued. Use `--build-live` for live data integration.
 - **Exponential Backoff with Jitter:** Improved environment variable parsing in the live data fetch function by standardizing the parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Non-numeric values now trigger a diagnostic warning once per variable, while defaults are applied silently when not set.
 - **Crawling Update:** Refactored crawlOntologies to return an object with separate arrays for successes and errors to simplify downstream processing.
-- Removed duplicate ESLint key from package.json to avoid build warnings.
-- Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.
+- Added robust HTTP endpoint integration testing for the web server.
 
 ## Contributing
 

@@ -405,6 +405,21 @@ export function serveWebServer() {
   });
 }
 
+// New function to start the web server and return the server instance for integration testing
+export function startWebServer() {
+  const port = process.env.PORT || 3000;
+  const server = http.createServer((req, res) => {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("owl-builder Web Server Running\n");
+  });
+  return new Promise((resolve, reject) => {
+    server.listen(port, () => {
+      console.log(`Web server started at http://localhost:${port}`);
+      resolve(server);
+    });
+  });
+}
+
 // Enhanced Functions for Advanced Ontology Models
 export function buildIntermediateOWLModel() {
   return {
