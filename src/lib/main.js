@@ -23,8 +23,8 @@
  *   - Refactored file system operations to use asynchronous APIs.
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *   - Implemented exponential backoff in fetchDataWithRetry for improved network resilience with configurable retries and delay parameters.
- *     Parses the LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT environment variables using a helper function to improve clarity and modularity.
- *     Logs a diagnostic warning only if a non-numeric value is explicitly provided; otherwise defaults are used silently.
+ *     Parses the LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT environment variables using a standardized helper function to provide consistent behavior.
+ *     If a non-numeric value is explicitly provided for these variables, a diagnostic warning is logged with appropriate units; otherwise, defaults are applied silently.
  *   - Refactored crawlOntologies to return separate arrays for successful and failed crawl results.
  *   - Added randomized jitter to exponential backoff delays in live data fetching to mitigate thundering herd issues.
  *
@@ -55,15 +55,21 @@ export function buildOntology() {
   };
 }
 
-// Helper function to parse numeric environment variables
-function parseEnvNumber(varName, defaultVal, diagnosticMessage) {
+// Standardized helper function to parse numeric environment variables
+function parseEnvNumber(varName, defaultVal) {
   const value = process.env[varName];
   if (value === undefined || value.trim() === "") {
     return defaultVal;
   }
   const num = Number(value);
   if (isNaN(num)) {
-    logDiagnostic(diagnosticMessage);
+    let unit = "";
+    if (varName === "LIVEDATA_RETRY_COUNT") {
+      unit = " retries";
+    } else if (varName === "LIVEDATA_INITIAL_DELAY") {
+      unit = "ms delay";
+    }
+    logDiagnostic(`Warning: ${varName} is non-numeric. Using default value of ${defaultVal}${unit}.`);
     return defaultVal;
   }
   return num;
@@ -280,17 +286,9 @@ export function listAvailableEndpoints() {
 // now enhanced with a randomized jitter to avoid thundering herd issues.
 export async function fetchDataWithRetry(url, retries) {
   if (typeof retries === "undefined") {
-    retries = parseEnvNumber(
-      "LIVEDATA_RETRY_COUNT",
-      3,
-      "Warning: LIVEDATA_RETRY_COUNT is non-numeric. Using default value of 3 retries."
-    );
+    retries = parseEnvNumber("LIVEDATA_RETRY_COUNT", 3);
   }
-  let initialDelay = parseEnvNumber(
-    "LIVEDATA_INITIAL_DELAY",
-    100,
-    "Warning: LIVEDATA_INITIAL_DELAY is non-numeric. Using default value of 100ms delay."
-  );
+  let initialDelay = parseEnvNumber("LIVEDATA_INITIAL_DELAY", 100);
   const mod = url.startsWith("https") ? https : http;
   const options = { headers: { "User-Agent": "owl-builder CLI tool" } };
   function sleep(ms) {
