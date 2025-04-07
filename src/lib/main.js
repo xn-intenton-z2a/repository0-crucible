@@ -23,6 +23,7 @@
  *   - Refactored file system operations to use asynchronous APIs.
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *   - Implemented exponential backoff in fetchDataWithRetry for improved network resilience with configurable retries and delay parameters.
+ *     Now safely parses the LIVEDATA_INITIAL_DELAY environment variable and falls back to a default value if invalid.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -259,8 +260,9 @@ export function listAvailableEndpoints() {
 export async function fetchDataWithRetry(url, retries) {
   // Use provided retries parameter, or override with environment variable LIVEDATA_RETRY_COUNT, defaulting to 3
   retries = (typeof retries !== 'undefined') ? retries : (process.env.LIVEDATA_RETRY_COUNT ? parseInt(process.env.LIVEDATA_RETRY_COUNT, 10) : 3);
-  // Initial delay in milliseconds can be configured via LIVEDATA_INITIAL_DELAY, default is 100ms
-  const initialDelay = process.env.LIVEDATA_INITIAL_DELAY ? parseInt(process.env.LIVEDATA_INITIAL_DELAY, 10) : 100;
+  // Safely parse initial delay, default is 100ms if invalid or not provided
+  const parsedDelay = parseInt(process.env.LIVEDATA_INITIAL_DELAY, 10);
+  const initialDelay = Number.isNaN(parsedDelay) ? 100 : parsedDelay;
   const mod = url.startsWith("https") ? https : http;
   const options = { headers: { "User-Agent": "owl-builder CLI tool" } };
   function sleep(ms) {
