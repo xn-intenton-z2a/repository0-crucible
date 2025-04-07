@@ -173,8 +173,8 @@ describe("Live Data Configurability", () => {
       "All retry attempts for http://testenv-nonnumeric failed. Last error: Non-numeric test error"
     );
     expect(attemptCount).toBeGreaterThanOrEqual(2);
-    const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_RETRY_COUNT") && call[0].includes("received invalid input")).length;
-    const delayWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_INITIAL_DELAY") && call[0].includes("received invalid input")).length;
+    const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_RETRY_COUNT") && call[0].includes("received non-numeric input")).length;
+    const delayWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_INITIAL_DELAY") && call[0].includes("received non-numeric input")).length;
     expect(warningCalls + delayWarnings).toBeGreaterThanOrEqual(2);
     http.get = originalGet;
     process.env.LIVEDATA_RETRY_COUNT = originalEnvRetry;
@@ -239,11 +239,11 @@ describe("Environment Variable Parsing Tests", () => {
     process.env.TEST_NON_NUM = "NaN";
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
-    const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM") && call[0].includes("received invalid input")).length;
+    const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM") && call[0].includes("received non-numeric input")).length;
     expect(warningCalls).toBe(1);
     process.env.TEST_NON_NUM = "NaN ";
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
-    const updatedWarningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM") && call[0].includes("received invalid input")).length;
+    const updatedWarningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM") && call[0].includes("received non-numeric input")).length;
     expect(updatedWarningCalls).toBe(1);
     logSpy.mockRestore();
   });
@@ -251,19 +251,19 @@ describe("Environment Variable Parsing Tests", () => {
   test("Strict mode: throws error on non-numeric input", () => {
     process.env.STRICT_ENV = "true";
     process.env.TEST_STRICT = "NaN";
-    expect(() => _parseEnvNumber("TEST_STRICT", 42)).toThrow("Strict mode: Environment variable TEST_STRICT received invalid numeric input");
+    expect(() => _parseEnvNumber("TEST_STRICT", 42)).toThrow("Strict mode: Environment variable TEST_STRICT received non-numeric input");
   });
 
   test("Strict mode: throws error on non-numeric input with whitespace variants", () => {
     process.env.STRICT_ENV = "true";
     process.env.TEST_STRICT_WHITESPACE = "  NaN  ";
-    expect(() => _parseEnvNumber("TEST_STRICT_WHITESPACE", 42)).toThrow("Strict mode: Environment variable TEST_STRICT_WHITESPACE received invalid numeric input");
+    expect(() => _parseEnvNumber("TEST_STRICT_WHITESPACE", 42)).toThrow("Strict mode: Environment variable TEST_STRICT_WHITESPACE received non-numeric input");
   });
 
   test("Strict mode: throws error on non-numeric input with tab characters", () => {
     process.env.STRICT_ENV = "true";
     process.env.TEST_STRICT_TAB = "NaN\t";
-    expect(() => _parseEnvNumber("TEST_STRICT_TAB", 42)).toThrow("Strict mode: Environment variable TEST_STRICT_TAB received invalid numeric input");
+    expect(() => _parseEnvNumber("TEST_STRICT_TAB", 42)).toThrow("Strict mode: Environment variable TEST_STRICT_TAB received non-numeric input");
   });
 
   test("Returns configurable fallback value when provided", () => {
@@ -306,7 +306,7 @@ describe("Environment Variable Parsing Tests", () => {
     process.env.TEST_WARN = "NaN";
     expect(_parseEnvNumber("TEST_WARN", 10)).toBe(10);
     expect(_parseEnvNumber("TEST_WARN", 10)).toBe(10);
-    const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_WARN") && call[0].includes("received invalid input"));
+    const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_WARN") && call[0].includes("received non-numeric input"));
     expect(warnings.length).toBe(0);
     delete process.env.DISABLE_ENV_WARNINGS;
     logSpy.mockRestore();
@@ -317,11 +317,11 @@ describe("Environment Variable Parsing Tests", () => {
     process.env.TEST_UNIQUE = "NaN";
     _parseEnvNumber("TEST_UNIQUE", 100);
     _parseEnvNumber("TEST_UNIQUE", 100);
-    let warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_UNIQUE") && call[0].includes("received invalid input")).length;
+    let warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_UNIQUE") && call[0].includes("received non-numeric input")).length;
     expect(warnings).toBe(1);
     process.env.TEST_UNIQUE = "\tNaN";
     _parseEnvNumber("TEST_UNIQUE", 100);
-    warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_UNIQUE") && call[0].includes("received invalid input")).length;
+    warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_UNIQUE") && call[0].includes("received non-numeric input")).length;
     expect(warnings).toBe(1);
     logSpy.mockRestore();
   });
@@ -335,7 +335,7 @@ describe("Environment Variable Parsing Tests", () => {
     expect(_parseEnvNumber("TEST_MULTIPLE", 50)).toBe(50);
     process.env.TEST_MULTIPLE = " NaN";
     expect(_parseEnvNumber("TEST_MULTIPLE", 50)).toBe(50);
-    const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_MULTIPLE") && call[0].includes("received invalid input")).length;
+    const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_MULTIPLE") && call[0].includes("received non-numeric input")).length;
     expect(warnings).toBe(1);
     logSpy.mockRestore();
   });
@@ -349,7 +349,7 @@ describe("Environment Variable Parsing Tests", () => {
     expect(_parseEnvNumber("TEST_VARIANT", 30)).toBe(30);
     process.env.TEST_VARIANT = "NaN   ";
     expect(_parseEnvNumber("TEST_VARIANT", 30)).toBe(30);
-    const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_VARIANT") && call[0].includes("received invalid input")).length;
+    const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_VARIANT") && call[0].includes("received non-numeric input")).length;
     expect(warnings).toBe(1);
     logSpy.mockRestore();
   });
