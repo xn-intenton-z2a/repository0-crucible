@@ -1,14 +1,18 @@
 {
   "openIssues": 1,
-  "issuesClosedLastHour": 28,
-  "issuesClosedLastDay": 28,
+  "issuesClosedLastHour": 7,
+  "issuesClosedLastDay": 31,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 0,
-  "diffMinutesMain": 0,
-  "commitsLastHour": 12,
-  "commitsLastDay": 13,
+  "diffMinutes": 8,
+  "diffMinutesMain": 8,
+  "commitsLastHour": 4,
+  "commitsLastDay": 14,
   "lastFiveCommitMessages": [
+    {
+      "time": "00:36",
+      "message": "Require --allow-deprecated flag with --build to explicitly invok..."
+    },
     {
       "time": "00:22",
       "message": "Add new features, prompts, and updates for owl-builder.\n\nThis co..."
@@ -24,10 +28,6 @@
     {
       "time": "23:41",
       "message": "Enhanced XML exportimport functions to support extended ontology..."
-    },
-    {
-      "time": "23:35",
-      "message": "Fixed malformed endpoint URLs in listAvailableEndpoints function..."
     }
   ],
   "branches": {
@@ -37,5 +37,5 @@
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-07T00:22:28.981Z"
+  "generatedAt": "2025-04-07T00:45:31.815Z"
 }
