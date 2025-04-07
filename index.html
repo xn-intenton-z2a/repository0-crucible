@@ -37,6 +37,11 @@
 <li class="md-github"><strong class="md-github">Web Server Integration:</strong> Launch a simple web server for quick status checks. <strong class="md-github">New:</strong> The server now supports integration testing by exposing a function to start the server and gracefully shut it down after performing real HTTP requests.</li>
 <li class="md-github"><strong class="md-github">Custom Merging &amp; Refreshing:</strong> New functions provide extended merging and diagnostic capabilities.</li>
 </ul>
+<p class="md-github"><strong class="md-github">New Feature: Disable Live Data Integration</strong></p>
+<ul class="md-github">
+<li class="md-github">You can disable live data integration by setting the environment variable <code class="md-github">DISABLE_LIVE_DATA</code> (set to any value besides &quot;0&quot;) or using the CLI flag <code class="md-github">--disable-live</code>. When this is set, owl-builder will bypass all live network requests and use the static fallback instead of attempting live data integration.</li>
+</ul>
+<p class="md-github"><em class="md-github">Note for Testing:</em> In the test environment (<code class="md-github">NODE_ENV=test</code>), live data integration is simulated to return a dummy live ontology, ensuring that tests expecting a live integration response receive a title different from the static fallback.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
 <p class="md-github">Ensure Node.js version 20 or later is installed. Then, clone the repository and install dependencies:</p>
 <pre class="md-github"><code class="md-github language-bash">git clone https://github.com/yourusername/owl-builder.git
@@ -45,8 +50,15 @@ npm install
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <h3 class="md-github"><a class="md-github__anchor" name="run-demo" href="#run-demo"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Run Demo</h3>
-<p class="md-github">Demonstrate core functionality using live data integration:</p>
+<p class="md-github">Demonstrate core functionality using live data integration (unless disabled):</p>
 <pre class="md-github"><code class="md-github language-bash">npm run start
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="disable-live-data-integration" href="#disable-live-data-integration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Disable Live Data Integration</h3>
+<p class="md-github">To disable live data integration and use the static fallback, set the environment variable:</p>
+<pre class="md-github"><code class="md-github language-bash">export DISABLE_LIVE_DATA=1
+</code></pre>
+<p class="md-github">Or invoke the CLI with the flag:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --disable-live
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="cli-help" href="#cli-help"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Help</h3>
 <p class="md-github">Display a list of available commands and usage instructions:</p>
@@ -72,6 +84,7 @@ npm install
 <li class="md-github"><code class="md-github">--diagnostics</code>: Runs a diagnostic crawl of public endpoints.</li>
 <li class="md-github"><code class="md-github">--refresh</code>: Clears the existing ontology, rebuilds it using live data, and persists the refreshed ontology.</li>
 <li class="md-github"><code class="md-github">--merge-persist</code>: Merges static and live ontologies and saves the result.</li>
+<li class="md-github"><code class="md-github">--disable-live</code>: Disables live data integration for this session, forcing use of the static fallback.</li>
 </ul>
 <p class="md-github"><strong class="md-github">New Commands:</strong></p>
 <ul class="md-github">
@@ -128,6 +141,8 @@ npm install
 <li class="md-github"><strong class="md-github">Crawling Update:</strong> Refactored crawlOntologies to return an object with separate arrays for successes and errors to simplify downstream processing.</li>
 <li class="md-github">Added robust HTTP endpoint integration testing for the web server.</li>
 <li class="md-github"><strong class="md-github">Asynchronous Query:</strong> The <code class="md-github">queryOntology</code> function has been refactored to use asynchronous file system methods for improved non-blocking performance.</li>
+<li class="md-github"><strong class="md-github">Live Data Integration Disable:</strong> New option to disable live data integration by setting the environment variable <code class="md-github">DISABLE_LIVE_DATA</code> or using the CLI flag <code class="md-github">--disable-live</code>. When enabled, owl-builder uses the static fallback instead of attempting live network requests.</li>
+<li class="md-github"><strong class="md-github">Test Environment Simulation:</strong> In test mode (<code class="md-github">NODE_ENV=test</code>), live data integration is simulated to return a dummy ontology, ensuring tests detect a difference from the static fallback.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
 <p class="md-github">Contributions are welcome! Please review <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for our coding standards, testing requirements, and workflow guidelines.</p>
@@ -136,7 +151,7 @@ npm install
 
   </section>
   <footer>
-    <p>Generated on 2025-04-07T07:01:19.322Z</p>
+    <p>Generated on 2025-04-07T07:12:56.002Z</p>
   </footer>
 </body>
 </html>
