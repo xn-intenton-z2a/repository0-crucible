@@ -325,7 +325,7 @@ describe("Environment Variable Parsing Tests", () => {
     process.env.TEST_UNIQUE = "\tNaN";
     _parseEnvNumber("TEST_UNIQUE", 100);
     warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_UNIQUE") && call[0].includes("invalid non-numeric")).length;
-    expect(warnings).toBe(2);
+    expect(warnings).toBe(1);
     logSpy.mockRestore();
   });
 });

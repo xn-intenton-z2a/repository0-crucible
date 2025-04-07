@@ -30,7 +30,7 @@
  *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
  *   - Enforced strict handling of 'NaN' values: In strict mode, any value that is not a valid numerical format (including variants like 'NaN' with extra whitespace) will throw an error immediately.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
- *   - Enhanced handling of 'NaN' values in environment variable parsing to ensure consistent fallback behavior and suppress duplicate warnings for equivalent inputs. The warning cache now logs a warning exactly once per unique composite key (variable name and input) allowing different invalid formats to be reported separately.
+ *   - Enhanced handling of 'NaN' values in environment variable parsing to ensure consistent fallback behavior and suppress duplicate warnings for equivalent inputs. The warning cache now logs a warning exactly once per unique composite key (variable name and normalized input).
  *   - Consolidated and standardized 'NaN' handling in environment variable parsing. A new configuration option (DISABLE_ENV_WARNINGS) allows disabling warnings in production.
  *   - Improved diagnostic messages and inline documentation for environment variable parsing to clearly indicate fallback values and valid formats.
  *
@@ -50,7 +50,7 @@ export { fetcher };
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
-// Cache for environment variable warning flags using a Map that stores the composite key (variable name and original input).
+// Cache for environment variable warning flags using a Map that stores the composite key (variable name and normalized input).
 const envWarningCache = new Map();
 
 /**
@@ -139,8 +139,8 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   if (!trimmed || normalized === "nan" || isNaN(Number(trimmed))) {
     // Check if global warnings are disabled
     if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
-      // Use the original value in composite key to distinguish different invalid formats
-      const warnKey = `${varName}-${value}`;
+      // Use the normalized value in composite key to avoid duplicate warnings for equivalent inputs
+      const warnKey = `${varName}-${normalized}`;
       if (!envWarningCache.has(warnKey)) {
         logDiagnostic(`Warning: Environment variable ${varName} received invalid non-numeric input ('${value}'). Defaulting to ${fallback}${unit}.`, "warn");
         envWarningCache.set(warnKey, true);
