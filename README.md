@@ -46,7 +46,7 @@ node src/lib/main.js --help
 
 ### Key CLI Commands
 
-- `--build`: Generates a deprecated fallback ontology using static data (**deprecated; use `--build-live` for live data integration**).
+- `--build --allow-deprecated`: Generates a deprecated fallback ontology using static data (**deprecated; use `--build-live` for live data integration**). **Note:** The `--allow-deprecated` flag is required with `--build` to invoke the legacy static fallback. Running `--build` without this flag will result in a warning.
 - `--build-live`: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt in case of errors.
 - `--persist`: Saves the current ontology to a JSON file.
 - `--load`: Loads the saved ontology.
@@ -116,6 +116,7 @@ Note: Ensure that your network environment allows access to these endpoints for 
 - Extended ontology model wrappers and introduced new merging and refreshing functions.
 - Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.
 - Refactored file system operations to use asynchronous, non-blocking APIs.
+- **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag to use the deprecated static fallback. Without the flag, a warning is issued. Use `--build-live` for live data integration.
 - Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.
 
 ## Contributing

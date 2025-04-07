@@ -556,11 +556,16 @@ const commandActions = {
     console.log("Supported commands:", commands);
     return commands;
   },
-  "--build": async (_args) => {
-    const ontology = buildOntology();
-    console.warn("Deprecated: --build uses the static fallback. Use --build-live for live data integration.");
-    console.log("Ontology built:", ontology);
-    return ontology;
+  "--build": async (args) => {
+    if (args.includes("--allow-deprecated")) {
+      const ontology = buildOntology();
+      console.warn("Warning: --build using --allow-deprecated flag invoked deprecated static fallback.");
+      console.log("Ontology built:", ontology);
+      return ontology;
+    } else {
+      console.warn("Error: --build command requires --allow-deprecated flag to use static fallback. Use --build-live for live data integration.");
+      return;
+    }
   },
   "--persist": async (_args) => {
     const ontology = buildOntology();
@@ -898,7 +903,7 @@ export async function main(args = process.argv.slice(2)) {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build, --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh`
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh`
   );
 }
 
