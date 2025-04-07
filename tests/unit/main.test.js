@@ -241,11 +241,12 @@ describe("Environment Variable Parsing Tests", () => {
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
     const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM is non-numeric") || call[0].includes("received 'NaN'")).length;
     expect(warningCalls).toBe(1);
-    // Now change the value so warning is logged again
+    // Now change the value to an equivalent value with extra whitespace
     process.env.TEST_NON_NUM = "NaN ";
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
     const updatedWarningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM is non-numeric") || call[0].includes("received 'NaN'")).length;
-    expect(updatedWarningCalls).toBe(2);
+    // With normalization, the warning should not be logged again
+    expect(updatedWarningCalls).toBe(1);
     logSpy.mockRestore();
   });
 
