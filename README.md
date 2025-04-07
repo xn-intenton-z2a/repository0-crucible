@@ -38,7 +38,7 @@ Key features include:
 owl-builder uses a unified approach to parse and handle environment variables. The key details are:
 
 1. **Normalization:**
-   - Input values are trimmed and all sequences of whitespace—including spaces, tabs, and non-breaking spaces—are replaced by a single space, and the value is converted to lowercase. This ensures that different raw inputs (e.g., " NaN ", "NaN", "\u00A0NaN\u00A0") normalize to the same value.
+   - Input values are trimmed and all sequences of whitespace—including spaces, tabs, non-breaking spaces, em space, en space, and other Unicode whitespace characters—are replaced by a single space, and the value is converted to lowercase. This ensures that different raw inputs (e.g., " NaN ", "NaN", "\u00A0NaN\u00A0") normalize to the same value.
 
 2. **Unified Warning Mechanism:**
    - In non-strict mode, if a normalized input is found to be invalid (empty or "nan"), a warning is logged exactly once for each unique normalized input, along with the fallback value and its unit (e.g., retries or delay).
@@ -67,7 +67,7 @@ node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --b
 
 ### Automated Tests
 
-Comprehensive tests verify the behavior of the environment variable handling, including different whitespace variants, unified warning logging, and CLI override functionality. Run tests using:
+Comprehensive tests verify the behavior of the environment variable handling, including different whitespace variants (now covering a broader set of Unicode whitespace), unified warning logging, and CLI override functionality. Run tests using:
 
 ```bash
 npm test
@@ -84,7 +84,7 @@ node src/lib/main.js --help
 ### Key CLI Commands
 
 - `--build --allow-deprecated`: Generates a deprecated fallback ontology using static data (**deprecated; use `--build-live` for live data integration**).
-- `--build-live`: Builds an ontology using live data with detailed diagnostic logging.
+- `--build-live`: Builds an ontology using live data using enhanced normalization and logs detailed diagnostic information for each retry attempt, including exponential backoff delay with jitter.
 - ... (other commands remain as documented)
 
 ## Installation
@@ -131,7 +131,7 @@ export STRICT_ENV=true
 node src/lib/main.js --strict-env
 ```
 
-When strict mode is enabled, any non-numeric input will result in an error with guidance on acceptable formats.
+When strict mode is enabled, any non-numeric input will result in an error with guidance on allowed formats.
 
 ### Override Fallback Values via CLI
 
@@ -152,7 +152,7 @@ node src/lib/main.js --help
 ### Key CLI Commands
 
 - `--build --allow-deprecated`: Generates a deprecated fallback ontology using static data (**deprecated; use `--build-live` for live data integration**).
-- `--build-live`: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt, including exponential backoff delay with jitter.
+- `--build-live`: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt, with robust normalization of environment variable inputs.
 - `--persist`: Saves the current ontology to a JSON file.
 - `--load`: Loads the saved ontology.
 - `--query "term"`: Searches for matching ontology concepts.
@@ -206,7 +206,7 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 - **Strict Environment Variable Parsing:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on allowed formats.
 - **CLI Overrides:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow runtime override of fallback values without changing environment variables.
 - **Custom Endpoints:** Supports custom API endpoints via `CUSTOM_API_ENDPOINTS`. Only valid endpoints (beginning with "http://" or "https://") are accepted.
-- **Unified NaN Handling:** Environment variable parsing now uniformly handles non-numeric values (including "NaN" with various whitespace variants), logging a unified warning exactly once per unique normalized non-numeric input, ensuring consistent fallback behavior.
+- **Unified NaN Handling and Robust Normalization:** Environment variable parsing now uses Unicode property escapes to handle a broader range of whitespace characters (including em space, en space, and other Unicode spaces). This ensures that different raw inputs that normalize to the same value trigger a unified warning exactly once, ensuring consistent fallback behavior.
 - **Enhanced Test Coverage:** Expanded tests now verify that different raw whitespace variants that normalize to the same value trigger only one warning, ensuring consistent fallback behavior.
 
 ## Contributing
