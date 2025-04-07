@@ -269,7 +269,7 @@ export function listAvailableEndpoints() {
     "https://randomuser.me/api/",
     "https://catfact.ninja/fact",
     "https://jsonplaceholder.typicode.com/todos",
-    "https://api.chucknorris.io/jokes/random",
+    "https://api/chucknorris.io/jokes/random",
     "https://api.agify.io/?name=michael",
     "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity",
     "https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json",
