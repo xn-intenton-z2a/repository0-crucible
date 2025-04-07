@@ -256,6 +256,8 @@ describe("Environment Variable Parsing Tests", () => {
   });
 });
 
+// ... Additional tests remain unchanged as they cover core functionality and CLI behavior
+
 describe("Core Ontology Functions", () => {
   test("buildOntology returns public data ontology", () => {
     const ont = buildOntology();
