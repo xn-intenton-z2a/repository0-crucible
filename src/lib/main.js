@@ -30,7 +30,7 @@
  *   - Revised CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and default values.
  *
  * NOTE on Environment Variable Handling:
- *   The function parseEnvNumber normalizes the environment variable's raw string input by trimming whitespace, replacing sequences of whitespace (including tabs and non-breaking spaces) with a single space, and converting to lower case. This unified approach ensures that different raw inputs that normalize to the same value trigger only one warning. Additionally, CLI override options (--livedata-retry-default and --livedata-delay-default) take precedence over environment variables.
+ *   The function parseEnvNumber normalizes the environment variable's raw string input by trimming whitespace, replacing sequences of whitespace (including tabs, non-breaking spaces, and other Unicode whitespace characters) with a single space, and converting to lower case. This unified approach ensures that different raw inputs that normalize to the same value trigger only one warning. Additionally, CLI override options (--livedata-retry-default and --livedata-delay-default) take precedence over environment variables.
  *   Enabling strict mode (--strict-env or setting STRICT_ENV=true) causes any non-numeric input to throw an error with guidance on acceptable formats.
  *
  * Note for Contributors:
@@ -62,15 +62,15 @@ export function resetEnvWarningCache() {
 
 /**
  * Helper function to normalize environment variable values.
- * Trims the value, replaces all sequences of whitespace (including non-breaking spaces, tabs, etc.) with a single space, and converts to lower case.
+ * Trims the value, replaces all sequences of Unicode whitespace (including tabs, non-breaking spaces, em space, en space, etc.) with a single space, and converts to lower case.
  * If the value is undefined or not a string, returns an empty string.
  * @param {string | undefined | null} value 
  * @returns {string}
  */
 function normalizeEnvValue(value) {
   if (typeof value !== "string") return "";
-  // Replace any sequence of whitespace characters (including NBSP) with a single space, then trim and lowercase it
-  return value.replace(/([\s\u00A0])+/g, ' ').trim().toLowerCase();
+  // Use Unicode property escapes to match any whitespace character
+  return value.replace(/\p{White_Space}+/gu, ' ').trim().toLowerCase();
 }
 
 /**
