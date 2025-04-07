@@ -288,7 +288,7 @@ describe("Environment Variable Parsing Tests", () => {
     expect(_parseEnvNumber("TEST_MIXED", 20)).toBe(20);
   });
 
-  test("Non-strict mode handles null environment variable by returning fallback", () => {
+  test("Non-strict mode handles null environment variable by returning fallback silently", () => {
     process.env.TEST_NULL = null;
     expect(_parseEnvNumber("TEST_NULL", 30)).toBe(30);
   });
