@@ -121,12 +121,14 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   }
 
   const rawValue = process.env[varName];
-  let normalized = "";
-  if (typeof rawValue === "string") {
-    normalized = normalizeEnvValue(rawValue);
+  let fallback = configurableFallback !== undefined ? configurableFallback : defaultVal;
+
+  // If the raw value is not a string, return the fallback silently without logging
+  if (typeof rawValue !== "string") {
+    return fallback;
   }
 
-  let fallback = configurableFallback !== undefined ? configurableFallback : defaultVal;
+  let normalized = normalizeEnvValue(rawValue);
 
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
     const numericRegex = /^-?\d+(\.\d+)?([eE][-+]?\d+)?$/;
