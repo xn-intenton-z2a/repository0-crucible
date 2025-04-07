@@ -28,15 +28,15 @@
 <p class="md-github">Key features include:</p>
 <ul class="md-github">
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Live Data Integration:</strong> Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code> are parsed using a standardized helper function that applies default values when not set, empty, or when non-numeric values (e.g., <code class="md-github">NaN</code>, empty strings, or whitespace-only) are provided.</p>
+<p class="md-github"><strong class="md-github">Live Data Integration:</strong> Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code> are parsed using a consolidated helper function that applies default values when not set, empty, or when non-numeric values (e.g., <code class="md-github">NaN</code>, empty strings, or whitespace-only) are provided.</p>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Non-Numeric Values Handling:</strong> In non-strict mode, if a non-numeric value such as <code class="md-github">NaN</code>, <code class="md-github">abc</code>, or an empty/whitespace-only string is provided, a one-time warning is logged (per unique normalized input, where inputs are trimmed and lowercased) and the system falls back to a default value (3 retries and 100ms delay) or a configurable fallback. Duplicate warnings for the same normalized input are prevented via caching.</li>
-<li class="md-github"><strong class="md-github">Strict Mode:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or by setting <code class="md-github">STRICT_ENV=true</code>), the environment variable must strictly be a valid numeric value in integer, decimal, or scientific notation. Any deviation (including variants of <code class="md-github">NaN</code> with extra whitespace) will immediately result in an error, clearly indicating the invalid input.</li>
-<li class="md-github"><strong class="md-github">CLI Overrides:</strong> The CLI options <code class="md-github">--livedata-retry-default &lt;number&gt;</code> and <code class="md-github">--livedata-delay-default &lt;number&gt;</code> allow you to override the default fallback values for live data fetching at runtime. These options take precedence over environment variable values when those are non-numeric.</li>
+<li class="md-github"><strong class="md-github">Non-Numeric Values Handling:</strong> In non-strict mode, if a non-numeric value is provided, a one-time warning is logged (per unique normalized input) indicating that a non-numeric input was received, and the system falls back to a default or configurable value. Duplicate warnings for the same normalized input are prevented via caching.</li>
+<li class="md-github"><strong class="md-github">Strict Mode:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or by setting <code class="md-github">STRICT_ENV=true</code>), the environment variable must conform exactly to a valid numeric format (integer, decimal, or scientific notation). Any deviation, such as variants of <code class="md-github">NaN</code> with extra whitespace, will cause an immediate error with a clear message.</li>
+<li class="md-github"><strong class="md-github">CLI Overrides:</strong> The CLI options <code class="md-github">--livedata-retry-default &lt;number&gt;</code> and <code class="md-github">--livedata-delay-default &lt;number&gt;</code> allow you to override the default fallback values for live data fetching at runtime.</li>
 </ul>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Custom Endpoints:</strong> Users can override or extend the default list of public API endpoints by setting the environment variable <code class="md-github">CUSTOM_API_ENDPOINTS</code> to a comma-separated list of URLs. <strong class="md-github">Only endpoints starting with &quot;http://&quot; or &quot;https://&quot; are accepted.</strong> Invalid endpoints are ignored with a diagnostic warning.</p>
+<p class="md-github"><strong class="md-github">Custom Endpoints:</strong> Users can override or extend the default list of public API endpoints by setting the environment variable <code class="md-github">CUSTOM_API_ENDPOINTS</code> to a comma-separated list of URLs. <strong class="md-github">Only endpoints starting with &quot;http://&quot; or &quot;https://&quot; are accepted.</strong> Invalid endpoints will be ignored with a diagnostic warning.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Data Persistence:</strong> Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)</p>
@@ -57,7 +57,7 @@
 <p class="md-github"><strong class="md-github">Enhanced Diagnostics:</strong> View timestamped logs with detailed context for each operation. You can control the verbosity of diagnostic messages by setting the environment variable <code class="md-github">DIAGNOSTIC_LOG_LEVEL</code> (possible values: <code class="md-github">off</code>, <code class="md-github">error</code>, <code class="md-github">warn</code>, <code class="md-github">info</code>, <code class="md-github">debug</code>). For example, setting <code class="md-github">DIAGNOSTIC_LOG_LEVEL=off</code> will suppress diagnostic logs.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Web Server Integration:</strong> Launch a simple web server for quick status checks. <strong class="md-github">New:</strong> The server now supports integration testing by exposing a function to start the server and gracefully shut it down after performing actual HTTP requests.</p>
+<p class="md-github"><strong class="md-github">Web Server Integration:</strong> Launch a simple web server for quick status checks. <strong class="md-github">New:</strong> The server now supports integration testing by exposing a function to start and gracefully shut it down after performing actual HTTP requests.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Custom Merging &amp; Refreshing:</strong> New functions provide extended merging and diagnostic capabilities.</p>
@@ -70,10 +70,10 @@
 <p class="md-github"><strong class="md-github">Valid Numeric Inputs:</strong> Accepts standard numeric values and scientific notation. For example, <code class="md-github">export LIVEDATA_RETRY_COUNT=3</code> or <code class="md-github">export LIVEDATA_INITIAL_DELAY=1e2</code>.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Invalid or Non-Numeric Inputs:</strong> In non-strict mode, if a non-numeric value (e.g., <code class="md-github">NaN</code>, <code class="md-github">abc</code>, or empty/whitespace-only) is provided, a one-time warning is logged for that normalized value and the system falls back to default values (3 retries and 100ms delay) or a configurable fallback.</p>
+<p class="md-github"><strong class="md-github">Invalid or Non-Numeric Inputs:</strong> In non-strict mode, if a non-numeric value (e.g., <code class="md-github">NaN</code>, <code class="md-github">abc</code>, or empty/whitespace-only) is provided, a one-time warning is logged reflecting that non-numeric input was received, and the system falls back to default values (3 retries and 100ms delay) or a configurable fallback.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Strict Mode:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or <code class="md-github">export STRICT_ENV=true</code>), the environment variable must conform exactly to a numeric format (integer, decimal, or scientific notation). Any deviation, such as <code class="md-github">NaN</code>, <code class="md-github">NaN</code>, or other non-numeric strings, will immediately cause an error with a clear message indicating the offending value.</p>
+<p class="md-github"><strong class="md-github">Strict Mode:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or <code class="md-github">export STRICT_ENV=true</code>), only valid numeric inputs are accepted. Any deviation will cause an immediate error with a clear message stating the invalid input.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">CLI Overrides:</strong> You can override the fallback values without modifying your environment variables using CLI options:</p>
@@ -179,8 +179,8 @@ node src/lib/main.js --strict-env
 <li class="md-github">Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.</li>
 <li class="md-github">Refactored file system operations to use asynchronous, non-blocking APIs.</li>
 <li class="md-github"><strong class="md-github">CLI Update:</strong> The <code class="md-github">--build</code> command now requires the <code class="md-github">--allow-deprecated</code> flag for using the deprecated static fallback. Use <code class="md-github">--build-live</code> for live data integration.</li>
-<li class="md-github"><strong class="md-github">Exponential Backoff with Jitter:</strong> Improved handling of environment variables by standardizing parsing of <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code>. Non-numeric values trigger a one-time warning per normalized input and fallback defaults (or CLI overrides) are applied.</li>
-<li class="md-github"><strong class="md-github">Strict Environment Variable Parsing:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or <code class="md-github">export STRICT_ENV=true</code>), only valid numeric inputs are accepted. Invalid values (including any variant of <code class="md-github">NaN</code> with extra whitespace) will cause an immediate error with a clear message indicating the offending input.</li>
+<li class="md-github"><strong class="md-github">Exponential Backoff with Jitter:</strong> Improved handling of environment variables by consolidating parsing of <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code>. Non-numeric values trigger a one-time warning per normalized input and fallback defaults (or CLI overrides) are applied.</li>
+<li class="md-github"><strong class="md-github">Strict Environment Variable Parsing:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or <code class="md-github">export STRICT_ENV=true</code>), only valid numeric inputs are accepted. Invalid values will cause an immediate error with a clear message indicating the offending input.</li>
 <li class="md-github"><strong class="md-github">CLI Overrides:</strong> New CLI options <code class="md-github">--livedata-retry-default</code> and <code class="md-github">--livedata-delay-default</code> allow runtime override of fallback values without changing environment variables.</li>
 <li class="md-github"><strong class="md-github">Custom Endpoints:</strong> Supports custom API endpoints via <code class="md-github">CUSTOM_API_ENDPOINTS</code>. Only valid endpoints (beginning with &quot;http://&quot; or &quot;https://&quot;) are accepted.</li>
 <li class="md-github"><strong class="md-github">Warning Cache Normalization:</strong> Ensures a single warning per normalized input.</li>
@@ -193,7 +193,7 @@ node src/lib/main.js --strict-env
 
   </section>
   <footer>
-    <p>Generated on 2025-04-07T13:45:48.357Z</p>
+    <p>Generated on 2025-04-07T13:54:03.034Z</p>
   </footer>
 </body>
 </html>
