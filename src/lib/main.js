@@ -31,6 +31,7 @@
  *   - Enforced strict handling of 'NaN' values: In strict mode, any value that is not a valid numerical format (including variants like 'NaN' with extra whitespace) will throw an error immediately.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
  *   - Enhanced handling of 'NaN' values in environment variable parsing to ensure consistent fallback behavior and suppress duplicate warnings for equivalent inputs.
+ *   - Consolidated and standardized 'NaN' handling in environment variable parsing. A new configuration option (DISABLE_ENV_WARNINGS) allows disabling warnings in production.
  *   - Improved diagnostic messages and inline documentation for environment variable parsing to clearly indicate fallback values and valid formats.
  *
  * Note for Contributors:
@@ -92,6 +93,7 @@ export function buildOntology() {
  * - In non-strict mode: If the provided variable is undefined, empty, or contains only whitespace, or if after trimming
  *   it equals (case-insensitive) 'nan', a one-time warning is logged (per unique normalized input) and the function returns the fallback value.
  *   Duplicate warnings for the same normalized input are suppressed via a cache.
+ *   Additionally, warnings can be globally disabled by setting DISABLE_ENV_WARNINGS (and not equal to "0").
  *
  * - In strict mode (when STRICT_ENV is set to true or --strict-env is used): The environment variable must be a valid numeric value.
  *   Any non-numeric input (even with extra whitespace) will throw an error immediately, with a clear message indicating that only
@@ -102,8 +104,8 @@ export function buildOntology() {
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const value = process.env[varName];
-  const trimmed = value ? value.trim() : "";
-  const normalized = normalizeEnvValue(value);
+  const trimmed = (typeof value === "string") ? value.trim() : "";
+  const normalized = trimmed.toLowerCase();
   const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
   
   // Determine fallback: priority is CLI provided override, then configurableFallback, then defaultVal
@@ -131,9 +133,12 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
 
   // Non-strict mode handling: if input is empty, 'NaN', or cannot be converted to a number
   if (!trimmed || normalized === "nan" || isNaN(Number(trimmed))) {
-    if (typeof value === "string" && envWarningCache.get(varName) !== normalized) {
-      logDiagnostic(`Warning: Environment variable ${varName} received invalid non-numeric input ('${value}'). Defaulting to ${fallback}${unit}.`, "warn");
-      envWarningCache.set(varName, normalized);
+    // Check if global warnings are disabled
+    if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
+      if (typeof value === "string" && envWarningCache.get(varName) !== normalized) {
+        logDiagnostic(`Warning: Environment variable ${varName} received invalid non-numeric input ('${value}'). Defaulting to ${fallback}${unit}.`, "warn");
+        envWarningCache.set(varName, normalized);
+      }
     }
     return fallback;
   }
@@ -255,35 +260,35 @@ export function importOntologyFromXML(xml) {
   const ontology = {};
   ontology.title = getTag("title") || "Imported Ontology";
 
-  const conceptsBlock = xml.match(/<concepts>([\s\S]*?)<\/concepts>/);
+  const conceptsBlock = xml.match(/<concepts>([\s\S]*?)<\\/concepts>/);
   if (conceptsBlock) {
-    const conceptMatches = conceptsBlock[1].matchAll(/<concept>([^<]+)<\/concept>/g);
+    const conceptMatches = conceptsBlock[1].matchAll(/<concept>([^<]+)<\\/concept>/g);
     ontology.concepts = Array.from(conceptMatches, (m) => m[1]);
   } else {
     ontology.concepts = [];
   }
 
-  const classesBlock = xml.match(/<classes>([\s\S]*?)<\/classes>/);
+  const classesBlock = xml.match(/<classes>([\s\S]*?)<\\/classes>/);
   if (classesBlock) {
-    const classMatches = classesBlock[1].matchAll(/<class>([^<]+)<\/class>/g);
+    const classMatches = classesBlock[1].matchAll(/<class>([^<]+)<\\/class>/g);
     ontology.classes = Array.from(classMatches, (m) => m[1]);
   }
 
-  const propertiesBlock = xml.match(/<properties>([\s\S]*?)<\/properties>/);
+  const propertiesBlock = xml.match(/<properties>([\s\S]*?)<\\/properties>/);
   if (propertiesBlock) {
-    const propertyMatches = propertiesBlock[1].matchAll(/<property>([\s\S]*?)<\/property>/g);
+    const propertyMatches = propertiesBlock[1].matchAll(/<property>([\s\S]*?)<\\/property>/g);
     ontology.properties = Array.from(propertyMatches, (m) => {
       const propXml = m[1];
-      const nameMatch = propXml.match(/<name>([^<]+)<\/name>/);
-      const typeMatch = propXml.match(/<type>([^<]+)<\/type>/);
+      const nameMatch = propXml.match(/<name>([^<]+)<\\/name>/);
+      const typeMatch = propXml.match(/<type>([^<]+)<\\/type>/);
       return { name: nameMatch ? nameMatch[1] : undefined, type: typeMatch ? typeMatch[1] : undefined };
     });
   }
 
-  const metadataBlock = xml.match(/<metadata>([\s\S]*?)<\/metadata>/);
+  const metadataBlock = xml.match(/<metadata>([\s\S]*?)<\\/metadata>/);
   if (metadataBlock) {
     ontology.metadata = {};
-    const metaRegex = /<([^>]+)>([^<]+)<\/\1>/g;
+    const metaRegex = /<([^>]+)>([^<]+)<\\/\1>/g;
     let metaMatch;
     while ((metaMatch = metaRegex.exec(metadataBlock[1])) !== null) {
       ontology.metadata[metaMatch[1]] = metaMatch[2];
@@ -362,7 +367,7 @@ export function listAvailableEndpoints() {
       if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
         validCustomEndpoints.push(trimmed);
       } else {
-        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with "http://" or "https://"`, "warn");
+        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with \"http://\" or \"https://\"`, "warn");
       }
     });
     return Array.from(new Set([...defaultEndpoints, ...validCustomEndpoints]));
