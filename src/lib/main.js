@@ -29,6 +29,7 @@
  *   - Allow custom configuration of public API endpoints via the CUSTOM_API_ENDPOINTS environment variable. When set with a comma-separated list, these endpoints that are valid (starting with "http://" or "https://") are merged with the default list.
  *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
  *   - Enforced strict handling of 'NaN' values: In strict mode, any value equal to 'NaN' (including with extra whitespace) will throw an error immediately.
+ *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -71,13 +72,16 @@ export function buildOntology() {
 /**
  * Standardized helper function to parse numeric environment variables.
  * If the variable is undefined, empty, or consists only of whitespace,
- * or if its trimmed value (case-insensitive) is exactly "nan", returns the default value.
+ * or if its trimmed value (case-insensitive) is exactly "nan", returns the fallback value.
  * If a non-numeric value is provided (including invalid strings, explicit "NaN", or empty) then:
- *   - In non-strict mode, logs a diagnostic warning exactly once per unique erroneous input and returns the default value.
+ *   - In non-strict mode, logs a diagnostic warning exactly once per unique erroneous input and returns the fallback value.
  *   - In strict mode (STRICT_ENV=true or CLI flag --strict-env), throws an error.
  * Supported formats include standard numbers as well as scientific notation (e.g. '1e3').
+ *
+ * Additionally, a configurable fallback value can be provided as the third parameter.
+ * If provided, it overrides the default fallback value when the environment variable is invalid.
  */
-function parseEnvNumber(varName, defaultVal) {
+function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const value = process.env[varName];
   const trimmed = value !== undefined ? value.trim() : "";
   const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
@@ -94,18 +98,18 @@ function parseEnvNumber(varName, defaultVal) {
   // Check if undefined, empty, or explicitly 'nan'
   if (trimmed === "" || trimmed.toLowerCase() === "nan") {
     if (envWarningCache.get(varName) !== value) { // use raw value for uniqueness
-      logDiagnostic(`Warning: ${varName} is non-numeric (received '${value}'). Using default value of ${defaultVal}${unit}.`, "warn");
+      logDiagnostic(`Warning: ${varName} is non-numeric (received '${value}'). Using fallback value of ${(configurableFallback !== undefined ? configurableFallback : defaultVal)}${unit}.`, "warn");
       envWarningCache.set(varName, value);
     }
-    return defaultVal;
+    return configurableFallback !== undefined ? configurableFallback : defaultVal;
   }
   const num = Number(trimmed);
   if (isNaN(num)) {
     if (envWarningCache.get(varName) !== value) {
-      logDiagnostic(`Warning: ${varName} is non-numeric. Using default value of ${defaultVal}${unit}.`, "warn");
+      logDiagnostic(`Warning: ${varName} is non-numeric. Using fallback value of ${(configurableFallback !== undefined ? configurableFallback : defaultVal)}${unit}.`, "warn");
       envWarningCache.set(varName, value);
     }
-    return defaultVal;
+    return configurableFallback !== undefined ? configurableFallback : defaultVal;
   }
   return num;
 }
