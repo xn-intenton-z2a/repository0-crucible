@@ -196,6 +196,7 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 - **Enhanced 'NaN' Handling:** Environment variable parsing now robustly handles non-numeric inputs (including variants of "NaN") by logging a standardized one-time diagnostic message and applying a fallback value.
 - **Warning Cache Normalization:** Ensures a single warning per normalized input.
 - **Automated Tests:** Comprehensive tests now cover fallback behavior, strict mode, and CLI override functionality.
+- **Fetch Spy Availability:** The internal function used in `buildEnhancedOntology` is now exported as part of a `fetcher` object, allowing tests to successfully spy on it.
 
 ## Contributing
 

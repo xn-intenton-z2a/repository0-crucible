@@ -43,6 +43,10 @@ import path from "path";
 import https from "https";
 import http from "http";
 
+// Define and export fetcher object for use in buildEnhancedOntology and for test spying
+const fetcher = {};
+export { fetcher };
+
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
@@ -402,6 +406,9 @@ export async function fetchDataWithRetry(url, retries) {
     attempt(retries, 1);
   });
 }
+
+// Assign fetchDataWithRetry to fetcher for external spying and exports
+fetcher.fetchDataWithRetry = fetchDataWithRetry;
 
 export async function crawlOntologies() {
   let endpoints = listAvailableEndpoints();
