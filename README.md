@@ -7,7 +7,7 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 Key features include:
 
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a consolidated helper function that applies default values when not set, empty, or when invalid non-numeric values (e.g., `NaN`, empty strings, or whitespace-only) are provided.
-  - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid input is provided, a unified diagnostic warning is logged exactly once per unique composite key (combining variable name and normalized input) indicating that the received non-numeric input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. Duplicate warnings for equivalent normalized inputs are suppressed.
+  - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid input is provided, a unified diagnostic warning is logged exactly once per unique composite key (combining variable name and normalized input) indicating that the received non-numeric input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. For example, raw inputs such as " NaN ", "\tNaN", and "\u00A0NaN\u00A0" all normalize to "nan" and trigger a single warning. Duplicate warnings for equivalent normalized inputs are suppressed.
   - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), only valid numeric inputs are accepted. If a non-numeric input is encountered, an error is thrown with clear guidance on acceptable formats, such as:
     - Integer (e.g., 42)
     - Decimal (e.g., 3.14)
@@ -67,7 +67,7 @@ node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --b
 
 ### Automated Tests
 
-Comprehensive tests verify the behavior of the environment variable handling, including different whitespace variants (now covering a broader set of Unicode whitespace), unified warning logging, and CLI override functionality. Run tests using:
+Comprehensive tests verify the behavior of the environment variable handling, including different whitespace variants that normalize to "nan", unified warning logging, and CLI override functionality. Run tests using:
 
 ```bash
 npm test
@@ -76,74 +76,6 @@ npm test
 ### CLI Help
 
 Display the list of commands and usage instructions:
-
-```bash
-node src/lib/main.js --help
-```
-
-### Key CLI Commands
-
-- `--build --allow-deprecated`: Generates a deprecated fallback ontology using static data (**deprecated; use `--build-live` for live data integration**).
-- `--build-live`: Builds an ontology using live data using enhanced normalization and logs detailed diagnostic information for each retry attempt, including exponential backoff delay with jitter.
-- ... (other commands remain as documented)
-
-## Installation
-
-Ensure Node.js version 20 or later is installed. Then, clone the repository and install dependencies:
-
-```bash
-git clone https://github.com/yourusername/owl-builder.git
-cd owl-builder
-npm install
-```
-
-## Usage
-
-### Run Demo
-
-Demonstrate core functionality using live data integration (unless disabled):
-
-```bash
-npm run start
-```
-
-### Disable Live Data Integration
-
-To disable live data integration and use the static fallback, set the environment variable:
-
-```bash
-export DISABLE_LIVE_DATA=1
-```
-
-Or invoke the CLI with the flag:
-
-```bash
-node src/lib/main.js --disable-live
-```
-
-### Strict Environment Variable Parsing
-
-To enforce strict parsing of numeric environment variables, either set the environment variable or use the CLI flag:
-
-```bash
-export STRICT_ENV=true
-# or
-node src/lib/main.js --strict-env
-```
-
-When strict mode is enabled, any non-numeric input will result in an error with guidance on allowed formats.
-
-### Override Fallback Values via CLI
-
-Override the default fallback values for live data fetching without modifying your environment variables:
-
-```bash
-node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250
-```
-
-### CLI Help
-
-Display a list of available commands and usage instructions:
 
 ```bash
 node src/lib/main.js --help
