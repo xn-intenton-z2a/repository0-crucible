@@ -35,7 +35,7 @@
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
  *
- * NOTE: Non-numeric values, such as "NaN" (even with extra whitespace), will trigger a one-time diagnostic warning in non-strict mode and fall back to default values, whereas in strict mode (STRICT_ENV=true or --strict-env), such values will immediately throw an error.
+ * IMPORTANT: The parseEnvNumber function now explicitly logs a one-time diagnostic warning for non-numeric inputs (such as "NaN", "NaN " with extra whitespace, empty or whitespace-only strings) and falls back to a default value or a provided configurable fallback. In strict mode, these inputs throw an error. Use resetEnvWarningCache() to clear the warning cache (mainly for testing purposes).
  */
 
 import fs, { promises as fsp } from "fs";
@@ -74,17 +74,20 @@ export function buildOntology() {
 
 /**
  * Standardized helper function to parse numeric environment variables.
+ * 
  * If the variable is undefined, empty, or consists only of whitespace,
  * or if its trimmed value (case-insensitive) is exactly "nan", returns the fallback value.
- * If a non-numeric value is provided (including invalid strings, explicit "NaN", or empty) then:
- *   - In non-strict mode, logs a diagnostic warning exactly once per unique normalized erroneous input and returns the fallback value.
- *   - In strict mode (STRICT_ENV=true or CLI flag --strict-env), throws an error.
+ * 
+ * If a non-numeric value is provided (including invalid strings or variations of "NaN" with extra whitespace) then:
+ *   - In non-strict mode, logs a one-time diagnostic warning exactly once per unique normalized erroneous input and returns the fallback value.
+ *   - In strict mode (STRICT_ENV=true or CLI flag --strict-env), throws an error immediately.
+ * 
  * Supported formats include standard numbers as well as scientific notation (e.g. '1e3').
- *
+ * 
  * Additionally, a configurable fallback value can be provided as the third parameter.
  * If provided, it overrides the default fallback value when the environment variable is invalid.
  *
- * NOTE: Non-numeric values, such as "NaN" (even with extra whitespace), will trigger a one-time diagnostic warning in non-strict mode and fall back to default values, whereas in strict mode they immediately throw an error.
+ * NOTE: Non-numeric values, including explicit "NaN" (with any leading/trailing whitespace), trigger a diagnostic warning once per normalized input in non-strict mode, and fallback is used. In strict mode, an error is thrown.
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const value = process.env[varName];
