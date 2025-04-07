@@ -119,6 +119,7 @@ Note: Ensure that your network environment allows access to these endpoints for 
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag to use the deprecated static fallback. Without the flag, a warning is issued. Use `--build-live` for live data integration.
 - **Exponential Backoff:** Improved environment variable parsing in the live data fetch function to robustly fallback to default values when provided non-numeric inputs. The defaults are 3 retries and 100ms delay if the environment variables are invalid.
+- Removed duplicate ESLint key from package.json to avoid build warnings.
 - Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.
 
 ## Contributing
