@@ -1,14 +1,18 @@
 {
-  "openIssues": 7,
+  "openIssues": 6,
   "issuesClosedLastHour": 8,
-  "issuesClosedLastDay": 96,
+  "issuesClosedLastDay": 98,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 10,
-  "diffMinutesMain": 14,
+  "diffMinutes": 7,
+  "diffMinutesMain": 7,
   "commitsLastHour": 4,
-  "commitsLastDay": 51,
+  "commitsLastDay": 52,
   "lastFiveCommitMessages": [
+    {
+      "time": "11:14",
+      "message": "Added CLI options to override fallback values for LIVEDATA_RETRY..."
+    },
     {
       "time": "10:55",
       "message": "Updated docs and inline comments to clarify NaN handling and fal..."
@@ -24,10 +28,6 @@
     {
       "time": "10:14",
       "message": "Added configurable fallback values for environment variable pars..."
-    },
-    {
-      "time": "09:56",
-      "message": "Updated strict mode logic in parseEnvNumber to throw an error fo..."
     }
   ],
   "branches": {
@@ -37,5 +37,5 @@
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-07T11:09:43.067Z"
+  "generatedAt": "2025-04-07T11:21:51.704Z"
 }
