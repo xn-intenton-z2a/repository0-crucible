@@ -269,9 +269,9 @@ export function listAvailableEndpoints() {
     "https://randomuser.me/api/",
     "https://catfact.ninja/fact",
     "https://jsonplaceholder.typicode.com/todos",
-    "https://api.chucknorris.io/jokes/random",
-    "https://api.agify.io/?name=michael",
-    "https://api.stackexchange.com/2.2/questions?order=desc&sort=activity",
+    "https://api/chucknorris.io/jokes/random",
+    "https://api/agify.io/?name=michael",
+    "https://api/stackexchange.com/2.2/questions?order=desc&sort=activity",
     "https://openlibrary.org/api/books?bibkeys=ISBN:0451526538&format=json",
     "https://api/spacexdata.com/v4/launches/latest",
     "https://random-data-api.com/api/commerce/random_commerce",
@@ -401,6 +401,21 @@ export function serveWebServer() {
       const logMsg = `Web server started at http://localhost:${port}`;
       console.log(logMsg);
       resolve("Web server started");
+    });
+  });
+}
+
+// New function to start the web server and return the server instance for integration testing
+export function startWebServer() {
+  const port = process.env.PORT || 3000;
+  const server = http.createServer((req, res) => {
+    res.writeHead(200, { "Content-Type": "text/plain" });
+    res.end("owl-builder Web Server Running\n");
+  });
+  return new Promise((resolve, reject) => {
+    server.listen(port, () => {
+      console.log(`Web server started at http://localhost:${port}`);
+      resolve(server);
     });
   });
 }

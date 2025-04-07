@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect, vi, afterEach } from "vitest";
 import fs from "fs";
 import path from "path";
 import http from "http";
@@ -48,7 +48,8 @@ const {
   enhancedDiagnosticSummary,
   customMergeWithTimestamp,
   backupAndRefreshOntology,
-  fetcher
+  fetcher,
+  startWebServer
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -71,6 +72,42 @@ function simulateNetworkFailure(mod) {
     return req;
   };
 }
+
+// New test for robust HTTP endpoint integration on the web server
+describe("Robust HTTP Endpoint Testing for the Integrated Web Server", () => {
+  let server;
+  const port = process.env.PORT || 3000;
+
+  afterEach(async () => {
+    if (server) {
+      await new Promise((resolve) => server.close(resolve));
+      server = null;
+    }
+  });
+
+  test("should respond with 200 and correct body", async () => {
+    server = await startWebServer();
+    const options = {
+      hostname: "localhost",
+      port: port,
+      path: "/",
+      method: "GET"
+    };
+
+    const responseData = await new Promise((resolve, reject) => {
+      const req = http.request(options, (res) => {
+        let data = '';
+        res.on('data', (chunk) => data += chunk);
+        res.on('end', () => resolve({ statusCode: res.statusCode, body: data }));
+      });
+      req.on('error', reject);
+      req.end();
+    });
+
+    expect(responseData.statusCode).toBe(200);
+    expect(responseData.body).toBe("owl-builder Web Server Running\n");
+  });
+});
 
 // New test for configurable environment variables in fetchDataWithRetry with non-numeric values
 describe("Live Data Configurability", () => {
@@ -131,7 +168,6 @@ describe("Live Data Configurability", () => {
       "All retry attempts for http://testenv-nonnumeric failed. Last error: Non-numeric test error"
     );
     expect(attemptCount).toBe(4);
-    // Check that warnings for non-numeric env values are logged only once
     const retryWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_RETRY_COUNT is non-numeric")).length;
     const delayWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_INITIAL_DELAY is non-numeric")).length;
     expect(retryWarnings).toBe(1);
