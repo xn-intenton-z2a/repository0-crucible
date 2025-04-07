@@ -104,13 +104,14 @@ describe("Live Data Configurability", () => {
     process.env.LIVEDATA_INITIAL_DELAY = originalEnvDelay;
   });
 
-  test("fetchDataWithRetry uses default values when env variables are non-numeric", async () => {
+  test("fetchDataWithRetry uses default values when env variables are non-numeric and logs warning only once", async () => {
     const originalEnvRetry = process.env.LIVEDATA_RETRY_COUNT;
     const originalEnvDelay = process.env.LIVEDATA_INITIAL_DELAY;
     process.env.LIVEDATA_RETRY_COUNT = "NaN"; // should fallback to 3
     process.env.LIVEDATA_INITIAL_DELAY = "NaN"; // should fallback to 100ms
     let attemptCount = 0;
     const originalGet = http.get;
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     http.get = (url, options, callback) => {
       attemptCount++;
       const req = {
@@ -130,9 +131,15 @@ describe("Live Data Configurability", () => {
       "All retry attempts for http://testenv-nonnumeric failed. Last error: Non-numeric test error"
     );
     expect(attemptCount).toBe(4);
+    // Check that warnings for non-numeric env values are logged only once
+    const retryWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_RETRY_COUNT is non-numeric")).length;
+    const delayWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_INITIAL_DELAY is non-numeric")).length;
+    expect(retryWarnings).toBe(1);
+    expect(delayWarnings).toBe(1);
     http.get = originalGet;
     process.env.LIVEDATA_RETRY_COUNT = originalEnvRetry;
     process.env.LIVEDATA_INITIAL_DELAY = originalEnvDelay;
+    logSpy.mockRestore();
   });
 
   test("fetchDataWithRetry includes jitter in delay", async () => {

@@ -24,7 +24,7 @@
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *   - Implemented exponential backoff in fetchDataWithRetry for improved network resilience with configurable retries and delay parameters.
  *     Parses the LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT environment variables using a standardized helper function to provide consistent behavior.
- *     If a non-numeric value is explicitly provided for these variables, a diagnostic warning is logged with appropriate units; otherwise, defaults are applied silently.
+ *     If a non-numeric value is explicitly provided for these variables, a diagnostic warning is logged only once per variable; otherwise, defaults are applied silently.
  *   - Refactored crawlOntologies to return separate arrays for successful and failed crawl results.
  *   - Added randomized jitter to exponential backoff delays in live data fetching to mitigate thundering herd issues.
  *
@@ -39,6 +39,9 @@ import http from "http";
 
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
+
+// Cache for environment variable warning flags to deduplicate warnings
+const envWarningLogged = {};
 
 /**
  * @deprecated Use buildOntologyFromLiveData for live data integration. This static fallback is retained only for emergencies.
@@ -69,7 +72,11 @@ function parseEnvNumber(varName, defaultVal) {
     } else if (varName === "LIVEDATA_INITIAL_DELAY") {
       unit = "ms delay";
     }
-    logDiagnostic(`Warning: ${varName} is non-numeric. Using default value of ${defaultVal}${unit}.`);
+    // Log warning only once per environment variable
+    if (!envWarningLogged[varName]) {
+      logDiagnostic(`Warning: ${varName} is non-numeric. Using default value of ${defaultVal}${unit}.`);
+      envWarningLogged[varName] = true;
+    }
     return defaultVal;
   }
   return num;
