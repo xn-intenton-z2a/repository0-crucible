@@ -28,7 +28,7 @@
  *   - Introduced configurable diagnostic logging levels via the DIAGNOSTIC_LOG_LEVEL environment variable.
  *   - Allow custom configuration of public API endpoints via the CUSTOM_API_ENDPOINTS environment variable. When set with a comma-separated list, these endpoints that are valid (starting with "http://" or "https://") are merged with the default list.
  *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
- *   - Enforced strict handling of 'NaN' values: In strict mode, any value that is not a valid numeric format (including variants like 'NaN' with extra whitespace) will throw an error immediately.
+ *   - Enforced strict handling of 'NaN' values: In strict mode, any value that is not a valid numerical format (including variants like 'NaN' with extra whitespace) will throw an error immediately.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
  *   - Warning Cache Normalization: To avoid duplicate logging, a warning is logged only once per unique normalized input (trimmed and lowercased value).
  *

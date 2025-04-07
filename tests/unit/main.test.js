@@ -667,9 +667,7 @@ describe("New Features", () => {
   });
 
   test("buildEnhancedOntology returns enhanced ontology with image and enhanced concept", async () => {
-    const spy = vi
-      .spyOn(fetcher, "fetchDataWithRetry")
-      .mockResolvedValue(JSON.stringify({ message: "http://example.com/image.jpg" }));
+    const spy = vi.spyOn(fetcher, "fetchDataWithRetry").mockResolvedValue(JSON.stringify({ message: "http://example.com/image.jpg" }));
     const ontology = await buildEnhancedOntology();
     expect(ontology.image).toBe("http://example.com/image.jpg");
     expect(ontology.concepts).toContain("EnhancedConcept");
