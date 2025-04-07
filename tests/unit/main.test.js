@@ -72,6 +72,7 @@ function simulateNetworkFailure(mod) {
   };
 }
 
+
 describe("Core Ontology Functions", () => {
   test("buildOntology returns public data ontology", () => {
     const ont = buildOntology();
@@ -210,6 +211,36 @@ describe("Crawling Functionality", () => {
     http.get = simulateNetworkFailure(http);
     await expect(fetchDataWithRetry("http://invalid.url", 2)).rejects.toBeDefined();
     http.get = originalGet;
+  });
+
+  test("fetchDataWithRetry applies exponential backoff delay using fake timers", async () => {
+    vi.useFakeTimers();
+    const originalGet = http.get;
+    let attempts = 0;
+    http.get = (url, options, callback) => {
+      attempts++;
+      const req = {
+        on: (event, handler) => {
+          if (event === "error") {
+            setTimeout(() => {
+              handler(new Error("Network error"));
+            }, 0);
+          }
+          return req;
+        }
+      };
+      return req;
+    };
+    const promise = fetchDataWithRetry("http://example.com", 2).catch(e => e);
+    // Advance timers: first call immediate error, then wait for 100ms, then 200ms
+    await vi.advanceTimersByTimeAsync(10);
+    await vi.advanceTimersByTimeAsync(100);
+    await vi.advanceTimersByTimeAsync(200);
+    const result = await promise;
+    expect(result).toBeInstanceOf(Error);
+    expect(attempts).toBe(3); // initial attempt + 2 retries
+    http.get = originalGet;
+    vi.useRealTimers();
   });
 });
 
