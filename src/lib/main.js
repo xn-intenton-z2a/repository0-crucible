@@ -23,14 +23,14 @@
  *   - Refactored file system operations to use asynchronous APIs.
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *   - Implemented exponential backoff in fetchDataWithRetry with configurable retries, delay and randomized jitter.
- *   - Non-numeric environment variables for LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT fallback to defaults with a diagnostic warning logged only once per normalized value.
+ *   - Non-numeric environment variables for LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT fallback to defaults with a diagnostic warning logged only once per unique normalized value.
  *   - Added configurable option to disable live data integration via the environment variable DISABLE_LIVE_DATA. When set (and not equal to "0"), live data requests are bypassed and the static fallback is used.
  *   - Introduced configurable diagnostic logging levels via the DIAGNOSTIC_LOG_LEVEL environment variable.
  *   - Allow custom configuration of public API endpoints via the CUSTOM_API_ENDPOINTS environment variable. When set with a comma-separated list, these endpoints that are valid (starting with "http://" or "https://") are merged with the default list.
  *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
  *   - Enforced strict handling of 'NaN' values: In strict mode, any value that is not a valid numerical format (including variants like 'NaN' with extra whitespace) will throw an error immediately.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
- *   - Enhanced handling of 'NaN' values in environment variable parsing to ensure consistent fallback behavior and suppress duplicate warnings for equivalent inputs.
+ *   - Enhanced handling of 'NaN' values in environment variable parsing to ensure consistent fallback behavior and suppress duplicate warnings for equivalent inputs. The warning cache now logs a warning exactly once per unique composite key (variable name and normalized input).
  *   - Consolidated and standardized 'NaN' handling in environment variable parsing. A new configuration option (DISABLE_ENV_WARNINGS) allows disabling warnings in production.
  *   - Improved diagnostic messages and inline documentation for environment variable parsing to clearly indicate fallback values and valid formats.
  *
@@ -50,7 +50,7 @@ export { fetcher };
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
-// Cache for environment variable warning flags using a Map that stores the normalized value (trimmed and lower case).
+// Cache for environment variable warning flags using a Map that stores the composite key (variable name and normalized value).
 const envWarningCache = new Map();
 
 /**
@@ -91,7 +91,7 @@ export function buildOntology() {
  *
  * Behavior:
  * - In non-strict mode: If the provided variable is undefined, empty, or contains only whitespace, or if after trimming
- *   it equals (case-insensitive) 'nan', a one-time warning is logged (per unique normalized input) and the function returns the fallback value.
+ *   it equals (case-insensitive) 'nan', a one-time warning is logged (per unique composite key) and the function returns the fallback value.
  *   Duplicate warnings for the same normalized input are suppressed via a cache.
  *   Additionally, warnings can be globally disabled by setting DISABLE_ENV_WARNINGS (and not equal to "0").
  *
@@ -104,7 +104,11 @@ export function buildOntology() {
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const value = process.env[varName];
-  const trimmed = (typeof value === "string") ? value.trim() : "";
+  // If the environment variable is not a string, return fallback silently without logging warning
+  if (typeof value !== "string") {
+    return configurableFallback !== undefined ? configurableFallback : defaultVal;
+  }
+  const trimmed = value.trim();
   const normalized = trimmed.toLowerCase();
   const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
   
@@ -130,14 +134,15 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
     }
     return Number(trimmed);
   }
-
+  
   // Non-strict mode handling: if input is empty, 'NaN', or cannot be converted to a number
   if (!trimmed || normalized === "nan" || isNaN(Number(trimmed))) {
     // Check if global warnings are disabled
     if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
-      if (typeof value === "string" && envWarningCache.get(varName) !== normalized) {
+      const warnKey = `${varName}-${normalized}`;
+      if (!envWarningCache.has(warnKey)) {
         logDiagnostic(`Warning: Environment variable ${varName} received invalid non-numeric input ('${value}'). Defaulting to ${fallback}${unit}.`, "warn");
-        envWarningCache.set(varName, normalized);
+        envWarningCache.set(warnKey, true);
       }
     }
     return fallback;
