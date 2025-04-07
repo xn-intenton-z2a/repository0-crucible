@@ -34,7 +34,7 @@ Key features include:
 
 Recent updates include expanded unit tests to ensure robust handling of non-numeric environment variable inputs. Additional tests have been added to cover diverse whitespace variants (including spaces, tabs, and non-breaking spaces) ensuring that different raw inputs that normalize to the same value trigger only one diagnostic warning. CLI override functionality is also verified to take precedence in all such scenarios.
 
-### Unified NaN Fallback Behavior
+### Unified NaN Handling
 
 This release has unified the handling of 'NaN' and similar non-numeric inputs. All variations now trigger a single diagnostic warning per unique normalized invalid input, ensuring clarity in fallback behavior and strict CLI override precedence.
 
