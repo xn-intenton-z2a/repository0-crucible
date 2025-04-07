@@ -305,7 +305,6 @@ describe("Environment Variable Parsing Tests", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     process.env.TEST_WARN = "NaN";
     expect(_parseEnvNumber("TEST_WARN", 10)).toBe(10);
-    // Subsequent calls should not log any warning because disabled
     expect(_parseEnvNumber("TEST_WARN", 10)).toBe(10);
     const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_WARN") && call[0].includes("received invalid input"));
     expect(warnings.length).toBe(0);
@@ -317,11 +316,9 @@ describe("Environment Variable Parsing Tests", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     process.env.TEST_UNIQUE = "NaN";
     _parseEnvNumber("TEST_UNIQUE", 100);
-    // Calling again with the same input should not log another warning
     _parseEnvNumber("TEST_UNIQUE", 100);
     let warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_UNIQUE") && call[0].includes("received invalid input")).length;
     expect(warnings).toBe(1);
-    // Call with a different invalid input
     process.env.TEST_UNIQUE = "\tNaN";
     _parseEnvNumber("TEST_UNIQUE", 100);
     warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_UNIQUE") && call[0].includes("received invalid input")).length;

@@ -65,14 +65,13 @@ export function resetEnvWarningCache() {
 /**
  * Helper function to normalize environment variable values.
  * Trims the value and converts to lower case. If the value is undefined or not a string, returns an empty string.
- * Additionally, replaces all whitespace (including non-breaking spaces, tabs, etc.) with a single space and then trims.
+ * Additionally, replaces all whitespace with a single space and then trims.
  * @param {string | undefined | null} value 
  * @returns {string}
  */
 function normalizeEnvValue(value) {
   if (typeof value !== "string") return "";
-  return value.replace(/[
-\r\t\s\u00A0]+/g, ' ').trim().toLowerCase();
+  return value.replace(/\s+/g, ' ').trim().toLowerCase();
 }
 
 /**
