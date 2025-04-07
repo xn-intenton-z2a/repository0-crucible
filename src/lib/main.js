@@ -22,13 +22,9 @@
  *   - Enhanced XML export/import to support extended ontology models (concepts, classes, properties, metadata).
  *   - Refactored file system operations to use asynchronous APIs.
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
- *   - Implemented exponential backoff in fetchDataWithRetry for improved network resilience with configurable retries and delay parameters.
- *     Parses the LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT environment variables using a standardized helper function to provide consistent behavior.
- *     If a non-numeric value is explicitly provided for these variables, a diagnostic warning is logged only once per variable; otherwise, defaults are applied silently.
+ *   - Implemented exponential backoff in fetchDataWithRetry with configurable retries, delay and randomized jitter.
+ *   - Non-numeric environment variables for LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT fallback to defaults with a diagnostic warning logged only once per variable.
  *   - Refactored crawlOntologies to return separate arrays for successful and failed crawl results.
- *   - Added randomized jitter to exponential backoff delays in live data fetching to mitigate thundering herd issues.
- *
- * New Feature:
  *   - Added configurable option to disable live data integration via the environment variable DISABLE_LIVE_DATA. When set (and not equal to "0"), live data requests are bypassed and the static fallback is used.
  *
  * Note for Contributors:
@@ -61,7 +57,12 @@ export function buildOntology() {
   };
 }
 
-// Standardized helper function to parse numeric environment variables
+/**
+ * Standardized helper function to parse numeric environment variables.
+ * If the variable is undefined, empty, or consists only of whitespace, returns the default value.
+ * If a non-numeric value is provided (including invalid strings), it logs a diagnostic warning (only once per variable) and returns the default value.
+ * Supported formats include standard numbers as well as scientific notation (e.g. '1e3').
+ */
 function parseEnvNumber(varName, defaultVal) {
   const value = process.env[varName];
   if (value === undefined || value.trim() === "") {
