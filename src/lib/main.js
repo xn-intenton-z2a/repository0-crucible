@@ -50,7 +50,7 @@ export { fetcher };
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
-// Cache for environment variable warning flags using a Map that stores the composite key (variable name and normalized value).
+// Cache for environment variable warning flags using a Map that stores the composite key (variable name and normalized input).
 const envWarningCache = new Map();
 
 /**
@@ -92,7 +92,7 @@ export function buildOntology() {
  * Behavior:
  * - In non-strict mode: If the provided variable is undefined, empty, or contains only whitespace, or if after trimming
  *   it equals (case-insensitive) 'nan', a one-time warning is logged (per unique composite key) and the function returns the fallback value.
- *   Duplicate warnings for the same normalized input are suppressed via a cache.
+ *   Duplicate warnings for the same input are suppressed via a cache.
  *   Additionally, warnings can be globally disabled by setting DISABLE_ENV_WARNINGS (and not equal to "0").
  *
  * - In strict mode (when STRICT_ENV is set to true or --strict-env is used): The environment variable must be a valid numeric value.
@@ -139,6 +139,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   if (!trimmed || normalized === "nan" || isNaN(Number(trimmed))) {
     // Check if global warnings are disabled
     if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
+      // Use the normalized value in composite key to avoid duplicate warnings for equivalent inputs
       const warnKey = `${varName}-${normalized}`;
       if (!envWarningCache.has(warnKey)) {
         logDiagnostic(`Warning: Environment variable ${varName} received invalid non-numeric input ('${value}'). Defaulting to ${fallback}${unit}.`, "warn");

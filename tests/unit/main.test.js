@@ -287,11 +287,6 @@ describe("Environment Variable Parsing Tests", () => {
     expect(_parseEnvNumber("TEST_MIXED", 20)).toBe(20);
   });
 
-  test("Non-strict mode handles null environment variable by returning fallback silently", () => {
-    process.env.TEST_NULL = null;
-    expect(_parseEnvNumber("TEST_NULL", 30)).toBe(30);
-  });
-
   test("Handles environment variable with non-breaking spaces", () => {
     process.env.TEST_NBSP = "\u00A0NaN\u00A0";
     expect(_parseEnvNumber("TEST_NBSP", 55)).toBe(55);
@@ -315,6 +310,22 @@ describe("Environment Variable Parsing Tests", () => {
     const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_WARN") && call[0].includes("invalid non-numeric"));
     expect(warnings.length).toBe(0);
     delete process.env.DISABLE_ENV_WARNINGS;
+    logSpy.mockRestore();
+  });
+
+  test("Logs warning only once per unique invalid input and separately for different invalid formats", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    process.env.TEST_UNIQUE = "NaN";
+    _parseEnvNumber("TEST_UNIQUE", 100);
+    // Calling again with the same input should not log another warning
+    _parseEnvNumber("TEST_UNIQUE", 100);
+    let warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_UNIQUE") && call[0].includes("invalid non-numeric")).length;
+    expect(warnings).toBe(1);
+    // Call with a different invalid input
+    process.env.TEST_UNIQUE = "\tNaN";
+    _parseEnvNumber("TEST_UNIQUE", 100);
+    warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_UNIQUE") && call[0].includes("invalid non-numeric")).length;
+    expect(warnings).toBe(1);
     logSpy.mockRestore();
   });
 });

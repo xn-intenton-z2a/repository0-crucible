@@ -7,7 +7,7 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 Key features include:
 
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a consolidated helper function that applies default values when not set, empty, or when invalid non-numeric values (e.g., `NaN`, empty strings, or whitespace-only) are provided. Notably, if an environment variable is not a string (e.g., null or undefined), it is silently handled without logging unnecessary warnings.
-  - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid non-numeric string is provided, a one-time warning is logged (per unique composite key combining variable name and normalized input) indicating that the input is invalid, and the system falls back to a default or configurable value. The fallback logic has been streamlined and the warning message standardized to clearly show the fallback value (including its unit) and to avoid duplicate warnings. Additionally, unusual whitespace such as non-breaking spaces and non-string falsy values are correctly processed without generating superfluous warnings.
+  - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid non-numeric string is provided, a one-time warning is logged (per unique composite key combining variable name and normalized input) indicating that the input is invalid, and the system falls back to a default or configurable value. The fallback logic has been streamlined and the warning message standardized to clearly show the fallback value (including its unit) and to avoid duplicate warnings. Additional tests now cover various whitespace patterns including non-breaking spaces, tab characters, and extra spaces.
   - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), only valid numeric inputs are accepted. Any deviation, such as variants of `NaN` with extra whitespace or unusual case, will cause an immediate error with a clear message stating the allowed numeric formats (integer, decimal, or scientific notation).
   - **CLI Overrides:** The CLI options `--livedata-retry-default <number>` and `--livedata-delay-default <number>` allow you to override the default fallback values for live data fetching at runtime without modifying your environment variables.
   - **Global Warning Suppression:** You can disable all environment variable warning logs by setting the environment variable `DISABLE_ENV_WARNINGS` (set to any value other than "0").
@@ -30,54 +30,9 @@ Key features include:
 
 - **Custom Merging & Refreshing:** New functions provide extended merging and diagnostic capabilities.
 
-### Enhanced Handling of 'NaN' Values
+### Enhanced Unit Test Coverage for Environment Variable Parsing
 
-The environment variable parsing logic has been refined. When invalid non-numeric values (including variants of "NaN") are provided, a standardized one-time warning message is logged per unique composite key (variable name and input) that clearly indicates the invalid input and the fallback value being used. In strict mode, any invalid input will immediately cause an error with guidance on the allowed formats (integer, decimal, or scientific notation). Additional edge cases, such as inputs with unusual whitespace (e.g., non-breaking spaces) or non-string falsy values, are now correctly handled. You can disable these warnings in production by setting `DISABLE_ENV_WARNINGS` (not equal to "0").
-
-### Environment Variable Handling for Live Data Fetching
-
-owl-builder uses the environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` to configure the retry logic during live data fetching. The behavior is as follows:
-
-- **Valid Numeric Inputs:** Accepts standard numeric values and scientific notation. For example, `export LIVEDATA_RETRY_COUNT=3` or `export LIVEDATA_INITIAL_DELAY=1e2`.
-
-- **Invalid or Non-Numeric Inputs:** In non-strict mode, if an invalid non-numeric string is provided (e.g., `NaN`, `abc`, empty/whitespace-only) a one-time warning is logged (per unique composite key) and the system falls back to default values (3 retries and 100ms delay) or a configurable fallback. If the variable is null or not a string, it is processed silently without logging a warning.
-
-- **Strict Mode:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Any deviation will cause an immediate error with a clear message stating the allowed numeric formats.
-
-- **CLI Overrides:** You can override the fallback values without modifying your environment variables using CLI options:
-
-```bash
-# Example: Using CLI overrides for fallback values
-node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250
-```
-
-- **Suppressing Warnings:** To disable warning messages for invalid environment variable inputs, set the environment variable `DISABLE_ENV_WARNINGS` (any value other than "0").
-
-### Custom API Endpoints
-
-To provide custom API endpoints, set the `CUSTOM_API_ENDPOINTS` environment variable to a comma-separated list of URLs. **Only endpoints starting with "http://" or "https://" are accepted.** Invalid endpoints will be ignored with a diagnostic warning.
-
-Example:
-
-```bash
-export CUSTOM_API_ENDPOINTS="https://example.com/api, https://another.example.com"
-```
-
-### Configurable Diagnostic Logging
-
-Diagnostic messages can be controlled via the `DIAGNOSTIC_LOG_LEVEL` environment variable. Supported levels are:
-
-- `off`: No diagnostic messages are logged.
-- `error`: Only error messages are logged.
-- `warn`: Warning and error messages are logged.
-- `info`: Info, warning, and error messages are logged.
-- `debug`: All messages (debug, info, warn, error) are logged. (Default)
-
-For example, to suppress all diagnostic logs:
-
-```bash
-export DIAGNOSTIC_LOG_LEVEL=off
-```
+Recent updates include expanded unit tests to ensure robust handling of non-numeric environment variable inputs. Tests now verify that various whitespace patterns (including non-breaking spaces and tab characters) are correctly processed, duplicate warnings are avoided for equivalent invalid inputs, and CLI override values are properly applied.
 
 ## Installation
 
@@ -197,7 +152,7 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 - **CLI Overrides:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow runtime override of fallback values without changing environment variables.
 - **Custom Endpoints:** Supports custom API endpoints via `CUSTOM_API_ENDPOINTS`. Only valid endpoints (beginning with "http://" or "https://") are accepted.
 - **Consolidated 'NaN' Handling:** Standardized environment variable parsing now logs a warning exactly once per unique composite key (variable name and normalized input) unless warnings are disabled by setting `DISABLE_ENV_WARNINGS`.
-- **Unit Test Enhancements:** Expanded test coverage to include various edge cases for invalid non-numeric inputs, unusual whitespace, non-string values, and the new global warning suppression option.
+- **Unit Test Enhancements:** Expanded test coverage to include various edge cases for invalid non-numeric inputs, unusual whitespace (including non-breaking spaces and tab characters), and the new global warning suppression option.
 - **Automated Tests:** Comprehensive tests now cover fallback behavior, strict mode, CLI override functionality, and suppression of warnings.
 - **Fetch Spy Availability:** The internal function used in `buildEnhancedOntology` is now exported as part of a `fetcher` object, allowing tests to successfully spy on it.
 - **Contributing Improvements:** Updated guidelines to reflect changes in environment variable handling and diagnostic logging.
