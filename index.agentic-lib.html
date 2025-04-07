@@ -31,7 +31,7 @@
 <p class="md-github"><strong class="md-github">Live Data Integration:</strong> Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code> are parsed using a standardized helper function that applies default values when not set, empty, or when non-numeric values (e.g., <code class="md-github">NaN</code>, empty strings, or whitespace-only) are provided.</p>
 <ul class="md-github">
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Non-Numeric Values Handling:</strong> In non-strict mode, if a non-numeric value such as <code class="md-github">NaN</code>, <code class="md-github">abc</code>, or an empty/whitespace-only string is provided, a one-time warning is logged (per normalized input, where values are trimmed and lowercased) and the system falls back to a default value (3 retries and 100ms delay) or a provided configurable fallback.</p>
+<p class="md-github"><strong class="md-github">Non-Numeric Values Handling:</strong> In non-strict mode, if a non-numeric value such as <code class="md-github">NaN</code>, <code class="md-github">abc</code>, or an empty/whitespace-only string is provided, a one-time warning is logged (per normalized input, where values are trimmed and lowercased) and the system falls back to a default value (3 retries and 100ms delay) or a configurable fallback.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Strict Mode:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or by setting <code class="md-github">STRICT_ENV=true</code>), the environment variable must strictly be a valid numeric value in integer, decimal, or scientific notation. Any deviation (including variants of <code class="md-github">NaN</code> with extra whitespace) will immediately result in an error.</p>
@@ -189,6 +189,7 @@ node src/lib/main.js --strict-env
 <li class="md-github"><strong class="md-github">Strict Environment Variable Parsing:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or <code class="md-github">export STRICT_ENV=true</code>), only valid numeric inputs are accepted. Invalid values (including any variant of <code class="md-github">NaN</code> with extra whitespace) will cause an immediate error.</li>
 <li class="md-github"><strong class="md-github">CLI Overrides:</strong> New CLI options <code class="md-github">--livedata-retry-default</code> and <code class="md-github">--livedata-delay-default</code> allow runtime override of fallback values without changing environment variables.</li>
 <li class="md-github"><strong class="md-github">Custom Endpoints:</strong> Supports custom API endpoints via <code class="md-github">CUSTOM_API_ENDPOINTS</code>. Only valid endpoints (beginning with &quot;http://&quot; or &quot;https://&quot;) are accepted.</li>
+<li class="md-github"><strong class="md-github">Normalization Refactor:</strong> The logic for handling non-numeric environment variables has been refactored into a dedicated helper function to ensure consistent processing and one-time warning logging for normalized inputs.</li>
 <li class="md-github"><strong class="md-github">Crawling Update:</strong> crawlOntologies now returns results segregated into successes and errors.</li>
 <li class="md-github"><strong class="md-github">Asynchronous Query:</strong> queryOntology now uses asynchronous file operations for better performance.</li>
 <li class="md-github"><strong class="md-github">Disable Live Data:</strong> Use <code class="md-github">DISABLE_LIVE_DATA</code> or the <code class="md-github">--disable-live</code> CLI flag to disable live data integration.</li>
@@ -203,7 +204,7 @@ node src/lib/main.js --strict-env
 
   </section>
   <footer>
-    <p>Generated on 2025-04-07T12:24:38.607Z</p>
+    <p>Generated on 2025-04-07T12:45:09.646Z</p>
   </footer>
 </body>
 </html>
