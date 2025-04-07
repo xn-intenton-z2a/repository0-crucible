@@ -30,7 +30,7 @@
  *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
  *   - Enforced strict handling of 'NaN' values: In strict mode, any value that is not a valid numeric format (including variants like 'NaN' with extra whitespace) will throw an error immediately.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
- *   - Normalized non-numeric warning caching to avoid duplicate warnings for equivalent values.
+ *   - Warning Cache Normalization: To avoid duplicate logging, a warning is logged only once per unique normalized input (trimmed and lowercased value).
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -72,20 +72,17 @@ export function buildOntology() {
 
 /**
  * Standardized helper function to parse numeric environment variables.
- * 
- * If the variable is undefined, empty, or consists only of whitespace,
- * or if its trimmed value (case-insensitive) is exactly "nan", returns the fallback value.
- * 
- * If a non-numeric value is provided (including invalid strings or variations of "NaN" with extra whitespace) then:
- *   - In non-strict mode, logs a one-time diagnostic warning exactly once per unique normalized erroneous input and returns the fallback value.
- *   - In strict mode (STRICT_ENV=true or CLI flag --strict-env), throws an error immediately.
- * 
- * Supported formats include standard numbers as well as scientific notation (e.g. '1e3').
- * 
- * Additionally, a configurable fallback value can be provided as the third parameter.
- * If provided, it overrides the default fallback value when the environment variable is invalid.
- * 
- * NOTE: Non-numeric values, including explicit "NaN" (with any leading/trailing whitespace), trigger a diagnostic warning once per normalized input in non-strict mode, and fallback is used. In strict mode, an error is thrown.
+ *
+ * Behavior:
+ * - If the provided variable is undefined, empty, or contains only whitespace, or if after trimming
+ *   it equals (case-insensitive) 'nan', the function returns the fallback.
+ * - If non-numeric input (including variants like 'NaN' with extra whitespace) is encountered:
+ *   - In non-strict mode, a one-time diagnostic warning is logged per unique normalized input and the fallback is returned.
+ *   - In strict mode (when STRICT_ENV is set to true or --strict-env is used), an error is thrown immediately.
+ * - Supports integers, decimals, and scientific notation.
+ * - Allows overriding fallback values via CLI options (e.g. --livedata-retry-default and --livedata-delay-default).
+ *
+ * The warning cache ensures that for each unique normalized value (trimmed, lowercased) only one warning is logged.
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const value = process.env[varName];
@@ -119,7 +116,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
 
   // Check if undefined, empty, or explicitly 'nan'
   if (normalized === "" || normalized === "nan") {
-    if (envWarningCache.get(varName) !== normalized) { // use normalized value for uniqueness
+    if (envWarningCache.get(varName) !== normalized) { // log warning only once per normalized value
       logDiagnostic(`Warning: ${varName} is non-numeric (received '${value}'). Using fallback value of ${fallback}${unit}.`, "warn");
       envWarningCache.set(varName, normalized);
     }
