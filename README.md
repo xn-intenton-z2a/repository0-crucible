@@ -7,14 +7,25 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 Key features include:
 
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy with a randomized jitter to further improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a standardized helper function that applies default values when not set. If non-numeric values are provided, including the explicit string `NaN`, the system falls back to defaults and logs a diagnostic warning **only once per unique value per variable**. A new function (`resetEnvWarningCache`) is provided to clear warning state in test environments.
+
+- **Strict Environment Variable Parsing:** Developers can now enforce strict parsing of numeric environment variables. When strict mode is enabled either via the CLI flag `--strict-env` or by setting the environment variable `STRICT_ENV=true`, any non-numeric value (including "NaN") will cause an error to be thrown immediately, helping to catch misconfigurations early.
+
 - **Custom Endpoints:** Users can override or extend the default list of public API endpoints by setting the environment variable `CUSTOM_API_ENDPOINTS` to a comma-separated list of endpoints. **Note:** Only endpoints starting with `http://` or `https://` are considered valid. Invalid endpoints are ignored and a diagnostic warning is logged. This provides increased flexibility for diverse deployment scenarios.
+
 - **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)
+
 - **Query & Validation:** Rapidly search for ontology concepts and validate your data. Note: The function `queryOntology` has been refactored to operate asynchronously for improved performance.
+
 - **OWL Export/Import:** Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).
+
 - **Concurrent Data Crawling:** Gather real-time data concurrently from a range of public endpoints. The crawl functionality has been enhanced to return results with separate arrays for successful responses and errors, simplifying downstream processing.
+
 - **Diverse Ontology Models:** Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).
+
 - **Enhanced Diagnostics:** View timestamped logs with detailed context for each operation. You can control the verbosity of diagnostic messages by setting the environment variable `DIAGNOSTIC_LOG_LEVEL` (possible values: `off`, `error`, `warn`, `info`, `debug`). For example, setting `DIAGNOSTIC_LOG_LEVEL=off` will suppress diagnostic logs.
+
 - **Web Server Integration:** Launch a simple web server for quick status checks. **New:** The server now supports integration testing by exposing a function to start the server and gracefully shut it down after performing real HTTP requests.
+
 - **Custom Merging & Refreshing:** New functions provide extended merging and diagnostic capabilities.
 
 ### Environment Variable Parsing for Live Data Fetching
@@ -22,13 +33,17 @@ Key features include:
 owl-builder uses the environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` to configure the retry logic during live data fetching. The behavior is as follows:
 
 - **Valid Numeric Inputs:** Standard numbers (e.g., `3`, `50`) and scientific notation (e.g., `1e3` for 1000) are accepted and used in the retry mechanism.
-- **Invalid or Non-Numeric Inputs:** If a non-numeric value (e.g., `NaN`, `abc`) or an empty value is provided, the function silently falls back to default values (`3` retries and `100ms` delay, respectively) and logs a diagnostic warning **only once per unique erroneous input** for a variable. This prevents log spam while ensuring fallback behavior is consistent. In test scenarios, the provided helper function `resetEnvWarningCache` allows resetting this state to ensure accurate warning logging.
+- **Invalid or Non-Numeric Inputs:** If a non-numeric value (e.g., `NaN`, `abc`) or an empty value is provided, the function falls back to default values (`3` retries and `100ms` delay, respectively) and logs a diagnostic warning **only once per unique erroneous input** for a variable.
+- **Strict Mode:** When strict mode is enabled (via `--strict-env` or `STRICT_ENV=true`), any non-numeric value will cause an error to be thrown, enforcing the correctness of configuration values.
 
 Example:
 
 ```bash
-export LIVEDATA_RETRY_COUNT=NaN      # Will default to 3 retries with a diagnostic warning (logged only once for 'NaN')
-export LIVEDATA_INITIAL_DELAY=abc      # Will default to 100ms with a diagnostic warning (logged only once for 'abc')
+export LIVEDATA_RETRY_COUNT=NaN      # In non-strict mode, defaults to 3 with a warning
+export LIVEDATA_INITIAL_DELAY=abc      # In non-strict mode, defaults to 100ms with a warning
+
+export STRICT_ENV=true                # Enabling strict mode
+# Now the same settings would cause an error
 ```
 
 ### Custom API Endpoints
@@ -91,6 +106,16 @@ Or invoke the CLI with the flag:
 node src/lib/main.js --disable-live
 ```
 
+### Strict Environment Variable Parsing
+
+To enforce strict parsing of numeric environment variables, either set the environment variable or use the CLI flag:
+
+```bash
+export STRICT_ENV=true
+# or
+node src/lib/main.js --strict-env
+```
+
 ### CLI Help
 
 Display a list of available commands and usage instructions:
@@ -119,10 +144,7 @@ node src/lib/main.js --help
 - `--diagnostics`: Runs a diagnostic crawl of public endpoints.
 - `--refresh`: Clears the existing ontology, rebuilds it using live data, and persists the refreshed ontology.
 - `--merge-persist`: Merges static and live ontologies and saves the result.
-- `--disable-live`: Disables live data integration for this session, forcing use of the static fallback.
-
-**New Commands:**
-
+- `--strict-env`: Enables strict mode for environment variable parsing, causing non-numeric values to throw an error.
 - `--build-hybrid`: Combines live data with custom static data to produce a hybrid ontology.
 - `--diagnostic-summary`: Provides a concise summary of diagnostic information (timestamp and version).
 - `--custom-merge`: Merges provided ontologies and appends a current timestamp.
@@ -163,7 +185,8 @@ _Note:_ Ensure that your network environment allows access to these endpoints fo
 - Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag to use the deprecated static fallback. Without the flag, a warning is issued. Use `--build-live` for live data integration.
-- **Exponential Backoff with Jitter:** Improved environment variable parsing in the live data fetch function by standardizing the parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Non-numeric values, including an explicit "NaN", now trigger a diagnostic warning once per unique value, while defaults are applied silently when not set. A new reset function (`resetEnvWarningCache`) is provided for testing purposes.
+- **Exponential Backoff with Jitter:** Improved environment variable parsing in the live data fetch function by standardizing the parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Non-numeric values, including explicit "NaN", now trigger a diagnostic warning once per unique value, while defaults are applied silently when not set. A new reset function (`resetEnvWarningCache`) is provided for testing purposes.
+- **Strict Environment Variable Parsing:** Introduced strict parsing mode (via the CLI flag `--strict-env` or `STRICT_ENV=true`) to enforce numeric configuration values by throwing errors on invalid input.
 - **Custom Endpoints:** Added support for custom public API endpoints via the `CUSTOM_API_ENDPOINTS` environment variable. Only endpoints starting with "http://" or "https://" are accepted and merged with the defaults. Invalid endpoints are ignored with a diagnostic warning.
 - **Crawling Update:** Refactored crawlOntologies to return an object with separate arrays for successes and errors to simplify downstream processing.
 - Added robust HTTP endpoint integration testing for the web server.
@@ -171,7 +194,7 @@ _Note:_ Ensure that your network environment allows access to these endpoints fo
 - **Live Data Integration Disable:** New option to disable live data integration by setting the environment variable `DISABLE_LIVE_DATA` or using the CLI flag `--disable-live`. When enabled, owl-builder uses the static fallback instead of attempting live network requests.
 - **Configurable Diagnostic Logging:** Diagnostic messages can now be controlled via the `DIAGNOSTIC_LOG_LEVEL` environment variable. This feature allows users and automated systems to suppress or enable diagnostic logs based on the desired verbosity.
 - **Automated Tests:** Added comprehensive tests for environment variable parsing (including handling of "NaN") and configurable diagnostic logging to ensure correct functionality.
-- Updated documentation to reflect the handling of edge-case non-numeric inputs, the new reset functionality for diagnostic logging, and custom endpoint configuration.
+- Updated documentation to reflect the handling of edge-case non-numeric inputs, the new strict parsing functionality, and custom endpoint configuration.
 
 ## Contributing
 

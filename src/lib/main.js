@@ -24,10 +24,10 @@
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *   - Implemented exponential backoff in fetchDataWithRetry with configurable retries, delay and randomized jitter.
  *   - Non-numeric environment variables for LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT fallback to defaults with a diagnostic warning logged only once per variable per unique value.
- *   - Refactored crawlOntologies to return separate arrays for successful and failed crawl results.
  *   - Added configurable option to disable live data integration via the environment variable DISABLE_LIVE_DATA. When set (and not equal to "0"), live data requests are bypassed and the static fallback is used.
  *   - Introduced configurable diagnostic logging levels via the DIAGNOSTIC_LOG_LEVEL environment variable.
  *   - Allow custom configuration of public API endpoints via the CUSTOM_API_ENDPOINTS environment variable. When set with a comma-separated list, these endpoints that are valid (starting with "http://" or "https://") are merged with the default list.
+ *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -73,11 +73,22 @@ export function buildOntology() {
  * or if its trimmed value (case-insensitive) is exactly "nan", returns the default value.
  * If a non-numeric value is provided (including invalid strings), it logs a diagnostic warning (only once per unique input) and returns the default value.
  * Supported formats include standard numbers as well as scientific notation (e.g. '1e3').
+ * In strict mode (STRICT_ENV=true or CLI flag --strict-env), an error is thrown for non-numeric values.
  */
 function parseEnvNumber(varName, defaultVal) {
   const value = process.env[varName];
   const trimmed = value !== undefined ? value.trim() : "";
   const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
+  
+  // Strict mode check
+  if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
+    if (trimmed === "" || trimmed.toLowerCase() === "nan" || isNaN(Number(trimmed))) {
+      throw new Error(`Strict mode: Environment variable ${varName} has invalid non-numeric value '${value}'`);
+    } else {
+      return Number(trimmed);
+    }
+  }
+
   // Check if undefined, empty, or explicitly 'nan'
   if (trimmed === "" || trimmed.toLowerCase() === "nan") {
     if (envWarningCache.get(varName) !== value) { // use raw value for uniqueness
@@ -942,6 +953,11 @@ const commandActions = {
     const result = await backupAndRefreshOntology();
     console.log("Backup and Refreshed Ontology:", result);
     return result;
+  },
+  "--strict-env": async (_args) => {
+    // This flag is handled at the start of main
+    console.log("Strict environment variable parsing enabled.");
+    return "Strict mode enabled";
   }
 };
 
@@ -1019,6 +1035,9 @@ async function demo() {
 }
 
 export async function main(args = process.argv.slice(2)) {
+  if (args.includes("--strict-env")) {
+    process.env.STRICT_ENV = "true";
+  }
   if (args.length === 0) {
     await demo();
     return;
@@ -1034,7 +1053,7 @@ export async function main(args = process.argv.slice(2)) {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh` 
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh, --strict-env` 
   );
 }
 
