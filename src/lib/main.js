@@ -64,11 +64,13 @@ export function resetEnvWarningCache() {
 /**
  * Helper function to normalize environment variable values.
  * Trims the value and converts to lower case. If the value is undefined or not a string, returns an empty string.
+ * Additionally, replaces non-breaking spaces with regular spaces for robust handling.
  * @param {string | undefined | null} value 
  * @returns {string}
  */
 function normalizeEnvValue(value) {
-  return (typeof value === "string") ? value.trim().toLowerCase() : "";
+  if (typeof value !== "string") return "";
+  return value.replace(/\u00A0/g, ' ').trim().toLowerCase();
 }
 
 /**
@@ -108,7 +110,9 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   if (typeof value !== "string") {
     return configurableFallback !== undefined ? configurableFallback : defaultVal;
   }
-  const trimmed = value.trim();
+  // Replace non-breaking spaces and trim
+  const cleaned = value.replace(/\u00A0/g, ' ');
+  const trimmed = cleaned.trim();
   const normalized = trimmed.toLowerCase();
   const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
   
@@ -135,7 +139,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
     return Number(trimmed);
   }
   
-  // Non-strict mode handling: if input is empty, 'NaN', or cannot be converted to a number
+  // Non-strict mode handling: if input is empty, 'nan', or cannot be converted to a number
   if (!trimmed || normalized === "nan" || isNaN(Number(trimmed))) {
     // Check if global warnings are disabled
     if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
@@ -1068,7 +1072,8 @@ async function demo() {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh, --strict-env, --livedata-retry-default <number>, --livedata-delay-default <number>`
+    `Usage: node src/lib/main.js [options]
+Options: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh, --strict-env, --livedata-retry-default <number>, --livedata-delay-default <number>`
   );
 }
 
