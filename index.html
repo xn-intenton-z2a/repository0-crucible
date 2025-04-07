@@ -45,8 +45,8 @@
 <li class="md-github"><strong class="md-github">Invalid or Non-Numeric Inputs:</strong> If a non-numeric value (e.g., <code class="md-github">NaN</code>, <code class="md-github">abc</code>) or an empty value is provided, the function silently falls back to default values (<code class="md-github">3</code> retries and <code class="md-github">100ms</code> delay, respectively) and logs a diagnostic warning <strong class="md-github">only once per variable</strong>. This prevents log spam while ensuring fallback behavior is consistent.</li>
 </ul>
 <p class="md-github">Example:</p>
-<pre class="md-github"><code class="md-github language-bash">export LIVEDATA_RETRY_COUNT=NaN      # Will default to 3 retries with a diagnostic warning
-export LIVEDATA_INITIAL_DELAY=abc      # Will default to 100ms with a diagnostic warning
+<pre class="md-github"><code class="md-github language-bash">export LIVEDATA_RETRY_COUNT=NaN      # Will default to 3 retries with a diagnostic warning (logged only once)
+export LIVEDATA_INITIAL_DELAY=abc      # Will default to 100ms with a diagnostic warning (logged only once)
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="custom-api-endpoints" href="#custom-api-endpoints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Custom API Endpoints</h3>
 <p class="md-github">To provide custom API endpoints, set the <code class="md-github">CUSTOM_API_ENDPOINTS</code> environment variable to a comma-separated list of URLs. These custom endpoints will be merged with the default list. For example:</p>
@@ -176,7 +176,7 @@ npm install
 
   </section>
   <footer>
-    <p>Generated on 2025-04-07T08:28:36.005Z</p>
+    <p>Generated on 2025-04-07T08:41:56.459Z</p>
   </footer>
 </body>
 </html>
