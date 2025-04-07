@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { describe, test, expect, vi, afterEach } from "vitest";
+import { describe, test, expect, vi } from "vitest";
 import fs from "fs";
 import path from "path";
 import http from "http";
@@ -55,7 +55,7 @@ const {
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
 const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
 
-function simulateNetworkFailure(mod) {
+function simulateNetworkFailure() {
   return function (url, callback) {
     const error = new Error("Network error");
     const req = {
@@ -163,7 +163,6 @@ describe("Live Data Configurability", () => {
       };
       return req;
     };
-    // Default retries fallback should be 3, so total attempts = 4
     await expect(fetchDataWithRetry("http://testenv-nonnumeric")).rejects.toThrow(
       "All retry attempts for http://testenv-nonnumeric failed. Last error: Non-numeric test error"
     );
@@ -346,7 +345,7 @@ describe("Crawling Functionality", () => {
 
   test("fetchDataWithRetry rejects for invalid URL", async () => {
     const originalGet = http.get;
-    http.get = simulateNetworkFailure(http);
+    http.get = simulateNetworkFailure();
     await expect(fetchDataWithRetry("http://invalid.url", 2)).rejects.toBeDefined();
     http.get = originalGet;
   });
@@ -375,7 +374,7 @@ describe("Crawling Functionality", () => {
     await vi.advanceTimersByTimeAsync(240);
     const result = await promise;
     expect(result).toBeInstanceOf(Error);
-    expect(attempts).toBe(3); // initial attempt + 2 retries
+    expect(attempts).toBe(3);
     http.get = originalGet;
     vi.useRealTimers();
   });
@@ -655,5 +654,22 @@ describe("Additional New Features", () => {
     const result = await backupAndRefreshOntology();
     expect(result).toHaveProperty("backupResult");
     expect(result).toHaveProperty("refreshedOntology");
+  });
+});
+
+describe("Disable Live Data Integration", () => {
+  test("buildOntologyFromLiveData returns static ontology when DISABLE_LIVE_DATA is set", async () => {
+    process.env.DISABLE_LIVE_DATA = "1";
+    const liveOntology = await buildOntologyFromLiveData();
+    const staticOntology = buildOntology();
+    expect(liveOntology).toEqual(staticOntology);
+    delete process.env.DISABLE_LIVE_DATA;
+  });
+
+  test("buildOntologyFromLiveData performs live integration when DISABLE_LIVE_DATA is not set", async () => {
+    delete process.env.DISABLE_LIVE_DATA;
+    const liveOntology = await buildOntologyFromLiveData();
+    // In typical scenario, live data integration would try to fetch and may differ from static fallback.
+    expect(liveOntology.title).not.toBe("Public Data Ontology");
   });
 });
