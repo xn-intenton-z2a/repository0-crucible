@@ -119,15 +119,20 @@ export async function loadOntology() {
   }
 }
 
-export function queryOntology(searchTerm) {
-  const ontology = fs.existsSync(ontologyFilePath)
-    ? JSON.parse(fs.readFileSync(ontologyFilePath, "utf-8"))
-    : { success: false };
-  if (ontology.success === false) {
+// Refactored queryOntology to use asynchronous file system methods
+export async function queryOntology(searchTerm) {
+  try {
+    await fsp.access(ontologyFilePath);
+    const content = await fsp.readFile(ontologyFilePath, "utf-8");
+    const ontology = JSON.parse(content);
+    if (ontology.success === false) {
+      return { searchTerm, results: [] };
+    }
+    const results = ontology.concepts.filter((c) => c.includes(searchTerm));
+    return { searchTerm, results };
+  } catch (e) {
     return { searchTerm, results: [] };
   }
-  const results = ontology.concepts.filter((c) => c.includes(searchTerm));
-  return { searchTerm, results };
 }
 
 export function validateOntology(ontology) {
@@ -649,7 +654,7 @@ const commandActions = {
   },
   "--query": async (args) => {
     const searchTerm = args[1] || "Concept1";
-    const results = queryOntology(searchTerm);
+    const results = await queryOntology(searchTerm);
     console.log("Ontology query results:", results);
     return results;
   },
@@ -892,7 +897,7 @@ async function demo() {
   console.log("Demo - persisted ontology:", persistResult);
   const loadedOntology = await loadOntology();
   console.log("Demo - loaded ontology:", loadedOntology);
-  const queryResult = queryOntology("Concept");
+  const queryResult = await queryOntology("Concept");
   console.log("Demo - query result:", queryResult);
   const isValid = validateOntology(ontology);
   console.log("Demo - ontology valid:", isValid);
