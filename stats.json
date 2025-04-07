@@ -1,19 +1,31 @@
 {
-  "openIssues": 19,
+  "openIssues": 21,
   "issuesClosedLastHour": 8,
   "issuesClosedLastDay": 100,
   "openPRs": 1,
   "prDetails": [
     {
-      "title": "Refined environment variable parsing to consolidate NaN handling and ensure a single warning per unique normalized input. (fixes #560)",
-      "ageMinutes": 0
+      "title": "Enhanced consistent handling and diagnostic reporting for non-numeric NaN env var parsing with updated logs and tests. (fixes #562)",
+      "ageMinutes": 2
     }
   ],
-  "diffMinutes": 1,
-  "diffMinutesMain": 9,
-  "commitsLastHour": 6,
-  "commitsLastDay": 87,
+  "diffMinutes": 0,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 8,
+  "commitsLastDay": 90,
   "lastFiveCommitMessages": [
+    {
+      "time": "22:26",
+      "message": "Update from agentic-lib"
+    },
+    {
+      "time": "22:15",
+      "message": "Refined environment variable parsing to consolidate NaN handling..."
+    },
+    {
+      "time": "22:13",
+      "message": "Maintain ENDPOINT_HEALTH"
+    },
     {
       "time": "22:04",
       "message": "Refined environment variable parsing to consolidate NaN handling..."
@@ -21,31 +33,19 @@
     {
       "time": "22:02",
       "message": "Update from agentic-lib"
-    },
-    {
-      "time": "22:01",
-      "message": "Update from agentic-lib"
-    },
-    {
-      "time": "21:45",
-      "message": "Suppress duplicate NaN warnings by caching normalized invalid in..."
-    },
-    {
-      "time": "21:31",
-      "message": "Extended tests for NaN and whitespace variants in environment va..."
     }
   ],
   "branches": {
     "count": 1,
     "details": [
       {
-        "branch": "agentic-lib-issue-560",
-        "minutesSinceLastCommit": 1
+        "branch": "agentic-lib-issue-562",
+        "minutesSinceLastCommit": 3
       }
     ]
   },
-  "averagePRAge": 0,
+  "averagePRAge": 2,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-07T22:13:44.857Z"
+  "generatedAt": "2025-04-07T22:27:09.338Z"
 }
