@@ -32,7 +32,7 @@
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
  *   - Enhanced handling of 'NaN' values in environment variable parsing to ensure consistent fallback behavior and suppress duplicate warnings for equivalent inputs. The warning cache now logs a warning exactly once per unique composite key (variable name and normalized input).
  *   - Consolidated and standardized 'NaN' handling in environment variable parsing. A new configuration option (DISABLE_ENV_WARNINGS) allows disabling warnings in production.
- *   - Refactored parseEnvNumber to further normalize whitespace (including non-breaking spaces) and to consolidate warning messages for each unique invalid input.
+ *   - Standardized diagnostic message format for environment variable fallback warnings.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -103,6 +103,9 @@ export function buildOntology() {
  *
  * Supports integers, decimals, and scientific notation.
  * Allows overriding fallback values via CLI options (e.g. --livedata-retry-default and --livedata-delay-default).
+ *
+ * Note: The diagnostic warning messages have been standardized to indicate the variable name, received input (and its normalized form),
+ * and the fallback value (with its unit) being applied.
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const rawValue = process.env[varName];
@@ -148,7 +151,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
     if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
       const warnKey = `${varName}-${normalized}`;
       if (!envWarningCache.has(warnKey)) {
-        logDiagnostic(`Warning: Environment variable ${varName} received invalid non-numeric input ('${rawValue}'). Defaulting to ${fallback}${unit}.`, "warn");
+        logDiagnostic(`Warning: Environment variable ${varName} received invalid input '${rawValue}' (normalized: '${normalized}') - fallback value ${fallback}${unit} applied.`, "warn");
         envWarningCache.set(warnKey, true);
       }
     }
@@ -379,7 +382,7 @@ export function listAvailableEndpoints() {
       if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
         validCustomEndpoints.push(trimmed);
       } else {
-        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with \"http://\" or \"https://\"`, "warn");
+        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with "http://" or "https://"`, "warn");
       }
     });
     return Array.from(new Set([...defaultEndpoints, ...validCustomEndpoints]));
