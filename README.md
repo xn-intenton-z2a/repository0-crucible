@@ -7,7 +7,7 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 Key features include:
 
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a consolidated helper function that applies default values when not set, empty, or when invalid non-numeric values (e.g., `NaN`, empty strings, or whitespace-only) are provided. Notably, if an environment variable is not a string (e.g., null or undefined), it is silently handled without logging unnecessary warnings.
-  - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid non-numeric string is provided, a one-time warning is logged (per unique normalized input) indicating that the input is invalid, and the system falls back to a default or configurable value. The fallback logic has been streamlined and the warning message standardized to clearly show the fallback value (including its unit) and to avoid duplicate warnings. In cases where the environment variable is null or not a string, no warning is produced.
+  - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid non-numeric string is provided, a one-time warning is logged (per unique normalized input) indicating that the input is invalid, and the system falls back to a default or configurable value. The fallback logic has been streamlined and the warning message standardized to clearly show the fallback value (including its unit) and to avoid duplicate warnings. Additionally, unusual whitespace such as non-breaking spaces and non-string falsy values are correctly processed without generating superfluous warnings.
   - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), only valid numeric inputs are accepted. Any deviation, such as variants of `NaN` with extra whitespace or unusual case, will cause an immediate error with a clear message stating that only valid numbers (integers, decimals, or scientific notation) are accepted.
   - **CLI Overrides:** The CLI options `--livedata-retry-default <number>` and `--livedata-delay-default <number>` allow you to override the default fallback values for live data fetching at runtime without modifying your environment variables.
 
@@ -31,7 +31,7 @@ Key features include:
 
 ### Enhanced Handling of 'NaN' Values
 
-The environment variable parsing logic has been refined. When invalid non-numeric values (including variants of "NaN") are provided, a standardized one-time warning message is logged that clearly indicates the invalid input and the fallback value being used. In strict mode, any invalid input will immediately cause an error with guidance on the allowed formats (integer, decimal, or scientific notation).
+The environment variable parsing logic has been refined. When invalid non-numeric values (including variants of "NaN") are provided, a standardized one-time warning message is logged that clearly indicates the invalid input and the fallback value being used. In strict mode, any invalid input will immediately cause an error with guidance on the allowed formats (integer, decimal, or scientific notation). Additional edge cases, such as inputs with unusual whitespace (e.g., non-breaking spaces) or non-string falsy values, are now correctly handled.
 
 ### Environment Variable Handling for Live Data Fetching
 
@@ -193,7 +193,7 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 - **Strict Environment Variable Parsing:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on valid formats (integer, decimal, or scientific notation).
 - **CLI Overrides:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow runtime override of fallback values without changing environment variables.
 - **Custom Endpoints:** Supports custom API endpoints via `CUSTOM_API_ENDPOINTS`. Only valid endpoints (beginning with "http://" or "https://") are accepted.
-- **Unit Test Enhancements:** Expanded test coverage to include various edge cases for invalid non-numeric inputs to ensure clear messaging and one-time warning behavior.
+- **Unit Test Enhancements:** Expanded test coverage to include various edge cases for invalid non-numeric inputs, unusual whitespace, and non-string values to ensure clear messaging and one-time warning behavior.
 - **Automated Tests:** Comprehensive tests now cover fallback behavior, strict mode, and CLI override functionality.
 - **Fetch Spy Availability:** The internal function used in `buildEnhancedOntology` is now exported as part of a `fetcher` object, allowing tests to successfully spy on it.
 - **Contributing Improvements:** Updated guidelines to reflect changes in environment variable handling and diagnostic logging.
