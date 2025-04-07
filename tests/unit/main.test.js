@@ -48,7 +48,7 @@ const {
   enhancedDiagnosticSummary,
   customMergeWithTimestamp,
   backupAndRefreshOntology,
-  fetcher
+  fetcher,
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -63,7 +63,7 @@ function simulateNetworkFailure(mod) {
           handler(error);
         }
         return req;
-      }
+      },
     };
     process.nextTick(() => {
       req.on("error", () => {});
@@ -91,12 +91,13 @@ describe("Live Data Configurability", () => {
             }, 0);
           }
           return req;
-        }
+        },
       };
       return req;
     };
-    await expect(fetchDataWithRetry("http://testenv"))
-      .rejects.toThrow("All retry attempts for http://testenv failed. Last error: Test error");
+    await expect(fetchDataWithRetry("http://testenv")).rejects.toThrow(
+      "All retry attempts for http://testenv failed. Last error: Test error",
+    );
     expect(attemptCount).toBe(2);
     http.get = originalGet;
     process.env.LIVEDATA_RETRY_COUNT = originalEnvRetry;
@@ -120,20 +121,20 @@ describe("Live Data Configurability", () => {
             }, 0);
           }
           return req;
-        }
+        },
       };
       return req;
     };
     // Default retries fallback should be 3, so total attempts = 4
-    await expect(fetchDataWithRetry("http://testenv-nonnumeric"))
-      .rejects.toThrow("All retry attempts for http://testenv-nonnumeric failed. Last error: Non-numeric test error");
+    await expect(fetchDataWithRetry("http://testenv-nonnumeric")).rejects.toThrow(
+      "All retry attempts for http://testenv-nonnumeric failed. Last error: Non-numeric test error",
+    );
     expect(attemptCount).toBe(4);
     http.get = originalGet;
     process.env.LIVEDATA_RETRY_COUNT = originalEnvRetry;
     process.env.LIVEDATA_INITIAL_DELAY = originalEnvDelay;
   });
 });
-
 
 describe("Core Ontology Functions", () => {
   test("buildOntology returns public data ontology", () => {
@@ -184,9 +185,9 @@ describe("Core Ontology Functions", () => {
       classes: ["C1", "C2"],
       properties: [
         { name: "prop1", type: "string" },
-        { name: "prop2", type: "number" }
+        { name: "prop2", type: "number" },
       ],
-      metadata: { created: "today", info: "demo" }
+      metadata: { created: "today", info: "demo" },
     };
     const xml = exportOntologyToXML(ontology);
     expect(xml).toContain("<ontology>");
@@ -213,7 +214,7 @@ describe("Core Ontology Functions", () => {
       concepts: ["ConceptX"],
       classes: ["ClassX"],
       properties: [{ name: "propX", type: "boolean" }],
-      metadata: { version: "1.0", tag: "roundtrip" }
+      metadata: { version: "1.0", tag: "roundtrip" },
     };
     const xml = exportOntologyToXML(ontology);
     const imported = importOntologyFromXML(xml);
@@ -246,7 +247,7 @@ describe("Core Ontology Functions", () => {
 
   test("clearOntology returns error when file does not exist", async () => {
     const error = new Error();
-    error.code = 'ENOENT';
+    error.code = "ENOENT";
     const unlinkSpy = vi.spyOn(fs.promises, "unlink").mockRejectedValue(error);
     const result = await clearOntology();
     expect(result).toEqual({ success: false, error: "Ontology file does not exist" });
@@ -289,11 +290,11 @@ describe("Crawling Functionality", () => {
             }, 0);
           }
           return req;
-        }
+        },
       };
       return req;
     };
-    const promise = fetchDataWithRetry("http://example.com", 2).catch(e => e);
+    const promise = fetchDataWithRetry("http://example.com", 2).catch((e) => e);
     await vi.advanceTimersByTimeAsync(10);
     await vi.advanceTimersByTimeAsync(100);
     await vi.advanceTimersByTimeAsync(200);
@@ -348,7 +349,9 @@ describe("CLI and Main Function Tests", () => {
   test("main with --build without --allow-deprecated warns and returns undefined", async () => {
     const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
     const ontology = await main(["--build"]);
-    expect(warnSpy).toHaveBeenCalledWith("Error: --build command requires --allow-deprecated flag to use static fallback. Use --build-live for live data integration.");
+    expect(warnSpy).toHaveBeenCalledWith(
+      "Error: --build command requires --allow-deprecated flag to use static fallback. Use --build-live for live data integration.",
+    );
     expect(ontology).toBeUndefined();
     warnSpy.mockRestore();
   });

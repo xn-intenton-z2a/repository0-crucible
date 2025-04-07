@@ -30,8 +30,7 @@
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
  */
 
-import fs from "fs";
-import { promises as fsp } from "fs";
+import fs, { promises as fsp } from "fs";
 import path from "path";
 import https from "https";
 import http from "http";
@@ -45,12 +44,12 @@ const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 export function buildOntology() {
   if (process.env.NODE_ENV !== "test") {
     console.warn(
-      "Warning: buildOntology (static fallback) is deprecated. Use buildOntologyFromLiveData for live data integration in production."
+      "Warning: buildOntology (static fallback) is deprecated. Use buildOntologyFromLiveData for live data integration in production.",
     );
   }
   return {
     title: "Public Data Ontology",
-    concepts: ["Concept1", "Concept2", "Concept3"]
+    concepts: ["Concept1", "Concept2", "Concept3"],
   };
 }
 
@@ -66,7 +65,9 @@ export async function buildOntologyFromLiveData() {
         : ["Concept1", "Concept2", "Concept3"];
     return { title, concepts };
   } catch (error) {
-    logDiagnostic(`buildOntologyFromLiveData encountered error fetching live data from https://api.publicapis.org/entries: ${error.message}. Falling back to static ontology.`);
+    logDiagnostic(
+      `buildOntologyFromLiveData encountered error fetching live data from https://api.publicapis.org/entries: ${error.message}. Falling back to static ontology.`,
+    );
     return buildOntology();
   }
 }
@@ -90,7 +91,9 @@ export async function loadOntology() {
 }
 
 export function queryOntology(searchTerm) {
-  const ontology = fs.existsSync(ontologyFilePath) ? JSON.parse(fs.readFileSync(ontologyFilePath, "utf-8")) : { success: false };
+  const ontology = fs.existsSync(ontologyFilePath)
+    ? JSON.parse(fs.readFileSync(ontologyFilePath, "utf-8"))
+    : { success: false };
   if (ontology.success === false) {
     return { searchTerm, results: [] };
   }
@@ -151,13 +154,13 @@ export function importOntologyFromXML(xml) {
   };
 
   const ontology = {};
-  ontology.title = getTag('title') || "Imported Ontology";
+  ontology.title = getTag("title") || "Imported Ontology";
 
   // Parse concepts
   const conceptsBlock = xml.match(/<concepts>([\s\S]*?)<\/concepts>/);
   if (conceptsBlock) {
     const conceptMatches = conceptsBlock[1].matchAll(/<concept>([^<]+)<\/concept>/g);
-    ontology.concepts = Array.from(conceptMatches, m => m[1]);
+    ontology.concepts = Array.from(conceptMatches, (m) => m[1]);
   } else {
     ontology.concepts = [];
   }
@@ -166,14 +169,14 @@ export function importOntologyFromXML(xml) {
   const classesBlock = xml.match(/<classes>([\s\S]*?)<\/classes>/);
   if (classesBlock) {
     const classMatches = classesBlock[1].matchAll(/<class>([^<]+)<\/class>/g);
-    ontology.classes = Array.from(classMatches, m => m[1]);
+    ontology.classes = Array.from(classMatches, (m) => m[1]);
   }
 
   // Parse properties
   const propertiesBlock = xml.match(/<properties>([\s\S]*?)<\/properties>/);
   if (propertiesBlock) {
     const propertyMatches = propertiesBlock[1].matchAll(/<property>([\s\S]*?)<\/property>/g);
-    ontology.properties = Array.from(propertyMatches, m => {
+    ontology.properties = Array.from(propertyMatches, (m) => {
       const propXml = m[1];
       const nameMatch = propXml.match(/<name>([^<]+)<\/name>/);
       const typeMatch = propXml.match(/<type>([^<]+)<\/type>/);
@@ -191,7 +194,7 @@ export function importOntologyFromXML(xml) {
       ontology.metadata[metaMatch[1]] = metaMatch[2];
     }
   }
-  
+
   return ontology;
 }
 
@@ -217,7 +220,7 @@ export async function clearOntology() {
     await fsp.unlink(ontologyFilePath);
     return { success: true };
   } catch (e) {
-    if (e.code === 'ENOENT') {
+    if (e.code === "ENOENT") {
       return { success: false, error: "Ontology file does not exist" };
     } else {
       return { success: false, error: "Error clearing ontology file" };
@@ -253,30 +256,34 @@ export function listAvailableEndpoints() {
     "https://type.fit/api/quotes",
     "https://api/exchangerate-api.com/v4/latest/USD",
     "https://api/spacexdata.com/v4/rockets",
-    "https://api/quotable.io/random"
+    "https://api/quotable.io/random",
   ];
 }
 
 // Updated fetchDataWithRetry to implement exponential backoff delays with configurable retry attempts and initial delay.
 export async function fetchDataWithRetry(url, retries) {
   // Use provided retries parameter, or override with environment variable LIVEDATA_RETRY_COUNT, defaulting to 3
-  if (typeof retries === 'undefined') {
+  if (typeof retries === "undefined") {
     const envRetries = Number(process.env.LIVEDATA_RETRY_COUNT);
     if (isNaN(envRetries)) {
-      logDiagnostic(`Warning: Invalid LIVEDATA_RETRY_COUNT value "${process.env.LIVEDATA_RETRY_COUNT}" provided, defaulting to 3 retries.`);
+      logDiagnostic(
+        `Warning: Invalid LIVEDATA_RETRY_COUNT value "${process.env.LIVEDATA_RETRY_COUNT}" provided, defaulting to 3 retries.`,
+      );
     }
     retries = isNaN(envRetries) ? 3 : envRetries;
   }
   // Safely parse initial delay, default is 100ms if invalid or not provided
   const envDelay = Number(process.env.LIVEDATA_INITIAL_DELAY);
   if (isNaN(envDelay)) {
-    logDiagnostic(`Warning: Invalid LIVEDATA_INITIAL_DELAY value "${process.env.LIVEDATA_INITIAL_DELAY}" provided, defaulting to 100ms delay.`);
+    logDiagnostic(
+      `Warning: Invalid LIVEDATA_INITIAL_DELAY value "${process.env.LIVEDATA_INITIAL_DELAY}" provided, defaulting to 100ms delay.`,
+    );
   }
   const initialDelay = isNaN(envDelay) ? 100 : envDelay;
   const mod = url.startsWith("https") ? https : http;
   const options = { headers: { "User-Agent": "owl-builder CLI tool" } };
   function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+    return new Promise((resolve) => setTimeout(resolve, ms));
   }
   return new Promise((resolve, reject) => {
     async function attempt(n, attemptNumber) {
@@ -325,7 +332,7 @@ export function buildBasicOWLModel() {
     id: "basic",
     title: "Basic OWL Ontology",
     concepts: ["Class1", "Class2"],
-    properties: []
+    properties: [],
   };
 }
 
@@ -336,11 +343,11 @@ export function buildAdvancedOWLModel() {
     classes: ["Person", "Organization"],
     properties: [
       { name: "hasName", type: "string" },
-      { name: "hasAge", type: "integer" }
+      { name: "hasAge", type: "integer" },
     ],
     metadata: {
-      created: new Date().toISOString()
-    }
+      created: new Date().toISOString(),
+    },
   };
 }
 
@@ -384,7 +391,7 @@ export function buildIntermediateOWLModel() {
     id: "intermediate",
     title: "Intermediate OWL Ontology",
     concepts: ["IntermediateConcept1", "IntermediateConcept2"],
-    annotations: { version: "intermediate" }
+    annotations: { version: "intermediate" },
   };
 }
 
@@ -438,7 +445,7 @@ export function buildMinimalOWLModel() {
     id: "minimal",
     title: "Minimal OWL Ontology",
     concepts: [],
-    metadata: { version: "minimal" }
+    metadata: { version: "minimal" },
   };
 }
 
@@ -450,10 +457,10 @@ export function buildComplexOntologyModel() {
     properties: [
       { name: "hasA", type: "string" },
       { name: "hasB", type: "number" },
-      { name: "hasC", type: "boolean" }
+      { name: "hasC", type: "boolean" },
     ],
     concepts: ["ConceptA", "ConceptB", "ConceptC"],
-    metadata: { created: new Date().toISOString() }
+    metadata: { created: new Date().toISOString() },
   };
 }
 
@@ -463,7 +470,7 @@ export function buildScientificOntologyModel() {
     title: "Scientific OWL Ontology",
     disciplines: ["Biology", "Chemistry", "Physics"],
     concepts: ["Hypothesis", "Experiment", "Data Analysis"],
-    metadata: { source: "Scientific Publications", created: new Date().toISOString() }
+    metadata: { source: "Scientific Publications", created: new Date().toISOString() },
   };
 }
 
@@ -473,7 +480,7 @@ export function buildEducationalOntologyModel() {
     title: "Educational OWL Ontology",
     subjects: ["Mathematics", "History", "Literature"],
     concepts: ["Curriculum", "Lesson Plan", "Assessment"],
-    metadata: { notes: "Developed for educational institutions", created: new Date().toISOString() }
+    metadata: { notes: "Developed for educational institutions", created: new Date().toISOString() },
   };
 }
 
@@ -484,7 +491,7 @@ export function buildPhilosophicalOntologyModel() {
     title: "Philosophical OWL Ontology",
     themes: ["Existence", "Ethics", "Epistemology"],
     concepts: ["Socrates", "Plato", "Aristotle"],
-    metadata: { created: new Date().toISOString(), category: "philosophy" }
+    metadata: { created: new Date().toISOString(), category: "philosophy" },
   };
 }
 
@@ -494,7 +501,7 @@ export function buildEconomicOntologyModel() {
     title: "Economic OWL Ontology",
     sectors: ["Finance", "Manufacturing", "Services"],
     concepts: ["Supply", "Demand", "Market"],
-    metadata: { created: new Date().toISOString(), category: "economics" }
+    metadata: { created: new Date().toISOString(), category: "economics" },
   };
 }
 
@@ -545,7 +552,7 @@ export function enhancedDiagnosticSummary() {
   return {
     timestamp,
     message: "All diagnostic systems operational.",
-    version: getVersion()
+    version: getVersion(),
   };
 }
 
@@ -560,7 +567,7 @@ export async function backupAndRefreshOntology() {
   const refreshedOntology = await refreshOntology();
   return {
     backupResult,
-    refreshedOntology
+    refreshedOntology,
   };
 }
 
@@ -587,7 +594,9 @@ const commandActions = {
       console.log("Ontology built:", ontology);
       return ontology;
     } else {
-      console.warn("Error: --build command requires --allow-deprecated flag to use static fallback. Use --build-live for live data integration.");
+      console.warn(
+        "Error: --build command requires --allow-deprecated flag to use static fallback. Use --build-live for live data integration.",
+      );
       return;
     }
   },
@@ -835,7 +844,7 @@ const commandActions = {
     const result = await backupAndRefreshOntology();
     console.log("Backup and Refreshed Ontology:", result);
     return result;
-  }
+  },
 };
 
 async function demo() {
@@ -927,7 +936,7 @@ export async function main(args = process.argv.slice(2)) {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh`
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh`,
   );
 }
 
