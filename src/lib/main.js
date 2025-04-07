@@ -1083,3 +1083,6 @@ function processCLIFallbackOptions(args) {
     }
   }
 }
+
+// Exporting fetcher to allow spying and modular access
+export const fetcher = { fetchDataWithRetry };
