@@ -26,6 +26,7 @@
  *   - Non-numeric environment variables for LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT fallback to defaults with a diagnostic warning logged only once per variable.
  *   - Refactored crawlOntologies to return separate arrays for successful and failed crawl results.
  *   - Added configurable option to disable live data integration via the environment variable DISABLE_LIVE_DATA. When set (and not equal to "0"), live data requests are bypassed and the static fallback is used.
+ *   - Introduced configurable diagnostic logging levels via the DIAGNOSTIC_LOG_LEVEL environment variable.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -90,7 +91,7 @@ function parseEnvNumber(varName, defaultVal) {
 export async function buildOntologyFromLiveData() {
   // Check if live data integration is disabled via environment variable
   if (process.env.DISABLE_LIVE_DATA && process.env.DISABLE_LIVE_DATA !== "0") {
-    logDiagnostic("Live data integration disabled by configuration. Using static fallback.");
+    logDiagnostic("Live data integration disabled by configuration. Using static fallback.", "info");
     return buildOntology();
   }
   
@@ -110,7 +111,8 @@ export async function buildOntologyFromLiveData() {
     return { title, concepts };
   } catch (error) {
     logDiagnostic(
-      `buildOntologyFromLiveData encountered error fetching live data from https://api.publicapis.org/entries: ${error.message}. Falling back to static ontology.`
+      `buildOntologyFromLiveData encountered error fetching live data from https://api.publicapis.org/entries: ${error.message}. Falling back to static ontology.`,
+      "error"
     );
     return buildOntology();
   }
@@ -323,19 +325,19 @@ export async function fetchDataWithRetry(url, retries) {
   }
   return new Promise((resolve, reject) => {
     async function attempt(n, attemptNumber) {
-      logDiagnostic(`Attempt ${attemptNumber} for ${url} started.`);
+      logDiagnostic(`Attempt ${attemptNumber} for ${url} started.`, "debug");
       const req = mod.get(url, options, (res) => {
         let data = "";
         res.on("data", (chunk) => (data += chunk));
         res.on("end", () => resolve(data));
       });
       req.on("error", async (err) => {
-        logDiagnostic(`Attempt ${attemptNumber} for ${url} failed: ${err.message}`);
+        logDiagnostic(`Attempt ${attemptNumber} for ${url} failed: ${err.message}`, "warn");
         if (n > 0) {
           const baseDelay = initialDelay * Math.pow(2, attemptNumber - 1);
           const jitter = baseDelay * 0.2 * Math.random();
           const actualDelay = Math.round(baseDelay + jitter);
-          logDiagnostic(`Retrying in ${actualDelay}ms (base: ${baseDelay}ms, jitter: ${Math.round(jitter)}ms)`);
+          logDiagnostic(`Retrying in ${actualDelay}ms (base: ${baseDelay}ms, jitter: ${Math.round(jitter)}ms)`, "info");
           await sleep(actualDelay);
           attempt(n - 1, attemptNumber + 1);
         } else {
@@ -468,8 +470,13 @@ export function getCurrentTimestamp() {
   return new Date().toISOString();
 }
 
-export function logDiagnostic(message) {
-  console.log(`[${getCurrentTimestamp()}] DIAGNOSTIC: ${message}`);
+export function logDiagnostic(message, level = "debug") {
+  const levels = { off: -1, error: 0, warn: 1, info: 2, debug: 3 };
+  const configured = process.env.DIAGNOSTIC_LOG_LEVEL ? process.env.DIAGNOSTIC_LOG_LEVEL.toLowerCase() : "debug";
+  // If the message's level is less than or equal to the configured threshold, log the message
+  if (levels[level] <= (levels[configured] !== undefined ? levels[configured] : 3)) {
+    console.log(`[${getCurrentTimestamp()}] DIAGNOSTIC: ${message}`);
+  }
 }
 
 // New functions for extended customization and merging functionality
@@ -489,7 +496,7 @@ export function mergeOntologies(...ontologies) {
 
 export async function buildOntologyFromLiveDataWithLog() {
   const ontology = await buildOntologyFromLiveData();
-  logDiagnostic("Live data ontology built successfully");
+  logDiagnostic("Live data ontology built successfully", "info");
   console.log("Live Data Ontology:", ontology);
   return ontology;
 }
@@ -565,14 +572,14 @@ export async function refreshOntology() {
   try {
     const clearResult = await clearOntology();
     if (clearResult.success === false) {
-      logDiagnostic("No existing ontology file to clear or already cleared.");
+      logDiagnostic("No existing ontology file to clear or already cleared.", "info");
     }
     const liveOntology = await buildOntologyFromLiveData();
     const persistResult = await persistOntology(liveOntology);
-    logDiagnostic("Ontology refreshed and persisted.");
+    logDiagnostic("Ontology refreshed and persisted.", "info");
     return { liveOntology, persistResult };
   } catch (err) {
-    logDiagnostic("Error during refresh: " + err.message);
+    logDiagnostic("Error during refresh: " + err.message, "error");
     throw err;
   }
 }
@@ -583,10 +590,10 @@ export async function mergeAndPersistOntology() {
     const liveOntology = await buildOntologyFromLiveData();
     const merged = mergeOntologies(staticOntology, liveOntology);
     const persistRes = await persistOntology(merged);
-    logDiagnostic("Merged ontology persisted.");
+    logDiagnostic("Merged ontology persisted.", "info");
     return { merged, persistRes };
   } catch (err) {
-    logDiagnostic("Error during merge and persist: " + err.message);
+    logDiagnostic("Error during merge and persist: " + err.message, "error");
     throw err;
   }
 }
@@ -797,7 +804,7 @@ const commandActions = {
   },
   "--build-live": async (_args) => {
     const model = await buildOntologyFromLiveData();
-    logDiagnostic("Live data ontology built successfully");
+    logDiagnostic("Live data ontology built successfully", "info");
     console.log("Live Data Ontology:", model);
     return model;
   },
@@ -809,7 +816,7 @@ const commandActions = {
       console.log("Invalid JSON input for custom data, using default");
     }
     const customOntology = buildOntologyFromCustomData(data);
-    logDiagnostic("Built custom data ontology");
+    logDiagnostic("Built custom data ontology", "info");
     console.log("Custom Data Ontology:", customOntology);
     return customOntology;
   },
@@ -817,7 +824,7 @@ const commandActions = {
     const ont1 = buildOntology();
     const ont2 = await buildOntologyFromLiveData();
     const merged = mergeOntologies(ont1, ont2);
-    logDiagnostic("Merged ontologies from static and live data");
+    logDiagnostic("Merged ontologies from static and live data", "info");
     console.log("Merged Ontology:", merged);
     return merged;
   },
@@ -869,7 +876,7 @@ const commandActions = {
   // New CLI switch to disable live data integration
   "--disable-live": async (args) => {
     process.env.DISABLE_LIVE_DATA = "1";
-    logDiagnostic("Live data integration has been disabled via CLI flag.");
+    logDiagnostic("Live data integration has been disabled via CLI flag.", "info");
     console.log("Live data integration disabled.");
     return "Live data integration disabled";
   },
@@ -910,7 +917,7 @@ const commandActions = {
 };
 
 async function demo() {
-  logDiagnostic("Demo started");
+  logDiagnostic("Demo started", "info");
   console.log("Running demo of ontology functions:");
   // Refocused demo to use live data integration
   const ontology = await buildOntologyFromLiveData();
@@ -979,7 +986,7 @@ async function demo() {
   console.log("Demo - philosophical OWL model:", philosophicalModel);
   const economicModel = buildEconomicOntologyModel();
   console.log("Demo - economic OWL model:", economicModel);
-  logDiagnostic("Demo completed successfully");
+  logDiagnostic("Demo completed successfully", "info");
 }
 
 export async function main(args = process.argv.slice(2)) {

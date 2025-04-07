@@ -6,13 +6,13 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 
 Key features include:
 
-- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy with a randomized jitter to further improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a standardized helper function that applies default values when not set. If non-numeric values are provided, the system falls back to defaults and logs a diagnostic warning only once per variable (with appropriate units).
+- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy with a randomized jitter to further improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a standardized helper function that applies default values when not set. If non-numeric values are provided, the system falls back to defaults and logs a diagnostic warning **only once per variable** (with appropriate units).
 - **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)
 - **Query & Validation:** Rapidly search for ontology concepts and validate your data. Note: The function `queryOntology` has been refactored to operate asynchronously for improved performance.
 - **OWL Export/Import:** Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).
 - **Concurrent Data Crawling:** Gather real-time data concurrently from a range of public endpoints. The crawl functionality has been enhanced to return results with separate arrays for successful responses and errors, simplifying downstream processing.
 - **Diverse Ontology Models:** Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).
-- **Enhanced Diagnostics:** View timestamped logs with detailed context for each operation, facilitating easier tracing and debugging.
+- **Enhanced Diagnostics:** View timestamped logs with detailed context for each operation. You can control the verbosity of diagnostic messages by setting the environment variable `DIAGNOSTIC_LOG_LEVEL` (possible values: `off`, `error`, `warn`, `info`, `debug`). For example, setting `DIAGNOSTIC_LOG_LEVEL=off` will suppress diagnostic logs.
 - **Web Server Integration:** Launch a simple web server for quick status checks. **New:** The server now supports integration testing by exposing a function to start the server and gracefully shut it down after performing real HTTP requests.
 - **Custom Merging & Refreshing:** New functions provide extended merging and diagnostic capabilities.
 
@@ -28,7 +28,23 @@ Example:
 ```bash
 export LIVEDATA_RETRY_COUNT=NaN      # Will default to 3 retries with a diagnostic warning
 export LIVEDATA_INITIAL_DELAY=abc      # Will default to 100ms with a diagnostic warning
-``` 
+```
+
+### Configurable Diagnostic Logging
+
+Diagnostic messages can be controlled via the `DIAGNOSTIC_LOG_LEVEL` environment variable. The supported levels are:
+
+- `off`: No diagnostic messages are logged.
+- `error`: Only error level messages are logged.
+- `warn`: Warning and error messages are logged.
+- `info`: Info, warning, and error messages are logged.
+- `debug`: All messages (debug, info, warn, error) are logged. (Default)
+
+For example, to suppress all diagnostic logs, use:
+
+```bash
+export DIAGNOSTIC_LOG_LEVEL=off
+```
 
 ## Installation
 
@@ -155,7 +171,8 @@ _Note:_ Ensure that your network environment allows access to these endpoints fo
 - Added robust HTTP endpoint integration testing for the web server.
 - **Asynchronous Query:** The `queryOntology` function has been refactored to use asynchronous file system methods for improved non-blocking performance.
 - **Live Data Integration Disable:** New option to disable live data integration by setting the environment variable `DISABLE_LIVE_DATA` or using the CLI flag `--disable-live`. When enabled, owl-builder uses the static fallback instead of attempting live network requests.
-- **Automated Tests:** Added comprehensive tests for environment variable parsing to ensure correct fallback values and single warning logging for invalid inputs.
+- **Configurable Diagnostic Logging:** Diagnostic messages can now be controlled via the `DIAGNOSTIC_LOG_LEVEL` environment variable. This feature allows users and automated systems to suppress or enable diagnostic logs based on the desired verbosity.
+- **Automated Tests:** Added comprehensive tests for environment variable parsing and configurable diagnostic logging to ensure correct functionality.
 
 ## Contributing
 
