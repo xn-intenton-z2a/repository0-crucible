@@ -325,6 +325,35 @@ describe("Environment Variable Parsing Tests", () => {
     expect(warnings).toBe(1);
     logSpy.mockRestore();
   });
+
+  // New tests for additional whitespace variants normalized to the same value
+  test("Unique warning is logged once for multiple raw inputs that normalize to the same value", () => {
+    resetEnvWarningCache();
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    process.env.TEST_MULTIPLE = "   NaN\t\u00A0";
+    expect(_parseEnvNumber("TEST_MULTIPLE", 50)).toBe(50);
+    process.env.TEST_MULTIPLE = "NaN";
+    expect(_parseEnvNumber("TEST_MULTIPLE", 50)).toBe(50);
+    process.env.TEST_MULTIPLE = " NaN";
+    expect(_parseEnvNumber("TEST_MULTIPLE", 50)).toBe(50);
+    const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_MULTIPLE") && call[0].includes("received invalid input"));
+    expect(warnings.length).toBe(1);
+    logSpy.mockRestore();
+  });
+
+  test("Multiple calls with differently formatted invalid inputs but same normalized result logs warning once", () => {
+    resetEnvWarningCache();
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    process.env.TEST_VARIANT = "NaN";
+    expect(_parseEnvNumber("TEST_VARIANT", 30)).toBe(30);
+    process.env.TEST_VARIANT = "  NaN";
+    expect(_parseEnvNumber("TEST_VARIANT", 30)).toBe(30);
+    process.env.TEST_VARIANT = "NaN   ";
+    expect(_parseEnvNumber("TEST_VARIANT", 30)).toBe(30);
+    const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_VARIANT") && call[0].includes("received invalid input"));
+    expect(warnings.length).toBe(1);
+    logSpy.mockRestore();
+  });
 });
 
 // ... Additional tests remain unchanged as they cover core functionality and CLI behavior

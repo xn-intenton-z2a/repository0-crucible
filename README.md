@@ -9,7 +9,7 @@ Key features include:
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a consolidated helper function that applies default values when not set, empty, or when invalid non-numeric values (e.g., `NaN`, empty strings, or whitespace-only) are provided. Notably, if an environment variable is not a string (e.g., null or undefined), it is silently handled without logging unnecessary warnings.
   - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid input is provided, a standardized one-time warning is logged (per unique composite key combining variable name and normalized input) indicating that the received input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. The logic for NaN and its variants has been harmonized to ensure that warnings are logged only once per unique invalid input. The logging now clearly indicates "Non-strict mode" behavior when fallback values are used.
   - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on providing a numeric value in integer, decimal, or scientific notation.
-  - **CLI Overrides with Precedence:** The new CLI options `--livedata-retry-default` and `--livedata-delay-default` allow you to override fallback values at runtime. CLI override values now take precedence over any configurable fallback and the default value, ensuring consistent behavior even when environment inputs are non-numeric.
+  - **CLI Overrides with Precedence:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow you to override fallback values at runtime. CLI override values now take precedence over any configurable fallback and the default value, ensuring consistent behavior even when environment inputs are non-numeric.
   - **Global Warning Suppression:** You can disable all environment variable warning logs by setting the environment variable `DISABLE_ENV_WARNINGS` (set to any value other than "0").
 
 - **Custom Endpoints:** Users can override or extend the default list of public API endpoints by setting the environment variable `CUSTOM_API_ENDPOINTS` to a comma-separated list of URLs. **Only endpoints starting with "http://" or "https://" are accepted.** Invalid endpoints will be ignored with a diagnostic warning.
@@ -32,11 +32,15 @@ Key features include:
 
 ### Enhanced Unit Test Coverage for Environment Variable Parsing
 
-Recent updates include expanded unit tests to ensure robust handling of non-numeric environment variable inputs. Tests now verify that various whitespace patterns (including non-breaking spaces, tabs, and extra spaces) are uniformly processed, duplicate warnings are avoided for equivalent invalid inputs, and CLI override functionality works as expected, with CLI overrides taking precedence.
+Recent updates include expanded unit tests to ensure robust handling of non-numeric environment variable inputs. Additional tests have been added to cover diverse whitespace variants (including spaces, tabs, and non-breaking spaces) ensuring that different raw inputs that normalize to the same value trigger only one diagnostic warning. CLI override functionality is also verified to take precedence in all such scenarios.
 
 ### Harmonized NaN Fallback Behavior
 
-This release has harmonized the handling of 'NaN' and similar non-numeric inputs. All variations now trigger a single diagnostic warning per unique normalized invalid input, ensuring consistency and clarity in fallback behavior.
+This release has harmonized the handling of 'NaN' and similar non-numeric inputs. All variations now trigger a single diagnostic warning per unique normalized invalid input, ensuring clarity in fallback behavior and strict CLI override precedence.
+
+### Automated Tests
+
+Comprehensive tests now cover fallback behavior, strict mode, CLI override functionality, and suppression of warnings. All tests run automatically in the CI environment using Vitest.
 
 ## Installation
 
@@ -155,12 +159,8 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 - **Strict Environment Variable Parsing:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on allowed formats (integer, decimal, or scientific notation).
 - **CLI Overrides:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow runtime override of fallback values without changing environment variables.
 - **Custom Endpoints:** Supports custom API endpoints via `CUSTOM_API_ENDPOINTS`. Only valid endpoints (beginning with "http://" or "https://") are accepted.
-- **Standardized NaN Handling:** Environment variable parsing now uniformly handles non-numeric values (including "NaN" with various whitespace variants), logging a warning exactly once per unique invalid input, unless warnings are disabled with `DISABLE_ENV_WARNINGS`.
-- **Harmonized NaN Fallback Behavior:** All variations of non-numeric inputs are now processed uniformly with a single diagnostic warning per unique normalized invalid input, ensuring clarity in fallback behavior and strict CLI override precedence.
-- **Unit Test Enhancements:** Expanded test coverage now verifies uniform processing of whitespace variants and proper application of CLI override functionality.
-- **Automated Tests:** Comprehensive tests now cover fallback behavior, strict mode, CLI override functionality, and suppression of warnings.
-- **Fetch Spy Availability:** The internal function used in `buildEnhancedOntology` is now exported as part of a `fetcher` object, allowing tests to successfully spy on it.
-- **Contributing Improvements:** Updated guidelines to reflect changes in environment variable handling and diagnostic logging.
+- **Standardized NaN Handling:** Environment variable parsing now uniformly handles non-numeric values (including "NaN" with various whitespace variants), logging a warning exactly once per unique normalized invalid input, unless warnings are disabled with `DISABLE_ENV_WARNINGS`.
+- **Enhanced Test Coverage:** Expanded tests now verify that different raw whitespace variants that normalize to the same value trigger only a single warning, ensuring consistent fallback behavior.
 
 ## Contributing
 
