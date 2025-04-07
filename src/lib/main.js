@@ -25,6 +25,7 @@
  *   - Implemented exponential backoff in fetchDataWithRetry for improved network resilience with configurable retries and delay parameters.
  *     Parses the LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT environment variables using a helper function to improve clarity and modularity.
  *     Logs a diagnostic warning only if a non-numeric value is explicitly provided; otherwise defaults are used silently.
+ *   - Refactored crawlOntologies to return separate arrays for successful and failed crawl results.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -276,7 +277,6 @@ export function listAvailableEndpoints() {
 
 // Updated fetchDataWithRetry to implement exponential backoff delays with configurable retry attempts and initial delay.
 export async function fetchDataWithRetry(url, retries) {
-  // Use provided retries parameter, or override with environment variable LIVEDATA_RETRY_COUNT
   if (typeof retries === "undefined") {
     retries = parseEnvNumber(
       "LIVEDATA_RETRY_COUNT",
@@ -284,7 +284,6 @@ export async function fetchDataWithRetry(url, retries) {
       "Warning: LIVEDATA_RETRY_COUNT is non-numeric. Using default value of 3 retries."
     );
   }
-  // Get initial delay using the helper function
   let initialDelay = parseEnvNumber(
     "LIVEDATA_INITIAL_DELAY",
     100,
@@ -321,7 +320,6 @@ export async function fetchDataWithRetry(url, retries) {
 
 export async function crawlOntologies() {
   let endpoints = listAvailableEndpoints();
-  // In test mode, limit the endpoints to speed up execution
   if (process.env.NODE_ENV === "test") {
     endpoints = endpoints.slice(0, 3);
   }
@@ -329,12 +327,15 @@ export async function crawlOntologies() {
     try {
       const data = await fetchDataWithRetry(endpoint);
       const owlContent = exportOntologyToXML(await buildOntologyFromLiveData());
-      return { endpoint, data, owlContent };
+      return { success: true, endpoint, data, owlContent };
     } catch (err) {
-      return { endpoint, error: err.message };
+      return { success: false, endpoint, error: err.message };
     }
   });
-  return await Promise.all(fetchPromises);
+  const results = await Promise.all(fetchPromises);
+  const successes = results.filter(r => r.success).map(({ endpoint, data, owlContent }) => ({ endpoint, data, owlContent }));
+  const errors = results.filter(r => !r.success).map(({ endpoint, error }) => ({ endpoint, error }));
+  return { successes, errors };
 }
 
 export function buildBasicOWLModel() {

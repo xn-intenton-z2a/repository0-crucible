@@ -10,7 +10,7 @@ Key features include:
 - **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)
 - **Query & Validation:** Rapidly search for ontology concepts and validate your data.
 - **OWL Export/Import:** Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).
-- **Concurrent Data Crawling:** Gather real-time data concurrently from a range of public endpoints.
+- **Concurrent Data Crawling:** Gather real-time data concurrently from a range of public endpoints. The crawl functionality has been enhanced to return results with separate arrays for successful crawls and errors, simplifying downstream processing.
 - **Diverse Ontology Models:** Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).
 - **Enhanced Diagnostics:** View timestamped logs with detailed context for each operation, facilitating easier tracing and debugging.
 - **Web Server Integration:** Launch a simple web server for quick status checks.
@@ -56,7 +56,7 @@ node src/lib/main.js --help
 - `--backup`: Creates a backup of the ontology file.
 - `--update "New Title"`: Updates the ontology title using live data.
 - `--clear`: Deletes the local ontology file.
-- `--crawl`: Concurrently crawls multiple public endpoints to gather data.
+- `--crawl`: Concurrently crawls multiple public endpoints to gather data. The output is structured as an object with separate arrays for successful responses and errors.
 - `--fetch-retry`: Fetches data using retry logic with detailed logging per attempt and exponential backoff delays.
 - `--merge-ontologies`: Merges static and live ontology models.
 - `--build-live-log`: Builds a live ontology with additional diagnostic logging.
@@ -118,6 +118,7 @@ Note: Ensure that your network environment allows access to these endpoints for 
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag to use the deprecated static fallback. Without the flag, a warning is issued. Use `--build-live` for live data integration.
 - **Exponential Backoff:** Improved environment variable parsing in the live data fetch function by extracting the logic into a helper function. This ensures that diagnostic warnings are logged only when a non-numeric value is explicitly provided; otherwise default values are applied silently.
+- **Crawling Update:** Refactored crawlOntologies to return an object with separate arrays for successes and errors to simplify downstream processing.
 - Removed duplicate ESLint key from package.json to avoid build warnings.
 - Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.
 

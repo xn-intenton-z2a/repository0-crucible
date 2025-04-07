@@ -256,16 +256,20 @@ describe("Core Ontology Functions", () => {
 });
 
 describe("Crawling Functionality", () => {
-  test("crawlOntologies returns array of results with real data", async () => {
+  test("crawlOntologies returns separated success and error results", async () => {
     const results = await crawlOntologies();
-    expect(Array.isArray(results)).toBe(true);
-    results.forEach((item) => {
+    expect(results).toHaveProperty("successes");
+    expect(results).toHaveProperty("errors");
+    results.successes.forEach(item => {
       expect(item).toHaveProperty("endpoint");
-      if (!item.error) {
-        expect(typeof item.data).toBe("string");
-        expect(item.data.length).toBeGreaterThan(0);
-        expect(item.owlContent).toContain("<title>");
-      }
+      expect(item).toHaveProperty("data");
+      expect(typeof item.data).toBe("string");
+      expect(item.data.length).toBeGreaterThan(0);
+      expect(item.owlContent).toContain("<title>");
+    });
+    results.errors.forEach(item => {
+      expect(item).toHaveProperty("endpoint");
+      expect(item).toHaveProperty("error");
     });
   }, 30000);
 
@@ -358,14 +362,15 @@ describe("CLI and Main Function Tests", () => {
 
   test("main with --crawl returns crawl results", async () => {
     const result = await main(["--crawl"]);
-    expect(Array.isArray(result)).toBe(true);
+    expect(result).toHaveProperty("successes");
+    expect(result).toHaveProperty("errors");
   }, 10000);
 
   test("main with --diagnostics returns remote crawl results", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     const results = await main(["--diagnostics"]);
-    expect(Array.isArray(results)).toBe(true);
-    results.forEach((item) => {
+    expect(results).toHaveProperty("successes");
+    results.successes.forEach((item) => {
       expect(item).toHaveProperty("endpoint");
     });
     spy.mockRestore();
