@@ -22,7 +22,7 @@
  *   - Enhanced XML export/import to support extended ontology models (concepts, classes, properties, metadata).
  *   - Refactored file system operations to use asynchronous APIs.
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
- *   - Implemented exponential backoff in fetchDataWithRetry for improved network resilience.
+ *   - Implemented exponential backoff in fetchDataWithRetry for improved network resilience with configurable retries and delay parameters.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -255,8 +255,12 @@ export function listAvailableEndpoints() {
   ];
 }
 
-// Updated fetchDataWithRetry to implement exponential backoff delays
-export async function fetchDataWithRetry(url, retries = 3) {
+// Updated fetchDataWithRetry to implement exponential backoff delays with configurable retry attempts and initial delay.
+export async function fetchDataWithRetry(url, retries) {
+  // Use provided retries parameter, or override with environment variable LIVEDATA_RETRY_COUNT, defaulting to 3
+  retries = (typeof retries !== 'undefined') ? retries : (process.env.LIVEDATA_RETRY_COUNT ? parseInt(process.env.LIVEDATA_RETRY_COUNT, 10) : 3);
+  // Initial delay in milliseconds can be configured via LIVEDATA_INITIAL_DELAY, default is 100ms
+  const initialDelay = process.env.LIVEDATA_INITIAL_DELAY ? parseInt(process.env.LIVEDATA_INITIAL_DELAY, 10) : 100;
   const mod = url.startsWith("https") ? https : http;
   const options = { headers: { "User-Agent": "owl-builder CLI tool" } };
   function sleep(ms) {
@@ -273,7 +277,7 @@ export async function fetchDataWithRetry(url, retries = 3) {
       req.on("error", async (err) => {
         logDiagnostic(`Attempt ${attemptNumber} for ${url} failed: ${err.message}`);
         if (n > 0) {
-          const delay = 100 * Math.pow(2, attemptNumber - 1);
+          const delay = initialDelay * Math.pow(2, attemptNumber - 1);
           logDiagnostic(`Retrying in ${delay}ms`);
           await sleep(delay);
           attempt(n - 1, attemptNumber + 1);

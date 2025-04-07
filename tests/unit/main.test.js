@@ -72,6 +72,38 @@ function simulateNetworkFailure(mod) {
   };
 }
 
+// New test for configurable environment variables in fetchDataWithRetry
+describe("Live Data Configurability", () => {
+  test("fetchDataWithRetry respects environment configuration for retries and initial delay", async () => {
+    const originalEnvRetry = process.env.LIVEDATA_RETRY_COUNT;
+    const originalEnvDelay = process.env.LIVEDATA_INITIAL_DELAY;
+    process.env.LIVEDATA_RETRY_COUNT = "1"; // 1 retry => total attempts = 2
+    process.env.LIVEDATA_INITIAL_DELAY = "50";
+    let attemptCount = 0;
+    const originalGet = http.get;
+    http.get = (url, options, callback) => {
+      attemptCount++;
+      const req = {
+        on: (event, handler) => {
+          if (event === "error") {
+            setTimeout(() => {
+              handler(new Error("Test error"));
+            }, 0);
+          }
+          return req;
+        }
+      };
+      return req;
+    };
+    await expect(fetchDataWithRetry("http://testenv"))
+      .rejects.toThrow("All retry attempts for http://testenv failed. Last error: Test error");
+    expect(attemptCount).toBe(2);
+    http.get = originalGet;
+    process.env.LIVEDATA_RETRY_COUNT = originalEnvRetry;
+    process.env.LIVEDATA_INITIAL_DELAY = originalEnvDelay;
+  });
+});
+
 
 describe("Core Ontology Functions", () => {
   test("buildOntology returns public data ontology", () => {
@@ -232,7 +264,6 @@ describe("Crawling Functionality", () => {
       return req;
     };
     const promise = fetchDataWithRetry("http://example.com", 2).catch(e => e);
-    // Advance timers: first call immediate error, then wait for 100ms, then 200ms
     await vi.advanceTimersByTimeAsync(10);
     await vi.advanceTimersByTimeAsync(100);
     await vi.advanceTimersByTimeAsync(200);
