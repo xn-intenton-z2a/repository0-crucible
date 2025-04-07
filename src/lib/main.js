@@ -41,7 +41,7 @@ import http from "http";
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
-// Cache for environment variable warning flags using a Map that stores the last seen value.
+// Cache for environment variable warning flags using a Map that stores the last seen raw value.
 const envWarningCache = new Map();
 
 /**
@@ -77,21 +77,20 @@ export function buildOntology() {
 function parseEnvNumber(varName, defaultVal) {
   const value = process.env[varName];
   const trimmed = value !== undefined ? value.trim() : "";
+  const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
   // Check if undefined, empty, or explicitly 'nan'
   if (trimmed === "" || trimmed.toLowerCase() === "nan") {
-    if (envWarningCache.get(varName) !== trimmed) {
-      const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
-      logDiagnostic(`Warning: ${varName} is non-numeric (received '${trimmed}'). Using default value of ${defaultVal}${unit}.`, "warn");
-      envWarningCache.set(varName, trimmed);
+    if (envWarningCache.get(varName) !== value) { // use raw value for uniqueness
+      logDiagnostic(`Warning: ${varName} is non-numeric (received '${value}'). Using default value of ${defaultVal}${unit}.`, "warn");
+      envWarningCache.set(varName, value);
     }
     return defaultVal;
   }
   const num = Number(trimmed);
   if (isNaN(num)) {
-    if (envWarningCache.get(varName) !== trimmed) {
-      const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
+    if (envWarningCache.get(varName) !== value) {
       logDiagnostic(`Warning: ${varName} is non-numeric. Using default value of ${defaultVal}${unit}.`, "warn");
-      envWarningCache.set(varName, trimmed);
+      envWarningCache.set(varName, value);
     }
     return defaultVal;
   }
