@@ -26,6 +26,7 @@
  *     Parses the LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT environment variables using a helper function to improve clarity and modularity.
  *     Logs a diagnostic warning only if a non-numeric value is explicitly provided; otherwise defaults are used silently.
  *   - Refactored crawlOntologies to return separate arrays for successful and failed crawl results.
+ *   - Added randomized jitter to exponential backoff delays in live data fetching to mitigate thundering herd issues.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -275,7 +276,8 @@ export function listAvailableEndpoints() {
   ];
 }
 
-// Updated fetchDataWithRetry to implement exponential backoff delays with configurable retry attempts and initial delay.
+// Updated fetchDataWithRetry to implement exponential backoff delays with configurable retry attempts and initial delay,
+// now enhanced with a randomized jitter to avoid thundering herd issues.
 export async function fetchDataWithRetry(url, retries) {
   if (typeof retries === "undefined") {
     retries = parseEnvNumber(
@@ -305,9 +307,11 @@ export async function fetchDataWithRetry(url, retries) {
       req.on("error", async (err) => {
         logDiagnostic(`Attempt ${attemptNumber} for ${url} failed: ${err.message}`);
         if (n > 0) {
-          const delay = initialDelay * Math.pow(2, attemptNumber - 1);
-          logDiagnostic(`Retrying in ${delay}ms`);
-          await sleep(delay);
+          const baseDelay = initialDelay * Math.pow(2, attemptNumber - 1);
+          const jitter = baseDelay * 0.2 * Math.random();
+          const actualDelay = Math.round(baseDelay + jitter);
+          logDiagnostic(`Retrying in ${actualDelay}ms (base: ${baseDelay}ms, jitter: ${Math.round(jitter)}ms)`);
+          await sleep(actualDelay);
           attempt(n - 1, attemptNumber + 1);
         } else {
           reject(new Error(`All retry attempts for ${url} failed. Last error: ${err.message}`));

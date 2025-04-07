@@ -134,6 +134,34 @@ describe("Live Data Configurability", () => {
     process.env.LIVEDATA_RETRY_COUNT = originalEnvRetry;
     process.env.LIVEDATA_INITIAL_DELAY = originalEnvDelay;
   });
+
+  test("fetchDataWithRetry includes jitter in delay", async () => {
+    const originalRandom = Math.random;
+    Math.random = () => 0.5; // fixed value for jitter
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    let attemptCount = 0;
+    const originalGet = http.get;
+    http.get = (url, options, callback) => {
+      attemptCount++;
+      const req = {
+        on: (event, handler) => {
+          if (event === "error") {
+            setTimeout(() => {
+              handler(new Error("Jitter test error"));
+            }, 0);
+          }
+          return req;
+        }
+      };
+      return req;
+    };
+    await expect(fetchDataWithRetry("http://jitter.test", 1)).rejects.toThrow();
+    const retryLog = logSpy.mock.calls.find(call => call[0].includes("Retrying in"));
+    expect(retryLog[0]).toMatch(/Retrying in \d+ms \(base: \d+ms, jitter: \d+ms\)/);
+    http.get = originalGet;
+    Math.random = originalRandom;
+    logSpy.mockRestore();
+  });
 });
 
 describe("Core Ontology Functions", () => {
@@ -300,8 +328,8 @@ describe("Crawling Functionality", () => {
     };
     const promise = fetchDataWithRetry("http://example.com", 2).catch((e) => e);
     await vi.advanceTimersByTimeAsync(10);
-    await vi.advanceTimersByTimeAsync(100);
-    await vi.advanceTimersByTimeAsync(200);
+    await vi.advanceTimersByTimeAsync(120);
+    await vi.advanceTimersByTimeAsync(240);
     const result = await promise;
     expect(result).toBeInstanceOf(Error);
     expect(attempts).toBe(3); // initial attempt + 2 retries
