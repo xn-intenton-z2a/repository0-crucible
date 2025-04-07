@@ -33,6 +33,7 @@
  *   - Enhanced handling of 'NaN' values in environment variable parsing to ensure consistent fallback behavior and suppress duplicate warnings for equivalent inputs. The warning cache now logs a warning exactly once per unique composite key (variable name and normalized input).
  *   - Consolidated and standardized 'NaN' handling in environment variable parsing. A new configuration option (DISABLE_ENV_WARNINGS) allows disabling warnings in production.
  *   - Standardized diagnostic message format for environment variable fallback warnings.
+ *   - Improved normalization of whitespace in environment variable parsing to ensure that all variants of non-numeric inputs (e.g., 'NaN', ' nAn ', '\u00A0NaN\u00A0', 'NaN\t') are treated uniformly.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -64,13 +65,13 @@ export function resetEnvWarningCache() {
 /**
  * Helper function to normalize environment variable values.
  * Trims the value and converts to lower case. If the value is undefined or not a string, returns an empty string.
- * Additionally, replaces non-breaking spaces with regular spaces for robust handling.
+ * Additionally, replaces all whitespace with a single space and then trims.
  * @param {string | undefined | null} value 
  * @returns {string}
  */
 function normalizeEnvValue(value) {
   if (typeof value !== "string") return "";
-  return value.replace(/\u00A0/g, ' ').trim().toLowerCase();
+  return value.replace(/\s+/g, ' ').trim().toLowerCase();
 }
 
 /**
@@ -92,7 +93,7 @@ export function buildOntology() {
  * Standardized helper function to parse numeric environment variables.
  *
  * Behavior:
- * - In non-strict mode: If the provided variable is undefined, empty, or contains only whitespace, or if after trimming
+ * - In non-strict mode: If the provided variable is undefined, empty, or contains only whitespace, or if after normalization
  *   it equals (case-insensitive) 'nan', a one-time warning is logged (per unique composite key) and the function returns the fallback value.
  *   Duplicate warnings for the same input are suppressed via a cache.
  *   Additionally, warnings can be globally disabled by setting DISABLE_ENV_WARNINGS (and not equal to "0").
@@ -112,17 +113,16 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   if (typeof rawValue !== "string") {
     return configurableFallback !== undefined ? configurableFallback : defaultVal;
   }
-  // Replace non-breaking spaces and trim
-  const replaced = rawValue.replace(/\u00A0/g, ' ');
-  const trimmed = replaced.trim();
-  const normalized = trimmed.toLowerCase();
+  const normalized = normalizeEnvValue(rawValue);
+
+  // Determine unit for logging
   let unit = "";
   if (varName === "LIVEDATA_RETRY_COUNT") {
     unit = " retries";
   } else if (varName === "LIVEDATA_INITIAL_DELAY") {
     unit = "ms delay";
   }
-  
+
   // Determine fallback: priority is CLI provided override, then configurableFallback, then defaultVal
   let fallback = configurableFallback !== undefined ? configurableFallback : defaultVal;
   if (varName === "LIVEDATA_RETRY_COUNT" && process.env.LIVEDATA_RETRY_DEFAULT) {
@@ -140,14 +140,14 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   // Strict mode: when STRICT_ENV is true, input must strictly match numeric format.
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
     const numericRegex = /^-?\d+(\.\d+)?([eE][-+]?\d+)?$/;
-    if (!numericRegex.test(trimmed)) {
+    if (!numericRegex.test(normalized)) {
       throw new Error(`Strict mode: Environment variable ${varName} must be a valid numeric value (allowed formats: integer, decimal, or scientific notation). Received '${rawValue}'.`);
     }
-    return Number(trimmed);
+    return Number(normalized);
   }
 
   // Non-strict mode handling: if input is empty, 'nan', or cannot be converted to a number
-  if (!trimmed || normalized === "nan" || isNaN(Number(trimmed))) {
+  if (!normalized || normalized === "nan" || isNaN(Number(normalized))) {
     if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
       const warnKey = `${varName}-${normalized}`;
       if (!envWarningCache.has(warnKey)) {
@@ -157,7 +157,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
     }
     return fallback;
   }
-  return Number(trimmed);
+  return Number(normalized);
 }
 
 // Builds an ontology using live data from a public API endpoint
@@ -1077,8 +1077,7 @@ async function demo() {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]
-Options: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh, --strict-env, --livedata-retry-default <number>, --livedata-delay-default <number>`
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh, --strict-env, --livedata-retry-default <number>, --livedata-delay-default <number>`
   );
 }
 
