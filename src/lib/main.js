@@ -23,8 +23,8 @@
  *   - Refactored file system operations to use asynchronous APIs.
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *   - Implemented exponential backoff in fetchDataWithRetry for improved network resilience with configurable retries and delay parameters.
- *     Now safely parses the LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT environment variables and falls back to default values if invalid.
- *     Additionally, warns via diagnostic logs when a non-numeric value is explicitly provided.
+ *     Parses the LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT environment variables using a helper function to improve clarity and modularity.
+ *     Logs a diagnostic warning only if a non-numeric value is explicitly provided; otherwise defaults are used silently.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -51,6 +51,20 @@ export function buildOntology() {
     title: "Public Data Ontology",
     concepts: ["Concept1", "Concept2", "Concept3"]
   };
+}
+
+// Helper function to parse numeric environment variables
+function parseEnvNumber(varName, defaultVal, diagnosticMessage) {
+  const value = process.env[varName];
+  if (value === undefined || value.trim() === "") {
+    return defaultVal;
+  }
+  const num = Number(value);
+  if (isNaN(num)) {
+    logDiagnostic(diagnosticMessage);
+    return defaultVal;
+  }
+  return num;
 }
 
 // Builds an ontology using live data from a public API endpoint
@@ -256,39 +270,26 @@ export function listAvailableEndpoints() {
     "https://type.fit/api/quotes",
     "https://api/exchangerate-api.com/v4/latest/USD",
     "https://api/spacexdata.com/v4/rockets",
-    "https://api/quotable.io/random",
+    "https://api/quotable.io/random"
   ];
 }
 
 // Updated fetchDataWithRetry to implement exponential backoff delays with configurable retry attempts and initial delay.
 export async function fetchDataWithRetry(url, retries) {
-  // Use provided retries parameter, or override with environment variable LIVEDATA_RETRY_COUNT, defaulting to 3
+  // Use provided retries parameter, or override with environment variable LIVEDATA_RETRY_COUNT
   if (typeof retries === "undefined") {
-    if (process.env.LIVEDATA_RETRY_COUNT !== undefined && process.env.LIVEDATA_RETRY_COUNT.trim() !== "") {
-      const envRetries = Number(process.env.LIVEDATA_RETRY_COUNT);
-      if (isNaN(envRetries)) {
-        logDiagnostic(`Warning: LIVEDATA_RETRY_COUNT is non-numeric. Using default value of 3 retries.`);
-        retries = 3;
-      } else {
-        retries = envRetries;
-      }
-    } else {
-      retries = 3;
-    }
+    retries = parseEnvNumber(
+      "LIVEDATA_RETRY_COUNT",
+      3,
+      "Warning: LIVEDATA_RETRY_COUNT is non-numeric. Using default value of 3 retries."
+    );
   }
-  // Safely parse initial delay, default is 100ms if invalid or not provided
-  let initialDelay;
-  if (process.env.LIVEDATA_INITIAL_DELAY !== undefined && process.env.LIVEDATA_INITIAL_DELAY.trim() !== "") {
-    const envDelay = Number(process.env.LIVEDATA_INITIAL_DELAY);
-    if (isNaN(envDelay)) {
-      logDiagnostic(`Warning: LIVEDATA_INITIAL_DELAY is non-numeric. Using default value of 100ms delay.`);
-      initialDelay = 100;
-    } else {
-      initialDelay = envDelay;
-    }
-  } else {
-    initialDelay = 100;
-  }
+  // Get initial delay using the helper function
+  let initialDelay = parseEnvNumber(
+    "LIVEDATA_INITIAL_DELAY",
+    100,
+    "Warning: LIVEDATA_INITIAL_DELAY is non-numeric. Using default value of 100ms delay."
+  );
   const mod = url.startsWith("https") ? https : http;
   const options = { headers: { "User-Agent": "owl-builder CLI tool" } };
   function sleep(ms) {
