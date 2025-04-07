@@ -173,8 +173,8 @@ describe("Live Data Configurability", () => {
       "All retry attempts for http://testenv-nonnumeric failed. Last error: Non-numeric test error"
     );
     expect(attemptCount).toBe(4);
-    const retryWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_RETRY_COUNT") && call[0].includes("non-numeric")).length;
-    const delayWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_INITIAL_DELAY") && call[0].includes("non-numeric")).length;
+    const retryWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_RETRY_COUNT") && call[0].includes("invalid non-numeric")).length;
+    const delayWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_INITIAL_DELAY") && call[0].includes("invalid non-numeric")).length;
     expect(retryWarnings + delayWarnings).toBeGreaterThanOrEqual(2);
     http.get = originalGet;
     process.env.LIVEDATA_RETRY_COUNT = originalEnvRetry;
@@ -239,11 +239,11 @@ describe("Environment Variable Parsing Tests", () => {
     process.env.TEST_NON_NUM = "NaN";
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
-    const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM") && call[0].includes("non-numeric")).length;
+    const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM") && call[0].includes("invalid non-numeric")).length;
     expect(warningCalls).toBe(1);
     process.env.TEST_NON_NUM = "NaN ";
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
-    const updatedWarningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM") && call[0].includes("non-numeric")).length;
+    const updatedWarningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM") && call[0].includes("invalid non-numeric")).length;
     expect(updatedWarningCalls).toBe(1);
     logSpy.mockRestore();
   });
@@ -280,12 +280,10 @@ describe("Environment Variable Parsing Tests", () => {
     expect(_parseEnvNumber("LIVEDATA_INITIAL_DELAY", 100)).toBe(250);
   });
 
-  // Additional tests for enhanced NaN handling and edge cases
   test("Non-strict mode handles mixed-case ' nAn ' with extra spaces", () => {
     process.env.TEST_MIXED = " nAn ";
     resetEnvWarningCache();
     expect(_parseEnvNumber("TEST_MIXED", 20)).toBe(20);
-    // Subsequent call with same normalized value should not log another warning
     expect(_parseEnvNumber("TEST_MIXED", 20)).toBe(20);
   });
 
@@ -295,18 +293,28 @@ describe("Environment Variable Parsing Tests", () => {
   });
 
   test("Handles environment variable with non-breaking spaces", () => {
-    // \u00A0 is non-breaking space
     process.env.TEST_NBSP = "\u00A0NaN\u00A0";
     expect(_parseEnvNumber("TEST_NBSP", 55)).toBe(55);
   });
 
   test("Handles non-string falsy values without logging warnings", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    // Setting a boolean false which is not a string
     process.env.TEST_BOOL = false;
     expect(_parseEnvNumber("TEST_BOOL", 99)).toBe(99);
-    // No warning should be logged because value is not a string
     expect(logSpy).not.toHaveBeenCalled();
+    logSpy.mockRestore();
+  });
+
+  test("DISABLE_ENV_WARNINGS suppresses warning logs", () => {
+    process.env.DISABLE_ENV_WARNINGS = "1";
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    process.env.TEST_WARN = "NaN";
+    expect(_parseEnvNumber("TEST_WARN", 10)).toBe(10);
+    // Subsequent calls should not log any warning because disabled
+    expect(_parseEnvNumber("TEST_WARN", 10)).toBe(10);
+    const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_WARN") && call[0].includes("invalid non-numeric"));
+    expect(warnings.length).toBe(0);
+    delete process.env.DISABLE_ENV_WARNINGS;
     logSpy.mockRestore();
   });
 });
