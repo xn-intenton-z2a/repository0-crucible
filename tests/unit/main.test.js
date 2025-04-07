@@ -245,12 +245,20 @@ describe("CLI and Main Function Tests", () => {
     spy.mockRestore();
   });
 
-  test("main with --build calls buildOntology and returns ontology", async () => {
+  test("main with --build with --allow-deprecated calls buildOntology and returns ontology", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const ontology = await main(["--build"]);
+    const ontology = await main(["--build", "--allow-deprecated"]);
     expect(spy).toHaveBeenCalledWith("Ontology built:", ontology);
     expect(ontology).toHaveProperty("title", "Public Data Ontology");
     spy.mockRestore();
+  });
+
+  test("main with --build without --allow-deprecated warns and returns undefined", async () => {
+    const warnSpy = vi.spyOn(console, "warn").mockImplementation(() => {});
+    const ontology = await main(["--build"]);
+    expect(warnSpy).toHaveBeenCalledWith("Error: --build command requires --allow-deprecated flag to use static fallback. Use --build-live for live data integration.");
+    expect(ontology).toBeUndefined();
+    warnSpy.mockRestore();
   });
 
   test("main with --crawl returns crawl results", async () => {
