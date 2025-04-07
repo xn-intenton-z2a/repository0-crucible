@@ -7,6 +7,7 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 Key features include:
 
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy with a randomized jitter to further improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a standardized helper function that applies default values when not set. If non-numeric values are provided, including the explicit string `NaN`, the system falls back to defaults and logs a diagnostic warning **only once per variable** (with appropriate units).
+- **Custom Endpoints:** Users can override or extend the default list of public API endpoints by setting the environment variable `CUSTOM_API_ENDPOINTS` to a comma-separated list of endpoints. These endpoints are merged with the default list, providing increased flexibility for diverse deployment scenarios.
 - **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)
 - **Query & Validation:** Rapidly search for ontology concepts and validate your data. Note: The function `queryOntology` has been refactored to operate asynchronously for improved performance.
 - **OWL Export/Import:** Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).
@@ -28,6 +29,14 @@ Example:
 ```bash
 export LIVEDATA_RETRY_COUNT=NaN      # Will default to 3 retries with a diagnostic warning
 export LIVEDATA_INITIAL_DELAY=abc      # Will default to 100ms with a diagnostic warning
+```
+
+### Custom API Endpoints
+
+To provide custom API endpoints, set the `CUSTOM_API_ENDPOINTS` environment variable to a comma-separated list of URLs. These custom endpoints will be merged with the default list. For example:
+
+```bash
+export CUSTOM_API_ENDPOINTS="https://example.com/api, https://another.example.com"
 ```
 
 ### Configurable Diagnostic Logging
@@ -167,13 +176,14 @@ _Note:_ Ensure that your network environment allows access to these endpoints fo
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag to use the deprecated static fallback. Without the flag, a warning is issued. Use `--build-live` for live data integration.
 - **Exponential Backoff with Jitter:** Improved environment variable parsing in the live data fetch function by standardizing the parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Non-numeric values, including an explicit "NaN", now trigger a diagnostic warning once per variable, while defaults are applied silently when not set.
+- **Custom Endpoints:** Added support for custom public API endpoints via the `CUSTOM_API_ENDPOINTS` environment variable. Custom endpoints are merged with the defaults.
 - **Crawling Update:** Refactored crawlOntologies to return an object with separate arrays for successes and errors to simplify downstream processing.
 - Added robust HTTP endpoint integration testing for the web server.
 - **Asynchronous Query:** The `queryOntology` function has been refactored to use asynchronous file system methods for improved non-blocking performance.
 - **Live Data Integration Disable:** New option to disable live data integration by setting the environment variable `DISABLE_LIVE_DATA` or using the CLI flag `--disable-live`. When enabled, owl-builder uses the static fallback instead of attempting live network requests.
 - **Configurable Diagnostic Logging:** Diagnostic messages can now be controlled via the `DIAGNOSTIC_LOG_LEVEL` environment variable. This feature allows users and automated systems to suppress or enable diagnostic logs based on the desired verbosity.
 - **Automated Tests:** Added comprehensive tests for environment variable parsing (including handling of "NaN") and configurable diagnostic logging to ensure correct functionality.
-- Updated documentation to reflect the handling of edge-case non-numeric inputs.
+- Updated documentation to reflect the handling of edge-case non-numeric inputs and custom endpoint configuration.
 
 ## Contributing
 
