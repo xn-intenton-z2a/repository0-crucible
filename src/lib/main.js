@@ -60,13 +60,24 @@ export function buildOntology() {
 
 /**
  * Standardized helper function to parse numeric environment variables.
- * If the variable is undefined, empty, or consists only of whitespace, returns the default value.
+ * If the variable is undefined, empty, or consists only of whitespace,
+ * or if its trimmed value (case-insensitive) is exactly "nan", returns the default value.
  * If a non-numeric value is provided (including invalid strings), it logs a diagnostic warning (only once per variable) and returns the default value.
  * Supported formats include standard numbers as well as scientific notation (e.g. '1e3').
  */
 function parseEnvNumber(varName, defaultVal) {
   const value = process.env[varName];
-  if (value === undefined || value.trim() === "") {
+  if (value === undefined || value.trim() === "" || value.trim().toLowerCase() === "nan") {
+    if (value !== undefined && value.trim().toLowerCase() === "nan" && !envWarningLogged[varName]) {
+      let unit = "";
+      if (varName === "LIVEDATA_RETRY_COUNT") {
+        unit = " retries";
+      } else if (varName === "LIVEDATA_INITIAL_DELAY") {
+        unit = "ms delay";
+      }
+      logDiagnostic(`Warning: ${varName} is non-numeric (received 'NaN'). Using default value of ${defaultVal}${unit}.`, "warn");
+      envWarningLogged[varName] = true;
+    }
     return defaultVal;
   }
   const num = Number(value);
@@ -79,7 +90,7 @@ function parseEnvNumber(varName, defaultVal) {
     }
     // Log warning only once per environment variable
     if (!envWarningLogged[varName]) {
-      logDiagnostic(`Warning: ${varName} is non-numeric. Using default value of ${defaultVal}${unit}.`);
+      logDiagnostic(`Warning: ${varName} is non-numeric. Using default value of ${defaultVal}${unit}.`, "warn");
       envWarningLogged[varName] = true;
     }
     return defaultVal;
