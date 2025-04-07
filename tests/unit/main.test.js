@@ -411,6 +411,29 @@ describe("Crawling Functionality", () => {
   });
 });
 
+describe("Custom Endpoint Configuration", () => {
+  const originalCustom = process.env.CUSTOM_API_ENDPOINTS;
+  afterEach(() => {
+    process.env.CUSTOM_API_ENDPOINTS = originalCustom;
+  });
+
+  test("listAvailableEndpoints returns default endpoints when CUSTOM_API_ENDPOINTS is not set", () => {
+    delete process.env.CUSTOM_API_ENDPOINTS;
+    const endpoints = listAvailableEndpoints();
+    expect(endpoints).toContain("https://api.publicapis.org/entries");
+    expect(endpoints.length).toBeGreaterThan(0);
+  });
+
+  test("listAvailableEndpoints merges custom endpoints with defaults", () => {
+    process.env.CUSTOM_API_ENDPOINTS = "https://example.com/api, https://another.example.com";
+    const endpoints = listAvailableEndpoints();
+    expect(endpoints).toContain("https://example.com/api");
+    expect(endpoints).toContain("https://another.example.com");
+    // Ensure default endpoint still exists
+    expect(endpoints).toContain("https://api.publicapis.org/entries");
+  });
+});
+
 describe("CLI and Main Function Tests", () => {
   test("main without args runs demo and logs demo output", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -644,8 +667,6 @@ describe("Configurable Diagnostic Logging", () => {
     spy.mockRestore();
   });
 });
-
-// Extended Custom Functions Tests
 
 describe("Extended Custom Functions", () => {
   test("buildOntologyFromCustomData returns ontology with customization flag", () => {

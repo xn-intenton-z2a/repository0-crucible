@@ -27,6 +27,7 @@
  *   - Refactored crawlOntologies to return separate arrays for successful and failed crawl results.
  *   - Added configurable option to disable live data integration via the environment variable DISABLE_LIVE_DATA. When set (and not equal to "0"), live data requests are bypassed and the static fallback is used.
  *   - Introduced configurable diagnostic logging levels via the DIAGNOSTIC_LOG_LEVEL environment variable.
+ *   - Allow custom configuration of public API endpoints via the CUSTOM_API_ENDPOINTS environment variable. When set with a comma-separated list, these endpoints are merged with the default list.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -290,8 +291,9 @@ export async function clearOntology() {
   }
 }
 
+// Updated listAvailableEndpoints to support custom endpoints configuration via CUSTOM_API_ENDPOINTS env variable
 export function listAvailableEndpoints() {
-  return [
+  const defaultEndpoints = [
     "https://api.publicapis.org/entries",
     "https://dog.ceo/api/breeds/image/random",
     "https://jsonplaceholder.typicode.com/posts",
@@ -320,6 +322,14 @@ export function listAvailableEndpoints() {
     "https://api/spacexdata.com/v4/rockets",
     "https://api/quotable.io/random"
   ];
+  
+  if (process.env.CUSTOM_API_ENDPOINTS && process.env.CUSTOM_API_ENDPOINTS.trim() !== "") {
+    const customEndpoints = process.env.CUSTOM_API_ENDPOINTS.split(',').map(ep => ep.trim()).filter(ep => ep !== "");
+    // Merge unique endpoints
+    return Array.from(new Set([...defaultEndpoints, ...customEndpoints]));
+  } else {
+    return defaultEndpoints;
+  }
 }
 
 // Updated fetchDataWithRetry to implement exponential backoff delays with configurable retry attempts and initial delay,
