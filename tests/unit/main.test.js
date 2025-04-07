@@ -111,7 +111,8 @@ describe("Robust HTTP Endpoint Testing for the Integrated Web Server", () => {
   });
 });
 
-// New test for configurable environment variables in fetchDataWithRetry with non-numeric values
+// New tests for configurable environment variables in fetchDataWithRetry with non-numeric values
+
 describe("Live Data Configurability", () => {
   beforeEach(() => {
     resetEnvWarningCache();
@@ -291,6 +292,22 @@ describe("Environment Variable Parsing Tests", () => {
   test("Non-strict mode handles null environment variable by returning fallback silently", () => {
     process.env.TEST_NULL = null;
     expect(_parseEnvNumber("TEST_NULL", 30)).toBe(30);
+  });
+
+  test("Handles environment variable with non-breaking spaces", () => {
+    // \u00A0 is non-breaking space
+    process.env.TEST_NBSP = "\u00A0NaN\u00A0";
+    expect(_parseEnvNumber("TEST_NBSP", 55)).toBe(55);
+  });
+
+  test("Handles non-string falsy values without logging warnings", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    // Setting a boolean false which is not a string
+    process.env.TEST_BOOL = false;
+    expect(_parseEnvNumber("TEST_BOOL", 99)).toBe(99);
+    // No warning should be logged because value is not a string
+    expect(logSpy).not.toHaveBeenCalled();
+    logSpy.mockRestore();
   });
 });
 
