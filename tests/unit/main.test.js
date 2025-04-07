@@ -432,6 +432,14 @@ describe("Custom Endpoint Configuration", () => {
     // Ensure default endpoint still exists
     expect(endpoints).toContain("https://api.publicapis.org/entries");
   });
+
+  test("listAvailableEndpoints filters out invalid custom endpoints", () => {
+    process.env.CUSTOM_API_ENDPOINTS = "ftp://invalid.com, http://valid.com, invalidURL";
+    const endpoints = listAvailableEndpoints();
+    expect(endpoints).toContain("http://valid.com");
+    expect(endpoints).not.toContain("ftp://invalid.com");
+    expect(endpoints).not.toContain("invalidURL");
+  });
 });
 
 describe("CLI and Main Function Tests", () => {
