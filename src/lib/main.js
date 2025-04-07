@@ -136,7 +136,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
     const numericRegex = /^-?\d+(\.\d+)?([eE][-+]?\d+)?$/;
     if (!numericRegex.test(normalized)) {
-      throw new Error(`Strict mode: Environment variable ${varName} received non-numeric input: '${rawValue}' (normalized: '${normalized}'). Allowed formats: integer, decimal, or scientific notation.`);
+      throw new Error(`Strict mode: Environment variable ${varName} received non-numeric input: '${rawValue}' (normalized: '${normalized}'). Valid formats: integer (e.g., 42), decimal (e.g., 3.14), or scientific notation (e.g., 1e3).`);
     }
     return Number(normalized);
   }
