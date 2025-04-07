@@ -8,7 +8,7 @@ Key features include:
 
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy with a randomized jitter to further improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a standardized helper function that silently applies default values when not set, and logs a diagnostic warning (with appropriate units) only once per variable when a non-numeric value is explicitly provided.
 - **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)
-- **Query & Validation:** Rapidly search for ontology concepts and validate your data.
+- **Query & Validation:** Rapidly search for ontology concepts and validate your data. Note: The function `queryOntology` has been refactored to operate asynchronously for improved performance.
 - **OWL Export/Import:** Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).
 - **Concurrent Data Crawling:** Gather real-time data concurrently from a range of public endpoints. The crawl functionality has been enhanced to return results with separate arrays for successful responses and errors, simplifying downstream processing.
 - **Diverse Ontology Models:** Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).
@@ -50,7 +50,7 @@ node src/lib/main.js --help
 - `--build-live`: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt, including the exponential backoff delay with randomized jitter.
 - `--persist`: Saves the current ontology to a JSON file.
 - `--load`: Loads the saved ontology.
-- `--query "term"`: Searches for matching ontology concepts.
+- `--query "term"`: Searches for matching ontology concepts. (This function is now asynchronous; use `await` if using directly in code.)
 - `--export`: Exports the ontology as extended OWL XML.
 - `--import`: Imports an ontology from extended OWL XML.
 - `--backup`: Creates a backup of the ontology file.
@@ -124,6 +124,7 @@ _Note:_ Ensure that your network environment allows access to these endpoints fo
 - **Exponential Backoff with Jitter:** Improved environment variable parsing in the live data fetch function by standardizing the parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Non-numeric values now trigger a diagnostic warning once per variable, while defaults are applied silently when not set.
 - **Crawling Update:** Refactored crawlOntologies to return an object with separate arrays for successes and errors to simplify downstream processing.
 - Added robust HTTP endpoint integration testing for the web server.
+- **Asynchronous Query:** The `queryOntology` function has been refactored to use asynchronous file system methods for improved non-blocking performance.
 
 ## Contributing
 

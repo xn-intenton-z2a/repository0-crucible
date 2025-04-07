@@ -73,7 +73,7 @@ function simulateNetworkFailure(mod) {
   };
 }
 
-// New test for robust HTTP endpoint integration on the web server
+// New test for robust HTTP endpoint integration on the integrated web server
 describe("Robust HTTP Endpoint Testing for the Integrated Web Server", () => {
   let server;
   const port = process.env.PORT || 3000;
@@ -239,14 +239,14 @@ describe("Core Ontology Functions", () => {
     readSpy.mockRestore();
   });
 
-  test("queryOntology returns matching concepts", () => {
+  test("queryOntology returns matching concepts", async () => {
     const ontology = { title: "Public Data Ontology", concepts: ["Concept1", "Concept2", "ExtraConcept"] };
-    const readSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
-    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(ontology, null, 2));
-    const results = queryOntology("Extra");
+    const accessSpy = vi.spyOn(fs.promises, "access").mockResolvedValue();
+    const readSpy = vi.spyOn(fs.promises, "readFile").mockResolvedValue(JSON.stringify(ontology, null, 2));
+    const results = await queryOntology("Extra");
     expect(results.results).toEqual(["ExtraConcept"]);
+    accessSpy.mockRestore();
     readSpy.mockRestore();
-    readFileSyncSpy.mockRestore();
   });
 
   test("exportOntologyToXML returns valid XML string with extended fields", () => {
