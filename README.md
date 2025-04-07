@@ -7,7 +7,7 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 Key features include:
 
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a consolidated helper function that applies default values when not set, empty, or when invalid non-numeric values (e.g., `NaN`, empty strings, or whitespace-only) are provided. Notably, if an environment variable is not a string (e.g., null or undefined), it is silently handled without logging unnecessary warnings.
-  - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid input is provided, a standardized one-time warning is logged (per unique composite key combining variable name and normalized input) indicating that the received input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. The fallback logic has been refined to also handle non-breaking spaces and other whitespace variants uniformly, ensuring consistent logging and behavior.
+  - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid input is provided, a standardized one-time warning is logged (per unique composite key combining variable name and normalized input) indicating that the received input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. The fallback logic has been refined to also handle non-breaking spaces, tabs, and other whitespace variants uniformly, ensuring consistent logging and behavior.
   - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), only valid numeric inputs are accepted. Any deviation, such as variants of `NaN` with extra whitespace or unusual case, will cause an immediate error with guidance on valid formats (integer, decimal, or scientific notation).
   - **CLI Overrides:** The CLI options `--livedata-retry-default <number>` and `--livedata-delay-default <number>` allow you to override the default fallback values for live data fetching at runtime without modifying your environment variables.
   - **Global Warning Suppression:** You can disable all environment variable warning logs by setting the environment variable `DISABLE_ENV_WARNINGS` (set to any value other than "0").
@@ -32,7 +32,7 @@ Key features include:
 
 ### Enhanced Unit Test Coverage for Environment Variable Parsing
 
-Recent updates include expanded unit tests to ensure robust handling of non-numeric environment variable inputs. Tests now verify that various whitespace patterns (including non-breaking spaces and tab characters) are correctly processed, duplicate warnings are avoided for equivalent invalid inputs, and CLI override values are properly applied.
+Recent updates include expanded unit tests to ensure robust handling of non-numeric environment variable inputs. Tests now verify that various whitespace patterns (including non-breaking spaces, tabs, and extra spaces) are correctly processed, duplicate warnings are avoided for equivalent invalid inputs, and CLI override values are properly applied.
 
 ## Installation
 
@@ -147,12 +147,13 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 - Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag for using the deprecated static fallback. Use `--build-live` for live data integration.
-- **Exponential Backoff with Jitter:** Improved handling of environment variables by consolidating parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Invalid inputs trigger a standardized one-time warning (displaying the variable name, received and normalized input, and the fallback value with unit) and the fallback value (or CLI overrides) are applied. This update now robustly handles non-breaking spaces and unusual whitespace.
+- **Exponential Backoff with Jitter:** Improved handling of environment variables by consolidating parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Invalid inputs trigger a standardized one-time warning (displaying the variable name, received and normalized input, and the fallback value with unit) and the fallback value (or CLI overrides) are applied. This update now robustly handles non-breaking spaces, tabs, and other whitespace variants.
 - **Strict Environment Variable Parsing:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on valid formats (integer, decimal, or scientific notation).
 - **CLI Overrides:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow runtime override of fallback values without changing environment variables.
 - **Custom Endpoints:** Supports custom API endpoints via `CUSTOM_API_ENDPOINTS`. Only valid endpoints (beginning with "http://" or "https://") are accepted.
 - **Consolidated 'NaN' Handling:** Standardized environment variable parsing now logs a warning exactly once per unique composite key (variable name and normalized input) unless warnings are disabled by setting `DISABLE_ENV_WARNINGS`.
-- **Unit Test Enhancements:** Expanded test coverage to include various edge cases for invalid inputs, unusual whitespace (including non-breaking spaces and tab characters), and the new global warning suppression option.
+- **Whitespace Normalization Enhancement:** The parsing function now normalizes all whitespace variants (including spaces, non-breaking spaces, tabs, and newlines) so that equivalent invalid inputs trigger a single warning.
+- **Unit Test Enhancements:** Expanded test coverage now verifies that various whitespace patterns are uniformly handled.
 - **Automated Tests:** Comprehensive tests now cover fallback behavior, strict mode, CLI override functionality, and suppression of warnings.
 - **Fetch Spy Availability:** The internal function used in `buildEnhancedOntology` is now exported as part of a `fetcher` object, allowing tests to successfully spy on it.
 - **Contributing Improvements:** Updated guidelines to reflect changes in environment variable handling and diagnostic logging.
