@@ -6,7 +6,7 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 
 Key features include:
 
-- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy. You can configure the number of retry attempts and the initial backoff delay by using the environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. If `LIVEDATA_INITIAL_DELAY` is invalid or not set, a default of 100ms is used. (Note: Total attempts = `LIVEDATA_RETRY_COUNT` + 1. Defaults are 3 and 100ms respectively if not set.)
+- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy. You can configure the number of retry attempts and the initial backoff delay by using the environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. If these variables are set to non-numeric values or are invalid, the defaults of 3 retries and 100ms delay are used. (Note: Total attempts = `LIVEDATA_RETRY_COUNT` + 1. Defaults are 3 and 100ms respectively if not set.)
 - **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)
 - **Query & Validation:** Rapidly search for ontology concepts and validate your data.
 - **OWL Export/Import:** Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).
@@ -15,7 +15,7 @@ Key features include:
 - **Enhanced Diagnostics:** View timestamped logs with detailed context for each operation, facilitating easier tracing and debugging.
 - **Web Server Integration:** Launch a simple web server for quick status checks.
 - **Custom Merging & Refreshing:** New functions provide extended merging and diagnostic capabilities.
-- **Exponential Backoff:** The live data fetch function now implements exponential backoff delays for live data fetch retries with configurable parameters using `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` (with a safe fallback if invalid).
+- **Exponential Backoff:** The live data fetch function now implements exponential backoff delays for live data fetch retries with configurable parameters using `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` (with a safe fallback to 3 retries and 100ms delay if invalid).
 
 ## Installation
 
@@ -118,7 +118,7 @@ Note: Ensure that your network environment allows access to these endpoints for 
 - Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag to use the deprecated static fallback. Without the flag, a warning is issued. Use `--build-live` for live data integration.
-- **Exponential Backoff:** Implemented exponential backoff delays for live data fetch retries with configurable parameters using `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` (with a safe fallback to 100ms if invalid).
+- **Exponential Backoff:** Implemented exponential backoff delays for live data fetch retries with configurable parameters using `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` (with a safe fallback to 3 retries and 100ms delay if invalid).
 - Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.
 
 ## Contributing

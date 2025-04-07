@@ -72,7 +72,7 @@ function simulateNetworkFailure(mod) {
   };
 }
 
-// New test for configurable environment variables in fetchDataWithRetry
+// New test for configurable environment variables in fetchDataWithRetry with non-numeric values
 describe("Live Data Configurability", () => {
   test("fetchDataWithRetry respects environment configuration for retries and initial delay", async () => {
     const originalEnvRetry = process.env.LIVEDATA_RETRY_COUNT;
@@ -98,6 +98,36 @@ describe("Live Data Configurability", () => {
     await expect(fetchDataWithRetry("http://testenv"))
       .rejects.toThrow("All retry attempts for http://testenv failed. Last error: Test error");
     expect(attemptCount).toBe(2);
+    http.get = originalGet;
+    process.env.LIVEDATA_RETRY_COUNT = originalEnvRetry;
+    process.env.LIVEDATA_INITIAL_DELAY = originalEnvDelay;
+  });
+
+  test("fetchDataWithRetry uses default values when env variables are non-numeric", async () => {
+    const originalEnvRetry = process.env.LIVEDATA_RETRY_COUNT;
+    const originalEnvDelay = process.env.LIVEDATA_INITIAL_DELAY;
+    process.env.LIVEDATA_RETRY_COUNT = "NaN"; // should fallback to 3
+    process.env.LIVEDATA_INITIAL_DELAY = "NaN"; // should fallback to 100ms
+    let attemptCount = 0;
+    const originalGet = http.get;
+    http.get = (url, options, callback) => {
+      attemptCount++;
+      const req = {
+        on: (event, handler) => {
+          if (event === "error") {
+            setTimeout(() => {
+              handler(new Error("Non-numeric test error"));
+            }, 0);
+          }
+          return req;
+        }
+      };
+      return req;
+    };
+    // Default retries fallback should be 3, so total attempts = 4
+    await expect(fetchDataWithRetry("http://testenv-nonnumeric"))
+      .rejects.toThrow("All retry attempts for http://testenv-nonnumeric failed. Last error: Non-numeric test error");
+    expect(attemptCount).toBe(4);
     http.get = originalGet;
     process.env.LIVEDATA_RETRY_COUNT = originalEnvRetry;
     process.env.LIVEDATA_INITIAL_DELAY = originalEnvDelay;
