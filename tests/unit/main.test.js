@@ -252,7 +252,13 @@ describe("Environment Variable Parsing Tests", () => {
   test("Strict mode: throws error on non-numeric input", () => {
     process.env.STRICT_ENV = "true";
     process.env.TEST_STRICT = "NaN";
-    expect(() => _parseEnvNumber("TEST_STRICT", 42)).toThrow("Strict mode: Environment variable TEST_STRICT has invalid non-numeric value 'NaN'");
+    expect(() => _parseEnvNumber("TEST_STRICT", 42)).toThrow("Strict mode: Environment variable TEST_STRICT is set to an invalid numerical value 'NaN'.");
+  });
+
+  test("Strict mode: throws error on non-numeric input with whitespace variants", () => {
+    process.env.STRICT_ENV = "true";
+    process.env.TEST_STRICT_WHITESPACE = "  NaN  ";
+    expect(() => _parseEnvNumber("TEST_STRICT_WHITESPACE", 42)).toThrow("Strict mode: Environment variable TEST_STRICT_WHITESPACE is set to an invalid numerical value 'NaN'.");
   });
 });
 

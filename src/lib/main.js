@@ -28,6 +28,7 @@
  *   - Introduced configurable diagnostic logging levels via the DIAGNOSTIC_LOG_LEVEL environment variable.
  *   - Allow custom configuration of public API endpoints via the CUSTOM_API_ENDPOINTS environment variable. When set with a comma-separated list, these endpoints that are valid (starting with "http://" or "https://") are merged with the default list.
  *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
+ *   - Enforced strict handling of 'NaN' values: In strict mode, any value equal to 'NaN' (including with extra whitespace) will throw an error immediately.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -84,7 +85,7 @@ function parseEnvNumber(varName, defaultVal) {
   // Strict mode check
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
     if (trimmed === "" || trimmed.toLowerCase() === "nan" || isNaN(Number(trimmed))) {
-      throw new Error(`Strict mode: Environment variable ${varName} has invalid non-numeric value '${value}'`);
+      throw new Error(`Strict mode: Environment variable ${varName} is set to an invalid numerical value '${trimmed}'.`);
     } else {
       return Number(trimmed);
     }
