@@ -6,26 +6,16 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 
 Key features include:
 
-- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy with a randomized jitter to further improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a standardized helper function that applies default values when not set. If non-numeric values are provided, including the explicit string `NaN`, the system falls back to defaults and logs a diagnostic warning **only once per unique value per variable**. A new function (`resetEnvWarningCache`) is provided to clear warning state in test environments.
-
+- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy with a randomized jitter to further improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a standardized helper function that applies default values when not set. **Non-numeric values (such as the explicit string "NaN", empty or whitespace-only strings) are considered invalid. In non-strict mode, the system falls back to default values and logs a diagnostic warning exactly once per unique erroneous input. In strict mode (enabled via `STRICT_ENV=true` or the CLI flag `--strict-env`), such misconfigurations will throw an error immediately. For testing purposes, the function `resetEnvWarningCache()` can be used to reset the logged warnings.**
 - **Strict Environment Variable Parsing:** Developers can now enforce strict parsing of numeric environment variables. When strict mode is enabled either via the CLI flag `--strict-env` or by setting the environment variable `STRICT_ENV=true`, any non-numeric value (including "NaN") will cause an error to be thrown immediately, helping to catch misconfigurations early.
-
-- **Custom Endpoints:** Users can override or extend the default list of public API endpoints by setting the environment variable `CUSTOM_API_ENDPOINTS` to a comma-separated list of endpoints. **Note:** Only endpoints starting with `http://` or `https://` are considered valid. Invalid endpoints are ignored and a diagnostic warning is logged. This provides increased flexibility for diverse deployment scenarios.
-
+- **Custom Endpoints:** Users can override or extend the default list of public API endpoints by setting the environment variable `CUSTOM_API_ENDPOINTS` to a comma-separated list of endpoints. **Note:** Only endpoints starting with `http://` or `https://` are accepted. Invalid endpoints will be ignored with a diagnostic warning.
 - **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)
-
 - **Query & Validation:** Rapidly search for ontology concepts and validate your data. Note: The function `queryOntology` has been refactored to operate asynchronously for improved performance.
-
 - **OWL Export/Import:** Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).
-
 - **Concurrent Data Crawling:** Gather real-time data concurrently from a range of public endpoints. The crawl functionality has been enhanced to return results with separate arrays for successful responses and errors, simplifying downstream processing.
-
 - **Diverse Ontology Models:** Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).
-
 - **Enhanced Diagnostics:** View timestamped logs with detailed context for each operation. You can control the verbosity of diagnostic messages by setting the environment variable `DIAGNOSTIC_LOG_LEVEL` (possible values: `off`, `error`, `warn`, `info`, `debug`). For example, setting `DIAGNOSTIC_LOG_LEVEL=off` will suppress diagnostic logs.
-
 - **Web Server Integration:** Launch a simple web server for quick status checks. **New:** The server now supports integration testing by exposing a function to start the server and gracefully shut it down after performing real HTTP requests.
-
 - **Custom Merging & Refreshing:** New functions provide extended merging and diagnostic capabilities.
 
 ### Environment Variable Parsing for Live Data Fetching
@@ -33,7 +23,7 @@ Key features include:
 owl-builder uses the environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` to configure the retry logic during live data fetching. The behavior is as follows:
 
 - **Valid Numeric Inputs:** Standard numbers (e.g., `3`, `50`) and scientific notation (e.g., `1e3` for 1000) are accepted and used in the retry mechanism.
-- **Invalid or Non-Numeric Inputs:** If a non-numeric value (e.g., `NaN`, `abc`) or an empty value is provided, the function falls back to default values (`3` retries and `100ms` delay, respectively) and logs a diagnostic warning **only once per unique erroneous input** for a variable.
+- **Invalid or Non-Numeric Inputs:** If a non-numeric value (e.g., `NaN`, `abc`) or an empty value is provided, the function falls back to default values (`3` retries and `100ms` delay, respectively) and logs a diagnostic warning exactly once per unique erroneous input. Use `resetEnvWarningCache()` in tests to reset this warning cache if needed.
 - **Strict Mode:** When strict mode is enabled (via `--strict-env` or `STRICT_ENV=true`), any non-numeric value will cause an error to be thrown, enforcing the correctness of configuration values.
 
 Example:
@@ -194,7 +184,7 @@ _Note:_ Ensure that your network environment allows access to these endpoints fo
 - **Live Data Integration Disable:** New option to disable live data integration by setting the environment variable `DISABLE_LIVE_DATA` or using the CLI flag `--disable-live`. When enabled, owl-builder uses the static fallback instead of attempting live network requests.
 - **Configurable Diagnostic Logging:** Diagnostic messages can now be controlled via the `DIAGNOSTIC_LOG_LEVEL` environment variable. This feature allows users and automated systems to suppress or enable diagnostic logs based on the desired verbosity.
 - **Automated Tests:** Added comprehensive tests for environment variable parsing (including handling of "NaN") and configurable diagnostic logging to ensure correct functionality.
-- Updated documentation to reflect the handling of edge-case non-numeric inputs, the new strict parsing functionality, and custom endpoint configuration.
+- Updated documentation to clarify the behavior when non-numeric values are provided for environment variables, including explicit "NaN", and to explain the usage of strict mode and the resetEnvWarningCache function.
 
 ## Contributing
 

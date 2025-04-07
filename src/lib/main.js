@@ -71,9 +71,10 @@ export function buildOntology() {
  * Standardized helper function to parse numeric environment variables.
  * If the variable is undefined, empty, or consists only of whitespace,
  * or if its trimmed value (case-insensitive) is exactly "nan", returns the default value.
- * If a non-numeric value is provided (including invalid strings), it logs a diagnostic warning (only once per unique input) and returns the default value.
+ * If a non-numeric value is provided (including invalid strings, explicit "NaN", or empty) then:
+ *   - In non-strict mode, logs a diagnostic warning exactly once per unique erroneous input and returns the default value.
+ *   - In strict mode (STRICT_ENV=true or CLI flag --strict-env), throws an error.
  * Supported formats include standard numbers as well as scientific notation (e.g. '1e3').
- * In strict mode (STRICT_ENV=true or CLI flag --strict-env), an error is thrown for non-numeric values.
  */
 function parseEnvNumber(varName, defaultVal) {
   const value = process.env[varName];
