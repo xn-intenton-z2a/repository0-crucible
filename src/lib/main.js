@@ -23,17 +23,11 @@
  *   - Refactored file system operations to use asynchronous APIs.
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *   - Implemented exponential backoff in fetchDataWithRetry with configurable retries, delay and randomized jitter.
- *   - Non-numeric environment variables for LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT fallback to defaults with a diagnostic warning logged only once per unique normalized value.
- *   - Added configurable option to disable live data integration via the environment variable DISABLE_LIVE_DATA. When set (and not equal to "0"), live data requests are bypassed and the static fallback is used.
- *   - Introduced configurable diagnostic logging levels via the DIAGNOSTIC_LOG_LEVEL environment variable.
- *   - Allow custom configuration of public API endpoints via the CUSTOM_API_ENDPOINTS environment variable. When set with a comma-separated list, these endpoints that are valid (starting with "http://" or "https://") are merged with the default list.
- *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
- *   - Enforced strict handling of 'NaN' values: In strict mode, any value that is not a valid numerical format (including variants like 'NaN' with extra whitespace) will throw an error immediately.
- *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
- *   - Enhanced handling of 'NaN' values in environment variable parsing to ensure consistent fallback behavior and suppress duplicate warnings for equivalent inputs. The warning cache now logs a warning exactly once per unique composite key (variable name and normalized input).
- *   - Consolidated and standardized 'NaN' handling in environment variable parsing. A new configuration option (DISABLE_ENV_WARNINGS) allows disabling warnings in production.
- *   - Standardized diagnostic message format for environment variable fallback warnings.
- *   - Improved normalization of whitespace in environment variable parsing to ensure that all variants of non-numeric inputs (e.g., 'NaN', ' nAn ', '\u00A0NaN\u00A0', 'NaN\t') are treated uniformly.
+ *   - Consolidated and standardized environment variable parsing to robustly handle non-numeric inputs (e.g., variants of "NaN" with extra whitespace, non-breaking spaces, tabs, etc.).
+ *     In non-strict mode, an invalid input triggers a one-time diagnostic warning per unique composite key (variable name and normalized input) with fallback values (and units) applied.
+ *     In strict mode, non-numeric inputs throw a clear error indicating that only valid numeric formats (integer, decimal, or scientific) are accepted.
+ *   - Added configurable fallback values for non-numeric environment variables via an optional parameter and CLI options (--livedata-retry-default and --livedata-delay-default).
+ *   - Introduced additional diagnostic logging details in live data fetching functions, including reporting of exponential backoff base delay and jitter.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -64,14 +58,15 @@ export function resetEnvWarningCache() {
 
 /**
  * Helper function to normalize environment variable values.
- * Trims the value and converts to lower case. If the value is undefined or not a string, returns an empty string.
- * Additionally, replaces all whitespace with a single space and then trims.
+ * Trims the value, replaces all whitespace (including non-breaking spaces, tabs, etc.) with a single space, and converts to lower case.
+ * If the value is undefined or not a string, returns an empty string.
  * @param {string | undefined | null} value 
  * @returns {string}
  */
 function normalizeEnvValue(value) {
   if (typeof value !== "string") return "";
-  return value.replace(/\s+/g, ' ').trim().toLowerCase();
+  // Replace any whitespace characters (including NBSP) with a single space, then trim and lowercase it
+  return value.replace(/[\s\u00A0]+/g, ' ').trim().toLowerCase();
 }
 
 /**
@@ -99,14 +94,18 @@ export function buildOntology() {
  *   Additionally, warnings can be globally disabled by setting DISABLE_ENV_WARNINGS (and not equal to "0").
  *
  * - In strict mode (when STRICT_ENV is set to true or --strict-env is used): The environment variable must be a valid numeric value.
- *   Any non-numeric input (even with extra whitespace) will throw an error immediately, with a clear message indicating that only
- *   valid numbers (integers, decimals, or scientific notation) are accepted.
+ *   Any non-numeric input (even with extra whitespace, non-breaking spaces, or tabs) will throw an error immediately, with a clear message indicating that only
+ *   valid numbers (integer, decimal, or scientific notation) are accepted.
  *
  * Supports integers, decimals, and scientific notation.
  * Allows overriding fallback values via CLI options (e.g. --livedata-retry-default and --livedata-delay-default).
  *
- * Note: The diagnostic warning messages have been standardized to indicate the variable name, received input (and its normalized form),
- * and the fallback value (with its unit) being applied.
+ * Note: The diagnostic warning messages include the variable name, the received input (and its normalized form), and the fallback value along with its unit.
+ *
+ * @param {string} varName 
+ * @param {number} defaultVal 
+ * @param {number} [configurableFallback]
+ * @returns {number}
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const rawValue = process.env[varName];
@@ -141,7 +140,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
     const numericRegex = /^-?\d+(\.\d+)?([eE][-+]?\d+)?$/;
     if (!numericRegex.test(normalized)) {
-      throw new Error(`Strict mode: Environment variable ${varName} must be a valid numeric value (allowed formats: integer, decimal, or scientific notation). Received '${rawValue}'.`);
+      throw new Error(`Strict mode: Environment variable ${varName} must be a valid numeric value (allowed formats: integer, decimal, or scientific notation). Received '${rawValue}' (normalized: '${normalized}').`);
     }
     return Number(normalized);
   }
