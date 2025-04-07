@@ -28,7 +28,7 @@
  *   - Introduced configurable diagnostic logging levels via the DIAGNOSTIC_LOG_LEVEL environment variable.
  *   - Allow custom configuration of public API endpoints via the CUSTOM_API_ENDPOINTS environment variable. When set with a comma-separated list, these endpoints that are valid (starting with "http://" or "https://") are merged with the default list.
  *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
- *   - Enforced strict handling of 'NaN' values: In strict mode, any value equal to 'NaN' (including with extra whitespace) will throw an error immediately.
+ *   - Enforced strict handling of 'NaN' values: In strict mode, any value that is not a valid numeric format (including variants like 'NaN' with extra whitespace) will throw an error immediately.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
  *   - Normalized non-numeric warning caching to avoid duplicate warnings for equivalent values.
  *
@@ -107,13 +107,14 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
     }
   }
   
-  // Strict mode check
+  // Strict mode check with regex validation
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
-    if (normalized === "" || normalized === "nan" || isNaN(Number(trimmed))) {
-      throw new Error(`Strict mode: Environment variable ${varName} is set to an invalid numerical value '${trimmed}'.`);
-    } else {
-      return Number(trimmed);
+    // Regex supports integer, decimals, and scientific notation
+    const numericRegex = /^-?\d+(\.\d+)?([eE]-?\d+)?$/;
+    if (!numericRegex.test(trimmed)) {
+      throw new Error(`Strict mode: Environment variable ${varName} is set to an invalid numerical value '${value}'.`);
     }
+    return Number(trimmed);
   }
 
   // Check if undefined, empty, or explicitly 'nan'
