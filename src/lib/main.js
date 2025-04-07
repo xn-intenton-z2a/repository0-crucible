@@ -68,29 +68,20 @@ export function buildOntology() {
  */
 function parseEnvNumber(varName, defaultVal) {
   const value = process.env[varName];
-  if (value === undefined || value.trim() === "" || value.trim().toLowerCase() === "nan") {
-    if (value !== undefined && value.trim().toLowerCase() === "nan" && !envWarningLogged[varName]) {
-      let unit = "";
-      if (varName === "LIVEDATA_RETRY_COUNT") {
-        unit = " retries";
-      } else if (varName === "LIVEDATA_INITIAL_DELAY") {
-        unit = "ms delay";
-      }
-      logDiagnostic(`Warning: ${varName} is non-numeric (received 'NaN'). Using default value of ${defaultVal}${unit}.`, "warn");
+  const trimmed = value !== undefined ? value.trim() : "";
+  // Check if undefined, empty, or explicitly 'nan'
+  if (trimmed === "" || trimmed.toLowerCase() === "nan") {
+    if (!envWarningLogged[varName] && trimmed.toLowerCase() === "nan") {
+      const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
+      logDiagnostic(`Warning: ${varName} is non-numeric (received '${trimmed}'). Using default value of ${defaultVal}${unit}.`, "warn");
       envWarningLogged[varName] = true;
     }
     return defaultVal;
   }
-  const num = Number(value);
+  const num = Number(trimmed);
   if (isNaN(num)) {
-    let unit = "";
-    if (varName === "LIVEDATA_RETRY_COUNT") {
-      unit = " retries";
-    } else if (varName === "LIVEDATA_INITIAL_DELAY") {
-      unit = "ms delay";
-    }
-    // Log warning only once per environment variable
     if (!envWarningLogged[varName]) {
+      const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
       logDiagnostic(`Warning: ${varName} is non-numeric. Using default value of ${defaultVal}${unit}.`, "warn");
       envWarningLogged[varName] = true;
     }
