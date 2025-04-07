@@ -48,7 +48,7 @@ const {
   enhancedDiagnosticSummary,
   customMergeWithTimestamp,
   backupAndRefreshOntology,
-  fetcher,
+  fetcher
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -63,7 +63,7 @@ function simulateNetworkFailure(mod) {
           handler(error);
         }
         return req;
-      },
+      }
     };
     process.nextTick(() => {
       req.on("error", () => {});
@@ -91,7 +91,7 @@ describe("Live Data Configurability", () => {
             }, 0);
           }
           return req;
-        },
+        }
       };
       return req;
     };
@@ -121,7 +121,7 @@ describe("Live Data Configurability", () => {
             }, 0);
           }
           return req;
-        },
+        }
       };
       return req;
     };
@@ -290,7 +290,7 @@ describe("Crawling Functionality", () => {
             }, 0);
           }
           return req;
-        },
+        }
       };
       return req;
     };
