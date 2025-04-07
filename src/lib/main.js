@@ -22,6 +22,7 @@
  *   - Enhanced XML export/import to support extended ontology models (concepts, classes, properties, metadata).
  *   - Refactored file system operations to use asynchronous APIs.
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
+ *   - Implemented exponential backoff in fetchDataWithRetry for improved network resilience.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -254,20 +255,27 @@ export function listAvailableEndpoints() {
   ];
 }
 
+// Updated fetchDataWithRetry to implement exponential backoff delays
 export async function fetchDataWithRetry(url, retries = 3) {
   const mod = url.startsWith("https") ? https : http;
   const options = { headers: { "User-Agent": "owl-builder CLI tool" } };
+  function sleep(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }
   return new Promise((resolve, reject) => {
-    function attempt(n, attemptNumber) {
+    async function attempt(n, attemptNumber) {
       logDiagnostic(`Attempt ${attemptNumber} for ${url} started.`);
       const req = mod.get(url, options, (res) => {
         let data = "";
         res.on("data", (chunk) => (data += chunk));
         res.on("end", () => resolve(data));
       });
-      req.on("error", (err) => {
+      req.on("error", async (err) => {
         logDiagnostic(`Attempt ${attemptNumber} for ${url} failed: ${err.message}`);
         if (n > 0) {
+          const delay = 100 * Math.pow(2, attemptNumber - 1);
+          logDiagnostic(`Retrying in ${delay}ms`);
+          await sleep(delay);
           attempt(n - 1, attemptNumber + 1);
         } else {
           reject(new Error(`All retry attempts for ${url} failed. Last error: ${err.message}`));

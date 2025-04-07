@@ -6,7 +6,7 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 
 Key features include:
 
-- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching.
+- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which now uses an exponential backoff strategy.
 - **Data Persistence:** Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)
 - **Query & Validation:** Rapidly search for ontology concepts and validate your data.
 - **OWL Export/Import:** Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).
@@ -15,6 +15,7 @@ Key features include:
 - **Enhanced Diagnostics:** View timestamped logs with detailed context for each operation, facilitating easier tracing and debugging.
 - **Web Server Integration:** Launch a simple web server for quick status checks.
 - **Custom Merging & Refreshing:** New functions provide extended merging and diagnostic capabilities.
+- **Exponential Backoff Retries:** The live data fetch function now implements exponential backoff delays (e.g., 100ms, 200ms, 400ms) between retry attempts, improving resilience and reducing rapid successive calls.
 
 ## Installation
 
@@ -57,7 +58,7 @@ node src/lib/main.js --help
 - `--update "New Title"`: Updates the ontology title using live data.
 - `--clear`: Deletes the local ontology file.
 - `--crawl`: Concurrently crawls multiple public endpoints to gather data.
-- `--fetch-retry`: Fetches data using retry logic with detailed logging per attempt.
+- `--fetch-retry`: Fetches data using retry logic with detailed logging per attempt and exponential backoff delays.
 - `--merge-ontologies`: Merges static and live ontology models.
 - `--build-live-log`: Builds a live ontology with additional diagnostic logging.
 - `--serve`: Launches the integrated web server.
@@ -117,6 +118,7 @@ Note: Ensure that your network environment allows access to these endpoints for 
 - Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag to use the deprecated static fallback. Without the flag, a warning is issued. Use `--build-live` for live data integration.
+- **Exponential Backoff:** Implemented exponential backoff delays for live data fetch retries.
 - Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.
 
 ## Contributing
