@@ -76,7 +76,7 @@
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Normalization:</strong></p>
 <ul class="md-github">
-<li class="md-github">Input values are trimmed and all sequences of whitespace—including spaces, tabs, and non-breaking spaces—are replaced by a single space, and the value is converted to lowercase. This ensures that different raw inputs (e.g., &quot; NaN &quot;, &quot;NaN&quot;, &quot;\u00A0NaN\u00A0&quot;) normalize to the same value.</li>
+<li class="md-github">Input values are trimmed and all sequences of whitespace—including spaces, tabs, non-breaking spaces, em space, en space, and other Unicode whitespace characters—are replaced by a single space, and the value is converted to lowercase. This ensures that different raw inputs (e.g., &quot; NaN &quot;, &quot;NaN&quot;, &quot;\u00A0NaN\u00A0&quot;) normalize to the same value.</li>
 </ul>
 </li>
 <li class="md-github">
@@ -112,7 +112,7 @@ node src/lib/main.js --build-live
 node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --build-live
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="automated-tests" href="#automated-tests"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Automated Tests</h3>
-<p class="md-github">Comprehensive tests verify the behavior of the environment variable handling, including different whitespace variants, unified warning logging, and CLI override functionality. Run tests using:</p>
+<p class="md-github">Comprehensive tests verify the behavior of the environment variable handling, including different whitespace variants (now covering a broader set of Unicode whitespace), unified warning logging, and CLI override functionality. Run tests using:</p>
 <pre class="md-github"><code class="md-github language-bash">npm test
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="cli-help" href="#cli-help"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Help</h3>
@@ -122,7 +122,7 @@ node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --b
 <h3 class="md-github"><a class="md-github__anchor" name="key-cli-commands" href="#key-cli-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Key CLI Commands</h3>
 <ul class="md-github">
 <li class="md-github"><code class="md-github">--build --allow-deprecated</code>: Generates a deprecated fallback ontology using static data (<strong class="md-github">deprecated; use <code class="md-github">--build-live</code> for live data integration</strong>).</li>
-<li class="md-github"><code class="md-github">--build-live</code>: Builds an ontology using live data with detailed diagnostic logging.</li>
+<li class="md-github"><code class="md-github">--build-live</code>: Builds an ontology using live data using enhanced normalization and logs detailed diagnostic information for each retry attempt, including exponential backoff delay with jitter.</li>
 <li class="md-github">... (other commands remain as documented)</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
@@ -149,7 +149,7 @@ npm install
 # or
 node src/lib/main.js --strict-env
 </code></pre>
-<p class="md-github">When strict mode is enabled, any non-numeric input will result in an error with guidance on acceptable formats.</p>
+<p class="md-github">When strict mode is enabled, any non-numeric input will result in an error with guidance on allowed formats.</p>
 <h3 class="md-github"><a class="md-github__anchor" name="override-fallback-values-via-cli" href="#override-fallback-values-via-cli"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Override Fallback Values via CLI</h3>
 <p class="md-github">Override the default fallback values for live data fetching without modifying your environment variables:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250
@@ -161,7 +161,7 @@ node src/lib/main.js --strict-env
 <h3 class="md-github"><a class="md-github__anchor" name="key-cli-commands-1" href="#key-cli-commands-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Key CLI Commands</h3>
 <ul class="md-github">
 <li class="md-github"><code class="md-github">--build --allow-deprecated</code>: Generates a deprecated fallback ontology using static data (<strong class="md-github">deprecated; use <code class="md-github">--build-live</code> for live data integration</strong>).</li>
-<li class="md-github"><code class="md-github">--build-live</code>: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt, including exponential backoff delay with jitter.</li>
+<li class="md-github"><code class="md-github">--build-live</code>: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt, with robust normalization of environment variable inputs.</li>
 <li class="md-github"><code class="md-github">--persist</code>: Saves the current ontology to a JSON file.</li>
 <li class="md-github"><code class="md-github">--load</code>: Loads the saved ontology.</li>
 <li class="md-github"><code class="md-github">--query &quot;term&quot;</code>: Searches for matching ontology concepts.</li>
@@ -210,7 +210,7 @@ node src/lib/main.js --strict-env
 <li class="md-github"><strong class="md-github">Strict Environment Variable Parsing:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or <code class="md-github">export STRICT_ENV=true</code>), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on allowed formats.</li>
 <li class="md-github"><strong class="md-github">CLI Overrides:</strong> New CLI options <code class="md-github">--livedata-retry-default</code> and <code class="md-github">--livedata-delay-default</code> allow runtime override of fallback values without changing environment variables.</li>
 <li class="md-github"><strong class="md-github">Custom Endpoints:</strong> Supports custom API endpoints via <code class="md-github">CUSTOM_API_ENDPOINTS</code>. Only valid endpoints (beginning with &quot;http://&quot; or &quot;https://&quot;) are accepted.</li>
-<li class="md-github"><strong class="md-github">Unified NaN Handling:</strong> Environment variable parsing now uniformly handles non-numeric values (including &quot;NaN&quot; with various whitespace variants), logging a unified warning exactly once per unique normalized non-numeric input, ensuring consistent fallback behavior.</li>
+<li class="md-github"><strong class="md-github">Unified NaN Handling and Robust Normalization:</strong> Environment variable parsing now uses Unicode property escapes to handle a broader range of whitespace characters (including em space, en space, and other Unicode spaces). This ensures that different raw inputs that normalize to the same value trigger a unified warning exactly once, ensuring consistent fallback behavior.</li>
 <li class="md-github"><strong class="md-github">Enhanced Test Coverage:</strong> Expanded tests now verify that different raw whitespace variants that normalize to the same value trigger only one warning, ensuring consistent fallback behavior.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
@@ -220,7 +220,7 @@ node src/lib/main.js --strict-env
 
   </section>
   <footer>
-    <p>Generated on 2025-04-07T23:15:20.158Z</p>
+    <p>Generated on 2025-04-07T23:27:04.792Z</p>
   </footer>
 </body>
 </html>
