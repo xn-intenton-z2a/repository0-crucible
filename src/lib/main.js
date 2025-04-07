@@ -32,7 +32,7 @@
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
  *   - Enhanced handling of 'NaN' values in environment variable parsing to ensure consistent fallback behavior and suppress duplicate warnings for equivalent inputs.
  *   - Consolidated environment variable parsing and diagnostic logging to provide clearer and more actionable messages in both strict and non-strict modes.
- *   - Updated inline documentation for environment variable parsing to clarify behavior in both strict and non-strict modes. In non-strict mode, non-numeric values (like 'NaN' or whitespace) trigger a one-time warning per normalized input and fall back to a default or configurable value, with duplicate warnings suppressed via caching.
+ *   - Streamlined the fallback logic and standardized the warning messages for non-numeric environment variables to ensure only one warning per unique normalized input is logged.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -42,6 +42,10 @@ import fs, { promises as fsp } from "fs";
 import path from "path";
 import https from "https";
 import http from "http";
+
+// Define and export fetcher object for use in buildEnhancedOntology and for test spying
+const fetcher = {};
+export { fetcher };
 
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
@@ -126,15 +130,14 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   }
 
   // Non-strict mode handling: if input is empty, 'NaN', or cannot be converted to a number
-  const converted = Number(trimmed);
-  if (trimmed === "" || normalized === "nan" || isNaN(converted)) {
+  if (!trimmed || normalized === "nan" || isNaN(Number(trimmed))) {
     if (envWarningCache.get(varName) !== normalized) {
-      logDiagnostic(`Warning (non-strict mode): Environment variable ${varName} received non-numeric input '${value}'. Falling back to ${fallback}${unit}. Duplicate warnings suppressed.`, "warn");
+      logDiagnostic(`Warning: Environment variable ${varName} received non-numeric input ('${value}'). Defaulting to ${fallback}${unit}.`, "warn");
       envWarningCache.set(varName, normalized);
     }
     return fallback;
   }
-  return converted;
+  return Number(trimmed);
 }
 
 // Builds an ontology using live data from a public API endpoint
@@ -403,6 +406,9 @@ export async function fetchDataWithRetry(url, retries) {
     attempt(retries, 1);
   });
 }
+
+// Assign fetchDataWithRetry to fetcher for external spying and exports
+fetcher.fetchDataWithRetry = fetchDataWithRetry;
 
 export async function crawlOntologies() {
   let endpoints = listAvailableEndpoints();
@@ -1078,6 +1084,3 @@ function processCLIFallbackOptions(args) {
     }
   }
 }
-
-// Exporting fetcher to allow spying and modular access
-export const fetcher = { fetchDataWithRetry };
