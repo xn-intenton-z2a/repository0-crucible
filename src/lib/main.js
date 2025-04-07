@@ -116,7 +116,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
       (varName === "LIVEDATA_INITIAL_DELAY" && process.env.LIVEDATA_DELAY_DEFAULT)) {
     const cliValue = varName === "LIVEDATA_RETRY_COUNT" ? process.env.LIVEDATA_RETRY_DEFAULT : process.env.LIVEDATA_DELAY_DEFAULT;
     const normalizedCli = normalizeEnvValue(cliValue);
-    if (normalizedCli && normalizedCli !== "nan" && !isNaN(Number(normalizedCli))) {
+    if (normalizedCli !== "" && normalizedCli !== "nan" && !isNaN(Number(normalizedCli))) {
       return Number(normalizedCli);
     }
   }
@@ -143,7 +143,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
 
   if (isInvalid) {
     // Log a warning only once per unique combination of variable name and normalized input
-    if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
+    if (!process.env.DISABLE_ENV_WARNINGS || process.env.DISABLE_ENV_WARNINGS === "0") {
       const warnKey = `${varName}:${normalized}`;
       if (!envWarningCache.has(warnKey)) {
         let unit = "";
