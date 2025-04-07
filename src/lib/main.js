@@ -29,9 +29,11 @@
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter and CLI options (--livedata-retry-default and --livedata-delay-default).
  *   - Revised CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and default values.
  *
- * NOTE on Environment Variable Handling:
- *   The function parseEnvNumber normalizes the environment variable's raw string input by trimming whitespace, replacing sequences of whitespace (including tabs, non-breaking spaces, and other Unicode whitespace characters) with a single space, and converting to lower case. This unified approach ensures that different raw inputs that normalize to the same value trigger only one warning. Additionally, CLI override options (--livedata-retry-default and --livedata-delay-default) take precedence over environment variables.
- *   Enabling strict mode (--strict-env or setting STRICT_ENV=true) causes any non-numeric input to throw an error with guidance on acceptable formats.
+ * Note on Environment Variable Handling:
+ *   The function parseEnvNumber normalizes the environment variable's raw string input by trimming whitespace, replacing sequences of whitespace (including tabs, non-breaking spaces, and other Unicode whitespace characters) with a single space, and converting to lower case.
+ *   For example, raw inputs such as " NaN ", "\tNaN", and "\u00A0NaN\u00A0" all normalize to "nan" and will trigger a unified warning exactly once per unique normalized input.
+ *   In non-strict mode, invalid or empty values trigger a one-time diagnostic warning and revert to fallback values.
+ *   When CLI override options (--livedata-retry-default and --livedata-delay-default) are provided with valid numeric input, these take precedence over environment variables and defaults.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -107,6 +109,10 @@ export function buildOntology() {
  *
  * CLI Override Precedence:
  *   When applicable, CLI override values (LIVEDATA_RETRY_DEFAULT and LIVEDATA_DELAY_DEFAULT) are strictly prioritized over any configurable fallback value or default.
+ *
+ * Examples:
+ *   - process.env.LIVEDATA_RETRY_COUNT = " NaN ", "\tNaN", or "\u00A0NaN\u00A0" all normalize to "nan" and will trigger a single warning.
+ *   - CLI options provided as --livedata-retry-default 5 and --livedata-delay-default 250 will override environment variable values.
  *
  * @param {string} varName 
  * @param {number} defaultVal 
