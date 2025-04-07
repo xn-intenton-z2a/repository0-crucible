@@ -24,6 +24,7 @@
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *   - Implemented exponential backoff in fetchDataWithRetry for improved network resilience with configurable retries and delay parameters.
  *     Now safely parses the LIVEDATA_INITIAL_DELAY and LIVEDATA_RETRY_COUNT environment variables and falls back to default values if invalid.
+ *     Additionally, warns via diagnostic logs when invalid values are encountered.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -261,10 +262,16 @@ export async function fetchDataWithRetry(url, retries) {
   // Use provided retries parameter, or override with environment variable LIVEDATA_RETRY_COUNT, defaulting to 3
   if (typeof retries === 'undefined') {
     const envRetries = Number(process.env.LIVEDATA_RETRY_COUNT);
+    if (isNaN(envRetries)) {
+      logDiagnostic(`Warning: Invalid LIVEDATA_RETRY_COUNT value "${process.env.LIVEDATA_RETRY_COUNT}" provided, defaulting to 3 retries.`);
+    }
     retries = isNaN(envRetries) ? 3 : envRetries;
   }
   // Safely parse initial delay, default is 100ms if invalid or not provided
   const envDelay = Number(process.env.LIVEDATA_INITIAL_DELAY);
+  if (isNaN(envDelay)) {
+    logDiagnostic(`Warning: Invalid LIVEDATA_INITIAL_DELAY value "${process.env.LIVEDATA_INITIAL_DELAY}" provided, defaulting to 100ms delay.`);
+  }
   const initialDelay = isNaN(envDelay) ? 100 : envDelay;
   const mod = url.startsWith("https") ? https : http;
   const options = { headers: { "User-Agent": "owl-builder CLI tool" } };
