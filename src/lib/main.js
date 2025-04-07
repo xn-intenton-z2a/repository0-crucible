@@ -30,6 +30,7 @@
  *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
  *   - Enforced strict handling of 'NaN' values: In strict mode, any value that is not a valid numerical format (including variants like 'NaN' with extra whitespace) will throw an error immediately.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
+ *   - Consolidated environment variable parsing and diagnostic logging to provide clearer and more actionable messages in both strict and non-strict modes.
  *   - Updated inline documentation for environment variable parsing to clarify behavior in both strict and non-strict modes. In non-strict mode, non-numeric values (like 'NaN' or whitespace) trigger a one-time warning per normalized input and fall back to a default or configurable value, with duplicate warnings suppressed via caching.
  *
  * Note for Contributors:
@@ -96,7 +97,7 @@ export function buildOntology() {
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const value = process.env[varName];
-  const trimmed = value !== undefined ? value.trim() : "";
+  const trimmed = value ? value.trim() : "";
   const normalized = normalizeEnvValue(value);
   const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
   
@@ -116,30 +117,23 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   
   // Strict mode check with regex validation
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
-    const numericRegex = /^-?\d+(\.\d+)?([eE]-?\d+)?$/;
+    const numericRegex = /^-?\d+(\.\d+)?([eE][-+]?\d+)?$/;
     if (!numericRegex.test(trimmed)) {
-      throw new Error(`Strict mode: Environment variable ${varName} is set to an invalid numerical value '${value}'.`);
+      throw new Error(`Strict mode: Environment variable ${varName} received invalid non-numeric input '${value}'.`);
     }
     return Number(trimmed);
   }
 
-  // Non-strict mode handling - log one-time warning per unique normalized value
-  if (normalized === "" || normalized === "nan") {
+  // Non-strict mode handling - consolidate empty, 'NaN', or any non-numeric input
+  const converted = Number(trimmed);
+  if (trimmed === "" || normalized === "nan" || isNaN(converted)) {
     if (envWarningCache.get(varName) !== normalized) {
-      logDiagnostic(`Warning (non-strict mode): ${varName} is non-numeric (received '${value}'). Using fallback value of ${fallback}${unit}. Duplicate warnings suppressed.`, "warn");
+      logDiagnostic(`Warning (non-strict mode): Environment variable ${varName} received non-numeric input '${value}'. Falling back to ${fallback}${unit}. Duplicate warnings suppressed.`, "warn");
       envWarningCache.set(varName, normalized);
     }
     return fallback;
   }
-  const num = Number(trimmed);
-  if (isNaN(num)) {
-    if (envWarningCache.get(varName) !== normalized) {
-      logDiagnostic(`Warning (non-strict mode): ${varName} is non-numeric. Using fallback value of ${fallback}${unit}. Duplicate warnings suppressed.`, "warn");
-      envWarningCache.set(varName, normalized);
-    }
-    return fallback;
-  }
-  return num;
+  return converted;
 }
 
 // Builds an ontology using live data from a public API endpoint
