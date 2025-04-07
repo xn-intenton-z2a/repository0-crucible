@@ -4,11 +4,15 @@
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 7,
-  "diffMinutesMain": 7,
+  "diffMinutes": 5,
+  "diffMinutesMain": 5,
   "commitsLastHour": 3,
-  "commitsLastDay": 78,
+  "commitsLastDay": 79,
   "lastFiveCommitMessages": [
+    {
+      "time": "20:32",
+      "message": "Refined environment variable parsing for improved CLI overrides ..."
+    },
     {
       "time": "20:19",
       "message": "Clarified NaN handling in environment variable parsing with impr..."
@@ -24,10 +28,6 @@
     {
       "time": "19:12",
       "message": "Refactored environment variable parsing to consolidate NaN handl..."
-    },
-    {
-      "time": "18:33",
-      "message": "Fixed regex in normalizeEnvValue to use sg for proper whitespace..."
     }
   ],
   "branches": {
@@ -37,5 +37,5 @@
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-07T20:27:14.375Z"
+  "generatedAt": "2025-04-07T20:37:29.665Z"
 }
