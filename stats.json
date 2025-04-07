@@ -4,11 +4,15 @@
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 7,
-  "diffMinutesMain": 14,
+  "diffMinutes": 5,
+  "diffMinutesMain": 5,
   "commitsLastHour": 2,
-  "commitsLastDay": 76,
+  "commitsLastDay": 77,
   "lastFiveCommitMessages": [
+    {
+      "time": "19:31",
+      "message": "Revise fallback precedence in parseEnvNumber to prioritize CLI o..."
+    },
     {
       "time": "19:12",
       "message": "Refactored environment variable parsing to consolidate NaN handl..."
@@ -24,10 +28,6 @@
     {
       "time": "17:43",
       "message": "Refactored parseEnvNumber to normalize whitespace consolidate wa..."
-    },
-    {
-      "time": "17:31",
-      "message": "Enhance environment variable numeric parsing to handle various w..."
     }
   ],
   "branches": {
@@ -37,5 +37,5 @@
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-07T19:27:33.945Z"
+  "generatedAt": "2025-04-07T19:36:24.877Z"
 }
