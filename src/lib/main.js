@@ -1010,3 +1010,6 @@ export function listCommands() {
 }
 
 console.log("owl-builder CLI loaded");
+
+// Export _parseEnvNumber for testing purposes
+export { parseEnvNumber as _parseEnvNumber };

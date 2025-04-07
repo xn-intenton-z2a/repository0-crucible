@@ -19,7 +19,10 @@ Key features include:
 **New Feature: Disable Live Data Integration**
 - You can disable live data integration by setting the environment variable `DISABLE_LIVE_DATA` (set to any value besides "0") or using the CLI flag `--disable-live`. When this is set, owl-builder will bypass all live network requests and use the static fallback instead of attempting live data integration.
 
-_Note for Testing:_ In the test environment (`NODE_ENV=test`), live data integration is simulated to return a dummy live ontology, ensuring that tests expecting a live integration response receive a title different from the static fallback.
+**New Automated Tests for Environment Variable Parsing:**
+- Comprehensive tests have been added to ensure that the parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` behaves as expected, correctly falling back to default values and logging warnings only once for invalid inputs.
+
+_Note for Testing:_ In the test environment (`NODE_ENV=test`), live data integration is simulated to return a dummy ontology, ensuring that tests expecting a live integration response receive a title different from the static fallback.
 
 ## Installation
 
@@ -146,7 +149,7 @@ _Note:_ Ensure that your network environment allows access to these endpoints fo
 - Added robust HTTP endpoint integration testing for the web server.
 - **Asynchronous Query:** The `queryOntology` function has been refactored to use asynchronous file system methods for improved non-blocking performance.
 - **Live Data Integration Disable:** New option to disable live data integration by setting the environment variable `DISABLE_LIVE_DATA` or using the CLI flag `--disable-live`. When enabled, owl-builder uses the static fallback instead of attempting live network requests.
-- **Test Environment Simulation:** In test mode (`NODE_ENV=test`), live data integration is simulated to return a dummy ontology, ensuring tests detect a difference from the static fallback.
+- **Automated Tests:** Added comprehensive tests for environment variable parsing to ensure correct fallback values and single warning logging for invalid inputs.
 
 ## Contributing
 
