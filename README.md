@@ -27,8 +27,8 @@ owl-builder uses the environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_
 Example:
 
 ```bash
-export LIVEDATA_RETRY_COUNT=NaN      # Will default to 3 retries with a diagnostic warning
-export LIVEDATA_INITIAL_DELAY=abc      # Will default to 100ms with a diagnostic warning
+export LIVEDATA_RETRY_COUNT=NaN      # Will default to 3 retries with a diagnostic warning (logged only once)
+export LIVEDATA_INITIAL_DELAY=abc      # Will default to 100ms with a diagnostic warning (logged only once)
 ```
 
 ### Custom API Endpoints
