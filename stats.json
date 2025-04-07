@@ -1,19 +1,18 @@
 {
-  "openIssues": 19,
-  "issuesClosedLastHour": 6,
+  "openIssues": 17,
+  "issuesClosedLastHour": 8,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Suppress duplicate NaN warnings by caching normalized invalid inputs and ensuring CLI overrides take precedence in environment variable parsing. (fixes #558)",
-      "ageMinutes": 1
-    }
-  ],
-  "diffMinutes": 2,
-  "diffMinutesMain": 13,
-  "commitsLastHour": 3,
-  "commitsLastDay": 83,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 8,
+  "diffMinutesMain": 8,
+  "commitsLastHour": 4,
+  "commitsLastDay": 84,
   "lastFiveCommitMessages": [
+    {
+      "time": "21:45",
+      "message": "Suppress duplicate NaN warnings by caching normalized invalid in..."
+    },
     {
       "time": "21:31",
       "message": "Extended tests for NaN and whitespace variants in environment va..."
@@ -29,23 +28,14 @@
     {
       "time": "20:40",
       "message": "Optimized NaN warning cache by using a consistent composite key ..."
-    },
-    {
-      "time": "20:32",
-      "message": "Refined environment variable parsing for improved CLI overrides ..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-558",
-        "minutesSinceLastCommit": 2
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 1,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-07T21:44:54.083Z"
+  "generatedAt": "2025-04-07T21:53:27.870Z"
 }
