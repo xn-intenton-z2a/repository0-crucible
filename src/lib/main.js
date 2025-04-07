@@ -28,7 +28,10 @@
  *     In strict mode, non-numeric inputs throw a clear error indicating that only valid numeric formats (integer, decimal, or scientific) are accepted. Allowed formats include integer, decimal or scientific notation.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter and CLI options (--livedata-retry-default and --livedata-delay-default).
  *   - Revised CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and default values.
- *   - Harmonized NaN fallback logging: all variations of non-numeric inputs trigger a single diagnostic warning per unique normalized input, and CLI override values strictly take precedence.
+ *
+ * NOTE on Environment Variable Handling:
+ *   The function parseEnvNumber normalizes the environment variable's raw string input by trimming whitespace, replacing sequences of whitespace (including tabs and non-breaking spaces) with a single space, and converting to lower case. This unified approach ensures that different raw inputs that normalize to the same value trigger only one warning. Additionally, CLI override options (--livedata-retry-default and --livedata-delay-default) take precedence over environment variables.
+ *   Enabling strict mode (--strict-env or setting STRICT_ENV=true) causes any non-numeric input to throw an error with guidance on acceptable formats.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -97,7 +100,7 @@ export function buildOntology() {
  *
  * - In strict mode (when STRICT_ENV is set to true or --strict-env is used): The environment variable must be a valid numeric value.
  *   Any non-numeric input (even with extra whitespace, non-breaking spaces, or tabs) will throw an error immediately, with a clear message indicating that only
- *   valid numbers (integer, decimal, or scientific notation) are accepted. Allowed formats: integer, decimal, or scientific.
+ *   valid numbers (integer, decimal, or scientific notation) are accepted. Allowed formats include integer, decimal or scientific.
  *
  * Supports integers, decimals, and scientific notation.
  * Allows overriding fallback values via CLI options (e.g. --livedata-retry-default and --livedata-delay-default).

@@ -6,10 +6,13 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 
 Key features include:
 
-- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a consolidated helper function that applies default values when not set, empty, or when invalid non-numeric values (e.g., `NaN`, empty strings, or whitespace-only) are provided. Notably, if an environment variable is not a string (e.g., null or undefined), it is silently handled without logging unnecessary warnings.
+- **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a consolidated helper function that applies default values when not set, empty, or when invalid non-numeric values (e.g., `NaN`, empty strings, or whitespace-only) are provided.
   - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid input is provided, a unified diagnostic warning is logged exactly once per unique composite key (combining variable name and normalized input) indicating that the received non-numeric input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. Duplicate warnings for equivalent normalized inputs are suppressed.
-  - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), only valid numeric inputs are accepted. If a non-numeric input is encountered, an error is thrown with a clear message detailing that valid formats include an integer (e.g., 42), a decimal (e.g., 3.14), or scientific notation (e.g., 1e3). This enhanced messaging helps developers quickly understand the required input format.
-  - **CLI Overrides with Precedence:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow you to override fallback values at runtime. CLI override values now take precedence over any configurable fallback and the default value, ensuring consistent behavior even when environment inputs are non-numeric.
+  - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), only valid numeric inputs are accepted. If a non-numeric input is encountered, an error is thrown with clear guidance on acceptable formats, such as:
+    - Integer (e.g., 42)
+    - Decimal (e.g., 3.14)
+    - Scientific notation (e.g., 1e3)
+  - **CLI Overrides with Precedence:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow you to override fallback values at runtime. These CLI values take precedence over environment variable values and defaults.
   - **Global Warning Suppression:** You can disable all environment variable warning logs by setting the environment variable `DISABLE_ENV_WARNINGS` (set to any value other than "0").
 
 - **Custom Endpoints:** Users can override or extend the default list of public API endpoints by setting the environment variable `CUSTOM_API_ENDPOINTS` to a comma-separated list of URLs. **Only endpoints starting with "http://" or "https://" are accepted.** Invalid endpoints will be ignored with a diagnostic warning.
@@ -30,24 +33,59 @@ Key features include:
 
 - **Custom Merging & Refreshing:** New functions provide extended merging and diagnostic capabilities.
 
-### Enhanced Unit Test Coverage for Environment Variable Parsing
+### Environment Variable Handling and Fallback Mechanism
 
-Recent updates include expanded unit tests to ensure robust handling of non-numeric environment variable inputs. Additional tests have been added to cover diverse whitespace variants (including spaces, tabs, and non-breaking spaces) ensuring that different raw inputs that normalize to the same value trigger only one diagnostic warning. CLI override functionality is also verified to take precedence in all such scenarios.
+owl-builder uses a unified approach to parse and handle environment variables. The key details are:
 
-### Unified NaN Handling
+1. **Normalization:**
+   - Input values are trimmed and all sequences of whitespace—including spaces, tabs, and non-breaking spaces—are replaced by a single space, and the value is converted to lowercase. This ensures that different raw inputs (e.g., " NaN ", "NaN", "\u00A0NaN\u00A0") normalize to the same value.
 
-This release has unified the handling of "NaN" and similar non-numeric inputs. All variations now trigger a single diagnostic warning exactly once per unique normalized non-numeric input, providing clear and consistent feedback along with the fallback values (and respective units). CLI override values always supersede non-numeric environment variable values.
+2. **Unified Warning Mechanism:**
+   - In non-strict mode, if a normalized input is found to be invalid (empty or "nan"), a warning is logged exactly once for each unique normalized input, along with the fallback value and its unit (e.g., retries or delay).
 
-### Strict Mode Error Messaging
+3. **CLI Override Precedence:**
+   - CLI options `--livedata-retry-default` and `--livedata-delay-default` override both the environment variables and default values if provided with valid numeric inputs.
 
-In strict mode, if a non-numeric input is received, the error message now provides clear guidance on what constitutes a valid number. For example, acceptable formats include:
-- Integer (e.g., 42)
-- Decimal (e.g., 3.14)
-- Scientific notation (e.g., 1e3)
+4. **Strict Mode:**
+   - When strict mode is enabled (`--strict-env` or `export STRICT_ENV=true`), any environment variable that does not strictly conform to a valid numeric format (integer, decimal, or scientific notation) will cause an error, providing clear guidance on acceptable formats.
+
+#### Example Usage:
+
+```bash
+# Non-strict mode (fallback applied with unified warning)
+export LIVEDATA_RETRY_COUNT=" NaN "
+node src/lib/main.js --build-live
+
+# Strict mode (will throw an error for non-numeric input)
+export STRICT_ENV=true
+export LIVEDATA_INITIAL_DELAY="invalid"
+node src/lib/main.js --build-live
+
+# Using CLI overrides
+node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --build-live
+```
 
 ### Automated Tests
 
-Comprehensive tests now cover fallback behavior, strict mode, CLI override functionality, and suppression of warnings. All tests run automatically in the CI environment using Vitest.
+Comprehensive tests verify the behavior of the environment variable handling, including different whitespace variants, unified warning logging, and CLI override functionality. Run tests using:
+
+```bash
+npm test
+```
+
+### CLI Help
+
+Display the list of commands and usage instructions:
+
+```bash
+node src/lib/main.js --help
+```
+
+### Key CLI Commands
+
+- `--build --allow-deprecated`: Generates a deprecated fallback ontology using static data (**deprecated; use `--build-live` for live data integration**).
+- `--build-live`: Builds an ontology using live data with detailed diagnostic logging.
+- ... (other commands remain as documented)
 
 ## Installation
 
@@ -113,27 +151,27 @@ node src/lib/main.js --help
 
 ### Key CLI Commands
 
-- `--build --allow-deprecated`: Generates a deprecated fallback ontology using static data (**deprecated; use `--build-live` for live data integration**). **Note:** The `--allow-deprecated` flag is required with `--build`.
+- `--build --allow-deprecated`: Generates a deprecated fallback ontology using static data (**deprecated; use `--build-live` for live data integration**).
 - `--build-live`: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt, including exponential backoff delay with jitter.
 - `--persist`: Saves the current ontology to a JSON file.
 - `--load`: Loads the saved ontology.
-- `--query "term"`: Searches for matching ontology concepts. (Async function; use `await` when calling directly.)
+- `--query "term"`: Searches for matching ontology concepts.
 - `--export`: Exports the ontology as extended OWL XML.
 - `--import`: Imports an ontology from extended OWL XML.
 - `--backup`: Creates a backup of the ontology file.
 - `--update "New Title"`: Updates the ontology title using live data.
 - `--clear`: Deletes the local ontology file.
-- `--crawl`: Concurrently crawls multiple public endpoints to gather data. Returns separated arrays for successes and errors.
-- `--fetch-retry`: Fetches data using retry logic with detailed logging of each attempt including jittered exponential backoff.
+- `--crawl`: Concurrently crawls multiple public endpoints to gather data.
+- `--fetch-retry`: Fetches data using retry logic with detailed logging.
 - `--merge-ontologies`: Merges static and live ontology models.
 - `--build-live-log`: Builds a live ontology with additional diagnostic logging.
 - `--serve`: Launches the integrated web server.
 - `--diagnostics`: Runs a diagnostic crawl of public endpoints.
 - `--refresh`: Clears the existing ontology, rebuilds it using live data, and persists the refreshed ontology.
 - `--merge-persist`: Merges static and live ontologies and saves the result.
-- `--strict-env`: Enables strict mode for environment variable parsing, causing invalid inputs to throw errors.
+- `--strict-env`: Enables strict mode for environment variable parsing.
 - `--build-hybrid`: Combines live data with custom static data to produce a hybrid ontology.
-- `--diagnostic-summary`: Provides a concise summary of diagnostic information (timestamp and version).
+- `--diagnostic-summary`: Provides a concise summary of diagnostic information.
 - `--custom-merge`: Merges provided ontologies and appends the current timestamp.
 - `--backup-refresh`: Creates a backup and refreshes the ontology.
 
@@ -164,8 +202,8 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 - Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag for using the deprecated static fallback. Use `--build-live` for live data integration.
-- **Exponential Backoff with Jitter:** Improved handling of environment variables by consolidating parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Non-numeric inputs now trigger a unified diagnostic warning exactly once per unique normalized non-numeric input, displaying the variable name, raw input, normalized input, and fallback value with unit. CLI override values now take precedence over other fallback mechanisms.
-- **Strict Environment Variable Parsing:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on allowed formats, for example: integer (e.g., 42), decimal (e.g., 3.14), or scientific notation (e.g., 1e3).
+- **Exponential Backoff with Jitter:** Improved handling of environment variables by consolidating parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Non-numeric inputs now trigger a unified diagnostic warning exactly once per unique normalized non-numeric input, displaying the variable name, raw input, normalized input, and fallback value with unit. CLI override values now take precedence.
+- **Strict Environment Variable Parsing:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on allowed formats.
 - **CLI Overrides:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow runtime override of fallback values without changing environment variables.
 - **Custom Endpoints:** Supports custom API endpoints via `CUSTOM_API_ENDPOINTS`. Only valid endpoints (beginning with "http://" or "https://") are accepted.
 - **Unified NaN Handling:** Environment variable parsing now uniformly handles non-numeric values (including "NaN" with various whitespace variants), logging a unified warning exactly once per unique normalized non-numeric input, ensuring consistent fallback behavior.
