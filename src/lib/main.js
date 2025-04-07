@@ -28,8 +28,7 @@
  *     In strict mode, non-numeric inputs throw a clear error indicating that only valid numeric formats (integer, decimal, or scientific) are accepted. Allowed formats include integer, decimal or scientific notation.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter and CLI options (--livedata-retry-default and --livedata-delay-default).
  *   - Revised CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and default values.
- *   - Simplified NaN input parsing and unified fallback logic to ensure only one warning per unique invalid input is logged, removing redundancy.
- *   - Refined diagnostic logging messages to clearly indicate non-strict mode fallback behavior.
+ *   - Harmonized NaN fallback logging: all variations of non-numeric inputs trigger a single diagnostic warning per unique normalized input, and CLI override values strictly take precedence.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -131,6 +130,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   }
 
   let normalized = normalizeEnvValue(rawValue);
+  const isInvalid = (normalized === "" || normalized === "nan" || isNaN(Number(normalized)));
 
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
     const numericRegex = /^-?\d+(\.\d+)?([eE][-+]?\d+)?$/;
@@ -140,8 +140,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
     return Number(normalized);
   }
 
-  // Non-strict mode: check for invalid or non-numeric values
-  if (!normalized || normalized === "nan" || isNaN(Number(normalized))) {
+  if (isInvalid) {
     if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
       const warnKey = `${varName}:${normalized}`;
       if (!envWarningCache.has(warnKey)) {
