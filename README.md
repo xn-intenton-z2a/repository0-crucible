@@ -8,7 +8,7 @@ Key features include:
 
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a standardized helper function that applies default values when not set, empty, or when non-numeric values (e.g., `NaN`, empty strings, or whitespace-only) are provided.
   
-  - **Non-Numeric Values Handling:** In non-strict mode, if a non-numeric value such as `NaN`, `abc`, or an empty/whitespace-only string is provided, a one-time warning is logged (per normalized input, where values are trimmed and lowercased) and the system falls back to a default value (3 retries and 100ms delay) or a provided configurable fallback.
+  - **Non-Numeric Values Handling:** In non-strict mode, if a non-numeric value such as `NaN`, `abc`, or an empty/whitespace-only string is provided, a one-time warning is logged (per normalized input, where values are trimmed and lowercased) and the system falls back to a default value (3 retries and 100ms delay) or a configurable fallback.
   
   - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), the environment variable must strictly be a valid numeric value in integer, decimal, or scientific notation. Any deviation (including variants of `NaN` with extra whitespace) will immediately result in an error.
   
@@ -192,6 +192,7 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 - **Strict Environment Variable Parsing:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid values (including any variant of `NaN` with extra whitespace) will cause an immediate error.
 - **CLI Overrides:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow runtime override of fallback values without changing environment variables.
 - **Custom Endpoints:** Supports custom API endpoints via `CUSTOM_API_ENDPOINTS`. Only valid endpoints (beginning with "http://" or "https://") are accepted.
+- **Normalization Refactor:** The logic for handling non-numeric environment variables has been refactored into a dedicated helper function to ensure consistent processing and one-time warning logging for normalized inputs.
 - **Crawling Update:** crawlOntologies now returns results segregated into successes and errors.
 - **Asynchronous Query:** queryOntology now uses asynchronous file operations for better performance.
 - **Disable Live Data:** Use `DISABLE_LIVE_DATA` or the `--disable-live` CLI flag to disable live data integration.
