@@ -28,16 +28,16 @@
 <p class="md-github">Key features include:</p>
 <ul class="md-github">
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Live Data Integration:</strong> Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code> are parsed using a standardized helper function that applies default values when not set or when non-numeric values are encountered.</p>
+<p class="md-github"><strong class="md-github">Live Data Integration:</strong> Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code> are parsed using a standardized helper function that applies default values when not set, empty, or when non-numeric values (e.g., <code class="md-github">NaN</code>, empty strings, or whitespace-only) are provided.</p>
 <ul class="md-github">
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Non-Numeric Values Handling:</strong> If a non-numeric value (e.g., <code class="md-github">NaN</code>, <code class="md-github">abc</code>, empty or whitespace-only strings) is provided in non-strict mode, a warning is logged only once per unique normalized input (values are trimmed and lowercased for comparison) and the system falls back to a default value (3 retries and 100ms delay) or a provided configurable fallback.</p>
+<p class="md-github"><strong class="md-github">Non-Numeric Values Handling:</strong> In non-strict mode, if a non-numeric value such as <code class="md-github">NaN</code>, <code class="md-github">abc</code>, or an empty/whitespace-only string is provided, a one-time warning is logged (per normalized input, where values are trimmed and lowercased) and the system falls back to a default value (3 retries and 100ms delay) or a provided configurable fallback.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Strict Mode:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or <code class="md-github">export STRICT_ENV=true</code>), the provided environment variable must match a strict numeric format (integer, decimal, or scientific notation). Any deviation, including any variant of &quot;NaN&quot; with extra whitespace or other non-numeric strings, will immediately cause an error.</p>
+<p class="md-github"><strong class="md-github">Strict Mode:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or by setting <code class="md-github">STRICT_ENV=true</code>), the environment variable must strictly be a valid numeric value in integer, decimal, or scientific notation. Any deviation (including variants of <code class="md-github">NaN</code> with extra whitespace) will immediately result in an error.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">CLI Override of Fallbacks:</strong> New CLI options <code class="md-github">--livedata-retry-default</code> and <code class="md-github">--livedata-delay-default</code> allow you to override the default fallback values for <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code> at runtime, without modifying environment variables directly.</p>
+<p class="md-github"><strong class="md-github">CLI Overrides:</strong> The CLI options <code class="md-github">--livedata-retry-default &lt;number&gt;</code> and <code class="md-github">--livedata-delay-default &lt;number&gt;</code> allow you to override the default fallback values for live data fetching at runtime. These options take precedence over environment variable values when those are non-numeric.</p>
 </li>
 </ul>
 </li>
@@ -76,20 +76,16 @@
 <p class="md-github"><strong class="md-github">Valid Numeric Inputs:</strong> Accepts standard numeric values and scientific notation. For example, <code class="md-github">export LIVEDATA_RETRY_COUNT=3</code> or <code class="md-github">export LIVEDATA_INITIAL_DELAY=1e2</code>.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Invalid or Non-Numeric Inputs:</strong> If a non-numeric value (e.g., <code class="md-github">NaN</code>, <code class="md-github">abc</code>, or empty/whitespace-only strings) is provided in non-strict mode, owl-builder logs a one-time warning (per normalized value) and falls back to default values (3 retries and 100ms delay) or a provided configurable fallback. The warning cache ensures that duplicate messages for the same normalized input are avoided.</p>
+<p class="md-github"><strong class="md-github">Invalid or Non-Numeric Inputs:</strong> In non-strict mode, if a non-numeric value (e.g., <code class="md-github">NaN</code>, <code class="md-github">abc</code>, or empty/whitespace-only) is provided, a one-time warning is logged for that normalized value and the system falls back to default values (3 retries and 100ms delay) or a configurable fallback, ensuring that duplicate warnings are not logged for the same input.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Strict Mode:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or <code class="md-github">export STRICT_ENV=true</code>), the environment variable must strictly conform to integer, decimal, or scientific notation formats. Any deviation, including variations of &quot;NaN&quot; with extra whitespace, immediately results in an error.</p>
+<p class="md-github"><strong class="md-github">Strict Mode:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or <code class="md-github">export STRICT_ENV=true</code>), the environment variable must conform exactly to a numeric format (integer, decimal, or scientific notation). Any deviation, such as <code class="md-github">NaN</code>, <code class="md-github">NaN</code>, or other non-numeric strings, will immediately cause an error.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">CLI Overrides:</strong> Additionally, you can override the fallback values by using the CLI options <code class="md-github">--livedata-retry-default &lt;number&gt;</code> and <code class="md-github">--livedata-delay-default &lt;number&gt;</code>, which take precedence over the environment variable values when those are non-numeric.</p>
+<p class="md-github"><strong class="md-github">CLI Overrides:</strong> You can override the fallback values without modifying your environment variables using CLI options:</p>
 </li>
 </ul>
-<p class="md-github">Example:</p>
-<pre class="md-github"><code class="md-github language-bash">export LIVEDATA_RETRY_COUNT=NaN      # Defaults to 3 (or CLI override) with a warning in non-strict mode
-export LIVEDATA_INITIAL_DELAY=abc     # Defaults to 100ms (or CLI override) with a warning in non-strict mode
-
-# Using CLI overrides:
+<pre class="md-github"><code class="md-github language-bash"># Example: Using CLI overrides for fallback values
 node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="custom-api-endpoints" href="#custom-api-endpoints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Custom API Endpoints</h3>
@@ -98,15 +94,15 @@ node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250
 <pre class="md-github"><code class="md-github language-bash">export CUSTOM_API_ENDPOINTS=&quot;https://example.com/api, https://another.example.com&quot;
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="configurable-diagnostic-logging" href="#configurable-diagnostic-logging"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configurable Diagnostic Logging</h3>
-<p class="md-github">Diagnostic messages can be controlled via the <code class="md-github">DIAGNOSTIC_LOG_LEVEL</code> environment variable. The supported levels are:</p>
+<p class="md-github">Diagnostic messages can be controlled via the <code class="md-github">DIAGNOSTIC_LOG_LEVEL</code> environment variable. Supported levels are:</p>
 <ul class="md-github">
 <li class="md-github"><code class="md-github">off</code>: No diagnostic messages are logged.</li>
-<li class="md-github"><code class="md-github">error</code>: Only error level messages are logged.</li>
+<li class="md-github"><code class="md-github">error</code>: Only error messages are logged.</li>
 <li class="md-github"><code class="md-github">warn</code>: Warning and error messages are logged.</li>
 <li class="md-github"><code class="md-github">info</code>: Info, warning, and error messages are logged.</li>
 <li class="md-github"><code class="md-github">debug</code>: All messages (debug, info, warn, error) are logged. (Default)</li>
 </ul>
-<p class="md-github">For example, to suppress all diagnostic logs, use:</p>
+<p class="md-github">For example, to suppress all diagnostic logs:</p>
 <pre class="md-github"><code class="md-github language-bash">export DIAGNOSTIC_LOG_LEVEL=off
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
@@ -134,7 +130,7 @@ npm install
 node src/lib/main.js --strict-env
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="override-fallback-values-via-cli" href="#override-fallback-values-via-cli"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Override Fallback Values via CLI</h3>
-<p class="md-github">You can override the default fallback values for live data fetching without modifying your environment variables directly using the CLI options:</p>
+<p class="md-github">Override the default fallback values for live data fetching without modifying your environment variables:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="cli-help" href="#cli-help"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Help</h3>
@@ -147,14 +143,14 @@ node src/lib/main.js --strict-env
 <li class="md-github"><code class="md-github">--build-live</code>: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt, including exponential backoff delay with jitter.</li>
 <li class="md-github"><code class="md-github">--persist</code>: Saves the current ontology to a JSON file.</li>
 <li class="md-github"><code class="md-github">--load</code>: Loads the saved ontology.</li>
-<li class="md-github"><code class="md-github">--query &quot;term&quot;</code>: Searches for matching ontology concepts. (This function is asynchronous; use <code class="md-github">await</code> if calling directly in code.)</li>
+<li class="md-github"><code class="md-github">--query &quot;term&quot;</code>: Searches for matching ontology concepts. (Async function; use <code class="md-github">await</code> when calling directly.)</li>
 <li class="md-github"><code class="md-github">--export</code>: Exports the ontology as extended OWL XML.</li>
 <li class="md-github"><code class="md-github">--import</code>: Imports an ontology from extended OWL XML.</li>
 <li class="md-github"><code class="md-github">--backup</code>: Creates a backup of the ontology file.</li>
 <li class="md-github"><code class="md-github">--update &quot;New Title&quot;</code>: Updates the ontology title using live data.</li>
 <li class="md-github"><code class="md-github">--clear</code>: Deletes the local ontology file.</li>
-<li class="md-github"><code class="md-github">--crawl</code>: Concurrently crawls multiple public endpoints to gather data. The output separates successful responses and errors.</li>
-<li class="md-github"><code class="md-github">--fetch-retry</code>: Fetches data using retry logic with detailed logging of each attempt and jittered exponential backoff.</li>
+<li class="md-github"><code class="md-github">--crawl</code>: Concurrently crawls multiple public endpoints to gather data. Returns separated arrays for successes and errors.</li>
+<li class="md-github"><code class="md-github">--fetch-retry</code>: Fetches data using retry logic with detailed logging of each attempt including jittered exponential backoff.</li>
 <li class="md-github"><code class="md-github">--merge-ontologies</code>: Merges static and live ontology models.</li>
 <li class="md-github"><code class="md-github">--build-live-log</code>: Builds a live ontology with additional diagnostic logging.</li>
 <li class="md-github"><code class="md-github">--serve</code>: Launches the integrated web server.</li>
@@ -168,7 +164,7 @@ node src/lib/main.js --strict-env
 <li class="md-github"><code class="md-github">--backup-refresh</code>: Creates a backup and refreshes the ontology.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="robust-web-server-integration-test" href="#robust-web-server-integration-test"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Robust Web Server Integration Test</h2>
-<p class="md-github">A new integration test has been added that starts the web server, sends an actual HTTP request, verifies that the response status is 200 and that the response body is &quot;owl-builder Web Server Running\n&quot;, and gracefully shuts down the server post-test.</p>
+<p class="md-github">A new integration test starts the web server, sends an actual HTTP request, verifies that the response status is 200 and that the response body is &quot;owl-builder Web Server Running\n&quot;, and gracefully shuts down the server after the test.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="endpoints-and-testing" href="#endpoints-and-testing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Endpoints and Testing</h2>
 <p class="md-github">owl-builder uses a broad list of public endpoints to build ontologies, such as:</p>
 <ul class="md-github">
@@ -178,7 +174,7 @@ node src/lib/main.js --strict-env
 <li class="md-github"><code class="md-github">https://api.coindesk.com/v1/bpi/currentprice.json</code></li>
 <li class="md-github">...</li>
 </ul>
-<p class="md-github"><em class="md-github">Note:</em> Ensure your network environment permits access to these endpoints for successful data retrieval.</p>
+<p class="md-github"><em class="md-github">Note:</em> Ensure that your network allows access to these endpoints for successful data retrieval.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="change-log" href="#change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change Log</h2>
 <p class="md-github"><strong class="md-github">Version 0.0.39</strong></p>
 <ul class="md-github">
@@ -188,19 +184,17 @@ node src/lib/main.js --strict-env
 <li class="md-github">Extended ontology model wrappers and introduced new merging and refreshing functions.</li>
 <li class="md-github">Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.</li>
 <li class="md-github">Refactored file system operations to use asynchronous, non-blocking APIs.</li>
-<li class="md-github"><strong class="md-github">CLI Update:</strong> The <code class="md-github">--build</code> command now requires the <code class="md-github">--allow-deprecated</code> flag to use the deprecated static fallback. Without the flag, a warning is issued. Use <code class="md-github">--build-live</code> for live data integration.</li>
-<li class="md-github"><strong class="md-github">Exponential Backoff with Jitter:</strong> Improved handling of environment variables by standardizing parsing of <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code>. Non-numeric values trigger a one-time warning per normalized input and defaults are applied unless overridden by CLI options.</li>
-<li class="md-github"><strong class="md-github">Strict Environment Variable Parsing:</strong> Enforced strict parsing mode (via <code class="md-github">--strict-env</code> or <code class="md-github">export STRICT_ENV=true</code>) to ensure only valid numeric inputs are accepted, throwing errors on invalid values.</li>
-<li class="md-github"><strong class="md-github">CLI Overrides:</strong> New CLI options <code class="md-github">--livedata-retry-default</code> and <code class="md-github">--livedata-delay-default</code> allow runtime override of fallback values.</li>
-<li class="md-github"><strong class="md-github">Custom Endpoints:</strong> Supports custom API endpoints via <code class="md-github">CUSTOM_API_ENDPOINTS</code>. Only valid endpoints (starting with &quot;http://&quot; or &quot;https://&quot;) are accepted.</li>
-<li class="md-github"><strong class="md-github">Crawling Update:</strong> Refactored crawlOntologies to return results segregated into successes and errors.</li>
-<li class="md-github">Added robust HTTP endpoint integration testing for the web server.</li>
-<li class="md-github"><strong class="md-github">Asynchronous Query:</strong> Refactored <code class="md-github">queryOntology</code> to use asynchronous file operations for improved performance.</li>
-<li class="md-github"><strong class="md-github">Disable Live Data:</strong> New option to disable live data integration by setting <code class="md-github">DISABLE_LIVE_DATA</code> or using <code class="md-github">--disable-live</code> CLI flag.</li>
-<li class="md-github"><strong class="md-github">Configurable Diagnostic Logging:</strong> Diagnostic messages can now be controlled using <code class="md-github">DIAGNOSTIC_LOG_LEVEL</code>.</li>
-<li class="md-github"><strong class="md-github">Warning Cache Normalization:</strong> Warning cache logs a single warning per normalized input, avoiding duplicates.</li>
-<li class="md-github"><strong class="md-github">Automated Tests:</strong> Comprehensive tests have been added covering environment variable parsing, CLI fallback options, and core functionality.</li>
-<li class="md-github">Updated documentation to clarify handling of non-numeric environment variables, the role of the warning cache, CLI overrides, and differences between strict and non-strict modes.</li>
+<li class="md-github"><strong class="md-github">CLI Update:</strong> The <code class="md-github">--build</code> command now requires the <code class="md-github">--allow-deprecated</code> flag for using the deprecated static fallback. Use <code class="md-github">--build-live</code> for live data integration.</li>
+<li class="md-github"><strong class="md-github">Exponential Backoff with Jitter:</strong> Improved handling of environment variables by standardizing parsing of <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code>. Non-numeric values trigger a one-time warning per normalized input and fallback defaults (or CLI overrides) are applied.</li>
+<li class="md-github"><strong class="md-github">Strict Environment Variable Parsing:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or <code class="md-github">export STRICT_ENV=true</code>), only valid numeric inputs are accepted. Invalid values (including any variant of <code class="md-github">NaN</code> with extra whitespace) will cause an immediate error.</li>
+<li class="md-github"><strong class="md-github">CLI Overrides:</strong> New CLI options <code class="md-github">--livedata-retry-default</code> and <code class="md-github">--livedata-delay-default</code> allow runtime override of fallback values without changing environment variables.</li>
+<li class="md-github"><strong class="md-github">Custom Endpoints:</strong> Supports custom API endpoints via <code class="md-github">CUSTOM_API_ENDPOINTS</code>. Only valid endpoints (beginning with &quot;http://&quot; or &quot;https://&quot;) are accepted.</li>
+<li class="md-github"><strong class="md-github">Crawling Update:</strong> crawlOntologies now returns results segregated into successes and errors.</li>
+<li class="md-github"><strong class="md-github">Asynchronous Query:</strong> queryOntology now uses asynchronous file operations for better performance.</li>
+<li class="md-github"><strong class="md-github">Disable Live Data:</strong> Use <code class="md-github">DISABLE_LIVE_DATA</code> or the <code class="md-github">--disable-live</code> CLI flag to disable live data integration.</li>
+<li class="md-github"><strong class="md-github">Configurable Diagnostic Logging:</strong> Control diagnostic messages with <code class="md-github">DIAGNOSTIC_LOG_LEVEL</code>.</li>
+<li class="md-github"><strong class="md-github">Warning Cache Normalization:</strong> Ensures a single warning per normalized input.</li>
+<li class="md-github"><strong class="md-github">Automated Tests:</strong> Comprehensive tests now cover fallback behavior, strict mode, and CLI override functionality.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
 <p class="md-github">Contributions are welcome! Please review <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for coding standards, testing requirements, and workflow guidelines.</p>
@@ -209,7 +203,7 @@ node src/lib/main.js --strict-env
 
   </section>
   <footer>
-    <p>Generated on 2025-04-07T12:09:03.838Z</p>
+    <p>Generated on 2025-04-07T12:24:38.607Z</p>
   </footer>
 </body>
 </html>

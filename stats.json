@@ -1,23 +1,22 @@
 {
-  "openIssues": 9,
-  "issuesClosedLastHour": 9,
+  "openIssues": 7,
+  "issuesClosedLastHour": 10,
   "issuesClosedLastDay": 100,
-  "openPRs": 2,
-  "prDetails": [
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 8,
+  "diffMinutesMain": 8,
+  "commitsLastHour": 7,
+  "commitsLastDay": 59,
+  "lastFiveCommitMessages": [
     {
-      "title": "Update README to clearly document NaN fallback strict mode behavior and CLI override options for live data fetching. (fixes #495)",
-      "ageMinutes": 10
+      "time": "12:15",
+      "message": "Update README to clearly document NaN fallback strict mode behav..."
     },
     {
-      "title": "Bump eslint from 9.23.0 to 9.24.0",
-      "ageMinutes": 28
-    }
-  ],
-  "diffMinutes": 7,
-  "diffMinutesMain": 8,
-  "commitsLastHour": 6,
-  "commitsLastDay": 57,
-  "lastFiveCommitMessages": [
+      "time": "12:10",
+      "message": "Bump eslint from 9.23.0 to 9.24.0 (#494)\n\nBumps [eslint](https:/..."
+    },
     {
       "time": "12:00",
       "message": "Bump eslint-plugin-prettier from 5.2.3 to 5.2.6 (#493)\n\nBumps [e..."
@@ -29,31 +28,14 @@
     {
       "time": "11:43",
       "message": "Bump eslint-plugin-react from 7.37.4 to 7.37.5 (#490)\n\nBumps [es..."
-    },
-    {
-      "time": "11:35",
-      "message": "Improved documentation for non-numeric environment variable hand..."
-    },
-    {
-      "time": "11:28",
-      "message": "Improved strict mode enforcement for NaN env vars using regex va..."
     }
   ],
   "branches": {
-    "count": 2,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-495",
-        "minutesSinceLastCommit": 11
-      },
-      {
-        "branch": "dependabot/npm_and_yarn/eslint-9.24.0",
-        "minutesSinceLastCommit": 7
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 19,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-07T12:08:49.863Z"
+  "generatedAt": "2025-04-07T12:24:19.229Z"
 }
