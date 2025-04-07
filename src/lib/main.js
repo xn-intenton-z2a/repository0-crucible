@@ -25,7 +25,7 @@
  *   - Implemented exponential backoff in fetchDataWithRetry with configurable retries, delay and randomized jitter.
  *   - Consolidated and standardized environment variable parsing to robustly handle non-numeric inputs (e.g., variants of "NaN" with extra whitespace, non-breaking spaces, tabs, etc.).
  *     In non-strict mode, an invalid input triggers a one-time diagnostic warning per unique composite key (variable name and normalized input) with fallback values (and units) applied.
- *     In strict mode, non-numeric inputs throw a clear error indicating that only valid numeric formats (integer, decimal, or scientific) are accepted.
+ *     In strict mode, non-numeric inputs throw a clear error indicating that only valid numeric formats (integer, decimal, or scientific) are accepted. Allowed formats include integer, decimal or scientific notation.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter and CLI options (--livedata-retry-default and --livedata-delay-default).
  *   - Revised CLI override precedence in environment variable parsing: CLI override values are now prioritized over configurable fallback values and default values.
  *   - Introduced additional diagnostic logging details in live data fetching functions, including reporting of exponential backoff base delay and jitter.
@@ -60,15 +60,15 @@ export function resetEnvWarningCache() {
 
 /**
  * Helper function to normalize environment variable values.
- * Trims the value, replaces all whitespace (including non-breaking spaces, tabs, etc.) with a single space, and converts to lower case.
+ * Trims the value, replaces all sequences of whitespace (including non-breaking spaces, tabs, etc.) with a single space, and converts to lower case.
  * If the value is undefined or not a string, returns an empty string.
  * @param {string | undefined | null} value 
  * @returns {string}
  */
 function normalizeEnvValue(value) {
   if (typeof value !== "string") return "";
-  // Replace any whitespace characters (including NBSP) with a single space, then trim and lowercase it
-  return value.replace(/\s|\u00A0/g, ' ').trim().toLowerCase();
+  // Replace any sequence of whitespace characters (including NBSP) with a single space, then trim and lowercase it
+  return value.replace(/([\s\u00A0])+/g, ' ').trim().toLowerCase();
 }
 
 /**
@@ -97,7 +97,7 @@ export function buildOntology() {
  *
  * - In strict mode (when STRICT_ENV is set to true or --strict-env is used): The environment variable must be a valid numeric value.
  *   Any non-numeric input (even with extra whitespace, non-breaking spaces, or tabs) will throw an error immediately, with a clear message indicating that only
- *   valid numbers (integer, decimal, or scientific notation) are accepted.
+ *   valid numbers (integer, decimal, or scientific notation) are accepted. Allowed formats: integer, decimal, or scientific.
  *
  * Supports integers, decimals, and scientific notation.
  * Allows overriding fallback values via CLI options (e.g. --livedata-retry-default and --livedata-delay-default).
