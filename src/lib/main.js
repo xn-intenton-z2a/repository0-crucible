@@ -31,9 +31,7 @@
  *   - Enforced strict handling of 'NaN' values: In strict mode, any value that is not a valid numerical format (including variants like 'NaN' with extra whitespace) will throw an error immediately.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
  *   - Enhanced handling of 'NaN' values in environment variable parsing to ensure consistent fallback behavior and suppress duplicate warnings for equivalent inputs.
- *   - Consolidated environment variable parsing and diagnostic logging to provide clearer and more actionable messages in both strict and non-strict modes.
- *   - Streamlined the fallback logic and standardized the warning messages for non-numeric environment variables to ensure only one warning per unique normalized input is logged.
- *   - Enhanced unit tests for additional edge cases in non-numeric environment variable handling (including mixed-case, extra spaces, and null values).
+ *   - Improved diagnostic messages and inline documentation for environment variable parsing to clearly indicate fallback values and valid formats.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -96,7 +94,8 @@ export function buildOntology() {
  *   Duplicate warnings for the same normalized input are suppressed via a cache.
  *
  * - In strict mode (when STRICT_ENV is set to true or --strict-env is used): The environment variable must be a valid numeric value.
- *   Any non-numeric input (even with extra whitespace) will throw an error immediately, with a clear message indicating the invalid input.
+ *   Any non-numeric input (even with extra whitespace) will throw an error immediately, with a clear message indicating that only
+ *   valid numbers (integers, decimals, or scientific notation) are accepted.
  *
  * Supports integers, decimals, and scientific notation.
  * Allows overriding fallback values via CLI options (e.g. --livedata-retry-default and --livedata-delay-default).
@@ -121,11 +120,11 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
     }
   }
   
-  // Strict mode check with regex validation
+  // Strict mode: when STRICT_ENV is true, input must strictly match numeric format.
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
     const numericRegex = /^-?\d+(\.\d+)?([eE][-+]?\d+)?$/;
     if (!numericRegex.test(trimmed)) {
-      throw new Error(`Strict mode: Environment variable ${varName} received invalid non-numeric input '${value}'.`);
+      throw new Error(`Strict mode: Environment variable ${varName} must be a valid numeric value (allowed formats: integer, decimal, or scientific notation). Received '${value}'.`);
     }
     return Number(trimmed);
   }
@@ -133,7 +132,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   // Non-strict mode handling: if input is empty, 'NaN', or cannot be converted to a number
   if (!trimmed || normalized === "nan" || isNaN(Number(trimmed))) {
     if (typeof value === "string" && envWarningCache.get(varName) !== normalized) {
-      logDiagnostic(`Warning: Environment variable ${varName} received non-numeric input ('${value}'). Defaulting to ${fallback}${unit}.`, "warn");
+      logDiagnostic(`Warning: Environment variable ${varName} received invalid non-numeric input ('${value}'). Defaulting to ${fallback}${unit}.`, "warn");
       envWarningCache.set(varName, normalized);
     }
     return fallback;
