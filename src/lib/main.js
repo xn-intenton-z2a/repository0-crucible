@@ -129,7 +129,8 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
     return fallback;
   }
 
-  let normalized = normalizeEnvValue(rawValue);
+  const normalized = normalizeEnvValue(rawValue);
+  // Determine if the normalized value is invalid (empty or represents NaN)
   const isInvalid = (normalized === "" || normalized === "nan" || isNaN(Number(normalized)));
 
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
@@ -141,7 +142,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   }
 
   if (isInvalid) {
-    // Only log a warning if warnings are not globally disabled
+    // Log a warning only once per unique combination of variable name and normalized input
     if (!(process.env.DISABLE_ENV_WARNINGS && process.env.DISABLE_ENV_WARNINGS !== "0")) {
       const warnKey = `${varName}:${normalized}`;
       if (!envWarningCache.has(warnKey)) {
