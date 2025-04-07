@@ -1,51 +1,41 @@
 {
   "openIssues": 2,
   "issuesClosedLastHour": 4,
-  "issuesClosedLastDay": 35,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Fixed exponential backoff delay calculation to safely handle NaN values from LIVEDATA_INITIAL_DELAY. (fixes #418)",
-      "ageMinutes": 0
-    }
-  ],
-  "diffMinutes": 0,
-  "diffMinutesMain": 10,
-  "commitsLastHour": 4,
-  "commitsLastDay": 18,
+  "issuesClosedLastDay": 39,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 5,
+  "diffMinutesMain": 6,
+  "commitsLastHour": 6,
+  "commitsLastDay": 22,
   "lastFiveCommitMessages": [
+    {
+      "time": "02:34",
+      "message": "Add new prompt, refine others, and reorganize files\n\nIntroduce a..."
+    },
+    {
+      "time": "02:27",
+      "message": "Robustly handle non-numeric LIVEDATA_RETRY_COUNT and LIVEDATA_IN..."
+    },
+    {
+      "time": "02:14",
+      "message": "Update from agentic-lib"
+    },
+    {
+      "time": "02:03",
+      "message": "Fixed exponential backoff delay calculation to safely handle NaN..."
+    },
     {
       "time": "01:52",
       "message": "Update from agentic-lib"
-    },
-    {
-      "time": "01:43",
-      "message": "Update from agentic-lib"
-    },
-    {
-      "time": "01:40",
-      "message": "Enhance live data integration with configurable retry count and ..."
-    },
-    {
-      "time": "01:23",
-      "message": "Implemented exponential backoff in fetchDataWithRetry with corre..."
-    },
-    {
-      "time": "00:36",
-      "message": "Require --allow-deprecated flag with --build to explicitly invok..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-418",
-        "minutesSinceLastCommit": 0
-      }
-    ]
+    "count": 0,
+    "details": []
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-07T02:03:09.653Z"
+  "generatedAt": "2025-04-07T02:41:01.739Z"
 }
