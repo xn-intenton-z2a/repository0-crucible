@@ -34,7 +34,7 @@
 <li class="md-github"><strong class="md-github">Concurrent Data Crawling:</strong> Gather real-time data concurrently from a range of public endpoints. The crawl functionality has been enhanced to return results with separate arrays for successful responses and errors, simplifying downstream processing.</li>
 <li class="md-github"><strong class="md-github">Diverse Ontology Models:</strong> Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).</li>
 <li class="md-github"><strong class="md-github">Enhanced Diagnostics:</strong> View timestamped logs with detailed context for each operation, facilitating easier tracing and debugging.</li>
-<li class="md-github"><strong class="md-github">Web Server Integration:</strong> Launch a simple web server for quick status checks.</li>
+<li class="md-github"><strong class="md-github">Web Server Integration:</strong> Launch a simple web server for quick status checks. <strong class="md-github">New:</strong> The server now supports integration testing by exposing a function to start the server and gracefully shut it down after performing real HTTP requests.</li>
 <li class="md-github"><strong class="md-github">Custom Merging &amp; Refreshing:</strong> New functions provide extended merging and diagnostic capabilities.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
@@ -80,6 +80,8 @@ npm install
 <li class="md-github"><code class="md-github">--custom-merge</code>: Merges provided ontologies and appends a current timestamp.</li>
 <li class="md-github"><code class="md-github">--backup-refresh</code>: Creates a backup and refreshes the ontology.</li>
 </ul>
+<h2 class="md-github"><a class="md-github__anchor" name="robust-web-server-integration-test" href="#robust-web-server-integration-test"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Robust Web Server Integration Test</h2>
+<p class="md-github">A new integration test has been added that starts the web server, sends an actual HTTP request, verifies that the response status code is 200 and that the response body matches &quot;owl-builder Web Server Running\n&quot;, and gracefully shuts down the server after testing.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="endpoints-and-testing" href="#endpoints-and-testing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Endpoints and Testing</h2>
 <p class="md-github">owl-builder uses a broad list of public endpoints to build ontologies. Examples include:</p>
 <ul class="md-github">
@@ -111,7 +113,7 @@ npm install
 <li class="md-github"><code class="md-github">https://api/spacexdata.com/v4/rockets</code></li>
 <li class="md-github"><code class="md-github">https://api/quotable.io/random</code></li>
 </ul>
-<p class="md-github">Note: Ensure that your network environment allows access to these endpoints for successful data retrieval.</p>
+<p class="md-github"><em class="md-github">Note:</em> Ensure that your network environment allows access to these endpoints for successful data retrieval.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="change-log" href="#change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change Log</h2>
 <p class="md-github"><strong class="md-github">Version 0.0.39</strong></p>
 <ul class="md-github">
@@ -124,8 +126,7 @@ npm install
 <li class="md-github"><strong class="md-github">CLI Update:</strong> The <code class="md-github">--build</code> command now requires the <code class="md-github">--allow-deprecated</code> flag to use the deprecated static fallback. Without the flag, a warning is issued. Use <code class="md-github">--build-live</code> for live data integration.</li>
 <li class="md-github"><strong class="md-github">Exponential Backoff with Jitter:</strong> Improved environment variable parsing in the live data fetch function by standardizing the parsing of <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code>. Non-numeric values now trigger a diagnostic warning once per variable, while defaults are applied silently when not set.</li>
 <li class="md-github"><strong class="md-github">Crawling Update:</strong> Refactored crawlOntologies to return an object with separate arrays for successes and errors to simplify downstream processing.</li>
-<li class="md-github">Removed duplicate ESLint key from package.json to avoid build warnings.</li>
-<li class="md-github">Updated documentation in this README to reflect recent changes and guidelines per CONTRIBUTING.md.</li>
+<li class="md-github">Added robust HTTP endpoint integration testing for the web server.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
 <p class="md-github">Contributions are welcome! Please review <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for our coding standards, testing requirements, and workflow guidelines.</p>
@@ -134,7 +135,7 @@ npm install
 
   </section>
   <footer>
-    <p>Generated on 2025-04-07T06:12:13.438Z</p>
+    <p>Generated on 2025-04-07T06:27:43.539Z</p>
   </footer>
 </body>
 </html>
