@@ -33,6 +33,8 @@
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
+ *
+ * NOTE: Non-numeric values, such as 'NaN' (even with extra whitespace), will trigger a one-time diagnostic warning in non-strict mode and fall back to default values. In strict mode (STRICT_ENV=true or --strict-env), such values will immediately throw an error.
  */
 
 import fs, { promises as fsp } from "fs";
@@ -80,6 +82,8 @@ export function buildOntology() {
  *
  * Additionally, a configurable fallback value can be provided as the third parameter.
  * If provided, it overrides the default fallback value when the environment variable is invalid.
+ *
+ * NOTE: Non-numeric values, such as "NaN" (even with extra whitespace), will trigger a one-time diagnostic warning in non-strict mode and fall back to default values, whereas in strict mode they immediately throw an error.
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const value = process.env[varName];
