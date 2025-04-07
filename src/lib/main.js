@@ -29,13 +29,11 @@
  *   - Allow custom configuration of public API endpoints via the CUSTOM_API_ENDPOINTS environment variable. When set with a comma-separated list, these endpoints that are valid (starting with "http://" or "https://") are merged with the default list.
  *   - Added strict environment variable parsing mode: When STRICT_ENV is set to true or --strict-env flag is used, non-numeric configuration values will throw an error instead of falling back silently.
  *   - Enforced strict handling of 'NaN' values: In strict mode, any value equal to 'NaN' (including with extra whitespace) will throw an error immediately.
- *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function.
+ *   - Added configurable fallback values for non-numeric environment variables via an optional parameter in the parsing function. Also, added new CLI options --livedata-retry-default and --livedata-delay-default to override fallback values at runtime.
  *   - Normalized non-numeric warning caching to avoid duplicate warnings for equivalent values.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
- *
- * IMPORTANT: The parseEnvNumber function now explicitly logs a one-time diagnostic warning for non-numeric inputs (such as "NaN", "NaN " with extra whitespace, empty or whitespace-only strings) and falls back to a default value or a provided configurable fallback. In strict mode, these inputs throw an error. Use resetEnvWarningCache() to clear the warning cache (mainly for testing purposes).
  */
 
 import fs, { promises as fsp } from "fs";
@@ -86,7 +84,7 @@ export function buildOntology() {
  * 
  * Additionally, a configurable fallback value can be provided as the third parameter.
  * If provided, it overrides the default fallback value when the environment variable is invalid.
- *
+ * 
  * NOTE: Non-numeric values, including explicit "NaN" (with any leading/trailing whitespace), trigger a diagnostic warning once per normalized input in non-strict mode, and fallback is used. In strict mode, an error is thrown.
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
@@ -94,6 +92,20 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   const trimmed = value !== undefined ? value.trim() : "";
   const normalized = trimmed.toLowerCase();
   const unit = varName === "LIVEDATA_RETRY_COUNT" ? " retries" : (varName === "LIVEDATA_INITIAL_DELAY" ? "ms delay" : "");
+  
+  // Determine fallback: priority is CLI provided override, then configurableFallback, then defaultVal
+  let fallback = configurableFallback !== undefined ? configurableFallback : defaultVal;
+  if (varName === "LIVEDATA_RETRY_COUNT" && process.env.LIVEDATA_RETRY_DEFAULT) {
+    const cliRetry = Number(process.env.LIVEDATA_RETRY_DEFAULT);
+    if (!isNaN(cliRetry)) {
+      fallback = cliRetry;
+    }
+  } else if (varName === "LIVEDATA_INITIAL_DELAY" && process.env.LIVEDATA_DELAY_DEFAULT) {
+    const cliDelay = Number(process.env.LIVEDATA_DELAY_DEFAULT);
+    if (!isNaN(cliDelay)) {
+      fallback = cliDelay;
+    }
+  }
   
   // Strict mode check
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
@@ -107,18 +119,18 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   // Check if undefined, empty, or explicitly 'nan'
   if (normalized === "" || normalized === "nan") {
     if (envWarningCache.get(varName) !== normalized) { // use normalized value for uniqueness
-      logDiagnostic(`Warning: ${varName} is non-numeric (received '${value}'). Using fallback value of ${(configurableFallback !== undefined ? configurableFallback : defaultVal)}${unit}.`, "warn");
+      logDiagnostic(`Warning: ${varName} is non-numeric (received '${value}'). Using fallback value of ${fallback}${unit}.`, "warn");
       envWarningCache.set(varName, normalized);
     }
-    return configurableFallback !== undefined ? configurableFallback : defaultVal;
+    return fallback;
   }
   const num = Number(trimmed);
   if (isNaN(num)) {
     if (envWarningCache.get(varName) !== normalized) {
-      logDiagnostic(`Warning: ${varName} is non-numeric. Using fallback value of ${(configurableFallback !== undefined ? configurableFallback : defaultVal)}${unit}.`, "warn");
+      logDiagnostic(`Warning: ${varName} is non-numeric. Using fallback value of ${fallback}${unit}.`, "warn");
       envWarningCache.set(varName, normalized);
     }
-    return configurableFallback !== undefined ? configurableFallback : defaultVal;
+    return fallback;
   }
   return num;
 }
@@ -691,6 +703,19 @@ export async function backupAndRefreshOntology() {
 // Exporting fetcher object to allow test spies
 export const fetcher = { fetchDataWithRetry };
 
+// New CLI processing for overriding fallback values via CLI options
+function processCLIFallbackOptions(args) {
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === "--livedata-retry-default" && args[i + 1]) {
+      process.env.LIVEDATA_RETRY_DEFAULT = args[i + 1];
+      i++;
+    } else if (args[i] === "--livedata-delay-default" && args[i + 1]) {
+      process.env.LIVEDATA_DELAY_DEFAULT = args[i + 1];
+      i++;
+    }
+  }
+}
+
 const commandActions = {
   "--help": async (_args) => {
     displayHelp();
@@ -976,6 +1001,26 @@ const commandActions = {
   }
 };
 
+export async function main(args = process.argv.slice(2)) {
+  // Process CLI fallback options to override default fallback values for live data fetch
+  processCLIFallbackOptions(args);
+  
+  if (args.includes("--strict-env")) {
+    process.env.STRICT_ENV = "true";
+  }
+  if (args.length === 0) {
+    await demo();
+    return;
+  }
+  for (const arg of args) {
+    if (commandActions[arg]) {
+      const result = await commandActions[arg](args);
+      return result;
+    }
+  }
+  console.log(`Run with: ${JSON.stringify(args)}`);
+}
+
 async function demo() {
   logDiagnostic("Demo started", "info");
   console.log("Running demo of ontology functions:");
@@ -1049,26 +1094,9 @@ async function demo() {
   logDiagnostic("Demo completed successfully", "info");
 }
 
-export async function main(args = process.argv.slice(2)) {
-  if (args.includes("--strict-env")) {
-    process.env.STRICT_ENV = "true";
-  }
-  if (args.length === 0) {
-    await demo();
-    return;
-  }
-  for (const arg of args) {
-    if (commandActions[arg]) {
-      const result = await commandActions[arg](args);
-      return result;
-    }
-  }
-  console.log(`Run with: ${JSON.stringify(args)}`);
-}
-
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh, --strict-env` 
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh, --strict-env, --livedata-retry-default <number>, --livedata-delay-default <number>`
   );
 }
 

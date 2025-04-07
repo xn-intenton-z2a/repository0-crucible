@@ -149,8 +149,8 @@ describe("Live Data Configurability", () => {
   test("fetchDataWithRetry uses default values when env variables are non-numeric and logs warning only once", async () => {
     const originalEnvRetry = process.env.LIVEDATA_RETRY_COUNT;
     const originalEnvDelay = process.env.LIVEDATA_INITIAL_DELAY;
-    process.env.LIVEDATA_RETRY_COUNT = "NaN"; // should fallback to 3
-    process.env.LIVEDATA_INITIAL_DELAY = "NaN"; // should fallback to 100ms
+    process.env.LIVEDATA_RETRY_COUNT = "NaN"; // should fallback
+    process.env.LIVEDATA_INITIAL_DELAY = "NaN"; // should fallback
     let attemptCount = 0;
     const originalGet = http.get;
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -237,15 +237,12 @@ describe("Environment Variable Parsing Tests", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     process.env.TEST_NON_NUM = "NaN";
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
-    // Calling again should not log again since value hasn't changed
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
     const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM is non-numeric") || call[0].includes("received 'NaN'")).length;
     expect(warningCalls).toBe(1);
-    // Now change the value to an equivalent value with extra whitespace
     process.env.TEST_NON_NUM = "NaN ";
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
     const updatedWarningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM is non-numeric") || call[0].includes("received 'NaN'")).length;
-    // With normalization, the warning should not be logged again
     expect(updatedWarningCalls).toBe(1);
     logSpy.mockRestore();
   });
@@ -265,6 +262,15 @@ describe("Environment Variable Parsing Tests", () => {
   test("Returns configurable fallback value when provided", () => {
     process.env.TEST_CONFIG = "NaN";
     expect(_parseEnvNumber("TEST_CONFIG", 42, 100)).toBe(100);
+  });
+  
+  test("CLI fallback values override defaults when env variables are non-numeric", () => {
+    process.env.LIVEDATA_RETRY_COUNT = "NaN";
+    process.env.LIVEDATA_INITIAL_DELAY = "NaN";
+    process.env.LIVEDATA_RETRY_DEFAULT = "5";
+    process.env.LIVEDATA_DELAY_DEFAULT = "250";
+    expect(_parseEnvNumber("LIVEDATA_RETRY_COUNT", 3)).toBe(5);
+    expect(_parseEnvNumber("LIVEDATA_INITIAL_DELAY", 100)).toBe(250);
   });
 });
 
@@ -546,6 +552,16 @@ describe("CLI and Main Function Tests", () => {
     expect(result).toBe("Web server started");
     expect(spy).toHaveBeenCalledWith(expect.stringMatching(/Web server started at http:\/\/localhost:\d+/));
     spy.mockRestore();
+  });
+
+  test("main with CLI fallback options --livedata-retry-default and --livedata-delay-default override defaults", async () => {
+    process.env.LIVEDATA_RETRY_COUNT = "NaN";
+    process.env.LIVEDATA_INITIAL_DELAY = "NaN";
+    const args = ["--livedata-retry-default", "8", "--livedata-delay-default", "300", "--build-live"];
+    const ontology = await main(args);
+    // The test ensures that when fetching, fallback values 8 and 300 are used, here indirectly tested via _parseEnvNumber
+    expect(_parseEnvNumber("LIVEDATA_RETRY_COUNT", 3)).toBe(8);
+    expect(_parseEnvNumber("LIVEDATA_INITIAL_DELAY", 100)).toBe(300);
   });
 });
 
