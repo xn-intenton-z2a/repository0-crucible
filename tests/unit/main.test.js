@@ -78,12 +78,10 @@ describe("Robust HTTP Endpoint Testing for the Integrated Web Server", () => {
   let server;
   const port = process.env.PORT || 3000;
 
-  afterEach((done) => {
+  afterEach(async () => {
     if (server) {
-      server.close(done);
+      await new Promise((resolve) => server.close(resolve));
       server = null;
-    } else {
-      done();
     }
   });
 
