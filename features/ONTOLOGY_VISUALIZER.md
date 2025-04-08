@@ -1,27 +1,27 @@
-# Ontology Visualizer
+# Ontology Visualizer & Diagnostic Dashboard
 
-This feature introduces an interactive visualization layer to the owl-builder tool. It dynamically renders the generated ontology in a graphical format, enabling users to quickly preview, navigate, and analyze the structure of OWL ontologies. The visual representation will help users understand the relationships between components (concepts, classes, properties, and metadata) and aid in troubleshooting and iterative development.
+This updated feature enhances the existing Ontology Visualizer by integrating a real-time Diagnostic Dashboard. The visual interface will now provide a two-panel view: one for the interactive ontology graph and another dedicated to streaming and reviewing diagnostic logs and telemetry events. This integration streamlines iterative development and troubleshooting by delivering both ontology insights and live system diagnostics in one unified interface.
 
 # Overview
 
-- **Interactive Graphical Display:** Render the current ontology as a network graph where nodes represent ontology entities (e.g., concepts, classes) and edges illustrate their relationships.
-- **Real-Time Updates:** As the ontology is built from live data, the visualization will update in real-time or on demand, reflecting the most recent structure from both live and merged static sources.
-- **User-Driven Exploration:** Provide capabilities such as zoom, pan, and node selection to inspect details, such as diagnostic logs, endpoint information, and customizations.
-- **Integration with CLI and Web Server:** Launch the visualizer as part of the integrated web server or via a dedicated CLI command (e.g., `--visualize`).
+- **Interactive Graph Display:** Continue to render the live-built ontology as a dynamic network graph where nodes and edges represent ontology entities and their relationships.
+- **Real-Time Updates:** Leverage live data integration and a polling or web socket mechanism to update both the ontology visualization and diagnostic dashboard in real time.
+- **User-Driven Exploration:** Enable standard graph interactions (zoom, pan, node selection) alongside diagnostic exploration, allowing users to switch views or see diagnostics linked to selected nodes.
+- **Diagnostic Dashboard Panel:** Provide a dedicated panel that aggregates telemetry logs, error messages, and diagnostic events. This section includes filtering options and timestamped log entries for effective monitoring.
+- **CLI & Web Server Integration:** Extend the existing CLI flag (e.g., `--visualize`) to support toggling between or combining the ontology view and the diagnostic dashboard. The web server will host the unified interface and serve the additional diagnostic details.
 
 # Implementation Details
 
-- **Graph Rendering Module:** Develop a new module (e.g., `src/lib/ontologyVisualizer.js`) that processes the ontology JSON and converts it into a format suitable for graph visualization (using libraries such as D3.js or Cytoscape.js).
-- **CLI Command:** Introduce a new CLI flag `--visualize` that either opens a browser window or serves an HTML page from the integrated web server with the ontology graph.
-- **Data Binding and Real-Time Updates:** Implement a socket or polling mechanism so that changes in the ontology (refresh, merge, or updates) trigger corresponding updates in the visual display.
-- **Configuration & Themes:** Allow users to configure basic visualization parameters (e.g., node colors, layout options) through environment variables or CLI options to match their preference or integrate with diagnostic logging.
-- **Diagnostic Integration:** Link nodes to detailed logs or metadata so that clicking a node shows related diagnostic messages, reflecting the unified diagnostic logs described in the mission.
+- **Extended Module:** Update the ontology visualization module (e.g., `src/lib/ontologyVisualizer.js`) to incorporate an additional UI section for diagnostics. The module should process live diagnostic data and format it for real-time display.
+- **Real-Time Data Binding:** Implement socket connections or long polling to fetch live telemetry logs. Ensure both the graph and the diagnostic dashboard update concurrently when underlying ontology data or diagnostic states change.
+- **User Interface Enhancements:** Add UI controls to toggle between views, filter diagnostic messages (e.g., warnings, errors, info), and link nodes to related diagnostics for context-driven exploration.
+- **Configuration Options:** Allow customization of visualization parameters (layout, themes, node colors) and diagnostic dashboard settings (log level filters, refresh intervals) via CLI options or environment variables.
+- **Testing:** Develop unit tests to validate the transformation of live data into graphical and diagnostic formats, along with integration tests to ensure the CLI command starts the web server and serves the combined interface correctly.
 
-# Testing
+# Testing & Diagnostics
 
-- **Unit Tests:** Verify that the visualization module correctly transforms the ontology JSON into a suitable graph data structure.
-- **Integration Tests:** Ensure that the `--visualize` CLI command starts the web server and serves the interactive visualization page. Use headless browser tests to check that the page loads and nodes are correctly rendered.
-- **Real-Time Update Tests:** Simulate ontology updates and confirm that changes are reflected in the visualization without requiring a full restart.
-- **Edge Cases:** Test with minimal, empty, and complex ontologies to guarantee robust and error-free rendering.
+- **Unit Tests:** Verify that the visualization module properly renders ontology data and that diagnostic data is correctly captured and formatted.
+- **Integration Tests:** Use headless browser tests to ensure both panels load correctly, updating in real time.
+- **Edge Cases:** Test with minimal, empty, and complex ontologies, as well as varying diagnostic log volumes, to ensure robust performance and error-free operation.
 
-This feature complements the mission of providing live, verified data representations by offering a direct, interactive look into the structure and relationships within the generated ontology. It also aids maintainers and users in iterative development, troubleshooting, and feature enhancement planning.
+This enhancement is aligned with our mission to provide live, verified data representations while empowering developers with real-time troubleshooting tools. The unified interface promotes a more efficient workflow for monitoring and iterating on the ontology as it evolves.
