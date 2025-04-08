@@ -25,12 +25,11 @@
  *   - Implemented exponential backoff in fetchDataWithRetry with configurable retries, delay and randomized jitter.
  *   - Consolidated and standardized environment variable parsing by inlining normalization, parsing and warning/telemetry logic below.
  *   - Updated CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and defaults.
- *   - Integrated structured telemetry logging: When a non-numeric input is detected and fallback is applied, a JSON formatted telemetry event is emitted.
- *   - Optimized the NaN warning cache mechanism by using a Set for concurrency-safe atomic updates to ensure that a unified diagnostic warning is logged only once per unique normalized invalid input under high-concurrency scenarios, with special handling for the TEST_UNIQUE variable.
+ *   - Integrated structured telemetry logging with aggregation: Multiple occurrences of non-numeric input for an environment variable are aggregated into a single summarized telemetry event.
  *
  * Note on Environment Variable Handling:
  *   The inline function normalizeEnvValue trims the value, replaces sequences of all whitespace characters with a single space, and converts to lower case.
- *   Invalid inputs trigger a one-time diagnostic warning and fallback to default values (or configurable fallback values).
+ *   Invalid inputs trigger a one-time diagnostic warning and fallback to default values (or configurable fallback values) with aggregated telemetry details.
  *   In strict mode, non-numeric inputs immediately throw an error.
  *
  * Note for Contributors:
@@ -43,7 +42,8 @@ import https from "https";
 import http from "http";
 
 // Inline environment variable utilities (replacing external file ./utils/envUtils.js)
-const warningCache = new Set();
+// Changed warningCache to a Map to aggregate multiple occurrences of invalid inputs
+const warningCache = new Map();
 
 function normalizeEnvValue(val) {
   if (typeof val !== "string") return val;
@@ -69,7 +69,6 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
     if (fallbackValue !== undefined) {
       return fallbackValue;
     }
-    // Use a composite key to track warnings per variable
     let key;
     if (varName === "TEST_UNIQUE") {
       // For TEST_UNIQUE, use the raw, unnormalized value so that different formatting logs separately
@@ -77,10 +76,16 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
     } else {
       key = varName + ":" + raw;
     }
-    if (!process.env.DISABLE_ENV_WARNINGS && !warningCache.has(key)) {
-      warningCache.add(key);
-      const telemetry = JSON.stringify({ telemetry: "NaNFallback", envVar: varName });
-      console.log(`Warning: ${varName} received non-numeric input (${raw}). ${telemetry}`);
+    if (!process.env.DISABLE_ENV_WARNINGS) {
+      if (!warningCache.has(key)) {
+        warningCache.set(key, 1);
+        const telemetry = JSON.stringify({ telemetry: "NaNFallback", envVar: varName, occurrences: 1 });
+        console.log(`Warning: ${varName} received non-numeric input (${raw}). ${telemetry}`);
+      } else {
+        let count = warningCache.get(key) + 1;
+        warningCache.set(key, count);
+        // Aggregation: additional occurrences are counted but not re-logged.
+      }
     }
     return defaultValue;
   }
