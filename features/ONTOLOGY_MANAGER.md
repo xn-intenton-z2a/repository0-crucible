@@ -1,30 +1,32 @@
-# Ontology Manager Feature (Enhanced with Dashboard)
+# Ontology Manager Feature (Comprehensive Lifecycle Operations)
 
-The Ontology Manager remains the central module for handling live ontology data and related operations. In this update, we extend the existing functionality by integrating an enhanced interactive dashboard. This dashboard provides real-time monitoring of ontology status, caching performance, diagnostic logs, and environment telemetry. This extended interface is delivered as an HTML view via the integrated web server, making system status insights more accessible to users.
+The Ontology Manager remains the central module responsible for managing live ontology data with robust diagnostic logging, dynamic data integration, and an enriched set of operations including backup, refresh, merging, and customizations. This updated specification expands upon the existing functionality by incorporating additional live data aggregation, concurrent crawling, and extended CLI-driven operations that support a complete ontology lifecycle management.
 
 ## Live Data Integration & Caching
 
-- **Live Data Integration:** Continues to fetch real-time ontology data from verified public endpoints. On failure, falls back to a robust static ontology.
-- **Schema Validation:** Maintains rigorous data validation using Zod-powered schemas for posts, classes, properties, and metadata.
-- **Caching Layer:** Offers configurable caching with in-memory or file-based options, supporting refresh and invalidation via CLI and environment settings.
+- **Real-time Data Fetching:** Continuously retrieve ontology data from verified public endpoints. In the event of API failures, use a reliable static fallback.
+- **Schema and Data Validation:** Employ Zod-powered schemas to validate incoming posts, classes, properties, and metadata.
+- **Caching Strategies:** Support configurable caching options (in-memory or file based) and facilitate cache refresh/invalidation via CLI commands or environment variables.
+- **Concurrent Data Crawling:** Integrate a concurrent crawling mechanism to fetch live data from multiple endpoints, aggregating successes and capturing detailed error diagnostics for failed endpoints.
 
-## Diagnostics, CLI Options & Scheduled Refresh
+## Diagnostic Logging & CLI Operations
 
-- **Diagnostic Logging:** Provides structured, timestamped logs for cache hits/misses, API fetch attempts including exponential backoff and jitter details.
-- **CLI Integration:** Supports commands for building, updating, querying, refreshing, merging, backing up, and diagnostics of ontologies.
-- **Scheduled Tasks:** Automates refresh and backup operations at configurable intervals with diagnostic feedback.
+- **Enhanced Diagnostics:** Implement structured, timestamped logs covering cache performance, API request attempts (with exponential backoff and jitter), and telemetry events such as non-numeric environment variable warnings.
+- **CLI-driven Controls:** Provide CLI commands for building, updating, querying, refreshing, merging, and backing up ontologies. Extended commands include:
+  - `--refresh`: Clear existing ontology data and refresh from live endpoints.
+  - `--merge-persist`: Merge static and live ontologies and persist the merged result.
+  - `--backup-refresh`: Create a backup and then refresh the ontology.
+  - `--build-hybrid`: Build a hybrid ontology by blending live data with custom user inputs.
 
-## Enhanced Web Server & Dashboard Integration
+## Extended Operations & Customization
 
-- **HTTP Endpoint:** Previously, the web server offered a plain-text status page. Now, an interactive HTML dashboard is integrated to provide a comprehensive view of the system's health.
-- **Dashboard Features:**
-  - **Real-time Status:** Display current live ontology results, cache statistics, and aggregated diagnostic logs.
-  - **Telemetry Data:** Visualize environment telemetry events (e.g., non-numeric env variable warnings) and configuration details.
-  - **User Interactivity:** Links for triggering refresh, backup, and diagnostic reports directly from the dashboard.
-- **Developer Benefits:** Simplifies troubleshooting by offering an immediate, browser-based overview of live operations and health metrics.
+- **Backup and Persistence:** Offer mechanisms for both scheduled and on-demand backup of ontology files, ensuring data integrity in case of failures.
+- **Custom Data Integration:** Support building ontologies from custom inputs, merging live data with user-provided modifications to tailor the ontology.
+- **Merging & Hybridization:** Facilitate ontology merging from multiple sources to create a comprehensive ontology view and include automated timestamp tracking for decentralized updates.
 
-## Benefits
+## Enhanced Web Dashboard & Developer Experience
 
-- **Unified Management:** Consolidates live data fetching, caching, diagnostics, and an interactive dashboard into a single cohesive module.
-- **Improved Monitoring:** Enhances operational transparency and aids in rapid troubleshooting by making key system metrics accessible via a modern web interface.
-- **Developer Productivity:** Simplifies the workflow with enhanced CLI commands and an intuitive dashboard, aligning closely with the mission to maintain accurate, current ontologies with robust diagnostics.
+- **Interactive Dashboard:** Enhance the integrated web server to deliver a rich HTML dashboard, providing real-time system health metrics, live data visualization, and links to trigger operations (refresh, backup, diagnostics).
+- **Unified Management Interface:** By consolidating operations such as live data integration, diagnostic logging, backup, merging, and custom data handling, the Ontology Manager streamlines troubleshooting and operational transparency.
+
+This comprehensive update aligns with the mission of owl-builder by ensuring that the latest ontology data is consistently integrated, maintained, and available for rapid development and troubleshooting.
