@@ -1,44 +1,29 @@
-# Ontology Manager Feature
+# Ontology Manager Feature (Enhanced)
 
-The Ontology Manager feature consolidates core ontology functionalities into a single, cohesive module. It merges interactive ontology visualization, diagnostic dashboards, robust schema validation, a new caching layer for improved performance, and HTTP API integration. This feature serves as the central point for handling live data integration, caching, and data persistence while offering valuable diagnostic insights for developers.
+The Ontology Manager remains the central module for handling live ontology data along with related foundations such as caching, diagnostics, scheduled tasks, and now an integrated web server interface. This unified feature is responsible for building ontologies from live verified data sources, merging live and static ontologies, and exposing useful status and diagnostic endpoints via both CLI and HTTP.
 
-## Unified Interface & Data Integration
+## Live Data Integration & Caching
 
-- **Live Data Integration:** Builds ontologies using up-to-date data from trusted, public endpoints. The system prioritizes live data for production use, with a legacy static fallback available for emergency scenarios.
-- **HTTP API Endpoints:** Extends HTTP API endpoints (e.g., `/ontology` and `/diagnostics`) to serve both live and cached ontology data and to trigger manual cache refreshes.
-- **Schema Validation:** Provides strict data quality checks using Zod-powered schemas to validate attributes such as title, concepts, classes, properties, and metadata.
+- **Live Data Integration:** Utilizes verified public endpoints to build ontologies in real-time. When live fetch fails, the module gracefully falls back to a static ontology.
+- **Schema Validation:** Implements strict data quality checks using Zod-powered schemas to verify ontology properties (titles, concepts, classes, properties, and metadata).
+- **Caching Layer:** Employs in-memory or file-based caching of ontology data with configurable TTL. Refresh and invalidation can be triggered by CLI commands or environment settings.
 
-## Caching & Diagnostics
+## Diagnostics, CLI Options & Scheduled Refresh
 
-- **Caching Layer:** Implements a configurable caching mechanism (in-memory and/or file-based) to store responses from live endpoints. The cache can be invalidated via CLI options or environment variable settings.
-- **Diagnostic Logging:** Enhances diagnostic logging to record cache hits, cache misses, refresh events, and detailed telemetry for environment variable handling. Warning messages are generated once per normalized invalid input, ensuring a unified and non-repetitive logging system.
+- **Diagnostic Logging:** Provides detailed logs including cache hits/misses, live data fetch attempts with exponential backoff and jitter details, and warns on misuse of environment configurations. Logs are structured and emitted with ISO timestamps.
+- **CLI Integration:** Exposes commands for building, updating, persisting, querying, refreshing, and merging ontologies, with CLI overrides taking precedence over environment variables.
+- **Scheduled Refresh & Backup:** Supports automated refresh and backup scheduling of the ontology via configurable intervals. Scheduled tasks log diagnostics and can trigger cache invalidation and backup routines.
 
-## CLI & Configuration
+## Web Server Integration
 
-- **CLI Options:** Updates CLI commands with additional flags for enabling/disabling caching and configuring cache expiration, live data retry counts, and delay defaults. CLI override values take precedence over environment variable settings.
-- **Environment Variable Monitoring:** Leverages the environment monitor module to aggregate telemetry events related to misconfigured or non-numeric inputs, which helps in troubleshooting and ensuring data integrity.
-
-## Scheduled Refresh & Backup (New Enhancement)
-
-- **Automatic Refresh Scheduling:** Introduces a new scheduling component that allows automated refreshing and backing up of the ontology at configurable intervals. 
-  - **Configuration:** Developers can set a `REFRESH_INTERVAL` environment variable or use a CLI flag (e.g., `--schedule-refresh`) to activate periodic refresh operations.
-  - **Automated Tasks:** The system automatically calls existing functions such as `refreshOntology` and `backupAndRefreshOntology` on the defined schedule, ensuring that the live data remains current and backed up without manual intervention.
-  - **Diagnostics Integration:** Scheduled refresh operations are logged with timestamps, providing consistent diagnostic feedback and aiding in performance monitoring.
-
-## Implementation Details
-
-- **Module Consolidation:** Integrate previously separate modules—ontology visualization, diagnostics, schema validation, caching—and extend them to support automated refresh and backup. 
-- **Configuration Priority:** Maintain CLI override precedence over environmental defaults for live data integration parameters (e.g., `LIVEDATA_RETRY_COUNT`, `LIVEDATA_INITIAL_DELAY`).
-- **Error Handling:** Retain robust error handling for situations when live data is unavailable by falling back to static data, and log necessary diagnostic events.
-
-## Testing & QA
-
-- **Unit Tests:** Extend tests to cover the new scheduling functionality, verifying that periodic refresh and backup triggers invoke the correct functions and log the expected diagnostics.
-- **Integration Tests:** Simulate scheduled execution in test environments using timers. Confirm that the scheduling configuration via environment variables and CLI flags is honored.
-- **Performance & Security:** Evaluate the impact of automatic scheduling on system performance and ensure that the automated refresh does not expose sensitive information in the diagnostic logs.
+- **HTTP Endpoint:** Integrates a lightweight web server which serves a status endpoint (e.g., at `/`) providing a plain-text confirmation that the tool is running.
+- **Status and Diagnostics:** The web server can be extended to present current live ontology status, cached data summaries, and diagnostic logs. This interface aids development and operational monitoring by offering real-time insight into system health.
+- **Simple Deployment:** Designed to run as a single source file library; deployment can be accomplished with minimal additional infrastructure using Node.js.
 
 ## Benefits
 
-- Aligns with the repository mission by continuously providing up-to-date ontologies derived from live public data sources.
-- Automates maintenance tasks such as cache refresh and data backup, reducing manual intervention.
-- Enhances diagnostic clarity and developer productivity through comprehensive, scheduled logging and telemetry.
+- **Unified Management:** Combines live data processing, caching, diagnostic logging, and HTTP status serving into one cohesive feature.
+- **Automated Maintenance:** Reduces manual checks by scheduling refresh and backups as well as offering immediate web-based status feedback.
+- **Developer Productivity:** Enhanced CLI commands and integrated web server simplify troubleshooting and monitoring of ontology data.
+
+This enhancement aligns closely with the mission of owl-builder to maintain current and accurate ontologies from live data sources while facilitating robust diagnostics and ease of operation.
