@@ -25,7 +25,7 @@
  *   - Implemented exponential backoff in fetchDataWithRetry with configurable retries, delay and randomized jitter.
  *   - Consolidated and standardized environment variable parsing by inlining normalization, parsing and warning/telemetry logic below.
  *   - Updated CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and defaults.
- *   - Integrated structured telemetry logging with aggregation: Multiple occurrences of non-numeric input for an environment variable are aggregated into a single summarized telemetry event.
+ *   - Enhanced NaN fallback telemetry by including additional context: timestamp, raw input value, and indicator if CLI override was used.
  *
  * Note on Environment Variable Handling:
  *   The inline function normalizeEnvValue trims the value, replaces sequences of all whitespace characters with a single space, and converts to lower case.
@@ -79,8 +79,14 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
     if (!process.env.DISABLE_ENV_WARNINGS) {
       if (!warningCache.has(key)) {
         warningCache.set(key, 1);
-        const telemetry = JSON.stringify({ telemetry: "NaNFallback", envVar: varName, occurrences: 1 });
-        console.log(`Warning: ${varName} received non-numeric input (${raw}). ${telemetry}`);
+        const telemetryObj = {
+          telemetry: "NaNFallback",
+          envVar: varName,
+          rawValue: rawOriginal,
+          cliOverride: !!cliOverride,
+          timestamp: new Date().toISOString()
+        };
+        console.log(`Warning: ${varName} received non-numeric input (${raw}). ${JSON.stringify(telemetryObj)}`);
       } else {
         let count = warningCache.get(key) + 1;
         warningCache.set(key, count);

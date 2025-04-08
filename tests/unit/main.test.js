@@ -176,11 +176,15 @@ describe("Live Data Configurability", () => {
     const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_RETRY_COUNT") && call[0].includes("received non-numeric input")).length;
     const delayWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_INITIAL_DELAY") && call[0].includes("received non-numeric input")).length;
     expect(warningCalls + delayWarnings).toBeGreaterThanOrEqual(2);
-    // Check telemetry events
+    // Check that telemetry events include additional fields
     const telemetryCalls = logSpy.mock.calls.filter(call => {
       try {
         const obj = JSON.parse(call[0].split(' ').pop());
-        return obj.telemetry === "NaNFallback" && (obj.envVar === "LIVEDATA_RETRY_COUNT" || obj.envVar === "LIVEDATA_INITIAL_DELAY");
+        return obj.telemetry === "NaNFallback" &&
+               (obj.envVar === "LIVEDATA_RETRY_COUNT" || obj.envVar === "LIVEDATA_INITIAL_DELAY") &&
+               obj.hasOwnProperty('rawValue') &&
+               obj.hasOwnProperty('cliOverride') &&
+               obj.hasOwnProperty('timestamp');
       } catch(e){
         return false;
       }
@@ -251,11 +255,11 @@ describe("Environment Variable Parsing Tests", () => {
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
     const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM") && call[0].includes("received non-numeric input")).length;
     expect(warningCalls).toBe(1);
-    // Check telemetry event
+    // Check telemetry event includes additional fields
     const telemetryCalls = logSpy.mock.calls.filter(call => {
       try {
         const obj = JSON.parse(call[0].split(' ').pop());
-        return obj.telemetry === "NaNFallback" && obj.envVar === "TEST_NON_NUM";
+        return obj.telemetry === "NaNFallback" && obj.envVar === "TEST_NON_NUM" && obj.hasOwnProperty('rawValue') && obj.hasOwnProperty('cliOverride') && obj.hasOwnProperty('timestamp');
       } catch(e){
         return false;
       }
