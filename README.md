@@ -16,7 +16,7 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 
 ## Environment Variable Handling
 
-Environment variable inputs are processed via an inline utility integrated in the main source file. This inline logic provides methods for normalizing input values by trimming whitespace and collapsing multiple whitespace characters, as well as parsing numeric values. When a non-numeric input is encountered (e.g. variations of "NaN" such as " NaN ", "\tNaN", and "\u00A0NaN\u00A0"), a one-time diagnostic warning is logged and the value falls back to a default (or a provided fallback). The logged telemetry event now includes additional context fields:
+Environment variable inputs are processed via an inline utility integrated in the main source file. This inline logic provides methods for normalizing input values by trimming whitespace and collapsing multiple whitespace characters—including non-breaking spaces—with a unified regex. When a non-numeric input is encountered (for example, variations of "NaN" such as " NaN ", "\tNaN", and "\u00A0NaN\u00A0"), a one-time diagnostic warning is logged and the value falls back to a default (or a provided fallback). The logged telemetry event now includes additional context fields:
 
 - `timestamp`: When the warning occurred in ISO format.
 - `rawValue`: The original, unnormalized input value.
@@ -34,7 +34,7 @@ In scenarios where NaN inputs occur repeatedly, an aggregated summary report is 
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing logic, please note the improved telemetry format which now includes additional context fields for better diagnostics and standardized warning messages.
+Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing logic, please note the improved normalization and telemetry format which now includes handling of non-breaking spaces and additional diagnostic context for enhanced clarity.
 
 ## License
 
