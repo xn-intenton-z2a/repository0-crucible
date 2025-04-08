@@ -69,8 +69,10 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
     if (fallbackValue !== undefined) {
       return fallbackValue;
     }
-    if (!warningCache.has(raw)) {
-      warningCache.add(raw);
+    // Use a composite key to track warnings per variable
+    const key = varName + ":" + raw;
+    if (!process.env.DISABLE_ENV_WARNINGS && !warningCache.has(key)) {
+      warningCache.add(key);
       const telemetry = JSON.stringify({ telemetry: "NaNFallback", envVar: varName });
       console.log(`Warning: ${varName} received non-numeric input (${raw}). ${telemetry}`);
     }
