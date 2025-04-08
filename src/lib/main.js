@@ -86,7 +86,7 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
           cliOverride: !!cliOverride,
           timestamp: new Date().toISOString()
         };
-        console.log(`Warning: ${varName} received non-numeric input (${raw}). ${JSON.stringify(telemetryObj)}`);
+        console.log(`Warning: ${varName} received non-numeric input (${raw}). TELEMETRY: ${JSON.stringify(telemetryObj)}`);
       } else {
         let count = warningCache.get(key) + 1;
         warningCache.set(key, count);
