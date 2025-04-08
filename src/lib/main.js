@@ -54,7 +54,8 @@ const TELEMETRY_FLUSH_DELAY = 50;
 function normalizeEnvValue(val) {
   if (typeof val !== "string") return val;
   // Updated regex to collapse all whitespace characters including non-breaking spaces
-  return val.trim().replace(/[\s\u00A0]+/g, ' ').toLowerCase();
+  return val.trim().replace(/[
+\s\u00A0]+/g, ' ').toLowerCase();
 }
 
 function parseEnvNumber(varName, defaultValue, fallbackValue) {
@@ -96,7 +97,7 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
       } else {
         let info = warningCache.get(key);
         info.count += 1;
-        info.logged = false; // reset logged flag for new event
+        // Removed resetting of the logged flag to ensure only one telemetry event is logged per unique normalized value
         warningCache.set(key, info);
       }
       if (process.env.NODE_ENV === "test") {
