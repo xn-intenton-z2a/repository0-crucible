@@ -1,27 +1,37 @@
 # Ontology Visualizer & Diagnostic Dashboard
 
-This updated feature enhances the existing Ontology Visualizer by integrating a real-time Diagnostic Dashboard. The visual interface will now provide a two-panel view: one for the interactive ontology graph and another dedicated to streaming and reviewing diagnostic logs and telemetry events. This integration streamlines iterative development and troubleshooting by delivering both ontology insights and live system diagnostics in one unified interface.
+This feature enhances the existing ontology visualization tool with a unified, interactive interface that not only displays the live-built ontology graph but also integrates an advanced diagnostic and telemetry dashboard panel. The updated module now aggregates real-time system logs, environment telemetry events (such as NaN fallback occurrences), and diagnostic messages. This creates a comprehensive overview of both the ontology data and the internal system health.
 
-# Overview
+## Overview
 
-- **Interactive Graph Display:** Continue to render the live-built ontology as a dynamic network graph where nodes and edges represent ontology entities and their relationships.
-- **Real-Time Updates:** Leverage live data integration and a polling or web socket mechanism to update both the ontology visualization and diagnostic dashboard in real time.
-- **User-Driven Exploration:** Enable standard graph interactions (zoom, pan, node selection) alongside diagnostic exploration, allowing users to switch views or see diagnostics linked to selected nodes.
-- **Diagnostic Dashboard Panel:** Provide a dedicated panel that aggregates telemetry logs, error messages, and diagnostic events. This section includes filtering options and timestamped log entries for effective monitoring.
-- **CLI & Web Server Integration:** Extend the existing CLI flag (e.g., `--visualize`) to support toggling between or combining the ontology view and the diagnostic dashboard. The web server will host the unified interface and serve the additional diagnostic details.
+- **Interactive Graph Display:** Continue to render the live-built ontology as a dynamic network graph. The graph supports zooming, panning, and node selection to aid in exploration of ontology entities and relationships.
 
-# Implementation Details
+- **Diagnostic Dashboard Panel:** Present a dedicated section adjacent to the graph that streams diagnostic logs, telemetry events, and error/warning messages. The panel allows filtering by log level and time stamps to quickly identify issues.
 
-- **Extended Module:** Update the ontology visualization module (e.g., `src/lib/ontologyVisualizer.js`) to incorporate an additional UI section for diagnostics. The module should process live diagnostic data and format it for real-time display.
-- **Real-Time Data Binding:** Implement socket connections or long polling to fetch live telemetry logs. Ensure both the graph and the diagnostic dashboard update concurrently when underlying ontology data or diagnostic states change.
-- **User Interface Enhancements:** Add UI controls to toggle between views, filter diagnostic messages (e.g., warnings, errors, info), and link nodes to related diagnostics for context-driven exploration.
-- **Configuration Options:** Allow customization of visualization parameters (layout, themes, node colors) and diagnostic dashboard settings (log level filters, refresh intervals) via CLI options or environment variables.
-- **Testing:** Develop unit tests to validate the transformation of live data into graphical and diagnostic formats, along with integration tests to ensure the CLI command starts the web server and serves the combined interface correctly.
+- **Telemetry Aggregator:** Integrate a telemetry sub-panel that collects structured telemetry events generated during environment variable parsing and other fallback operations. This module aggregates events such as non-numeric environment variable inputs and presents metrics (e.g., frequency counts, timestamps) to help diagnose recurring configuration issues.
 
-# Testing & Diagnostics
+- **Real-Time Updates:** Leverage socket connections or long polling to update both the ontology graph and the diagnostic/telemetry panels in real time. This dynamic binding ensures that users always see current data and diagnostic feedback.
 
-- **Unit Tests:** Verify that the visualization module properly renders ontology data and that diagnostic data is correctly captured and formatted.
-- **Integration Tests:** Use headless browser tests to ensure both panels load correctly, updating in real time.
-- **Edge Cases:** Test with minimal, empty, and complex ontologies, as well as varying diagnostic log volumes, to ensure robust performance and error-free operation.
+- **User-Driven Controls:** Offer CLI and in-UI toggles to switch between views (ontology graph, diagnostic logs, telemetry aggregator) and to export diagnostic or telemetry summaries as JSON reports for offline review.
 
-This enhancement is aligned with our mission to provide live, verified data representations while empowering developers with real-time troubleshooting tools. The unified interface promotes a more efficient workflow for monitoring and iterating on the ontology as it evolves.
+## Implementation Details
+
+- **Extended Module:** Update the existing visualization module (e.g., `src/lib/ontologyVisualizer.js`) to incorporate additional UI sections that render the diagnostic logs and telemetry events. Maintain the interactive graph while introducing new panels for diagnostics and aggregated telemetry.
+
+- **Telemetry Collection:** Modify the environment variable parsing and diagnostic logging functions to emit structured telemetry events (such as NaN fallback warnings) in JSON format. The interface will capture these events and store them in an in-memory aggregator that can be filtered and exported.
+
+- **UI Enhancements:** Add user interface controls for toggling panels, applying filters (by log level, event type, or time range), and exporting a summarized telemetry report. Ensure that both the diagnostic logs and telemetry data are clearly labeled and accessible within the unified dashboard.
+
+- **CLI Integration:** Extend the existing CLI flag (e.g., `--visualize`) to support the new telemetry aggregation functionality. Provide additional CLI options (like `--export-telemetry`) to dump the collected telemetry data into a JSON file.
+
+- **Testing & Validation:** Develop unit and integration tests to verify that the interactive graph, diagnostic logs, and telemetry aggregator function correctly and update in real time. Test the export functionality and ensure that diagnostic and telemetry filters work as expected across various data load scenarios.
+
+## Testing & Diagnostics
+
+- **Unit Tests:** Validate that the visualization module renders both the ontology and the diagnostic panels, and that telemetry events are correctly captured and aggregated.
+
+- **Integration Tests:** Utilize headless browser tests to ensure that UI controls for switching views and filtering logs are operational and that CLI flags properly trigger the telemetry export feature.
+
+- **Performance & Edge Cases:** Test the dashboard with a variety of ontology sizes and telemetry volumes to ensure the interface remains responsive and accurate under stress.
+
+This enhancement aligns with the mission to deliver live, verified data insights coupled with robust diagnostic feedback. By integrating telemetry aggregation, the Ontology Visualizer now empowers developers to promptly identify and address configuration issues, improving overall system reliability and maintainability.
