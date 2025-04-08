@@ -22,11 +22,15 @@ Environment variable inputs are processed via an inline utility integrated in th
 - `rawValue`: The original, unnormalized input value.
 - `cliOverride`: A boolean indicating whether the value came from a CLI override.
 
-The telemetry event is prefixed by `TELEMETRY:` in the logs to facilitate extraction by diagnostic tools. Duplicate warnings for the same normalized invalid input are suppressed, ensuring clear and consistent logging.
+The telemetry event is prefixed by `TELEMETRY:` in the logs to facilitate extraction by diagnostic tools. Duplicate warnings for the same normalized invalid input are suppressed, ensuring clear and consistent logging. An aggregated telemetry summary for all NaN fallback events is maintained at runtime and can be accessed via the CLI flag `--diagnostic-summary-naN`.
 
 CLI override options (e.g. `--livedata-retry-default` and `--livedata-delay-default`) take precedence over environment variables and defaults. Strict mode, enabled via `--strict-env` or setting `STRICT_ENV=true`, causes non-numeric inputs to throw errors immediately.
 
 There is special handling for the environment variable `TEST_UNIQUE` where different formatting (even when normalized to the same value) may trigger separate warnings, aiding granular detection during testing.
+
+## Aggregated Telemetry Summary
+
+In scenarios where NaN inputs occur repeatedly, an aggregated summary report is generated. This summary includes the count for each unique normalized invalid input along with its associated telemetry details. Use the `--diagnostic-summary-naN` CLI flag to view this report.
 
 ## Contributing
 
