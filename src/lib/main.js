@@ -99,7 +99,15 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
         info.logged = false; // reset logged flag for new event
         warningCache.set(key, info);
       }
-      if (!telemetryFlushScheduled) {
+      if (process.env.NODE_ENV === "test") {
+        // In test environment, flush warnings synchronously
+        for (const [k, info] of warningCache.entries()) {
+          if (!info.logged) {
+            console.log(`Warning: Environment variable '${info.telemetry.envVar}' received non-numeric input ('${info.telemetry.rawValue}'). Falling back to default. Occurred ${info.count} time(s). TELEMETRY: ${JSON.stringify(info.telemetry)}`);
+            info.logged = true;
+          }
+        }
+      } else if (!telemetryFlushScheduled) {
         telemetryFlushScheduled = true;
         setTimeout(() => {
           for (const [k, info] of warningCache.entries()) {
