@@ -91,6 +91,20 @@ export function buildOntology() {
 }
 
 /**
+ * Helper function to get CLI override value for specific environment variables.
+ * @param {string} varName
+ * @returns {string} The CLI override value if exists, otherwise an empty string.
+ */
+function getCLIOverrideValue(varName) {
+  if (varName === "LIVEDATA_RETRY_COUNT" && process.env.LIVEDATA_RETRY_DEFAULT) {
+    return process.env.LIVEDATA_RETRY_DEFAULT;
+  } else if (varName === "LIVEDATA_INITIAL_DELAY" && process.env.LIVEDATA_DELAY_DEFAULT) {
+    return process.env.LIVEDATA_DELAY_DEFAULT;
+  }
+  return "";
+}
+
+/**
  * Standardized helper function to parse numeric environment variables.
  *
  * Behavior:
@@ -120,10 +134,9 @@ export function buildOntology() {
  * @returns {number}
  */
 function parseEnvNumber(varName, defaultVal, configurableFallback) {
-  // Handle CLI override for specific variables
-  if ((varName === "LIVEDATA_RETRY_COUNT" && process.env.LIVEDATA_RETRY_DEFAULT) ||
-      (varName === "LIVEDATA_INITIAL_DELAY" && process.env.LIVEDATA_DELAY_DEFAULT)) {
-    const cliValue = varName === "LIVEDATA_RETRY_COUNT" ? process.env.LIVEDATA_RETRY_DEFAULT : process.env.LIVEDATA_DELAY_DEFAULT;
+  // First, check for CLI override
+  const cliValue = getCLIOverrideValue(varName);
+  if (cliValue) {
     const normalizedCli = normalizeEnvValue(cliValue);
     if (normalizedCli !== "" && normalizedCli !== "nan" && !isNaN(Number(normalizedCli))) {
       return Number(normalizedCli);
@@ -145,7 +158,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
     const numericRegex = /^-?\d+(\.\d+)?([eE][-+]?\d+)?$/;
     if (!numericRegex.test(normalized)) {
-      throw new Error(`Strict mode: Environment variable ${varName} received non-numeric input: '${rawValue}' (normalized: '${normalized}'). Valid formats: integer (e.g., 42), decimal (e.g., 3.14), or scientific notation (e.g., 1e3).`);
+      throw new Error(`Strict mode: Environment variable ${varName} received non-numeric input: '${rawValue}' (normalized: '${normalized}'). Valid formats: integer, decimal or scientific notation.`);
     }
     return Number(normalized);
   }
