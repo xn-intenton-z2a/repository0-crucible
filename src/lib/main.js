@@ -31,8 +31,8 @@
  *   - Integrated structured telemetry logging: When a non-numeric input is detected and fallback is applied, a JSON formatted telemetry event is emitted containing the env var name, raw input, normalized input, fallback value with unit, and timestamp.
  *
  * Note on Environment Variable Handling:
- *   The function parseEnvNumber normalizes the environment variable's raw string input by trimming whitespace, replacing sequences of whitespace (including tabs, non-breaking spaces, and other Unicode whitespace characters) with a single space, and converting to lower case.
- *   For example, raw inputs such as " NaN ", "\tNaN", and "\u00A0NaN\u00A0" all normalize to "nan" and will trigger a unified warning exactly once per unique normalized input.
+ *   The function parseEnvNumber normalizes the environment variable's raw string input by trimming whitespace, replacing sequences of any whitespace characters (including tabs, non-breaking spaces, and other Unicode whitespace) with a single space, and converting to lower case.
+ *   For example, raw inputs such as " NaN ", "\tNaN", and "\u00A0NaN\u00A0" all normalize to "nan" and will trigger a unified warning exactly once per unique composite key.
  *   In non-strict mode, invalid or empty values trigger a one-time diagnostic warning and revert to fallback values.
  *   When CLI override options (--livedata-retry-default and --livedata-delay-default) are provided with valid numeric input, these take precedence over environment variables and defaults.
  *
@@ -65,15 +65,15 @@ export function resetEnvWarningCache() {
 
 /**
  * Helper function to normalize environment variable values.
- * Trims the value, replaces all sequences of Unicode whitespace (including tabs, non-breaking spaces, em space, en space, etc.) with a single space, and converts to lower case.
+ * Trims the value, replaces all sequences of any whitespace characters (including tabs, non-breaking spaces, em space, en space, etc.) with a single space, and converts to lower case.
  * If the value is undefined or not a string, returns an empty string.
  * @param {string | undefined | null} value 
  * @returns {string}
  */
 function normalizeEnvValue(value) {
   if (typeof value !== "string") return "";
-  // Use Unicode property escapes to match any whitespace character
-  return value.replace(/\p{White_Space}+/gu, ' ').trim().toLowerCase();
+  // Use \s+ with unicode flag to match any whitespace character
+  return value.replace(/\s+/gu, ' ').trim().toLowerCase();
 }
 
 /**

@@ -14,6 +14,10 @@ owl-builder uses a broad list of public endpoints to build ontologies, such as:
 
 _Note:_ Ensure that your network allows access to these endpoints for successful data retrieval.
 
+## Environment Variable Handling
+
+Environment variable inputs are normalized using a unified regular expression (`/\s+/gu`) to replace all sequences of whitespace characters (including spaces, tabs, non-breaking spaces, etc.) with a single space. This ensures that variations like " NaN ", "\tNaN", and "\u00A0NaN\u00A0" all normalize to "nan" and trigger a single warning and telemetry event per unique invalid input.
+
 ## Contributing
 
 Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines.
