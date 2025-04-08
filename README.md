@@ -16,7 +16,11 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 
 ## Environment Variable Handling
 
-Environment variable inputs are normalized using a unified regular expression (`/\s+/gu`) to replace all sequences of whitespace characters (including spaces, tabs, non-breaking spaces, etc.) with a single space. This ensures that variations like " NaN ", "\tNaN", and "\u00A0NaN\u00A0" all normalize to "nan" and trigger a single telemetry event and diagnostic warning per unique invalid input. CLI override options (e.g. `--livedata-retry-default` and `--livedata-delay-default`) take precedence over environment variables and defaults.
+Environment variable inputs are normalized using a unified regular expression (`/\s+/gu`) to replace all sequences of whitespace characters (including spaces, tabs, non-breaking spaces, etc.) with a single space. This ensures that variations like " NaN ", "\tNaN", and "\u00A0NaN\u00A0" all normalize to "nan" and trigger a single telemetry event and diagnostic warning per unique invalid input.
+
+The mechanism for logging these warnings has been optimized for high-concurrency scenarios. A concurrency-safe approach using a JavaScript Set ensures that even under rapid or asynchronous invocations, only one warning and telemetry event is logged per unique normalized invalid input.
+
+CLI override options (e.g. `--livedata-retry-default` and `--livedata-delay-default`) take precedence over environment variables and defaults.
 
 ## Contributing
 

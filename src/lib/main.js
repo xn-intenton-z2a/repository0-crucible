@@ -29,6 +29,7 @@
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter and CLI options (--livedata-retry-default and --livedata-delay-default).
  *   - Revised CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and default values.
  *   - Integrated structured telemetry logging: When a non-numeric input is detected and fallback is applied, a JSON formatted telemetry event is emitted containing the env var name, raw input, normalized input, fallback value with unit, and timestamp.
+ *   - Optimized the NaN warning cache mechanism by using a Set for concurrency-safe atomic updates to ensure that a unified diagnostic warning is logged only once per unique normalized invalid input under high-concurrency scenarios.
  *
  * Note on Environment Variable Handling:
  *   The function parseEnvNumber normalizes the environment variable's raw string input by trimming whitespace, replacing sequences of any whitespace characters (including tabs, non-breaking spaces, and other Unicode whitespace) with a single space, and converting to lower case.
@@ -52,8 +53,8 @@ export { fetcher };
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
-// Cache for environment variable warning flags using a Map that stores the composite key (variable name and normalized input).
-const envWarningCache = new Map();
+// Cache for environment variable warning flags using a Set that stores the composite key (variable name and normalized input).
+const envWarningCache = new Set();
 
 /**
  * Resets the environment warning cache. This function is primarily intended for testing purposes
@@ -167,6 +168,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
     // Log a warning and telemetry event only once per unique normalized invalid input
     const warnKey = `${varName}:${normalized}`;
     if (!envWarningCache.has(warnKey)) {
+      envWarningCache.add(warnKey);
       let unit = "";
       if (varName === "LIVEDATA_RETRY_COUNT") {
         unit = " retries";
@@ -189,7 +191,6 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
       if (!process.env.DISABLE_ENV_WARNINGS || process.env.DISABLE_ENV_WARNINGS === "0") {
         logDiagnostic(`Unified NaN Handling: Environment variable ${varName} received non-numeric input '${rawValue}' (normalized: '${normalized}'). Fallback value ${fallback}${unit} applied.`, "warn");
       }
-      envWarningCache.set(warnKey, true);
     }
     return fallback;
   }

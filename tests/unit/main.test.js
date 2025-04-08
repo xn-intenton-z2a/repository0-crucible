@@ -339,7 +339,6 @@ describe("Environment Variable Parsing Tests", () => {
     _parseEnvNumber("TEST_UNIQUE", 100);
     let warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_UNIQUE") && call[0].includes("received non-numeric input")).length;
     expect(warnings).toBe(1);
-    // Check telemetry event
     let telemetryCalls = logSpy.mock.calls.filter(call => {
       try {
         const obj = JSON.parse(call[0]);
@@ -399,9 +398,27 @@ describe("Environment Variable Parsing Tests", () => {
     expect(telemetryCalls).toBe(1);
     logSpy.mockRestore();
   });
-});
 
-// ... Additional tests remain unchanged as they cover core functionality and CLI behavior
+  test("High concurrency simulation: only one telemetry event is logged for concurrent calls", async () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    process.env.TEST_CONCURRENCY = "NaN";
+    const concurrentCalls = [];
+    for (let i = 0; i < 10; i++) {
+      concurrentCalls.push(Promise.resolve().then(() => _parseEnvNumber("TEST_CONCURRENCY", 0)));
+    }
+    await Promise.all(concurrentCalls);
+    const telemetryCalls = logSpy.mock.calls.filter(call => {
+      try {
+        const obj = JSON.parse(call[0]);
+        return obj.telemetry === "NaNFallback" && obj.envVar === "TEST_CONCURRENCY";
+      } catch(e){
+        return false;
+      }
+    });
+    expect(telemetryCalls.length).toBe(1);
+    logSpy.mockRestore();
+  });
+});
 
 describe("Core Ontology Functions", () => {
   test("buildOntology returns public data ontology", () => {
