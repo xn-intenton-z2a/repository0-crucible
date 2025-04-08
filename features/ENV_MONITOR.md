@@ -1,29 +1,37 @@
-# ENV_MONITOR Feature - Enhanced Configuration Validator & Telemetry Report
+# ENV_MONITOR Feature - Enhanced Configuration Validator, Telemetry Report, and Interactive Config Wizard
 
-The ENV_MONITOR feature is responsible for validating critical configuration parameters and collecting telemetry data from environment variables and runtime diagnostics. In this update, the feature is extended to not only validate configurations and aggregate environment telemetry, but also to generate a comprehensive diagnostic report. This report consolidates structured telemetry events, diagnostic logs, and backoff retry details to aid users in troubleshooting and optimizing live data integration.
+The ENV_MONITOR feature is responsible for validating critical configuration parameters and collecting telemetry data from environment variables and runtime diagnostics. In this update, the feature is extended to not only validate configurations and aggregate environment telemetry but also to provide an interactive configuration wizard, enabling users to review, modify, and apply configuration settings at runtime. This comprehensive approach is designed to improve troubleshooting, streamline configuration management, and enhance operational transparency.
 
-## Overview
+## Environment Configuration Validation & Telemetry
 
-- **Configuration Validation:** Scans key environment variables (e.g., LIVEDATA_RETRY_COUNT, LIVEDATA_INITIAL_DELAY, CUSTOM_API_ENDPOINTS) to check for valid numeric and URL formats. Provides detailed JSON summary reports highlighting discrepancies and suggested fixes.
-- **Telemetry Collection:** Captures diagnostic events such as non-numeric inputs, fallback values applied, and exponential backoff details. Each event is logged exactly once per unique normalized input to ensure clarity under high concurrency.
-- **Diagnostic Reporting:** Generates a consolidated telemetry report that aggregates recent diagnostic logs and telemetry events. The report can be exported in JSON format and, optionally, rendered as an interactive HTML view via the integrated web server.
+- **Configuration Validation:**
+  - Scans key environment variables (e.g. LIVEDATA_RETRY_COUNT, LIVEDATA_INITIAL_DELAY, CUSTOM_API_ENDPOINTS) to check for valid numeric and URL formats.
+  - Uses Zod-powered or inline schema validation to validate dynamic input from both environment variables and CLI overrides.
+  - Provides detailed JSON summary reports, highlighting misconfigured values along with suggested corrections.
 
-## Configuration Validation & Telemetry
+- **Telemetry Collection:**
+  - Aggregates diagnostic events including non-numeric inputs, applied fallback values, and exponential backoff retry details.
+  - Uses a concurrency-safe caching mechanism (Map) to ensure that multiple invalid occurrences are aggregated into a single summarized telemetry event.
+  - Captures detailed logs with timestamps to aid both real-time and post-mortem analysis.
 
-- **CLI Integration:** A new CLI command (e.g. `--validate-config`) triggers a full scan of critical environment variables. Results are output as a JSON summary, making it easier for users to quickly identify and correct configuration issues.
-- **Telemetry Logging:** Uses a concurrency-safe caching mechanism to log a unified warning for each unique invalid input. Telemetry events include details such as raw input, normalized value, fallback value, and timestamp.
-- **CLI Override:** CLI options (e.g. `--livedata-retry-default` and `--livedata-delay-default`) continue to strictly override environment variables, ensuring predictable behavior.
+- **Diagnostic Reporting:**
+  - Generates unified diagnostic summaries via a dedicated CLI command (e.g. `--diagnostic-summary`) and exports them in JSON format or an interactive HTML view if integrated with the web server.
 
-## Diagnostic and Telemetry Reporting
+## Interactive Configuration Wizard
 
-- **Comprehensive Report:** Builds upon existing diagnostic logging by aggregating recent telemetry events and diagnostic logs (including exponential backoff retry attempts and environment validation warnings).
-- **Exportable Output:** Users can trigger detailed diagnostic summaries using the `--diagnostic-summary` CLI command. The report provides an at-a-glance view of system health and configurations, aiding in rapid troubleshooting.
-- **Interactive View:** Optionally, the report can be integrated into the existing web dashboard for browser-based viewing, promoting immediate access to key operational metrics.
+- **CLI-Based Interactive Wizard:**
+  - Introduces a new CLI command (e.g. `--config-wizard`) which launches an interactive session for users to review current configuration settings, get recommendations based on telemetry insights, and input new values.
+  - Provides immediate feedback on the validity of new inputs, using the same normalization and parsing logic as the main environment utilities.
+  - Allows users to persist updated configurations either to a local configuration file or to update the environment for the current session.
+
+- **Web Dashboard Integration (Optional):**
+  - Enables a browser-based interactive view to monitor system health, view real-time telemetry, and trigger configuration updates.
+  - Offers a unified management interface that consolidates live data integration diagnostics with configuration management.
 
 ## Benefits
 
-- **Proactive Error Detection:** By validating and reporting configuration mismatches early, users can address issues before they impact live data integrations.
-- **Enhanced Troubleshooting:** Aggregated and exportable telemetry reports provide clear, structured insight into diagnostic events, facilitating faster resolution of issues.
-- **Operational Transparency:** Integrates seamlessly with the existing diagnostic logging mechanisms to deliver a unified view of system health and configuration accuracy.
+- **Proactive Issue Detection:** Quickly identify misconfigurations before they impact live data integration.
+- **Enhanced Troubleshooting:** Aggregated telemetry reports combined with an interactive wizard reduce the time needed to address configuration errors.
+- **Operational Transparency:** Users can see real-time diagnostic data and make informed changes through an intuitive interface.
 
-This update ensures that ENV_MONITOR not only validates and records critical configuration parameters, but also empowers users with detailed, actionable telemetry reports to maintain robust, reliable live data integration.
+This updated specification aligns with the overall mission of owl-builder by ensuring that the system’s environment variables are kept in line with the live data integration requirements, while also empowering users with actionable diagnostic data and the means to rapidly correct configuration issues.
