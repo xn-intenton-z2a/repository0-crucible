@@ -23,13 +23,13 @@
  *   - Refactored file system operations to use asynchronous APIs.
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *   - Implemented exponential backoff in fetchDataWithRetry with configurable retries, delay and randomized jitter.
- *   - Consolidated and standardized environment variable parsing by extracting normalization, parsing and warning/telemetry logic into a dedicated utility module (src/lib/utils/envUtils.js).
+ *   - Consolidated and standardized environment variable parsing by inlining normalization, parsing and warning/telemetry logic below.
  *   - Updated CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and defaults.
  *   - Integrated structured telemetry logging: When a non-numeric input is detected and fallback is applied, a JSON formatted telemetry event is emitted.
  *   - Optimized the NaN warning cache mechanism by using a Set for concurrency-safe atomic updates to ensure that a unified diagnostic warning is logged only once per unique normalized invalid input under high-concurrency scenarios.
  *
  * Note on Environment Variable Handling:
- *   The function normalizeEnvValue (now located in src/lib/utils/envUtils.js) trims the value, replaces sequences of all whitespace characters with a single space, and converts to lower case.
+ *   The inline function normalizeEnvValue trims the value, replaces sequences of all whitespace characters with a single space, and converts to lower case.
  *   Invalid inputs trigger a one-time diagnostic warning and fallback to default values (or configurable fallback values).
  *   In strict mode, non-numeric inputs immediately throw an error.
  *
@@ -42,8 +42,50 @@ import path from "path";
 import https from "https";
 import http from "http";
 
-// Import the extracted non-numeric env var parsing utilities
-import { normalizeEnvValue, parseEnvNumber, resetEnvWarningCache } from "./utils/envUtils.js";
+// Inline environment variable utilities (replacing external file ./utils/envUtils.js)
+const warningCache = new Set();
+
+function normalizeEnvValue(val) {
+  if (typeof val !== "string") return val;
+  return val.trim().replace(/\s+/g, ' ').toLowerCase();
+}
+
+function parseEnvNumber(varName, defaultValue, fallbackValue) {
+  // Check for CLI override values
+  let cliOverride = '';
+  if (varName === "LIVEDATA_RETRY_COUNT" && process.env.LIVEDATA_RETRY_DEFAULT) {
+    cliOverride = process.env.LIVEDATA_RETRY_DEFAULT;
+  } else if (varName === "LIVEDATA_INITIAL_DELAY" && process.env.LIVEDATA_DELAY_DEFAULT) {
+    cliOverride = process.env.LIVEDATA_DELAY_DEFAULT;
+  }
+  let raw = cliOverride || process.env[varName] || "";
+  raw = normalizeEnvValue(raw);
+  if (raw === "") return defaultValue;
+  const num = Number(raw);
+  if (isNaN(num)) {
+    if (process.env.STRICT_ENV === "true") {
+      throw new Error(`Strict mode: Environment variable ${varName} received non-numeric input`);
+    }
+    if (fallbackValue !== undefined) {
+      return fallbackValue;
+    }
+    if (!warningCache.has(raw)) {
+      warningCache.add(raw);
+      const telemetry = JSON.stringify({ telemetry: "NaNFallback", envVar: varName });
+      console.log(`Warning: ${varName} received non-numeric input (${raw}). ${telemetry}`);
+    }
+    return defaultValue;
+  }
+  return num;
+}
+
+function resetEnvWarningCache() {
+  warningCache.clear();
+}
+
+// Export inline env utils for testing
+export { normalizeEnvValue, parseEnvNumber, resetEnvWarningCache };
+export const _parseEnvNumber = parseEnvNumber;
 
 // Define and export fetcher object for use in buildEnhancedOntology and for test spying
 const fetcher = {};
@@ -51,14 +93,6 @@ export { fetcher };
 
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
-
-// Removed local envWarningCache and related utility functions (normalizeEnvValue, parseEnvNumber) to the dedicated module at ./utils/envUtils.js
-
-/**
- * Resets the environment warning cache. This function is primarily intended for testing purposes
- * to allow idempotent logging behavior when environment variables change.
- */
-export { resetEnvWarningCache };
 
 /**
  * @deprecated Use buildOntologyFromLiveData for live data integration. This static fallback is retained only for emergencies.
@@ -88,8 +122,6 @@ function getCLIOverrideValue(varName) {
   }
   return "";
 }
-
-// The parseEnvNumber function is now imported from ./utils/envUtils.js and uses the centralized logic for parsing environment variables.
 
 // Builds an ontology using live data from a public API endpoint
 export async function buildOntologyFromLiveData() {
