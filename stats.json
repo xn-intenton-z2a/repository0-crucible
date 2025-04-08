@@ -1,19 +1,22 @@
 {
-  "openIssues": 10,
+  "openIssues": 9,
   "issuesClosedLastHour": 100,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Standardized Unicode whitespace handling in environment variable normalization by using sgu. (fixes #804)",
-      "ageMinutes": 0
-    }
-  ],
-  "diffMinutes": 1,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 2,
   "diffMinutesMain": 2,
   "commitsLastHour": 8,
-  "commitsLastDay": 41,
+  "commitsLastDay": 42,
   "lastFiveCommitMessages": [
+    {
+      "time": "19:55",
+      "message": "Maintain ONTOLOGY_VISUALIZER"
+    },
+    {
+      "time": "19:51",
+      "message": "Standardized Unicode whitespace handling in environment variable..."
+    },
     {
       "time": "19:47",
       "message": "Maintain ONTOLOGY_VISUALIZER"
@@ -25,27 +28,14 @@
     {
       "time": "19:29",
       "message": "Maintain ONTOLOGY_VISUALIZER"
-    },
-    {
-      "time": "19:20",
-      "message": "Update feature-worker workflow to run every 2 minutes\n\nAdjusted ..."
-    },
-    {
-      "time": "19:13",
-      "message": "Maintain SCHEMA_VALIDATOR"
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-804",
-        "minutesSinceLastCommit": 1
-      }
-    ]
+    "count": 0,
+    "details": []
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-08T19:49:35.302Z"
+  "generatedAt": "2025-04-08T19:57:33.857Z"
 }
