@@ -30,7 +30,16 @@
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Live Data Integration:</strong> Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code> are parsed using a consolidated helper function that applies default values when not set, empty, or when invalid non-numeric values (e.g., <code class="md-github">NaN</code>, empty strings, or whitespace-only) are provided.</p>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Invalid Non-Numeric Values Handling:</strong> In non-strict mode, if an invalid input is provided, a unified diagnostic warning is logged exactly once per unique composite key (combining variable name and normalized input) indicating that the received non-numeric input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. For example, raw inputs such as &quot; NaN &quot;, &quot;\tNaN&quot;, and &quot;\u00A0NaN\u00A0&quot; all normalize to &quot;nan&quot; and trigger a single warning. Duplicate warnings for equivalent normalized inputs are suppressed.</li>
+<li class="md-github"><strong class="md-github">Invalid Non-Numeric Values Handling:</strong> In non-strict mode, if an invalid input is provided, a unified diagnostic warning is logged exactly once per unique composite key (combining variable name and normalized input) indicating that the received non-numeric input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. In addition, a structured telemetry event is emitted in JSON format with the following details:
+<ul class="md-github">
+<li class="md-github">Environment variable name</li>
+<li class="md-github">Raw input provided</li>
+<li class="md-github">Normalized input</li>
+<li class="md-github">Fallback value applied (and associated unit)</li>
+<li class="md-github">Precise timestamp
+This structured telemetry ensures consistent monitoring and analytics without duplicate events for identical normalized inputs.</li>
+</ul>
+</li>
 <li class="md-github"><strong class="md-github">Strict Mode:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or by setting <code class="md-github">STRICT_ENV=true</code>), only valid numeric inputs are accepted. If a non-numeric input is encountered, an error is thrown with clear guidance on acceptable formats, such as:
 <ul class="md-github">
 <li class="md-github">Integer (e.g., 42)</li>
@@ -80,9 +89,9 @@
 </ul>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Unified Warning Mechanism:</strong></p>
+<p class="md-github"><strong class="md-github">Unified Warning and Telemetry Mechanism:</strong></p>
 <ul class="md-github">
-<li class="md-github">In non-strict mode, if a normalized input is found to be invalid (empty or &quot;nan&quot;), a warning is logged exactly once for each unique normalized input, along with the fallback value and its unit (e.g., retries or delay).</li>
+<li class="md-github">In non-strict mode, if a normalized input is found to be invalid (empty or &quot;nan&quot;), a warning is logged exactly once for each unique normalized input, along with the fallback value and its unit (e.g., retries or delay). Simultaneously, a structured telemetry event in JSON format is emitted containing the environment variable, raw and normalized inputs, the fallback value (and its unit), and a timestamp. Duplicate telemetry events for equivalent normalized inputs are suppressed.</li>
 </ul>
 </li>
 <li class="md-github">
@@ -99,7 +108,7 @@
 </li>
 </ol>
 <h4 class="md-github"><a class="md-github__anchor" name="example-usage" href="#example-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example Usage:</h4>
-<pre class="md-github"><code class="md-github language-bash"># Non-strict mode (fallback applied with unified warning)
+<pre class="md-github"><code class="md-github language-bash"># Non-strict mode (fallback applied with unified warning and telemetry event)
 export LIVEDATA_RETRY_COUNT=&quot; NaN &quot;
 node src/lib/main.js --build-live
 
@@ -112,7 +121,7 @@ node src/lib/main.js --build-live
 node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --build-live
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="automated-tests" href="#automated-tests"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Automated Tests</h3>
-<p class="md-github">Comprehensive tests verify the behavior of the environment variable handling, including different whitespace variants that normalize to &quot;nan&quot;, unified warning logging, and CLI override functionality. Run tests using:</p>
+<p class="md-github">Comprehensive tests verify the behavior of the environment variable handling, including different whitespace variants that normalize to &quot;nan&quot;, unified warning logging, structured telemetry event emission, and CLI override functionality. Run tests using:</p>
 <pre class="md-github"><code class="md-github language-bash">npm test
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="cli-help" href="#cli-help"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Help</h3>
@@ -122,7 +131,7 @@ node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --b
 <h3 class="md-github"><a class="md-github__anchor" name="key-cli-commands" href="#key-cli-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Key CLI Commands</h3>
 <ul class="md-github">
 <li class="md-github"><code class="md-github">--build --allow-deprecated</code>: Generates a deprecated fallback ontology using static data (<strong class="md-github">deprecated; use <code class="md-github">--build-live</code> for live data integration</strong>).</li>
-<li class="md-github"><code class="md-github">--build-live</code>: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt, with robust normalization of environment variable inputs.</li>
+<li class="md-github"><code class="md-github">--build-live</code>: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt, with robust normalization of environment variable inputs and structured telemetry events for fallback occurrences.</li>
 <li class="md-github"><code class="md-github">--persist</code>: Saves the current ontology to a JSON file.</li>
 <li class="md-github"><code class="md-github">--load</code>: Loads the saved ontology.</li>
 <li class="md-github"><code class="md-github">--query &quot;term&quot;</code>: Searches for matching ontology concepts.</li>
@@ -167,12 +176,12 @@ node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --b
 <li class="md-github">Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.</li>
 <li class="md-github">Refactored file system operations to use asynchronous, non-blocking APIs.</li>
 <li class="md-github"><strong class="md-github">CLI Update:</strong> The <code class="md-github">--build</code> command now requires the <code class="md-github">--allow-deprecated</code> flag for using the deprecated static fallback. Use <code class="md-github">--build-live</code> for live data integration.</li>
-<li class="md-github"><strong class="md-github">Exponential Backoff with Jitter:</strong> Improved handling of environment variables by consolidating parsing of <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code>. Non-numeric inputs now trigger a unified diagnostic warning exactly once per unique normalized non-numeric input, displaying the variable name, raw input, normalized input, and fallback value with unit. CLI override values now take precedence.</li>
+<li class="md-github"><strong class="md-github">Exponential Backoff with Jitter:</strong> Improved handling of environment variables by consolidating parsing of <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code>. Non-numeric inputs now trigger a unified diagnostic warning and a structured telemetry event exactly once per unique normalized non-numeric input, displaying the variable name, raw input, normalized input, and fallback value with unit. CLI override values now take precedence.</li>
 <li class="md-github"><strong class="md-github">Strict Environment Variable Parsing:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or <code class="md-github">export STRICT_ENV=true</code>), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on allowed formats.</li>
 <li class="md-github"><strong class="md-github">CLI Overrides:</strong> New CLI options <code class="md-github">--livedata-retry-default</code> and <code class="md-github">--livedata-delay-default</code> allow runtime override of fallback values without changing environment variables.</li>
 <li class="md-github"><strong class="md-github">Custom Endpoints:</strong> Supports custom API endpoints via <code class="md-github">CUSTOM_API_ENDPOINTS</code>. Only valid endpoints (beginning with &quot;http://&quot; or &quot;https://&quot;) are accepted.</li>
-<li class="md-github"><strong class="md-github">Unified NaN Handling and Robust Normalization:</strong> Environment variable parsing now uses Unicode property escapes to handle a broader range of whitespace characters (including em space, en space, and other Unicode spaces). This ensures that different raw inputs that normalize to the same value trigger a unified warning exactly once, ensuring consistent fallback behavior.</li>
-<li class="md-github"><strong class="md-github">Enhanced Test Coverage:</strong> Expanded tests now verify that different raw whitespace variants that normalize to the same value trigger only one warning, ensuring consistent fallback behavior.</li>
+<li class="md-github"><strong class="md-github">Unified NaN Handling and Structured Telemetry:</strong> Environment variable parsing now emits a structured JSON telemetry log for each fallback occurrence due to invalid numeric input, ensuring consistent monitoring and preventing duplicate logs for equivalent normalized inputs.</li>
+<li class="md-github"><strong class="md-github">Enhanced Test Coverage:</strong> Expanded tests now verify that different raw whitespace variants that normalize to the same value trigger only one diagnostic warning and one telemetry event, ensuring consistent fallback behavior.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
 <p class="md-github">Contributions are welcome! Please review <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for coding standards, testing requirements, and workflow guidelines.</p>
@@ -181,7 +190,7 @@ node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --b
 
   </section>
   <footer>
-    <p>Generated on 2025-04-08T00:34:52.041Z</p>
+    <p>Generated on 2025-04-08T01:02:45.545Z</p>
   </footer>
 </body>
 </html>
