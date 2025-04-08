@@ -1,25 +1,26 @@
-# Issue Generator
+# Issue Generator Enhancement
 
-This feature introduces an automated workflow to generate GitHub issues using a Chat Completions API. By submitting a prompt through the CLI or other integration points, the system activates a conversation with the API and returns a series of well-structured issues. This allows maintainers to iterate on features, refactor tasks, and document required enhancements effectively.
+This update refines the existing ISSUE_GENERATOR feature to further empower maintainers with a context-aware, configurable issue generation workflow. The enhanced module will interact with the Chat Completions API with added parameters, enriched context injection, and robust error handling.
 
 # Overview
 
-- **Automated Issue Creation:** Submit a feature description or prompt which is processed via the Chat Completions API to create a list of actionable GitHub issues.
-- **Structured Output:** The generated issues include titles, detailed descriptions, implementation steps, and testing recommendations adhering to repository guidelines.
-- **CLI Integration:** Introduce a dedicated CLI flag (e.g., `--generate-issues`) that accepts a prompt and triggers the issue generation module.
-- **Configuration Options:** Allow users to define parameters such as model choice, temperature, and output formatting via environment variables or CLI options.
+- **Context-Aware Generation:** Enrich user prompts with repository context such as recent commit messages, diagnostic logs, and function documentation when generating issues.
+- **Configurable Parameters:** Introduce CLI options for selecting the model (e.g., GPT-4), temperature setting, and output formatting. Users can override defaults via environment variables or CLI flags.
+- **Structured Issue Format:** The generated issues will be parsed and formatted with clear titles, detailed descriptions, implementation steps, testing recommendations, and diagnostic links.
+- **Robust Error Handling:** Graceful degradation in case of API failures or unexpected responses, with thorough diagnostic logging.
 
 # Implementation Details
 
-- **API Integration Module:** Create a new module (e.g., `src/lib/issueGenerator.js`) which packages the user’s feature prompt, submits it to the Chat Completions endpoint, and parses the response to generate a list of issues.
-- **CLI Command:** Extend the CLI to accept a flag like `--generate-issues "Your feature description"` that calls the new module. The command should handle errors and provide fallback messaging if the API call fails.
-- **Formatting & Validation:** Ensure that the returned issues adhere to the repository’s issue template and include sections for Implementation, Testing, and Diagnostics.
-- **Documentation:** Update README and CONTRIBUTING files to include guidance on how to use the Issue Generator and how to incorporate the generated issues into development workflow.
+- **API Integration Module:** Update the existing module (e.g., `src/lib/issueGenerator.js`) to accept new CLI flags such as `--issue-model`, `--issue-temp`, and `--generate-issues`. Validate inputs before sending the request to the Chat Completions API.
+- **Prompt Enrichment:** Append additional context (such as recent diagnostic logs or commit summaries) to the user prompt to improve issue relevance.
+- **Output Parsing & Formatting:** Ensure that the transformed output adheres to the repository issue template, including sections for Implementation, Testing, and Diagnostics.
+- **Fallback Mechanism:** If the API fails, provide informative error messages and fallback to a simplified issue generation mode.
+- **Documentation:** Update README and CONTRIBUTING to include instructions on using the enhanced options. Provide examples of CLI invocation and configuration via environment variables.
 
-# Testing
+# Testing & Validation
 
-- **Unit Tests:** Write tests for the issue generation module by mocking the Chat Completions API response and verifying that the output is correctly parsed into GitHub issue format.
-- **CLI Integration Tests:** Simulate CLI usage with various prompts, including empty or malformed inputs, to ensure robust error handling and proper issue generation.
-- **Edge Cases:** Test scenarios where the API might return unexpected outputs or network failures, ensuring graceful degradation and clear diagnostic logs.
+- **Unit Tests:** Extend tests to simulate varied API responses using mocks, validating that the generated issues include all required sections.
+- **Integration Tests:** Use headless testing to demonstrate the CLI command behavior, ensuring that new flags are correctly processed.
+- **Edge Cases:** Test with empty or malformed prompts, verify that enhanced context is appended correctly, and ensure that error handling is triggered appropriately.
 
-This feature aligns with the mission of delivering live and interactive feedback to developers, augmenting the development cycle by quickly transforming high-level ideas into actionable GitHub issues.
+This enhancement aligns with the repository mission by streamlining development workflows and transforming high-level ideas into actionable tasks with enriched context and configurability.
