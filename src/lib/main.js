@@ -71,26 +71,27 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
     }
     let key;
     if (varName === "TEST_UNIQUE") {
-      // For TEST_UNIQUE, use the raw, unnormalized value so that different formatting logs separately
-      key = varName + ":" + (cliOverride || process.env[varName] || "");
+      // Use the raw, unnormalized value for TEST_UNIQUE
+      key = varName + ":" + rawOriginal;
     } else {
       key = varName + ":" + raw;
     }
     if (!process.env.DISABLE_ENV_WARNINGS) {
       if (!warningCache.has(key)) {
         warningCache.set(key, 1);
+        const timestamp = new Date().toISOString();
         const telemetryObj = {
           telemetry: "NaNFallback",
           envVar: varName,
           rawValue: rawOriginal,
           cliOverride: !!cliOverride,
-          timestamp: new Date().toISOString()
+          timestamp
         };
-        console.log(`Warning: ${varName} received non-numeric input (${raw}). TELEMETRY: ${JSON.stringify(telemetryObj)}`);
+        console.log(`Warning: Environment variable '${varName}' received non-numeric input ('${raw}'). Falling back to default. TELEMETRY: ${JSON.stringify(telemetryObj)}`);
       } else {
-        let count = warningCache.get(key) + 1;
-        warningCache.set(key, count);
-        // Aggregation: additional occurrences are counted but not re-logged.
+        let count = warningCache.get(key);
+        warningCache.set(key, count + 1);
+        // Subsequent occurrences are aggregated and not re-logged.
       }
     }
     return defaultValue;
@@ -364,7 +365,7 @@ export function listAvailableEndpoints() {
       if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
         validCustomEndpoints.push(trimmed);
       } else {
-        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with \"http://\" or \"https://\"`, "warn");
+        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with "http://" or "https://"`, "warn");
       }
     });
     return Array.from(new Set([...defaultEndpoints, ...validCustomEndpoints]));

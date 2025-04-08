@@ -22,15 +22,15 @@ Environment variable inputs are processed via an inline utility integrated in th
 - `rawValue`: The original, unnormalized input value.
 - `cliOverride`: A boolean indicating whether the value came from a CLI override.
 
-The telemetry event is prefixed by `TELEMETRY:` in the logs to facilitate extraction by diagnostic tools.
+The telemetry event is prefixed by `TELEMETRY:` in the logs to facilitate extraction by diagnostic tools. Duplicate warnings for the same normalized invalid input are suppressed, ensuring clear and consistent logging.
 
 CLI override options (e.g. `--livedata-retry-default` and `--livedata-delay-default`) take precedence over environment variables and defaults. Strict mode, enabled via `--strict-env` or setting `STRICT_ENV=true`, causes non-numeric inputs to throw errors immediately.
 
-There is special handling for the environment variable `TEST_UNIQUE` where different formatting (even when normalized to the same value) will trigger separate warnings, aiding granular detection during testing.
+There is special handling for the environment variable `TEST_UNIQUE` where different formatting (even when normalized to the same value) may trigger separate warnings, aiding granular detection during testing.
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing logic, please note the enhanced telemetry format which now includes additional context fields for better diagnostics.
+Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing logic, please note the improved telemetry format which now includes additional context fields for better diagnostics and standardized warning messages.
 
 ## License
 
