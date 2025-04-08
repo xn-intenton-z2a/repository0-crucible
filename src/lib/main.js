@@ -29,7 +29,7 @@
  *   - Introduced aggregated telemetry summary for NaN fallback events, accessible via CLI flag '--diagnostic-summary-naN'.
  *
  * Note on Environment Variable Handling:
- *   The inline function normalizeEnvValue trims the value, replaces sequences of all whitespace characters with a single space, and converts to lower case.
+ *   The inline function normalizeEnvValue trims the value and replaces sequences of all whitespace characters (including non-breaking spaces) with a single space, then converts to lower case.
  *   Invalid inputs trigger a one-time diagnostic warning and fallback to default values (or configurable fallback values) with aggregated telemetry details.
  *   In strict mode, non-numeric inputs immediately throw an error.
  *
@@ -48,7 +48,8 @@ const warningCache = new Map();
 
 function normalizeEnvValue(val) {
   if (typeof val !== "string") return val;
-  return val.trim().replace(/\s+/g, ' ').toLowerCase();
+  // Updated regex to collapse all whitespace characters including non-breaking spaces
+  return val.trim().replace(/[\s\u00A0]+/g, ' ').toLowerCase();
 }
 
 function parseEnvNumber(varName, defaultValue, fallbackValue) {
