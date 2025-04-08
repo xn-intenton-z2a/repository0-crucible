@@ -24,138 +24,6 @@
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="owl-builder" href="#owl-builder"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>owl-builder</h1>
 <p class="md-github">owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontologies from live, verified public data sources. In this release, live data integration is the default for building, updating, querying, and persisting ontologies, while the legacy static fallback remains for emergency use only.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="overview" href="#overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
-<p class="md-github">Key features include:</p>
-<ul class="md-github">
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Live Data Integration:</strong> Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code> are parsed using a consolidated helper function that applies default values when not set, empty, or when invalid non-numeric values (e.g., <code class="md-github">NaN</code>, empty strings, or whitespace-only) are provided.</p>
-<ul class="md-github">
-<li class="md-github"><strong class="md-github">Invalid Non-Numeric Values Handling:</strong> In non-strict mode, if an invalid input is provided, a unified diagnostic warning is logged exactly once per unique composite key (combining variable name and normalized input) indicating that the received non-numeric input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. In addition, a structured telemetry event is emitted in JSON format with the following details:
-<ul class="md-github">
-<li class="md-github">Environment variable name</li>
-<li class="md-github">Raw input provided</li>
-<li class="md-github">Normalized input</li>
-<li class="md-github">Fallback value applied (and associated unit)</li>
-<li class="md-github">Precise timestamp
-This structured telemetry ensures consistent monitoring and analytics without duplicate events for identical normalized inputs.</li>
-</ul>
-</li>
-<li class="md-github"><strong class="md-github">Strict Mode:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or by setting <code class="md-github">STRICT_ENV=true</code>), only valid numeric inputs are accepted. If a non-numeric input is encountered, an error is thrown with clear guidance on acceptable formats, such as:
-<ul class="md-github">
-<li class="md-github">Integer (e.g., 42)</li>
-<li class="md-github">Decimal (e.g., 3.14)</li>
-<li class="md-github">Scientific notation (e.g., 1e3)</li>
-</ul>
-</li>
-<li class="md-github"><strong class="md-github">CLI Overrides with Precedence:</strong> New CLI options <code class="md-github">--livedata-retry-default</code> and <code class="md-github">--livedata-delay-default</code> allow you to override fallback values at runtime. These CLI values take precedence over environment variable values and defaults.</li>
-<li class="md-github"><strong class="md-github">Global Warning Suppression:</strong> You can disable all environment variable warning logs by setting the environment variable <code class="md-github">DISABLE_ENV_WARNINGS</code> (set to any value other than &quot;0&quot;).</li>
-</ul>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Custom Endpoints:</strong> Users can override or extend the default list of public API endpoints by setting the environment variable <code class="md-github">CUSTOM_API_ENDPOINTS</code> to a comma-separated list of URLs. <strong class="md-github">Only endpoints starting with &quot;http://&quot; or &quot;https://&quot; are accepted.</strong> Invalid endpoints will be ignored with a diagnostic warning.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Data Persistence:</strong> Easily save, load, backup, clear, refresh, and merge ontologies as JSON files. (File system operations are now non-blocking using asynchronous APIs.)</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Query &amp; Validation:</strong> Rapidly search for ontology concepts and validate your data. Note: The function <code class="md-github">queryOntology</code> has been refactored to operate asynchronously for improved performance.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">OWL Export/Import:</strong> Convert ontologies to and from an extended OWL XML format that supports additional fields (concepts, classes, properties, metadata).</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Concurrent Data Crawling:</strong> Gather real-time data concurrently from a range of public endpoints. The crawl functionality has been enhanced to return results with separate arrays for successful responses and errors, simplifying downstream processing.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Diverse Ontology Models:</strong> Build various models (basic, advanced, intermediate, enhanced, minimal, complex, scientific, educational, philosophical, economic, and hybrid).</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Enhanced Diagnostics:</strong> View timestamped logs with detailed context for each operation. Diagnostic messages now include details on fallback values and their units, clearly indicating non-strict mode usage when applicable. You can control the verbosity of diagnostic messages by setting the environment variable <code class="md-github">DIAGNOSTIC_LOG_LEVEL</code> (possible values: <code class="md-github">off</code>, <code class="md-github">error</code>, <code class="md-github">warn</code>, <code class="md-github">info</code>, <code class="md-github">debug</code>). For example, setting <code class="md-github">DIAGNOSTIC_LOG_LEVEL=off</code> will suppress diagnostic logs.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Web Server Integration:</strong> Launch a simple web server for quick status checks. <strong class="md-github">New:</strong> The server now supports integration testing by exposing a function to start and gracefully shut it down after performing actual HTTP requests.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Custom Merging &amp; Refreshing:</strong> New functions provide extended merging and diagnostic capabilities.</p>
-</li>
-</ul>
-<h3 class="md-github"><a class="md-github__anchor" name="environment-variable-handling-and-fallback-mechanism" href="#environment-variable-handling-and-fallback-mechanism"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Variable Handling and Fallback Mechanism</h3>
-<p class="md-github">owl-builder uses a unified approach to parse and handle environment variables. The key details are:</p>
-<ol class="md-github">
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Normalization:</strong></p>
-<ul class="md-github">
-<li class="md-github">Input values are trimmed and all sequences of whitespace—including spaces, tabs, non-breaking spaces, em space, en space, and other Unicode whitespace characters—are replaced by a single space, and the value is converted to lowercase. This ensures that different raw inputs (e.g., &quot; NaN &quot;, &quot;NaN&quot;, &quot;\u00A0NaN\u00A0&quot;) normalize to the same value.</li>
-</ul>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Unified Warning and Telemetry Mechanism:</strong></p>
-<ul class="md-github">
-<li class="md-github">In non-strict mode, if a normalized input is found to be invalid (empty or &quot;nan&quot;), a warning is logged exactly once for each unique normalized input, along with the fallback value and its unit (e.g., retries or delay). Simultaneously, a structured telemetry event in JSON format is emitted containing the environment variable, raw and normalized inputs, the fallback value (and its unit), and a timestamp. Duplicate telemetry events for equivalent normalized inputs are suppressed.</li>
-</ul>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">CLI Override Precedence:</strong></p>
-<ul class="md-github">
-<li class="md-github">CLI options <code class="md-github">--livedata-retry-default</code> and <code class="md-github">--livedata-delay-default</code> override both the environment variables and default values if provided with valid numeric inputs.</li>
-</ul>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Strict Mode:</strong></p>
-<ul class="md-github">
-<li class="md-github">When strict mode is enabled (<code class="md-github">--strict-env</code> or <code class="md-github">export STRICT_ENV=true</code>), any environment variable that does not strictly conform to a valid numeric format (integer, decimal, or scientific notation) will cause an error, providing clear guidance on acceptable formats.</li>
-</ul>
-</li>
-</ol>
-<h4 class="md-github"><a class="md-github__anchor" name="example-usage" href="#example-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example Usage:</h4>
-<pre class="md-github"><code class="md-github language-bash"># Non-strict mode (fallback applied with unified warning and telemetry event)
-export LIVEDATA_RETRY_COUNT=&quot; NaN &quot;
-node src/lib/main.js --build-live
-
-# Strict mode (will throw an error for non-numeric input)
-export STRICT_ENV=true
-export LIVEDATA_INITIAL_DELAY=&quot;invalid&quot;
-node src/lib/main.js --build-live
-
-# Using CLI overrides
-node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --build-live
-</code></pre>
-<h3 class="md-github"><a class="md-github__anchor" name="automated-tests" href="#automated-tests"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Automated Tests</h3>
-<p class="md-github">Comprehensive tests verify the behavior of the environment variable handling, including different whitespace variants that normalize to &quot;nan&quot;, unified warning logging, structured telemetry event emission, and CLI override functionality. Run tests using:</p>
-<pre class="md-github"><code class="md-github language-bash">npm test
-</code></pre>
-<h3 class="md-github"><a class="md-github__anchor" name="cli-help" href="#cli-help"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Help</h3>
-<p class="md-github">Display the list of commands and usage instructions:</p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
-</code></pre>
-<h3 class="md-github"><a class="md-github__anchor" name="key-cli-commands" href="#key-cli-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Key CLI Commands</h3>
-<ul class="md-github">
-<li class="md-github"><code class="md-github">--build --allow-deprecated</code>: Generates a deprecated fallback ontology using static data (<strong class="md-github">deprecated; use <code class="md-github">--build-live</code> for live data integration</strong>).</li>
-<li class="md-github"><code class="md-github">--build-live</code>: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt, with robust normalization of environment variable inputs and structured telemetry events for fallback occurrences.</li>
-<li class="md-github"><code class="md-github">--persist</code>: Saves the current ontology to a JSON file.</li>
-<li class="md-github"><code class="md-github">--load</code>: Loads the saved ontology.</li>
-<li class="md-github"><code class="md-github">--query &quot;term&quot;</code>: Searches for matching ontology concepts.</li>
-<li class="md-github"><code class="md-github">--export</code>: Exports the ontology as extended OWL XML.</li>
-<li class="md-github"><code class="md-github">--import</code>: Imports an ontology from extended OWL XML.</li>
-<li class="md-github"><code class="md-github">--backup</code>: Creates a backup of the ontology file.</li>
-<li class="md-github"><code class="md-github">--update &quot;New Title&quot;</code>: Updates the ontology title using live data.</li>
-<li class="md-github"><code class="md-github">--clear</code>: Deletes the local ontology file.</li>
-<li class="md-github"><code class="md-github">--crawl</code>: Concurrently crawls multiple public endpoints to gather data.</li>
-<li class="md-github"><code class="md-github">--fetch-retry</code>: Fetches data using retry logic with detailed logging.</li>
-<li class="md-github"><code class="md-github">--merge-ontologies</code>: Merges static and live ontology models.</li>
-<li class="md-github"><code class="md-github">--build-live-log</code>: Builds a live ontology with additional diagnostic logging.</li>
-<li class="md-github"><code class="md-github">--serve</code>: Launches the integrated web server.</li>
-<li class="md-github"><code class="md-github">--diagnostics</code>: Runs a diagnostic crawl of public endpoints.</li>
-<li class="md-github"><code class="md-github">--refresh</code>: Clears the existing ontology, rebuilds it using live data, and persists the refreshed ontology.</li>
-<li class="md-github"><code class="md-github">--merge-persist</code>: Merges static and live ontologies and saves the result.</li>
-<li class="md-github"><code class="md-github">--strict-env</code>: Enables strict mode for environment variable parsing.</li>
-<li class="md-github"><code class="md-github">--build-hybrid</code>: Combines live data with custom static data to produce a hybrid ontology.</li>
-<li class="md-github"><code class="md-github">--diagnostic-summary</code>: Provides a concise summary of diagnostic information.</li>
-<li class="md-github"><code class="md-github">--custom-merge</code>: Merges provided ontologies and appends the current timestamp.</li>
-<li class="md-github"><code class="md-github">--backup-refresh</code>: Creates a backup and refreshes the ontology.</li>
-</ul>
-<h2 class="md-github"><a class="md-github__anchor" name="robust-web-server-integration-test" href="#robust-web-server-integration-test"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Robust Web Server Integration Test</h2>
-<p class="md-github">A new integration test starts the web server, sends an actual HTTP request, verifies that the response status is 200 and that the response body is &quot;owl-builder Web Server Running\n&quot;, and gracefully shuts down the server after the test.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="endpoints-and-testing" href="#endpoints-and-testing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Endpoints and Testing</h2>
 <p class="md-github">owl-builder uses a broad list of public endpoints to build ontologies, such as:</p>
 <ul class="md-github">
@@ -166,23 +34,6 @@ node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --b
 <li class="md-github">...</li>
 </ul>
 <p class="md-github"><em class="md-github">Note:</em> Ensure that your network allows access to these endpoints for successful data retrieval.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="change-log" href="#change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Change Log</h2>
-<p class="md-github"><strong class="md-github">Version 0.0.39</strong></p>
-<ul class="md-github">
-<li class="md-github">Refocused ontology building on live public data sources; static fallback remains only for emergencies.</li>
-<li class="md-github">Enhanced diagnostic logging with detailed error messages and retry context in live data integration functions.</li>
-<li class="md-github">Pruned redundant legacy code to align with our mission.</li>
-<li class="md-github">Extended ontology model wrappers and introduced new merging and refreshing functions.</li>
-<li class="md-github">Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.</li>
-<li class="md-github">Refactored file system operations to use asynchronous, non-blocking APIs.</li>
-<li class="md-github"><strong class="md-github">CLI Update:</strong> The <code class="md-github">--build</code> command now requires the <code class="md-github">--allow-deprecated</code> flag for using the deprecated static fallback. Use <code class="md-github">--build-live</code> for live data integration.</li>
-<li class="md-github"><strong class="md-github">Exponential Backoff with Jitter:</strong> Improved handling of environment variables by consolidating parsing of <code class="md-github">LIVEDATA_RETRY_COUNT</code> and <code class="md-github">LIVEDATA_INITIAL_DELAY</code>. Non-numeric inputs now trigger a unified diagnostic warning and a structured telemetry event exactly once per unique normalized non-numeric input, displaying the variable name, raw input, normalized input, and fallback value with unit. CLI override values now take precedence.</li>
-<li class="md-github"><strong class="md-github">Strict Environment Variable Parsing:</strong> When strict mode is enabled (via <code class="md-github">--strict-env</code> or <code class="md-github">export STRICT_ENV=true</code>), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on allowed formats.</li>
-<li class="md-github"><strong class="md-github">CLI Overrides:</strong> New CLI options <code class="md-github">--livedata-retry-default</code> and <code class="md-github">--livedata-delay-default</code> allow runtime override of fallback values without changing environment variables.</li>
-<li class="md-github"><strong class="md-github">Custom Endpoints:</strong> Supports custom API endpoints via <code class="md-github">CUSTOM_API_ENDPOINTS</code>. Only valid endpoints (beginning with &quot;http://&quot; or &quot;https://&quot;) are accepted.</li>
-<li class="md-github"><strong class="md-github">Unified NaN Handling and Structured Telemetry:</strong> Environment variable parsing now emits a structured JSON telemetry log for each fallback occurrence due to invalid numeric input, ensuring consistent monitoring and preventing duplicate logs for equivalent normalized inputs.</li>
-<li class="md-github"><strong class="md-github">Enhanced Test Coverage:</strong> Expanded tests now verify that different raw whitespace variants that normalize to the same value trigger only one diagnostic warning and one telemetry event, ensuring consistent fallback behavior.</li>
-</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
 <p class="md-github">Contributions are welcome! Please review <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for coding standards, testing requirements, and workflow guidelines.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
@@ -190,7 +41,7 @@ node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --b
 
   </section>
   <footer>
-    <p>Generated on 2025-04-08T01:02:45.545Z</p>
+    <p>Generated on 2025-04-08T01:43:00.785Z</p>
   </footer>
 </body>
 </html>
