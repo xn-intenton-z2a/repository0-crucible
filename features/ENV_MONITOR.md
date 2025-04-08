@@ -1,24 +1,26 @@
-# ENV_MONITOR Feature
+# ENV_MONITOR Feature - Enhanced Configuration Validator
 
-This feature introduces a dedicated environment variable monitoring module that aggregates and exposes telemetry data from environment variable parsing. It adds diagnostic clarity by capturing all non-numeric and misconfigured input events that occur in the repository, and provides a CLI command to review the aggregated data.
+This update extends the existing environment monitoring module to not only aggregate telemetry events from environment variable parsing, but also to proactively validate critical configuration parameters before runtime. The new configuration validator will provide a comprehensive diagnostic report detailing any misconfigurations in numeric and URL inputs, offering early warnings and suggestions for correction.
 
 ## Overview
 
-- **Telemetry Aggregation:** Centralizes all telemetry events (such as unified NaN fallback warnings) originating from environment variable parsing. This helps developers assess recurring misconfigurations.
-- **Diagnostic Dashboard:** Provides a CLI command (e.g., `--env-monitor`) that displays a summary report of all warnings and telemetry events logged during runtime. Summaries include counts per environment variable and normalized values.
-- **Log Export:** Optionally exports the aggregated telemetry data to a JSON file, enabling further analysis or integration with external diagnostic tools.
-- **Real-Time Monitoring:** Supports a watch mode to update the report in real-time as environment variable issues are detected, assisting during development and debugging.
+- **Telemetry & Monitoring:** Continues to capture and log non-numeric or misconfigured environment variable inputs with a unified diagnostic message using a concurrency-safe mechanism.
+- **Configuration Validation:** Introduces a new CLI command (e.g. `--validate-config`) that scans important environment variables (such as LIVEDATA_RETRY_COUNT, LIVEDATA_INITIAL_DELAY, CUSTOM_API_ENDPOINTS, etc.) and validates them against expected formats. It will generate a JSON summary report highlighting any discrepancies and their recommended fixes.
+- **Integration with Diagnostics:** The configuration validator leverages the existing telemetry mechanisms to ensure that invalid inputs are flagged exactly once per unique normalized input. Any warnings or errors are logged with structured details for improved troubleshooting.
 
 ## Implementation Details
 
-- **Module Creation:** Implement the feature in a new source file (e.g., `src/lib/envMonitor.js`).
-- **Data Storage:** Use an in-memory store (such as a Map) to accumulate telemetry events. Provide functions to add new events and retrieve aggregated statistics.
-- **CLI Integration:** Extend the main CLI command parsing to recognize a new flag (`--env-monitor`). When invoked, the tool will display the current diagnostic summary from the environment monitoring module.
-- **Testing & QA:** Add unit tests to verify that telemetry events are logged exactly once per unique invalid input and that aggregation works correctly. Confirm that the CLI command outputs the expected summary and that log export functionality produces valid JSON.
-- **Documentation:** Update the README and CONTRIBUTING documentation to explain the purpose of environment variable monitoring, instructions for use, and troubleshooting guidelines.
+- **Module Extension:** Update the existing `envMonitor.js` module to include a new function `validateConfiguration()` that checks:
+  - Numeric values for environment variables using the existing normalization and parsing routines.
+  - Correct URL format for custom API endpoints.
+  - Presence of required configuration keys.
+
+- **CLI Integration:** Extend the main CLI parsing in `main.js` to accept a new flag `--validate-config`. When invoked, the tool will run the configuration validation, output a detailed summary report, and optionally export the report as a JSON file for further analysis.
+
+- **Reporting:** The validation report will include the name of each checked variable, its raw and normalized values, the expected format, and a status indicating success or the specific error encountered. This report reinforces proactive diagnostics and assists users in correcting configuration issues before impacting live data integration.
 
 ## Benefits
 
-- Aligns with the repository mission by enhancing diagnostic capabilities and maintaining high code quality standards.
-- Provides actionable insights into configuration issues, reducing the time required to diagnose environment-related errors.
-- Encourages better practices in environment variable management, leading to more robust live data integration.
+- **Proactive Error Detection:** By validating configuration at startup, users can identify and correct input issues early, reducing runtime errors and unexpected fallbacks.
+- **Enhanced User Feedback:** Detailed, structured reports provide actionable insights, improving the overall user experience.
+- **Streamlined Troubleshooting:** Consolidating environment monitoring and configuration validation simplifies diagnostics, aligning with the repository’s mission of robust live data integration and precise ontology building.
