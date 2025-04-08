@@ -23,19 +23,15 @@
  *   - Refactored file system operations to use asynchronous APIs.
  *   - Enhanced error handling and diagnostic logging in live data integration functions.
  *   - Implemented exponential backoff in fetchDataWithRetry with configurable retries, delay and randomized jitter.
- *   - Consolidated and standardized environment variable parsing to robustly handle non-numeric inputs (e.g., variants of "NaN" with extra whitespace, non-breaking spaces, tabs, etc.).
- *     In non-strict mode, an invalid input triggers a one-time diagnostic warning per unique composite key (variable name and normalized input) with fallback values (and units) applied.
- *     In strict mode, non-numeric inputs throw a clear error indicating that only valid numeric formats (integer, decimal, or scientific) are accepted. Allowed formats include integer, decimal or scientific notation.
- *   - Added configurable fallback values for non-numeric environment variables via an optional parameter and CLI options (--livedata-retry-default and --livedata-delay-default).
- *   - Revised CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and default values.
- *   - Integrated structured telemetry logging: When a non-numeric input is detected and fallback is applied, a JSON formatted telemetry event is emitted containing the env var name, raw input, normalized input, fallback value with unit, and timestamp.
+ *   - Consolidated and standardized environment variable parsing by extracting normalization, parsing and warning/telemetry logic into a dedicated utility module (src/lib/utils/envUtils.js).
+ *   - Updated CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and defaults.
+ *   - Integrated structured telemetry logging: When a non-numeric input is detected and fallback is applied, a JSON formatted telemetry event is emitted.
  *   - Optimized the NaN warning cache mechanism by using a Set for concurrency-safe atomic updates to ensure that a unified diagnostic warning is logged only once per unique normalized invalid input under high-concurrency scenarios.
  *
  * Note on Environment Variable Handling:
- *   The function parseEnvNumber normalizes the environment variable's raw string input by trimming whitespace, replacing sequences of any whitespace characters (including tabs, non-breaking spaces, and other Unicode whitespace) with a single space, and converting to lower case.
- *   For example, raw inputs such as " NaN ", "\tNaN", and "\u00A0NaN\u00A0" all normalize to "nan" and will trigger a unified warning exactly once per unique composite key.
- *   In non-strict mode, invalid or empty values trigger a one-time diagnostic warning and revert to fallback values.
- *   When CLI override options (--livedata-retry-default and --livedata-delay-default) are provided with valid numeric input, these take precedence over environment variables and defaults.
+ *   The function normalizeEnvValue (now located in src/lib/utils/envUtils.js) trims the value, replaces sequences of all whitespace characters with a single space, and converts to lower case.
+ *   Invalid inputs trigger a one-time diagnostic warning and fallback to default values (or configurable fallback values).
+ *   In strict mode, non-numeric inputs immediately throw an error.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -46,6 +42,9 @@ import path from "path";
 import https from "https";
 import http from "http";
 
+// Import the extracted non-numeric env var parsing utilities
+import { normalizeEnvValue, parseEnvNumber, resetEnvWarningCache } from "./utils/envUtils.js";
+
 // Define and export fetcher object for use in buildEnhancedOntology and for test spying
 const fetcher = {};
 export { fetcher };
@@ -53,29 +52,13 @@ export { fetcher };
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
-// Cache for environment variable warning flags using a Set that stores the composite key (variable name and normalized input).
-const envWarningCache = new Set();
+// Removed local envWarningCache and related utility functions (normalizeEnvValue, parseEnvNumber) to the dedicated module at ./utils/envUtils.js
 
 /**
  * Resets the environment warning cache. This function is primarily intended for testing purposes
  * to allow idempotent logging behavior when environment variables change.
  */
-export function resetEnvWarningCache() {
-  envWarningCache.clear();
-}
-
-/**
- * Helper function to normalize environment variable values.
- * Trims the value, replaces all sequences of any whitespace characters (including tabs, non-breaking spaces, em space, en space, etc.) with a single space, and converts to lower case.
- * If the value is undefined or not a string, returns an empty string.
- * @param {string | undefined | null} value 
- * @returns {string}
- */
-function normalizeEnvValue(value) {
-  if (typeof value !== "string") return "";
-  // Use \s+ with unicode flag to match any whitespace character
-  return value.replace(/\s+/gu, ' ').trim().toLowerCase();
-}
+export { resetEnvWarningCache };
 
 /**
  * @deprecated Use buildOntologyFromLiveData for live data integration. This static fallback is retained only for emergencies.
@@ -106,96 +89,7 @@ function getCLIOverrideValue(varName) {
   return "";
 }
 
-/**
- * Standardized helper function to parse numeric environment variables.
- *
- * Behavior:
- * - CLI override values (--livedata-retry-default and --livedata-delay-default) always take precedence if valid.
- * - In non-strict mode: If the provided variable is undefined, empty, or contains only whitespace, or if after normalization
- *   it equals (case-insensitive) 'nan', a one-time warning is logged (per unique composite key) and the function returns the fallback value.
- *   Duplicate warnings for the same input are suppressed via a cache.
- *   Additionally, warnings can be globally disabled by setting DISABLE_ENV_WARNINGS (and not equal to "0").
- *
- * - In strict mode (when STRICT_ENV is set to true or --strict-env is used): The environment variable must be a valid numeric value.
- *   Any non-numeric input (even with extra whitespace, non-breaking spaces, or tabs) will throw an error immediately, with a clear message indicating that only
- *   valid numbers (integer, decimal, or scientific notation) are accepted. Allowed formats include integer, decimal or scientific.
- *
- * Supports integers, decimals, and scientific notation.
- * Allows overriding fallback values via CLI options (e.g. --livedata-retry-default and --livedata-delay-default).
- *
- * CLI Override Precedence:
- *   When applicable, CLI override values (LIVEDATA_RETRY_COUNT and LIVEDATA_INITIAL_DELAY) are strictly prioritized over any configurable fallback value or default.
- *
- * Examples:
- *   - process.env.LIVEDATA_RETRY_COUNT = " NaN ", "\tNaN", or "\u00A0NaN\u00A0" all normalize to "nan" and will trigger a single warning.
- *   - CLI options provided as --livedata-retry-default 5 and --livedata-delay-default 250 will override environment variable values.
- *
- * @param {string} varName 
- * @param {number} defaultVal 
- * @param {number} [configurableFallback]
- * @returns {number}
- */
-function parseEnvNumber(varName, defaultVal, configurableFallback) {
-  // First, check for CLI override
-  const cliValue = getCLIOverrideValue(varName);
-  if (cliValue) {
-    const normalizedCli = normalizeEnvValue(cliValue);
-    if (normalizedCli !== "" && normalizedCli !== "nan" && !isNaN(Number(normalizedCli))) {
-      return Number(normalizedCli);
-    }
-  }
-
-  const rawValue = process.env[varName];
-  const fallback = configurableFallback !== undefined ? configurableFallback : defaultVal;
-
-  // If the raw value is not a string, return the fallback silently without logging
-  if (typeof rawValue !== "string") {
-    return fallback;
-  }
-
-  const normalized = normalizeEnvValue(rawValue);
-  const inputInvalid = (normalized === "" || normalized === "nan" || isNaN(Number(normalized)));
-
-  if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
-    const numericRegex = /^-?\d+(\.\d+)?([eE][-+]?\d+)?$/;
-    if (!numericRegex.test(normalized)) {
-      throw new Error(`Strict mode: Environment variable ${varName} received non-numeric input: '${rawValue}' (normalized: '${normalized}'). Valid formats: integer, decimal or scientific notation.`);
-    }
-    return Number(normalized);
-  }
-
-  if (inputInvalid) {
-    // Log a warning and telemetry event only once per unique normalized invalid input
-    const warnKey = `${varName}:${normalized}`;
-    if (!envWarningCache.has(warnKey)) {
-      envWarningCache.add(warnKey);
-      let unit = "";
-      if (varName === "LIVEDATA_RETRY_COUNT") {
-        unit = " retries";
-      } else if (varName === "LIVEDATA_INITIAL_DELAY") {
-        unit = "ms delay";
-      }
-      // Emit structured telemetry event as JSON
-      const telemetryEvent = {
-        telemetry: "NaNFallback",
-        envVar: varName,
-        rawInput: rawValue,
-        normalizedInput: normalized,
-        fallbackValue: fallback,
-        unit: unit.trim(),
-        timestamp: getCurrentTimestamp()
-      };
-      console.log(JSON.stringify(telemetryEvent));
-
-      // Log diagnostic warning if not suppressed
-      if (!process.env.DISABLE_ENV_WARNINGS || process.env.DISABLE_ENV_WARNINGS === "0") {
-        logDiagnostic(`Unified NaN Handling: Environment variable ${varName} received non-numeric input '${rawValue}' (normalized: '${normalized}'). Fallback value ${fallback}${unit} applied.`, "warn");
-      }
-    }
-    return fallback;
-  }
-  return Number(normalized);
-}
+// The parseEnvNumber function is now imported from ./utils/envUtils.js and uses the centralized logic for parsing environment variables.
 
 // Builds an ontology using live data from a public API endpoint
 export async function buildOntologyFromLiveData() {
@@ -1127,8 +1021,6 @@ export function listCommands() {
 }
 
 console.log("owl-builder CLI loaded");
-
-export { parseEnvNumber as _parseEnvNumber }; 
 
 function processCLIFallbackOptions(args) {
   for (let i = 0; i < args.length; i++) {
