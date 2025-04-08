@@ -1,26 +1,29 @@
-# ENV_MONITOR Feature - Enhanced Configuration Validator
+# ENV_MONITOR Feature - Enhanced Configuration Validator & Telemetry Report
 
-This update extends the existing environment monitoring module to not only aggregate telemetry events from environment variable parsing, but also to proactively validate critical configuration parameters before runtime. The new configuration validator will provide a comprehensive diagnostic report detailing any misconfigurations in numeric and URL inputs, offering early warnings and suggestions for correction.
+The ENV_MONITOR feature is responsible for validating critical configuration parameters and collecting telemetry data from environment variables and runtime diagnostics. In this update, the feature is extended to not only validate configurations and aggregate environment telemetry, but also to generate a comprehensive diagnostic report. This report consolidates structured telemetry events, diagnostic logs, and backoff retry details to aid users in troubleshooting and optimizing live data integration.
 
 ## Overview
 
-- **Telemetry & Monitoring:** Continues to capture and log non-numeric or misconfigured environment variable inputs with a unified diagnostic message using a concurrency-safe mechanism.
-- **Configuration Validation:** Introduces a new CLI command (e.g. `--validate-config`) that scans important environment variables (such as LIVEDATA_RETRY_COUNT, LIVEDATA_INITIAL_DELAY, CUSTOM_API_ENDPOINTS, etc.) and validates them against expected formats. It will generate a JSON summary report highlighting any discrepancies and their recommended fixes.
-- **Integration with Diagnostics:** The configuration validator leverages the existing telemetry mechanisms to ensure that invalid inputs are flagged exactly once per unique normalized input. Any warnings or errors are logged with structured details for improved troubleshooting.
+- **Configuration Validation:** Scans key environment variables (e.g., LIVEDATA_RETRY_COUNT, LIVEDATA_INITIAL_DELAY, CUSTOM_API_ENDPOINTS) to check for valid numeric and URL formats. Provides detailed JSON summary reports highlighting discrepancies and suggested fixes.
+- **Telemetry Collection:** Captures diagnostic events such as non-numeric inputs, fallback values applied, and exponential backoff details. Each event is logged exactly once per unique normalized input to ensure clarity under high concurrency.
+- **Diagnostic Reporting:** Generates a consolidated telemetry report that aggregates recent diagnostic logs and telemetry events. The report can be exported in JSON format and, optionally, rendered as an interactive HTML view via the integrated web server.
 
-## Implementation Details
+## Configuration Validation & Telemetry
 
-- **Module Extension:** Update the existing `envMonitor.js` module to include a new function `validateConfiguration()` that checks:
-  - Numeric values for environment variables using the existing normalization and parsing routines.
-  - Correct URL format for custom API endpoints.
-  - Presence of required configuration keys.
+- **CLI Integration:** A new CLI command (e.g. `--validate-config`) triggers a full scan of critical environment variables. Results are output as a JSON summary, making it easier for users to quickly identify and correct configuration issues.
+- **Telemetry Logging:** Uses a concurrency-safe caching mechanism to log a unified warning for each unique invalid input. Telemetry events include details such as raw input, normalized value, fallback value, and timestamp.
+- **CLI Override:** CLI options (e.g. `--livedata-retry-default` and `--livedata-delay-default`) continue to strictly override environment variables, ensuring predictable behavior.
 
-- **CLI Integration:** Extend the main CLI parsing in `main.js` to accept a new flag `--validate-config`. When invoked, the tool will run the configuration validation, output a detailed summary report, and optionally export the report as a JSON file for further analysis.
+## Diagnostic and Telemetry Reporting
 
-- **Reporting:** The validation report will include the name of each checked variable, its raw and normalized values, the expected format, and a status indicating success or the specific error encountered. This report reinforces proactive diagnostics and assists users in correcting configuration issues before impacting live data integration.
+- **Comprehensive Report:** Builds upon existing diagnostic logging by aggregating recent telemetry events and diagnostic logs (including exponential backoff retry attempts and environment validation warnings).
+- **Exportable Output:** Users can trigger detailed diagnostic summaries using the `--diagnostic-summary` CLI command. The report provides an at-a-glance view of system health and configurations, aiding in rapid troubleshooting.
+- **Interactive View:** Optionally, the report can be integrated into the existing web dashboard for browser-based viewing, promoting immediate access to key operational metrics.
 
 ## Benefits
 
-- **Proactive Error Detection:** By validating configuration at startup, users can identify and correct input issues early, reducing runtime errors and unexpected fallbacks.
-- **Enhanced User Feedback:** Detailed, structured reports provide actionable insights, improving the overall user experience.
-- **Streamlined Troubleshooting:** Consolidating environment monitoring and configuration validation simplifies diagnostics, aligning with the repository’s mission of robust live data integration and precise ontology building.
+- **Proactive Error Detection:** By validating and reporting configuration mismatches early, users can address issues before they impact live data integrations.
+- **Enhanced Troubleshooting:** Aggregated and exportable telemetry reports provide clear, structured insight into diagnostic events, facilitating faster resolution of issues.
+- **Operational Transparency:** Integrates seamlessly with the existing diagnostic logging mechanisms to deliver a unified view of system health and configuration accuracy.
+
+This update ensures that ENV_MONITOR not only validates and records critical configuration parameters, but also empowers users with detailed, actionable telemetry reports to maintain robust, reliable live data integration.
