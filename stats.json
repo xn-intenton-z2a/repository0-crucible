@@ -1,14 +1,18 @@
 {
-  "openIssues": 43,
+  "openIssues": 46,
   "issuesClosedLastHour": 6,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 2,
-  "diffMinutesMain": 2,
+  "diffMinutes": 6,
+  "diffMinutesMain": 7,
   "commitsLastHour": 9,
   "commitsLastDay": 47,
   "lastFiveCommitMessages": [
+    {
+      "time": "23:33",
+      "message": "Maintain ONTOLOGY_MANAGER"
+    },
     {
       "time": "23:29",
       "message": "Enhanced env var normalization to include non-breaking spaces fo..."
@@ -24,18 +28,19 @@
     {
       "time": "23:11",
       "message": "Maintain ENV_MONITOR"
-    },
-    {
-      "time": "22:59",
-      "message": "Maintain ENV_MONITOR"
     }
   ],
   "branches": {
-    "count": 0,
-    "details": []
+    "count": 1,
+    "details": [
+      {
+        "branch": "agentic-lib-issue-858",
+        "minutesSinceLastCommit": 6
+      }
+    ]
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-08T23:31:35.638Z"
+  "generatedAt": "2025-04-08T23:40:24.582Z"
 }
