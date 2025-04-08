@@ -123,7 +123,7 @@ function getCLIOverrideValue(varName) {
  * Allows overriding fallback values via CLI options (e.g. --livedata-retry-default and --livedata-delay-default).
  *
  * CLI Override Precedence:
- *   When applicable, CLI override values (LIVEDATA_RETRY_DEFAULT and LIVEDATA_DELAY_DEFAULT) are strictly prioritized over any configurable fallback value or default.
+ *   When applicable, CLI override values (LIVEDATA_RETRY_COUNT and LIVEDATA_INITIAL_DELAY) are strictly prioritized over any configurable fallback value or default.
  *
  * Examples:
  *   - process.env.LIVEDATA_RETRY_COUNT = " NaN ", "\tNaN", or "\u00A0NaN\u00A0" all normalize to "nan" and will trigger a single warning.
@@ -153,8 +153,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
   }
 
   const normalized = normalizeEnvValue(rawValue);
-  // Determine if the normalized value is invalid (empty or represents NaN)
-  const isInvalid = (normalized === "" || normalized === "nan" || isNaN(Number(normalized)));
+  const inputInvalid = (normalized === "" || normalized === "nan" || isNaN(Number(normalized)));
 
   if (process.env.STRICT_ENV && process.env.STRICT_ENV.toLowerCase() === "true") {
     const numericRegex = /^-?\d+(\.\d+)?([eE][-+]?\d+)?$/;
@@ -164,8 +163,8 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
     return Number(normalized);
   }
 
-  if (isInvalid) {
-    // Log a warning only once per unique combination of variable name and normalized input
+  if (inputInvalid) {
+    // Log a warning and telemetry event only once per unique normalized invalid input
     const warnKey = `${varName}:${normalized}`;
     if (!envWarningCache.has(warnKey)) {
       let unit = "";
@@ -186,7 +185,7 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
       };
       console.log(JSON.stringify(telemetryEvent));
 
-      // Continue with diagnostic logging if not disabled
+      // Log diagnostic warning if not suppressed
       if (!process.env.DISABLE_ENV_WARNINGS || process.env.DISABLE_ENV_WARNINGS === "0") {
         logDiagnostic(`Unified NaN Handling: Environment variable ${varName} received non-numeric input '${rawValue}' (normalized: '${normalized}'). Fallback value ${fallback}${unit} applied.`, "warn");
       }
@@ -419,7 +418,7 @@ export function listAvailableEndpoints() {
       if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
         validCustomEndpoints.push(trimmed);
       } else {
-        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with "http://" or "https://"`, "warn");
+        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with \"http://\" or \"https://\"`, "warn");
       }
     });
     return Array.from(new Set([...defaultEndpoints, ...validCustomEndpoints]));
@@ -1128,7 +1127,7 @@ export function listCommands() {
 
 console.log("owl-builder CLI loaded");
 
-export { parseEnvNumber as _parseEnvNumber };
+export { parseEnvNumber as _parseEnvNumber }; 
 
 function processCLIFallbackOptions(args) {
   for (let i = 0; i < args.length; i++) {
