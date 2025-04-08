@@ -1,33 +1,22 @@
-# ENV_MONITOR - Enhanced Configuration and Diagnostics
+# Extended Environment Monitor & Diagnostic Log Analyzer
 
-This feature refines and extends the existing ENV_MONITOR module to provide robust environment variable validation, real-time telemetry, and an integrated web dashboard for diagnostics and configuration.
+This update enhances the existing ENV_MONITOR feature by integrating a Diagnostic Log Analyzer. In addition to its current capabilities in environment variable validation, interactive CLI configuration, and real-time telemetry with an HTTP dashboard, this update provides automated log analysis of diagnostic events. The analyzer parses the standardized diagnostic log output to aggregate error counts, categorize issues, and provide actionable recommendations
 
 ## Overview
 
-The enhanced ENV_MONITOR combines rigorous environment configuration validation with an interactive CLI wizard and an optional HTTP dashboard. This allows users to instantly detect misconfigurations, view aggregated telemetry, and adjust settings on the fly. This integration aligns with the repository mission by ensuring the tool operates reliably in dynamic, live data environments.
-
-## Configuration Validation & Telemetry
-
-- **Robust Parsing:** Continue to validate critical environment variables (such as LIVEDATA_RETRY_COUNT, LIVEDATA_INITIAL_DELAY, CUSTOM_API_ENDPOINTS) using inline schema normalization and parsing.
-- **Enhanced Telemetry:** Log a one-time warning when non-numeric or invalid entries are encountered. Each warning includes detailed telemetry data (raw input, CLI override status, and ISO timestamp) to aid diagnosis.
-- **Graceful Fallback:** In non-strict mode, fallback to default or configurable values while suppressing duplicate warnings for the same normalized invalid input.
-
-## Interactive Configuration Wizard
-
-- **CLI-Based Wizard:** Launch an interactive session (using the `--config-wizard` flag) to review and update environment settings in real-time.
-- **Immediate Feedback:** Provide validation results and suggestions for instant normalization and error resolution.
-- **Persistent Updates:** Option to save changes locally or apply them dynamically at runtime.
-
-## Diagnostic Analytics & Web Dashboard
-
-- **Aggregated Logs & Metrics:** Collect diagnostic logs and performance data (e.g., API retry counts, delay intervals with jitter, success/failure rates) in real time.
-- **Web Dashboard Integration:** Expose HTTP endpoints (such as `/config` for current configuration and `/diagnostics` for performance summaries) via the integrated web server, complementing CLI commands like `--diagnostic-summary`.
-- **Actionable Insights:** Provide detailed, timestamped analytics with visual cues to empower rapid troubleshooting and system optimization.
+- **Configuration & Telemetry:** Continues to validate and normalize critical environment variables with in-memory aggregation of warning telemetry.
+- **Interactive CLI Wizard & Web Dashboard:** Maintains the CLI guided configuration and HTTP endpoints (/config, /diagnostics) for live configuration snapshots and performance data.
+- **Diagnostic Log Analyzer:** New functionality that parses diagnostic logs (prefixed with "TELEMETRY:") to:
+  - Aggregate error and warning counts over time
+  - Categorize common error types (e.g. non-numeric environment inputs, network failures)
+  - Present trends and suggested corrective actions
+  - Offer a dedicated CLI flag (e.g. `--log-analyzer`) and HTTP endpoint (e.g. `/diag/logs`)
 
 ## Implementation Details
 
-- **Single Source Integration:** Implement all enhancements in the existing source file to maintain coherence and ease of maintenance.
-- **Consistent Logging:** Utilize the enhanced diagnostic logging functions to ensure that all environment-related warnings and telemetry are clearly tagged (prefixed with "TELEMETRY:").
-- **User Documentation:** Update README and CONTRIBUTING guidelines to include usage examples for the interactive wizard and web dashboard endpoints.
+- **Single Source Integration:** All enhancements are implemented in the current ENV_MONITOR source file to ensure coherence and ease of maintenance.
+- **Log Parsing Engine:** A lightweight parser will read diagnostic logs and extract telemetry JSON payloads. Aggregated data will be displayed as a summary report.
+- **CLI & HTTP Integration:** Extend the CLI with a new flag (`--log-analyzer`) for on-demand log analysis, and expose an additional HTTP endpoint for remote diagnostics.
+- **User Documentation:** Update README and CONTRIBUTING to reflect the new log analyzer tool, including examples of its CLI usage and integration with diagnostic dashboards.
 
-This consolidated approach ensures that the repository remains reliable and easy to configure, supporting live data integration and advanced diagnostics as required by the project mission.
+This consolidated approach maintains the focus on robust live data integration while enhancing system observability and user support through detailed diagnostic insights.
