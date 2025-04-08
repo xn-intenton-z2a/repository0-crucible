@@ -26,6 +26,7 @@
  *   - Consolidated and standardized environment variable parsing by inlining normalization, parsing and warning/telemetry logic below.
  *   - Updated CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and defaults.
  *   - Enhanced NaN fallback telemetry by including additional context: timestamp, raw input value, and indicator if CLI override was used.
+ *   - Introduced aggregated telemetry summary for NaN fallback events, accessible via CLI flag '--diagnostic-summary-naN'.
  *
  * Note on Environment Variable Handling:
  *   The inline function normalizeEnvValue trims the value, replaces sequences of all whitespace characters with a single space, and converts to lower case.
@@ -78,20 +79,19 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
     }
     if (!process.env.DISABLE_ENV_WARNINGS) {
       if (!warningCache.has(key)) {
-        warningCache.set(key, 1);
-        const timestamp = new Date().toISOString();
         const telemetryObj = {
           telemetry: "NaNFallback",
           envVar: varName,
           rawValue: rawOriginal,
           cliOverride: !!cliOverride,
-          timestamp
+          timestamp: new Date().toISOString()
         };
+        warningCache.set(key, { count: 1, telemetry: telemetryObj });
         console.log(`Warning: Environment variable '${varName}' received non-numeric input ('${raw}'). Falling back to default. TELEMETRY: ${JSON.stringify(telemetryObj)}`);
       } else {
-        let count = warningCache.get(key);
-        warningCache.set(key, count + 1);
-        // Subsequent occurrences are aggregated and not re-logged.
+        let info = warningCache.get(key);
+        info.count += 1;
+        warningCache.set(key, info);
       }
     }
     return defaultValue;
@@ -106,6 +106,15 @@ function resetEnvWarningCache() {
 // Export inline env utils for testing
 export { normalizeEnvValue, parseEnvNumber, resetEnvWarningCache };
 export const _parseEnvNumber = parseEnvNumber;
+
+// New function to get aggregated NaN fallback telemetry summary
+export function getAggregatedNaNSummary() {
+  const summary = [];
+  for (const [key, info] of warningCache.entries()) {
+    summary.push({ key, count: info.count, telemetry: info.telemetry });
+  }
+  return summary;
+}
 
 // Define and export fetcher object for use in buildEnhancedOntology and for test spying
 const fetcher = {};
@@ -965,6 +974,11 @@ const commandActions = {
   "--strict-env": async (_args) => {
     console.log("Strict environment variable parsing enabled.");
     return "Strict mode enabled";
+  },
+  "--diagnostic-summary-naN": async (_args) => {
+    const summary = getAggregatedNaNSummary();
+    console.log("Aggregated NaN Fallback Telemetry Summary:", JSON.stringify(summary, null, 2));
+    return summary;
   }
 };
 
@@ -1060,7 +1074,7 @@ async function demo() {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --custom-merge, --backup-refresh, --strict-env, --livedata-retry-default <number>, --livedata-delay-default <number>`
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --diagnostic-summary-naN, --custom-merge, --backup-refresh, --strict-env, --livedata-retry-default <number>, --livedata-delay-default <number>`
   );
 }
 

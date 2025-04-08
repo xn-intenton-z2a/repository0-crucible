@@ -51,7 +51,8 @@ const {
   fetcher,
   startWebServer,
   _parseEnvNumber,
-  resetEnvWarningCache
+  resetEnvWarningCache,
+  getAggregatedNaNSummary
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -176,7 +177,6 @@ describe("Live Data Configurability", () => {
     const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_RETRY_COUNT") && call[0].includes("received non-numeric input")).length;
     const delayWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_INITIAL_DELAY") && call[0].includes("received non-numeric input")).length;
     expect(warningCalls + delayWarnings).toBeGreaterThanOrEqual(2);
-    // Check that telemetry events include additional fields
     const telemetryCalls = logSpy.mock.calls.filter(call => {
       try {
         const jsonStr = call[0].split("TELEMETRY: ").pop();
@@ -249,14 +249,13 @@ describe("Environment Variable Parsing Tests", () => {
     expect(_parseEnvNumber("TEST_SCI", 0)).toBe(1000);
   });
 
-  test("Returns default for input 'NaN' as string and logs warning only once with a single telemetry event", () => {
+  test("Returns default for input 'NaN' as string and logs warning once with a single telemetry event", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     process.env.TEST_NON_NUM = "NaN";
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
     const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM") && call[0].includes("received non-numeric input")).length;
     expect(warningCalls).toBe(1);
-    // Check telemetry event includes additional fields
     const telemetryCalls = logSpy.mock.calls.filter(call => {
       try {
         const jsonStr = call[0].split("TELEMETRY: ").pop();
@@ -715,6 +714,19 @@ describe("CLI and Main Function Tests", () => {
     const ontology = await main(args);
     expect(_parseEnvNumber("LIVEDATA_RETRY_COUNT", 3)).toBe(8);
     expect(_parseEnvNumber("LIVEDATA_INITIAL_DELAY", 100)).toBe(300);
+  });
+
+  test("main with new CLI flag --diagnostic-summary-naN returns aggregated NaN summary", async () => {
+    // Trigger some NaN warnings
+    process.env.TEST_SUMMARY = "NaN";
+    _parseEnvNumber("TEST_SUMMARY", 10);
+    _parseEnvNumber("TEST_SUMMARY", 10);
+    const summary = await main(["--diagnostic-summary-naN"]);
+    expect(Array.isArray(summary)).toBe(true);
+    expect(summary.length).toBeGreaterThan(0);
+    const entry = summary.find(x => x.key.includes("TEST_SUMMARY"));
+    expect(entry).toBeDefined();
+    expect(entry.count).toBe(2);
   });
 });
 
