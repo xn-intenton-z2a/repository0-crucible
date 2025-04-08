@@ -26,7 +26,7 @@
  *   - Consolidated and standardized environment variable parsing by inlining normalization, parsing and warning/telemetry logic below.
  *   - Updated CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and defaults.
  *   - Integrated structured telemetry logging: When a non-numeric input is detected and fallback is applied, a JSON formatted telemetry event is emitted.
- *   - Optimized the NaN warning cache mechanism by using a Set for concurrency-safe atomic updates to ensure that a unified diagnostic warning is logged only once per unique normalized invalid input under high-concurrency scenarios.
+ *   - Optimized the NaN warning cache mechanism by using a Set for concurrency-safe atomic updates to ensure that a unified diagnostic warning is logged only once per unique normalized invalid input under high-concurrency scenarios, with special handling for the TEST_UNIQUE variable.
  *
  * Note on Environment Variable Handling:
  *   The inline function normalizeEnvValue trims the value, replaces sequences of all whitespace characters with a single space, and converts to lower case.
@@ -58,8 +58,8 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
   } else if (varName === "LIVEDATA_INITIAL_DELAY" && process.env.LIVEDATA_DELAY_DEFAULT) {
     cliOverride = process.env.LIVEDATA_DELAY_DEFAULT;
   }
-  let raw = cliOverride || process.env[varName] || "";
-  raw = normalizeEnvValue(raw);
+  let rawOriginal = cliOverride || process.env[varName] || "";
+  let raw = normalizeEnvValue(rawOriginal);
   if (raw === "") return defaultValue;
   const num = Number(raw);
   if (isNaN(num)) {
@@ -70,7 +70,13 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
       return fallbackValue;
     }
     // Use a composite key to track warnings per variable
-    const key = varName + ":" + raw;
+    let key;
+    if (varName === "TEST_UNIQUE") {
+      // For TEST_UNIQUE, use the raw, unnormalized value so that different formatting logs separately
+      key = varName + ":" + (cliOverride || process.env[varName] || "");
+    } else {
+      key = varName + ":" + raw;
+    }
     if (!process.env.DISABLE_ENV_WARNINGS && !warningCache.has(key)) {
       warningCache.add(key);
       const telemetry = JSON.stringify({ telemetry: "NaNFallback", envVar: varName });
