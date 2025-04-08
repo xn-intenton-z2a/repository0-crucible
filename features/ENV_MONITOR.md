@@ -1,37 +1,23 @@
-# ENV_MONITOR Feature - Enhanced Configuration Validator & Interactive Wizard
+# ENV_MONITOR Feature Enhancement - Validator, Wizard & Analytics
 
-This feature is responsible for validating critical environment configuration parameters, aggregating telemetry for diagnostic purposes, and now introducing an interactive configuration wizard. It maintains the established validation and telemetry collection mechanisms while adding a new layer for interactive, real-time configuration management.
+This update refines the existing ENV_MONITOR feature to not only validate and interactively guide configuration updates but also to aggregate and expose detailed diagnostic and performance analytics. The enhanced feature now integrates three core components:
 
 ## Environment Configuration Validation & Telemetry
-
-- **Configuration Validation:**
-  - Scans key environment variables (e.g. LIVEDATA_RETRY_COUNT, LIVEDATA_INITIAL_DELAY, CUSTOM_API_ENDPOINTS) for proper numeric and URL formats.
-  - Utilizes inline schema validation (powered by Zod or equivalent logic) to parse both environment variables and CLI override inputs.
-  - Issues one-time diagnostic warnings upon encountering invalid inputs. Repeated invalid entries are aggregated into a summarized telemetry event.
-
-- **Telemetry Collection:**
-  - Aggregates diagnostic events such as non-numeric inputs, applied fallback values, and retry details with exponential backoff.
-  - Uses a concurrency-safe caching mechanism (Map) to ensure aggregated reporting for multiple occurrences of the same misconfiguration.
-  - Produces detailed, timestamped logs useful for real-time monitoring and post-mortem analysis.
-
-## Diagnostic Reporting
-
-- Generates unified diagnostic summaries via a dedicated CLI command (e.g. `--diagnostic-summary`).
-- Exports diagnostic data in JSON or an interactive HTML view if integrated with the web server.
+- **Robust Parsing:** Continues scanning critical environment variables (e.g. LIVEDATA_RETRY_COUNT, LIVEDATA_INITIAL_DELAY, CUSTOM_API_ENDPOINTS) using inline schema validation.
+- **Telemetry Aggregation:** Aggregates one-time diagnostic warnings for invalid inputs with enriched telemetry data including raw input, CLI override status, and ISO timestamps.
+- **Graceful Fallback:** In non-strict mode, non-numeric values trigger warnings and fallback to defaults or provided fallback values, with suppression options available via DISABLE_ENV_WARNINGS.
 
 ## Interactive Configuration Wizard
+- **CLI-Based Wizard:** Launches an interactive session (via the `--config-wizard` flag) to review, validate, and update environment configurations in real-time.
+- **Immediate Feedback:** Provides real-time validation and normalization feedback with options to persist updates locally or apply dynamically.
+- **Optional Web Dashboard:** Extends to a browser-based interface at a dedicated endpoint (e.g. `/config`) displaying current settings and telemetry summaries.
 
-- **CLI-Based Interactive Wizard:**
-  - Introduces a new CLI command, `--config-wizard`, which launches an interactive session for reviewing and updating configuration settings.
-  - Provides immediate validation feedback, using the same normalization and parsing logic already present in the utility functions.
-  - Allows users to modify environment values interactively and persist updated configurations to a local configuration file or apply them dynamically for the current session.
-
-- **Web Dashboard Integration (Optional):**
-  - Extends the current HTTP server with an additional endpoint (e.g. `/config`), providing a browser-based interface to display current configuration, real-time telemetry, and control elements for updating settings.
-  - Enhances operational transparency by allowing users to view diagnostic reports and adjust configuration parameters directly via the dashboard.
+## Diagnostic Analytics & Performance Dashboard
+- **Aggregated Metrics:** Collates diagnostic logs and performance metrics (e.g., fetch retry counts, delay intervals with jitter, and success/failure rates) from both environment validation and live data integration operations.
+- **Real-Time Monitoring:** Exposes a new HTTP endpoint (e.g. `/diagnostics`) and CLI command (`--diagnostic-summary`) that offer interactive visualizations and summaries of system health and performance trends.
+- **Actionable Insights:** Provides detailed, timestamped analytics to support rapid troubleshooting and continuous performance improvements.
 
 ## Benefits & Mission Alignment
-
-- **Rapid Troubleshooting:** Quickly identify and resolve configuration errors before they affect live data integration.
-- **Operational Transparency:** Combines detailed telemetry with interactive configuration, empowering users to make informed corrections in real-time.
-- **Enhanced User Experience:** Seamlessly integrate CLI and web-based management for an improved developer workflow, fully aligned with owl-builder’s mission to deliver live, high-quality ontology data.
+- **Enhanced Reliability:** By combining configuration validation with performance analytics, users gain real-time insights and diagnostic context to optimize live data integration.
+- **Improved Developer Experience:** The unified interactive wizard coupled with performance dashboards streamlines the configuration and monitoring process.
+- **Operational Transparency:** Detailed diagnostic summaries empower maintainers to quickly identify and rectify issues, aligning with owl-builder's mission to deliver live, high-quality ontology data.
