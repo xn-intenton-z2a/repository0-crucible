@@ -28,6 +28,7 @@
  *     In strict mode, non-numeric inputs throw a clear error indicating that only valid numeric formats (integer, decimal, or scientific) are accepted. Allowed formats include integer, decimal or scientific notation.
  *   - Added configurable fallback values for non-numeric environment variables via an optional parameter and CLI options (--livedata-retry-default and --livedata-delay-default).
  *   - Revised CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and default values.
+ *   - Integrated structured telemetry logging: When a non-numeric input is detected and fallback is applied, a JSON formatted telemetry event is emitted containing the env var name, raw input, normalized input, fallback value with unit, and timestamp.
  *
  * Note on Environment Variable Handling:
  *   The function parseEnvNumber normalizes the environment variable's raw string input by trimming whitespace, replacing sequences of whitespace (including tabs, non-breaking spaces, and other Unicode whitespace characters) with a single space, and converting to lower case.
@@ -165,18 +166,31 @@ function parseEnvNumber(varName, defaultVal, configurableFallback) {
 
   if (isInvalid) {
     // Log a warning only once per unique combination of variable name and normalized input
-    if (!process.env.DISABLE_ENV_WARNINGS || process.env.DISABLE_ENV_WARNINGS === "0") {
-      const warnKey = `${varName}:${normalized}`;
-      if (!envWarningCache.has(warnKey)) {
-        let unit = "";
-        if (varName === "LIVEDATA_RETRY_COUNT") {
-          unit = " retries";
-        } else if (varName === "LIVEDATA_INITIAL_DELAY") {
-          unit = "ms delay";
-        }
-        logDiagnostic(`Unified NaN Handling: Environment variable ${varName} received non-numeric input '${rawValue}' (normalized: '${normalized}'). Fallback value ${fallback}${unit} applied.`, "warn");
-        envWarningCache.set(warnKey, true);
+    const warnKey = `${varName}:${normalized}`;
+    if (!envWarningCache.has(warnKey)) {
+      let unit = "";
+      if (varName === "LIVEDATA_RETRY_COUNT") {
+        unit = " retries";
+      } else if (varName === "LIVEDATA_INITIAL_DELAY") {
+        unit = "ms delay";
       }
+      // Emit structured telemetry event as JSON
+      const telemetryEvent = {
+        telemetry: "NaNFallback",
+        envVar: varName,
+        rawInput: rawValue,
+        normalizedInput: normalized,
+        fallbackValue: fallback,
+        unit: unit.trim(),
+        timestamp: getCurrentTimestamp()
+      };
+      console.log(JSON.stringify(telemetryEvent));
+
+      // Continue with diagnostic logging if not disabled
+      if (!process.env.DISABLE_ENV_WARNINGS || process.env.DISABLE_ENV_WARNINGS === "0") {
+        logDiagnostic(`Unified NaN Handling: Environment variable ${varName} received non-numeric input '${rawValue}' (normalized: '${normalized}'). Fallback value ${fallback}${unit} applied.`, "warn");
+      }
+      envWarningCache.set(warnKey, true);
     }
     return fallback;
   }

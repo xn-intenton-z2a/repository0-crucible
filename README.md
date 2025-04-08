@@ -7,7 +7,13 @@ owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontolo
 Key features include:
 
 - **Live Data Integration:** Ontologies are built using up-to-date data from trusted public endpoints. Enhanced error handling and diagnostic logging now provide detailed information on each retry attempt during live data fetching, which uses an exponential backoff strategy with randomized jitter to improve network resilience and mitigate thundering herd issues. Environment variables `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY` are parsed using a consolidated helper function that applies default values when not set, empty, or when invalid non-numeric values (e.g., `NaN`, empty strings, or whitespace-only) are provided.
-  - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid input is provided, a unified diagnostic warning is logged exactly once per unique composite key (combining variable name and normalized input) indicating that the received non-numeric input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. For example, raw inputs such as " NaN ", "\tNaN", and "\u00A0NaN\u00A0" all normalize to "nan" and trigger a single warning. Duplicate warnings for equivalent normalized inputs are suppressed.
+  - **Invalid Non-Numeric Values Handling:** In non-strict mode, if an invalid input is provided, a unified diagnostic warning is logged exactly once per unique composite key (combining variable name and normalized input) indicating that the received non-numeric input (including its normalized form) is invalid and that a fallback value (with unit) is being applied. In addition, a structured telemetry event is emitted in JSON format with the following details:
+    - Environment variable name
+    - Raw input provided
+    - Normalized input
+    - Fallback value applied (and associated unit)
+    - Precise timestamp
+    This structured telemetry ensures consistent monitoring and analytics without duplicate events for identical normalized inputs.
   - **Strict Mode:** When strict mode is enabled (via `--strict-env` or by setting `STRICT_ENV=true`), only valid numeric inputs are accepted. If a non-numeric input is encountered, an error is thrown with clear guidance on acceptable formats, such as:
     - Integer (e.g., 42)
     - Decimal (e.g., 3.14)
@@ -40,8 +46,8 @@ owl-builder uses a unified approach to parse and handle environment variables. T
 1. **Normalization:**
    - Input values are trimmed and all sequences of whitespace—including spaces, tabs, non-breaking spaces, em space, en space, and other Unicode whitespace characters—are replaced by a single space, and the value is converted to lowercase. This ensures that different raw inputs (e.g., " NaN ", "NaN", "\u00A0NaN\u00A0") normalize to the same value.
 
-2. **Unified Warning Mechanism:**
-   - In non-strict mode, if a normalized input is found to be invalid (empty or "nan"), a warning is logged exactly once for each unique normalized input, along with the fallback value and its unit (e.g., retries or delay).
+2. **Unified Warning and Telemetry Mechanism:**
+   - In non-strict mode, if a normalized input is found to be invalid (empty or "nan"), a warning is logged exactly once for each unique normalized input, along with the fallback value and its unit (e.g., retries or delay). Simultaneously, a structured telemetry event in JSON format is emitted containing the environment variable, raw and normalized inputs, the fallback value (and its unit), and a timestamp. Duplicate telemetry events for equivalent normalized inputs are suppressed.
 
 3. **CLI Override Precedence:**
    - CLI options `--livedata-retry-default` and `--livedata-delay-default` override both the environment variables and default values if provided with valid numeric inputs.
@@ -52,7 +58,7 @@ owl-builder uses a unified approach to parse and handle environment variables. T
 #### Example Usage:
 
 ```bash
-# Non-strict mode (fallback applied with unified warning)
+# Non-strict mode (fallback applied with unified warning and telemetry event)
 export LIVEDATA_RETRY_COUNT=" NaN "
 node src/lib/main.js --build-live
 
@@ -67,7 +73,7 @@ node src/lib/main.js --livedata-retry-default 5 --livedata-delay-default 250 --b
 
 ### Automated Tests
 
-Comprehensive tests verify the behavior of the environment variable handling, including different whitespace variants that normalize to "nan", unified warning logging, and CLI override functionality. Run tests using:
+Comprehensive tests verify the behavior of the environment variable handling, including different whitespace variants that normalize to "nan", unified warning logging, structured telemetry event emission, and CLI override functionality. Run tests using:
 
 ```bash
 npm test
@@ -84,7 +90,7 @@ node src/lib/main.js --help
 ### Key CLI Commands
 
 - `--build --allow-deprecated`: Generates a deprecated fallback ontology using static data (**deprecated; use `--build-live` for live data integration**).
-- `--build-live`: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt, with robust normalization of environment variable inputs.
+- `--build-live`: Builds an ontology using live data and logs detailed diagnostic information for each retry attempt, with robust normalization of environment variable inputs and structured telemetry events for fallback occurrences.
 - `--persist`: Saves the current ontology to a JSON file.
 - `--load`: Loads the saved ontology.
 - `--query "term"`: Searches for matching ontology concepts.
@@ -134,12 +140,12 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 - Enhanced XML export/import functions to support extended ontology models including concepts, classes, properties, and metadata.
 - Refactored file system operations to use asynchronous, non-blocking APIs.
 - **CLI Update:** The `--build` command now requires the `--allow-deprecated` flag for using the deprecated static fallback. Use `--build-live` for live data integration.
-- **Exponential Backoff with Jitter:** Improved handling of environment variables by consolidating parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Non-numeric inputs now trigger a unified diagnostic warning exactly once per unique normalized non-numeric input, displaying the variable name, raw input, normalized input, and fallback value with unit. CLI override values now take precedence.
+- **Exponential Backoff with Jitter:** Improved handling of environment variables by consolidating parsing of `LIVEDATA_RETRY_COUNT` and `LIVEDATA_INITIAL_DELAY`. Non-numeric inputs now trigger a unified diagnostic warning and a structured telemetry event exactly once per unique normalized non-numeric input, displaying the variable name, raw input, normalized input, and fallback value with unit. CLI override values now take precedence.
 - **Strict Environment Variable Parsing:** When strict mode is enabled (via `--strict-env` or `export STRICT_ENV=true`), only valid numeric inputs are accepted. Invalid inputs will cause an immediate error with guidance on allowed formats.
 - **CLI Overrides:** New CLI options `--livedata-retry-default` and `--livedata-delay-default` allow runtime override of fallback values without changing environment variables.
 - **Custom Endpoints:** Supports custom API endpoints via `CUSTOM_API_ENDPOINTS`. Only valid endpoints (beginning with "http://" or "https://") are accepted.
-- **Unified NaN Handling and Robust Normalization:** Environment variable parsing now uses Unicode property escapes to handle a broader range of whitespace characters (including em space, en space, and other Unicode spaces). This ensures that different raw inputs that normalize to the same value trigger a unified warning exactly once, ensuring consistent fallback behavior.
-- **Enhanced Test Coverage:** Expanded tests now verify that different raw whitespace variants that normalize to the same value trigger only one warning, ensuring consistent fallback behavior.
+- **Unified NaN Handling and Structured Telemetry:** Environment variable parsing now emits a structured JSON telemetry log for each fallback occurrence due to invalid numeric input, ensuring consistent monitoring and preventing duplicate logs for equivalent normalized inputs.
+- **Enhanced Test Coverage:** Expanded tests now verify that different raw whitespace variants that normalize to the same value trigger only one diagnostic warning and one telemetry event, ensuring consistent fallback behavior.
 
 ## Contributing
 

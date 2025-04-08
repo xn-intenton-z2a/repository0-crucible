@@ -176,6 +176,16 @@ describe("Live Data Configurability", () => {
     const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_RETRY_COUNT") && call[0].includes("received non-numeric input")).length;
     const delayWarnings = logSpy.mock.calls.filter(call => call[0].includes("LIVEDATA_INITIAL_DELAY") && call[0].includes("received non-numeric input")).length;
     expect(warningCalls + delayWarnings).toBeGreaterThanOrEqual(2);
+    // Check telemetry events
+    const telemetryCalls = logSpy.mock.calls.filter(call => {
+      try {
+        const obj = JSON.parse(call[0]);
+        return obj.telemetry === "NaNFallback" && (obj.envVar === "LIVEDATA_RETRY_COUNT" || obj.envVar === "LIVEDATA_INITIAL_DELAY");
+      } catch(e){
+        return false;
+      }
+    }).length;
+    expect(telemetryCalls).toBeGreaterThanOrEqual(2);
     http.get = originalGet;
     process.env.LIVEDATA_RETRY_COUNT = originalEnvRetry;
     process.env.LIVEDATA_INITIAL_DELAY = originalEnvDelay;
@@ -234,13 +244,23 @@ describe("Environment Variable Parsing Tests", () => {
     expect(_parseEnvNumber("TEST_SCI", 0)).toBe(1000);
   });
 
-  test("Returns default for input 'NaN' as string and logs warning only once", () => {
+  test("Returns default for input 'NaN' as string and logs warning only once with a single telemetry event", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     process.env.TEST_NON_NUM = "NaN";
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
     const warningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM") && call[0].includes("received non-numeric input")).length;
     expect(warningCalls).toBe(1);
+    // Check telemetry event
+    const telemetryCalls = logSpy.mock.calls.filter(call => {
+      try {
+        const obj = JSON.parse(call[0]);
+        return obj.telemetry === "NaNFallback" && obj.envVar === "TEST_NON_NUM";
+      } catch(e){
+        return false;
+      }
+    }).length;
+    expect(telemetryCalls).toBe(1);
     process.env.TEST_NON_NUM = "NaN ";
     expect(_parseEnvNumber("TEST_NON_NUM", 7)).toBe(7);
     const updatedWarningCalls = logSpy.mock.calls.filter(call => call[0].includes("TEST_NON_NUM") && call[0].includes("received non-numeric input")).length;
@@ -312,13 +332,21 @@ describe("Environment Variable Parsing Tests", () => {
     logSpy.mockRestore();
   });
 
-  test("Logs warning only once per unique invalid input and separately for different invalid formats", () => {
+  test("Unique warning is logged once per unique invalid input and separately for different invalid formats", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     process.env.TEST_UNIQUE = "NaN";
     _parseEnvNumber("TEST_UNIQUE", 100);
     _parseEnvNumber("TEST_UNIQUE", 100);
     let warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_UNIQUE") && call[0].includes("received non-numeric input")).length;
     expect(warnings).toBe(1);
+    // Check telemetry event
+    let telemetryCalls = logSpy.mock.calls.filter(call => {
+      try {
+        const obj = JSON.parse(call[0]);
+        return obj.telemetry === "NaNFallback" && obj.envVar === "TEST_UNIQUE";
+      } catch(e){ return false; }
+    }).length;
+    expect(telemetryCalls).toBe(1);
     process.env.TEST_UNIQUE = "\tNaN";
     _parseEnvNumber("TEST_UNIQUE", 100);
     warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_UNIQUE") && call[0].includes("received non-numeric input")).length;
@@ -337,6 +365,15 @@ describe("Environment Variable Parsing Tests", () => {
     expect(_parseEnvNumber("TEST_MULTIPLE", 50)).toBe(50);
     const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_MULTIPLE") && call[0].includes("received non-numeric input")).length;
     expect(warnings).toBe(1);
+    const telemetryCalls = logSpy.mock.calls.filter(call => {
+      try {
+        const obj = JSON.parse(call[0]);
+        return obj.telemetry === "NaNFallback" && obj.envVar === "TEST_MULTIPLE";
+      } catch(e){
+        return false;
+      }
+    }).length;
+    expect(telemetryCalls).toBe(1);
     logSpy.mockRestore();
   });
 
@@ -351,6 +388,15 @@ describe("Environment Variable Parsing Tests", () => {
     expect(_parseEnvNumber("TEST_VARIANT", 30)).toBe(30);
     const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_VARIANT") && call[0].includes("received non-numeric input")).length;
     expect(warnings).toBe(1);
+    const telemetryCalls = logSpy.mock.calls.filter(call => {
+      try {
+        const obj = JSON.parse(call[0]);
+        return obj.telemetry === "NaNFallback" && obj.envVar === "TEST_VARIANT";
+      } catch(e){
+        return false;
+      }
+    }).length;
+    expect(telemetryCalls).toBe(1);
     logSpy.mockRestore();
   });
 });
