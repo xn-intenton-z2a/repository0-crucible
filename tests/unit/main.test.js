@@ -102,6 +102,27 @@ describe("Anomaly Detection", () => {
   });
 });
 
+// New tests for NaN Telemetry Batching
+
+describe("NaN Telemetry Batching", () => {
+  beforeEach(() => {
+    resetEnvWarningCache();
+    // Increase threshold to allow multiple warnings
+    process.env.NANFALLBACK_WARNING_THRESHOLD = "5";
+  });
+  
+  test("Should aggregate warnings for multiple non-numeric env inputs", async () => {
+    // Simulate rapid calls with non-numeric input
+    for (let i = 0; i < 10; i++) {
+      _parseEnvNumber("TEST_VAR", 10);
+    }
+    const summary = getAggregatedNaNSummary();
+    // There should be one key with count 10
+    expect(summary.length).toBe(1);
+    expect(summary[0].count).toBe(10);
+  });
+});
+
 // Existing tests...
 
 describe("Robust HTTP Endpoint Testing for the Integrated Web Server", () => {

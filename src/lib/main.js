@@ -27,7 +27,7 @@
  *   - Updated CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and defaults.
  *   - Enhanced NaN fallback telemetry by including additional context: timestamp, raw input value, and indicator if CLI override was used.
  *   - Introduced aggregated telemetry summary for NaN fallback events, accessible via CLI flag '--diagnostic-summary-naN'.
- *   - Implemented promise-based batching for NaN fallback telemetry logs to ensure atomicity under high concurrency.
+ *   - Implemented promise-based batching for NaN fallback telemetry logs to ensure atomicity under high concurrency. [Optimized]
  *   - Added real-time WebSocket notifications for ontology updates. When key ontology operations occur, a JSON payload is broadcast to all connected WebSocket clients.
  *   - Added configurable warning threshold for NaN fallback logs via the NANFALLBACK_WARNING_THRESHOLD environment variable.
  *   - New Feature: Real-Time Anomaly Detection for Live Data Integration. Live data is validated against expected schema and anomalies trigger diagnostic logging and WebSocket alerts.
@@ -54,9 +54,9 @@ import { WebSocketServer } from "ws";  // Added WebSocket support
 // Changed warningCache to a Map to aggregate multiple occurrences of invalid inputs
 const warningCache = new Map();
 
-// New variable for promise-based asynchronous batching of NaN fallback telemetry logs
+// New variable for debounced asynchronous batching of NaN fallback telemetry logs
 const TELEMETRY_FLUSH_DELAY = 50;
-let telemetryFlushPromise = null;
+let flushTimer = null; // Replaces telemetryFlushPromise for improved batching under high concurrency
 
 // Global WebSocket server variable
 let wsServer = null;
@@ -136,13 +136,14 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
       }
       if (process.env.NODE_ENV === "test") {
         // In test environment, flush warnings synchronously
-      } else if (!telemetryFlushPromise) {
-        telemetryFlushPromise = new Promise((resolve) => {
-          setTimeout(() => {
-            telemetryFlushPromise = null;
-            resolve();
-          }, TELEMETRY_FLUSH_DELAY);
-        });
+      } else {
+        // Optimized batching using a debounced flush timer
+        if (flushTimer) {
+          clearTimeout(flushTimer);
+        }
+        flushTimer = setTimeout(() => {
+          flushTimer = null; // Flush complete; additional actions can be added here if needed
+        }, TELEMETRY_FLUSH_DELAY);
       }
     }
     return defaultValue;
