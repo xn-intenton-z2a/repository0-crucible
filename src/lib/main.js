@@ -32,6 +32,7 @@
  *   - Added configurable warning threshold for NaN fallback logs via the NANFALLBACK_WARNING_THRESHOLD environment variable.
  *   - New Feature: Real-Time Anomaly Detection for Live Data Integration. Live data is validated against expected schema and anomalies trigger diagnostic logging and WebSocket alerts.
  *   - New Feature: Export Aggregated Telemetry via CLI flag '--export-telemetry'. This command exports diagnostic telemetry (including NaN fallback details) to a JSON file 'telemetry.json' or CSV file 'telemetry.csv' based on specified format.
+ *   - New Feature: Automated Rollback Mechanism. If a live data anomaly is detected, owl-builder attempts to restore the last known good backup from ontology-backup.json and broadcasts a WebSocket alert indicating the rollback.
  *
  * Note on Environment Variable Handling:
  *   The inline function normalizeEnvValue trims the value and replaces sequences of all whitespace characters (including non-breaking spaces) with a single space, then converts to lower case.
@@ -226,18 +227,24 @@ export async function buildOntologyFromLiveData() {
     return buildOntology();
   }
   
-  if (process.env.NODE_ENV === "test") {
-    return { title: "Live Data Ontology", concepts: ["LiveConcept1", "LiveConcept2", "LiveConcept3"] };
-  }
-
   try {
-    const dataStr = await fetchDataWithRetry("https://api.publicapis.org/entries");
+    // Use fetcher.fetchDataWithRetry to allow test overrides
+    const dataStr = await fetcher.fetchDataWithRetry("https://api.publicapis.org/entries");
     const parsed = JSON.parse(dataStr);
     const anomaly = detectLiveDataAnomaly(parsed);
     if (anomaly) {
       logDiagnostic("Anomaly detected in live data: " + JSON.stringify(anomaly), "warn");
-      broadcastOntologyUpdate({ title: "Anomaly Detected", concepts: [] }, "Anomaly detected in live data");
-      return buildOntology();
+      // Attempt automated rollback
+      const rollbackResult = await restoreLastBackup();
+      if (rollbackResult.success) {
+        logDiagnostic("Rollback executed successfully, restored last backup ontology", "info");
+        broadcastOntologyUpdate(rollbackResult.restoredOntology, "Ontology rollback executed due to live data anomaly");
+        return rollbackResult.restoredOntology;
+      } else {
+        logDiagnostic("Rollback failed: " + rollbackResult.error, "error");
+        broadcastOntologyUpdate({ title: "Anomaly Detected", concepts: [] }, "Anomaly detected in live data. Rollback failed, using static fallback");
+        return buildOntology();
+      }
     }
     const title = parsed && parsed.entries && parsed.entries.length > 0 ? parsed.entries[0].API : "Live Data Ontology";
     const concepts =
@@ -520,7 +527,7 @@ export async function crawlOntologies() {
   }
   const fetchPromises = endpoints.map(async (endpoint) => {
     try {
-      const data = await fetchDataWithRetry(endpoint);
+      const data = await fetcher.fetchDataWithRetry(endpoint);
       const owlContent = exportOntologyToXML(await buildOntologyFromLiveData());
       return { success: true, endpoint, data, owlContent };
     } catch (err) {
@@ -792,7 +799,7 @@ export async function detectAnomalyCLI(args) {
     }
   }
   if (!sampleData) {
-    const dataStr = await fetchDataWithRetry("https://api.publicapis.org/entries");
+    const dataStr = await fetcher.fetchDataWithRetry("https://api.publicapis.org/entries");
     sampleData = JSON.parse(dataStr);
   }
   const anomaly = detectLiveDataAnomaly(sampleData);
@@ -1184,7 +1191,7 @@ async function demo() {
   const endpoints = listAvailableEndpoints();
   console.log("Demo - available endpoints:", endpoints);
   try {
-    const fetchData = await fetchDataWithRetry(endpoints[0], 1);
+    const fetchData = await fetcher.fetchDataWithRetry(endpoints[0], 1);
     console.log(`Demo - fetched data from ${endpoints[0]}:`, fetchData.substring(0, 100));
   } catch (err) {
     console.log(`Demo - error fetching ${endpoints[0]}:`, err.message);
@@ -1257,5 +1264,16 @@ function processCLIFallbackOptions(args) {
       process.env.LIVEDATA_DELAY_DEFAULT = args[i + 1];
       i++;
     }
+  }
+}
+
+// New function: restoreLastBackup
+export async function restoreLastBackup() {
+  try {
+    const backupContent = await fsp.readFile(backupFilePath, "utf-8");
+    await fsp.writeFile(ontologyFilePath, backupContent);
+    return { success: true, restoredOntology: JSON.parse(backupContent) };
+  } catch (e) {
+    return { success: false, error: e.message };
   }
 }

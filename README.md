@@ -16,16 +16,16 @@ _Note:_ Ensure that your network allows access to these endpoints for successful
 
 ## WebSocket Notifications
 
-owl-builder now includes a real-time WebSocket notification service. This service broadcasts a JSON payload to all connected clients whenever key ontology operations (e.g., refresh, merge, update) occur.
+owl-builder now includes a real-time WebSocket notification service. This service broadcasts a JSON payload to all connected clients whenever key ontology operations (e.g., refresh, merge, update, rollback) occur.
 
 ### How It Works
 
 - The WebSocket server runs alongside the HTTP server on the same port.
-- When an ontology is updated, refreshed, or merged, a payload is broadcast with the following fields:
+- When an ontology is updated, refreshed, merged, or rolled back, a payload is broadcast with the following fields:
   - `updatedOntologyTitle`: The title of the updated ontology.
   - `version`: The current version of owl-builder.
   - `timestamp`: ISO formatted timestamp of the update.
-  - `statusMessage`: A description of the update (e.g., "Ontology refreshed").
+  - `statusMessage`: A description of the update (e.g., "Ontology refreshed", "Ontology rollback executed due to live data anomaly").
 
 ### Usage Example
 
@@ -44,9 +44,13 @@ ws.on('message', (data) => {
 });
 ```
 
-## Real-Time Anomaly Detection
+## Real-Time Anomaly Detection and Automated Rollback
 
-A new feature in owl-builder is the real-time anomaly detection mechanism within the live data integration workflow. After fetching data from a live endpoint, the data is validated to ensure it meets expected schema criteria. For instance, when using the `https://api.publicapis.org/entries` endpoint, the data must contain an `entries` array with at least one element. If an anomaly is detected (e.g., missing or empty `entries`), owl-builder logs detailed diagnostic messages and broadcasts a WebSocket alert with a status message such as "Anomaly detected in live data". This helps operators quickly identify issues with the external data source.
+A new feature in owl-builder is the real-time anomaly detection mechanism within the live data integration workflow. After fetching data from a live endpoint, the data is validated to ensure it meets expected schema criteria. For instance, when using the `https://api.publicapis.org/entries` endpoint, the data must contain an `entries` array with at least one element.
+
+If an anomaly is detected (e.g., missing or empty `entries`), owl-builder logs detailed diagnostic messages and broadcasts a WebSocket alert. In addition, owl-builder now automatically attempts to restore a valid ontology by rolling back to the last known good backup stored in `ontology-backup.json`. If the rollback is successful, the backup ontology is restored as the current ontology and a WebSocket notification with the status message "Ontology rollback executed due to live data anomaly" is broadcast.
+
+_Note:_ In previous versions, when running in a test environment, live data integration returned hardcoded test data. This version removes that early return to ensure that anomaly detection and rollback are fully exercised even during testing.
 
 ### CLI Usage
 
@@ -58,7 +62,7 @@ Example:
 node src/lib/main.js --detect-anomaly '{"entries": []}'
 ```
 
-This command will simulate an anomaly scenario by providing an empty `entries` array.
+This command will simulate an anomaly scenario by providing an empty `entries` array, triggering the automated rollback mechanism if a valid backup exists.
 
 ## Exporting Telemetry Data
 
@@ -109,7 +113,7 @@ Proper configuration of these variables is essential for predictable ontology bu
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing, WebSocket notification features, the new anomaly detection mechanism, or the new telemetry export command, ensure that you update both the inline documentation in the source code and this README with the details of the changes.
+Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing, WebSocket notification features, the new anomaly detection mechanism, the automated rollback mechanism, or the new telemetry export command, ensure that you update both the inline documentation in the source code and this README with the details of the changes.
 
 ## License
 
