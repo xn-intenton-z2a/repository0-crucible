@@ -52,7 +52,8 @@ const {
   restoreLastBackup,
   fetcher,
   startWebServer,
-  runCLI
+  runCLI,
+  parseEnvNumber
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
