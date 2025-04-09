@@ -1,33 +1,32 @@
-# Ontology Service and Telemetry (Updated with Auto Refresh)
+# ONTOLOGY_SERVICE
 
-This feature consolidates ontology management, live data integration, and diagnostic telemetry capabilities into a single cohesive module. In addition to its existing responsibilities, the service now includes an automatic scheduled refresh mechanism for the ontology, ensuring that the underlying data remains up-to-date with minimal manual intervention.
+## Overview
+The ONTOLOGY_SERVICE feature is designed to provide a unified module for managing OWL ontologies in real-time. It integrates live data retrieval, automated refresh routines, diagnostic telemetry, and robust environment configuration management. This feature not only enables live data integration with scheduled auto refreshes but also incorporates detailed diagnostics for environment variable parsing and other operational parameters.
 
-# Overview
+## Live Data & Auto Refresh
+- **Live Data Integration:** Builds ontologies from verified live data sources, ensuring that the model remains current.
+- **Scheduled Auto Refresh:** Utilizes the `AUTO_REFRESH_INTERVAL` environment variable to automatically refresh the ontology at configurable intervals, updating the ontology with the latest live data.
+- **Manual Override:** Allows users to manually trigger ontology refreshes via CLI flags (e.g., `--refresh`).
 
-- **Unified Ontology Management:** Performs live data integration to build, update, refresh, backup, query, and merge ontologies. A static fallback is available for emergencies.
-- **Integrated Diagnostic Telemetry:** Aggregates diagnostic events from environment variable parsing anomalies (such as non-numeric inputs) and logs them with detailed telemetry data. Telemetry is exposed via a dedicated HTTP `/telemetry` endpoint and via the CLI using `--diagnostic-summary-naN`.
-- **Security and Notifications:** Enforces API key verification for data-modifying operations and broadcasts real-time notifications via WebSocket to alert clients of ontology changes.
-- **Scheduled Auto Refresh:** Introduces a configurable mechanism to automatically refresh the ontology at regular intervals. This ensures that the ontology reflects the most current live data without requiring manual triggers.
+## Environment & Diagnostic Telemetry
+- **Advanced Environment Variable Parsing:** Uses robust inline utilities to normalize environment variable values by trimming whitespace and collapsing non-breaking spaces. This ensures consistent configuration inputs.
+- **Aggregated Diagnostic Telemetry:** Monitors non-numeric or malformed environment variable inputs, logging a one-time (per unique normalized invalid input) warning with a detailed telemetry object which includes the raw value, timestamp, and whether a CLI override was applied.
+- **CLI Overrides & Strict Mode:** Supports CLI flags (e.g., `--livedata-retry-default`, `--livedata-delay-default`) that override environment settings. When strict mode is enabled (via `--strict-env` or setting `STRICT_ENV=true`), non-numeric inputs throw immediate errors to enforce configuration integrity.
+- **Telemetry Summary:** Aggregated telemetry data for environment parsing anomalies (NaN fallback events) is available via the `--diagnostic-summary-naN` CLI flag.
 
-# Scheduled Auto Refresh
+## Security & Notification Integration
+- **API Key Verification:** Secures data-modifying operations by enforcing API key checks.
+- **Real-Time Notifications:** Integrates with the WebSocket notification system to broadcast updates (e.g., after a refresh or merge) along with diagnostic information.
+- **Diagnostic Logging:** Consolidates logs for live data operations and environment configuration anomalies, making troubleshooting more straightforward.
 
-### Features
+## Benefits and User Impact
+- **Timely Data Updates:** Ensures that ontologies are built and refreshed from the most current live data sources, reducing the risk of stale information.
+- **Enhanced Diagnostic Insight:** Detailed and aggregated telemetry for environment variable parsing aids developers in identifying configuration issues promptly.
+- **Simplified Configuration Management:** CLI overrides and strict mode options provide users with greater control and assurance over system reliability.
+- **Secure & Real-Time Operations:** Seamlessly integrates security measures and real-time client notifications, aligning with the overall mission of delivering dynamic, live data-driven ontology management.
 
-- **Automatic Refreshing:** When enabled, the service will automatically call the live data build and refresh routines at a regular interval specified by the environment variable `AUTO_REFRESH_INTERVAL` (in milliseconds). A sensible default (e.g., 60000 ms) is used when not specified.
-- **Configuration:** Users can configure the refresh interval via `AUTO_REFRESH_INTERVAL` and override defaults via CLI flags if needed. When auto refresh is active, regular telemetry logs and notifications are triggered on each successful refresh.
-- **Resource Efficiency:** Utilizes a single timer loop that gracefully integrates with existing telemetry and persistence functions, ensuring that resources are optimized and no duplicate refresh cycles occur.
-- **Real-Time Updates:** Each scheduled refresh broadcasts an update notification through the integrated WebSocket server. This notification includes details such as the updated ontology title, version, timestamp, and a status message (e.g., "Ontology auto-refreshed").
-
-# Implementation Details
-
-- **Timer Initialization:** On service start-up, if `AUTO_REFRESH_INTERVAL` is defined and not set to disable auto refresh (e.g., using a value of 0), initialize a timer that invokes the refresh routine (`refreshOntology`) at the specified interval.
-- **Error Handling:** In case the auto refresh process encounters any errors (e.g., network issues while fetching live data), the error is logged in the diagnostic telemetry. The timer continues running and will attempt the next refresh cycle as scheduled.
-- **Integration with Notifications:** After each successful auto refresh, the updated ontology is persisted and a WebSocket notification is sent to all connected clients.
-- **Manual Override:** Users retain the ability to manually trigger the refresh process via the CLI (using the `--refresh` flag), which works in parallel with the auto refresh schedule.
-
-# Benefits and User Impact
-
-- **Timeliness:** Ensures that ontologies remain current with minimal manual oversight, aligning with the mission of dynamic, live data integration.
-- **Enhanced Reliability:** By automating the refresh process, users experience fewer stale data issues and benefit from proactive updates.
-- **Improved Diagnostics:** Integrates auto refresh events into diagnostic logs and telemetry, providing a complete picture of system health and configuration.
-- **Seamless Integration:** This update builds on existing functionalities and requires only minimal configuration changes to enable auto refresh capabilities.
+## Implementation Details
+- **Centralized Module:** Consolidates ontology construction routines (model building, live data fetching, and refresh operations) into one cohesive service.
+- **Promise-Based Batching:** Uses asynchronous batching to ensure that diagnostic warnings for configuration issues are logged exactly once per unique invalid input.
+- **Integration with Existing Telemetry:** Merges environment variable diagnostics with diagnostic telemetry for overall system health monitoring.
+- **Consistent API:** Offers a predictable and well-documented interface where live data integration, diagnostics, and notifications work in harmony.
