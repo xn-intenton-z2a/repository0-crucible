@@ -1,37 +1,39 @@
 # ONTOLOGY_SERVICE
 
-This updated ONTOLOGY_SERVICE feature continues to manage live OWL ontologies but now also exposes a full HTTP API. In addition to live data integration, automated refresh routines, and diagnostic telemetry, this update provides a RESTful interface so that remote clients can interact with ontology operations beyond CLI commands.
+The ONTOLOGY_SERVICE feature continues to manage live OWL ontologies with an HTTP API and now also integrates enhanced diagnostic telemetry endpoints. This update extends the existing endpoints by adding a diagnostics interface that provides real-time aggregated telemetry and health insights.
 
-# Overview
+## Overview
 
-- **Live Data and Auto Refresh:** Integrates live data from verified endpoints and supports configurable refresh intervals with both automated and manual triggering.
-- **Environment and Diagnostic Telemetry:** Robust parsing and normalization of environment variables; aggregates telemetry for invalid inputs with enhanced details.
-- **Security and Notification Integration:** Enforces API key checks, logs diagnostics, and broadcasts real-time notifications using WebSockets for critical events.
-- **HTTP API Endpoints:** A new set of RESTful HTTP endpoints is introduced to allow client applications and external systems to perform ontology operations remotely.
+- **Live Data Integration & Auto Refresh:** Continues to integrate live data from verified endpoints and supports configurable refresh intervals with both automated and manual triggering.
+- **HTTP API Endpoints:** In addition to the existing endpoints (GET /ontology, POST /refresh, GET /export, POST /update, GET /query), a new endpoint is added for diagnostics.
+- **Security & Notifications:** Retains API key checks, real-time WebSocket notifications, and robust logging with diagnostic telemetry.
+- **Enhanced Diagnostics:** Exposes a new diagnostics endpoint to provide aggregated diagnostic summaries and telemetry related to environment variable parsing and other internal events.
 
-# HTTP API Endpoints
+## HTTP API Endpoints
 
-The HTTP API extends the basic web server functionality with the following endpoints:
+- **GET /ontology:** Returns the current ontology as JSON.
+- **POST /refresh:** Triggers a live data refresh of the ontology and persists updates.
+- **GET /export:** Exports the current ontology in OWL XML format.
+- **POST /update:** Updates ontology metadata based on JSON payload input.
+- **GET /query:** Executes search queries against ontology concepts.
+- **GET /diagnostics:** Returns a JSON payload containing diagnostic information:
+  - **Diagnostic Summary:** Includes a timestamped message and system version (via enhancedDiagnosticSummary()).
+  - **Aggregated Telemetry:** Provides details of NaN fallback events and environment variable parsing issues (via getAggregatedNaNSummary()).
 
-- **GET /ontology**: Returns the current ontology as JSON.
-- **POST /refresh**: Triggers a live data refresh of the ontology and persists updates.
-- **GET /export**: Exports the current ontology in OWL XML format.
-- **POST /update**: Allows updating the ontology title or metadata via JSON payload.
-- **GET /query**: Executes a search query against ontology concepts using query parameters.
+## Implementation Details
 
-These endpoints reuse existing functions (e.g. `buildOntologyFromLiveData`, `persistOntology`, `loadOntology`, and `exportOntologyToXML`) and leverage the diagnostic and telemetry logging utilities to ensure each operation is tracked and secured.
+- Extend the existing HTTP router to incorporate the GET /diagnostics endpoint.
+- When this endpoint is invoked, the server should execute the following:
+  - Call `enhancedDiagnosticSummary()` to gather a current health snapshot.
+  - Call `getAggregatedNaNSummary()` to retrieve aggregated telemetry on invalid environment variable inputs.
+  - Return a combined JSON response with both sets of diagnostics data.
+- Maintain existing diagnostic logging and security measures, ensuring that only authorized users can access detailed diagnostics if necessary.
+- Update documentation and usage examples in the README and CONTRIBUTING guidelines to reflect the new endpoint.
 
-# Implementation Details
+## Benefits and User Impact
 
-- **API Routing:** Extend the on-demand HTTP server (started via the `--serve` CLI flag) by adding a lightweight router. This router distinguishes the above endpoints and delegates the request to corresponding ontology functions.
-- **Security Measures:** API endpoints enforce checks such as API key verification (if provided) and strict mode operation with CLI overrides for enhanced control.
-- **Integration with Live Data and Notifications:** Each API action is integrated with the live data functions and, if applicable, broadcasts an update via the WebSocket notification system.
-- **Documentation and Examples:** Update the README and contributing documentation with details on API usage, including sample curl commands and JSON payload formats.
+- **Real-Time Health Monitoring:** Users can quickly retrieve a comprehensive view of the system’s diagnostic status.
+- **Easier Troubleshooting:** Aggregated telemetry on environment variable issues and other diagnostic logs aid in faster debugging and system tuning.
+- **Enhanced Transparency:** The diagnostics endpoint provides visibility into internal telemetry, bolstering user confidence in the system's live data integration and error handling capabilities.
 
-# Benefits and User Impact
-
-- **Remote Integration:** External applications can interact with owl-builder’s ontology management functions without invoking the CLI directly.
-- **Real-Time Monitoring:** Combined with the real-time WebSocket notifications, users and systems can immediately react to ontology changes.
-- **Improved Developer Experience:** Consolidates live operations, diagnostics, logging, and API interaction into a unified module, making maintenance and extensions simpler.
-
-This update aligns with the mission of dynamically building and adapting OWL ontologies by enhancing accessibility and integration while ensuring robust live data management and diagnostics.
+This update aligns with the mission of building dynamic, live-data driven OWL ontologies and enhances the overall developer and operational experience through improved observability.
