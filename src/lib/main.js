@@ -31,7 +31,7 @@
  *   - Added real-time WebSocket notifications for ontology updates. When key ontology operations occur, a JSON payload is broadcast to all connected WebSocket clients.
  *   - Added configurable warning threshold for NaN fallback logs via the NANFALLBACK_WARNING_THRESHOLD environment variable.
  *   - New Feature: Real-Time Anomaly Detection for Live Data Integration. Live data is validated against expected schema and anomalies trigger diagnostic logging and WebSocket alerts.
- *   - New Feature: Export Aggregated Telemetry via CLI flag '--export-telemetry'. This command exports diagnostic telemetry (including NaN fallback details) to a JSON file 'telemetry.json'.
+ *   - New Feature: Export Aggregated Telemetry via CLI flag '--export-telemetry'. This command exports diagnostic telemetry (including NaN fallback details) to a JSON file 'telemetry.json' or CSV file 'telemetry.csv' based on specified format.
  *
  * Note on Environment Variable Handling:
  *   The inline function normalizeEnvValue trims the value and replaces sequences of all whitespace characters (including non-breaking spaces) with a single space, then converts to lower case.
@@ -449,7 +449,7 @@ export function listAvailableEndpoints() {
       if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
         validCustomEndpoints.push(trimmed);
       } else {
-        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with \"http://\" or \"https://\"`, "warn");
+        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with "http://" or "https://"`, "warn");
       }
     });
     return Array.from(new Set([...defaultEndpoints, ...validCustomEndpoints]));
@@ -807,16 +807,41 @@ export async function detectAnomalyCLI(args) {
   }
 }
 
-// New CLI command to export aggregated telemetry to file
-export async function exportTelemetryCLI() {
+// New CLI command to export aggregated telemetry to file with support for CSV format
+export async function exportTelemetryCLI(args = []) {
   const aggregatedTelemetry = {
     nanSummary: getAggregatedNaNSummary(),
     diagnosticSummary: enhancedDiagnosticSummary()
   };
-  const filePath = path.resolve(process.cwd(), 'telemetry.json');
+  let format = 'json';
+  const idx = args.indexOf('--format');
+  if (idx !== -1 && args.length > idx + 1) {
+    format = args[idx + 1].toLowerCase();
+  }
   try {
-    await fsp.writeFile(filePath, JSON.stringify(aggregatedTelemetry, null, 2));
-    console.log(`Telemetry exported successfully to ${filePath}`);
+    if (format === 'csv') {
+      // Prepare CSV contents
+      let csvLines = [];
+      csvLines.push("NaN Fallback Telemetry");
+      csvLines.push("key,count,envVar,rawValue,cliOverride,timestamp");
+      aggregatedTelemetry.nanSummary.forEach(item => {
+        const { key, count, telemetry } = item;
+        csvLines.push(`${key},${count},${telemetry.envVar},${telemetry.rawValue},${telemetry.cliOverride},${telemetry.timestamp}`);
+      });
+      csvLines.push("");
+      csvLines.push("Diagnostic Summary");
+      csvLines.push("timestamp,message,version");
+      const diag = aggregatedTelemetry.diagnosticSummary;
+      csvLines.push(`${diag.timestamp},${diag.message},${diag.version}`);
+      const csvContent = csvLines.join("\n");
+      const filePath = path.resolve(process.cwd(), 'telemetry.csv');
+      await fsp.writeFile(filePath, csvContent);
+      console.log(`Telemetry exported successfully to ${filePath} (CSV format)`);
+    } else {
+      const filePath = path.resolve(process.cwd(), 'telemetry.json');
+      await fsp.writeFile(filePath, JSON.stringify(aggregatedTelemetry, null, 2));
+      console.log(`Telemetry exported successfully to ${filePath} (JSON format)`);
+    }
     return aggregatedTelemetry;
   } catch (e) {
     console.error("Failed to export telemetry", e);
@@ -1112,8 +1137,8 @@ const commandActions = {
   "--detect-anomaly": async (args) => {
     return await detectAnomalyCLI(args);
   },
-  "--export-telemetry": async (_args) => {
-    return await exportTelemetryCLI();
+  "--export-telemetry": async (args) => {
+    return await exportTelemetryCLI(args);
   }
 };
 
@@ -1209,7 +1234,7 @@ async function demo() {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --diagnostic-summary-naN, --custom-merge, --backup-refresh, --strict-env, --livedata-retry-default <number>, --livedata-delay-default <number>, --detect-anomaly, --export-telemetry`
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --diagnostic-summary-naN, --custom-merge, --backup-refresh, --strict-env, --livedata-retry-default <number>, --livedata-delay-default <number>, --detect-anomaly, --export-telemetry [--format <json|csv>]`
   );
 }
 

@@ -59,7 +59,8 @@ const {
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
 const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
-const telemetryPath = path.resolve(process.cwd(), "telemetry.json");
+const telemetryPathJson = path.resolve(process.cwd(), "telemetry.json");
+const telemetryPathCsv = path.resolve(process.cwd(), "telemetry.csv");
 
 function removeFileIfExists(filePath) {
   if (fs.existsSync(filePath)) {
@@ -214,20 +215,35 @@ describe("WebSocket Notifications", () => {
 
 describe("Export Telemetry", () => {
   afterEach(() => {
-    removeFileIfExists(telemetryPath);
+    removeFileIfExists(telemetryPathJson);
+    removeFileIfExists(telemetryPathCsv);
   });
 
-  test("CLI command --export-telemetry exports telemetry data to file", async () => {
-    removeFileIfExists(telemetryPath);
+  test("CLI command --export-telemetry exports telemetry data to JSON file by default", async () => {
+    removeFileIfExists(telemetryPathJson);
     const args = ["--export-telemetry"];
     const result = await main(args);
     expect(result).toHaveProperty('nanSummary');
     expect(result).toHaveProperty('diagnosticSummary');
     // Check file exists
-    expect(fs.existsSync(telemetryPath)).toBe(true);
-    const fileContent = fs.readFileSync(telemetryPath, 'utf-8');
+    expect(fs.existsSync(telemetryPathJson)).toBe(true);
+    const fileContent = fs.readFileSync(telemetryPathJson, 'utf-8');
     const parsedContent = JSON.parse(fileContent);
     expect(parsedContent).toHaveProperty('nanSummary');
     expect(parsedContent).toHaveProperty('diagnosticSummary');
+  });
+
+  test("CLI command --export-telemetry with csv format exports telemetry data to CSV file", async () => {
+    removeFileIfExists(telemetryPathCsv);
+    const args = ["--export-telemetry", "--format", "csv"];
+    const result = await main(args);
+    expect(result).toHaveProperty('nanSummary');
+    expect(result).toHaveProperty('diagnosticSummary');
+    // Check CSV file exists
+    expect(fs.existsSync(telemetryPathCsv)).toBe(true);
+    const fileContent = fs.readFileSync(telemetryPathCsv, 'utf-8');
+    // Check for CSV headers
+    expect(fileContent).toContain("NaN Fallback Telemetry");
+    expect(fileContent).toContain("Diagnostic Summary");
   });
 });

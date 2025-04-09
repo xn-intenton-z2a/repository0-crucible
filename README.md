@@ -62,23 +62,31 @@ This command will simulate an anomaly scenario by providing an empty `entries` a
 
 ## Exporting Telemetry Data
 
-A new CLI command `--export-telemetry` has been added. When invoked, it gathers the aggregated diagnostic telemetry (including NaN fallback warnings) and exports the summary as a JSON file named `telemetry.json` in the current working directory.
+A new CLI command `--export-telemetry` has been added. When invoked without additional parameters, it gathers the aggregated diagnostic telemetry (including NaN fallback warnings) and exports the summary as a JSON file named `telemetry.json` in the current working directory. Additionally, by specifying the `--format csv` flag, the telemetry data can be exported in CSV format to a file named `telemetry.csv`.
 
 ### How It Works
 
-- The command aggregates telemetry data using the internal telemetry functions, such as `getAggregatedNaNSummary` and `enhancedDiagnosticSummary`.
-- The aggregated data is then written to a file called `telemetry.json`.
-- The file contains a JSON object with at least the following keys:
-  - `nanSummary`: An array of aggregated NaN fallback warnings.
-  - `diagnosticSummary`: A summary of the diagnostic telemetry.
+- The command aggregates telemetry data using internal telemetry functions, such as `getAggregatedNaNSummary` and `enhancedDiagnosticSummary`.
+- By default, the telemetry data is exported in JSON format. Use the `--format csv` flag to export in CSV format.
+- When exporting in CSV, the file will contain two sections:
+  - **NaN Fallback Telemetry:** Contains headers (`key,count,envVar,rawValue,cliOverride,timestamp`) and rows for each aggregated warning.
+  - **Diagnostic Summary:** Contains headers (`timestamp,message,version`) and a summary row.
 
-### CLI Usage Example
+### CLI Usage Examples
+
+Export telemetry data in JSON format (default):
 
 ```bash
 node src/lib/main.js --export-telemetry
 ```
 
-After running the command, check the `telemetry.json` file in your working directory for the exported telemetry data.
+Export telemetry data in CSV format:
+
+```bash
+node src/lib/main.js --export-telemetry --format csv
+```
+
+After running the command, check the respective file (`telemetry.json` or `telemetry.csv`) in your working directory for the exported telemetry data.
 
 ## Environment Variable Handling
 
