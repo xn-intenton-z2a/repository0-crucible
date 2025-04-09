@@ -1,15 +1,22 @@
-# Monitoring Hub
+# Monitoring Hub Enhanced
+
+This update to the Monitoring Hub feature integrates advanced diagnostic telemetry filtering over HTTP while retaining the consolidated status display and interactive CLI dashboard. This enhancement enables users and developers to query and filter aggregated telemetry events (such as NaN fallback warnings and other diagnostic logs) directly through RESTful endpoints. By providing flexible filtering options, the system improves real-time troubleshooting and observability of environment variable inconsistencies and other runtime issues.
 
 ## Overview
-The Monitoring Hub feature consolidates the previously separate web server and diagnostics functionalities into a single, unified interface. This module provides both an HTTP-based status and telemetry dashboard as well as an interactive CLI dashboard. It is designed to offer real-time system health monitoring, aggregated diagnostic logging, and convenient troubleshooting tools in one lightweight, maintainable source file.
+
+- **Expanded Diagnostics API:** In addition to the existing HTTP status endpoint and CLI dashboard, a new REST endpoint (e.g., `/diag/telemetry`) will be added. This endpoint supports query parameters to filter telemetry by environment variable names, occurrence counts, timestamps, and CLI override flags.
+- **Interactive CLI Enhancement:** The CLI dashboard now supports an additional flag (e.g., `--diagnostic-filter`) to invoke filtering options directly from the terminal, enabling quick access to targeted diagnostic information.
+- **Maintained Core Functionality:** All existing features including aggregated telemetry for NaN fallback events, promise-based batching under high concurrency, and legacy CLI flags (like `--diagnostic-summary-naN`) are preserved as part of this unified monitoring solution.
 
 ## Implementation Details
-- **Unified HTTP Endpoints:** Combine the core functionalities of the existing web server (e.g. `/` for basic status) and diagnostics manager (e.g. `/diag/summary` for aggregated telemetry) into one module. By leveraging existing functions like `serveWebServer` and diagnostic log aggregation utilities, the Monitoring Hub will present a comprehensive status report through a single web interface.
-- **Interactive CLI Dashboard:** Extend the CLI with a dedicated flag (e.g. `--diagnostic-dashboard`) that displays real-time diagnostics and telemetry directly in the terminal. The dashboard supports filtering by log level and other diagnostic parameters, making it easier to pinpoint issues.
-- **Aggregated Telemetry & Enhanced Logging:** Integrate the promise-based batching mechanism for logging invalid environment variable inputs and other diagnostics data. Maintain access to aggregated telemetry via a CLI flag (e.g. `--diagnostic-summary-naN`) so that users can view warning counts and associated context.
-- **Modular and Maintainable Design:** Implement the Monitoring Hub in a single source file, ensuring high cohesion and easier maintenance. Documentation and tests will be updated to reflect the consolidated endpoints, providing clear examples for both HTTP and CLI usage.
+
+- **HTTP Endpoint Extension:** Update the current web server integration to include the `/diag/telemetry` endpoint. This endpoint will accept query parameters (for example, `?env=TEST_SUMMARY&minCount=2`) to filter the telemetry cache and return a JSON-formatted summary of matched diagnostic events.
+- **CLI Integration:** Enhance the interactive CLI dashboard by adding a new flag (`--diagnostic-filter`) that takes optional filter parameters, invokes the same filtering logic as the HTTP endpoint, and displays the results in a readable format.
+- **Telemetry Filtering Logic:** Leverage the existing promise-based batching mechanism and the aggregated telemetry data structure. Implement filtering functions to process query parameters and return subsets of the telemetry events based on criteria such as environment variable names, raw input values, count thresholds, and timestamp ranges.
+- **Documentation and Testing:** Update the README and CONTRIBUTING documentation to reflect the new endpoints and CLI flag. Add unit and integration tests to simulate various filtering scenarios (e.g., filtering by environment variable, count, and date ranges) ensuring robust functionality.
 
 ## Benefits
-- **Simplified User Experience:** Users have a single entry point to monitor system health and diagnostics without toggling between separate interfaces.
-- **Improved Maintainability:** Combining similar functions reduces code redundancy and streamlines future enhancements and debugging.
-- **Enhanced Diagnostics:** Aggregated telemetry and interactive CLI dashboards allow for quicker issue detection and resolution, ultimately improving overall system stability.
+
+- **Enhanced Troubleshooting:** Developers and users can quickly pinpoint problematic environment variable configurations by filtering diagnostic logs, reducing noise from non-relevant entries.
+- **Improved Observability:** The new RESTful interface provides a richer, flexible view into real-time telemetry data, complementing the existing CLI dashboard.
+- **Seamless Integration:** Built as an extension of the current Monitoring Hub in a single-source file, the enhancement maintains high cohesion and leverages existing logging and telemetry aggregation mechanics.
