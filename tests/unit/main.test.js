@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect, vi, afterEach } from "vitest";
 import fs from "fs";
 import path from "path";
 import http from "http";
@@ -79,6 +79,7 @@ function simulateNetworkFailure() {
 }
 
 // New tests for anomaly detection
+
 describe("Anomaly Detection", () => {
   test("detectLiveDataAnomaly returns null for valid data", () => {
     const validData = { entries: [{ API: "TestAPI", Description: "Test Description" }] };
