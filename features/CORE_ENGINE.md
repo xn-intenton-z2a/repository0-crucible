@@ -1,36 +1,30 @@
 # CORE_ENGINE: Unified Live Data, Diagnostics, Telemetry, Query & Recovery Engine
 
 ## Overview
-This feature remains the backbone of owl-builder, integrating live data ingestion, anomaly detection, comprehensive diagnostics, telemetry aggregation, scheduled maintenance, RDF export, in-memory caching, backup/rollback, and enhanced ontology query and validation. It underpins a robust system that seamlessly handles ontology updates through live public data, while ensuring reliable fallback and detailed diagnostic logging.
+The CORE_ENGINE remains the backbone of owl-builder and is responsible for integrating live data ingestion, anomaly detection, diagnostic logging, telemetry aggregation, and recovery mechanisms. This engine now features an enhanced environment variable parsing and telemetry batching subsystem that provides robust handling of configuration values, ensuring that non-numeric or malicious inputs are safely managed and logged.
 
 ## Live Data Integration & Anomaly Detection
-- **Live Data Ingestion:** Continuously fetches data from verified public endpoints with automated retries, exponential backoff, and caching to optimize performance.
-- **Anomaly Detection:** Validates live data against expected schemas. If anomalies (e.g., missing or empty `entries`) are detected, diagnostic logs are triggered and automated rollback is initiated using the last known good backup.
+- **Live Data Ingestion:** Continuously fetch data from trusted public endpoints with retry mechanisms, exponential backoff, and a caching layer to optimize performance.
+- **Anomaly Detection:** Validate fetched data against expected schemas. Trigger detailed diagnostic messages and initiate automated rollback when anomalies (e.g., missing or empty `entries`) are detected.
 
-## Telemetry and Diagnostics Management
-- **Centralized Logging:** Aggregates detailed diagnostic messages, logging every event with timestamps and severity levels.
-- **Aggregated Telemetry:** Implements batching mechanisms for environment variable warnings (e.g., NaN fallback events) to avoid log flooding. Warnings are summarized and accessible via CLI commands.
+## Diagnostics, Telemetry & Environment Variable Parsing
+- **Enhanced Diagnostics:** Log every significant event with timestamped messages. Detailed logs include both successful operations and error warnings for immediate troubleshooting.
+- **Aggregated Telemetry:** Batch and export diagnostic telemetry (including NaN fallback events) via CLI commands. Support for both JSON and CSV export formats is maintained.
+- **Environment Variable Parsing:** Newly refined parsing utilities now normalize environment variables by trimming and collapsing whitespace, converting edge-case variants of 'NaN' (including " nAn " and non-breaking space variants) into a standardized form. Explicit non-numeric inputs are logged distinctly and fallback to default values, all while aggregating warnings to prevent log flooding.
 
-## Telemetry Export and CLI Integration
-- **CLI Telemetry Export:** The tool now supports a dedicated CLI command (`--export-telemetry`) to export aggregated telemetry data in JSON or CSV formats. This feature ensures that detailed diagnostic and telemetry logs—including NaN fallback events—are exportable for further analysis.
-- **Usage Details:**
-  - **JSON Export (default):** Generates a `telemetry.json` file containing structured telemetry data.
-  - **CSV Export:** When using the `--format csv` flag, telemetry data is exported as a CSV file (`telemetry.csv`), including separate sections for NaN fallback warnings and diagnostic summaries.
+## Live Data Caching, Backup & Recovery
+- **Caching:** Implement an in-memory caching mechanism for live data fetches with a configurable TTL. Redundant API calls are minimized by reusing recent data while ensuring fresh fetches once the TTL expires.
+- **Backup & Automated Rollback:** Regular backups are created and stored. On detecting data anomalies, the engine attempts to restore the last known good backup, with real-time WebSocket notifications indicating rollback status.
 
-## Scheduling, RDF Export & Live Data Caching
-- **Scheduled Maintenance:** Supports routine operations like backups, refreshes, and merges at configurable intervals.
-- **RDF Export:** Converts ontologies into standardized RDF formats, supporting external integrations.
-- **Caching Mechanism:** In-memory cache with a configurable TTL ensures optimized performance by reducing redundant API calls during live data fetch operations.
+## Query, Validation & Persistence
+- **Ontology Querying:** Rapid search and validation of ontology concepts via CLI and HTTP/GraphQL interfaces.
+- **Data Persistence:** Methods to export ontologies in OWL XML format, as well as clear, merge, and update operations that maintain consistent data structures during live updates.
 
-## Backup, Automated Rollback & Recovery
-- **Backup Operations:** Regularly saves the current ontology state to a backup file.
-- **Automated Rollback:** On detecting data anomalies, the system automatically restores the last known good backup, with clear, timestamped diagnostic logs and real-time WebSocket notifications.
-
-## Query & Validation
-- **Ontology Querying:** Provides rapid ontology concept searches via CLI and HTTP/GraphQL interfaces.
-- **Data Validation:** Performs strict checks to ensure ontologies are structurally sound and complete.
+## Web Server and CLI Integration
+- **Unified Interface:** Although the CORE_ENGINE handles backend processes, it integrates with the unified CLI and HTTP/GraphQL interfaces. This ensures that diagnostic logs, telemetry data, and live updates are readily available through a consistent user interface.
+- **Real-Time Notifications:** On key events—such as live data refresh, merge, or rollback—WebSocket notifications are broadcast with details including the updated ontology title, version, and status messages.
 
 ## Benefits
-- **Increased Reliability:** Automated telemetry and diagnostic mechanisms ensure robust handling of live data integration issues.
-- **Enhanced Developer Experience:** Detailed CLI feedback, along with exportable telemetry, helps developers quickly diagnose and resolve configuration or runtime issues.
-- **Comprehensive Data Management:** Combines real-time data ingestion with fallback strategies, ensuring that ontology data remains accurate and up-to-date.
+- **Reliability & Maintainability:** Enhanced environment variable parsing reduces runtime configuration issues and improves system resilience.
+- **Actionable Diagnostics:** Comprehensive and aggregated telemetry ensures that developers gain immediate insight into system health and configuration anomalies.
+- **Optimized Performance:** With robust caching and automated recovery mechanisms, the CORE_ENGINE ensures that owl-builder delivers up-to-date ontologies without sacrificing reliability.
