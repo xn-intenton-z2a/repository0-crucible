@@ -5,8 +5,6 @@ import path from "path";
 import http from "http";
 import { WebSocket } from "ws";
 import * as mainModule from "../../src/lib/main.js";
-// Import the new CLI handler
-import { runCLI } from "../../src/cli/index.js";
 
 const {
   buildOntology,
@@ -52,7 +50,9 @@ const {
   getAggregatedNaNSummary,
   detectLiveDataAnomaly,
   restoreLastBackup,
-  fetcher
+  fetcher,
+  startWebServer,
+  runCLI
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -153,7 +153,7 @@ describe("Robust HTTP Endpoint Testing for the Integrated Web Server", () => {
   });
 
   test("should respond with 200 and correct body", async () => {
-    server = await mainModule.startWebServer();
+    server = await startWebServer();
     const options = {
       hostname: "localhost",
       port: port,
@@ -196,7 +196,7 @@ describe("WebSocket Notifications", () => {
 
   test("should receive WebSocket notification on ontology refresh", async () => {
     fetcher.fetchDataWithRetry = async () => JSON.stringify({ entries: [{ API: "LiveAPI", Description: "Some description" }] });
-    server = await mainModule.startWebServer();
+    server = await startWebServer();
     await new Promise(resolve => setTimeout(resolve, 50));
     await new Promise((resolve, reject) => {
       wsClient = new WebSocket(`ws://localhost:${port}`);

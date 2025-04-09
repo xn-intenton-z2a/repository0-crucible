@@ -442,14 +442,14 @@ export const fetcher = {};
 fetcher.fetchDataWithRetry = fetchDataWithRetry;
 
 function broadcastOntologyUpdate(ontology, updateType) {
-  if (!wsServer) return;
+  if (!global.wsServer) return;
   const message = {
     updatedOntologyTitle: ontology.title,
     version: getVersion(),
     timestamp: getCurrentTimestamp(),
     statusMessage: updateType
   };
-  wsServer.clients.forEach(client => {
+  global.wsServer.clients.forEach(client => {
     if (client.readyState === client.OPEN) {
       client.send(JSON.stringify(message));
     }
@@ -712,19 +712,93 @@ export async function restoreLastBackup() {
   }
 }
 
-// Import CLI handler from modularized CLI modules
-import { runCLI, getVersion, displayHelp, listCommands } from "../cli/index.js";
+// New CLI and Web Server Functions integrated into main.js
+
+export async function startWebServer() {
+  const port = process.env.PORT || 3000;
+  const server = http.createServer((req, res) => {
+    if (req.method === 'GET' && req.url === '/') {
+      res.writeHead(200, { "Content-Type": "text/plain" });
+      res.end("owl-builder Web Server Running\n");
+    } else {
+      res.writeHead(404);
+      res.end();
+    }
+  });
+  const wsServer = new WebSocketServer({ server });
+  // assign to global variable for broadcast
+  global.wsServer = wsServer;
+  server.listen(port);
+  return server;
+}
+
+export async function runCLI(args) {
+  if (args[0] === '--detect-anomaly') {
+    try {
+      const data = JSON.parse(args[1]);
+      const anomaly = detectLiveDataAnomaly(data);
+      if (anomaly) {
+        return anomaly;
+      } else {
+        return {};
+      }
+    } catch (e) {
+      return { error: "Invalid JSON input" };
+    }
+  }
+  if (args[0] === '--export-telemetry') {
+    const telemetry = {
+      nanSummary: getAggregatedNaNSummary(),
+      diagnosticSummary: enhancedDiagnosticSummary()
+    };
+    const formatIndex = args.indexOf('--format');
+    if (formatIndex !== -1 && args[formatIndex + 1] === "csv") {
+      let csvContent = "NaN Fallback Telemetry\nkey,count,envVar,rawValue,cliOverride,timestamp\n";
+      const summary = telemetry.nanSummary;
+      summary.forEach(item => {
+        csvContent += `${item.key},${item.count},${item.telemetry.envVar},${item.telemetry.rawValue},${item.telemetry.cliOverride},${item.telemetry.timestamp}\n`;
+      });
+      csvContent += "\nDiagnostic Summary\ntimestamp,message,version\n";
+      const diag = telemetry.diagnosticSummary;
+      csvContent += `${diag.timestamp},${diag.message},${diag.version}\n`;
+      await fsp.writeFile("telemetry.csv", csvContent, "utf-8");
+    } else {
+      await fsp.writeFile("telemetry.json", JSON.stringify(telemetry, null, 2), "utf-8");
+    }
+    return telemetry;
+  }
+  // Default action if no recognized CLI flag is provided
+  displayHelp();
+  return {};
+}
+
+export function getVersion() {
+  return "0.0.39";
+}
+
+export function displayHelp() {
+  console.log("Usage: node src/lib/main.js [options]");
+  console.log("Options:");
+  console.log("  --detect-anomaly [JSON]  Detect data anomaly using provided JSON string");
+  console.log("  --export-telemetry [--format csv]  Export telemetry data in JSON (default) or CSV format");
+}
+
+export function listCommands() {
+  return ["--detect-anomaly", "--export-telemetry"];
+}
 
 // If executed directly, run the CLI
 if (process.argv && process.argv.length > 1 && process.argv[1].includes("main.js")) {
-  runCLI(process.argv.slice(2));
+  runCLI(process.argv.slice(2)).then(() => {});
 }
 
 // Re-export core functions for backward compatibility and testing
 export {
+  runCLI,
   getVersion,
   displayHelp,
-  listCommands
+  listCommands,
+  startWebServer
 };
 
 // Log that owl-builder CLI has been loaded
