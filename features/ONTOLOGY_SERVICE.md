@@ -1,31 +1,35 @@
 # Ontology Service
 
-This feature consolidates all ontology management functionalities into a single, cohesive service. It provides support for both CLI and RESTful HTTP interactions to build, update, query, and manage ontologies. Key operations include live data integration, secure data handling, diagnostic logging, and an enhanced telemetry module.
+This feature consolidates all ontology management functionalities into a single, cohesive service. It provides CLI and RESTful HTTP interactions to build, update, query, persist, and manage ontologies with a strong emphasis on live data integration and enhanced diagnostics.
 
 ## Overview
 
-- **Unified Management:** Combines legacy ontology APIs with dynamic live data integration, providing both CLI commands and HTTP endpoints for ontology operations.
-- **Live Data Integration & Fallback:** Leverages verified public endpoints to construct ontologies in real time while retaining a static fallback for emergency use.
-- **Authentication & Security:** Secures data-modifying operations via API keys or token-based mechanisms, with robust diagnostic logging for unauthorized access.
-- **Enhanced Diagnostics & Telemetry:** Captures detailed diagnostic logs and aggregates telemetry for environment variable parsing anomalies, including NaN fallback events. Telemetry data can be exported as a JSON file on demand using a CLI flag.
+- **Unified Management:** Combines legacy and live data ontology building, offering both CLI commands and HTTP endpoints for ontology operations.
+- **Live Data Integration & Fallback:** Leverages verified public endpoints to construct ontologies in real time, while retaining a static fallback for emergencies.
+- **Authentication & Security:** Secures data-modifying operations with API key or token-based authentication and includes robust diagnostic logging.
+- **Enhanced Diagnostics & Telemetry:** Implements detailed diagnostic logging for failed data fetch attempts and environment variable parsing anomalies. Telemetry data includes timestamps, raw inputs, CLI override flags, and aggregated event counts.
 
-## Telemetry API Extension
+## Telemetry API & Aggregated Diagnostics
 
-In addition to the existing CLI-based telemetry export, this update introduces an HTTP API endpoint to provide real-time access to aggregated diagnostic telemetry data. This endpoint enhances observability by allowing operators and developers to query telemetry details via a simple REST call.
+- **HTTP Endpoint Addition:** Extends the ontology service HTTP server with a new `/telemetry` endpoint. When accessed, this endpoint calls the function `getAggregatedNaNSummary()` to retrieve aggregated telemetry data on environment variable parsing failures (for example, non-numeric inputs encountered during configuration).
+- **CLI Integration:** Provides a new CLI flag `--diagnostic-summary-naN` that outputs aggregated telemetry data. This aggregation batches multiple occurrences of similar invalid inputs, logging a single diagnostic warning per unique normalized value.
+- **Benefits:**
+  - **Real-Time Diagnostics:** Immediate access to telemetry data for troubleshooting environment configuration issues.
+  - **Proactive Monitoring:** Aggregated telemetry helps detect repeated configuration issues and facilitates proactive system maintenance.
+  - **Unified User Experience:** Consistent integration across CLI and HTTP interfaces within the ontology service.
 
-### Implementation Details
+## Implementation Details
 
-- **HTTP Endpoint Addition:** Extend the existing ontology service HTTP server to include a new endpoint `/telemetry`.
-  - When this endpoint is accessed, it calls the function `getAggregatedNaNSummary()` to retrieve telemetry data.
-  - The endpoint responds with a JSON payload containing details such as the count of non-numeric environment variable occurrences, the raw input values, CLI override status, and timestamps.
-- **Security Considerations:** Optionally restrict access to the `/telemetry` endpoint based on environment configurations or authentication tokens.
-- **Seamless Integration:** Ensure that the new telemetry API coexists with existing ontology operations without adding extra dependencies or complexity.
+- **Live Data vs. Fallback:** If live data integration is disabled via configuration (`DISABLE_LIVE_DATA`), the service falls back to a static ontology, with a clear warning logged.
+- **Environment Variable Parsing:** The feature includes inline utilities to normalize, parse, and verify environment variable inputs. In non-strict mode, non-numeric inputs trigger a one-time telemetry event, while in strict mode an error is thrown immediately.
+- **Asynchronous Telemetry Logging:** Uses a promise-based batching mechanism to ensure that repeated invalid inputs are logged atomically, even under high concurrency.
+- **WebSocket Notifications:** When key operations occur (refresh, merge, or update), the service broadcasts a JSON payload, including the updated title, version, timestamp, and status message, to all connected WebSocket clients.
 
-## Benefits
+## Benefits and User Impact
 
-- **Real-Time Diagnostics:** Provides immediate access to aggregated telemetry data for monitoring environment variable anomalies and other diagnostic events.
-- **Enhanced Observability:** Facilitates proactive troubleshooting and auditing of configuration issues by exposing detailed telemetry insights via an API.
-- **Unified User Experience:** Merges telemetry export and retrieval within the same service, ensuring consistency across CLI and HTTP interfaces.
-- **Ease of Integration:** Operators can integrate the telemetry endpoint with external monitoring systems and dashboards for improved system operational visibility.
+- **Robust Ontology Management:** Offers a reliable and secure platform for dynamic ontology building using live data streams.
+- **Enhanced Observability:** The integrated telemetry API and aggregated diagnostics empower developers and operators to quickly detect, diagnose, and remediate configuration issues.
+- **Seamless Integration:** By combining CLI commands and HTTP endpoints, users gain flexibility in how they operate and monitor the system.
+- **Improved Quality Assurance:** Detailed logging and telemetry support contribute to stable deployments and easier troubleshooting during development and production.
 
-This extension solidifies the mission of providing live, reliable, and observable ontology management by enhancing real-time diagnostic capabilities.
+With these enhancements, the Ontology Service remains focused on providing reliable, live data-driven ontology management while offering advanced diagnostics and monitoring capabilities to support robust production environments.
