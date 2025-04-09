@@ -28,6 +28,7 @@
  *   - Enhanced NaN fallback telemetry by including additional context: timestamp, raw input value, and indicator if CLI override was used.
  *   - Introduced aggregated telemetry summary for NaN fallback events, accessible via CLI flag '--diagnostic-summary-naN'.
  *   - Implemented promise-based batching for NaN fallback telemetry logs to ensure atomicity under high concurrency.
+ *   - Added real-time WebSocket notifications for ontology updates. When key ontology operations occur, a JSON payload is broadcast to all connected WebSocket clients.
  *
  * Note on Environment Variable Handling:
  *   The inline function normalizeEnvValue trims the value and replaces sequences of all whitespace characters (including non-breaking spaces) with a single space, then converts to lower case.
@@ -42,6 +43,7 @@ import fs, { promises as fsp } from "fs";
 import path from "path";
 import https from "https";
 import http from "http";
+import { WebSocketServer } from "ws";  // Added WebSocket support
 
 // Inline environment variable utilities (replacing external file ./utils/envUtils.js)
 // Changed warningCache to a Map to aggregate multiple occurrences of invalid inputs
@@ -50,6 +52,9 @@ const warningCache = new Map();
 // New variable for promise-based asynchronous batching of NaN fallback telemetry logs
 const TELEMETRY_FLUSH_DELAY = 50;
 let telemetryFlushPromise = null;
+
+// Global WebSocket server variable
+let wsServer = null;
 
 function normalizeEnvValue(val) {
   if (typeof val !== "string") return val;
@@ -346,6 +351,8 @@ export async function backupOntology() {
 export async function updateOntology(newTitle) {
   const ontology = await buildOntologyFromLiveData();
   ontology.title = newTitle;
+  // Broadcast updated ontology
+  broadcastOntologyUpdate(ontology, "Ontology updated");
   return ontology;
 }
 
@@ -450,6 +457,22 @@ export async function fetchDataWithRetry(url, retries) {
 // Assign fetchDataWithRetry to fetcher for external spying and exports
 fetcher.fetchDataWithRetry = fetchDataWithRetry;
 
+// Broadcast function for WebSocket notifications on ontology updates
+function broadcastOntologyUpdate(ontology, updateType) {
+  if (!wsServer) return;
+  const message = {
+    updatedOntologyTitle: ontology.title,
+    version: getVersion(),
+    timestamp: getCurrentTimestamp(),
+    statusMessage: updateType
+  };
+  wsServer.clients.forEach(client => {
+    if (client.readyState === client.OPEN) {
+      client.send(JSON.stringify(message));
+    }
+  });
+}
+
 export async function crawlOntologies() {
   let endpoints = listAvailableEndpoints();
   if (process.env.NODE_ENV === "test") {
@@ -513,26 +536,17 @@ export function extendOntologyConcepts(ontology, additionalConcepts = []) {
   return ontology;
 }
 
-export function serveWebServer() {
-  const port = process.env.PORT || 3000;
-  const server = http.createServer((req, res) => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("owl-builder Web Server Running\n");
-  });
-  return new Promise((resolve, reject) => {
-    server.listen(port, () => {
-      const logMsg = `Web server started at http://localhost:${port}`;
-      console.log(logMsg);
-      resolve("Web server started");
-    });
-  });
-}
-
+// Modified startWebServer to also start a WebSocket server for real-time notifications
 export function startWebServer() {
   const port = process.env.PORT || 3000;
   const server = http.createServer((req, res) => {
     res.writeHead(200, { "Content-Type": "text/plain" });
     res.end("owl-builder Web Server Running\n");
+  });
+  // Initialize WebSocket server on the same HTTP server
+  wsServer = new WebSocketServer({ server });
+  wsServer.on('connection', (socket) => {
+    console.log(`[${getCurrentTimestamp()}] WebSocket client connected`);
   });
   return new Promise((resolve, reject) => {
     server.listen(port, () => {
@@ -670,6 +684,8 @@ export async function refreshOntology() {
     const liveOntology = await buildOntologyFromLiveData();
     const persistResult = await persistOntology(liveOntology);
     logDiagnostic("Ontology refreshed and persisted.", "info");
+    // Broadcast update notification
+    broadcastOntologyUpdate(liveOntology, "Ontology refreshed");
     return { liveOntology, persistResult };
   } catch (err) {
     logDiagnostic("Error during refresh: " + err.message, "error");
@@ -684,6 +700,8 @@ export async function mergeAndPersistOntology() {
     const merged = mergeOntologies(staticOntology, liveOntology);
     const persistRes = await persistOntology(merged);
     logDiagnostic("Merged ontology persisted.", "info");
+    // Broadcast merged ontology update
+    broadcastOntologyUpdate(merged, "Ontologies merged and persisted");
     return { merged, persistRes };
   } catch (err) {
     logDiagnostic("Error during merge and persist: " + err.message, "error");
@@ -876,8 +894,8 @@ const commandActions = {
     }
   },
   "--serve": async (_args) => {
-    const msg = await serveWebServer();
-    return msg;
+    const msg = await startWebServer();
+    return "Web server started";
   },
   "--build-intermediate": async (_args) => {
     const model = buildIntermediateOWLModel();

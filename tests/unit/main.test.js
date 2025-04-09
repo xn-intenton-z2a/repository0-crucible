@@ -3,6 +3,7 @@ import { describe, test, expect, vi, afterEach, beforeEach } from "vitest";
 import fs from "fs";
 import path from "path";
 import http from "http";
+import { WebSocket } from "ws";
 import * as mainModule from "../../src/lib/main.js";
 
 const {
@@ -109,6 +110,49 @@ describe("Robust HTTP Endpoint Testing for the Integrated Web Server", () => {
 
     expect(responseData.statusCode).toBe(200);
     expect(responseData.body).toBe("owl-builder Web Server Running\n");
+  });
+});
+
+// New tests for WebSocket Notifications
+describe("WebSocket Notifications", () => {
+  let server;
+  const port = process.env.PORT || 3000;
+  let wsClient;
+
+  afterEach(async () => {
+    if (wsClient) {
+      wsClient.close();
+      wsClient = null;
+    }
+    if (server) {
+      await new Promise((resolve) => server.close(resolve));
+      server = null;
+    }
+  });
+
+  test("should receive WebSocket notification on ontology refresh", async () => {
+    server = await startWebServer();
+    await new Promise(resolve => setTimeout(resolve, 50)); // wait for ws server to start
+    await new Promise((resolve, reject) => {
+      wsClient = new WebSocket(`ws://localhost:${port}`);
+      wsClient.on('open', () => {
+        // Once connected, trigger ontology refresh to broadcast notification
+        refreshOntology().then(() => {});
+      });
+      wsClient.on('message', (data) => {
+        const message = JSON.parse(data);
+        try {
+          expect(message).toHaveProperty('updatedOntologyTitle');
+          expect(message).toHaveProperty('version', getVersion());
+          expect(message).toHaveProperty('timestamp');
+          expect(message).toHaveProperty('statusMessage', 'Ontology refreshed');
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
+      });
+      wsClient.on('error', reject);
+    });
   });
 });
 
