@@ -207,6 +207,8 @@ describe("WebSocket Notifications", () => {
   });
 
   test("should receive WebSocket notification on ontology refresh", async () => {
+    // Override fetcher.fetchDataWithRetry to simulate valid live data
+    fetcher.fetchDataWithRetry = async () => JSON.stringify({ entries: [{ API: "LiveAPI", Description: "Some description" }] });
     server = await startWebServer();
     await new Promise(resolve => setTimeout(resolve, 50));
     await new Promise((resolve, reject) => {
