@@ -1,41 +1,51 @@
 {
-  "openIssues": 45,
+  "openIssues": 49,
   "issuesClosedLastHour": 100,
   "issuesClosedLastDay": 100,
-  "openPRs": 0,
-  "prDetails": [],
-  "diffMinutes": 3,
-  "diffMinutesMain": 3,
-  "commitsLastHour": 6,
-  "commitsLastDay": 94,
+  "openPRs": 1,
+  "prDetails": [
+    {
+      "title": "Updated documentation and inline comments to clearly describe environment variable NaN handling fallback mechanisms and aggregated telemetry. (fixes #975)",
+      "ageMinutes": 0
+    }
+  ],
+  "diffMinutes": 1,
+  "diffMinutesMain": 1,
+  "commitsLastHour": 8,
+  "commitsLastDay": 98,
   "lastFiveCommitMessages": [
+    {
+      "time": "10:47",
+      "message": "Move unused feature docs to rejects folder\n\nTransferred unused f..."
+    },
+    {
+      "time": "10:43",
+      "message": "Maintain ONTOLOGY_SERVICE"
+    },
+    {
+      "time": "10:39",
+      "message": "Update from agentic-lib"
+    },
+    {
+      "time": "10:38",
+      "message": "Maintain ONTOLOGY_SERVICE"
+    },
     {
       "time": "10:33",
       "message": "Added configurable warning threshold for NaN fallback logging us..."
-    },
-    {
-      "time": "10:23",
-      "message": "Maintain ONTOLOGY_SERVICE"
-    },
-    {
-      "time": "10:09",
-      "message": "Maintain ONTOLOGY_SERVICE"
-    },
-    {
-      "time": "09:56",
-      "message": "Maintain ONTOLOGY_SERVICE"
-    },
-    {
-      "time": "09:48",
-      "message": "Maintain ONTOLOGY_SERVICE"
     }
   ],
   "branches": {
-    "count": 0,
-    "details": []
+    "count": 1,
+    "details": [
+      {
+        "branch": "agentic-lib-issue-975",
+        "minutesSinceLastCommit": 1
+      }
+    ]
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-09T10:36:47.450Z"
+  "generatedAt": "2025-04-09T10:48:22.871Z"
 }
