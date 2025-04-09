@@ -171,11 +171,12 @@ export function detectLiveDataAnomaly(data) {
   if (!data || typeof data !== 'object') {
     return { error: "Data is not a valid object." };
   }
-  // For data from https://api.publicapis.org/entries, expect an 'entries' property that is a non-empty array
-  if ('entries' in data) {
-    if (!Array.isArray(data.entries) || data.entries.length === 0) {
-      return { error: "Expected 'entries' to be a non-empty array.", received: data.entries };
-    }
+  // Updated: Check for the presence of 'entries' property
+  if (!('entries' in data)) {
+    return { error: "Expected 'entries' property in the data." };
+  }
+  if (!Array.isArray(data.entries) || data.entries.length === 0) {
+    return { error: "Expected 'entries' to be a non-empty array.", received: data.entries };
   }
   // Additional schema checks can be added here for other endpoints if needed
   return null;
