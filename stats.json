@@ -1,14 +1,22 @@
 {
-  "openIssues": 25,
+  "openIssues": 26,
   "issuesClosedLastHour": 4,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 6,
-  "diffMinutesMain": 6,
+  "diffMinutes": 0,
+  "diffMinutesMain": 0,
   "commitsLastHour": 7,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
+    {
+      "time": "14:16",
+      "message": "Added fetcher.fetchDataWithRetry override in WebSocket notificat..."
+    },
+    {
+      "time": "14:08",
+      "message": "Maintain TELEMETRY_SERVICE"
+    },
     {
       "time": "13:57",
       "message": "Maintain SCHEDULED_TASKS"
@@ -20,27 +28,14 @@
     {
       "time": "13:38",
       "message": "Maintain AUTO_REFRESH"
-    },
-    {
-      "time": "13:24",
-      "message": "Maintain ONTOLOGY_SERVICE"
-    },
-    {
-      "time": "13:17",
-      "message": "Added CSV export support to the telemetry CLI command. (fixes #1..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1009",
-        "minutesSinceLastCommit": 11
-      }
-    ]
+    "count": 0,
+    "details": []
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-09T14:04:26.142Z"
+  "generatedAt": "2025-04-09T14:16:46.460Z"
 }
