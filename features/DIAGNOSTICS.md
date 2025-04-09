@@ -1,22 +1,23 @@
 # DIAGNOSTICS
 
-This feature consolidates and enhances all diagnostic and telemetry functions into one unified system. It merges the previously separate TELEMETRY_SUMMARY and MONITORING_HUB features while introducing persistent logging capabilities. In addition to aggregating environment variable parsing issues, filtering diagnostic events via HTTP and CLI, and batching high-concurrency logs, this feature adds support for logging diagnostic messages to a file when enabled.
+This feature unifies and enhances all logging, telemetry, and diagnostic operations across the tool. It consolidates legacy diagnostic logging, HTTP and CLI diagnostic filtering, and introduces robust, persistent and aggregated telemetry for environment variable issues and network backoff events.
 
 ## Overview
 
-- **Unified Diagnostics:** Combine the functions of aggregated telemetry (for invalid environment variable inputs) and advanced diagnostic filtering (via REST endpoints and CLI dashboard) into one cohesive feature.
-- **Persistent Log Files:** Introduce a new CLI flag (`--log-to-file`) and configuration option to write all diagnostic logs (including those for backoff retries, telemetry aggregation, and CLI/HTTP dashboard events) to a designated log file (e.g. `logs/diagnostic.log`).
-- **Configurable Logging Levels:** Maintain existing DIAGNOSTIC_LOG_LEVEL configuration while extending logging to support both console and file output.
+- **Unified Logging System:** Centralizes diagnostic messages from live data integration, ontology management, and CLI command operations. All logs are timestamped and can be output to the console, a persistent file, or aggregated for on-demand reporting.
+- **Aggregated Telemetry:** Implements promise-based batching to collect and report aggregated telemetry for non-numeric environment variable inputs (NaN) and other warnings, accessible via the CLI flag `--diagnostic-summary-naN`.
+- **Flexible Output Options:** Provides configurable logging levels and supports dual output (console and file) via CLI flags (e.g. `--log-to-file`) and environment variable controls.
+- **Extended Diagnostics for CLI and HTTP:** Enhances both the CLI dashboard and the HTTP endpoint (`/diag/telemetry`) for real-time filtering, audit trailing, and troubleshooting of ontology build operations.
 
 ## Implementation Details
 
-- **Aggregation & Batching:** Retain the promise-based batching mechanism for aggregating telemetry events (including NaN fallback warnings), ensuring each unique invalid input is logged only once per normalization cycle.
-- **HTTP Endpoint & CLI Dashboard:** Merge the existing HTTP endpoint (`/diag/telemetry`) and CLI flag (`--diagnostic-filter`) functionality with telemetry summary commands. This unified diagnostics dashboard will allow users to filter and review events in real time.
-- **Log File Integration:** Enhance the `logDiagnostic()` function to check for a new flag (e.g. `--log-to-file` or an environment variable like `LOG_TO_FILE=true`) and, if enabled, append all diagnostic messages along with their ISO timestamps to a log file.
-- **Configuration & Documentation:** Update README and CONTRIBUTING documentation to describe the new diagnostics system, including examples of CLI usage (e.g. using `--diagnostic-summary-naN` and `--log-to-file`) and instructions for accessing the HTTP endpoint.
+- **Promise-Based Batching:** Diagnostic warnings, especially those triggered by invalid environment variable inputs, are batched asynchronously. This ensures that each unique issue is logged once even under high concurrency conditions.
+- **Multi-Channel Logging:** The system supports logging to console and a designated log file (e.g. `logs/diagnostic.log`) when enabled. The logging behavior is governed by the `DIAGNOSTIC_LOG_LEVEL` setting and additional flags.
+- **Aggregated Telemetry Summary:** An aggregated report is maintained in memory that counts occurrences of each unique invalid input. Users can retrieve this summary using the CLI flag `--diagnostic-summary-naN`.
+- **Integration with CLI and Web Server:** Diagnostic messages are integrated into both the CLI command responses and the HTTP dashboard for real-time visibility across all operations including live data fetching, network retries with jitter, environment variable parsing, and ontology merging.
 
 ## Benefits
 
-- **Improved Observability:** By consolidating diagnostic logging into a single feature, developers and users gain a clear and unified view of system events, errors, and telemetry.
-- **Persistent Troubleshooting Data:** Log file support allows retention of diagnostic data beyond the runtime session, facilitating offline analysis and long-term monitoring.
-- **Enhanced Flexibility:** Users can now choose between real-time console output and persistent logging, and filter telemetry data during both interactive CLI sessions and via RESTful endpoints.
+- **Improved Observability:** Developers and users gain a unified and detailed view of system events, errors, and telemetry data through a consolidated diagnostics system.
+- **Persistent Troubleshooting Data:** Logging to file and aggregated telemetry provide a robust audit trail for both live and fallback scenarios, facilitating offline analysis and long-term monitoring.
+- **Enhanced Flexibility and Configurability:** Users can customize the diagnostic output level, control persistence options, and retrieve detailed aggregated reports to quickly pinpoint configuration or network issues.
