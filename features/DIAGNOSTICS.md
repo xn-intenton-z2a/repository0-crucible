@@ -1,32 +1,29 @@
-# DIAGNOSTICS: Aggregated Telemetry and Log Management
+# DIAGNOSTICS: Aggregated Telemetry, Log Management & CLI Telemetry Viewer
 
 ## Overview
-This feature consolidates environment variable telemetry and diagnostic logging into a single, unified module. It enhances the current telemetry functionality by aggregating logs from various parts of the system (including live data ingestion, anomaly detection, and CLI interactions) and provides advanced log management capabilities. It also enables operators to query, export, and analyze diagnostic events through additional CLI commands.
+This feature consolidates all diagnostic logging and telemetry related to environment variable parsing, live data anomaly detection, and operational events into a single, unified module. It aggregates logs from various parts of the system, includes advanced export options, and now introduces an interactive CLI telemetry viewer to aid operators and developers in real-time diagnosis.
 
-## Implementation Details
-1. **Unified Logging Pipeline:**
-   - Replace inline logging calls and separate telemetry handling found in the legacy ENV_TELEMETRY module with a unified logging API.
-   - Collect diagnostic messages (at levels such as debug, info, warn, error) along with environment variable warnings into an in-memory store with timestamps.
+## Unified Logging and Telemetry
+- **Centralized Logging:** Replaces legacy inline logging and ensures that all telemetry (e.g., NaN fallback warnings, diagnostic events) are captured in an in-memory store with timestamps.
+- **Telemetry Aggregation:** Normalizes, validates, and aggregates environment variable warnings (including explicit and implicit NaN inputs) along with detailed diagnostic logs from live data integrations and CLI operations.
+- **Export Functionality:** Offers CLI options (`--export-telemetry`) to output aggregated logs in JSON or CSV formats. Existing commands for exporting remain unchanged.
 
-2. **Telemetry Aggregation & Export:**
-   - Continue to normalize and validate environment variables, aggregating warnings (e.g., non-numeric inputs and explicit 'NaN' values) with detailed telemetry data.
-   - Add new endpoints via CLI (e.g. `--show-logs`, `--export-logs`) to display or export the aggregated log and telemetry data in JSON and CSV formats for further analysis.
+## Interactive CLI Telemetry Viewer
+- **New CLI Command:** Introduces a new CLI flag `--show-telemetry` which displays the aggregated telemetry data in a user-friendly, interactive table format directly in the terminal.
+- **Detailed Summary:** Provides a real-time summary of all non-numeric environment variable inputs, explicit "NaN" events, and other diagnostic logs. An optional `--json` flag can output the summary in JSON format for further automated processing.
+- **Usage:** Enhances troubleshooting by allowing developers to quickly inspect system health and configuration issues without having to search through log files.
 
-3. **Persistent Log Storage Option:**
-   - Optionally, provide a mechanism to persist logs to a file (with configurable retention), making it easier to trace historical diagnostic events and troubleshoot issues.
-   - Include filtering capabilities such as log level and time range for targeted diagnostics.
-
-4. **Integration and Backwards Compatibility:**
-   - Merge the core aspects of the previous ENV_TELEMETRY functionality into this new DIAGNOSTICS module.
-   - Ensure that existing CLI flags (such as `--diagnostic-summary-naN` and telemetry export commands) continue to work, while introducing additional log management commands.
-   - Update the CONTRIBUTING documentation and README file to reflect the new unified diagnostics approach.
+## Integration and Backwards Compatibility
+- **Seamless Merging:** Consolidates legacy ENV_TELEMETRY functionality into the enhanced DIAGNOSTICS module.
+- **CLI Updates:** All existing CLI flags (such as `--diagnostic-summary-naN` and telemetry export commands) remain active while the new `--show-telemetry` command provides additional interactive insights.
+- **Documentation:** Update CONTRIBUTING.md and README with details about the new telemetry viewer, demonstrating examples of interactive usage.
 
 ## Benefits
-- **Centralized Diagnostics:** Offers a single point of access to all telemetry and log data across the application, reducing complexity for developers and operators.
-- **Enhanced Troubleshooting:** Provides detailed diagnostic information that is easily exportable and filterable, improving troubleshooting and operational monitoring.
-- **Seamless Integration:** Maintains backwards compatibility with existing telemetry features while adding enhanced logging capabilities in one consolidated module.
+- **Centralized Diagnostics:** A single point of access for all telemetry and log data, reducing complexity and simplifying troubleshooting.
+- **Enhanced Visibility:** Real-time, interactive telemetry display improves developer productivity by offering immediate insight into diagnostic data.
+- **Export and Analysis:** Continues to support detailed exporting of telemetry for external analysis, maintaining backwards compatibility with legacy commands.
 
 ## Migration Notes
-- The legacy ENV_TELEMETRY feature will be deprecated and merged into the new DIAGNOSTICS module. All configuration and CLI command references should be updated accordingly.
-- Developers should update their imports from ENV_TELEMETRY to DIAGNOSTICS and refer to the updated documentation for new log management CLI commands.
-- Extensive testing and documentation updates are required to ensure a smooth transition for users and contributors.
+- Developers should update their CLI usage to include the new `--show-telemetry` flag for real-time monitoring.
+- Legacy references to ENV_TELEMETRY should now point to this enhanced DIAGNOSTICS module.
+- No breaking changes are introduced; existing functionalities and configurations remain fully supported.
