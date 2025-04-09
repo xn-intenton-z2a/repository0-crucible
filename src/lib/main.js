@@ -29,11 +29,12 @@ import { WebSocketServer } from "ws";
  *   - Implemented exponential backoff in fetchDataWithRetry with configurable retries, delay and randomized jitter.
  *   - Consolidated and standardized environment variable parsing by inlining normalization, parsing and warning/telemetry logic below.
  *   - Updated CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and defaults.
- *   - Enhanced NaN fallback telemetry by including additional context: timestamp, raw input value, and indicator if CLI override was used.
+ *   - Enhanced NaN fallback telemetry by including additional context: timestamp, raw input value, normalized value, and indicator if CLI override was used.
  *   - Introduced aggregated telemetry summary for NaN fallback events, accessible via CLI flag '--diagnostic-summary-naN'.
  *   - Implemented promise-based batching for NaN fallback telemetry logs to ensure atomicity under high concurrency. [Optimized]
  *   - Added real-time WebSocket notifications for ontology updates. When key ontology operations occur, a JSON payload is broadcast to all connected WebSocket clients.
  *   - Added configurable warning threshold for NaN fallback logs via the NANFALLBACK_WARNING_THRESHOLD environment variable.
+ *   - Configurable TELEMETRY_FLUSH_DELAY: The delay for batching telemetry flushes can now be set using the TELEMETRY_FLUSH_DELAY environment variable.
  *   - New Feature: Real-Time Anomaly Detection for Live Data Integration. Live data is validated against expected schema and anomalies trigger diagnostic logging and WebSocket alerts.
  *   - New Feature: Export Aggregated Telemetry via CLI flag '--export-telemetry'. This command exports diagnostic telemetry (including NaN fallback details) to a JSON file 'telemetry.json' or CSV file 'telemetry.csv' based on specified format.
  *   - New Feature: Automated Rollback Mechanism. If a live data anomaly is detected, owl-builder attempts to restore the last known good backup from ontology-backup.json and broadcasts a WebSocket alert indicating the rollback.
@@ -52,7 +53,8 @@ import { WebSocketServer } from "ws";
 // Core Environment Variable Utilities
 // Changed warningCache to a Map to aggregate multiple occurrences of invalid inputs
 const warningCache = new Map();
-const TELEMETRY_FLUSH_DELAY = 50;
+// Configurable telemetry flush delay (default 50ms) via TELEMETRY_FLUSH_DELAY env var
+const TELEMETRY_FLUSH_DELAY = process.env.TELEMETRY_FLUSH_DELAY ? Number(normalizeEnvValue(process.env.TELEMETRY_FLUSH_DELAY)) || 50 : 50;
 let flushTimer = null;
 
 function normalizeEnvValue(val) {
@@ -70,6 +72,10 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
   let rawOriginal = cliOverride || process.env[varName] || "";
   let raw = normalizeEnvValue(rawOriginal);
   if (raw === "") return defaultValue;
+  // Explicitly check for 'nan' after normalization for clarity
+  if (raw === 'nan') {
+    raw = "";
+  }
   const num = Number(raw);
   if (isNaN(num)) {
     if (process.env.STRICT_ENV === "true") {
@@ -91,6 +97,7 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
         telemetry: "NaNFallback",
         envVar: varName,
         rawValue: rawOriginal,
+        normalizedValue: raw,
         cliOverride: !!cliOverride,
         timestamp: new Date().toISOString()
       };
@@ -104,7 +111,7 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
         info.count += 1;
         warningCache.set(key, info);
         if (info.count <= threshold) {
-          console.log(`Warning: Environment variable '${telemetryObj.envVar}' received non-numeric input ('${telemetryObj.rawValue}'). Falling back to default. Occurred ${info.count} time(s). TELEMETRY: ${JSON.stringify(telemetryObj)}`);
+          console.log(`Warning: Environment variable '${telemetryObj.envVar}' received non-numeric input ('${telemetryObj.rawValue}'). Falling back to default. Occurred ${info.count} time(s). TELEMETRY: ${JSON.stringify(telemetryObj)}. Total warnings so far: ${info.count}`);
         }
       }
       if (process.env.NODE_ENV === "test") {
