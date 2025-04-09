@@ -1,35 +1,41 @@
 # ONTOLOGY ENGINE
 
-The Ontology Engine consolidates the core functionalities of live data integration, diagnostic telemetry, anomaly detection, and automated rollback into a single unified module. This feature merges the previously separate Observability Service and Ontology Service, streamlining communication channels (CLI and WebSocket), diagnostic logging, and recovery workflows.
+This feature consolidates the dynamic aspects of live data integration, diagnostic telemetry, anomaly detection, and automated rollback into one unified module. It unifies CLI and WebSocket communications, ensuring that ontology building is both resilient and transparent.
 
 ## Overview
 
-- **Unified Live Data Integration:** Leverages verified public endpoints to build and update OWL ontologies with real-time data. Integrates live anomaly detection to ensure data quality.
-- **Aggregated Diagnostics & Telemetry:** Collects, normalizes, and aggregates diagnostic telemetry including environment variable fallback warnings and non-numeric input detections. Supports export of telemetry data in both JSON and CSV formats via CLI commands.
-- **Automated Anomaly Detection & Rollback:** Continuously validates incoming live data against schema expectations. On detecting anomalies (e.g. missing or empty `entries`), the system logs detailed messages, broadcasts WebSocket notifications, and automatically triggers an emergency rollback to the last known good backup.
-- **CLI and WebSocket Integration:** Provides intuitive CLI commands for real-time inspection (e.g. `--build-live`, `--detect-anomaly`, `--diagnostic-summary-naN`) and a WebSocket server that broadcasts updates, ensuring operational transparency.
+- **Live Data Integration:** Fetches and processes data from verified public endpoints to build OWL ontologies in real time.
+- **Diagnostic and Telemetry Aggregation:** Collects, normalizes, and exports telemetry, including diagnostic logs and environment variable warnings, to facilitate monitoring and troubleshooting.
+- **Anomaly Detection and Automated Rollback:** Continuously validates live data against expected schema standards and, upon detecting anomalies, triggers an immediate rollback to the last known good backup.
+- **CLI and WebSocket Integration:** Provides robust command line interfaces and real-time notifications to ensure operational transparency.
 
 ## Implementation Details
 
-- **Live Data Processing and Validation:**
-  - Fetches live data from endpoints such as `https://api.publicapis.org/entries` with retry logic using exponential backoff.
-  - Validates schema (e.g. ensures the `entries` array exists and is non-empty) and logs anomalies with aggregated diagnostics.
+1. **Live Data Processing and Validation:**
+   - Fetch live data with robust retry mechanisms and exponential backoff. 
+   - Validate critical fields (e.g., ensure the presence and non-emptiness of `entries`) and trigger diagnostic logs if validation fails.
 
-- **Diagnostic Telemetry & Environment Variable Handling:**
-  - Aggregates warnings for non-numeric environment variable inputs using a debounced batching mechanism.
-  - Supports configurable thresholds (via `NANFALLBACK_WARNING_THRESHOLD`) and provides CLI overrides for live data retry options.
+2. **Diagnostic Telemetry Enhancements:**
+   - Aggregate warnings from environment variable parsing, leveraging debounced batching to handle high concurrency.
+   - Support both JSON and CSV export formats via dedicated CLI commands.
 
-- **Automated Rollback Mechanism:**
-  - On anomaly detection, attempts to restore the last known good ontology from a backup file (`ontology-backup.json`).
-  - Broadcasts the rollback status via WebSocket notifications and logs detailed diagnostic telemetry.
+3. **Automated Rollback Mechanism:**
+   - On detection of an anomaly (e.g., missing or empty data arrays), log detailed messages and attempt an automated rollback from a backup file.
+   - If rollback is successful, restore the last verified ontology and broadcast a WebSocket update.
+   - In scenarios where rollback fails, default to a static fallback, ensuring uninterrupted service.
 
-- **Output and Export:**
-  - Enables exporting the aggregated telemetry in JSON or CSV format using CLI flags (`--export-telemetry` with optional `--format csv`).
-  - Centralizes CLI commands for building, updating, merging, and refreshing ontologies.
+4. **Enhanced Anomaly Detection and Escalation:**
+   - Implement an additional monitoring layer that tracks the frequency and patterns of anomalies.
+   - If anomalies exceed a configurable threshold within a given timeframe, escalate alerts via CLI notifications and WebSocket broadcasts.
+   - Provide detailed diagnostic summaries for rapid investigation and resolution.
 
-## Usage & Benefits
+5. **CLI and WebSocket Integration:**
+   - Update existing CLI commands (e.g., `--detect-anomaly`, `--backup-refresh`) to include new escalation details and diagnostic insights.
+   - Ensure WebSocket notifications include fields like updated ontology title, version, timestamp, and a clear status message (e.g., anomaly detected, rollback executed, escalation triggered).
 
-- **Streamlined Functionality:** Consolidates disparate diagnostic and live data functionalities into a single, maintainable module.
-- **Enhanced Reliability:** Rapid anomaly detection with automated rollback minimizes downtime and ensures data integrity.
-- **Operational Transparency:** Real-time telemetry and WebSocket notifications empower users to monitor and manage ontology updates efficiently.
-- **Simplified Maintenance:** Merging overlapping services reduces code complexity and aligns with the mission of live, verified data integration.
+## Benefits
+
+- **Resilient Ontology Building:** Combines real-time live data integration with immediate anomaly remediation, ensuring the ontology remains accurate and up-to-date.
+- **Proactive Monitoring:** Enhanced anomaly analysis and escalation allow administrators to quickly address issues before widespread disruption occurs.
+- **Operational Transparency:** Through robust CLI and WebSocket updates, users remain continuously informed about system status and interventions.
+- **Streamlined Maintenance:** Unifying multiple overlapping services into one cohesive module simplifies code management and future feature enhancements.
