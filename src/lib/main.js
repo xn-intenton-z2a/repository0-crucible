@@ -792,14 +792,5 @@ if (process.argv && process.argv.length > 1 && process.argv[1].includes("main.js
   runCLI(process.argv.slice(2)).then(() => {});
 }
 
-// Re-export core functions for backward compatibility and testing
-export {
-  runCLI,
-  getVersion,
-  displayHelp,
-  listCommands,
-  startWebServer
-};
-
 // Log that owl-builder CLI has been loaded
 console.log("owl-builder CLI loaded");
