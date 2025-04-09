@@ -1,34 +1,39 @@
-# Ontology Service
+# ONTOLOGY SERVICE
 
-The Ontology Service is the central engine of owl-builder, responsible for building, updating, validating, and persisting OWL ontologies by leveraging live, verified public data sources. This service integrates robust live data fetching, real-time anomaly detection, and enriched diagnostic telemetry, while also exposing a series of CLI commands for enhanced operational control.
+The Ontology Service is the central engine of owl-builder, responsible for building, updating, validating, and persisting OWL ontologies using live, verified public data sources. In addition to robust live data integration, it features real-time anomaly detection, advanced diagnostic telemetry, and automated rollback capabilities to ensure data integrity and operational resilience.
 
-# Live Data Integration
+## Live Data Integration
 
-- Fetches live data from trusted public APIs with retry logic including exponential backoff and jitter.
-- Falls back to a legacy static ontology build only when live data retrieval fails.
-- Supports CLI overrides for parameters such as retry counts and initial delays to ensure flexible deployments.
+- **Dynamic Data Fetching:** Retrieves live data from trusted public APIs with built-in retry logic, exponential backoff, and jitter for robust performance.
+- **Fallback Mechanism:** When live data retrieval fails or anomalies are detected, the service reverts to a legacy static ontology build as an emergency fallback.
+- **CLI Overrides:** Supports CLI parameters (such as retry count and initial delay) to adjust live data fetching behavior for flexible deployments.
 
-# Real-Time Anomaly Detection
+## Real-Time Anomaly Detection
 
-- Validates live data retrieval by ensuring that key schema properties (e.g. non-empty 'entries' arrays) are present.
-- When anomalies are detected (missing or empty data arrays), logs detailed diagnostic messages and triggers WebSocket alerts with comprehensive metadata.
-- Provides a dedicated CLI command (`--detect-anomaly`) to simulate anomaly scenarios for testing and debugging purposes.
+- **Schema Validation:** Ensures that critical properties (like the `entries` array) exist and are non-empty in the fetched data; errors in data structure prompt immediate warnings.
+- **Simulation Mode:** Provides CLI commands (e.g. `--detect-anomaly`) to simulate anomaly states for testing and debugging, ensuring full exercise of error handling workflows.
 
-# Diagnostic Telemetry and Environment Variable Handling
+## Diagnostic Telemetry and Environment Variable Handling
 
-- Implements advanced telemetry batching to aggregate warnings for non-numeric environment variable inputs, avoiding log flooding.
-- Normalizes environment variables to ensure consistency. In strict mode, non-numeric inputs will immediately throw errors.
-- Offers a CLI command (`--export-telemetry`) to export aggregated telemetry data in JSON (default) or CSV formats, supporting operational monitoring and debugging.
+- **Aggregated Diagnostics:** Collects and batches warnings from non-numeric or malformed environment variable inputs, with debounced asynchronous batching to prevent log flooding.
+- **Flexible Export Options:** Supports exporting diagnostic telemetry in multiple formats (JSON or CSV) via dedicated CLI commands (`--export-telemetry`, `--diagnostic-summary-naN`).
+- **Consistent Normalization:** All environment variables are normalized inline to maintain consistency and clarity across the application.
 
-# WebSocket Notifications
+## WebSocket Notifications
 
-- Integrates a WebSocket server that broadcasts real-time notifications for key ontology operations such as refreshes, updates, and merges.
-- Notifications include updated ontology title, version, timestamp, and a descriptive status message, ensuring that connected clients are promptly informed of system state changes.
+- **Real-Time Alerts:** Integrates a WebSocket server that broadcasts notifications whenever key operations occur (e.g., ontology refreshes, updates, merges, or rollbacks).
+- **Detailed Payloads:** Notifications include metadata such as the updated ontology title, version, timestamp, and a descriptive status message, ensuring proactive system monitoring.
 
-# Enhanced Diagnostic and Simulation Mode
+## Automated Rollback Mechanism
 
-- Introduces additional diagnostics for simulating failures and viewing detailed telemetry summaries via CLI commands (e.g. `--diagnostic-summary`, `--diagnostic-summary-naN`).
-- Aggregates detailed telemetry data such as NaN fallback incidents, including counts, timestamps, and CLI override indicators.
-- Enables developers to trigger simulated anomaly states to test end-to-end error handling and recovery workflows without external disruptions.
+- **Immediate Recovery:** Upon detection of live data anomalies (such as missing or empty `entries`), the service automatically attempts to restore the last known good ontology from `ontology-backup.json`.
+- **Transparent Communication:** Success or failure of the rollback is immediately broadcast via WebSocket along with detailed diagnostic messages.
+- **CLI Integration:** Dedicated CLI commands facilitate testing of the rollback mechanism; for example, the `--detect-anomaly` flag can trigger simulated anomaly conditions and observe the rollback process.
 
-This comprehensive service framework consolidates the core functionalities of ontology management while integrating enhanced monitoring, diagnostics, and simulation capabilities, aligning with the mission of handling live data in a robust and transparent manner.
+## Usage & Benefits
+
+- **Enhanced Reliability:** Combines live data integration with robust anomaly detection and recovery, ensuring that the ontology remains accurate and up-to-date.
+- **Operational Transparency:** Real-time telemetry and notifications provide ongoing insight into system performance and health, aiding rapid triage when issues arise.
+- **Flexible Deployment:** With comprehensive CLI overrides and simulation modes, administrators can customize and test the behavior of the ontology service in diverse environments.
+
+Overall, the Ontology Service not only builds and manages ontologies but also enforces data integrity and system resilience by proactively addressing anomalies through automated rollback and comprehensive diagnostic feedback.
