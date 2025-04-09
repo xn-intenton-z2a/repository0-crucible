@@ -1,35 +1,31 @@
-# CORE_ENGINE: Unified Live Data, Scheduling, Diagnostics, Telemetry, and RDF Export Engine
+# CORE_ENGINE: Unified Live Data, Scheduling, Diagnostics, Telemetry, RDF Export & Live Data Cache Engine
 
 ## Overview
-This feature remains the backbone of owl-builder by integrating live data ingestion, anomaly detection, automated rollback, and comprehensive diagnostic logging with scheduled maintenance and CLI command integrations. In this update, CORE_ENGINE has been extended to include RDF export capabilities. This allows users to seamlessly convert their ontologies from JSON into standard RDF/Turtle (or optionally RDF/XML) formats, aligning owl-builder with common semantic web practices and enhancing interoperability.
+This feature integrates live data ingestion, anomaly detection, automated rollback, diagnostic logging, scheduled maintenance, CLI commands, RDF export functionality, and now an enhanced in-memory caching mechanism for live data fetches. It serves as the central engine powering owl-builder's dynamic ontology building and management.
 
-## Implementation Details
-1. **Live Data Integration & Anomaly Detection:**
-   - Continues to ingest live data from verified public endpoints and validate incoming data against expected schemas.
-   - Triggers diagnostic logging and automated rollback using the last known good backup upon anomaly detection.
-   - Broadcasts real-time WebSocket notifications with fields such as `updatedOntologyTitle`, `version`, `timestamp`, and `statusMessage`.
+## Live Data Integration & Anomaly Detection
+- Continues to ingest live data from verified public endpoints, validating against expected schemas.
+- Anomalies in the data (e.g., missing or empty 'entries') trigger detailed diagnostic logging and prompt an automated rollback procedure to the last known good backup.
+- Real-time notifications are broadcast via WebSocket with update details including the ontology title, version, timestamp, and status messages.
 
-2. **Diagnostic Logging & Telemetry:**
-   - Aggregates diagnostic logs including environment variable warnings and detailed telemetry export events.
-   - Implements debounced telemetry batching with configurable flush delays.
-   - Provides CLI commands (e.g., `--export-telemetry`) to export diagnostic telemetry in JSON or CSV formats.
+## Diagnostic Logging & Telemetry
+- Aggregates environment variable warnings, including non-numeric inputs, and debounces rapid successive logs for clarity.
+- Exports detailed telemetry via CLI, supporting both JSON and CSV formats with aggregated diagnostics on NaN inputs.
 
-3. **Scheduled Maintenance & CLI Commands:**
-   - Controls scheduled tasks (e.g., ontology refresh and backup) through environment variables and CLI commands (e.g., `--refresh`, `--merge-persist`).
-   - Ensures full integration with the web server and interactive CLI menu for quick user feedback.
+## Scheduled Maintenance & CLI Commands
+- Manages scheduled tasks for ontology refresh, backup, and merge operations, all configurable via environment variables and CLI flags.
+- Ensures that operations such as refreshing and merging live data are seamlessly integrated with the web server and interactive CLI (CLI_MENU). 
 
-4. **RDF EXPORT Functionality:**
-   - **Purpose:** Convert the current ontology from its JSON representation into RDF/Turtle format. Optionally, support RDF/XML conversion if specified by a CLI flag or parameter.
-   - **Implementation:**
-        - Implement a conversion function that maps ontology properties (title, concepts, classes, properties, metadata) to RDF triples.
-        - Integrate the conversion function into the CLI commands (e.g., extending an export flag like `--export-rdf`) so that users can generate an RDF file (e.g., `ontology.ttl` or `ontology.rdf`).
-        - Ensure that the RDF export is consistent with the underlying ontology schema used in owl-builder.
-   - **Benefits:**
-        - Enhances semantic interoperability by providing standardized RDF output.
-        - Facilitates integration with semantic web tools and triple stores.
-        - Offers users an extended export option without disrupting the core live data and diagnostic functionalities.
+## RDF Export Functionality
+- Provides functions to convert the current ontology from JSON into standardized RDF/Turtle or RDF/XML formats.
+- Integrates with existing CLI commands (e.g., '--export-rdf') to facilitate semantic interoperability with the broader semantic web ecosystem.
+
+## Live Data Caching
+- Implements an in-memory caching layer for live data fetches to reduce redundant network calls and improve performance.
+- Cache duration (TTL) is configurable via the LIVE_DATA_CACHE_TTL environment variable, with a default of 60000 ms.
+- Incorporates cache invalidation logic to ensure that stale data is purged and new requests trigger a fresh network call.
 
 ## Migration and Integration Notes
-- All existing functionalities (live data integration, anomaly detection, diagnostic logging, scheduled operations, CLI integrations, and web & WebSocket notifications) remain fully operational.
-- Documentation including README and CONTRIBUTING files will be updated to introduce the new RDF export options with usage examples.
-- No features are removed; this is an additive update to CORE_ENGINE to broaden its export capabilities.
+- All existing functionalities (live data integration, anomaly detection, rollback, telemetry export, RDF export) remain fully operational.
+- Documentation and CLI usage examples will be updated to include details on the enhanced caching mechanism and its configuration.
+- This update consolidates multiple essential operations under a single unified feature, streamlining the codebase in alignment with the mission of owl-builder.
