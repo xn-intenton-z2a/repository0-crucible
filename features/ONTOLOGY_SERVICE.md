@@ -1,27 +1,28 @@
 # ONTOLOGY_SERVICE
 
-The ONTOLOGY_SERVICE feature provides a robust framework for integrating live public data sources into dynamic OWL ontologies. This service orchestrates data retrieval, anomaly detection, diagnostics, persistence, and real-time notifications, all in a single repository compliant with the project mission.
+The ONTOLOGY_SERVICE feature integrates live data processing with robust diagnostics and real-time notifications. It is designed to build, update, validate, and export dynamic OWL ontologies sourced from public data endpoints while consolidating legacy fallback mechanisms for emergencies.
 
 # Live Data Integration
 
-- **Dynamic Data Retrieval:** Periodically fetches live ontology data from verified public endpoints such as `https://api.publicapis.org/entries` and others.
-- **Manual & Scheduled Refresh:** Supports CLI and HTTP endpoints for on-demand refreshes and manual triggering. 
-- **Static Fallback:** When live data cannot be obtained, the service gracefully falls back to a legacy static mode, ensuring continuity.
+- **Dynamic Data Retrieval:** Fetches live data from trusted public endpoints (e.g., https://api.publicapis.org/entries), with a fallback to a static legacy mode only for emergencies.
+- **Scheduled & Manual Refresh:** Supports CLI and HTTP endpoints for on-demand refreshes and scheduled updates.
+- **Retry & Backoff Mechanisms:** Implements exponential backoff with jitter for handling network errors and ensuring data consistency.
 
-# Diagnostics and Telemetry
+# Diagnostics, Telemetry & Anomaly Detection
 
-- **Enhanced Logging:** Implements detailed diagnostic logging with exponential backoff and jitter for retries. Logs include timestamped messages and aggregated telemetry for issues such as malformed environment variables.
-- **Environment Variable Parsing:** Integrates normalization and robust fallback mechanisms. Aggregates warnings for non-numeric inputs and provides a CLI summary via the `--diagnostic-summary-naN` flag.
-- **Strict Mode Option:** In strict mode, non-numeric inputs issued via command line or environment variables result in immediate errors to enforce data integrity.
+- **Enhanced Logging & Diagnostics:** Provides detailed timestamped logs, warnings for environment variable issues, and aggregated telemetry for non-numeric fallback events.
+- **Environment Variable Parsing:** Normalizes input values and enforces strict mode option to ensure numeric integrity. Aggregates warnings using a configurable threshold.
+- **Real-Time Anomaly Detection:** Validates live data to check for anomalies (e.g., missing or empty 'entries') and triggers diagnostic logs and WebSocket notifications if issues are detected.
+- **Telemetry Export:** Offers a CLI command (`--export-telemetry`) to export aggregated telemetry data such as NaN fallback summaries and diagnostic summaries to a JSON file.
 
-# Real-Time Anomaly Detection
+# CLI and HTTP API Endpoints
 
-- **Schema Validation:** Validates live data by ensuring required fields (e.g., non-empty `entries` array) are present. Returns detailed error objects if anomalies are detected.
-- **CLI Testing:** Includes a CLI flag (`--detect-anomaly`) to simulate anomaly scenarios with provided JSON data, ensuring that any abnormalities are promptly reported and diagnostic logs are updated.
+- **Comprehensive Operations:** Supports a variety of commands including building, updating, querying, backing up, refreshing, merging, and custom ontology creation.
+- **Diagnostic & Anomaly CLI Commands:** Includes CLI options to force anomaly detection (`--detect-anomaly`), view aggregated telemetry (`--diagnostic-summary-naN`), and export telemetry data.
 
-# HTTP API & CLI Endpoints
+# WebSocket Notifications
 
-- **Comprehensive Commands:** Supports a variety of operations such as building, updating, querying, exporting (to OWL XML), and merging ontologies.
-- **WebSocket Notifications:** Leverages a built-in WebSocket server to broadcast JSON notifications detailing operations (e.g., ontology refreshes, updates, anomaly alerts) to connected clients, aligning with live operational monitoring requirements.
+- **Real-Time Updates:** Integrates a WebSocket server that broadcasts JSON notifications on crucial operations such as ontology refresh, anomaly detection, and merging.
+- **Operational Monitoring:** Ensures connected clients receive updates with detailed payloads (ontology title, version, timestamp, and status message) during live operations.
 
-This refined specification not only consolidates existing functionality but also enhances data integrity and real-time operational awareness, thereby advancing the mission of building resilient, live-data driven ontologies.
+This comprehensive feature encapsulates all critical aspects of building resilient, live-data driven ontologies, ensuring both data integrity and operational transparency in line with the project mission.
