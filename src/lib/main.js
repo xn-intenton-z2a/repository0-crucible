@@ -53,8 +53,8 @@ const TELEMETRY_FLUSH_DELAY = 50;
 
 function normalizeEnvValue(val) {
   if (typeof val !== "string") return val;
-  // Updated regex to collapse all whitespace characters including non-breaking spaces
-  return val.trim().replace(/[[\s\u00A0]]+/g, ' ').toLowerCase();
+  // Fixed regex to collapse all whitespace characters including non-breaking spaces
+  return val.trim().replace(/[\s\u00A0]+/g, ' ').toLowerCase();
 }
 
 function parseEnvNumber(varName, defaultValue, fallbackValue) {
@@ -96,7 +96,6 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
       } else {
         let info = warningCache.get(key);
         info.count += 1;
-        // Removed resetting of the logged flag to ensure only one telemetry event is logged per unique normalized value
         warningCache.set(key, info);
       }
       if (process.env.NODE_ENV === "test") {
@@ -401,7 +400,7 @@ export function listAvailableEndpoints() {
       if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
         validCustomEndpoints.push(trimmed);
       } else {
-        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with "http://" or "https://"`, "warn");
+        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with \"http://\" or \"https://\"`, "warn");
       }
     });
     return Array.from(new Set([...defaultEndpoints, ...validCustomEndpoints]));

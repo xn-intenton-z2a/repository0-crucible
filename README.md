@@ -22,7 +22,7 @@ Environment variable inputs are processed via an inline utility integrated in th
 - `rawValue`: The original, unnormalized input value.
 - `cliOverride`: A boolean indicating whether the value came from a CLI override.
 
-Telemetry logs for NaN fallback events are now batched asynchronously to reduce logging overhead in high concurrency scenarios. Aggregated telemetry data is maintained at runtime and can be accessed via the CLI flag `--diagnostic-summary-naN`.
+Telemetry logs for NaN fallback events are batched asynchronously to reduce logging overhead in high concurrency scenarios. Aggregated telemetry data is maintained at runtime and can be accessed via the CLI flag `--diagnostic-summary-naN`. This aggregation ensures that duplicate normalized invalid inputs are logged only once, even under high concurrency.
 
 CLI override options (e.g. `--livedata-retry-default` and `--livedata-delay-default`) take precedence over environment variables and defaults. Strict mode, enabled via `--strict-env` or setting `STRICT_ENV=true`, causes non-numeric inputs to throw errors immediately.
 
@@ -34,7 +34,7 @@ In scenarios where NaN inputs occur repeatedly, an aggregated summary report is 
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing logic, please note the improved normalization, asynchronous batching of telemetry logs, and enhanced diagnostic context for improved clarity and performance.
+Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing logic, please note the optimized normalization using a corrected regex, improved aggregation of warnings for repeated invalid inputs, and enhanced diagnostic context for improved clarity and performance.
 
 ## License
 
