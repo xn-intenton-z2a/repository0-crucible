@@ -50,15 +50,9 @@ No additional configuration is needed; the WebSocket server starts automatically
 
 ## Environment Variable Handling
 
-Environment variable inputs are processed via an inline utility integrated in the main source file. This inline logic provides methods for normalizing input values by trimming whitespace and collapsing multiple whitespace characters—including non-breaking spaces—with a unified regex. When a non-numeric input is encountered (for example, variations of "NaN" such as " NaN ", "\tNaN", and "\u00A0NaN\u00A0"), a one-time diagnostic warning is logged asynchronously using a promise-based batching mechanism to ensure atomic aggregation even under high concurrency. The logged telemetry event now includes additional context fields:
+Environment variable inputs are processed via an inline utility integrated in the main source file. This inline logic provides methods for normalizing input values by trimming whitespace and collapsing multiple whitespace characters—including non-breaking spaces—with a unified regex. When a non-numeric input is encountered (for example, variations of "NaN" such as " NaN ", "\tNaN", and "\u00A0NaN\u00A0"), a diagnostic warning is logged and the value falls back to a default (or a configurable fallback) value. The warning and its associated telemetry event are logged up to a configurable threshold defined by the environment variable `NANFALLBACK_WARNING_THRESHOLD` (default is 1). This mechanism ensures that in high concurrency scenarios, the number of warning logs per unique invalid input can be controlled.
 
-- `timestamp`: When the warning occurred in ISO format.
-- `rawValue`: The original, unnormalized input value.
-- `cliOverride`: A boolean indicating whether the value came from a CLI override.
-
-Telemetry logs for NaN fallback events are batched using a promise-based approach to ensure that each unique invalid input is logged exactly once, even under rapid concurrent invocations. Aggregated telemetry data is maintained at runtime and can be accessed via the CLI flag `--diagnostic-summary-naN`.
-
-CLI override options (e.g. `--livedata-retry-default` and `--livedata-delay-default`) take precedence over environment variables and defaults. Strict mode, enabled via `--strict-env` or setting `STRICT_ENV=true`, causes non-numeric inputs to throw errors immediately.
+Additionally, when CLI override options (e.g. `--livedata-retry-default` and `--livedata-delay-default`) are provided, they take precedence over the corresponding environment variables and default values. Strict mode, enabled via `--strict-env` or setting `STRICT_ENV=true`, causes non-numeric inputs to throw errors immediately.
 
 There is special handling for the environment variable `TEST_UNIQUE` where different formatting (even when normalized to the same value) may trigger separate warnings, aiding granular detection during testing.
 
@@ -68,7 +62,7 @@ In scenarios where NaN inputs occur repeatedly, an aggregated summary report is 
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing logic or WebSocket notification features, please note the updated mechanisms for asynchronous telemetry logging and real-time updates.
+Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing logic or WebSocket notification features, please note the updated mechanisms for asynchronous telemetry logging, configurable warning thresholds, and real-time updates.
 
 ## License
 

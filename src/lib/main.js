@@ -29,10 +29,11 @@
  *   - Introduced aggregated telemetry summary for NaN fallback events, accessible via CLI flag '--diagnostic-summary-naN'.
  *   - Implemented promise-based batching for NaN fallback telemetry logs to ensure atomicity under high concurrency.
  *   - Added real-time WebSocket notifications for ontology updates. When key ontology operations occur, a JSON payload is broadcast to all connected WebSocket clients.
+ *   - Added configurable warning threshold for NaN fallback logs via the NANFALLBACK_WARNING_THRESHOLD environment variable.
  *
  * Note on Environment Variable Handling:
  *   The inline function normalizeEnvValue trims the value and replaces sequences of all whitespace characters (including non-breaking spaces) with a single space, then converts to lower case.
- *   Invalid inputs trigger a one-time diagnostic warning and fallback to default values (or configurable fallback values) with aggregated telemetry details.
+ *   Invalid inputs trigger a diagnostic warning and fallback to default values (or configurable fallback values) with aggregated telemetry details.
  *   In strict mode, non-numeric inputs immediately throw an error.
  *
  * Note for Contributors:
@@ -89,38 +90,41 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
       key = varName + ":" + raw;
     }
     if (!process.env.DISABLE_ENV_WARNINGS) {
+      // Get configurable threshold, default is 1
+      let threshold = 1;
+      if (process.env.NANFALLBACK_WARNING_THRESHOLD) {
+        const t = Number(normalizeEnvValue(process.env.NANFALLBACK_WARNING_THRESHOLD));
+        if (!isNaN(t) && t > 0) {
+          threshold = t;
+        }
+      }
+      const telemetryObj = {
+        telemetry: "NaNFallback",
+        envVar: varName,
+        rawValue: rawOriginal,
+        cliOverride: !!cliOverride,
+        timestamp: new Date().toISOString()
+      };
       if (!warningCache.has(key)) {
-        const telemetryObj = {
-          telemetry: "NaNFallback",
-          envVar: varName,
-          rawValue: rawOriginal,
-          cliOverride: !!cliOverride,
-          timestamp: new Date().toISOString()
-        };
-        warningCache.set(key, { count: 1, telemetry: telemetryObj, logged: false });
+        warningCache.set(key, { count: 1, telemetry: telemetryObj });
+        if (1 <= threshold) {
+          console.log(`Warning: Environment variable '${telemetryObj.envVar}' received non-numeric input ('${telemetryObj.rawValue}'). Falling back to default. Occurred 1 time(s). TELEMETRY: ${JSON.stringify(telemetryObj)}`);
+        }
       } else {
         let info = warningCache.get(key);
         info.count += 1;
         warningCache.set(key, info);
+        if (info.count <= threshold) {
+          console.log(`Warning: Environment variable '${telemetryObj.envVar}' received non-numeric input ('${telemetryObj.rawValue}'). Falling back to default. Occurred ${info.count} time(s). TELEMETRY: ${JSON.stringify(telemetryObj)}`);
+        }
       }
       if (process.env.NODE_ENV === "test") {
         // In test environment, flush warnings synchronously
-        for (const [k, info] of warningCache.entries()) {
-          if (!info.logged) {
-            console.log(`Warning: Environment variable '${info.telemetry.envVar}' received non-numeric input ('${info.telemetry.rawValue}'). Falling back to default. Occurred ${info.count} time(s). TELEMETRY: ${JSON.stringify(info.telemetry)}`);
-            info.logged = true;
-          }
-        }
+        // (Already logged above according to threshold)
       } else if (!telemetryFlushPromise) {
         telemetryFlushPromise = new Promise((resolve) => {
           setTimeout(() => {
-            for (const [k, info] of warningCache.entries()) {
-              if (!info.logged) {
-                console.log(`Warning: Environment variable '${info.telemetry.envVar}' received non-numeric input ('${info.telemetry.rawValue}'). Falling back to default. Occurred ${info.count} time(s). TELEMETRY: ${JSON.stringify(info.telemetry)}`);
-                info.logged = true;
-                warningCache.set(k, info);
-              }
-            }
+            // Batching delay complete - no additional action needed
             telemetryFlushPromise = null;
             resolve();
           }, TELEMETRY_FLUSH_DELAY);
