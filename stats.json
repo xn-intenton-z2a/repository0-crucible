@@ -1,19 +1,22 @@
 {
-  "openIssues": 41,
-  "issuesClosedLastHour": 2,
+  "openIssues": 42,
+  "issuesClosedLastHour": 4,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Enhanced NaN fallback parsing and telemetry aggregation with configurable flush delay. (fixes #1036)",
-      "ageMinutes": 0
-    }
-  ],
-  "diffMinutes": 1,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 5,
   "diffMinutesMain": 5,
-  "commitsLastHour": 7,
+  "commitsLastHour": 8,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
+    {
+      "time": "15:35",
+      "message": "Maintain CORE_ENGINE"
+    },
+    {
+      "time": "15:29",
+      "message": "Enhanced NaN fallback parsing and telemetry aggregation with con..."
+    },
     {
       "time": "15:23",
       "message": "Maintain WEB_SERVER"
@@ -25,27 +28,14 @@
     {
       "time": "15:10",
       "message": "Maintain CLI_MENU"
-    },
-    {
-      "time": "14:59",
-      "message": "Maintain ONTOLOGY_ENGINE"
-    },
-    {
-      "time": "14:52",
-      "message": "Maintain TELEMETRY_MANAGER"
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1036",
-        "minutesSinceLastCommit": 1
-      }
-    ]
+    "count": 0,
+    "details": []
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-09T15:29:07.204Z"
+  "generatedAt": "2025-04-09T15:40:29.456Z"
 }
