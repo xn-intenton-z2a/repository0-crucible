@@ -3,6 +3,7 @@ import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import fs from "fs";
 import path from "path";
 import http from "http";
+import https from "https";
 import { WebSocket } from "ws";
 import * as mainModule from "../../src/lib/main.js";
 
@@ -53,7 +54,9 @@ const {
   fetcher,
   startWebServer,
   runCLI,
-  parseEnvNumber
+  parseEnvNumber,
+  resetLiveDataCache,
+  getLiveDataCacheEntry
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -225,6 +228,63 @@ describe("WebSocket Notifications", () => {
       });
       wsClient.on('error', reject);
     });
+  });
+});
+
+// New Tests for Live Data Caching
+
+describe("Live Data Caching", () => {
+  let originalGet;
+  const testURL = "https://dummytest.com/data";
+  let callCount = 0;
+
+  beforeEach(() => {
+    resetLiveDataCache();
+    callCount = 0;
+    // Override https.get to simulate a network call
+    originalGet = https.get;
+    https.get = (url, options, callback) => {
+      callCount++;
+      const EventEmitter = require('events');
+      const fakeResponse = new EventEmitter();
+      fakeResponse.statusCode = 200;
+      process.nextTick(() => {
+        callback(fakeResponse);
+        fakeResponse.emit('data', JSON.stringify({ result: 'response'+callCount }));
+        fakeResponse.emit('end');
+      });
+      return { on: () => {} };
+    };
+    // Set a short TTL for testing
+    process.env.LIVE_DATA_CACHE_TTL = "100";
+  });
+
+  afterEach(() => {
+    https.get = originalGet;
+  });
+
+  test("should cache response for same URL within TTL", async () => {
+    const firstCall = await fetchDataWithRetry(testURL);
+    const secondCall = await fetchDataWithRetry(testURL);
+    expect(firstCall).toEqual(secondCall);
+    expect(callCount).toBe(1);
+  });
+
+  test("should make new network call after TTL expires", async () => {
+    const firstCall = await fetchDataWithRetry(testURL);
+    await new Promise(resolve => setTimeout(resolve, 150));
+    const secondCall = await fetchDataWithRetry(testURL);
+    expect(firstCall).not.toEqual(secondCall);
+    expect(callCount).toBe(2);
+  });
+
+  test("cache keys should differentiate by URL", async () => {
+    const url1 = testURL + "?q=1";
+    const url2 = testURL + "?q=2";
+    const resp1 = await fetchDataWithRetry(url1);
+    const resp2 = await fetchDataWithRetry(url2);
+    expect(resp1).not.toEqual(resp2);
+    expect(callCount).toBe(2);
   });
 });
 
