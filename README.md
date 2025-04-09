@@ -48,13 +48,29 @@ ws.on('message', (data) => {
 
 No additional configuration is needed; the WebSocket server starts automatically when running the CLI tool with the `--serve` flag.
 
+## Real-Time Anomaly Detection
+
+A new feature in owl-builder is the real-time anomaly detection mechanism within the live data integration workflow. After fetching data from a live endpoint, the data is validated to ensure it meets expected schema criteria. For instance, when using the `https://api.publicapis.org/entries` endpoint, the data must contain an `entries` array with at least one element. If an anomaly is detected (e.g., missing or empty `entries`), owl-builder logs detailed diagnostic messages and broadcasts a WebSocket alert with a status message such as "Anomaly detected in live data". This helps operators quickly identify issues with the external data source.
+
+### CLI Usage
+
+To force anomaly detection and test the feature, use the `--detect-anomaly` flag. You may optionally provide a JSON string representing sample data for testing. If not provided, live data will be used.
+
+Example:
+
+```bash
+node src/lib/main.js --detect-anomaly '{"entries": []}'
+```
+
+This command will simulate an anomaly scenario by providing an empty `entries` array.
+
 ## Environment Variable Handling
 
 owl-builder processes environment variables inline. This includes:
 
-1. **Normalization**: All environment variable values are trimmed and collapsed. For example, inputs like `"  NaN  "`, `" nAn "`, or even with non-breaking spaces like `"\u00A0NaN\u00A0"` are normalized to a consistent format.
+1. **Normalization**: All environment variable values are trimmed and collapsed. For example, inputs like "  NaN  ", " nAn ", or even with non-breaking spaces like "\u00A0NaN\u00A0" are normalized to a consistent format.
 
-2. **Fallback Mechanism**: If an environment variable expected to be numeric is found to be non-numeric (including the variations mentioned above), a diagnostic warning is logged and the value falls back to a default or configurable fallback value. This behavior is determined by:
+2. **Fallback Mechanism**: If an environment variable expected to be numeric is found to be non-numeric, a diagnostic warning is logged and the value falls back to a default or configurable fallback value. This behavior is determined by:
    - The default value provided to the parser.
    - An optional fallback value if specified.
    - CLI override values (e.g. `--livedata-retry-default` and `--livedata-delay-default`), which take precedence over environment-specified or default values.
@@ -67,7 +83,7 @@ Proper configuration of these variables is essential for predictable ontology bu
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing or WebSocket notification features, ensure that you update both the inline documentation in the source code and this README with the details of the fallback behavior and diagnostic telemetry.
+Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing, WebSocket notification features, or the new anomaly detection mechanism, ensure that you update both the inline documentation in the source code and this README with the details of the fallback behavior and diagnostic telemetry.
 
 ## License
 
