@@ -11,7 +11,6 @@ The ONTOLOGY_SERVICE feature provides comprehensive management of live OWL ontol
 
 # Aggregated Telemetry Summary
 
-- **NaN Fallback Telemetry:** When environment variables contain non-numeric values, a warning is logged and detailed telemetry is generated. This telemetry captures the raw input, normalized value, count of occurrences, and timestamps.
 - **Configurable Warning Threshold:** The number of warnings logged per unique normalized invalid input is controlled by the `NANFALLBACK_WARNING_THRESHOLD` environment variable (default is 1).
 - **CLI & API Access:** The aggregated telemetry summary is accessible via the CLI flag `--diagnostic-summary-naN` and can be exposed via a dedicated HTTP API endpoint (e.g. GET `/diagnostics/naN`) for real-time monitoring.
 
