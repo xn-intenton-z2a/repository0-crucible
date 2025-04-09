@@ -108,7 +108,7 @@ describe("Anomaly Detection", () => {
     const backupOntology = { title: "Backup Ontology", concepts: ["BackupConcept1"] };
     // Write backup file
     await fs.promises.writeFile(backupPath, JSON.stringify(backupOntology, null, 2));
-    // Override fetchDataWithRetry to return anomalous JSON
+    // Override fetchDataWithRetry to return anomalous JSON via fetcher
     fetcher.fetchDataWithRetry = async () => JSON.stringify({ entries: [] });
     const result = await buildOntologyFromLiveData();
     expect(result).toEqual(backupOntology);
@@ -117,7 +117,7 @@ describe("Anomaly Detection", () => {
   test("should fallback to static fallback when rollback fails", async () => {
     // Ensure backup file is removed
     removeFileIfExists(backupPath);
-    // Override fetchDataWithRetry to return anomalous JSON
+    // Override fetchDataWithRetry to return anomalous JSON via fetcher
     fetcher.fetchDataWithRetry = async () => JSON.stringify({ entries: [] });
     const result = await buildOntologyFromLiveData();
     expect(result).toEqual(buildOntology());

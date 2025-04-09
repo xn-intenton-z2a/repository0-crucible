@@ -228,7 +228,8 @@ export async function buildOntologyFromLiveData() {
   }
   
   try {
-    const dataStr = await fetchDataWithRetry("https://api.publicapis.org/entries");
+    // Use fetcher.fetchDataWithRetry to allow test overrides
+    const dataStr = await fetcher.fetchDataWithRetry("https://api.publicapis.org/entries");
     const parsed = JSON.parse(dataStr);
     const anomaly = detectLiveDataAnomaly(parsed);
     if (anomaly) {
@@ -526,7 +527,7 @@ export async function crawlOntologies() {
   }
   const fetchPromises = endpoints.map(async (endpoint) => {
     try {
-      const data = await fetchDataWithRetry(endpoint);
+      const data = await fetcher.fetchDataWithRetry(endpoint);
       const owlContent = exportOntologyToXML(await buildOntologyFromLiveData());
       return { success: true, endpoint, data, owlContent };
     } catch (err) {
@@ -798,7 +799,7 @@ export async function detectAnomalyCLI(args) {
     }
   }
   if (!sampleData) {
-    const dataStr = await fetchDataWithRetry("https://api.publicapis.org/entries");
+    const dataStr = await fetcher.fetchDataWithRetry("https://api.publicapis.org/entries");
     sampleData = JSON.parse(dataStr);
   }
   const anomaly = detectLiveDataAnomaly(sampleData);
@@ -1190,7 +1191,7 @@ async function demo() {
   const endpoints = listAvailableEndpoints();
   console.log("Demo - available endpoints:", endpoints);
   try {
-    const fetchData = await fetchDataWithRetry(endpoints[0], 1);
+    const fetchData = await fetcher.fetchDataWithRetry(endpoints[0], 1);
     console.log(`Demo - fetched data from ${endpoints[0]}:`, fetchData.substring(0, 100));
   } catch (err) {
     console.log(`Demo - error fetching ${endpoints[0]}:`, err.message);
