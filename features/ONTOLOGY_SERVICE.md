@@ -1,24 +1,25 @@
-# ONTOLOGY_SERVICE
+# ONTOLOGY SERVICE
 
-The ONTOLOGY_SERVICE feature is the core component of owl-builder, responsible for building and maintaining dynamic OWL ontologies using live, verified public data sources. This enhanced service integrates robust live data retrieval, extensive diagnostics, real-time notifications, and additional safety mechanisms to ensure operational resilience.
+The ONTOLOGY SERVICE is the core engine of owl-builder, integrating dynamic live data retrieval with robust diagnostics, anomaly detection, and real-time notifications. This module is responsible for building, maintaining, validating, and exporting OWL ontologies using live, verified public data sources. It provides a resilient architecture that adapts to changing data sources and implements comprehensive telemetry and CLI support.
 
-# Live Data Integration
-- **Dynamic Data Retrieval:** Fetches live data from trusted public endpoints with configurable retry logic, exponential backoff, and jitter to ensure robust and timely collection.
-- **Flexible Refresh Modes:** Supports both scheduled and on-demand data refreshes through CLI commands and HTTP endpoints.
-- **Fallback Mechanism:** Retains a legacy static fallback for emergency use when live data retrieval fails.
+## Live Data Integration
+- **Dynamic Data Retrieval:** Leverages configurable retry logic, exponential backoff, and jitter to fetch live data from trusted endpoints.
+- **Flexible Refresh Modes:** Supports scheduled and on-demand updates through CLI commands and HTTP endpoints.
+- **Fallback Strategy:** Uses a legacy static fallback mechanism for emergency resilience if live data retrieval encounters issues.
 
-# Diagnostics and Telemetry
-- **Enhanced Logging:** Provides detailed, timestamped diagnostic logs for debugging, including handling of non-numeric environment variables with aggregated telemetry on NaN fallback incidents.
-- **Aggregated Telemetry Export:** Implements a CLI command (`--export-telemetry`) that collects aggregated diagnostic and telemetry data into a JSON file, facilitating post-mortem analysis and continuous monitoring.
+## Diagnostics, Telemetry, and Anomaly Detection
+- **Enhanced Diagnostic Logging:** Incorporates detailed, timestamped logs including non-numeric environment variable handling with aggregated telemetry for NaN fallback incidents.
+- **Real-Time Anomaly Detection:** Validates incoming data by checking for the presence and quality of the `entries` array. On detecting anomalies, logs diagnostic warnings and triggers appropriate WebSocket alerts.
+- **Aggregated Telemetry Export:** Provides CLI commands (e.g., `--export-telemetry` and `--diagnostic-summary-naN`) to export telemetry data and view aggregated diagnostic summaries.
 
-# Real-Time Anomaly Detection
-- **Data Validation:** Validates live data against a defined schema (ensuring an `entries` property exists as a non-empty array) and triggers diagnostic logs when anomalies are detected.
-- **WebSocket Notifications:** Broadcasts real-time alerts to connected clients when anomalies or critical data events occur, ensuring operators are alerted immediately to any issues.
+## API and CLI Enhancements
+- **Comprehensive CLI Commands:** Offers commands for live data ontology building (`--build-live`), anomaly detection (`--detect-anomaly`), telemetry export, and other diagnostic features. 
+- **User-Focused Interface:** Incorporates CLI override capabilities and clear messaging, ensuring predictable behavior across various environments.
 
-# API and CLI Enhancements
-- **Comprehensive CLI Commands:** Extends the CLI to include commands for anomaly detection (`--detect-anomaly`), live data ontology building (`--build-live`), telemetry export (`--export-telemetry`), and additional diagnostics.
-- **User-Focused Diagnostics:** Includes detailed error handling, environment variable normalization, and CLI override capabilities to maintain predictable behavior across environments.
+## Real-Time Notifications and Resilience
+- **WebSocket Integration:** Broadcasts real-time notifications to connected clients on key events such as ontology updates, anomaly detection, and data refreshes.
+- **Robust Error Handling:** Merges live and legacy data sourcing with standardized error handling to ensure operational resilience and mission alignment.
 
-# Mission Alignment and Resilience
-- **Mission-Driven Approach:** Ensures that ontology building is driven by live, public data, aligning with the mission of creating dynamic and reliable ontologies using verified online sources.
-- **Resilient Operations:** Incorporates fallback strategies and enhanced logging mechanisms so that the system remains robust even under adverse conditions.
+## Mission Alignment
+- **Live and Verified Data:** Ensures that ontology construction is driven by current, trusted public data sources, fully supporting the mission of delivering dynamic, reliable ontologies.
+- **Consistent Performance:** Maintains high availability and robust fallback strategies to handle network variations and data anomalies without service disruption.
