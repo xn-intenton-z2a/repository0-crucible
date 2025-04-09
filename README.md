@@ -14,6 +14,40 @@ owl-builder uses a broad list of public endpoints to build ontologies, such as:
 
 _Note:_ Ensure that your network allows access to these endpoints for successful data retrieval.
 
+## WebSocket Notifications
+
+owl-builder now includes a real-time WebSocket notification service. This service broadcasts a JSON payload to all connected clients whenever key ontology operations (e.g., refresh, merge, update) occur.
+
+### How It Works
+
+- The WebSocket server runs alongside the HTTP server on the same port.
+- When an ontology is updated, refreshed, or merged, a payload is broadcast with the following fields:
+  - `updatedOntologyTitle`: The title of the updated ontology.
+  - `version`: The current version of owl-builder.
+  - `timestamp`: ISO formatted timestamp of the update.
+  - `statusMessage`: A description of the update (e.g., "Ontology refreshed").
+
+### Usage Example
+
+You can connect to the WebSocket endpoint as follows:
+
+```js
+import { WebSocket } from 'ws';
+
+const ws = new WebSocket('ws://localhost:3000');
+
+ws.on('open', () => {
+  console.log('Connected to owl-builder notifications');
+});
+
+ws.on('message', (data) => {
+  const notification = JSON.parse(data);
+  console.log('Received update:', notification);
+});
+```
+
+No additional configuration is needed; the WebSocket server starts automatically when running the CLI tool with the `--serve` flag.
+
 ## Environment Variable Handling
 
 Environment variable inputs are processed via an inline utility integrated in the main source file. This inline logic provides methods for normalizing input values by trimming whitespace and collapsing multiple whitespace characters—including non-breaking spaces—with a unified regex. When a non-numeric input is encountered (for example, variations of "NaN" such as " NaN ", "\tNaN", and "\u00A0NaN\u00A0"), a one-time diagnostic warning is logged asynchronously using a promise-based batching mechanism to ensure atomic aggregation even under high concurrency. The logged telemetry event now includes additional context fields:
@@ -34,7 +68,7 @@ In scenarios where NaN inputs occur repeatedly, an aggregated summary report is 
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing logic, please note the updated promise-based batching mechanism for telemetry logs which ensures atomic, consistent logging under high concurrency.
+Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing logic or WebSocket notification features, please note the updated mechanisms for asynchronous telemetry logging and real-time updates.
 
 ## License
 

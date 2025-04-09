@@ -30,7 +30,8 @@
     "openai": "^4.91.1",
     "dotenv": "^16.4.7",
     "zod": "^3.24.2",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "ws": "^8.13.0"
   },
   "devDependencies": {
     "eslint": "^9.24.0",
