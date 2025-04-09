@@ -30,6 +30,7 @@
  *   - Implemented promise-based batching for NaN fallback telemetry logs to ensure atomicity under high concurrency.
  *   - Added real-time WebSocket notifications for ontology updates. When key ontology operations occur, a JSON payload is broadcast to all connected WebSocket clients.
  *   - Added configurable warning threshold for NaN fallback logs via the NANFALLBACK_WARNING_THRESHOLD environment variable.
+ *   - **New Feature:** Real-Time Anomaly Detection for Live Data Integration. Live data is validated against expected schema and anomalies trigger diagnostic logging and WebSocket alerts.
  *
  * Note on Environment Variable Handling:
  *   The inline function normalizeEnvValue trims the value and replaces sequences of all whitespace characters (including non-breaking spaces) with a single space, then converts to lower case.
@@ -165,6 +166,21 @@ export function getAggregatedNaNSummary() {
   return summary;
 }
 
+// New function for real-time anomaly detection in live data integration
+export function detectLiveDataAnomaly(data) {
+  if (!data || typeof data !== 'object') {
+    return { error: "Data is not a valid object." };
+  }
+  // For data from https://api.publicapis.org/entries, expect an 'entries' property that is a non-empty array
+  if ('entries' in data) {
+    if (!Array.isArray(data.entries) || data.entries.length === 0) {
+      return { error: "Expected 'entries' to be a non-empty array.", received: data.entries };
+    }
+  }
+  // Additional schema checks can be added here for other endpoints if needed
+  return null;
+}
+
 // Define and export fetcher object for use in buildEnhancedOntology and for test spying
 const fetcher = {};
 export { fetcher };
@@ -213,8 +229,14 @@ export async function buildOntologyFromLiveData() {
   }
 
   try {
-    const data = await fetchDataWithRetry("https://api.publicapis.org/entries");
-    const parsed = JSON.parse(data);
+    const dataStr = await fetchDataWithRetry("https://api.publicapis.org/entries");
+    const parsed = JSON.parse(dataStr);
+    const anomaly = detectLiveDataAnomaly(parsed);
+    if (anomaly) {
+      logDiagnostic("Anomaly detected in live data: " + JSON.stringify(anomaly), "warn");
+      broadcastOntologyUpdate({ title: "Anomaly Detected", concepts: [] }, "Anomaly detected in live data");
+      return buildOntology();
+    }
     const title = parsed && parsed.entries && parsed.entries.length > 0 ? parsed.entries[0].API : "Live Data Ontology";
     const concepts =
       parsed && parsed.entries
@@ -757,6 +779,32 @@ export async function backupAndRefreshOntology() {
   };
 }
 
+// New CLI command to force anomaly detection for live data
+export async function detectAnomalyCLI(args) {
+  let sampleData;
+  if (args.length > 1) {
+    try {
+      sampleData = JSON.parse(args[1]);
+    } catch(e) {
+      console.log("Invalid JSON provided for anomaly detection. Using live data instead.");
+    }
+  }
+  if (!sampleData) {
+    const dataStr = await fetchDataWithRetry("https://api.publicapis.org/entries");
+    sampleData = JSON.parse(dataStr);
+  }
+  const anomaly = detectLiveDataAnomaly(sampleData);
+  if (anomaly) {
+    logDiagnostic("Anomaly detected via CLI: " + JSON.stringify(anomaly), "warn");
+    broadcastOntologyUpdate({ title: "Anomaly Detected", concepts: [] }, "Anomaly detected in live data via CLI");
+    console.log("Anomaly detected:", anomaly);
+    return anomaly;
+  } else {
+    console.log("No anomaly detected in live data.");
+    return {};
+  }
+}
+
 const commandActions = {
   "--help": async (_args) => {
     displayHelp();
@@ -1041,6 +1089,9 @@ const commandActions = {
     const summary = getAggregatedNaNSummary();
     console.log("Aggregated NaN Fallback Telemetry Summary:", JSON.stringify(summary, null, 2));
     return summary;
+  },
+  "--detect-anomaly": async (args) => {
+    return await detectAnomalyCLI(args);
   }
 };
 
@@ -1136,7 +1187,7 @@ async function demo() {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --diagnostic-summary-naN, --custom-merge, --backup-refresh, --strict-env, --livedata-retry-default <number>, --livedata-delay-default <number>`
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --diagnostic-summary-naN, --custom-merge, --backup-refresh, --strict-env, --livedata-retry-default <number>, --livedata-delay-default <number>, --detect-anomaly`
   );
 }
 
