@@ -1,31 +1,33 @@
-# CORE_ENGINE: Unified Live Data, Scheduling, Diagnostics, Telemetry, RDF Export & Live Data Cache Engine
+# CORE_ENGINE: Unified Live Data, Diagnostics & Service Engine
 
 ## Overview
-This feature integrates live data ingestion, anomaly detection, automated rollback, diagnostic logging, scheduled maintenance, CLI commands, RDF export functionality, and now an enhanced in-memory caching mechanism for live data fetches. It serves as the central engine powering owl-builder's dynamic ontology building and management.
+This feature integrates live data ingestion, anomaly detection, comprehensive diagnostics, telemetry aggregation, scheduling, RDF export, and an in-memory caching mechanism into a single unified engine. It consolidates the diagnostic logging and interactive CLI telemetry viewer previously housed in the DIAGNOSTICS module, streamlining maintenance and improving developer experience.
 
 ## Live Data Integration & Anomaly Detection
-- Continues to ingest live data from verified public endpoints, validating against expected schemas.
-- Anomalies in the data (e.g., missing or empty 'entries') trigger detailed diagnostic logging and prompt an automated rollback procedure to the last known good backup.
-- Real-time notifications are broadcast via WebSocket with update details including the ontology title, version, timestamp, and status messages.
+- **Live Data Ingestion:** Continually fetches live data from verified public endpoints and validates it against expected schemas.
+- **Anomaly Detection & Rollback:** Detects anomalies such as missing or empty data arrays. On detection, triggers detailed diagnostic logging, WebSocket notifications, and an automated rollback to the last known good backup.
+- **Interactive Feedback:** Provides real-time logs and alerts to assist in troubleshooting and rapid diagnosis.
 
-## Diagnostic Logging & Telemetry
-- Aggregates environment variable warnings, including non-numeric inputs, and debounces rapid successive logs for clarity.
-- Exports detailed telemetry via CLI, supporting both JSON and CSV formats with aggregated diagnostics on NaN inputs.
+## Unified Diagnostics & Telemetry
+- **Centralized Logging:** Merges legacy inline logging with advanced diagnostic telemetry for environment variable parsing, explicit and implicit NaN inputs, and operational events.
+- **Telemetry Aggregation & Export:** Aggregates diagnostic logs and telemetry data that can be exported via CLI flags in JSON or CSV formats.
+- **Interactive CLI Viewer:** Retains an interactive telemetry viewer that displays aggregated logs in a user-friendly table format, offering real-time summaries and context for troubleshooting.
 
-## Scheduled Maintenance & CLI Commands
-- Manages scheduled tasks for ontology refresh, backup, and merge operations, all configurable via environment variables and CLI flags.
-- Ensures that operations such as refreshing and merging live data are seamlessly integrated with the web server and interactive CLI (CLI_MENU). 
+## Scheduling, RDF Export & Live Data Caching
+- **Scheduled Maintenance:** Manages tasks for ontology refreshing, backups, and merging, configurable via environment variables and CLI commands.
+- **RDF Export Functionality:** Converts the dynamically built ontology into standardized RDF formats (Turtle or RDF/XML) and integrates with export commands.
+- **In-Memory Caching:** Implements a caching layer for live data fetches with configurable TTL, reducing redundant network calls and improving performance.
 
-## RDF Export Functionality
-- Provides functions to convert the current ontology from JSON into standardized RDF/Turtle or RDF/XML formats.
-- Integrates with existing CLI commands (e.g., '--export-rdf') to facilitate semantic interoperability with the broader semantic web ecosystem.
+## CLI & Web Interface Integration
+- **Unified Interface:** Shares a single server instance to support CLI commands, HTTP endpoints (including a status endpoint and telemetry data endpoint), and GraphQL queries.
+- **Interactive Help & Real-Time Updates:** Integrates enhanced CLI help that offers command suggestions and contextual usage information, along with real-time WebSocket updates during key ontology operations.
 
-## Live Data Caching
-- Implements an in-memory caching layer for live data fetches to reduce redundant network calls and improve performance.
-- Cache duration (TTL) is configurable via the LIVE_DATA_CACHE_TTL environment variable, with a default of 60000 ms.
-- Incorporates cache invalidation logic to ensure that stale data is purged and new requests trigger a fresh network call.
+## Migration and Backwards Compatibility
+- **Seamless Transition:** Merges the previously separate DIAGNOSTICS module into the CORE_ENGINE, ensuring all legacy CLI flags (e.g., for telemetry export and diagnostic summaries) remain active.
+- **Documentation Updates:** README and CONTRIBUTING documents will be updated to reflect the consolidated functionalities and new interactive interface.
 
-## Migration and Integration Notes
-- All existing functionalities (live data integration, anomaly detection, rollback, telemetry export, RDF export) remain fully operational.
-- Documentation and CLI usage examples will be updated to include details on the enhanced caching mechanism and its configuration.
-- This update consolidates multiple essential operations under a single unified feature, streamlining the codebase in alignment with the mission of owl-builder.
+## Benefits
+- **Centralized Management:** A single engine that reduces code duplication and simplifies operational workflows.
+- **Enhanced Visibility:** Real-time diagnostics and aggregated telemetry provide immediate insights into operational health.
+- **Improved Performance:** Efficient live data caching and scheduling reduce network overhead and streamline data processing.
+- **User-Friendly Interface:** Consolidated CLI and web endpoints lower the learning curve and improve overall developer productivity.
