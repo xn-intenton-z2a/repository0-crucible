@@ -471,6 +471,19 @@ describe("Environment Variable Parsing Tests", () => {
     expect(telemetryCalls.length).toBe(1);
     logSpy.mockRestore();
   });
+  
+  test("Respects NANFALLBACK_WARNING_THRESHOLD setting", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    process.env.NANFALLBACK_WARNING_THRESHOLD = "2";
+    process.env.TEST_THRESHOLD = "NaN";
+    _parseEnvNumber("TEST_THRESHOLD", 10);
+    _parseEnvNumber("TEST_THRESHOLD", 10);
+    _parseEnvNumber("TEST_THRESHOLD", 10);
+    const warnings = logSpy.mock.calls.filter(call => call[0].includes("TEST_THRESHOLD") && call[0].includes("received non-numeric input")).length;
+    expect(warnings).toBe(2);
+    delete process.env.NANFALLBACK_WARNING_THRESHOLD;
+    logSpy.mockRestore();
+  });
 });
 
 describe("Core Ontology Functions", () => {
