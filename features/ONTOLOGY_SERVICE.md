@@ -1,44 +1,32 @@
-# Ontology Service
+# Ontology Service and Telemetry
 
-This feature consolidates all ontology management functionalities into a single, cohesive service that now includes enhanced authentication and security alongside live data integration, detailed diagnostics, and real-time notifications. The goal is to deliver a robust, secure, and user-friendly platform for building, updating, and managing OWL ontologies.
+This updated feature consolidates ontology management with integrated diagnostic telemetry capabilities. The service unifies live data integration, secure ontology operations, and aggregated telemetry reporting into a single cohesive module. Diagnostic telemetry now includes aggregated summaries of environment variable parsing anomalies such as non-numeric inputs, accessible via both a dedicated HTTP `/telemetry` endpoint and a CLI flag (`--diagnostic-summary-naN`).
 
 ## Overview
 
-- **Unified Management:** Combines legacy and live data ontology building with CLI commands and RESTful HTTP endpoints for operations such as build, update, refresh, backup, query, and import/export of ontologies.
-- **Live Data Integration & Fallback:** Builds ontologies from live verified public endpoints while retaining a static fallback for emergencies, configurable via environment variables.
-- **Real-Time Notifications:** Supports outbound WebSocket notifications (and SSE if needed) to instantly broadcast critical ontology operations (refresh, merge, update).
-
-## HTTP Endpoints & Diagnostics
-
-- **Core Endpoints:** Provides endpoints to persist, load, query, backup, and clear ontology data. A dedicated `/telemetry` endpoint exposes aggregated diagnostic and telemetry data, including environment variable parsing warnings.
-- **Diagnostic & Telemetry Logging:** Implements detailed diagnostic logging with asynchronous batching for environment variable parsing anomalies. Aggregated telemetry data (NaN fallback events) can be accessed via the CLI flag `--diagnostic-summary-naN` as well as the `/telemetry` endpoint.
-
-## Authentication & Security Enhancements
-
-- **API Key Authentication:** New security middleware enforces API key verification on data-modifying HTTP endpoints. Clients must include a valid API key (e.g., in the `x-api-key` header or via CLI override) to invoke operations such as ontology update, refresh, and merge.
-- **Error Handling & Logging:** Unauthorized requests are immediately rejected and logged as security warnings. This mechanism ensures that only authenticated users can perform sensitive changes.
+- **Unified Ontology Management:** Performs live data integration to build, update, refresh, backup, query, and merge ontologies. A static fallback remains available for emergencies.
+- **Integrated Telemetry:** Aggregates diagnostic events related to environment variable normalization errors (e.g., invalid non-numeric inputs). Each unique anomaly is logged once, with details including the raw input, CLI override indicator, and timestamp. Aggregated summaries are accessible via the CLI and HTTP.
+- **Enhanced Security and Notifications:** Incorporates API key verification for data-modifying operations and broadcasts real-time notifications via WebSocket upon key ontology events.
 
 ## Implementation Details
 
-- **Single Repository, Single Source File:** All functions, including live data fetching with exponential backoff, environment variable normalization, WebSocket notifications, and security middleware, are implemented in one source file.
-- **Configuration:** Retry logic and delay for live data fetching are configurable through environment variables. CLI override options (e.g., `--livedata-retry-default`, `--livedata-delay-default`) take precedence over defaults.
-- **Real-Time Updates:** On successful ontology updates, a JSON payload containing the updated title, current version, timestamp, and status message is broadcast to all connected WebSocket clients.
-
-## Benefits and User Impact
-
-- **Enhanced Security:** By requiring API key authentication for modifying operations, the system protects against unauthorized access and ensures data integrity.
-- **Robust Management:** Users benefit from a unified service that handles live data integration, diagnostics, telemetry, and seamless persistence of ontology data.
-- **Proactive Monitoring:** Detailed and aggregated telemetry helps operators detect configuration issues early and take corrective measures.
+- **Live Data Integration:** Fetches ontological data from verified public endpoints with exponential backoff, configurable via environment variables and CLI override flags. Error handling falls back to a static ontology when necessary.
+- **Diagnostic Telemetry:** Merges functionalities from the legacy telemetry summary feature. Environment variable parsing errors trigger asynchronous, batched warnings and aggregated logging. The telemetry summary is exposed over HTTP at `/telemetry` and via the CLI flag `--diagnostic-summary-naN`.
+- **Security and Notifications:** Security middleware enforces API key authentication. Ontology updates broadcast update messages (including updated ontology title, version, timestamp, and status message) to connected WebSocket clients.
 
 ## Usage Example
 
-1. **Configure API Key:**
-   - Set the API key in the environment: `export API_KEY=your_secret_key`.
-   - When sending HTTP requests to secured endpoints (e.g., `/update`, `/refresh`), include header `x-api-key: your_secret_key`.
+1. **Launching the Service:**
+   - Run the CLI tool with commands such as `--build-live`, `--refresh`, or `--merge-persist` to manage ontologies.
+   - Use `--diagnostic-summary-naN` to view aggregated telemetry for environment variable anomalies.
+   - Start the web server with `--serve` to enable both HTTP endpoints and the integrated WebSocket server.
 
-2. **Invoke Operations via CLI:**
-   - Update an ontology: `node src/lib/main.js --update "New Ontology Title"`
-   - Refresh ontology data: `node src/lib/main.js --refresh`
-   - Retrieve aggregated diagnostics: `node src/lib/main.js --diagnostic-summary-naN` or access `/telemetry` via HTTP.
+2. **Accessing Telemetry Data:**
+   - HTTP: Navigate to `http://localhost:<port>/telemetry` for a JSON summary of diagnostic logs.
+   - CLI: Run `node src/lib/main.js --diagnostic-summary-naN` to output the aggregated telemetry report.
 
-This update reinforces the mission of owl-builder to deliver dynamic, secure, and live data-driven ontology management in a single, easy-to-maintain repository.
+## Benefits and User Impact
+
+- **Simplified Maintenance:** Merging telemetry diagnostics with ontology operations reduces duplication and streamlines troubleshooting.
+- **Improved Debugging:** Aggregated telemetry provides actionable insights for configuration issues, helping users quickly identify and resolve environment variable errors.
+- **Enhanced Security and Real-Time Updates:** Secure operations combined with notifications keep users informed of changes as they occur.
