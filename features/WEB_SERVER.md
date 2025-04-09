@@ -1,29 +1,32 @@
-# WEB_SERVER: Integrated HTTP and WebSocket Notifications with Diagnostics
+# WEB_SERVER: Integrated HTTP, WebSocket & QUERY ENDPOINT
 
 ## Overview
-This feature provides an integrated HTTP server and WebSocket service that not only serves as a status endpoint but also exposes diagnostic and telemetry endpoints. In addition to the existing root endpoint for status messages and real-time notifications via WebSocket, new REST endpoints are introduced to allow querying aggregated telemetry data and diagnostic summaries. This enhancement further supports monitoring and troubleshooting by providing easy access to environment variable warnings, real-time telemetry export data, and system health checks.
+This updated WEB_SERVER feature not only provides a status endpoint and real-time WebSocket notifications but now also includes a new RESTful query endpoint. The /query endpoint allows clients to perform ontology searches using query parameters. This update enhances accessibility and integration with external applications, all while maintaining enhanced diagnostics and telemetry support.
 
 ## Implementation Details
 1. **HTTP Server Enhancements:**
-   - The HTTP server continues to listen on a configurable port (default 3000), serving GET requests on the root path (`/`) with a plain text status message.
-   - **New Diagnostics Endpoint:** A new GET endpoint at `/telemetry` is implemented to return aggregated telemetry data including NaN fallback warnings and diagnostic summaries in JSON format.
-   - **Optional CSV Export:** An optional query parameter (e.g., `?format=csv`) can be provided to trigger CSV formatted output directly via the HTTP response, mirroring the CLI export functionality.
+   - **Root Endpoint (`/`):** Continues to serve a plain text status message confirming that the server is running.
+   - **Diagnostics and Telemetry Endpoint (`/telemetry`):** Remains available to provide aggregated telemetry data including warnings, NaN fallback logs, and diagnostic summaries. A query parameter (e.g., `?format=csv`) is supported for exporting data in CSV format.
+   - **New Query Endpoint (`/query`):** 
+     - Accepts a GET request with a query parameter `q` representing the search term for ontology concepts.
+     - Internally calls the existing `queryOntology` method to search through persisted ontology data.
+     - Returns the matching results in JSON format, facilitating easy integration with other services or for direct client-side querying.
 
 2. **WebSocket Integration:**
-   - The existing WebSocket server attached to the HTTP server remains unchanged, broadcasting JSON notifications for ontology operations such as refreshes, merges, updates, and rollbacks.
-   - These notifications continue to include fields like `updatedOntologyTitle`, `version`, `timestamp`, and `statusMessage` to inform connected clients in real time.
+   - Remains active to broadcast real-time notifications to clients on ontology operations such as updates, refreshes, merges, and rollbacks.
+   - Notifications continue to include key fields like `updatedOntologyTitle`, `version`, `timestamp`, and `statusMessage`.
 
 3. **Configuration and CLI Integration:**
    - The server port remains configurable via the `PORT` environment variable.
-   - The CLI flag `--serve` activates the web server, ensuring that both status and diagnostic endpoints are available during runtime.
-   - Documentation will be updated to reflect the new endpoints and their usage examples.
+   - The CLI flag `--serve` continues to activate the web server, ensuring that both status, telemetry, and now query endpoints are available during runtime.
+   - Documentation will be updated to illustrate usage examples for the new /query endpoint, including parameter handling and expected JSON responses.
 
 ## Benefits
-- **Enhanced Monitoring:** Developers and system administrators can now query detailed diagnostic telemetry directly via HTTP without resorting to CLI commands.
-- **Improved Troubleshooting:** Aggregated telemetry and diagnostic summaries are easily accessible, enabling quicker resolution of configuration issues related to environment variables and live data anomalies.
-- **Single Repository Scope:** All functionality is consolidated within a single repository, leveraging the existing server and WebSocket setup to extend value without adding complexity.
+- **Enhanced Data Accessibility:** External systems, dashboards, or other clients can now query ontology data directly through a RESTful interface, facilitating easier integration.
+- **Real-Time Diagnostics & Monitoring:** Continuous real-time WebSocket notifications remain in place, ensuring that any key ontology operations are instantly communicated.
+- **Streamlined Operations:** This consolidated web server approach simplifies the architecture by combining status checks, diagnostic telemetry, and ontology querying into a unified system.
 
 ## Migration Notes
-- Existing functionality remains unchanged. The new `/telemetry` endpoint is an addition to the current WEB_SERVER feature and does not interfere with other CLI commands or modules.
-- Users are advised to update their documentation and usage guidelines (e.g., README and CONTRIBUTING files) to include details about the `/telemetry` endpoint and its CSV export option.
-- No additional features need to be removed or merged, so this update is a non-breaking enhancement to the current WEB_SERVER feature.
+- Existing functionality (status endpoint, telemetry export, WebSocket notifications) remains unchanged.
+- The new `/query` endpoint is an additive enhancement that does not affect backward compatibility. Users should update their integration documentation to include details about the new query functionality.
+- No features are being removed, and all prior capabilities are retained within the updated WEB_SERVER feature.
