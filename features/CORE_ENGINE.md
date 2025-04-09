@@ -1,29 +1,34 @@
-# CORE_ENGINE: Unified Live Data and Scheduling Engine
+# CORE_ENGINE: Unified Live Data, Scheduling, and Diagnostics Engine
 
 ## Overview
-This feature consolidates critical functionalities for live data integration, anomaly detection, automated rollback, detailed telemetry logging, and scheduled ontology maintenance into one unified core engine. It merges aspects of the deprecated TELEMETRY_MANAGER and ONTOLOGY_ENGINE as well as the SCHEDULED_TASKS feature. The core engine underpins owl-builder’s mission by ensuring that ontologies are built from live public data sources with robust error handling, proactive anomaly detection, and automated recovery mechanisms.
+This feature consolidates multiple critical functionalities into a single unified engine. It manages live data integration, anomaly detection with automated rollback, detailed telemetry logging, scheduled maintenance, and enhanced CLI diagnostic and telemetry export. It merges the legacy TELEMETRY_MANAGER and ONTOLOGY_ENGINE features (and SCHEDULED_TASKS) into one robust module that not only builds and maintains ontologies but also provides enriched insights and diagnostics as per the mission statement.
 
 ## Implementation Details
-1. **Live Data Integration and Anomaly Detection:**
-   - Use the `buildOntologyFromLiveData` function to construct ontologies directly from live, verified data endpoints.
-   - Validate incoming data using `detectLiveDataAnomaly`. If a data anomaly is detected (e.g., missing or empty `entries`), trigger diagnostic logging.
-   - In the event of a detected anomaly, automatically attempt a rollback by invoking `restoreLastBackup` and broadcast an appropriate WebSocket notification.
+### 1. Live Data Integration and Anomaly Detection
+- **Data Ingestion:** Use verified public endpoints to build ontologies directly from live data.
+- **Anomaly Handling:** Validate the data against schema expectations (e.g., non-empty `entries`). On detecting anomalies, log detailed diagnostics and automatically trigger a rollback using the last known backup from `ontology-backup.json`.
+- **Rollback Mechanism:** If a rollback is successful, broadcast a WebSocket alert with the message "Ontology rollback executed due to live data anomaly"; if it fails, fall back to the static build.
 
-2. **Telemetry and Environment Variable Management:**
-   - Integrate the enhanced environment variable parsing (with normalization and fallback logic) alongside aggregated telemetry for non-numeric inputs.
-   - Utilize functions like `parseEnvNumber` and `getAggregatedNaNSummary` to gather and export telemetry data via CLI commands.
-   - Provide CLI export functionality (`--export-telemetry`) for detailed diagnostics in JSON and CSV formats.
+### 2. Telemetry and Environment Variable Management
+- **Enhanced Logging:** Integrate detailed telemetry for both successful operations and error cases, with warnings for non-numeric environment variable inputs (including explicit "NaN" values).
+- **Batching and Aggregation:** Aggregate diagnostic messages using a debounced flush mechanism to prevent log flooding. Export diagnostic summaries and aggregated telemetry (in JSON or CSV format) via dedicated CLI commands.
 
-3. **Scheduled Maintenance Tasks:**
-   - Merge the periodic refresh and backup operations previously handled by SCHEDULED_TASKS into the core engine.
-   - Schedule ontology refresh and backup using configurable intervals (e.g., `AUTO_REFRESH_INTERVAL` and `AUTO_BACKUP_INTERVAL`) and ensure graceful shutdown of intervals.
+### 3. Scheduled Maintenance and CLI Integration
+- **Maintenance Tasks:** Incorporate scheduled refresh and backup operations. Configure intervals using environment variables and ensure graceful shutdown.
+- **CLI Commands:** Provide options such as `--refresh`, `--merge-persist`, and `--export-telemetry` to invoke operations on the core engine. These commands deliver real-time feedback via terminal output and WebSocket notifications.
 
-4. **CLI Integration:**
-   - Offer commands such as `--refresh` and `--merge-persist` that leverage the unified core engine’s functionalities.
-   - Ensure that both automated and on-demand operations are seamlessly integrated, providing real-time diagnostic feedback via logging and WebSocket notifications.
+### 4. Telemetry Export and Diagnostics Enhancement
+- **Export Options:** Allow users to export telemetry data (including aggregated NaN fallback telemetry and diagnostic summaries) either in JSON or CSV formats.
+- **Diagnostic Summaries:** Provide a CLI flag (`--diagnostic-summary-naN`) that collates detailed telemetry information including timestamps, raw inputs, normalized values, and occurrence counts.
+- **Integration:** Seamlessly integrate these telemetry export capabilities with the core engine so that all operations are monitored and reported consistently.
 
 ## Benefits
-- **Improved Reliability:** Consolidates multiple asynchronous processes into a single reliable engine, ensuring timely detection of data anomalies and automated recovery through rollback.
-- **Streamlined Maintenance:** Simplifies environment configurations and scheduled operations into one module, reducing complexity in deployment and ongoing maintenance.
-- **Enhanced Diagnostic Capabilities:** Provides a unified approach to telemetry logging, error detection, and reporting, thereby facilitating better monitoring and troubleshooting.
-- **Scalable Architecture:** Lays a strong foundation for future enhancements, such as additional custom merging strategies and more granular telemetry exports.
+- **Robust Data Handling:** Consolidates live data integration with immediate anomaly detection and automated recovery, ensuring high reliability.
+- **Comprehensive Diagnostics:** Enhances real-time monitoring with detailed telemetry export and diagnostic summaries, aiding troubleshooting and system transparency.
+- **Streamlined Maintenance:** Combines scheduled tasks with manual CLI operations, reducing complexity and improving maintainability.
+- **Scalable and Extensible:** Provides a scalable architecture that supports future enhancements in data merging strategies and diagnostic capabilities.
+
+## Migration and Integration Notes
+- The functionalities of the legacy TELEMETRY_MANAGER and ONTOLOGY_ENGINE are now fully integrated into CORE_ENGINE.
+- This update consolidates those features; therefore, **TELEMETRY_MANAGER** and **ONTOLOGY_ENGINE** will be deleted from the repository.
+- Update documentation in the README and CONTRIBUTING files to reflect the enhanced diagnostics and telemetry export options integrated into CORE_ENGINE.
