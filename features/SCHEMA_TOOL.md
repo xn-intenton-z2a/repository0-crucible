@@ -1,51 +1,44 @@
 # SCHEMA_TOOL Feature Update
 
 ## Overview
-This update refines the SCHEMA_TOOL feature to serve as the central engine for JSON schema diffing, validation, and explanation with an even broader reach. In addition to robust CLI management, interactive guided mode, and persistent logging, this update integrates a lightweight HTTP API endpoint. This new capability allows API developers to invoke schema operations remotely, fostering seamless integration with external tools and automated workflows.
+The SCHEMA_TOOL feature serves as the central engine for managing JSON schemas. It offers robust diffing, validation, and explanation of schema changes with enhanced CLI management, interactive guided mode, and persistent logging. In this update, we have further refined the feature to include an Interactive Schema Editor, enabling on-the-fly modifications and immediate feedback to facilitate smoother API evolution and collaborative troubleshooting.
 
 ## Functionality
-- **JSON Schema Diff & Reporting**:
-  - Generate human‑readable and machine‑parsable diffs, categorizing changes into additions, removals, and modifications.
-  - Produce detailed Markdown reports to clearly outline each schema change.
 
-- **Enhanced AI-Powered Explanations & Caching**:
-  - Leverage the OpenAI API to provide plain language explanations for schema diffs.
-  - Optimize API usage with an intelligent caching mechanism to reduce redundant calls and latency.
+### JSON Schema Diff & Reporting
+- **Diff Generation:** Produce human‑readable and machine‑parsable diffs that clearly categorize changes as additions, removals, or modifications.
+- **Markdown Reports:** Generate detailed reports in Markdown to provide clear insights into schema changes.
 
-- **Interactive Guided Mode & Schema Validation**:
-  - Offer a step‑by‑step interactive mode that provides contextual guidance during schema resolution.
-  - Validate JSON schemas against standard meta-schemas, with precise error and warning messages.
+### Enhanced AI-Powered Explanations & Caching
+- **AI Explanations:** Leverage the OpenAI API to offer plain language explanations of schema diffs.
+- **Caching Mechanism:** Reduce redundant API calls with an efficient caching layer to speed up repeated requests.
 
-- **Schema Persistence & Historical Tracking**:
-  - Persist outputs of diff, validation, and explanation operations for audit trails and potential rollbacks.
-  - Maintain a comprehensive evolution log recording schema changes over time.
+### Interactive Guided Mode & Schema Validation
+- **Step-by-Step Guidance:** Provide an interactive, guided mode that assists users through complex schema resolution processes.
+- **Validation:** Validate JSON schemas against standard meta-schemas, delivering precise error and warning messages when needed.
 
-- **CLI Management & Enhanced Dispatching**:
-  - Robust command parsing with support for complex flag routing (e.g., --diff, --validate, --explain, --interactive, --diagnostics, --serve, etc.).
-  - Automatic help generation and detailed error reporting for invalid commands.
+### Schema Persistence & Historical Tracking
+- **Audit Trails:** Persist outputs from diff, validation, and explanation operations to build a solid audit trail and enable rollbacks if necessary.
+- **Evolution Log:** Maintain a comprehensive log of schema changes over time.
 
-- **HTTP API Integration**:
-  - Introduce a lightweight HTTP server to expose endpoints for schema operations. 
-  - Endpoints such as GET /diff, POST /validate, and GET /explain allow remote triggering of the tool’s core functions.
-  - Seamless routing from CLI commands to HTTP handlers, ensuring consistency in behavior and output.
+### CLI Management & HTTP API Integration
+- **Comprehensive CLI:** Support complex command parsing with flags such as --diff, --validate, --explain, --interactive, --diagnostics, and --serve.
+- **HTTP Endpoints:** Expose lightweight HTTP API endpoints (e.g., GET /diff, POST /validate, GET /explain) to enable remote invocation of schema operations.
 
-- **Integration & Logging**:
-  - Centralized logging and consistent event tracking across CLI and HTTP API interactions.
-  - Backwards compatibility maintained with prior command sets while extending the tool’s integration surface.
+### Interactive Schema Editor
+- **In-Place Editing:** Introduce a new CLI-driven interactive schema editor that allows users to load, modify, and revalidate JSON schemas in real time.
+- **Instant Feedback:** As schemas are edited, immediately display diffs and validation results, leveraging existing diff and validation backends.
+- **Seamless Integration:** Integrate editor functionality with the existing guided mode, ensuring that changes made via the editor trigger the same logging, persistence, and API endpoints as other operations.
+
+### Integration & Logging
+- **Centralized Logging:** Ensure all interactions—from CLI commands to HTTP API requests and editor modifications—are logged uniformly for traceability and diagnostics.
+- **Backwards Compatibility:** Maintain compatibility with previous command sets while extending functionalities with new interactive features.
 
 ## Implementation
-- **Module Consolidation & Refactoring**:
-  - Update the main source file (e.g., `src/lib/schemaTool.js`) to include HTTP server initialization, leveraging Node’s built-in HTTP modules or lightweight frameworks.
-  - Consolidate legacy CLI and diff modules to streamline function calls between CLI and HTTP endpoints.
 
-- **Performance & Error Handling Improvements**:
-  - Optimize the caching mechanism for AI responses.
-  - Enhance error handling routines to deliver clear, actionable feedback in both interactive and API contexts.
-  - Ensure robust persistence with proper rollback and audit logging in case of failures.
-
-- **Testing & Documentation**:
-  - Expand unit tests to cover CLI operations, HTTP endpoint responses, diff generation, validation, AI caching, and persistence functionalities.
-  - Update the README and CONTRIBUTING documentation to include configuration instructions, usage examples, and detailed endpoint descriptions.
+- **Module Consolidation & Refactoring:** Update the main source file (e.g., `src/lib/schemaTool.js`) to initialize the HTTP server and integrate the interactive schema editor. Consolidate legacy modules to ensure consistent function calls between CLI and HTTP operations.
+- **Performance & Error Handling:** Optimize AI response caching and enhance error handling routines to deliver clear, actionable feedback in both interactive and API contexts.
+- **Testing & Documentation:** Expand unit tests to cover CLI operations, HTTP endpoint responses, interactive editing, diff generation, validation, AI caching, and persistence functionalities. Update the README and CONTRIBUTING documents with detailed configuration and usage instructions.
 
 ## Value Proposition
-The enhanced SCHEMA_TOOL consolidates all JSON schema management tasks into a unified tool that now supports both CLI and remote HTTP API interactions. This not only simplifies API evolution by automating diffing, validation, and explanation tasks but also extends the tool’s integration potential, aligning with our mission to facilitate collaborative and traceable API development.
+By consolidating all JSON schema management tasks—diffing, validation, interactive editing, and remote API operations—into a unified tool, the enhanced SCHEMA_TOOL streamlines API evolution. The addition of an Interactive Schema Editor not only simplifies the development workflow but also fosters collaborative troubleshooting, aligning perfectly with our mission to facilitate traceable and collaborative API development.
