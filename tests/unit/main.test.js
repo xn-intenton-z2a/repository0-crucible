@@ -59,23 +59,12 @@ const {
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
 const backupPath = path.resolve(process.cwd(), "ontology-backup.json");
+const telemetryPath = path.resolve(process.cwd(), "telemetry.json");
 
-function simulateNetworkFailure() {
-  return function (url, callback) {
-    const error = new Error("Network error");
-    const req = {
-      on: (event, handler) => {
-        if (event === "error") {
-          handler(error);
-        }
-        return req;
-      }
-    };
-    process.nextTick(() => {
-      req.on("error", () => {});
-    });
-    return req;
-  };
+function removeFileIfExists(filePath) {
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath);
+  }
 }
 
 // New tests for anomaly detection
@@ -194,6 +183,24 @@ describe("WebSocket Notifications", () => {
   });
 });
 
-// Existing tests for environment variable parsing, crawling, CLI commands, etc. would remain here...
+// New tests for Export Telemetry CLI Command
 
-// Additional tests can be added as needed.
+describe("Export Telemetry", () => {
+  afterEach(() => {
+    removeFileIfExists(telemetryPath);
+  });
+
+  test("CLI command --export-telemetry exports telemetry data to file", async () => {
+    removeFileIfExists(telemetryPath);
+    const args = ["--export-telemetry"];
+    const result = await main(args);
+    expect(result).toHaveProperty('nanSummary');
+    expect(result).toHaveProperty('diagnosticSummary');
+    // Check file exists
+    expect(fs.existsSync(telemetryPath)).toBe(true);
+    const fileContent = fs.readFileSync(telemetryPath, 'utf-8');
+    const parsedContent = JSON.parse(fileContent);
+    expect(parsedContent).toHaveProperty('nanSummary');
+    expect(parsedContent).toHaveProperty('diagnosticSummary');
+  });
+});

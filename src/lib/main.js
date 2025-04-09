@@ -30,7 +30,8 @@
  *   - Implemented promise-based batching for NaN fallback telemetry logs to ensure atomicity under high concurrency.
  *   - Added real-time WebSocket notifications for ontology updates. When key ontology operations occur, a JSON payload is broadcast to all connected WebSocket clients.
  *   - Added configurable warning threshold for NaN fallback logs via the NANFALLBACK_WARNING_THRESHOLD environment variable.
- *   - **New Feature:** Real-Time Anomaly Detection for Live Data Integration. Live data is validated against expected schema and anomalies trigger diagnostic logging and WebSocket alerts.
+ *   - New Feature: Real-Time Anomaly Detection for Live Data Integration. Live data is validated against expected schema and anomalies trigger diagnostic logging and WebSocket alerts.
+ *   - New Feature: Export Aggregated Telemetry via CLI flag '--export-telemetry'. This command exports diagnostic telemetry (including NaN fallback details) to a JSON file 'telemetry.json'.
  *
  * Note on Environment Variable Handling:
  *   The inline function normalizeEnvValue trims the value and replaces sequences of all whitespace characters (including non-breaking spaces) with a single space, then converts to lower case.
@@ -806,6 +807,23 @@ export async function detectAnomalyCLI(args) {
   }
 }
 
+// New CLI command to export aggregated telemetry to file
+export async function exportTelemetryCLI() {
+  const aggregatedTelemetry = {
+    nanSummary: getAggregatedNaNSummary(),
+    diagnosticSummary: enhancedDiagnosticSummary()
+  };
+  const filePath = path.resolve(process.cwd(), 'telemetry.json');
+  try {
+    await fsp.writeFile(filePath, JSON.stringify(aggregatedTelemetry, null, 2));
+    console.log(`Telemetry exported successfully to ${filePath}`);
+    return aggregatedTelemetry;
+  } catch (e) {
+    console.error("Failed to export telemetry", e);
+    return { error: e.message };
+  }
+}
+
 const commandActions = {
   "--help": async (_args) => {
     displayHelp();
@@ -1093,6 +1111,9 @@ const commandActions = {
   },
   "--detect-anomaly": async (args) => {
     return await detectAnomalyCLI(args);
+  },
+  "--export-telemetry": async (_args) => {
+    return await exportTelemetryCLI();
   }
 };
 
@@ -1188,7 +1209,7 @@ async function demo() {
 
 export function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --diagnostic-summary-naN, --custom-merge, --backup-refresh, --strict-env, --livedata-retry-default <number>, --livedata-delay-default <number>, --detect-anomaly`
+    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --diagnostic-summary-naN, --custom-merge, --backup-refresh, --strict-env, --livedata-retry-default <number>, --livedata-delay-default <number>, --detect-anomaly, --export-telemetry`
   );
 }
 

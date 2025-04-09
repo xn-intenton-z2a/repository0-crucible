@@ -29,8 +29,6 @@ owl-builder now includes a real-time WebSocket notification service. This servic
 
 ### Usage Example
 
-You can connect to the WebSocket endpoint as follows:
-
 ```js
 import { WebSocket } from 'ws';
 
@@ -45,8 +43,6 @@ ws.on('message', (data) => {
   console.log('Received update:', notification);
 });
 ```
-
-No additional configuration is needed; the WebSocket server starts automatically when running the CLI tool with the `--serve` flag.
 
 ## Real-Time Anomaly Detection
 
@@ -63,6 +59,26 @@ node src/lib/main.js --detect-anomaly '{"entries": []}'
 ```
 
 This command will simulate an anomaly scenario by providing an empty `entries` array.
+
+## Exporting Telemetry Data
+
+A new CLI command `--export-telemetry` has been added. When invoked, it gathers the aggregated diagnostic telemetry (including NaN fallback warnings) and exports the summary as a JSON file named `telemetry.json` in the current working directory.
+
+### How It Works
+
+- The command aggregates telemetry data using the internal telemetry functions, such as `getAggregatedNaNSummary` and `enhancedDiagnosticSummary`.
+- The aggregated data is then written to a file called `telemetry.json`.
+- The file contains a JSON object with at least the following keys:
+  - `nanSummary`: An array of aggregated NaN fallback warnings.
+  - `diagnosticSummary`: A summary of the diagnostic telemetry.
+
+### CLI Usage Example
+
+```bash
+node src/lib/main.js --export-telemetry
+```
+
+After running the command, check the `telemetry.json` file in your working directory for the exported telemetry data.
 
 ## Environment Variable Handling
 
@@ -83,7 +99,7 @@ Proper configuration of these variables is essential for predictable ontology bu
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing, WebSocket notification features, or the new anomaly detection mechanism, ensure that you update both the inline documentation in the source code and this README with the details of the fallback behavior and diagnostic telemetry.
+Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing, WebSocket notification features, the new anomaly detection mechanism, or the new telemetry export command, ensure that you update both the inline documentation in the source code and this README with the details of the changes.
 
 ## License
 
