@@ -1,39 +1,36 @@
 # CORE_ENGINE: Unified Live Data, Diagnostics, Telemetry, Query & Recovery Engine
 
 ## Overview
-This feature integrates live data ingestion, anomaly detection, comprehensive diagnostics, telemetry aggregation, scheduling, RDF export, in-memory caching, backup/rollback, and enhanced ontology query and validation. In this update, a dedicated focus has been placed on Telemetry and Diagnostics Management, ensuring that the system not only reacts to live data anomalies but also provides centralized, configurable insight into system health and environment variable handling.
+This feature remains the backbone of owl-builder, integrating live data ingestion, anomaly detection, comprehensive diagnostics, telemetry aggregation, scheduled maintenance, RDF export, in-memory caching, backup/rollback, and enhanced ontology query and validation. It underpins a robust system that seamlessly handles ontology updates through live public data, while ensuring reliable fallback and detailed diagnostic logging.
 
 ## Live Data Integration & Anomaly Detection
-- **Live Data Ingestion:** Continuously fetches live data from verified public endpoints with automated retries and exponential backoff.
-- **Anomaly Detection:** Monitors live data for schema inconsistencies, missing data, or empty arrays. Anomalies trigger diagnostic logging and real-time WebSocket alerts.
-
-## Unified Diagnostics, Telemetry & Notifications
-- **Centralized Logging:** Consolidates advanced diagnostic messages with timestamps and log levels. Detailed telemetry data (including NaN fallback events) are logged and aggregated.
-- **Real-Time Notifications:** Broadcasts ontology update events (refresh, merge, rollback) via WebSocket, including version, timestamp, and status messages.
+- **Live Data Ingestion:** Continuously fetches data from verified public endpoints with automated retries, exponential backoff, and caching to optimize performance.
+- **Anomaly Detection:** Validates live data against expected schemas. If anomalies (e.g., missing or empty `entries`) are detected, diagnostic logs are triggered and automated rollback is initiated using the last known good backup.
 
 ## Telemetry and Diagnostics Management
-- **Aggregated Telemetry:** Implements a batching mechanism to aggregate environment variable NaN fallback warnings. Thresholds (configurable via NANFALLBACK_WARNING_THRESHOLD) control log output to prevent flooding.
-- **Configurable Flush and Export:** Uses a debounced logging flush (configurable via TELEMETRY_FLUSH_DELAY) for improved performance. Provides CLI commands to export telemetry data either in JSON or CSV format, ensuring diagnostic events are persistently recorded.
-- **Enhanced CLI Feedback:** The interactive CLI help now includes real-time diagnostic summaries, guiding developers to track telemetry events and diagnose configuration issues instantly.
+- **Centralized Logging:** Aggregates detailed diagnostic messages, logging every event with timestamps and severity levels.
+- **Aggregated Telemetry:** Implements batching mechanisms for environment variable warnings (e.g., NaN fallback events) to avoid log flooding. Warnings are summarized and accessible via CLI commands.
+
+## Telemetry Export and CLI Integration
+- **CLI Telemetry Export:** The tool now supports a dedicated CLI command (`--export-telemetry`) to export aggregated telemetry data in JSON or CSV formats. This feature ensures that detailed diagnostic and telemetry logs—including NaN fallback events—are exportable for further analysis.
+- **Usage Details:**
+  - **JSON Export (default):** Generates a `telemetry.json` file containing structured telemetry data.
+  - **CSV Export:** When using the `--format csv` flag, telemetry data is exported as a CSV file (`telemetry.csv`), including separate sections for NaN fallback warnings and diagnostic summaries.
 
 ## Scheduling, RDF Export & Live Data Caching
-- **Scheduled Maintenance:** Manages routine tasks such as backups, refreshes, and merges with user-configurable intervals.
-- **RDF Export:** Converts ontologies into standardized RDF formats for external integrations.
-- **Caching Mechanism:** Implements in-memory caching with configurable TTL for live data fetching performance.
+- **Scheduled Maintenance:** Supports routine operations like backups, refreshes, and merges at configurable intervals.
+- **RDF Export:** Converts ontologies into standardized RDF formats, supporting external integrations.
+- **Caching Mechanism:** In-memory cache with a configurable TTL ensures optimized performance by reducing redundant API calls during live data fetch operations.
 
 ## Backup, Automated Rollback & Recovery
-- **Backup Mechanism:** Regularly saves the current state of the ontology to a backup file.
-- **Automated Rollback:** On detecting data anomalies, initiates an automatic rollback to the last known good backup with detailed diagnostic logs and WebSocket alerts.
+- **Backup Operations:** Regularly saves the current ontology state to a backup file.
+- **Automated Rollback:** On detecting data anomalies, the system automatically restores the last known good backup, with clear, timestamped diagnostic logs and real-time WebSocket notifications.
 
 ## Query & Validation
-- **Ontology Query:** Provides rapid search functionality for ontology concepts, accessible via CLI and HTTP/GraphQL interfaces.
-- **Data Validation:** Enforces strict checks to ensure ontologies are structurally complete with essential attributes.
-
-## Migration and Backwards Compatibility
-- **Backward Support:** All legacy functions remain functional to ensure smooth transition for existing users.
-- **Documentation Updates:** The README and CONTRIBUTING guides have been updated to reflect telemetry export, diagnostic summary, and configuration guidance.
+- **Ontology Querying:** Provides rapid ontology concept searches via CLI and HTTP/GraphQL interfaces.
+- **Data Validation:** Performs strict checks to ensure ontologies are structurally sound and complete.
 
 ## Benefits
-- **Robust Data Management:** Enhanced system reliability through detailed diagnostics and automated recovery operations.
-- **Centralized Telemetry:** Consolidates telemetry and diagnostic logs for improved monitoring, troubleshooting, and quality assurance.
-- **Interactive Developer Experience:** Integrated CLI feedback offers real-time insights into system health and configuration issues, lowering the learning curve.
+- **Increased Reliability:** Automated telemetry and diagnostic mechanisms ensure robust handling of live data integration issues.
+- **Enhanced Developer Experience:** Detailed CLI feedback, along with exportable telemetry, helps developers quickly diagnose and resolve configuration or runtime issues.
+- **Comprehensive Data Management:** Combines real-time data ingestion with fallback strategies, ensuring that ontology data remains accurate and up-to-date.
