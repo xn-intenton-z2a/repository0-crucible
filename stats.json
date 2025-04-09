@@ -4,11 +4,15 @@
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 8,
-  "diffMinutesMain": 9,
+  "diffMinutes": 6,
+  "diffMinutesMain": 6,
   "commitsLastHour": 8,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
+    {
+      "time": "19:39",
+      "message": "Refactor and simplify project structure, update README\n\nRebrande..."
+    },
     {
       "time": "19:27",
       "message": "Update from agentic-lib"
@@ -24,10 +28,6 @@
     {
       "time": "19:04",
       "message": "Maintain CORE_ENGINE"
-    },
-    {
-      "time": "18:55",
-      "message": "Maintain CORE_ENGINE"
     }
   ],
   "branches": {
@@ -35,12 +35,12 @@
     "details": [
       {
         "branch": "agentic-lib-issue-1050",
-        "minutesSinceLastCommit": 14
+        "minutesSinceLastCommit": 6
       }
     ]
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-09T19:37:52.618Z"
+  "generatedAt": "2025-04-09T19:46:03.768Z"
 }
