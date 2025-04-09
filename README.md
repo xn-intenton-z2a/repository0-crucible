@@ -64,6 +64,12 @@ A new feature in owl-builder is the real-time anomaly detection mechanism within
 
 If an anomaly is detected (e.g., missing or empty `entries`), owl-builder logs detailed diagnostic messages and broadcasts a WebSocket alert. In addition, owl-builder automatically attempts to restore a valid ontology by rolling back to the last known good backup stored in `ontology-backup.json`. If the rollback is successful, the backup ontology is restored as the current ontology and a WebSocket notification with the status message "Ontology rollback executed due to live data anomaly" is broadcast.
 
+## Live Data Fetch Caching
+
+To reduce redundant API calls and improve response times when fetching live data, owl-builder now implements an in-memory caching mechanism. Before initiating a network request via `fetchDataWithRetry`, the tool checks if a valid cached response for the requested URL exists. If a cached response is found and it has not expired, the cached data is returned immediately. Otherwise, a new network request is made and its result is cached for subsequent requests.
+
+The cache duration is configurable via the `LIVE_DATA_CACHE_TTL` environment variable (in milliseconds). If not explicitly set, the default cache TTL is 60000 ms (1 minute).
+
 ## Environment Variable Handling
 
 owl-builder processes environment variables inline. This includes:

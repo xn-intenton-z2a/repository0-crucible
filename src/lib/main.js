@@ -38,6 +38,7 @@ import { WebSocketServer } from "ws";
  *   - New Feature: Real-Time Anomaly Detection for Live Data Integration. Live data is validated against expected schema and anomalies trigger diagnostic logging and WebSocket alerts.
  *   - New Feature: Export Aggregated Telemetry via CLI flag '--export-telemetry'. This command exports diagnostic telemetry (including NaN fallback details) to a JSON file 'telemetry.json' or CSV file 'telemetry.csv' based on specified format.
  *   - New Feature: Automated Rollback Mechanism. If a live data anomaly is detected, owl-builder attempts to restore the last known good backup from ontology-backup.json and broadcasts a WebSocket alert indicating the rollback.
+ *   - New Feature: Live Data Fetch Caching. Responses from live data fetches are now cached for a configurable duration to reduce redundant API calls and improve performance.
  *
  * Note on Environment Variable Handling:
  *   The inline function normalizeEnvValue trims the value and replaces sequences of all whitespace characters (including non-breaking spaces) with a single space, then converts to lower case.
@@ -193,6 +194,17 @@ export function detectLiveDataAnomaly(data) {
     return { error: "Expected 'entries' to be a non-empty array.", received: data.entries };
   }
   return null;
+}
+
+// Caching mechanism for live data fetches
+const liveDataCache = new Map();
+
+export function resetLiveDataCache() {
+  liveDataCache.clear();
+}
+
+export function getLiveDataCacheEntry(url) {
+  return liveDataCache.get(url);
 }
 
 // Core Ontology Functions
@@ -449,6 +461,17 @@ export function listAvailableEndpoints() {
 }
 
 export async function fetchDataWithRetry(url, retries) {
+  // Caching layer integration
+  const cacheTTL = process.env.LIVE_DATA_CACHE_TTL ? parseEnvNumber("LIVE_DATA_CACHE_TTL", 60000) : 60000; // TTL in ms
+  if (liveDataCache.has(url)) {
+    const { timestamp, data } = liveDataCache.get(url);
+    if (Date.now() - timestamp < cacheTTL) {
+      return Promise.resolve(data);
+    } else {
+      liveDataCache.delete(url);
+    }
+  }
+
   if (typeof retries === "undefined") {
     retries = parseEnvNumber("LIVEDATA_RETRY_COUNT", 3);
   }
@@ -464,7 +487,11 @@ export async function fetchDataWithRetry(url, retries) {
       const req = mod.get(url, options, (res) => {
         let data = "";
         res.on("data", (chunk) => (data += chunk));
-        res.on("end", () => resolve(data));
+        res.on("end", () => {
+          // Cache the successful response
+          liveDataCache.set(url, { timestamp: Date.now(), data });
+          resolve(data);
+        });
       });
       req.on("error", async (err) => {
         logDiagnostic(`Attempt ${attemptNumber} for ${url} failed: ${err.message}`, "warn");
