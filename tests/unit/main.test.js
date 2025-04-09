@@ -54,7 +54,8 @@ const {
   _parseEnvNumber,
   resetEnvWarningCache,
   getAggregatedNaNSummary,
-  detectLiveDataAnomaly
+  detectLiveDataAnomaly,
+  restoreLastBackup
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -100,6 +101,26 @@ describe("Anomaly Detection", () => {
     const args = ["--detect-anomaly", validJSON];
     const result = await main(args);
     expect(result).toEqual({});
+  });
+
+  // New tests for automated rollback mechanism
+  test("should rollback to last backup when anomaly detected in live data", async () => {
+    const backupOntology = { title: "Backup Ontology", concepts: ["BackupConcept1"] };
+    // Write backup file
+    await fs.promises.writeFile(backupPath, JSON.stringify(backupOntology, null, 2));
+    // Override fetchDataWithRetry to return anomalous JSON
+    fetcher.fetchDataWithRetry = async () => JSON.stringify({ entries: [] });
+    const result = await buildOntologyFromLiveData();
+    expect(result).toEqual(backupOntology);
+  });
+
+  test("should fallback to static fallback when rollback fails", async () => {
+    // Ensure backup file is removed
+    removeFileIfExists(backupPath);
+    // Override fetchDataWithRetry to return anomalous JSON
+    fetcher.fetchDataWithRetry = async () => JSON.stringify({ entries: [] });
+    const result = await buildOntologyFromLiveData();
+    expect(result).toEqual(buildOntology());
   });
 });
 
@@ -187,11 +208,10 @@ describe("WebSocket Notifications", () => {
 
   test("should receive WebSocket notification on ontology refresh", async () => {
     server = await startWebServer();
-    await new Promise(resolve => setTimeout(resolve, 50)); // wait for ws server to start
+    await new Promise(resolve => setTimeout(resolve, 50));
     await new Promise((resolve, reject) => {
       wsClient = new WebSocket(`ws://localhost:${port}`);
       wsClient.on('open', () => {
-        // Once connected, trigger ontology refresh to broadcast notification
         refreshOntology().then(() => {});
       });
       wsClient.on('message', (data) => {
