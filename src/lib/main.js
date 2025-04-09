@@ -54,8 +54,7 @@ const TELEMETRY_FLUSH_DELAY = 50;
 function normalizeEnvValue(val) {
   if (typeof val !== "string") return val;
   // Updated regex to collapse all whitespace characters including non-breaking spaces
-  return val.trim().replace(/[
-\s\u00A0]+/g, ' ').toLowerCase();
+  return val.trim().replace(/[[\s\u00A0]]+/g, ' ').toLowerCase();
 }
 
 function parseEnvNumber(varName, defaultValue, fallbackValue) {
