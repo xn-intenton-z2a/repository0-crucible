@@ -1,14 +1,31 @@
 {
-  "openIssues": 14,
-  "issuesClosedLastHour": 0,
+  "openIssues": 17,
+  "issuesClosedLastHour": 2,
   "issuesClosedLastDay": 100,
-  "openPRs": 0,
-  "prDetails": [],
-  "diffMinutes": 3,
-  "diffMinutesMain": 3,
-  "commitsLastHour": 4,
+  "openPRs": 1,
+  "prDetails": [
+    {
+      "title": "Added CSV export support to the telemetry CLI command. (fixes #1004)",
+      "ageMinutes": 4
+    }
+  ],
+  "diffMinutes": 4,
+  "diffMinutesMain": 4,
+  "commitsLastHour": 6,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
+    {
+      "time": "13:10",
+      "message": "Maintain ONTOLOGY_SERVICE"
+    },
+    {
+      "time": "13:05",
+      "message": "Updated test file to set non-numeric environment variable for TE..."
+    },
+    {
+      "time": "13:00",
+      "message": "Update ONTOLOGY_SERVICE.md"
+    },
     {
       "time": "12:55",
       "message": "Maintain ONTOLOGY_SERVICE"
@@ -16,31 +33,19 @@
     {
       "time": "12:35",
       "message": "Maintain ONTOLOGY_SERVICE"
-    },
-    {
-      "time": "12:18",
-      "message": "Maintain ONTOLOGY_SERVICE"
-    },
-    {
-      "time": "12:05",
-      "message": "Maintain ONTOLOGY_SERVICE"
-    },
-    {
-      "time": "11:55",
-      "message": "Implemented --export-telemetry CLI command to export aggregated ..."
     }
   ],
   "branches": {
     "count": 1,
     "details": [
       {
-        "branch": "agentic-lib-issue-996",
-        "minutesSinceLastCommit": 19
+        "branch": "agentic-lib-issue-1004",
+        "minutesSinceLastCommit": 5
       }
     ]
   },
-  "averagePRAge": 0,
+  "averagePRAge": 4,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-09T12:58:12.243Z"
+  "generatedAt": "2025-04-09T13:15:12.585Z"
 }
