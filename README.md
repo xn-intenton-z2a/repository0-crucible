@@ -99,7 +99,7 @@ owl-builder processes environment variables inline. This includes:
 
 4. **Strict Mode**: When strict mode is enabled (using the `--strict-env` CLI flag or setting `STRICT_ENV=true`), any non-numeric input will immediately throw an error instead of falling back.
 
-5. **Optimized Telemetry Batching**: A debounced flush mechanism ensures that rapid, successive non-numeric inputs are batched efficiently.
+5. **Optimized Telemetry Batching**: A debounced flush mechanism ensures that rapid, successive non-numeric inputs are batched efficiently. The delay for flushing telemetry logs is configurable via the `TELEMETRY_FLUSH_DELAY` environment variable (default is 50ms).
 
 ## Contributing
 
