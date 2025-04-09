@@ -3,6 +3,7 @@ import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import fs from "fs";
 import path from "path";
 import http from "http";
+import https from "https";
 import { WebSocket } from "ws";
 import * as mainModule from "../../src/lib/main.js";
 
@@ -263,16 +264,16 @@ describe("Live Data Caching", () => {
   });
 
   test("should cache response for same URL within TTL", async () => {
-    const firstCall = await fetcher.fetchDataWithRetry(testURL);
-    const secondCall = await fetcher.fetchDataWithRetry(testURL);
+    const firstCall = await fetchDataWithRetry(testURL);
+    const secondCall = await fetchDataWithRetry(testURL);
     expect(firstCall).toEqual(secondCall);
     expect(callCount).toBe(1);
   });
 
   test("should make new network call after TTL expires", async () => {
-    const firstCall = await fetcher.fetchDataWithRetry(testURL);
+    const firstCall = await fetchDataWithRetry(testURL);
     await new Promise(resolve => setTimeout(resolve, 150));
-    const secondCall = await fetcher.fetchDataWithRetry(testURL);
+    const secondCall = await fetchDataWithRetry(testURL);
     expect(firstCall).not.toEqual(secondCall);
     expect(callCount).toBe(2);
   });
@@ -280,8 +281,8 @@ describe("Live Data Caching", () => {
   test("cache keys should differentiate by URL", async () => {
     const url1 = testURL + "?q=1";
     const url2 = testURL + "?q=2";
-    const resp1 = await fetcher.fetchDataWithRetry(url1);
-    const resp2 = await fetcher.fetchDataWithRetry(url2);
+    const resp1 = await fetchDataWithRetry(url1);
+    const resp2 = await fetchDataWithRetry(url2);
     expect(resp1).not.toEqual(resp2);
     expect(callCount).toBe(2);
   });
