@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import { describe, test, expect, vi, afterEach } from "vitest";
+import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import fs from "fs";
 import path from "path";
 import http from "http";
@@ -99,6 +99,33 @@ describe("Anomaly Detection", () => {
     const args = ["--detect-anomaly", validJSON];
     const result = await main(args);
     expect(result).toEqual({});
+  });
+});
+
+// New tests for NaN Telemetry Batching
+
+describe("NaN Telemetry Batching", () => {
+  beforeEach(() => {
+    resetEnvWarningCache();
+    // Increase threshold to allow multiple warnings
+    process.env.NANFALLBACK_WARNING_THRESHOLD = "5";
+    // Set TEST_VAR to a non-numeric value to trigger fallback
+    process.env.TEST_VAR = "abc";
+  });
+  
+  afterEach(() => {
+    delete process.env.TEST_VAR;
+  });
+  
+  test("Should aggregate warnings for multiple non-numeric env inputs", async () => {
+    // Simulate rapid calls with non-numeric input
+    for (let i = 0; i < 10; i++) {
+      _parseEnvNumber("TEST_VAR", 10);
+    }
+    const summary = getAggregatedNaNSummary();
+    // There should be one key with count 10
+    expect(summary.length).toBe(1);
+    expect(summary[0].count).toBe(10);
   });
 });
 
