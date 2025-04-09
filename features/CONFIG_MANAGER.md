@@ -1,22 +1,19 @@
 # CONFIG_MANAGER
 
 ## Overview
-This feature provides a centralized module for managing environment configuration and validating runtime parameters. It standardizes how configuration values are normalized, parsed, and overridden via CLI options, while aggregating diagnostic telemetry for invalid inputs. By consolidating these capabilities into a single module, the feature improves maintainability and observability across the repository.
+This feature provides a centralized module for managing environment configuration and integrated diagnostic telemetry. It not only standardizes the parsing, normalization, and CLI override precedence for environment variables but also aggregates diagnostic data from invalid or malformed inputs. By consolidating telemetry data—previously scattered across components—into a single, cohesive module, the feature improves maintainability and observability across the repository.
 
 ## Features
-- **Centralized Parsing:** Implements robust value normalization (trimming and collapsing whitespace, including non-breaking spaces) and numeric parsing for environment variables.
-- **CLI Overrides:** Ensures CLI-provided defaults (e.g. `--livedata-retry-default`, `--livedata-delay-default`) always take precedence over environment and fallback values.
-- **Telemetry Aggregation:** Batches and aggregates warnings for non-numeric or malformed input, logging a single diagnostic event per unique invalid value even under high concurrency. This telemetry data is accessible via a dedicated CLI flag (`--diagnostic-summary-naN`).
-- **Consistency:** Provides a unified API for retrieving configuration values, reducing inconsistencies across ontology and live data operations.
-- **Error Handling:** In strict mode, immediately throws errors for invalid configuration, ensuring only valid inputs are used during runtime.
+- **Centralized Parsing & Overrides:** Implements robust normalization (trimming and collapsing of whitespace, including non-breaking spaces) and numeric parsing for environment variables. CLI-provided values always take precedence over environment and fallback values.
+- **Integrated Telemetry Aggregation:** Utilizes a promise-based batching mechanism to log a single diagnostic warning per unique invalid input. Each event includes details such as the raw input value, CLI override status, and a timestamp. The aggregated telemetry summary is accessible using the CLI flag `--diagnostic-summary-naN` and can be leveraged for further integration with external monitoring systems.
+- **Consistency and Observability:** Provides a unified API (including functions like `normalizeEnvValue`, `parseEnvNumber`, `resetEnvWarningCache`, and `getAggregatedNaNSummary`) to retrieve both configuration values and diagnostic telemetry data, thereby ensuring consistent behavior and rapid troubleshooting.
 
 ## Implementation Details
-- Developed as a self-contained module (ideally in a single source file) that can be imported and used by other components.
-- Exposes key functions such as `normalizeEnvValue`, `parseEnvNumber`, and `resetEnvWarningCache` along with telemetry retrieval.
-- Integrates promise-based batching for asynchronous logging, ensuring atomic aggregation of diagnostic events.
-- Offers utility methods that align with the repository’s current configuration logic, while enhancing error reporting and observability.
+- **Enhanced Utility Functions:** Update and integrate existing helper functions to ensure that any non-numeric or malformed input triggers a single, batched telemetry event.
+- **Asynchronous Batching:** Leverages promise-based batching for telemetry flushes under high concurrency to guarantee atomic aggregation of diagnostic warnings.
+- **Migration of Telemetry:** Diagnostic telemetry originally embedded in other features (such as the telemetry HTTP endpoint in Ontology Service) is now consolidated in CONFIG_MANAGER. This not only avoids duplication but establishes a single source of truth for configuration-related diagnostics.
 
 ## Benefits
-- **Improved Maintainability:** Consolidates diverse configuration-handling logic into one module.
-- **Enhanced Diagnostics:** Aggregated telemetry helps in quickly identifying and addressing misconfigurations.
-- **Aligned with Mission:** Ensures robust live data integration by verifying all configuration inputs, thereby supporting reliable ontology building.
+- **Improved Maintainability:** By centralizing configuration and telemetry, the codebase becomes easier to maintain and extend.
+- **Proactive Diagnostics:** Immediate access to aggregated telemetry helps in quickly identifying and resolving configuration issues.
+- **Streamlined Integration:** Other components (like Ontology Service and the Web Dashboard) can rely on a consistent and centralized telemetry API for enhanced observability.
