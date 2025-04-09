@@ -65,19 +65,35 @@ ws.on('message', (data) =&gt; {
 </code></pre>
 <p class="md-github">No additional configuration is needed; the WebSocket server starts automatically when running the CLI tool with the <code class="md-github">--serve</code> flag.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="environment-variable-handling" href="#environment-variable-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Variable Handling</h2>
-<p class="md-github">Environment variable inputs are processed via an inline utility integrated in the main source file. This inline logic provides methods for normalizing input values by trimming whitespace and collapsing multiple whitespace characters—including non-breaking spaces—with a unified regex. When a non-numeric input is encountered (for example, variations of &quot;NaN&quot; such as &quot; NaN &quot;, &quot;\tNaN&quot;, and &quot;\u00A0NaN\u00A0&quot;), a diagnostic warning is logged and the value falls back to a default (or a configurable fallback) value. The warning and its associated telemetry event are logged up to a configurable threshold defined by the environment variable <code class="md-github">NANFALLBACK_WARNING_THRESHOLD</code> (default is 1). This mechanism ensures that in high concurrency scenarios, the number of warning logs per unique invalid input can be controlled.</p>
-<p class="md-github">Additionally, when CLI override options (e.g. <code class="md-github">--livedata-retry-default</code> and <code class="md-github">--livedata-delay-default</code>) are provided, they take precedence over the corresponding environment variables and default values. Strict mode, enabled via <code class="md-github">--strict-env</code> or setting <code class="md-github">STRICT_ENV=true</code>, causes non-numeric inputs to throw errors immediately.</p>
-<p class="md-github">There is special handling for the environment variable <code class="md-github">TEST_UNIQUE</code> where different formatting (even when normalized to the same value) may trigger separate warnings, aiding granular detection during testing.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="aggregated-telemetry-summary" href="#aggregated-telemetry-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Aggregated Telemetry Summary</h2>
-<p class="md-github">In scenarios where NaN inputs occur repeatedly, an aggregated summary report is generated. This summary includes the count for each unique normalized invalid input along with its associated telemetry details. Use the <code class="md-github">--diagnostic-summary-naN</code> CLI flag to view this report.</p>
+<p class="md-github">owl-builder processes environment variables inline. This includes:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Normalization</strong>: All environment variable values are trimmed and collapsed. For example, inputs like <code class="md-github">&quot;  NaN  &quot;</code>, <code class="md-github">&quot; nAn &quot;</code>, or even with non-breaking spaces like <code class="md-github">&quot;\u00A0NaN\u00A0&quot;</code> are normalized to a consistent format.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Fallback Mechanism</strong>: If an environment variable expected to be numeric is found to be non-numeric (including the variations mentioned above), a diagnostic warning is logged and the value falls back to a default or configurable fallback value. This behavior is determined by:</p>
+<ul class="md-github">
+<li class="md-github">The default value provided to the parser.</li>
+<li class="md-github">An optional fallback value if specified.</li>
+<li class="md-github">CLI override values (e.g. <code class="md-github">--livedata-retry-default</code> and <code class="md-github">--livedata-delay-default</code>), which take precedence over environment-specified or default values.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Aggregated Telemetry</strong>: To avoid flooding logs, warnings for non-numeric inputs are aggregated per unique normalized value. The number of warnings logged is controlled by the <code class="md-github">NANFALLBACK_WARNING_THRESHOLD</code> (default is 1). You can view a summary of all such warnings using the CLI flag <code class="md-github">--diagnostic-summary-naN</code>.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Strict Mode</strong>: When strict mode is enabled (using the <code class="md-github">--strict-env</code> CLI flag or setting <code class="md-github">STRICT_ENV=true</code>), any non-numeric input will immediately throw an error instead of falling back.</p>
+</li>
+</ol>
+<p class="md-github">Proper configuration of these variables is essential for predictable ontology building and live data integration.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
-<p class="md-github">Contributions are welcome! Please review <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing logic or WebSocket notification features, please note the updated mechanisms for asynchronous telemetry logging, configurable warning thresholds, and real-time updates.</p>
+<p class="md-github">Contributions are welcome! Please review <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing or WebSocket notification features, ensure that you update both the inline documentation in the source code and this README with the details of the fallback behavior and diagnostic telemetry.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
 <p class="md-github">Released under the MIT License.</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-09T10:48:39.080Z</p>
+    <p>Generated on 2025-04-09T10:57:31.305Z</p>
   </footer>
 </body>
 </html>
