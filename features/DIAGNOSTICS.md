@@ -1,39 +1,29 @@
 # DIAGNOSTICS
 
-This feature unifies and enhances all logging, telemetry, and diagnostic operations across the tool. It consolidates legacy diagnostic logging, HTTP and CLI diagnostic filtering, and introduces robust, persistent and aggregated telemetry—including advanced handling of environment variable configurations—for live data and fallback events.
+This feature unifies logging, telemetry, and diagnostic operations across the tool while now incorporating an additional configuration audit capability. In addition to tracking real-time errors, warning, and telemetry data from live data integration and environment issues, it will now also capture the effective configuration state after normalization and CLI override resolution.
 
-## Overview
+# Overview
 
-- **Unified Logging System:** Centralizes diagnostic messages from live data integration, ontology management, CLI command operations, and environment configuration errors. All logs are timestamped and can be output to the console, a persistent file, or aggregated for on-demand reporting.
+- **Unified Logging and Telemetry:** Maintains the existing multi-channel logging for CLI, HTTP, and WebSocket operations. All diagnostic messages are timestamped and available via both console and persistent file logs.
 
-- **Aggregated Telemetry:** Implements promise-based batching to collect and report aggregated telemetry for invalid environment variable inputs (e.g. non-numeric values) and other warnings. Users can retrieve this summary using the CLI flag `--diagnostic-summary-naN`.
+- **Aggregated Telemetry:** Continues to batch and aggregate events such as invalid environment variable inputs (e.g. non-numeric values), logging each unique normalized invalid input exactly once with detailed telemetry data.
 
-- **Flexible Output Options:** Provides configurable logging levels and supports dual output (console and file) via CLI flags (e.g. `--log-to-file`) and environment variable controls.
+- **Configuration Audit Logging:** Newly added functionality. The tool will capture and log the effective configuration state as determined by environment variables and CLI overrides. This includes values for critical parameters (e.g., LIVEDATA_RETRY_COUNT, LIVEDATA_INITIAL_DELAY) after applying normalization and fallback logic. The audited configuration can be written to a persistent file (e.g. `config_audit.json`) and is accessible on-demand via a CLI flag (`--config-audit`).
 
-- **Extended Diagnostics for CLI, HTTP, and Environment Configuration:** Enhances diagnostic logging for both runtime operations and configuration management. This includes detailed tracking of environment variable normalization errors, CLI override precedence, and robust error logging with contextual telemetry (raw input, timestamp, and override flag).
+# Implementation Details
 
-## Environment Variable Configuration
+- **Extended Environment Variable Handling:** The inline environment utility functions (e.g. `normalizeEnvValue` and `parseEnvNumber`) now feed into a configuration audit module that gathers effective configuration values across the tool.
 
-- **Normalization and Parsing:** Environment variable values are trimmed, whitespace-collapsed (including non-breaking spaces), and converted to lower case to ensure consistency. Invalid (non-numeric) inputs trigger one-time diagnostic warnings and fallback to default or configurable values.
+- **Aggressive Audit Trigger:** Upon tool startup or when the CLI flag `--config-audit` is used, the system will collate normalized configuration values (including those coming from CLI overrides) and output them as both part of the standard diagnostic log and into a dedicated audit file.
 
-- **CLI Overrides and Strict Mode:** CLI provided override values take precedence over environment configurations. In strict mode (enabled via `--strict-env` or `STRICT_ENV=true`), non-numeric inputs raise errors immediately, ensuring robust configuration validation.
+- **Asynchronous and Batched Logging:** The batching architecture used for NaN fallback telemetry is extended for configuration audit events, ensuring that logging remains atomic even under high concurrency.
 
-- **Promise-Based Batching for Telemetry:** To handle high concurrency scenarios, telemetry events for configuration issues are batched asynchronously. Each unique invalid input is logged exactly once per normalized value, with detailed telemetry including the raw input, whether a CLI override was used, and the timestamp.
+- **CLI Integration:** A new CLI flag (`--config-audit`) enables users to print (or persist) the current effective configuration settings to help diagnose misconfigurations and verify that environment variables and CLI overrides are processed as intended.
 
-## Implementation Details
+# Benefits
 
-- **Multi-Channel Logging:** Implements logging to both the console and a persistent log file (e.g. `logs/diagnostic.log`) based on user configuration.
+- **Enhanced Observability:** By auditing the effective configuration state, developers and operators can quickly verify that environment variables and CLI overrides are applied correctly.
 
-- **Aggregated Telemetry Summary:** Maintains an in-memory summary of diagnostic events that can be queried on demand.
+- **Improved Troubleshooting:** Persistent configuration audit logs facilitate post-mortem analysis by providing a clear snapshot of the runtime configuration, especially in cases where misconfigurations cause unexpected behaviors.
 
-- **Integration with CLI and HTTP Endpoints:** Diagnostic events are integrated into CLI command responses and HTTP monitoring endpoints, ensuring real-time visibility into both operational and configuration issues.
-
-- **Robust Error Handling:** Uses promise-based batching to ensure that warnings for invalid environment variable values (such as variations of "NaN") are aggregated and logged consistently under high load conditions.
-
-## Benefits
-
-- **Improved Observability:** Developers and users gain a unified and detailed view of system events, errors, and configuration issues through comprehensive diagnostic logging.
-
-- **Persistent Troubleshooting Data:** Aggregated reports and persistent logs provide a robust audit trail for both live system monitoring and offline analysis.
-
-- **Enhanced Configuration Robustness:** Advanced environment variable management ensures that non-standard inputs are handled gracefully, with detailed telemetry available for troubleshooting.
+- **Consistent Diagnostics:** Integration of configuration audit within the existing diagnostics framework allows all telemetry data to be viewed centrally, enhancing overall observability.
