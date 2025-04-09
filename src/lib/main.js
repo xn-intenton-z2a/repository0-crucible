@@ -36,6 +36,8 @@
  *   Invalid inputs trigger a diagnostic warning and fallback to default values (or configurable fallback values) with aggregated telemetry details.
  *   In strict mode, non-numeric inputs immediately throw an error.
  *
+ *   UPDATE: When environment variables intended to be numeric (even if provided as 'NaN', ' nAn ', '\u00A0NaN\u00A0', etc.) are encountered, the input is normalized and detected as non-numeric. A warning is logged with telemetry (subject to the NANFALLBACK_WARNING_THRESHOLD setting) and the value falls back to a default or specified fallback value. CLI override options (such as --livedata-retry-default and --livedata-delay-default) take precedence. Use the '--diagnostic-summary-naN' flag to aggregate and view these warnings.
+ *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
  */
@@ -63,6 +65,18 @@ function normalizeEnvValue(val) {
   return val.trim().replace(/^[\s\u00A0]+|[\s\u00A0]+$/g, '').replace(/[\s\u00A0]+/g, ' ').toLowerCase();
 }
 
+/**
+ * Parses environment variable as a number with fallback.
+ * The function also detects various malformed inputs (e.g. 'NaN', ' nAn ', '\u00A0NaN\u00A0', etc.)
+ * and logs a diagnostic warning with aggregated telemetry details (subject to NANFALLBACK_WARNING_THRESHOLD).
+ * In strict mode (when process.env.STRICT_ENV is 'true'), non-numeric inputs cause an exception.
+ * CLI override values (--livedata-retry-default, --livedata-delay-default) take precedence.
+ *
+ * @param {string} varName - The name of the environment variable
+ * @param {number} defaultValue - The default value to use if the env variable is not numeric
+ * @param {number} [fallbackValue] - Optional fallback value if non-numeric input is detected
+ * @returns {number}
+ */
 function parseEnvNumber(varName, defaultValue, fallbackValue) {
   // Check for CLI override values
   let cliOverride = '';
@@ -120,11 +134,9 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
       }
       if (process.env.NODE_ENV === "test") {
         // In test environment, flush warnings synchronously
-        // (Already logged above according to threshold)
       } else if (!telemetryFlushPromise) {
         telemetryFlushPromise = new Promise((resolve) => {
           setTimeout(() => {
-            // Batching delay complete - no additional action needed
             telemetryFlushPromise = null;
             resolve();
           }, TELEMETRY_FLUSH_DELAY);

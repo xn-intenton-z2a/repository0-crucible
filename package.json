@@ -1,7 +1,7 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
   "version": "0.1.1-1",
-  "description": "CLI tool refocused on building OWL ontologies from live, verified public data sources with enhanced diagnostics, persistence, extended ontology model wrappers, and configurable diagnostic logging via DIAGNOSTIC_LOG_LEVEL. Improved error messages and documentation for invalid non-numeric environment variable handling.",
+  "description": "CLI tool for building OWL ontologies from live, verified public data sources with enhanced diagnostics, persistence, extended ontology model wrappers, and detailed environment variable NaN fallback handling.",
   "type": "module",
   "main": "src/lib/main.js",
   "scripts": {

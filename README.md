@@ -50,19 +50,24 @@ No additional configuration is needed; the WebSocket server starts automatically
 
 ## Environment Variable Handling
 
-Environment variable inputs are processed via an inline utility integrated in the main source file. This inline logic provides methods for normalizing input values by trimming whitespace and collapsing multiple whitespace characters—including non-breaking spaces—with a unified regex. When a non-numeric input is encountered (for example, variations of "NaN" such as " NaN ", "\tNaN", and "\u00A0NaN\u00A0"), a diagnostic warning is logged and the value falls back to a default (or a configurable fallback) value. The warning and its associated telemetry event are logged up to a configurable threshold defined by the environment variable `NANFALLBACK_WARNING_THRESHOLD` (default is 1). This mechanism ensures that in high concurrency scenarios, the number of warning logs per unique invalid input can be controlled.
+owl-builder processes environment variables inline. This includes:
 
-Additionally, when CLI override options (e.g. `--livedata-retry-default` and `--livedata-delay-default`) are provided, they take precedence over the corresponding environment variables and default values. Strict mode, enabled via `--strict-env` or setting `STRICT_ENV=true`, causes non-numeric inputs to throw errors immediately.
+1. **Normalization**: All environment variable values are trimmed and collapsed. For example, inputs like `"  NaN  "`, `" nAn "`, or even with non-breaking spaces like `"\u00A0NaN\u00A0"` are normalized to a consistent format.
 
-There is special handling for the environment variable `TEST_UNIQUE` where different formatting (even when normalized to the same value) may trigger separate warnings, aiding granular detection during testing.
+2. **Fallback Mechanism**: If an environment variable expected to be numeric is found to be non-numeric (including the variations mentioned above), a diagnostic warning is logged and the value falls back to a default or configurable fallback value. This behavior is determined by:
+   - The default value provided to the parser.
+   - An optional fallback value if specified.
+   - CLI override values (e.g. `--livedata-retry-default` and `--livedata-delay-default`), which take precedence over environment-specified or default values.
 
-## Aggregated Telemetry Summary
+3. **Aggregated Telemetry**: To avoid flooding logs, warnings for non-numeric inputs are aggregated per unique normalized value. The number of warnings logged is controlled by the `NANFALLBACK_WARNING_THRESHOLD` (default is 1). You can view a summary of all such warnings using the CLI flag `--diagnostic-summary-naN`.
 
-In scenarios where NaN inputs occur repeatedly, an aggregated summary report is generated. This summary includes the count for each unique normalized invalid input along with its associated telemetry details. Use the `--diagnostic-summary-naN` CLI flag to view this report.
+4. **Strict Mode**: When strict mode is enabled (using the `--strict-env` CLI flag or setting `STRICT_ENV=true`), any non-numeric input will immediately throw an error instead of falling back.
+
+Proper configuration of these variables is essential for predictable ontology building and live data integration.
 
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing logic or WebSocket notification features, please note the updated mechanisms for asynchronous telemetry logging, configurable warning thresholds, and real-time updates.
+Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing or WebSocket notification features, ensure that you update both the inline documentation in the source code and this README with the details of the fallback behavior and diagnostic telemetry.
 
 ## License
 
