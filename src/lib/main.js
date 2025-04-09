@@ -27,7 +27,7 @@
  *   - Updated CLI override precedence in environment variable parsing: CLI override values are now strictly prioritized over configurable fallback values and defaults.
  *   - Enhanced NaN fallback telemetry by including additional context: timestamp, raw input value, and indicator if CLI override was used.
  *   - Introduced aggregated telemetry summary for NaN fallback events, accessible via CLI flag '--diagnostic-summary-naN'.
- *   - Implemented asynchronous batching for NaN fallback telemetry logs to reduce logging overhead in high concurrency scenarios.
+ *   - Implemented promise-based batching for NaN fallback telemetry logs to ensure atomicity under high concurrency.
  *
  * Note on Environment Variable Handling:
  *   The inline function normalizeEnvValue trims the value and replaces sequences of all whitespace characters (including non-breaking spaces) with a single space, then converts to lower case.
@@ -47,14 +47,15 @@ import http from "http";
 // Changed warningCache to a Map to aggregate multiple occurrences of invalid inputs
 const warningCache = new Map();
 
-// New variables for asynchronous batching of NaN fallback telemetry logs
-let telemetryFlushScheduled = false;
+// New variable for promise-based asynchronous batching of NaN fallback telemetry logs
 const TELEMETRY_FLUSH_DELAY = 50;
+let telemetryFlushPromise = null;
 
 function normalizeEnvValue(val) {
   if (typeof val !== "string") return val;
   // Fixed regex to collapse all whitespace characters including non-breaking spaces
-  return val.trim().replace(/[\s\u00A0]+/g, ' ').toLowerCase();
+  return val.trim().replace(/[
+\s\u00A0]+/g, ' ').toLowerCase();
 }
 
 function parseEnvNumber(varName, defaultValue, fallbackValue) {
@@ -106,18 +107,20 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
             info.logged = true;
           }
         }
-      } else if (!telemetryFlushScheduled) {
-        telemetryFlushScheduled = true;
-        setTimeout(() => {
-          for (const [k, info] of warningCache.entries()) {
-            if (!info.logged) {
-              console.log(`Warning: Environment variable '${info.telemetry.envVar}' received non-numeric input ('${info.telemetry.rawValue}'). Falling back to default. Occurred ${info.count} time(s). TELEMETRY: ${JSON.stringify(info.telemetry)}`);
-              info.logged = true;
-              warningCache.set(k, info);
+      } else if (!telemetryFlushPromise) {
+        telemetryFlushPromise = new Promise((resolve) => {
+          setTimeout(() => {
+            for (const [k, info] of warningCache.entries()) {
+              if (!info.logged) {
+                console.log(`Warning: Environment variable '${info.telemetry.envVar}' received non-numeric input ('${info.telemetry.rawValue}'). Falling back to default. Occurred ${info.count} time(s). TELEMETRY: ${JSON.stringify(info.telemetry)}`);
+                info.logged = true;
+                warningCache.set(k, info);
+              }
             }
-          }
-          telemetryFlushScheduled = false;
-        }, TELEMETRY_FLUSH_DELAY);
+            telemetryFlushPromise = null;
+            resolve();
+          }, TELEMETRY_FLUSH_DELAY);
+        });
       }
     }
     return defaultValue;
