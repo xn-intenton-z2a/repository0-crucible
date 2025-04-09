@@ -109,6 +109,12 @@ describe("NaN Telemetry Batching", () => {
     resetEnvWarningCache();
     // Increase threshold to allow multiple warnings
     process.env.NANFALLBACK_WARNING_THRESHOLD = "5";
+    // Set TEST_VAR to a non-numeric value to trigger fallback
+    process.env.TEST_VAR = "abc";
+  });
+  
+  afterEach(() => {
+    delete process.env.TEST_VAR;
   });
   
   test("Should aggregate warnings for multiple non-numeric env inputs", async () => {

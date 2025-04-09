@@ -137,7 +137,6 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
       if (process.env.NODE_ENV === "test") {
         // In test environment, flush warnings synchronously
       } else {
-        // Optimized batching using a debounced flush timer
         if (flushTimer) {
           clearTimeout(flushTimer);
         }
