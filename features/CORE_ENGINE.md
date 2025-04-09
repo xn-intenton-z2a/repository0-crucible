@@ -1,39 +1,35 @@
-# CORE_ENGINE: Unified Live Data, Diagnostics, Service, and Recovery Engine
+# CORE_ENGINE: Unified Live Data, Diagnostics, Query & Recovery Engine
 
 ## Overview
-This feature integrates live data ingestion, anomaly detection, comprehensive diagnostics, telemetry aggregation, scheduling, RDF export, in-memory caching, and automated backup and rollback into a single robust engine. In this update, we enhance the rollback mechanism with custom backup scheduling and detailed real-time notifications to alert users of both successful and failed recovery attempts. 
+This feature integrates live data ingestion, anomaly detection, comprehensive diagnostics, telemetry aggregation, scheduling, RDF export, in-memory caching, backup/rollback, and now enhanced ontology query and validation. It provides a unified system that ensures data integrity and offers robust mechanisms for live data integration with advanced query capabilities and structural validation of ontologies.
 
 ## Live Data Integration & Anomaly Detection
-- **Live Data Ingestion:** Continuously fetches live data from verified public endpoints and validates it against expected schemas.
-- **Anomaly Detection:** Monitors the live data for inconsistencies (e.g., missing or empty data arrays) and triggers detailed diagnostic logging alongside real-time WebSocket alerts.
+- **Live Data Ingestion:** Continuously fetches live data from verified public endpoints with automated retries and exponential backoff.
+- **Anomaly Detection:** Monitors live data for schema inconsistencies, missing data, or empty arrays. Anomalies trigger diagnostic logging and real-time WebSocket alerts.
 
-## Unified Diagnostics & Telemetry
-- **Centralized Logging:** Combines legacy inline logging and advanced diagnostic telemetry for a comprehensive view of system operations.
-- **Telemetry Aggregation:** Collects and exports diagnostic logs and telemetry data in formats such as JSON or CSV via CLI commands.
-- **Diagnostic Feedback:** Provides immediate, timestamped logs during data ingestion, backup, and rollback operations.
+## Unified Diagnostics, Telemetry & Notifications
+- **Centralized Logging:** Consolidates advanced diagnostic messages, including timestamps and log levels. Integrates detailed telemetry export (JSON/CSV) for events like NaN fallback occurrences.
+- **Real-Time Notifications:** Broadcasting of ontology update events (refresh, merge, rollback) via WebSocket including version, timestamp, and status messages.
 
 ## Scheduling, RDF Export & Live Data Caching
-- **Scheduled Maintenance:** Manages routine tasks such as ontology refreshes, backups, and merges. Backup intervals can now be configured by the user.
-- **RDF Export:** Converts ontologies into standardized RDF formats (Turtle or RDF/XML) for external integrations.
-- **In-Memory Caching:** Implements a caching layer with a configurable Time-To-Live (TTL) to optimize live data fetching performance.
+- **Scheduled Maintenance:** Manages routine tasks such as backups, refreshes, and merges with user-configurable intervals.
+- **RDF Export:** Converts ontologies into standardized RDF formats for external integrations.
+- **Caching Mechanism:** Implements in-memory caching with configurable Time-To-Live (TTL) to optimize live data fetching performance.
 
-## Backup, Automated Rollback & Enhanced Notifications
-- **Backup Mechanism:** Regularly saves the current state of the ontology as a backup file (e.g., `ontology-backup.json`) for rapid recovery during anomalies.
-- **Automated Rollback:** In the event of data anomalies, the system automatically attempts to restore the last known good backup.
-- **Enhanced Rollback Notifications:** Provides detailed real-time notifications (via WebSocket and CLI logs) on the outcome of rollback attempts, including explicit indications for both success and failure.
-- **Custom Backup Scheduling:** Offers user-configurable backup intervals to better align with different operational needs and data update frequencies.
+## Backup, Automated Rollback & Recovery
+- **Backup Mechanism:** Regularly saves the current state of the ontology to a backup file.
+- **Automated Rollback:** On detecting data anomalies, initiates an automatic rollback to the last known good backup, supported by detailed diagnostic logs and WebSocket alerts.
 
-## CLI & Web Interface Integration
-- **Unified Server Instance:** Both CLI commands and HTTP endpoints for status, telemetry, and GraphQL queries operate on a single server instance.
-- **Real-Time Notifications:** Key ontology operations (refresh, merge, rollback, update) trigger WebSocket notifications that include the updated ontology title, version, timestamp, and a descriptive status message.
-- **Interactive Diagnostics Viewer:** An integrated CLI viewer displays aggregated logs in real-time, aiding quick troubleshooting and system monitoring.
+## Query & Validation
+- **Ontology Query:** Provides a function to search ontology concepts based on user-provided search terms, ensuring rapid retrieval of relevant data.
+- **Data Validation:** Implements strict validation checks to ensure that ontologies are structurally correct and contain essential attributes (e.g., non-empty title, valid entries).
+- **CLI Integration:** Query and validation functionalities are accessible through both CLI commands and the unified HTTP/GraphQL interface, ensuring seamless user interaction.
 
 ## Migration and Backwards Compatibility
-- **Seamless Upgrade:** All legacy CLI commands and functionalities remain supported, ensuring a smooth transition to the enhanced engine.
-- **Updated Documentation:** README and CONTRIBUTING guides have been revised to incorporate the new backup scheduling and enhanced rollback notification details.
+- All legacy functions remain supported ensuring a smooth transition for existing users.
+- Updated documentation (README and CONTRIBUTING) includes usage examples for query and validation commands.
 
 ## Benefits
-- **Increased System Robustness:** User-configurable backup scheduling and detailed rollback notifications reduce downtime and improve recovery reliability.
-- **Centralized Management:** A single engine now efficiently manages live data integration, diagnostics, caching, and recovery, minimizing complexity.
-- **Improved Visibility:** Detailed, real-time feedback through logs and notifications provides immediate clarity on system health and operational outcomes.
-- **Enhanced User Experience:** Integrated CLI and web interfaces streamline operational workflows, offering swift insights into system status and recovery actions.
+- **Robust Data Management:** Enhances system reliability with comprehensive diagnostics, automated recovery, and improved query accuracy.
+- **Centralized Engine:** Simplifies operational workflows by consolidating live data integration, query operations, and recovery into a single engine.
+- **Improved User Experience:** Provides immediate, contextual feedback on system health and facilitates efficient troubleshooting through detailed logs and interactive help.
