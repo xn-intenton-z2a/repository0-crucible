@@ -1,23 +1,33 @@
 # DIAGNOSTICS_MANAGER
 
-This feature consolidates the diagnostic and telemetry functionalities from the existing Issue Generator and ENV_MONITOR modules into a unified diagnostics manager. It provides both enriched, context-aware issue generation and a real-time telemetry dashboard, streamlining how developers monitor and act on diagnostic data.
-
 ## Overview
 
-- **Centralized Diagnostics:** Combine aggregated diagnostic logs, telemetry data (including NaN fallback warnings and environmental misconfiguration alerts), and enhanced error context from live data integration into a single diagnostics module.
-- **Issue Generation Integration:** Enrich issue generation workflows by incorporating detailed telemetry snapshots (error counts, warning frequencies, timestamps, and CLI override contexts) to facilitate targeted resolutions.
-- **Real-Time Telemetry Dashboard:** Expose an HTTP endpoint (e.g., `/diag/summary`) that displays a user-friendly dashboard summarizing diagnostic events, aggregated warnings, and environmental validations for remote monitoring.
-- **Configurable CLI Options:** Provide CLI flags such as `--diagnostic-summary` and `--diagnostic-summary-naN` to allow users to trigger diagnostics summaries and view aggregated telemetry data directly from the CLI.
+This feature consolidates diagnostic logging, telemetry aggregation, and issue generation into a single diagnostics manager. In addition to its current responsibilities (centralized diagnostics, enriched issue context, and a lightweight HTTP telemetry dashboard), this update introduces an interactive CLI dashboard that allows users to view and filter aggregated telemetry data including NaN fallback warnings, error counts, and diagnostic messages. This CLI dashboard is accessible via a dedicated flag (e.g. `--diagnostic-dashboard`) and presents real-time insights directly in the terminal.
 
 ## Implementation Details
 
-- **Telemetry Aggregation:** Merge the logic from the existing ENV_MONITOR and ISSUE_GENERATOR features to collect and de-duplicate diagnostic messages, ensuring that duplicate normalized invalid inputs (like non-numeric environment variables) are logged only once, even under high concurrency.
-- **Context-Aware Issue Generation:** Update the issue generation process to automatically include the aggregated telemetry data along with recent diagnostic logs, commit summaries, and function documentation, providing a richer context to support troubleshooting.
-- **Web Dashboard Endpoint:** Implement a lightweight HTTP server route that renders diagnostic metrics including environment variable validation errors, aggregated warning counts, and other key telemetry data. The endpoint will be documented for quick status checks.
-- **Documentation & Testing:** Update the README and CONTRIBUTING documentation to reflect the consolidated diagnostic functionalities. Expand unit and integration tests to cover the new merged behaviors and ensure backward compatibility with legacy CLI commands.
+- **Centralized Logging and Telemetry Aggregation:** Continue merging diagnostic logs from environment variable parsing, HTTP retries, and live data integration in a unified diagnostics module. Maintain the promise-based batching of telemetry events to ensure atomic logging under high concurrency.
+
+- **HTTP Diagnostics Dashboard:** Retain the HTTP endpoint (e.g. `/diag/summary`) to display real-time diagnostic metrics in a simple web interface.
+
+- **CLI Dashboard Integration:**
+  - Introduce a new CLI flag (`--diagnostic-dashboard`) that, when invoked, presents users with a terminal-based dashboard.
+  - The dashboard will display aggregated telemetry data including unique invalid environment variable inputs, counts of NaN fallback events, and recent diagnostic log entries.
+  - Provide filtering options (e.g., by log level or specific environment variable identifiers) to help users quickly identify issues.
+  - Ensure that this CLI dashboard leverages the existing aggregated telemetry data available via the diagnostics module (i.e. the data accessible with `getAggregatedNaNSummary` and other logging functions).
+
+- **Issue Generation and Enrichment:** Continue to automatically enrich generated GitHub issues with contextual diagnostic information including timestamps, error descriptions, and the relevant telemetry payloads.
+
+- **Documentation and Testing:**
+  - Update the README and CONTRIBUTING documents to include examples of using the CLI dashboard as well as the HTTP diagnostics endpoint.
+  - Enhance unit and integration tests to cover the new CLI dashboard functionality, ensuring that aggregated telemetry is correctly displayed and filtered.
 
 ## Benefits
 
-- **Improved Maintenance:** By merging related diagnostics features, the repository reduces code duplication, increases maintainability, and provides a single source of truth for telemetry and diagnostic information.
-- **Enhanced Issue Context:** Automated enrichment of generated issues with diagnostic telemetry supports faster, more accurate troubleshooting and resolution of problems.
-- **Streamlined Monitoring:** A unified diagnostics dashboard offers a real-time view of system health, making it easier for maintainers to monitor and respond to operational anomalies.
+- **Unified Diagnostics and Monitoring:** Provides a single source of truth for all diagnostic data, reducing code duplication and simplifying maintenance.
+
+- **Interactive User Experience:** The new CLI dashboard offers an easy-to-use, real-time interface for monitoring system health and telemetry data directly from the terminal, complementing the HTTP-based dashboard.
+
+- **Enhanced Issue Context:** Automatically enriched diagnostic data aids faster troubleshooting and more precise issue resolution.
+
+- **Consistent Integration:** Maintains compatibility with the repository’s live data integration and overall mission of building dynamic OWL ontologies while improving user transparency and control over diagnostics.
