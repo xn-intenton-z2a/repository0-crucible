@@ -1,37 +1,32 @@
 # SCHEMA_DIFF Feature Enhancement
 
 ## Overview
-This feature enhances the core JSON schema diff functionality by providing an interactive mode along with extended diagnostic capabilities. It not only supports standard diff operations between JSON schemas, but now also includes additional diagnostic output and a refresh mechanism to ensure that users can quickly identify environmental issues and reset states as needed.
+This feature unifies the core JSON schema diff capabilities with comprehensive Markdown reporting. It enhances the existing diff functionality by integrating interactive modes, detailed diagnostics, and a robust report generation mechanism, all accessible via CLI and an optional HTTP endpoint.
 
 ## Functionality
 - **Core Diff Operations**:
-  - Continue to utilize the existing comparison engine for batch and interactive diffs.
-  - Retain support for human‑readable and machine‑parsable JSON outputs.
+  - Utilize the established comparison engine to perform batch and interactive diffs between JSON schemas.
+  - Support both human‑readable outputs and machine‑parsable JSON data.
 
-- **Interactive Mode**:
-  - Support an `--interactive` flag to start a guided, step‑by‑step examination of differences.
-  - Allow filtering differences by categories (e.g., types, properties, structures) during the interactive session.
-  
-- **HTTP Endpoint**:
-  - Provide an optional lightweight HTTP API endpoint for remote comparison requests.
-  
-- **Diagnostic Enhancements**:
-  - Introduce a `--diagnostics` flag which, when invoked, outputs detailed system and runtime information. This includes environment details, Node version checks, file accessibility status, and configuration diagnostics.
-  - Add a `--refresh` flag to clear caches and refresh all internal state, ensuring that the diff engine works with the most recent file changes.
-  - Ensure enhanced error logging and robust validations when diagnostic information is provided. 
+- **Interactive Mode & Diagnostics**:
+  - Support an `--interactive` flag to guide users through a step‑by‑step analysis of schema differences.
+  - Include diagnostic flags (`--diagnostics` and `--refresh`) to output system runtime and environment details and to refresh internal states.
 
-## Implementation Details
+- **Markdown Report Generation**:
+  - Introduce a `--report` flag that converts the raw diff output into a well-structured Markdown document.
+  - Format changes into categorized sections such as Additions, Removals, and Modifications, making the report executive-ready.
+  - Optionally, integrate with a lightweight HTTP endpoint to serve reports remotely when required.
+
+## Implementation
+- **Module Updates**:
+  - Enhance `src/lib/schemaDiff.js` to include logic for both interactive diff and Markdown report generation.
+  - Integrate report generation seamlessly with the existing diff engine to avoid duplication of comparison logic.
 - **CLI Integration**:
-  - Update the main command parser (in `src/lib/main.js`) to recognize the new `--diagnostics` and `--refresh` flags and route them appropriately.
-  - Integrate these flags with the interactive diff logic to provide pre‑execution diagnostics and a post‑diagnostic refresh of system state.
-
-- **Comparison Module Updates**:
-  - Modify `src/lib/schemaDiff.js` to incorporate diagnostic logging and state refresh behavior within the diff processing functions.
-
-- **Testing & Documentation**:
-  - Add unit tests (e.g., in `tests/unit/schemaDiff.test.js`) to validate diagnostic outputs and the refresh functionality under various scenarios.
-  - Update README.md and CONTRIBUTING.md with detailed usage examples of the new flags (e.g., `node src/lib/main.js --interactive --diagnostics`).
-  - Provide inline code documentation detailing the enhancements and integration points.
+  - Update the main command parser (`src/lib/main.js` and `src/lib/cliParser.js`) to support the additional reporting flag and diagnostics commands.
+- **Testing & Validation**:
+  - Add comprehensive unit tests (e.g., in `tests/unit/schemaDiff.test.js`) to cover interactive scenarios, diagnostic outputs, and report formatting.
+- **Documentation**:
+  - Revise README.md and CONTRIBUTING.md to include new usage examples for flags like `--interactive`, `--diagnostics`, `--refresh`, and `--report`.
 
 ## Value Proposition
-By merging interactive diff capabilities with enhanced diagnostics and refresh operations, this feature not only facilitates easier schema comparisons but also empowers developers to troubleshoot issues quickly. These improvements align with the mission of simplifying API evolution and fostering better collaboration among development teams.
+By consolidating diff operations and report generation into a single robust feature, this update simplifies API change tracking and enhances team collaboration. It leverages existing components to provide versatile outputs—whether through the terminal or over HTTP—aligning with the mission to simplify API evolution and facilitate smoother development workflows.
