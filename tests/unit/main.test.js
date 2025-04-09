@@ -5,9 +5,10 @@ import path from "path";
 import http from "http";
 import { WebSocket } from "ws";
 import * as mainModule from "../../src/lib/main.js";
+// Import the new CLI handler
+import { runCLI } from "../../src/cli/index.js";
 
 const {
-  main,
   buildOntology,
   buildOntologyFromLiveData,
   persistOntology,
@@ -22,9 +23,7 @@ const {
   listAvailableEndpoints,
   fetchDataWithRetry,
   crawlOntologies,
-  displayHelp,
   getVersion,
-  listCommands,
   buildBasicOWLModel,
   buildAdvancedOWLModel,
   wrapOntologyModel,
@@ -49,13 +48,11 @@ const {
   enhancedDiagnosticSummary,
   customMergeWithTimestamp,
   backupAndRefreshOntology,
-  fetcher,
-  startWebServer,
-  _parseEnvNumber,
   resetEnvWarningCache,
   getAggregatedNaNSummary,
   detectLiveDataAnomaly,
-  restoreLastBackup
+  restoreLastBackup,
+  fetcher
 } = mainModule;
 
 const ontologyPath = path.resolve(process.cwd(), "ontology.json");
@@ -69,7 +66,7 @@ function removeFileIfExists(filePath) {
   }
 }
 
-// New tests for anomaly detection
+// Tests for Anomaly Detection and Automated Rollback
 
 describe("Anomaly Detection", () => {
   test("detectLiveDataAnomaly returns null for valid data", () => {
@@ -92,46 +89,39 @@ describe("Anomaly Detection", () => {
   test("CLI command --detect-anomaly detects anomaly with provided anomalous JSON", async () => {
     const anomalousJSON = JSON.stringify({ entries: [] });
     const args = ["--detect-anomaly", anomalousJSON];
-    const result = await main(args);
+    const result = await runCLI(args);
     expect(result).toHaveProperty('error', "Expected 'entries' to be a non-empty array.");
   });
 
   test("CLI command --detect-anomaly reports no anomaly for valid JSON", async () => {
     const validJSON = JSON.stringify({ entries: [{ API: "ValidAPI", Description: "A valid description" }] });
     const args = ["--detect-anomaly", validJSON];
-    const result = await main(args);
+    const result = await runCLI(args);
     expect(result).toEqual({});
   });
 
-  // New tests for automated rollback mechanism
   test("should rollback to last backup when anomaly detected in live data", async () => {
     const backupOntology = { title: "Backup Ontology", concepts: ["BackupConcept1"] };
-    // Write backup file
     await fs.promises.writeFile(backupPath, JSON.stringify(backupOntology, null, 2));
-    // Override fetchDataWithRetry to return anomalous JSON via fetcher
     fetcher.fetchDataWithRetry = async () => JSON.stringify({ entries: [] });
     const result = await buildOntologyFromLiveData();
     expect(result).toEqual(backupOntology);
   });
 
   test("should fallback to static fallback when rollback fails", async () => {
-    // Ensure backup file is removed
     removeFileIfExists(backupPath);
-    // Override fetchDataWithRetry to return anomalous JSON via fetcher
     fetcher.fetchDataWithRetry = async () => JSON.stringify({ entries: [] });
     const result = await buildOntologyFromLiveData();
     expect(result).toEqual(buildOntology());
   });
 });
 
-// New tests for NaN Telemetry Batching
+// Tests for NaN Telemetry Batching
 
 describe("NaN Telemetry Batching", () => {
   beforeEach(() => {
     resetEnvWarningCache();
-    // Increase threshold to allow multiple warnings
     process.env.NANFALLBACK_WARNING_THRESHOLD = "5";
-    // Set TEST_VAR to a non-numeric value to trigger fallback
     process.env.TEST_VAR = "abc";
   });
   
@@ -140,18 +130,16 @@ describe("NaN Telemetry Batching", () => {
   });
   
   test("Should aggregate warnings for multiple non-numeric env inputs", async () => {
-    // Simulate rapid calls with non-numeric input
     for (let i = 0; i < 10; i++) {
-      _parseEnvNumber("TEST_VAR", 10);
+      parseEnvNumber("TEST_VAR", 10);
     }
     const summary = getAggregatedNaNSummary();
-    // There should be one key with count 10
     expect(summary.length).toBe(1);
     expect(summary[0].count).toBe(10);
   });
 });
 
-// Existing tests...
+// Tests for Robust HTTP Endpoint Testing for the Integrated Web Server
 
 describe("Robust HTTP Endpoint Testing for the Integrated Web Server", () => {
   let server;
@@ -165,7 +153,7 @@ describe("Robust HTTP Endpoint Testing for the Integrated Web Server", () => {
   });
 
   test("should respond with 200 and correct body", async () => {
-    server = await startWebServer();
+    server = await mainModule.startWebServer();
     const options = {
       hostname: "localhost",
       port: port,
@@ -188,7 +176,7 @@ describe("Robust HTTP Endpoint Testing for the Integrated Web Server", () => {
   });
 });
 
-// New tests for WebSocket Notifications
+// Tests for WebSocket Notifications
 
 describe("WebSocket Notifications", () => {
   let server;
@@ -207,9 +195,8 @@ describe("WebSocket Notifications", () => {
   });
 
   test("should receive WebSocket notification on ontology refresh", async () => {
-    // Override fetcher.fetchDataWithRetry to simulate valid live data
     fetcher.fetchDataWithRetry = async () => JSON.stringify({ entries: [{ API: "LiveAPI", Description: "Some description" }] });
-    server = await startWebServer();
+    server = await mainModule.startWebServer();
     await new Promise(resolve => setTimeout(resolve, 50));
     await new Promise((resolve, reject) => {
       wsClient = new WebSocket(`ws://localhost:${port}`);
@@ -233,7 +220,7 @@ describe("WebSocket Notifications", () => {
   });
 });
 
-// New tests for Export Telemetry CLI Command
+// Tests for Export Telemetry CLI Command
 
 describe("Export Telemetry", () => {
   afterEach(() => {
@@ -244,10 +231,9 @@ describe("Export Telemetry", () => {
   test("CLI command --export-telemetry exports telemetry data to JSON file by default", async () => {
     removeFileIfExists(telemetryPathJson);
     const args = ["--export-telemetry"];
-    const result = await main(args);
+    const result = await runCLI(args);
     expect(result).toHaveProperty('nanSummary');
     expect(result).toHaveProperty('diagnosticSummary');
-    // Check file exists
     expect(fs.existsSync(telemetryPathJson)).toBe(true);
     const fileContent = fs.readFileSync(telemetryPathJson, 'utf-8');
     const parsedContent = JSON.parse(fileContent);
@@ -258,13 +244,11 @@ describe("Export Telemetry", () => {
   test("CLI command --export-telemetry with csv format exports telemetry data to CSV file", async () => {
     removeFileIfExists(telemetryPathCsv);
     const args = ["--export-telemetry", "--format", "csv"];
-    const result = await main(args);
+    const result = await runCLI(args);
     expect(result).toHaveProperty('nanSummary');
     expect(result).toHaveProperty('diagnosticSummary');
-    // Check CSV file exists
     expect(fs.existsSync(telemetryPathCsv)).toBe(true);
     const fileContent = fs.readFileSync(telemetryPathCsv, 'utf-8');
-    // Check for CSV headers
     expect(fileContent).toContain("NaN Fallback Telemetry");
     expect(fileContent).toContain("Diagnostic Summary");
   });

@@ -1,6 +1,10 @@
 #!/usr/bin/env node
 
-/* eslint-disable sonarjs/no-nested-functions */
+import fs, { promises as fsp } from "fs";
+import path from "path";
+import https from "https";
+import http from "http";
+import { WebSocketServer } from "ws";
 
 /*
  * owl-builder CLI Tool
@@ -45,43 +49,18 @@
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
  */
 
-import fs, { promises as fsp } from "fs";
-import path from "path";
-import https from "https";
-import http from "http";
-import { WebSocketServer } from "ws";  // Added WebSocket support
-
-// Inline environment variable utilities (replacing external file ./utils/envUtils.js)
+// Core Environment Variable Utilities
 // Changed warningCache to a Map to aggregate multiple occurrences of invalid inputs
 const warningCache = new Map();
-
-// New variable for debounced asynchronous batching of NaN fallback telemetry logs
 const TELEMETRY_FLUSH_DELAY = 50;
-let flushTimer = null; // Replaces telemetryFlushPromise for improved batching under high concurrency
-
-// Global WebSocket server variable
-let wsServer = null;
+let flushTimer = null;
 
 function normalizeEnvValue(val) {
   if (typeof val !== "string") return val;
-  // Fixed regex to collapse all whitespace characters including non-breaking spaces
   return val.trim().replace(/^[\s\u00A0]+|[\s\u00A0]+$/g, '').replace(/[\s\u00A0]+/g, ' ').toLowerCase();
 }
 
-/**
- * Parses environment variable as a number with fallback.
- * The function also detects various malformed inputs (e.g. 'NaN', ' nAn ', '\u00A0NaN\u00A0', etc.)
- * and logs a diagnostic warning with aggregated telemetry details (subject to NANFALLBACK_WARNING_THRESHOLD).
- * In strict mode (when process.env.STRICT_ENV is 'true'), non-numeric inputs cause an exception.
- * CLI override values (--livedata-retry-default, --livedata-delay-default) take precedence.
- *
- * @param {string} varName - The name of the environment variable
- * @param {number} defaultValue - The default value to use if the env variable is not numeric
- * @param {number} [fallbackValue] - Optional fallback value if non-numeric input is detected
- * @returns {number}
- */
 function parseEnvNumber(varName, defaultValue, fallbackValue) {
-  // Check for CLI override values
   let cliOverride = '';
   if (varName === "LIVEDATA_RETRY_COUNT" && process.env.LIVEDATA_RETRY_DEFAULT) {
     cliOverride = process.env.LIVEDATA_RETRY_DEFAULT;
@@ -99,15 +78,8 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
     if (fallbackValue !== undefined) {
       return fallbackValue;
     }
-    let key;
-    if (varName === "TEST_UNIQUE") {
-      // Use the raw, unnormalized value for TEST_UNIQUE
-      key = varName + ":" + rawOriginal;
-    } else {
-      key = varName + ":" + raw;
-    }
+    let key = varName + ":" + raw;
     if (!process.env.DISABLE_ENV_WARNINGS) {
-      // Get configurable threshold, default is 1
       let threshold = 1;
       if (process.env.NANFALLBACK_WARNING_THRESHOLD) {
         const t = Number(normalizeEnvValue(process.env.NANFALLBACK_WARNING_THRESHOLD));
@@ -136,13 +108,12 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
         }
       }
       if (process.env.NODE_ENV === "test") {
-        // In test environment, flush warnings synchronously
       } else {
         if (flushTimer) {
           clearTimeout(flushTimer);
         }
         flushTimer = setTimeout(() => {
-          flushTimer = null; // Flush complete; additional actions can be added here if needed
+          flushTimer = null;
         }, TELEMETRY_FLUSH_DELAY);
       }
     }
@@ -155,11 +126,8 @@ function resetEnvWarningCache() {
   warningCache.clear();
 }
 
-// Export inline env utils for testing
 export { normalizeEnvValue, parseEnvNumber, resetEnvWarningCache };
-export const _parseEnvNumber = parseEnvNumber;
 
-// New function to get aggregated NaN fallback telemetry summary
 export function getAggregatedNaNSummary() {
   const summary = [];
   for (const [key, info] of warningCache.entries()) {
@@ -168,26 +136,20 @@ export function getAggregatedNaNSummary() {
   return summary;
 }
 
-// New function for real-time anomaly detection in live data integration
 export function detectLiveDataAnomaly(data) {
   if (!data || typeof data !== 'object') {
     return { error: "Data is not a valid object." };
   }
-  // Updated: Check for the presence of 'entries' property
   if (!('entries' in data)) {
     return { error: "Expected 'entries' property in the data." };
   }
   if (!Array.isArray(data.entries) || data.entries.length === 0) {
     return { error: "Expected 'entries' to be a non-empty array.", received: data.entries };
   }
-  // Additional schema checks can be added here for other endpoints if needed
   return null;
 }
 
-// Define and export fetcher object for use in buildEnhancedOntology and for test spying
-const fetcher = {};
-export { fetcher };
-
+// Core Ontology Functions
 const ontologyFilePath = path.resolve(process.cwd(), "ontology.json");
 const backupFilePath = path.resolve(process.cwd(), "ontology-backup.json");
 
@@ -206,35 +168,17 @@ export function buildOntology() {
   };
 }
 
-/**
- * Helper function to get CLI override value for specific environment variables.
- * @param {string} varName
- * @returns {string} The CLI override value if exists, otherwise an empty string.
- */
-function getCLIOverrideValue(varName) {
-  if (varName === "LIVEDATA_RETRY_COUNT" && process.env.LIVEDATA_RETRY_DEFAULT) {
-    return process.env.LIVEDATA_RETRY_DEFAULT;
-  } else if (varName === "LIVEDATA_INITIAL_DELAY" && process.env.LIVEDATA_DELAY_DEFAULT) {
-    return process.env.LIVEDATA_DELAY_DEFAULT;
-  }
-  return "";
-}
-
-// Builds an ontology using live data from a public API endpoint
 export async function buildOntologyFromLiveData() {
   if (process.env.DISABLE_LIVE_DATA && process.env.DISABLE_LIVE_DATA !== "0") {
     logDiagnostic("Live data integration disabled by configuration. Using static fallback.", "info");
     return buildOntology();
   }
-  
   try {
-    // Use fetcher.fetchDataWithRetry to allow test overrides
     const dataStr = await fetcher.fetchDataWithRetry("https://api.publicapis.org/entries");
     const parsed = JSON.parse(dataStr);
     const anomaly = detectLiveDataAnomaly(parsed);
     if (anomaly) {
       logDiagnostic("Anomaly detected in live data: " + JSON.stringify(anomaly), "warn");
-      // Attempt automated rollback
       const rollbackResult = await restoreLastBackup();
       if (rollbackResult.success) {
         logDiagnostic("Rollback executed successfully, restored last backup ontology", "info");
@@ -247,16 +191,10 @@ export async function buildOntologyFromLiveData() {
       }
     }
     const title = parsed && parsed.entries && parsed.entries.length > 0 ? parsed.entries[0].API : "Live Data Ontology";
-    const concepts =
-      parsed && parsed.entries
-        ? parsed.entries.slice(0, 3).map((entry) => entry.Description)
-        : ["Concept1", "Concept2", "Concept3"];
+    const concepts = parsed && parsed.entries ? parsed.entries.slice(0, 3).map((entry) => entry.Description) : ["Concept1", "Concept2", "Concept3"];
     return { title, concepts };
   } catch (error) {
-    logDiagnostic(
-      `buildOntologyFromLiveData encountered error fetching live data from https://api.publicapis.org/entries: ${error.message}. Falling back to static ontology.`,
-      "error"
-    );
+    logDiagnostic(`buildOntologyFromLiveData encountered error fetching live data from https://api.publicapis.org/entries: ${error.message}. Falling back to static ontology.`, "error");
     return buildOntology();
   }
 }
@@ -398,7 +336,6 @@ export async function backupOntology() {
 export async function updateOntology(newTitle) {
   const ontology = await buildOntologyFromLiveData();
   ontology.title = newTitle;
-  // Broadcast updated ontology
   broadcastOntologyUpdate(ontology, "Ontology updated");
   return ontology;
 }
@@ -456,7 +393,7 @@ export function listAvailableEndpoints() {
       if (trimmed.startsWith("http://") || trimmed.startsWith("https://")) {
         validCustomEndpoints.push(trimmed);
       } else {
-        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with "http://" or "https://"`, "warn");
+        logDiagnostic(`Invalid custom endpoint '${trimmed}' ignored. It must start with \"http://\" or \"https://\"`, "warn");
       }
     });
     return Array.from(new Set([...defaultEndpoints, ...validCustomEndpoints]));
@@ -501,10 +438,9 @@ export async function fetchDataWithRetry(url, retries) {
   });
 }
 
-// Assign fetchDataWithRetry to fetcher for external spying and exports
+export const fetcher = {};
 fetcher.fetchDataWithRetry = fetchDataWithRetry;
 
-// Broadcast function for WebSocket notifications on ontology updates
 function broadcastOntologyUpdate(ontology, updateType) {
   if (!wsServer) return;
   const message = {
@@ -581,26 +517,6 @@ export function extendOntologyConcepts(ontology, additionalConcepts = []) {
   if (!ontology.concepts) ontology.concepts = [];
   ontology.concepts = ontology.concepts.concat(additionalConcepts);
   return ontology;
-}
-
-// Modified startWebServer to also start a WebSocket server for real-time notifications
-export function startWebServer() {
-  const port = process.env.PORT || 3000;
-  const server = http.createServer((req, res) => {
-    res.writeHead(200, { "Content-Type": "text/plain" });
-    res.end("owl-builder Web Server Running\n");
-  });
-  // Initialize WebSocket server on the same HTTP server
-  wsServer = new WebSocketServer({ server });
-  wsServer.on('connection', (socket) => {
-    console.log(`[${getCurrentTimestamp()}] WebSocket client connected`);
-  });
-  return new Promise((resolve, reject) => {
-    server.listen(port, () => {
-      console.log(`Web server started at http://localhost:${port}`);
-      resolve(server);
-    });
-  });
 }
 
 export function buildIntermediateOWLModel() {
@@ -731,7 +647,6 @@ export async function refreshOntology() {
     const liveOntology = await buildOntologyFromLiveData();
     const persistResult = await persistOntology(liveOntology);
     logDiagnostic("Ontology refreshed and persisted.", "info");
-    // Broadcast update notification
     broadcastOntologyUpdate(liveOntology, "Ontology refreshed");
     return { liveOntology, persistResult };
   } catch (err) {
@@ -747,7 +662,6 @@ export async function mergeAndPersistOntology() {
     const merged = mergeOntologies(staticOntology, liveOntology);
     const persistRes = await persistOntology(merged);
     logDiagnostic("Merged ontology persisted.", "info");
-    // Broadcast merged ontology update
     broadcastOntologyUpdate(merged, "Ontologies merged and persisted");
     return { merged, persistRes };
   } catch (err) {
@@ -788,486 +702,6 @@ export async function backupAndRefreshOntology() {
   };
 }
 
-// New CLI command to force anomaly detection for live data
-export async function detectAnomalyCLI(args) {
-  let sampleData;
-  if (args.length > 1) {
-    try {
-      sampleData = JSON.parse(args[1]);
-    } catch(e) {
-      console.log("Invalid JSON provided for anomaly detection. Using live data instead.");
-    }
-  }
-  if (!sampleData) {
-    const dataStr = await fetcher.fetchDataWithRetry("https://api.publicapis.org/entries");
-    sampleData = JSON.parse(dataStr);
-  }
-  const anomaly = detectLiveDataAnomaly(sampleData);
-  if (anomaly) {
-    logDiagnostic("Anomaly detected via CLI: " + JSON.stringify(anomaly), "warn");
-    broadcastOntologyUpdate({ title: "Anomaly Detected", concepts: [] }, "Anomaly detected in live data via CLI");
-    console.log("Anomaly detected:", anomaly);
-    return anomaly;
-  } else {
-    console.log("No anomaly detected in live data.");
-    return {};
-  }
-}
-
-// New CLI command to export aggregated telemetry to file with support for CSV format
-export async function exportTelemetryCLI(args = []) {
-  const aggregatedTelemetry = {
-    nanSummary: getAggregatedNaNSummary(),
-    diagnosticSummary: enhancedDiagnosticSummary()
-  };
-  let format = 'json';
-  const idx = args.indexOf('--format');
-  if (idx !== -1 && args.length > idx + 1) {
-    format = args[idx + 1].toLowerCase();
-  }
-  try {
-    if (format === 'csv') {
-      // Prepare CSV contents
-      let csvLines = [];
-      csvLines.push("NaN Fallback Telemetry");
-      csvLines.push("key,count,envVar,rawValue,cliOverride,timestamp");
-      aggregatedTelemetry.nanSummary.forEach(item => {
-        const { key, count, telemetry } = item;
-        csvLines.push(`${key},${count},${telemetry.envVar},${telemetry.rawValue},${telemetry.cliOverride},${telemetry.timestamp}`);
-      });
-      csvLines.push("");
-      csvLines.push("Diagnostic Summary");
-      csvLines.push("timestamp,message,version");
-      const diag = aggregatedTelemetry.diagnosticSummary;
-      csvLines.push(`${diag.timestamp},${diag.message},${diag.version}`);
-      const csvContent = csvLines.join("\n");
-      const filePath = path.resolve(process.cwd(), 'telemetry.csv');
-      await fsp.writeFile(filePath, csvContent);
-      console.log(`Telemetry exported successfully to ${filePath} (CSV format)`);
-    } else {
-      const filePath = path.resolve(process.cwd(), 'telemetry.json');
-      await fsp.writeFile(filePath, JSON.stringify(aggregatedTelemetry, null, 2));
-      console.log(`Telemetry exported successfully to ${filePath} (JSON format)`);
-    }
-    return aggregatedTelemetry;
-  } catch (e) {
-    console.error("Failed to export telemetry", e);
-    return { error: e.message };
-  }
-}
-
-const commandActions = {
-  "--help": async (_args) => {
-    displayHelp();
-  },
-  "--version": async (_args) => {
-    console.log("Tool version:", getVersion());
-    return getVersion();
-  },
-  "--list": async (_args) => {
-    const commands = listCommands();
-    console.log("Supported commands:", commands);
-    return commands;
-  },
-  "--build": async (args) => {
-    if (args.includes("--allow-deprecated")) {
-      const ontology = buildOntology();
-      console.warn("Warning: --build using --allow-deprecated flag invoked deprecated static fallback.");
-      console.log("Ontology built:", ontology);
-      return ontology;
-    } else {
-      console.warn(
-        "Error: --build command requires --allow-deprecated flag to use static fallback. Use --build-live for live data integration."
-      );
-      return;
-    }
-  },
-  "--persist": async (_args) => {
-    const ontology = buildOntology();
-    console.log("Ontology built:", ontology);
-    const saved = await persistOntology(ontology);
-    console.log("Ontology persisted:", saved);
-    return saved;
-  },
-  "--load": async (_args) => {
-    const loaded = await loadOntology();
-    console.log("Ontology loaded:", loaded);
-    return loaded;
-  },
-  "--query": async (args) => {
-    const searchTerm = args[1] || "Concept1";
-    const results = await queryOntology(searchTerm);
-    console.log("Ontology query results:", results);
-    return results;
-  },
-  "--validate": async (_args) => {
-    const ontology = buildOntology();
-    const isValid = validateOntology(ontology);
-    console.log("Ontology validation result:", isValid);
-    return isValid;
-  },
-  "--export": async (_args) => {
-    const ontology = buildOntology();
-    const xml = exportOntologyToXML(ontology);
-    console.log("Ontology exported to XML:", xml);
-    return xml;
-  },
-  "--import": async (_args) => {
-    const sampleXML = `<ontology><title>Imported Ontology</title><concepts><concept>ConceptA</concept></concepts></ontology>`;
-    const imported = importOntologyFromXML(sampleXML);
-    console.log("Ontology imported from XML:", imported);
-    return imported;
-  },
-  "--backup": async (_args) => {
-    const ontology = buildOntology();
-    await persistOntology(ontology);
-    const backupResult = await backupOntology();
-    console.log("Ontology backup created:", backupResult);
-    return backupResult;
-  },
-  "--update": async (args) => {
-    const idx = args.indexOf("--update");
-    const newTitle = idx !== -1 && args.length > idx + 1 ? args[idx + 1] : "Updated Ontology";
-    const updated = await updateOntology(newTitle);
-    console.log("Ontology updated:", updated);
-    return updated;
-  },
-  "--clear": async (_args) => {
-    const result = await clearOntology();
-    if (result.success) {
-      console.log("Ontology cleared, file removed.", result);
-    } else {
-      console.log("Ontology clear failed:", result);
-    }
-    return result;
-  },
-  "--crawl": async (_args) => {
-    const crawlResults = await crawlOntologies();
-    console.log("Crawled ontology data:", crawlResults);
-    return crawlResults;
-  },
-  "--fetch-retry": async (_args) => {
-    try {
-      const result = await fetchDataWithRetry("https://api.publicapis.org/entries");
-      console.log("Fetched data with retry:", result);
-      return result;
-    } catch (err) {
-      console.log("Fetch with retry failed:", err.message);
-      return err.message;
-    }
-  },
-  "--build-basic": async (_args) => {
-    const model = buildBasicOWLModel();
-    console.log("Basic OWL Model:", model);
-    return model;
-  },
-  "--build-advanced": async (_args) => {
-    const model = buildAdvancedOWLModel();
-    console.log("Advanced OWL Model:", model);
-    return model;
-  },
-  "--wrap-model": async (args) => {
-    let model;
-    try {
-      model = args[1] ? JSON.parse(args[1]) : buildBasicOWLModel();
-    } catch (_error) {
-      model = buildBasicOWLModel();
-    }
-    const wrapped = wrapOntologyModel(model);
-    console.log("Wrapped Model:", wrapped);
-    return wrapped;
-  },
-  "--build-custom": async (args) => {
-    let custom = {};
-    try {
-      custom = args[1] ? JSON.parse(args[1]) : {};
-    } catch (_error) {
-      console.log("Invalid JSON input for custom ontology, using default");
-    }
-    const customOntology = buildCustomOntology(custom);
-    console.log("Custom Ontology:", customOntology);
-    return customOntology;
-  },
-  "--extend-concepts": async (args) => {
-    const additional = args[1] ? args[1].split(",") : ["ExtraConcept"];
-    let ontology = await loadOntology();
-    if (ontology.success === false) {
-      ontology = buildOntology();
-    }
-    const extended = extendOntologyConcepts(ontology, additional);
-    console.log("Extended Ontology:", extended);
-    return extended;
-  },
-  "--diagnostics": async (_args) => {
-    try {
-      const crawlResults = await crawlOntologies();
-      console.log("Diagnostic crawl results:", JSON.stringify(crawlResults, null, 2));
-      return crawlResults;
-    } catch (err) {
-      console.error("Error during diagnostics:", err);
-      return { error: err.message };
-    }
-  },
-  "--serve": async (_args) => {
-    const msg = await startWebServer();
-    return "Web server started";
-  },
-  "--build-intermediate": async (_args) => {
-    const model = buildIntermediateOWLModel();
-    console.log("Intermediate OWL Model:", model);
-    return model;
-  },
-  "--build-enhanced": async (_args) => {
-    const model = await buildEnhancedOntology();
-    console.log("Enhanced Ontology:", model);
-    return model;
-  },
-  "--build-live": async (_args) => {
-    const model = await buildOntologyFromLiveData();
-    logDiagnostic("Live data ontology built successfully", "info");
-    console.log("Live Data Ontology:", model);
-    return model;
-  },
-  "--build-custom-data": async (args) => {
-    let data = {};
-    try {
-      data = args[1] ? JSON.parse(args[1]) : {};
-    } catch (_error) {
-      console.log("Invalid JSON input for custom data, using default");
-    }
-    const customOntology = buildOntologyFromCustomData(data);
-    logDiagnostic("Built custom data ontology", "info");
-    console.log("Custom Data Ontology:", customOntology);
-    return customOntology;
-  },
-  "--merge-ontologies": async (_args) => {
-    const ont1 = buildOntology();
-    const ont2 = await buildOntologyFromLiveData();
-    const merged = mergeOntologies(ont1, ont2);
-    logDiagnostic("Merged ontologies from static and live data", "info");
-    console.log("Merged Ontology:", merged);
-    return merged;
-  },
-  "--build-live-log": async (_args) => {
-    const ont = await buildOntologyFromLiveDataWithLog();
-    console.log("Live Data Ontology with Log:", ont);
-    return ont;
-  },
-  "--build-minimal": async (_args) => {
-    const model = buildMinimalOWLModel();
-    console.log("Minimal OWL Model:", model);
-    return model;
-  },
-  "--build-complex": async (_args) => {
-    const model = buildComplexOntologyModel();
-    console.log("Complex OWL Model:", model);
-    return model;
-  },
-  "--build-scientific": async (_args) => {
-    const model = buildScientificOntologyModel();
-    console.log("Scientific OWL Model:", model);
-    return model;
-  },
-  "--build-educational": async (_args) => {
-    const model = buildEducationalOntologyModel();
-    console.log("Educational OWL Model:", model);
-    return model;
-  },
-  "--build-philosophical": async (_args) => {
-    const model = buildPhilosophicalOntologyModel();
-    console.log("Philosophical OWL Model:", model);
-    return model;
-  },
-  "--build-economic": async (_args) => {
-    const model = buildEconomicOntologyModel();
-    console.log("Economic OWL Model:", model);
-    return model;
-  },
-  "--refresh": async (_args) => {
-    const result = await refreshOntology();
-    console.log("Ontology refreshed:", result);
-    return result;
-  },
-  "--merge-persist": async (_args) => {
-    const result = await mergeAndPersistOntology();
-    console.log("Merged ontology persisted:", result);
-    return result;
-  },
-  "--disable-live": async (args) => {
-    process.env.DISABLE_LIVE_DATA = "1";
-    logDiagnostic("Live data integration has been disabled via CLI flag.", "info");
-    console.log("Live data integration disabled.");
-    return "Live data integration disabled";
-  },
-  "--build-hybrid": async (args) => {
-    let custom = {};
-    try {
-      custom = args[1] ? JSON.parse(args[1]) : {};
-    } catch (_error) {
-      console.log("Invalid JSON input for hybrid ontology, using default");
-    }
-    const model = await buildOntologyHybrid(custom);
-    console.log("Hybrid Ontology:", model);
-    return model;
-  },
-  "--diagnostic-summary": async (_args) => {
-    const summary = enhancedDiagnosticSummary();
-    console.log("Diagnostic Summary:", summary);
-    return summary;
-  },
-  "--custom-merge": async (args) => {
-    let ontologies = [];
-    try {
-      ontologies = args.slice(1).map((data) => JSON.parse(data));
-    } catch (_error) {
-      console.log("Invalid JSON input for custom merge, using defaults");
-      ontologies = [buildOntology(), buildOntologyFromCustomData()];
-    }
-    const merged = customMergeWithTimestamp(...ontologies);
-    console.log("Custom Merged Ontology with Timestamp:", merged);
-    return merged;
-  },
-  "--backup-refresh": async (_args) => {
-    const result = await backupAndRefreshOntology();
-    console.log("Backup and Refreshed Ontology:", result);
-    return result;
-  },
-  "--strict-env": async (_args) => {
-    console.log("Strict environment variable parsing enabled.");
-    return "Strict mode enabled";
-  },
-  "--diagnostic-summary-naN": async (_args) => {
-    const summary = getAggregatedNaNSummary();
-    console.log("Aggregated NaN Fallback Telemetry Summary:", JSON.stringify(summary, null, 2));
-    return summary;
-  },
-  "--detect-anomaly": async (args) => {
-    return await detectAnomalyCLI(args);
-  },
-  "--export-telemetry": async (args) => {
-    return await exportTelemetryCLI(args);
-  }
-};
-
-export async function main(args = process.argv.slice(2)) {
-  processCLIFallbackOptions(args);
-  if (args.includes("--strict-env")) {
-    process.env.STRICT_ENV = "true";
-  }
-  if (args.length === 0) {
-    await demo();
-    return;
-  }
-  for (const arg of args) {
-    if (commandActions[arg]) {
-      const result = await commandActions[arg](args);
-      return result;
-    }
-  }
-  console.log(`Run with: ${JSON.stringify(args)}`);
-}
-
-async function demo() {
-  logDiagnostic("Demo started", "info");
-  console.log("Running demo of ontology functions:");
-  const ontology = await buildOntologyFromLiveData();
-  console.log("Demo - built ontology:", ontology);
-  const persistResult = await persistOntology(ontology);
-  console.log("Demo - persisted ontology:", persistResult);
-  const loadedOntology = await loadOntology();
-  console.log("Demo - loaded ontology:", loadedOntology);
-  const queryResult = await queryOntology("Concept");
-  console.log("Demo - query result:", queryResult);
-  const isValid = validateOntology(ontology);
-  console.log("Demo - ontology valid:", isValid);
-  const xml = exportOntologyToXML(ontology);
-  console.log("Demo - exported XML:", xml);
-  const importedOntology = importOntologyFromXML(xml);
-  console.log("Demo - imported ontology:", importedOntology);
-  const backupResult = await backupOntology();
-  console.log("Demo - backup result:", backupResult);
-  const updatedOntology = await updateOntology("Demo Updated Ontology");
-  console.log("Demo - updated ontology:", updatedOntology);
-  const endpoints = listAvailableEndpoints();
-  console.log("Demo - available endpoints:", endpoints);
-  try {
-    const fetchData = await fetcher.fetchDataWithRetry(endpoints[0], 1);
-    console.log(`Demo - fetched data from ${endpoints[0]}:`, fetchData.substring(0, 100));
-  } catch (err) {
-    console.log(`Demo - error fetching ${endpoints[0]}:`, err.message);
-  }
-  if (process.env.NODE_ENV !== "test") {
-    const crawlResults = await crawlOntologies();
-    console.log("Demo - crawl results:", crawlResults);
-  } else {
-    console.log("Demo - skipping crawl in test mode");
-  }
-  const basicModel = buildBasicOWLModel();
-  console.log("Demo - basic OWL model:", basicModel);
-  const advancedModel = buildAdvancedOWLModel();
-  console.log("Demo - advanced OWL model:", advancedModel);
-  const wrappedModel = wrapOntologyModel({ title: "Demo Model" });
-  console.log("Demo - wrapped model:", wrappedModel);
-  const customOntology = buildCustomOntology({ concepts: ["CustomConcept"] });
-  console.log("Demo - custom ontology:", customOntology);
-  const extendedOntology = extendOntologyConcepts(ontology, ["ExtraConcept"]);
-  console.log("Demo - extended ontology:", extendedOntology);
-  const intermediateModel = buildIntermediateOWLModel();
-  console.log("Demo - intermediate OWL model:", intermediateModel);
-  const enhancedModel = await buildEnhancedOntology();
-  console.log("Demo - enhanced ontology:", enhancedModel);
-  const liveModel = await buildOntologyFromLiveData();
-  console.log("Demo - live data ontology:", liveModel);
-  const customDataOntology = buildOntologyFromCustomData({ concepts: ["CustomDataConcept"] });
-  console.log("Demo - custom data ontology:", customDataOntology);
-  const mergedOntology = mergeOntologies(ontology, liveModel);
-  console.log("Demo - merged ontology:", mergedOntology);
-  const liveLogOntology = await buildOntologyFromLiveDataWithLog();
-  console.log("Demo - live data ontology with log:", liveLogOntology);
-  const minimalModel = buildMinimalOWLModel();
-  console.log("Demo - minimal OWL model:", minimalModel);
-  const complexModel = buildComplexOntologyModel();
-  console.log("Demo - complex OWL model:", complexModel);
-  const scientificModel = buildScientificOntologyModel();
-  console.log("Demo - scientific OWL model:", scientificModel);
-  const educationalModel = buildEducationalOntologyModel();
-  console.log("Demo - educational OWL model:", educationalModel);
-  const philosophicalModel = buildPhilosophicalOntologyModel();
-  console.log("Demo - philosophical OWL model:", philosophicalModel);
-  const economicModel = buildEconomicOntologyModel();
-  console.log("Demo - economic OWL model:", economicModel);
-  logDiagnostic("Demo completed successfully", "info");
-}
-
-export function displayHelp() {
-  console.log(
-    `Usage: node src/lib/main.js [options]\nOptions: --help, --version, --list, --build [--allow-deprecated], --persist, --load, --query, --validate, --export, --import, --backup, --update, --clear, --crawl, --fetch-retry, --build-basic, --build-advanced, --wrap-model, --build-custom, --extend-concepts, --diagnostics, --serve, --build-intermediate, --build-enhanced, --build-live, --build-custom-data, --merge-ontologies, --build-live-log, --build-minimal, --build-complex, --build-scientific, --build-educational, --build-philosophical, --build-economic, --refresh, --merge-persist, --disable-live, --build-hybrid, --diagnostic-summary, --diagnostic-summary-naN, --custom-merge, --backup-refresh, --strict-env, --livedata-retry-default <number>, --livedata-delay-default <number>, --detect-anomaly, --export-telemetry [--format <json|csv>]`
-  );
-}
-
-export function getVersion() {
-  return "0.0.39";
-}
-
-export function listCommands() {
-  return Object.keys(commandActions);
-}
-
-console.log("owl-builder CLI loaded");
-
-function processCLIFallbackOptions(args) {
-  for (let i = 0; i < args.length; i++) {
-    if (args[i] === "--livedata-retry-default" && args[i + 1]) {
-      process.env.LIVEDATA_RETRY_DEFAULT = args[i + 1];
-      i++;
-    } else if (args[i] === "--livedata-delay-default" && args[i + 1]) {
-      process.env.LIVEDATA_DELAY_DEFAULT = args[i + 1];
-      i++;
-    }
-  }
-}
-
-// New function: restoreLastBackup
 export async function restoreLastBackup() {
   try {
     const backupContent = await fsp.readFile(backupFilePath, "utf-8");
@@ -1277,3 +711,21 @@ export async function restoreLastBackup() {
     return { success: false, error: e.message };
   }
 }
+
+// Import CLI handler from modularized CLI modules
+import { runCLI, getVersion, displayHelp, listCommands } from "../cli/index.js";
+
+// If executed directly, run the CLI
+if (process.argv && process.argv.length > 1 && process.argv[1].includes("main.js")) {
+  runCLI(process.argv.slice(2));
+}
+
+// Re-export core functions for backward compatibility and testing
+export {
+  getVersion,
+  displayHelp,
+  listCommands
+};
+
+// Log that owl-builder CLI has been loaded
+console.log("owl-builder CLI loaded");

@@ -2,6 +2,47 @@
 
 owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontologies from live, verified public data sources. In this release, live data integration is the default for building, updating, querying, and persisting ontologies, while the legacy static fallback remains for emergency use only.
 
+## CLI Modular Architecture
+
+The CLI command handling has been refactored for better modularity and extensibility. The commands are now defined in separate modules under the `src/cli/` directory:
+
+- **src/cli/commands.js**: Contains individual, self-contained functions for each CLI command.
+- **src/cli/index.js**: Acts as the centralized CLI handler. It imports the command modules, maps CLI flags to their corresponding functions, and invokes them based on user input.
+
+This new structure makes it easier to add, modify, or remove CLI commands without cluttering the main source file.
+
+### Adding a New CLI Command
+
+1. Create a new function in `src/cli/commands.js` for your command.
+2. Add an entry to the `commandActions` object mapping the CLI flag to your function.
+3. The new command will automatically be available through the CLI handler in `src/cli/index.js`.
+
+### Usage Examples
+
+#### Running the CLI
+
+```bash
+node src/lib/main.js --detect-anomaly '{"entries": []}'
+```
+
+This command simulates an anomaly scenario with an empty `entries` array, triggering the automated rollback mechanism if a valid backup exists.
+
+#### Exporting Telemetry Data
+
+To export telemetry data in JSON format (default):
+
+```bash
+node src/lib/main.js --export-telemetry
+```
+
+To export telemetry data in CSV format:
+
+```bash
+node src/lib/main.js --export-telemetry --format csv
+```
+
+After running the command, check the respective file (`telemetry.json` or `telemetry.csv`) in your working directory for the exported telemetry data.
+
 ## Endpoints and Testing
 
 owl-builder uses a broad list of public endpoints to build ontologies, such as:
@@ -52,18 +93,6 @@ If an anomaly is detected (e.g., missing or empty `entries`), owl-builder logs d
 
 _Note:_ In previous versions, when running in a test environment, live data integration returned hardcoded test data. This version removes that early return to ensure that anomaly detection and rollback are fully exercised even during testing.
 
-### CLI Usage
-
-To force anomaly detection and test the feature, use the `--detect-anomaly` flag. You may optionally provide a JSON string representing sample data for testing. If not provided, live data will be used.
-
-Example:
-
-```bash
-node src/lib/main.js --detect-anomaly '{"entries": []}'
-```
-
-This command will simulate an anomaly scenario by providing an empty `entries` array, triggering the automated rollback mechanism if a valid backup exists.
-
 ## Exporting Telemetry Data
 
 A new CLI command `--export-telemetry` has been added. When invoked without additional parameters, it gathers the aggregated diagnostic telemetry (including NaN fallback warnings) and exports the summary as a JSON file named `telemetry.json` in the current working directory. Additionally, by specifying the `--format csv` flag, the telemetry data can be exported in CSV format to a file named `telemetry.csv`.
@@ -109,11 +138,9 @@ owl-builder processes environment variables inline. This includes:
 
 5. **Optimized Telemetry Batching**: A debounced flush mechanism now ensures that rapid, successive non-numeric inputs are batched efficiently, improving accuracy and performance under high concurrency.
 
-Proper configuration of these variables is essential for predictable ontology building and live data integration.
-
 ## Contributing
 
-Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the environment variable parsing, WebSocket notification features, the new anomaly detection mechanism, the automated rollback mechanism, or the new telemetry export command, ensure that you update both the inline documentation in the source code and this README with the details of the changes.
+Contributions are welcome! Please review [CONTRIBUTING.md](CONTRIBUTING.md) for coding standards, testing requirements, and workflow guidelines. When contributing changes to the CLI command handling system, ensure that you update both the inline documentation in the source code and this README with the details of the new modular structure.
 
 ## License
 
