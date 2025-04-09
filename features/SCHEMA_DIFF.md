@@ -1,50 +1,37 @@
 # SCHEMA_DIFF Feature Enhancement
 
 ## Overview
-This update enhances the existing SCHEMA_DIFF feature by adding an Interactive Mode. In addition to the CLI and optional HTTP API functionalities, the tool now allows users to engage in an interactive session to explore and filter differences between JSON Schema files. This interactive mode brings a user-friendly approach to schema comparison and debugging, aligning with the mission of simplifying API evolution and collaboration.
+This feature enhances the core JSON schema diff functionality by providing an interactive mode along with extended diagnostic capabilities. It not only supports standard diff operations between JSON schemas, but now also includes additional diagnostic output and a refresh mechanism to ensure that users can quickly identify environmental issues and reset states as needed.
 
 ## Functionality
-- **Command Line Interface (CLI) Enhancements**: 
-  - Support for an `--interactive` flag that launches an interactive prompt session.
-  - Retains existing diff commands (`diff`, `--diff`) and optional `--http` flag.
+- **Core Diff Operations**:
+  - Continue to utilize the existing comparison engine for batch and interactive diffs.
+  - Retain support for human‑readable and machine‑parsable JSON outputs.
 
 - **Interactive Mode**:
-  - Utilizes Node.js’s readline module to interactively display differences.
-  - Allows users to filter discrepancies by categories (e.g., types, properties, structures).
-  - Provides step-by-step review of each difference, with options to show more detail or skip certain parts.
+  - Support an `--interactive` flag to start a guided, step‑by‑step examination of differences.
+  - Allow filtering differences by categories (e.g., types, properties, structures) during the interactive session.
   
-- **HTTP API Endpoint**: 
-  - Continues to expose an HTTP endpoint for remote diff computation with color-coded and verbose logging options.
+- **HTTP Endpoint**:
+  - Provide an optional lightweight HTTP API endpoint for remote comparison requests.
   
-- **Comparison Engine**:
-  - Extends the current comparison logic to support both batch and interactive diff output.
-  - Maintains support for both human-readable and machine-parsable JSON formats.
+- **Diagnostic Enhancements**:
+  - Introduce a `--diagnostics` flag which, when invoked, outputs detailed system and runtime information. This includes environment details, Node version checks, file accessibility status, and configuration diagnostics.
+  - Add a `--refresh` flag to clear caches and refresh all internal state, ensuring that the diff engine works with the most recent file changes.
+  - Ensure enhanced error logging and robust validations when diagnostic information is provided. 
 
-- **Error Handling and Logging**:
-  - Robust input validation with clear error messages for both CLI and interactive modes.
-  - Interactive prompts include fallback options in case of unexpected inputs.
+## Implementation Details
+- **CLI Integration**:
+  - Update the main command parser (in `src/lib/main.js`) to recognize the new `--diagnostics` and `--refresh` flags and route them appropriately.
+  - Integrate these flags with the interactive diff logic to provide pre‑execution diagnostics and a post‑diagnostic refresh of system state.
 
-## Implementation
-- **CLI Integration**: Update `src/lib/main.js` to parse the `--interactive` flag and launch an interactive session.
+- **Comparison Module Updates**:
+  - Modify `src/lib/schemaDiff.js` to incorporate diagnostic logging and state refresh behavior within the diff processing functions.
 
-- **Comparison Module**: Enhance `src/lib/schemaDiff.js` to include functions that support the step-by-step interactive review of schema differences.
-
-- **Interactive Session Module**: (Optional) Create a lightweight module within the repository that wraps Node.js’s built-in `readline` to manage the interactive prompts.
-
-- **HTTP Server and API**: Ensure the HTTP endpoint remains fully operational and document its usage, without interfering with the new interactive mode.
-
-- **Testing**: 
-  - Add unit tests in `tests/unit/schemaDiff.test.js` to cover interactive mode scenarios along with existing diff operations.
-  - Perform manual tests to ensure that both CLI and HTTP functionalities handle edge cases gracefully.
-
-- **Documentation**: 
-  - Update README.md and CONTRIBUTING.md to include instructions and usage examples for the interactive mode.
-  - Provide inline code documentation and usage examples in the source code.
-
-## Integration & Testing
-- Ensure compatibility with Node 20 and ECMAScript Module (ESM) standards.
-- Follow coding and testing guidelines as per CONTRIBUTING.md.
-- Use both automated tests (vitest) and manual testing to validate interactive and non-interactive modes.
+- **Testing & Documentation**:
+  - Add unit tests (e.g., in `tests/unit/schemaDiff.test.js`) to validate diagnostic outputs and the refresh functionality under various scenarios.
+  - Update README.md and CONTRIBUTING.md with detailed usage examples of the new flags (e.g., `node src/lib/main.js --interactive --diagnostics`).
+  - Provide inline code documentation detailing the enhancements and integration points.
 
 ## Value Proposition
-This enhancement empowers API developers with a more dynamic way to review JSON Schema differences. The interactive mode not only improves the user experience by providing immediate, guided feedback but also streamlines the process of validating complex schema changes, thus fostering better collaboration and reducing errors during API upgrades.
+By merging interactive diff capabilities with enhanced diagnostics and refresh operations, this feature not only facilitates easier schema comparisons but also empowers developers to troubleshoot issues quickly. These improvements align with the mission of simplifying API evolution and fostering better collaboration among development teams.
