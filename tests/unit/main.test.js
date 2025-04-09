@@ -138,6 +138,13 @@ describe("NaN Telemetry Batching", () => {
     expect(summary.length).toBe(1);
     expect(summary[0].count).toBe(10);
   });
+
+  test("Should treat explicit 'NaN' input distinctly and fallback to default", () => {
+    process.env.TEST_NAN = "  NaN  ";
+    const result = parseEnvNumber("TEST_NAN", 42);
+    expect(result).toBe(42);
+    delete process.env.TEST_NAN;
+  });
 });
 
 // Tests for Robust HTTP Endpoint Testing for the Integrated Web Server

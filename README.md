@@ -64,26 +64,6 @@ A new feature in owl-builder is the real-time anomaly detection mechanism within
 
 If an anomaly is detected (e.g., missing or empty `entries`), owl-builder logs detailed diagnostic messages and broadcasts a WebSocket alert. In addition, owl-builder automatically attempts to restore a valid ontology by rolling back to the last known good backup stored in `ontology-backup.json`. If the rollback is successful, the backup ontology is restored as the current ontology and a WebSocket notification with the status message "Ontology rollback executed due to live data anomaly" is broadcast.
 
-## Exporting Telemetry Data
-
-A new CLI command `--export-telemetry` has been added. When invoked without additional parameters, it gathers the aggregated diagnostic telemetry (including NaN fallback warnings) and exports the summary as a JSON file named `telemetry.json` in the current working directory. Additionally, by specifying the `--format csv` flag, the telemetry data can be exported in CSV format to a file named `telemetry.csv`.
-
-### CLI Usage Examples
-
-Export telemetry data in JSON format (default):
-
-```bash
-node src/lib/main.js --export-telemetry
-```
-
-Export telemetry data in CSV format:
-
-```bash
-node src/lib/main.js --export-telemetry --format csv
-```
-
-After running the command, check the respective file in your working directory for the exported telemetry data.
-
 ## Environment Variable Handling
 
 owl-builder processes environment variables inline. This includes:
@@ -97,9 +77,11 @@ owl-builder processes environment variables inline. This includes:
 
 3. **Aggregated Telemetry**: To avoid flooding logs, warnings for non-numeric inputs are aggregated per unique normalized value. The number of warnings logged is controlled by the `NANFALLBACK_WARNING_THRESHOLD` (default is 1). You can view a summary of all such warnings using the CLI flag `--diagnostic-summary-naN`.
 
-4. **Strict Mode**: When strict mode is enabled (using the `--strict-env` CLI flag or setting `STRICT_ENV=true`), any non-numeric input will immediately throw an error instead of falling back.
+4. **Explicit 'NaN' Handling**: Explicit inputs that normalize to "nan" (including edge-case variations) are now detected and logged as a distinct telemetry event labeled "ExplicitNaN". These explicit 'NaN' values will also fall back to default values but are clearly distinguished in diagnostic logs.
 
-5. **Optimized Telemetry Batching**: A debounced flush mechanism ensures that rapid, successive non-numeric inputs are batched efficiently. The delay for flushing telemetry logs is configurable via the `TELEMETRY_FLUSH_DELAY` environment variable (default is 50ms).
+5. **Strict Mode**: When strict mode is enabled (using the `--strict-env` CLI flag or setting `STRICT_ENV=true`), any non-numeric input will immediately throw an error instead of falling back.
+
+6. **Optimized Telemetry Batching**: A debounced flush mechanism ensures that rapid, successive non-numeric inputs are batched efficiently. The delay for flushing telemetry logs is configurable via the `TELEMETRY_FLUSH_DELAY` environment variable (default is 50ms).
 
 ## Contributing
 

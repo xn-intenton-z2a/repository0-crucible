@@ -44,7 +44,7 @@ import { WebSocketServer } from "ws";
  *   Invalid inputs trigger a diagnostic warning and fallback to default values (or configurable fallback values) with aggregated telemetry details.
  *   In strict mode, non-numeric inputs immediately throw an error.
  *
- *   UPDATE: When environment variables intended to be numeric (even if provided as 'NaN', ' nAn ', '\u00A0NaN\u00A0', etc.) are encountered, the input is normalized and detected as non-numeric. A warning is logged with telemetry (subject to the NANFALLBACK_WARNING_THRESHOLD setting) and the value falls back to a default or specified fallback value. CLI override options (such as --livedata-retry-default and --livedata-delay-default) take precedence. Use the '--diagnostic-summary-naN' flag to aggregate and view these warnings.
+ *   UPDATE: When environment variables intended to be numeric (even if provided as 'NaN', ' nAn ', '\u00A0NaN\u00A0', etc.) are encountered, the input is normalized and detected as explicit 'NaN'. This explicit input is now logged with distinct telemetry (tagged as "ExplicitNaN") and then falls back to the default or specified fallback value. CLI override options (such as --livedata-retry-default and --livedata-delay-default) take precedence. Use the '--diagnostic-summary-naN' flag to aggregate and view these warnings.
  *
  * Note for Contributors:
  *   Refer to CONTRIBUTING.md for detailed workflow and coding guidelines.
@@ -72,9 +72,48 @@ function parseEnvNumber(varName, defaultValue, fallbackValue) {
   let rawOriginal = cliOverride || process.env[varName] || "";
   let raw = normalizeEnvValue(rawOriginal);
   if (raw === "") return defaultValue;
-  // Explicitly check for 'nan' after normalization for clarity
+  // Check explicitly for 'nan' input (literal and its variants)
   if (raw === 'nan') {
-    raw = "";
+    const telemetryObj = {
+      telemetry: "ExplicitNaN",
+      envVar: varName,
+      rawValue: rawOriginal,
+      normalizedValue: raw,
+      cliOverride: !!cliOverride,
+      timestamp: new Date().toISOString()
+    };
+    let key = varName + ":explicitNaN";
+    let threshold = 1;
+    if (process.env.NANFALLBACK_WARNING_THRESHOLD) {
+      const t = Number(normalizeEnvValue(process.env.NANFALLBACK_WARNING_THRESHOLD));
+      if (!isNaN(t) && t > 0) {
+        threshold = t;
+      }
+    }
+    if (!warningCache.has(key)) {
+      warningCache.set(key, { count: 1, telemetry: telemetryObj });
+      if (1 <= threshold) {
+        console.log(`Notice: Environment variable '${telemetryObj.envVar}' explicitly set to 'NaN'. Using fallback default. Occurred 1 time(s). TELEMETRY: ${JSON.stringify(telemetryObj)}`);
+      }
+    } else {
+      let info = warningCache.get(key);
+      info.count += 1;
+      warningCache.set(key, info);
+      if (info.count <= threshold) {
+        console.log(`Notice: Environment variable '${telemetryObj.envVar}' explicitly set to 'NaN'. Using fallback default. Occurred ${info.count} time(s). TELEMETRY: ${JSON.stringify(telemetryObj)}. Total notices so far: ${info.count}`);
+      }
+    }
+    if (process.env.NODE_ENV === "test") {
+      // Skip flush in test
+    } else {
+      if (flushTimer) {
+        clearTimeout(flushTimer);
+      }
+      flushTimer = setTimeout(() => {
+        flushTimer = null;
+      }, TELEMETRY_FLUSH_DELAY);
+    }
+    return fallbackValue !== undefined ? fallbackValue : defaultValue;
   }
   const num = Number(raw);
   if (isNaN(num)) {
