@@ -1,14 +1,22 @@
 {
-  "openIssues": 6,
+  "openIssues": 8,
   "issuesClosedLastHour": 59,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 10,
-  "diffMinutesMain": 10,
+  "diffMinutes": 0,
+  "diffMinutesMain": 0,
   "commitsLastHour": 8,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
+    {
+      "time": "12:18",
+      "message": "Maintain ONTOLOGY_SERVICE"
+    },
+    {
+      "time": "12:05",
+      "message": "Maintain ONTOLOGY_SERVICE"
+    },
     {
       "time": "11:55",
       "message": "Implemented --export-telemetry CLI command to export aggregated ..."
@@ -20,22 +28,19 @@
     {
       "time": "11:42",
       "message": "Maintain ONTOLOGY_SERVICE"
-    },
-    {
-      "time": "11:37",
-      "message": "Fixed detectLiveDataAnomaly to return an error when the entries ..."
-    },
-    {
-      "time": "11:34",
-      "message": "Move MONITORING.md to rejects folder\n\nRelocated the MONITORING.m..."
     }
   ],
   "branches": {
-    "count": 0,
-    "details": []
+    "count": 1,
+    "details": [
+      {
+        "branch": "agentic-lib-issue-996",
+        "minutesSinceLastCommit": 0
+      }
+    ]
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-09T12:05:15.159Z"
+  "generatedAt": "2025-04-09T12:19:25.035Z"
 }
