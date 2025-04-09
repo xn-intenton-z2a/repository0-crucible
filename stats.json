@@ -1,19 +1,22 @@
 {
-  "openIssues": 17,
-  "issuesClosedLastHour": 2,
+  "openIssues": 18,
+  "issuesClosedLastHour": 4,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Added CSV export support to the telemetry CLI command. (fixes #1004)",
-      "ageMinutes": 4
-    }
-  ],
-  "diffMinutes": 4,
-  "diffMinutesMain": 4,
-  "commitsLastHour": 6,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 2,
+  "diffMinutesMain": 6,
+  "commitsLastHour": 7,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
+    {
+      "time": "13:24",
+      "message": "Maintain ONTOLOGY_SERVICE"
+    },
+    {
+      "time": "13:17",
+      "message": "Added CSV export support to the telemetry CLI command. (fixes #1..."
+    },
     {
       "time": "13:10",
       "message": "Maintain ONTOLOGY_SERVICE"
@@ -25,27 +28,19 @@
     {
       "time": "13:00",
       "message": "Update ONTOLOGY_SERVICE.md"
-    },
-    {
-      "time": "12:55",
-      "message": "Maintain ONTOLOGY_SERVICE"
-    },
-    {
-      "time": "12:35",
-      "message": "Maintain ONTOLOGY_SERVICE"
     }
   ],
   "branches": {
     "count": 1,
     "details": [
       {
-        "branch": "agentic-lib-issue-1004",
-        "minutesSinceLastCommit": 5
+        "branch": "agentic-lib-issue-1009",
+        "minutesSinceLastCommit": 2
       }
     ]
   },
-  "averagePRAge": 4,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-09T13:15:12.585Z"
+  "generatedAt": "2025-04-09T13:31:41.592Z"
 }

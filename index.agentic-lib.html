@@ -71,22 +71,26 @@ ws.on('message', (data) =&gt; {
 </code></pre>
 <p class="md-github">This command will simulate an anomaly scenario by providing an empty <code class="md-github">entries</code> array.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="exporting-telemetry-data" href="#exporting-telemetry-data"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Exporting Telemetry Data</h2>
-<p class="md-github">A new CLI command <code class="md-github">--export-telemetry</code> has been added. When invoked, it gathers the aggregated diagnostic telemetry (including NaN fallback warnings) and exports the summary as a JSON file named <code class="md-github">telemetry.json</code> in the current working directory.</p>
+<p class="md-github">A new CLI command <code class="md-github">--export-telemetry</code> has been added. When invoked without additional parameters, it gathers the aggregated diagnostic telemetry (including NaN fallback warnings) and exports the summary as a JSON file named <code class="md-github">telemetry.json</code> in the current working directory. Additionally, by specifying the <code class="md-github">--format csv</code> flag, the telemetry data can be exported in CSV format to a file named <code class="md-github">telemetry.csv</code>.</p>
 <h3 class="md-github"><a class="md-github__anchor" name="how-it-works-1" href="#how-it-works-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>How It Works</h3>
 <ul class="md-github">
-<li class="md-github">The command aggregates telemetry data using the internal telemetry functions, such as <code class="md-github">getAggregatedNaNSummary</code> and <code class="md-github">enhancedDiagnosticSummary</code>.</li>
-<li class="md-github">The aggregated data is then written to a file called <code class="md-github">telemetry.json</code>.</li>
-<li class="md-github">The file contains a JSON object with at least the following keys:
+<li class="md-github">The command aggregates telemetry data using internal telemetry functions, such as <code class="md-github">getAggregatedNaNSummary</code> and <code class="md-github">enhancedDiagnosticSummary</code>.</li>
+<li class="md-github">By default, the telemetry data is exported in JSON format. Use the <code class="md-github">--format csv</code> flag to export in CSV format.</li>
+<li class="md-github">When exporting in CSV, the file will contain two sections:
 <ul class="md-github">
-<li class="md-github"><code class="md-github">nanSummary</code>: An array of aggregated NaN fallback warnings.</li>
-<li class="md-github"><code class="md-github">diagnosticSummary</code>: A summary of the diagnostic telemetry.</li>
+<li class="md-github"><strong class="md-github">NaN Fallback Telemetry:</strong> Contains headers (<code class="md-github">key,count,envVar,rawValue,cliOverride,timestamp</code>) and rows for each aggregated warning.</li>
+<li class="md-github"><strong class="md-github">Diagnostic Summary:</strong> Contains headers (<code class="md-github">timestamp,message,version</code>) and a summary row.</li>
 </ul>
 </li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="cli-usage-example" href="#cli-usage-example"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Usage Example</h3>
+<h3 class="md-github"><a class="md-github__anchor" name="cli-usage-examples" href="#cli-usage-examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Usage Examples</h3>
+<p class="md-github">Export telemetry data in JSON format (default):</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-telemetry
 </code></pre>
-<p class="md-github">After running the command, check the <code class="md-github">telemetry.json</code> file in your working directory for the exported telemetry data.</p>
+<p class="md-github">Export telemetry data in CSV format:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-telemetry --format csv
+</code></pre>
+<p class="md-github">After running the command, check the respective file (<code class="md-github">telemetry.json</code> or <code class="md-github">telemetry.csv</code>) in your working directory for the exported telemetry data.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="environment-variable-handling" href="#environment-variable-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Variable Handling</h2>
 <p class="md-github">owl-builder processes environment variables inline. This includes:</p>
 <ol class="md-github">
@@ -119,7 +123,7 @@ ws.on('message', (data) =&gt; {
 
   </section>
   <footer>
-    <p>Generated on 2025-04-09T13:15:41.322Z</p>
+    <p>Generated on 2025-04-09T13:31:51.495Z</p>
   </footer>
 </body>
 </html>
