@@ -54,9 +54,7 @@ let telemetryFlushPromise = null;
 function normalizeEnvValue(val) {
   if (typeof val !== "string") return val;
   // Fixed regex to collapse all whitespace characters including non-breaking spaces
-  return val.trim().replace(/[
-\s\u00A0]+/g, ' ').toLowerCase().replace(/[
-]+/g, ' ');
+  return val.trim().replace(/^[\s\u00A0]+|[\s\u00A0]+$/g, '').replace(/[\s\u00A0]+/g, ' ').toLowerCase();
 }
 
 function parseEnvNumber(varName, defaultValue, fallbackValue) {
