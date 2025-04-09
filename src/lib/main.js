@@ -227,10 +227,6 @@ export async function buildOntologyFromLiveData() {
     return buildOntology();
   }
   
-  if (process.env.NODE_ENV === "test") {
-    return { title: "Live Data Ontology", concepts: ["LiveConcept1", "LiveConcept2", "LiveConcept3"] };
-  }
-
   try {
     const dataStr = await fetchDataWithRetry("https://api.publicapis.org/entries");
     const parsed = JSON.parse(dataStr);

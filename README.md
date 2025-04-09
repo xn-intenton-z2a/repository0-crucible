@@ -50,6 +50,8 @@ A new feature in owl-builder is the real-time anomaly detection mechanism within
 
 If an anomaly is detected (e.g., missing or empty `entries`), owl-builder logs detailed diagnostic messages and broadcasts a WebSocket alert. In addition, owl-builder now automatically attempts to restore a valid ontology by rolling back to the last known good backup stored in `ontology-backup.json`. If the rollback is successful, the backup ontology is restored as the current ontology and a WebSocket notification with the status message "Ontology rollback executed due to live data anomaly" is broadcast.
 
+_Note:_ In previous versions, when running in a test environment, live data integration returned hardcoded test data. This version removes that early return to ensure that anomaly detection and rollback are fully exercised even during testing.
+
 ### CLI Usage
 
 To force anomaly detection and test the feature, use the `--detect-anomaly` flag. You may optionally provide a JSON string representing sample data for testing. If not provided, live data will be used.
