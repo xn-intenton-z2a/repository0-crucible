@@ -1,31 +1,36 @@
-# USER_INTERFACE: Unified CLI and HTTP Interface
+# USER_INTERFACE: Unified CLI, HTTP, and GraphQL Interface
 
 ## Overview
-The USER_INTERFACE feature consolidates the existing HTTP and CLI interaction capabilities into a single, unified interface. It merges the functionalities of the previous WEB_SERVER and CLI_MENU features to provide a consistent user experience for interacting with owl-builder. This feature supports both a RESTful API (including status, telemetry, and query endpoints) and an interactive command line menu for performing ontology operations, including querying, refreshing, and monitoring live data updates via WebSocket notifications.
+This feature unifies CLI and HTTP interfaces with the addition of a GraphQL endpoint, offering a flexible and comprehensive way to interact with ontology data. It merges functionalities from legacy WEB_SERVER and CLI_MENU modules and extends them by enabling advanced queries, mutations, and interactive GraphQL requests alongside existing RESTful options and real-time WebSocket notifications.
 
 ## Implementation Details
 1. **Unified HTTP Endpoints:**
    - **Status Endpoint (`/`):** Returns a simple plain text message indicating that the owl-builder service is running.
-   - **Telemetry Endpoint (`/telemetry`):** Provides aggregated diagnostic and telemetry data, supporting export formats such as JSON and CSV via query parameters (e.g., `?format=csv`).
-   - **Query Endpoint (`/query`):** Accepts GET requests with a search parameter (`q`) to perform ontology queries using the internal `queryOntology` function. The endpoint returns matching results in JSON format.
-   - **WebSocket Notifications:** Real-time notifications for ontology operations (updates, refreshes, rollbacks, etc.) are broadcast to connected clients. These notifications include key metadata such as the ontology title, version, timestamp, and a status message.
+   - **Telemetry Endpoint (`/telemetry`):** Provides aggregated diagnostic and telemetry data in JSON or CSV formats, based on query parameters (e.g., `?format=csv`).
+   - **REST Query Endpoint (`/query`):** Accepts GET requests with a search parameter (`q`) to perform ontology queries and returns matching data in JSON format.
+   - **GraphQL Endpoint (`/graphql`):**
+     - Implements a basic GraphQL schema that allows clients to perform flexible queries for ontology attributes such as title, concepts, classes, and metadata.
+     - Supports mutations to trigger actions like refreshing or updating the ontology using underlying CLI functions.
+     - Provides introspection support, enabling developers to explore the available schema.
+   - **WebSocket Notifications:** Broadcasts real-time notifications for ontology operations (updates, refreshes, merges, rollbacks) to all connected clients.
 
 2. **Integrated Interactive CLI:**
-   - **Menu-Driven Interface:** Offers a consolidated interactive menu that provides options such as Build Ontology, Refresh Ontology, Export Telemetry, Backup/Restore, and Query Ontology.
-   - **Query Functionality:** The interactive CLI includes a dedicated option for querying ontology data, capitalizing on the same functionality available via the RESTful API.
-   - **Consistent Feedback:** Users receive immediate, formatted responses directly in the CLI, with smooth transitions back to the main menu for further operations.
+   - **Menu-Driven Interface:**: Offers options for building, refreshing, querying, exporting telemetry, and managing ontology updates.
+   - **GraphQL Interactive Client:** Includes an option within the CLI to send GraphQL queries directly, providing immediate, structured responses.
+   - **Consistent Feedback:** Users receive formatted responses and clear error messages, streamlining troubleshooting and improving the overall developer experience.
 
 3. **Configuration and Integration:**
-   - Environment variables and CLI flags are used for configuration (e.g., setting the server port via `PORT` and activating the interface with a flag such as `--serve` or `--ui`).
-   - Detailed logging and diagnostic messages are integrated to help monitor operations and facilitate troubleshooting.
+   - The HTTP and GraphQL services share a single server instance for simplicity in deployment and configuration.
+   - Environment variables and CLI flags control configurations such as server port, GraphQL introspection, and debug levels.
+   - The system maintains backwards compatibility with existing REST endpoints while extending capabilities through GraphQL.
 
 ## Benefits
-- **Consistent User Experience:** Unifies CLI and HTTP interactions, reducing the learning curve and maintenance overhead.
-- **Simplified Architecture:** Consolidates two previously separate features into one coherent module, streamlining code organization.
-- **Improved Maintainability:** Centralizes interface-related logic, making future enhancements and bug fixes more straightforward.
-- **Enhanced Functionality:** Retains all key features such as real-time notifications, query operations, and telemetry export, while delivering a harmonized interaction layer.
+- **Enhanced Flexibility:** GraphQL allows clients to request exactly the data they need, reducing data over-fetching and optimizing performance.
+- **Unified User Experience:** A single interface for HTTP, CLI, and GraphQL interactions simplifies usage and reduces the learning curve.
+- **Improved Developer Productivity:** Multiple interaction modes (CLI, REST, GraphQL) enable rapid prototyping and integration with different client applications.
+- **Scalability:** The addition of GraphQL sets the stage for future expansion into more complex data querying and manipulation scenarios.
 
 ## Migration Notes
-- **Deprecated Features:** The previous WEB_SERVER and CLI_MENU features will be deprecated. All query, status, and interactive menu functionalities are now integrated into USER_INTERFACE.
-- **Documentation Updates:** Users and developers should refer to the updated documentation for usage examples and configuration instructions.
-- **Backward Compatibility:** Existing API endpoints and CLI operations remain functional through the new unified module, ensuring a smooth transition for existing users.
+- Legacy features (WEB_SERVER and CLI_MENU) have been deprecated in favor of this unified interface.
+- Developers should consult the updated documentation for examples on forming GraphQL queries and configuring the server settings.
+- All existing REST endpoints and CLI commands remain functional, ensuring a smooth transition.
