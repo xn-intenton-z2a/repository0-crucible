@@ -35,19 +35,30 @@ export function executePlugins(data) {
  * Special Handling:
  * - The string 'NaN' is intentionally kept as a string to serve as a special-case marker.
  * - Boolean strings (case-insensitive) are converted to booleans.
+ * - ISO 8601 formatted date strings are converted to Date objects if valid.
  * - Numeric strings are converted to numbers if valid.
  * - Otherwise, the argument is returned as-is.
  *
  * @param {string} arg - The CLI argument
- * @returns {string | boolean | number} - The converted argument
+ * @returns {string | boolean | number | Date} - The converted argument
  */
 function convertArg(arg) {
   // Special case: if the argument is exactly 'NaN', preserve it as a string to indicate a special marker.
   if (arg === "NaN") return arg;
-  
+
   // Convert boolean strings (case-insensitive) to booleans
   if (arg.toLowerCase() === "true") return true;
   if (arg.toLowerCase() === "false") return false;
+
+  // Check for ISO 8601 formatted date strings
+  // This regex matches dates in the format YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS with optional milliseconds and timezone
+  const iso8601Regex = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2}))?$/;
+  if (iso8601Regex.test(arg)) {
+    const date = new Date(arg);
+    if (!isNaN(date.getTime())) {
+      return date;
+    }
+  }
 
   // Attempt to convert to a number if applicable
   const num = Number(arg);

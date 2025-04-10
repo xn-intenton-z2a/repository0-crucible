@@ -2,7 +2,6 @@ import { describe, test, expect, vi, beforeEach } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main, registerPlugin, getPlugins, executePlugins } from "@src/lib/main.js";
 
-
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
@@ -18,7 +17,6 @@ describe("Default Demo Output", () => {
     logSpy.mockRestore();
   });
 });
-
 
 describe("CLI Argument Conversion", () => {
   test("should convert numeric strings to numbers", () => {
@@ -48,8 +46,25 @@ describe("CLI Argument Conversion", () => {
     expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify(["NaN", 100])}`);
     logSpy.mockRestore();
   });
-});
 
+  test("should convert valid ISO 8601 date strings to Date objects", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const validISO = "2023-10-10T12:30:00Z";
+    main([validISO]);
+    // Retrieve the logged output and parse it
+    const loggedArg = JSON.parse(logSpy.mock.calls[0][0].replace('Run with: ', ''));
+    expect(new Date(loggedArg[0]).toISOString()).toEqual(new Date(validISO).toISOString());
+    logSpy.mockRestore();
+  });
+
+  test("should not convert invalid ISO 8601 date strings and leave them unchanged", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const invalidISO = "2023-13-01T00:00:00Z"; // Invalid month
+    main([invalidISO]);
+    expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify([invalidISO])}`);
+    logSpy.mockRestore();
+  });
+});
 
 describe("Plugin Integration in CLI", () => {
   test("should process arguments through plugins when --use-plugins flag is provided", () => {
@@ -61,7 +76,6 @@ describe("Plugin Integration in CLI", () => {
     logSpy.mockRestore();
   });
 });
-
 
 describe("Plugin Manager Functionality", () => {
   beforeEach(() => {
