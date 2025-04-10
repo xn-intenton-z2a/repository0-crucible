@@ -61,7 +61,10 @@
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Custom Replacement via CLI Flag:</strong> Provide a replacement for &quot;NaN&quot; inline using <code class="md-github">--custom-nan &lt;value&gt;</code>:</p>
+<p class="md-github"><strong class="md-github">Custom Replacement via CLI Flag:</strong> Provide a replacement for &quot;NaN&quot; inline using <code class="md-github">--custom-nan &lt;value&gt;</code>. If the flag is provided without a valid non-&quot;NaN&quot; replacement immediately following the flag, the CLI will throw an error:</p>
+<pre class="md-github"><code class="md-github language-bash">Error: The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.
+</code></pre>
+<p class="md-github">Example usage:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --custom-nan customReplacement NaN 100
 </code></pre>
 </li>
@@ -207,7 +210,7 @@ registerPlugin(data =&gt; data.map(item =&gt; typeof item === 'string' ? item + 
 
   </section>
   <footer>
-    <p>Generated on 2025-04-10T21:01:11.073Z</p>
+    <p>Generated on 2025-04-10T21:02:04.611Z</p>
   </footer>
 </body>
 </html>

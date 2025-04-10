@@ -2,21 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 62,
-  "issuesClosedLastHour": 4,
-  "issuesClosedLastDay": 84,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Clarified the error message for missing replacement with --custom-nan flag. (fixes #1234)",
-      "ageMinutes": 1
-    }
-  ],
-  "diffMinutes": 1,
-  "diffMinutesMain": 7,
-  "commitsLastHour": 2,
+  "openIssues": 60,
+  "issuesClosedLastHour": 6,
+  "issuesClosedLastDay": 86,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 0,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 3,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
+    {
+      "time": "21:01",
+      "message": "Clarified the error message for missing replacement with --custo..."
+    },
     {
       "time": "20:53",
       "message": "Updated main.js dump-config logic and added beforeEach reset in ..."
@@ -32,23 +31,14 @@
     {
       "time": "19:51",
       "message": "Add --trace-plugins flag to enable plugin transformation trace l..."
-    },
-    {
-      "time": "19:42",
-      "message": "Add support for customNan configuration in .repositoryConfig.jso..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1234",
-        "minutesSinceLastCommit": 2
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 1,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-10T21:00:54.913Z"
+  "generatedAt": "2025-04-10T21:01:52.555Z"
 }
