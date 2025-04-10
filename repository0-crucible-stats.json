@@ -2,21 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 61,
-  "issuesClosedLastHour": 10,
-  "issuesClosedLastDay": 92,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Consolidated and enhanced NaN handling logic for uniform behavior across all variants and configurations. (fixes #1242)",
-      "ageMinutes": 1
-    }
-  ],
+  "openIssues": 59,
+  "issuesClosedLastHour": 12,
+  "issuesClosedLastDay": 94,
+  "openPRs": 0,
+  "prDetails": [],
   "diffMinutes": 0,
-  "diffMinutesMain": 6,
-  "commitsLastHour": 5,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 6,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
+    {
+      "time": "21:40",
+      "message": "Consolidated and enhanced NaN handling logic for uniform behavio..."
+    },
     {
       "time": "21:34",
       "message": "Clarified Unicode NaN handling and custom replacement behavior i..."
@@ -32,23 +31,14 @@
     {
       "time": "21:01",
       "message": "Clarified the error message for missing replacement with --custo..."
-    },
-    {
-      "time": "20:53",
-      "message": "Updated main.js dump-config logic and added beforeEach reset in ..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1242",
-        "minutesSinceLastCommit": 1
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 1,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-10T21:40:22.899Z"
+  "generatedAt": "2025-04-10T21:41:23.791Z"
 }

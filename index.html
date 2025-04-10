@@ -87,6 +87,7 @@
 <p class="md-github"><strong class="md-github">Debug Mode:</strong> Use <code class="md-github">--debug-nan</code> to output detailed diagnostic information for each conversion, including the normalized input and conversion method.</p>
 </li>
 </ul>
+<p class="md-github"><em class="md-github">The NaN handling logic has been consolidated to ensure uniform behavior across all variants and configurations.</em></p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Plugin Architecture and Trace Logging:</strong> Extend functionality by registering plugins using the provided API. When the CLI is run with the <code class="md-github">--use-plugins</code> flag, input arguments are processed through all registered plugins. Additionally, if you supply the <code class="md-github">--trace-plugins</code> flag, the CLI will output a detailed trace log of the transformation steps performed by each plugin.</p>
@@ -223,7 +224,7 @@ registerPlugin(data =&gt; data.map(item =&gt; typeof item === 'string' ? item + 
 
   </section>
   <footer>
-    <p>Generated on 2025-04-10T21:40:36.415Z</p>
+    <p>Generated on 2025-04-10T21:41:35.781Z</p>
   </footer>
 </body>
 </html>
