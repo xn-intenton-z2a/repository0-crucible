@@ -25,7 +25,8 @@ npm install repository0-crucible
 
 ## Features
 
-* Automated conversion of CLI arguments: Numeric strings like "42" or "3.14" are automatically converted to numbers, boolean strings like "true" or "false" are converted to booleans, while non-numeric strings and the special case "NaN" remain unchanged.
+* Automated conversion of CLI arguments: Numeric strings like "42" or "3.14" are automatically converted to numbers, boolean strings like "true" or "false" are converted to booleans, while non-numeric strings remain unchanged.
+* Special handling of the string "NaN" is implemented to preserve it as a string in order to serve as a special-case marker.
 * Demonstration of GitHub workflows for CI/CD setups.
 * Template based structure ideal for evolving JavaScript libraries.
 
