@@ -1,6 +1,7 @@
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main, registerPlugin, getPlugins, executePlugins } from "@src/lib/main.js";
+import fs from "fs";
 
 // NOTE: This test file is part of the automated testing suite that verifies the core CLI functionalities of repository0-crucible
 
@@ -116,6 +117,20 @@ describe("CLI Argument Conversion", () => {
     expect(isNaN(loggedArg[0])).toBe(true);
     expect(loggedArg[1]).toBe(100);
     logSpy.mockRestore();
+  });
+
+  test("should convert 'NaN' to numeric NaN when configuration file sets nativeNan to true", () => {
+    // Mock fs methods to simulate configuration file
+    const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"nativeNan": true}');
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["NaN", "100"]);
+    const loggedArg = logSpy.mock.calls[0][1];
+    expect(isNaN(loggedArg[0])).toBe(true);
+    expect(loggedArg[1]).toBe(100);
+    logSpy.mockRestore();
+    existsSyncSpy.mockRestore();
+    readFileSyncSpy.mockRestore();
   });
 });
 
