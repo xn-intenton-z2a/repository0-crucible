@@ -41,7 +41,7 @@ export function executePlugins(data) {
  * Converts a CLI argument into its appropriate type.
  *
  * Special Handling:
- * - The literal string 'NaN' is detected after trimming. By default, it is preserved as a string
+ * - Any case variation of the string 'NaN' is detected after trimming. By default, it is preserved as a string
  *   for clarity. It will only be converted to numeric NaN when the --native-nan flag is provided
  *   or the environment variable NATIVE_NAN is set to "true".
  * - Boolean strings (case-insensitive) are converted to booleans.
@@ -55,11 +55,11 @@ export function executePlugins(data) {
 function convertArg(arg) {
   const trimmed = arg.trim();
 
-  // Special case for "NaN":
-  // After trimming the input, if it exactly matches "NaN",
+  // Special case for any case variation of "NaN":
+  // After trimming the input, if its lowercase matches "nan",
   // return numeric NaN when native conversion is enabled; otherwise, preserve as string.
-  if (trimmed === "NaN") {
-    return useNativeNanConfig ? NaN : "NaN";
+  if (trimmed.toLowerCase() === "nan") {
+    return useNativeNanConfig ? NaN : trimmed;
   }
 
   // Convert boolean strings (case-insensitive) to booleans
@@ -89,7 +89,7 @@ function convertArg(arg) {
  * If the flag --use-plugins is provided, the function will process the arguments
  * through registered plugins if any exist.
  * Additionally, if the flag --native-nan is provided or process.env.NATIVE_NAN is "true",
- * 'NaN' is converted to numeric NaN; otherwise, it is preserved as a string.
+ * any variation of 'NaN' is converted to numeric NaN; otherwise, it is preserved as a string.
  *
  * @param {string[]} args - The CLI arguments
  */
