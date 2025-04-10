@@ -74,7 +74,6 @@ describe("Plugin Integration in CLI", () => {
     const plugins = getPlugins();
     plugins.length = 0;
     main(["--use-plugins", "50", "hello"]);
-    // '50' converts to number 50
     expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify([50, "hello"])}`);
     logSpy.mockRestore();
   });
