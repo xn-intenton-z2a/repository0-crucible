@@ -141,9 +141,7 @@ function processNaNConversion(originalStr) {
  * @param {string[]} args - CLI arguments
  */
 export function main(args = []) {
-  // Note: Removed reset of customNaNHandler to preserve externally registered custom handlers
-
-  // New flag to dump configuration and exit early
+  // Dump config early if requested
   if (args.includes("--dump-config")) {
     let repoConfig = {};
     try {
@@ -162,8 +160,6 @@ export function main(args = []) {
       effectiveCustomNan = args[customNanIndex + 1];
     } else if (typeof repoConfig.customNan === "string" && repoConfig.customNan.trim() !== "") {
       effectiveCustomNan = repoConfig.customNan;
-    } else if (process.env.CUSTOM_NAN && typeof process.env.CUSTOM_NAN === "string" && process.env.CUSTOM_NAN.trim() !== "" && process.env.CUSTOM_NAN.trim().normalize("NFKC").toLowerCase() !== "nan") {
-      effectiveCustomNan = repoConfig.customNan; // Ignore environment variable during dump-config
     }
     const pluginsList = getPlugins().map(fn => fn.name || "anonymous");
     console.log(JSON.stringify({

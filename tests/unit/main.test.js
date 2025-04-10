@@ -337,6 +337,10 @@ describe("Configuration CustomNaN via repositoryConfig.json", () => {
 });
 
 describe("Environment Custom NaN Handler", () => {
+  beforeEach(() => {
+    registerNaNHandler(null);
+  });
+
   test("should convert 'NaN' using CUSTOM_NAN environment variable when no CLI flag or repository config is set", () => {
     process.env.CUSTOM_NAN = "envCustomReplacement";
     // Ensure no repository config exists
@@ -395,7 +399,7 @@ describe("Dump Config Flag", () => {
   });
 
   test("should output effective config with flags and config file values", () => {
-    const repoConfig = { nativeNan: true, strictNan: true, customNan: "configCustom" };
+    const repoConfig = { nativeNan: true, strictNan: true, customNan: "cliCustom" };
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(repoConfig));
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
