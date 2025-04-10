@@ -93,7 +93,7 @@ function convertArg(arg) {
  *
  * @param {string[]} args - The CLI arguments
  */
-export function main(args) {
+export function main(args = []) {
   // Check if plugins should be used
   const usePlugins = args.includes("--use-plugins");
   // Check if native NaN conversion is requested via flag or environment variable
