@@ -40,7 +40,7 @@ export function executePlugins(data) {
  *   if the --native-nan flag is provided or the environment variable NATIVE_NAN is set to "true".
  * - Boolean strings (case-insensitive) are converted to booleans.
  * - ISO 8601 formatted date strings are converted to Date objects if valid.
- * - Otherwise, numeric strings are converted to numbers and non-numeric strings remain unchanged.
+ * - Otherwise, numeric strings are converted to numbers if applicable, leaving non-numeric strings unchanged.
  *
  * @param {string} arg - The CLI argument
  * @returns {string | boolean | number | Date} - The converted argument
@@ -78,7 +78,8 @@ function convertArg(arg) {
 /**
  * Main function for the CLI.
  * If the flag --use-plugins is provided, the function will process the arguments through registered plugins if any exist.
- * Additionally, if the flag --native-nan is provided or process.env.NATIVE_NAN is true, 'NaN' is converted to numeric NaN.
+ * Additionally, if the flag --native-nan is provided or process.env.NATIVE_NAN is true,
+ * 'NaN' is converted to numeric NaN; otherwise, the literal 'NaN' is preserved as a special-case marker.
  *
  * @param {string[]} args - The CLI arguments
  */
