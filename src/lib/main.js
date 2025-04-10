@@ -36,12 +36,14 @@ export function executePlugins(data) {
  * Converts a CLI argument into its appropriate type.
  *
  * Special Handling:
- * - The literal string 'NaN' is preserved as a string by default. It will only be converted to numeric NaN
- *   when the --native-nan flag is provided or the environment variable NATIVE_NAN is set to "true".
+ * - The literal string 'NaN' is preserved as a string by default for clarity.
+ *   It will only be converted to numeric NaN when the --native-nan flag is provided
+ *   or the environment variable NATIVE_NAN is set to "true".
  * - Boolean strings (case-insensitive) are converted to booleans.
  * - ISO 8601 formatted date strings are converted to Date objects if valid.
  * - Additionally, the input is trimmed to ensure robust conversion.
- * - Otherwise, numeric strings are converted to numbers if applicable, and non-numeric strings are trimmed.
+ * - Otherwise, numeric strings are converted to numbers if applicable,
+ *   and non-numeric strings are trimmed.
  *
  * @param {string} arg - The CLI argument
  * @returns {string | boolean | number | Date} - The converted argument
@@ -49,7 +51,7 @@ export function executePlugins(data) {
 function convertArg(arg) {
   const trimmed = arg.trim();
 
-  // Handle the special case for "NaN"
+  // Handle the special case for "NaN": preserve as string unless native conversion is enabled
   if (trimmed === "NaN") {
     return useNativeNanConfig ? NaN : "NaN";
   }
@@ -81,7 +83,7 @@ function convertArg(arg) {
  * If the flag --use-plugins is provided, the function will process the arguments
  * through registered plugins if any exist.
  * Additionally, if the flag --native-nan is provided or process.env.NATIVE_NAN is "true",
- * 'NaN' is converted to numeric NaN; otherwise, the literal 'NaN' is preserved as a marker.
+ * 'NaN' is converted to numeric NaN; otherwise, it is preserved as a string.
  *
  * @param {string[]} args - The CLI arguments
  */
