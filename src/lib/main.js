@@ -106,19 +106,19 @@ function convertArg(arg) {
  * Helper function to process 'NaN' conversion based on the current configuration and flags.
  * Uses the trimmed input and its Unicode normalized form for decisions.
  *
- * Behavior:
- * - First, verifies the input is a recognized variant of 'NaN'.
- * - If a custom handler is registered, it is used (and in strict mode, logs diagnostic info).
+ * Updated Logic:
+ * - Verifies if the normalized input equals 'nan'.
+ * - If a custom handler is registered, it uses the handler and, in strict mode, logs diagnostic info.
  * - In strict mode without a custom handler, throws an error.
- * - In native mode, returns numeric NaN.
- * - Default: Returns the original string input.
+ * - If native mode is active, returns numeric NaN.
+ * - Otherwise, returns the original input string.
  *
- * @param {string} originalStr - The original input string (already trimmed)
+ * @param {string} originalStr - The original input string (assumed trimmed externally)
  * @returns {{converted: any, conversionMethod: string}}
  */
 function processNaNConversion(originalStr) {
-  const normalized = originalStr.trim().normalize("NFKC");
-  if (normalized.toLowerCase() !== "nan") {
+  const normalizedInput = originalStr.trim().normalize("NFKC");
+  if (normalizedInput.toLowerCase() !== "nan") {
     return { converted: originalStr, conversionMethod: "default" };
   }
 
@@ -127,7 +127,7 @@ function processNaNConversion(originalStr) {
       console.info("Strict NaN mode active: using custom NaN handler.");
     }
     try {
-      const handledValue = customNaNHandler(normalized);
+      const handledValue = customNaNHandler(normalizedInput);
       return { converted: handledValue, conversionMethod: "custom" };
     } catch (e) {
       throw new Error(`Error in custom NaN handler: ${e.message}`);
@@ -145,7 +145,7 @@ function processNaNConversion(originalStr) {
  * Main function for the CLI.
  * Processes CLI arguments using conversion logic and plugin integration.
  * Handles NaN conversion based on the following rules:
- *   - Default: Any variant of 'NaN' (including Unicode variants such as 'ＮａＮ') is preserved as the original string.
+ *   - Default: Any variant of 'NaN' (including Unicode variants like 'ＮａＮ') is preserved as the original string.
  *   - --native-nan: Converts recognized 'NaN' variants to numeric NaN.
  *   - --strict-nan: In strict mode, throws an error if a 'NaN' input is encountered without a custom handler.
  *   - --custom-nan: Registers an inline custom handler to replace 'NaN' with the provided value.
@@ -153,16 +153,6 @@ function processNaNConversion(originalStr) {
  *   - --trace-plugins: Outputs detailed trace logs for each plugin transformation when plugins are enabled.
  *
  * Additionally, supports custom configuration via .repositoryConfig.json and the CUSTOM_NAN environment variable.
- *
- * Examples:
- *   node src/lib/main.js NaN 100
- *       Uses default behavior, leaving 'NaN' as a string.
- *   node src/lib/main.js --native-nan NaN 100
- *       Converts 'NaN' (and variants like 'ＮａＮ') to numeric NaN.
- *   node src/lib/main.js --strict-nan NaN 100
- *       Throws an error if no custom handler is registered.
- *   node src/lib/main.js --custom-nan customReplacement NaN 100
- *       Replaces 'NaN' with 'customReplacement'.
  *
  * @param {string[]} args - CLI arguments
  */
