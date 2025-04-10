@@ -271,22 +271,29 @@ function startConfigWatcher() {
  * @param {string[]} args - CLI arguments
  */
 export async function main(args = []) {
-  // Reset configuration flags for each run
+  // Reset configuration flags for each run (do not reset customNaNHandler if already set)
   useNativeNanConfig = false;
   useStrictNan = false;
 
-  // If the --refresh-config flag is provided, update configuration dynamically
   if (args.includes("--refresh-config")) {
     updateGlobalNaNConfig();
   } else {
-    // Resolve configuration based on current CLI args; dynamic config refresh applies to non-CLI overrides
     const { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan } = resolveNaNConfig(args || []);
     useNativeNanConfig = effectiveNativeNan;
     useStrictNan = effectiveStrictNan;
-    if (effectiveCustomNan !== null && effectiveCustomNan !== undefined) {
-      registerNaNHandler(() => effectiveCustomNan);
-    } else {
-      registerNaNHandler(null);
+    if (args.includes("--custom-nan")) {
+      const customIndex = args.indexOf("--custom-nan");
+      if (args.length > customIndex + 1 && args[customIndex + 1].trim().normalize("NFKC").toLowerCase() !== "nan") {
+        registerNaNHandler(() => args[customIndex + 1]);
+      } else {
+        throw new Error("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
+      }
+    } else if (customNaNHandler === null) {
+      if (effectiveCustomNan !== null && effectiveCustomNan !== undefined) {
+        registerNaNHandler(() => effectiveCustomNan);
+      } else {
+        registerNaNHandler(null);
+      }
     }
   }
 
