@@ -9,11 +9,11 @@
   "prDetails": [
     {
       "title": "Refactored NaN conversion logic for consistent CLI behavior and streamlined debug logging. (fixes #1213)",
-      "ageMinutes": 1
+      "ageMinutes": 2
     }
   ],
   "diffMinutes": 0,
-  "diffMinutesMain": 11,
+  "diffMinutesMain": 12,
   "commitsLastHour": 5,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
@@ -43,12 +43,12 @@
     "details": [
       {
         "branch": "agentic-lib-issue-1213",
-        "minutesSinceLastCommit": 2
+        "minutesSinceLastCommit": 3
       }
     ]
   },
-  "averagePRAge": 1,
+  "averagePRAge": 2,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-10T19:25:37.695Z"
+  "generatedAt": "2025-04-10T19:26:34.402Z"
 }
