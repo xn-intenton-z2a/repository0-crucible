@@ -118,7 +118,7 @@ function convertArg(arg) {
  * - Otherwise, returns the original input string.
  *
  * @param {string} originalStr - The original input string (assumed trimmed externally)
- * @returns {Promise<{converted: any, conversionMethod: string}>>}
+ * @returns {Promise<{converted: any, conversionMethod: string}>}
  */
 async function processNaNConversion(originalStr) {
   const normalizedInput = originalStr.trim().normalize("NFKC");
@@ -198,7 +198,7 @@ function resolveNaNConfig(args) {
     effectiveStrictNan = true;
   }
   if (
-    !effectiveCustomNan &&
+    effectiveCustomNan === null &&
     typeof repoConfig.customNan === "string" &&
     repoConfig.customNan.trim() !== "" &&
     repoConfig.customNan.trim().normalize("NFKC").toLowerCase() !== "nan"
@@ -214,7 +214,7 @@ function resolveNaNConfig(args) {
     effectiveStrictNan = true;
   }
   if (
-    !effectiveCustomNan &&
+    effectiveCustomNan === null &&
     process.env.CUSTOM_NAN &&
     process.env.CUSTOM_NAN.trim() !== "" &&
     process.env.CUSTOM_NAN.trim().normalize("NFKC").toLowerCase() !== "nan"
@@ -233,7 +233,7 @@ function updateGlobalNaNConfig() {
   const { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan } = resolveNaNConfig([]);
   useNativeNanConfig = effectiveNativeNan;
   useStrictNan = effectiveStrictNan;
-  if (effectiveCustomNan) {
+  if (effectiveCustomNan !== null && effectiveCustomNan !== undefined) {
     registerNaNHandler(() => effectiveCustomNan);
   } else {
     registerNaNHandler(null);
@@ -271,7 +271,7 @@ function startConfigWatcher() {
  * @param {string[]} args - CLI arguments
  */
 export async function main(args = []) {
-  // Do not reset customNaNHandler to allow pre-registered handlers to persist
+  // Reset configuration flags for each run
   useNativeNanConfig = false;
   useStrictNan = false;
 
@@ -283,8 +283,10 @@ export async function main(args = []) {
     const { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan } = resolveNaNConfig(args || []);
     useNativeNanConfig = effectiveNativeNan;
     useStrictNan = effectiveStrictNan;
-    if (!customNaNHandler && effectiveCustomNan) {
+    if (effectiveCustomNan !== null && effectiveCustomNan !== undefined) {
       registerNaNHandler(() => effectiveCustomNan);
+    } else {
+      registerNaNHandler(null);
     }
   }
 

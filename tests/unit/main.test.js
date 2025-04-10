@@ -408,7 +408,7 @@ describe("Dump Config Flag", () => {
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(repoConfig));
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    await main(["--dump-config", "--custom-nan", "cliCustom", "--native-nan"]);
+    await main(["--dump-config", "--custom-nan", "cliCustom", "--native-nan", "--strict-nan"]);
     const output = JSON.parse(logSpy.mock.calls[0][0]);
     expect(output).toHaveProperty("nativeNan", true);
     expect(output).toHaveProperty("strictNan", true);
@@ -427,7 +427,7 @@ describe("Configuration Precedence", () => {
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(repoConfig));
     process.env.NATIVE_NAN = "false";
     process.env.STRICT_NAN = "false";
-    process.env.CUSTOM_NAN = "envCustom";
+    process.env.CUSTOM_NAN = "envCustomReplacement";
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--dump-config", "--native-nan", "--strict-nan", "--custom-nan", "cliCustom"]);
     const output = JSON.parse(logSpy.mock.calls[0][0]);
