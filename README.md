@@ -1,6 +1,6 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository showcasing GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, and advanced CI/CD workflows.
+`repository0-crucible` is a demo repository showcasing GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, advanced CI/CD workflows, and new plugin transformation trace logging.
 
 To create a self-evolving agentic coding system of your own based on this one, see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
@@ -58,10 +58,10 @@ npm install repository0-crucible
     ```
 
   - **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information for each conversion, including the normalized input.
-* **Plugin Architecture:** Extend functionality by registering plugins using the provided API. When the CLI is run with the `--use-plugins` flag, input arguments are processed through all registered plugins.
+* **Plugin Architecture and Trace Logging:** Extend functionality by registering plugins using the provided API. When the CLI is run with the `--use-plugins` flag, input arguments are processed through all registered plugins. Additionally, if you supply the `--trace-plugins` flag, the CLI will output a detailed trace log of the transformation steps performed by each plugin.
 * **Structured JSON Logging:** CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.
 * **Unicode Variant Support:** Recognizes and handles Unicode variants of "NaN", ensuring consistent behavior worldwide.
-* **Automated Tests:** Comprehensive tests ensure that all edge cases and functionalities—including NaN handling—work as expected.
+* **Automated Tests:** Comprehensive tests ensure that all edge cases and functionalities—including NaN handling and plugin tracing—work as expected.
 * **LLM-Driven Regeneration:** The project incorporates an automated code regeneration workflow powered by an LLM, ensuring consistency and quality without manual intervention.
 
 ## Configurable 'NaN' Handling
@@ -71,7 +71,7 @@ Users can control how "NaN" is processed by the CLI tool:
 * **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`.
 * **Strict Mode:** Enable strict validation with `--strict-nan`, environment variable `STRICT_NAN`, or in `.repositoryConfig.json`.
 * **Custom Replacement via CLI & Config:** Provide a replacement for "NaN" either inline using `--custom-nan <value>` or persistently via the `customNan` key in `.repositoryConfig.json`.
-* **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information for each conversion, including the normalized input.
+* **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information, including the normalized input.
 
 ## Usage
 
@@ -106,6 +106,12 @@ node src/lib/main.js --help
 - **Debug NaN Mode:**
   ```bash
   node src/lib/main.js --debug-nan NaN 100
+  ```
+
+- **Plugin Transformation Trace Logging:**
+  Use the `--trace-plugins` flag along with `--use-plugins` to see each transformation step:
+  ```bash
+  node src/lib/main.js --trace-plugins --use-plugins 42 hello
   ```
 
 - **Custom NaN Replacement via CLI:**

@@ -129,6 +129,7 @@ function processNaNConversion(str) {
  *   - --strict-nan flag (or config/environment): throws an error if a 'NaN' input is encountered without a custom handler.
  *   - --custom-nan flag: registers an inline custom handler to replace 'NaN' with the provided value.
  *   - --debug-nan flag: outputs detailed debug info for each NaN conversion instance, including the normalized input.
+ *   - --trace-plugins flag: outputs detailed trace logs for each plugin transformation step when using plugins.
  *
  * Additionally, supports custom configuration via .repositoryConfig.json for setting customNan.
  *
@@ -164,6 +165,9 @@ export function main(args = []) {
   // Check for debug flag
   const debugNanFlag = args.includes("--debug-nan");
 
+  // Check for plugin trace flag
+  const tracePluginsFlag = args.includes("--trace-plugins");
+
   // Handle inline custom NaN replacement via --custom-nan flag (overrides configuration if provided)
   const customNanIndex = args.indexOf("--custom-nan");
   if (customNanIndex !== -1) {
@@ -178,7 +182,7 @@ export function main(args = []) {
   // Filter out flags and their associated values
   const processedArgs = [];
   for (let i = 0; i < args.length; i++) {
-    if (["--use-plugins", "--native-nan", "--strict-nan", "--debug-nan"].includes(args[i])) continue;
+    if (["--use-plugins", "--native-nan", "--strict-nan", "--debug-nan", "--trace-plugins"].includes(args[i])) continue;
     if (args[i] === "--custom-nan") { i++; continue; }
     processedArgs.push(args[i]);
   }
@@ -203,13 +207,27 @@ export function main(args = []) {
 
   // Process through plugins if requested
   let finalData = convertedArgs;
+  let pluginTrace;
   if (args.includes("--use-plugins") && getPlugins().length > 0) {
-    finalData = executePlugins(convertedArgs);
+    if (tracePluginsFlag) {
+      pluginTrace = [];
+      let intermediate = convertedArgs;
+      getPlugins().forEach((plugin, index) => {
+        intermediate = plugin(intermediate);
+        pluginTrace.push({ pluginIndex: index, result: intermediate });
+      });
+      finalData = intermediate;
+    } else {
+      finalData = executePlugins(convertedArgs);
+    }
   }
 
   const finalLog = { message: "Run with", data: finalData };
   if (debugNanFlag) {
     finalLog.debugNan = debugDetails;
+  }
+  if (tracePluginsFlag && pluginTrace) {
+    finalLog.pluginTrace = pluginTrace;
   }
 
   // Output structured JSON with custom serialization for special numeric values

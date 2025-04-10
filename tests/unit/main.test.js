@@ -335,3 +335,33 @@ describe("Configuration CustomNaN via repositoryConfig.json", () => {
     readFileSyncSpy.mockRestore();
   });
 });
+
+describe("Plugin Transformation Trace Logging", () => {
+  test("should not include pluginTrace when no plugins are registered", () => {
+    const plugins = getPlugins();
+    plugins.length = 0;
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--trace-plugins", "--use-plugins", "50", "hello"]);
+    const output = getLoggedOutput(logSpy);
+    expect(output).not.toHaveProperty("pluginTrace");
+    logSpy.mockRestore();
+  });
+
+  test("should include pluginTrace with intermediate results when plugins are registered", () => {
+    const plugins = getPlugins();
+    plugins.length = 0;
+    const plugin1 = (data) => data.map(item => typeof item === 'number' ? item + 10 : item);
+    const plugin2 = (data) => data.map(item => typeof item === 'number' ? item * 2 : item);
+    registerPlugin(plugin1);
+    registerPlugin(plugin2);
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--trace-plugins", "--use-plugins", "5", "foo"]);
+    const output = getLoggedOutput(logSpy);
+    expect(output).toHaveProperty("pluginTrace");
+    expect(output.pluginTrace.length).toBe(2);
+    expect(output.pluginTrace[0]).toEqual({ pluginIndex: 0, result: [15, "foo"] });
+    expect(output.pluginTrace[1]).toEqual({ pluginIndex: 1, result: [30, "foo"] });
+    expect(output.data).toEqual([30, "foo"]);
+    logSpy.mockRestore();
+  });
+});
