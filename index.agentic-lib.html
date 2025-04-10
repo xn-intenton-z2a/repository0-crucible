@@ -23,7 +23,7 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="repository0-crucible" href="#repository0-crucible"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>repository0-crucible</h1>
-<p class="md-github"><code class="md-github">repository0-crucible</code> is a demo repository showcasing GitHub workflows imported from intentïon <a href="https://github.com/xn-intenton-z2a/agentic-lib" class="md-github">agentic‑lib</a>. It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, advanced CI/CD workflows, and new plugin transformation trace logging.</p>
+<p class="md-github"><code class="md-github">repository0-crucible</code> is a demo repository showcasing GitHub workflows imported from intentïon <a href="https://github.com/xn-intenton-z2a/agentic-lib" class="md-github">agentic‑lib</a>. It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, advanced CI/CD workflows, and enhanced plugin transformation trace logging.</p>
 <p class="md-github">To create a self-evolving agentic coding system of your own based on this one, see the <a href="./TEMPLATE-README.md" class="md-github">TEMPLATE-README.md</a> for more details.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="repository-template" href="#repository-template"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Repository Template</h2>
 <p class="md-github">The repository is intended as a template that includes:</p>
@@ -43,7 +43,7 @@
 <p class="md-github"><strong class="md-github">Automated CLI Argument Conversion:</strong> Automatically converts numeric strings (e.g. &quot;42&quot;, &quot;3.14&quot;), boolean strings (&quot;true&quot;, &quot;false&quot;), ISO 8601 dates, JSON formatted strings, and more. Non-numeric strings are trimmed and returned.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Enhanced NaN Handling:</strong></p>
+<p class="md-github"><strong class="md-github">Enhanced NaN Handling (Revamped):</strong></p>
 <ul class="md-github">
 <li class="md-github">
 <p class="md-github">Recognizes all variants of &quot;NaN&quot;, including Unicode variants such as &quot;ＮａＮ&quot; by normalizing inputs with trim and NFKC normalization.</p>
@@ -84,10 +84,9 @@
 <p class="md-github"><strong class="md-github">Environment Variable:</strong> Set the environment variable <code class="md-github">CUSTOM_NAN</code> to a non-empty string (that is not a variant of &quot;NaN&quot;) to configure a custom replacement. (Note: When using <code class="md-github">--dump-config</code>, the environment variable is ignored.)</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Debug Mode:</strong> Use <code class="md-github">--debug-nan</code> to output detailed diagnostic information for each conversion, including the normalized input and conversion method.</p>
+<p class="md-github"><strong class="md-github">Debug Mode:</strong> Use <code class="md-github">--debug-nan</code> to output detailed diagnostic information for each conversion, including the normalized input and the conversion method (default, native, or custom).</p>
 </li>
 </ul>
-<p class="md-github"><em class="md-github">The NaN handling logic has been consolidated to ensure uniform behavior across all variants and configurations.</em></p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Plugin Architecture and Trace Logging:</strong> Extend functionality by registering plugins using the provided API. When the CLI is run with the <code class="md-github">--use-plugins</code> flag, input arguments are processed through all registered plugins. Additionally, if you supply the <code class="md-github">--trace-plugins</code> flag, the CLI will output a detailed trace log of the transformation steps performed by each plugin.</p>
@@ -197,34 +196,10 @@ node src/lib/main.js NaN 100
 </code></pre>
 </li>
 </ul>
-<h2 class="md-github"><a class="md-github__anchor" name="plugin-system" href="#plugin-system"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Plugin System</h2>
-<p class="md-github">The plugin system allows you to register custom functions to transform or analyze the CLI output. Available functions:</p>
-<ul class="md-github">
-<li class="md-github"><code class="md-github">registerPlugin(plugin)</code>: Register a plugin function.</li>
-<li class="md-github"><code class="md-github">getPlugins()</code>: Retrieve currently registered plugins.</li>
-<li class="md-github"><code class="md-github">executePlugins(data)</code>: Process data through plugins when <code class="md-github">--use-plugins</code> is active.</li>
-<li class="md-github"><code class="md-github">registerNaNHandler(handler)</code>: Register a custom handler for converting &quot;NaN&quot;.</li>
-</ul>
-<h3 class="md-github"><a class="md-github__anchor" name="example-plugin" href="#example-plugin"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example Plugin</h3>
-<pre class="md-github"><code class="md-github language-javascript">import { registerPlugin } from &quot;@src/lib/main.js&quot;;
-
-// Append &quot;-custom&quot; to each string argument
-registerPlugin(data =&gt; data.map(item =&gt; typeof item === 'string' ? item + &quot;-custom&quot; : item));
-</code></pre>
-<p class="md-github">Run the CLI with:</p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --use-plugins 100 hello
-</code></pre>
-<p class="md-github">Output:</p>
-<pre class="md-github"><code class="md-github language-json">{ &quot;message&quot;: &quot;Run with&quot;, &quot;data&quot;: [100, &quot;hello-custom&quot;] }
-</code></pre>
-<h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
-<p class="md-github">We welcome contributions! Please review our <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines on how to contribute. All contributions will be validated against the automated LLM-driven regeneration pipeline.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
-<p class="md-github">Released under the MIT License (see <a href="./LICENSE" class="md-github">LICENSE</a>).</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-10T21:54:08.271Z</p>
+    <p>Generated on 2025-04-10T21:54:43.872Z</p>
   </footer>
 </body>
 </html>
