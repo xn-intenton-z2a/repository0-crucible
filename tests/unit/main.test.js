@@ -81,6 +81,13 @@ describe("CLI Argument Conversion", () => {
     expect(logSpy).toHaveBeenCalledWith("Run with:", [42, true, "hello"]);
     logSpy.mockRestore();
   });
+
+  test("should trim whitespace around 'NaN' and handle it as a string by default", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["   NaN   "]);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", ["NaN"]);
+    logSpy.mockRestore();
+  });
 });
 
 describe("Plugin Integration in CLI", () => {
