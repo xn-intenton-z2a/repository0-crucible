@@ -30,120 +30,120 @@ describe("Main Module Import", () => {
 });
 
 describe("Default Demo Output", () => {
-  test("should terminate without error for empty args passed explicitly", () => {
+  test("should terminate without error for empty args passed explicitly", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main([]);
+    await main([]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [] });
     logSpy.mockRestore();
   });
 
-  test("should terminate without error when called without arguments", () => {
+  test("should terminate without error when called without arguments", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main();
+    await main();
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [] });
     logSpy.mockRestore();
   });
 });
 
 describe("CLI Argument Conversion", () => {
-  test("should convert numeric strings to numbers", () => {
+  test("should convert numeric strings to numbers", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["42", "3.14"]);
+    await main(["42", "3.14"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [42, 3.14] });
     logSpy.mockRestore();
   });
 
-  test("should convert boolean strings to booleans", () => {
+  test("should convert boolean strings to booleans", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["true", "false"]);
+    await main(["true", "false"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [true, false] });
     logSpy.mockRestore();
   });
 
-  test("should leave non-numeric strings unchanged", () => {
+  test("should leave non-numeric strings unchanged", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["hello", "world"]);
+    await main(["hello", "world"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["hello", "world"] });
     logSpy.mockRestore();
   });
 
-  test("should handle special case 'NaN' as a string by default", () => {
+  test("should handle special case 'NaN' as a string by default", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["NaN", "100"]);
+    await main(["NaN", "100"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["NaN", 100] });
     logSpy.mockRestore();
   });
 
-  test("should convert valid ISO 8601 date strings to Date objects", () => {
+  test("should convert valid ISO 8601 date strings to Date objects", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const validISO = "2023-10-10T12:30:00Z";
-    main([validISO]);
+    await main([validISO]);
     const loggedOutput = getLoggedOutput(logSpy);
     expect(new Date(loggedOutput.data[0]).toISOString()).toEqual(new Date(validISO).toISOString());
     logSpy.mockRestore();
   });
 
-  test("should not convert invalid ISO 8601 date strings and leave them unchanged", () => {
+  test("should not convert invalid ISO 8601 date strings and leave them unchanged", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const invalidISO = "2023-13-01T00:00:00Z";
-    main([invalidISO]);
+    await main([invalidISO]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [invalidISO.trim()] });
     logSpy.mockRestore();
   });
 
-  test("should convert 'NaN' to numeric NaN when --native-nan flag is provided", () => {
+  test("should convert 'NaN' to numeric NaN when --native-nan flag is provided", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--native-nan", "NaN", "100"]);
+    await main(["--native-nan", "NaN", "100"]);
     const loggedOutput = getLoggedOutput(logSpy);
-    expect(isNaN(loggedOutput.data[0])).toBe(true);
+    expect(Number.isNaN(loggedOutput.data[0])).toBe(true);
     expect(loggedOutput.data[1]).toBe(100);
     logSpy.mockRestore();
   });
 
-  test("should trim arguments and convert strings correctly", () => {
+  test("should trim arguments and convert strings correctly", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["   42   ", "  true ", "   hello   "]);
+    await main(["   42   ", "  true ", "   hello   "]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [42, true, "hello"] });
     logSpy.mockRestore();
   });
 
-  test("should trim whitespace around 'NaN' and handle it as a string by default", () => {
+  test("should trim whitespace around 'NaN' and handle it as a string by default", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["   NaN   "]);
+    await main(["   NaN   "]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["NaN"] });
     logSpy.mockRestore();
   });
 
-  test("should handle lowercase 'nan' as a string by default", () => {
+  test("should handle lowercase 'nan' as a string by default", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["nan", "100"]);
+    await main(["nan", "100"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["nan", 100] });
     logSpy.mockRestore();
   });
 
-  test("should handle uppercase 'NAN' as a string by default", () => {
+  test("should handle uppercase 'NAN' as a string by default", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["NAN", "100"]);
+    await main(["NAN", "100"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["NAN", 100] });
     logSpy.mockRestore();
   });
 
-  test("should convert lowercase 'nan' to numeric NaN when --native-nan flag is provided", () => {
+  test("should convert lowercase 'nan' to numeric NaN when --native-nan flag is provided", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--native-nan", "nan", "100"]);
+    await main(["--native-nan", "nan", "100"]);
     const loggedOutput = getLoggedOutput(logSpy);
-    expect(isNaN(loggedOutput.data[0])).toBe(true);
+    expect(Number.isNaN(loggedOutput.data[0])).toBe(true);
     expect(loggedOutput.data[1]).toBe(100);
     logSpy.mockRestore();
   });
 
-  test("should convert 'NaN' to numeric NaN when configuration file sets nativeNan to true", () => {
+  test("should convert 'NaN' to numeric NaN when configuration file sets nativeNan to true", async () => {
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"nativeNan": true}');
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["NaN", "100"]);
+    await main(["NaN", "100"]);
     const loggedOutput = getLoggedOutput(logSpy);
-    expect(isNaN(loggedOutput.data[0])).toBe(true);
+    expect(Number.isNaN(loggedOutput.data[0])).toBe(true);
     expect(loggedOutput.data[1]).toBe(100);
     logSpy.mockRestore();
     existsSyncSpy.mockRestore();
@@ -152,21 +152,21 @@ describe("CLI Argument Conversion", () => {
 });
 
 describe("Plugin Integration in CLI", () => {
-  test("should pass arguments unchanged when --use-plugins flag is provided but no plugins are registered", () => {
+  test("should pass arguments unchanged when --use-plugins flag is provided but no plugins are registered", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const plugins = getPlugins();
     plugins.length = 0;
-    main(["--use-plugins", "50", "hello"]);
+    await main(["--use-plugins", "50", "hello"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [50, "hello"] });
     logSpy.mockRestore();
   });
 
-  test("should process arguments through plugins when a custom plugin is registered", () => {
+  test("should process arguments through plugins when a custom plugin is registered", async () => {
     const plugins = getPlugins();
     plugins.length = 0;
     registerPlugin(data => data.map(item => typeof item === 'number' ? item * 2 : item));
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--use-plugins", "50", "hello"]);
+    await main(["--use-plugins", "50", "hello"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [100, "hello"] });
     logSpy.mockRestore();
   });
@@ -178,17 +178,27 @@ describe("Custom NaN Handler Plugin", () => {
     registerNaNHandler(null);
   });
 
-  test("should use custom NaN handler when registered", () => {
+  test("should use custom NaN handler when registered (synchronous)", async () => {
     registerNaNHandler(() => 'customNaN');
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["NaN", "100"]);
+    await main(["NaN", "100"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ['customNaN', 100] });
     logSpy.mockRestore();
   });
 
-  test("should fall back to default conversion when custom handler is not registered", () => {
+  test("should use async custom NaN handler when registered", async () => {
+    registerNaNHandler(async () => {
+      return new Promise(resolve => setTimeout(() => resolve('asyncCustomNaN'), 10));
+    });
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["NaN", "100"]);
+    await main(["NaN", "100"]);
+    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ['asyncCustomNaN', 100] });
+    logSpy.mockRestore();
+  });
+
+  test("should fall back to default conversion when custom handler is not registered", async () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    await main(["NaN", "100"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["NaN", 100] });
     logSpy.mockRestore();
   });
@@ -200,39 +210,35 @@ describe("Strict NaN Mode", () => {
     registerNaNHandler(null);
   });
 
-  test("should throw an error in strict mode when no custom handler is registered (using CLI flag)", () => {
-    expect(() => {
-      main(["--strict-nan", "NaN", "100"]);
-    }).toThrow(/Strict NaN mode error/);
+  test("should throw an error in strict mode when no custom handler is registered (using CLI flag)", async () => {
+    await expect(main(["--strict-nan", "NaN", "100"]).catch(e => { throw e; })).rejects.toThrow(/Strict NaN mode error/);
   });
 
-  test("should use custom handler in strict mode and log an info message (using CLI flag)", () => {
+  test("should use custom handler in strict mode and log an info message (using CLI flag)", async () => {
     registerNaNHandler(() => 'customStrictNaN');
     const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--strict-nan", "NaN", "100"]);
+    await main(["--strict-nan", "NaN", "100"]);
     expect(infoSpy).toHaveBeenCalledWith("Strict NaN mode active: using custom NaN handler.");
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ['customStrictNaN', 100] });
     infoSpy.mockRestore();
     logSpy.mockRestore();
   });
 
-  test("should throw an error in strict mode when enabled via configuration file without custom handler", () => {
+  test("should throw an error in strict mode when enabled via configuration file without custom handler", async () => {
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"strictNan": true}');
-    expect(() => {
-      main(["NaN", "100"]);
-    }).toThrow(/Strict NaN mode error/);
+    await expect(main(["NaN", "100"]).catch(e => { throw e; })).rejects.toThrow(/Strict NaN mode error/);
     existsSyncSpy.mockRestore();
     readFileSyncSpy.mockRestore();
   });
 
-  test("should use custom handler in strict mode when enabled via configuration file and log an info message", () => {
+  test("should use custom handler in strict mode when enabled via configuration file and log an info message", async () => {
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"strictNan": true, "customNan": "customConfigStrictNaN"}');
     const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["NaN", "100"]);
+    await main(["NaN", "100"]);
     expect(infoSpy).toHaveBeenCalledWith("Strict NaN mode active: using custom NaN handler.");
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ['customConfigStrictNaN', 100] });
     existsSyncSpy.mockRestore();
@@ -248,9 +254,9 @@ describe("Debug NaN Mode", () => {
     registerNaNHandler(null);
   });
 
-  test("should include debug info for NaN conversion when --debug-nan flag is provided", () => {
+  test("should include debug info for NaN conversion when --debug-nan flag is provided", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--debug-nan", "NaN", "100"]);
+    await main(["--debug-nan", "NaN", "100"]);
     const output = getLoggedOutput(logSpy);
     expect(output).toHaveProperty('debugNan');
     expect(output.debugNan).toEqual([
@@ -259,9 +265,9 @@ describe("Debug NaN Mode", () => {
     logSpy.mockRestore();
   });
 
-  test("should include debug info with native NaN conversion when both --native-nan and --debug-nan flags are provided", () => {
+  test("should include debug info with native NaN conversion when both --native-nan and --debug-nan flags are provided", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--debug-nan", "--native-nan", "NaN", "100"]);
+    await main(["--debug-nan", "--native-nan", "NaN", "100"]);
     const output = getLoggedOutput(logSpy);
     expect(output).toHaveProperty('debugNan');
     expect(Number.isNaN(output.debugNan[0].converted)).toBe(true);
@@ -272,9 +278,9 @@ describe("Debug NaN Mode", () => {
 });
 
 describe("Special Numeric Values Serialization", () => {
-  test("should serialize Infinity and -Infinity to special strings", () => {
+  test("should serialize Infinity and -Infinity to special strings", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["Infinity", "-Infinity", "100"]);
+    await main(["Infinity", "-Infinity", "100"]);
     const output = getLoggedOutput(logSpy);
     expect(output).toEqual({ message: "Run with", data: [Infinity, -Infinity, 100] });
     logSpy.mockRestore();
@@ -282,25 +288,25 @@ describe("Special Numeric Values Serialization", () => {
 });
 
 describe("CLI NaN Handling", () => {
-  test("should process 'NaN' argument correctly when passed as a single parameter", () => {
+  test("should process 'NaN' argument correctly when passed as a single parameter", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["NaN"]);
+    await main(["NaN"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["NaN"] });
     logSpy.mockRestore();
   });
 
-  test("should process Unicode variant 'ＮａＮ' as a string by default", () => {
+  test("should process Unicode variant 'ＮａＮ' as a string by default", async () => {
     const unicodeNan = "ＮａＮ";
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main([unicodeNan]);
+    await main([unicodeNan]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [unicodeNan] });
     logSpy.mockRestore();
   });
 
-  test("should convert Unicode variant 'ＮａＮ' to numeric NaN when --native-nan flag is provided", () => {
+  test("should convert Unicode variant 'ＮａＮ' to numeric NaN when --native-nan flag is provided", async () => {
     const unicodeNan = "ＮａＮ";
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--native-nan", unicodeNan, "200"]);
+    await main(["--native-nan", unicodeNan, "200"]);
     const output = getLoggedOutput(logSpy);
     expect(Number.isNaN(output.data[0])).toBe(true);
     expect(output.data[1]).toBe(200);
@@ -309,26 +315,24 @@ describe("CLI NaN Handling", () => {
 });
 
 describe("CLI Custom --custom-nan Flag", () => {
-  test("should convert 'NaN' using custom replacement provided with --custom-nan flag", () => {
+  test("should convert 'NaN' using custom replacement provided with --custom-nan flag (sync)", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--custom-nan", "customReplacement", "NaN", "100"]);
+    await main(["--custom-nan", "customReplacement", "NaN", "100"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["customReplacement", 100] });
     logSpy.mockRestore();
   });
 
-  test("should throw error if --custom-nan is provided without a replacement", () => {
-    expect(() => {
-      main(["--custom-nan", "NaN"]);
-    }).toThrow("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
+  test("should throw error if --custom-nan is provided without a replacement", async () => {
+    await expect(main(["--custom-nan", "NaN"]).catch(e => { throw e; })).rejects.toThrow("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
   });
 });
 
 describe("Configuration CustomNaN via repositoryConfig.json", () => {
-  test("should convert 'NaN' using custom replacement from configuration file", () => {
+  test("should convert 'NaN' using custom replacement from configuration file", async () => {
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"customNan": "configCustomReplacement"}');
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["NaN", "100"]);
+    await main(["NaN", "100"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["configCustomReplacement", 100] });
     logSpy.mockRestore();
     existsSyncSpy.mockRestore();
@@ -341,11 +345,11 @@ describe("Environment Custom NaN Handler", () => {
     registerNaNHandler(null);
   });
 
-  test("should convert 'NaN' using CUSTOM_NAN environment variable when no CLI flag or repository config is set", () => {
+  test("should convert 'NaN' using CUSTOM_NAN environment variable when no CLI flag or repository config is set", async () => {
     process.env.CUSTOM_NAN = "envCustomReplacement";
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(false);
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["NaN", "100"]);
+    await main(["NaN", "100"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["envCustomReplacement", 100] });
     logSpy.mockRestore();
     existsSyncSpy.mockRestore();
@@ -354,17 +358,17 @@ describe("Environment Custom NaN Handler", () => {
 });
 
 describe("Plugin Transformation Trace Logging", () => {
-  test("should not include pluginTrace when no plugins are registered", () => {
+  test("should not include pluginTrace when no plugins are registered", async () => {
     const plugins = getPlugins();
     plugins.length = 0;
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--trace-plugins", "--use-plugins", "50", "hello"]);
+    await main(["--trace-plugins", "--use-plugins", "50", "hello"]);
     const output = getLoggedOutput(logSpy);
     expect(output).not.toHaveProperty("pluginTrace");
     logSpy.mockRestore();
   });
 
-  test("should include pluginTrace with intermediate results when plugins are registered", () => {
+  test("should include pluginTrace with intermediate results when plugins are registered", async () => {
     const plugins = getPlugins();
     plugins.length = 0;
     const plugin1 = (data) => data.map(item => typeof item === 'number' ? item + 10 : item);
@@ -372,7 +376,7 @@ describe("Plugin Transformation Trace Logging", () => {
     registerPlugin(plugin1);
     registerPlugin(plugin2);
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--trace-plugins", "--use-plugins", "5", "foo"]);
+    await main(["--trace-plugins", "--use-plugins", "5", "foo"]);
     const output = getLoggedOutput(logSpy);
     expect(output).toHaveProperty("pluginTrace");
     expect(output.pluginTrace.length).toBe(2);
@@ -384,10 +388,10 @@ describe("Plugin Transformation Trace Logging", () => {
 });
 
 describe("Dump Config Flag", () => {
-  test("should output effective config with default values", () => {
+  test("should output effective config with default values", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(false);
-    main(["--dump-config"]);
+    await main(["--dump-config"]);
     const output = JSON.parse(logSpy.mock.calls[0][0]);
     expect(output).toHaveProperty("nativeNan", false);
     expect(output).toHaveProperty("strictNan", false);
@@ -397,12 +401,12 @@ describe("Dump Config Flag", () => {
     existsSyncSpy.mockRestore();
   });
 
-  test("should output effective config with flags and config file values", () => {
+  test("should output effective config with flags and config file values", async () => {
     const repoConfig = { nativeNan: true, strictNan: true, customNan: "cliCustom" };
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(repoConfig));
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--dump-config", "--custom-nan", "cliCustom", "--native-nan"]);
+    await main(["--dump-config", "--custom-nan", "cliCustom", "--native-nan"]);
     const output = JSON.parse(logSpy.mock.calls[0][0]);
     expect(output).toHaveProperty("nativeNan", true);
     expect(output).toHaveProperty("strictNan", true);
