@@ -23,9 +23,9 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="repository0-crucible" href="#repository0-crucible"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>repository0-crucible</h1>
-<p class="md-github"><code class="md-github">repository0-crucible</code> is a demo repository that showcases the GitHub workflows imported from intentïon <a href="https://github.com/xn-intenton-z2a/repository0-crucible" class="md-github">agentic‑lib</a>. Its primary purpose is to demonstrate these automated CI/CD workflows.</p>
-<p class="md-github">To create a self-evolving agentic coding system of your own based on this one see the <a href="./TEMPLATE-README.md" class="md-github">TEMPLATE-README.md</a> for more details.</p>
-<p class="md-github">This readme shall evolve into a JavaScript library based on the seed CONTRIBUTING files in [./seeds].</p>
+<p class="md-github"><code class="md-github">repository0-crucible</code> is a demo repository that showcases the GitHub workflows imported from intentïon <a href="https://github.com/xn-intenton-z2a/repository0-crucible" class="md-github">agentic‑lib</a>. Its primary purpose is to demonstrate a unified automated CLI tool with robust argument conversion and a flexible plugin architecture.</p>
+<p class="md-github">To create a self-evolving agentic coding system of your own based on this one, see the <a href="./TEMPLATE-README.md" class="md-github">TEMPLATE-README.md</a> for more details.</p>
+<p class="md-github">This repository provides a unified project identity under the name repository0-crucible.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="repository-template" href="#repository-template"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Repository Template</h2>
 <p class="md-github">The repository is intended as a template that includes:</p>
 <ul class="md-github">
@@ -33,7 +33,7 @@
 <p class="md-github">A Template Base: A starting point for new projects.</p>
 </li>
 <li class="md-github">
-<p class="md-github">A Running Experiment: An example implementation that demonstrates one way to use the template.</p>
+<p class="md-github">A Running Experiment: An example implementation showcasing automated CLI argument conversion, plugin architecture, and advanced CI/CD workflows.</p>
 </li>
 <li class="md-github">
 <p class="md-github">Example GitHub Workflows from <a href="https://github.com/xn-intenton-z2a/repository0-crucible" class="md-github">agentic‑lib</a> which hand off to reusable workflows.</p>
@@ -49,11 +49,10 @@
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
 <li class="md-github">Automated conversion of CLI arguments: Numeric strings like &quot;42&quot; or &quot;3.14&quot; are automatically converted to numbers, boolean strings like &quot;true&quot; or &quot;false&quot; are converted to booleans, while non-numeric strings are trimmed and returned.</li>
-<li class="md-github">Special Handling for 'NaN': By default, the CLI tool preserves the literal string 'NaN' (even when surrounded by whitespace) for clarity. To convert 'NaN' to numeric NaN, use the --native-nan flag or set the environment variable NATIVE_NAN to &quot;true&quot;.</li>
+<li class="md-github">Special Handling for 'NaN': By default, the CLI tool preserves any case variation of the string 'NaN' (e.g., &quot;NaN&quot;, &quot;nan&quot;, &quot;NAN&quot;) for clarity. To convert any variation of 'NaN' to numeric NaN, use the --native-nan flag or set the environment variable NATIVE_NAN to &quot;true&quot;.</li>
 <li class="md-github">ISO 8601 Date Parsing: ISO formatted date strings are automatically converted to JavaScript Date objects if valid.</li>
-<li class="md-github">Demonstration of GitHub workflows for CI/CD setups.</li>
-<li class="md-github">Template based structure ideal for evolving JavaScript libraries.</li>
-<li class="md-github">Plugin Architecture: Extend the functionality by registering plugins to transform or analyze the CLI output. Use the CLI flag <code class="md-github">--use-plugins</code> to activate plugin processing.</li>
+<li class="md-github">Demonstration of automated CI/CD workflows for code regeneration and testing.</li>
+<li class="md-github">Unified Plugin Architecture: Extend functionality by registering plugins to transform or analyze the CLI output using the <code class="md-github">--use-plugins</code> flag.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="llm-driven-automated-code-regeneration-workflow" href="#llm-driven-automated-code-regeneration-workflow"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>LLM-Driven Automated Code Regeneration Workflow</h2>
 <p class="md-github">This project incorporates an automated code regeneration pipeline powered by a large language model (LLM) capable of processing over 100,000 tokens. The workflow is integrated with our CI/CD pipelines to ensure that source files and documentation are automatically updated to meet project standards.</p>
@@ -65,8 +64,8 @@
 </ul>
 <h3 class="md-github"><a class="md-github__anchor" name="integration-with-cicd" href="#integration-with-cicd"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Integration with CI/CD</h3>
 <ul class="md-github">
-<li class="md-github">The pipeline runs as a part of our scheduled CI/CD jobs and on-demand triggers.</li>
-<li class="md-github">Regenerated outputs replace older versions, ensuring that the repository always follows the latest guidelines.</li>
+<li class="md-github">The pipeline runs as part of our scheduled CI/CD jobs and on-demand triggers.</li>
+<li class="md-github">Regenerated outputs replace older versions, ensuring that the repository consistently reflects the repository0-crucible identity.</li>
 </ul>
 <h3 class="md-github"><a class="md-github__anchor" name="guidelines-for-contributors" href="#guidelines-for-contributors"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Guidelines for Contributors</h3>
 <ul class="md-github">
@@ -80,7 +79,7 @@
 <li class="md-github">For manual triggering, use the npm script provided (see below).</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="plugin-system" href="#plugin-system"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Plugin System</h2>
-<p class="md-github">The plugin system allows developers to register custom functions (plugins) that transform the output of the CLI tool. This makes it easy to extend and customize the functionality without altering the core code.</p>
+<p class="md-github">The plugin system allows developers to register custom functions (plugins) that transform the output of the CLI tool. This makes it easy to extend and customize functionality without altering the core code.</p>
 <h3 class="md-github"><a class="md-github__anchor" name="how-it-works" href="#how-it-works"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>How It Works</h3>
 <ul class="md-github">
 <li class="md-github">
@@ -92,7 +91,7 @@
 </ul>
 </li>
 <li class="md-github">
-<p class="md-github">When you run the CLI with the <code class="md-github">--use-plugins</code> flag, the tool will process the input arguments through any registered plugins. If no plugins are registered, the arguments remain unchanged.</p>
+<p class="md-github">When you run the CLI with the <code class="md-github">--use-plugins</code> flag, the tool will process input arguments through any registered plugins. If no plugins are registered, the arguments remain unchanged.</p>
 </li>
 </ul>
 <h3 class="md-github"><a class="md-github__anchor" name="example-plugin" href="#example-plugin"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example Plugin</h3>
@@ -140,7 +139,7 @@ To convert the string &quot;NaN&quot; to the numeric NaN, use the --native-nan f
 
   </section>
   <footer>
-    <p>Generated on 2025-04-10T15:45:59.505Z</p>
+    <p>Generated on 2025-04-10T15:54:12.559Z</p>
   </footer>
 </body>
 </html>

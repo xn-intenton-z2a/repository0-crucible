@@ -1,14 +1,22 @@
 {
-  "openIssues": 62,
-  "issuesClosedLastHour": 14,
+  "openIssues": 61,
+  "issuesClosedLastHour": 16,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 4,
-  "diffMinutesMain": 4,
-  "commitsLastHour": 7,
+  "diffMinutes": 0,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 8,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
+    {
+      "time": "15:53",
+      "message": "Enable case-insensitive handling for NaN CLI argument conversion..."
+    },
+    {
+      "time": "15:49",
+      "message": "Unified project identity to repository0-crucible across source t..."
+    },
     {
       "time": "15:41",
       "message": "Refined NaN handling in CLI argument conversion and updated inli..."
@@ -20,14 +28,6 @@
     {
       "time": "15:29",
       "message": "Refined NaN handling in CLI argument conversion and updated READ..."
-    },
-    {
-      "time": "15:23",
-      "message": "Refined CLI argument conversion logic to trim input and handle e..."
-    },
-    {
-      "time": "15:09",
-      "message": "Updated CLI argument conversion to ensure NaN is preserved by de..."
     }
   ],
   "branches": {
@@ -37,5 +37,5 @@
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-10T15:45:49.304Z"
+  "generatedAt": "2025-04-10T15:54:02.371Z"
 }
