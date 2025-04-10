@@ -440,3 +440,33 @@ describe("Configuration Precedence", () => {
     delete process.env.CUSTOM_NAN;
   });
 });
+
+describe("Dynamic Configuration Refresh", () => {
+  test("should update configuration dynamically when --refresh-config flag is provided", async () => {
+    const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
+    const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"nativeNan": true, "customNan": "dynamicCustom", "strictNan": false}');
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    await main(["--refresh-config", "--dump-config"]);
+    const output = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(output.nativeNan).toBe(true);
+    expect(output.strictNan).toBe(false);
+    expect(output.customNan).toBe("dynamicCustom");
+    expect(infoSpy).toHaveBeenCalledWith("Dynamic configuration refresh applied", { effectiveNativeNan: true, effectiveStrictNan: false, effectiveCustomNan: "dynamicCustom" });
+    infoSpy.mockRestore();
+    logSpy.mockRestore();
+    existsSyncSpy.mockRestore();
+    readFileSyncSpy.mockRestore();
+  });
+
+  test("should start config watcher when --serve flag is provided", async () => {
+    const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
+    const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    await main(["--serve", "NaN", "100"]);
+    expect(infoSpy).toHaveBeenCalledWith("Started configuration file watcher for dynamic configuration refresh.");
+    infoSpy.mockRestore();
+    existsSyncSpy.mockRestore();
+  });
+});
+
+// End of tests

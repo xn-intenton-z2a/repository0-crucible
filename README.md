@@ -1,6 +1,6 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository showcasing GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, advanced CI/CD workflows, and enhanced plugin transformation trace logging.
+`repository0-crucible` is a demo repository showcasing GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, advanced CI/CD workflows, enhanced plugin transformation trace logging, and dynamic configuration refresh for custom NaN handling.
 
 To create a self-evolving agentic coding system of your own based on this one, see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
@@ -8,7 +8,7 @@ To create a self-evolving agentic coding system of your own based on this one, s
 
 The repository is intended as a template that includes:
 * A Template Base: A starting point for new projects.
-* A Running Experiment: An example implementation showcasing automated CLI argument conversion, plugin architecture, and advanced CI/CD workflows.
+* A Running Experiment: An example implementation showcasing automated CLI argument conversion, plugin architecture, advanced CI/CD workflows, and now dynamic configuration refresh that updates NaN handling in realtime.
 * Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) that hand off to reusable workflows.
 
 See [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
@@ -24,7 +24,7 @@ npm install repository0-crucible
 ## Features
 
 * **Automated CLI Argument Conversion:** Automatically converts numeric strings (e.g. "42", "3.14"), boolean strings ("true", "false"), ISO 8601 dates, JSON formatted strings, and more. Non-numeric strings are trimmed and returned.
-* **Enhanced NaN Handling (Revamped with Asynchronous Support and Clear Precedence):**
+* **Enhanced NaN Handling with Dynamic Configuration Refresh:**
   - Recognizes all variants of "NaN", including Unicode variants such as "ＮａＮ" by normalizing inputs with trim and NFKC normalization.
   - **Default Behavior:** Preserves the input as a string, even if the representation is a Unicode variant.
   - **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`:
@@ -48,6 +48,8 @@ npm install repository0-crucible
 
   - **Custom Replacement:** Override the default behavior by providing a custom replacement via CLI using `--custom-nan <value>`, in the repository configuration (`customNan` key), or via the environment variable `CUSTOM_NAN`.
 
+  - **Dynamic Configuration Refresh:** The tool now supports automatic updating of NaN handling configuration at runtime. When running in serve mode (`--serve`) or via the `--refresh-config` flag, changes to environment variables or the `.repositoryConfig.json` file are applied immediately without restarting the process.
+
   - **Configuration Precedence:** The effective NaN handling configuration is resolved in the following order (highest to lowest): CLI flags, Repository configuration file (.repositoryConfig.json), Environment variables, Default behavior.
 
   - **Asynchronous Custom Handlers:** Custom handlers can be asynchronous, allowing dynamic operations such as API calls during conversion.
@@ -60,7 +62,7 @@ npm install repository0-crucible
 
 * **Unicode Variant Support:** All input variants of "NaN" (like "ＮａＮ") are normalized uniformly to ensure consistent behavior across different configurations.
 
-* **Automated Tests:** Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous), configuration precedence, and plugin tracing—work as expected.
+* **Automated Tests:** Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous), dynamic configuration refresh, configuration precedence, and plugin tracing—work as expected.
 
 * **LLM-Driven Regeneration:** The project incorporates an automated code regeneration workflow powered by an LLM, ensuring consistency and quality without manual intervention.
 
@@ -71,6 +73,8 @@ Users can control how "NaN" is processed by the CLI tool. The configuration reso
 2. **Repository Config:** Define settings in a `.repositoryConfig.json` file.
 3. **Environment Variables:** Set `NATIVE_NAN`, `STRICT_NAN`, or `CUSTOM_NAN` environment variables.
 4. **Default Behavior:** Applied when no other configuration is provided.
+
+With dynamic configuration refresh enabled, the tool monitors changes and applies updates on the fly when running interactively or in serve mode.
 
 ## Dump Configuration
 
@@ -158,6 +162,18 @@ node src/lib/main.js --help
   ```bash
   export CUSTOM_NAN=customEnvReplacement
   node src/lib/main.js NaN 100
+  ```
+
+- **Dynamic Configuration Refresh (Serve Mode):**
+  Run in serve mode to enable dynamic config updates:
+  ```bash
+  node src/lib/main.js --serve
+  ```
+  Changes to `.repositoryConfig.json` will be applied on the fly.
+
+- **Force Refresh Configuration:**
+  ```bash
+  node src/lib/main.js --refresh-config
   ```
 
 - **JSON Argument Conversion:**

@@ -12,9 +12,12 @@ const plugins = [];
 // Global variable for custom NaN handler
 let customNaNHandler = null;
 
-// Configurable flags for handling 'NaN'
+// Global configuration flags for handling 'NaN'
 let useNativeNanConfig = false;
 let useStrictNan = false;
+
+// Configuration file watcher
+let configWatcher = null;
 
 /**
  * Register a new plugin
@@ -223,26 +226,68 @@ function resolveNaNConfig(args) {
 }
 
 /**
- * Main function for the CLI.
- * Processes CLI arguments using conversion logic and plugin integration.
- * Handles NaN conversion with prioritized configuration from CLI, configuration file, and environment variables.
- *
- * @param {string[]} args - CLI arguments
+ * Dynamically updates the global NaN configuration from repository config and environment variables.
+ * This enables the tool to refresh its configuration at runtime without a restart.
  */
-export async function main(args = []) {
-  // Resolve NaN configuration with defined precedence: CLI > Repo Config > Environment > Default
-  const { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan } = resolveNaNConfig(args || []);
+function updateGlobalNaNConfig() {
+  const { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan } = resolveNaNConfig([]);
   useNativeNanConfig = effectiveNativeNan;
   useStrictNan = effectiveStrictNan;
   if (effectiveCustomNan) {
     registerNaNHandler(() => effectiveCustomNan);
+  } else {
+    registerNaNHandler(null);
+  }
+  console.info("Dynamic configuration refresh applied", { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan });
+}
+
+/**
+ * Starts a watcher on .repositoryConfig.json to dynamically refresh NaN configuration when changes occur.
+ */
+function startConfigWatcher() {
+  if (fs.existsSync(".repositoryConfig.json")) {
+    configWatcher = fs.watch(".repositoryConfig.json", (eventType) => {
+      if (eventType === "change") {
+        updateGlobalNaNConfig();
+      }
+    });
+    console.info("Started configuration file watcher for dynamic configuration refresh.");
+  }
+}
+
+/**
+ * Main function for the CLI.
+ * Processes CLI arguments using conversion logic and plugin integration.
+ * Handles NaN conversion with prioritized configuration from CLI, configuration file, environment variables, and supports dynamic refresh.
+ *
+ * @param {string[]} args - CLI arguments
+ */
+export async function main(args = []) {
+  // If the --refresh-config flag is provided, update configuration dynamically
+  if (args.includes("--refresh-config")) {
+    updateGlobalNaNConfig();
+  } else {
+    // Resolve configuration based on current CLI args; dynamic config refresh applies to non-CLI overrides
+    const { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan } = resolveNaNConfig(args || []);
+    useNativeNanConfig = effectiveNativeNan;
+    useStrictNan = effectiveStrictNan;
+    if (effectiveCustomNan) {
+      registerNaNHandler(() => effectiveCustomNan);
+    }
+  }
+
+  // If serving mode is enabled, start configuration watcher for dynamic updates
+  if (args.includes("--serve")) {
+    if (!configWatcher) {
+      startConfigWatcher();
+    }
   }
 
   if (args.includes("--dump-config")) {
     const configDump = {
-      nativeNan: effectiveNativeNan,
-      strictNan: effectiveStrictNan,
-      customNan: effectiveCustomNan,
+      nativeNan: useNativeNanConfig,
+      strictNan: useStrictNan,
+      customNan: customNaNHandler ? customNaNHandler() : null,
       plugins: getPlugins().map(fn => fn.name || "anonymous"),
     };
     console.log(JSON.stringify(configDump));
@@ -252,7 +297,7 @@ export async function main(args = []) {
   // Remove configuration flags from arguments before processing
   const processedArgs = [];
   for (let i = 0; i < args.length; i++) {
-    if (["--use-plugins", "--native-nan", "--strict-nan", "--debug-nan", "--trace-plugins", "--dump-config"].includes(args[i])) continue;
+    if (["--use-plugins", "--native-nan", "--strict-nan", "--debug-nan", "--trace-plugins", "--dump-config", "--serve", "--refresh-config"].includes(args[i])) continue;
     if (args[i] === "--custom-nan") { i++; continue; }
     processedArgs.push(args[i]);
   }
