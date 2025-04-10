@@ -52,14 +52,49 @@
 <li class="md-github">Special handling of the string &quot;NaN&quot; is implemented to preserve it as a string in order to serve as a special-case marker.</li>
 <li class="md-github">Demonstration of GitHub workflows for CI/CD setups.</li>
 <li class="md-github">Template based structure ideal for evolving JavaScript libraries.</li>
+<li class="md-github">Plugin Architecture: Extend the functionality by registering plugins to transform or analyze the CLI output. Use the CLI flag <code class="md-github">--use-plugins</code> to activate plugin processing.</li>
 </ul>
+<h2 class="md-github"><a class="md-github__anchor" name="plugin-system" href="#plugin-system"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Plugin System</h2>
+<p class="md-github">The plugin system allows developers to register custom functions (plugins) that transform the output of the CLI tool. This makes it easy to extend and customize the JSON Schema diff functionality without altering the core code.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="how-it-works" href="#how-it-works"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>How It Works</h3>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">The plugin manager is now integrated into the main module in <code class="md-github">src/lib/main.js</code> and provides three main functions that are exported:</p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">registerPlugin(plugin)</code>: Register a new plugin (a function) that takes data as input and returns transformed data.</li>
+<li class="md-github"><code class="md-github">getPlugins()</code>: Retrieve the list of currently registered plugins.</li>
+<li class="md-github"><code class="md-github">executePlugins(data)</code>: Process data through all registered plugins sequentially.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">When you run the CLI with the <code class="md-github">--use-plugins</code> flag, the tool will automatically process the input arguments through the registered plugins. For demonstration purposes, if no plugin is registered, a default plugin that doubles numeric values is automatically added.</p>
+</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="example-plugin" href="#example-plugin"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example Plugin</h3>
+<p class="md-github">Below is an example of a simple plugin that appends &quot;-custom&quot; to each string argument:</p>
+<pre class="md-github"><code class="md-github language-javascript">import { registerPlugin } from &quot;@src/lib/main.js&quot;;
+
+// A plugin that appends &quot;-custom&quot; to string values
+registerPlugin(data =&gt; data.map(item =&gt; typeof item === 'string' ? item + &quot;-custom&quot; : item));
+</code></pre>
+<p class="md-github">After registering your plugin, run the CLI as follows:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --use-plugins 100 hello
+</code></pre>
+<p class="md-github">The output will reflect the transformation applied by your plugin.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">To run the CLI tool and see help instructions:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="example-commands" href="#example-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example Commands</h3>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Default Demo Output:</strong><pre class="md-github"><code class="md-github language-bash">npm run start
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Default Demo Output:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm run start
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Using Plugins:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm run start -- --use-plugins 42 true hello
 </code></pre>
 </li>
 </ul>
@@ -72,7 +107,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-10T13:56:53.079Z</p>
+    <p>Generated on 2025-04-10T14:08:06.582Z</p>
   </footer>
 </body>
 </html>
