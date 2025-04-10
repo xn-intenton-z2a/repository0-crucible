@@ -41,7 +41,7 @@ describe("CLI Argument Conversion", () => {
     logSpy.mockRestore();
   });
 
-  test("should handle special case 'NaN' as a string", () => {
+  test("should handle special case 'NaN' as a string by default", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["NaN", "100"]);
     expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify(["NaN", 100])}`);
@@ -62,6 +62,16 @@ describe("CLI Argument Conversion", () => {
     const invalidISO = "2023-13-01T00:00:00Z"; // Invalid month
     main([invalidISO]);
     expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify([invalidISO])}`);
+    logSpy.mockRestore();
+  });
+
+  test("should convert 'NaN' to numeric NaN when --native-nan flag is provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--native-nan", "NaN", "100"]);
+    const outputString = logSpy.mock.calls[0][0].replace('Run with: ', '');
+    const loggedArg = JSON.parse(outputString);
+    expect(isNaN(loggedArg[0])).toBe(true);
+    expect(loggedArg[1]).toBe(100);
     logSpy.mockRestore();
   });
 });

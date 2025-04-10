@@ -4,6 +4,9 @@ import { fileURLToPath } from "url";
 // Plugin Manager Implementation integrated into main.js
 const plugins = [];
 
+// Configurable flag for handling 'NaN'
+let useNativeNanConfig = false;
+
 /**
  * Register a new plugin
  * @param {Function} plugin - A plugin function to register
@@ -33,7 +36,8 @@ export function executePlugins(data) {
  * Converts a CLI argument into its appropriate type.
  *
  * Special Handling:
- * - The literal string 'NaN' is intentionally preserved to serve as a special-case marker and is not converted to a number.
+ * - The literal string 'NaN' is preserved as a string by default, but can be converted to numeric NaN
+ *   if the --native-nan flag is provided or the environment variable NATIVE_NAN is set to "true".
  * - Boolean strings (case-insensitive) are converted to booleans.
  * - ISO 8601 formatted date strings are converted to Date objects if valid.
  * - Otherwise, numeric strings are converted to numbers and non-numeric strings remain unchanged.
@@ -42,8 +46,11 @@ export function executePlugins(data) {
  * @returns {string | boolean | number | Date} - The converted argument
  */
 function convertArg(arg) {
-  // Preserve the literal string "NaN" as a special-case marker
+  // Handle the special case for "NaN"
   if (arg === "NaN") {
+    if (useNativeNanConfig) {
+      return NaN;
+    }
     return "NaN";
   }
 
@@ -52,7 +59,6 @@ function convertArg(arg) {
   if (arg.toLowerCase() === "false") return false;
 
   // Check for ISO 8601 formatted date strings
-  // This regex matches dates in the format YYYY-MM-DD or YYYY-MM-DDTHH:MM:SS with optional milliseconds and timezone
   const iso8601Regex = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2}))?$/;
   if (iso8601Regex.test(arg)) {
     const date = new Date(arg);
@@ -72,15 +78,18 @@ function convertArg(arg) {
 /**
  * Main function for the CLI.
  * If the flag --use-plugins is provided, the function will process the arguments through registered plugins if any exist.
- * If no plugins are registered, the arguments remain unchanged.
+ * Additionally, if the flag --native-nan is provided or process.env.NATIVE_NAN is true, 'NaN' is converted to numeric NaN.
  *
  * @param {string[]} args - The CLI arguments
  */
 export function main(args) {
   // Check if plugins should be used
   const usePlugins = args.includes("--use-plugins");
-  // Remove the plugin flag from args
-  const filteredArgs = args.filter(arg => arg !== "--use-plugins");
+  // Check if native NaN conversion is requested via flag or environment variable
+  const nativeNanFlag = args.includes("--native-nan");
+  useNativeNanConfig = nativeNanFlag || process.env.NATIVE_NAN === "true";
+  // Remove the plugin and native-nan flags from args
+  const filteredArgs = args.filter(arg => arg !== "--use-plugins" && arg !== "--native-nan");
 
   // Convert each argument using intelligent parsing
   const convertedArgs = filteredArgs.map(convertArg);
