@@ -1,6 +1,33 @@
 #!/usr/bin/env node
 import { fileURLToPath } from "url";
-import * as pluginManager from "./pluginManager.js";
+
+// Plugin Manager Implementation integrated into main.js
+const plugins = [];
+
+/**
+ * Register a new plugin
+ * @param {Function} plugin - A plugin function to register
+ */
+export function registerPlugin(plugin) {
+  plugins.push(plugin);
+}
+
+/**
+ * Retrieve the list of registered plugins
+ * @returns {Function[]} - Array of plugin functions
+ */
+export function getPlugins() {
+  return plugins;
+}
+
+/**
+ * Execute all registered plugins sequentially
+ * @param {Array} data - The data to process
+ * @returns {Array} - The processed data
+ */
+export function executePlugins(data) {
+  return plugins.reduce((currentData, plugin) => plugin(currentData), data);
+}
 
 /**
  * Converts a CLI argument into its appropriate type.
@@ -49,10 +76,10 @@ export function main(args) {
 
   if (usePlugins) {
     // For demonstration, if no plugin has been registered, register a dummy plugin that doubles numeric values
-    if (pluginManager.getPlugins().length === 0) {
-      pluginManager.registerPlugin(data => data.map(item => typeof item === 'number' ? item * 2 : item));
+    if (getPlugins().length === 0) {
+      registerPlugin(data => data.map(item => typeof item === 'number' ? item * 2 : item));
     }
-    finalOutput = pluginManager.executePlugins(convertedArgs);
+    finalOutput = executePlugins(convertedArgs);
   }
 
   console.log(`Run with: ${JSON.stringify(finalOutput)}`);

@@ -1,7 +1,6 @@
 import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main } from "@src/lib/main.js";
-import { registerPlugin, getPlugins, executePlugins } from "@src/lib/pluginManager.js";
+import { main, registerPlugin, getPlugins, executePlugins } from "@src/lib/main.js";
 
 
 describe("Main Module Import", () => {
@@ -62,15 +61,13 @@ describe("Plugin Integration in CLI", () => {
 
 describe("Plugin Manager Functionality", () => {
   beforeEach(() => {
-    // Reset plugins array by accessing the module's internal plugins array
-    // Since plugins variable is not directly exposed, we simulate a reset by reassigning the module
-    // Note: In a real-world scenario, we might expose a reset function for testing purposes
-    // For this test we register a new plugin and check functionality without relying on previous state
+    // Since plugins array is internal, we simulate a reset by clearing all plugins
+    // WARNING: This is a hack and in production a reset function might be preferred
+    const plugins = getPlugins();
+    plugins.length = 0;
   });
 
   test("should register and retrieve plugins", () => {
-    // Clear any previously registered plugins by using a new plugin manager instance if possible
-    // Here we register a dummy plugin and then check that it appears in the getPlugins list
     const initialCount = getPlugins().length;
     const dummyPlugin = data => data;
     registerPlugin(dummyPlugin);
@@ -83,9 +80,7 @@ describe("Plugin Manager Functionality", () => {
     registerPlugin(appendPlugin);
     const input = ["test", 123];
     const output = executePlugins(input);
-    // Note: the default dummy plugin from main might also be registered if tests are run in sequence.
-    // To ensure isolation, we test the effect of appendPlugin by itself.
-    // So we expect the string to be appended with "-plugin" if it wasn't transformed by any other plugin.
+    // Verify that the string is appended with "-plugin" and number remains unchanged
     expect(output).toContain("test-plugin");
     expect(output).toContain(123);
   });

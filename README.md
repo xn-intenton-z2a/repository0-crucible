@@ -37,7 +37,7 @@ The plugin system allows developers to register custom functions (plugins) that 
 
 ### How It Works
 
-* The plugin manager is defined in `src/lib/pluginManager.js` and provides three main functions:
+* The plugin manager is now integrated into the main module in `src/lib/main.js` and provides three main functions that are exported:
   - `registerPlugin(plugin)`: Register a new plugin (a function) that takes data as input and returns transformed data.
   - `getPlugins()`: Retrieve the list of currently registered plugins.
   - `executePlugins(data)`: Process data through all registered plugins sequentially.
@@ -49,7 +49,7 @@ The plugin system allows developers to register custom functions (plugins) that 
 Below is an example of a simple plugin that appends "-custom" to each string argument:
 
 ```javascript
-import { registerPlugin } from "@src/lib/pluginManager.js";
+import { registerPlugin } from "@src/lib/main.js";
 
 // A plugin that appends "-custom" to string values
 registerPlugin(data => data.map(item => typeof item === 'string' ? item + "-custom" : item));
