@@ -141,6 +141,36 @@ function processNaNConversion(originalStr) {
  * @param {string[]} args - CLI arguments
  */
 export function main(args = []) {
+  // New flag to dump configuration and exit early
+  if (args.includes("--dump-config")) {
+    let repoConfig = {};
+    try {
+      if (fs.existsSync(".repositoryConfig.json")) {
+        const configContent = fs.readFileSync(".repositoryConfig.json", { encoding: "utf-8" });
+        repoConfig = JSON.parse(configContent);
+      }
+    } catch (error) {
+      repoConfig = {};
+    }
+    const effectiveNativeNan = args.includes("--native-nan") || repoConfig.nativeNan === true || process.env.NATIVE_NAN === "true";
+    const effectiveStrictNan = args.includes("--strict-nan") || repoConfig.strictNan === true || process.env.STRICT_NAN === "true";
+    let effectiveCustomNan = null;
+    const customNanIndex = args.indexOf("--custom-nan");
+    if (customNanIndex !== -1 && args.length > customNanIndex + 1 && args[customNanIndex + 1].trim().normalize("NFKC").toLowerCase() !== "nan") {
+      effectiveCustomNan = args[customNanIndex + 1];
+    } else if (typeof repoConfig.customNan === "string" && repoConfig.customNan.trim() !== "") {
+      effectiveCustomNan = repoConfig.customNan;
+    }
+    const pluginsList = getPlugins().map(fn => fn.name || "anonymous");
+    console.log(JSON.stringify({
+      nativeNan: effectiveNativeNan,
+      strictNan: effectiveStrictNan,
+      customNan: effectiveCustomNan,
+      plugins: pluginsList
+    }));
+    return;
+  }
+
   // Load configuration from .repositoryConfig.json if available
   let configNativeNan = false;
   let configStrictNan = false;
@@ -187,7 +217,7 @@ export function main(args = []) {
   // Filter out flags and their associated values
   const processedArgs = [];
   for (let i = 0; i < args.length; i++) {
-    if (["--use-plugins", "--native-nan", "--strict-nan", "--debug-nan", "--trace-plugins"].includes(args[i])) continue;
+    if (["--use-plugins", "--native-nan", "--strict-nan", "--debug-nan", "--trace-plugins", "--dump-config"].includes(args[i])) continue;
     if (args[i] === "--custom-nan") { i++; continue; }
     processedArgs.push(args[i]);
   }
