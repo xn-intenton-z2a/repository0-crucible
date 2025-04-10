@@ -53,6 +53,7 @@ export function registerNaNHandler(handler) {
 /**
  * Determines if the provided string represents a variant of 'NaN'.
  * It standardizes the input by trimming and normalizing (NFKC) and comparing in a case-insensitive manner.
+ * Supports extended Unicode variants such as 'ＮａＮ'.
  * @param {string} str
  * @returns {boolean}
  */
@@ -111,12 +112,18 @@ function processNaNConversion(originalStr) {
   const normalized = originalStr.trim().normalize("NFKC");
 
   if (customNaNHandler && typeof customNaNHandler === "function") {
+    // If in strict mode, log additional info
     if (useStrictNan) {
       console.info("Strict NaN mode active: using custom NaN handler.");
     }
-    return { converted: customNaNHandler(normalized), conversionMethod: "custom" };
+    try {
+      const handledValue = customNaNHandler(normalized);
+      return { converted: handledValue, conversionMethod: "custom" };
+    } catch (e) {
+      throw new Error(`Error in custom NaN handler: ${e.message}`);
+    }
   } else if (useStrictNan) {
-    throw new Error("Strict NaN mode error: encountered 'NaN' input without a custom handler.");
+    throw new Error(`Strict NaN mode error: encountered 'NaN' input without a custom handler. Input was: '${originalStr}'`);
   } else if (useNativeNanConfig) {
     return { converted: NaN, conversionMethod: "native" };
   } else {
