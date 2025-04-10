@@ -107,16 +107,20 @@ function convertArg(arg) {
  * Uses the trimmed input and its Unicode normalized form for decisions.
  *
  * Behavior:
- * - Default: Preserves the original input string (even if normalized form differs).
- * - Native Mode (--native-nan): Converts any recognized 'NaN' variant (including Unicode variants) to numeric NaN.
- * - Strict Mode (--strict-nan): Throws an error if a 'NaN' input is encountered and no custom handler is registered.
- * - Custom Handler: If registered via CLI flag (--custom-nan), repository config, or environment variable, uses the custom replacement.
+ * - First, verifies the input is a recognized variant of 'NaN'.
+ * - If a custom handler is registered, it is used (and in strict mode, logs diagnostic info).
+ * - In strict mode without a custom handler, throws an error.
+ * - In native mode, returns numeric NaN.
+ * - Default: Returns the original string input.
  *
  * @param {string} originalStr - The original input string (already trimmed)
  * @returns {{converted: any, conversionMethod: string}}
  */
 function processNaNConversion(originalStr) {
   const normalized = originalStr.trim().normalize("NFKC");
+  if (normalized.toLowerCase() !== "nan") {
+    return { converted: originalStr, conversionMethod: "default" };
+  }
 
   if (customNaNHandler && typeof customNaNHandler === "function") {
     if (useStrictNan) {
@@ -245,11 +249,10 @@ export function main(args = []) {
     const arg = processedArgs[i];
     const trimmed = arg.trim();
     if (isNaNInput(trimmed)) {
-      const normalized = trimmed.normalize("NFKC");
       const { converted, conversionMethod } = processNaNConversion(trimmed);
       convertedArgs.push(converted);
       if (debugNanFlag) {
-        debugDetails.push({ raw: arg, normalized, converted, conversionMethod });
+        debugDetails.push({ raw: arg, normalized: trimmed.normalize("NFKC"), converted, conversionMethod });
       }
     } else {
       convertedArgs.push(convertArg(arg));
