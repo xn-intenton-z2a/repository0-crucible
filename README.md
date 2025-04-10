@@ -24,7 +24,7 @@ npm install repository0-crucible
 ## Features
 
 * **Automated CLI Argument Conversion:** Automatically converts numeric strings (e.g. "42", "3.14"), boolean strings ("true", "false"), ISO 8601 dates, JSON formatted strings, and more. Non-numeric strings are trimmed and returned.
-* **Enhanced NaN Handling (Revamped with Asynchronous Support):**
+* **Enhanced NaN Handling (Revamped with Asynchronous Support and Clear Precedence):**
   - Recognizes all variants of "NaN", including Unicode variants such as "ＮａＮ" by normalizing inputs with trim and NFKC normalization.
   - **Default Behavior:** Preserves the input as a string, even if the representation is a Unicode variant.
   - **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`:
@@ -46,25 +46,11 @@ npm install repository0-crucible
     }
     ```
 
-  - **Custom Replacement via CLI:** Provide a replacement for "NaN" inline using `--custom-nan <value>`. For example:
+  - **Custom Replacement:** Override the default behavior by providing a custom replacement via CLI using `--custom-nan <value>`, in the repository configuration (`customNan` key), or via the environment variable `CUSTOM_NAN`.
 
-    ```bash
-    node src/lib/main.js --custom-nan customReplacement NaN 100
-    ```
+  - **Configuration Precedence:** The effective NaN handling configuration is resolved in the following order (highest to lowest): CLI flags, Repository configuration file (.repositoryConfig.json), Environment variables, Default behavior.
 
-    The tool will replace any variant of "NaN" with "customReplacement".
-
-  - **Custom Replacement via Configuration:** Specify a persistent custom replacement by adding a `customNan` key to `.repositoryConfig.json`:
-
-    ```json
-    {
-      "customNan": "customReplacement"
-    }
-    ```
-
-  - **Environment Variable:** Set the environment variable `CUSTOM_NAN` to a non-empty string (that is not a variant of "NaN") to configure a custom replacement. (Note: When using `--dump-config`, the environment variable is ignored.)
-
-  - **Asynchronous Custom Handlers:** Custom NaN handlers can now be asynchronous. If an async handler is registered (via CLI, configuration, or environment variable), the CLI will await its resolution before processing further. This allows for dynamic operations such as logging, external API calls, or dynamic configuration during conversion.
+  - **Asynchronous Custom Handlers:** Custom handlers can be asynchronous, allowing dynamic operations such as API calls during conversion.
 
   - **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information for each conversion, including the normalized input and the conversion method (default, native, or custom).
 
@@ -74,19 +60,17 @@ npm install repository0-crucible
 
 * **Unicode Variant Support:** All input variants of "NaN" (like "ＮａＮ") are normalized uniformly to ensure consistent behavior across different configurations.
 
-* **Automated Tests:** Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous) and plugin tracing—work as expected.
+* **Automated Tests:** Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous), configuration precedence, and plugin tracing—work as expected.
 
 * **LLM-Driven Regeneration:** The project incorporates an automated code regeneration workflow powered by an LLM, ensuring consistency and quality without manual intervention.
 
 ## Configurable 'NaN' Handling
 
-Users can control how "NaN" is processed by the CLI tool:
-* **Default Behavior:** Preserves any variant of "NaN" as the original string input.
-* **Native Conversion:** Activate via `--native-nan`, environment variable `NATIVE_NAN`, or within `.repositoryConfig.json` to convert recognized variants to numeric NaN.
-* **Strict Mode:** Enable with `--strict-nan`, environment variable `STRICT_NAN`, or via `.repositoryConfig.json` to throw an error on encountering a "NaN" unless a custom handler is provided.
-* **Custom Replacement:** Override the default behavior by providing a custom replacement via CLI (`--custom-nan <value>`), repository configuration (`customNan` key), or environment variable (`CUSTOM_NAN`).
-* **Asynchronous Custom Handlers:** Custom handlers can be asynchronous, enabling you to perform dynamic operations and await external processes during NaN conversion.
-* **Debug Mode:** Use `--debug-nan` to see detailed output of the conversion process.
+Users can control how "NaN" is processed by the CLI tool. The configuration resolution follows this precedence:
+1. **CLI Flags:** Directly specify behavior using `--native-nan`, `--strict-nan`, or `--custom-nan <value>`.
+2. **Repository Config:** Define settings in a `.repositoryConfig.json` file.
+3. **Environment Variables:** Set `NATIVE_NAN`, `STRICT_NAN`, or `CUSTOM_NAN` environment variables.
+4. **Default Behavior:** Applied when no other configuration is provided.
 
 ## Dump Configuration
 
