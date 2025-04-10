@@ -24,7 +24,7 @@ npm install repository0-crucible
 ## Features
 
 * **Automated CLI Argument Conversion:** Automatically converts numeric strings (e.g. "42", "3.14"), boolean strings ("true", "false"), ISO 8601 dates, JSON formatted strings, and more. Non-numeric strings are trimmed and returned.
-* **Enhanced NaN Handling:** Supports robust handling of NaN inputs and its Unicode variants. The logic has been refactored to standardize Unicode normalization (using NFKC) for all input variants of "NaN" and uniformly applies the following options:
+* **Enhanced NaN Handling:** Supports robust handling of NaN inputs and its Unicode variants. The logic now applies consistent Unicode normalization (using trim and NFKC normalization) to all input variants of "NaN" and uniformly applies the following options:
   - **Default Behavior:** Preserves any variant of "NaN" as the original string.
   - **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`:
 
