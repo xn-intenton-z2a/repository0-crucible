@@ -49,7 +49,7 @@ npm install repository0-crucible
     node src/lib/main.js --custom-nan customReplacement NaN 100
     ```
 
-  - **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information (including the conversion method used) for each NaN conversion.
+  - **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information including the raw input, its normalized value, conversion method used, and conversion result.
 * **Plugin Architecture:** Extend functionality by registering plugins using the provided API. When the CLI is run with the `--use-plugins` flag, input arguments are processed through all registered plugins.
 * **Structured JSON Logging:** CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.
 * **Unicode Variant Support:** Recognizes and handles Unicode variants of "NaN", ensuring consistent behavior worldwide.
@@ -63,7 +63,7 @@ Users can control how "NaN" is processed by the CLI tool:
 * **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`.
 * **Strict Mode:** Enable strict validation with `--strict-nan`, environment variable `STRICT_NAN`, or in `.repositoryConfig.json`.
 * **Custom Replacement:** Provide a replacement for "NaN" inline using `--custom-nan <value>`.
-* **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information for each conversion.
+* **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information for each conversion, including the normalized input.
 
 ## Usage
 
