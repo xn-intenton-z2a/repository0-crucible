@@ -264,7 +264,7 @@ describe("Debug NaN Mode", () => {
     main(["--debug-nan", "NaN", "100"]);
     const output = getLoggedOutput(logSpy);
     expect(output).toHaveProperty('debugNan');
-    expect(output.debugNan).toEqual([{ raw: "NaN", converted: "NaN" }]);
+    expect(output.debugNan).toEqual([{ raw: "NaN", converted: "NaN", conversionMethod: "default" }]);
     logSpy.mockRestore();
   });
 
@@ -274,6 +274,7 @@ describe("Debug NaN Mode", () => {
     const output = getLoggedOutput(logSpy);
     expect(output).toHaveProperty('debugNan');
     expect(isNaN(output.debugNan[0].converted)).toBe(true);
+    expect(output.debugNan[0].conversionMethod).toBe("native");
     logSpy.mockRestore();
   });
 });
