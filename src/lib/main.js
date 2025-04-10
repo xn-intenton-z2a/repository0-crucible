@@ -43,7 +43,7 @@ export function executePlugins(data) {
 
 /**
  * Register a custom handler for converting 'NaN'.
- * The handler should be a function that accepts the normalized version of the original string and returns the desired conversion.
+ * The handler can be synchronous or asynchronous. If asynchronous, it should return a Promise.
  * @param {Function|null} handler
  */
 export function registerNaNHandler(handler) {
@@ -109,14 +109,15 @@ function convertArg(arg) {
  * Updated Logic:
  * - Verifies if the normalized input equals 'nan'.
  * - If a custom handler is registered, it uses the handler and, in strict mode, logs diagnostic info.
+ *   Supports both synchronous and asynchronous custom handlers.
  * - In strict mode without a custom handler, throws an error.
  * - If native mode is active, returns numeric NaN.
  * - Otherwise, returns the original input string.
  *
  * @param {string} originalStr - The original input string (assumed trimmed externally)
- * @returns {{converted: any, conversionMethod: string}}
+ * @returns {Promise<{converted: any, conversionMethod: string}>}
  */
-function processNaNConversion(originalStr) {
+async function processNaNConversion(originalStr) {
   const normalizedInput = originalStr.trim().normalize("NFKC");
   if (normalizedInput.toLowerCase() !== "nan") {
     return { converted: originalStr, conversionMethod: "default" };
@@ -127,7 +128,10 @@ function processNaNConversion(originalStr) {
       console.info("Strict NaN mode active: using custom NaN handler.");
     }
     try {
-      const handledValue = customNaNHandler(normalizedInput);
+      let handledValue = customNaNHandler(normalizedInput);
+      if (handledValue && typeof handledValue.then === "function") {
+        handledValue = await handledValue;
+      }
       return { converted: handledValue, conversionMethod: "custom" };
     } catch (e) {
       throw new Error(`Error in custom NaN handler: ${e.message}`);
@@ -144,19 +148,11 @@ function processNaNConversion(originalStr) {
 /**
  * Main function for the CLI.
  * Processes CLI arguments using conversion logic and plugin integration.
- * Handles NaN conversion based on the following rules:
- *   - Default: Any variant of 'NaN' (including Unicode variants like 'ＮａＮ') is preserved as the original string.
- *   - --native-nan: Converts recognized 'NaN' variants to numeric NaN.
- *   - --strict-nan: In strict mode, throws an error if a 'NaN' input is encountered without a custom handler.
- *   - --custom-nan: Registers an inline custom handler to replace 'NaN' with the provided value.
- *   - --debug-nan: Outputs detailed debug information for each NaN conversion instance.
- *   - --trace-plugins: Outputs detailed trace logs for each plugin transformation when plugins are enabled.
- *
- * Additionally, supports custom configuration via .repositoryConfig.json and the CUSTOM_NAN environment variable.
+ * Handles NaN conversion with support for asynchronous custom NaN handlers.
  *
  * @param {string[]} args - CLI arguments
  */
-export function main(args = []) {
+export async function main(args = []) {
   if (args.includes("--dump-config")) {
     let repoConfig = {};
     try {
@@ -239,7 +235,7 @@ export function main(args = []) {
     const arg = processedArgs[i];
     const trimmed = arg.trim();
     if (isNaNInput(trimmed)) {
-      const { converted, conversionMethod } = processNaNConversion(trimmed);
+      const { converted, conversionMethod } = await processNaNConversion(trimmed);
       convertedArgs.push(converted);
       if (debugNanFlag) {
         debugDetails.push({ raw: arg, normalized: trimmed.normalize("NFKC"), converted, conversionMethod });
@@ -285,5 +281,8 @@ export function main(args = []) {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  main(args);
+  main(args).catch(e => {
+    console.error(e);
+    process.exit(1);
+  });
 }
