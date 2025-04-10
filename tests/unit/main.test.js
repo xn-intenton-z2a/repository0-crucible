@@ -317,7 +317,6 @@ describe("CLI NaN Handling", () => {
   });
 });
 
-
 describe("CLI Custom --custom-nan Flag", () => {
   test("should convert 'NaN' using custom replacement provided with --custom-nan flag", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
