@@ -3,9 +3,20 @@ import * as mainModule from "@src/lib/main.js";
 import { main, registerPlugin, getPlugins, executePlugins, registerNaNHandler } from "@src/lib/main.js";
 import fs from "fs";
 
-// Helper function to parse the logged JSON output
+// Helper function to parse the logged JSON output and revive native NaN values
 function getLoggedOutput(logSpy) {
-  return JSON.parse(logSpy.mock.calls[0][0]);
+  const parsed = JSON.parse(logSpy.mock.calls[0][0]);
+  function revive(value) {
+    if (value === "___native_NaN___") return NaN;
+    if (Array.isArray(value)) return value.map(revive);
+    if (value !== null && typeof value === "object") {
+      for (const key in value) {
+        value[key] = revive(value[key]);
+      }
+    }
+    return value;
+  }
+  return revive(parsed);
 }
 
 // NOTE: This test file is part of the automated testing suite that verifies the core CLI functionalities of repository0-crucible

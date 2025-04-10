@@ -151,7 +151,8 @@ export function main(args = []) {
   }
 
   // Output structured JSON log for improved integration with monitoring systems
-  console.log(JSON.stringify({ message: "Run with", data: finalOutput }));
+  // Use a custom replacer to properly serialize numeric NaN (when --native-nan flag is used) since JSON.stringify converts NaN to null.
+  console.log(JSON.stringify({ message: "Run with", data: finalOutput }, (key, value) => (typeof value === 'number' && isNaN(value) ? "___native_NaN___" : value)));
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
