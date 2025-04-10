@@ -205,19 +205,46 @@ describe("Strict NaN Mode", () => {
     registerNaNHandler(null);
   });
 
-  test("should throw an error in strict mode when no custom handler is registered", () => {
+  test("should throw an error in strict mode when no custom handler is registered (using CLI flag)", () => {
     expect(() => {
       main(["--strict-nan", "NaN", "100"]);
     }).toThrow(/Strict NaN mode error/);
   });
 
-  test("should use custom handler in strict mode and log an info message", () => {
+  test("should use custom handler in strict mode and log an info message (using CLI flag)", () => {
     registerNaNHandler(() => 'customStrictNaN');
     const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--strict-nan", "NaN", "100"]);
     expect(infoSpy).toHaveBeenCalledWith("Strict NaN mode active: using custom NaN handler.");
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ['customStrictNaN', 100] });
+    infoSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+
+  test("should throw an error in strict mode when enabled via configuration file without custom handler", () => {
+    // Simulate config file returning strictNan:true
+    const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"strictNan": true}');
+    expect(() => {
+      main(["NaN", "100"]);
+    }).toThrow(/Strict NaN mode error/);
+    existsSyncSpy.mockRestore();
+    readFileSyncSpy.mockRestore();
+  });
+
+  test("should use custom handler in strict mode when enabled via configuration file and log an info message", () => {
+    // Simulate config file with strictNan:true
+    const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"strictNan": true}');
+    registerNaNHandler(() => 'customConfigStrictNaN');
+    const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["NaN", "100"]);
+    expect(infoSpy).toHaveBeenCalledWith("Strict NaN mode active: using custom NaN handler.");
+    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ['customConfigStrictNaN', 100] });
+    existsSyncSpy.mockRestore();
+    readFileSyncSpy.mockRestore();
     infoSpy.mockRestore();
     logSpy.mockRestore();
   });
