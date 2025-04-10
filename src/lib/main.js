@@ -141,7 +141,7 @@ function processNaNConversion(originalStr) {
  * @param {string[]} args - CLI arguments
  */
 export function main(args = []) {
-  // New flag to dump configuration and exit early
+  // Dump config early if requested
   if (args.includes("--dump-config")) {
     let repoConfig = {};
     try {
@@ -187,6 +187,11 @@ export function main(args = []) {
   } catch (error) {
     configNativeNan = false;
     configStrictNan = false;
+  }
+
+  // Register environment custom handler if not dumping config and no handler registered from config
+  if (!args.includes("--dump-config") && !customNaNHandler && process.env.CUSTOM_NAN && typeof process.env.CUSTOM_NAN === "string" && process.env.CUSTOM_NAN.trim() !== "" && process.env.CUSTOM_NAN.trim().normalize("NFKC").toLowerCase() !== "nan") {
+    registerNaNHandler(() => process.env.CUSTOM_NAN);
   }
 
   // Determine whether to use native NaN handling
