@@ -52,6 +52,16 @@ export function registerNaNHandler(handler) {
 }
 
 /**
+ * Helper function to check if the given argument represents a NaN value
+ * considering different Unicode variants and case variations.
+ * @param {string} str
+ * @returns {boolean}
+ */
+function isNaNInput(str) {
+  return str.trim().normalize("NFKC").toLowerCase() === "nan";
+}
+
+/**
  * Converts a CLI argument into its appropriate type.
  *
  * Special Handling:
@@ -181,9 +191,7 @@ export function main(args = []) {
   for (let i = 0; i < processedArgs.length; i++) {
     const arg = processedArgs[i];
     const trimmed = arg.trim();
-    // Normalize to handle Unicode variants of 'NaN'
-    const normalized = trimmed.normalize("NFKC").toLowerCase();
-    if (normalized === "nan") {
+    if (isNaNInput(trimmed)) {
       let convMethod;
       let converted;
       if (customNaNHandler && typeof customNaNHandler === "function") {
