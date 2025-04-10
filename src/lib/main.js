@@ -71,7 +71,7 @@ function convertArg(arg) {
   const trimmed = arg.trim();
 
   // Attempt JSON conversion if input looks like JSON object or array
-  if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+  if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
     try {
       const jsonParsed = JSON.parse(trimmed);
       return jsonParsed;
@@ -129,6 +129,9 @@ function convertArg(arg) {
  * 
  * A new debug flag --debug-nan has been added to output additional details about the NaN conversion process when enabled.
  * In debug mode, for each occurrence of a NaN conversion, the original input and its converted value are logged under a debugNan property.
+ * 
+ * A new flag --custom-nan <value> has been added to allow specifying a replacement value for any variant of 'NaN'.
+ * When provided, this inline custom NaN handler will override default behavior.
  *
  * @param {string[]} args - The CLI arguments
  */
@@ -160,19 +163,38 @@ export function main(args = []) {
   // Determine if debug-nan mode is active
   const debugNanFlag = args.includes("--debug-nan");
 
-  // Check if plugins should be used
-  const usePlugins = args.includes("--use-plugins");
-  
-  // Remove the plugin, native-nan, strict-nan, and debug-nan flags from args
-  const filteredArgs = args.filter(arg => arg !== "--use-plugins" && arg !== "--native-nan" && arg !== "--strict-nan" && arg !== "--debug-nan");
+  // Handle --custom-nan flag to register inline custom NaN handler
+  let customNanValue = null;
+  const customNanIndex = args.indexOf("--custom-nan");
+  if (customNanIndex !== -1) {
+    if (args.length > customNanIndex + 1 && args[customNanIndex + 1].trim().toLowerCase() !== "nan") {
+      customNanValue = args[customNanIndex + 1];
+      registerNaNHandler(() => customNanValue);
+    } else {
+      throw new Error("--custom-nan flag provided without a replacement value.");
+    }
+  }
+
+  // Process the arguments by filtering out known flags and their associated values
+  const processedArgs = [];
+  for (let i = 0; i < args.length; i++) {
+    if (args[i] === "--use-plugins" || args[i] === "--native-nan" || args[i] === "--strict-nan" || args[i] === "--debug-nan") {
+      continue;
+    }
+    if (args[i] === "--custom-nan") {
+      i++; // Skip the next element as it is the value for --custom-nan
+      continue;
+    }
+    processedArgs.push(args[i]);
+  }
 
   // Convert each argument using intelligent parsing
-  const convertedArgs = filteredArgs.map(convertArg);
+  const convertedArgs = processedArgs.map(convertArg);
 
   // Collect debug information for NaN conversion if debug-nan flag is active
   let debugDetails = [];
   if (debugNanFlag) {
-    filteredArgs.forEach((arg, index) => {
+    processedArgs.forEach((arg, index) => {
       if (arg.trim().toLowerCase() === "nan") {
         debugDetails.push({ raw: arg, converted: convertedArgs[index] });
       }
@@ -181,7 +203,7 @@ export function main(args = []) {
 
   let finalOutput = convertedArgs;
 
-  if (usePlugins && getPlugins().length > 0) {
+  if (args.includes("--use-plugins") && getPlugins().length > 0) {
     finalOutput = executePlugins(convertedArgs);
   }
 
@@ -194,7 +216,7 @@ export function main(args = []) {
   // Output structured JSON log for improved integration with monitoring systems
   // Use a custom replacer to properly serialize special numeric values such as NaN, Infinity and -Infinity.
   console.log(JSON.stringify(finalLog, (key, value) => {
-    if (typeof value === 'number') {
+    if (typeof value === "number") {
       if (isNaN(value)) return "___native_NaN___";
       if (value === Infinity) return "___Infinity___";
       if (value === -Infinity) return "___-Infinity___";
