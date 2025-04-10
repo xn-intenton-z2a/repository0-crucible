@@ -222,3 +222,30 @@ describe("Strict NaN Mode", () => {
     logSpy.mockRestore();
   });
 });
+
+describe("Debug NaN Mode", () => {
+  beforeEach(() => {
+    // Reset plugins and custom NaN handler
+    getPlugins().length = 0;
+    registerNaNHandler(null);
+  });
+
+  test("should include debug info for NaN conversion when --debug-nan flag is provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--debug-nan", "NaN", "100"]);
+    const output = getLoggedOutput(logSpy);
+    expect(output).toHaveProperty('debugNan');
+    expect(output.debugNan).toEqual([{ raw: "NaN", converted: "NaN" }]);
+    logSpy.mockRestore();
+  });
+
+  test("should include debug info with native NaN conversion when both --native-nan and --debug-nan flags are provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--debug-nan", "--native-nan", "NaN", "100"]);
+    const output = getLoggedOutput(logSpy);
+    expect(output).toHaveProperty('debugNan');
+    // The converted value should be numeric NaN which is serialized as "___native_NaN___" and then revived to NaN
+    expect(isNaN(output.debugNan[0].converted)).toBe(true);
+    logSpy.mockRestore();
+  });
+});

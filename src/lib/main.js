@@ -128,7 +128,10 @@ function convertArg(arg) {
  * 
  * The experimental --strict-nan flag (or environment variable STRICT_NAN=true) enforces strict validation for NaN inputs.
  * In strict mode, if a NaN input is encountered without a custom handler, an error is thrown.
- * If a custom handler is registered in strict mode, it is used and logs an informational message.
+ * If a custom handler is registered, it is used and logs an informational message.
+ * 
+ * A new debug flag --debug-nan has been added to output additional details about the NaN conversion process when enabled.
+ * In debug mode, for each occurrence of a NaN conversion, the original input and its converted value are logged under a debugNan property.
  *
  * @param {string[]} args - The CLI arguments
  */
@@ -154,23 +157,43 @@ export function main(args = []) {
   const strictNanFlag = args.includes("--strict-nan");
   useStrictNan = strictNanFlag || process.env.STRICT_NAN === "true";
 
+  // Determine if debug-nan mode is active
+  const debugNanFlag = args.includes("--debug-nan");
+
   // Check if plugins should be used
   const usePlugins = args.includes("--use-plugins");
   
-  // Remove the plugin, native-nan, and strict-nan flags from args
-  const filteredArgs = args.filter(arg => arg !== "--use-plugins" && arg !== "--native-nan" && arg !== "--strict-nan");
+  // Remove the plugin, native-nan, strict-nan, and debug-nan flags from args
+  const filteredArgs = args.filter(arg => arg !== "--use-plugins" && arg !== "--native-nan" && arg !== "--strict-nan" && arg !== "--debug-nan");
 
   // Convert each argument using intelligent parsing
   const convertedArgs = filteredArgs.map(convertArg);
+
+  // Collect debug information for NaN conversion if debug-nan flag is active
+  let debugDetails = [];
+  if (debugNanFlag) {
+    filteredArgs.forEach((arg, index) => {
+      if (arg.trim().toLowerCase() === "nan") {
+        debugDetails.push({ raw: arg, converted: convertedArgs[index] });
+      }
+    });
+  }
+
   let finalOutput = convertedArgs;
 
   if (usePlugins && getPlugins().length > 0) {
     finalOutput = executePlugins(convertedArgs);
   }
 
+  // Prepare final log object
+  let finalLog = { message: "Run with", data: finalOutput };
+  if (debugNanFlag) {
+    finalLog.debugNan = debugDetails;
+  }
+
   // Output structured JSON log for improved integration with monitoring systems
   // Use a custom replacer to properly serialize numeric NaN (when --native-nan flag is used) since JSON.stringify converts NaN to null.
-  console.log(JSON.stringify({ message: "Run with", data: finalOutput }, (key, value) => (typeof value === 'number' && isNaN(value) ? "___native_NaN___" : value)));
+  console.log(JSON.stringify(finalLog, (key, value) => (typeof value === 'number' && isNaN(value) ? "___native_NaN___" : value)));
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
