@@ -51,6 +51,7 @@
 <li class="md-github">Automated conversion of CLI arguments: Numeric strings like &quot;42&quot; or &quot;3.14&quot; are automatically converted to numbers, boolean strings like &quot;true&quot; or &quot;false&quot; are converted to booleans, while non-numeric strings are trimmed and returned.</li>
 <li class="md-github">Special Handling for 'NaN': By default, the CLI tool preserves any case variation of the string 'NaN' (e.g., &quot;NaN&quot;, &quot;nan&quot;, &quot;NAN&quot;) for clarity. To convert any variation of 'NaN' to numeric NaN, use the --native-nan flag or set the environment variable NATIVE_NAN to &quot;true&quot;.</li>
 <li class="md-github">ISO 8601 Date Parsing: ISO formatted date strings are automatically converted to JavaScript Date objects if valid.</li>
+<li class="md-github">JSON Conversion: CLI arguments that begin with <code class="md-github">{</code> or <code class="md-github">[</code> are automatically parsed as JSON objects or arrays if valid.</li>
 <li class="md-github">Consistent Default Argument Handling: The CLI tool now defaults to an empty arguments array if no inputs are provided, ensuring consistent behavior between production and tests.</li>
 <li class="md-github">Demonstration of automated CI/CD workflows for code regeneration and testing.</li>
 <li class="md-github">Unified Plugin Architecture: Extend functionality by registering plugins to transform or analyze the CLI output using the <code class="md-github">--use-plugins</code> flag.</li>
@@ -130,6 +131,12 @@ To convert the string &quot;NaN&quot; to the numeric NaN, use the --native-nan f
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --native-nan NaN 100
 </code></pre>
 </li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">JSON Argument Conversion:</strong>
+You can now pass JSON formatted arguments directly. For example:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js '{&quot;key&quot;: &quot;value&quot;}' '[1,2,3]'
+</code></pre>
+</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="incremental-changes-plan" href="#incremental-changes-plan"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Incremental Changes Plan</h2>
 <p class="md-github">TODO: Add forthcoming changes here.</p>
@@ -140,7 +147,7 @@ To convert the string &quot;NaN&quot; to the numeric NaN, use the --native-nan f
 
   </section>
   <footer>
-    <p>Generated on 2025-04-10T16:04:21.600Z</p>
+    <p>Generated on 2025-04-10T16:17:19.426Z</p>
   </footer>
 </body>
 </html>
