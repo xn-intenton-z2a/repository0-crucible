@@ -176,7 +176,7 @@ export function main(args = []) {
   }
 
   // Convert each argument using intelligent parsing, with special handling for 'NaN' to capture debug info
-  const convertedArgs = [];
+  let convertedArgs = [];
   let debugDetails = [];
   for (let i = 0; i < processedArgs.length; i++) {
     const arg = processedArgs[i];
