@@ -271,9 +271,10 @@ function startConfigWatcher() {
  * @param {string[]} args - CLI arguments
  */
 export async function main(args = []) {
-  // Reset configuration flags for each run (do not reset customNaNHandler if already set)
+  // Reset configuration for each run
   useNativeNanConfig = false;
   useStrictNan = false;
+  registerNaNHandler(null);
 
   if (args.includes("--refresh-config")) {
     updateGlobalNaNConfig();
