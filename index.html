@@ -49,15 +49,16 @@
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
 <li class="md-github">Automated conversion of CLI arguments: Numeric strings like &quot;42&quot; or &quot;3.14&quot; are automatically converted to numbers, boolean strings like &quot;true&quot; or &quot;false&quot; are converted to booleans, while non-numeric strings are trimmed and returned.</li>
+<li class="md-github">Refactored NaN Conversion Handling: Any variation of the string 'NaN' (including Unicode variants) is now handled consistently according to the provided flags (--native-nan, --strict-nan, --custom-nan) and custom handlers. Debug logging now reliably reports the original input, the final converted value, and the conversion method used.</li>
 <li class="md-github">Special Handling for 'NaN': By default, the CLI tool preserves any case variation of the string 'NaN' (e.g., &quot;NaN&quot;, &quot;nan&quot;, &quot;NAN&quot;) for clarity. To convert any variation of &quot;NaN&quot; (including Unicode variants) to numeric NaN, use the --native-nan flag, set the environment variable NATIVE_NAN to &quot;true&quot;, or create a configuration file named .repositoryConfig.json with the property { &quot;nativeNan&quot;: true }.</li>
 <li class="md-github">Custom NaN Handling: Developers can now register a custom handler for 'NaN' conversion using the <code class="md-github">registerNaNHandler</code> API. When a custom handler is registered, it will always be used to process any variant of 'NaN', ensuring consistent behavior across all CLI invocations.</li>
 <li class="md-github">New CLI Option --custom-nan: A new flag, <strong class="md-github">--custom-nan <value></strong>, has been added. When provided, this inline custom NaN handler converts any occurrence of 'NaN' (in any case or Unicode variant) into the specified replacement value. This works seamlessly alongside the --native-nan, --strict-nan, and --debug-nan flags.</li>
 <li class="md-github">Experimental Strict NaN Mode: With the new --strict-nan flag, setting the environment variable STRICT_NAN to &quot;true&quot;, or adding a property &quot;strictNan&quot;: true in the .repositoryConfig.json configuration file, the CLI enforces strict validation of NaN inputs. In this mode, a NaN input without a custom handler will result in an error. If a custom handler is registered, it will be used with an informational log.</li>
-<li class="md-github">Debug NaN Mode: A new CLI flag <code class="md-github">--debug-nan</code> has been added to aid in troubleshooting. When enabled, the CLI outputs additional diagnostic information for each NaN conversion. The debug output includes:
+<li class="md-github">Debug NaN Mode: A new CLI flag <code class="md-github">--debug-nan</code> has been added to aid in troubleshooting. When this flag is used, the CLI outputs additional diagnostic information for each NaN conversion. The debug output includes:
 <ul class="md-github">
 <li class="md-github">The original raw input value</li>
 <li class="md-github">The final converted value</li>
-<li class="md-github">The conversionMethod field indicating whether the conversion was performed using &quot;native&quot;, &quot;custom&quot;, or &quot;default&quot; handling.</li>
+<li class="md-github">The conversionMethod indicating whether the conversion was performed using &quot;native&quot;, &quot;custom&quot;, or &quot;default&quot; handling.</li>
 </ul>
 </li>
 <li class="md-github">ISO 8601 Date Parsing: ISO formatted date strings are automatically converted to JavaScript Date objects if valid.</li>
@@ -221,7 +222,7 @@ You can now pass JSON formatted arguments directly. For example:</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-10T19:02:40.250Z</p>
+    <p>Generated on 2025-04-10T19:03:43.863Z</p>
   </footer>
 </body>
 </html>
