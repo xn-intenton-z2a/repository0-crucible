@@ -1,19 +1,22 @@
 {
-  "openIssues": 67,
-  "issuesClosedLastHour": 12,
+  "openIssues": 64,
+  "issuesClosedLastHour": 16,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Changed CLI output serialization to use multiple console.log arguments so that special values like NaN are preserved and updated tests to match the new output format. (fixes #1164)",
-      "ageMinutes": 0
-    }
-  ],
-  "diffMinutes": 1,
-  "diffMinutesMain": 9,
-  "commitsLastHour": 6,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 2,
+  "diffMinutesMain": 2,
+  "commitsLastHour": 8,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
+    {
+      "time": "14:57",
+      "message": "Ensure NaN CLI argument is preserved as a literal string by defa..."
+    },
+    {
+      "time": "14:52",
+      "message": "Changed CLI output serialization to use multiple console.log arg..."
+    },
     {
       "time": "14:42",
       "message": "Refactored argument conversion logic to clearly preserve the lit..."
@@ -25,27 +28,14 @@
     {
       "time": "14:29",
       "message": "Optimize the NaN special-case handling in CLI argument parsing f..."
-    },
-    {
-      "time": "14:21",
-      "message": "Removed automatic dummy plugin registration and updated tests an..."
-    },
-    {
-      "time": "14:10",
-      "message": "Enhance CLI argument conversion to parse ISO 8601 dates and upda..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1164",
-        "minutesSinceLastCommit": 1
-      }
-    ]
+    "count": 0,
+    "details": []
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-10T14:51:57.475Z"
+  "generatedAt": "2025-04-10T15:00:04.925Z"
 }
