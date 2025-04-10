@@ -365,3 +365,34 @@ describe("Plugin Transformation Trace Logging", () => {
     logSpy.mockRestore();
   });
 });
+
+describe("Dump Config Flag", () => {
+  test("should output effective config with default values", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(false);
+    main(["--dump-config"]);
+    const output = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(output).toHaveProperty("nativeNan", false);
+    expect(output).toHaveProperty("strictNan", false);
+    expect(output).toHaveProperty("customNan", null);
+    expect(Array.isArray(output.plugins)).toBe(true);
+    logSpy.mockRestore();
+    existsSyncSpy.mockRestore();
+  });
+
+  test("should output effective config with flags and config file values", () => {
+    const repoConfig = { nativeNan: true, strictNan: true, customNan: "configCustom" };
+    const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(repoConfig));
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--dump-config", "--custom-nan", "cliCustom", "--native-nan"]);
+    const output = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(output).toHaveProperty("nativeNan", true);
+    expect(output).toHaveProperty("strictNan", true);
+    expect(output).toHaveProperty("customNan", "cliCustom");
+    expect(Array.isArray(output.plugins)).toBe(true);
+    logSpy.mockRestore();
+    existsSyncSpy.mockRestore();
+    readFileSyncSpy.mockRestore();
+  });
+});

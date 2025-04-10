@@ -73,6 +73,31 @@ Users can control how "NaN" is processed by the CLI tool:
 * **Custom Replacement via CLI & Config:** Provide a replacement for "NaN" either inline using `--custom-nan <value>` or persistently via the `customNan` key in `.repositoryConfig.json`.
 * **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information, including the normalized input.
 
+## Dump Configuration
+
+You can use the `--dump-config` flag to output the effective configuration that the CLI tool is using. The JSON output includes:
+- **nativeNan**: (boolean) Indicates whether native NaN conversion is active.
+- **strictNan**: (boolean) Indicates whether strict NaN mode is enabled.
+- **customNan**: (string|null) The custom replacement value for "NaN", if any.
+- **plugins**: (array) A list of registered plugin names.
+
+### Example
+
+```bash
+node src/lib/main.js --dump-config
+```
+
+Output:
+
+```json
+{
+  "nativeNan": false,
+  "strictNan": false,
+  "customNan": null,
+  "plugins": []
+}
+```
+
 ## Usage
 
 Run the CLI tool to see available options:
