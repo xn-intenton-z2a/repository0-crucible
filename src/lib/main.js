@@ -141,8 +141,7 @@ function processNaNConversion(originalStr) {
  * @param {string[]} args - CLI arguments
  */
 export function main(args = []) {
-  // Reset customNaNHandler for isolated CLI runs
-  customNaNHandler = null;
+  // Note: Removed reset of customNaNHandler to preserve externally registered custom handlers
 
   // New flag to dump configuration and exit early
   if (args.includes("--dump-config")) {
