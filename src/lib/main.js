@@ -141,6 +141,9 @@ function processNaNConversion(originalStr) {
  * @param {string[]} args - CLI arguments
  */
 export function main(args = []) {
+  // Reset customNaNHandler for isolated CLI runs
+  customNaNHandler = null;
+
   // New flag to dump configuration and exit early
   if (args.includes("--dump-config")) {
     let repoConfig = {};
@@ -161,7 +164,7 @@ export function main(args = []) {
     } else if (typeof repoConfig.customNan === "string" && repoConfig.customNan.trim() !== "") {
       effectiveCustomNan = repoConfig.customNan;
     } else if (process.env.CUSTOM_NAN && typeof process.env.CUSTOM_NAN === "string" && process.env.CUSTOM_NAN.trim() !== "" && process.env.CUSTOM_NAN.trim().normalize("NFKC").toLowerCase() !== "nan") {
-      effectiveCustomNan = process.env.CUSTOM_NAN;
+      effectiveCustomNan = repoConfig.customNan; // Ignore environment variable during dump-config
     }
     const pluginsList = getPlugins().map(fn => fn.name || "anonymous");
     console.log(JSON.stringify({
@@ -191,8 +194,8 @@ export function main(args = []) {
     configStrictNan = false;
   }
 
-  // If no custom NaN handler registered from configuration, check for CUSTOM_NAN in environment variables
-  if (!customNaNHandler && process.env.CUSTOM_NAN && typeof process.env.CUSTOM_NAN === "string" && process.env.CUSTOM_NAN.trim() !== "" && process.env.CUSTOM_NAN.trim().normalize("NFKC").toLowerCase() !== "nan") {
+  // Register environment custom handler if not dumping config and no handler registered from config
+  if (!args.includes("--dump-config") && !customNaNHandler && process.env.CUSTOM_NAN && typeof process.env.CUSTOM_NAN === "string" && process.env.CUSTOM_NAN.trim() !== "" && process.env.CUSTOM_NAN.trim().normalize("NFKC").toLowerCase() !== "nan") {
     registerNaNHandler(() => process.env.CUSTOM_NAN);
   }
 

@@ -57,7 +57,7 @@ npm install repository0-crucible
     }
     ```
 
-  - **Environment Variable:** Additionally, you can set the environment variable `CUSTOM_NAN` to a non-empty string (that is not a variant of "NaN") to configure a custom replacement for NaN inputs if not provided via CLI or configuration file.
+  - **Environment Variable:** Additionally, you can set the environment variable `CUSTOM_NAN` to a non-empty string (that is not a variant of "NaN") to configure a custom replacement for NaN inputs if not provided via CLI or configuration file. Note: When using the `--dump-config` flag, the environment variable is ignored.
 
   - **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information for each conversion, including the normalized input.
 * **Plugin Architecture and Trace Logging:** Extend functionality by registering plugins using the provided API. When the CLI is run with the `--use-plugins` flag, input arguments are processed through all registered plugins. Additionally, if you supply the `--trace-plugins` flag, the CLI will output a detailed trace log of the transformation steps performed by each plugin.
@@ -80,7 +80,7 @@ Users can control how "NaN" is processed by the CLI tool:
 You can use the `--dump-config` flag to output the effective configuration that the CLI tool is using. The JSON output includes:
 - **nativeNan**: (boolean) Indicates whether native NaN conversion is active.
 - **strictNan**: (boolean) Indicates whether strict NaN mode is enabled.
-- **customNan**: (string|null) The custom replacement value for "NaN", if any.
+- **customNan**: (string|null) The custom replacement value for "NaN", if any. (Environment variable CUSTOM_NAN is ignored in this mode.)
 - **plugins**: (array) A list of registered plugin names.
 
 ### Example

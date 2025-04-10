@@ -339,10 +339,13 @@ describe("Configuration CustomNaN via repositoryConfig.json", () => {
 describe("Environment Custom NaN Handler", () => {
   test("should convert 'NaN' using CUSTOM_NAN environment variable when no CLI flag or repository config is set", () => {
     process.env.CUSTOM_NAN = "envCustomReplacement";
+    // Ensure no repository config exists
+    const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(false);
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["NaN", "100"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["envCustomReplacement", 100] });
     logSpy.mockRestore();
+    existsSyncSpy.mockRestore();
     delete process.env.CUSTOM_NAN;
   });
 });
