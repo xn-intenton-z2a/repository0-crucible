@@ -26,12 +26,28 @@ npm install repository0-crucible
 ## Features
 
 * Automated conversion of CLI arguments: Numeric strings like "42" or "3.14" are automatically converted to numbers, boolean strings like "true" or "false" are converted to booleans, while non-numeric strings are trimmed and returned.
-* Special Handling for 'NaN': By default, the CLI tool preserves any case variation of the string 'NaN' (e.g., "NaN", "nan", "NAN") for clarity. To convert any variation of 'NaN' to numeric NaN, use the --native-nan flag or set the environment variable NATIVE_NAN to "true".
+* Special Handling for 'NaN': By default, the CLI tool preserves any case variation of the string 'NaN' (e.g., "NaN", "nan", "NAN") for clarity. To convert any variation of 'NaN' to numeric NaN, use the --native-nan flag, set the environment variable NATIVE_NAN to "true", or create a configuration file named .repositoryConfig.json with the property { "nativeNan": true }.
 * ISO 8601 Date Parsing: ISO formatted date strings are automatically converted to JavaScript Date objects if valid.
 * JSON Conversion: CLI arguments that begin with `{` or `[` are automatically parsed as JSON objects or arrays if valid.
 * Consistent Default Argument Handling: The CLI tool now defaults to an empty arguments array if no inputs are provided, ensuring consistent behavior between production and tests.
 * Demonstration of automated CI/CD workflows for code regeneration and testing.
 * Unified Plugin Architecture: Extend functionality by registering plugins to transform or analyze the CLI output using the `--use-plugins` flag.
+
+## Configurable 'NaN' Handling
+
+Users can control how the string 'NaN' is processed by the CLI tool. By default, 'NaN' is preserved as a string. However, you can enable conversion to numeric NaN:
+
+- Use the `--native-nan` command line flag.
+- Set the environment variable `NATIVE_NAN` to "true".
+- Create a configuration file named `.repositoryConfig.json` in the project root with the following content:
+
+```json
+{
+  "nativeNan": true
+}
+```
+
+Any of these methods will cause the CLI tool to convert any variation of "NaN" to the numeric NaN.
 
 ## LLM-Driven Automated Code Regeneration Workflow
 
@@ -116,7 +132,7 @@ node src/lib/main.js --help
   ```
 
 - **Native NaN Conversion:**
-  To convert the string "NaN" to the numeric NaN, use the --native-nan flag or set the environment variable NATIVE_NAN to "true":
+  To convert the string "NaN" to the numeric NaN, use the --native-nan flag, set the environment variable NATIVE_NAN to "true", or use a configuration file:
   ```bash
   node src/lib/main.js --native-nan NaN 100
   ```

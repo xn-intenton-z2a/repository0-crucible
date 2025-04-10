@@ -5,6 +5,7 @@
 // Contributors should avoid making manual changes that conflict with the automated regeneration guidelines provided in the README and CONTRIBUTING documents.
 
 import { fileURLToPath } from "url";
+import fs from "fs"; // Added to read configuration file
 
 // Plugin Manager Implementation integrated into main.js for repository0-crucible
 const plugins = [];
@@ -43,8 +44,8 @@ export function executePlugins(data) {
  * Special Handling:
  * - JSON Conversion: If the argument starts with '{' or '[', it will be parsed as JSON if valid.
  * - Any case variation of the string 'NaN' is detected after trimming. By default, it is preserved as a string
- *   for clarity. It will only be converted to numeric NaN when the --native-nan flag is provided
- *   or the environment variable NATIVE_NAN is set to "true".
+ *   for clarity. It will only be converted to numeric NaN when the --native-nan flag is provided, the configuration file
+ *   (.repositoryConfig.json) sets nativeNan to true, or the environment variable NATIVE_NAN is set to "true".
  * - Boolean strings (case-insensitive) are converted to booleans.
  * - ISO 8601 formatted date strings are converted to Date objects if valid.
  * - Additionally, the input is trimmed to ensure robust conversion.
@@ -99,17 +100,33 @@ function convertArg(arg) {
  * Main function for the CLI.
  * If the flag --use-plugins is provided, the function will process the arguments
  * through registered plugins if any exist.
- * Additionally, if the flag --native-nan is provided or process.env.NATIVE_NAN is "true",
+ * Additionally, if the flag --native-nan is provided, the configuration file (.repositoryConfig.json)
+ * sets nativeNan to true, or process.env.NATIVE_NAN is "true",
  * any variation of 'NaN' is converted to numeric NaN; otherwise, it is preserved as a string.
  *
  * @param {string[]} args - The CLI arguments
  */
 export function main(args = []) {
+  // Read configuration from .repositoryConfig.json if it exists
+  let configNativeNan = false;
+  try {
+    if (fs.existsSync('.repositoryConfig.json')) {
+      const configContent = fs.readFileSync('.repositoryConfig.json', { encoding: 'utf-8' });
+      const config = JSON.parse(configContent);
+      configNativeNan = config.nativeNan === true;
+    }
+  } catch (error) {
+    // If reading/parsing fails, default to false
+    configNativeNan = false;
+  }
+
+  // Determine native NaN conversion based on CLI flag, configuration file, or environment variable
+  const nativeNanFlag = args.includes("--native-nan");
+  useNativeNanConfig = nativeNanFlag || configNativeNan || process.env.NATIVE_NAN === "true";
+
   // Check if plugins should be used
   const usePlugins = args.includes("--use-plugins");
-  // Check if native NaN conversion is requested via flag or environment variable
-  const nativeNanFlag = args.includes("--native-nan");
-  useNativeNanConfig = nativeNanFlag || process.env.NATIVE_NAN === "true";
+  
   // Remove the plugin and native-nan flags from args
   const filteredArgs = args.filter(arg => arg !== "--use-plugins" && arg !== "--native-nan");
 
