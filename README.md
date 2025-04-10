@@ -24,11 +24,32 @@ npm install repository0-crucible
 ## Features
 
 * **Automated CLI Argument Conversion:** Automatically converts numeric strings (e.g. "42", "3.14"), boolean strings ("true", "false"), ISO 8601 dates, JSON formatted strings, and more. Non-numeric strings are trimmed and returned.
-* **Enhanced NaN Handling:** Supports robust handling of NaN inputs and its Unicode variants. By default, variants of "NaN" are preserved as strings. Use the following options to alter behavior:
-  - **--native-nan:** Converts any variant of "NaN" to the numeric NaN value.
-  - **--strict-nan:** Enforces strict validation and throws an error on encountering "NaN" without a custom handler.
-  - **--custom-nan <value>:** Uses a custom inline handler to replace "NaN" with the provided value.
-  - **--debug-nan:** Outputs detailed debug info (raw input, converted value, conversion method) for each NaN conversion.
+* **Enhanced NaN Handling:** Supports robust handling of NaN inputs and its Unicode variants. The NaN parsing logic has been streamlined to uniformly handle all variations based on the following options:
+  - **Default Behavior:** Preserves any variant of "NaN" as a string.
+  - **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`:
+
+    ```json
+    {
+      "nativeNan": true
+    }
+    ```
+
+  - **Strict Mode:** Enable strict validation with `--strict-nan`, environment variable `STRICT_NAN`, or in `.repositoryConfig.json`:
+
+    ```json
+    {
+      "nativeNan": true,
+      "strictNan": true
+    }
+    ```
+
+  - **Custom Replacement:** Provide a replacement for "NaN" inline using `--custom-nan <value>`:
+
+    ```bash
+    node src/lib/main.js --custom-nan customReplacement NaN 100
+    ```
+
+  - **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information (including the conversion method used) for each NaN conversion.
 * **Plugin Architecture:** Extend functionality by registering plugins using the provided API. When the CLI is run with the `--use-plugins` flag, input arguments are processed through all registered plugins.
 * **Structured JSON Logging:** CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.
 * **Unicode Variant Support:** Recognizes and handles Unicode variants of "NaN", ensuring consistent behavior worldwide.
@@ -39,29 +60,9 @@ npm install repository0-crucible
 
 Users can control how "NaN" is processed by the CLI tool:
 * **Default Behavior:** Preserves any variant of "NaN" as a string.
-* **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`:
-
-```json
-{
-  "nativeNan": true
-}
-```
-
-* **Strict Mode:** Enable strict validation with `--strict-nan`, environment variable `STRICT_NAN`, or in `.repositoryConfig.json`:
-
-```json
-{
-  "nativeNan": true,
-  "strictNan": true
-}
-```
-
-* **Custom Replacement:** Provide a replacement for "NaN" inline using `--custom-nan <value>`:
-
-```bash
-node src/lib/main.js --custom-nan customReplacement NaN 100
-```
-
+* **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`.
+* **Strict Mode:** Enable strict validation with `--strict-nan`, environment variable `STRICT_NAN`, or in `.repositoryConfig.json`.
+* **Custom Replacement:** Provide a replacement for "NaN" inline using `--custom-nan <value>`.
 * **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information for each conversion.
 
 ## Usage
