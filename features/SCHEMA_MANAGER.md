@@ -1,7 +1,7 @@
 # SCHEMA_MANAGER Feature Enhancement
 
 ## Overview
-This enhancement builds upon the robust JSON Schema management capabilities by not only maintaining core functions such as diff generation, versioned persistence, interactive editing, validation, export, and documentation generation, but also by introducing Recommendation Analytics and Interactive Diff Visualization. The new additions leverage historical diff data and schema change trends to offer actionable recommendations for API improvements, as well as provide a visual, interactive representation of schema differences to streamline understanding and decision making.
+This enhancement builds upon the robust JSON Schema management capabilities by maintaining core functions such as diff generation, versioned persistence, interactive editing, validation, export, and documentation generation. It also includes Recommendation Analytics and Interactive Diff Visualization. In this update, we further integrate a Live Watch Mode to automatically monitor and respond to JSON Schema changes.
 
 ## Core Functionalities
 - **Diff Generation & Reporting:**
@@ -42,24 +42,36 @@ This enhancement builds upon the robust JSON Schema management capabilities by n
   - Allow zooming, panning, and detailed tooltips to inspect specific changes in the schema.
 
 - **CLI and HTTP Integration:**
-  - Implement a new CLI flag (e.g., `--visualize`) that opens the visual diff interface in a browser or renders it directly in the terminal using a text-based UI.
+  - Implement a new CLI flag (e.g., `--visualize`) that opens the visual diff interface in a browser or renders it directly in the terminal using a text‑based UI.
   - Expose an HTTP endpoint (e.g., `/visualize`) for remote access to the visualization tool.
 
 - **User Interaction and Customization:**
   - Enable users to customize visualization parameters such as color schemes, layout options, and filtering of diff types.
   - Provide options to overlay recommendations alongside visual diff outputs, linking analytical insights with the visual narrative.
 
+## Live Watch Mode
+- **Automated Monitoring:**
+  - Integrate a file system watcher to monitor designated directories for JSON Schema files.
+  - Automatically trigger diff generation, validation, and report updates when changes are detected.
+
+- **Real-Time Notifications:**
+  - Provide a CLI flag (e.g., `--watch`) and an HTTP endpoint (e.g., `/watch`) to enable continuous monitoring.
+  - Stream live updates and notifications about schema evolution directly to the developer console or web interface.
+
+- **Robust Error Handling:**
+  - Ensure continuous operation with graceful error handling and recovery mechanisms during live monitoring.
+  - Log events and errors to assist with debugging and auditing.
+
 ## Implementation & Testing
 - **Single-File Consolidation:**
-  - Enhance the existing source file (`src/lib/schema_manager.js`) to incorporate both Recommendation Analytics and Interactive Diff Visualization, ensuring the code remains coherent and easily maintainable.
+  - Enhance the existing source file (`src/lib/schema_manager.js`) to incorporate Recommendation Analytics, Interactive Diff Visualization, and Live Watch Mode, ensuring the code remains coherent and maintainable.
 
 - **CLI and HTTP Integration:**
-  - Extend current CLI entry points to support the new `--visualize` flag alongside `--export` and `--recommend` flags.
-  - Integrate with the INTERFACE_MANAGER to expose the new `/visualize` endpoint, ensuring consistency in error handling and logging.
+  - Extend current CLI entry points to support the new `--watch` flag alongside existing `--export`, `--recommend`, and `--visualize` flags.
+  - Integrate with the INTERFACE_MANAGER to expose corresponding HTTP endpoints, ensuring consistency in error handling and logging.
 
-- **Robust Error Handling & Testing:**
-  - Implement detailed error management and logging for both recommendation analysis and visualization processes.
-  - Expand unit and integration tests to cover interactive visualization scenarios, in addition to existing tests for diff analytics and core operations.
+- **Comprehensive Testing:**
+  - Expand unit and integration tests to cover the live monitoring functionality along with the existing tests for diff analytics and core operations.
 
 ## Value Proposition
-Integrating Recommendation Analytics and Interactive Diff Visualization into SCHEMA_MANAGER empowers API teams not only to track and validate schema changes but also to experience these changes visually. This enhancement simplifies decision-making by merging analytical insights with interactive visual tools, reinforcing our mission of simplifying and streamlining error‑free API evolution.
+Integrating Live Watch Mode with existing Recommendation Analytics and Interactive Diff Visualization empowers API teams with an automated, real-time monitoring capability. This enhancement simplifies the detection and management of schema changes, supporting error-free API evolution and continual improvement in line with our mission.
