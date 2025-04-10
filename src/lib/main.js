@@ -4,18 +4,24 @@
 import { fileURLToPath } from "url";
 
 function convertArg(arg) {
-  // If the argument is exactly 'NaN', keep it as a string to preserve the special case
+  // Special case: if the argument is exactly 'NaN', keep it as a string to preserve the special case
   if (arg === "NaN") return arg;
-  // If the argument represents a valid number, convert it
-  // Using isNaN on the string works because isNaN('42') is false and isNaN('abc') is true
-  if (!isNaN(arg) && arg.trim() !== "") {
-    return Number(arg);
-  }
+  
+  // Convert boolean strings (case-insensitive) to booleans
+  if (arg.toLowerCase() === "true") return true;
+  if (arg.toLowerCase() === "false") return false;
+
+  // Attempt to convert to a number if applicable
+  const num = Number(arg);
+  // If the argument is not empty and conversion does not yield NaN, return the number
+  if (arg.trim() !== "" && !isNaN(num)) return num;
+
+  // Fallback: return the original string
   return arg;
 }
 
 export function main(args) {
-  // Convert each argument
+  // Convert each argument using intelligent parsing
   const convertedArgs = args.map(convertArg);
   console.log(`Run with: ${JSON.stringify(convertedArgs)}`);
 }

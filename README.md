@@ -4,7 +4,7 @@
 
 To create a self-evolving agentic coding system of your own based on this one see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+This readme shall evolve into a JavaScript library based on the seed CONTRIBUTING files in [./seeds](./seeds).
 
 ## Repository Template
 
@@ -25,7 +25,7 @@ npm install repository0-crucible
 
 ## Features
 
-* Automated conversion of numeric CLI arguments: CLI arguments that represent numeric values (like "42" or "3.14") are automatically converted to actual numbers, while non-numeric strings and the special case "NaN" remain unchanged.
+* Automated conversion of CLI arguments: Numeric strings like "42" or "3.14" are automatically converted to numbers, boolean strings like "true" or "false" are converted to booleans, while non-numeric strings and the special case "NaN" remain unchanged.
 * Demonstration of GitHub workflows for CI/CD setups.
 * Template based structure ideal for evolving JavaScript libraries.
 

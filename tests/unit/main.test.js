@@ -25,6 +25,13 @@ describe("CLI Argument Conversion", () => {
     logSpy.mockRestore();
   });
 
+  test("should convert boolean strings to booleans", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["true", "false"]);
+    expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify([true, false])}`);
+    logSpy.mockRestore();
+  });
+
   test("should leave non-numeric strings unchanged", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["hello", "world"]);
