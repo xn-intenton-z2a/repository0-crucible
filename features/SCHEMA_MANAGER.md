@@ -1,7 +1,7 @@
 # SCHEMA_MANAGER
 
 ## Overview
-The SCHEMA_MANAGER module is the central component of our repository, responsible for the evolution and validation of JSON Schemas. It supports schema diff generation, version control, migration assistance, and now expanded ontology and semantic integration. This unified module ensures smooth transitions from legacy schema formats and provides powerful analytical tools for risk assessment and automated fixes.
+The SCHEMA_MANAGER module is the central component of our repository, responsible for the evolution, validation, and real‐time management of JSON Schemas. It supports schema diff generation, version control, migration assistance, linting & auto-fixing, comprehensive risk analysis, and now a new Real-Time Monitoring capability. This unified module ensures smooth transitions from legacy schema formats, offers actionable insights and automated fixes, and improves developer productivity with real-time feedback.
 
 ## Diff Generation & Reporting
 - **Change Analysis:** Detect and categorize differences between schema versions including additions, modifications, and removals.
@@ -27,15 +27,21 @@ The SCHEMA_MANAGER module is the central component of our repository, responsibl
 - **CLI Integration:** Support risk evaluations via a dedicated CLI flag (`--risk-assess`).
 
 ## Ontology & Semantic Integration
-- **Live Data Integration:** Leverage curated public data sources to enrich the JSON Schema data, forming the basis for dynamic ontology generation.
+- **Live Data Integration:** Leverage curated public data sources to enrich JSON Schema data, forming the basis for dynamic ontology generation.
 - **OWL Ontology Generation:** Transform JSON Schema definitions into OWL ontologies, enhancing semantic capabilities and facilitating interoperability with semantic web technologies.
-- **Dedicated CLI Command:** Support ontology building through a CLI flag (`--build-ontology`), allowing for on-demand or scheduled generation and updates.
-- **Legacy Schema Support:** Detect and manage legacy schema formats with options for automated migration and conversion enhancements.
+- **CLI Command:** Support ontology building through a CLI flag (`--build-ontology`), enabling both on-demand and scheduled generation.
+- **Legacy Schema Support:** Detect and manage legacy schema formats with automated migration and conversion tools.
+
+## Real-Time Monitoring & Auto-Trigger (New Addition)
+- **File System Watcher:** Integrate a real-time monitoring system that watches for changes in JSON Schema files.
+- **Automated Diff & Analysis:** Automatically trigger diff generation, linting, and risk analysis when file changes are detected.
+- **Developer Notification:** Provide immediate terminal feedback and optional logging via CLI flags so developers can quickly respond to schema updates.
+- **Configurable Behavior:** Allow users to enable or disable real-time monitoring and customize the frequency or conditions under which the auto-trigger operates.
 
 ## Implementation & Testing
-- **Single-File Extension:** Integrate new ontology and semantic features within the existing main source file (e.g., `src/lib/schema_manager.js`), ensuring a cohesive and maintainable codebase.
-- **CLI & HTTP Endpoints:** Update command parsers to include new ontology commands alongside existing flags, ensuring seamless integration across all schema management workflows.
-- **Comprehensive Testing:** Expand unit and integration tests to cover scenarios including diffing, legacy handling, risk assessment, linting, and live ontology generation.
+- **Single File Extension:** Extend the main source file (e.g., `src/lib/schema_manager.js`) to incorporate the new real-time monitoring capabilities.
+- **CLI & HTTP Endpoints:** Update command parsers to include new flags for monitoring (e.g., `--watch`) along with the existing commands.
+- **Comprehensive Testing:** Expand unit and integration tests to cover scenarios including file change detection, real-time diff generation, risk analysis, and auto-fix operations.
 
 ## Value Proposition
-By merging the ontology and enhanced schema evolution capabilities into the SCHEMA_MANAGER, the repository offers a streamlined toolset that not only manages JSON Schema differences and migrations effectively but also bridges to modern semantic web technologies. This alignment reinforces our mission of simplifying API change management, enhancing operational transparency, and reducing migration risks in a single, unified repository.
+By integrating a real-time monitoring system into the SCHEMA_MANAGER, the repository not only manages JSON Schema differences and migrations effectively but also provides instant feedback during development. This enhancement reduces manual intervention, accelerates development cycles, and reinforces our mission of simplifying API change management by delivering dynamic and automated schema oversight.
