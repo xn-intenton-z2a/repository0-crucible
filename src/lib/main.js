@@ -43,7 +43,7 @@ export function executePlugins(data) {
 
 /**
  * Register a custom handler for converting 'NaN'.
- * The handler should be a function that accepts the original string and returns the desired conversion.
+ * The handler should be a function that accepts the normalized version of the original string and returns the desired conversion.
  * @param {Function|null} handler
  */
 export function registerNaNHandler(handler) {
@@ -102,25 +102,25 @@ function convertArg(arg) {
 
 /**
  * Helper function to process 'NaN' conversion based on the current configuration and flags.
- * The function uses standardized normalization for comparison but preserves the original input in default mode.
+ * Uses trimmed and normalized value for decisions. In default mode, preserves the original string.
  * @param {string} originalStr - The original input string (already trimmed)
  * @returns {{converted: any, conversionMethod: string}}
  */
 function processNaNConversion(originalStr) {
-  // Using normalized value for decision making
-  const normalized = originalStr.normalize("NFKC");
+  // Normalize the input for consistent processing of Unicode variants
+  const normalized = originalStr.trim().normalize("NFKC");
 
   if (customNaNHandler && typeof customNaNHandler === "function") {
     if (useStrictNan) {
       console.info("Strict NaN mode active: using custom NaN handler.");
     }
-    return { converted: customNaNHandler(originalStr), conversionMethod: "custom" };
+    return { converted: customNaNHandler(normalized), conversionMethod: "custom" };
   } else if (useStrictNan) {
     throw new Error("Strict NaN mode error: encountered 'NaN' input without a custom handler.");
   } else if (useNativeNanConfig) {
     return { converted: NaN, conversionMethod: "native" };
   } else {
-    // Preserve the original string even if its normalized form is different
+    // Preserve the original user input even if its normalized form is different
     return { converted: originalStr, conversionMethod: "default" };
   }
 }
