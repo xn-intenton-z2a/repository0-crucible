@@ -39,11 +39,17 @@
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Automated CLI Argument Conversion:</strong> Automatically converts numeric strings (e.g. &quot;42&quot;, &quot;3.14&quot;), boolean strings (&quot;true&quot;, &quot;false&quot;), ISO 8601 dates, JSON formatted strings, and more. Non-numeric strings are trimmed and returned.</li>
-<li class="md-github"><strong class="md-github">Enhanced NaN Handling:</strong> Supports robust handling of NaN inputs including extended Unicode variants such as &quot;ＮａＮ&quot;. The logic now applies consistent Unicode normalization (using trim and NFKC normalization) to all input variants of &quot;NaN&quot; and uniformly applies the following options:
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Automated CLI Argument Conversion:</strong> Automatically converts numeric strings (e.g. &quot;42&quot;, &quot;3.14&quot;), boolean strings (&quot;true&quot;, &quot;false&quot;), ISO 8601 dates, JSON formatted strings, and more. Non-numeric strings are trimmed and returned.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Enhanced NaN Handling:</strong></p>
 <ul class="md-github">
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Default Behavior:</strong> Preserves any variant of &quot;NaN&quot; as the original string.</p>
+<p class="md-github">Recognizes all variants of &quot;NaN&quot;, including Unicode variants such as &quot;ＮａＮ&quot; by normalizing inputs with trim and NFKC normalization.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Default Behavior:</strong> Preserves the input as a string, even if the representation is a Unicode variant.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Native Conversion:</strong> Use <code class="md-github">--native-nan</code>, set environment variable <code class="md-github">NATIVE_NAN</code> to &quot;true&quot;, or configure via <code class="md-github">.repositoryConfig.json</code>:</p>
@@ -51,9 +57,10 @@
   &quot;nativeNan&quot;: true
 }
 </code></pre>
+<p class="md-github">This converts recognized &quot;NaN&quot; inputs to numeric NaN.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Strict Mode:</strong> Enable strict validation with <code class="md-github">--strict-nan</code>, environment variable <code class="md-github">STRICT_NAN</code>, or in <code class="md-github">.repositoryConfig.json</code>. In this mode, an error is thrown unless a custom handler is registered:</p>
+<p class="md-github"><strong class="md-github">Strict Mode:</strong> Enable with <code class="md-github">--strict-nan</code>, environment variable <code class="md-github">STRICT_NAN</code>, or via <code class="md-github">.repositoryConfig.json</code>. In strict mode, an error is thrown if a &quot;NaN&quot; input is encountered without a custom handler:</p>
 <pre class="md-github"><code class="md-github language-json">{
   &quot;nativeNan&quot;: true,
   &quot;strictNan&quot;: true
@@ -61,12 +68,10 @@
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Custom Replacement via CLI Flag:</strong> Provide a replacement for &quot;NaN&quot; inline using <code class="md-github">--custom-nan &lt;value&gt;</code>. If the flag is provided without a valid non-&quot;NaN&quot; replacement immediately following the flag, the CLI will throw an error:</p>
-<pre class="md-github"><code class="md-github language-bash">Error: The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.
-</code></pre>
-<p class="md-github">Example usage:</p>
+<p class="md-github"><strong class="md-github">Custom Replacement via CLI:</strong> Provide a replacement for &quot;NaN&quot; inline using <code class="md-github">--custom-nan &lt;value&gt;</code>. For example:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --custom-nan customReplacement NaN 100
 </code></pre>
+<p class="md-github">The tool will replace any variant of &quot;NaN&quot; with &quot;customReplacement&quot;.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Custom Replacement via Configuration:</strong> Specify a persistent custom replacement by adding a <code class="md-github">customNan</code> key to <code class="md-github">.repositoryConfig.json</code>:</p>
@@ -76,34 +81,44 @@
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Environment Variable:</strong> Additionally, you can set the environment variable <code class="md-github">CUSTOM_NAN</code> to a non-empty string (that is not a variant of &quot;NaN&quot;) to configure a custom replacement for NaN inputs if not provided via CLI or configuration file. Note: When using the <code class="md-github">--dump-config</code> flag, the environment variable is ignored.</p>
+<p class="md-github"><strong class="md-github">Environment Variable:</strong> Set the environment variable <code class="md-github">CUSTOM_NAN</code> to a non-empty string (that is not a variant of &quot;NaN&quot;) to configure a custom replacement. (Note: When using <code class="md-github">--dump-config</code>, the environment variable is ignored.)</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Debug Mode:</strong> Use <code class="md-github">--debug-nan</code> to output detailed diagnostic information for each conversion, including the normalized input.</p>
+<p class="md-github"><strong class="md-github">Debug Mode:</strong> Use <code class="md-github">--debug-nan</code> to output detailed diagnostic information for each conversion, including the normalized input and conversion method.</p>
 </li>
 </ul>
 </li>
-<li class="md-github"><strong class="md-github">Plugin Architecture and Trace Logging:</strong> Extend functionality by registering plugins using the provided API. When the CLI is run with the <code class="md-github">--use-plugins</code> flag, input arguments are processed through all registered plugins. Additionally, if you supply the <code class="md-github">--trace-plugins</code> flag, the CLI will output a detailed trace log of the transformation steps performed by each plugin.</li>
-<li class="md-github"><strong class="md-github">Structured JSON Logging:</strong> CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.</li>
-<li class="md-github"><strong class="md-github">Unicode Variant Support:</strong> Recognizes Unicode variants of &quot;NaN&quot; (e.g. &quot;ＮａＮ&quot;) and processes them consistently based on the chosen configuration.</li>
-<li class="md-github"><strong class="md-github">Automated Tests:</strong> Comprehensive tests ensure that all edge cases and functionalities—including NaN handling and plugin tracing—work as expected.</li>
-<li class="md-github"><strong class="md-github">LLM-Driven Regeneration:</strong> The project incorporates an automated code regeneration workflow powered by an LLM, ensuring consistency and quality without manual intervention.</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Plugin Architecture and Trace Logging:</strong> Extend functionality by registering plugins using the provided API. When the CLI is run with the <code class="md-github">--use-plugins</code> flag, input arguments are processed through all registered plugins. Additionally, if you supply the <code class="md-github">--trace-plugins</code> flag, the CLI will output a detailed trace log of the transformation steps performed by each plugin.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Structured JSON Logging:</strong> CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Unicode Variant Support:</strong> All input variants of &quot;NaN&quot; (like &quot;ＮａＮ&quot;) are normalized uniformly to ensure consistent behavior across different configurations.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Automated Tests:</strong> Comprehensive tests ensure that edge cases and functionalities—including NaN handling and plugin tracing—work as expected.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">LLM-Driven Regeneration:</strong> The project incorporates an automated code regeneration workflow powered by an LLM, ensuring consistency and quality without manual intervention.</p>
+</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="configurable-nan-handling" href="#configurable-nan-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configurable 'NaN' Handling</h2>
 <p class="md-github">Users can control how &quot;NaN&quot; is processed by the CLI tool:</p>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Default Behavior:</strong> Preserves any variant of &quot;NaN&quot; as the original string input.</li>
-<li class="md-github"><strong class="md-github">Native Conversion:</strong> Use <code class="md-github">--native-nan</code>, set environment variable <code class="md-github">NATIVE_NAN</code> to &quot;true&quot;, or configure via <code class="md-github">.repositoryConfig.json</code>.</li>
-<li class="md-github"><strong class="md-github">Strict Mode:</strong> Enable strict validation with <code class="md-github">--strict-nan</code>, environment variable <code class="md-github">STRICT_NAN</code>, or in <code class="md-github">.repositoryConfig.json</code> (throws an error if no custom handler is provided).</li>
-<li class="md-github"><strong class="md-github">Custom Replacement via CLI, Config &amp; Environment:</strong> Provide a replacement for &quot;NaN&quot; either inline using <code class="md-github">--custom-nan &lt;value&gt;</code>, via the <code class="md-github">customNan</code> key in <code class="md-github">.repositoryConfig.json</code>, or by setting the environment variable <code class="md-github">CUSTOM_NAN</code>.</li>
-<li class="md-github"><strong class="md-github">Debug Mode:</strong> Use <code class="md-github">--debug-nan</code> to output detailed diagnostic information, including the normalized input.</li>
+<li class="md-github"><strong class="md-github">Native Conversion:</strong> Activate via <code class="md-github">--native-nan</code>, environment variable <code class="md-github">NATIVE_NAN</code>, or within <code class="md-github">.repositoryConfig.json</code> to convert recognized variants to numeric NaN.</li>
+<li class="md-github"><strong class="md-github">Strict Mode:</strong> Enable with <code class="md-github">--strict-nan</code>, environment variable <code class="md-github">STRICT_NAN</code>, or via <code class="md-github">.repositoryConfig.json</code> to throw an error on encountering a &quot;NaN&quot; unless a custom handler is provided.</li>
+<li class="md-github"><strong class="md-github">Custom Replacement:</strong> Override the default behavior by providing a custom replacement via CLI (<code class="md-github">--custom-nan &lt;value&gt;</code>), repository configuration (<code class="md-github">customNan</code> key), or environment variable (<code class="md-github">CUSTOM_NAN</code>).</li>
+<li class="md-github"><strong class="md-github">Debug Mode:</strong> Use <code class="md-github">--debug-nan</code> to see detailed output of the conversion process.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="dump-configuration" href="#dump-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dump Configuration</h2>
-<p class="md-github">You can use the <code class="md-github">--dump-config</code> flag to output the effective configuration that the CLI tool is using. The JSON output includes:</p>
+<p class="md-github">Use the <code class="md-github">--dump-config</code> flag to output the effective configuration that the CLI tool is using. The JSON output includes:</p>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">nativeNan</strong>: (boolean) Indicates whether native NaN conversion is active.</li>
 <li class="md-github"><strong class="md-github">strictNan</strong>: (boolean) Indicates whether strict NaN mode is enabled.</li>
-<li class="md-github"><strong class="md-github">customNan</strong>: (string|null) The custom replacement value for &quot;NaN&quot;, if any. (Environment variable CUSTOM_NAN is ignored in this mode.)</li>
+<li class="md-github"><strong class="md-github">customNan</strong>: (string|null) The custom replacement value for &quot;NaN&quot;, if any.</li>
 <li class="md-github"><strong class="md-github">plugins</strong>: (array) A list of registered plugin names.</li>
 </ul>
 <h3 class="md-github"><a class="md-github__anchor" name="example" href="#example"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h3>
@@ -149,8 +164,7 @@
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Plugin Transformation Trace Logging:</strong>
-Use the <code class="md-github">--trace-plugins</code> flag along with <code class="md-github">--use-plugins</code> to see each transformation step:</p>
+<p class="md-github"><strong class="md-github">Plugin Transformation Trace Logging:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --trace-plugins --use-plugins 42 hello
 </code></pre>
 </li>
@@ -171,8 +185,7 @@ Create a <code class="md-github">.repositoryConfig.json</code> with:</p>
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Custom NaN Replacement via Environment Variable:</strong>
-Set the environment variable before running the CLI:</p>
+<p class="md-github"><strong class="md-github">Custom NaN Replacement via Environment Variable:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">export CUSTOM_NAN=customEnvReplacement
 node src/lib/main.js NaN 100
 </code></pre>
@@ -184,7 +197,7 @@ node src/lib/main.js NaN 100
 </li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="plugin-system" href="#plugin-system"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Plugin System</h2>
-<p class="md-github">The plugin system allows you to register custom functions to transform or analyze the CLI output. Functions provided:</p>
+<p class="md-github">The plugin system allows you to register custom functions to transform or analyze the CLI output. Available functions:</p>
 <ul class="md-github">
 <li class="md-github"><code class="md-github">registerPlugin(plugin)</code>: Register a plugin function.</li>
 <li class="md-github"><code class="md-github">getPlugins()</code>: Retrieve currently registered plugins.</li>
@@ -210,7 +223,7 @@ registerPlugin(data =&gt; data.map(item =&gt; typeof item === 'string' ? item + 
 
   </section>
   <footer>
-    <p>Generated on 2025-04-10T21:34:12.420Z</p>
+    <p>Generated on 2025-04-10T21:35:09.123Z</p>
   </footer>
 </body>
 </html>
