@@ -24,8 +24,8 @@ npm install repository0-crucible
 ## Features
 
 * **Automated CLI Argument Conversion:** Automatically converts numeric strings (e.g. "42", "3.14"), boolean strings ("true", "false"), ISO 8601 dates, JSON formatted strings, and more. Non-numeric strings are trimmed and returned.
-* **Enhanced NaN Handling:** Supports robust handling of NaN inputs and its Unicode variants. The NaN parsing logic has been streamlined to uniformly handle all variations based on the following options:
-  - **Default Behavior:** Preserves any variant of "NaN" as a string.
+* **Enhanced NaN Handling:** Supports robust handling of NaN inputs and its Unicode variants. The logic has been refactored to standardize Unicode normalization (using NFKC) for all input variants of "NaN" and uniformly applies the following options:
+  - **Default Behavior:** Preserves any variant of "NaN" as the original string.
   - **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`:
 
     ```json
@@ -34,7 +34,7 @@ npm install repository0-crucible
     }
     ```
 
-  - **Strict Mode:** Enable strict validation with `--strict-nan`, environment variable `STRICT_NAN`, or in `.repositoryConfig.json`:
+  - **Strict Mode:** Enable strict validation with `--strict-nan`, environment variable `STRICT_NAN`, or in `.repositoryConfig.json`. In this mode, an error is thrown unless a custom handler is registered:
 
     ```json
     {
@@ -60,16 +60,16 @@ npm install repository0-crucible
   - **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information for each conversion, including the normalized input.
 * **Plugin Architecture and Trace Logging:** Extend functionality by registering plugins using the provided API. When the CLI is run with the `--use-plugins` flag, input arguments are processed through all registered plugins. Additionally, if you supply the `--trace-plugins` flag, the CLI will output a detailed trace log of the transformation steps performed by each plugin.
 * **Structured JSON Logging:** CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.
-* **Unicode Variant Support:** Recognizes and handles Unicode variants of "NaN", ensuring consistent behavior worldwide.
+* **Unicode Variant Support:** Recognizes Unicode variants of "NaN" (e.g. "ＮａＮ") and processes them consistently based on the chosen configuration.
 * **Automated Tests:** Comprehensive tests ensure that all edge cases and functionalities—including NaN handling and plugin tracing—work as expected.
 * **LLM-Driven Regeneration:** The project incorporates an automated code regeneration workflow powered by an LLM, ensuring consistency and quality without manual intervention.
 
 ## Configurable 'NaN' Handling
 
 Users can control how "NaN" is processed by the CLI tool:
-* **Default Behavior:** Preserves any variant of "NaN" as a string.
+* **Default Behavior:** Preserves any variant of "NaN" as the original string input.
 * **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`.
-* **Strict Mode:** Enable strict validation with `--strict-nan`, environment variable `STRICT_NAN`, or in `.repositoryConfig.json`.
+* **Strict Mode:** Enable strict validation with `--strict-nan`, environment variable `STRICT_NAN`, or in `.repositoryConfig.json` (throws an error if no custom handler is provided).
 * **Custom Replacement via CLI & Config:** Provide a replacement for "NaN" either inline using `--custom-nan <value>` or persistently via the `customNan` key in `.repositoryConfig.json`.
 * **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information, including the normalized input.
 

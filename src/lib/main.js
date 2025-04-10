@@ -4,7 +4,7 @@
 // The automated system updates this file based on defined CI/CD triggers and the contributing guidelines. Avoid manual changes that conflict with these protocols.
 
 import { fileURLToPath } from "url";
-import fs from "fs"; // Used for reading configuration file
+import fs from "fs";
 
 // Plugin Manager Implementation integrated into main.js for repository0-crucible
 const plugins = [];
@@ -52,7 +52,7 @@ export function registerNaNHandler(handler) {
 
 /**
  * Determines if the provided string represents a variant of 'NaN'.
- * It normalizes Unicode variants and compares in a case-insensitive manner.
+ * It standardizes the input by trimming and normalizing (NFKC) and comparing in a case-insensitive manner.
  * @param {string} str
  * @returns {boolean}
  */
@@ -102,21 +102,26 @@ function convertArg(arg) {
 
 /**
  * Helper function to process 'NaN' conversion based on the current configuration and flags.
- * @param {string} str - The input string (assumed trimmed and validated as a NaN representation)
+ * The function uses standardized normalization for comparison but preserves the original input in default mode.
+ * @param {string} originalStr - The original input string (already trimmed)
  * @returns {{converted: any, conversionMethod: string}}
  */
-function processNaNConversion(str) {
+function processNaNConversion(originalStr) {
+  // Using normalized value for decision making
+  const normalized = originalStr.normalize("NFKC");
+
   if (customNaNHandler && typeof customNaNHandler === "function") {
     if (useStrictNan) {
       console.info("Strict NaN mode active: using custom NaN handler.");
     }
-    return { converted: customNaNHandler(str), conversionMethod: "custom" };
+    return { converted: customNaNHandler(originalStr), conversionMethod: "custom" };
   } else if (useStrictNan) {
     throw new Error("Strict NaN mode error: encountered 'NaN' input without a custom handler.");
   } else if (useNativeNanConfig) {
     return { converted: NaN, conversionMethod: "native" };
   } else {
-    return { converted: str, conversionMethod: "default" };
+    // Preserve the original string even if its normalized form is different
+    return { converted: originalStr, conversionMethod: "default" };
   }
 }
 
