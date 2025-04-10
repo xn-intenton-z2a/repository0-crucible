@@ -336,6 +336,17 @@ describe("Configuration CustomNaN via repositoryConfig.json", () => {
   });
 });
 
+describe("Environment Custom NaN Handler", () => {
+  test("should convert 'NaN' using CUSTOM_NAN environment variable when no CLI flag or repository config is set", () => {
+    process.env.CUSTOM_NAN = "envCustomReplacement";
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["NaN", "100"]);
+    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["envCustomReplacement", 100] });
+    logSpy.mockRestore();
+    delete process.env.CUSTOM_NAN;
+  });
+});
+
 describe("Plugin Transformation Trace Logging", () => {
   test("should not include pluginTrace when no plugins are registered", () => {
     const plugins = getPlugins();

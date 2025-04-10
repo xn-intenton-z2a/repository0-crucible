@@ -57,6 +57,8 @@ npm install repository0-crucible
     }
     ```
 
+  - **Environment Variable:** Additionally, you can set the environment variable `CUSTOM_NAN` to a non-empty string (that is not a variant of "NaN") to configure a custom replacement for NaN inputs if not provided via CLI or configuration file.
+
   - **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information for each conversion, including the normalized input.
 * **Plugin Architecture and Trace Logging:** Extend functionality by registering plugins using the provided API. When the CLI is run with the `--use-plugins` flag, input arguments are processed through all registered plugins. Additionally, if you supply the `--trace-plugins` flag, the CLI will output a detailed trace log of the transformation steps performed by each plugin.
 * **Structured JSON Logging:** CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.
@@ -70,7 +72,7 @@ Users can control how "NaN" is processed by the CLI tool:
 * **Default Behavior:** Preserves any variant of "NaN" as the original string input.
 * **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`.
 * **Strict Mode:** Enable strict validation with `--strict-nan`, environment variable `STRICT_NAN`, or in `.repositoryConfig.json` (throws an error if no custom handler is provided).
-* **Custom Replacement via CLI & Config:** Provide a replacement for "NaN" either inline using `--custom-nan <value>` or persistently via the `customNan` key in `.repositoryConfig.json`.
+* **Custom Replacement via CLI, Config & Environment:** Provide a replacement for "NaN" either inline using `--custom-nan <value>`, via the `customNan` key in `.repositoryConfig.json`, or by setting the environment variable `CUSTOM_NAN`.
 * **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information, including the normalized input.
 
 ## Dump Configuration
@@ -153,6 +155,13 @@ node src/lib/main.js --help
   ```
   Then run:
   ```bash
+  node src/lib/main.js NaN 100
+  ```
+
+- **Custom NaN Replacement via Environment Variable:**
+  Set the environment variable before running the CLI:
+  ```bash
+  export CUSTOM_NAN=customEnvReplacement
   node src/lib/main.js NaN 100
   ```
 
