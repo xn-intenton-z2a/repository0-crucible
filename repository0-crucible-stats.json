@@ -9,11 +9,11 @@
   "prDetails": [
     {
       "title": "Refactored NaN configuration resolution to enforce clear precedence CLI Repo Config Environment Default and updated tests and README accordingly. (fixes #1247)",
-      "ageMinutes": 0
+      "ageMinutes": 1
     }
   ],
-  "diffMinutes": 1,
-  "diffMinutesMain": 12,
+  "diffMinutes": 0,
+  "diffMinutesMain": 13,
   "commitsLastHour": 5,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
@@ -43,12 +43,12 @@
     "details": [
       {
         "branch": "agentic-lib-issue-1247",
-        "minutesSinceLastCommit": 1
+        "minutesSinceLastCommit": 2
       }
     ]
   },
-  "averagePRAge": 0,
+  "averagePRAge": 1,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-10T22:22:55.692Z"
+  "generatedAt": "2025-04-10T22:24:15.744Z"
 }
