@@ -1,19 +1,17 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate a unified automated CLI tool with robust argument conversion and a flexible plugin architecture.
+`repository0-crucible` is a demo repository showcasing GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, and advanced CI/CD workflows.
 
 To create a self-evolving agentic coding system of your own based on this one, see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
-
-This repository provides a unified project identity under the name repository0-crucible.
 
 ## Repository Template
 
 The repository is intended as a template that includes:
 * A Template Base: A starting point for new projects.
 * A Running Experiment: An example implementation showcasing automated CLI argument conversion, plugin architecture, and advanced CI/CD workflows.
-* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) that hand off to reusable workflows.
 
-* See [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
+See [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
 ## Installation
 
@@ -25,32 +23,23 @@ npm install repository0-crucible
 
 ## Features
 
-* Automated conversion of CLI arguments: Numeric strings like "42" or "3.14" are automatically converted to numbers, boolean strings like "true" or "false" are converted to booleans, while non-numeric strings are trimmed and returned.
-* Refactored NaN Conversion Handling: Any variation of the string 'NaN' (including Unicode variants) is now handled consistently according to the provided flags (--native-nan, --strict-nan, --custom-nan) and custom handlers. Debug logging now reliably reports the original input, the final converted value, and the conversion method used.
-* Special Handling for 'NaN': By default, the CLI tool preserves any case variation of the string 'NaN' (e.g., "NaN", "nan", "NAN") for clarity. To convert any variation of "NaN" (including Unicode variants) to numeric NaN, use the --native-nan flag, set the environment variable NATIVE_NAN to "true", or create a configuration file named .repositoryConfig.json with the property { "nativeNan": true }.
-* Custom NaN Handling: Developers can now register a custom handler for 'NaN' conversion using the `registerNaNHandler` API. When a custom handler is registered, it will always be used to process any variant of 'NaN', ensuring consistent behavior across all CLI invocations.
-* New CLI Option --custom-nan: A new flag, **--custom-nan <value>**, has been added. When provided, this inline custom NaN handler converts any occurrence of 'NaN' (in any case or Unicode variant) into the specified replacement value. This works seamlessly alongside the --native-nan, --strict-nan, and --debug-nan flags.
-* Experimental Strict NaN Mode: With the new --strict-nan flag, setting the environment variable STRICT_NAN to "true", or adding a property "strictNan": true in the .repositoryConfig.json configuration file, the CLI enforces strict validation of NaN inputs. In this mode, a NaN input without a custom handler will result in an error. If a custom handler is registered, it will be used with an informational log.
-* Debug NaN Mode: A new CLI flag `--debug-nan` has been added to aid in troubleshooting. When this flag is used, the CLI outputs additional diagnostic information for each NaN conversion. The debug output includes:
-  - The original raw input value
-  - The final converted value
-  - The conversionMethod indicating whether the conversion was performed using "native", "custom", or "default" handling.
-* ISO 8601 Date Parsing: ISO formatted date strings are automatically converted to JavaScript Date objects if valid.
-* JSON Conversion: CLI arguments that begin with `{` or `[` are automatically parsed as JSON objects or arrays if valid.
-* Consistent Default Argument Handling: The CLI tool now defaults to an empty arguments array if no inputs are provided, ensuring consistent behavior between production and tests.
-* Structured JSON Logging: The CLI outputs a structured JSON formatted string to enhance log parsing and integration with monitoring systems. When using the --native-nan flag, numeric NaN, Infinity, and -Infinity values are serialized in a special format as "___native_NaN___", "___Infinity___", and "___-Infinity___" respectively, which are then revived appropriately.
-* Support for Unicode Variants of 'NaN': The CLI tool now recognizes and appropriately handles Unicode and localized variants of "NaN", ensuring consistent parsing globally.
-* Automated Tests for CLI Argument Handling: The test suite now includes dedicated tests to verify the correct processing of both standard and Unicode variants of the 'NaN' argument, ensuring robust CLI behavior.
-* Demonstration of automated CI/CD workflows for code regeneration and testing.
-* Unified Plugin Architecture: Extend functionality by registering plugins to transform or analyze the CLI output using the `--use-plugins` flag.
+* **Automated CLI Argument Conversion:** Automatically converts numeric strings (e.g. "42", "3.14"), boolean strings ("true", "false"), ISO 8601 dates, JSON formatted strings, and more. Non-numeric strings are trimmed and returned.
+* **Enhanced NaN Handling:** Supports robust handling of NaN inputs and its Unicode variants. By default, variants of "NaN" are preserved as strings. Use the following options to alter behavior:
+  - **--native-nan:** Converts any variant of "NaN" to the numeric NaN value.
+  - **--strict-nan:** Enforces strict validation and throws an error on encountering "NaN" without a custom handler.
+  - **--custom-nan <value>:** Uses a custom inline handler to replace "NaN" with the provided value.
+  - **--debug-nan:** Outputs detailed debug info (raw input, converted value, conversion method) for each NaN conversion.
+* **Plugin Architecture:** Extend functionality by registering plugins using the provided API. When the CLI is run with the `--use-plugins` flag, input arguments are processed through all registered plugins.
+* **Structured JSON Logging:** CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.
+* **Unicode Variant Support:** Recognizes and handles Unicode variants of "NaN", ensuring consistent behavior worldwide.
+* **Automated Tests:** Comprehensive tests ensure that all edge cases and functionalities—including NaN handling—work as expected.
+* **LLM-Driven Regeneration:** The project incorporates an automated code regeneration workflow powered by an LLM, ensuring consistency and quality without manual intervention.
 
 ## Configurable 'NaN' Handling
 
-Users can control how the string 'NaN' is processed by the CLI tool. By default, 'NaN' is preserved as a string. However, you can enable conversion to numeric NaN:
-
-- Use the `--native-nan` command line flag.
-- Set the environment variable `NATIVE_NAN` to "true".
-- Create a configuration file named `.repositoryConfig.json` in the project root with the following content:
+Users can control how "NaN" is processed by the CLI tool:
+* **Default Behavior:** Preserves any variant of "NaN" as a string.
+* **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`:
 
 ```json
 {
@@ -58,7 +47,7 @@ Users can control how the string 'NaN' is processed by the CLI tool. By default,
 }
 ```
 
-Additionally, to enable strict validation for NaN inputs (experimental), include the property "strictNan": true in the configuration file. For example:
+* **Strict Mode:** Enable strict validation with `--strict-nan`, environment variable `STRICT_NAN`, or in `.repositoryConfig.json`:
 
 ```json
 {
@@ -67,109 +56,17 @@ Additionally, to enable strict validation for NaN inputs (experimental), include
 }
 ```
 
-## New Custom NaN Option
-
-In addition to the above, the new CLI flag **--custom-nan** allows you to specify a replacement value for any variant of "NaN". For example:
+* **Custom Replacement:** Provide a replacement for "NaN" inline using `--custom-nan <value>`:
 
 ```bash
 node src/lib/main.js --custom-nan customReplacement NaN 100
 ```
 
-This command will replace the string representation of "NaN" (including Unicode variants) with `customReplacement` in the output, while processing other arguments normally.
-
-## Experimental Strict NaN Mode
-
-With the experimental **--strict-nan** mode, the CLI enforces strict validation of NaN inputs. When enabled (either via the flag, environment variable `STRICT_NAN`, or the configuration file property "strictNan": true), encountering any variation of "NaN" without a custom handler will result in an error. If a custom handler is registered, it will be used and an informational message logged indicating that strict mode is active.
-
-## Debug NaN Mode
-
-In addition to the existing NaN handling features, the CLI tool now supports a **--debug-nan** flag. When this flag is used, the CLI outputs additional diagnostic information for each NaN conversion. The debug output includes:
-- The original raw input value
-- The final converted value
-- The conversionMethod indicating whether the NaN conversion was performed using "native", "custom", or "default" handling.
-
-## Custom NaN Handler Plugin
-
-You can override the default 'NaN' conversion by registering a custom handler. For example:
-
-```javascript
-import { registerNaNHandler } from "@src/lib/main.js";
-
-// Register a custom NaN handler
-registerNaNHandler(() => {
-  // Custom conversion logic
-  return 'customNaN';
-});
-```
-
-When a custom handler is registered, any input that is a variation of "NaN" (including Unicode variants) will be processed using your custom logic, regardless of flags or formatting.
-
-## LLM-Driven Automated Code Regeneration Workflow
-
-This project incorporates an automated code regeneration pipeline powered by a large language model (LLM) capable of processing over 100,000 tokens. The workflow is integrated with our CI/CD pipelines to ensure that source files and documentation are automatically updated to meet project standards.
-
-### Overview
-
-- The LLM-driven pipeline monitors issues and pull requests for specific formatting markers.
-- When triggered, it regenerates complete source files, tests, and documentation based on defined templates.
-- This ensures consistency and rapid iteration on the project, without manual 'dry-run' steps.
-
-### Integration with CI/CD
-
-- The pipeline runs as part of our scheduled CI/CD jobs and on-demand triggers.
-- Regenerated outputs replace older versions, ensuring that the repository consistently reflects the repository0-crucible identity.
-
-### Guidelines for Contributors
-
-- When reporting issues, please follow the established template so that the LLM can process your input and generate accurate code changes.
-- Include detailed descriptions, expected outputs, and examples in your issue submissions.
-- After the LLM regenerates code, review the changes per our [CONTRIBUTING.md](./CONTRIBUTING.md) guidelines.
-
-### Triggering Regeneration
-
-- The regeneration process is fully automated. In most cases, submitting a formatted issue or pull request will initiate the pipeline.
-- For manual triggering, use the npm script provided (see below).
-
-## Plugin System
-
-The plugin system allows developers to register custom functions (plugins) that transform the output of the CLI tool. This makes it easy to extend and customize functionality without altering the core code.
-
-### How It Works
-
-* The plugin manager is integrated into the main module in `src/lib/main.js` and provides the following functions:
-  - `registerPlugin(plugin)`: Register a new plugin (a function) that takes data as input and returns transformed data.
-  - `getPlugins()`: Retrieve the list of currently registered plugins.
-  - `executePlugins(data)`: Process data through all registered plugins sequentially.
-  - `registerNaNHandler(handler)`: Register a custom handler for converting 'NaN'.
-
-* When you run the CLI with the `--use-plugins` flag, the tool will process input arguments through any registered plugins. If no plugins are registered, the arguments remain unchanged.
-
-### Example Plugin
-
-Below is an example of a simple plugin that appends "-custom" to each string argument:
-
-```javascript
-import { registerPlugin } from "@src/lib/main.js";
-
-// A plugin that appends "-custom" to string values
-registerPlugin(data => data.map(item => typeof item === 'string' ? item + "-custom" : item));
-```
-
-After registering your plugin, run the CLI as follows:
-
-```bash
-node src/lib/main.js --use-plugins 100 hello
-```
-
-The output will display the processed array in a structured JSON format, for example:
-
-```json
-{ "message": "Run with", "data": [100, "hello-custom"] }
-```
+* **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information for each conversion.
 
 ## Usage
 
-To run the CLI tool and see help instructions:
+Run the CLI tool to see available options:
 
 ```bash
 node src/lib/main.js --help
@@ -182,48 +79,69 @@ node src/lib/main.js --help
   npm run start
   ```
 
-- **Using Plugins (only active if plugins are registered):**
+- **Using Plugins:**
   ```bash
   npm run start -- --use-plugins 42 true hello
   ```
 
 - **Native NaN Conversion:**
-  To convert the string "NaN" to the numeric NaN, use the --native-nan flag, set the environment variable NATIVE_NAN to "true", or use a configuration file:
   ```bash
   node src/lib/main.js --native-nan NaN 100
   ```
 
 - **Strict NaN Mode:**
-  To enforce strict validation of NaN inputs, use the --strict-nan flag, set the environment variable STRICT_NAN to "true", or add "strictNan": true in your .repositoryConfig.json file. In this mode, a NaN input without a custom handler will result in an error:
   ```bash
   node src/lib/main.js --strict-nan NaN 100
   ```
 
 - **Debug NaN Mode:**
-  To output detailed debug information for each NaN conversion, use the --debug-nan flag. This will include both the original input, the converted value, and the conversionMethod (native, custom, or default) in the CLI output:
   ```bash
   node src/lib/main.js --debug-nan NaN 100
   ```
 
 - **Custom NaN Replacement:**
-  To specify a custom replacement for "NaN", use the --custom-nan flag followed by the desired replacement value:
   ```bash
   node src/lib/main.js --custom-nan customReplacement NaN 100
   ```
 
 - **JSON Argument Conversion:**
-  You can now pass JSON formatted arguments directly. For example:
   ```bash
   node src/lib/main.js '{"key": "value"}' '[1,2,3]'
   ```
 
-## Incremental Changes Plan
+## Plugin System
 
-TODO: Add forthcoming changes here.
+The plugin system allows you to register custom functions to transform or analyze the CLI output. Functions provided:
+
+* `registerPlugin(plugin)`: Register a plugin function.
+* `getPlugins()`: Retrieve currently registered plugins.
+* `executePlugins(data)`: Process data through plugins when `--use-plugins` is active.
+* `registerNaNHandler(handler)`: Register a custom handler for converting "NaN".
+
+### Example Plugin
+
+```javascript
+import { registerPlugin } from "@src/lib/main.js";
+
+// Append "-custom" to each string argument
+registerPlugin(data => data.map(item => typeof item === 'string' ? item + "-custom" : item));
+```
+
+Run the CLI with:
+
+```bash
+node src/lib/main.js --use-plugins 100 hello
+```
+
+Output:
+
+```json
+{ "message": "Run with", "data": [100, "hello-custom"] }
+```
 
 ## Contributing
 
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively. Note that any contributions will be validated against the automated LLM-driven regeneration pipeline to maintain project consistency.
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute. All contributions will be validated against the automated LLM-driven regeneration pipeline.
 
 ## License
 

@@ -1,11 +1,10 @@
 #!/usr/bin/env node
 
 // NOTE: This file is maintained in part by an automated LLM-driven regeneration pipeline for repository0-crucible.
-// The LLM is capable of processing over 100,000 tokens. It automatically updates this file based on defined CI/CD triggers.
-// Contributors should avoid making manual changes that conflict with the automated regeneration guidelines provided in the README and CONTRIBUTING documents.
+// The automated system updates this file based on defined CI/CD triggers and the contributing guidelines. Avoid manual changes that conflict with these protocols.
 
 import { fileURLToPath } from "url";
-import fs from "fs"; // Added to read configuration file
+import fs from "fs"; // Used for reading configuration file
 
 // Plugin Manager Implementation integrated into main.js for repository0-crucible
 const plugins = [];
@@ -43,8 +42,8 @@ export function executePlugins(data) {
 }
 
 /**
- * Register a custom handler to override default conversion of 'NaN'.
- * The handler should be a function that accepts the original string and returns the desired value.
+ * Register a custom handler for converting 'NaN'.
+ * The handler should be a function that accepts the original string and returns the desired conversion.
  * @param {Function|null} handler
  */
 export function registerNaNHandler(handler) {
@@ -52,8 +51,8 @@ export function registerNaNHandler(handler) {
 }
 
 /**
- * Helper function to check if the given argument represents a NaN value
- * considering different Unicode variants and case variations.
+ * Determines if the provided string represents a variant of 'NaN'.
+ * It normalizes Unicode variants and compares in a case-insensitive manner.
  * @param {string} str
  * @returns {boolean}
  */
@@ -62,78 +61,59 @@ function isNaNInput(str) {
 }
 
 /**
- * Converts a CLI argument into its appropriate type.
+ * Converts a CLI argument to its appropriate type.
  *
- * Special Handling:
- * - JSON Conversion: If the argument starts with '{' or '[', it will be parsed as JSON if valid.
- * - Boolean strings (case-insensitive) are converted to booleans.
- * - ISO 8601 formatted date strings are converted to Date objects if valid.
+ * Special Handling includes:
+ * - JSON Conversion: Strings that start with '{' or '[' are parsed as JSON when valid.
+ * - Boolean values (case-insensitive) are converted to booleans.
+ * - ISO 8601 date strings are converted to Date objects if valid.
  * - Numeric strings are converted to numbers when applicable.
- * - Fallback: returns a trimmed string if no other conversion applies.
- *
- * Note: 'NaN' handling is now managed separately in the main function to provide enhanced debug details.
+ * - If none apply, the trimmed string is returned.
  *
  * @param {string} arg - The CLI argument
- * @returns {string | boolean | number | Date | Object | Array} - The converted argument
+ * @returns {string|boolean|number|Date|Object|Array}
  */
 function convertArg(arg) {
   const trimmed = arg.trim();
 
-  // Attempt JSON conversion if input looks like JSON object or array
   if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
     try {
-      const jsonParsed = JSON.parse(trimmed);
-      return jsonParsed;
+      return JSON.parse(trimmed);
     } catch (e) {
-      // If JSON.parse fails, fallback to other conversion methods
+      // Fall through to other conversion methods if JSON parsing fails
     }
   }
 
-  // Convert boolean strings (case-insensitive) to booleans
   const lower = trimmed.toLowerCase();
   if (lower === "true") return true;
   if (lower === "false") return false;
 
-  // Check for ISO 8601 formatted date strings
   const iso8601Regex = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+\-]\d{2}:\d{2}))?$/;
   if (iso8601Regex.test(trimmed)) {
     const date = new Date(trimmed);
-    if (!isNaN(date.getTime())) {
-      return date;
-    }
+    if (!isNaN(date.getTime())) return date;
   }
 
-  // Attempt to convert to a number if applicable
   const num = Number(trimmed);
   if (trimmed !== "" && !isNaN(num)) return num;
 
-  // Fallback: return the trimmed string
   return trimmed;
 }
 
 /**
  * Main function for the CLI.
- * If the flag --use-plugins is provided, the function will process the arguments
- * through registered plugins if any exist.
- * Additionally, if the flag --native-nan is provided, the configuration file (.repositoryConfig.json)
- * sets nativeNan to true, or process.env.NATIVE_NAN is "true",
- * any variation of 'NaN' is converted to numeric NaN by default unless overridden by a custom handler.
- * 
- * The experimental --strict-nan flag (or environment variable STRICT_NAN=true or strictNan:true in config) enforces strict validation for NaN inputs.
- * In strict mode, if a NaN input is encountered without a custom handler, an error is thrown.
- * If a custom handler is registered, it is used and logs an informational message.
- * 
- * A new debug flag --debug-nan has been added to output additional details about the NaN conversion process when enabled.
- * In debug mode, for each occurrence of a NaN conversion, the original input, its converted value, and the conversion method
- * (native, custom, or default) are logged under a debugNan property.
- * 
- * A new flag --custom-nan <value> has been added to allow specifying a replacement value for any variant of 'NaN'.
- * When provided, this inline custom NaN handler will override default behavior.
+ * Processes CLI arguments using conversion logic and plugin integration.
+ * Handles NaN conversion based on these rules:
+ *   - Default: preserves NaN as a string.
+ *   - --native-nan flag (or config/environment): converts variant of 'NaN' to numeric NaN.
+ *   - --strict-nan flag (or config/environment): throws an error if a 'NaN' input is encountered without a custom handler.
+ *   - --custom-nan flag: registers an inline custom handler to replace 'NaN' with the provided value.
+ *   - --debug-nan flag: outputs detailed debug info for each NaN conversion instance.
  *
- * @param {string[]} args - The CLI arguments
+ * @param {string[]} args - CLI arguments
  */
 export function main(args = []) {
-  // Read configuration from .repositoryConfig.json if it exists
+  // Load configuration from .repositoryConfig.json if available
   let configNativeNan = false;
   let configStrictNan = false;
   try {
@@ -144,50 +124,43 @@ export function main(args = []) {
       configStrictNan = config.strictNan === true;
     }
   } catch (error) {
-    // If reading/parsing fails, default to false
     configNativeNan = false;
     configStrictNan = false;
   }
 
-  // Determine native NaN conversion based on CLI flag, configuration file, or environment variable
+  // Determine whether to use native NaN handling
   const nativeNanFlag = args.includes("--native-nan");
   useNativeNanConfig = nativeNanFlag || configNativeNan || process.env.NATIVE_NAN === "true";
 
-  // Determine strict NaN mode based on CLI flag, configuration file or environment variable
+  // Determine strict NaN mode
   const strictNanFlag = args.includes("--strict-nan");
-  useStrictNan = strictNanFlag || process.env.STRICT_NAN === "true" || configStrictNan;
+  useStrictNan = strictNanFlag || configStrictNan || process.env.STRICT_NAN === "true";
 
-  // Determine if debug-nan mode is active
+  // Check for debug flag
   const debugNanFlag = args.includes("--debug-nan");
 
-  // Handle --custom-nan flag to register inline custom NaN handler
-  let customNanValue = null;
+  // Handle inline custom NaN replacement via --custom-nan flag
   const customNanIndex = args.indexOf("--custom-nan");
   if (customNanIndex !== -1) {
-    if (args.length > customNanIndex + 1 && args[customNanIndex + 1].trim().toLowerCase() !== "nan") {
-      customNanValue = args[customNanIndex + 1];
+    if (args.length > customNanIndex + 1 && args[customNanIndex + 1].trim().normalize("NFKC").toLowerCase() !== "nan") {
+      const customNanValue = args[customNanIndex + 1];
       registerNaNHandler(() => customNanValue);
     } else {
       throw new Error("--custom-nan flag provided without a replacement value.");
     }
   }
 
-  // Process the arguments by filtering out known flags and their associated values
+  // Filter out flags and their associated values
   const processedArgs = [];
   for (let i = 0; i < args.length; i++) {
-    if (args[i] === "--use-plugins" || args[i] === "--native-nan" || args[i] === "--strict-nan" || args[i] === "--debug-nan") {
-      continue;
-    }
-    if (args[i] === "--custom-nan") {
-      i++; // Skip the next element as it is the value for --custom-nan
-      continue;
-    }
+    if (["--use-plugins", "--native-nan", "--strict-nan", "--debug-nan"].includes(args[i])) continue;
+    if (args[i] === "--custom-nan") { i++; continue; }
     processedArgs.push(args[i]);
   }
 
-  // Convert each argument using intelligent parsing, with special handling for Unicode variants of 'NaN'
-  let convertedArgs = [];
-  let debugDetails = [];
+  // Convert each argument with intelligent parsing and special handling for variants of 'NaN'
+  const convertedArgs = [];
+  const debugDetails = [];
   for (let i = 0; i < processedArgs.length; i++) {
     const arg = processedArgs[i];
     const trimmed = arg.trim();
@@ -214,26 +187,25 @@ export function main(args = []) {
         debugDetails.push({ raw: arg, converted, conversionMethod: convMethod });
       }
     } else {
-      const converted = convertArg(arg);
-      convertedArgs.push(converted);
+      convertedArgs.push(convertArg(arg));
     }
   }
 
+  // Process through plugins if requested
+  let finalData = convertedArgs;
   if (args.includes("--use-plugins") && getPlugins().length > 0) {
-    convertedArgs = executePlugins(convertedArgs);
+    finalData = executePlugins(convertedArgs);
   }
 
-  // Prepare final log object
-  let finalLog = { message: "Run with", data: convertedArgs };
+  const finalLog = { message: "Run with", data: finalData };
   if (debugNanFlag) {
     finalLog.debugNan = debugDetails;
   }
 
-  // Output structured JSON log for improved integration with monitoring systems
-  // Use a custom replacer to properly serialize special numeric values such as NaN, Infinity and -Infinity.
+  // Output structured JSON with custom serialization for special numeric values
   console.log(JSON.stringify(finalLog, (key, value) => {
     if (typeof value === "number") {
-      if (isNaN(value)) return "___native_NaN___";
+      if (Number.isNaN(value)) return "___native_NaN___";
       if (value === Infinity) return "___Infinity___";
       if (value === -Infinity) return "___-Infinity___";
     }

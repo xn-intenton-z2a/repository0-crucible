@@ -21,7 +21,7 @@ function getLoggedOutput(logSpy) {
   return revive(parsed);
 }
 
-// NOTE: This test file is part of the automated testing suite that verifies the core CLI functionalities of repository0-crucible
+// Automated test suite for CLI argument conversion and plugin integration
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -85,7 +85,7 @@ describe("CLI Argument Conversion", () => {
 
   test("should not convert invalid ISO 8601 date strings and leave them unchanged", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const invalidISO = "2023-13-01T00:00:00Z"; // Invalid month
+    const invalidISO = "2023-13-01T00:00:00Z";
     main([invalidISO]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [invalidISO.trim()] });
     logSpy.mockRestore();
@@ -138,7 +138,6 @@ describe("CLI Argument Conversion", () => {
   });
 
   test("should convert 'NaN' to numeric NaN when configuration file sets nativeNan to true", () => {
-    // Mock fs methods to simulate configuration file
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"nativeNan": true}');
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -155,7 +154,6 @@ describe("CLI Argument Conversion", () => {
 describe("Plugin Integration in CLI", () => {
   test("should pass arguments unchanged when --use-plugins flag is provided but no plugins are registered", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    // Ensure no plugins are registered
     const plugins = getPlugins();
     plugins.length = 0;
     main(["--use-plugins", "50", "hello"]);
@@ -164,10 +162,8 @@ describe("Plugin Integration in CLI", () => {
   });
 
   test("should process arguments through plugins when a custom plugin is registered", () => {
-    // Reset plugins before registering
     const plugins = getPlugins();
     plugins.length = 0;
-    // Register a plugin that doubles numeric values
     registerPlugin(data => data.map(item => typeof item === 'number' ? item * 2 : item));
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--use-plugins", "50", "hello"]);
@@ -178,13 +174,11 @@ describe("Plugin Integration in CLI", () => {
 
 describe("Custom NaN Handler Plugin", () => {
   beforeEach(() => {
-    // Reset plugins and custom NaN handler
     getPlugins().length = 0;
     registerNaNHandler(null);
   });
 
   test("should use custom NaN handler when registered", () => {
-    // Register a custom NaN handler that returns a string 'customNaN'
     registerNaNHandler(() => 'customNaN');
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["NaN", "100"]);
@@ -202,7 +196,6 @@ describe("Custom NaN Handler Plugin", () => {
 
 describe("Strict NaN Mode", () => {
   beforeEach(() => {
-    // Reset plugins and custom NaN handler
     getPlugins().length = 0;
     registerNaNHandler(null);
   });
@@ -225,7 +218,6 @@ describe("Strict NaN Mode", () => {
   });
 
   test("should throw an error in strict mode when enabled via configuration file without custom handler", () => {
-    // Simulate config file returning strictNan:true
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"strictNan": true}');
     expect(() => {
@@ -236,7 +228,6 @@ describe("Strict NaN Mode", () => {
   });
 
   test("should use custom handler in strict mode when enabled via configuration file and log an info message", () => {
-    // Simulate config file with strictNan:true
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"strictNan": true}');
     registerNaNHandler(() => 'customConfigStrictNaN');
@@ -254,7 +245,6 @@ describe("Strict NaN Mode", () => {
 
 describe("Debug NaN Mode", () => {
   beforeEach(() => {
-    // Reset plugins and custom NaN handler
     getPlugins().length = 0;
     registerNaNHandler(null);
   });
@@ -273,7 +263,7 @@ describe("Debug NaN Mode", () => {
     main(["--debug-nan", "--native-nan", "NaN", "100"]);
     const output = getLoggedOutput(logSpy);
     expect(output).toHaveProperty('debugNan');
-    expect(isNaN(output.debugNan[0].converted)).toBe(true);
+    expect(Number.isNaN(output.debugNan[0].converted)).toBe(true);
     expect(output.debugNan[0].conversionMethod).toBe("native");
     logSpy.mockRestore();
   });
@@ -289,7 +279,6 @@ describe("Special Numeric Values Serialization", () => {
   });
 });
 
-// Additional test to specifically verify the CLI handling of a single 'NaN' argument
 describe("CLI NaN Handling", () => {
   test("should process 'NaN' argument correctly when passed as a single parameter", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -311,7 +300,7 @@ describe("CLI NaN Handling", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--native-nan", unicodeNan, "200"]);
     const output = getLoggedOutput(logSpy);
-    expect(isNaN(output.data[0])).toBe(true);
+    expect(Number.isNaN(output.data[0])).toBe(true);
     expect(output.data[1]).toBe(200);
     logSpy.mockRestore();
   });
