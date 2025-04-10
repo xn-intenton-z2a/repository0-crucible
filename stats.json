@@ -1,19 +1,22 @@
 {
-  "openIssues": 63,
-  "issuesClosedLastHour": 6,
+  "openIssues": 61,
+  "issuesClosedLastHour": 8,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Updated main.js to use a custom JSON replacer for numeric NaN and updated tests to revive this value plus documentation note in README. (fixes #1152)",
-      "ageMinutes": 5
-    }
-  ],
-  "diffMinutes": 6,
-  "diffMinutesMain": 34,
-  "commitsLastHour": 3,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 4,
+  "diffMinutesMain": 4,
+  "commitsLastHour": 4,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
+    {
+      "time": "17:12",
+      "message": "Implemented --strict-nan flag that enforces strict NaN validatio..."
+    },
+    {
+      "time": "17:06",
+      "message": "Updated main.js to use a custom JSON replacer for numeric NaN an..."
+    },
     {
       "time": "16:30",
       "message": "Add custom NaN handler hook and corresponding tests and document..."
@@ -25,27 +28,14 @@
     {
       "time": "16:11",
       "message": "Enhance CLI argument conversion to support JSON objects and arra..."
-    },
-    {
-      "time": "15:59",
-      "message": "Set default parameter for main to and added test for undefined a..."
-    },
-    {
-      "time": "15:53",
-      "message": "Enable case-insensitive handling for NaN CLI argument conversion..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1152",
-        "minutesSinceLastCommit": 6
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 5,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-10T17:05:07.629Z"
+  "generatedAt": "2025-04-10T17:17:01.260Z"
 }
