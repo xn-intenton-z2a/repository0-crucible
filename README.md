@@ -26,7 +26,7 @@ npm install repository0-crucible
 ## Features
 
 * Automated conversion of CLI arguments: Numeric strings like "42" or "3.14" are automatically converted to numbers, boolean strings like "true" or "false" are converted to booleans, while non-numeric strings remain unchanged.
-* Special Handling for 'NaN': By default, the CLI tool preserves the literal string "NaN" as a special-case marker. However, you can enable conversion to the numeric NaN by using the --native-nan flag or setting the environment variable NATIVE_NAN to "true".
+* Special Handling for 'NaN': By default, the CLI tool preserves the literal string "NaN" as a special-case marker. To convert "NaN" to numeric NaN, use the --native-nan flag or set the environment variable NATIVE_NAN to "true".
 * ISO 8601 Date Parsing: ISO formatted date strings are automatically converted to JavaScript Date objects if valid.
 * Demonstration of GitHub workflows for CI/CD setups.
 * Template based structure ideal for evolving JavaScript libraries.
