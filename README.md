@@ -66,6 +66,8 @@ npm install repository0-crucible
 
   - **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information for each conversion, including the normalized input and conversion method.
 
+  *The NaN handling logic has been consolidated to ensure uniform behavior across all variants and configurations.*
+
 * **Plugin Architecture and Trace Logging:** Extend functionality by registering plugins using the provided API. When the CLI is run with the `--use-plugins` flag, input arguments are processed through all registered plugins. Additionally, if you supply the `--trace-plugins` flag, the CLI will output a detailed trace log of the transformation steps performed by each plugin.
 
 * **Structured JSON Logging:** CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.
