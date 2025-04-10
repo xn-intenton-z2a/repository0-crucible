@@ -33,10 +33,10 @@ export function executePlugins(data) {
  * Converts a CLI argument into its appropriate type.
  *
  * Special Handling:
- * - The string 'NaN' is intentionally preserved as a string to serve as a special-case marker.
+ * - The string 'NaN' is intentionally preserved as a string to serve as a special-case marker. 
+ *   This is distinct from numeric conversion; all other numeric strings are converted to numbers.
  * - Boolean strings (case-insensitive) are converted to booleans.
  * - ISO 8601 formatted date strings are converted to Date objects if valid.
- * - Numeric strings are converted to numbers if valid.
  * - Otherwise, the argument is returned as-is.
  *
  * @param {string} arg - The CLI argument
