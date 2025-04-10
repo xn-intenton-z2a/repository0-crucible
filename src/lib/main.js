@@ -44,7 +44,7 @@ export function executePlugins(data) {
 /**
  * Register a custom handler to override default conversion of 'NaN'.
  * The handler should be a function that accepts the original string and returns the desired value.
- * @param {Function} handler
+ * @param {Function|null} handler
  */
 export function registerNaNHandler(handler) {
   customNaNHandler = handler;
@@ -80,7 +80,7 @@ function convertArg(arg) {
 
   // Special case for any case variation of "NaN":
   if (trimmed.toLowerCase() === "nan") {
-    if (customNaNHandler && typeof customNaNHandler === 'function') {
+    if (customNaNHandler && typeof customNaNHandler === "function") {
       return customNaNHandler(trimmed);
     }
     return useNativeNanConfig ? NaN : trimmed;
@@ -122,8 +122,8 @@ export function main(args = []) {
   // Read configuration from .repositoryConfig.json if it exists
   let configNativeNan = false;
   try {
-    if (fs.existsSync('.repositoryConfig.json')) {
-      const configContent = fs.readFileSync('.repositoryConfig.json', { encoding: 'utf-8' });
+    if (fs.existsSync(".repositoryConfig.json")) {
+      const configContent = fs.readFileSync(".repositoryConfig.json", { encoding: "utf-8" });
       const config = JSON.parse(configContent);
       configNativeNan = config.nativeNan === true;
     }
@@ -150,8 +150,9 @@ export function main(args = []) {
     finalOutput = executePlugins(convertedArgs);
   }
 
-  // Output using multiple arguments to preserve non-JSON values like NaN
-  console.log("Run with:", finalOutput);
+  // Output structured JSON log for improved integration with monitoring systems
+  // Use a custom replacer to properly serialize numeric NaN (when --native-nan flag is used) since JSON.stringify converts NaN to null.
+  console.log(JSON.stringify({ message: "Run with", data: finalOutput }, (key, value) => (typeof value === 'number' && isNaN(value) ? "___native_NaN___" : value)));
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
