@@ -28,7 +28,7 @@ npm install repository0-crucible
 * Automated conversion of CLI arguments: Numeric strings like "42" or "3.14" are automatically converted to numbers, boolean strings like "true" or "false" are converted to booleans, while non-numeric strings are trimmed and returned.
 * Special Handling for 'NaN': By default, the CLI tool preserves any case variation of the string 'NaN' (e.g., "NaN", "nan", "NAN") for clarity. To convert any variation of "NaN" to numeric NaN, use the --native-nan flag, set the environment variable NATIVE_NAN to "true", or create a configuration file named .repositoryConfig.json with the property { "nativeNan": true }.
 * Custom NaN Handling: Developers can now register a custom handler for 'NaN' conversion using the `registerNaNHandler` API. This allows overriding the default behavior with a custom function.
-* Experimental Strict NaN Mode: With the new --strict-nan flag (or by setting the environment variable STRICT_NAN to "true"), the CLI enforces strict validation of NaN inputs. In this mode, if a NaN input is encountered without a custom handler, a descriptive error is thrown. If a custom handler is registered, it is used with an informational log.
+* Experimental Strict NaN Mode: With the new --strict-nan flag, setting the environment variable STRICT_NAN to "true", or adding a property "strictNan": true in the .repositoryConfig.json configuration file, the CLI enforces strict validation of NaN inputs. In this mode, a NaN input without a custom handler will result in a descriptive error. If a custom handler is registered, it will be used with an informational log.
 * Debug NaN Mode: A new CLI flag `--debug-nan` has been added to aid in troubleshooting. When enabled, the CLI outputs additional details about the NaN conversion process, including the original input and its converted value for each occurrence of a NaN conversion.
 * ISO 8601 Date Parsing: ISO formatted date strings are automatically converted to JavaScript Date objects if valid.
 * JSON Conversion: CLI arguments that begin with `{` or `[` are automatically parsed as JSON objects or arrays if valid.
@@ -51,11 +51,18 @@ Users can control how the string 'NaN' is processed by the CLI tool. By default,
 }
 ```
 
-Any of these methods will cause the CLI tool to convert any variation of "NaN" to the numeric NaN, unless a custom handler is registered via `registerNaNHandler`.
+Additionally, to enable strict validation for NaN inputs (experimental), include the property "strictNan": true in the configuration file. For example:
+
+```json
+{
+  "nativeNan": true,
+  "strictNan": true
+}
+```
 
 ## Experimental Strict NaN Mode
 
-With the experimental **--strict-nan** mode, the CLI enforces strict validation of NaN inputs. When enabled (either via the flag or by setting the environment variable `STRICT_NAN` to "true"), encountering any variation of "NaN" without a custom handler will result in a descriptive error. If a custom handler is registered, it will be used and an informational message logged indicating that strict mode is active.
+With the experimental **--strict-nan** mode, the CLI enforces strict validation of NaN inputs. When enabled (either via the flag, environment variable `STRICT_NAN`, or the configuration file property "strictNan": true), encountering any variation of "NaN" without a custom handler will result in a descriptive error. If a custom handler is registered, it will be used and an informational message logged indicating that strict mode is active.
 
 ## Debug NaN Mode
 
@@ -172,7 +179,7 @@ node src/lib/main.js --help
   ```
 
 - **Strict NaN Mode:**
-  To enforce strict validation of NaN inputs, use the --strict-nan flag or set the environment variable STRICT_NAN to "true". In this mode, a NaN input without a custom handler will result in an error:
+  To enforce strict validation of NaN inputs, use the --strict-nan flag, set the environment variable STRICT_NAN to "true", or add "strictNan": true in your .repositoryConfig.json file. In this mode, a NaN input without a custom handler will result in an error:
   ```bash
   node src/lib/main.js --strict-nan NaN 100
   ```

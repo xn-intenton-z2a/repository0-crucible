@@ -126,7 +126,7 @@ function convertArg(arg) {
  * sets nativeNan to true, or process.env.NATIVE_NAN is "true",
  * any variation of 'NaN' is converted to numeric NaN by default unless overridden by a custom handler.
  * 
- * The experimental --strict-nan flag (or environment variable STRICT_NAN=true) enforces strict validation for NaN inputs.
+ * The experimental --strict-nan flag (or environment variable STRICT_NAN=true or strictNan:true in config) enforces strict validation for NaN inputs.
  * In strict mode, if a NaN input is encountered without a custom handler, an error is thrown.
  * If a custom handler is registered, it is used and logs an informational message.
  * 
@@ -138,24 +138,27 @@ function convertArg(arg) {
 export function main(args = []) {
   // Read configuration from .repositoryConfig.json if it exists
   let configNativeNan = false;
+  let configStrictNan = false;
   try {
     if (fs.existsSync(".repositoryConfig.json")) {
       const configContent = fs.readFileSync(".repositoryConfig.json", { encoding: "utf-8" });
       const config = JSON.parse(configContent);
       configNativeNan = config.nativeNan === true;
+      configStrictNan = config.strictNan === true;
     }
   } catch (error) {
     // If reading/parsing fails, default to false
     configNativeNan = false;
+    configStrictNan = false;
   }
 
   // Determine native NaN conversion based on CLI flag, configuration file, or environment variable
   const nativeNanFlag = args.includes("--native-nan");
   useNativeNanConfig = nativeNanFlag || configNativeNan || process.env.NATIVE_NAN === "true";
 
-  // Determine strict NaN mode based on CLI flag or environment variable
+  // Determine strict NaN mode based on CLI flag, configuration file or environment variable
   const strictNanFlag = args.includes("--strict-nan");
-  useStrictNan = strictNanFlag || process.env.STRICT_NAN === "true";
+  useStrictNan = strictNanFlag || process.env.STRICT_NAN === "true" || configStrictNan;
 
   // Determine if debug-nan mode is active
   const debugNanFlag = args.includes("--debug-nan");
