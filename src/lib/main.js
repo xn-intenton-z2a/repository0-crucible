@@ -13,8 +13,9 @@ const plugins = [];
 // Global variable for custom NaN handler
 let customNaNHandler = null;
 
-// Configurable flag for handling 'NaN'
+// Configurable flags for handling 'NaN'
 let useNativeNanConfig = false;
+let useStrictNan = false;
 
 /**
  * Register a new plugin
@@ -55,8 +56,9 @@ export function registerNaNHandler(handler) {
  *
  * Special Handling:
  * - JSON Conversion: If the argument starts with '{' or '[', it will be parsed as JSON if valid.
- * - Any case variation of the string 'NaN' is detected after trimming. If a custom NaN handler is registered, it will be used; otherwise,
- *   numeric NaN is returned when enabled; else the string is preserved for clarity.
+ * - Any case variation of the string 'NaN' is detected after trimming. If strict mode is enabled and no custom handler is registered,
+ *   a descriptive error is thrown. If a custom handler is registered in strict mode, it will be used with an informational log.
+ *   Otherwise, numeric NaN is returned when enabled; else the string is preserved for clarity.
  * - Boolean strings (case-insensitive) are converted to booleans.
  * - ISO 8601 formatted date strings are converted to Date objects if valid.
  * - Additionally, the input is trimmed to ensure robust conversion.
@@ -80,6 +82,14 @@ function convertArg(arg) {
 
   // Special case for any case variation of "NaN":
   if (trimmed.toLowerCase() === "nan") {
+    if (useStrictNan) {
+      if (customNaNHandler && typeof customNaNHandler === "function") {
+        console.info("Strict NaN mode active: using custom NaN handler.");
+        return customNaNHandler(trimmed);
+      } else {
+        throw new Error("Strict NaN mode error: encountered 'NaN' input without a custom handler.");
+      }
+    }
     if (customNaNHandler && typeof customNaNHandler === "function") {
       return customNaNHandler(trimmed);
     }
@@ -115,6 +125,10 @@ function convertArg(arg) {
  * Additionally, if the flag --native-nan is provided, the configuration file (.repositoryConfig.json)
  * sets nativeNan to true, or process.env.NATIVE_NAN is "true",
  * any variation of 'NaN' is converted to numeric NaN by default unless overridden by a custom handler.
+ * 
+ * The experimental --strict-nan flag (or environment variable STRICT_NAN=true) enforces strict validation for NaN inputs.
+ * In strict mode, if a NaN input is encountered without a custom handler, an error is thrown.
+ * If a custom handler is registered in strict mode, it is used and logs an informational message.
  *
  * @param {string[]} args - The CLI arguments
  */
@@ -136,11 +150,15 @@ export function main(args = []) {
   const nativeNanFlag = args.includes("--native-nan");
   useNativeNanConfig = nativeNanFlag || configNativeNan || process.env.NATIVE_NAN === "true";
 
+  // Determine strict NaN mode based on CLI flag or environment variable
+  const strictNanFlag = args.includes("--strict-nan");
+  useStrictNan = strictNanFlag || process.env.STRICT_NAN === "true";
+
   // Check if plugins should be used
   const usePlugins = args.includes("--use-plugins");
   
-  // Remove the plugin and native-nan flags from args
-  const filteredArgs = args.filter(arg => arg !== "--use-plugins" && arg !== "--native-nan");
+  // Remove the plugin, native-nan, and strict-nan flags from args
+  const filteredArgs = args.filter(arg => arg !== "--use-plugins" && arg !== "--native-nan" && arg !== "--strict-nan");
 
   // Convert each argument using intelligent parsing
   const convertedArgs = filteredArgs.map(convertArg);
