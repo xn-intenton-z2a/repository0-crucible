@@ -9,11 +9,11 @@
   "prDetails": [
     {
       "title": "Consolidated and enhanced NaN handling logic for uniform behavior across all variants and configurations. (fixes #1242)",
-      "ageMinutes": 0
+      "ageMinutes": 1
     }
   ],
   "diffMinutes": 0,
-  "diffMinutesMain": 5,
+  "diffMinutesMain": 6,
   "commitsLastHour": 5,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
@@ -47,8 +47,8 @@
       }
     ]
   },
-  "averagePRAge": 0,
+  "averagePRAge": 1,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-10T21:40:02.694Z"
+  "generatedAt": "2025-04-10T21:40:22.899Z"
 }
