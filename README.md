@@ -34,16 +34,16 @@ npm install repository0-crucible
 
 ## Plugin System
 
-The plugin system allows developers to register custom functions (plugins) that transform the output of the CLI tool. This makes it easy to extend and customize the JSON Schema diff functionality without altering the core code.
+The plugin system allows developers to register custom functions (plugins) that transform the output of the CLI tool. This makes it easy to extend and customize the functionality without altering the core code.
 
 ### How It Works
 
-* The plugin manager is now integrated into the main module in `src/lib/main.js` and provides three main functions that are exported:
+* The plugin manager is integrated into the main module in `src/lib/main.js` and provides three main functions that are exported:
   - `registerPlugin(plugin)`: Register a new plugin (a function) that takes data as input and returns transformed data.
   - `getPlugins()`: Retrieve the list of currently registered plugins.
   - `executePlugins(data)`: Process data through all registered plugins sequentially.
 
-* When you run the CLI with the `--use-plugins` flag, the tool will automatically process the input arguments through the registered plugins. For demonstration purposes, if no plugin is registered, a default plugin that doubles numeric values is automatically added.
+* When you run the CLI with the `--use-plugins` flag, the tool will process the input arguments through any registered plugins. If no plugins are registered, the arguments remain unchanged.
 
 ### Example Plugin
 
@@ -79,7 +79,7 @@ node src/lib/main.js --help
   npm run start
   ```
 
-- **Using Plugins:**
+- **Using Plugins (only active if plugins are registered):**
   ```bash
   npm run start -- --use-plugins 42 true hello
   ```

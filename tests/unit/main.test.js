@@ -18,6 +18,7 @@ describe("Default Demo Output", () => {
   });
 });
 
+
 describe("CLI Argument Conversion", () => {
   test("should convert numeric strings to numbers", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -51,7 +52,6 @@ describe("CLI Argument Conversion", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const validISO = "2023-10-10T12:30:00Z";
     main([validISO]);
-    // Retrieve the logged output and parse it
     const loggedArg = JSON.parse(logSpy.mock.calls[0][0].replace('Run with: ', ''));
     expect(new Date(loggedArg[0]).toISOString()).toEqual(new Date(validISO).toISOString());
     logSpy.mockRestore();
@@ -66,21 +66,36 @@ describe("CLI Argument Conversion", () => {
   });
 });
 
+
 describe("Plugin Integration in CLI", () => {
-  test("should process arguments through plugins when --use-plugins flag is provided", () => {
-    // Using the default dummy plugin registered in main (doubles numbers)
+  test("should pass arguments unchanged when --use-plugins flag is provided but no plugins are registered", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    // Ensure no plugins are registered
+    const plugins = getPlugins();
+    plugins.length = 0;
+    main(["--use-plugins", "50", "hello"]);
+    // '50' converts to number 50
+    expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify([50, "hello"])}`);
+    logSpy.mockRestore();
+  });
+
+  test("should process arguments through plugins when a custom plugin is registered", () => {
+    // Reset plugins before registering
+    const plugins = getPlugins();
+    plugins.length = 0;
+    // Register a plugin that doubles numeric values
+    registerPlugin(data => data.map(item => typeof item === 'number' ? item * 2 : item));
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--use-plugins", "50", "hello"]);
-    // 50 is a number and should be doubled to 100, "hello" remains unchanged
     expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify([100, "hello"])}`);
     logSpy.mockRestore();
   });
 });
 
+
 describe("Plugin Manager Functionality", () => {
   beforeEach(() => {
-    // Since plugins array is internal, we simulate a reset by clearing all plugins
-    // WARNING: This is a hack and in production a reset function might be preferred
+    // Reset plugins by clearing the internal array
     const plugins = getPlugins();
     plugins.length = 0;
   });
@@ -98,7 +113,6 @@ describe("Plugin Manager Functionality", () => {
     registerPlugin(appendPlugin);
     const input = ["test", 123];
     const output = executePlugins(input);
-    // Verify that the string is appended with "-plugin" and number remains unchanged
     expect(output).toContain("test-plugin");
     expect(output).toContain(123);
   });
