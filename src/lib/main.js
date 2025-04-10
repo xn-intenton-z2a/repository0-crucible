@@ -271,8 +271,7 @@ function startConfigWatcher() {
  * @param {string[]} args - CLI arguments
  */
 export async function main(args = []) {
-  // Reset global configuration for a clean run
-  customNaNHandler = null;
+  // Do not reset customNaNHandler to allow pre-registered handlers to persist
   useNativeNanConfig = false;
   useStrictNan = false;
 
@@ -284,7 +283,7 @@ export async function main(args = []) {
     const { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan } = resolveNaNConfig(args || []);
     useNativeNanConfig = effectiveNativeNan;
     useStrictNan = effectiveStrictNan;
-    if (effectiveCustomNan) {
+    if (!customNaNHandler && effectiveCustomNan) {
       registerNaNHandler(() => effectiveCustomNan);
     }
   }
