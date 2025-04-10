@@ -101,6 +101,26 @@ function convertArg(arg) {
 }
 
 /**
+ * Helper function to process 'NaN' conversion based on the current configuration and flags.
+ * @param {string} str - The input string (assumed trimmed and validated as a NaN representation)
+ * @returns {{converted: any, conversionMethod: string}}
+ */
+function processNaNConversion(str) {
+  if (customNaNHandler && typeof customNaNHandler === "function") {
+    if (useStrictNan) {
+      console.info("Strict NaN mode active: using custom NaN handler.");
+    }
+    return { converted: customNaNHandler(str), conversionMethod: "custom" };
+  } else if (useStrictNan) {
+    throw new Error("Strict NaN mode error: encountered 'NaN' input without a custom handler.");
+  } else if (useNativeNanConfig) {
+    return { converted: NaN, conversionMethod: "native" };
+  } else {
+    return { converted: str, conversionMethod: "default" };
+  }
+}
+
+/**
  * Main function for the CLI.
  * Processes CLI arguments using conversion logic and plugin integration.
  * Handles NaN conversion based on these rules:
@@ -165,26 +185,10 @@ export function main(args = []) {
     const arg = processedArgs[i];
     const trimmed = arg.trim();
     if (isNaNInput(trimmed)) {
-      let convMethod;
-      let converted;
-      if (customNaNHandler && typeof customNaNHandler === "function") {
-        convMethod = "custom";
-        converted = customNaNHandler(trimmed);
-        if (useStrictNan) {
-          console.info("Strict NaN mode active: using custom NaN handler.");
-        }
-      } else if (useStrictNan) {
-        throw new Error("Strict NaN mode error: encountered 'NaN' input without a custom handler.");
-      } else if (useNativeNanConfig) {
-        convMethod = "native";
-        converted = NaN;
-      } else {
-        convMethod = "default";
-        converted = trimmed;
-      }
+      const { converted, conversionMethod } = processNaNConversion(trimmed);
       convertedArgs.push(converted);
       if (debugNanFlag) {
-        debugDetails.push({ raw: arg, converted, conversionMethod: convMethod });
+        debugDetails.push({ raw: arg, converted, conversionMethod });
       }
     } else {
       convertedArgs.push(convertArg(arg));
