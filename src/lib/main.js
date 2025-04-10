@@ -56,9 +56,9 @@ export function registerNaNHandler(handler) {
  *
  * Special Handling:
  * - JSON Conversion: If the argument starts with '{' or '[', it will be parsed as JSON if valid.
- * - Any case variation of the string 'NaN' is detected after trimming. If strict mode is enabled and no custom handler is registered,
- *   a descriptive error is thrown. If a custom handler is registered in strict mode, it will be used with an informational log.
- *   Otherwise, numeric NaN is returned when enabled; else the string is preserved for clarity.
+ * - Any case variation of the string 'NaN' is detected after trimming. When a custom handler is registered, it is always used.
+ *   If strict mode is enabled and no custom handler is registered, a descriptive error is thrown. Otherwise, numeric NaN is returned
+ *   when enabled; else the string is preserved.
  * - Boolean strings (case-insensitive) are converted to booleans.
  * - ISO 8601 formatted date strings are converted to Date objects if valid.
  * - Additionally, the input is trimmed to ensure robust conversion.
@@ -82,16 +82,13 @@ function convertArg(arg) {
 
   // Special case for any case variation of "NaN":
   if (trimmed.toLowerCase() === "nan") {
-    if (useStrictNan) {
-      if (customNaNHandler && typeof customNaNHandler === "function") {
-        console.info("Strict NaN mode active: using custom NaN handler.");
-        return customNaNHandler(trimmed);
-      } else {
-        throw new Error("Strict NaN mode error: encountered 'NaN' input without a custom handler.");
-      }
-    }
     if (customNaNHandler && typeof customNaNHandler === "function") {
+      if (useStrictNan) {
+        console.info("Strict NaN mode active: using custom NaN handler.");
+      }
       return customNaNHandler(trimmed);
+    } else if (useStrictNan) {
+      throw new Error("Strict NaN mode error: encountered 'NaN' input without a custom handler.");
     }
     return useNativeNanConfig ? NaN : trimmed;
   }
