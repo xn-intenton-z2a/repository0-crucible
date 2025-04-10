@@ -3,11 +3,13 @@ import * as mainModule from "@src/lib/main.js";
 import { main, registerPlugin, getPlugins, executePlugins, registerNaNHandler } from "@src/lib/main.js";
 import fs from "fs";
 
-// Helper function to parse the logged JSON output and revive native NaN values
+// Helper function to parse the logged JSON output and revive special numeric values
 function getLoggedOutput(logSpy) {
   const parsed = JSON.parse(logSpy.mock.calls[0][0]);
   function revive(value) {
     if (value === "___native_NaN___") return NaN;
+    if (value === "___Infinity___") return Infinity;
+    if (value === "___-Infinity___") return -Infinity;
     if (Array.isArray(value)) return value.map(revive);
     if (value !== null && typeof value === "object") {
       for (const key in value) {
@@ -273,6 +275,17 @@ describe("Debug NaN Mode", () => {
     expect(output).toHaveProperty('debugNan');
     // The converted value should be numeric NaN which is serialized as "___native_NaN___" and then revived to NaN
     expect(isNaN(output.debugNan[0].converted)).toBe(true);
+    logSpy.mockRestore();
+  });
+});
+
+describe("Special Numeric Values Serialization", () => {
+  test("should serialize Infinity and -Infinity to special strings", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["Infinity", "-Infinity", "100"]);
+    const output = getLoggedOutput(logSpy);
+    // Expect Infinity and -Infinity to be revived correctly
+    expect(output).toEqual({ message: "Run with", data: [Infinity, -Infinity, 100] });
     logSpy.mockRestore();
   });
 });

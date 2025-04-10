@@ -192,8 +192,15 @@ export function main(args = []) {
   }
 
   // Output structured JSON log for improved integration with monitoring systems
-  // Use a custom replacer to properly serialize numeric NaN (when --native-nan flag is used) since JSON.stringify converts NaN to null.
-  console.log(JSON.stringify(finalLog, (key, value) => (typeof value === 'number' && isNaN(value) ? "___native_NaN___" : value)));
+  // Use a custom replacer to properly serialize special numeric values such as NaN, Infinity and -Infinity.
+  console.log(JSON.stringify(finalLog, (key, value) => {
+    if (typeof value === 'number') {
+      if (isNaN(value)) return "___native_NaN___";
+      if (value === Infinity) return "___Infinity___";
+      if (value === -Infinity) return "___-Infinity___";
+    }
+    return value;
+  }));
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
