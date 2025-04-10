@@ -56,13 +56,12 @@ export function registerNaNHandler(handler) {
  *
  * Special Handling:
  * - JSON Conversion: If the argument starts with '{' or '[', it will be parsed as JSON if valid.
- * - Any case variation of the string 'NaN' is detected after trimming. When a custom handler is registered, it is always used.
- *   If strict mode is enabled and no custom handler is registered, a descriptive error is thrown. Otherwise, numeric NaN is returned
- *   when enabled; else the string is preserved.
  * - Boolean strings (case-insensitive) are converted to booleans.
  * - ISO 8601 formatted date strings are converted to Date objects if valid.
- * - Additionally, the input is trimmed to ensure robust conversion.
  * - Numeric strings are converted to numbers when applicable.
+ * - Fallback: returns a trimmed string if no other conversion applies.
+ *
+ * Note: 'NaN' handling is now managed separately in the main function to provide enhanced debug details.
  *
  * @param {string} arg - The CLI argument
  * @returns {string | boolean | number | Date | Object | Array} - The converted argument
@@ -78,19 +77,6 @@ function convertArg(arg) {
     } catch (e) {
       // If JSON.parse fails, fallback to other conversion methods
     }
-  }
-
-  // Special case for any case variation of "NaN":
-  if (trimmed.toLowerCase() === "nan") {
-    if (customNaNHandler && typeof customNaNHandler === "function") {
-      if (useStrictNan) {
-        console.info("Strict NaN mode active: using custom NaN handler.");
-      }
-      return customNaNHandler(trimmed);
-    } else if (useStrictNan) {
-      throw new Error("Strict NaN mode error: encountered 'NaN' input without a custom handler.");
-    }
-    return useNativeNanConfig ? NaN : trimmed;
   }
 
   // Convert boolean strings (case-insensitive) to booleans
@@ -128,7 +114,8 @@ function convertArg(arg) {
  * If a custom handler is registered, it is used and logs an informational message.
  * 
  * A new debug flag --debug-nan has been added to output additional details about the NaN conversion process when enabled.
- * In debug mode, for each occurrence of a NaN conversion, the original input and its converted value are logged under a debugNan property.
+ * In debug mode, for each occurrence of a NaN conversion, the original input, its converted value, and the conversion method
+ * (native, custom, or default) are logged under a debugNan property.
  * 
  * A new flag --custom-nan <value> has been added to allow specifying a replacement value for any variant of 'NaN'.
  * When provided, this inline custom NaN handler will override default behavior.
@@ -188,27 +175,46 @@ export function main(args = []) {
     processedArgs.push(args[i]);
   }
 
-  // Convert each argument using intelligent parsing
-  const convertedArgs = processedArgs.map(convertArg);
-
-  // Collect debug information for NaN conversion if debug-nan flag is active
+  // Convert each argument using intelligent parsing, with special handling for 'NaN' to capture debug info
+  let convertedArgs = [];
   let debugDetails = [];
-  if (debugNanFlag) {
-    processedArgs.forEach((arg, index) => {
-      if (arg.trim().toLowerCase() === "nan") {
-        debugDetails.push({ raw: arg, converted: convertedArgs[index] });
+  for (let i = 0; i < processedArgs.length; i++) {
+    const arg = processedArgs[i];
+    const trimmed = arg.trim();
+    if (trimmed.toLowerCase() === "nan") {
+      let convMethod;
+      let converted;
+      if (customNaNHandler && typeof customNaNHandler === "function") {
+        convMethod = "custom";
+        converted = customNaNHandler(trimmed);
+        if (useStrictNan) {
+          console.info("Strict NaN mode active: using custom NaN handler.");
+        }
+      } else if (useStrictNan) {
+        throw new Error("Strict NaN mode error: encountered 'NaN' input without a custom handler.");
+      } else if (useNativeNanConfig) {
+        convMethod = "native";
+        converted = NaN;
+      } else {
+        convMethod = "default";
+        converted = trimmed;
       }
-    });
+      convertedArgs.push(converted);
+      if (debugNanFlag) {
+        debugDetails.push({ raw: arg, converted, conversionMethod: convMethod });
+      }
+    } else {
+      const converted = convertArg(arg);
+      convertedArgs.push(converted);
+    }
   }
 
-  let finalOutput = convertedArgs;
-
   if (args.includes("--use-plugins") && getPlugins().length > 0) {
-    finalOutput = executePlugins(convertedArgs);
+    convertedArgs = executePlugins(convertedArgs);
   }
 
   // Prepare final log object
-  let finalLog = { message: "Run with", data: finalOutput };
+  let finalLog = { message: "Run with", data: convertedArgs };
   if (debugNanFlag) {
     finalLog.debugNan = debugDetails;
   }
