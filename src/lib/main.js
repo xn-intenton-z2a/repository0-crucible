@@ -130,6 +130,8 @@ function processNaNConversion(str) {
  *   - --custom-nan flag: registers an inline custom handler to replace 'NaN' with the provided value.
  *   - --debug-nan flag: outputs detailed debug info for each NaN conversion instance, including the normalized input.
  *
+ * Additionally, supports custom configuration via .repositoryConfig.json for setting customNan.
+ *
  * @param {string[]} args - CLI arguments
  */
 export function main(args = []) {
@@ -142,6 +144,9 @@ export function main(args = []) {
       const config = JSON.parse(configContent);
       configNativeNan = config.nativeNan === true;
       configStrictNan = config.strictNan === true;
+      if (config.customNan && typeof config.customNan === "string" && config.customNan.trim() !== "") {
+        registerNaNHandler(() => config.customNan);
+      }
     }
   } catch (error) {
     configNativeNan = false;
@@ -159,7 +164,7 @@ export function main(args = []) {
   // Check for debug flag
   const debugNanFlag = args.includes("--debug-nan");
 
-  // Handle inline custom NaN replacement via --custom-nan flag
+  // Handle inline custom NaN replacement via --custom-nan flag (overrides configuration if provided)
   const customNanIndex = args.indexOf("--custom-nan");
   if (customNanIndex !== -1) {
     if (args.length > customNanIndex + 1 && args[customNanIndex + 1].trim().normalize("NFKC").toLowerCase() !== "nan") {

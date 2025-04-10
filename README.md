@@ -43,13 +43,21 @@ npm install repository0-crucible
     }
     ```
 
-  - **Custom Replacement:** Provide a replacement for "NaN" inline using `--custom-nan <value>`:
+  - **Custom Replacement via CLI Flag:** Provide a replacement for "NaN" inline using `--custom-nan <value>`:
 
     ```bash
     node src/lib/main.js --custom-nan customReplacement NaN 100
     ```
 
-  - **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information including the raw input, its normalized value, conversion method used, and conversion result.
+  - **Custom Replacement via Configuration:** Specify a persistent custom replacement by adding a `customNan` key to `.repositoryConfig.json`:
+
+    ```json
+    {
+      "customNan": "customReplacement"
+    }
+    ```
+
+  - **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information for each conversion, including the normalized input.
 * **Plugin Architecture:** Extend functionality by registering plugins using the provided API. When the CLI is run with the `--use-plugins` flag, input arguments are processed through all registered plugins.
 * **Structured JSON Logging:** CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.
 * **Unicode Variant Support:** Recognizes and handles Unicode variants of "NaN", ensuring consistent behavior worldwide.
@@ -62,7 +70,7 @@ Users can control how "NaN" is processed by the CLI tool:
 * **Default Behavior:** Preserves any variant of "NaN" as a string.
 * **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`.
 * **Strict Mode:** Enable strict validation with `--strict-nan`, environment variable `STRICT_NAN`, or in `.repositoryConfig.json`.
-* **Custom Replacement:** Provide a replacement for "NaN" inline using `--custom-nan <value>`.
+* **Custom Replacement via CLI & Config:** Provide a replacement for "NaN" either inline using `--custom-nan <value>` or persistently via the `customNan` key in `.repositoryConfig.json`.
 * **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information for each conversion, including the normalized input.
 
 ## Usage
@@ -100,9 +108,21 @@ node src/lib/main.js --help
   node src/lib/main.js --debug-nan NaN 100
   ```
 
-- **Custom NaN Replacement:**
+- **Custom NaN Replacement via CLI:**
   ```bash
   node src/lib/main.js --custom-nan customReplacement NaN 100
+  ```
+
+- **Custom NaN Replacement via Configuration:**
+  Create a `.repositoryConfig.json` with:
+  ```json
+  {
+    "customNan": "customReplacement"
+  }
+  ```
+  Then run:
+  ```bash
+  node src/lib/main.js NaN 100
   ```
 
 - **JSON Argument Conversion:**
