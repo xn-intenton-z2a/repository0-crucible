@@ -175,13 +175,15 @@ export function main(args = []) {
     processedArgs.push(args[i]);
   }
 
-  // Convert each argument using intelligent parsing, with special handling for 'NaN' to capture debug info
+  // Convert each argument using intelligent parsing, with special handling for Unicode variants of 'NaN'
   let convertedArgs = [];
   let debugDetails = [];
   for (let i = 0; i < processedArgs.length; i++) {
     const arg = processedArgs[i];
     const trimmed = arg.trim();
-    if (trimmed.toLowerCase() === "nan") {
+    // Normalize to handle Unicode variants of 'NaN'
+    const normalized = trimmed.normalize("NFKC").toLowerCase();
+    if (normalized === "nan") {
       let convMethod;
       let converted;
       if (customNaNHandler && typeof customNaNHandler === "function") {

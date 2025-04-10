@@ -26,19 +26,20 @@ npm install repository0-crucible
 ## Features
 
 * Automated conversion of CLI arguments: Numeric strings like "42" or "3.14" are automatically converted to numbers, boolean strings like "true" or "false" are converted to booleans, while non-numeric strings are trimmed and returned.
-* Special Handling for 'NaN': By default, the CLI tool preserves any case variation of the string 'NaN' (e.g., "NaN", "nan", "NAN") for clarity. To convert any variation of "NaN" to numeric NaN, use the --native-nan flag, set the environment variable NATIVE_NAN to "true", or create a configuration file named .repositoryConfig.json with the property { "nativeNan": true }.
+* Special Handling for 'NaN': By default, the CLI tool preserves any case variation of the string 'NaN' (e.g., "NaN", "nan", "NAN") for clarity. To convert any variation of "NaN" (including Unicode variants) to numeric NaN, use the --native-nan flag, set the environment variable NATIVE_NAN to "true", or create a configuration file named .repositoryConfig.json with the property { "nativeNan": true }.
 * Custom NaN Handling: Developers can now register a custom handler for 'NaN' conversion using the `registerNaNHandler` API. When a custom handler is registered, it will always be used to process any variant of 'NaN', ensuring consistent behavior across all CLI invocations.
-* New CLI Option --custom-nan: A new flag, **--custom-nan <value>**, has been added. When provided, this inline custom NaN handler converts any occurrence of 'NaN' (in any case) into the specified replacement value. This works seamlessly alongside the --native-nan, --strict-nan, and --debug-nan flags.
+* New CLI Option --custom-nan: A new flag, **--custom-nan <value>**, has been added. When provided, this inline custom NaN handler converts any occurrence of 'NaN' (in any case or Unicode variant) into the specified replacement value. This works seamlessly alongside the --native-nan, --strict-nan, and --debug-nan flags.
 * Experimental Strict NaN Mode: With the new --strict-nan flag, setting the environment variable STRICT_NAN to "true", or adding a property "strictNan": true in the .repositoryConfig.json configuration file, the CLI enforces strict validation of NaN inputs. In this mode, a NaN input without a custom handler will result in an error. If a custom handler is registered, it will be used with an informational log.
 * Debug NaN Mode: A new CLI flag `--debug-nan` has been added to aid in troubleshooting. When enabled, the CLI outputs additional diagnostic information for each NaN conversion. The debug output includes:
   - The original raw input value
   - The final converted value
-  - The conversionMethod field indicating whether the conversion was performed using native, custom, or default handling.
+  - The conversionMethod field indicating whether the conversion was performed using "native", "custom", or "default" handling.
 * ISO 8601 Date Parsing: ISO formatted date strings are automatically converted to JavaScript Date objects if valid.
 * JSON Conversion: CLI arguments that begin with `{` or `[` are automatically parsed as JSON objects or arrays if valid.
 * Consistent Default Argument Handling: The CLI tool now defaults to an empty arguments array if no inputs are provided, ensuring consistent behavior between production and tests.
 * Structured JSON Logging: The CLI outputs a structured JSON formatted string to enhance log parsing and integration with monitoring systems. When using the --native-nan flag, numeric NaN, Infinity, and -Infinity values are serialized in a special format as "___native_NaN___", "___Infinity___", and "___-Infinity___" respectively, which are then revived appropriately.
-* Automated Tests for CLI Argument Handling: The test suite now includes dedicated tests to verify the correct processing of the 'NaN' argument, ensuring robust CLI behavior.
+* Support for Unicode Variants of 'NaN': The CLI tool now recognizes and appropriately handles Unicode and localized variants of "NaN", ensuring consistent parsing globally.
+* Automated Tests for CLI Argument Handling: The test suite now includes dedicated tests to verify the correct processing of both standard and Unicode variants of the 'NaN' argument, ensuring robust CLI behavior.
 * Demonstration of automated CI/CD workflows for code regeneration and testing.
 * Unified Plugin Architecture: Extend functionality by registering plugins to transform or analyze the CLI output using the `--use-plugins` flag.
 
@@ -73,7 +74,7 @@ In addition to the above, the new CLI flag **--custom-nan** allows you to specif
 node src/lib/main.js --custom-nan customReplacement NaN 100
 ```
 
-This command will replace the string representation of "NaN" with `customReplacement` in the output, while processing other arguments normally.
+This command will replace the string representation of "NaN" (including Unicode variants) with `customReplacement` in the output, while processing other arguments normally.
 
 ## Experimental Strict NaN Mode
 
@@ -100,7 +101,7 @@ registerNaNHandler(() => {
 });
 ```
 
-When a custom handler is registered, any input that is a variation of "NaN" will be processed using your custom logic, regardless of flags or formatting.
+When a custom handler is registered, any input that is a variation of "NaN" (including Unicode variants) will be processed using your custom logic, regardless of flags or formatting.
 
 ## LLM-Driven Automated Code Regeneration Workflow
 

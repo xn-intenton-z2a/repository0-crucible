@@ -297,7 +297,26 @@ describe("CLI NaN Handling", () => {
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["NaN"] });
     logSpy.mockRestore();
   });
+
+  test("should process Unicode variant 'ＮａＮ' as a string by default", () => {
+    const unicodeNan = "ＮａＮ";
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main([unicodeNan]);
+    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [unicodeNan] });
+    logSpy.mockRestore();
+  });
+
+  test("should convert Unicode variant 'ＮａＮ' to numeric NaN when --native-nan flag is provided", () => {
+    const unicodeNan = "ＮａＮ";
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--native-nan", unicodeNan, "200"]);
+    const output = getLoggedOutput(logSpy);
+    expect(isNaN(output.data[0])).toBe(true);
+    expect(output.data[1]).toBe(200);
+    logSpy.mockRestore();
+  });
 });
+
 
 describe("CLI Custom --custom-nan Flag", () => {
   test("should convert 'NaN' using custom replacement provided with --custom-nan flag", () => {
