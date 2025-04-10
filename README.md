@@ -43,8 +43,13 @@ npm install repository0-crucible
     }
     ```
 
-  - **Custom Replacement via CLI Flag:** Provide a replacement for "NaN" inline using `--custom-nan <value>`:
+  - **Custom Replacement via CLI Flag:** Provide a replacement for "NaN" inline using `--custom-nan <value>`. If the flag is provided without a valid non-"NaN" replacement immediately following the flag, the CLI will throw an error:
 
+    ```bash
+    Error: The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.
+    ```
+
+    Example usage:
     ```bash
     node src/lib/main.js --custom-nan customReplacement NaN 100
     ```
