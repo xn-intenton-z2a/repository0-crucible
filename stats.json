@@ -1,14 +1,22 @@
 {
-  "openIssues": 61,
+  "openIssues": 60,
   "issuesClosedLastHour": 16,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 5,
-  "diffMinutesMain": 5,
+  "diffMinutes": 3,
+  "diffMinutesMain": 3,
   "commitsLastHour": 8,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
+    {
+      "time": "16:30",
+      "message": "Add custom NaN handler hook and corresponding tests and document..."
+    },
+    {
+      "time": "16:24",
+      "message": "Implemented configurable NaN handling via CLI flag environment v..."
+    },
     {
       "time": "16:11",
       "message": "Enhance CLI argument conversion to support JSON objects and arra..."
@@ -20,14 +28,6 @@
     {
       "time": "15:53",
       "message": "Enable case-insensitive handling for NaN CLI argument conversion..."
-    },
-    {
-      "time": "15:49",
-      "message": "Unified project identity to repository0-crucible across source t..."
-    },
-    {
-      "time": "15:41",
-      "message": "Refined NaN handling in CLI argument conversion and updated inli..."
     }
   ],
   "branches": {
@@ -37,5 +37,5 @@
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-10T16:17:08.757Z"
+  "generatedAt": "2025-04-10T16:33:23.764Z"
 }

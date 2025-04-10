@@ -49,13 +49,37 @@
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
 <li class="md-github">Automated conversion of CLI arguments: Numeric strings like &quot;42&quot; or &quot;3.14&quot; are automatically converted to numbers, boolean strings like &quot;true&quot; or &quot;false&quot; are converted to booleans, while non-numeric strings are trimmed and returned.</li>
-<li class="md-github">Special Handling for 'NaN': By default, the CLI tool preserves any case variation of the string 'NaN' (e.g., &quot;NaN&quot;, &quot;nan&quot;, &quot;NAN&quot;) for clarity. To convert any variation of 'NaN' to numeric NaN, use the --native-nan flag or set the environment variable NATIVE_NAN to &quot;true&quot;.</li>
+<li class="md-github">Special Handling for 'NaN': By default, the CLI tool preserves any case variation of the string 'NaN' (e.g., &quot;NaN&quot;, &quot;nan&quot;, &quot;NAN&quot;) for clarity. To convert any variation of &quot;NaN&quot; to numeric NaN, use the --native-nan flag, set the environment variable NATIVE_NAN to &quot;true&quot;, or create a configuration file named .repositoryConfig.json with the property { &quot;nativeNan&quot;: true }.</li>
+<li class="md-github">Custom NaN Handling: Developers can now register a custom handler for 'NaN' conversion using the <code class="md-github">registerNaNHandler</code> API. This allows overriding the default behavior with a custom function.</li>
 <li class="md-github">ISO 8601 Date Parsing: ISO formatted date strings are automatically converted to JavaScript Date objects if valid.</li>
 <li class="md-github">JSON Conversion: CLI arguments that begin with <code class="md-github">{</code> or <code class="md-github">[</code> are automatically parsed as JSON objects or arrays if valid.</li>
 <li class="md-github">Consistent Default Argument Handling: The CLI tool now defaults to an empty arguments array if no inputs are provided, ensuring consistent behavior between production and tests.</li>
 <li class="md-github">Demonstration of automated CI/CD workflows for code regeneration and testing.</li>
 <li class="md-github">Unified Plugin Architecture: Extend functionality by registering plugins to transform or analyze the CLI output using the <code class="md-github">--use-plugins</code> flag.</li>
 </ul>
+<h2 class="md-github"><a class="md-github__anchor" name="configurable-nan-handling" href="#configurable-nan-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configurable 'NaN' Handling</h2>
+<p class="md-github">Users can control how the string 'NaN' is processed by the CLI tool. By default, 'NaN' is preserved as a string. However, you can enable conversion to numeric NaN:</p>
+<ul class="md-github">
+<li class="md-github">Use the <code class="md-github">--native-nan</code> command line flag.</li>
+<li class="md-github">Set the environment variable <code class="md-github">NATIVE_NAN</code> to &quot;true&quot;.</li>
+<li class="md-github">Create a configuration file named <code class="md-github">.repositoryConfig.json</code> in the project root with the following content:</li>
+</ul>
+<pre class="md-github"><code class="md-github language-json">{
+  &quot;nativeNan&quot;: true
+}
+</code></pre>
+<p class="md-github">Any of these methods will cause the CLI tool to convert any variation of &quot;NaN&quot; to the numeric NaN, unless a custom handler is registered via <code class="md-github">registerNaNHandler</code>.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="custom-nan-handler-plugin" href="#custom-nan-handler-plugin"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Custom NaN Handler Plugin</h2>
+<p class="md-github">You can override the default 'NaN' conversion by registering a custom handler. For example:</p>
+<pre class="md-github"><code class="md-github language-javascript">import { registerNaNHandler } from &quot;@src/lib/main.js&quot;;
+
+// Register a custom NaN handler
+registerNaNHandler(() =&gt; {
+  // Custom conversion logic
+  return 'customNaN';
+});
+</code></pre>
+<p class="md-github">When this handler is registered, any input that is a variation of &quot;NaN&quot; will be converted using your custom logic.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="llm-driven-automated-code-regeneration-workflow" href="#llm-driven-automated-code-regeneration-workflow"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>LLM-Driven Automated Code Regeneration Workflow</h2>
 <p class="md-github">This project incorporates an automated code regeneration pipeline powered by a large language model (LLM) capable of processing over 100,000 tokens. The workflow is integrated with our CI/CD pipelines to ensure that source files and documentation are automatically updated to meet project standards.</p>
 <h3 class="md-github"><a class="md-github__anchor" name="overview" href="#overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h3>
@@ -85,11 +109,12 @@
 <h3 class="md-github"><a class="md-github__anchor" name="how-it-works" href="#how-it-works"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>How It Works</h3>
 <ul class="md-github">
 <li class="md-github">
-<p class="md-github">The plugin manager is integrated into the main module in <code class="md-github">src/lib/main.js</code> and provides three main functions that are exported:</p>
+<p class="md-github">The plugin manager is integrated into the main module in <code class="md-github">src/lib/main.js</code> and provides the following functions:</p>
 <ul class="md-github">
 <li class="md-github"><code class="md-github">registerPlugin(plugin)</code>: Register a new plugin (a function) that takes data as input and returns transformed data.</li>
 <li class="md-github"><code class="md-github">getPlugins()</code>: Retrieve the list of currently registered plugins.</li>
 <li class="md-github"><code class="md-github">executePlugins(data)</code>: Process data through all registered plugins sequentially.</li>
+<li class="md-github"><code class="md-github">registerNaNHandler(handler)</code>: Register a custom handler for converting 'NaN'.</li>
 </ul>
 </li>
 <li class="md-github">
@@ -127,7 +152,7 @@ registerPlugin(data =&gt; data.map(item =&gt; typeof item === 'string' ? item + 
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Native NaN Conversion:</strong>
-To convert the string &quot;NaN&quot; to the numeric NaN, use the --native-nan flag or set the environment variable NATIVE_NAN to &quot;true&quot;:</p>
+To convert the string &quot;NaN&quot; to the numeric NaN, use the --native-nan flag, set the environment variable NATIVE_NAN to &quot;true&quot;, or use a configuration file:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --native-nan NaN 100
 </code></pre>
 </li>
@@ -147,7 +172,7 @@ You can now pass JSON formatted arguments directly. For example:</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-10T16:17:19.426Z</p>
+    <p>Generated on 2025-04-10T16:33:34.824Z</p>
   </footer>
 </body>
 </html>
