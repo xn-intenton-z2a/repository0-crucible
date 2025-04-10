@@ -1,42 +1,39 @@
 # INTERFACE_MANAGER
 
 ## Overview
-This module consolidates the command-line interface (CLI), HTTP endpoints, plugin integration, and dynamic help capabilities into one unified module. It streamlines interactions with json‑schema‑diff functionalities by providing a single interface for executing schema exports, diagnostics, diff analytics, dynamic plugin operations, and context-aware guidance. This update refines the existing functionalities and introduces interactive tutorial features to further improve the developer experience.
+The INTERFACE_MANAGER module consolidates CLI commands, HTTP endpoints, plugin integration, and dynamic help capabilities into one unified module. It ensures smooth routing of operations, robust error handling, and an overall enhanced developer experience when interacting with JSON Schema diff functionalities.
 
 ## Unified Command and HTTP Handling
 - **Integrated CLI Commands:**
-  - Merge existing CLI commands (e.g., `--export`, `--diagnostics`, `--serve`, `--list-plugins`, `--update-plugin`) into one cohesive handler.
-  - Auto‑detect flags and subcommands to ensure smooth routing of operations.
+  - Merges existing CLI commands (e.g., `--export`, `--diagnostics`, `--serve`, `--list-plugins`, `--update-plugin`) under one cohesive handler.
+  - Auto-detects flags and subcommands to route operations without friction.
 - **HTTP Endpoint Integration:**
-  - Expose core operations (such as export, diagnostics, live watch, and dry run simulation from SCHEMA_MANAGER) alongside plugin management endpoints via standardized HTTP routes (e.g. `/export`, `/diagnostics`, `/plugins/list`, `/plugins/update`).
-  - Implement uniform error-handling and logging for all endpoints.
+  - Exposes core operations (export, diagnostics, live watch, dry run simulations) alongside plugin management endpoints via standardized HTTP routes (e.g., `/export`, `/diagnostics`, `/plugins/list`, `/plugins/update`).
+  - Implements consistent error handling and logging across endpoints.
 
 ## Dynamic Plugin Support
 - **Plugin Discovery and Management:**
-  - Auto‑discover and load third‑party plugins from local directories and community repositories.
-  - Fetch plugin metadata, version history and support auto‑updates of installed plugins.
-- **Seamless Integration with Core Modules:**
-  - Provide predefined hooks for plugins to extend or override core schema operations.
-  - Ensure that plugins can register custom commands or HTTP endpoints while adhering to security and error standards.
+  - Auto-discovers and loads third-party plugins from local directories and community repositories.
+  - Fetches plugin metadata, version history, and supports auto-updates of installed plugins.
+- **Seamless Integration:**
+  - Provides hooks for plugins to extend or override core schema operations, ensuring security and robustness.
 
-## Dynamic Help & Interactive Guidance
+## Enhanced Interactive Tutorial and Onboarding
 - **Context-Aware CLI Help:**
-  - Auto-generate command usage instructions upon the `--help` flag or when no command arguments are provided.
-  - Aggregate descriptions from all integrated functionalities (CLI commands, HTTP endpoints, and plugin commands) for a comprehensive help output.
-- **Interactive Tutorial Mode:**
-  - Introduce an interactive, step-by-step tutorial that guides users through common tasks.
-  - Provide real-time command suggestions, inline examples, and usage hints based on the current context.
-  - Enable feedback mechanisms to help users learn the CLI and HTTP interface quickly.
-- **Unified Documentation Delivery:**
-  - Integrate dynamic help outputs within both CLI and HTTP endpoints to ensure consistent guidance across the ecosystem.
+  - Auto-generates command usage instructions upon the `--help` flag or when no arguments are provided.
+  - Aggregates descriptions from all integrated functionalities (CLI commands, HTTP endpoints, and plugin commands) for a comprehensive help output.
+- **Interactive Onboarding Wizard:**
+  - Introduces a new, step-by-step onboarding wizard designed to guide new users through common tasks such as configuring initial settings, performing a sample schema diff, and registering plugins.
+  - Provides real-time command suggestions, inline code examples, and dynamic error feedback.
+  - Logs contextual hints and tips based on the current state of user inputs to help accelerate familiarity with the system.
 
 ## Implementation & Testing
 - **Single-Source Library Approach:**
-  - Implement the unified module in a dedicated source file (e.g., `src/lib/interface_manager.js`), ensuring a clear separation of concerns and minimal external dependencies.
-  - Maintain ESM standards for compatibility with Node v20.
+  - Implement the unified module in a dedicated source file (e.g., `src/lib/interface_manager.js`), maintaining strict separation of concerns and minimal external dependencies.
+  - Updates to CLI parsers and HTTP routers now include endpoints for triggering the interactive onboarding wizard.
 - **Enhanced Testing:**
-  - Expand unit and integration tests to cover interactive tutorial flows, dynamic CLI help outputs, and HTTP endpoint responses.
-  - Document usage scenarios and provide inline code examples to facilitate troubleshooting and onboarding.
+  - Expands unit and integration tests to cover interactive tutorial flows, real-time CLI help outputs, HTTP endpoint responses, and the new onboarding wizard.
+  - Documentation is updated with usage examples and walkthroughs for both CLI and HTTP integration.
 
 ## Value Proposition
-By updating the INTERFACE_MANAGER, this refined module not only unifies CLI and HTTP interfaces with robust plugin management and dynamic help, but also introduces an interactive tutorial mode. This addition significantly improves the developer experience by providing real‑time guidance and step‑by‑step instructions, ensuring that both new and experienced users can quickly and confidently utilize json‑schema‑diff functionalities.
+This update to the INTERFACE_MANAGER elevates the user experience by combining robust CLI and HTTP interface management with an enriched, interactive onboarding wizard. This wizard not only helps new users quickly acclimate to the tool’s capabilities, but also reinforces compliance with our mission of simplifying API change management and fostering proactive engagement. With dynamic, context-aware guidance integrated directly into both CLI and HTTP interfaces, developers benefit from reduced learning curves and improved efficiency in handling JSON Schema diffs.
