@@ -71,7 +71,8 @@ function convertArg(arg) {
 
 /**
  * Main function for the CLI.
- * If the flag --use-plugins is provided, the function will process the arguments through registered plugins.
+ * If the flag --use-plugins is provided, the function will process the arguments through registered plugins if any exist.
+ * If no plugins are registered, the arguments remain unchanged.
  *
  * @param {string[]} args - The CLI arguments
  */
@@ -85,11 +86,7 @@ export function main(args) {
   const convertedArgs = filteredArgs.map(convertArg);
   let finalOutput = convertedArgs;
 
-  if (usePlugins) {
-    // For demonstration, if no plugin has been registered, register a dummy plugin that doubles numeric values
-    if (getPlugins().length === 0) {
-      registerPlugin(data => data.map(item => typeof item === 'number' ? item * 2 : item));
-    }
+  if (usePlugins && getPlugins().length > 0) {
     finalOutput = executePlugins(convertedArgs);
   }
 
