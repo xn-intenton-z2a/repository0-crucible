@@ -10,6 +10,9 @@ import fs from "fs"; // Added to read configuration file
 // Plugin Manager Implementation integrated into main.js for repository0-crucible
 const plugins = [];
 
+// Global variable for custom NaN handler
+let customNaNHandler = null;
+
 // Configurable flag for handling 'NaN'
 let useNativeNanConfig = false;
 
@@ -39,13 +42,21 @@ export function executePlugins(data) {
 }
 
 /**
+ * Register a custom handler to override default conversion of 'NaN'.
+ * The handler should be a function that accepts the original string and returns the desired value.
+ * @param {Function} handler
+ */
+export function registerNaNHandler(handler) {
+  customNaNHandler = handler;
+}
+
+/**
  * Converts a CLI argument into its appropriate type.
  *
  * Special Handling:
  * - JSON Conversion: If the argument starts with '{' or '[', it will be parsed as JSON if valid.
- * - Any case variation of the string 'NaN' is detected after trimming. By default, it is preserved as a string
- *   for clarity. It will only be converted to numeric NaN when the --native-nan flag is provided, the configuration file
- *   (.repositoryConfig.json) sets nativeNan to true, or the environment variable NATIVE_NAN is set to "true".
+ * - Any case variation of the string 'NaN' is detected after trimming. If a custom NaN handler is registered, it will be used; otherwise,
+ *   numeric NaN is returned when enabled; else the string is preserved for clarity.
  * - Boolean strings (case-insensitive) are converted to booleans.
  * - ISO 8601 formatted date strings are converted to Date objects if valid.
  * - Additionally, the input is trimmed to ensure robust conversion.
@@ -68,9 +79,10 @@ function convertArg(arg) {
   }
 
   // Special case for any case variation of "NaN":
-  // After trimming the input, if its lowercase matches "nan",
-  // return numeric NaN when native conversion is enabled; otherwise, preserve as string.
   if (trimmed.toLowerCase() === "nan") {
+    if (customNaNHandler && typeof customNaNHandler === 'function') {
+      return customNaNHandler(trimmed);
+    }
     return useNativeNanConfig ? NaN : trimmed;
   }
 
@@ -102,7 +114,7 @@ function convertArg(arg) {
  * through registered plugins if any exist.
  * Additionally, if the flag --native-nan is provided, the configuration file (.repositoryConfig.json)
  * sets nativeNan to true, or process.env.NATIVE_NAN is "true",
- * any variation of 'NaN' is converted to numeric NaN; otherwise, it is preserved as a string.
+ * any variation of 'NaN' is converted to numeric NaN by default unless overridden by a custom handler.
  *
  * @param {string[]} args - The CLI arguments
  */
