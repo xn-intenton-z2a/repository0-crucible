@@ -240,7 +240,7 @@ describe("Strict NaN Mode", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["NaN", "100"]);
     expect(infoSpy).toHaveBeenCalledWith("Strict NaN mode active: using custom NaN handler.");
-    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ['customConfigStrictNAN'/* respect case if needed */ || 'customConfigStrictNaN', 100] });
+    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ['customConfigStrictNaN', 100] });
     existsSyncSpy.mockRestore();
     readFileSyncSpy.mockRestore();
     infoSpy.mockRestore();
@@ -249,9 +249,14 @@ describe("Strict NaN Mode", () => {
 });
 
 describe("Debug NaN Mode", () => {
+  let existsSyncSpy;
   beforeEach(() => {
     getPlugins().length = 0;
     registerNaNHandler(null);
+    existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(false);
+  });
+  afterEach(() => {
+    existsSyncSpy.mockRestore();
   });
 
   test("should include debug info for NaN conversion when --debug-nan flag is provided", async () => {
@@ -288,6 +293,9 @@ describe("Special Numeric Values Serialization", () => {
 });
 
 describe("CLI NaN Handling", () => {
+  beforeEach(() => {
+    registerNaNHandler(null);
+  });
   test("should process 'NaN' argument correctly when passed as a single parameter", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["NaN"]);
@@ -331,7 +339,6 @@ describe("Configuration CustomNaN via repositoryConfig.json", () => {
   beforeEach(() => {
     registerNaNHandler(null);
   });
-
   test("should convert 'NaN' using custom replacement from configuration file", async () => {
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"customNan": "configCustomReplacement"}');
@@ -348,7 +355,6 @@ describe("Environment Custom NaN Handler", () => {
   beforeEach(() => {
     registerNaNHandler(null);
   });
-
   test("should convert 'NaN' using CUSTOM_NAN environment variable when no CLI flag or repository config is set", async () => {
     process.env.CUSTOM_NAN = "envCustomReplacement";
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(false);
@@ -393,7 +399,6 @@ describe("Plugin Transformation Trace Logging", () => {
 
 describe("Dump Config Flag", () => {
   test("should output effective config with default values", async () => {
-    // Ensure no environment variables interfere
     delete process.env.CUSTOM_NAN;
     delete process.env.NATIVE_NAN;
     delete process.env.STRICT_NAN;
@@ -416,9 +421,9 @@ describe("Dump Config Flag", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--dump-config", "--custom-nan", "cliCustom", "--native-nan", "--strict-nan"]);
     const output = JSON.parse(logSpy.mock.calls[0][0]);
-    expect(output).toHaveProperty("nativeNan", true);
-    expect(output).toHaveProperty("strictNan", true);
-    expect(output).toHaveProperty("customNan", "cliCustom");
+    expect(output.nativeNan).toBe(true);
+    expect(output.strictNan).toBe(true);
+    expect(output.customNan).toBe("cliCustom");
     expect(Array.isArray(output.plugins)).toBe(true);
     logSpy.mockRestore();
     existsSyncSpy.mockRestore();

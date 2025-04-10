@@ -271,10 +271,10 @@ function startConfigWatcher() {
  * @param {string[]} args - CLI arguments
  */
 export async function main(args = []) {
-  // Reset configuration for each run
+  // Reset configuration flags for each run, but preserve externally set custom NaN handler.
   useNativeNanConfig = false;
   useStrictNan = false;
-  registerNaNHandler(null);
+  const preservedCustomHandler = customNaNHandler;
 
   if (args.includes("--refresh-config")) {
     updateGlobalNaNConfig();
@@ -289,12 +289,12 @@ export async function main(args = []) {
       } else {
         throw new Error("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
       }
-    } else if (customNaNHandler === null) {
-      if (effectiveCustomNan !== null && effectiveCustomNan !== undefined) {
-        registerNaNHandler(() => effectiveCustomNan);
-      } else {
-        registerNaNHandler(null);
-      }
+    } else if (typeof preservedCustomHandler === "function") {
+      registerNaNHandler(preservedCustomHandler);
+    } else if (effectiveCustomNan !== null && effectiveCustomNan !== undefined) {
+      registerNaNHandler(() => effectiveCustomNan);
+    } else {
+      registerNaNHandler(null);
     }
   }
 
