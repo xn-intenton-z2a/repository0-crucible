@@ -1,13 +1,12 @@
 #!/usr/bin/env node
 
-// NOTE: This file is maintained in part by an automated LLM-driven regeneration pipeline.
-// The LLM has the capability to process over 100,000 tokens. It automatically updates this file
-// based on defined CI/CD triggers. Contributors should avoid making manual changes that conflict
-// with the automated regeneration guidelines provided in the README and CONTRIBUTING documents.
+// NOTE: This file is maintained in part by an automated LLM-driven regeneration pipeline for repository0-crucible.
+// The LLM is capable of processing over 100,000 tokens. It automatically updates this file based on defined CI/CD triggers.
+// Contributors should avoid making manual changes that conflict with the automated regeneration guidelines provided in the README and CONTRIBUTING documents.
 
 import { fileURLToPath } from "url";
 
-// Plugin Manager Implementation integrated into main.js
+// Plugin Manager Implementation integrated into main.js for repository0-crucible
 const plugins = [];
 
 // Configurable flag for handling 'NaN'
