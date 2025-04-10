@@ -1,34 +1,36 @@
-# CLI_MANAGER Feature
+# CLI_MANAGER Feature Update
 
 ## Overview
-The CLI_MANAGER feature unifies and streamlines all CLI commands and flags. It handles command parsing, dispute resolution between conflicting options, and dispatches commands to underlying operations in the repository. In this update, the CLI_MANAGER is enhanced to dynamically generate user documentation for both CLI usage and HTTP endpoints, ensuring that documentation remains consistent with current functionalities.
+The CLI_MANAGER feature is central to managing all command line interactions for json-schema-diff. In this update the feature is further refined to enhance dynamic documentation generation, improved argument parsing with interactive error feedback, and tighter integration with both SCHEMA_MANAGER and WEB_SERVICE functionalities. This upgrade ensures that the repository remains user‑friendly, well‑documented, and aligned with our mission to simplify JSON Schema evolution and promote error‑free, collaborative development.
 
 ## Core Functionalities
-- **Unified Command Parsing:**
-  - Consolidates various CLI flags (e.g., --serve, --diagnostics, --refresh, --build-enhanced) into a coherent, subcommand-based interface.
-  - Implements robust argument validation and error messaging to guide users in correct usage.
+- **Unified Command Parsing & Dispatch:**
+  - Continue to consolidate CLI flags (e.g., --serve, --diagnostics, --refresh, --build-enhanced, --validate-schema, --explain-change) into a coherent, subcommand-based interface.
+  - Implement advanced argument validation, interactive suggestions, and informative error messages to guide users in proper usage.
+  - Maintain backward compatibility and seamless dispatch to underlying modules such as SCHEMA_MANAGER and WEB_SERVICE.
 
-- **Dynamic Help & Usage Documentation:**
-  - Generates context-aware help messages detailing available commands and options, with usage examples and inline documentation.
-  - Auto-updates user documentation (Markdown) based on modifications in CLI commands and HTTP endpoints.
-  - Integrates with the repository's README and CONTRIBUTING guidelines to offer up-to-date operational instructions.
+- **Enhanced Dynamic Help & Documentation:**
+  - Dynamically generate context-aware help messages and usage examples by extracting current command definitions and available options.
+  - Auto-update Markdown documentation to reflect the latest CLI commands and HTTP endpoint integrations, ensuring consistency with the repository README and CONTRIBUTING guidelines.
+  - Introduce inline tips and interactive prompts in case of argument conflicts to streamline the user experience.
 
-- **Seamless Integration:**
-  - Dispatches commands to corresponding modules including SCHEMA_MANAGER and WEB_SERVICE, preserving backward compatibility with the legacy CLI entry point.
-  - Supports extended functionality such as generating diagnostic outputs and real-time feedback.
+- **Integrated Diagnostics & Interactive Feedback:**
+  - Provide immediate diagnostic outputs for CLI commands that interface with error logging and asynchronous notifications.
+  - Enhance command execution feedback by clearly reporting both successful and error states, linking back to the related documentation sections.
+  - Offer a preview mode that allows users to see the impact of commands before fully executing them.
 
 ## Implementation & Testing
-- **Single-File Module:**
-  - The CLI_MANAGER is implemented in a single source file (e.g., `src/lib/cli_manager.js`) encapsulating all command parsing, dynamic documentation generation, and dispatch logic.
-  - Updates to the main CLI entry point in `src/lib/main.js` delegate interactions to CLI_MANAGER.
+- **Single-File Consolidation:**
+  - Implement the improved CLI_MANAGER in a single source file (e.g., `src/lib/cli_manager.js`) while ensuring that all enhancements are modular and maintainable.
+  - Update the main CLI entry point (`src/lib/main.js`) to delegate to CLI_MANAGER and forward new flags as needed, ensuring minimal disruption to existing workflows.
 
-- **Robust Error Handling & Validation:**
-  - Full error handling for invalid arguments, missing parameters, and unsupported commands.
-  - Enhances unit and integration tests to cover dynamic documentation generation along with parsing logic.
+- **Robust Error Handling & Unit Testing:**
+  - Ensure comprehensive error management, including handling of invalid arguments, missing parameters, and conflicts between options.
+  - Enhance the existing test suites with additional unit and integration tests, particularly around dynamic documentation generation and interactive feedback features.
 
-- **Dynamic Documentation Generation:**
-  - Incorporates a submodule within CLI_MANAGER to extract command definitions and inline usage details, generating (or updating) a Markdown documentation file.
-  - Ensures that any changes to endpoints or command flags are automatically reflected in the repository's documentation.
+- **Seamless Integration:**
+  - Maintain complete backward compatibility with previous command formats while introducing new user-centric features.
+  - Synchronize documentation updates in real-time with CLI command changes so that developers always have the latest usage information at hand.
 
 ## Value Proposition
-By unifying command parsing and automatically synchronizing user documentation with code changes, the updated CLI_MANAGER feature further simplifies user interactions. This dynamic approach minimizes documentation drift, eases onboarding, and aligns with our mission to simplify API evolution and promote error-free, collaborative development.
+By refining the CLI_MANAGER feature, the repository enhances user engagement and reduces the learning curve. Dynamic help messages and tighter integration with remote service endpoints lead to a more intuitive and error‑resilient CLI tool. This update further aligns with our mission to simplify API evolution, strengthen developer collaboration, and promote a robust, user‑friendly operational interface.
