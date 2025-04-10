@@ -25,7 +25,9 @@ npm install repository0-crucible
 
 ## Features
 
-TODO: Add features here.
+* Automated conversion of numeric CLI arguments: CLI arguments that represent numeric values (like "42" or "3.14") are automatically converted to actual numbers, while non-numeric strings and the special case "NaN" remain unchanged.
+* Demonstration of GitHub workflows for CI/CD setups.
+* Template based structure ideal for evolving JavaScript libraries.
 
 ## Usage
 
@@ -41,7 +43,6 @@ node src/lib/main.js --help
   ```bash
   npm run start
   ```
-
 
 ## Incremental Changes Plan
 
