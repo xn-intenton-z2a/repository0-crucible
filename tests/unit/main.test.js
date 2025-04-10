@@ -87,6 +87,29 @@ describe("CLI Argument Conversion", () => {
     expect(logSpy).toHaveBeenCalledWith("Run with:", ["NaN"]);
     logSpy.mockRestore();
   });
+
+  test("should handle lowercase 'nan' as a string by default", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["nan", "100"]);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", ["nan", 100]);
+    logSpy.mockRestore();
+  });
+
+  test("should handle uppercase 'NAN' as a string by default", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["NAN", "100"]);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", ["NAN", 100]);
+    logSpy.mockRestore();
+  });
+
+  test("should convert lowercase 'nan' to numeric NaN when --native-nan flag is provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--native-nan", "nan", "100"]);
+    const loggedArg = logSpy.mock.calls[0][1];
+    expect(isNaN(loggedArg[0])).toBe(true);
+    expect(loggedArg[1]).toBe(100);
+    logSpy.mockRestore();
+  });
 });
 
 describe("Plugin Integration in CLI", () => {
