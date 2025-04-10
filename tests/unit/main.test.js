@@ -2,6 +2,9 @@ import { describe, test, expect, vi, beforeEach } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main, registerPlugin, getPlugins, executePlugins } from "@src/lib/main.js";
 
+// NOTE: This test file is part of the automated testing suite that verifies the core CLI functionalities
+// and ensures compatibility with the LLM-driven regeneration pipeline.
+
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
