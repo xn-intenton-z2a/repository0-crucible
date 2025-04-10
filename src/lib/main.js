@@ -245,14 +245,16 @@ function updateGlobalNaNConfig() {
  * Starts a watcher on .repositoryConfig.json to dynamically refresh NaN configuration when changes occur.
  */
 function startConfigWatcher() {
-  if (fs.existsSync(".repositoryConfig.json")) {
-    configWatcher = fs.watch(".repositoryConfig.json", (eventType) => {
-      if (eventType === "change") {
-        updateGlobalNaNConfig();
-      }
-    });
-    console.info("Started configuration file watcher for dynamic configuration refresh.");
+  // If the configuration file doesn't exist, create an empty one
+  if (!fs.existsSync(".repositoryConfig.json")) {
+    fs.writeFileSync(".repositoryConfig.json", "{}");
   }
+  configWatcher = fs.watch(".repositoryConfig.json", (eventType) => {
+    if (eventType === "change") {
+      updateGlobalNaNConfig();
+    }
+  });
+  console.info("Started configuration file watcher for dynamic configuration refresh.");
 }
 
 /**

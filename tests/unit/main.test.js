@@ -389,6 +389,8 @@ describe("Plugin Transformation Trace Logging", () => {
 
 describe("Dump Config Flag", () => {
   test("should output effective config with default values", async () => {
+    // Ensure no CUSTOM_NAN env variable interferes
+    delete process.env.CUSTOM_NAN;
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(false);
     await main(["--dump-config"]);
@@ -468,5 +470,3 @@ describe("Dynamic Configuration Refresh", () => {
     existsSyncSpy.mockRestore();
   });
 });
-
-// End of tests
