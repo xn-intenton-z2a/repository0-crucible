@@ -33,7 +33,7 @@ export function executePlugins(data) {
  * Converts a CLI argument into its appropriate type.
  *
  * Special Handling:
- * - The string 'NaN' is intentionally kept as a string to serve as a special-case marker.
+ * - The string 'NaN' is intentionally preserved as a string to serve as a special-case marker.
  * - Boolean strings (case-insensitive) are converted to booleans.
  * - ISO 8601 formatted date strings are converted to Date objects if valid.
  * - Numeric strings are converted to numbers if valid.
@@ -43,8 +43,10 @@ export function executePlugins(data) {
  * @returns {string | boolean | number | Date} - The converted argument
  */
 function convertArg(arg) {
-  // Special case: if the argument is exactly 'NaN', preserve it as a string to indicate a special marker.
-  if (arg === "NaN") return arg;
+  // Explicitly handle the special case: literal "NaN" should be kept as a string.
+  if (arg === "NaN") {
+    return "NaN";
+  }
 
   // Convert boolean strings (case-insensitive) to booleans
   if (arg.toLowerCase() === "true") return true;
@@ -62,7 +64,6 @@ function convertArg(arg) {
 
   // Attempt to convert to a number if applicable
   const num = Number(arg);
-  // If the argument is not empty and conversion does not yield NaN, return the number
   if (arg.trim() !== "" && !isNaN(num)) return num;
 
   // Fallback: return the original string
