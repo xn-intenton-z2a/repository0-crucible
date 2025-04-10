@@ -29,6 +29,39 @@ npm install repository0-crucible
 * Special handling of the string "NaN" is implemented to preserve it as a string in order to serve as a special-case marker.
 * Demonstration of GitHub workflows for CI/CD setups.
 * Template based structure ideal for evolving JavaScript libraries.
+* Plugin Architecture: Extend the functionality by registering plugins to transform or analyze the CLI output. Use the CLI flag `--use-plugins` to activate plugin processing.
+
+## Plugin System
+
+The plugin system allows developers to register custom functions (plugins) that transform the output of the CLI tool. This makes it easy to extend and customize the JSON Schema diff functionality without altering the core code.
+
+### How It Works
+
+* The plugin manager is now integrated into the main module in `src/lib/main.js` and provides three main functions that are exported:
+  - `registerPlugin(plugin)`: Register a new plugin (a function) that takes data as input and returns transformed data.
+  - `getPlugins()`: Retrieve the list of currently registered plugins.
+  - `executePlugins(data)`: Process data through all registered plugins sequentially.
+
+* When you run the CLI with the `--use-plugins` flag, the tool will automatically process the input arguments through the registered plugins. For demonstration purposes, if no plugin is registered, a default plugin that doubles numeric values is automatically added.
+
+### Example Plugin
+
+Below is an example of a simple plugin that appends "-custom" to each string argument:
+
+```javascript
+import { registerPlugin } from "@src/lib/main.js";
+
+// A plugin that appends "-custom" to string values
+registerPlugin(data => data.map(item => typeof item === 'string' ? item + "-custom" : item));
+```
+
+After registering your plugin, run the CLI as follows:
+
+```bash
+node src/lib/main.js --use-plugins 100 hello
+```
+
+The output will reflect the transformation applied by your plugin.
 
 ## Usage
 
@@ -43,6 +76,11 @@ node src/lib/main.js --help
 - **Default Demo Output:**
   ```bash
   npm run start
+  ```
+
+- **Using Plugins:**
+  ```bash
+  npm run start -- --use-plugins 42 true hello
   ```
 
 ## Incremental Changes Plan

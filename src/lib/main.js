@@ -1,7 +1,33 @@
 #!/usr/bin/env node
-// src/lib/main.js
-
 import { fileURLToPath } from "url";
+
+// Plugin Manager Implementation integrated into main.js
+const plugins = [];
+
+/**
+ * Register a new plugin
+ * @param {Function} plugin - A plugin function to register
+ */
+export function registerPlugin(plugin) {
+  plugins.push(plugin);
+}
+
+/**
+ * Retrieve the list of registered plugins
+ * @returns {Function[]} - Array of plugin functions
+ */
+export function getPlugins() {
+  return plugins;
+}
+
+/**
+ * Execute all registered plugins sequentially
+ * @param {Array} data - The data to process
+ * @returns {Array} - The processed data
+ */
+export function executePlugins(data) {
+  return plugins.reduce((currentData, plugin) => plugin(currentData), data);
+}
 
 /**
  * Converts a CLI argument into its appropriate type.
@@ -32,10 +58,31 @@ function convertArg(arg) {
   return arg;
 }
 
+/**
+ * Main function for the CLI.
+ * If the flag --use-plugins is provided, the function will process the arguments through registered plugins.
+ *
+ * @param {string[]} args - The CLI arguments
+ */
 export function main(args) {
+  // Check if plugins should be used
+  const usePlugins = args.includes("--use-plugins");
+  // Remove the plugin flag from args
+  const filteredArgs = args.filter(arg => arg !== "--use-plugins");
+
   // Convert each argument using intelligent parsing
-  const convertedArgs = args.map(convertArg);
-  console.log(`Run with: ${JSON.stringify(convertedArgs)}`);
+  const convertedArgs = filteredArgs.map(convertArg);
+  let finalOutput = convertedArgs;
+
+  if (usePlugins) {
+    // For demonstration, if no plugin has been registered, register a dummy plugin that doubles numeric values
+    if (getPlugins().length === 0) {
+      registerPlugin(data => data.map(item => typeof item === 'number' ? item * 2 : item));
+    }
+    finalOutput = executePlugins(convertedArgs);
+  }
+
+  console.log(`Run with: ${JSON.stringify(finalOutput)}`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
