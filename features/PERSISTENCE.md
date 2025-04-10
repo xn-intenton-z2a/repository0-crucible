@@ -1,19 +1,20 @@
 # PERSISTENCE Feature
 
 ## Overview
-This feature introduces a lightweight persistence module for storing and managing the history of JSON schema diffs and changes. It is designed to complement the SCHEMA_TOOL and OBSERVABILITY features by saving diff outputs, enabling historical audits, and supporting rollback operations if needed. The module leverages file-based storage to maintain a record of schema evolutions, hence simplifying debugging and providing a verifiable audit trail.
+This feature introduces a robust persistence module for storing, managing, and rolling back changes in JSON Schemas. Building upon its original capabilities to record diff outputs and maintain a historical audit trail, the enhanced PERSISTENCE feature now also supports rollback operations, allowing developers to easily revert to a previous, stable schema state in case of errors or breaking changes.
 
 ## Core Functionalities
 - **Diff Storage:** Automatically save JSON schema diff outputs to local files in both JSON and markdown formats for easy reference.
-- **Historical Auditing:** Maintain a versioned history of schema changes, allowing developers to track evolution over time and compare previous states.
-- **Configuration Options:** Allow configuration via environment variables or command-line flags (e.g., file path, file format, retention policy).
-- **CLI Integration:** Introduce a `--merge-persist` flag in the CLI tool to trigger persistence operations, consolidating diff data after execution.
+- **Historical Auditing:** Maintain a versioned history of schema changes, enabling developers to track evolution, compare previous states, and audit modifications over time.
+- **Rollback Operations:** Provide a command-line flag (e.g., `--rollback`) that enables users to revert to a chosen historical schema state based on the persisted records. Rollback support includes confirmation prompts and integrity checks to ensure safe state transitions.
+- **Configuration Options:** Allow configuration via environment variables or command-line flags (e.g., file paths, file formats, retention policy, and rollback version selection).
+- **CLI Integration:** Extend the existing CLI with additional flags (e.g., `--merge-persist` for normal persistence operations and `--rollback` for reverting changes) to trigger and manage persistence workflows.
 
 ## Implementation
-- **Single Source File:** Implement the persistence logic in a dedicated module (e.g., `src/lib/persistence.js`).
-- **File Management:** Use Node's file system (fs) module for writing and reading persistence data, ensuring error handling and data integrity.
-- **Integration Points:** Update the main CLI entry point to handle the `--merge-persist` flag by invoking the persistence module.
-- **Testing:** Develop unit and integration tests to ensure diff outputs are correctly persisted and retrievable.
+- **Single Source File:** Implement all persistence logic, including diff storage and rollback functionality, within a dedicated module (e.g., `src/lib/persistence.js`).
+- **File Management:** Use Node's file system module (fs) for writing, reading, and managing persistence data, ensuring robust error handling and data integrity.
+- **Integration Points:** Update the main CLI entry point to incorporate new flags and routing logic for rollback operations alongside existing persistence actions.
+- **Testing:** Develop comprehensive unit and integration tests to cover diff storage, historical auditing, and rollback operations. Ensure all edge cases are tested (e.g., reverting to an invalid version, file access errors).
 
 ## Value Proposition
-The PERSISTENCE feature enhances the overall tool by providing a reliable record of API schema evolutions. This improves traceability, eases debugging, and supports compliance by ensuring that historical changes are accurately logged and available for review.
+By enhancing persistence with a built-in rollback capability, this feature not only improves traceability and auditing of JSON Schema changes but also empowers developers with a safe mechanism to quickly revert to known good states. This reliability is crucial for maintaining API stability during frequent schema evolution, ultimately aligning with our mission to simplify API evolution and foster collaborative, error-resilient development workflows.
