@@ -32,6 +32,32 @@ npm install repository0-crucible
 * Template based structure ideal for evolving JavaScript libraries.
 * Plugin Architecture: Extend the functionality by registering plugins to transform or analyze the CLI output. Use the CLI flag `--use-plugins` to activate plugin processing.
 
+## LLM-Driven Automated Code Regeneration Workflow
+
+This project incorporates an automated code regeneration pipeline powered by a large language model (LLM) capable of processing over 100,000 tokens. The workflow is integrated with our CI/CD pipelines to ensure that source files and documentation are automatically updated to meet project standards.
+
+### Overview
+
+- The LLM-driven pipeline monitors issues and pull requests for specific formatting markers.
+- When triggered, it regenerates complete source files, tests, and documentation based on defined templates.
+- This ensures consistency and rapid iteration on the project, without manual 'dry-run' steps.
+
+### Integration with CI/CD
+
+- The pipeline runs as a part of our scheduled CI/CD jobs and on-demand triggers.
+- Regenerated outputs replace older versions, ensuring that the repository always follows the latest guidelines.
+
+### Guidelines for Contributors
+
+- When reporting issues, please follow the established template so that the LLM can process your input and generate accurate code changes.
+- Include detailed descriptions, expected outputs, and examples in your issue submissions.
+- After the LLM regenerates code, review the changes per our [CONTRIBUTING.md](./CONTRIBUTING.md) guidelines.
+
+### Triggering Regeneration
+
+- The regeneration process is fully automated. In most cases, submitting a formatted issue or pull request will initiate the pipeline.
+- For manual triggering, use the npm script provided (see below).
+
 ## Plugin System
 
 The plugin system allows developers to register custom functions (plugins) that transform the output of the CLI tool. This makes it easy to extend and customize the functionality without altering the core code.
@@ -100,7 +126,7 @@ TODO: Add forthcoming changes here.
 
 ## Contributing
 
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively. Note that any contributions will be validated against the automated LLM-driven regeneration pipeline to maintain project consistency.
 
 ## License
 
