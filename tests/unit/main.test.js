@@ -8,7 +8,6 @@ describe("Main Module Import", () => {
   });
 });
 
-
 describe("Default Demo Output", () => {
   test("should terminate without error for empty args", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -17,7 +16,6 @@ describe("Default Demo Output", () => {
     logSpy.mockRestore();
   });
 });
-
 
 describe("CLI Argument Conversion", () => {
   test("should convert numeric strings to numbers", () => {
@@ -75,7 +73,6 @@ describe("CLI Argument Conversion", () => {
   });
 });
 
-
 describe("Plugin Integration in CLI", () => {
   test("should pass arguments unchanged when --use-plugins flag is provided but no plugins are registered", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -99,7 +96,6 @@ describe("Plugin Integration in CLI", () => {
     logSpy.mockRestore();
   });
 });
-
 
 describe("Plugin Manager Functionality", () => {
   beforeEach(() => {
