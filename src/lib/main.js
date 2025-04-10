@@ -167,7 +167,7 @@ export function main(args = []) {
   let customNanValue = null;
   const customNanIndex = args.indexOf("--custom-nan");
   if (customNanIndex !== -1) {
-    if (args.length > customNanIndex + 1) {
+    if (args.length > customNanIndex + 1 && args[customNanIndex + 1].trim().toLowerCase() !== "nan") {
       customNanValue = args[customNanIndex + 1];
       registerNaNHandler(() => customNanValue);
     } else {
