@@ -40,39 +40,40 @@ export function executePlugins(data) {
  *   when the --native-nan flag is provided or the environment variable NATIVE_NAN is set to "true".
  * - Boolean strings (case-insensitive) are converted to booleans.
  * - ISO 8601 formatted date strings are converted to Date objects if valid.
- * - Otherwise, numeric strings are converted to numbers if applicable, leaving non-numeric strings unchanged.
+ * - Additionally, the input is trimmed to ensure robust conversion.
+ * - Otherwise, numeric strings are converted to numbers if applicable, and non-numeric strings are trimmed.
  *
  * @param {string} arg - The CLI argument
  * @returns {string | boolean | number | Date} - The converted argument
  */
 function convertArg(arg) {
+  const trimmed = arg.trim();
+
   // Handle the special case for "NaN"
-  if (arg === "NaN") {
-    if (useNativeNanConfig) {
-      return NaN;
-    }
-    return "NaN";
+  if (trimmed === "NaN") {
+    return useNativeNanConfig ? NaN : "NaN";
   }
 
   // Convert boolean strings (case-insensitive) to booleans
-  if (arg.toLowerCase() === "true") return true;
-  if (arg.toLowerCase() === "false") return false;
+  const lower = trimmed.toLowerCase();
+  if (lower === "true") return true;
+  if (lower === "false") return false;
 
   // Check for ISO 8601 formatted date strings
-  const iso8601Regex = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+-]\d{2}:\d{2}))?$/;
-  if (iso8601Regex.test(arg)) {
-    const date = new Date(arg);
+  const iso8601Regex = /^\d{4}-\d{2}-\d{2}(?:T\d{2}:\d{2}:\d{2}(?:\.\d+)?(?:Z|[+\-]\d{2}:\d{2}))?$/;
+  if (iso8601Regex.test(trimmed)) {
+    const date = new Date(trimmed);
     if (!isNaN(date.getTime())) {
       return date;
     }
   }
 
   // Attempt to convert to a number if applicable
-  const num = Number(arg);
-  if (arg.trim() !== "" && !isNaN(num)) return num;
+  const num = Number(trimmed);
+  if (trimmed !== "" && !isNaN(num)) return num;
 
-  // Fallback: return the original string
-  return arg;
+  // Fallback: return the trimmed string
+  return trimmed;
 }
 
 /**
