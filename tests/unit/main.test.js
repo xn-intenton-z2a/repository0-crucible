@@ -319,7 +319,7 @@ describe("CLI Custom --custom-nan Flag", () => {
   test("should throw error if --custom-nan is provided without a replacement", () => {
     expect(() => {
       main(["--custom-nan", "NaN"]);
-    }).toThrow("--custom-nan flag provided without a replacement value.");
+    }).toThrow("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
   });
 });
 

@@ -215,7 +215,7 @@ export function main(args = []) {
       const customNanValue = args[customNanIndex + 1];
       registerNaNHandler(() => customNanValue);
     } else {
-      throw new Error("--custom-nan flag provided without a replacement value.");
+      throw new Error("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
     }
   }
 
