@@ -41,19 +41,30 @@ export function executePlugins(data) {
  * Converts a CLI argument into its appropriate type.
  *
  * Special Handling:
+ * - JSON Conversion: If the argument starts with '{' or '[', it will be parsed as JSON if valid.
  * - Any case variation of the string 'NaN' is detected after trimming. By default, it is preserved as a string
  *   for clarity. It will only be converted to numeric NaN when the --native-nan flag is provided
  *   or the environment variable NATIVE_NAN is set to "true".
  * - Boolean strings (case-insensitive) are converted to booleans.
  * - ISO 8601 formatted date strings are converted to Date objects if valid.
  * - Additionally, the input is trimmed to ensure robust conversion.
- * - Numeric strings are converted to numbers when applicable, with all extraneous whitespace removed.
+ * - Numeric strings are converted to numbers when applicable.
  *
  * @param {string} arg - The CLI argument
- * @returns {string | boolean | number | Date} - The converted argument
+ * @returns {string | boolean | number | Date | Object | Array} - The converted argument
  */
 function convertArg(arg) {
   const trimmed = arg.trim();
+
+  // Attempt JSON conversion if input looks like JSON object or array
+  if (trimmed.startsWith('{') || trimmed.startsWith('[')) {
+    try {
+      const jsonParsed = JSON.parse(trimmed);
+      return jsonParsed;
+    } catch (e) {
+      // If JSON.parse fails, fallback to other conversion methods
+    }
+  }
 
   // Special case for any case variation of "NaN":
   // After trimming the input, if its lowercase matches "nan",
