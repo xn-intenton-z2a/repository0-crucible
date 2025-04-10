@@ -417,3 +417,26 @@ describe("Dump Config Flag", () => {
     readFileSyncSpy.mockRestore();
   });
 });
+
+describe("Configuration Precedence", () => {
+  test("CLI flags override repo config and environment", async () => {
+    const repoConfig = { nativeNan: false, strictNan: false, customNan: "configCustom" };
+    const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(repoConfig));
+    process.env.NATIVE_NAN = "false";
+    process.env.STRICT_NAN = "false";
+    process.env.CUSTOM_NAN = "envCustom";
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    await main(["--dump-config", "--native-nan", "--strict-nan", "--custom-nan", "cliCustom"]);
+    const output = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(output.nativeNan).toBe(true);
+    expect(output.strictNan).toBe(true);
+    expect(output.customNan).toBe("cliCustom");
+    logSpy.mockRestore();
+    existsSyncSpy.mockRestore();
+    readFileSyncSpy.mockRestore();
+    delete process.env.NATIVE_NAN;
+    delete process.env.STRICT_NAN;
+    delete process.env.CUSTOM_NAN;
+  });
+});

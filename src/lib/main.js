@@ -146,82 +146,110 @@ async function processNaNConversion(originalStr) {
 }
 
 /**
- * Main function for the CLI.
- * Processes CLI arguments using conversion logic and plugin integration.
- * Handles NaN conversion with support for asynchronous custom NaN handlers.
+ * Resolves the effective NaN handling configuration based on a defined precedence:
+ * 1. CLI flags
+ * 2. Repository configuration file (.repositoryConfig.json)
+ * 3. Environment variables
+ * 4. Default behavior
  *
- * @param {string[]} args - CLI arguments
+ * @param {string[]} args - The CLI arguments
+ * @returns {object} - The resolved configuration
  */
-export async function main(args = []) {
-  if (args.includes("--dump-config")) {
-    let repoConfig = {};
-    try {
-      if (fs.existsSync(".repositoryConfig.json")) {
-        const configContent = fs.readFileSync(".repositoryConfig.json", { encoding: "utf-8" });
-        repoConfig = JSON.parse(configContent);
-      }
-    } catch (error) {
-      repoConfig = {};
-    }
-    const effectiveNativeNan = args.includes("--native-nan") || repoConfig.nativeNan === true || process.env.NATIVE_NAN === "true";
-    const effectiveStrictNan = args.includes("--strict-nan") || repoConfig.strictNan === true || process.env.STRICT_NAN === "true";
-    let effectiveCustomNan = null;
-    const customNanIndex = args.indexOf("--custom-nan");
-    if (customNanIndex !== -1 && args.length > customNanIndex + 1 && args[customNanIndex + 1].trim().normalize("NFKC").toLowerCase() !== "nan") {
-      effectiveCustomNan = args[customNanIndex + 1];
-    } else if (typeof repoConfig.customNan === "string" && repoConfig.customNan.trim() !== "") {
-      effectiveCustomNan = repoConfig.customNan;
-    }
-    const pluginsList = getPlugins().map(fn => fn.name || "anonymous");
-    console.log(JSON.stringify({
-      nativeNan: effectiveNativeNan,
-      strictNan: effectiveStrictNan,
-      customNan: effectiveCustomNan,
-      plugins: pluginsList
-    }));
-    return;
+function resolveNaNConfig(args) {
+  let effectiveNativeNan = false,
+    effectiveStrictNan = false,
+    effectiveCustomNan = null;
+
+  // CLI flags take highest precedence
+  if (args.includes("--native-nan")) {
+    effectiveNativeNan = true;
   }
-
-  let configNativeNan = false;
-  let configStrictNan = false;
-  try {
-    if (fs.existsSync(".repositoryConfig.json")) {
-      const configContent = fs.readFileSync(".repositoryConfig.json", { encoding: "utf-8" });
-      const config = JSON.parse(configContent);
-      configNativeNan = config.nativeNan === true;
-      configStrictNan = config.strictNan === true;
-      if (config.customNan && typeof config.customNan === "string" && config.customNan.trim() !== "") {
-        registerNaNHandler(() => config.customNan);
-      }
-    }
-  } catch (error) {
-    configNativeNan = false;
-    configStrictNan = false;
+  if (args.includes("--strict-nan")) {
+    effectiveStrictNan = true;
   }
-
-  if (!args.includes("--dump-config") && !customNaNHandler && process.env.CUSTOM_NAN && typeof process.env.CUSTOM_NAN === "string" && process.env.CUSTOM_NAN.trim() !== "" && process.env.CUSTOM_NAN.trim().normalize("NFKC").toLowerCase() !== "nan") {
-    registerNaNHandler(() => process.env.CUSTOM_NAN);
-  }
-
-  const nativeNanFlag = args.includes("--native-nan");
-  useNativeNanConfig = nativeNanFlag || configNativeNan || process.env.NATIVE_NAN === "true";
-
-  const strictNanFlag = args.includes("--strict-nan");
-  useStrictNan = strictNanFlag || configStrictNan || process.env.STRICT_NAN === "true";
-
-  const debugNanFlag = args.includes("--debug-nan");
-  const tracePluginsFlag = args.includes("--trace-plugins");
-
-  const customNanIndex = args.indexOf("--custom-nan");
-  if (customNanIndex !== -1) {
-    if (args.length > customNanIndex + 1 && args[customNanIndex + 1].trim().normalize("NFKC").toLowerCase() !== "nan") {
-      const customNanValue = args[customNanIndex + 1];
-      registerNaNHandler(() => customNanValue);
+  const customIndex = args.indexOf("--custom-nan");
+  if (customIndex !== -1) {
+    if (
+      args.length > customIndex + 1 &&
+      args[customIndex + 1].trim().normalize("NFKC").toLowerCase() !== "nan"
+    ) {
+      effectiveCustomNan = args[customIndex + 1];
     } else {
       throw new Error("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
     }
   }
 
+  // Repository configuration file
+  let repoConfig = {};
+  if (fs.existsSync(".repositoryConfig.json")) {
+    try {
+      repoConfig = JSON.parse(fs.readFileSync(".repositoryConfig.json", { encoding: "utf-8" }));
+    } catch (error) {
+      repoConfig = {};
+    }
+  }
+  if (!effectiveNativeNan && repoConfig.nativeNan === true) {
+    effectiveNativeNan = true;
+  }
+  if (!effectiveStrictNan && repoConfig.strictNan === true) {
+    effectiveStrictNan = true;
+  }
+  if (
+    !effectiveCustomNan &&
+    typeof repoConfig.customNan === "string" &&
+    repoConfig.customNan.trim() !== "" &&
+    repoConfig.customNan.trim().normalize("NFKC").toLowerCase() !== "nan"
+  ) {
+    effectiveCustomNan = repoConfig.customNan;
+  }
+
+  // Environment variables
+  if (!effectiveNativeNan && process.env.NATIVE_NAN === "true") {
+    effectiveNativeNan = true;
+  }
+  if (!effectiveStrictNan && process.env.STRICT_NAN === "true") {
+    effectiveStrictNan = true;
+  }
+  if (
+    !effectiveCustomNan &&
+    process.env.CUSTOM_NAN &&
+    process.env.CUSTOM_NAN.trim() !== "" &&
+    process.env.CUSTOM_NAN.trim().normalize("NFKC").toLowerCase() !== "nan"
+  ) {
+    effectiveCustomNan = process.env.CUSTOM_NAN;
+  }
+
+  return { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan };
+}
+
+/**
+ * Main function for the CLI.
+ * Processes CLI arguments using conversion logic and plugin integration.
+ * Handles NaN conversion with prioritized configuration from CLI, configuration file, and environment variables.
+ *
+ * @param {string[]} args - CLI arguments
+ */
+export async function main(args = []) {
+  // Resolve NaN configuration with defined precedence: CLI > Repo Config > Environment > Default
+  const { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan } = resolveNaNConfig(args || []);
+  useNativeNanConfig = effectiveNativeNan;
+  useStrictNan = effectiveStrictNan;
+  if (effectiveCustomNan) {
+    registerNaNHandler(() => effectiveCustomNan);
+  }
+
+  if (args.includes("--dump-config")) {
+    const configDump = {
+      nativeNan: effectiveNativeNan,
+      strictNan: effectiveStrictNan,
+      customNan: effectiveCustomNan,
+      plugins: getPlugins().map(fn => fn.name || "anonymous"),
+    };
+    console.log(JSON.stringify(configDump));
+    return;
+  }
+
+  // Remove configuration flags from arguments before processing
   const processedArgs = [];
   for (let i = 0; i < args.length; i++) {
     if (["--use-plugins", "--native-nan", "--strict-nan", "--debug-nan", "--trace-plugins", "--dump-config"].includes(args[i])) continue;
@@ -231,6 +259,7 @@ export async function main(args = []) {
 
   const convertedArgs = [];
   const debugDetails = [];
+  const debugNanFlag = args.includes("--debug-nan");
   for (let i = 0; i < processedArgs.length; i++) {
     const arg = processedArgs[i];
     const trimmed = arg.trim();
@@ -238,7 +267,12 @@ export async function main(args = []) {
       const { converted, conversionMethod } = await processNaNConversion(trimmed);
       convertedArgs.push(converted);
       if (debugNanFlag) {
-        debugDetails.push({ raw: arg, normalized: trimmed.normalize("NFKC"), converted, conversionMethod });
+        debugDetails.push({
+          raw: arg,
+          normalized: trimmed.normalize("NFKC"),
+          converted,
+          conversionMethod,
+        });
       }
     } else {
       convertedArgs.push(convertArg(arg));
@@ -248,7 +282,7 @@ export async function main(args = []) {
   let finalData = convertedArgs;
   let pluginTrace;
   if (args.includes("--use-plugins") && getPlugins().length > 0) {
-    if (tracePluginsFlag) {
+    if (args.includes("--trace-plugins")) {
       pluginTrace = [];
       let intermediate = convertedArgs;
       getPlugins().forEach((plugin, index) => {
@@ -265,7 +299,7 @@ export async function main(args = []) {
   if (debugNanFlag) {
     finalLog.debugNan = debugDetails;
   }
-  if (tracePluginsFlag && pluginTrace) {
+  if (pluginTrace) {
     finalLog.pluginTrace = pluginTrace;
   }
 
