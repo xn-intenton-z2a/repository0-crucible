@@ -34,6 +34,7 @@ npm install repository0-crucible
 * JSON Conversion: CLI arguments that begin with `{` or `[` are automatically parsed as JSON objects or arrays if valid.
 * Consistent Default Argument Handling: The CLI tool now defaults to an empty arguments array if no inputs are provided, ensuring consistent behavior between production and tests.
 * Structured JSON Logging: The CLI outputs a structured JSON formatted string to enhance log parsing and integration with monitoring systems. When using the --native-nan flag, numeric NaN, Infinity, and -Infinity values are serialized in a special format as "___native_NaN___", "___Infinity___", and "___-Infinity___" respectively, which are then revived appropriately.
+* Automated Tests for CLI Argument Handling: The test suite now includes dedicated tests to verify the correct processing of the 'NaN' argument, ensuring robust CLI behavior.
 * Demonstration of automated CI/CD workflows for code regeneration and testing.
 * Unified Plugin Architecture: Extend functionality by registering plugins to transform or analyze the CLI output using the `--use-plugins` flag.
 

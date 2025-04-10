@@ -273,7 +273,6 @@ describe("Debug NaN Mode", () => {
     main(["--debug-nan", "--native-nan", "NaN", "100"]);
     const output = getLoggedOutput(logSpy);
     expect(output).toHaveProperty('debugNan');
-    // The converted value should be numeric NaN which is serialized as "___native_NaN___" and then revived to NaN
     expect(isNaN(output.debugNan[0].converted)).toBe(true);
     logSpy.mockRestore();
   });
@@ -284,8 +283,17 @@ describe("Special Numeric Values Serialization", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["Infinity", "-Infinity", "100"]);
     const output = getLoggedOutput(logSpy);
-    // Expect Infinity and -Infinity to be revived correctly
     expect(output).toEqual({ message: "Run with", data: [Infinity, -Infinity, 100] });
+    logSpy.mockRestore();
+  });
+});
+
+// Additional test to specifically verify the CLI handling of a single 'NaN' argument
+describe("CLI NaN Handling", () => {
+  test("should process 'NaN' argument correctly when passed as a single parameter", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["NaN"]);
+    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["NaN"] });
     logSpy.mockRestore();
   });
 });
