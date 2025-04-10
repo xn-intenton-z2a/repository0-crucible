@@ -52,8 +52,9 @@ export function registerNaNHandler(handler) {
 
 /**
  * Determines if the provided string represents a variant of 'NaN'.
- * It standardizes the input by trimming and normalizing (NFKC) and comparing in a case-insensitive manner.
- * Supports extended Unicode variants such as 'ＮａＮ'.
+ * It standardizes the input by trimming and applying Unicode Normalization Form KC (NFKC), and comparing in a case-insensitive manner.
+ * This method supports extended Unicode variants such as 'ＮａＮ'.
+ *
  * @param {string} str
  * @returns {boolean}
  */
@@ -103,16 +104,21 @@ function convertArg(arg) {
 
 /**
  * Helper function to process 'NaN' conversion based on the current configuration and flags.
- * Uses trimmed and normalized value for decisions. In default mode, preserves the original string.
+ * Uses the trimmed input and its Unicode normalized form for decisions.
+ *
+ * Behavior:
+ * - Default: Preserves the original input string (even if normalized form differs).
+ * - Native Mode (--native-nan): Converts any recognized 'NaN' variant (including Unicode variants) to numeric NaN.
+ * - Strict Mode (--strict-nan): Throws an error if a 'NaN' input is encountered and no custom handler is registered.
+ * - Custom Handler: If registered via CLI flag (--custom-nan), repository config, or environment variable, uses the custom replacement.
+ *
  * @param {string} originalStr - The original input string (already trimmed)
  * @returns {{converted: any, conversionMethod: string}}
  */
 function processNaNConversion(originalStr) {
-  // Normalize the input for consistent processing of Unicode variants
   const normalized = originalStr.trim().normalize("NFKC");
 
   if (customNaNHandler && typeof customNaNHandler === "function") {
-    // If in strict mode, log additional info
     if (useStrictNan) {
       console.info("Strict NaN mode active: using custom NaN handler.");
     }
@@ -127,7 +133,6 @@ function processNaNConversion(originalStr) {
   } else if (useNativeNanConfig) {
     return { converted: NaN, conversionMethod: "native" };
   } else {
-    // Preserve the original user input even if its normalized form is different
     return { converted: originalStr, conversionMethod: "default" };
   }
 }
@@ -135,20 +140,29 @@ function processNaNConversion(originalStr) {
 /**
  * Main function for the CLI.
  * Processes CLI arguments using conversion logic and plugin integration.
- * Handles NaN conversion based on these rules:
- *   - Default: preserves NaN as a string.
- *   - --native-nan flag (or config/environment): converts variant of 'NaN' to numeric NaN.
- *   - --strict-nan flag (or config/environment): throws an error if a 'NaN' input is encountered without a custom handler.
- *   - --custom-nan flag: registers an inline custom handler to replace 'NaN' with the provided value.
- *   - --debug-nan flag: outputs detailed debug info for each NaN conversion instance, including the normalized input.
- *   - --trace-plugins flag: outputs detailed trace logs for each plugin transformation step when using plugins.
+ * Handles NaN conversion based on the following rules:
+ *   - Default: Any variant of 'NaN' (including Unicode variants such as 'ＮａＮ') is preserved as the original string.
+ *   - --native-nan: Converts recognized 'NaN' variants to numeric NaN.
+ *   - --strict-nan: In strict mode, throws an error if a 'NaN' input is encountered without a custom handler.
+ *   - --custom-nan: Registers an inline custom handler to replace 'NaN' with the provided value.
+ *   - --debug-nan: Outputs detailed debug information for each NaN conversion instance.
+ *   - --trace-plugins: Outputs detailed trace logs for each plugin transformation when plugins are enabled.
  *
- * Additionally, supports custom configuration via .repositoryConfig.json for setting customNan.
+ * Additionally, supports custom configuration via .repositoryConfig.json and the CUSTOM_NAN environment variable.
+ *
+ * Examples:
+ *   node src/lib/main.js NaN 100
+ *       Uses default behavior, leaving 'NaN' as a string.
+ *   node src/lib/main.js --native-nan NaN 100
+ *       Converts 'NaN' (and variants like 'ＮａＮ') to numeric NaN.
+ *   node src/lib/main.js --strict-nan NaN 100
+ *       Throws an error if no custom handler is registered.
+ *   node src/lib/main.js --custom-nan customReplacement NaN 100
+ *       Replaces 'NaN' with 'customReplacement'.
  *
  * @param {string[]} args - CLI arguments
  */
 export function main(args = []) {
-  // Dump config early if requested
   if (args.includes("--dump-config")) {
     let repoConfig = {};
     try {
@@ -178,7 +192,6 @@ export function main(args = []) {
     return;
   }
 
-  // Load configuration from .repositoryConfig.json if available
   let configNativeNan = false;
   let configStrictNan = false;
   try {
@@ -196,26 +209,19 @@ export function main(args = []) {
     configStrictNan = false;
   }
 
-  // Register environment custom handler if not dumping config and no handler registered from config
   if (!args.includes("--dump-config") && !customNaNHandler && process.env.CUSTOM_NAN && typeof process.env.CUSTOM_NAN === "string" && process.env.CUSTOM_NAN.trim() !== "" && process.env.CUSTOM_NAN.trim().normalize("NFKC").toLowerCase() !== "nan") {
     registerNaNHandler(() => process.env.CUSTOM_NAN);
   }
 
-  // Determine whether to use native NaN handling
   const nativeNanFlag = args.includes("--native-nan");
   useNativeNanConfig = nativeNanFlag || configNativeNan || process.env.NATIVE_NAN === "true";
 
-  // Determine strict NaN mode
   const strictNanFlag = args.includes("--strict-nan");
   useStrictNan = strictNanFlag || configStrictNan || process.env.STRICT_NAN === "true";
 
-  // Check for debug flag
   const debugNanFlag = args.includes("--debug-nan");
-
-  // Check for plugin trace flag
   const tracePluginsFlag = args.includes("--trace-plugins");
 
-  // Handle inline custom NaN replacement via --custom-nan flag (overrides configuration if provided)
   const customNanIndex = args.indexOf("--custom-nan");
   if (customNanIndex !== -1) {
     if (args.length > customNanIndex + 1 && args[customNanIndex + 1].trim().normalize("NFKC").toLowerCase() !== "nan") {
@@ -226,7 +232,6 @@ export function main(args = []) {
     }
   }
 
-  // Filter out flags and their associated values
   const processedArgs = [];
   for (let i = 0; i < args.length; i++) {
     if (["--use-plugins", "--native-nan", "--strict-nan", "--debug-nan", "--trace-plugins", "--dump-config"].includes(args[i])) continue;
@@ -234,7 +239,6 @@ export function main(args = []) {
     processedArgs.push(args[i]);
   }
 
-  // Convert each argument with intelligent parsing and special handling for variants of 'NaN'
   const convertedArgs = [];
   const debugDetails = [];
   for (let i = 0; i < processedArgs.length; i++) {
@@ -252,7 +256,6 @@ export function main(args = []) {
     }
   }
 
-  // Process through plugins if requested
   let finalData = convertedArgs;
   let pluginTrace;
   if (args.includes("--use-plugins") && getPlugins().length > 0) {
@@ -277,7 +280,6 @@ export function main(args = []) {
     finalLog.pluginTrace = pluginTrace;
   }
 
-  // Output structured JSON with custom serialization for special numeric values
   console.log(JSON.stringify(finalLog, (key, value) => {
     if (typeof value === "number") {
       if (Number.isNaN(value)) return "___native_NaN___";
