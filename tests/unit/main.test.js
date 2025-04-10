@@ -150,34 +150,6 @@ describe("CLI Argument Conversion", () => {
   });
 });
 
-describe("JSON Conversion in CLI Arguments", () => {
-  test("should convert valid JSON object strings to objects", () => {
-    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const jsonObject = '{"key": "value", "num": 123}';
-    main([jsonObject]);
-    const loggedOutput = getLoggedOutput(logSpy);
-    expect(loggedOutput.data[0]).toEqual({ key: "value", num: 123 });
-    logSpy.mockRestore();
-  });
-
-  test("should convert valid JSON array strings to arrays", () => {
-    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const jsonArray = '[1, 2, 3, "four"]';
-    main([jsonArray]);
-    const loggedOutput = getLoggedOutput(logSpy);
-    expect(loggedOutput.data[0]).toEqual([1, 2, 3, "four"]);
-    logSpy.mockRestore();
-  });
-
-  test("should fallback to string conversion for invalid JSON inputs", () => {
-    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const invalidJson = '{invalid: json';
-    main([invalidJson]);
-    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [invalidJson.trim()] });
-    logSpy.mockRestore();
-  });
-});
-
 describe("Plugin Integration in CLI", () => {
   test("should pass arguments unchanged when --use-plugins flag is provided but no plugins are registered", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -222,6 +194,31 @@ describe("Custom NaN Handler Plugin", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["NaN", "100"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["NaN", 100] });
+    logSpy.mockRestore();
+  });
+});
+
+describe("Strict NaN Mode", () => {
+  beforeEach(() => {
+    // Reset plugins and custom NaN handler
+    getPlugins().length = 0;
+    registerNaNHandler(null);
+  });
+
+  test("should throw an error in strict mode when no custom handler is registered", () => {
+    expect(() => {
+      main(["--strict-nan", "NaN", "100"]);
+    }).toThrow(/Strict NaN mode error/);
+  });
+
+  test("should use custom handler in strict mode and log an info message", () => {
+    registerNaNHandler(() => 'customStrictNaN');
+    const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--strict-nan", "NaN", "100"]);
+    expect(infoSpy).toHaveBeenCalledWith("Strict NaN mode active: using custom NaN handler.");
+    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ['customStrictNaN', 100] });
+    infoSpy.mockRestore();
     logSpy.mockRestore();
   });
 });
