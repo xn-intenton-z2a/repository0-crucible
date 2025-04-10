@@ -59,7 +59,7 @@ describe("CLI Argument Conversion", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const invalidISO = "2023-13-01T00:00:00Z"; // Invalid month
     main([invalidISO]);
-    expect(logSpy).toHaveBeenCalledWith("Run with:", [invalidISO]);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", [invalidISO.trim()]);
     logSpy.mockRestore();
   });
 
@@ -69,6 +69,13 @@ describe("CLI Argument Conversion", () => {
     const loggedArg = logSpy.mock.calls[0][1];
     expect(isNaN(loggedArg[0])).toBe(true);
     expect(loggedArg[1]).toBe(100);
+    logSpy.mockRestore();
+  });
+
+  test("should trim arguments and convert strings correctly", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["   42   ", "  true ", "   hello   "]);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", [42, true, "hello"]);
     logSpy.mockRestore();
   });
 });
