@@ -119,6 +119,34 @@ describe("CLI Argument Conversion", () => {
   });
 });
 
+describe("JSON Conversion in CLI Arguments", () => {
+  test("should convert valid JSON object strings to objects", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const jsonObject = '{"key": "value", "num": 123}';
+    main([jsonObject]);
+    const loggedArg = logSpy.mock.calls[0][1];
+    expect(loggedArg[0]).toEqual({ key: "value", num: 123 });
+    logSpy.mockRestore();
+  });
+
+  test("should convert valid JSON array strings to arrays", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const jsonArray = '[1, 2, 3, "four"]';
+    main([jsonArray]);
+    const loggedArg = logSpy.mock.calls[0][1];
+    expect(loggedArg[0]).toEqual([1, 2, 3, "four"]);
+    logSpy.mockRestore();
+  });
+
+  test("should fallback to string conversion for invalid JSON inputs", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const invalidJson = '{invalid: json';
+    main([invalidJson]);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", [invalidJson.trim()]);
+    logSpy.mockRestore();
+  });
+});
+
 describe("Plugin Integration in CLI", () => {
   test("should pass arguments unchanged when --use-plugins flag is provided but no plugins are registered", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
