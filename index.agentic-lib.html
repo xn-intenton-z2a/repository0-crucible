@@ -73,6 +73,9 @@
 </code></pre>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">Environment Variable:</strong> Additionally, you can set the environment variable <code class="md-github">CUSTOM_NAN</code> to a non-empty string (that is not a variant of &quot;NaN&quot;) to configure a custom replacement for NaN inputs if not provided via CLI or configuration file. Note: When using the <code class="md-github">--dump-config</code> flag, the environment variable is ignored.</p>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">Debug Mode:</strong> Use <code class="md-github">--debug-nan</code> to output detailed diagnostic information for each conversion, including the normalized input.</p>
 </li>
 </ul>
@@ -89,7 +92,7 @@
 <li class="md-github"><strong class="md-github">Default Behavior:</strong> Preserves any variant of &quot;NaN&quot; as the original string input.</li>
 <li class="md-github"><strong class="md-github">Native Conversion:</strong> Use <code class="md-github">--native-nan</code>, set environment variable <code class="md-github">NATIVE_NAN</code> to &quot;true&quot;, or configure via <code class="md-github">.repositoryConfig.json</code>.</li>
 <li class="md-github"><strong class="md-github">Strict Mode:</strong> Enable strict validation with <code class="md-github">--strict-nan</code>, environment variable <code class="md-github">STRICT_NAN</code>, or in <code class="md-github">.repositoryConfig.json</code> (throws an error if no custom handler is provided).</li>
-<li class="md-github"><strong class="md-github">Custom Replacement via CLI &amp; Config:</strong> Provide a replacement for &quot;NaN&quot; either inline using <code class="md-github">--custom-nan &lt;value&gt;</code> or persistently via the <code class="md-github">customNan</code> key in <code class="md-github">.repositoryConfig.json</code>.</li>
+<li class="md-github"><strong class="md-github">Custom Replacement via CLI, Config &amp; Environment:</strong> Provide a replacement for &quot;NaN&quot; either inline using <code class="md-github">--custom-nan &lt;value&gt;</code>, via the <code class="md-github">customNan</code> key in <code class="md-github">.repositoryConfig.json</code>, or by setting the environment variable <code class="md-github">CUSTOM_NAN</code>.</li>
 <li class="md-github"><strong class="md-github">Debug Mode:</strong> Use <code class="md-github">--debug-nan</code> to output detailed diagnostic information, including the normalized input.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="dump-configuration" href="#dump-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dump Configuration</h2>
@@ -97,7 +100,7 @@
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">nativeNan</strong>: (boolean) Indicates whether native NaN conversion is active.</li>
 <li class="md-github"><strong class="md-github">strictNan</strong>: (boolean) Indicates whether strict NaN mode is enabled.</li>
-<li class="md-github"><strong class="md-github">customNan</strong>: (string|null) The custom replacement value for &quot;NaN&quot;, if any.</li>
+<li class="md-github"><strong class="md-github">customNan</strong>: (string|null) The custom replacement value for &quot;NaN&quot;, if any. (Environment variable CUSTOM_NAN is ignored in this mode.)</li>
 <li class="md-github"><strong class="md-github">plugins</strong>: (array) A list of registered plugin names.</li>
 </ul>
 <h3 class="md-github"><a class="md-github__anchor" name="example" href="#example"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example</h3>
@@ -165,6 +168,13 @@ Create a <code class="md-github">.repositoryConfig.json</code> with:</p>
 </code></pre>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">Custom NaN Replacement via Environment Variable:</strong>
+Set the environment variable before running the CLI:</p>
+<pre class="md-github"><code class="md-github language-bash">export CUSTOM_NAN=customEnvReplacement
+node src/lib/main.js NaN 100
+</code></pre>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">JSON Argument Conversion:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js '{&quot;key&quot;: &quot;value&quot;}' '[1,2,3]'
 </code></pre>
@@ -197,7 +207,7 @@ registerPlugin(data =&gt; data.map(item =&gt; typeof item === 'string' ? item + 
 
   </section>
   <footer>
-    <p>Generated on 2025-04-10T20:53:10.572Z</p>
+    <p>Generated on 2025-04-10T20:53:51.268Z</p>
   </footer>
 </body>
 </html>
