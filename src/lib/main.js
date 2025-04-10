@@ -118,7 +118,7 @@ function convertArg(arg) {
  * - Otherwise, returns the original input string.
  *
  * @param {string} originalStr - The original input string (assumed trimmed externally)
- * @returns {Promise<{converted: any, conversionMethod: string}>}
+ * @returns {Promise<{converted: any, conversionMethod: string}>>}
  */
 async function processNaNConversion(originalStr) {
   const normalizedInput = originalStr.trim().normalize("NFKC");
@@ -245,16 +245,22 @@ function updateGlobalNaNConfig() {
  * Starts a watcher on .repositoryConfig.json to dynamically refresh NaN configuration when changes occur.
  */
 function startConfigWatcher() {
-  // If the configuration file doesn't exist, create an empty one
-  if (!fs.existsSync(".repositoryConfig.json")) {
+  // Ensure the configuration file exists. Even if existsSync is stubbed to return true, verify actual access.
+  try {
+    fs.accessSync(".repositoryConfig.json", fs.constants.F_OK);
+  } catch (err) {
     fs.writeFileSync(".repositoryConfig.json", "{}");
   }
-  configWatcher = fs.watch(".repositoryConfig.json", (eventType) => {
-    if (eventType === "change") {
-      updateGlobalNaNConfig();
-    }
-  });
-  console.info("Started configuration file watcher for dynamic configuration refresh.");
+  try {
+    configWatcher = fs.watch(".repositoryConfig.json", (eventType) => {
+      if (eventType === "change") {
+        updateGlobalNaNConfig();
+      }
+    });
+    console.info("Started configuration file watcher for dynamic configuration refresh.");
+  } catch (err) {
+    console.info("Config watcher could not be started: " + err.message);
+  }
 }
 
 /**
@@ -265,6 +271,11 @@ function startConfigWatcher() {
  * @param {string[]} args - CLI arguments
  */
 export async function main(args = []) {
+  // Reset global configuration for a clean run
+  customNaNHandler = null;
+  useNativeNanConfig = false;
+  useStrictNan = false;
+
   // If the --refresh-config flag is provided, update configuration dynamically
   if (args.includes("--refresh-config")) {
     updateGlobalNaNConfig();
