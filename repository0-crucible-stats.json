@@ -3,18 +3,18 @@
   "repo": "repository0-crucible",
   "engine": "schedule-3",
   "openIssues": 62,
-  "issuesClosedLastHour": 6,
+  "issuesClosedLastHour": 5,
   "issuesClosedLastDay": 86,
   "openPRs": 1,
   "prDetails": [
     {
       "title": "Enhanced Unicode normalization in NaN conversion by normalizing inputs before processing custom handlers. (fixes #1233)",
-      "ageMinutes": 0
+      "ageMinutes": 1
     }
   ],
-  "diffMinutes": 1,
-  "diffMinutesMain": 10,
-  "commitsLastHour": 3,
+  "diffMinutes": 0,
+  "diffMinutesMain": 11,
+  "commitsLastHour": 2,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
     {
@@ -47,8 +47,8 @@
       }
     ]
   },
-  "averagePRAge": 0,
+  "averagePRAge": 1,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-10T21:11:52.057Z"
+  "generatedAt": "2025-04-10T21:12:35.016Z"
 }
