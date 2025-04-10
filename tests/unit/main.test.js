@@ -229,8 +229,7 @@ describe("Strict NaN Mode", () => {
 
   test("should use custom handler in strict mode when enabled via configuration file and log an info message", () => {
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
-    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"strictNan": true}');
-    registerNaNHandler(() => 'customConfigStrictNaN');
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"strictNan": true, "customNan": "customConfigStrictNaN"}');
     const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["NaN", "100"]);
@@ -321,5 +320,18 @@ describe("CLI Custom --custom-nan Flag", () => {
     expect(() => {
       main(["--custom-nan", "NaN"]);
     }).toThrow("--custom-nan flag provided without a replacement value.");
+  });
+});
+
+describe("Configuration CustomNaN via repositoryConfig.json", () => {
+  test("should convert 'NaN' using custom replacement from configuration file", () => {
+    const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"customNan": "configCustomReplacement"}');
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["NaN", "100"]);
+    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["configCustomReplacement", 100] });
+    logSpy.mockRestore();
+    existsSyncSpy.mockRestore();
+    readFileSyncSpy.mockRestore();
   });
 });
