@@ -11,9 +11,16 @@ describe("Main Module Import", () => {
 });
 
 describe("Default Demo Output", () => {
-  test("should terminate without error for empty args", () => {
+  test("should terminate without error for empty args passed explicitly", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main([]);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", []);
+    logSpy.mockRestore();
+  });
+
+  test("should terminate without error when called without arguments", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main();
     expect(logSpy).toHaveBeenCalledWith("Run with:", []);
     logSpy.mockRestore();
   });
