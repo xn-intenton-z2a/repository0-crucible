@@ -1,14 +1,22 @@
 {
-  "openIssues": 67,
-  "issuesClosedLastHour": 4,
+  "openIssues": 66,
+  "issuesClosedLastHour": 8,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 0,
-  "diffMinutesMain": 9,
-  "commitsLastHour": 2,
+  "diffMinutes": 4,
+  "diffMinutesMain": 4,
+  "commitsLastHour": 4,
   "commitsLastDay": 100,
   "lastFiveCommitMessages": [
+    {
+      "time": "14:29",
+      "message": "Optimize the NaN special-case handling in CLI argument parsing f..."
+    },
+    {
+      "time": "14:21",
+      "message": "Removed automatic dummy plugin registration and updated tests an..."
+    },
     {
       "time": "14:10",
       "message": "Enhance CLI argument conversion to parse ISO 8601 dates and upda..."
@@ -20,27 +28,14 @@
     {
       "time": "12:56",
       "message": "Refined NaN special-case handling in CLI argument conversion and..."
-    },
-    {
-      "time": "12:52",
-      "message": "Enhanced CLI argument parsing to intelligently convert numeric a..."
-    },
-    {
-      "time": "12:44",
-      "message": "Update from agentic-lib"
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1168",
-        "minutesSinceLastCommit": 0
-      }
-    ]
+    "count": 0,
+    "details": []
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-10T14:20:43.122Z"
+  "generatedAt": "2025-04-10T14:33:45.883Z"
 }
