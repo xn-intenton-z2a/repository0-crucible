@@ -31,6 +31,7 @@ npm install repository0-crucible
 * ISO 8601 Date Parsing: ISO formatted date strings are automatically converted to JavaScript Date objects if valid.
 * JSON Conversion: CLI arguments that begin with `{` or `[` are automatically parsed as JSON objects or arrays if valid.
 * Consistent Default Argument Handling: The CLI tool now defaults to an empty arguments array if no inputs are provided, ensuring consistent behavior between production and tests.
+* Structured JSON Logging: The CLI outputs a structured JSON formatted string to enhance log parsing and integration with monitoring systems.
 * Demonstration of automated CI/CD workflows for code regeneration and testing.
 * Unified Plugin Architecture: Extend functionality by registering plugins to transform or analyze the CLI output using the `--use-plugins` flag.
 
@@ -123,10 +124,10 @@ After registering your plugin, run the CLI as follows:
 node src/lib/main.js --use-plugins 100 hello
 ```
 
-The output will display the processed array, for example:
+The output will display the processed array in a structured JSON format, for example:
 
-```
-Run with: [100, "hello-custom"]
+```json
+{ "message": "Run with", "data": [100, "hello-custom"] }
 ```
 
 ## Usage
