@@ -13,7 +13,7 @@ describe("Default Demo Output", () => {
   test("should terminate without error for empty args", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main([]);
-    expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify([])}`);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", []);
     logSpy.mockRestore();
   });
 });
@@ -23,28 +23,28 @@ describe("CLI Argument Conversion", () => {
   test("should convert numeric strings to numbers", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["42", "3.14"]);
-    expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify([42, 3.14])}`);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", [42, 3.14]);
     logSpy.mockRestore();
   });
 
   test("should convert boolean strings to booleans", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["true", "false"]);
-    expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify([true, false])}`);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", [true, false]);
     logSpy.mockRestore();
   });
 
   test("should leave non-numeric strings unchanged", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["hello", "world"]);
-    expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify(["hello", "world"])}`);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", ["hello", "world"]);
     logSpy.mockRestore();
   });
 
-  test("should handle special case 'NaN' as a string", () => {
+  test("should handle special case 'NaN' as a string by default", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["NaN", "100"]);
-    expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify(["NaN", 100])}`);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", ["NaN", 100]);
     logSpy.mockRestore();
   });
 
@@ -52,7 +52,7 @@ describe("CLI Argument Conversion", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const validISO = "2023-10-10T12:30:00Z";
     main([validISO]);
-    const loggedArg = JSON.parse(logSpy.mock.calls[0][0].replace('Run with: ', ''));
+    const loggedArg = logSpy.mock.calls[0][1];
     expect(new Date(loggedArg[0]).toISOString()).toEqual(new Date(validISO).toISOString());
     logSpy.mockRestore();
   });
@@ -61,7 +61,16 @@ describe("CLI Argument Conversion", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const invalidISO = "2023-13-01T00:00:00Z"; // Invalid month
     main([invalidISO]);
-    expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify([invalidISO])}`);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", [invalidISO]);
+    logSpy.mockRestore();
+  });
+
+  test("should convert 'NaN' to numeric NaN when --native-nan flag is provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--native-nan", "NaN", "100"]);
+    const loggedArg = logSpy.mock.calls[0][1];
+    expect(isNaN(loggedArg[0])).toBe(true);
+    expect(loggedArg[1]).toBe(100);
     logSpy.mockRestore();
   });
 });
@@ -74,7 +83,7 @@ describe("Plugin Integration in CLI", () => {
     const plugins = getPlugins();
     plugins.length = 0;
     main(["--use-plugins", "50", "hello"]);
-    expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify([50, "hello"])}`);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", [50, "hello"]);
     logSpy.mockRestore();
   });
 
@@ -86,7 +95,7 @@ describe("Plugin Integration in CLI", () => {
     registerPlugin(data => data.map(item => typeof item === 'number' ? item * 2 : item));
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--use-plugins", "50", "hello"]);
-    expect(logSpy).toHaveBeenCalledWith(`Run with: ${JSON.stringify([100, "hello"])}`);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", [100, "hello"]);
     logSpy.mockRestore();
   });
 });
