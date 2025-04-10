@@ -1,4 +1,4 @@
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect, vi, beforeEach } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main, registerPlugin, getPlugins, executePlugins } from "@src/lib/main.js";
 
@@ -9,6 +9,7 @@ describe("Main Module Import", () => {
   });
 });
 
+
 describe("Default Demo Output", () => {
   test("should terminate without error for empty args", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -17,6 +18,7 @@ describe("Default Demo Output", () => {
     logSpy.mockRestore();
   });
 });
+
 
 describe("CLI Argument Conversion", () => {
   test("should convert numeric strings to numbers", () => {
@@ -48,6 +50,7 @@ describe("CLI Argument Conversion", () => {
   });
 });
 
+
 describe("Plugin Integration in CLI", () => {
   test("should process arguments through plugins when --use-plugins flag is provided", () => {
     // Using the default dummy plugin registered in main (doubles numbers)
@@ -58,6 +61,7 @@ describe("Plugin Integration in CLI", () => {
     logSpy.mockRestore();
   });
 });
+
 
 describe("Plugin Manager Functionality", () => {
   beforeEach(() => {
