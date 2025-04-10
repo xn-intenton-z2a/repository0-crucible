@@ -62,7 +62,11 @@ After registering your plugin, run the CLI as follows:
 node src/lib/main.js --use-plugins 100 hello
 ```
 
-The output will reflect the transformation applied by your plugin.
+The output will display the processed array, for example:
+
+```
+Run with: [100, "hello-custom"]
+```
 
 ## Usage
 

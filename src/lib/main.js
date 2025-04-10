@@ -99,7 +99,8 @@ export function main(args) {
     finalOutput = executePlugins(convertedArgs);
   }
 
-  console.log(`Run with: ${JSON.stringify(finalOutput)}`);
+  // Output using multiple arguments to preserve non-JSON values like NaN
+  console.log("Run with:", finalOutput);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
