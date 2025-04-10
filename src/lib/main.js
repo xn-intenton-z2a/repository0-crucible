@@ -128,7 +128,7 @@ function processNaNConversion(str) {
  *   - --native-nan flag (or config/environment): converts variant of 'NaN' to numeric NaN.
  *   - --strict-nan flag (or config/environment): throws an error if a 'NaN' input is encountered without a custom handler.
  *   - --custom-nan flag: registers an inline custom handler to replace 'NaN' with the provided value.
- *   - --debug-nan flag: outputs detailed debug info for each NaN conversion instance.
+ *   - --debug-nan flag: outputs detailed debug info for each NaN conversion instance, including the normalized input.
  *
  * @param {string[]} args - CLI arguments
  */
@@ -185,10 +185,11 @@ export function main(args = []) {
     const arg = processedArgs[i];
     const trimmed = arg.trim();
     if (isNaNInput(trimmed)) {
+      const normalized = trimmed.normalize("NFKC");
       const { converted, conversionMethod } = processNaNConversion(trimmed);
       convertedArgs.push(converted);
       if (debugNanFlag) {
-        debugDetails.push({ raw: arg, converted, conversionMethod });
+        debugDetails.push({ raw: arg, normalized, converted, conversionMethod });
       }
     } else {
       convertedArgs.push(convertArg(arg));
