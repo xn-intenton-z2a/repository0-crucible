@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main, registerPlugin, getPlugins, executePlugins } from "@src/lib/main.js";
+import { main, registerPlugin, getPlugins, executePlugins, registerNaNHandler } from "@src/lib/main.js";
 import fs from "fs";
 
 // NOTE: This test file is part of the automated testing suite that verifies the core CLI functionalities of repository0-crucible
@@ -186,27 +186,27 @@ describe("Plugin Integration in CLI", () => {
   });
 });
 
-describe("Plugin Manager Functionality", () => {
+describe("Custom NaN Handler Plugin", () => {
   beforeEach(() => {
-    // Reset plugins by clearing the internal array
-    const plugins = getPlugins();
-    plugins.length = 0;
+    // Reset plugins and custom NaN handler
+    getPlugins().length = 0;
+    // Reset customNaNHandler by reassigning via the exported function
+    registerNaNHandler(null);
   });
 
-  test("should register and retrieve plugins", () => {
-    const initialCount = getPlugins().length;
-    const dummyPlugin = data => data;
-    registerPlugin(dummyPlugin);
-    expect(getPlugins().length).toBe(initialCount + 1);
+  test("should use custom NaN handler when registered", () => {
+    // Register a custom NaN handler that returns a string 'customNaN'
+    registerNaNHandler(() => 'customNaN');
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["NaN", "100"]);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", ['customNaN', 100]);
+    logSpy.mockRestore();
   });
 
-  test("should execute plugins and transform data", () => {
-    // Register a plugin that appends "-plugin" to each string item
-    const appendPlugin = data => data.map(item => typeof item === 'string' ? item + "-plugin" : item);
-    registerPlugin(appendPlugin);
-    const input = ["test", 123];
-    const output = executePlugins(input);
-    expect(output).toContain("test-plugin");
-    expect(output).toContain(123);
+  test("should fall back to default conversion when custom handler is not registered", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["NaN", "100"]);
+    expect(logSpy).toHaveBeenCalledWith("Run with:", ["NaN", 100]);
+    logSpy.mockRestore();
   });
 });

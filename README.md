@@ -26,7 +26,8 @@ npm install repository0-crucible
 ## Features
 
 * Automated conversion of CLI arguments: Numeric strings like "42" or "3.14" are automatically converted to numbers, boolean strings like "true" or "false" are converted to booleans, while non-numeric strings are trimmed and returned.
-* Special Handling for 'NaN': By default, the CLI tool preserves any case variation of the string 'NaN' (e.g., "NaN", "nan", "NAN") for clarity. To convert any variation of 'NaN' to numeric NaN, use the --native-nan flag, set the environment variable NATIVE_NAN to "true", or create a configuration file named .repositoryConfig.json with the property { "nativeNan": true }.
+* Special Handling for 'NaN': By default, the CLI tool preserves any case variation of the string 'NaN' (e.g., "NaN", "nan", "NAN") for clarity. To convert any variation of "NaN" to numeric NaN, use the --native-nan flag, set the environment variable NATIVE_NAN to "true", or create a configuration file named .repositoryConfig.json with the property { "nativeNan": true }.
+* Custom NaN Handling: Developers can now register a custom handler for 'NaN' conversion using the `registerNaNHandler` API. This allows overriding the default behavior with a custom function.
 * ISO 8601 Date Parsing: ISO formatted date strings are automatically converted to JavaScript Date objects if valid.
 * JSON Conversion: CLI arguments that begin with `{` or `[` are automatically parsed as JSON objects or arrays if valid.
 * Consistent Default Argument Handling: The CLI tool now defaults to an empty arguments array if no inputs are provided, ensuring consistent behavior between production and tests.
@@ -47,7 +48,23 @@ Users can control how the string 'NaN' is processed by the CLI tool. By default,
 }
 ```
 
-Any of these methods will cause the CLI tool to convert any variation of "NaN" to the numeric NaN.
+Any of these methods will cause the CLI tool to convert any variation of "NaN" to the numeric NaN, unless a custom handler is registered via `registerNaNHandler`.
+
+## Custom NaN Handler Plugin
+
+You can override the default 'NaN' conversion by registering a custom handler. For example:
+
+```javascript
+import { registerNaNHandler } from "@src/lib/main.js";
+
+// Register a custom NaN handler
+registerNaNHandler(() => {
+  // Custom conversion logic
+  return 'customNaN';
+});
+```
+
+When this handler is registered, any input that is a variation of "NaN" will be converted using your custom logic.
 
 ## LLM-Driven Automated Code Regeneration Workflow
 
@@ -81,10 +98,11 @@ The plugin system allows developers to register custom functions (plugins) that 
 
 ### How It Works
 
-* The plugin manager is integrated into the main module in `src/lib/main.js` and provides three main functions that are exported:
+* The plugin manager is integrated into the main module in `src/lib/main.js` and provides the following functions:
   - `registerPlugin(plugin)`: Register a new plugin (a function) that takes data as input and returns transformed data.
   - `getPlugins()`: Retrieve the list of currently registered plugins.
   - `executePlugins(data)`: Process data through all registered plugins sequentially.
+  - `registerNaNHandler(handler)`: Register a custom handler for converting 'NaN'.
 
 * When you run the CLI with the `--use-plugins` flag, the tool will process input arguments through any registered plugins. If no plugins are registered, the arguments remain unchanged.
 
