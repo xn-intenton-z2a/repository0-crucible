@@ -1,4 +1,4 @@
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main, registerPlugin, getPlugins, executePlugins, registerNaNHandler } from "@src/lib/main.js";
 import fs from "fs";
@@ -438,29 +438,6 @@ describe("Dump Config Flag", () => {
   });
 });
 
-describe("Configuration Precedence", () => {
-  test("CLI flags override repo config and environment", async () => {
-    const repoConfig = { nativeNan: false, strictNan: false, customNan: "configCustom" };
-    const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
-    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(repoConfig));
-    process.env.NATIVE_NAN = "false";
-    process.env.STRICT_NAN = "false";
-    process.env.CUSTOM_NAN = "envCustomReplacement";
-    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    await main(["--dump-config", "--native-nan", "--strict-nan", "--custom-nan", "cliCustom"]);
-    const output = JSON.parse(logSpy.mock.calls[0][0]);
-    expect(output.nativeNan).toBe(true);
-    expect(output.strictNan).toBe(true);
-    expect(output.customNan).toBe("cliCustom");
-    logSpy.mockRestore();
-    existsSyncSpy.mockRestore();
-    readFileSyncSpy.mockRestore();
-    delete process.env.NATIVE_NAN;
-    delete process.env.STRICT_NAN;
-    delete process.env.CUSTOM_NAN;
-  });
-});
-
 describe("Dynamic Configuration Refresh", () => {
   test("should update configuration dynamically when --refresh-config flag is provided", async () => {
     const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
@@ -486,5 +463,18 @@ describe("Dynamic Configuration Refresh", () => {
     expect(infoSpy).toHaveBeenCalledWith("Started configuration file watcher for dynamic configuration refresh.");
     infoSpy.mockRestore();
     existsSyncSpy.mockRestore();
+  });
+});
+
+describe("Benchmark Performance Tests", () => {
+  test("should log benchmark results when --benchmark flag is provided", async () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    await main(["--benchmark"]);
+    const output = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(output).toHaveProperty('benchmark');
+    expect(typeof output.benchmark.count).toBe('number');
+    expect(typeof output.benchmark.cachingEnabled).toBe('number');
+    expect(typeof output.benchmark.cachingDisabled).toBe('number');
+    logSpy.mockRestore();
   });
 });

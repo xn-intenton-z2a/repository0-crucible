@@ -5,6 +5,7 @@
 
 import { fileURLToPath } from "url";
 import fs from "fs";
+import { performance } from "perf_hooks";
 
 // Plugin Manager Implementation integrated into main.js for repository0-crucible
 const plugins = [];
@@ -127,7 +128,7 @@ function convertArg(arg) {
  *
  * Updated Logic:
  * - Normalizes the input using trim and NFKC normalization and compares in a case-insensitive manner to 'nan'.
- * - Caches results for identical inputs to improve performance during bulk processing.
+ * - Caches results for identical 'NaN' inputs to improve performance during bulk processing.
  * - If a custom handler is registered, it uses the handler and, in strict mode, logs diagnostic info.
  *   Supports both synchronous and asynchronous custom handlers.
  * - In strict mode without a custom handler, throws an error with actionable guidance.
@@ -338,6 +339,73 @@ function startConfigWatcher() {
 export async function main(args = []) {
   // Clear the NaN conversion cache for each run
   nanConversionCache.clear();
+
+  // Benchmark mode: perform performance testing for bulk NaN processing
+  if (args.includes("--benchmark")) {
+    const bulkCount = 10000;
+    const bulkArgs = [];
+    for (let i = 0; i < bulkCount; i++) {
+      const r = Math.random();
+      if (r < 0.5) {
+        bulkArgs.push("NaN");
+      } else if (r < 0.75) {
+        bulkArgs.push("42");
+      } else {
+        bulkArgs.push("true");
+      }
+    }
+    console.info("Starting benchmark with caching enabled");
+    let startTime = performance.now();
+    const resultsEnabled = [];
+    for (const arg of bulkArgs) {
+      if (normalizeValue(arg).toLowerCase() === "nan") {
+        resultsEnabled.push(await processNaNConversion(arg));
+      } else {
+        resultsEnabled.push(convertArg(arg));
+      }
+    }
+    const durationEnabled = performance.now() - startTime;
+
+    console.info("Starting benchmark with caching disabled");
+    let startTimeDisabled = performance.now();
+    const resultsDisabled = [];
+    for (const arg of bulkArgs) {
+      if (normalizeValue(arg).toLowerCase() === "nan") {
+        // Replicating processNaNConversion without cache
+        const trimmed = arg.trim();
+        const normalized = normalizeValue(arg);
+        let res;
+        if (normalized.toLowerCase() !== "nan") {
+          res = { converted: convertArg(arg), conversionMethod: "default" };
+        } else {
+          if (customNaNHandler && typeof customNaNHandler === "function") {
+            try {
+              let handledValue = customNaNHandler(normalized);
+              if (handledValue && typeof handledValue.then === "function") {
+                handledValue = await handledValue;
+              }
+              res = { converted: handledValue, conversionMethod: "custom" };
+            } catch (e) {
+              throw new Error(`Error in custom NaN handler: ${e.message}`);
+            }
+          } else if (useStrictNan) {
+            throw new Error(`Strict NaN mode error: encountered 'NaN' without custom handler`);
+          } else if (useNativeNanConfig) {
+            res = { converted: NaN, conversionMethod: "native" };
+          } else {
+            res = { converted: convertArg(arg), conversionMethod: "default" };
+          }
+        }
+        resultsDisabled.push(res);
+      } else {
+        resultsDisabled.push(convertArg(arg));
+      }
+    }
+    const durationDisabled = performance.now() - startTimeDisabled;
+
+    console.log(JSON.stringify({ benchmark: { count: bulkCount, cachingEnabled: durationEnabled, cachingDisabled: durationDisabled } }));
+    return;
+  }
 
   // Reset configuration flags for each run.
   useNativeNanConfig = false;
