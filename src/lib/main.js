@@ -71,7 +71,7 @@ export function registerNaNHandler(handler) {
  * @returns {boolean}
  */
 function isNaNInput(str) {
-  // This function is retained for potential future use, but processNaNConversion now uses direct comparison on trimmed input.
+  // This function is retained for potential future use, but processNaNConversion now uses normalized comparison.
   return normalizeValue(str).toLowerCase() === "nan";
 }
 
@@ -117,22 +117,23 @@ function convertArg(arg) {
 
 /**
  * Helper function to process 'NaN' conversion based on the current configuration and flags.
- * Uses a direct comparison on trimmed input to decide if it's a standard ASCII NaN representation.
+ * Uses normalization to support Unicode variants of 'NaN'.
  *
  * Updated Logic:
- * - Checks if the trimmed input exactly equals 'NaN' (in any common ASCII variant: "NaN", "nan", "NAN").
+ * - Normalizes the input using trim and NFKC normalization and compares in a case-insensitive manner to 'nan'.
  * - If a custom handler is registered, it uses the handler and, in strict mode, logs diagnostic info.
  *   Supports both synchronous and asynchronous custom handlers.
  * - In strict mode without a custom handler, throws an error with actionable guidance.
  * - If native mode is active, returns numeric NaN.
- * - Otherwise, returns the trimmed input to preserve original formatting for non-standard variants.
+ * - Otherwise, returns the normalized input to preserve consistent formatting for recognized variants.
  *
  * @param {string} originalStr - The original input string
  * @returns {Promise<{converted: any, conversionMethod: string}>}
  */
 async function processNaNConversion(originalStr) {
   const trimmed = originalStr.trim();
-  if (!(trimmed === "NaN" || trimmed === "nan" || trimmed === "NAN")) {
+  const normalized = normalizeValue(originalStr);
+  if (normalized.toLowerCase() !== "nan") {
     return { converted: convertArg(originalStr), conversionMethod: "default" };
   }
 
@@ -141,7 +142,7 @@ async function processNaNConversion(originalStr) {
       console.info("Strict NaN mode active: using custom NaN handler.");
     }
     try {
-      let handledValue = customNaNHandler(trimmed);
+      let handledValue = customNaNHandler(normalized);
       if (handledValue && typeof handledValue.then === "function") {
         handledValue = await handledValue;
       }
@@ -154,7 +155,7 @@ async function processNaNConversion(originalStr) {
   } else if (useNativeNanConfig) {
     return { converted: NaN, conversionMethod: "native" };
   } else {
-    return { converted: trimmed, conversionMethod: "default" };
+    return { converted: normalized, conversionMethod: "default" };
   }
 }
 
@@ -346,14 +347,14 @@ export async function main(args = []) {
   const debugNanFlag = args.includes("--debug-nan");
   for (let i = 0; i < processedArgs.length; i++) {
     const arg = processedArgs[i];
-    const trimmed = arg.trim();
-    if (trimmed === "NaN" || trimmed === "nan" || trimmed === "NAN") {
+    // Use normalization for NaN check to support Unicode variants
+    if (normalizeValue(arg).toLowerCase() === "nan") {
       const { converted, conversionMethod } = await processNaNConversion(arg);
       convertedArgs.push(converted);
       if (debugNanFlag) {
         debugDetails.push({
           raw: arg,
-          normalized: trimmed,
+          normalized: normalizeValue(arg),
           converted,
           conversionMethod,
         });
