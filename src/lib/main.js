@@ -12,9 +12,12 @@ const plugins = [];
 // Global variable for custom NaN handler
 let customNaNHandler = null;
 
-// Configurable flags for handling 'NaN'
+// Global configuration flags for handling 'NaN'
 let useNativeNanConfig = false;
 let useStrictNan = false;
+
+// Configuration file watcher
+let configWatcher = null;
 
 /**
  * Register a new plugin
@@ -195,7 +198,7 @@ function resolveNaNConfig(args) {
     effectiveStrictNan = true;
   }
   if (
-    !effectiveCustomNan &&
+    effectiveCustomNan === null &&
     typeof repoConfig.customNan === "string" &&
     repoConfig.customNan.trim() !== "" &&
     repoConfig.customNan.trim().normalize("NFKC").toLowerCase() !== "nan"
@@ -211,7 +214,7 @@ function resolveNaNConfig(args) {
     effectiveStrictNan = true;
   }
   if (
-    !effectiveCustomNan &&
+    effectiveCustomNan === null &&
     process.env.CUSTOM_NAN &&
     process.env.CUSTOM_NAN.trim() !== "" &&
     process.env.CUSTOM_NAN.trim().normalize("NFKC").toLowerCase() !== "nan"
@@ -223,36 +226,103 @@ function resolveNaNConfig(args) {
 }
 
 /**
+ * Dynamically updates the global NaN configuration from repository config and environment variables.
+ * This enables the tool to refresh its configuration at runtime without a restart.
+ */
+function updateGlobalNaNConfig() {
+  const { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan } = resolveNaNConfig([]);
+  useNativeNanConfig = effectiveNativeNan;
+  useStrictNan = effectiveStrictNan;
+  if (effectiveCustomNan !== null && effectiveCustomNan !== undefined) {
+    registerNaNHandler(() => effectiveCustomNan);
+  } else {
+    registerNaNHandler(null);
+  }
+  console.info("Dynamic configuration refresh applied", { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan });
+}
+
+/**
+ * Starts a watcher on .repositoryConfig.json to dynamically refresh NaN configuration when changes occur.
+ */
+function startConfigWatcher() {
+  // Ensure the configuration file exists. Even if existsSync is stubbed to return true, verify actual access.
+  try {
+    fs.accessSync(".repositoryConfig.json", fs.constants.F_OK);
+  } catch (err) {
+    fs.writeFileSync(".repositoryConfig.json", "{}");
+  }
+  try {
+    configWatcher = fs.watch(".repositoryConfig.json", (eventType) => {
+      if (eventType === "change") {
+        updateGlobalNaNConfig();
+      }
+    });
+    console.info("Started configuration file watcher for dynamic configuration refresh.");
+  } catch (err) {
+    console.info("Config watcher could not be started: " + err.message);
+  }
+}
+
+/**
  * Main function for the CLI.
  * Processes CLI arguments using conversion logic and plugin integration.
- * Handles NaN conversion with prioritized configuration from CLI, configuration file, and environment variables.
+ * Handles NaN conversion with prioritized configuration from CLI, configuration file, environment variables, and supports dynamic refresh.
  *
  * @param {string[]} args - CLI arguments
  */
 export async function main(args = []) {
-  // Resolve NaN configuration with defined precedence: CLI > Repo Config > Environment > Default
+  // Reset configuration flags for each run.
+  useNativeNanConfig = false;
+  useStrictNan = false;
+  const preservedCustomHandler = customNaNHandler;
+
   const { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan } = resolveNaNConfig(args || []);
   useNativeNanConfig = effectiveNativeNan;
   useStrictNan = effectiveStrictNan;
-  if (effectiveCustomNan) {
+
+  if (args.includes("--custom-nan")) {
+    const customIndex = args.indexOf("--custom-nan");
+    if (args.length > customIndex + 1 && args[customIndex + 1].trim().normalize("NFKC").toLowerCase() !== "nan") {
+      registerNaNHandler(() => args[customIndex + 1]);
+    } else {
+      throw new Error("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
+    }
+  } else if (preservedCustomHandler && typeof preservedCustomHandler === "function") {
+    registerNaNHandler(preservedCustomHandler);
+  } else if (effectiveCustomNan !== null && effectiveCustomNan !== undefined) {
     registerNaNHandler(() => effectiveCustomNan);
+  } else {
+    registerNaNHandler(null);
   }
 
+  // If refresh-config flag is provided, update configuration dynamically
+  if (args.includes("--refresh-config")) {
+    updateGlobalNaNConfig();
+  }
+
+  // Dump configuration if requested
   if (args.includes("--dump-config")) {
     const configDump = {
-      nativeNan: effectiveNativeNan,
-      strictNan: effectiveStrictNan,
-      customNan: effectiveCustomNan,
+      nativeNan: useNativeNanConfig,
+      strictNan: useStrictNan,
+      customNan: customNaNHandler ? customNaNHandler() : null,
       plugins: getPlugins().map(fn => fn.name || "anonymous"),
     };
     console.log(JSON.stringify(configDump));
     return;
   }
 
+  // If serving mode is enabled, start configuration watcher for dynamic updates
+  if (args.includes("--serve")) {
+    if (!configWatcher) {
+      startConfigWatcher();
+    }
+  }
+
   // Remove configuration flags from arguments before processing
   const processedArgs = [];
   for (let i = 0; i < args.length; i++) {
-    if (["--use-plugins", "--native-nan", "--strict-nan", "--debug-nan", "--trace-plugins", "--dump-config"].includes(args[i])) continue;
+    if (["--use-plugins", "--native-nan", "--strict-nan", "--debug-nan", "--trace-plugins", "--dump-config", "--serve", "--refresh-config"].includes(args[i])) continue;
     if (args[i] === "--custom-nan") { i++; continue; }
     processedArgs.push(args[i]);
   }
