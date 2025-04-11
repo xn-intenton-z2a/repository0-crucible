@@ -23,13 +23,13 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="repository0-crucible" href="#repository0-crucible"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>repository0-crucible</h1>
-<p class="md-github"><code class="md-github">repository0-crucible</code> is a demo repository showcasing GitHub workflows imported from intentïon <a href="https://github.com/xn-intenton-z2a/agentic-lib" class="md-github">agentic‑lib</a>. It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, advanced CI/CD workflows, enhanced plugin transformation trace logging, dynamic configuration refresh for custom NaN handling, and optimized performance for bulk NaN processing.</p>
+<p class="md-github"><code class="md-github">repository0-crucible</code> is a demo repository showcasing GitHub workflows imported from intentïon <a href="https://github.com/xn-intenton-z2a/agentic-lib" class="md-github">agentic‑lib</a>. It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, advanced CI/CD workflows, enhanced plugin transformation trace logging, dynamic configuration refresh for custom NaN handling, optimized performance for bulk NaN processing, and now built-in performance benchmarking for NaN processing.</p>
 <p class="md-github">To create a self-evolving agentic coding system of your own based on this one, see the <a href="./TEMPLATE-README.md" class="md-github">TEMPLATE-README.md</a> for more details.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="repository-template" href="#repository-template"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Repository Template</h2>
 <p class="md-github">The repository is intended as a template that includes:</p>
 <ul class="md-github">
 <li class="md-github">A Template Base: A starting point for new projects.</li>
-<li class="md-github">A Running Experiment: An example implementation showcasing automated CLI argument conversion, plugin architecture, advanced CI/CD workflows, and now dynamic configuration refresh with performance optimizations for bulk NaN processing.</li>
+<li class="md-github">A Running Experiment: An example implementation showcasing automated CLI argument conversion, plugin architecture, advanced CI/CD workflows, and dynamic configuration refresh with performance optimizations and benchmarking for bulk NaN processing.</li>
 <li class="md-github">Example GitHub Workflows from <a href="https://github.com/xn-intenton-z2a/agentic-lib" class="md-github">agentic‑lib</a> that hand off to reusable workflows.</li>
 </ul>
 <p class="md-github">See <a href="./TEMPLATE-README.md" class="md-github">TEMPLATE-README.md</a> for more details.</p>
@@ -43,7 +43,7 @@
 <p class="md-github"><strong class="md-github">Automated CLI Argument Conversion:</strong> Automatically converts numeric strings (e.g. &quot;42&quot;, &quot;3.14&quot;), boolean strings (&quot;true&quot;, &quot;false&quot;), ISO 8601 dates, JSON formatted strings, and more. Non-numeric strings are trimmed and returned.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Enhanced NaN Handling with Dynamic Configuration Refresh:</strong></p>
+<p class="md-github"><strong class="md-github">Enhanced NaN Handling with Dynamic Configuration Refresh and Benchmarking:</strong></p>
 <ul class="md-github">
 <li class="md-github">
 <p class="md-github">Recognizes all Unicode variants of &quot;NaN&quot; (for example, &quot;NaN&quot;, &quot;nan&quot;, &quot;ＮａＮ&quot;), by normalizing inputs using trim and NFKC normalization.</p>
@@ -74,6 +74,9 @@
 <p class="md-github"><strong class="md-github">Dynamic Configuration Refresh:</strong> The tool now supports automatic updating of NaN handling configuration at runtime. When running in serve mode (<code class="md-github">--serve</code>) or via the <code class="md-github">--refresh-config</code> flag, changes to environment variables or the <code class="md-github">.repositoryConfig.json</code> file are applied immediately without restarting the process.</p>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">Built-in Performance Benchmarking:</strong> A new performance benchmarking mode is provided. Run the CLI with the <code class="md-github">--benchmark</code> flag or via the npm script to perform bulk processing tests. This benchmark measures execution times with caching enabled vs disabled and logs the results in a structured JSON format, aiding in performance analysis and regression detection.</p>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">Enhanced Diagnostic Logging:</strong> When the <code class="md-github">--debug-nan</code> flag is provided, the CLI outputs detailed diagnostic logs capturing the original input, trimmed version, normalization applied, and the conversion branch (default, native, or custom).</p>
 </li>
 <li class="md-github">
@@ -97,7 +100,7 @@
 <p class="md-github"><strong class="md-github">Unicode Variant Support:</strong> All input variants of &quot;NaN&quot; (like &quot;ＮａＮ&quot;) are normalized uniformly using a dedicated normalization function (trim + NFKC) to ensure consistent behavior across configurations.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Automated Tests:</strong> Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous), dynamic configuration refresh, configuration precedence, plugin tracing, and bulk performance improvements—work as expected.</p>
+<p class="md-github"><strong class="md-github">Automated Tests:</strong> Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous), dynamic configuration refresh, configuration precedence, plugin tracing, benchmark performance, and bulk performance improvements—work as expected.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">LLM-Driven Regeneration:</strong> The project incorporates an automated code regeneration workflow powered by an LLM, ensuring consistency and quality without manual intervention.</p>
@@ -131,6 +134,16 @@
   &quot;plugins&quot;: []
 }
 </code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="performance-benchmarking" href="#performance-benchmarking"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Performance Benchmarking</h2>
+<p class="md-github">A new performance benchmarking mode is included to measure the execution times of NaN processing with and without caching. Use the <code class="md-github">--benchmark</code> flag or the npm script below:</p>
+<pre class="md-github"><code class="md-github language-bash">npm run benchmark
+</code></pre>
+<p class="md-github">This will run bulk processing tests and output benchmark results in JSON format, including the counts and elapsed times for caching enabled vs disabled scenarios.</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">JSON Argument Conversion:</strong><pre class="md-github"><code class="md-github language-bash">node src/lib/main.js '{&quot;key&quot;: &quot;value&quot;}' '[1,2,3]'
+</code></pre>
+</li>
+</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">Run the CLI tool to see available options:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
@@ -203,6 +216,11 @@ Run in serve mode to enable dynamic config updates:</p>
 </code></pre>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">Performance Benchmarking:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm run benchmark
+</code></pre>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">JSON Argument Conversion:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js '{&quot;key&quot;: &quot;value&quot;}' '[1,2,3]'
 </code></pre>
@@ -211,7 +229,7 @@ Run in serve mode to enable dynamic config updates:</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-11T05:59:10.125Z</p>
+    <p>Generated on 2025-04-11T06:00:01.059Z</p>
   </footer>
 </body>
 </html>
