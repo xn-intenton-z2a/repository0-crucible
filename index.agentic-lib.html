@@ -23,13 +23,13 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="repository0-crucible" href="#repository0-crucible"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>repository0-crucible</h1>
-<p class="md-github"><code class="md-github">repository0-crucible</code> is a demo repository showcasing GitHub workflows imported from intentïon <a href="https://github.com/xn-intenton-z2a/agentic-lib" class="md-github">agentic‑lib</a>. It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, advanced CI/CD workflows, and enhanced plugin transformation trace logging.</p>
+<p class="md-github"><code class="md-github">repository0-crucible</code> is a demo repository showcasing GitHub workflows imported from intentïon <a href="https://github.com/xn-intenton-z2a/agentic-lib" class="md-github">agentic‑lib</a>. It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, advanced CI/CD workflows, enhanced plugin transformation trace logging, and dynamic configuration refresh for custom NaN handling.</p>
 <p class="md-github">To create a self-evolving agentic coding system of your own based on this one, see the <a href="./TEMPLATE-README.md" class="md-github">TEMPLATE-README.md</a> for more details.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="repository-template" href="#repository-template"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Repository Template</h2>
 <p class="md-github">The repository is intended as a template that includes:</p>
 <ul class="md-github">
 <li class="md-github">A Template Base: A starting point for new projects.</li>
-<li class="md-github">A Running Experiment: An example implementation showcasing automated CLI argument conversion, plugin architecture, and advanced CI/CD workflows.</li>
+<li class="md-github">A Running Experiment: An example implementation showcasing automated CLI argument conversion, plugin architecture, advanced CI/CD workflows, and now dynamic configuration refresh that updates NaN handling in realtime.</li>
 <li class="md-github">Example GitHub Workflows from <a href="https://github.com/xn-intenton-z2a/agentic-lib" class="md-github">agentic‑lib</a> that hand off to reusable workflows.</li>
 </ul>
 <p class="md-github">See <a href="./TEMPLATE-README.md" class="md-github">TEMPLATE-README.md</a> for more details.</p>
@@ -43,7 +43,7 @@
 <p class="md-github"><strong class="md-github">Automated CLI Argument Conversion:</strong> Automatically converts numeric strings (e.g. &quot;42&quot;, &quot;3.14&quot;), boolean strings (&quot;true&quot;, &quot;false&quot;), ISO 8601 dates, JSON formatted strings, and more. Non-numeric strings are trimmed and returned.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Enhanced NaN Handling (Revamped with Asynchronous Support and Clear Precedence):</strong></p>
+<p class="md-github"><strong class="md-github">Enhanced NaN Handling with Dynamic Configuration Refresh:</strong></p>
 <ul class="md-github">
 <li class="md-github">
 <p class="md-github">Recognizes all variants of &quot;NaN&quot;, including Unicode variants such as &quot;ＮａＮ&quot; by normalizing inputs with trim and NFKC normalization.</p>
@@ -71,6 +71,9 @@
 <p class="md-github"><strong class="md-github">Custom Replacement:</strong> Override the default behavior by providing a custom replacement via CLI using <code class="md-github">--custom-nan &lt;value&gt;</code>, in the repository configuration (<code class="md-github">customNan</code> key), or via the environment variable <code class="md-github">CUSTOM_NAN</code>.</p>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">Dynamic Configuration Refresh:</strong> The tool now supports automatic updating of NaN handling configuration at runtime. When running in serve mode (<code class="md-github">--serve</code>) or via the <code class="md-github">--refresh-config</code> flag, changes to environment variables or the <code class="md-github">.repositoryConfig.json</code> file are applied immediately without restarting the process.</p>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">Configuration Precedence:</strong> The effective NaN handling configuration is resolved in the following order (highest to lowest): CLI flags, Repository configuration file (.repositoryConfig.json), Environment variables, Default behavior.</p>
 </li>
 <li class="md-github">
@@ -91,7 +94,7 @@
 <p class="md-github"><strong class="md-github">Unicode Variant Support:</strong> All input variants of &quot;NaN&quot; (like &quot;ＮａＮ&quot;) are normalized uniformly to ensure consistent behavior across different configurations.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Automated Tests:</strong> Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous), configuration precedence, and plugin tracing—work as expected.</p>
+<p class="md-github"><strong class="md-github">Automated Tests:</strong> Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous), dynamic configuration refresh, configuration precedence, and plugin tracing—work as expected.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">LLM-Driven Regeneration:</strong> The project incorporates an automated code regeneration workflow powered by an LLM, ensuring consistency and quality without manual intervention.</p>
@@ -105,6 +108,7 @@
 <li class="md-github"><strong class="md-github">Environment Variables:</strong> Set <code class="md-github">NATIVE_NAN</code>, <code class="md-github">STRICT_NAN</code>, or <code class="md-github">CUSTOM_NAN</code> environment variables.</li>
 <li class="md-github"><strong class="md-github">Default Behavior:</strong> Applied when no other configuration is provided.</li>
 </ol>
+<p class="md-github">With dynamic configuration refresh enabled, the tool monitors changes and applies updates on the fly when running interactively or in serve mode.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="dump-configuration" href="#dump-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dump Configuration</h2>
 <p class="md-github">Use the <code class="md-github">--dump-config</code> flag to output the effective configuration that the CLI tool is using. The JSON output includes:</p>
 <ul class="md-github">
@@ -183,6 +187,18 @@ node src/lib/main.js NaN 100
 </code></pre>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">Dynamic Configuration Refresh (Serve Mode):</strong>
+Run in serve mode to enable dynamic config updates:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --serve
+</code></pre>
+<p class="md-github">Changes to <code class="md-github">.repositoryConfig.json</code> will be applied on the fly.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Force Refresh Configuration:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --refresh-config
+</code></pre>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">JSON Argument Conversion:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js '{&quot;key&quot;: &quot;value&quot;}' '[1,2,3]'
 </code></pre>
@@ -191,7 +207,7 @@ node src/lib/main.js NaN 100
 
   </section>
   <footer>
-    <p>Generated on 2025-04-11T01:52:14.113Z</p>
+    <p>Generated on 2025-04-11T01:53:21.219Z</p>
   </footer>
 </body>
 </html>
