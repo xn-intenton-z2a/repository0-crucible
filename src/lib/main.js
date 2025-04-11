@@ -140,7 +140,7 @@ function convertArg(arg) {
 /**
  * Internal function to process 'NaN' conversion without caching.
  * @param {string} originalStr - The original input string
- * @returns {Promise<{converted: any, conversionMethod: string}>}
+ * @returns {Promise<{converted: any, conversionMethod: string}>
  */
 async function processNaNConversionInternal(originalStr) {
   const trimmed = originalStr.trim();
@@ -203,7 +203,7 @@ async function processNaNConversionInternal(originalStr) {
  * Processes 'NaN' conversion with caching to optimize repeated identical inputs.
  * The caching key is based on the normalized (trimmed, NFKC, lowercase) value to ensure consistency across Unicode variants.
  * @param {string} originalStr
- * @returns {Promise<{converted: any, conversionMethod: string}>}
+ * @returns {Promise<{converted: any, conversionMethod: string}>
  */
 async function processNaNConversion(originalStr) {
   const normalizedKey = normalizeValue(originalStr).toLowerCase();
