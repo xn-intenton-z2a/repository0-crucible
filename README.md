@@ -25,7 +25,7 @@ npm install repository0-crucible
 
 * **Automated CLI Argument Conversion:** Automatically converts numeric strings (e.g. "42", "3.14"), boolean strings ("true", "false"), ISO 8601 dates, JSON formatted strings, and more. Non-numeric strings are trimmed and returned.
 * **Enhanced NaN Handling with Dynamic Configuration Refresh:**
-  - Recognizes all variants of "NaN", including Unicode variants such as "ＮａＮ" by normalizing inputs with trim and NFKC normalization.
+  - Recognizes all Unicode variants of "NaN" (for example, "NaN", "nan", "ＮａＮ"), by normalizing inputs using trim and NFKC normalization.
   - **Default Behavior:** Preserves the input as a string, even if the representation is a Unicode variant.
   - **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`:
 
@@ -37,7 +37,7 @@ npm install repository0-crucible
 
     This converts recognized "NaN" inputs to numeric NaN.
 
-  - **Strict Mode:** Enable with `--strict-nan`, environment variable `STRICT_NAN`, or via `.repositoryConfig.json`. In strict mode, if a "NaN" input is encountered without a registered custom handler, an error is thrown with actionable guidance. The error message will instruct you to register a custom NaN handler using the `--custom-nan <value>` flag, update your `.repositoryConfig.json` with a valid `customNan` value, or set the `CUSTOM_NAN` environment variable.
+  - **Strict Mode:** Enable with `--strict-nan`, environment variable `STRICT_NAN`, or via `.repositoryConfig.json`. In strict mode, if a "NaN" input is encountered without a registered custom handler, an error is thrown with actionable guidance. The error message instructs you to register a custom NaN handler using the `--custom-nan <value>` flag, update your `.repositoryConfig.json` with a valid `customNan` value, or set the `CUSTOM_NAN` environment variable.
 
     ```json
     {
@@ -60,7 +60,7 @@ npm install repository0-crucible
 
 * **Structured JSON Logging:** CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.
 
-* **Unicode Variant Support:** All input variants of "NaN" (like "ＮａＮ") are normalized uniformly to ensure consistent behavior across different configurations.
+* **Unicode Variant Support:** All input variants of "NaN" (like "ＮａＮ") are normalized uniformly using a dedicated normalization function (trim + NFKC) to ensure consistent behavior across configurations.
 
 * **Automated Tests:** Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous), dynamic configuration refresh, configuration precedence, and plugin tracing—work as expected.
 

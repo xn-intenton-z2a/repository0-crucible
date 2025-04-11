@@ -432,6 +432,9 @@ describe("Dump Config Flag", () => {
     logSpy.mockRestore();
     existsSyncSpy.mockRestore();
     readFileSyncSpy.mockRestore();
+    delete process.env.NATIVE_NAN;
+    delete process.env.STRICT_NAN;
+    delete process.env.CUSTOM_NAN;
   });
 });
 
