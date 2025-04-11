@@ -36,6 +36,21 @@ function normalizeValue(value) {
 }
 
 /**
+ * Custom replacer for JSON.stringify to handle special numeric values.
+ * @param {string} key
+ * @param {any} value
+ * @returns {any}
+ */
+function nanReplacer(key, value) {
+  if (typeof value === "number") {
+    if (Number.isNaN(value)) return "___native_NaN___";
+    if (value === Infinity) return "___Infinity___";
+    if (value === -Infinity) return "___-Infinity___";
+  }
+  return value;
+}
+
+/**
  * Register a new plugin
  * @param {Function} plugin - A plugin function to register
  */
@@ -78,7 +93,6 @@ export function registerNaNHandler(handler) {
  * @returns {boolean}
  */
 function isNaNInput(str) {
-  // This function is retained for potential future use, but processNaNConversion now uses normalized comparison.
   return normalizeValue(str).toLowerCase() === "nan";
 }
 
@@ -123,48 +137,25 @@ function convertArg(arg) {
 }
 
 /**
- * Helper function to process 'NaN' conversion based on the current configuration and flags.
- * Uses normalization to support Unicode variants of 'NaN'.
- *
- * Updated Logic:
- * - Normalizes the input using trim and NFKC normalization and compares in a case-insensitive manner to 'nan'.
- * - Caches results for identical 'NaN' inputs to improve performance during bulk processing.
- * - If a custom handler is registered, it uses the handler and, in strict mode, logs diagnostic info.
- *   Supports both synchronous and asynchronous custom handlers.
- * - In strict mode without a custom handler, throws an error with actionable guidance.
- * - If native mode is active, returns numeric NaN.
- * - Otherwise, returns the original argument (trimmed) to preserve consistent formatting for recognized variants.
- *
- * Additional Diagnostic Logging:
- * When global DEBUG_NAN is true, logs detailed information about the original input, its normalization,
- * and the chosen conversion branch.
- *
+ * Internal function to process 'NaN' conversion without caching.
  * @param {string} originalStr - The original input string
- * @returns {Promise<{converted: any, conversionMethod: string}>
+ * @returns {Promise<{converted: any, conversionMethod: string}>>}
  */
-async function processNaNConversion(originalStr) {
+async function processNaNConversionInternal(originalStr) {
   const trimmed = originalStr.trim();
   const normalized = normalizeValue(originalStr);
+  const normalizedLower = normalized.toLowerCase();
 
   if (globalThis.DEBUG_NAN) {
-    console.debug(JSON.stringify({ event: 'processNaNConversion_start', input: originalStr, trimmed, normalized }));
+    console.debug(JSON.stringify({ event: 'processNaNConversion_start', input: originalStr, trimmed, normalized }, nanReplacer));
   }
 
-  if (normalized.toLowerCase() !== "nan") {
+  if (normalizedLower !== "nan") {
     const result = { converted: convertArg(originalStr), conversionMethod: "default" };
     if (globalThis.DEBUG_NAN) {
-      console.debug(JSON.stringify({ event: 'processNaNConversion_default', input: originalStr, result }));
+      console.debug(JSON.stringify({ event: 'processNaNConversion_default', input: originalStr, result }, nanReplacer));
     }
     return result;
-  }
-
-  // Use cache for identical 'NaN' inputs
-  if (nanConversionCache.has(originalStr)) {
-    const cachedResult = nanConversionCache.get(originalStr);
-    if (globalThis.DEBUG_NAN) {
-      console.debug(JSON.stringify({ event: 'processNaNConversion_cache_hit', input: originalStr, result: cachedResult }));
-    }
-    return cachedResult;
   }
 
   let result;
@@ -179,33 +170,48 @@ async function processNaNConversion(originalStr) {
       }
       result = { converted: handledValue, conversionMethod: "custom" };
       if (globalThis.DEBUG_NAN) {
-        console.debug(JSON.stringify({ event: 'processNaNConversion_custom', input: originalStr, result }));
+        console.debug(JSON.stringify({ event: 'processNaNConversion_custom', input: originalStr, result }, nanReplacer));
       }
     } catch (e) {
       if (globalThis.DEBUG_NAN) {
-        console.debug(JSON.stringify({ event: 'processNaNConversion_custom_error', input: originalStr, error: e.message }));
+        console.debug(JSON.stringify({ event: 'processNaNConversion_custom_error', input: originalStr, error: e.message }, nanReplacer));
       }
       throw new Error(`Error in custom NaN handler: ${e.message}`);
     }
   } else if (useStrictNan) {
     const errorMsg = `Strict NaN mode error: encountered 'NaN' input without a registered custom handler. To resolve this, please register a custom NaN handler using the '--custom-nan <value>' flag, update your .repositoryConfig.json with a valid "customNan" value, or set the CUSTOM_NAN environment variable. Input was: '${originalStr}'`;
     if (globalThis.DEBUG_NAN) {
-      console.debug(JSON.stringify({ event: 'processNaNConversion_strict', input: originalStr, error: errorMsg }));
+      console.debug(JSON.stringify({ event: 'processNaNConversion_strict', input: originalStr, error: errorMsg }, nanReplacer));
     }
     throw new Error(errorMsg);
   } else if (useNativeNanConfig) {
     result = { converted: NaN, conversionMethod: "native" };
     if (globalThis.DEBUG_NAN) {
-      console.debug(JSON.stringify({ event: 'processNaNConversion_native', input: originalStr, result }));
+      console.debug(JSON.stringify({ event: 'processNaNConversion_native', input: originalStr, result }, nanReplacer));
     }
   } else {
     result = { converted: convertArg(originalStr), conversionMethod: "default" };
     if (globalThis.DEBUG_NAN) {
-      console.debug(JSON.stringify({ event: 'processNaNConversion_fallback', input: originalStr, result }));
+      console.debug(JSON.stringify({ event: 'processNaNConversion_fallback', input: originalStr, result }, nanReplacer));
     }
   }
+  return result;
+}
 
-  // Cache the result for future identical 'NaN' inputs
+/**
+ * Processes 'NaN' conversion with caching to optimize repeated identical inputs.
+ * @param {string} originalStr
+ * @returns {Promise<{converted: any, conversionMethod: string}>>}
+ */
+async function processNaNConversion(originalStr) {
+  if (nanConversionCache.has(originalStr)) {
+    const cachedResult = nanConversionCache.get(originalStr);
+    if (globalThis.DEBUG_NAN) {
+      console.debug(JSON.stringify({ event: 'processNaNConversion_cache_hit', input: originalStr, result: cachedResult }, nanReplacer));
+    }
+    return cachedResult;
+  }
+  const result = await processNaNConversionInternal(originalStr);
   nanConversionCache.set(originalStr, result);
   return result;
 }
@@ -311,7 +317,6 @@ function updateGlobalNaNConfig() {
  * Starts a watcher on .repositoryConfig.json to dynamically refresh NaN configuration when changes occur.
  */
 function startConfigWatcher() {
-  // Ensure the configuration file exists. Even if existsSync is stubbed to return true, verify actual access.
   try {
     fs.accessSync(".repositoryConfig.json", fs.constants.F_OK);
   } catch (err) {
@@ -371,31 +376,8 @@ export async function main(args = []) {
     const resultsDisabled = [];
     for (const arg of bulkArgs) {
       if (normalizeValue(arg).toLowerCase() === "nan") {
-        // Replicating processNaNConversion without cache
-        const trimmed = arg.trim();
-        const normalized = normalizeValue(arg);
-        let res;
-        if (normalized.toLowerCase() !== "nan") {
-          res = { converted: convertArg(arg), conversionMethod: "default" };
-        } else {
-          if (customNaNHandler && typeof customNaNHandler === "function") {
-            try {
-              let handledValue = customNaNHandler(normalized);
-              if (handledValue && typeof handledValue.then === "function") {
-                handledValue = await handledValue;
-              }
-              res = { converted: handledValue, conversionMethod: "custom" };
-            } catch (e) {
-              throw new Error(`Error in custom NaN handler: ${e.message}`);
-            }
-          } else if (useStrictNan) {
-            throw new Error(`Strict NaN mode error: encountered 'NaN' without custom handler`);
-          } else if (useNativeNanConfig) {
-            res = { converted: NaN, conversionMethod: "native" };
-          } else {
-            res = { converted: convertArg(arg), conversionMethod: "default" };
-          }
-        }
+        // Replicating processNaNConversion without using cache
+        const res = await processNaNConversionInternal(arg);
         resultsDisabled.push(res);
       } else {
         resultsDisabled.push(convertArg(arg));
@@ -403,7 +385,7 @@ export async function main(args = []) {
     }
     const durationDisabled = performance.now() - startTimeDisabled;
 
-    console.log(JSON.stringify({ benchmark: { count: bulkCount, cachingEnabled: durationEnabled, cachingDisabled: durationDisabled } }));
+    console.log(JSON.stringify({ benchmark: { count: bulkCount, cachingEnabled: durationEnabled, cachingDisabled: durationDisabled } }, nanReplacer));
     return;
   }
 
@@ -448,7 +430,7 @@ export async function main(args = []) {
       customNan: customNaNHandler ? customNaNHandler() : null,
       plugins: getPlugins().map(fn => fn.name || "anonymous"),
     };
-    console.log(JSON.stringify(configDump));
+    console.log(JSON.stringify(configDump, nanReplacer));
     return;
   }
 
@@ -512,14 +494,7 @@ export async function main(args = []) {
     finalLog.pluginTrace = pluginTrace;
   }
 
-  console.log(JSON.stringify(finalLog, (key, value) => {
-    if (typeof value === "number") {
-      if (Number.isNaN(value)) return "___native_NaN___";
-      if (value === Infinity) return "___Infinity___";
-      if (value === -Infinity) return "___-Infinity___";
-    }
-    return value;
-  }));
+  console.log(JSON.stringify(finalLog, nanReplacer));
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
