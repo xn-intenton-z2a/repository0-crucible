@@ -271,25 +271,54 @@ function startConfigWatcher() {
  * @param {string[]} args - CLI arguments
  */
 export async function main(args = []) {
-  // Reset configuration flags for each run, but preserve externally set custom NaN handler.
+  // Reset configuration flags for each run.
   useNativeNanConfig = false;
   useStrictNan = false;
   const preservedCustomHandler = customNaNHandler;
 
+  const { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan } = resolveNaNConfig(args || []);
+  useNativeNanConfig = effectiveNativeNan;
+  useStrictNan = effectiveStrictNan;
+
+  if (args.includes("--custom-nan")) {
+    const customIndex = args.indexOf("--custom-nan");
+    if (args.length > customIndex + 1 && args[customIndex + 1].trim().normalize("NFKC").toLowerCase() !== "nan") {
+      registerNaNHandler(() => args[customIndex + 1]);
+    } else {
+      throw new Error("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
+    }
+  } else if (args.includes("--dump-config")) {
+    // Force config to reflect effective configuration in dump-config branch.
+    if (effectiveCustomNan !== null && effectiveCustomNan !== undefined) {
+      registerNaNHandler(() => effectiveCustomNan);
+    } else {
+      registerNaNHandler(null);
+    }
+  } else if (preservedCustomHandler && typeof preservedCustomHandler === "function") {
+    registerNaNHandler(preservedCustomHandler);
+  } else if (effectiveCustomNan !== null && effectiveCustomNan !== undefined) {
+    registerNaNHandler(() => effectiveCustomNan);
+  } else {
+    registerNaNHandler(null);
+  }
+
+  if (args.includes("--dump-config")) {
+    const configDump = {
+      nativeNan: useNativeNanConfig,
+      strictNan: useStrictNan,
+      customNan: customNaNHandler ? customNaNHandler() : null,
+      plugins: getPlugins().map(fn => fn.name || "anonymous"),
+    };
+    console.log(JSON.stringify(configDump));
+    return;
+  }
+
   if (args.includes("--refresh-config")) {
     updateGlobalNaNConfig();
   } else {
-    const { effectiveNativeNan, effectiveStrictNan, effectiveCustomNan } = resolveNaNConfig(args || []);
-    useNativeNanConfig = effectiveNativeNan;
-    useStrictNan = effectiveStrictNan;
     if (args.includes("--custom-nan")) {
-      const customIndex = args.indexOf("--custom-nan");
-      if (args.length > customIndex + 1 && args[customIndex + 1].trim().normalize("NFKC").toLowerCase() !== "nan") {
-        registerNaNHandler(() => args[customIndex + 1]);
-      } else {
-        throw new Error("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
-      }
-    } else if (typeof preservedCustomHandler === "function") {
+      // already handled above
+    } else if (preservedCustomHandler && typeof preservedCustomHandler === "function") {
       registerNaNHandler(preservedCustomHandler);
     } else if (effectiveCustomNan !== null && effectiveCustomNan !== undefined) {
       registerNaNHandler(() => effectiveCustomNan);
@@ -306,13 +335,7 @@ export async function main(args = []) {
   }
 
   if (args.includes("--dump-config")) {
-    const configDump = {
-      nativeNan: useNativeNanConfig,
-      strictNan: useStrictNan,
-      customNan: customNaNHandler ? customNaNHandler() : null,
-      plugins: getPlugins().map(fn => fn.name || "anonymous"),
-    };
-    console.log(JSON.stringify(configDump));
+    // Already handled above
     return;
   }
 

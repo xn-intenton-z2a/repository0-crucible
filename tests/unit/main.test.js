@@ -398,6 +398,10 @@ describe("Plugin Transformation Trace Logging", () => {
 });
 
 describe("Dump Config Flag", () => {
+  beforeEach(() => {
+    // Reset any previously registered customNaN handler
+    registerNaNHandler(null);
+  });
   test("should output effective config with default values", async () => {
     delete process.env.CUSTOM_NAN;
     delete process.env.NATIVE_NAN;
