@@ -7,11 +7,15 @@
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 1,
-  "diffMinutesMain": 15,
+  "diffMinutes": 0,
+  "diffMinutesMain": 1,
   "commitsLastHour": 4,
   "commitsLastDay": 99,
   "lastFiveCommitMessages": [
+    {
+      "time": "11:04",
+      "message": "Added global config option ALLOW_NAN to control explicit NaN inp..."
+    },
     {
       "time": "10:44",
       "message": "Refined NaN parsing error messages and consolidated fallback mec..."
@@ -27,10 +31,6 @@
     {
       "time": "10:00",
       "message": "Refactored numeric parsing functions to improve unified NaN hand..."
-    },
-    {
-      "time": "09:49",
-      "message": "Updated validateNumericArg to log a warning when a fallback is a..."
     }
   ],
   "branches": {
@@ -40,5 +40,5 @@
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-11T10:59:16.438Z"
+  "generatedAt": "2025-04-11T11:05:33.858Z"
 }
