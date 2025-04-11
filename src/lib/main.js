@@ -124,7 +124,7 @@ function convertArg(arg) {
  *   Supports both synchronous and asynchronous custom handlers.
  * - In strict mode without a custom handler, throws an error with actionable guidance.
  * - If native mode is active, returns numeric NaN.
- * - Otherwise, returns the original input string to preserve Unicode variants.
+ * - Otherwise, returns the normalized input string to preserve Unicode variants in trimmed form.
  *
  * @param {string} originalStr - The original input string
  * @returns {Promise<{converted: any, conversionMethod: string}>}
@@ -132,7 +132,7 @@ function convertArg(arg) {
 async function processNaNConversion(originalStr) {
   const normalizedInput = normalizeValue(originalStr);
   if (normalizedInput.toLowerCase() !== "nan") {
-    return { converted: originalStr, conversionMethod: "default" };
+    return { converted: convertArg(originalStr), conversionMethod: "default" };
   }
 
   if (customNaNHandler && typeof customNaNHandler === "function") {
@@ -153,7 +153,7 @@ async function processNaNConversion(originalStr) {
   } else if (useNativeNanConfig) {
     return { converted: NaN, conversionMethod: "native" };
   } else {
-    return { converted: originalStr, conversionMethod: "default" };
+    return { converted: normalizedInput, conversionMethod: "default" };
   }
 }
 

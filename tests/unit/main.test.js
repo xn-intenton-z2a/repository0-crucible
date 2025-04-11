@@ -258,7 +258,7 @@ describe("Debug NaN Mode", () => {
   afterEach(() => {
     existsSyncSpy.mockRestore();
   });
-
+  
   test("should include debug info for NaN conversion when --debug-nan flag is provided", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--debug-nan", "NaN", "100"]);
@@ -269,7 +269,7 @@ describe("Debug NaN Mode", () => {
     ]);
     logSpy.mockRestore();
   });
-
+  
   test("should include debug info with native NaN conversion when both --native-nan and --debug-nan flags are provided", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--debug-nan", "--native-nan", "NaN", "100"]);
