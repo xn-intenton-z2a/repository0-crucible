@@ -23,13 +23,13 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="repository0-crucible" href="#repository0-crucible"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>repository0-crucible</h1>
-<p class="md-github"><code class="md-github">repository0-crucible</code> is a demo repository showcasing GitHub workflows imported from intentïon <a href="https://github.com/xn-intenton-z2a/repository0-crucible" class="md-github">agentic‑lib</a>. It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, advanced CI/CD workflows, enhanced plugin transformation trace logging, and dynamic configuration refresh for custom NaN handling.</p>
+<p class="md-github"><code class="md-github">repository0-crucible</code> is a demo repository showcasing GitHub workflows imported from intentïon <a href="https://github.com/xn-intenton-z2a/repository0-crucible" class="md-github">agentic‑lib</a>. It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, advanced CI/CD workflows, enhanced plugin transformation trace logging, dynamic configuration refresh for custom NaN handling, and optimized performance for bulk NaN processing.</p>
 <p class="md-github">To create a self-evolving agentic coding system of your own based on this one, see the <a href="./TEMPLATE-README.md" class="md-github">TEMPLATE-README.md</a> for more details.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="repository-template" href="#repository-template"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Repository Template</h2>
 <p class="md-github">The repository is intended as a template that includes:</p>
 <ul class="md-github">
 <li class="md-github">A Template Base: A starting point for new projects.</li>
-<li class="md-github">A Running Experiment: An example implementation showcasing automated CLI argument conversion, plugin architecture, advanced CI/CD workflows, and now dynamic configuration refresh that updates NaN handling in realtime.</li>
+<li class="md-github">A Running Experiment: An example implementation showcasing automated CLI argument conversion, plugin architecture, advanced CI/CD workflows, and now dynamic configuration refresh with performance optimizations for bulk NaN processing.</li>
 <li class="md-github">Example GitHub Workflows from <a href="https://github.com/xn-intenton-z2a/repository0-crucible" class="md-github">agentic‑lib</a> that hand off to reusable workflows.</li>
 </ul>
 <p class="md-github">See <a href="./TEMPLATE-README.md" class="md-github">TEMPLATE-README.md</a> for more details.</p>
@@ -82,6 +82,9 @@
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Asynchronous Custom Handlers:</strong> Custom handlers can be asynchronous, allowing dynamic operations such as API calls during conversion.</p>
 </li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Optimized Bulk Processing:</strong> To enhance performance when processing a large number of CLI arguments, repeated normalization of identical inputs is cached, reducing overhead and improving efficiency.</p>
+</li>
 </ul>
 </li>
 <li class="md-github">
@@ -94,7 +97,7 @@
 <p class="md-github"><strong class="md-github">Unicode Variant Support:</strong> All input variants of &quot;NaN&quot; (like &quot;ＮａＮ&quot;) are normalized uniformly using a dedicated normalization function (trim + NFKC) to ensure consistent behavior across configurations.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Automated Tests:</strong> Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous), dynamic configuration refresh, configuration precedence, and plugin tracing—work as expected.</p>
+<p class="md-github"><strong class="md-github">Automated Tests:</strong> Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous), dynamic configuration refresh, configuration precedence, plugin tracing, and bulk performance improvements—work as expected.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">LLM-Driven Regeneration:</strong> The project incorporates an automated code regeneration workflow powered by an LLM, ensuring consistency and quality without manual intervention.</p>
@@ -208,7 +211,7 @@ Run in serve mode to enable dynamic config updates:</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-11T04:46:29.423Z</p>
+    <p>Generated on 2025-04-11T04:47:29.578Z</p>
   </footer>
 </body>
 </html>
