@@ -5,10 +5,15 @@
   "openIssues": 100,
   "issuesClosedLastHour": 8,
   "issuesClosedLastDay": 100,
-  "openPRs": 0,
-  "prDetails": [],
-  "diffMinutes": 2,
-  "diffMinutesMain": 6,
+  "openPRs": 1,
+  "prDetails": [
+    {
+      "title": "Standardize NaN variant handling across CLI and CSV imports with unified normalization and fallback logic. (fixes #1804)",
+      "ageMinutes": 0
+    }
+  ],
+  "diffMinutes": 0,
+  "diffMinutesMain": 12,
   "commitsLastHour": 4,
   "commitsLastDay": 98,
   "lastFiveCommitMessages": [
@@ -34,11 +39,16 @@
     }
   ],
   "branches": {
-    "count": 0,
-    "details": []
+    "count": 1,
+    "details": [
+      {
+        "branch": "agentic-lib-issue-1804",
+        "minutesSinceLastCommit": 1
+      }
+    ]
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-11T11:20:39.850Z"
+  "generatedAt": "2025-04-11T11:26:31.674Z"
 }
