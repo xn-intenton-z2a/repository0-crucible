@@ -1,6 +1,6 @@
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, test, expect, vi, beforeEach } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main, registerPlugin, getPlugins, executePlugins, registerNaNHandler } from "@src/lib/main.js";
+import { main, registerPlugin, getPlugins, registerNaNHandler } from "@src/lib/main.js";
 import fs from "fs";
 
 // Helper function to parse the logged JSON output and revive special numeric values
@@ -466,6 +466,22 @@ describe("Dynamic Configuration Refresh", () => {
   });
 });
 
+describe("Diagnostics Mode", () => {
+  test("should output diagnostics information in JSON format when --diagnostics flag is provided", async () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    await main(["--diagnostics"]);
+    const output = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(output).toHaveProperty('diagnostics');
+    expect(output.diagnostics).toHaveProperty('nodeVersion');
+    expect(output.diagnostics).toHaveProperty('platform');
+    expect(output.diagnostics).toHaveProperty('env');
+    expect(output.diagnostics).toHaveProperty('repositoryConfigExists');
+    expect(output.diagnostics).toHaveProperty('plugins');
+    logSpy.mockRestore();
+  });
+});
+
+// Benchmark Performance Tests
 describe("Benchmark Performance Tests", () => {
   test("should log benchmark results when --benchmark flag is provided", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});

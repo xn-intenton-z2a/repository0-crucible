@@ -1,6 +1,6 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository showcasing GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, advanced CI/CD workflows, enhanced plugin transformation trace logging, dynamic configuration refresh for custom NaN handling, optimized performance for bulk NaN processing, and now built-in performance benchmarking for NaN processing.
+`repository0-crucible` is a demo repository showcasing GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). It demonstrates a unified, automated CLI tool that features robust argument conversion, a flexible plugin architecture, advanced CI/CD workflows, enhanced plugin transformation trace logging, dynamic configuration refresh for custom NaN handling, optimized performance for bulk NaN processing, built-in performance benchmarking, and a new diagnostics mode for health and configuration checks.
 
 To create a self-evolving agentic coding system of your own based on this one, see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
@@ -8,7 +8,7 @@ To create a self-evolving agentic coding system of your own based on this one, s
 
 The repository is intended as a template that includes:
 * A Template Base: A starting point for new projects.
-* A Running Experiment: An example implementation showcasing automated CLI argument conversion, plugin architecture, advanced CI/CD workflows, and dynamic configuration refresh with performance optimizations and benchmarking for bulk NaN processing.
+* A Running Experiment: An example implementation showcasing automated CLI argument conversion, plugin architecture, advanced CI/CD workflows, and dynamic configuration refresh with performance optimizations, benchmarking for bulk NaN processing, and diagnostics mode for system health checks.
 * Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) that hand off to reusable workflows.
 
 See [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
@@ -48,25 +48,22 @@ npm install repository0-crucible
 
   - **Custom Replacement:** Override the default behavior by providing a custom replacement via CLI using `--custom-nan <value>`, in the repository configuration (`customNan` key), or via the environment variable `CUSTOM_NAN`.
 
-  - **Dynamic Configuration Refresh:** The tool now supports automatic updating of NaN handling configuration at runtime. When running in serve mode (`--serve`) or via the `--refresh-config` flag, changes to environment variables or the `.repositoryConfig.json` file are applied immediately without restarting the process.
+  - **Dynamic Configuration Refresh:** The tool supports automatic updating of NaN handling configuration at runtime. When running in serve mode (`--serve`) or via the `--refresh-config` flag, changes to environment variables or the `.repositoryConfig.json` file are applied immediately without restarting the process.
 
-  - **Built-in Performance Benchmarking:** A new performance benchmarking mode is provided. Run the CLI with the `--benchmark` flag or via the npm script to perform bulk processing tests. This benchmark measures execution times with caching enabled vs disabled and logs the results in a structured JSON format, aiding in performance analysis and regression detection.
+  - **Built-in Performance Benchmarking:** Run the CLI with the `--benchmark` flag or via the npm script below to perform bulk processing tests. This benchmark measures execution times with caching enabled vs disabled and logs results in a structured JSON format.
 
-  - **Enhanced Diagnostic Logging:** When the `--debug-nan` flag is provided, the CLI outputs detailed diagnostic logs capturing the original input, trimmed version, normalization applied, and the conversion branch (default, native, or custom).
+  - **Enhanced Diagnostic Logging:** When the `--debug-nan` flag is provided, the CLI outputs detailed diagnostic logs capturing the conversion process details.
 
-  - **Configuration Precedence:** The effective NaN handling configuration is resolved in the following order (highest to lowest): CLI flags, Repository configuration file (.repositoryConfig.json), Environment variables, Default behavior.
+* **Diagnostics Mode:**
+  - Activate by running the CLI with the `--diagnostics` flag. This mode collects and outputs system health and configuration checks including Node.js version, platform, relevant environment variables, existence of configuration files, and registered plugins. This structured, JSON-formatted output assists in troubleshooting and monitoring the system.
 
-  - **Asynchronous Custom Handlers:** Custom handlers can be asynchronous, allowing dynamic operations such as API calls during conversion.
-
-  - **Optimized Bulk Processing:** The bulk NaN processing pipeline has been refactored to ensure consistent asynchronous behavior and improved caching performance under high-volume input scenarios.
-
-* **Plugin Architecture and Trace Logging:** Extend functionality by registering plugins using the provided API. When the CLI is run with the `--use-plugins` flag, input arguments are processed through all registered plugins. Additionally, if you supply the `--trace-plugins` flag, the CLI will output a detailed trace log of the transformation steps performed by each plugin.
+* **Plugin Architecture and Trace Logging:** Extend functionality by registering plugins using the provided API. When the CLI is run with the `--use-plugins` flag, input arguments are processed through all registered plugins. If you supply the `--trace-plugins` flag, the CLI outputs a detailed transformation trace log of each plugin's operation.
 
 * **Structured JSON Logging:** CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.
 
-* **Unicode Variant Support:** All input variants of "NaN" (like "ＮａＮ") are normalized uniformly using a dedicated normalization function (trim + NFKC) to ensure consistent behavior across configurations and caching.
+* **Unicode Variant Support:** All input variants of "NaN" are normalized uniformly using a dedicated normalization function (trim + NFKC) to ensure consistent behavior across configurations and caching.
 
-* **Automated Tests:** Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous), dynamic configuration refresh, configuration precedence, plugin tracing, benchmark performance, and bulk performance improvements—work as expected.
+* **Automated Tests:** Comprehensive tests ensure that functionalities—including NaN handling (both synchronous and asynchronous), dynamic configuration refresh, diagnostics mode, plugin tracing, benchmark performance, and bulk performance improvements—work as expected.
 
 * **LLM-Driven Regeneration:** The project incorporates an automated code regeneration workflow powered by an LLM, ensuring consistency and quality without manual intervention.
 
@@ -105,20 +102,37 @@ Output:
 }
 ```
 
-## Performance Benchmarking
+## Diagnostics Mode
 
-A new performance benchmarking mode is included to measure the execution times of NaN processing with and without caching. Use the `--benchmark` flag or the npm script below:
+Activate diagnostics mode to perform health and configuration checks. This mode outputs:
+- Node.js version and platform
+- Key environment variables (`NATIVE_NAN`, `STRICT_NAN`, `CUSTOM_NAN`)
+- Existence check for `.repositoryConfig.json`
+- Registered plugins
+
+Run diagnostics with:
 
 ```bash
-npm run benchmark
+node src/lib/main.js --diagnostics
 ```
 
-This will run bulk processing tests and output benchmark results in JSON format, including the counts and elapsed times for caching enabled vs disabled scenarios.
+The output will be in structured JSON format, for example:
 
-- **JSON Argument Conversion:**
-  ```bash
-  node src/lib/main.js '{"key": "value"}' '[1,2,3]'
-  ```
+```json
+{
+  "diagnostics": {
+    "nodeVersion": "v20.x.x",
+    "platform": "linux",
+    "env": {
+      "NATIVE_NAN": null,
+      "STRICT_NAN": null,
+      "CUSTOM_NAN": null
+    },
+    "repositoryConfigExists": false,
+    "plugins": []
+  }
+}
+```
 
 ## Usage
 
@@ -149,7 +163,6 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --strict-nan NaN 100
   ```
-  If you encounter a strict mode error, follow the guidance in the error message to register a custom handler.
 
 - **Debug NaN Mode:**
   ```bash
@@ -185,7 +198,6 @@ node src/lib/main.js --help
   ```
 
 - **Dynamic Configuration Refresh (Serve Mode):**
-  Run in serve mode to enable dynamic config updates:
   ```bash
   node src/lib/main.js --serve
   ```
@@ -199,6 +211,11 @@ node src/lib/main.js --help
 - **Performance Benchmarking:**
   ```bash
   npm run benchmark
+  ```
+
+- **Diagnostics Mode:**
+  ```bash
+  npm run diagnostics
   ```
 
 - **JSON Argument Conversion:**

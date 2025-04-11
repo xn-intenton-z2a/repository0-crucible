@@ -348,6 +348,23 @@ export async function main(args = []) {
   // Clear the NaN conversion cache for each run
   nanConversionCache.clear();
 
+  // Diagnostics mode: perform environment and configuration checks and output diagnostic information
+  if (args.includes("--diagnostics")) {
+    const diagnostics = {
+      nodeVersion: process.version,
+      platform: process.platform,
+      env: {
+        NATIVE_NAN: process.env.NATIVE_NAN || null,
+        STRICT_NAN: process.env.STRICT_NAN || null,
+        CUSTOM_NAN: process.env.CUSTOM_NAN || null
+      },
+      repositoryConfigExists: fs.existsSync(".repositoryConfig.json"),
+      plugins: getPlugins().map(fn => fn.name || "anonymous")
+    };
+    console.log(JSON.stringify({ diagnostics }, nanReplacer));
+    return;
+  }
+
   // Benchmark mode: perform performance testing for bulk NaN processing
   if (args.includes("--benchmark")) {
     const bulkCount = 10000;
@@ -431,7 +448,7 @@ export async function main(args = []) {
       nativeNan: useNativeNanConfig,
       strictNan: useStrictNan,
       customNan: customNaNHandler ? customNaNHandler() : null,
-      plugins: getPlugins().map(fn => fn.name || "anonymous"),
+      plugins: getPlugins().map(fn => fn.name || "anonymous")
     };
     console.log(JSON.stringify(configDump, nanReplacer));
     return;
