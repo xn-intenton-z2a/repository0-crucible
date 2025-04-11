@@ -211,7 +211,7 @@ describe("Strict NaN Mode", () => {
   });
 
   test("should throw an error in strict mode when no custom handler is registered (using CLI flag)", async () => {
-    await expect(main(["--strict-nan", "NaN", "100"]).catch(e => { throw e; })).rejects.toThrow(/Strict NaN mode error/);
+    await expect(main(["--strict-nan", "NaN", "100"]).catch(e => { throw e; })).rejects.toThrow(/Strict NaN mode error: encountered 'NaN' input without a registered custom handler.*(--custom-nan|\.repositoryConfig\.json|CUSTOM_NAN)/);
   });
 
   test("should use custom handler in strict mode and log an info message (using CLI flag)", async () => {
@@ -228,7 +228,7 @@ describe("Strict NaN Mode", () => {
   test("should throw an error in strict mode when enabled via configuration file without custom handler", async () => {
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"strictNan": true}');
-    await expect(main(["NaN", "100"]).catch(e => { throw e; })).rejects.toThrow(/Strict NaN mode error/);
+    await expect(main(["NaN", "100"]).catch(e => { throw e; })).rejects.toThrow(/Strict NaN mode error: encountered 'NaN' input without a registered custom handler.*(--custom-nan|\.repositoryConfig\.json|CUSTOM_NAN)/);
     existsSyncSpy.mockRestore();
     readFileSyncSpy.mockRestore();
   });
@@ -485,4 +485,3 @@ describe("Dynamic Configuration Refresh", () => {
     existsSyncSpy.mockRestore();
   });
 });
-

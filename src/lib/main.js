@@ -113,7 +113,7 @@ function convertArg(arg) {
  * - Verifies if the normalized input equals 'nan'.
  * - If a custom handler is registered, it uses the handler and, in strict mode, logs diagnostic info.
  *   Supports both synchronous and asynchronous custom handlers.
- * - In strict mode without a custom handler, throws an error.
+ * - In strict mode without a custom handler, throws an error with actionable guidance.
  * - If native mode is active, returns numeric NaN.
  * - Otherwise, returns the original input string.
  *
@@ -140,7 +140,7 @@ async function processNaNConversion(originalStr) {
       throw new Error(`Error in custom NaN handler: ${e.message}`);
     }
   } else if (useStrictNan) {
-    throw new Error(`Strict NaN mode error: encountered 'NaN' input without a custom handler. Input was: '${originalStr}'`);
+    throw new Error(`Strict NaN mode error: encountered 'NaN' input without a registered custom handler. To resolve this, please register a custom NaN handler using the '--custom-nan <value>' flag, update your .repositoryConfig.json with a valid "customNan" value, or set the CUSTOM_NAN environment variable. Input was: '${originalStr}'`);
   } else if (useNativeNanConfig) {
     return { converted: NaN, conversionMethod: "native" };
   } else {

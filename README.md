@@ -37,7 +37,7 @@ npm install repository0-crucible
 
     This converts recognized "NaN" inputs to numeric NaN.
 
-  - **Strict Mode:** Enable with `--strict-nan`, environment variable `STRICT_NAN`, or via `.repositoryConfig.json`. In strict mode, an error is thrown if a "NaN" input is encountered without a custom handler:
+  - **Strict Mode:** Enable with `--strict-nan`, environment variable `STRICT_NAN`, or via `.repositoryConfig.json`. In strict mode, if a "NaN" input is encountered without a registered custom handler, an error is thrown with actionable guidance. The error message will instruct you to register a custom NaN handler using the `--custom-nan <value>` flag, update your `.repositoryConfig.json` with a valid `customNan` value, or set the `CUSTOM_NAN` environment variable.
 
     ```json
     {
@@ -130,6 +130,7 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --strict-nan NaN 100
   ```
+  If you encounter a strict mode error, follow the guidance in the error message to register a custom handler.
 
 - **Debug NaN Mode:**
   ```bash
