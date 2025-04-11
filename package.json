@@ -1,6 +1,6 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
-  "version": "0.1.1-7",
+  "version": "0.1.1-8",
   "description": "CLI tool for repository0-crucible, a unified solution demonstrating automated CLI argument conversion, plugin architecture, advanced CI/CD workflows, and plugin transformation trace logging via --trace-plugins flag.",
   "type": "module",
   "main": "src/lib/main.js",
