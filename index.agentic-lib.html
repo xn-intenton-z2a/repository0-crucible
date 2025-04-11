@@ -46,7 +46,7 @@
 <p class="md-github"><strong class="md-github">Enhanced NaN Handling with Dynamic Configuration Refresh:</strong></p>
 <ul class="md-github">
 <li class="md-github">
-<p class="md-github">Recognizes all variants of &quot;NaN&quot;, including Unicode variants such as &quot;ＮａＮ&quot; by normalizing inputs with trim and NFKC normalization.</p>
+<p class="md-github">Recognizes all Unicode variants of &quot;NaN&quot; (for example, &quot;NaN&quot;, &quot;nan&quot;, &quot;ＮａＮ&quot;), by normalizing inputs using trim and NFKC normalization.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Default Behavior:</strong> Preserves the input as a string, even if the representation is a Unicode variant.</p>
@@ -60,7 +60,7 @@
 <p class="md-github">This converts recognized &quot;NaN&quot; inputs to numeric NaN.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Strict Mode:</strong> Enable with <code class="md-github">--strict-nan</code>, environment variable <code class="md-github">STRICT_NAN</code>, or via <code class="md-github">.repositoryConfig.json</code>. In strict mode, if a &quot;NaN&quot; input is encountered without a registered custom handler, an error is thrown with actionable guidance. The error message will instruct you to register a custom NaN handler using the <code class="md-github">--custom-nan &lt;value&gt;</code> flag, update your <code class="md-github">.repositoryConfig.json</code> with a valid <code class="md-github">customNan</code> value, or set the <code class="md-github">CUSTOM_NAN</code> environment variable.</p>
+<p class="md-github"><strong class="md-github">Strict Mode:</strong> Enable with <code class="md-github">--strict-nan</code>, environment variable <code class="md-github">STRICT_NAN</code>, or via <code class="md-github">.repositoryConfig.json</code>. In strict mode, if a &quot;NaN&quot; input is encountered without a registered custom handler, an error is thrown with actionable guidance. The error message instructs you to register a custom NaN handler using the <code class="md-github">--custom-nan &lt;value&gt;</code> flag, update your <code class="md-github">.repositoryConfig.json</code> with a valid <code class="md-github">customNan</code> value, or set the <code class="md-github">CUSTOM_NAN</code> environment variable.</p>
 <pre class="md-github"><code class="md-github language-json">{
   &quot;nativeNan&quot;: true,
   &quot;strictNan&quot;: true
@@ -91,7 +91,7 @@
 <p class="md-github"><strong class="md-github">Structured JSON Logging:</strong> CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Unicode Variant Support:</strong> All input variants of &quot;NaN&quot; (like &quot;ＮａＮ&quot;) are normalized uniformly to ensure consistent behavior across different configurations.</p>
+<p class="md-github"><strong class="md-github">Unicode Variant Support:</strong> All input variants of &quot;NaN&quot; (like &quot;ＮａＮ&quot;) are normalized uniformly using a dedicated normalization function (trim + NFKC) to ensure consistent behavior across configurations.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Automated Tests:</strong> Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous), dynamic configuration refresh, configuration precedence, and plugin tracing—work as expected.</p>
@@ -208,7 +208,7 @@ Run in serve mode to enable dynamic config updates:</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-11T04:14:25.364Z</p>
+    <p>Generated on 2025-04-11T04:15:21.712Z</p>
   </footer>
 </body>
 </html>
