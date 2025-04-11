@@ -46,7 +46,7 @@
 <p class="md-github"><strong class="md-github">Enhanced NaN Handling with Dynamic Configuration Refresh and Benchmarking:</strong></p>
 <ul class="md-github">
 <li class="md-github">
-<p class="md-github">Recognizes all Unicode variants of &quot;NaN&quot; (for example, &quot;NaN&quot;, &quot;nan&quot;, &quot;ＮａＮ&quot;), by normalizing inputs using trim and NFKC normalization.</p>
+<p class="md-github">Recognizes all Unicode variants of &quot;NaN&quot; (for example, &quot;NaN&quot;, &quot;nan&quot;, &quot;ＮａＮ&quot;), by normalizing inputs using trim and NFKC normalization. The caching mechanism now uses a normalized (trimmed, NFKC, lowercase) key, ensuring consistent processing across Unicode variants.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Default Behavior:</strong> Preserves the input as a string, even if the representation is a Unicode variant.</p>
@@ -97,7 +97,7 @@
 <p class="md-github"><strong class="md-github">Structured JSON Logging:</strong> CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Unicode Variant Support:</strong> All input variants of &quot;NaN&quot; (like &quot;ＮａＮ&quot;) are normalized uniformly using a dedicated normalization function (trim + NFKC) to ensure consistent behavior across configurations.</p>
+<p class="md-github"><strong class="md-github">Unicode Variant Support:</strong> All input variants of &quot;NaN&quot; (like &quot;ＮａＮ&quot;) are normalized uniformly using a dedicated normalization function (trim + NFKC) to ensure consistent behavior across configurations and caching.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Automated Tests:</strong> Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous), dynamic configuration refresh, configuration precedence, plugin tracing, benchmark performance, and bulk performance improvements—work as expected.</p>
@@ -229,7 +229,7 @@ Run in serve mode to enable dynamic config updates:</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-11T06:37:04.915Z</p>
+    <p>Generated on 2025-04-11T06:37:49.127Z</p>
   </footer>
 </body>
 </html>
