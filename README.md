@@ -50,11 +50,11 @@ npm install repository0-crucible
 
   - **Dynamic Configuration Refresh:** The tool now supports automatic updating of NaN handling configuration at runtime. When running in serve mode (`--serve`) or via the `--refresh-config` flag, changes to environment variables or the `.repositoryConfig.json` file are applied immediately without restarting the process.
 
+  - **Enhanced Diagnostic Logging:** When the `--debug-nan` flag is provided, the CLI outputs detailed diagnostic logs capturing the original input, trimmed version, normalization applied, and the conversion branch (default, native, or custom).
+
   - **Configuration Precedence:** The effective NaN handling configuration is resolved in the following order (highest to lowest): CLI flags, Repository configuration file (.repositoryConfig.json), Environment variables, Default behavior.
 
   - **Asynchronous Custom Handlers:** Custom handlers can be asynchronous, allowing dynamic operations such as API calls during conversion.
-
-  - **Debug Mode:** Use `--debug-nan` to output detailed diagnostic information for each conversion, including the normalized input and the conversion method (default, native, or custom).
 
 * **Plugin Architecture and Trace Logging:** Extend functionality by registering plugins using the provided API. When the CLI is run with the `--use-plugins` flag, input arguments are processed through all registered plugins. Additionally, if you supply the `--trace-plugins` flag, the CLI will output a detailed trace log of the transformation steps performed by each plugin.
 

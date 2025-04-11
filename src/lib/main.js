@@ -16,6 +16,9 @@ let customNaNHandler = null;
 let useNativeNanConfig = false;
 let useStrictNan = false;
 
+// Global debug flag for NaN diagnostic logging
+// It will be set in main when --debug-nan flag is provided
+
 // Configuration file watcher
 let configWatcher = null;
 
@@ -127,14 +130,27 @@ function convertArg(arg) {
  * - If native mode is active, returns numeric NaN.
  * - Otherwise, returns the original argument (trimmed) to preserve consistent formatting for recognized variants.
  *
+ * Additional Diagnostic Logging:
+ * When global DEBUG_NAN is true, logs detailed information about the original input, its normalization,
+ * and the chosen conversion branch.
+ *
  * @param {string} originalStr - The original input string
  * @returns {Promise<{converted: any, conversionMethod: string}>
  */
 async function processNaNConversion(originalStr) {
   const trimmed = originalStr.trim();
   const normalized = normalizeValue(originalStr);
+
+  if (globalThis.DEBUG_NAN) {
+    console.debug(JSON.stringify({ event: 'processNaNConversion_start', input: originalStr, trimmed, normalized }));
+  }
+
   if (normalized.toLowerCase() !== "nan") {
-    return { converted: convertArg(originalStr), conversionMethod: "default" };
+    const result = { converted: convertArg(originalStr), conversionMethod: "default" };
+    if (globalThis.DEBUG_NAN) {
+      console.debug(JSON.stringify({ event: 'processNaNConversion_default', input: originalStr, result }));
+    }
+    return result;
   }
 
   if (customNaNHandler && typeof customNaNHandler === "function") {
@@ -146,17 +162,35 @@ async function processNaNConversion(originalStr) {
       if (handledValue && typeof handledValue.then === "function") {
         handledValue = await handledValue;
       }
-      return { converted: handledValue, conversionMethod: "custom" };
+      const result = { converted: handledValue, conversionMethod: "custom" };
+      if (globalThis.DEBUG_NAN) {
+        console.debug(JSON.stringify({ event: 'processNaNConversion_custom', input: originalStr, result }));
+      }
+      return result;
     } catch (e) {
+      if (globalThis.DEBUG_NAN) {
+        console.debug(JSON.stringify({ event: 'processNaNConversion_custom_error', input: originalStr, error: e.message }));
+      }
       throw new Error(`Error in custom NaN handler: ${e.message}`);
     }
   } else if (useStrictNan) {
-    throw new Error(`Strict NaN mode error: encountered 'NaN' input without a registered custom handler. To resolve this, please register a custom NaN handler using the '--custom-nan <value>' flag, update your .repositoryConfig.json with a valid "customNan" value, or set the CUSTOM_NAN environment variable. Input was: '${originalStr}'`);
+    const errorMsg = `Strict NaN mode error: encountered 'NaN' input without a registered custom handler. To resolve this, please register a custom NaN handler using the '--custom-nan <value>' flag, update your .repositoryConfig.json with a valid "customNan" value, or set the CUSTOM_NAN environment variable. Input was: '${originalStr}'`;
+    if (globalThis.DEBUG_NAN) {
+      console.debug(JSON.stringify({ event: 'processNaNConversion_strict', input: originalStr, error: errorMsg }));
+    }
+    throw new Error(errorMsg);
   } else if (useNativeNanConfig) {
-    return { converted: NaN, conversionMethod: "native" };
+    const result = { converted: NaN, conversionMethod: "native" };
+    if (globalThis.DEBUG_NAN) {
+      console.debug(JSON.stringify({ event: 'processNaNConversion_native', input: originalStr, result }));
+    }
+    return result;
   } else {
-    // Return the trimmed original argument to preserve the original Unicode if present
-    return { converted: convertArg(originalStr), conversionMethod: "default" };
+    const result = { converted: convertArg(originalStr), conversionMethod: "default" };
+    if (globalThis.DEBUG_NAN) {
+      console.debug(JSON.stringify({ event: 'processNaNConversion_fallback', input: originalStr, result }));
+    }
+    return result;
   }
 }
 
@@ -311,6 +345,10 @@ export async function main(args = []) {
     registerNaNHandler(null);
   }
 
+  // Set global debug flag for enhanced diagnostic logging if --debug-nan is provided
+  const debugNanFlag = args.includes("--debug-nan");
+  globalThis.DEBUG_NAN = debugNanFlag;
+
   // If refresh-config flag is provided, update configuration dynamically
   if (args.includes("--refresh-config")) {
     updateGlobalNaNConfig();
@@ -345,7 +383,6 @@ export async function main(args = []) {
 
   const convertedArgs = [];
   const debugDetails = [];
-  const debugNanFlag = args.includes("--debug-nan");
   for (let i = 0; i < processedArgs.length; i++) {
     const arg = processedArgs[i];
     // Use normalization for NaN check to support Unicode variants
