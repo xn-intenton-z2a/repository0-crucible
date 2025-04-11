@@ -287,13 +287,6 @@ export async function main(args = []) {
     } else {
       throw new Error("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
     }
-  } else if (args.includes("--dump-config")) {
-    // Force config to reflect effective configuration in dump-config branch.
-    if (effectiveCustomNan !== null && effectiveCustomNan !== undefined) {
-      registerNaNHandler(() => effectiveCustomNan);
-    } else {
-      registerNaNHandler(null);
-    }
   } else if (preservedCustomHandler && typeof preservedCustomHandler === "function") {
     registerNaNHandler(preservedCustomHandler);
   } else if (effectiveCustomNan !== null && effectiveCustomNan !== undefined) {
@@ -302,6 +295,12 @@ export async function main(args = []) {
     registerNaNHandler(null);
   }
 
+  // If refresh-config flag is provided, update configuration dynamically
+  if (args.includes("--refresh-config")) {
+    updateGlobalNaNConfig();
+  }
+
+  // Dump configuration if requested
   if (args.includes("--dump-config")) {
     const configDump = {
       nativeNan: useNativeNanConfig,
@@ -313,30 +312,11 @@ export async function main(args = []) {
     return;
   }
 
-  if (args.includes("--refresh-config")) {
-    updateGlobalNaNConfig();
-  } else {
-    if (args.includes("--custom-nan")) {
-      // already handled above
-    } else if (preservedCustomHandler && typeof preservedCustomHandler === "function") {
-      registerNaNHandler(preservedCustomHandler);
-    } else if (effectiveCustomNan !== null && effectiveCustomNan !== undefined) {
-      registerNaNHandler(() => effectiveCustomNan);
-    } else {
-      registerNaNHandler(null);
-    }
-  }
-
   // If serving mode is enabled, start configuration watcher for dynamic updates
   if (args.includes("--serve")) {
     if (!configWatcher) {
       startConfigWatcher();
     }
-  }
-
-  if (args.includes("--dump-config")) {
-    // Already handled above
-    return;
   }
 
   // Remove configuration flags from arguments before processing
