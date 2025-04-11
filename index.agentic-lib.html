@@ -60,7 +60,7 @@
 <p class="md-github">This converts recognized &quot;NaN&quot; inputs to numeric NaN.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Strict Mode:</strong> Enable with <code class="md-github">--strict-nan</code>, environment variable <code class="md-github">STRICT_NAN</code>, or via <code class="md-github">.repositoryConfig.json</code>. In strict mode, an error is thrown if a &quot;NaN&quot; input is encountered without a custom handler:</p>
+<p class="md-github"><strong class="md-github">Strict Mode:</strong> Enable with <code class="md-github">--strict-nan</code>, environment variable <code class="md-github">STRICT_NAN</code>, or via <code class="md-github">.repositoryConfig.json</code>. In strict mode, if a &quot;NaN&quot; input is encountered without a registered custom handler, an error is thrown with actionable guidance. The error message will instruct you to register a custom NaN handler using the <code class="md-github">--custom-nan &lt;value&gt;</code> flag, update your <code class="md-github">.repositoryConfig.json</code> with a valid <code class="md-github">customNan</code> value, or set the <code class="md-github">CUSTOM_NAN</code> environment variable.</p>
 <pre class="md-github"><code class="md-github language-json">{
   &quot;nativeNan&quot;: true,
   &quot;strictNan&quot;: true
@@ -153,6 +153,7 @@
 <p class="md-github"><strong class="md-github">Strict NaN Mode:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --strict-nan NaN 100
 </code></pre>
+<p class="md-github">If you encounter a strict mode error, follow the guidance in the error message to register a custom handler.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Debug NaN Mode:</strong></p>
@@ -207,7 +208,7 @@ Run in serve mode to enable dynamic config updates:</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-11T02:01:25.842Z</p>
+    <p>Generated on 2025-04-11T02:02:23.197Z</p>
   </footer>
 </body>
 </html>
