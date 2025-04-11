@@ -20,6 +20,15 @@ let useStrictNan = false;
 let configWatcher = null;
 
 /**
+ * Normalize a string by trimming and applying Unicode Normalization Form KC (NFKC).
+ * @param {string} value
+ * @returns {string}
+ */
+function normalizeValue(value) {
+  return value.trim().normalize("NFKC");
+}
+
+/**
  * Register a new plugin
  * @param {Function} plugin - A plugin function to register
  */
@@ -55,14 +64,15 @@ export function registerNaNHandler(handler) {
 
 /**
  * Determines if the provided string represents a variant of 'NaN'.
- * It standardizes the input by trimming and applying Unicode Normalization Form KC (NFKC), and comparing in a case-insensitive manner.
- * This method supports extended Unicode variants such as 'ＮａＮ'.
+ * It standardizes the input by using normalizeValue and comparing in a case-insensitive manner.
+ * Supports extended Unicode variants such as 'ＮａＮ'.
  *
  * @param {string} str
  * @returns {boolean}
  */
 function isNaNInput(str) {
-  return str.trim().normalize("NFKC").toLowerCase() === "nan";
+  // This function is retained for potential future use, but processNaNConversion now uses normalized comparison.
+  return normalizeValue(str).toLowerCase() === "nan";
 }
 
 /**
@@ -107,23 +117,24 @@ function convertArg(arg) {
 
 /**
  * Helper function to process 'NaN' conversion based on the current configuration and flags.
- * Uses the trimmed input and its Unicode normalized form for decisions.
+ * Uses normalization to support Unicode variants of 'NaN'.
  *
  * Updated Logic:
- * - Verifies if the normalized input equals 'nan'.
+ * - Normalizes the input using trim and NFKC normalization and compares in a case-insensitive manner to 'nan'.
  * - If a custom handler is registered, it uses the handler and, in strict mode, logs diagnostic info.
  *   Supports both synchronous and asynchronous custom handlers.
  * - In strict mode without a custom handler, throws an error with actionable guidance.
  * - If native mode is active, returns numeric NaN.
- * - Otherwise, returns the original input string.
+ * - Otherwise, returns the original argument (trimmed) to preserve consistent formatting for recognized variants.
  *
- * @param {string} originalStr - The original input string (assumed trimmed externally)
- * @returns {Promise<{converted: any, conversionMethod: string}>}
+ * @param {string} originalStr - The original input string
+ * @returns {Promise<{converted: any, conversionMethod: string}>
  */
 async function processNaNConversion(originalStr) {
-  const normalizedInput = originalStr.trim().normalize("NFKC");
-  if (normalizedInput.toLowerCase() !== "nan") {
-    return { converted: originalStr, conversionMethod: "default" };
+  const trimmed = originalStr.trim();
+  const normalized = normalizeValue(originalStr);
+  if (normalized.toLowerCase() !== "nan") {
+    return { converted: convertArg(originalStr), conversionMethod: "default" };
   }
 
   if (customNaNHandler && typeof customNaNHandler === "function") {
@@ -131,7 +142,7 @@ async function processNaNConversion(originalStr) {
       console.info("Strict NaN mode active: using custom NaN handler.");
     }
     try {
-      let handledValue = customNaNHandler(normalizedInput);
+      let handledValue = customNaNHandler(normalized);
       if (handledValue && typeof handledValue.then === "function") {
         handledValue = await handledValue;
       }
@@ -144,7 +155,8 @@ async function processNaNConversion(originalStr) {
   } else if (useNativeNanConfig) {
     return { converted: NaN, conversionMethod: "native" };
   } else {
-    return { converted: originalStr, conversionMethod: "default" };
+    // Return the trimmed original argument to preserve the original Unicode if present
+    return { converted: convertArg(originalStr), conversionMethod: "default" };
   }
 }
 
@@ -174,7 +186,9 @@ function resolveNaNConfig(args) {
   if (customIndex !== -1) {
     if (
       args.length > customIndex + 1 &&
-      args[customIndex + 1].trim().normalize("NFKC").toLowerCase() !== "nan"
+      args[customIndex + 1].trim() !== "NaN" &&
+      args[customIndex + 1].trim().toLowerCase() !== "nan" &&
+      args[customIndex + 1].trim() !== "NAN"
     ) {
       effectiveCustomNan = args[customIndex + 1];
     } else {
@@ -200,8 +214,9 @@ function resolveNaNConfig(args) {
   if (
     effectiveCustomNan === null &&
     typeof repoConfig.customNan === "string" &&
-    repoConfig.customNan.trim() !== "" &&
-    repoConfig.customNan.trim().normalize("NFKC").toLowerCase() !== "nan"
+    repoConfig.customNan.trim() !== "NaN" &&
+    repoConfig.customNan.trim().toLowerCase() !== "nan" &&
+    repoConfig.customNan.trim() !== "NAN"
   ) {
     effectiveCustomNan = repoConfig.customNan;
   }
@@ -216,8 +231,9 @@ function resolveNaNConfig(args) {
   if (
     effectiveCustomNan === null &&
     process.env.CUSTOM_NAN &&
-    process.env.CUSTOM_NAN.trim() !== "" &&
-    process.env.CUSTOM_NAN.trim().normalize("NFKC").toLowerCase() !== "nan"
+    process.env.CUSTOM_NAN.trim() !== "NaN" &&
+    process.env.CUSTOM_NAN.trim().toLowerCase() !== "nan" &&
+    process.env.CUSTOM_NAN.trim() !== "NAN"
   ) {
     effectiveCustomNan = process.env.CUSTOM_NAN;
   }
@@ -282,7 +298,7 @@ export async function main(args = []) {
 
   if (args.includes("--custom-nan")) {
     const customIndex = args.indexOf("--custom-nan");
-    if (args.length > customIndex + 1 && args[customIndex + 1].trim().normalize("NFKC").toLowerCase() !== "nan") {
+    if (args.length > customIndex + 1 && args[customIndex + 1].trim() !== "NaN" && args[customIndex + 1].trim().toLowerCase() !== "nan" && args[customIndex + 1].trim() !== "NAN") {
       registerNaNHandler(() => args[customIndex + 1]);
     } else {
       throw new Error("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
@@ -332,14 +348,14 @@ export async function main(args = []) {
   const debugNanFlag = args.includes("--debug-nan");
   for (let i = 0; i < processedArgs.length; i++) {
     const arg = processedArgs[i];
-    const trimmed = arg.trim();
-    if (isNaNInput(trimmed)) {
-      const { converted, conversionMethod } = await processNaNConversion(trimmed);
+    // Use normalization for NaN check to support Unicode variants
+    if (normalizeValue(arg).toLowerCase() === "nan") {
+      const { converted, conversionMethod } = await processNaNConversion(arg);
       convertedArgs.push(converted);
       if (debugNanFlag) {
         debugDetails.push({
           raw: arg,
-          normalized: trimmed.normalize("NFKC"),
+          normalized: normalizeValue(arg),
           converted,
           conversionMethod,
         });
