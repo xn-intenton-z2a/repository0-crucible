@@ -24,6 +24,7 @@ let useStrictNan = false;
 let configWatcher = null;
 
 // Cache for NaN conversion results to optimize repeated processing in bulk
+// The cache now uses a normalized (trim + NFKC + lowercase) value as the key
 const nanConversionCache = new Map();
 
 /**
@@ -139,7 +140,7 @@ function convertArg(arg) {
 /**
  * Internal function to process 'NaN' conversion without caching.
  * @param {string} originalStr - The original input string
- * @returns {Promise<{converted: any, conversionMethod: string}>>}
+ * @returns {Promise<{converted: any, conversionMethod: string}>}
  */
 async function processNaNConversionInternal(originalStr) {
   const trimmed = originalStr.trim();
@@ -200,19 +201,21 @@ async function processNaNConversionInternal(originalStr) {
 
 /**
  * Processes 'NaN' conversion with caching to optimize repeated identical inputs.
+ * The caching key is based on the normalized (trimmed, NFKC, lowercase) value to ensure consistency across Unicode variants.
  * @param {string} originalStr
- * @returns {Promise<{converted: any, conversionMethod: string}>>}
+ * @returns {Promise<{converted: any, conversionMethod: string}>}
  */
 async function processNaNConversion(originalStr) {
-  if (nanConversionCache.has(originalStr)) {
-    const cachedResult = nanConversionCache.get(originalStr);
+  const normalizedKey = normalizeValue(originalStr).toLowerCase();
+  if (nanConversionCache.has(normalizedKey)) {
+    const cachedResult = nanConversionCache.get(normalizedKey);
     if (globalThis.DEBUG_NAN) {
-      console.debug(JSON.stringify({ event: 'processNaNConversion_cache_hit', input: originalStr, result: cachedResult }, nanReplacer));
+      console.debug(JSON.stringify({ event: 'processNaNConversion_cache_hit', input: originalStr, normalizedKey, result: cachedResult }, nanReplacer));
     }
     return cachedResult;
   }
   const result = await processNaNConversionInternal(originalStr);
-  nanConversionCache.set(originalStr, result);
+  nanConversionCache.set(normalizedKey, result);
   return result;
 }
 

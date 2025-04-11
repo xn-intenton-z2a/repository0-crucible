@@ -25,7 +25,7 @@ npm install repository0-crucible
 
 * **Automated CLI Argument Conversion:** Automatically converts numeric strings (e.g. "42", "3.14"), boolean strings ("true", "false"), ISO 8601 dates, JSON formatted strings, and more. Non-numeric strings are trimmed and returned.
 * **Enhanced NaN Handling with Dynamic Configuration Refresh and Benchmarking:**
-  - Recognizes all Unicode variants of "NaN" (for example, "NaN", "nan", "ＮａＮ"), by normalizing inputs using trim and NFKC normalization.
+  - Recognizes all Unicode variants of "NaN" (for example, "NaN", "nan", "ＮａＮ"), by normalizing inputs using trim and NFKC normalization. The caching mechanism now uses a normalized (trimmed, NFKC, lowercase) key, ensuring consistent processing across Unicode variants.
   - **Default Behavior:** Preserves the input as a string, even if the representation is a Unicode variant.
   - **Native Conversion:** Use `--native-nan`, set environment variable `NATIVE_NAN` to "true", or configure via `.repositoryConfig.json`:
 
@@ -64,7 +64,7 @@ npm install repository0-crucible
 
 * **Structured JSON Logging:** CLI outputs structured JSON logs with special serialization for numeric NaN, Infinity, and -Infinity.
 
-* **Unicode Variant Support:** All input variants of "NaN" (like "ＮａＮ") are normalized uniformly using a dedicated normalization function (trim + NFKC) to ensure consistent behavior across configurations.
+* **Unicode Variant Support:** All input variants of "NaN" (like "ＮａＮ") are normalized uniformly using a dedicated normalization function (trim + NFKC) to ensure consistent behavior across configurations and caching.
 
 * **Automated Tests:** Comprehensive tests ensure that edge cases and functionalities—including NaN handling (both synchronous and asynchronous), dynamic configuration refresh, configuration precedence, plugin tracing, benchmark performance, and bulk performance improvements—work as expected.
 
