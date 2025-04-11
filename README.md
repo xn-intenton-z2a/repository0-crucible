@@ -58,7 +58,7 @@ npm install repository0-crucible
 
   - **Asynchronous Custom Handlers:** Custom handlers can be asynchronous, allowing dynamic operations such as API calls during conversion.
 
-  - **Optimized Bulk Processing:** To enhance performance when processing a large number of CLI arguments, repeated normalization of identical inputs is cached, reducing overhead and improving efficiency.
+  - **Optimized Bulk Processing:** The bulk NaN processing pipeline has been refactored to ensure consistent asynchronous behavior and improved caching performance under high-volume input scenarios.
 
 * **Plugin Architecture and Trace Logging:** Extend functionality by registering plugins using the provided API. When the CLI is run with the `--use-plugins` flag, input arguments are processed through all registered plugins. Additionally, if you supply the `--trace-plugins` flag, the CLI will output a detailed trace log of the transformation steps performed by each plugin.
 
