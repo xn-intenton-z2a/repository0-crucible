@@ -74,13 +74,13 @@
 <p class="md-github"><strong class="md-github">Dynamic Configuration Refresh:</strong> The tool now supports automatic updating of NaN handling configuration at runtime. When running in serve mode (<code class="md-github">--serve</code>) or via the <code class="md-github">--refresh-config</code> flag, changes to environment variables or the <code class="md-github">.repositoryConfig.json</code> file are applied immediately without restarting the process.</p>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">Enhanced Diagnostic Logging:</strong> When the <code class="md-github">--debug-nan</code> flag is provided, the CLI outputs detailed diagnostic logs capturing the original input, trimmed version, normalization applied, and the conversion branch (default, native, or custom).</p>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">Configuration Precedence:</strong> The effective NaN handling configuration is resolved in the following order (highest to lowest): CLI flags, Repository configuration file (.repositoryConfig.json), Environment variables, Default behavior.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Asynchronous Custom Handlers:</strong> Custom handlers can be asynchronous, allowing dynamic operations such as API calls during conversion.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Debug Mode:</strong> Use <code class="md-github">--debug-nan</code> to output detailed diagnostic information for each conversion, including the normalized input and the conversion method (default, native, or custom).</p>
 </li>
 </ul>
 </li>
@@ -208,7 +208,7 @@ Run in serve mode to enable dynamic config updates:</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-11T04:31:00.578Z</p>
+    <p>Generated on 2025-04-11T04:32:02.977Z</p>
   </footer>
 </body>
 </html>
