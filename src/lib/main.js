@@ -125,10 +125,10 @@ function convertArg(arg) {
  *   Supports both synchronous and asynchronous custom handlers.
  * - In strict mode without a custom handler, throws an error with actionable guidance.
  * - If native mode is active, returns numeric NaN.
- * - Otherwise, returns the normalized input to preserve consistent formatting for recognized variants.
+ * - Otherwise, returns the original argument (trimmed) to preserve consistent formatting for recognized variants.
  *
  * @param {string} originalStr - The original input string
- * @returns {Promise<{converted: any, conversionMethod: string}>}
+ * @returns {Promise<{converted: any, conversionMethod: string}>
  */
 async function processNaNConversion(originalStr) {
   const trimmed = originalStr.trim();
@@ -155,7 +155,8 @@ async function processNaNConversion(originalStr) {
   } else if (useNativeNanConfig) {
     return { converted: NaN, conversionMethod: "native" };
   } else {
-    return { converted: normalized, conversionMethod: "default" };
+    // Return the trimmed original argument to preserve the original Unicode if present
+    return { converted: convertArg(originalStr), conversionMethod: "default" };
   }
 }
 

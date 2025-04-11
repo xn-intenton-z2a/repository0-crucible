@@ -307,7 +307,7 @@ describe("CLI NaN Handling", () => {
     const unicodeNan = "ＮａＮ";
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main([unicodeNan]);
-    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [unicodeNan] });
+    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [unicodeNan.trim()] });
     logSpy.mockRestore();
   });
 
