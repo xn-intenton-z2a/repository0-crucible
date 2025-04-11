@@ -115,6 +115,11 @@ npm run benchmark
 
 This will run bulk processing tests and output benchmark results in JSON format, including the counts and elapsed times for caching enabled vs disabled scenarios.
 
+- **JSON Argument Conversion:**
+  ```bash
+  node src/lib/main.js '{"key": "value"}' '[1,2,3]'
+  ```
+
 ## Usage
 
 Run the CLI tool to see available options:
