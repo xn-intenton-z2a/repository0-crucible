@@ -2,21 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 5,
-  "issuesClosedLastHour": 6,
+  "openIssues": 3,
+  "issuesClosedLastHour": 8,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "No changes applied non-actionable prompt received. (fixes #1462)",
-      "ageMinutes": 1
-    }
-  ],
-  "diffMinutes": 1,
-  "diffMinutesMain": 10,
-  "commitsLastHour": 3,
-  "commitsLastDay": 62,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 0,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 4,
+  "commitsLastDay": 63,
   "lastFiveCommitMessages": [
+    {
+      "time": "14:23",
+      "message": "No changes applied non-actionable prompt received. (fixes #1462)..."
+    },
     {
       "time": "14:11",
       "message": "Add export-owl command to convert ontology JSON to OWLTurtle for..."
@@ -32,23 +31,14 @@
     {
       "time": "12:51",
       "message": "Enhanced --query command to support regex searches and updated d..."
-    },
-    {
-      "time": "12:29",
-      "message": "Refactored package.json import to avoid deprecated assert syntax..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1462",
-        "minutesSinceLastCommit": 2
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 1,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T14:22:09.176Z"
+  "generatedAt": "2025-04-12T14:23:30.332Z"
 }
