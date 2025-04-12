@@ -55,6 +55,7 @@
 <li class="md-github"><strong class="md-github">Version Display:</strong> Use the new --version flag to display the current package version as specified in package.json.</li>
 <li class="md-github"><strong class="md-github">Help Command:</strong> Use --help (or run without arguments) to display CLI usage instructions.</li>
 <li class="md-github"><strong class="md-github">Custom Ontology Persistence:</strong> Use the new --ontology flag with --persist to supply a custom ontology (as a JSON string or by providing a file path) instead of the default dummy ontology.</li>
+<li class="md-github"><strong class="md-github">Environment Variable Fallback Handling:</strong> The CLI validates numeric environment variables (e.g., DEFAULT_TIMEOUT) and falls back to safe defaults if they are invalid.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">To run the CLI tool and see help instructions:</p>
@@ -110,8 +111,14 @@
 <p class="md-github">This command reads two ontology JSON files, merges them (combining unique classes and merging properties where the second ontology takes precedence), and writes the merged ontology to the specified output file.</p>
 </li>
 </ul>
+<h2 class="md-github"><a class="md-github__anchor" name="environment-variable-configuration" href="#environment-variable-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Variable Configuration</h2>
+<p class="md-github">The CLI tool checks for numeric environment variables such as DEFAULT_TIMEOUT. If an environment variable intended to represent a number is invalid (NaN), the tool will automatically fall back to a safe default (e.g., 5000).</p>
+<p class="md-github">Example of setting an environment variable:</p>
+<pre class="md-github"><code class="md-github language-bash">export DEFAULT_TIMEOUT=3000
+node src/lib/main.js --help
+</code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="end-to-end-integration-tests" href="#end-to-end-integration-tests"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>End-to-End Integration Tests</h2>
-<p class="md-github">A suite of end-to-end integration tests has been added to verify all CLI commands. These tests simulate realistic usage scenarios including file I/O operations and JSON parsing. To run the integration tests, execute:</p>
+<p class="md-github">A suite of end-to-end integration tests has been added to verify all CLI commands. These tests simulate realistic usage scenarios including file I/O operations and JSON parsing, as well as environment variable fallback handling. To run the integration tests, execute:</p>
 <pre class="md-github"><code class="md-github language-bash">npm run test:e2e
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
@@ -121,7 +128,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-12T04:54:05.146Z</p>
+    <p>Generated on 2025-04-12T04:54:13.114Z</p>
   </footer>
 </body>
 </html>
