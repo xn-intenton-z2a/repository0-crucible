@@ -2,12 +2,12 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 5,
+  "openIssues": 6,
   "issuesClosedLastHour": 16,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 2,
+  "diffMinutes": 0,
   "diffMinutesMain": 8,
   "commitsLastHour": 9,
   "commitsLastDay": 51,
@@ -38,12 +38,12 @@
     "details": [
       {
         "branch": "agentic-lib-issue-1443",
-        "minutesSinceLastCommit": 2
+        "minutesSinceLastCommit": 3
       }
     ]
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T11:32:20.059Z"
+  "generatedAt": "2025-04-12T11:33:00.992Z"
 }
