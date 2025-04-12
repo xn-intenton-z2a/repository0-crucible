@@ -188,7 +188,6 @@ function handleDiagnostics(args, { logCommand, getDefaultTimeout }) {
 }
 
 function handleRefresh(args, { logCommand }) {
-  logCommand("--refresh");
   const logDir = join(process.cwd(), 'logs');
   if (existsSync(logDir)) {
     try {
@@ -204,7 +203,10 @@ function handleRefresh(args, { logCommand }) {
     mkdirSync(logDir, { recursive: true });
   }
   const logFile = join(logDir, 'cli.log');
+  // Clear the log file before logging the refresh command
   writeFileSync(logFile, '', { encoding: 'utf-8' });
+  // Log the refresh command after clearing the logs
+  logCommand("--refresh");
   console.log('System state refreshed');
 }
 
