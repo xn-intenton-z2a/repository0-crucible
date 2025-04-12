@@ -222,4 +222,14 @@ describe('End-to-End CLI Integration Tests', () => {
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
+
+  test('Invalid ontology structure fails validation in --read', () => {
+    clearLogFile();
+    const invalidOntology = { name: 123, version: "1.0", classes: "not-an-array", properties: {} };
+    const ontologyFile = join(tempDir, 'invalidOntology.json');
+    writeFileSync(ontologyFile, JSON.stringify(invalidOntology), { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--read', ontologyFile], { encoding: 'utf-8' });
+    expect(result.stderr).toContain('Ontology validation failed:');
+    unlinkSync(ontologyFile);
+  });
 });
