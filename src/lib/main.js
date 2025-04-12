@@ -34,8 +34,8 @@ export function main(args) {
     const dummyOntology = {
       name: 'Dummy Ontology',
       version: '1.0.0',
-      classes: ["ClassA", "ClassB"],
-      properties: { key: "value" }
+      classes: ['ClassA', 'ClassB'],
+      properties: { key: 'value' }
     };
     try {
       persistOntology(dummyOntology, file);
@@ -53,43 +53,4 @@ export function main(args) {
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   main(args);
-}
-
-// ----------------------------------------------------------------------
-// New File: src/lib/persistence.js
-// ----------------------------------------------------------------------
-
-/*
-  This module provides functions to read and persist OWL ontologies in JSON format.
-*/
-
-import { readFileSync, writeFileSync } from 'fs';
-
-/**
- * Reads a JSON file from the given filePath and returns the parsed ontology object.
- * @param {string} filePath 
- * @returns {Object} Parsed ontology object
- */
-export function readOntology(filePath) {
-  try {
-    const data = readFileSync(filePath, { encoding: 'utf-8' });
-    const ontology = JSON.parse(data);
-    return ontology;
-  } catch (error) {
-    throw new Error(`Failed to read ontology from file: ${error.message}`);
-  }
-}
-
-/**
- * Persists the given ontology object to the specified filePath in JSON format.
- * @param {Object} ontology 
- * @param {string} filePath 
- */
-export function persistOntology(ontology, filePath) {
-  try {
-    const jsonData = JSON.stringify(ontology, null, 2);
-    writeFileSync(filePath, jsonData, { encoding: 'utf-8' });
-  } catch (error) {
-    throw new Error(`Failed to persist ontology to file: ${error.message}`);
-  }
 }

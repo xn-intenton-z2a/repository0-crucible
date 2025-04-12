@@ -1,7 +1,7 @@
-import { describe, test, expect } from 'vitest';
-import { main } from '@src/lib/main.js';
-import { readOntology, persistOntology } from '@src/lib/persistence.js';
-import { existsSync, unlinkSync, writeFileSync } from 'fs';
+import { describe, test, expect, afterEach } from 'vitest';
+import { main } from '../../src/lib/main.js';
+import { readOntology, persistOntology } from '../../src/lib/persistence.js';
+import { existsSync, unlinkSync, writeFileSync, readFileSync } from 'fs';
 
 // Tests for main module
 
@@ -34,7 +34,7 @@ describe('Persistence Module', () => {
   test('persistOntology writes correct JSON to file', () => {
     persistOntology(dummyOntology, tempFilePath);
     expect(existsSync(tempFilePath)).toBe(true);
-    const fileContent = require('fs').readFileSync(tempFilePath, { encoding: 'utf-8' });
+    const fileContent = readFileSync(tempFilePath, { encoding: 'utf-8' });
     const parsed = JSON.parse(fileContent);
     expect(parsed).toEqual(dummyOntology);
   });

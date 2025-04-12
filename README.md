@@ -55,6 +55,12 @@ node src/lib/main.js --help
 
 The --read command will load and display the ontology from the specified JSON file, while the --persist command will write a sample ontology object (or your provided ontology) to the specified JSON file.
 
+For direct use of the persistence functionality in your code, import the module from:
+
+```javascript
+import { readOntology, persistOntology } from './src/lib/persistence.js';
+```
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.
