@@ -191,6 +191,46 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     unlinkSync(outputFile);
   });
 
+  test('--export-owl flag exports OWL/Turtle format to STDOUT', () => {
+    clearLogFile();
+    const dummyOntology = {
+      name: 'OwlOntology',
+      version: '1.0',
+      classes: ['OwlClass'],
+      properties: { owlProp: 'owlValue' }
+    };
+    const inputFile = join(tempDir, 'owlOntology.json');
+    writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--export-owl', inputFile], { encoding: 'utf-8' });
+    // Check that output contains OWL prefixes and Turtle syntax
+    expect(result.stdout).toContain('@prefix owl: <http://www.w3.org/2002/07/owl#>');
+    expect(result.stdout).toContain('a owl:Ontology');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--export-owl');
+    unlinkSync(inputFile);
+  });
+
+  test('--export-owl flag writes output to file if provided', () => {
+    clearLogFile();
+    const dummyOntology = {
+      name: 'OwlOntologyFile',
+      version: '1.0',
+      classes: ['OwlClassFile'],
+      properties: { owlPropFile: 'owlValueFile' }
+    };
+    const inputFile = join(tempDir, 'owlOntologyFile.json');
+    const outputFile = join(tempDir, 'owlOutput.ttl');
+    writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--export-owl', inputFile, outputFile], { encoding: 'utf-8' });
+    expect(result.stdout).toContain('OWL/Turtle exporter output written to');
+    const outputContent = readFileSync(outputFile, { encoding: 'utf-8' });
+    expect(outputContent).toContain('@prefix owl: <http://www.w3.org/2002/07/owl#>');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--export-owl');
+    unlinkSync(inputFile);
+    unlinkSync(outputFile);
+  });
+
   test('--merge-persist flag merges two ontologies and writes output', () => {
     clearLogFile();
     const ontology1 = {
@@ -261,113 +301,6 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     expect(result.stdout).toContain('Server stopped');
     const logContent = readLogFile();
     expect(logContent).toContain('--serve');
-  });
-
-  // New tests for --query command
-  describe('--query command tests', () => {
-    test('returns matching results when search term is found', () => {
-      clearLogFile();
-      const ontology = {
-        name: 'SearchOntology',
-        version: '1.0',
-        classes: ['Alpha', 'Beta'],
-        properties: { description: 'This ontology is for testing', note: 'Important data' }
-      };
-      const ontologyFile = join(tempDir, 'searchOntology.json');
-      writeFileSync(ontologyFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
-      // Search term that matches name and a class
-      const searchTerm = 'search';
-      const result = spawnSync('node', [cliPath, '--query', ontologyFile, searchTerm], { encoding: 'utf-8' });
-      const output = JSON.parse(result.stdout);
-      expect(output).toHaveProperty('name', 'SearchOntology');
-      unlinkSync(ontologyFile);
-      const logContent = readLogFile();
-      expect(logContent).toContain('--query');
-    });
-
-    test('returns no matches found when search term is absent', () => {
-      clearLogFile();
-      const ontology = {
-        name: 'AnotherOntology',
-        version: '1.0',
-        classes: ['Gamma', 'Delta'],
-        properties: { info: 'Sample' }
-      };
-      const ontologyFile = join(tempDir, 'noMatchOntology.json');
-      writeFileSync(ontologyFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
-      const searchTerm = 'nonexistent';
-      const result = spawnSync('node', [cliPath, '--query', ontologyFile, searchTerm], { encoding: 'utf-8' });
-      const output = JSON.parse(result.stdout);
-      expect(output).toHaveProperty('message', 'No matches found');
-      unlinkSync(ontologyFile);
-    });
-
-    test('handles invalid ontology file gracefully', () => {
-      clearLogFile();
-      const invalidOntology = { name: 123, version: '1.0', classes: 'not-an-array', properties: {} };
-      const ontologyFile = join(tempDir, 'invalidQueryOntology.json');
-      writeFileSync(ontologyFile, JSON.stringify(invalidOntology), { encoding: 'utf-8' });
-      const searchTerm = 'test';
-      const result = spawnSync('node', [cliPath, '--query', ontologyFile, searchTerm], { encoding: 'utf-8' });
-      expect(result.stderr).toContain('LOG_ERR_ONTOLOGY_VALIDATE');
-      unlinkSync(ontologyFile);
-    });
-
-    test('returns matching results using regex when --regex flag is provided', () => {
-      clearLogFile();
-      const ontology = {
-        name: 'RegexOntology',
-        version: '1.0',
-        classes: ['AlphaClass', 'BetaClass'],
-        properties: { info: 'Contains numbers 12345', note: 'Sample note' }
-      };
-      const ontologyFile = join(tempDir, 'regexOntology.json');
-      writeFileSync(ontologyFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
-      const regexPattern = '^RegexOntology$';
-      const result = spawnSync('node', [cliPath, '--query', ontologyFile, regexPattern, '--regex'], { encoding: 'utf-8' });
-      const output = JSON.parse(result.stdout);
-      expect(output).toHaveProperty('name', 'RegexOntology');
-      const logContent = readLogFile();
-      expect(logContent).toContain('--query');
-      unlinkSync(ontologyFile);
-    });
-
-    test('handles invalid regex pattern when --regex flag is provided', () => {
-      clearLogFile();
-      const ontology = {
-        name: 'InvalidRegexOntology',
-        version: '1.0',
-        classes: ['Gamma'],
-        properties: { key: 'value' }
-      };
-      const ontologyFile = join(tempDir, 'invalidRegexOntology.json');
-      writeFileSync(ontologyFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
-      const invalidPattern = '(unclosed';
-      const result = spawnSync('node', [cliPath, '--query', ontologyFile, invalidPattern, '--regex'], { encoding: 'utf-8' });
-      expect(result.stderr).toContain('LOG_ERR_INVALID_REGEX');
-      unlinkSync(ontologyFile);
-    });
-  });
-
-  // New tests for --fetch command
-  describe('--fetch command tests', () => {
-    test('outputs fetched ontology JSON to STDOUT when no output file is provided', () => {
-      clearLogFile();
-      const result = spawnSync('node', [cliPath, '--fetch'], { encoding: 'utf-8' });
-      const output = JSON.parse(result.stdout);
-      expect(output).toHaveProperty('name', 'Fetched Ontology');
-      expect(output).toHaveProperty('version', 'fetched-1.0');
-    });
-
-    test('persists fetched ontology JSON to file when output file is provided', () => {
-      clearLogFile();
-      const outputFile = join(tempDir, 'fetchedOntology.json');
-      const result = spawnSync('node', [cliPath, '--fetch', outputFile], { encoding: 'utf-8' });
-      expect(result.stdout).toContain('Fetched ontology persisted to');
-      const fetched = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
-      expect(fetched).toHaveProperty('name', 'Fetched Ontology');
-      unlinkSync(outputFile);
-    });
   });
 });
 

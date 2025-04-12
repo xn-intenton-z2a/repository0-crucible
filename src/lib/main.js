@@ -116,6 +116,7 @@ function handleHelp(args, { getDefaultTimeout }) {
   --read <path>      Load ontology from file
   --persist <outputFile> [--ontology <json-string|path>]    Persist ontology
   --export-graphdb <inputFile> [outputFile]    Export ontology in GraphDB format
+  --export-owl <inputFile> [outputFile]    Export ontology in OWL/Turtle format
   --merge-persist <file1> <file2> <outputFile>    Merge ontologies
   --diagnostics      Output diagnostic report
   --refresh          Refresh system state
@@ -230,6 +231,53 @@ function handleExportGraphDB(args) {
   }
 }
 
+function handleExportOWL(args) {
+  logCommand('--export-owl');
+  const inputFile = args[args.indexOf('--export-owl') + 1];
+  let outputFile = null;
+  const potentialOutput = args[args.indexOf('--export-owl') + 2];
+  if (potentialOutput && !potentialOutput.startsWith('--')) {
+    outputFile = potentialOutput;
+  }
+  try {
+    const data = readFileSync(inputFile, { encoding: 'utf-8' });
+    const ontology = JSON.parse(data);
+    // Validate ontology using Zod schema
+    ontologySchema.parse(ontology);
+    // Build Turtle format output
+    let ttl = '';
+    ttl += '@prefix owl: <http://www.w3.org/2002/07/owl#> .\n';
+    ttl += '@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n';
+    ttl += '@prefix ex: <http://example.org/> .\n\n';
+    ttl += `ex:${ontology.name.replace(/\s+/g, '_')} a owl:Ontology ;\n`;
+    ttl += `    owl:versionInfo "${ontology.version}" .\n\n`;
+    if (Array.isArray(ontology.classes)) {
+      ontology.classes.forEach(cls => {
+        ttl += `ex:${cls.replace(/\s+/g, '_')} a owl:Class .\n`;
+      });
+    }
+    if (ontology.properties && typeof ontology.properties === 'object') {
+      for (const [key, value] of Object.entries(ontology.properties)) {
+        ttl += `ex:${key.replace(/\s+/g, '_')} "${value}" .\n`;
+      }
+    }
+    if (outputFile) {
+      writeFileSync(outputFile, ttl, { encoding: 'utf-8' });
+      console.log(`OWL/Turtle exporter output written to ${outputFile}`);
+    } else {
+      console.log(ttl);
+    }
+  } catch (err) {
+    if (err instanceof Error && err.name === 'ZodError') {
+      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed for export-owl', { command: '--export-owl', file: inputFile, errors: err.errors });
+      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
+    } else {
+      logError('LOG_ERR_EXPORT_OWL', 'Error exporting OWL/Turtle', { command: '--export-owl', error: err.message, inputFile });
+      console.error('LOG_ERR_EXPORT_OWL', err.message);
+    }
+  }
+}
+
 function handleMergePersist(args) {
   logCommand('--merge-persist');
   const index = args.indexOf('--merge-persist');
@@ -270,7 +318,7 @@ function handleDiagnostics(args) {
       platform: process.platform,
       arch: process.arch
     },
-    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--serve','--interactive','--query','--fetch'],
+    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--export-owl','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--serve','--interactive','--query','--fetch'],
     processArgs: process.argv.slice(2),
     DEFAULT_TIMEOUT: getDefaultTimeout()
   };
@@ -587,6 +635,9 @@ function dispatchCommand(args) {
   }
   if (args.includes('--export-graphdb')) {
     return handleExportGraphDB(args);
+  }
+  if (args.includes('--export-owl')) {
+    return handleExportOWL(args);
   }
   if (args.includes('--merge-persist')) {
     return handleMergePersist(args);
