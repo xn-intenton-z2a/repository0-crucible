@@ -1,9 +1,8 @@
-import { describe, test, expect, beforeAll } from 'vitest';
-import { spawnSync, spawn } from 'child_process';
-import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSync, mkdirSync, readdirSync } from 'fs';
+import { describe, test, expect } from 'vitest';
+import { spawnSync } from 'child_process';
+import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import os from 'os';
-import http from 'http';
 
 // Import the interactiveCompleter helper for testing auto-completion
 import { interactiveCompleter } from '../../src/lib/main.js';
@@ -33,27 +32,16 @@ function readLogFile() {
   return '';
 }
 
-// Helper function to write dummy log content
-function writeDummyLog() {
-  const logDir = join(process.cwd(), 'logs');
-  if (!existsSync(logDir)) {
-    mkdirSync(logDir, { recursive: true });
-  }
-  const logFilePath = join(logDir, 'cli.log');
-  writeFileSync(logFilePath, 'dummy log content\n', { encoding: 'utf-8' });
-}
-
 // Helper function to clear ontologies directory
 function clearOntologiesDir() {
   const ontDir = join(process.cwd(), 'ontologies');
   if (existsSync(ontDir)) {
-    const files = readdirSync(ontDir);
+    const files = require('fs').readdirSync(ontDir);
     for (const file of files) {
       rmSync(join(ontDir, file), { force: true });
     }
   }
 }
-
 
 describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--help flag displays usage information', () => {
@@ -238,9 +226,8 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--refresh flag clears logs and outputs confirmation', () => {
     const logDir = join(process.cwd(), 'logs');
     const logFilePath = join(logDir, 'cli.log');
-    // Intentionally create a file instead of directory to emulate pre-existing condition
     if (!existsSync(logDir)) {
-      writeFileSync(logDir, '', { encoding: 'utf-8' });
+      mkdirSync(logDir, { recursive: true });
     }
     writeFileSync(logFilePath, 'dummy log content\n', { encoding: 'utf-8' });
     const result = spawnSync('node', [cliPath, '--refresh'], { encoding: 'utf-8' });
@@ -274,9 +261,58 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const logContent = readLogFile();
     expect(logContent).toContain('--serve');
   });
-});
 
-// New tests for Interactive Mode Auto-Completion and Command History
+  // New tests for --query command
+  describe('--query command tests', () => {
+    test('returns matching results when search term is found', () => {
+      clearLogFile();
+      const ontology = {
+        name: 'SearchOntology',
+        version: '1.0',
+        classes: ['Alpha', 'Beta'],
+        properties: { description: 'This ontology is for testing', note: 'Important data' }
+      };
+      const ontologyFile = join(tempDir, 'searchOntology.json');
+      writeFileSync(ontologyFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
+      // Search term that matches name and a class
+      const searchTerm = 'search';
+      const result = spawnSync('node', [cliPath, '--query', ontologyFile, searchTerm], { encoding: 'utf-8' });
+      const output = JSON.parse(result.stdout);
+      expect(output).toHaveProperty('name', 'SearchOntology');
+      unlinkSync(ontologyFile);
+      const logContent = readLogFile();
+      expect(logContent).toContain('--query');
+    });
+
+    test('returns no matches found when search term is absent', () => {
+      clearLogFile();
+      const ontology = {
+        name: 'AnotherOntology',
+        version: '1.0',
+        classes: ['Gamma', 'Delta'],
+        properties: { info: 'Sample' }
+      };
+      const ontologyFile = join(tempDir, 'noMatchOntology.json');
+      writeFileSync(ontologyFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
+      const searchTerm = 'nonexistent';
+      const result = spawnSync('node', [cliPath, '--query', ontologyFile, searchTerm], { encoding: 'utf-8' });
+      const output = JSON.parse(result.stdout);
+      expect(output).toHaveProperty('message', 'No matches found');
+      unlinkSync(ontologyFile);
+    });
+
+    test('handles invalid ontology file gracefully', () => {
+      clearLogFile();
+      const invalidOntology = { name: 123, version: '1.0', classes: 'not-an-array', properties: {} };
+      const ontologyFile = join(tempDir, 'invalidQueryOntology.json');
+      writeFileSync(ontologyFile, JSON.stringify(invalidOntology), { encoding: 'utf-8' });
+      const searchTerm = 'test';
+      const result = spawnSync('node', [cliPath, '--query', ontologyFile, searchTerm], { encoding: 'utf-8' });
+      expect(result.stderr).toContain('LOG_ERR_ONTOLOGY_VALIDATE');
+      unlinkSync(ontologyFile);
+    });
+  });
+});
 
 describe('Interactive Mode Auto-Completion', () => {
   test('provides base command suggestions when no ontology is loaded', () => {
@@ -287,7 +323,6 @@ describe('Interactive Mode Auto-Completion', () => {
   test('provides ontology class suggestions when ontology is loaded', () => {
     const ontology = { classes: ['Person', 'Animal'] };
     const [completions, line] = interactiveCompleter(ontology, 'P');
-    // Should include 'Person' in the auto-complete suggestions
     expect(completions).toEqual(expect.arrayContaining(['Person']));
   });
 });

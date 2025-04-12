@@ -33,7 +33,7 @@ npm install repository0-crucible
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions. The help output includes the effective DEFAULT_TIMEOUT value after environment validation.
 - **Custom Ontology Persistence:** Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.
 - **Enhanced Environment Variable Validation:** The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, it logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If DEFAULT_TIMEOUT is provided but is non-numeric (for example, a string that cannot be parsed into a finite number such as "NaN") or is a non-finite numeric value (e.g., Infinity, -Infinity), it logs an error (LOG_ERR_ENV_NON_FINITE) and also defaults to 5000. Automated tests verify this behavior.
-- **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log). Error logs include structured error codes (e.g., LOG_ERR_*) and detailed contextual information. <strong>Note:</strong> The logger functionality is now integrated directly into the main CLI file and uses a dedicated helper function to ensure the log directory is correctly setup.
+- **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log). Error logs include structured error codes (e.g., LOG_ERR_*) and detailed contextual information.
 - **Diagnostics Mode:** Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.
 - **System Refresh:** Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.
 - **Build Commands:**
@@ -51,6 +51,7 @@ npm install repository0-crucible
   - `list-classes`: List the classes present in the loaded ontology.
   - `help`: Show available interactive commands.
   - `exit`: Exit interactive mode.
+- **Ontology Content Query:** Use the new **--query** command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. The command searches within the ontology's name, classes, and properties (both keys and string values) in a case-insensitive manner and outputs the matching results in a structured JSON format. If no matches are found, an appropriate JSON message is returned.
 - **Zod Schema Validation:** Ontology JSON files are validated using a strict Zod schema to ensure they contain the required properties (name, version, classes, and properties) with the correct data types. This integration provides clearer error messages on invalid ontology formats.
 
 ## Usage
@@ -152,13 +153,19 @@ node src/lib/main.js --help
     - `help` for interactive help,
     - `exit` to leave interactive mode.
 
+- **Ontology Content Query:**
+  ```bash
+  node src/lib/main.js --query path/to/ontology.json searchTerm
+  ```
+  This command searches the specified ontology for the provided search term in the ontology's name, classes, and properties (keys and string values) and returns the matching results in JSON format. If no matches are found, it outputs a JSON message indicating "No matches found".
+
 ## Environment Variable Configuration
 
 The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, the tool logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If a non-numeric or non-finite value (such as "NaN", "Infinity", or "-Infinity") is provided, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value of 5000. Automated tests verify this behavior.
 
 ## End-to-End Integration Tests
 
-A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, and the new interactive mode enhancements. To run the integration tests:
+A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, and the new ontology query functionality. To run the integration tests:
 
 ```bash
 npm run test:e2e

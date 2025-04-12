@@ -122,6 +122,7 @@ function handleHelp(args, { getDefaultTimeout }) {
   --build-enhanced       Process and output an enhanced build version of the ontology
   --serve                Launch an HTTP server exposing REST endpoints for ontology operations
   --interactive          Launch the interactive mode for ontology exploration
+  --query <ontologyFile> <searchTerm>    Search ontology content for a term
 Using DEFAULT_TIMEOUT: ${timeout}`);
 }
 
@@ -267,7 +268,7 @@ function handleDiagnostics(args) {
       platform: process.platform,
       arch: process.arch
     },
-    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--serve','--interactive'],
+    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--serve','--interactive','--query'],
     processArgs: process.argv.slice(2),
     DEFAULT_TIMEOUT: getDefaultTimeout()
   };
@@ -297,6 +298,65 @@ function handleBuildEnhanced(args) {
   logCommand('--build-enhanced');
   // Simulate processing of an enhanced build version of the ontology
   console.log('Enhanced build processed');
+}
+
+// New handler: --query command for ontology content search
+function handleQuery(args) {
+  logCommand('--query');
+  const index = args.indexOf('--query');
+  const filePath = args[index + 1];
+  const searchTerm = args[index + 2];
+  if (!filePath || !searchTerm) {
+    console.error('LOG_ERR_QUERY_USAGE Missing ontology file path or search term');
+    return;
+  }
+  try {
+    const data = readFileSync(filePath, { encoding: 'utf-8' });
+    const ontology = JSON.parse(data);
+    // Validate ontology using Zod schema
+    ontologySchema.parse(ontology);
+    const term = searchTerm.toLowerCase();
+    const result = {};
+    // Search in name
+    if (ontology.name && ontology.name.toLowerCase().includes(term)) {
+      result.name = ontology.name;
+    }
+    // Search in classes
+    const matchingClasses = ontology.classes.filter(cls => cls.toLowerCase().includes(term));
+    if (matchingClasses.length > 0) {
+      result.classes = matchingClasses;
+    }
+    // Search in properties (keys and string values)
+    const matchingKeys = [];
+    const matchingValues = [];
+    for (const [key, value] of Object.entries(ontology.properties)) {
+      if (key.toLowerCase().includes(term)) {
+        matchingKeys.push(key);
+      }
+      if (typeof value === 'string' && value.toLowerCase().includes(term)) {
+        matchingValues.push({ key, value });
+      }
+    }
+    if (matchingKeys.length > 0) {
+      result.propertyKeys = matchingKeys;
+    }
+    if (matchingValues.length > 0) {
+      result.propertyValues = matchingValues;
+    }
+    if (Object.keys(result).length === 0) {
+      console.log(JSON.stringify({ message: "No matches found" }, null, 2));
+    } else {
+      console.log(JSON.stringify(result, null, 2));
+    }
+  } catch (err) {
+    if (err instanceof Error && err.name === 'ZodError') {
+      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed for query', { command: '--query', file: filePath, errors: err.errors });
+      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
+    } else {
+      logError('LOG_ERR_QUERY_READ', 'Error processing query command', { command: '--query', error: err.message, file: filePath });
+      console.error('LOG_ERR_QUERY_READ', err.message);
+    }
+  }
 }
 
 // Enhanced HTTP server with comprehensive REST API endpoints for ontology management
@@ -515,14 +575,6 @@ function handleDefault(args) {
   console.log('Invalid command');
 }
 
-// Expose a helper completer function for testing purposes
-export function interactiveCompleter(loadedOntology, line) {
-  const baseCommands = ["load", "show", "list-classes", "help", "exit"];
-  const suggestions = baseCommands.concat((loadedOntology && loadedOntology.classes) ? loadedOntology.classes : []);
-  const hits = suggestions.filter(s => s.startsWith(line));
-  return [hits.length ? hits : suggestions, line];
-}
-
 // Command dispatcher using inline command handlers
 function dispatchCommand(args) {
   if (args.includes('--interactive')) {
@@ -558,6 +610,9 @@ function dispatchCommand(args) {
   if (args.includes('--serve')) {
     return handleServe(args);
   }
+  if (args.includes('--query')) {
+    return handleQuery(args);
+  }
   if (args.includes('--help') || args.length === 0) {
     return handleHelp(args, { getDefaultTimeout });
   }
@@ -570,8 +625,16 @@ function main() {
   dispatchCommand(args);
 }
 
+// Define interactiveCompleter for test auto-completion
+function interactiveCompleter(loadedOntology, line) {
+  const baseCommands = ["load", "show", "list-classes", "help", "exit"];
+  const suggestions = baseCommands.concat((loadedOntology && Array.isArray(loadedOntology.classes)) ? loadedOntology.classes : []);
+  const hits = suggestions.filter(c => c.startsWith(line));
+  return [hits.length ? hits : suggestions, line];
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main();
 }
 
-export { dispatchCommand, main };
+export { dispatchCommand, main, interactiveCompleter };
