@@ -25,14 +25,14 @@ npm install repository0-crucible
 
 ## Features
 
-- CLI tool for building and managing OWL ontologies with a modular command routing. The CLI now modularizes each command handler into dedicated modules located in `src/commands`, improving clarity, maintainability, and testability.
+- CLI tool for building and managing OWL ontologies with a modular command routing. The CLI now modularizes each command handler directly in the main file, eliminating missing module errors and improving testability.
 - JSON-based persistence and retrieval of OWL ontologies via integrated persistence functions exported from the main module (located in src/lib/main.js).
 - Exports a GraphDB-friendly format from OWL ontology JSON using the GraphDB Exporter feature.
 - Merge functionality: merge two ontology JSON files and persist the merged result via the --merge-persist CLI option.
 - **Version Display:** Use the --version flag to display the current package version as specified in package.json.
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions. The help output includes the effective DEFAULT_TIMEOUT value after environment validation.
 - **Custom Ontology Persistence:** Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.
-- **Enhanced Environment Variable Validation:** The CLI tool now performs explicit checks for special cases including non-numeric inputs, NaN, Infinity and -Infinity. In these cases, a clear warning is issued and a default value of 5000 is used.
+- **Enhanced Environment Variable Validation:** The CLI tool now performs explicit checks for special cases including non-numeric inputs, NaN, Infinity and -Infinity. In these cases, a clear warning is logged and a default value of 5000 is used.
 - **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log), with errors reported to stderr for better diagnostics.
 - **Diagnostics Mode:** Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.
 - **System Refresh:** Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.

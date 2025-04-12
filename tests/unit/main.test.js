@@ -46,6 +46,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const result = spawnSync('node', [cliPath, '--help'], { encoding: 'utf-8' });
     expect(result.stdout).toContain('Usage:');
     expect(result.stdout).toContain('--version');
+    expect(result.stdout).toContain('Using DEFAULT_TIMEOUT:');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
@@ -295,9 +296,9 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   });
 
   test('--refresh flag clears logs and outputs confirmation', () => {
-    // Write dummy log content so we can verify it gets cleared
     const logDir = join(process.cwd(), 'logs');
     const logFilePath = join(logDir, 'cli.log');
+    // Intentionally create a file instead of directory to emulate pre-existing condition
     if (!existsSync(logDir)) {
       writeFileSync(logDir, '', { encoding: 'utf-8' });
     }
