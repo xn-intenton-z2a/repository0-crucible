@@ -37,6 +37,7 @@ npm install repository0-crucible
 - **Build Commands:**
   - **Intermediate Build:** Use --build-intermediate to process and output an intermediate build version of the ontology.
   - **Enhanced Build:** Use --build-enhanced to fetch data from a public API, transform it into an enriched ontology JSON, and output the enhanced build version.
+  - **Build Ontology:** **New!** Use --build-ontology to build an ontology from an input file or, if no file is provided, to generate a default built ontology.
 - **REST API Server:**
   Launch the REST API server using the --serve flag. The server provides the following endpoints:
   - **GET /health:** Returns a simple health status, e.g., `{ "status": "ok", "message": "Service is healthy" }`.
@@ -45,12 +46,16 @@ npm install repository0-crucible
   - **POST /ontology/merge:** Accepts an array of ontology JSON payloads, merges them (stub merge), and returns the merged ontology.
   - **GET /diagnostics:** Returns a diagnostic report similar to the CLI diagnostics.
   - Additional endpoints, such as GET /ontology, are available for listing persisted ontologies.
-
 - **Interactive Mode with Enhanced Usability:** Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration. This mode supports auto-completion (including dynamic suggestions from loaded ontology classes) and command history.
 - **Ontology Content Query:** Use the **--query** command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the `--regex` flag to interpret the search term as a regular expression.
 - **Fetch Ontology from Public Data Source:** **Enhanced!** Use the **--fetch** command to dynamically retrieve ontology data from a public API. If the environment variable FETCH_URL is set, the CLI will perform an HTTP GET request to that URL and transform the returned JSON into a valid ontology. If FETCH_URL is not set or the fetch fails, it will fall back to a default dummy ontology.
 - **Export OWL/Turtle Format:** Use the **--export-owl** command to convert a JSON ontology into an OWL representation in Turtle format.
 - **Export RDF/XML Format:** **New!** Use the **--export-xml** command to convert a JSON ontology into RDF/XML format, including XML declaration and RDF/XML namespace mappings.
+- **Ontology Difference Comparison:** Use the **--diff** command to compare two ontology JSON files and output the differences.
+- **New Commands:**
+  - **Build Ontology:** `--build-ontology [inputFile]` builds an ontology from a provided JSON file or generates a default built ontology.
+  - **Merge Ontology:** `--merge-ontology <file1> <file2> [outputFile]` merges two ontology JSON files and either outputs the result to STDOUT or writes to the specified file.
+  - **Query Ontology:** `--query-ontology <ontologyFile> <searchTerm> [--regex]` searches the content of an ontology for a specified term, with optional regex matching.
 - **Zod Schema Validation:** Ontology JSON files are validated using a strict Zod schema to ensure required properties are present and of the correct types.
 - **Non-deprecated Package Import:** The package version is imported using file read operations to avoid deprecated import assertions.
 
@@ -164,6 +169,26 @@ node src/lib/main.js --help
   node src/lib/main.js --build-enhanced
   ```
 
+- **Build Ontology (New):**
+  - Without input file (default built ontology):
+    ```bash
+    node src/lib/main.js --build-ontology
+    ```
+  - With input file:
+    ```bash
+    node src/lib/main.js --build-ontology path/to/ontology.json
+    ```
+
+- **Merge Ontology (New):**
+  ```bash
+  node src/lib/main.js --merge-ontology ontology1.json ontology2.json [output.json]
+  ```
+
+- **Query Ontology Content (New):**
+  ```bash
+  node src/lib/main.js --query-ontology path/to/ontology.json searchTerm [--regex]
+  ```
+
 - **REST API Server:**
   ```bash
   node src/lib/main.js --serve
@@ -174,7 +199,7 @@ node src/lib/main.js --help
   node src/lib/main.js --interactive
   ```
 
-- **Ontology Content Query:**
+- **Ontology Content Query (Legacy):**
   ```bash
   node src/lib/main.js --query path/to/ontology.json searchTerm [--regex]
   ```
@@ -198,7 +223,7 @@ For the enhanced --fetch command, you can set a FETCH_URL environment variable t
 
 ## End-to-End Integration Tests
 
-A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch, export-owl, export-xml, and diff functionalities. To run the integration tests:
+A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch, export-owl, export-xml, diff, build-ontology, merge-ontology, and query-ontology functionalities. To run the integration tests:
 
 ```bash
 npm run test:e2e

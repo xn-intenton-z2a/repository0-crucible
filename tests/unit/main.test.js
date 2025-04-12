@@ -483,6 +483,77 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       }, 500);
     });
   });
+
+  // Tests for new commands
+  test('--build-ontology builds ontology from default when no input file provided', () => {
+    clearLogFile();
+    const result = spawnSync('node', [cliPath, '--build-ontology'], { encoding: 'utf-8' });
+    const output = JSON.parse(result.stdout);
+    expect(output).toHaveProperty('name', 'Built Ontology');
+    expect(output).toHaveProperty('built', true);
+    const logContent = readLogFile();
+    expect(logContent).toContain('--build-ontology');
+  });
+
+  test('--build-ontology builds ontology from input file when provided', () => {
+    clearLogFile();
+    const inputOntology = {
+      name: 'Input Ontology',
+      version: '0.5',
+      classes: ['X'],
+      properties: { keyX: 'valueX' }
+    };
+    const inputFile = join(tempDir, 'inputBuild.json');
+    writeFileSync(inputFile, JSON.stringify(inputOntology, null, 2), { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--build-ontology', inputFile], { encoding: 'utf-8' });
+    const output = JSON.parse(result.stdout);
+    expect(output).toHaveProperty('name', 'Input Ontology');
+    expect(output).toHaveProperty('built', true);
+    unlinkSync(inputFile);
+  });
+
+  test('--merge-ontology merges two ontologies and outputs result to stdout', () => {
+    clearLogFile();
+    const ontology1 = {
+      name: 'MergeTest1',
+      version: '1.1',
+      classes: ['A', 'B'],
+      properties: { prop1: 'val1' }
+    };
+    const ontology2 = {
+      name: 'MergeTest2',
+      version: '1.2',
+      classes: ['B', 'C'],
+      properties: { prop2: 'val2' }
+    };
+    const file1 = join(tempDir, 'mergeTest1.json');
+    const file2 = join(tempDir, 'mergeTest2.json');
+    writeFileSync(file1, JSON.stringify(ontology1, null, 2), { encoding: 'utf-8' });
+    writeFileSync(file2, JSON.stringify(ontology2, null, 2), { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--merge-ontology', file1, file2], { encoding: 'utf-8' });
+    const merged = JSON.parse(result.stdout);
+    expect(merged.name).toBe('MergeTest1 & MergeTest2');
+    expect(merged.classes.sort()).toEqual(['A', 'B', 'C'].sort());
+    unlinkSync(file1);
+    unlinkSync(file2);
+  });
+
+  test('--query-ontology returns query results based on search term', () => {
+    clearLogFile();
+    const ontology = {
+      name: 'QueryOntology',
+      version: '2.0',
+      classes: ['Alpha', 'Beta'],
+      properties: { key1: 'value1', key2: 'searchValue' }
+    };
+    const ontologyFile = join(tempDir, 'queryOntology.json');
+    writeFileSync(ontologyFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--query-ontology', ontologyFile, 'search'], { encoding: 'utf-8' });
+    const output = JSON.parse(result.stdout);
+    // Expect propertyValues or propertyKeys to contain search related results
+    expect(output).toHaveProperty('propertyKeys');
+    unlinkSync(ontologyFile);
+  });
 });
 
 // Interactive Mode Auto-Completion Tests
