@@ -47,49 +47,26 @@
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
-<li class="md-github">
-<p class="md-github">CLI tool for building and managing OWL ontologies with a modular command routing. The CLI modularizes each command handler directly in the main file to improve testability.</p>
-</li>
-<li class="md-github">
-<p class="md-github">JSON-based persistence and retrieval of OWL ontologies via integrated persistence functions exported from the main module (located in src/lib/main.js).</p>
-</li>
-<li class="md-github">
-<p class="md-github">Exports a GraphDB-friendly format from OWL ontology JSON using the GraphDB Exporter feature.</p>
-</li>
-<li class="md-github">
-<p class="md-github">Merge functionality: Merge two ontology JSON files and persist the merged result via the --merge-persist CLI option.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Version Display:</strong> Use the --version flag to display the current package version as specified in package.json.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Help Command:</strong> Use --help (or run without arguments) to display CLI usage instructions. The help output includes the effective DEFAULT_TIMEOUT value after environment validation.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Custom Ontology Persistence:</strong> Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Enhanced Environment Variable Validation:</strong> The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, it logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If DEFAULT_TIMEOUT is provided but is non-numeric or non-finite, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Robust Logging:</strong> Every command execution is logged in JSON format to a dedicated log file (logs/cli.log). Error logs include structured error codes (e.g., LOG_ERR_*) and detailed contextual information.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Diagnostics Mode:</strong> Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">System Refresh:</strong> Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Build Commands:</strong></p>
+<li class="md-github">CLI tool for building and managing OWL ontologies with a modular command routing. The CLI modularizes each command handler directly in the main file to improve testability.</li>
+<li class="md-github">JSON-based persistence and retrieval of OWL ontologies via integrated persistence functions exported from the main module (located in src/lib/main.js).</li>
+<li class="md-github">Exports a GraphDB-friendly format from OWL ontology JSON using the GraphDB Exporter feature.</li>
+<li class="md-github">Merge functionality: Merge two ontology JSON files and persist the merged result via the --merge-persist CLI option.</li>
+<li class="md-github"><strong class="md-github">Version Display:</strong> Use the --version flag to display the current package version as specified in package.json.</li>
+<li class="md-github"><strong class="md-github">Help Command:</strong> Use --help (or run without arguments) to display CLI usage instructions. The help output includes the effective DEFAULT_TIMEOUT value after environment validation.</li>
+<li class="md-github"><strong class="md-github">Custom Ontology Persistence:</strong> Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.</li>
+<li class="md-github"><strong class="md-github">Enhanced Environment Variable Validation:</strong> The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, it logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If DEFAULT_TIMEOUT is provided but is non-numeric or non-finite, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value.</li>
+<li class="md-github"><strong class="md-github">Robust Logging:</strong> Every command execution is logged in JSON format to a dedicated log file (logs/cli.log). Error logs include structured error codes (e.g., LOG_ERR_*) and detailed contextual information.</li>
+<li class="md-github"><strong class="md-github">Diagnostics Mode:</strong> Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.</li>
+<li class="md-github"><strong class="md-github">System Refresh:</strong> Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.</li>
+<li class="md-github"><strong class="md-github">Build Commands:</strong>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Intermediate Build:</strong> Use --build-intermediate to process and output an intermediate build version of the ontology.</li>
 <li class="md-github"><strong class="md-github">Enhanced Build:</strong> Use --build-enhanced to fetch data from a public API, transform it into an enriched ontology JSON, and output the enhanced build version.</li>
+<li class="md-github"><strong class="md-github">Build Ontology:</strong> <strong class="md-github">New!</strong> Use --build-ontology to build an ontology from an input file or, if no file is provided, to generate a default built ontology.</li>
 </ul>
 </li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">REST API Server:</strong>
-Launch the REST API server using the --serve flag. The server provides the following endpoints:</p>
+<li class="md-github"><strong class="md-github">REST API Server:</strong>
+Launch the REST API server using the --serve flag. The server provides the following endpoints:
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">GET /health:</strong> Returns a simple health status, e.g., <code class="md-github">{ &quot;status&quot;: &quot;ok&quot;, &quot;message&quot;: &quot;Service is healthy&quot; }</code>.</li>
 <li class="md-github"><strong class="md-github">POST /ontology/build:</strong> Triggers the ontology build process (stub implementation returns a trigger message).</li>
@@ -99,27 +76,21 @@ Launch the REST API server using the --serve flag. The server provides the follo
 <li class="md-github">Additional endpoints, such as GET /ontology, are available for listing persisted ontologies.</li>
 </ul>
 </li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Interactive Mode with Enhanced Usability:</strong> Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration. This mode supports auto-completion (including dynamic suggestions from loaded ontology classes) and command history.</p>
+<li class="md-github"><strong class="md-github">Interactive Mode with Enhanced Usability:</strong> Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration. This mode supports auto-completion (including dynamic suggestions from loaded ontology classes) and command history.</li>
+<li class="md-github"><strong class="md-github">Ontology Content Query:</strong> Use the <strong class="md-github">--query</strong> command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the <code class="md-github">--regex</code> flag to interpret the search term as a regular expression.</li>
+<li class="md-github"><strong class="md-github">Fetch Ontology from Public Data Source:</strong> <strong class="md-github">Enhanced!</strong> Use the <strong class="md-github">--fetch</strong> command to dynamically retrieve ontology data from a public API. If the environment variable FETCH_URL is set, the CLI will perform an HTTP GET request to that URL and transform the returned JSON into a valid ontology. If FETCH_URL is not set or the fetch fails, it will fall back to a default dummy ontology.</li>
+<li class="md-github"><strong class="md-github">Export OWL/Turtle Format:</strong> Use the <strong class="md-github">--export-owl</strong> command to convert a JSON ontology into an OWL representation in Turtle format.</li>
+<li class="md-github"><strong class="md-github">Export RDF/XML Format:</strong> <strong class="md-github">New!</strong> Use the <strong class="md-github">--export-xml</strong> command to convert a JSON ontology into RDF/XML format, including XML declaration and RDF/XML namespace mappings.</li>
+<li class="md-github"><strong class="md-github">Ontology Difference Comparison:</strong> Use the <strong class="md-github">--diff</strong> command to compare two ontology JSON files and output the differences.</li>
+<li class="md-github"><strong class="md-github">New Commands:</strong>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Build Ontology:</strong> <code class="md-github">--build-ontology [inputFile]</code> builds an ontology from a provided JSON file or generates a default built ontology.</li>
+<li class="md-github"><strong class="md-github">Merge Ontology:</strong> <code class="md-github">--merge-ontology &lt;file1&gt; &lt;file2&gt; [outputFile]</code> merges two ontology JSON files and either outputs the result to STDOUT or writes to the specified file.</li>
+<li class="md-github"><strong class="md-github">Query Ontology:</strong> <code class="md-github">--query-ontology &lt;ontologyFile&gt; &lt;searchTerm&gt; [--regex]</code> searches the content of an ontology for a specified term, with optional regex matching.</li>
+</ul>
 </li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Ontology Content Query:</strong> Use the <strong class="md-github">--query</strong> command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the <code class="md-github">--regex</code> flag to interpret the search term as a regular expression.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Fetch Ontology from Public Data Source:</strong> <strong class="md-github">Enhanced!</strong> Use the <strong class="md-github">--fetch</strong> command to dynamically retrieve ontology data from a public API. If the environment variable FETCH_URL is set, the CLI will perform an HTTP GET request to that URL and transform the returned JSON into a valid ontology. If FETCH_URL is not set or the fetch fails, it will fall back to a default dummy ontology.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Export OWL/Turtle Format:</strong> Use the <strong class="md-github">--export-owl</strong> command to convert a JSON ontology into an OWL representation in Turtle format.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Export RDF/XML Format:</strong> <strong class="md-github">New!</strong> Use the <strong class="md-github">--export-xml</strong> command to convert a JSON ontology into RDF/XML format, including XML declaration and RDF/XML namespace mappings.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Zod Schema Validation:</strong> Ontology JSON files are validated using a strict Zod schema to ensure required properties are present and of the correct types.</p>
-</li>
-<li class="md-github">
-<p class="md-github"><strong class="md-github">Non-deprecated Package Import:</strong> The package version is imported using file read operations to avoid deprecated import assertions.</p>
-</li>
+<li class="md-github"><strong class="md-github">Zod Schema Validation:</strong> Ontology JSON files are validated using a strict Zod schema to ensure required properties are present and of the correct types.</li>
+<li class="md-github"><strong class="md-github">Non-deprecated Package Import:</strong> The package version is imported using file read operations to avoid deprecated import assertions.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="running-the-rest-api-server" href="#running-the-rest-api-server"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Running the REST API Server</h2>
 <p class="md-github">To launch the REST API server, use the --serve flag:</p>
@@ -226,6 +197,27 @@ Launch the REST API server using the --serve flag. The server provides the follo
 </code></pre>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">Build Ontology (New):</strong></p>
+<ul class="md-github">
+<li class="md-github">Without input file (default built ontology):<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-ontology
+</code></pre>
+</li>
+<li class="md-github">With input file:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-ontology path/to/ontology.json
+</code></pre>
+</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">**Merge Ontology (New):</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --merge-ontology ontology1.json ontology2.json [output.json]
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Query Ontology Content (New):</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query-ontology path/to/ontology.json searchTerm [--regex]
+</code></pre>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">REST API Server:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --serve
 </code></pre>
@@ -236,7 +228,7 @@ Launch the REST API server using the --serve flag. The server provides the follo
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Ontology Content Query:</strong></p>
+<p class="md-github"><strong class="md-github">Ontology Content Query (Legacy):</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query path/to/ontology.json searchTerm [--regex]
 </code></pre>
 </li>
@@ -258,7 +250,7 @@ Launch the REST API server using the --serve flag. The server provides the follo
 <p class="md-github">The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, the tool logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If a non-numeric or non-finite value is provided, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value.</p>
 <p class="md-github">For the enhanced --fetch command, you can set a FETCH_URL environment variable to dynamically retrieve ontology data from a public API endpoint. If the fetch fails or FETCH_URL is not provided, the command falls back to a default dummy ontology.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="end-to-end-integration-tests" href="#end-to-end-integration-tests"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>End-to-End Integration Tests</h2>
-<p class="md-github">A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch, export-owl, export-xml, and diff functionalities. To run the integration tests:</p>
+<p class="md-github">A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch, export-owl, export-xml, diff, build-ontology, merge-ontology, and query-ontology functionalities. To run the integration tests:</p>
 <pre class="md-github"><code class="md-github language-bash">npm run test:e2e
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
@@ -268,7 +260,7 @@ Launch the REST API server using the --serve flag. The server provides the follo
 
   </section>
   <footer>
-    <p>Generated on 2025-04-12T21:48:51.402Z</p>
+    <p>Generated on 2025-04-12T21:52:17.413Z</p>
   </footer>
 </body>
 </html>
