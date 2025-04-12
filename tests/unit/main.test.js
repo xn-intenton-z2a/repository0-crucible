@@ -43,7 +43,6 @@ function clearOntologiesDir() {
   }
 }
 
-
 describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--help flag displays usage information', () => {
     clearLogFile();
@@ -348,7 +347,27 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       expect(result.stderr).toContain('LOG_ERR_INVALID_REGEX');
       unlinkSync(ontologyFile);
     });
+  });
 
+  // New tests for --fetch command
+  describe('--fetch command tests', () => {
+    test('outputs fetched ontology JSON to STDOUT when no output file is provided', () => {
+      clearLogFile();
+      const result = spawnSync('node', [cliPath, '--fetch'], { encoding: 'utf-8' });
+      const output = JSON.parse(result.stdout);
+      expect(output).toHaveProperty('name', 'Fetched Ontology');
+      expect(output).toHaveProperty('version', 'fetched-1.0');
+    });
+
+    test('persists fetched ontology JSON to file when output file is provided', () => {
+      clearLogFile();
+      const outputFile = join(tempDir, 'fetchedOntology.json');
+      const result = spawnSync('node', [cliPath, '--fetch', outputFile], { encoding: 'utf-8' });
+      expect(result.stdout).toContain('Fetched ontology persisted to');
+      const fetched = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
+      expect(fetched).toHaveProperty('name', 'Fetched Ontology');
+      unlinkSync(outputFile);
+    });
   });
 });
 
