@@ -55,8 +55,13 @@ function logEvent(eventObj) {
 function getEnvNumber(name, defaultValue) {
   const val = process.env[name];
   if (val === undefined) return defaultValue;
-  // Use Zod to preprocess and validate the numeric value
-  const numericSchema = z.preprocess((input) => Number(input), z.number());
+
+  // Use Zod to preprocess and validate the numeric value, ensuring it is a finite number
+  const numericSchema = z.preprocess((input) => {
+    const num = Number(input);
+    return isNaN(num) || !isFinite(num) ? undefined : num;
+  }, z.number());
+
   const parsed = numericSchema.safeParse(val);
   if (!parsed.success) {
     const warningMsg = `Warning: Received non-numeric value '${val}' for environment variable ${name}; falling back to default value ${defaultValue}`;
