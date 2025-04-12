@@ -69,16 +69,22 @@ function getDefaultTimeout() {
   const defaultValue = 5000;
   const rawTimeout = process.env.DEFAULT_TIMEOUT;
   if (rawTimeout === undefined) {
-    logError('LOG_ERR_ENV_NOT_SET', `DEFAULT_TIMEOUT is not set; using default value of ${defaultValue}`, { rawTimeout });
+    const errorMsg = `DEFAULT_TIMEOUT is not set; using default value of ${defaultValue}`;
+    logError('LOG_ERR_ENV_NOT_SET', errorMsg, { rawTimeout });
+    console.error('LOG_ERR_ENV_NOT_SET', errorMsg);
     return defaultValue;
   }
   const timeoutValue = Number(rawTimeout);
   if (isNaN(timeoutValue)) {
-    logError('LOG_ERR_ENV_NAN', `DEFAULT_TIMEOUT is not a valid number; using default value of ${defaultValue} (input: ${rawTimeout})`, { rawTimeout });
+    const errorMsg = `DEFAULT_TIMEOUT is not a valid number; using default value of ${defaultValue} (input: ${rawTimeout})`;
+    logError('LOG_ERR_ENV_NAN', errorMsg, { rawTimeout });
+    console.error('LOG_ERR_ENV_NAN', errorMsg);
     return defaultValue;
   }
   if (!isFinite(timeoutValue)) {
-    logError('LOG_ERR_ENV_NON_FINITE', `DEFAULT_TIMEOUT must be a finite number; using default value of ${defaultValue} (input: ${rawTimeout})`, { rawTimeout });
+    const errorMsg = `DEFAULT_TIMEOUT must be a finite number; using default value of ${defaultValue} (input: ${rawTimeout})`;
+    logError('LOG_ERR_ENV_NON_FINITE', errorMsg, { rawTimeout });
+    console.error('LOG_ERR_ENV_NON_FINITE', errorMsg);
     return defaultValue;
   }
   return timeoutValue;
@@ -117,8 +123,10 @@ function handleRead(args) {
   } catch (err) {
     if (err instanceof Error && err.name === 'ZodError') {
       logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed', { command: '--read', file: filePath, errors: err.errors });
+      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
     } else {
       logError('LOG_ERR_ONTOLOGY_READ', 'Ontology read error', { command: '--read', error: err.message, file: filePath });
+      console.error('LOG_ERR_ONTOLOGY_READ', err.message);
     }
   }
 }
@@ -142,8 +150,10 @@ function handlePersist(args) {
     } catch (err) {
       if (err instanceof Error && err.name === 'ZodError') {
         logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed', { command: '--persist', input: ontologyArg, errors: err.errors });
+        console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
       } else {
         logError('LOG_ERR_PERSIST_PARSE', 'Error parsing ontology JSON string', { command: '--persist', input: ontologyArg });
+        console.error('LOG_ERR_PERSIST_PARSE', 'Error parsing ontology JSON string');
       }
       return;
     }
@@ -160,6 +170,7 @@ function handlePersist(args) {
     console.log(`Ontology persisted to ${outputFile}`);
   } catch (err) {
     logError('LOG_ERR_PERSIST_WRITE', 'Error persisting ontology', { command: '--persist', error: err.message, outputFile });
+    console.error('LOG_ERR_PERSIST_WRITE', err.message);
   }
 }
 
@@ -189,8 +200,10 @@ function handleExportGraphDB(args) {
   } catch (err) {
     if (err instanceof Error && err.name === 'ZodError') {
       logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed', { command: '--export-graphdb', file: inputFile, errors: err.errors });
+      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
     } else {
       logError('LOG_ERR_EXPORT_GRAPHDB', 'Error exporting GraphDB', { command: '--export-graphdb', error: err.message, inputFile });
+      console.error('LOG_ERR_EXPORT_GRAPHDB', err.message);
     }
   }
 }
@@ -218,8 +231,10 @@ function handleMergePersist(args) {
   } catch (err) {
     if (err instanceof Error && err.name === 'ZodError') {
       logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed during merge', { command: '--merge-persist', error: err.errors });
+      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed during merge');
     } else {
       logError('LOG_ERR_MERGE', 'Error merging ontologies', { command: '--merge-persist', error: err.message, files: [file1, file2, outputFile] });
+      console.error('LOG_ERR_MERGE', err.message);
     }
   }
 }
