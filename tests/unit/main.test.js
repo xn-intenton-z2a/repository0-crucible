@@ -29,6 +29,16 @@ function readLogFile() {
   return '';
 }
 
+// Helper function to write dummy log content
+function writeDummyLog() {
+  const logDir = join(process.cwd(), 'logs');
+  if (!existsSync(logDir)) {
+    mkdirSync(logDir, { recursive: true });
+  }
+  const logFilePath = join(logDir, 'cli.log');
+  writeFileSync(logFilePath, 'dummy log content\n', { encoding: 'utf-8' });
+}
+
 
 describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--help flag displays usage information', () => {
@@ -269,5 +279,21 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     expect(diagnostics).toHaveProperty('processArgs');
     const logContent = readLogFile();
     expect(logContent).toContain('--diagnostics');
+  });
+
+  test('--refresh flag clears logs and outputs confirmation', () => {
+    // Write dummy log content so we can verify it gets cleared
+    const logDir = join(process.cwd(), 'logs');
+    const logFilePath = join(logDir, 'cli.log');
+    if (!existsSync(logDir)) {
+      writeFileSync(logDir, '', { encoding: 'utf-8' });
+    }
+    writeFileSync(logFilePath, 'dummy log content\n', { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--refresh'], { encoding: 'utf-8' });
+    expect(result.stdout).toContain('System state refreshed');
+    const logContent = readLogFile();
+    // The log should only contain the new refresh command entry and not the dummy content
+    expect(logContent).toContain('--refresh');
+    expect(logContent).not.toContain('dummy log content');
   });
 });

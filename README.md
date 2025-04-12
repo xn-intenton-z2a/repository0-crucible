@@ -36,6 +36,7 @@ npm install repository0-crucible
 - **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log), with errors reported to stderr for better diagnostics.
 - **Diagnostics Mode:** Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.
 - **Modular Command Routing:** CLI command logic is implemented inline to ensure all commands are available without external module dependencies, enhancing testability.
+- **System Refresh:** Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting internal states.
 
 ## Usage
 
@@ -92,6 +93,12 @@ node src/lib/main.js --help
   node src/lib/main.js --diagnostics
   ```
   This command outputs a detailed JSON report with diagnostic information.
+
+- **System Refresh:**
+  ```bash
+  node src/lib/main.js --refresh
+  ```
+  This command reinitializes the system state by clearing cached logs and resetting any internal states.
 
 ## Environment Variable Configuration
 
