@@ -5,11 +5,24 @@ import { fileURLToPath } from "url";
 import { readFileSync, writeFileSync, existsSync, appendFileSync, mkdirSync } from "fs";
 import { join, dirname } from "path";
 import dotenv from "dotenv";
+import { z } from "zod";
 
 // Load environment variables from .env file if available
 dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Define Zod schema for ontology validation
+const ontologySchema = z.object({
+  name: z.string().optional(),
+  version: z.string().optional(),
+  classes: z.array(z.string()).default([]),
+  properties: z.record(z.any()).default({})
+});
+
+export function validateOntology(ontology) {
+  return ontologySchema.parse(ontology);
+}
 
 // Enhanced logging function to log CLI events in JSON format to logs/cli.log
 // Now, errors during logging (directory creation or appending logs) are reported to stderr instead of failing silently
@@ -53,14 +66,26 @@ function getEnvNumber(name, defaultValue) {
 
 export function readOntology(filePath) {
   const data = readFileSync(filePath, { encoding: "utf-8" });
+  let ontology;
   try {
-    return JSON.parse(data);
+    ontology = JSON.parse(data);
   } catch (err) {
     throw new Error("Invalid JSON content");
   }
+  try {
+    ontology = validateOntology(ontology);
+  } catch (err) {
+    throw new Error("Ontology validation failed: " + err.message);
+  }
+  return ontology;
 }
 
 export function persistOntology(ontology, filePath) {
+  try {
+    ontology = validateOntology(ontology);
+  } catch (err) {
+    throw new Error("Ontology validation failed: " + err.message);
+  }
   const data = JSON.stringify(ontology, null, 2);
   writeFileSync(filePath, data, { encoding: "utf-8" });
 }

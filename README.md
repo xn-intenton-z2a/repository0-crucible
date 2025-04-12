@@ -34,6 +34,7 @@ npm install repository0-crucible
 - **Custom Ontology Persistence:** Use the new --ontology flag with --persist to supply a custom ontology (as a JSON string or by providing a file path) instead of the default dummy ontology.
 - **Environment Variable Fallback Handling:** The CLI validates numeric environment variables (e.g., DEFAULT_TIMEOUT) and falls back to safe defaults if they are invalid. When a non-numeric value is provided, a clear warning is printed to stderr before falling back.
 - **Robust Logging:** Every command execution is logged with a timestamp, command arguments, and outcome in JSON format to a dedicated log file (logs/cli.log). The logging functionality has been enhanced to report errors (such as directory creation or file writing failures) to stderr for better diagnostics.
+- **Schema Validation:** Ontology JSON objects are validated using Zod to ensure they adhere to the expected structure. This enhances error reporting and robustness.
 
 ## Usage
 

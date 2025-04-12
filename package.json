@@ -1,7 +1,7 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
   "version": "0.1.3-2",
-  "description": "CLI tool for building OWL ontologies from live, verified public data sources with enhanced diagnostics, persistence, extended ontology model wrappers, detailed environment variable NaN fallback handling, and GraphDB exporter functionality.",
+  "description": "CLI tool for building OWL ontologies from live, verified public data sources with enhanced diagnostics, persistence, extended ontology model wrappers, detailed environment variable NaN fallback handling, GraphDB exporter functionality, and Zod-based schema validation.",
   "type": "module",
   "main": "src/lib/main.js",
   "scripts": {
