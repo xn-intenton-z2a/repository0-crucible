@@ -5,10 +5,15 @@
   "openIssues": 9,
   "issuesClosedLastHour": 12,
   "issuesClosedLastDay": 100,
-  "openPRs": 0,
-  "prDetails": [],
+  "openPRs": 1,
+  "prDetails": [
+    {
+      "title": "Consolidated DEFAULT_TIMEOUT validation logic with clear error codes for undefined non-numeric and non-finite values. (fixes #1431)",
+      "ageMinutes": 0
+    }
+  ],
   "diffMinutes": 0,
-  "diffMinutesMain": 5,
+  "diffMinutesMain": 6,
   "commitsLastHour": 6,
   "commitsLastDay": 40,
   "lastFiveCommitMessages": [
@@ -45,5 +50,5 @@
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T09:39:30.720Z"
+  "generatedAt": "2025-04-12T09:39:50.705Z"
 }
