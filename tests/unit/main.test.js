@@ -39,6 +39,7 @@ function writeDummyLog() {
   writeFileSync(logFilePath, 'dummy log content\n', { encoding: 'utf-8' });
 }
 
+
 describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--help flag displays usage information', () => {
     clearLogFile();

@@ -1,65 +1,3 @@
-// File: src/lib/logger.js
-#!/usr/bin/env node
-
-import { join } from 'path';
-import { existsSync, mkdirSync, appendFileSync, writeFileSync, lstatSync, rmSync } from 'fs';
-
-/**
- * Logs a command execution to the logs/cli.log file.
- * Ensures the logs directory exists and is a directory.
- * @param {string} commandFlag - The command flag invoked.
- */
-export function logCommand(commandFlag) {
-  const logDir = join(process.cwd(), 'logs');
-  if (existsSync(logDir)) {
-    try {
-      const stats = lstatSync(logDir);
-      if (!stats.isDirectory()) {
-        rmSync(logDir);
-        mkdirSync(logDir, { recursive: true });
-      }
-    } catch (err) {
-      mkdirSync(logDir, { recursive: true });
-    }
-  } else {
-    mkdirSync(logDir, { recursive: true });
-  }
-  const logFile = join(logDir, 'cli.log');
-  const logEntry = { timestamp: new Date().toISOString(), command: commandFlag };
-  appendFileSync(logFile, JSON.stringify(logEntry) + "\n", { encoding: 'utf-8' });
-}
-
-/**
- * Logs an error with a structured error code and context to logs/cli.log, and prints to stderr.
- * @param {string} errorCode - The error code identifier.
- * @param {string} message - The error message.
- * @param {object} context - Additional context for the error.
- */
-export function logError(errorCode, message, context = {}) {
-  const logDir = join(process.cwd(), 'logs');
-  if (!existsSync(logDir)) {
-    try {
-      mkdirSync(logDir, { recursive: true });
-    } catch (err) {
-      console.error(`ERROR [LOG_ERR_DIR_CREATE] Failed to create logs directory: ${err.message}`);
-    }
-  }
-  const logFile = join(logDir, 'cli.log');
-  const errorEntry = {
-    timestamp: new Date().toISOString(),
-    errorCode,
-    message,
-    context
-  };
-  try {
-    appendFileSync(logFile, JSON.stringify(errorEntry) + "\n", { encoding: 'utf-8' });
-  } catch (err) {
-    console.error(`ERROR [LOG_ERR_LOG_WRITE] Failed to write to log file: ${err.message}`);
-  }
-  console.error(`ERROR [${errorCode}] ${message}`);
-}
-
-// File: src/lib/main.js
 #!/usr/bin/env node
 // src/lib/main.js
 
@@ -266,17 +204,17 @@ function handleDiagnostics(args, { logCommand, getDefaultTimeout }) {
 
 function handleRefresh(args, { logCommand }) {
   const logDir = join(process.cwd(), 'logs');
-  if (existsSync(logDir)) {
-    try {
+  try {
+    if (existsSync(logDir)) {
       const stats = lstatSync(logDir);
       if (!stats.isDirectory()) {
-        rmSync(logDir);
+        rmSync(logDir, { force: true });
         mkdirSync(logDir, { recursive: true });
       }
-    } catch (err) {
+    } else {
       mkdirSync(logDir, { recursive: true });
     }
-  } else {
+  } catch (err) {
     mkdirSync(logDir, { recursive: true });
   }
   const logFile = join(logDir, 'cli.log');
