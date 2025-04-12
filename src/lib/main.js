@@ -142,6 +142,48 @@ export function main(args) {
   // Log the received arguments
   logEvent({ event: 'start', command: 'main', detail: 'CLI started', args });
 
+  // Diagnostics mode: output detailed diagnostic information in JSON format
+  if (args.includes('--diagnostics')) {
+    let packageVersion = "unknown";
+    try {
+      const pkgJsonUrl = new URL('../../package.json', import.meta.url);
+      const pkgData = readFileSync(pkgJsonUrl, { encoding: 'utf-8' });
+      const pkg = JSON.parse(pkgData);
+      packageVersion = pkg.version || "unknown";
+    } catch (err) {
+      packageVersion = "unknown";
+    }
+    const defaultTimeout = getEnvNumber("DEFAULT_TIMEOUT", 5000);
+    const diagnosticsReport = {
+      packageVersion,
+      environment: {
+        DEFAULT_TIMEOUT: defaultTimeout,
+        rawEnv: {
+          DEFAULT_TIMEOUT: process.env.DEFAULT_TIMEOUT
+        }
+      },
+      system: {
+        nodeVersion: process.version,
+        platform: process.platform,
+        pid: process.pid,
+        cwd: process.cwd()
+      },
+      cliCommands: [
+        { command: "--help", description: "Display help message" },
+        { command: "--version", description: "Display package version" },
+        { command: "--read <file>", description: "Read ontology from JSON file" },
+        { command: "--persist <file> [--ontology <json|string:file>]", description: "Persist ontology to JSON file" },
+        { command: "--export-graphdb <input> [output]", description: "Export GraphDB-friendly format" },
+        { command: "--merge-persist <file1> <file2> <output>", description: "Merge two ontologies and persist" },
+        { command: "--diagnostics", description: "Output diagnostic information in JSON format" }
+      ],
+      processArgs: process.argv.slice(2)
+    };
+    console.log(JSON.stringify(diagnosticsReport, null, 2));
+    logEvent({ event: 'success', command: '--diagnostics', detail: 'Diagnostics information output' });
+    return;
+  }
+
   // If --version flag is provided, handle version first and exit without logging DEFAULT_TIMEOUT.
   if (args.includes("--version")) {
     try {
@@ -175,6 +217,7 @@ export function main(args) {
   --persist <file> [--ontology <json|string:file>]  Persist ontology to JSON file.
   --export-graphdb <input> [output]  Export GraphDB-friendly format.
   --merge-persist <file1> <file2> <output>  Merge two ontologies and persist.
+  --diagnostics                 Output diagnostic information in JSON format.
   --help                        Display this help message.`);
     logEvent({ event: 'success', command: '--help', detail: 'Help information displayed' });
     return;
