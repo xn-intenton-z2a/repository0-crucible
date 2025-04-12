@@ -32,7 +32,7 @@ npm install repository0-crucible
 - **Version Display:** Use the new --version flag to display the current package version as specified in package.json.
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions.
 - **Custom Ontology Persistence:** Use the new --ontology flag with --persist to supply a custom ontology (as a JSON string or by providing a file path) instead of the default dummy ontology.
-- **Environment Variable Fallback Handling:** The CLI validates numeric environment variables (e.g., DEFAULT_TIMEOUT) and falls back to safe defaults if they are invalid.
+- **Environment Variable Fallback Handling:** The CLI validates numeric environment variables (e.g., DEFAULT_TIMEOUT) and falls back to safe defaults if they are invalid. When a non-numeric value is provided, a clear warning is printed to stderr before falling back.
 - **Robust Logging:** Every command execution is logged with a timestamp, command arguments, and outcome in JSON format to a dedicated log file (logs/cli.log). The logging functionality has been enhanced to report errors (such as directory creation or file writing failures) to stderr for better diagnostics.
 
 ## Usage
@@ -90,7 +90,7 @@ node src/lib/main.js --help
 
 ## Environment Variable Configuration
 
-The CLI tool checks for numeric environment variables such as DEFAULT_TIMEOUT. If an environment variable intended to represent a number is invalid (NaN), the tool will automatically fall back to a safe default (e.g., 5000).
+The CLI tool checks for numeric environment variables such as DEFAULT_TIMEOUT. If an environment variable intended to represent a number is invalid (NaN), the tool will automatically fall back to a safe default (e.g., 5000), after printing a clear warning to stderr.
 
 Example of setting an environment variable:
 
