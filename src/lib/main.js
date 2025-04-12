@@ -426,6 +426,7 @@ function handleQuery(args) {
   }
 }
 
+// Interactive mode for ontology exploration
 function handleInteractive(args) {
   logCommand('--interactive');
   console.log("Entering Interactive Mode. Type 'help' for available commands.");
@@ -435,8 +436,8 @@ function handleInteractive(args) {
 
   // Completer function that suggests base commands and, if an ontology is loaded, its classes.
   function completer(line) {
-    const suggestions = baseCommands.concat((loadedOntology && loadedOntology.classes) ? loadedOntology.classes : []);
-    const hits = suggestions.filter((c) => c.startsWith(line));
+    const suggestions = baseCommands.concat((loadedOntology && Array.isArray(loadedOntology.classes)) ? loadedOntology.classes : []);
+    const hits = suggestions.filter(c => c.startsWith(line));
     return [hits.length ? hits : suggestions, line];
   }
 
@@ -685,108 +686,17 @@ function handleServe(args) {
   }, 2000);
 }
 
-// Enhanced Interactive Mode with Auto-Completion and Command History Support
-function handleInteractive(args) {
-  logCommand('--interactive');
-  console.log("Entering Interactive Mode. Type 'help' for available commands.");
-
-  let loadedOntology = null;
-  const baseCommands = ["load", "show", "list-classes", "help", "exit"];
-
-  // Completer function that suggests base commands and, if an ontology is loaded, its classes.
-  function completer(line) {
-    const suggestions = baseCommands.concat((loadedOntology && Array.isArray(loadedOntology.classes)) ? loadedOntology.classes : []);
-    const hits = suggestions.filter(c => c.startsWith(line));
-    return [hits.length ? hits : suggestions, line];
-  }
-
-  const rl = readline.createInterface({
-    input: process.stdin,
-    output: process.stdout,
-    prompt: 'interactive> ',
-    completer
-  });
-
-  rl.prompt();
-  rl.on('line', (line) => {
-    const input = line.trim();
-    const tokens = input.split(' ');
-    const command = tokens[0];
-    switch (command) {
-      case 'load':
-        if (tokens.length < 2) {
-          console.log("Usage: load <file>");
-        } else {
-          const filePath = tokens[1];
-          try {
-            const data = readFileSync(filePath, { encoding: 'utf-8' });
-            const ontology = JSON.parse(data);
-            ontologySchema.parse(ontology);
-            loadedOntology = ontology;
-            logCommand('interactive: load');
-            console.log(`Ontology '${ontology.name}' loaded successfully.`);
-          } catch (err) {
-            logError('LOG_ERR_INTERACTIVE_LOAD', 'Failed to load ontology', { error: err.message });
-            console.error("Error loading ontology:", err.message);
-          }
-        }
-        break;
-      case 'show':
-        if (loadedOntology) {
-          console.log("Loaded Ontology:", JSON.stringify(loadedOntology, null, 2));
-        } else {
-          console.log("No ontology loaded.");
-        }
-        logCommand('interactive: show');
-        break;
-      case 'list-classes':
-        if (loadedOntology && loadedOntology.classes) {
-          console.log("Classes:", loadedOntology.classes.join(', '));
-        } else {
-          console.log("No ontology loaded or ontology has no classes.");
-        }
-        logCommand('interactive: list-classes');
-        break;
-      case 'help':
-        console.log("Interactive commands:");
-        console.log(" load <file>      - Load ontology from file");
-        console.log(" show             - Show loaded ontology details");
-        console.log(" list-classes     - List classes in the loaded ontology");
-        console.log(" help             - Show this help message");
-        console.log(" exit             - Exit interactive mode");
-        logCommand('interactive: help');
-        break;
-      case 'exit':
-        logCommand('interactive: exit');
-        rl.close();
-        return;
-      default:
-        console.log("Unknown command. Type 'help' for available commands.");
-        logCommand(`interactive: unknown command: ${input}`);
-    }
-    rl.prompt();
-  }).on('close', () => {
-    console.log("Exiting Interactive Mode.");
-  });
-}
-
-function handleDefault(args) {
-  logCommand('default');
-  console.log('Invalid command');
-}
-
-// Main function
-function main() {
-  const args = process.argv.slice(2);
-  dispatchCommand(args);
-}
-
 // Define interactiveCompleter for test auto-completion
 function interactiveCompleter(loadedOntology, line) {
   const baseCommands = ["load", "show", "list-classes", "help", "exit"];
   const suggestions = baseCommands.concat((loadedOntology && Array.isArray(loadedOntology.classes)) ? loadedOntology.classes : []);
   const hits = suggestions.filter(c => c.startsWith(line));
   return [hits.length ? hits : suggestions, line];
+}
+
+function main() {
+  const args = process.argv.slice(2);
+  dispatchCommand(args);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
