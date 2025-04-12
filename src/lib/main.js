@@ -11,26 +11,30 @@ dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-// Helper logging function to log CLI events in JSON format to logs/cli.log
+// Enhanced logging function to log CLI events in JSON format to logs/cli.log
+// Now, errors during logging (directory creation or appending logs) are reported to stderr instead of failing silently
 function logEvent(eventObj) {
   const logDir = join(__dirname, '../../logs');
   const logPath = join(logDir, 'cli.log');
-  try {
-    if (!existsSync(logDir)) {
-      mkdirSync(logDir, { recursive: true });
-    }
-  } catch (e) {
-    // If logging directory creation fails, silently fail logging
-  }
   const entry = {
     timestamp: new Date().toISOString(),
     args: process.argv.slice(2),
     ...eventObj
   };
+  const entryString = JSON.stringify(entry) + "\n";
+  
   try {
-    appendFileSync(logPath, JSON.stringify(entry) + "\n", { encoding: "utf-8" });
-  } catch (e) {
-    // Fail silently if logging fails
+    if (!existsSync(logDir)) {
+      mkdirSync(logDir, { recursive: true });
+    }
+  } catch (err) {
+    console.error("Logging directory creation failed:", err.message);
+  }
+
+  try {
+    appendFileSync(logPath, entryString, { encoding: "utf-8" });
+  } catch (err) {
+    console.error("Failed to write to log file:", err.message);
   }
 }
 

@@ -33,7 +33,7 @@ npm install repository0-crucible
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions.
 - **Custom Ontology Persistence:** Use the new --ontology flag with --persist to supply a custom ontology (as a JSON string or by providing a file path) instead of the default dummy ontology.
 - **Environment Variable Fallback Handling:** The CLI validates numeric environment variables (e.g., DEFAULT_TIMEOUT) and falls back to safe defaults if they are invalid.
-- **Robust Logging:** Every command execution is logged with a timestamp, command arguments, and outcome in JSON format to a dedicated log file (logs/cli.log).
+- **Robust Logging:** Every command execution is logged with a timestamp, command arguments, and outcome in JSON format to a dedicated log file (logs/cli.log). The logging functionality has been enhanced to report errors (such as directory creation or file writing failures) to stderr for better diagnostics.
 
 ## Usage
 
@@ -101,7 +101,7 @@ node src/lib/main.js --help
 
 ## Logging
 
-Every CLI command execution is logged automatically in JSON format. The log entries include a timestamp, the command arguments, and the outcome (success, error, or informational). Logs are stored in a dedicated file at logs/cli.log with automatic directory and file creation as needed.
+Every CLI command execution is logged automatically in JSON format. The log entries include a timestamp, the command arguments, and the outcome (success, error, or informational). Logs are stored in a dedicated file at logs/cli.log with automatic directory and file creation as needed. The logging functionality has been enhanced to report errors to stderr if log directory creation or file writing fails, ensuring better diagnostics during execution.
 
 ## End-to-End Integration Tests
 
