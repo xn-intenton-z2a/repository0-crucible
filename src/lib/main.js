@@ -51,22 +51,19 @@ function logEvent(eventObj) {
   }
 }
 
-// Refactored helper function to get and validate a numeric environment variable using Zod for robust validation
+// Refactored helper function to get and validate a numeric environment variable
+// Now explicitly checks for non-finite values (NaN, Infinity, -Infinity) and falls back to a safe default
 function getEnvNumber(name, defaultValue) {
   const val = process.env[name];
   if (val === undefined) return defaultValue;
-
-  const numericSchema = z.number().refine(num => Number.isFinite(num), { message: "Invalid number" });
-  let parsedValue;
-  try {
-    parsedValue = numericSchema.parse(Number(val));
-    return parsedValue;
-  } catch (error) {
-    const warningMsg = `Warning: Received non-numeric value '${val}' for environment variable ${name}; falling back to default value ${defaultValue}`;
+  const numericValue = Number(val);
+  if (!Number.isFinite(numericValue)) {
+    const warningMsg = `Warning: Received non-finite value '${val}' for environment variable ${name}; falling back to default value ${defaultValue}`;
     console.error(warningMsg);
     logEvent({ event: 'warning', command: 'getEnvNumber', detail: warningMsg });
     return defaultValue;
   }
+  return numericValue;
 }
 
 export function readOntology(filePath) {
@@ -206,7 +203,7 @@ export function main(args) {
     return;
   }
 
-  // Validate and log numeric environment variable DEFAULT_TIMEOUT with fallback for non-version commands
+  // Validate and log numeric environment variable DEFAULT_TIMEOUT for non-version commands
   const defaultTimeout = getEnvNumber("DEFAULT_TIMEOUT", 5000);
   console.log("Using DEFAULT_TIMEOUT:", defaultTimeout);
 
