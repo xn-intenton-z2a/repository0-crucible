@@ -3,6 +3,7 @@
 
 import { fileURLToPath } from "url";
 import { readFileSync, writeFileSync } from "fs";
+import { exportGraphDB } from "./graphdbExporter.js"; // New module for GraphDB exporting
 
 export function readOntology(filePath) {
   const data = readFileSync(filePath, { encoding: "utf-8" });
@@ -61,10 +62,75 @@ export function main(args) {
     return;
   }
 
+  if (args.includes('--export-graphdb')) {
+    const index = args.indexOf('--export-graphdb');
+    const inputFile = args[index + 1];
+    if (!inputFile) {
+      console.error('Error: --export-graphdb option requires an input file path argument.');
+      process.exit(1);
+    }
+    // Optional output file argument
+    const outputFile = args[index + 2] || null;
+    try {
+      const ontology = readOntology(inputFile);
+      const graphdbData = exportGraphDB(ontology);
+      const outputString = JSON.stringify(graphdbData, null, 2);
+      if (outputFile) {
+        writeFileSync(outputFile, outputString, { encoding: "utf-8" });
+        console.log(`GraphDB exporter output written to ${outputFile}`);
+      } else {
+        console.log('GraphDB exporter output:', outputString);
+      }
+    } catch (err) {
+      console.error('Error exporting GraphDB data:', err.message);
+      process.exit(1);
+    }
+    return;
+  }
+
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   main(args);
+}
+
+// -------------------------------------------------------------------
+// New Module: src/lib/graphdbExporter.js
+// This module exports a function to convert an OWL ontology JSON
+// into a GraphDB-friendly format consisting of nodes and edges.
+// -------------------------------------------------------------------
+
+// Note: In a real-world scenario, the conversion schema might be more complex.
+export function exportGraphDB(ontology) {
+  const nodes = [];
+  const edges = [];
+  
+  // Create main ontology node
+  nodes.push({
+    id: "ontology",
+    label: ontology.name || "Ontology",
+    version: ontology.version || "unknown"
+  });
+  
+  // Create nodes for ontology classes and link them
+  if (Array.isArray(ontology.classes)) {
+    ontology.classes.forEach((cls, idx) => {
+      const classNodeId = `class_${idx}`;
+      nodes.push({ id: classNodeId, label: cls });
+      edges.push({ from: "ontology", to: classNodeId, relation: "has_class" });
+    });
+  }
+  
+  // Create nodes for ontology properties and link them
+  if (ontology.properties && typeof ontology.properties === "object") {
+    Object.entries(ontology.properties).forEach(([key, value]) => {
+      const propNodeId = `prop_${key}`;
+      nodes.push({ id: propNodeId, label: key, value });
+      edges.push({ from: "ontology", to: propNodeId, relation: "has_property" });
+    });
+  }
+  
+  return { nodes, edges };
 }

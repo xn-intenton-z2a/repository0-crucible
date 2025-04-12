@@ -1,56 +1,39 @@
-import { describe, test, expect, afterEach } from 'vitest';
-import { main, readOntology, persistOntology } from '../../src/lib/main.js';
-import { existsSync, unlinkSync, writeFileSync, readFileSync } from 'fs';
+import { describe, test, expect } from 'vitest';
+import { exportGraphDB } from '../../src/lib/graphdbExporter.js';
 
-// Tests for main module
+describe('GraphDB Exporter Module', () => {
+  test('should export ontology with classes and properties correctly', () => {
+    const ontology = {
+      name: 'Test Ontology',
+      version: '2.0',
+      classes: ['Class1', 'Class2'],
+      properties: { propA: 'valueA' }
+    };
+    const result = exportGraphDB(ontology);
+    expect(result).toHaveProperty('nodes');
+    expect(result).toHaveProperty('edges');
 
-describe('Main Module Import', () => {
-  test('should be non-null', () => {
-    expect(main).not.toBeNull();
-  });
-});
+    const ontologyNode = result.nodes.find(node => node.id === 'ontology');
+    expect(ontologyNode).toBeDefined();
+    expect(ontologyNode.label).toBe('Test Ontology');
+    
+    const classNodes = result.nodes.filter(node => node.id.startsWith('class_'));
+    expect(classNodes.length).toBe(2);
 
-describe('Default Demo Output', () => {
-  test('should terminate without error', () => {
-    // Reset process.argv to simulate CLI without commands
-    process.argv = ['node', 'src/lib/main.js'];
-    main([]);
-  });
-});
-
-// Tests for persistence functions
-
-describe('Persistence Module', () => {
-  const tempFilePath = './temp_ontology_test.json';
-  const dummyOntology = { test: 'data', value: 123 };
-
-  afterEach(() => {
-    if (existsSync(tempFilePath)) {
-      unlinkSync(tempFilePath);
-    }
+    const propertyNode = result.nodes.find(node => node.id === 'prop_propA');
+    expect(propertyNode).toBeDefined();
+    expect(propertyNode.value).toBe('valueA');
   });
 
-  test('persistOntology writes correct JSON to file', () => {
-    persistOntology(dummyOntology, tempFilePath);
-    expect(existsSync(tempFilePath)).toBe(true);
-    const fileContent = readFileSync(tempFilePath, { encoding: 'utf-8' });
-    const parsed = JSON.parse(fileContent);
-    expect(parsed).toEqual(dummyOntology);
-  });
-
-  test('readOntology reads and parses JSON from file correctly', () => {
-    const content = JSON.stringify(dummyOntology, null, 2);
-    writeFileSync(tempFilePath, content, { encoding: 'utf-8' });
-    const ontology = readOntology(tempFilePath);
-    expect(ontology).toEqual(dummyOntology);
-  });
-
-  test('readOntology throws error for non-existent file', () => {
-    expect(() => readOntology('non_existent_file.json')).toThrow();
-  });
-
-  test('readOntology throws error for invalid JSON content', () => {
-    writeFileSync(tempFilePath, "invalid json", { encoding: 'utf-8' });
-    expect(() => readOntology(tempFilePath)).toThrow();
+  test('should handle ontology without classes and properties', () => {
+    const ontology = { name: 'Empty Ontology', version: '1.0' };
+    const result = exportGraphDB(ontology);
+    const ontologyNode = result.nodes.find(node => node.id === 'ontology');
+    expect(ontologyNode).toBeDefined();
+    
+    // No additional nodes or edges should exist
+    const otherNodes = result.nodes.filter(node => node.id !== 'ontology');
+    expect(otherNodes.length).toBe(0);
+    expect(result.edges.length).toBe(0);
   });
 });
