@@ -288,3 +288,4 @@ fabric.properties
 /tests/unit/output.*
 /output.*
 /ontology.json
+/CONTRIBUTING.md.bak

@@ -1,4 +1,4 @@
-# json-schema-diff
+# owl-builder
 
 owl-builder is a CLI tool and JavaScript library for building dynamic OWL ontologies from live, verified public data sources.
 

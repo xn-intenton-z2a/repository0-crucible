@@ -1,7 +1,7 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
-  "version": "0.1.3-2",
-  "description": "CLI tool for building OWL ontologies from live, verified public data sources with enhanced diagnostics, persistence, extended ontology model wrappers, and detailed environment variable NaN fallback handling.",
+  "version": "0.1.1-8",
+  "description": "CLI tool for repository0-crucible, a unified solution demonstrating automated CLI argument conversion, plugin architecture, advanced CI/CD workflows, and plugin transformation trace logging via --trace-plugins flag.",
   "type": "module",
   "main": "src/lib/main.js",
   "scripts": {
@@ -21,7 +21,9 @@
     "build-intermediate": "node src/lib/main.js --build-intermediate",
     "build-enhanced": "node src/lib/main.js --build-enhanced",
     "refresh": "node src/lib/main.js --refresh",
-    "merge-persist": "node src/lib/main.js --merge-persist"
+    "merge-persist": "node src/lib/main.js --merge-persist",
+    "benchmark": "node src/lib/main.js --benchmark",
+    "llm-regenerate": "echo 'LLM-driven automated code regeneration trigger initiated'"
   },
   "keywords": [],
   "author": "",
@@ -68,7 +70,7 @@
   },
   "eslintIgnore": [
     "archive/**",
-    "build/",
+    "build/", 
     "coverage/",
     "dist/",
     "exports/",
