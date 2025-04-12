@@ -1,6 +1,5 @@
 import { describe, test, expect, afterEach } from 'vitest';
-import { main } from '../../src/lib/main.js';
-import { readOntology, persistOntology } from '../../src/lib/persistence.js';
+import { main, readOntology, persistOntology } from '../../src/lib/main.js';
 import { existsSync, unlinkSync, writeFileSync, readFileSync } from 'fs';
 
 // Tests for main module

@@ -26,7 +26,7 @@ npm install repository0-crucible
 ## Features
 
 - CLI tool for building and managing OWL ontologies.
-- JSON-based persistence and retrieval of OWL ontologies via a dedicated persistence module (located in src/lib/persistence.js).
+- JSON-based persistence and retrieval of OWL ontologies via integrated persistence functions exported from the main module (located in src/lib/main.js).
 
 ## Usage
 
@@ -58,7 +58,7 @@ The --read command will load and display the ontology from the specified JSON fi
 For direct use of the persistence functionality in your code, import the module from:
 
 ```javascript
-import { readOntology, persistOntology } from './src/lib/persistence.js';
+import { readOntology, persistOntology } from './src/lib/main.js';
 ```
 
 ## Incremental Changes Plan

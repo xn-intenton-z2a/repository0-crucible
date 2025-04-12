@@ -2,7 +2,21 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
-import { readOntology, persistOntology } from "./persistence.js";
+import { readFileSync, writeFileSync } from "fs";
+
+export function readOntology(filePath) {
+  const data = readFileSync(filePath, { encoding: "utf-8" });
+  try {
+    return JSON.parse(data);
+  } catch (err) {
+    throw new Error("Invalid JSON content");
+  }
+}
+
+export function persistOntology(ontology, filePath) {
+  const data = JSON.stringify(ontology, null, 2);
+  writeFileSync(filePath, data, { encoding: "utf-8" });
+}
 
 export function main(args) {
   // Check for persistence commands
