@@ -2,13 +2,18 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 11,
+  "openIssues": 12,
   "issuesClosedLastHour": 8,
   "issuesClosedLastDay": 100,
-  "openPRs": 0,
-  "prDetails": [],
+  "openPRs": 1,
+  "prDetails": [
+    {
+      "title": "Refined DEFAULT_TIMEOUT validation to include detailed logging of invalid inputs and fallback behavior. (fixes #1413)",
+      "ageMinutes": 0
+    }
+  ],
   "diffMinutes": 0,
-  "diffMinutesMain": 8,
+  "diffMinutesMain": 9,
   "commitsLastHour": 4,
   "commitsLastDay": 34,
   "lastFiveCommitMessages": [
@@ -38,12 +43,12 @@
     "details": [
       {
         "branch": "agentic-lib-issue-1413",
-        "minutesSinceLastCommit": 0
+        "minutesSinceLastCommit": 1
       }
     ]
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T08:38:59.066Z"
+  "generatedAt": "2025-04-12T08:39:57.081Z"
 }
