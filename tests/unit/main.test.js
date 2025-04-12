@@ -135,7 +135,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const invalidJSON = '{ invalid json }';
     const args = [cliPath, '--persist', outputFile, '--ontology', invalidJSON];
     const result = spawnSync('node', args, { encoding: 'utf-8' });
-    expect(result.stderr).toContain('Error parsing ontology JSON string');
+    expect(result.stderr).toContain('LOG_ERR_PERSIST_PARSE');
     const logContent = readLogFile();
     expect(logContent).toContain('--persist');
   });
@@ -217,7 +217,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       env: { ...process.env, DEFAULT_TIMEOUT: 'not_a_number' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 5000');
-    expect(result.stderr).toContain('DEFAULT_TIMEOUT is NaN; using default value of 5000');
+    expect(result.stderr).toContain('LOG_ERR_ENV_NAN');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
@@ -229,8 +229,8 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       env: { ...process.env, DEFAULT_TIMEOUT: '3000' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 3000');
-    expect(result.stderr).not.toContain('DEFAULT_TIMEOUT is NaN');
-    expect(result.stderr).not.toContain('DEFAULT_TIMEOUT not set');
+    expect(result.stderr).not.toContain('LOG_ERR_ENV_NAN');
+    expect(result.stderr).not.toContain('LOG_ERR_ENV_NON_FINITE');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
@@ -242,7 +242,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       env: { ...process.env, DEFAULT_TIMEOUT: 'Infinity' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 5000');
-    expect(result.stderr).toContain('DEFAULT_TIMEOUT not set; using default value of 5000');
+    expect(result.stderr).toContain('LOG_ERR_ENV_NON_FINITE');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
@@ -254,7 +254,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       env: { ...process.env, DEFAULT_TIMEOUT: '-Infinity' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 5000');
-    expect(result.stderr).toContain('DEFAULT_TIMEOUT not set; using default value of 5000');
+    expect(result.stderr).toContain('LOG_ERR_ENV_NON_FINITE');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
@@ -266,7 +266,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       env: { ...process.env, DEFAULT_TIMEOUT: 'NaN' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 5000');
-    expect(result.stderr).toContain('DEFAULT_TIMEOUT is NaN; using default value of 5000');
+    expect(result.stderr).toContain('LOG_ERR_ENV_NAN');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
@@ -277,7 +277,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const ontologyFile = join(tempDir, 'invalidOntology.json');
     writeFileSync(ontologyFile, JSON.stringify(invalidOntology), { encoding: 'utf-8' });
     const result = spawnSync('node', [cliPath, '--read', ontologyFile], { encoding: 'utf-8' });
-    expect(result.stderr).toContain('Ontology validation failed:');
+    expect(result.stderr).toContain('LOG_ERR_ONTOLOGY_VALIDATE');
     unlinkSync(ontologyFile);
   });
 
