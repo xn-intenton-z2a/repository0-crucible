@@ -54,6 +54,7 @@
 <li class="md-github">Merge functionality: merge two ontology JSON files and persist the merged result via the new --merge-persist CLI option.</li>
 <li class="md-github"><strong class="md-github">Version Display:</strong> Use the new --version flag to display the current package version as specified in package.json.</li>
 <li class="md-github"><strong class="md-github">Help Command:</strong> Use --help (or run without arguments) to display CLI usage instructions.</li>
+<li class="md-github"><strong class="md-github">Custom Ontology Persistence:</strong> Use the new --ontology flag with --persist to supply a custom ontology (as a JSON string or by providing a file path) instead of the default dummy ontology.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">To run the CLI tool and see help instructions:</p>
@@ -77,9 +78,24 @@
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Persist Ontology to JSON File:</strong></p>
+<p class="md-github"><strong class="md-github">Persist Ontology to JSON File (Using Default Dummy Ontology):</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --persist path/to/output.json
 </code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Persist Ontology with Custom Input:</strong></p>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Using a JSON string:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --persist path/to/output.json --ontology '{&quot;name&quot;: &quot;Custom Ontology&quot;, &quot;version&quot;: &quot;2.0&quot;, &quot;classes&quot;: [&quot;CustomClass&quot;], &quot;properties&quot;: {&quot;customProp&quot;: &quot;customValue&quot;}}'
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Using a file containing valid JSON:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --persist path/to/output.json --ontology path/to/customOntology.json
+</code></pre>
+</li>
+</ul>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Export Ontology to GraphDB Format:</strong></p>
@@ -105,7 +121,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-12T04:36:36.263Z</p>
+    <p>Generated on 2025-04-12T04:36:57.032Z</p>
   </footer>
 </body>
 </html>
