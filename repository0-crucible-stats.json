@@ -2,13 +2,18 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 10,
+  "openIssues": 12,
   "issuesClosedLastHour": 10,
   "issuesClosedLastDay": 100,
-  "openPRs": 0,
-  "prDetails": [],
+  "openPRs": 1,
+  "prDetails": [
+    {
+      "title": "Refactored DEFAULT_TIMEOUT handling to explicitly detect NaN values and updated tests and README accordingly. (fixes #1421)",
+      "ageMinutes": 1
+    }
+  ],
   "diffMinutes": 0,
-  "diffMinutesMain": 8,
+  "diffMinutesMain": 10,
   "commitsLastHour": 5,
   "commitsLastDay": 35,
   "lastFiveCommitMessages": [
@@ -38,12 +43,12 @@
     "details": [
       {
         "branch": "agentic-lib-issue-1421",
-        "minutesSinceLastCommit": 0
+        "minutesSinceLastCommit": 1
       }
     ]
   },
-  "averagePRAge": 0,
+  "averagePRAge": 1,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T08:50:29.526Z"
+  "generatedAt": "2025-04-12T08:51:56.555Z"
 }
