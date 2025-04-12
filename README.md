@@ -31,6 +31,7 @@ npm install repository0-crucible
 - Merge functionality: merge two ontology JSON files and persist the merged result via the new --merge-persist CLI option.
 - **Version Display:** Use the new --version flag to display the current package version as specified in package.json.
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions.
+- **Custom Ontology Persistence:** Use the new --ontology flag with --persist to supply a custom ontology (as a JSON string or by providing a file path) instead of the default dummy ontology.
 
 ## Usage
 
@@ -57,10 +58,21 @@ node src/lib/main.js --help
   node src/lib/main.js --read path/to/ontology.json
   ```
 
-- **Persist Ontology to JSON File:**
+- **Persist Ontology to JSON File (Using Default Dummy Ontology):**
   ```bash
   node src/lib/main.js --persist path/to/output.json
   ```
+
+- **Persist Ontology with Custom Input:**
+  - Using a JSON string:
+    ```bash
+    node src/lib/main.js --persist path/to/output.json --ontology '{"name": "Custom Ontology", "version": "2.0", "classes": ["CustomClass"], "properties": {"customProp": "customValue"}}'
+    ```
+
+  - Using a file containing valid JSON:
+    ```bash
+    node src/lib/main.js --persist path/to/output.json --ontology path/to/customOntology.json
+    ```
 
 - **Export Ontology to GraphDB Format:**
   ```bash

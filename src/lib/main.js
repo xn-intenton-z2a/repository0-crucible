@@ -2,7 +2,7 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
-import { readFileSync, writeFileSync } from "fs";
+import { readFileSync, writeFileSync, existsSync } from "fs";
 import { join, dirname } from "path";
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -69,7 +69,7 @@ export function main(args) {
     console.log(`Usage:
   --version                     Display package version.
   --read <file>                 Read ontology from JSON file.
-  --persist <file>              Persist dummy ontology to JSON file.
+  --persist <file> [--ontology <json|string:file>]  Persist ontology to JSON file.
   --export-graphdb <input> [output]  Export GraphDB-friendly format.
   --merge-persist <file1> <file2> <output>  Merge two ontologies and persist.
   --help                        Display this help message.`);
@@ -118,15 +118,46 @@ export function main(args) {
       console.error('Error: --persist option requires a file path argument.');
       process.exit(1);
     }
-    // For demonstration, use a dummy ontology object
-    const dummyOntology = {
-      name: 'Dummy Ontology',
-      version: '1.0.0',
-      classes: ['ClassA', 'ClassB'],
-      properties: { key: 'value' }
-    };
+
+    let ontologyToPersist = null;
+    // Check if a custom ontology is provided
+    if (args.includes('--ontology')) {
+      const ontIndex = args.indexOf('--ontology');
+      const ontologyInput = args[ontIndex + 1];
+      if (!ontologyInput) {
+        console.error('Error: --ontology option requires an ontology input argument.');
+        process.exit(1);
+      }
+      // If the provided argument is a path to an existing file, read from file, else treat it as a JSON string
+      if (existsSync(ontologyInput)) {
+        try {
+          const fileContents = readFileSync(ontologyInput, { encoding: 'utf-8' });
+          ontologyToPersist = JSON.parse(fileContents);
+        } catch (err) {
+          console.error('Error reading ontology file:', err.message);
+          process.exit(1);
+        }
+      } else {
+        // Attempt to parse the input as a JSON string
+        try {
+          ontologyToPersist = JSON.parse(ontologyInput);
+        } catch (err) {
+          console.error('Error parsing ontology JSON string:', err.message);
+          process.exit(1);
+        }
+      }
+    } else {
+      // For demonstration, use a dummy ontology object if no custom ontology is provided
+      ontologyToPersist = {
+        name: 'Dummy Ontology',
+        version: '1.0.0',
+        classes: ['ClassA', 'ClassB'],
+        properties: { key: 'value' }
+      };
+    }
+
     try {
-      persistOntology(dummyOntology, file);
+      persistOntology(ontologyToPersist, file);
       console.log(`Ontology persisted to ${file}`);
     } catch (err) {
       console.error('Error persisting ontology:', err.message);
