@@ -12,8 +12,9 @@ import readline from 'readline';
 // Load environment variables
 dotenv.config();
 
-// Import package version from package.json
-import pkg from '../../package.json' assert { type: 'json' };
+// Updated package.json import to avoid deprecated assert syntax
+const pkgPath = new URL('../../package.json', import.meta.url);
+const pkg = JSON.parse(readFileSync(pkgPath, { encoding: 'utf-8' }));
 
 // Get __dirname for ESM modules
 const __dirname = dirname(fileURLToPath(import.meta.url));
