@@ -2,16 +2,18 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Apply Fix on Fail",
+  "lastActivityName": "Review Issue",
   "lastActivityBranchName": "main",
-  "openIssues": 6,
+  "openIssues": 7,
   "issuesClosedLastHour": 0,
   "issuesClosedLastDay": 100,
-  "openPRs": 0,
+  "openPRs": 1,
   "averagePRAge": 0,
-  "prDetails": [],
+  "prDetails": [
+    "[0m] Modified the --serve command to return a promise and removed premature process.exit calls to allow the server to start and shutdown gracefully fixing the REST API endpoint tests. (fixes #1470)"
+  ],
   "diffMinutes": 0,
-  "diffMinutesMain": 19,
+  "diffMinutesMain": 20,
   "commitsLastHour": 5,
   "commitsLastDay": 78,
   "lastFiveCommitMessages": [
@@ -30,5 +32,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-12T17:48:55.053Z"
+  "statsGeneratedAt": "2025-04-12T17:49:35.302Z"
 }
