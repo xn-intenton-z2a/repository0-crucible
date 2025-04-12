@@ -2,21 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 6,
-  "issuesClosedLastHour": 2,
+  "openIssues": 4,
+  "issuesClosedLastHour": 4,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Modified handleBuildEnhanced to return dummy enhanced build output in test environment to fix JSON parse error in tests. (fixes #1441)",
-      "ageMinutes": 4
-    }
-  ],
-  "diffMinutes": 4,
-  "diffMinutesMain": 52,
-  "commitsLastHour": 1,
-  "commitsLastDay": 59,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 0,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 2,
+  "commitsLastDay": 60,
   "lastFiveCommitMessages": [
+    {
+      "time": "13:44",
+      "message": "Modified handleBuildEnhanced to return dummy enhanced build outp..."
+    },
     {
       "time": "12:51",
       "message": "Enhanced --query command to support regex searches and updated d..."
@@ -32,23 +31,14 @@
     {
       "time": "12:00",
       "message": "Updated README documentation to clarify DEFAULT_TIMEOUT environm..."
-    },
-    {
-      "time": "11:51",
-      "message": "Enhanced interactive mode with auto-completion and command histo..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1441",
-        "minutesSinceLastCommit": 4
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 4,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T13:43:55.910Z"
+  "generatedAt": "2025-04-12T13:44:21.157Z"
 }
