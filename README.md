@@ -32,9 +32,10 @@ npm install repository0-crucible
 - **Version Display:** Use the new --version flag to display the current package version as specified in package.json.
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions.
 - **Custom Ontology Persistence:** Use the new --ontology flag with --persist to supply a custom ontology (as a JSON string or by providing a file path) instead of the default dummy ontology.
-- **Enhanced Environment Variable Validation:** Environment variables such as DEFAULT_TIMEOUT are now robustly validated using a Zod-based schema. If an invalid (non-numeric, NaN, or non-finite) value is provided, a standardized warning is logged and a safe default (e.g., 5000) is used.
+- **Enhanced Environment Variable Validation:** Environment variables such as DEFAULT_TIMEOUT are now robustly validated using a Zod-based schema. If an invalid (non-numeric, NaN, or non-finite) value is provided, the tool will automatically fall back to a safe default (e.g., 5000) and log a standardized warning.
 - **Robust Logging:** Every command execution is logged with a timestamp, command arguments, and outcome in JSON format to a dedicated log file (logs/cli.log). The logging functionality has been enhanced to report errors (such as directory creation or file writing failures) to stderr for better diagnostics.
 - **Schema Validation:** Ontology JSON objects are validated using Zod to ensure they adhere to the expected structure. This enhances error reporting and robustness.
+- **Diagnostics Mode:** Use the new --diagnostics flag to output a detailed JSON report containing diagnostic information such as package version, environment variables, system information, available CLI commands, and the current execution context.
 
 ## Usage
 
@@ -81,13 +82,17 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --export-graphdb path/to/ontology.json [path/to/output.json]
   ```
-  The --export-graphdb command reads an ontology JSON file, converts it into a GraphDB-friendly format (with nodes and edges), and outputs the result either to stdout or writes it to the provided output file.
 
 - **Merge and Persist Ontologies:**
   ```bash
   node src/lib/main.js --merge-persist ontology1.json ontology2.json mergedOntology.json
   ```
-  This command reads two ontology JSON files, merges them (combining unique classes and merging properties with the second ontology’s values overwriting conflicts), and writes the merged ontology to the specified output file.
+
+- **Diagnostics Mode:**
+  ```bash
+  node src/lib/main.js --diagnostics
+  ```
+  This command outputs a detailed JSON report with diagnostic information, including the package version, environment variables, system details, available CLI commands, and current execution context.
 
 ## Environment Variable Configuration
 
@@ -106,7 +111,7 @@ Every CLI command execution is logged automatically in JSON format. The log entr
 
 ## End-to-End Integration Tests
 
-A suite of end-to-end integration tests has been added to verify all CLI commands, including log creation. These tests simulate realistic usage scenarios including file I/O operations, JSON parsing, and environment variable fallback handling. To run the integration tests, execute:
+A suite of end-to-end integration tests has been added to verify all CLI commands, including log creation and the diagnostics mode. These tests simulate realistic usage scenarios including file I/O operations, JSON parsing, and environment variable fallback handling. To run the integration tests, execute:
 
 ```bash
 npm run test:e2e

@@ -232,4 +232,18 @@ describe('End-to-End CLI Integration Tests', () => {
     expect(result.stderr).toContain('Ontology validation failed:');
     unlinkSync(ontologyFile);
   });
+
+  test('--diagnostics flag outputs valid JSON diagnostic report', () => {
+    clearLogFile();
+    const result = spawnSync('node', [cliPath, '--diagnostics'], { encoding: 'utf-8' });
+    let diagnostics;
+    expect(() => { diagnostics = JSON.parse(result.stdout); }).not.toThrow();
+    expect(diagnostics).toHaveProperty('packageVersion');
+    expect(diagnostics).toHaveProperty('environment');
+    expect(diagnostics).toHaveProperty('system');
+    expect(diagnostics).toHaveProperty('cliCommands');
+    expect(diagnostics).toHaveProperty('processArgs');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--diagnostics');
+  });
 });
