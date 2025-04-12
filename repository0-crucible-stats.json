@@ -5,18 +5,17 @@
   "openIssues": 11,
   "issuesClosedLastHour": 10,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Reordered --version flag handling to avoid logging DEFAULT_TIMEOUT info when version flag is used. (fixes #1386)",
-      "ageMinutes": 1
-    }
-  ],
-  "diffMinutes": 1,
-  "diffMinutesMain": 16,
-  "commitsLastHour": 5,
-  "commitsLastDay": 20,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 0,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 6,
+  "commitsLastDay": 21,
   "lastFiveCommitMessages": [
+    {
+      "time": "04:53",
+      "message": "Reordered --version flag handling to avoid logging DEFAULT_TIMEO..."
+    },
     {
       "time": "04:36",
       "message": "Added support for custom ontology input for the --persist comman..."
@@ -32,23 +31,14 @@
     {
       "time": "04:11",
       "message": "Implemented mergeOntologies functionality and added --merge-pers..."
-    },
-    {
-      "time": "04:07",
-      "message": "Inlined the missing GraphDB exporter function into main.js and u..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1386",
-        "minutesSinceLastCommit": 1
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 1,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T04:52:34.353Z"
+  "generatedAt": "2025-04-12T04:53:48.065Z"
 }
