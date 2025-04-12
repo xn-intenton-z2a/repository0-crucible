@@ -3,7 +3,6 @@
 
 import { fileURLToPath } from "url";
 import { readFileSync, writeFileSync } from "fs";
-import { exportGraphDB } from "./graphdbExporter.js"; // Import from separate module
 
 export function readOntology(filePath) {
   const data = readFileSync(filePath, { encoding: "utf-8" });
@@ -17,6 +16,39 @@ export function readOntology(filePath) {
 export function persistOntology(ontology, filePath) {
   const data = JSON.stringify(ontology, null, 2);
   writeFileSync(filePath, data, { encoding: "utf-8" });
+}
+
+// Inlined GraphDB exporter function to replace missing module
+export function exportGraphDB(ontology) {
+  const nodes = [];
+  const edges = [];
+
+  // Add an ontology node
+  nodes.push({
+    id: "ontology",
+    label: ontology.name || "Ontology",
+    version: ontology.version || "unknown"
+  });
+
+  // Process classes if available
+  if (ontology.classes && Array.isArray(ontology.classes)) {
+    ontology.classes.forEach((cls, index) => {
+      const nodeId = `class_${index}`;
+      nodes.push({ id: nodeId, label: cls });
+      edges.push({ source: "ontology", target: nodeId, relation: "hasClass" });
+    });
+  }
+
+  // Process properties if available
+  if (ontology.properties && typeof ontology.properties === "object") {
+    Object.entries(ontology.properties).forEach(([key, value]) => {
+      const nodeId = `prop_${key}`;
+      nodes.push({ id: nodeId, label: key, value });
+      edges.push({ source: "ontology", target: nodeId, relation: "hasProperty" });
+    });
+  }
+
+  return { nodes, edges };
 }
 
 export function main(args) {

@@ -1,5 +1,5 @@
 import { describe, test, expect } from 'vitest';
-import { exportGraphDB } from '../../src/lib/graphdbExporter.js';
+import { exportGraphDB } from '../../src/lib/main.js';
 
 describe('GraphDB Exporter Module', () => {
   test('should export ontology with classes and properties correctly', () => {
