@@ -32,7 +32,7 @@ npm install repository0-crucible
 - **Version Display:** Use the new --version flag to display the current package version as specified in package.json.
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions.
 - **Custom Ontology Persistence:** Use the new --ontology flag with --persist to supply a custom ontology (as a JSON string or by providing a file path) instead of the default dummy ontology.
-- **Enhanced Environment Variable Validation:** Numeric environment variables such as DEFAULT_TIMEOUT are now validated using Zod. If an invalid (non-numeric, NaN, or non-finite) value is provided, a clear warning is printed to stderr and a safe default (e.g., 5000) is used.
+- **Enhanced Environment Variable Validation:** Environment variables such as DEFAULT_TIMEOUT are now robustly validated using a Zod-based schema. If an invalid (non-numeric, NaN, or non-finite) value is provided, a standardized warning is logged and a safe default (e.g., 5000) is used.
 - **Robust Logging:** Every command execution is logged with a timestamp, command arguments, and outcome in JSON format to a dedicated log file (logs/cli.log). The logging functionality has been enhanced to report errors (such as directory creation or file writing failures) to stderr for better diagnostics.
 - **Schema Validation:** Ontology JSON objects are validated using Zod to ensure they adhere to the expected structure. This enhances error reporting and robustness.
 
@@ -91,7 +91,7 @@ node src/lib/main.js --help
 
 ## Environment Variable Configuration
 
-The CLI tool checks for numeric environment variables such as DEFAULT_TIMEOUT. If an environment variable intended to represent a number is invalid (non-numeric, NaN, or infinite), the tool will automatically fall back to a safe default (e.g., 5000), after printing a clear warning to stderr. This validation is implemented using Zod for a robust check.
+The CLI tool now leverages a Zod-based schema to robustly validate numeric environment variables such as DEFAULT_TIMEOUT. If an environment variable intended to represent a number is invalid (non-numeric, NaN, or infinite), the tool will automatically fall back to a safe default (e.g., 5000) and log a standardized warning. This helps ensure predictable behavior and easier diagnostics.
 
 Example of setting an environment variable:
 
