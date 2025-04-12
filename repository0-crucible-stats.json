@@ -2,21 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 6,
-  "issuesClosedLastHour": 4,
+  "openIssues": 4,
+  "issuesClosedLastHour": 6,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Add export-owl command to convert ontology JSON to OWLTurtle format with tests and documentation updates (fixes #1463)",
-      "ageMinutes": 1
-    }
-  ],
+  "openPRs": 0,
+  "prDetails": [],
   "diffMinutes": 0,
-  "diffMinutesMain": 19,
-  "commitsLastHour": 2,
-  "commitsLastDay": 61,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 3,
+  "commitsLastDay": 62,
   "lastFiveCommitMessages": [
+    {
+      "time": "14:11",
+      "message": "Add export-owl command to convert ontology JSON to OWLTurtle for..."
+    },
     {
       "time": "13:51",
       "message": "Added --fetch command to support auto-generating ontologies from..."
@@ -32,23 +31,14 @@
     {
       "time": "12:29",
       "message": "Refactored package.json import to avoid deprecated assert syntax..."
-    },
-    {
-      "time": "12:17",
-      "message": "Defined and exported interactiveCompleter in the source file and..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1463",
-        "minutesSinceLastCommit": 1
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 1,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T14:10:49.825Z"
+  "generatedAt": "2025-04-12T14:12:19.396Z"
 }
