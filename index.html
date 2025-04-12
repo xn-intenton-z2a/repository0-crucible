@@ -100,7 +100,7 @@ Launch the REST API server using the --serve flag. The server provides the follo
 </ul>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Interactive Mode with Enhanced Usability:</strong> Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration. This mode supports auto-completion (including dynamic suggestions from loaded ontology classes) and command history.</p>
+<p class="md-github"><strong class="md-github">Interactive Mode with Enhanced Usability and Persistent History:</strong> Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration. This mode supports auto-completion (including dynamic suggestions from loaded ontology classes and previously executed commands saved in a persistent history file located at logs/interactive_history.txt) and command history that persists across sessions. This mode now properly handles non-TTY inputs as well.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Ontology Content Query:</strong> Use the <strong class="md-github">--query</strong> command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the <code class="md-github">--regex</code> flag to interpret the search term as a regular expression.</p>
@@ -231,7 +231,8 @@ Launch the REST API server using the --serve flag. The server provides the follo
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Interactive Mode with Auto-Completion and Command History:</strong></p>
+<p class="md-github"><strong class="md-github">Interactive Mode with Persistent History:</strong>
+Launch the interactive mode which now loads previously executed commands from logs/interactive_history.txt and saves any new commands on exit.</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --interactive
 </code></pre>
 </li>
@@ -258,7 +259,7 @@ Launch the REST API server using the --serve flag. The server provides the follo
 <p class="md-github">The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, the tool logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If a non-numeric or non-finite value is provided, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value.</p>
 <p class="md-github">For the enhanced --fetch command, you can set a FETCH_URL environment variable to dynamically retrieve ontology data from a public API endpoint. If the fetch fails or FETCH_URL is not provided, the command falls back to a default dummy ontology.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="end-to-end-integration-tests" href="#end-to-end-integration-tests"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>End-to-End Integration Tests</h2>
-<p class="md-github">A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch, export-owl, export-xml, and diff functionalities. To run the integration tests:</p>
+<p class="md-github">A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements (with persistent history), ontology query functionality, and the new fetch, export-owl, export-xml, and diff functionalities. To run the integration tests:</p>
 <pre class="md-github"><code class="md-github language-bash">npm run test:e2e
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
@@ -268,7 +269,7 @@ Launch the REST API server using the --serve flag. The server provides the follo
 
   </section>
   <footer>
-    <p>Generated on 2025-04-12T20:52:58.443Z</p>
+    <p>Generated on 2025-04-12T21:00:02.934Z</p>
   </footer>
 </body>
 </html>
