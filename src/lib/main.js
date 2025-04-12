@@ -13,10 +13,48 @@ dotenv.config();
 // Import package version from package.json
 import pkg from '../../package.json' assert { type: 'json' };
 
-// Import logging functions from the dedicated logger module
-import { logCommand, logError } from './logger.js';
-
+// Get __dirname for ESM modules
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Inline logger functions (integrated to avoid missing module error)
+function logCommand(command) {
+  try {
+    const logDir = join(process.cwd(), 'logs');
+    if (!existsSync(logDir)) {
+      mkdirSync(logDir, { recursive: true });
+    } else {
+      // If logDir exists but is not a directory, remove it
+      const stats = lstatSync(logDir);
+      if (!stats.isDirectory()) {
+        rmSync(logDir, { force: true });
+        mkdirSync(logDir, { recursive: true });
+      }
+    }
+    const logFile = join(logDir, 'cli.log');
+    appendFileSync(logFile, JSON.stringify({ command, timestamp: new Date().toISOString() }) + "\n", { encoding: 'utf-8' });
+  } catch (err) {
+    console.error("Failed to log command:", command);
+  }
+}
+
+function logError(code, messageStr, details) {
+  try {
+    const logDir = join(process.cwd(), 'logs');
+    if (!existsSync(logDir)) {
+      mkdirSync(logDir, { recursive: true });
+    } else {
+      const stats = lstatSync(logDir);
+      if (!stats.isDirectory()) {
+        rmSync(logDir, { force: true });
+        mkdirSync(logDir, { recursive: true });
+      }
+    }
+    const logFile = join(logDir, 'cli.log');
+    appendFileSync(logFile, JSON.stringify({ code, message: messageStr, details, timestamp: new Date().toISOString() }) + "\n", { encoding: 'utf-8' });
+  } catch (err) {
+    console.error("Failed to log error:", code);
+  }
+}
 
 // Define ontology schema using Zod for validation
 const ontologySchema = z.object({
@@ -47,7 +85,7 @@ function getDefaultTimeout() {
 }
 
 // Inline command handlers
-function handleHelp(args, { logCommand, getDefaultTimeout }) {
+function handleHelp(args, { getDefaultTimeout }) {
   logCommand('--help');
   const timeout = getDefaultTimeout();
   console.log(`Usage: 
@@ -62,12 +100,12 @@ function handleHelp(args, { logCommand, getDefaultTimeout }) {
 Using DEFAULT_TIMEOUT: ${timeout}`);
 }
 
-function handleVersion(args, { logCommand }) {
+function handleVersion(args) {
   logCommand('--version');
   console.log(pkg.version);
 }
 
-function handleRead(args, { logCommand }) {
+function handleRead(args) {
   logCommand('--read');
   const filePath = args[args.indexOf('--read') + 1];
   try {
@@ -85,7 +123,7 @@ function handleRead(args, { logCommand }) {
   }
 }
 
-function handlePersist(args, { logCommand }) {
+function handlePersist(args) {
   logCommand('--persist');
   const outputFile = args[args.indexOf('--persist') + 1];
   let ontology;
@@ -125,7 +163,7 @@ function handlePersist(args, { logCommand }) {
   }
 }
 
-function handleExportGraphDB(args, { logCommand }) {
+function handleExportGraphDB(args) {
   logCommand('--export-graphdb');
   const inputFile = args[args.indexOf('--export-graphdb') + 1];
   let outputFile = null;
@@ -157,7 +195,7 @@ function handleExportGraphDB(args, { logCommand }) {
   }
 }
 
-function handleMergePersist(args, { logCommand }) {
+function handleMergePersist(args) {
   logCommand('--merge-persist');
   const index = args.indexOf('--merge-persist');
   const file1 = args[index + 1];
@@ -186,7 +224,7 @@ function handleMergePersist(args, { logCommand }) {
   }
 }
 
-function handleDiagnostics(args, { logCommand, getDefaultTimeout }) {
+function handleDiagnostics(args) {
   logCommand('--diagnostics');
   const diagnostics = {
     packageVersion: pkg.version,
@@ -202,7 +240,7 @@ function handleDiagnostics(args, { logCommand, getDefaultTimeout }) {
   console.log(JSON.stringify(diagnostics));
 }
 
-function handleRefresh(args, { logCommand }) {
+function handleRefresh(args) {
   const logDir = join(process.cwd(), 'logs');
   try {
     if (existsSync(logDir)) {
@@ -223,7 +261,7 @@ function handleRefresh(args, { logCommand }) {
   console.log('System state refreshed');
 }
 
-function handleDefault(args, { logCommand }) {
+function handleDefault(args) {
   logCommand('default');
   console.log('Invalid command');
 }
@@ -231,30 +269,30 @@ function handleDefault(args, { logCommand }) {
 // Command dispatcher using inline command handlers
 function dispatchCommand(args) {
   if (args.includes('--diagnostics')) {
-    return handleDiagnostics(args, { logCommand, getDefaultTimeout });
+    return handleDiagnostics(args);
   }
   if (args.includes('--refresh')) {
-    return handleRefresh(args, { logCommand });
+    return handleRefresh(args);
   }
   if (args.includes('--version')) {
-    return handleVersion(args, { logCommand });
+    return handleVersion(args);
   }
   if (args.includes('--read')) {
-    return handleRead(args, { logCommand });
+    return handleRead(args);
   }
   if (args.includes('--persist')) {
-    return handlePersist(args, { logCommand });
+    return handlePersist(args);
   }
   if (args.includes('--export-graphdb')) {
-    return handleExportGraphDB(args, { logCommand });
+    return handleExportGraphDB(args);
   }
   if (args.includes('--merge-persist')) {
-    return handleMergePersist(args, { logCommand });
+    return handleMergePersist(args);
   }
   if (args.includes('--help') || args.length === 0) {
-    return handleHelp(args, { logCommand, getDefaultTimeout });
+    return handleHelp(args, { getDefaultTimeout });
   }
-  return handleDefault(args, { logCommand });
+  return handleDefault(args);
 }
 
 // Main function
