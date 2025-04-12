@@ -39,7 +39,13 @@ npm install repository0-crucible
 - **Build Commands:**
   - **Intermediate Build:** Use --build-intermediate to process and output an intermediate build version of the ontology.
   - **Enhanced Build:** Use --build-enhanced to process additional steps and output an enhanced build version of the ontology.
-- **REST Server:** Use the --serve flag to launch an HTTP server that exposes REST endpoints (e.g., /diagnostics) to interact with the ontology operations.
+- **REST Server:** Use the --serve flag to launch an HTTP server that exposes REST endpoints for ontology operations (e.g., GET /diagnostics).
+- **Interactive Mode:** Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration. In interactive mode, you can use the following commands:
+  - `load <file>`: Load and validate an ontology from a JSON file.
+  - `show`: Display the currently loaded ontology.
+  - `list-classes`: List the classes of the loaded ontology.
+  - `help`: Show available interactive commands.
+  - `exit`: Exit interactive mode.
 - **Zod Schema Validation:** Ontology JSON files are validated using a strict Zod schema to ensure they contain the required properties (name, version, classes, and properties) with the correct data types. This integration provides clearer error messages on invalid ontology formats.
 
 ## Usage
@@ -116,11 +122,22 @@ node src/lib/main.js --help
   ```
   Processes and outputs an enhanced build version of the ontology.
 
-- **Launch REST Server:**
+- **REST Server:**
   ```bash
   node src/lib/main.js --serve
   ```
   Launches an HTTP server that exposes REST endpoints for ontology operations (e.g., GET /diagnostics).
+
+- **Interactive Mode:**
+  ```bash
+  node src/lib/main.js --interactive
+  ```
+  Launches an interactive session where you can type commands such as:
+  - `load <file>` to load an ontology,
+  - `show` to display the loaded ontology,
+  - `list-classes` to list ontology classes,
+  - `help` for interactive help,
+  - `exit` to leave interactive mode.
 
 ## Environment Variable Configuration
 
@@ -139,7 +156,7 @@ Every CLI command execution is logged automatically in JSON format. Logs include
 
 ## End-to-End Integration Tests
 
-A suite of end-to-end integration tests verifies all CLI commands, including log creation and diagnostics mode. To run the integration tests:
+A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, and the new interactive mode. To run the integration tests:
 
 ```bash
 npm run test:e2e

@@ -333,4 +333,15 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const logContent = readLogFile();
     expect(logContent).toContain('--serve');
   });
+
+  test('--interactive mode executes commands correctly', () => {
+    clearLogFile();
+    // Simulate interactive input: type 'help' then 'exit'
+    const inputCommands = 'help\nexit\n';
+    const result = spawnSync('node', [cliPath, '--interactive'], { input: inputCommands, encoding: 'utf-8', timeout: 5000 });
+    expect(result.stdout).toContain('Interactive commands:');
+    expect(result.stdout).toContain('Exiting Interactive Mode.');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--interactive');
+  });
 });
