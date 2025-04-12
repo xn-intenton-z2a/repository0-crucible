@@ -2,7 +2,7 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Review Issue",
+  "lastActivityName": "Apply Fix on Fail",
   "lastActivityBranchName": "main",
   "openIssues": 5,
   "issuesClosedLastHour": 2,
@@ -10,8 +10,8 @@
   "openPRs": 0,
   "averagePRAge": 0,
   "prDetails": [],
-  "diffMinutes": 0,
-  "diffMinutesMain": 1,
+  "diffMinutes": 3,
+  "diffMinutesMain": 5,
   "commitsLastHour": 6,
   "commitsLastDay": 79,
   "lastFiveCommitMessages": [
@@ -28,5 +28,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-12T17:51:26.811Z"
+  "statsGeneratedAt": "2025-04-12T17:55:22.478Z"
 }
