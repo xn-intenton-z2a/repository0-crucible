@@ -52,6 +52,7 @@ npm install repository0-crucible
   - `help`: Show available interactive commands.
   - `exit`: Exit interactive mode.
 - **Ontology Content Query:** Use the **--query** command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the `--regex` flag to interpret the search term as a regular expression. This command searches within the ontology's name, classes, and properties (both keys and string values) and returns the matching results in JSON format. If no matches are found, an appropriate JSON message is returned.
+- **Fetch Ontology from Public Data Source:** Use the **--fetch** command to simulate retrieving data from a public data source, transform it into a valid ontology JSON object, and either output the result to STDOUT or persist it to a file if a file path is provided.
 - **Zod Schema Validation:** Ontology JSON files are validated using a strict Zod schema to ensure they contain the required properties (name, version, classes, and properties) with the correct data types. This integration provides clearer error messages on invalid ontology formats.
 - **Non-deprecated Package Import:** The package version from package.json is now imported using a file read method to avoid using deprecated import assertions.
 
@@ -163,13 +164,19 @@ node src/lib/main.js --help
   node src/lib/main.js --query path/to/ontology.json "^OntologyName$" --regex
   ```
 
+- **Fetch Ontology from Public Data Source:**
+  ```bash
+  node src/lib/main.js --fetch [path/to/output.json]
+  ```
+  When no output file is provided, the fetched ontology JSON is printed to STDOUT. If an output file is specified, the ontology JSON is persisted to that file.
+
 ## Environment Variable Configuration
 
 The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, the tool logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If a non-numeric or non-finite value (such as "NaN", "Infinity", or "-Infinity") is provided, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value of 5000. Automated tests verify this behavior.
 
 ## End-to-End Integration Tests
 
-A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, and the new ontology query functionality. To run the integration tests:
+A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch functionality. To run the integration tests:
 
 ```bash
 npm run test:e2e
