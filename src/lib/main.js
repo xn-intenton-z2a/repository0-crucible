@@ -3,6 +3,9 @@
 
 import { fileURLToPath } from "url";
 import { readFileSync, writeFileSync } from "fs";
+import { join, dirname } from "path";
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 export function readOntology(filePath) {
   const data = readFileSync(filePath, { encoding: "utf-8" });
@@ -62,7 +65,17 @@ export function exportGraphDB(ontology) {
 }
 
 export function main(args) {
-  // New CLI flag to display package version
+  if (args.includes("--help") || args.length === 0) {
+    console.log(`Usage:
+  --version                     Display package version.
+  --read <file>                 Read ontology from JSON file.
+  --persist <file>              Persist dummy ontology to JSON file.
+  --export-graphdb <input> [output]  Export GraphDB-friendly format.
+  --merge-persist <file1> <file2> <output>  Merge two ontologies and persist.
+  --help                        Display this help message.`);
+    return;
+  }
+
   if (args.includes('--version')) {
     try {
       const pkgJsonUrl = new URL('../../package.json', import.meta.url);
@@ -81,7 +94,6 @@ export function main(args) {
     return;
   }
 
-  // Check for persistence commands
   if (args.includes('--read')) {
     const index = args.indexOf('--read');
     const file = args[index + 1];

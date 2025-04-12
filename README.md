@@ -30,6 +30,7 @@ npm install repository0-crucible
 - Exports a GraphDB-friendly format from OWL ontology JSON using the new GraphDB Exporter feature (now implemented in src/lib/main.js).
 - Merge functionality: merge two ontology JSON files and persist the merged result via the new --merge-persist CLI option.
 - **Version Display:** Use the new --version flag to display the current package version as specified in package.json.
+- **Help Command:** Use --help (or run without arguments) to display CLI usage instructions.
 
 ## Usage
 
@@ -41,9 +42,9 @@ node src/lib/main.js --help
 
 ### Example Commands
 
-- **Default Demo Output:**
+- **Default Demo/Help Output:**
   ```bash
-  npm run start
+  node src/lib/main.js
   ```
 
 - **Display Package Version:**
@@ -73,15 +74,13 @@ node src/lib/main.js --help
   ```
   This command reads two ontology JSON files, merges them (combining unique classes and merging properties where the second ontology takes precedence), and writes the merged ontology to the specified output file.
 
-For direct use of the persistence functionality in your code, import the module from:
+## End-to-End Integration Tests
 
-```javascript
-import { readOntology, persistOntology, exportGraphDB, mergeOntologies } from './src/lib/main.js';
+A suite of end-to-end integration tests has been added to verify all CLI commands. These tests simulate realistic usage scenarios including file I/O operations and JSON parsing. To run the integration tests, execute:
+
+```bash
+npm run test:e2e
 ```
-
-## Incremental Changes Plan
-
-TODO: Add forthcoming changes here.
 
 ## Contributing
 
