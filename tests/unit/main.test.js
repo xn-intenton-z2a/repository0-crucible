@@ -518,13 +518,13 @@ describe('REST API Endpoints', () => {
 describe('Interactive Mode Auto-Completion', () => {
   test('provides base command suggestions when no ontology is loaded', () => {
     const [completions, line] = interactiveCompleter(null, '');
-    expect(completions).toEqual(expect.arrayContaining(['load', 'show', 'list-classes', 'help', 'exit']));
+    expect(completions).toEqual(expect.arrayContaining(['load', 'show', 'list-classes', 'help', 'exit']))
   });
 
   test('provides ontology class suggestions when ontology is loaded', () => {
     const ontology = { classes: ['Person', 'Animal'] };
     const [completions, line] = interactiveCompleter(ontology, 'P');
-    expect(completions).toEqual(expect.arrayContaining(['Person']));
+    expect(completions).toEqual(expect.arrayContaining(['Person']))
   });
 });
 

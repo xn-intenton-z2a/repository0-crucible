@@ -619,7 +619,6 @@ async function handleFetch(args) {
   } else {
     console.log(JSON.stringify(ontology, null, 2));
   }
-  // Removed process.exit(0) to allow normal termination and proper flushing of stdout
   return;
 }
 
@@ -954,6 +953,7 @@ async function dispatchCommand(args) {
 async function main() {
   const args = process.argv.slice(2);
   await dispatchCommand(args);
+  process.exit(0);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
