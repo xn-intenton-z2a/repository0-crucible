@@ -18,6 +18,39 @@ export function persistOntology(ontology, filePath) {
   writeFileSync(filePath, data, { encoding: "utf-8" });
 }
 
+// Inlined GraphDB exporter function to replace missing module
+export function exportGraphDB(ontology) {
+  const nodes = [];
+  const edges = [];
+
+  // Add an ontology node
+  nodes.push({
+    id: "ontology",
+    label: ontology.name || "Ontology",
+    version: ontology.version || "unknown"
+  });
+
+  // Process classes if available
+  if (ontology.classes && Array.isArray(ontology.classes)) {
+    ontology.classes.forEach((cls, index) => {
+      const nodeId = `class_${index}`;
+      nodes.push({ id: nodeId, label: cls });
+      edges.push({ source: "ontology", target: nodeId, relation: "hasClass" });
+    });
+  }
+
+  // Process properties if available
+  if (ontology.properties && typeof ontology.properties === "object") {
+    Object.entries(ontology.properties).forEach(([key, value]) => {
+      const nodeId = `prop_${key}`;
+      nodes.push({ id: nodeId, label: key, value });
+      edges.push({ source: "ontology", target: nodeId, relation: "hasProperty" });
+    });
+  }
+
+  return { nodes, edges };
+}
+
 export function main(args) {
   // Check for persistence commands
   if (args.includes('--read')) {
@@ -56,6 +89,32 @@ export function main(args) {
       console.log(`Ontology persisted to ${file}`);
     } catch (err) {
       console.error('Error persisting ontology:', err.message);
+      process.exit(1);
+    }
+    return;
+  }
+
+  if (args.includes('--export-graphdb')) {
+    const index = args.indexOf('--export-graphdb');
+    const inputFile = args[index + 1];
+    if (!inputFile) {
+      console.error('Error: --export-graphdb option requires an input file path argument.');
+      process.exit(1);
+    }
+    // Optional output file argument
+    const outputFile = args[index + 2] || null;
+    try {
+      const ontology = readOntology(inputFile);
+      const graphdbData = exportGraphDB(ontology);
+      const outputString = JSON.stringify(graphdbData, null, 2);
+      if (outputFile) {
+        writeFileSync(outputFile, outputString, { encoding: "utf-8" });
+        console.log(`GraphDB exporter output written to ${outputFile}`);
+      } else {
+        console.log('GraphDB exporter output:', outputString);
+      }
+    } catch (err) {
+      console.error('Error exporting GraphDB data:', err.message);
       process.exit(1);
     }
     return;
