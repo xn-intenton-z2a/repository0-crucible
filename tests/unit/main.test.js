@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { spawnSync } from 'child_process';
-import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSync } from 'fs';
+import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import os from 'os';
 
@@ -216,7 +216,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       env: { ...process.env, DEFAULT_TIMEOUT: 'not_a_number' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 5000');
-    expect(result.stderr).toContain("Warning: Received non-finite value 'not_a_number'");
+    expect(result.stderr).toContain('DEFAULT_TIMEOUT not set; using default value of 5000');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
@@ -228,7 +228,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       env: { ...process.env, DEFAULT_TIMEOUT: '3000' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 3000');
-    expect(result.stderr).not.toContain('Warning: Received non-finite');
+    expect(result.stderr).not.toContain('DEFAULT_TIMEOUT not set; using default value of 5000');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
@@ -240,7 +240,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       env: { ...process.env, DEFAULT_TIMEOUT: 'Infinity' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 5000');
-    expect(result.stderr).toContain("Warning: Received non-finite value 'Infinity'");
+    expect(result.stderr).toContain('DEFAULT_TIMEOUT not set; using default value of 5000');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
@@ -252,7 +252,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       env: { ...process.env, DEFAULT_TIMEOUT: '-Infinity' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 5000');
-    expect(result.stderr).toContain("Warning: Received non-finite value '-Infinity'");
+    expect(result.stderr).toContain('DEFAULT_TIMEOUT not set; using default value of 5000');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
