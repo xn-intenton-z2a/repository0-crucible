@@ -32,7 +32,7 @@ npm install repository0-crucible
 - **Version Display:** Use the --version flag to display the current package version as specified in package.json.
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions. The help output includes the effective DEFAULT_TIMEOUT value after environment validation.
 - **Custom Ontology Persistence:** Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.
-- **Enhanced Environment Variable Validation:** The CLI tool now explicitly validates the DEFAULT_TIMEOUT environment variable. If DEFAULT_TIMEOUT is not set, a message is logged indicating the fallback to 5000. If an invalid or non-finite numeric value is provided, a corresponding structured error code is logged with details, and the default value of 5000 is used.
+- **Enhanced Environment Variable Validation:** The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, it logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If DEFAULT_TIMEOUT is provided but is non-numeric (for example, a string that cannot be parsed into a finite number such as "NaN") or is a non-finite numeric value (e.g., Infinity, -Infinity), it logs an error (LOG_ERR_ENV_NON_FINITE) and also defaults to 5000. Automated tests verify this behavior.
 - **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log). Error logs include structured error codes (e.g., LOG_ERR_*) and detailed contextual information. <strong>Note:</strong> The logger functionality is now integrated directly into the main CLI file and uses a dedicated helper function to ensure the log directory is correctly setup.
 - **Diagnostics Mode:** Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.
 - **System Refresh:** Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.
@@ -154,14 +154,7 @@ node src/lib/main.js --help
 
 ## Environment Variable Configuration
 
-The CLI tool validates numeric environment variables like DEFAULT_TIMEOUT. If the environment variable is not set, a message is logged indicating the fallback to 5000. If an invalid or non-finite numeric value is provided, a corresponding structured error code is logged with details, and the default value of 5000 is used.
-
-Example of setting an environment variable:
-
-```bash
-export DEFAULT_TIMEOUT=3000
-node src/lib/main.js --help
-```
+The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, the tool logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If a non-numeric or non-finite value (such as "NaN", "Infinity", or "-Infinity") is provided, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value of 5000. Automated tests verify this behavior.
 
 ## End-to-End Integration Tests
 
