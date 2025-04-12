@@ -27,7 +27,7 @@ npm install repository0-crucible
 
 - CLI tool for building and managing OWL ontologies.
 - JSON-based persistence and retrieval of OWL ontologies via integrated persistence functions exported from the main module (located in src/lib/main.js).
-- Exports a GraphDB-friendly format from OWL ontology JSON using the new GraphDB Exporter feature.
+- Exports a GraphDB-friendly format from OWL ontology JSON using the new GraphDB Exporter feature (implemented in src/lib/graphdbExporter.js).
 
 ## Usage
 

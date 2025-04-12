@@ -95,3 +95,41 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   main(args);
 }
+
+// ------------------------------------------------------------------
+// New File: src/lib/graphdbExporter.js
+// Implements the exportGraphDB function used by main.js and tested in unit tests
+
+export function exportGraphDB(ontology) {
+  const nodes = [];
+  const edges = [];
+
+  // Create the central ontology node
+  nodes.push({
+    id: 'ontology',
+    label: ontology.name || 'Unnamed Ontology',
+    version: ontology.version || ''
+  });
+
+  // Add class nodes if available
+  if (ontology.classes && Array.isArray(ontology.classes)) {
+    ontology.classes.forEach(cls => {
+      nodes.push({
+        id: `class_${cls}`,
+        label: cls
+      });
+    });
+  }
+
+  // Add property nodes if available
+  if (ontology.properties && typeof ontology.properties === 'object') {
+    Object.entries(ontology.properties).forEach(([key, value]) => {
+      nodes.push({
+        id: `prop_${key}`,
+        value: value
+      });
+    });
+  }
+
+  return { nodes, edges };
+}
