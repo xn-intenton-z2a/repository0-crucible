@@ -2,21 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 5,
+  "openIssues": 3,
   "issuesClosedLastHour": 4,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Added --fetch command to support auto-generating ontologies from public data sources and updated tests and docs. (fixes #1459)",
-      "ageMinutes": 1
-    }
-  ],
-  "diffMinutes": 1,
-  "diffMinutesMain": 6,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 0,
+  "diffMinutesMain": 0,
   "commitsLastHour": 2,
-  "commitsLastDay": 60,
+  "commitsLastDay": 61,
   "lastFiveCommitMessages": [
+    {
+      "time": "13:51",
+      "message": "Added --fetch command to support auto-generating ontologies from..."
+    },
     {
       "time": "13:44",
       "message": "Modified handleBuildEnhanced to return dummy enhanced build outp..."
@@ -32,23 +31,14 @@
     {
       "time": "12:17",
       "message": "Defined and exported interactiveCompleter in the source file and..."
-    },
-    {
-      "time": "12:00",
-      "message": "Updated README documentation to clarify DEFAULT_TIMEOUT environm..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1459",
-        "minutesSinceLastCommit": 2
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 1,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T13:50:07.542Z"
+  "generatedAt": "2025-04-12T13:51:44.815Z"
 }
