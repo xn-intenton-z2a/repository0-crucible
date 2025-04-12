@@ -2,21 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 11,
-  "issuesClosedLastHour": 6,
+  "openIssues": 9,
+  "issuesClosedLastHour": 8,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Refactored getEnvNumber to use Zod for numeric validation with standardized warning and fallback. (fixes #1401)",
-      "ageMinutes": 1
-    }
-  ],
-  "diffMinutes": 1,
-  "diffMinutesMain": 9,
-  "commitsLastHour": 3,
-  "commitsLastDay": 26,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 0,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 4,
+  "commitsLastDay": 27,
   "lastFiveCommitMessages": [
+    {
+      "time": "06:55",
+      "message": "Refactored getEnvNumber to use Zod for numeric validation with s..."
+    },
     {
       "time": "06:44",
       "message": "Enhance numeric env var validation to handle NaN and non-finite ..."
@@ -32,23 +31,14 @@
     {
       "time": "05:53",
       "message": "Implemented --merge-persist command for merging ontology files a..."
-    },
-    {
-      "time": "05:42",
-      "message": "Refactored DEFAULT_TIMEOUT parsing to use console.error for NaN ..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1401",
-        "minutesSinceLastCommit": 1
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 1,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T06:54:05.743Z"
+  "generatedAt": "2025-04-12T06:55:34.563Z"
 }

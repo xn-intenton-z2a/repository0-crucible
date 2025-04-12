@@ -55,7 +55,7 @@
 <li class="md-github"><strong class="md-github">Version Display:</strong> Use the new --version flag to display the current package version as specified in package.json.</li>
 <li class="md-github"><strong class="md-github">Help Command:</strong> Use --help (or run without arguments) to display CLI usage instructions.</li>
 <li class="md-github"><strong class="md-github">Custom Ontology Persistence:</strong> Use the new --ontology flag with --persist to supply a custom ontology (as a JSON string or by providing a file path) instead of the default dummy ontology.</li>
-<li class="md-github"><strong class="md-github">Enhanced Environment Variable Validation:</strong> Numeric environment variables such as DEFAULT_TIMEOUT are now validated using Zod. If an invalid (non-numeric, NaN, or non-finite) value is provided, a clear warning is printed to stderr and a safe default (e.g., 5000) is used.</li>
+<li class="md-github"><strong class="md-github">Enhanced Environment Variable Validation:</strong> Environment variables such as DEFAULT_TIMEOUT are now robustly validated using a Zod-based schema. If an invalid (non-numeric, NaN, or non-finite) value is provided, a standardized warning is logged and a safe default (e.g., 5000) is used.</li>
 <li class="md-github"><strong class="md-github">Robust Logging:</strong> Every command execution is logged with a timestamp, command arguments, and outcome in JSON format to a dedicated log file (logs/cli.log). The logging functionality has been enhanced to report errors (such as directory creation or file writing failures) to stderr for better diagnostics.</li>
 <li class="md-github"><strong class="md-github">Schema Validation:</strong> Ontology JSON objects are validated using Zod to ensure they adhere to the expected structure. This enhances error reporting and robustness.</li>
 </ul>
@@ -114,7 +114,7 @@
 </li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="environment-variable-configuration" href="#environment-variable-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Variable Configuration</h2>
-<p class="md-github">The CLI tool checks for numeric environment variables such as DEFAULT_TIMEOUT. If an environment variable intended to represent a number is invalid (non-numeric, NaN, or infinite), the tool will automatically fall back to a safe default (e.g., 5000), after printing a clear warning to stderr. This validation is implemented using Zod for a robust check.</p>
+<p class="md-github">The CLI tool now leverages a Zod-based schema to robustly validate numeric environment variables such as DEFAULT_TIMEOUT. If an environment variable intended to represent a number is invalid (non-numeric, NaN, or infinite), the tool will automatically fall back to a safe default (e.g., 5000) and log a standardized warning. This helps ensure predictable behavior and easier diagnostics.</p>
 <p class="md-github">Example of setting an environment variable:</p>
 <pre class="md-github"><code class="md-github language-bash">export DEFAULT_TIMEOUT=3000
 node src/lib/main.js --help
@@ -132,7 +132,7 @@ node src/lib/main.js --help
 
   </section>
   <footer>
-    <p>Generated on 2025-04-12T06:54:31.475Z</p>
+    <p>Generated on 2025-04-12T06:55:52.741Z</p>
   </footer>
 </body>
 </html>
