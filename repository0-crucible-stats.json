@@ -2,17 +2,17 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Automerge",
+  "lastActivityName": "Tests",
   "lastActivityBranchName": "main",
   "nextIssue": "[1477] Implement Delete Ontology Command for CLI and REST API automated, feature",
-  "openIssues": 4,
+  "openIssues": 5,
   "issuesClosedLastHour": 4,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "averagePRAge": 0,
   "prDetails": [],
-  "diffMinutes": 3,
-  "diffMinutesMain": 5,
+  "diffMinutes": 0,
+  "diffMinutesMain": 6,
   "commitsLastHour": 5,
   "commitsLastDay": 85,
   "lastFiveCommitMessages": [
@@ -34,5 +34,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-12T20:06:19.847Z"
+  "statsGeneratedAt": "2025-04-12T20:06:55.775Z"
 }
