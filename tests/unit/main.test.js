@@ -218,7 +218,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       env: { ...process.env, DEFAULT_TIMEOUT: '3000' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 3000');
-    expect(result.stderr).not.toContain('Warning: Received non-finite value');
+    expect(result.stderr).not.toContain('Warning: Received non-finite');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
