@@ -51,17 +51,19 @@ function logEvent(eventObj) {
   }
 }
 
-// Helper function to get and validate a numeric environment variable
+// Helper function to get and validate a numeric environment variable using Zod for robust validation
 function getEnvNumber(name, defaultValue) {
   const val = process.env[name];
-  if (!val) return defaultValue;
-  const num = Number(val);
-  if (isNaN(num)) {
+  if (val === undefined) return defaultValue;
+  // Use Zod to preprocess and validate the numeric value
+  const numericSchema = z.preprocess((input) => Number(input), z.number());
+  const parsed = numericSchema.safeParse(val);
+  if (!parsed.success) {
     const warningMsg = `Warning: Received non-numeric value '${val}' for environment variable ${name}; falling back to default value ${defaultValue}`;
     console.error(warningMsg);
     return defaultValue;
   }
-  return num;
+  return parsed.data;
 }
 
 export function readOntology(filePath) {
