@@ -30,7 +30,7 @@ function getDefaultTimeout() {
     const timeout = timeoutSchema.parse(process.env.DEFAULT_TIMEOUT);
     return timeout;
   } catch (error) {
-    console.error(`Warning: Received non-finite value '${process.env.DEFAULT_TIMEOUT}'`);
+    console.error("DEFAULT_TIMEOUT not set; using default value of 5000");
     return 5000;
   }
 }
