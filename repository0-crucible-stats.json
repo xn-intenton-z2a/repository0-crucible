@@ -2,19 +2,19 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Tests",
+  "lastActivityName": "Issue Worker",
   "lastActivityBranchName": "main",
   "nextIssue": "[1485] Enhance Interactive Mode with Ontology Editing Capabilities automated, feature",
   "openIssues": 6,
   "issuesClosedLastHour": 5,
   "issuesClosedLastDay": 100,
   "openPRs": 1,
-  "averagePRAge": 8,
+  "averagePRAge": 9,
   "prDetails": [
-    "[8m] Updated handleQueryOntology to always include propertyKeys and propertyValues so that the test expecting propertyKeys is satisfied. (fixes #1364)"
+    "[9m] Updated handleQueryOntology to always include propertyKeys and propertyValues so that the test expecting propertyKeys is satisfied. (fixes #1364)"
   ],
   "diffMinutes": 0,
-  "diffMinutesMain": 0,
+  "diffMinutesMain": 1,
   "commitsLastHour": 7,
   "commitsLastDay": 96,
   "lastFiveCommitMessages": [
@@ -36,5 +36,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-12T21:47:35.699Z"
+  "statsGeneratedAt": "2025-04-12T21:48:33.062Z"
 }
