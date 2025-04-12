@@ -76,6 +76,16 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     unlinkSync(ontologyFile);
   });
 
+  test('--read flag fails validation for invalid ontology structure', () => {
+    clearLogFile();
+    const invalidOntology = { name: 123, version: '1.0', classes: 'not-an-array', properties: {} };
+    const ontologyFile = join(tempDir, 'invalidOntology.json');
+    writeFileSync(ontologyFile, JSON.stringify(invalidOntology), { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--read', ontologyFile], { encoding: 'utf-8' });
+    expect(result.stderr).toContain('LOG_ERR_ONTOLOGY_VALIDATE');
+    unlinkSync(ontologyFile);
+  });
+
   test('--persist flag writes dummy ontology to file when no custom ontology is provided', () => {
     clearLogFile();
     const outputFile = join(tempDir, 'persisted.json');
@@ -269,16 +279,6 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     expect(result.stderr).toContain('LOG_ERR_ENV_NAN');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
-  });
-
-  test('Invalid ontology structure fails validation in --read', () => {
-    clearLogFile();
-    const invalidOntology = { name: 123, version: "1.0", classes: "not-an-array", properties: {} };
-    const ontologyFile = join(tempDir, 'invalidOntology.json');
-    writeFileSync(ontologyFile, JSON.stringify(invalidOntology), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--read', ontologyFile], { encoding: 'utf-8' });
-    expect(result.stderr).toContain('LOG_ERR_ONTOLOGY_VALIDATE');
-    unlinkSync(ontologyFile);
   });
 
   test('--diagnostics flag outputs valid JSON diagnostic report', () => {

@@ -25,17 +25,18 @@ npm install repository0-crucible
 
 ## Features
 
-- CLI tool for building and managing OWL ontologies with a modular command routing. The CLI now modularizes each command handler directly in the main file, eliminating missing module errors and improving testability.
+- CLI tool for building and managing OWL ontologies with a modular command routing. The CLI modularizes each command handler directly in the main file to improve testability.
 - JSON-based persistence and retrieval of OWL ontologies via integrated persistence functions exported from the main module (located in src/lib/main.js).
 - Exports a GraphDB-friendly format from OWL ontology JSON using the GraphDB Exporter feature.
-- Merge functionality: merge two ontology JSON files and persist the merged result via the --merge-persist CLI option.
+- Merge functionality: Merge two ontology JSON files and persist the merged result via the --merge-persist CLI option.
 - **Version Display:** Use the --version flag to display the current package version as specified in package.json.
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions. The help output includes the effective DEFAULT_TIMEOUT value after environment validation.
 - **Custom Ontology Persistence:** Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.
 - **Enhanced Environment Variable Validation:** The CLI tool now explicitly validates the DEFAULT_TIMEOUT environment variable. If DEFAULT_TIMEOUT is not set, non-numeric, or non-finite (such as NaN, Infinity, or -Infinity), a corresponding structured error (LOG_ERR_ENV_NOT_SET, LOG_ERR_ENV_NAN, or LOG_ERR_ENV_NON_FINITE) is logged and a default value of 5000 is used.
-- **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log). With the new logging enhancements, error logs include structured error codes (e.g., LOG_ERR_*) and detailed contextual information to aid in diagnostics.
+- **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log). Error logs include structured error codes (e.g., LOG_ERR_*) and detailed contextual information.
 - **Diagnostics Mode:** Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.
 - **System Refresh:** Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.
+- **Zod Schema Validation:** Ontology JSON files are validated using a strict Zod schema to ensure they contain the required properties (name, version, classes, and properties) with the correct data types. This integration provides clearer error messages on invalid ontology formats.
 
 ## Usage
 
@@ -101,7 +102,7 @@ node src/lib/main.js --help
 
 ## Environment Variable Configuration
 
-The CLI tool validates numeric environment variables like DEFAULT_TIMEOUT. If the environment variable is not set, a message is logged indicating the fallback to 5000. If an invalid or non-finite numeric value is provided, a corresponding structured error code (e.g., LOG_ERR_ENV_NAN or LOG_ERR_ENV_NON_FINITE) is logged with details, and the default value of 5000 is used.
+The CLI tool validates numeric environment variables like DEFAULT_TIMEOUT. If the environment variable is not set, a message is logged indicating the fallback to 5000. If an invalid or non-finite numeric value is provided, a corresponding structured error code is logged with details, and the default value of 5000 is used.
 
 Example of setting an environment variable:
 

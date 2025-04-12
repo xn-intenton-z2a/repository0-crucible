@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { existsSync, mkdirSync, appendFileSync, writeFileSync, readFileSync, rmSync, lstatSync } from 'fs';
 import dotenv from 'dotenv';
+import { z } from 'zod';
 
 // Load environment variables
 dotenv.config();
@@ -13,6 +14,14 @@ dotenv.config();
 import pkg from '../../package.json' assert { type: 'json' };
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Define ontology schema using Zod for validation
+const ontologySchema = z.object({
+  name: z.string(),
+  version: z.string(),
+  classes: z.array(z.string()),
+  properties: z.record(z.any())
+});
 
 // Utility: Log command execution to logs/cli.log
 function logCommand(commandFlag) {
@@ -43,7 +52,6 @@ function logError(errorCode, message, context = {}) {
     try {
       mkdirSync(logDir, { recursive: true });
     } catch (err) {
-      // If directory creation fails, output minimal error
       console.error(`ERROR [LOG_ERR_DIR_CREATE] Failed to create logs directory: ${err.message}`);
     }
   }
@@ -57,7 +65,6 @@ function logError(errorCode, message, context = {}) {
   try {
     appendFileSync(logFile, JSON.stringify(errorEntry) + "\n", { encoding: 'utf-8' });
   } catch (err) {
-    // If logging fails, write to stderr
     console.error(`ERROR [LOG_ERR_LOG_WRITE] Failed to write to log file: ${err.message}`);
   }
   console.error(`ERROR [${errorCode}] ${message}`);
@@ -110,14 +117,15 @@ function handleRead(args, { logCommand }) {
   try {
     const data = readFileSync(filePath, { encoding: 'utf-8' });
     const ontology = JSON.parse(data);
-    // Basic validation
-    if (typeof ontology.name !== 'string' || typeof ontology.version !== 'string' || !Array.isArray(ontology.classes) || typeof ontology.properties !== 'object') {
-      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed: Invalid structure', { command: '--read', file: filePath });
-      return;
-    }
+    // Validate ontology using Zod schema
+    ontologySchema.parse(ontology);
     console.log(`Ontology loaded: ${ontology.name}`);
   } catch (err) {
-    logError('LOG_ERR_ONTOLOGY_READ', 'Ontology validation failed', { command: '--read', error: err.message, file: filePath });
+    if (err instanceof Error && err.name === 'ZodError') {
+      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed', { command: '--read', file: filePath, errors: err.errors });
+    } else {
+      logError('LOG_ERR_ONTOLOGY_READ', 'Ontology read error', { command: '--read', error: err.message, file: filePath });
+    }
   }
 }
 
@@ -135,8 +143,14 @@ function handlePersist(args, { logCommand }) {
       } else {
         ontology = JSON.parse(ontologyArg);
       }
+      // Validate ontology using Zod schema
+      ontologySchema.parse(ontology);
     } catch (err) {
-      logError('LOG_ERR_PERSIST_PARSE', 'Error parsing ontology JSON string', { command: '--persist', input: ontologyArg });
+      if (err instanceof Error && err.name === 'ZodError') {
+        logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed', { command: '--persist', input: ontologyArg, errors: err.errors });
+      } else {
+        logError('LOG_ERR_PERSIST_PARSE', 'Error parsing ontology JSON string', { command: '--persist', input: ontologyArg });
+      }
       return;
     }
   } else {
@@ -166,6 +180,8 @@ function handleExportGraphDB(args, { logCommand }) {
   try {
     const data = readFileSync(inputFile, { encoding: 'utf-8' });
     const ontology = JSON.parse(data);
+    // Validate ontology using Zod schema
+    ontologySchema.parse(ontology);
     const graphOutput = {
       message: `GraphDB exporter output for ${ontology.name}`,
       nodes: []
@@ -177,7 +193,11 @@ function handleExportGraphDB(args, { logCommand }) {
       console.log(`GraphDB exporter output: ${JSON.stringify(graphOutput)}`);
     }
   } catch (err) {
-    logError('LOG_ERR_EXPORT_GRAPHDB', 'Error exporting GraphDB', { command: '--export-graphdb', error: err.message, inputFile });
+    if (err instanceof Error && err.name === 'ZodError') {
+      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed', { command: '--export-graphdb', file: inputFile, errors: err.errors });
+    } else {
+      logError('LOG_ERR_EXPORT_GRAPHDB', 'Error exporting GraphDB', { command: '--export-graphdb', error: err.message, inputFile });
+    }
   }
 }
 
@@ -190,6 +210,9 @@ function handleMergePersist(args, { logCommand }) {
   try {
     const ontology1 = JSON.parse(readFileSync(file1, { encoding: 'utf-8' }));
     const ontology2 = JSON.parse(readFileSync(file2, { encoding: 'utf-8' }));
+    // Validate both ontologies
+    ontologySchema.parse(ontology1);
+    ontologySchema.parse(ontology2);
     const merged = {
       name: `${ontology1.name} & ${ontology2.name}`,
       version: ontology2.version,
@@ -199,7 +222,11 @@ function handleMergePersist(args, { logCommand }) {
     writeFileSync(outputFile, JSON.stringify(merged, null, 2), { encoding: 'utf-8' });
     console.log(`Merged ontology persisted to ${outputFile}`);
   } catch (err) {
-    logError('LOG_ERR_MERGE', 'Error merging ontologies', { command: '--merge-persist', error: err.message, files: [file1, file2, outputFile] });
+    if (err instanceof Error && err.name === 'ZodError') {
+      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed during merge', { command: '--merge-persist', error: err.errors });
+    } else {
+      logError('LOG_ERR_MERGE', 'Error merging ontologies', { command: '--merge-persist', error: err.message, files: [file1, file2, outputFile] });
+    }
   }
 }
 
@@ -235,9 +262,7 @@ function handleRefresh(args, { logCommand }) {
     mkdirSync(logDir, { recursive: true });
   }
   const logFile = join(logDir, 'cli.log');
-  // Clear the log file before logging the refresh command
   writeFileSync(logFile, '', { encoding: 'utf-8' });
-  // Log the refresh command after clearing the logs
   logCommand('--refresh');
   console.log('System state refreshed');
 }
