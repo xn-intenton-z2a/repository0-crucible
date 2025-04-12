@@ -43,6 +43,7 @@ function clearOntologiesDir() {
   }
 }
 
+
 describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--help flag displays usage information', () => {
     clearLogFile();
@@ -202,7 +203,6 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const inputFile = join(tempDir, 'owlOntology.json');
     writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
     const result = spawnSync('node', [cliPath, '--export-owl', inputFile], { encoding: 'utf-8' });
-    // Check that output contains OWL prefixes and Turtle syntax
     expect(result.stdout).toContain('@prefix owl: <http://www.w3.org/2002/07/owl#>');
     expect(result.stdout).toContain('a owl:Ontology');
     const logContent = readLogFile();
@@ -301,6 +301,66 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     expect(result.stdout).toContain('Server stopped');
     const logContent = readLogFile();
     expect(logContent).toContain('--serve');
+  });
+
+  test('--diff flag outputs differences when ontologies differ', () => {
+    clearLogFile();
+    const ontology1 = {
+      name: 'OntologyA',
+      version: '1.0',
+      classes: ['Class1', 'Class2'],
+      properties: { propA: 'valueA', propB: 'valueB' }
+    };
+    const ontology2 = {
+      name: 'OntologyB',
+      version: '2.0',
+      classes: ['Class2', 'Class3'],
+      properties: { propA: 'valueA_modified', propC: 'valueC' }
+    };
+    const file1 = join(tempDir, 'diff1.json');
+    const file2 = join(tempDir, 'diff2.json');
+    writeFileSync(file1, JSON.stringify(ontology1, null, 2), { encoding: 'utf-8' });
+    writeFileSync(file2, JSON.stringify(ontology2, null, 2), { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--diff', file1, file2], { encoding: 'utf-8' });
+    const diffOutput = JSON.parse(result.stdout);
+    expect(diffOutput).toHaveProperty('name');
+    expect(diffOutput.name).toEqual({ from: 'OntologyA', to: 'OntologyB' });
+    expect(diffOutput).toHaveProperty('version');
+    expect(diffOutput.version).toEqual({ from: '1.0', to: '2.0' });
+    expect(diffOutput).toHaveProperty('classes');
+    expect(diffOutput.classes).toHaveProperty('added');
+    expect(diffOutput.classes).toHaveProperty('removed');
+    expect(diffOutput.classes.added).toContain('Class3');
+    expect(diffOutput.classes.removed).toContain('Class1');
+    expect(diffOutput).toHaveProperty('properties');
+    expect(diffOutput.properties).toHaveProperty('added');
+    expect(diffOutput.properties).toHaveProperty('removed');
+    expect(diffOutput.properties).toHaveProperty('modified');
+    unlinkSync(file1);
+    unlinkSync(file2);
+    const logContent = readLogFile();
+    expect(logContent).toContain('--diff');
+  });
+
+  test('--diff flag outputs "No differences found" when ontologies are identical', () => {
+    clearLogFile();
+    const ontology = {
+      name: 'SameOntology',
+      version: '1.0',
+      classes: ['Class1', 'Class2'],
+      properties: { propA: 'valueA' }
+    };
+    const file1 = join(tempDir, 'same1.json');
+    const file2 = join(tempDir, 'same2.json');
+    writeFileSync(file1, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
+    writeFileSync(file2, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--diff', file1, file2], { encoding: 'utf-8' });
+    const diffOutput = JSON.parse(result.stdout);
+    expect(diffOutput).toHaveProperty('message', 'No differences found');
+    unlinkSync(file1);
+    unlinkSync(file2);
+    const logContent = readLogFile();
+    expect(logContent).toContain('--diff');
   });
 });
 
