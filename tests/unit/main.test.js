@@ -292,7 +292,6 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const result = spawnSync('node', [cliPath, '--refresh'], { encoding: 'utf-8' });
     expect(result.stdout).toContain('System state refreshed');
     const logContent = readLogFile();
-    // The log should only contain the new refresh command entry and not the dummy content
     expect(logContent).toContain('--refresh');
     expect(logContent).not.toContain('dummy log content');
   });
