@@ -13,7 +13,48 @@ dotenv.config();
 // Import package version from package.json
 import pkg from '../../package.json' assert { type: 'json' };
 
+// Get __dirname for ESM modules
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Inline logger functions (integrated to avoid missing module error)
+function logCommand(command) {
+  try {
+    const logDir = join(process.cwd(), 'logs');
+    if (!existsSync(logDir)) {
+      mkdirSync(logDir, { recursive: true });
+    } else {
+      // If logDir exists but is not a directory, remove it
+      const stats = lstatSync(logDir);
+      if (!stats.isDirectory()) {
+        rmSync(logDir, { force: true });
+        mkdirSync(logDir, { recursive: true });
+      }
+    }
+    const logFile = join(logDir, 'cli.log');
+    appendFileSync(logFile, JSON.stringify({ command, timestamp: new Date().toISOString() }) + "\n", { encoding: 'utf-8' });
+  } catch (err) {
+    console.error("Failed to log command:", command);
+  }
+}
+
+function logError(code, messageStr, details) {
+  try {
+    const logDir = join(process.cwd(), 'logs');
+    if (!existsSync(logDir)) {
+      mkdirSync(logDir, { recursive: true });
+    } else {
+      const stats = lstatSync(logDir);
+      if (!stats.isDirectory()) {
+        rmSync(logDir, { force: true });
+        mkdirSync(logDir, { recursive: true });
+      }
+    }
+    const logFile = join(logDir, 'cli.log');
+    appendFileSync(logFile, JSON.stringify({ code, message: messageStr, details, timestamp: new Date().toISOString() }) + "\n", { encoding: 'utf-8' });
+  } catch (err) {
+    console.error("Failed to log error:", code);
+  }
+}
 
 // Define ontology schema using Zod for validation
 const ontologySchema = z.object({
@@ -23,75 +64,34 @@ const ontologySchema = z.object({
   properties: z.record(z.any())
 });
 
-// Utility: Log command execution to logs/cli.log
-function logCommand(commandFlag) {
-  const logDir = join(process.cwd(), 'logs');
-  // Ensure logDir is an actual directory
-  if (existsSync(logDir)) {
-    try {
-      const stats = lstatSync(logDir);
-      if (!stats.isDirectory()) {
-        rmSync(logDir);
-        mkdirSync(logDir, { recursive: true });
-      }
-    } catch (err) {
-      mkdirSync(logDir, { recursive: true });
-    }
-  } else {
-    mkdirSync(logDir, { recursive: true });
-  }
-  const logFile = join(logDir, 'cli.log');
-  const logEntry = { timestamp: new Date().toISOString(), command: commandFlag };
-  appendFileSync(logFile, JSON.stringify(logEntry) + "\n", { encoding: 'utf-8' });
-}
-
-// Utility: Log errors with structured error codes and context
-function logError(errorCode, message, context = {}) {
-  const logDir = join(process.cwd(), 'logs');
-  if (!existsSync(logDir)) {
-    try {
-      mkdirSync(logDir, { recursive: true });
-    } catch (err) {
-      console.error(`ERROR [LOG_ERR_DIR_CREATE] Failed to create logs directory: ${err.message}`);
-    }
-  }
-  const logFile = join(logDir, 'cli.log');
-  const errorEntry = {
-    timestamp: new Date().toISOString(),
-    errorCode,
-    message,
-    context
-  };
-  try {
-    appendFileSync(logFile, JSON.stringify(errorEntry) + "\n", { encoding: 'utf-8' });
-  } catch (err) {
-    console.error(`ERROR [LOG_ERR_LOG_WRITE] Failed to write to log file: ${err.message}`);
-  }
-  console.error(`ERROR [${errorCode}] ${message}`);
-}
-
 // Utility: Get validated DEFAULT_TIMEOUT with consolidated handling for undefined, non-numeric, and non-finite values
 function getDefaultTimeout() {
   const defaultValue = 5000;
   const rawTimeout = process.env.DEFAULT_TIMEOUT;
   if (rawTimeout === undefined) {
-    logError('LOG_ERR_ENV_NOT_SET', `DEFAULT_TIMEOUT is not set; using default value of ${defaultValue}`, { rawTimeout });
+    const errorMsg = `DEFAULT_TIMEOUT is not set; using default value of ${defaultValue}`;
+    logError('LOG_ERR_ENV_NOT_SET', errorMsg, { rawTimeout });
+    console.error('LOG_ERR_ENV_NOT_SET', errorMsg);
     return defaultValue;
   }
   const timeoutValue = Number(rawTimeout);
   if (isNaN(timeoutValue)) {
-    logError('LOG_ERR_ENV_NAN', `DEFAULT_TIMEOUT is not a valid number; using default value of ${defaultValue} (input: ${rawTimeout})`, { rawTimeout });
+    const errorMsg = `DEFAULT_TIMEOUT is not a valid number; using default value of ${defaultValue} (input: ${rawTimeout})`;
+    logError('LOG_ERR_ENV_NAN', errorMsg, { rawTimeout });
+    console.error('LOG_ERR_ENV_NAN', errorMsg);
     return defaultValue;
   }
   if (!isFinite(timeoutValue)) {
-    logError('LOG_ERR_ENV_NON_FINITE', `DEFAULT_TIMEOUT must be a finite number; using default value of ${defaultValue} (input: ${rawTimeout})`, { rawTimeout });
+    const errorMsg = `DEFAULT_TIMEOUT must be a finite number; using default value of ${defaultValue} (input: ${rawTimeout})`;
+    logError('LOG_ERR_ENV_NON_FINITE', errorMsg, { rawTimeout });
+    console.error('LOG_ERR_ENV_NON_FINITE', errorMsg);
     return defaultValue;
   }
   return timeoutValue;
 }
 
 // Inline command handlers
-function handleHelp(args, { logCommand, getDefaultTimeout }) {
+function handleHelp(args, { getDefaultTimeout }) {
   logCommand('--help');
   const timeout = getDefaultTimeout();
   console.log(`Usage: 
@@ -106,12 +106,12 @@ function handleHelp(args, { logCommand, getDefaultTimeout }) {
 Using DEFAULT_TIMEOUT: ${timeout}`);
 }
 
-function handleVersion(args, { logCommand }) {
+function handleVersion(args) {
   logCommand('--version');
   console.log(pkg.version);
 }
 
-function handleRead(args, { logCommand }) {
+function handleRead(args) {
   logCommand('--read');
   const filePath = args[args.indexOf('--read') + 1];
   try {
@@ -123,13 +123,15 @@ function handleRead(args, { logCommand }) {
   } catch (err) {
     if (err instanceof Error && err.name === 'ZodError') {
       logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed', { command: '--read', file: filePath, errors: err.errors });
+      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
     } else {
       logError('LOG_ERR_ONTOLOGY_READ', 'Ontology read error', { command: '--read', error: err.message, file: filePath });
+      console.error('LOG_ERR_ONTOLOGY_READ', err.message);
     }
   }
 }
 
-function handlePersist(args, { logCommand }) {
+function handlePersist(args) {
   logCommand('--persist');
   const outputFile = args[args.indexOf('--persist') + 1];
   let ontology;
@@ -148,8 +150,10 @@ function handlePersist(args, { logCommand }) {
     } catch (err) {
       if (err instanceof Error && err.name === 'ZodError') {
         logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed', { command: '--persist', input: ontologyArg, errors: err.errors });
+        console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
       } else {
         logError('LOG_ERR_PERSIST_PARSE', 'Error parsing ontology JSON string', { command: '--persist', input: ontologyArg });
+        console.error('LOG_ERR_PERSIST_PARSE', 'Error parsing ontology JSON string');
       }
       return;
     }
@@ -166,10 +170,11 @@ function handlePersist(args, { logCommand }) {
     console.log(`Ontology persisted to ${outputFile}`);
   } catch (err) {
     logError('LOG_ERR_PERSIST_WRITE', 'Error persisting ontology', { command: '--persist', error: err.message, outputFile });
+    console.error('LOG_ERR_PERSIST_WRITE', err.message);
   }
 }
 
-function handleExportGraphDB(args, { logCommand }) {
+function handleExportGraphDB(args) {
   logCommand('--export-graphdb');
   const inputFile = args[args.indexOf('--export-graphdb') + 1];
   let outputFile = null;
@@ -195,13 +200,15 @@ function handleExportGraphDB(args, { logCommand }) {
   } catch (err) {
     if (err instanceof Error && err.name === 'ZodError') {
       logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed', { command: '--export-graphdb', file: inputFile, errors: err.errors });
+      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
     } else {
       logError('LOG_ERR_EXPORT_GRAPHDB', 'Error exporting GraphDB', { command: '--export-graphdb', error: err.message, inputFile });
+      console.error('LOG_ERR_EXPORT_GRAPHDB', err.message);
     }
   }
 }
 
-function handleMergePersist(args, { logCommand }) {
+function handleMergePersist(args) {
   logCommand('--merge-persist');
   const index = args.indexOf('--merge-persist');
   const file1 = args[index + 1];
@@ -224,13 +231,15 @@ function handleMergePersist(args, { logCommand }) {
   } catch (err) {
     if (err instanceof Error && err.name === 'ZodError') {
       logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed during merge', { command: '--merge-persist', error: err.errors });
+      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed during merge');
     } else {
       logError('LOG_ERR_MERGE', 'Error merging ontologies', { command: '--merge-persist', error: err.message, files: [file1, file2, outputFile] });
+      console.error('LOG_ERR_MERGE', err.message);
     }
   }
 }
 
-function handleDiagnostics(args, { logCommand, getDefaultTimeout }) {
+function handleDiagnostics(args) {
   logCommand('--diagnostics');
   const diagnostics = {
     packageVersion: pkg.version,
@@ -246,19 +255,19 @@ function handleDiagnostics(args, { logCommand, getDefaultTimeout }) {
   console.log(JSON.stringify(diagnostics));
 }
 
-function handleRefresh(args, { logCommand }) {
+function handleRefresh(args) {
   const logDir = join(process.cwd(), 'logs');
-  if (existsSync(logDir)) {
-    try {
+  try {
+    if (existsSync(logDir)) {
       const stats = lstatSync(logDir);
       if (!stats.isDirectory()) {
-        rmSync(logDir);
+        rmSync(logDir, { force: true });
         mkdirSync(logDir, { recursive: true });
       }
-    } catch (err) {
+    } else {
       mkdirSync(logDir, { recursive: true });
     }
-  } else {
+  } catch (err) {
     mkdirSync(logDir, { recursive: true });
   }
   const logFile = join(logDir, 'cli.log');
@@ -267,7 +276,7 @@ function handleRefresh(args, { logCommand }) {
   console.log('System state refreshed');
 }
 
-function handleDefault(args, { logCommand }) {
+function handleDefault(args) {
   logCommand('default');
   console.log('Invalid command');
 }
@@ -275,30 +284,30 @@ function handleDefault(args, { logCommand }) {
 // Command dispatcher using inline command handlers
 function dispatchCommand(args) {
   if (args.includes('--diagnostics')) {
-    return handleDiagnostics(args, { logCommand, getDefaultTimeout });
+    return handleDiagnostics(args);
   }
   if (args.includes('--refresh')) {
-    return handleRefresh(args, { logCommand });
+    return handleRefresh(args);
   }
   if (args.includes('--version')) {
-    return handleVersion(args, { logCommand });
+    return handleVersion(args);
   }
   if (args.includes('--read')) {
-    return handleRead(args, { logCommand });
+    return handleRead(args);
   }
   if (args.includes('--persist')) {
-    return handlePersist(args, { logCommand });
+    return handlePersist(args);
   }
   if (args.includes('--export-graphdb')) {
-    return handleExportGraphDB(args, { logCommand });
+    return handleExportGraphDB(args);
   }
   if (args.includes('--merge-persist')) {
-    return handleMergePersist(args, { logCommand });
+    return handleMergePersist(args);
   }
   if (args.includes('--help') || args.length === 0) {
-    return handleHelp(args, { logCommand, getDefaultTimeout });
+    return handleHelp(args, { getDefaultTimeout });
   }
-  return handleDefault(args, { logCommand });
+  return handleDefault(args);
 }
 
 // Main function
