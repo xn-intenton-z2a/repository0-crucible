@@ -2,21 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 10,
-  "issuesClosedLastHour": 8,
+  "openIssues": 8,
+  "issuesClosedLastHour": 10,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Refactored DEFAULT_TIMEOUT parsing to use console.error for NaN warnings and updated README documentation. (fixes #1394)",
-      "ageMinutes": 1
-    }
-  ],
+  "openPRs": 0,
+  "prDetails": [],
   "diffMinutes": 0,
-  "diffMinutesMain": 11,
-  "commitsLastHour": 4,
-  "commitsLastDay": 24,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 5,
+  "commitsLastDay": 25,
   "lastFiveCommitMessages": [
+    {
+      "time": "05:42",
+      "message": "Refactored DEFAULT_TIMEOUT parsing to use console.error for NaN ..."
+    },
     {
       "time": "05:29",
       "message": "Improve logging robustness by reporting errors to stderr when lo..."
@@ -32,23 +31,14 @@
     {
       "time": "04:53",
       "message": "Reordered --version flag handling to avoid logging DEFAULT_TIMEO..."
-    },
-    {
-      "time": "04:36",
-      "message": "Added support for custom ontology input for the --persist comman..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1394",
-        "minutesSinceLastCommit": 1
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 1,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T05:40:59.954Z"
+  "generatedAt": "2025-04-12T05:42:28.143Z"
 }
