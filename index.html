@@ -55,7 +55,7 @@
 <li class="md-github"><strong class="md-github">Version Display:</strong> Use the --version flag to display the current package version as specified in package.json.</li>
 <li class="md-github"><strong class="md-github">Help Command:</strong> Use --help (or run without arguments) to display CLI usage instructions. The help output includes the effective DEFAULT_TIMEOUT value after environment validation.</li>
 <li class="md-github"><strong class="md-github">Custom Ontology Persistence:</strong> Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.</li>
-<li class="md-github"><strong class="md-github">Enhanced Environment Variable Validation:</strong> The CLI tool now performs explicit checks for special cases including non-numeric inputs, NaN, Infinity and -Infinity. In these cases, a clear warning is logged and a default value of 5000 is used.</li>
+<li class="md-github"><strong class="md-github">Enhanced Environment Variable Validation:</strong> The CLI tool now performs explicit checks for special cases including non-numeric inputs, NaN, Infinity and -Infinity. In these cases, a clear warning is logged and a default value of 5000 is used. (Error messages have been refined to specify the input received.)</li>
 <li class="md-github"><strong class="md-github">Robust Logging:</strong> Every command execution is logged in JSON format to a dedicated log file (logs/cli.log), with errors reported to stderr for better diagnostics.</li>
 <li class="md-github"><strong class="md-github">Diagnostics Mode:</strong> Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.</li>
 <li class="md-github"><strong class="md-github">System Refresh:</strong> Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.</li>
@@ -139,7 +139,7 @@ node src/lib/main.js --help
 
   </section>
   <footer>
-    <p>Generated on 2025-04-12T09:22:11.234Z</p>
+    <p>Generated on 2025-04-12T09:23:34.304Z</p>
   </footer>
 </body>
 </html>
