@@ -40,7 +40,7 @@ function getEnvNumber(name, defaultValue) {
   if (!val) return defaultValue;
   const num = Number(val);
   if (isNaN(num)) {
-    console.warn(`Warning: Environment variable ${name} is not numeric, falling back to ${defaultValue}`);
+    console.warn(`Warning: Received non-numeric value '${val}' for environment variable ${name}; falling back to default value ${defaultValue}`);
     return defaultValue;
   }
   return num;
