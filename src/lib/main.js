@@ -36,16 +36,20 @@ function logCommand(commandFlag) {
   appendFileSync(logFile, logEntry + "\n", { encoding: 'utf-8' });
 }
 
-// Utility: Get validated DEFAULT_TIMEOUT with explicit handling for NaN and non-finite values
+// Utility: Get validated DEFAULT_TIMEOUT with explicit handling for undefined, NaN and non-finite values
 function getDefaultTimeout() {
   const rawTimeout = process.env.DEFAULT_TIMEOUT;
+  if (rawTimeout === undefined) {
+    console.error("DEFAULT_TIMEOUT is not set; using default value of 5000");
+    return 5000;
+  }
   const timeoutValue = Number(rawTimeout);
   if (isNaN(timeoutValue)) {
-    console.error("DEFAULT_TIMEOUT is NaN; using default value of 5000 (input: " + rawTimeout + ")");
+    console.error(`DEFAULT_TIMEOUT is NaN; using default value of 5000 (input: ${rawTimeout})`);
     return 5000;
   }
   if (!isFinite(timeoutValue)) {
-    console.error("DEFAULT_TIMEOUT not set; using default value of 5000 (invalid input: " + rawTimeout + ")");
+    console.error(`DEFAULT_TIMEOUT not set; using default value of 5000 (invalid input: ${rawTimeout})`);
     return 5000;
   }
   return timeoutValue;
