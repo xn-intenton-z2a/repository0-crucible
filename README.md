@@ -39,7 +39,12 @@ npm install repository0-crucible
 - **Build Commands:**
   - **Intermediate Build:** Use --build-intermediate to process and output an intermediate build version of the ontology.
   - **Enhanced Build:** Use --build-enhanced to process additional steps and output an enhanced build version of the ontology.
-- **REST Server:** Use the --serve flag to launch an HTTP server that exposes REST endpoints for ontology operations (e.g., GET /diagnostics).
+- **REST API Server:** Use the --serve flag to launch an HTTP server exposing comprehensive REST API endpoints for ontology operations. The following endpoints are available:
+  - **GET /diagnostics:** Returns a diagnostic report (same as CLI diagnostics).
+  - **GET /ontology:** Returns a JSON list of persisted ontology definitions.
+  - **POST /ontology:** Accepts a JSON payload representing an ontology, validates it using a Zod schema, persists it with a unique identifier, and returns a creation confirmation.
+  - **PUT /ontology:** Accepts a JSON payload for updating an existing ontology (requires an "id" property), validates and persists the update, and returns a confirmation.
+  - **DELETE /ontology:** Accepts an ontology identifier as a query parameter (e.g., /ontology?id=123) and deletes the corresponding persisted ontology, returning a confirmation.
 - **Interactive Mode:** Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration. In interactive mode, you can use the following commands:
   - `load <file>`: Load and validate an ontology from a JSON file.
   - `show`: Display the currently loaded ontology.
@@ -122,11 +127,16 @@ node src/lib/main.js --help
   ```
   Processes and outputs an enhanced build version of the ontology.
 
-- **REST Server:**
+- **REST API Server:**
   ```bash
   node src/lib/main.js --serve
   ```
-  Launches an HTTP server that exposes REST endpoints for ontology operations (e.g., GET /diagnostics).
+  Launches an HTTP server that exposes the following endpoints:
+    - **GET /diagnostics**: Returns diagnostic information.
+    - **GET /ontology**: Returns a list of persisted ontologies.
+    - **POST /ontology**: Creates a new ontology from a JSON payload.
+    - **PUT /ontology**: Updates an existing ontology; requires an "id" field.
+    - **DELETE /ontology**: Deletes an ontology specified by an "id" query parameter.
 
 - **Interactive Mode:**
   ```bash
@@ -156,7 +166,7 @@ Every CLI command execution is logged automatically in JSON format. Logs include
 
 ## End-to-End Integration Tests
 
-A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, and the new interactive mode. To run the integration tests:
+A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, and the new interactive mode. To run the integration tests:
 
 ```bash
 npm run test:e2e

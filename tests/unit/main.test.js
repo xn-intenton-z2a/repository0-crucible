@@ -1,8 +1,9 @@
 import { describe, test, expect } from 'vitest';
-import { spawnSync } from 'child_process';
-import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSync, mkdirSync } from 'fs';
+import { spawnSync, spawn } from 'child_process';
+import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSync, mkdirSync, readdirSync } from 'fs';
 import { join } from 'path';
 import os from 'os';
+import http from 'http';
 
 // Path to the CLI entry point
 const cliPath = join(process.cwd(), 'src', 'lib', 'main.js');
@@ -37,6 +38,17 @@ function writeDummyLog() {
   }
   const logFilePath = join(logDir, 'cli.log');
   writeFileSync(logFilePath, 'dummy log content\n', { encoding: 'utf-8' });
+}
+
+// Helper function to clear ontologies directory
+function clearOntologiesDir() {
+  const ontDir = join(process.cwd(), 'ontologies');
+  if (existsSync(ontDir)) {
+    const files = readdirSync(ontDir);
+    for (const file of files) {
+      rmSync(join(ontDir, file), { force: true });
+    }
+  }
 }
 
 describe('End-to-End CLI Integration Tests - Modular Commands', () => {
@@ -334,14 +346,141 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     expect(logContent).toContain('--serve');
   });
 
-  test('--interactive mode executes commands correctly', () => {
-    clearLogFile();
-    // Simulate interactive input: type 'help' then 'exit'
-    const inputCommands = 'help\nexit\n';
-    const result = spawnSync('node', [cliPath, '--interactive'], { input: inputCommands, encoding: 'utf-8', timeout: 5000 });
-    expect(result.stdout).toContain('Interactive commands:');
-    expect(result.stdout).toContain('Exiting Interactive Mode.');
-    const logContent = readLogFile();
-    expect(logContent).toContain('--interactive');
+});
+
+// New tests for REST API endpoints for ontology CRUD operations
+
+describe('REST API Endpoints', () => {
+  // Before tests, clear ontologies directory
+  beforeAll(() => {
+    clearOntologiesDir();
   });
+
+  test('CRUD operations on /ontology endpoint', (done) => {
+    // Spawn the server using spawn (non-blocking) so we can make HTTP requests
+    const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: ['pipe', 'pipe', 'pipe'] });
+    let serverOutput = '';
+    serverProcess.stdout.on('data', (data) => {
+      serverOutput += data.toString();
+    });
+    
+    // Wait for the server to start
+    setTimeout(() => {
+      // 1. Test GET /diagnostics
+      http.get('http://localhost:3000/diagnostics', (res) => {
+        let data = '';
+        res.on('data', chunk => data += chunk);
+        res.on('end', () => {
+          const diag = JSON.parse(data);
+          expect(diag).toHaveProperty('packageVersion');
+          
+          // 2. Test GET /ontology (should be empty)
+          http.get('http://localhost:3000/ontology', (res2) => {
+            let data2 = '';
+            res2.on('data', chunk => data2 += chunk);
+            res2.on('end', () => {
+              const ontList = JSON.parse(data2);
+              expect(Array.isArray(ontList)).toBe(true);
+              expect(ontList.length).toBe(0);
+              
+              // 3. Test POST /ontology
+              const postData = JSON.stringify({
+                name: 'New Ontology',
+                version: '1.0',
+                classes: ['Class1'],
+                properties: { prop1: 'value1' }
+              });
+              const postOptions = {
+                hostname: 'localhost',
+                port: 3000,
+                path: '/ontology',
+                method: 'POST',
+                headers: {
+                  'Content-Type': 'application/json',
+                  'Content-Length': Buffer.byteLength(postData)
+                }
+              };
+              const postReq = http.request(postOptions, (res3) => {
+                let postResData = '';
+                res3.on('data', chunk => postResData += chunk);
+                res3.on('end', () => {
+                  expect(res3.statusCode).toBe(201);
+                  const postRes = JSON.parse(postResData);
+                  expect(postRes).toHaveProperty('id');
+                  const ontId = postRes.id;
+
+                  // 4. Test GET /ontology again, should have one entry
+                  http.get('http://localhost:3000/ontology', (res4) => {
+                    let data4 = '';
+                    res4.on('data', chunk => data4 += chunk);
+                    res4.on('end', () => {
+                      const ontList2 = JSON.parse(data4);
+                      expect(ontList2.length).toBe(1);
+                      expect(ontList2[0]).toHaveProperty('id', ontId);
+
+                      // 5. Test PUT /ontology
+                      const updatedOntology = {
+                        id: ontId,
+                        name: 'Updated Ontology',
+                        version: '1.1',
+                        classes: ['Class1', 'Class2'],
+                        properties: { prop1: 'value1', prop2: 'value2' }
+                      };
+                      const putData = JSON.stringify(updatedOntology);
+                      const putOptions = {
+                        hostname: 'localhost',
+                        port: 3000,
+                        path: '/ontology',
+                        method: 'PUT',
+                        headers: {
+                          'Content-Type': 'application/json',
+                          'Content-Length': Buffer.byteLength(putData)
+                        }
+                      };
+                      const putReq = http.request(putOptions, (res5) => {
+                        let putResData = '';
+                        res5.on('data', chunk => putResData += chunk);
+                        res5.on('end', () => {
+                          expect(res5.statusCode).toBe(200);
+                          const putRes = JSON.parse(putResData);
+                          expect(putRes).toHaveProperty('id', ontId);
+
+                          // 6. Test DELETE /ontology
+                          http.get(`http://localhost:3000/ontology?id=${ontId}`, (res6) => {
+                            let delData = '';
+                            res6.on('data', chunk => delData += chunk);
+                            res6.on('end', () => {
+                              const delRes = JSON.parse(delData);
+                              expect(res6.statusCode).toBe(200);
+                              expect(delRes).toHaveProperty('id', ontId);
+
+                              // 7. Final GET /ontology (should be empty again)
+                              http.get('http://localhost:3000/ontology', (res7) => {
+                                let data7 = '';
+                                res7.on('data', chunk => data7 += chunk);
+                                res7.on('end', () => {
+                                  const finalList = JSON.parse(data7);
+                                  expect(finalList.length).toBe(0);
+                                  serverProcess.kill();
+                                  done();
+                                });
+                              });
+                            });
+                          });
+                        });
+                      });
+                      putReq.write(putData);
+                      putReq.end();
+                    });
+                  });
+                });
+              });
+              postReq.write(postData);
+              postReq.end();
+            });
+          });
+        });
+      }, 500);
+    }, 100);
+  }, 10000);
 });

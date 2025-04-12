@@ -3,7 +3,7 @@
 
 import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
-import { existsSync, mkdirSync, appendFileSync, writeFileSync, readFileSync, rmSync, lstatSync } from 'fs';
+import { existsSync, mkdirSync, appendFileSync, writeFileSync, readFileSync, rmSync, lstatSync, readdirSync } from 'fs';
 import dotenv from 'dotenv';
 import { z } from 'zod';
 import http from 'http';
@@ -42,6 +42,18 @@ function ensureLogDir() {
     mkdirSync(logDir, { recursive: true });
   }
   return logDir;
+}
+
+/**
+ * Ensures that the ontologies directory exists for persisting ontology files.
+ * @returns {string} The absolute path to the ontologies directory.
+ */
+function ensureOntologiesDir() {
+  const ontDir = join(process.cwd(), 'ontologies');
+  if (!existsSync(ontDir)) {
+    mkdirSync(ontDir, { recursive: true });
+  }
+  return ontDir;
 }
 
 // Inline logger functions (integrated to avoid missing module error)
@@ -293,13 +305,18 @@ function handleBuildEnhanced(args) {
   console.log('Enhanced build processed');
 }
 
+// Enhanced HTTP server with comprehensive REST API endpoints for ontology management
 function handleServe(args) {
   logCommand('--serve');
-  // Launch an HTTP server that exposes REST endpoints for ontology operations
   const port = 3000;
+  const ontDir = ensureOntologiesDir();
+
   const server = http.createServer((req, res) => {
-    // Basic routing based on URL
-    if (req.method === 'GET' && req.url === '/diagnostics') {
+    // Log API request details
+    logCommand(`API Request: ${req.method} ${req.url}`);
+    const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+    
+    if (req.method === 'GET' && parsedUrl.pathname === '/diagnostics') {
       const diagnostics = {
         packageVersion: pkg.version,
         environment: process.env,
@@ -310,22 +327,108 @@ function handleServe(args) {
       };
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify(diagnostics));
+    } else if (req.method === 'GET' && parsedUrl.pathname === '/ontology') {
+      try {
+        let ontologies = [];
+        if (existsSync(ontDir)) {
+          const files = readdirSync(ontDir);
+          for (const file of files) {
+            if (file.endsWith('.json')) {
+              const data = readFileSync(join(ontDir, file), { encoding: 'utf-8' });
+              ontologies.push(JSON.parse(data));
+            }
+          }
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(ontologies));
+      } catch (err) {
+        logError('LOG_ERR_ONTOLOGY_LIST', 'Error listing ontologies', { error: err.message });
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Failed to list ontologies' }));
+      }
+    } else if (req.method === 'POST' && parsedUrl.pathname === '/ontology') {
+      let body = '';
+      req.on('data', (chunk) => { body += chunk; });
+      req.on('end', () => {
+        try {
+          const ont = JSON.parse(body);
+          ontologySchema.parse(ont);
+          const id = Date.now().toString();
+          ont.id = id; // assign a unique id
+          const filePath = join(ontDir, `${id}.json`);
+          writeFileSync(filePath, JSON.stringify(ont, null, 2), { encoding: 'utf-8' });
+          res.writeHead(201, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ message: 'Ontology created', id }));
+        } catch (err) {
+          logError('LOG_ERR_ONTOLOGY_CREATE', 'Failed to create ontology', { error: err.message });
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Invalid ontology data' }));
+        }
+      });
+    } else if (req.method === 'PUT' && parsedUrl.pathname === '/ontology') {
+      let body = '';
+      req.on('data', (chunk) => { body += chunk; });
+      req.on('end', () => {
+        try {
+          const ont = JSON.parse(body);
+          if (!ont.id) {
+            throw new Error('Missing ontology id');
+          }
+          ontologySchema.parse(ont);
+          const filePath = join(ontDir, `${ont.id}.json`);
+          if (!existsSync(filePath)) {
+            res.writeHead(404, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Ontology not found' }));
+            return;
+          }
+          writeFileSync(filePath, JSON.stringify(ont, null, 2), { encoding: 'utf-8' });
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ message: 'Ontology updated', id: ont.id }));
+        } catch (err) {
+          logError('LOG_ERR_ONTOLOGY_UPDATE', 'Failed to update ontology', { error: err.message });
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Invalid ontology data or missing id' }));
+        }
+      });
+    } else if (req.method === 'DELETE' && parsedUrl.pathname === '/ontology') {
+      const id = parsedUrl.searchParams.get('id');
+      if (!id) {
+        res.writeHead(400, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Missing ontology id in query' }));
+      } else {
+        const filePath = join(ontDir, `${id}.json`);
+        try {
+          if (existsSync(filePath)) {
+            rmSync(filePath, { force: true });
+            res.writeHead(200, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ message: 'Ontology deleted', id }));
+          } else {
+            res.writeHead(404, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Ontology not found' }));
+          }
+        } catch (err) {
+          logError('LOG_ERR_ONTOLOGY_DELETE', 'Failed to delete ontology', { error: err.message });
+          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Failed to delete ontology' }));
+        }
+      }
     } else {
-      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
       res.end('Endpoint not implemented');
     }
   });
 
   server.listen(port, () => {
     console.log(`Server started on port ${port}`);
-    // Automatically stop server after 1 second for dry-run purposes
-    setTimeout(() => {
-      server.close(() => {
-        console.log('Server stopped');
-        process.exit(0);
-      });
-    }, 1000);
   });
+  
+  // Auto shutdown the server after 2000ms for dry-run purposes
+  setTimeout(() => {
+    server.close(() => {
+      console.log('Server stopped');
+      process.exit(0);
+    });
+  }, 2000);
 }
 
 function handleInteractive(args) {
