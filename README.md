@@ -53,6 +53,7 @@ npm install repository0-crucible
   - `exit`: Exit interactive mode.
 - **Ontology Content Query:** Use the new **--query** command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. The command searches within the ontology's name, classes, and properties (both keys and string values) in a case-insensitive manner and outputs the matching results in a structured JSON format. If no matches are found, an appropriate JSON message is returned.
 - **Zod Schema Validation:** Ontology JSON files are validated using a strict Zod schema to ensure they contain the required properties (name, version, classes, and properties) with the correct data types. This integration provides clearer error messages on invalid ontology formats.
+- **Non-deprecated Package Import:** The package version from package.json is now imported using a file read method to avoid using deprecated import assertions.
 
 ## Usage
 
