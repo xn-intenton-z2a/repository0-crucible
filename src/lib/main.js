@@ -2,8 +2,65 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
+import { readFileSync, writeFileSync } from "fs";
+
+export function readOntology(filePath) {
+  const data = readFileSync(filePath, { encoding: "utf-8" });
+  try {
+    return JSON.parse(data);
+  } catch (err) {
+    throw new Error("Invalid JSON content");
+  }
+}
+
+export function persistOntology(ontology, filePath) {
+  const data = JSON.stringify(ontology, null, 2);
+  writeFileSync(filePath, data, { encoding: "utf-8" });
+}
 
 export function main(args) {
+  // Check for persistence commands
+  if (args.includes('--read')) {
+    const index = args.indexOf('--read');
+    const file = args[index + 1];
+    if (!file) {
+      console.error('Error: --read option requires a file path argument.');
+      process.exit(1);
+    }
+    try {
+      const ontology = readOntology(file);
+      console.log('Ontology loaded:', ontology);
+    } catch (err) {
+      console.error('Error reading ontology:', err.message);
+      process.exit(1);
+    }
+    return;
+  }
+
+  if (args.includes('--persist')) {
+    const index = args.indexOf('--persist');
+    const file = args[index + 1];
+    if (!file) {
+      console.error('Error: --persist option requires a file path argument.');
+      process.exit(1);
+    }
+    // For demonstration, use a dummy ontology object
+    const dummyOntology = {
+      name: 'Dummy Ontology',
+      version: '1.0.0',
+      classes: ['ClassA', 'ClassB'],
+      properties: { key: 'value' }
+    };
+    try {
+      persistOntology(dummyOntology, file);
+      console.log(`Ontology persisted to ${file}`);
+    } catch (err) {
+      console.error('Error persisting ontology:', err.message);
+      process.exit(1);
+    }
+    return;
+  }
+
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 

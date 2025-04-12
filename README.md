@@ -4,7 +4,7 @@
 
 To create a self-evolving agentic coding system of your own based on this one see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+This readme shall evolve into a JavaScript library based on the seed CONTRIBUTING files in [./seeds](./seeds).
 
 ## Repository Template
 
@@ -25,7 +25,8 @@ npm install repository0-crucible
 
 ## Features
 
-TODO: Add features here.
+- CLI tool for building and managing OWL ontologies.
+- JSON-based persistence and retrieval of OWL ontologies via integrated persistence functions exported from the main module (located in src/lib/main.js).
 
 ## Usage
 
@@ -42,6 +43,23 @@ node src/lib/main.js --help
   npm run start
   ```
 
+- **Read Ontology from JSON File:**
+  ```bash
+  node src/lib/main.js --read path/to/ontology.json
+  ```
+
+- **Persist Ontology to JSON File:**
+  ```bash
+  node src/lib/main.js --persist path/to/output.json
+  ```
+
+The --read command will load and display the ontology from the specified JSON file, while the --persist command will write a sample ontology object (or your provided ontology) to the specified JSON file.
+
+For direct use of the persistence functionality in your code, import the module from:
+
+```javascript
+import { readOntology, persistOntology } from './src/lib/main.js';
+```
 
 ## Incremental Changes Plan
 
