@@ -5,6 +5,7 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { readFileSync, writeFileSync, existsSync, mkdirSync, appendFileSync } from 'fs';
 import dotenv from 'dotenv';
+import { z } from 'zod';
 
 // Load environment variables
 dotenv.config();
@@ -22,15 +23,16 @@ function logCommand(commandFlag) {
   appendFileSync(logFile, logEntry + "\n", { encoding: 'utf-8' });
 }
 
-// Utility: Get validated DEFAULT_TIMEOUT
+// Utility: Get validated DEFAULT_TIMEOUT using Zod
 function getDefaultTimeout() {
-  const timeoutStr = process.env.DEFAULT_TIMEOUT;
-  let timeout = Number(timeoutStr);
-  if (!isFinite(timeout)) {
-    console.error(`Warning: Received non-finite value '${timeoutStr}'`);
-    timeout = 5000;
+  const timeoutSchema = z.preprocess((a) => Number(a), z.number().refine(n => isFinite(n), { message: `Received non-finite value '${process.env.DEFAULT_TIMEOUT}'` }));
+  try {
+    const timeout = timeoutSchema.parse(process.env.DEFAULT_TIMEOUT);
+    return timeout;
+  } catch (error) {
+    console.error(`Warning: Received non-finite value '${process.env.DEFAULT_TIMEOUT}'`);
+    return 5000;
   }
-  return timeout;
 }
 
 // Command handlers implemented inline

@@ -32,7 +32,7 @@ npm install repository0-crucible
 - **Version Display:** Use the --version flag to display the current package version as specified in package.json.
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions. The help output includes the effective DEFAULT_TIMEOUT value after environment validation.
 - **Custom Ontology Persistence:** Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.
-- **Enhanced Environment Variable Validation:** Robust validation of environment variables like DEFAULT_TIMEOUT using inline logic. Non-finite values fall back to a safe default with logged warnings.
+- **Enhanced Environment Variable Validation:** The CLI tool now leverages Zod for robust validation of the DEFAULT_TIMEOUT environment variable. If the provided value is invalid (non-numeric, Infinity, -Infinity, or undefined), a clear warning is logged and a default value of 5000 is used.
 - **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log), with errors reported to stderr for better diagnostics.
 - **Diagnostics Mode:** Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.
 - **Modular Command Routing:** CLI command logic is implemented inline to ensure all commands are available without external module dependencies, enhancing testability.
@@ -102,7 +102,7 @@ node src/lib/main.js --help
 
 ## Environment Variable Configuration
 
-The CLI tool validates numeric environment variables like DEFAULT_TIMEOUT. If an invalid, non-numeric, or non-finite value is provided, the tool automatically falls back to a safe default (e.g., 5000) and logs a warning.
+The CLI tool validates numeric environment variables like DEFAULT_TIMEOUT. The tool now uses Zod to perform robust validation. If an invalid, non-numeric, or non-finite value is provided (e.g., Infinity, -Infinity, or undefined), a warning is shown and the tool falls back to a default value of 5000.
 
 Example of setting an environment variable:
 
