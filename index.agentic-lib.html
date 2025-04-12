@@ -59,6 +59,7 @@
 <li class="md-github"><strong class="md-github">Robust Logging:</strong> Every command execution is logged in JSON format to a dedicated log file (logs/cli.log), with errors reported to stderr for better diagnostics.</li>
 <li class="md-github"><strong class="md-github">Diagnostics Mode:</strong> Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.</li>
 <li class="md-github"><strong class="md-github">Modular Command Routing:</strong> CLI command logic is implemented inline to ensure all commands are available without external module dependencies, enhancing testability.</li>
+<li class="md-github"><strong class="md-github">System Refresh:</strong> Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting internal states.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">To run the CLI tool and see help instructions:</p>
@@ -113,6 +114,12 @@
 </code></pre>
 <p class="md-github">This command outputs a detailed JSON report with diagnostic information.</p>
 </li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">System Refresh:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --refresh
+</code></pre>
+<p class="md-github">This command reinitializes the system state by clearing cached logs and resetting any internal states.</p>
+</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="environment-variable-configuration" href="#environment-variable-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Variable Configuration</h2>
 <p class="md-github">The CLI tool validates numeric environment variables like DEFAULT_TIMEOUT. If an invalid, non-numeric, or non-finite value is provided, the tool automatically falls back to a safe default (e.g., 5000) and logs a warning.</p>
@@ -133,7 +140,7 @@ node src/lib/main.js --help
 
   </section>
   <footer>
-    <p>Generated on 2025-04-12T08:11:50.193Z</p>
+    <p>Generated on 2025-04-12T08:13:18.302Z</p>
   </footer>
 </body>
 </html>
