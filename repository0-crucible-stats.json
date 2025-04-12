@@ -2,48 +2,33 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 5,
+  "lastActivityName": "Tests",
+  "lastActivityBranchName": "main",
+  "openIssues": 6,
   "issuesClosedLastHour": 0,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
+  "averagePRAge": 0,
   "prDetails": [],
   "diffMinutes": 0,
-  "diffMinutesMain": 82,
-  "commitsLastHour": 0,
-  "commitsLastDay": 67,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 9,
+  "commitsLastDay": 76,
   "lastFiveCommitMessages": [
-    {
-      "time": "14:51",
-      "message": "Integrated REST API endpoints into the --serve command added API..."
-    },
-    {
-      "time": "14:43",
-      "message": "Added --export-xml command for exporting ontology to RDFXML form..."
-    },
-    {
-      "time": "14:38",
-      "message": "Maintain DATA_FETCHER"
-    },
-    {
-      "time": "14:36",
-      "message": "Implemented --diff command for comparing ontology JSON files and..."
-    },
-    {
-      "time": "14:23",
-      "message": "No changes applied non-actionable prompt received. (fixes #1462)..."
-    }
+    "[17:02] - Add `ejs` dependency and update project version\n\nAdded the `ejs`...",
+    "[16:59] - Update from agentic-lib",
+    "[16:55] - Update from agentic-lib",
+    "[16:46] - Update from agentic-lib",
+    "[16:37] - Update from agentic-lib"
   ],
   "branches": {
     "count": 1,
     "details": [
-      {
-        "branch": "agentic-lib-issue-1470",
-        "minutesSinceLastCommit": 1
-      }
-    ]
+      "[10m] agentic-lib-issue-1470"
+    ],
+    "averageBranchAge": 10
   },
-  "averagePRAge": 0,
-  "testStatus": "PASS",
+  "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T16:13:38.631Z"
+  "statsGeneratedAt": "2025-04-12T17:03:28.683Z"
 }
