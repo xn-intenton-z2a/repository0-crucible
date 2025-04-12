@@ -32,7 +32,7 @@ npm install repository0-crucible
 - **Version Display:** Use the new --version flag to display the current package version as specified in package.json.
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions.
 - **Custom Ontology Persistence:** Use the new --ontology flag with --persist to supply a custom ontology (as a JSON string or by providing a file path) instead of the default dummy ontology.
-- **Enhanced Environment Variable Validation:** Environment variables such as DEFAULT_TIMEOUT are now robustly validated using a Zod-based schema. If an invalid (non-numeric, NaN, or non-finite) value is provided, the tool will automatically fall back to a safe default (e.g., 5000) and log a standardized warning.
+- **Enhanced Environment Variable Validation:** Environment variables such as DEFAULT_TIMEOUT are now robustly validated using a Zod-based schema. Now, if a non-numeric or non-finite value (NaN, Infinity, -Infinity) is provided, the tool will fall back to a safe default (e.g., 5000) with a standardized logged warning.
 - **Robust Logging:** Every command execution is logged with a timestamp, command arguments, and outcome in JSON format to a dedicated log file (logs/cli.log). The logging functionality has been enhanced to report errors (such as directory creation or file writing failures) to stderr for better diagnostics.
 - **Schema Validation:** Ontology JSON objects are validated using Zod to ensure they adhere to the expected structure. This enhances error reporting and robustness.
 - **Diagnostics Mode:** Use the new --diagnostics flag to output a detailed JSON report containing diagnostic information such as package version, environment variables, system information, available CLI commands, and the current execution context.
@@ -96,7 +96,7 @@ node src/lib/main.js --help
 
 ## Environment Variable Configuration
 
-The CLI tool now leverages a Zod-based schema to robustly validate numeric environment variables such as DEFAULT_TIMEOUT. If an environment variable intended to represent a number is invalid (non-numeric, NaN, or infinite), the tool will automatically fall back to a safe default (e.g., 5000) and log a standardized warning. This helps ensure predictable behavior and easier diagnostics.
+The CLI tool now leverages a Zod-based schema to robustly validate numeric environment variables such as DEFAULT_TIMEOUT. If an environment variable intended to represent a number is invalid, non-numeric, or non-finite (e.g., NaN, Infinity, -Infinity), the tool will automatically fall back to a safe default (e.g., 5000) and log a standardized warning. This helps ensure predictable behavior and easier diagnostics.
 
 Example of setting an environment variable:
 
