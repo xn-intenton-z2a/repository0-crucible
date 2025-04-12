@@ -23,14 +23,16 @@ function logCommand(commandFlag) {
   appendFileSync(logFile, logEntry + "\n", { encoding: 'utf-8' });
 }
 
-// Utility: Get validated DEFAULT_TIMEOUT using Zod
+// Utility: Get validated DEFAULT_TIMEOUT using Zod with enhanced logging for invalid inputs
 function getDefaultTimeout() {
-  const timeoutSchema = z.preprocess((a) => Number(a), z.number().refine(n => isFinite(n), { message: `Received non-finite value '${process.env.DEFAULT_TIMEOUT}'` }));
+  const timeoutSchema = z.preprocess(
+    (a) => Number(a),
+    z.number().refine(n => isFinite(n), { message: `Non-finite value '${process.env.DEFAULT_TIMEOUT}'` })
+  );
   try {
-    const timeout = timeoutSchema.parse(process.env.DEFAULT_TIMEOUT);
-    return timeout;
+    return timeoutSchema.parse(process.env.DEFAULT_TIMEOUT);
   } catch (error) {
-    console.error("DEFAULT_TIMEOUT not set; using default value of 5000");
+    console.error("DEFAULT_TIMEOUT not set; using default value of 5000 (invalid input: " + process.env.DEFAULT_TIMEOUT + ")");
     return 5000;
   }
 }
