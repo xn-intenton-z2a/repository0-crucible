@@ -117,6 +117,7 @@ function handleHelp(args, { getDefaultTimeout }) {
   --persist <outputFile> [--ontology <json-string|path>]    Persist ontology
   --export-graphdb <inputFile> [outputFile]    Export ontology in GraphDB format
   --export-owl <inputFile> [outputFile]    Export ontology in OWL/Turtle format
+  --export-xml <inputFile> [outputFile]    Export ontology in RDF/XML format
   --merge-persist <file1> <file2> <outputFile>    Merge ontologies
   --diagnostics      Output diagnostic report
   --refresh          Refresh system state
@@ -279,6 +280,60 @@ function handleExportOWL(args) {
   }
 }
 
+// New handler for exporting ontology to RDF/XML format
+function handleExportXML(args) {
+  logCommand('--export-xml');
+  const inputFile = args[args.indexOf('--export-xml') + 1];
+  let outputFile = null;
+  const potentialOutput = args[args.indexOf('--export-xml') + 2];
+  if (potentialOutput && !potentialOutput.startsWith('--')) {
+    outputFile = potentialOutput;
+  }
+  try {
+    const data = readFileSync(inputFile, { encoding: 'utf-8' });
+    const ontology = JSON.parse(data);
+    // Validate ontology using Zod schema
+    ontologySchema.parse(ontology);
+    let xml = '<?xml version="1.0"?>\n';
+    xml += '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ';
+    xml += 'xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" ';
+    xml += 'xmlns:owl="http://www.w3.org/2002/07/owl#">\n';
+    const ontAbout = 'http://example.org/' + ontology.name.replace(/\s+/g, '_');
+    xml += `  <owl:Ontology rdf:about="${ontAbout}">\n`;
+    xml += `    <rdfs:comment>Version: ${ontology.version}</rdfs:comment>\n`;
+    xml += '  </owl:Ontology>\n';
+    if (Array.isArray(ontology.classes)) {
+      ontology.classes.forEach(cls => {
+        const classAbout = 'http://example.org/' + cls.replace(/\s+/g, '_');
+        xml += `  <owl:Class rdf:about="${classAbout}" />\n`;
+      });
+    }
+    if (ontology.properties && typeof ontology.properties === 'object') {
+      for (const [key, value] of Object.entries(ontology.properties)) {
+        const propAbout = 'http://example.org/' + key.replace(/\s+/g, '_');
+        xml += `  <rdf:Description rdf:about="${propAbout}">\n`;
+        xml += `    <rdfs:label>${value}</rdfs:label>\n`;
+        xml += '  </rdf:Description>\n';
+      }
+    }
+    xml += '</rdf:RDF>';
+    if (outputFile) {
+      writeFileSync(outputFile, xml, { encoding: 'utf-8' });
+      console.log(`RDF/XML exporter output written to ${outputFile}`);
+    } else {
+      console.log(xml);
+    }
+  } catch (err) {
+    if (err instanceof Error && err.name === 'ZodError') {
+      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed for export-xml', { command: '--export-xml', file: inputFile, errors: err.errors });
+      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
+    } else {
+      logError('LOG_ERR_EXPORT_XML', 'Error exporting RDF/XML', { command: '--export-xml', error: err.message, inputFile });
+      console.error('LOG_ERR_EXPORT_XML', err.message);
+    }
+  }
+}
+
 function handleMergePersist(args) {
   logCommand('--merge-persist');
   const index = args.indexOf('--merge-persist');
@@ -319,7 +374,7 @@ function handleDiagnostics(args) {
       platform: process.platform,
       arch: process.arch
     },
-    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--export-owl','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--serve','--interactive','--query','--fetch','--diff'],
+    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--export-owl','--export-xml','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--serve','--interactive','--query','--fetch','--diff'],
     processArgs: process.argv.slice(2),
     DEFAULT_TIMEOUT: getDefaultTimeout()
   };
@@ -711,6 +766,9 @@ function dispatchCommand(args) {
   }
   if (args.includes('--export-owl')) {
     return handleExportOWL(args);
+  }
+  if (args.includes('--export-xml')) {
+    return handleExportXML(args);
   }
   if (args.includes('--merge-persist')) {
     return handleMergePersist(args);

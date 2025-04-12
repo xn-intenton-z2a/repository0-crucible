@@ -231,6 +231,47 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     unlinkSync(outputFile);
   });
 
+  test('--export-xml flag exports RDF/XML format to STDOUT', () => {
+    clearLogFile();
+    const dummyOntology = {
+      name: 'XMLOntology',
+      version: '1.0',
+      classes: ['XMLClass'],
+      properties: { xmlProp: 'xmlValue' }
+    };
+    const inputFile = join(tempDir, 'xmlOntology.json');
+    writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--export-xml', inputFile], { encoding: 'utf-8' });
+    expect(result.stdout).toContain('<?xml version="1.0"?>');
+    expect(result.stdout).toContain('rdf:RDF');
+    expect(result.stdout).toContain('owl:Ontology');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--export-xml');
+    unlinkSync(inputFile);
+  });
+
+  test('--export-xml flag writes RDF/XML to file if provided', () => {
+    clearLogFile();
+    const dummyOntology = {
+      name: 'XMLOntologyFile',
+      version: '1.0',
+      classes: ['XMLClassFile'],
+      properties: { xmlPropFile: 'xmlValueFile' }
+    };
+    const inputFile = join(tempDir, 'xmlOntologyFile.json');
+    const outputFile = join(tempDir, 'xmlOutput.xml');
+    writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--export-xml', inputFile, outputFile], { encoding: 'utf-8' });
+    expect(result.stdout).toContain('RDF/XML exporter output written to');
+    const outputContent = readFileSync(outputFile, { encoding: 'utf-8' });
+    expect(outputContent).toContain('<?xml version="1.0"?>');
+    expect(outputContent).toContain('owl:Ontology');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--export-xml');
+    unlinkSync(inputFile);
+    unlinkSync(outputFile);
+  });
+
   test('--merge-persist flag merges two ontologies and writes output', () => {
     clearLogFile();
     const ontology1 = {
