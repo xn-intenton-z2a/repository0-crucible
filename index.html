@@ -62,7 +62,7 @@
 <li class="md-github"><strong class="md-github">Build Commands:</strong>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">Intermediate Build:</strong> Use --build-intermediate to process and output an intermediate build version of the ontology.</li>
-<li class="md-github"><strong class="md-github">Enhanced Build:</strong> Use --build-enhanced to fetch data from a public API, transform it into an enriched ontology JSON, and output the enhanced build version. This command integrates external public data sources into the ontology creation process.</li>
+<li class="md-github"><strong class="md-github">Enhanced Build:</strong> Use --build-enhanced to fetch data from a public API, transform it into an enriched ontology JSON, and output the enhanced build version.</li>
 </ul>
 </li>
 <li class="md-github"><strong class="md-github">REST API Server:</strong> Use the --serve flag to launch an HTTP server exposing comprehensive REST API endpoints for ontology operations. The following endpoints are available:
@@ -89,6 +89,36 @@
 <li class="md-github"><strong class="md-github">Zod Schema Validation:</strong> Ontology JSON files are validated using a strict Zod schema to ensure they contain the required properties (name, version, classes, and properties) with the correct data types. This integration provides clearer error messages on invalid ontology formats.</li>
 <li class="md-github"><strong class="md-github">Non-deprecated Package Import:</strong> The package version from package.json is now imported using a file read method to avoid using deprecated import assertions.</li>
 </ul>
+<h3 class="md-github"><a class="md-github__anchor" name="new-feature-ontology-difference-comparison---diff" href="#new-feature-ontology-difference-comparison---diff"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>New Feature: Ontology Difference Comparison (--diff)</h3>
+<p class="md-github">A new command, <strong class="md-github">--diff</strong>, has been added. It compares two ontology JSON files and outputs their differences in a structured JSON format. The command performs the following steps:</p>
+<ol class="md-github">
+<li class="md-github">Reads, parses, and validates both ontology files using the Zod schema.</li>
+<li class="md-github">Compares key fields such as name, version, classes, and properties.
+<ul class="md-github">
+<li class="md-github">For classes, it reports additions and removals.</li>
+<li class="md-github">For properties, it reports added, removed, and modified keys and values.</li>
+</ul>
+</li>
+<li class="md-github">Outputs a JSON object representing the differences. If no differences are found, it returns a message stating &quot;No differences found&quot;.</li>
+</ol>
+<p class="md-github"><strong class="md-github">Usage Example:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --diff path/to/ontology1.json path/to/ontology2.json
+</code></pre>
+<p class="md-github">The output will be a JSON object similar to:</p>
+<pre class="md-github"><code class="md-github language-json">{
+  &quot;name&quot;: { &quot;from&quot;: &quot;OntologyA&quot;, &quot;to&quot;: &quot;OntologyB&quot; },
+  &quot;version&quot;: { &quot;from&quot;: &quot;1.0&quot;, &quot;to&quot;: &quot;2.0&quot; },
+  &quot;classes&quot;: {
+    &quot;added&quot;: [&quot;Class3&quot;],
+    &quot;removed&quot;: [&quot;Class1&quot;]
+  },
+  &quot;properties&quot;: {
+    &quot;added&quot;: { &quot;propC&quot;: &quot;valueC&quot; },
+    &quot;removed&quot;: { &quot;propB&quot;: &quot;valueB&quot; },
+    &quot;modified&quot;: [{ &quot;key&quot;: &quot;propA&quot;, &quot;from&quot;: &quot;valueA&quot;, &quot;to&quot;: &quot;valueA_modified&quot; }]
+  }
+}
+</code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">To run the CLI tool and see help instructions:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
@@ -145,77 +175,53 @@
 <p class="md-github"><strong class="md-github">Diagnostics Mode:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --diagnostics
 </code></pre>
-<p class="md-github">This command outputs a detailed JSON report with diagnostic information.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">System Refresh:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --refresh
 </code></pre>
-<p class="md-github">This command reinitializes the system state by clearing cached logs and resetting any internal states.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Intermediate Build:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-intermediate
 </code></pre>
-<p class="md-github">Processes and outputs an intermediate build version of the ontology.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Enhanced Build:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-enhanced
 </code></pre>
-<p class="md-github">Fetches data from a public API, transforms it into an enriched ontology JSON, and outputs the enhanced build version.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">REST API Server:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --serve
 </code></pre>
-<p class="md-github">Launches an HTTP server that exposes the following endpoints:</p>
-<ul class="md-github">
-<li class="md-github"><strong class="md-github">GET /diagnostics</strong>: Returns diagnostic information.</li>
-<li class="md-github"><strong class="md-github">GET /ontology</strong>: Returns a list of persisted ontologies.</li>
-<li class="md-github"><strong class="md-github">POST /ontology</strong>: Creates a new ontology from a JSON payload.</li>
-<li class="md-github"><strong class="md-github">PUT /ontology</strong>: Updates an existing ontology; requires an &quot;id&quot; field.</li>
-<li class="md-github"><strong class="md-github">DELETE /ontology</strong>: Deletes an ontology specified by an &quot;id&quot; query parameter.</li>
-</ul>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Interactive Mode with Auto-Completion and Command History:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --interactive
 </code></pre>
-<p class="md-github">Launches an interactive session where you can type commands. The session supports:</p>
-<ul class="md-github">
-<li class="md-github">Auto-completion for base commands as well as dynamic suggestions (e.g., loaded ontology classes) when available.</li>
-<li class="md-github">Navigation of previous commands using the up/down arrow keys.</li>
-<li class="md-github">Commands such as:
-<ul class="md-github">
-<li class="md-github">load <file> to load an ontology,</li>
-<li class="md-github">show to display the loaded ontology,</li>
-<li class="md-github">list-classes to list ontology classes,</li>
-<li class="md-github">help for interactive help,</li>
-<li class="md-github">exit to leave interactive mode.</li>
-</ul>
-</li>
-</ul>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Ontology Content Query:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query path/to/ontology.json searchTerm [--regex]
-</code></pre>
-<p class="md-github">Use the optional <code class="md-github">--regex</code> flag to interpret the search term as a regular expression. For example, to match an ontology name exactly:</p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query path/to/ontology.json &quot;^OntologyName$&quot; --regex
 </code></pre>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Fetch Ontology from Public Data Source:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --fetch [path/to/output.json]
 </code></pre>
-<p class="md-github">When no output file is provided, the fetched ontology JSON is printed to STDOUT. If an output file is specified, the ontology JSON is persisted to that file.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Ontology Difference Comparison:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --diff path/to/ontology1.json path/to/ontology2.json
+</code></pre>
+<p class="md-github">This command compares two ontology JSON files and outputs a structured JSON diff. If no differences are detected, it outputs a message indicating &quot;No differences found&quot;.</p>
 </li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="environment-variable-configuration" href="#environment-variable-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Variable Configuration</h2>
 <p class="md-github">The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, the tool logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If a non-numeric or non-finite value (such as &quot;NaN&quot;, &quot;Infinity&quot;, or &quot;-Infinity&quot;) is provided, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value of 5000. Automated tests verify this behavior.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="end-to-end-integration-tests" href="#end-to-end-integration-tests"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>End-to-End Integration Tests</h2>
-<p class="md-github">A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch and export-owl functionalities. To run the integration tests:</p>
+<p class="md-github">A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch, export-owl, and diff functionalities. To run the integration tests:</p>
 <pre class="md-github"><code class="md-github language-bash">npm run test:e2e
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
@@ -225,7 +231,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-12T14:35:27.978Z</p>
+    <p>Generated on 2025-04-12T14:36:51.533Z</p>
   </footer>
 </body>
 </html>
