@@ -4,8 +4,24 @@
 import { fileURLToPath } from "url";
 import { readFileSync, writeFileSync, existsSync } from "fs";
 import { join, dirname } from "path";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file if available
+dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Helper function to get and validate a numeric environment variable
+function getEnvNumber(name, defaultValue) {
+  const val = process.env[name];
+  if (!val) return defaultValue;
+  const num = Number(val);
+  if (isNaN(num)) {
+    console.warn(`Warning: Environment variable ${name} is not numeric, falling back to ${defaultValue}`);
+    return defaultValue;
+  }
+  return num;
+}
 
 export function readOntology(filePath) {
   const data = readFileSync(filePath, { encoding: "utf-8" });
@@ -65,18 +81,8 @@ export function exportGraphDB(ontology) {
 }
 
 export function main(args) {
-  if (args.includes("--help") || args.length === 0) {
-    console.log(`Usage:
-  --version                     Display package version.
-  --read <file>                 Read ontology from JSON file.
-  --persist <file> [--ontology <json|string:file>]  Persist ontology to JSON file.
-  --export-graphdb <input> [output]  Export GraphDB-friendly format.
-  --merge-persist <file1> <file2> <output>  Merge two ontologies and persist.
-  --help                        Display this help message.`);
-    return;
-  }
-
-  if (args.includes('--version')) {
+  // If --version flag is provided, handle version first and exit without logging DEFAULT_TIMEOUT.
+  if (args.includes("--version")) {
     try {
       const pkgJsonUrl = new URL('../../package.json', import.meta.url);
       const pkgData = readFileSync(pkgJsonUrl, { encoding: 'utf-8' });
@@ -91,6 +97,21 @@ export function main(args) {
       console.error("Error reading package.json:", err.message);
       process.exit(1);
     }
+    return;
+  }
+
+  // Validate and log numeric environment variable DEFAULT_TIMEOUT with fallback for non-version commands
+  const defaultTimeout = getEnvNumber("DEFAULT_TIMEOUT", 5000);
+  console.log("Using DEFAULT_TIMEOUT:", defaultTimeout);
+
+  if (args.includes("--help") || args.length === 0) {
+    console.log(`Usage:
+  --version                     Display package version.
+  --read <file>                 Read ontology from JSON file.
+  --persist <file> [--ontology <json|string:file>]  Persist ontology to JSON file.
+  --export-graphdb <input> [output]  Export GraphDB-friendly format.
+  --merge-persist <file1> <file2> <output>  Merge two ontologies and persist.
+  --help                        Display this help message.`);
     return;
   }
 

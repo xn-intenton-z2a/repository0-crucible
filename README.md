@@ -32,6 +32,7 @@ npm install repository0-crucible
 - **Version Display:** Use the new --version flag to display the current package version as specified in package.json.
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions.
 - **Custom Ontology Persistence:** Use the new --ontology flag with --persist to supply a custom ontology (as a JSON string or by providing a file path) instead of the default dummy ontology.
+- **Environment Variable Fallback Handling:** The CLI validates numeric environment variables (e.g., DEFAULT_TIMEOUT) and falls back to safe defaults if they are invalid.
 
 ## Usage
 
@@ -86,9 +87,20 @@ node src/lib/main.js --help
   ```
   This command reads two ontology JSON files, merges them (combining unique classes and merging properties where the second ontology takes precedence), and writes the merged ontology to the specified output file.
 
+## Environment Variable Configuration
+
+The CLI tool checks for numeric environment variables such as DEFAULT_TIMEOUT. If an environment variable intended to represent a number is invalid (NaN), the tool will automatically fall back to a safe default (e.g., 5000).
+
+Example of setting an environment variable:
+
+```bash
+export DEFAULT_TIMEOUT=3000
+node src/lib/main.js --help
+```
+
 ## End-to-End Integration Tests
 
-A suite of end-to-end integration tests has been added to verify all CLI commands. These tests simulate realistic usage scenarios including file I/O operations and JSON parsing. To run the integration tests, execute:
+A suite of end-to-end integration tests has been added to verify all CLI commands. These tests simulate realistic usage scenarios including file I/O operations and JSON parsing, as well as environment variable fallback handling. To run the integration tests, execute:
 
 ```bash
 npm run test:e2e
