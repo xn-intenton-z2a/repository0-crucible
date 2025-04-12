@@ -155,11 +155,11 @@ node src/lib/main.js --help
   - Auto-completion for base commands as well as dynamic suggestions (e.g., loaded ontology classes) when available.
   - Navigation of previous commands using the up/down arrow keys.
   - Commands such as:
-    - `load <file>` to load an ontology,
-    - `show` to display the loaded ontology,
-    - `list-classes` to list ontology classes,
-    - `help` for interactive help,
-    - `exit` to leave interactive mode.
+    - load <file> to load an ontology,
+    - show to display the loaded ontology,
+    - list-classes to list ontology classes,
+    - help for interactive help,
+    - exit to leave interactive mode.
 
 - **Ontology Content Query:**
   ```bash
