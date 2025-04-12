@@ -2,7 +2,7 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
-import { readFileSync, writeFileSync, existsSync } from "fs";
+import { readFileSync, writeFileSync, existsSync, appendFileSync, mkdirSync } from "fs";
 import { join, dirname } from "path";
 import dotenv from "dotenv";
 
@@ -10,6 +10,29 @@ import dotenv from "dotenv";
 dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Helper logging function to log CLI events in JSON format to logs/cli.log
+function logEvent(eventObj) {
+  const logDir = join(__dirname, '../../logs');
+  const logPath = join(logDir, 'cli.log');
+  try {
+    if (!existsSync(logDir)) {
+      mkdirSync(logDir, { recursive: true });
+    }
+  } catch (e) {
+    // If logging directory creation fails, silently fail logging
+  }
+  const entry = {
+    timestamp: new Date().toISOString(),
+    args: process.argv.slice(2),
+    ...eventObj
+  };
+  try {
+    appendFileSync(logPath, JSON.stringify(entry) + "\n", { encoding: "utf-8" });
+  } catch (e) {
+    // Fail silently if logging fails
+  }
+}
 
 // Helper function to get and validate a numeric environment variable
 function getEnvNumber(name, defaultValue) {
@@ -81,6 +104,9 @@ export function exportGraphDB(ontology) {
 }
 
 export function main(args) {
+  // Log the received arguments
+  logEvent({ event: 'start', command: 'main', detail: 'CLI started', args });
+
   // If --version flag is provided, handle version first and exit without logging DEFAULT_TIMEOUT.
   if (args.includes("--version")) {
     try {
@@ -89,12 +115,15 @@ export function main(args) {
       const pkg = JSON.parse(pkgData);
       if (pkg.version) {
         console.log(pkg.version);
+        logEvent({ event: 'success', command: '--version', detail: 'Version displayed successfully' });
       } else {
         console.error("Package version not found");
+        logEvent({ event: 'error', command: '--version', detail: 'Package version not found' });
         process.exit(1);
       }
     } catch (err) {
       console.error("Error reading package.json:", err.message);
+      logEvent({ event: 'error', command: '--version', detail: err.message });
       process.exit(1);
     }
     return;
@@ -112,6 +141,7 @@ export function main(args) {
   --export-graphdb <input> [output]  Export GraphDB-friendly format.
   --merge-persist <file1> <file2> <output>  Merge two ontologies and persist.
   --help                        Display this help message.`);
+    logEvent({ event: 'success', command: '--help', detail: 'Help information displayed' });
     return;
   }
 
@@ -120,13 +150,16 @@ export function main(args) {
     const file = args[index + 1];
     if (!file) {
       console.error('Error: --read option requires a file path argument.');
+      logEvent({ event: 'error', command: '--read', detail: '--read option missing file path' });
       process.exit(1);
     }
     try {
       const ontology = readOntology(file);
       console.log('Ontology loaded:', ontology);
+      logEvent({ event: 'success', command: '--read', detail: 'Ontology loaded successfully' });
     } catch (err) {
       console.error('Error reading ontology:', err.message);
+      logEvent({ event: 'error', command: '--read', detail: err.message });
       process.exit(1);
     }
     return;
@@ -137,6 +170,7 @@ export function main(args) {
     const file = args[index + 1];
     if (!file) {
       console.error('Error: --persist option requires a file path argument.');
+      logEvent({ event: 'error', command: '--persist', detail: '--persist option missing file path' });
       process.exit(1);
     }
 
@@ -147,6 +181,7 @@ export function main(args) {
       const ontologyInput = args[ontIndex + 1];
       if (!ontologyInput) {
         console.error('Error: --ontology option requires an ontology input argument.');
+        logEvent({ event: 'error', command: '--persist', detail: '--ontology option missing input' });
         process.exit(1);
       }
       // If the provided argument is a path to an existing file, read from file, else treat it as a JSON string
@@ -156,6 +191,7 @@ export function main(args) {
           ontologyToPersist = JSON.parse(fileContents);
         } catch (err) {
           console.error('Error reading ontology file:', err.message);
+          logEvent({ event: 'error', command: '--persist', detail: 'Error reading ontology file: ' + err.message });
           process.exit(1);
         }
       } else {
@@ -164,6 +200,7 @@ export function main(args) {
           ontologyToPersist = JSON.parse(ontologyInput);
         } catch (err) {
           console.error('Error parsing ontology JSON string:', err.message);
+          logEvent({ event: 'error', command: '--persist', detail: 'Error parsing ontology JSON string: ' + err.message });
           process.exit(1);
         }
       }
@@ -180,8 +217,10 @@ export function main(args) {
     try {
       persistOntology(ontologyToPersist, file);
       console.log(`Ontology persisted to ${file}`);
+      logEvent({ event: 'success', command: '--persist', detail: 'Ontology persisted successfully' });
     } catch (err) {
       console.error('Error persisting ontology:', err.message);
+      logEvent({ event: 'error', command: '--persist', detail: err.message });
       process.exit(1);
     }
     return;
@@ -192,6 +231,7 @@ export function main(args) {
     const inputFile = args[index + 1];
     if (!inputFile) {
       console.error('Error: --export-graphdb option requires an input file path argument.');
+      logEvent({ event: 'error', command: '--export-graphdb', detail: '--export-graphdb missing input file' });
       process.exit(1);
     }
     // Optional output file argument
@@ -203,11 +243,14 @@ export function main(args) {
       if (outputFile) {
         writeFileSync(outputFile, outputString, { encoding: "utf-8" });
         console.log(`GraphDB exporter output written to ${outputFile}`);
+        logEvent({ event: 'success', command: '--export-graphdb', detail: 'GraphDB output written to file' });
       } else {
         console.log('GraphDB exporter output:', outputString);
+        logEvent({ event: 'success', command: '--export-graphdb', detail: 'GraphDB output displayed on stdout' });
       }
     } catch (err) {
       console.error('Error exporting GraphDB data:', err.message);
+      logEvent({ event: 'error', command: '--export-graphdb', detail: err.message });
       process.exit(1);
     }
     return;
@@ -220,6 +263,7 @@ export function main(args) {
     const outputFile = args[index + 3];
     if (!file1 || !file2 || !outputFile) {
       console.error('Error: --merge-persist option requires three file path arguments: <ontology1> <ontology2> <output>');
+      logEvent({ event: 'error', command: '--merge-persist', detail: '--merge-persist missing one or more file arguments' });
       process.exit(1);
     }
     try {
@@ -228,14 +272,17 @@ export function main(args) {
       const mergedOntology = mergeOntologies(ontology1, ontology2);
       persistOntology(mergedOntology, outputFile);
       console.log(`Merged ontology persisted to ${outputFile}`);
+      logEvent({ event: 'success', command: '--merge-persist', detail: 'Ontologies merged and persisted successfully' });
     } catch (err) {
       console.error('Error merging ontologies:', err.message);
+      logEvent({ event: 'error', command: '--merge-persist', detail: err.message });
       process.exit(1);
     }
     return;
   }
 
   console.log(`Run with: ${JSON.stringify(args)}`);
+  logEvent({ event: 'info', command: 'default', detail: 'No matching command executed' });
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { spawnSync } from 'child_process';
-import { mkdtempSync, writeFileSync, readFileSync, unlinkSync } from 'fs';
+import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSync } from 'fs';
 import { join } from 'path';
 import os from 'os';
 
@@ -12,19 +12,44 @@ const pkg = JSON.parse(readFileSync(packageJsonPath, { encoding: 'utf-8' }));
 // Create a temporary directory for test files
 const tempDir = mkdtempSync(join(os.tmpdir(), 'cli-e2e-'));
 
+// Helper function to clear logs file before test
+function clearLogFile() {
+  const logFilePath = join(process.cwd(), 'logs', 'cli.log');
+  if (existsSync(logFilePath)) {
+    rmSync(logFilePath, { force: true });
+  }
+}
+
+// Helper function to read log file content
+function readLogFile() {
+  const logFilePath = join(process.cwd(), 'logs', 'cli.log');
+  if (existsSync(logFilePath)) {
+    return readFileSync(logFilePath, { encoding: 'utf-8' });
+  }
+  return '';
+}
+
+
 describe('End-to-End CLI Integration Tests', () => {
   test('--help flag displays usage information', () => {
+    clearLogFile();
     const result = spawnSync('node', [cliPath, '--help'], { encoding: 'utf-8' });
     expect(result.stdout).toContain('Usage:');
     expect(result.stdout).toContain('--version');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--help');
   });
 
   test('--version flag outputs package version', () => {
+    clearLogFile();
     const result = spawnSync('node', [cliPath, '--version'], { encoding: 'utf-8' });
     expect(result.stdout.trim()).toBe(pkg.version);
+    const logContent = readLogFile();
+    expect(logContent).toContain('--version');
   });
 
   test('--read flag loads ontology and outputs confirmation', () => {
+    clearLogFile();
     const dummyOntology = {
       name: 'TestOntology',
       version: '0.0.1',
@@ -35,19 +60,25 @@ describe('End-to-End CLI Integration Tests', () => {
     writeFileSync(ontologyFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
     const result = spawnSync('node', [cliPath, '--read', ontologyFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('Ontology loaded:');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--read');
     unlinkSync(ontologyFile);
   });
 
   test('--persist flag writes dummy ontology to file when no custom ontology is provided', () => {
+    clearLogFile();
     const outputFile = join(tempDir, 'persisted.json');
     const result = spawnSync('node', [cliPath, '--persist', outputFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('Ontology persisted to');
     const persisted = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
     expect(persisted).toHaveProperty('name', 'Dummy Ontology');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--persist');
     unlinkSync(outputFile);
   });
 
   test('--persist flag writes custom ontology from JSON string when provided', () => {
+    clearLogFile();
     const outputFile = join(tempDir, 'customPersisted.json');
     const customOntology = {
       name: 'Custom Ontology',
@@ -60,10 +91,13 @@ describe('End-to-End CLI Integration Tests', () => {
     expect(result.stdout).toContain('Ontology persisted to');
     const persisted = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
     expect(persisted).toEqual(customOntology);
+    const logContent = readLogFile();
+    expect(logContent).toContain('--persist');
     unlinkSync(outputFile);
   });
 
   test('--persist flag reads custom ontology from file when provided', () => {
+    clearLogFile();
     const ontologyInputFile = join(tempDir, 'inputOntology.json');
     const outputFile = join(tempDir, 'customFilePersisted.json');
     const customOntology = {
@@ -78,19 +112,25 @@ describe('End-to-End CLI Integration Tests', () => {
     expect(result.stdout).toContain('Ontology persisted to');
     const persisted = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
     expect(persisted).toEqual(customOntology);
+    const logContent = readLogFile();
+    expect(logContent).toContain('--persist');
     unlinkSync(ontologyInputFile);
     unlinkSync(outputFile);
   });
 
   test('--persist flag fails gracefully with invalid custom ontology JSON string', () => {
+    clearLogFile();
     const outputFile = join(tempDir, 'invalidPersisted.json');
     const invalidJSON = '{ invalid json }';
     const args = [cliPath, '--persist', outputFile, '--ontology', invalidJSON];
     const result = spawnSync('node', args, { encoding: 'utf-8' });
     expect(result.stderr).toContain('Error parsing ontology JSON string');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--persist');
   });
 
   test('--export-graphdb flag exports GraphDB format to stdout', () => {
+    clearLogFile();
     const dummyOntology = {
       name: 'GraphOntology',
       version: '1.0',
@@ -101,10 +141,13 @@ describe('End-to-End CLI Integration Tests', () => {
     writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
     const result = spawnSync('node', [cliPath, '--export-graphdb', inputFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('GraphDB exporter output:');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--export-graphdb');
     unlinkSync(inputFile);
   });
 
   test('--export-graphdb flag writes output to file if provided', () => {
+    clearLogFile();
     const dummyOntology = {
       name: 'GraphOntology',
       version: '1.0',
@@ -118,11 +161,14 @@ describe('End-to-End CLI Integration Tests', () => {
     expect(result.stdout).toContain('GraphDB exporter output written to');
     const outputContent = readFileSync(outputFile, { encoding: 'utf-8' });
     expect(outputContent).toContain('nodes');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--export-graphdb');
     unlinkSync(inputFile);
     unlinkSync(outputFile);
   });
 
   test('--merge-persist flag merges two ontologies and writes output', () => {
+    clearLogFile();
     const ontology1 = {
       name: 'MergeOne',
       version: '1.0',
@@ -146,27 +192,34 @@ describe('End-to-End CLI Integration Tests', () => {
     expect(merged.name).toBe('MergeOne & MergeTwo');
     expect(merged.classes.sort()).toEqual(['A', 'B', 'C'].sort());
     expect(merged.properties).toEqual({ prop1: 'value1', prop2: 'value2', common: 'two' });
+    const logContent = readLogFile();
+    expect(logContent).toContain('--merge-persist');
     unlinkSync(file1);
     unlinkSync(file2);
     unlinkSync(outputFile);
   });
 
   test('Environment variable DEFAULT_TIMEOUT fallback when non-numeric', () => {
+    clearLogFile();
     const result = spawnSync('node', [cliPath, '--help'], { 
       encoding: 'utf-8', 
       env: { ...process.env, DEFAULT_TIMEOUT: 'not_a_number' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 5000');
     expect(result.stderr).toContain('Warning: Environment variable DEFAULT_TIMEOUT is not numeric');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--help');
   });
 
   test('Environment variable DEFAULT_TIMEOUT uses valid numeric value', () => {
+    clearLogFile();
     const result = spawnSync('node', [cliPath, '--help'], { 
       encoding: 'utf-8', 
       env: { ...process.env, DEFAULT_TIMEOUT: '3000' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 3000');
-    // Should not emit a warning
     expect(result.stderr).not.toContain('Warning: Environment variable DEFAULT_TIMEOUT is not numeric');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--help');
   });
 });
