@@ -9,11 +9,11 @@
   "prDetails": [
     {
       "title": "Added missing afterEach import in the test file to resolve ReferenceError in tests. (fixes #1148)",
-      "ageMinutes": 13
+      "ageMinutes": 14
     }
   ],
-  "diffMinutes": 4,
-  "diffMinutesMain": 8,
+  "diffMinutes": 0,
+  "diffMinutesMain": 9,
   "commitsLastHour": 4,
   "commitsLastDay": 18,
   "lastFiveCommitMessages": [
@@ -47,8 +47,8 @@
       }
     ]
   },
-  "averagePRAge": 13,
+  "averagePRAge": 14,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T00:49:36.845Z"
+  "generatedAt": "2025-04-12T00:50:27.957Z"
 }
