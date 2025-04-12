@@ -9,11 +9,11 @@
   "prDetails": [
     {
       "title": "Refined DEFAULT_TIMEOUT validation to include detailed logging of invalid inputs and fallback behavior. (fixes #1413)",
-      "ageMinutes": 0
+      "ageMinutes": 1
     }
   ],
   "diffMinutes": 0,
-  "diffMinutesMain": 9,
+  "diffMinutesMain": 10,
   "commitsLastHour": 4,
   "commitsLastDay": 34,
   "lastFiveCommitMessages": [
@@ -47,8 +47,8 @@
       }
     ]
   },
-  "averagePRAge": 0,
+  "averagePRAge": 1,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T08:39:57.081Z"
+  "generatedAt": "2025-04-12T08:40:27.613Z"
 }
