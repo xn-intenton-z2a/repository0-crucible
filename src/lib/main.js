@@ -7,6 +7,7 @@ import { existsSync, mkdirSync, appendFileSync, writeFileSync, readFileSync, rmS
 import dotenv from 'dotenv';
 import { z } from 'zod';
 import http from 'http';
+import https from 'https';
 import readline from 'readline';
 
 // Load environment variables
@@ -538,35 +539,90 @@ function handleQuery(args) {
   }
 }
 
-// New handler: --fetch command for auto-generating ontology from public data sources
+// New handler: --fetch command for auto-generating ontology from public data sources with dynamic fetch support
 function handleFetch(args) {
   logCommand('--fetch');
-  const fetchedOntology = {
-    name: 'Fetched Ontology',
-    version: 'fetched-1.0',
-    classes: ['FetchedClassA', 'FetchedClassB'],
-    properties: { fetchedProp: 'value' }
-  };
-  try {
-    ontologySchema.parse(fetchedOntology);
-  } catch (err) {
-    logError('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed', { errors: err.errors });
-    console.error('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed');
-    return;
-  }
-  const fetchIndex = args.indexOf('--fetch');
-  const potentialOutput = args[fetchIndex + 1];
-  if (potentialOutput && !potentialOutput.startsWith('--')) {
-    try {
-      writeFileSync(potentialOutput, JSON.stringify(fetchedOntology, null, 2), { encoding: 'utf-8' });
-      console.log(`Fetched ontology persisted to ${potentialOutput}`);
-    } catch (err) {
-      logError('LOG_ERR_FETCH_WRITE', 'Error writing fetched ontology to file', { error: err.message, outputFile: potentialOutput });
-      console.error('LOG_ERR_FETCH_WRITE', err.message);
+  (async () => {
+    // Helper function to fetch data from URL
+    function fetchData(url) {
+      return new Promise((resolve, reject) => {
+        const client = url.startsWith('https') ? https : http;
+        client.get(url, (res) => {
+          let rawData = '';
+          res.on('data', chunk => { rawData += chunk; });
+          res.on('end', () => {
+            try {
+              const data = JSON.parse(rawData);
+              resolve(data);
+            } catch (err) {
+              reject(err);
+            }
+          });
+        }).on('error', reject);
+      });
     }
-  } else {
-    console.log(JSON.stringify(fetchedOntology, null, 2));
-  }
+
+    const fetchUrl = process.env.FETCH_URL;
+    let ontology;
+    if (fetchUrl) {
+      try {
+        const data = await fetchData(fetchUrl);
+        ontology = {
+          name: data.name || 'Fetched Ontology',
+          version: data.version || new Date().toISOString(),
+          classes: data.classes || Object.keys(data),
+          properties: data.properties || data
+        };
+        // Validate ontology using Zod schema
+        ontologySchema.parse(ontology);
+      } catch (err) {
+        logError('LOG_ERR_FETCH_GET', 'Error fetching ontology from public API', { error: err.message, url: fetchUrl });
+        console.error('LOG_ERR_FETCH_GET', err.message);
+        // Fallback to dummy ontology
+        ontology = {
+          name: 'Fetched Ontology',
+          version: 'fetched-1.0',
+          classes: ['FetchedClassA', 'FetchedClassB'],
+          properties: { fetchedProp: 'value' }
+        };
+        try {
+          ontologySchema.parse(ontology);
+        } catch (err) {
+          logError('LOG_ERR_FETCH_VALIDATE', 'Fallback ontology validation failed', { errors: err.errors });
+          console.error('LOG_ERR_FETCH_VALIDATE', 'Fallback ontology validation failed');
+          process.exit(1);
+        }
+      }
+    } else {
+      ontology = {
+        name: 'Fetched Ontology',
+        version: 'fetched-1.0',
+        classes: ['FetchedClassA', 'FetchedClassB'],
+        properties: { fetchedProp: 'value' }
+      };
+      try {
+        ontologySchema.parse(ontology);
+      } catch (err) {
+        logError('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed', { errors: err.errors });
+        console.error('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed');
+        process.exit(1);
+      }
+    }
+    const fetchIndex = args.indexOf('--fetch');
+    const potentialOutput = args[fetchIndex + 1];
+    if (potentialOutput && !potentialOutput.startsWith('--')) {
+      try {
+        writeFileSync(potentialOutput, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
+        console.log(`Fetched ontology persisted to ${potentialOutput}`);
+      } catch (err) {
+        logError('LOG_ERR_FETCH_WRITE', 'Error writing fetched ontology to file', { error: err.message, outputFile: potentialOutput });
+        console.error('LOG_ERR_FETCH_WRITE', err.message);
+      }
+    } else {
+      console.log(JSON.stringify(ontology, null, 2));
+    }
+    process.exit(0);
+  })();
 }
 
 // New handler: --diff command for comparing two ontologies
@@ -817,7 +873,7 @@ function handleServe(args) {
 
 // Define interactiveCompleter for test auto-completion
 function interactiveCompleter(loadedOntology, line) {
-  const baseCommands = ["load", "show", "list-classes", "help", "exit"];
+  const baseCommands = ["load", "show", "list-classes", "help", "exit"]; 
   const suggestions = baseCommands.concat((loadedOntology && Array.isArray(loadedOntology.classes)) ? loadedOntology.classes : []);
   const hits = suggestions.filter(c => c.startsWith(line));
   return [hits.length ? hits : suggestions, line];

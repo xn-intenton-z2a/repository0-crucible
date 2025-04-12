@@ -527,3 +527,42 @@ describe('Interactive Mode Auto-Completion', () => {
     expect(completions).toEqual(expect.arrayContaining(['Person']));
   });
 });
+
+// New tests for enhanced --fetch command
+
+describe('--fetch Command Enhanced Functionality', () => {
+  test('--fetch falls back to dummy ontology when FETCH_URL is not set', () => {
+    clearLogFile();
+    const result = spawnSync('node', [cliPath, '--fetch'], { encoding: 'utf-8', timeout: 5000 });
+    const output = JSON.parse(result.stdout);
+    expect(output).toHaveProperty('name', 'Fetched Ontology');
+    expect(output).toHaveProperty('version', 'fetched-1.0');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--fetch');
+  });
+
+  test('--fetch retrieves ontology from a dynamic public API when FETCH_URL is set', (done) => {
+    // Create a temporary HTTP server to simulate a public API
+    const testData = {
+      name: 'Dynamic Ontology',
+      version: 'dynamic-123',
+      classes: ['DynamicClass'],
+      properties: { dynamicProp: 'dynamicValue' }
+    };
+    const apiServer = http.createServer((req, res) => {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(testData));
+    });
+    apiServer.listen(0, () => {
+      const port = apiServer.address().port;
+      const fetchUrl = `http://127.0.0.1:${port}`;
+      const env = { ...process.env, FETCH_URL: fetchUrl };
+      const result = spawnSync('node', [cliPath, '--fetch'], { encoding: 'utf-8', env, timeout: 5000 });
+      const output = JSON.parse(result.stdout);
+      expect(output).toHaveProperty('name', 'Dynamic Ontology');
+      expect(output).toHaveProperty('version', 'dynamic-123');
+      apiServer.close();
+      done();
+    });
+  });
+});
