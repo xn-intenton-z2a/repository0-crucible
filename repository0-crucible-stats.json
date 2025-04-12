@@ -2,17 +2,19 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Apply Fix on Fail",
+  "lastActivityName": "Create Feature Development Issue",
   "lastActivityBranchName": "main",
   "nextIssue": "[1483] Enhance RDF/XML Exporter: Improve Formatting and Validation automated, feature",
-  "openIssues": 4,
+  "openIssues": 6,
   "issuesClosedLastHour": 5,
   "issuesClosedLastDay": 100,
-  "openPRs": 0,
-  "averagePRAge": 0,
-  "prDetails": [],
-  "diffMinutes": 0,
-  "diffMinutesMain": 22,
+  "openPRs": 1,
+  "averagePRAge": 5,
+  "prDetails": [
+    "[5m] Updated handleQueryOntology to always include propertyKeys and propertyValues so that the test expecting propertyKeys is satisfied. (fixes #1364)"
+  ],
+  "diffMinutes": 5,
+  "diffMinutesMain": 28,
   "commitsLastHour": 6,
   "commitsLastDay": 95,
   "lastFiveCommitMessages": [
@@ -25,14 +27,14 @@
   "branches": {
     "count": 1,
     "details": [
-      "[0m] agentic-lib-issue-1364"
+      "[6m] agentic-lib-issue-1364"
     ],
     "branchIssueDetails": [
       "[1364] Implement Core OWL Ontology CLI Functionality automated, feature"
     ],
-    "averageBranchAge": 0
+    "averageBranchAge": 6
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-12T21:38:54.801Z"
+  "statsGeneratedAt": "2025-04-12T21:45:00.109Z"
 }
