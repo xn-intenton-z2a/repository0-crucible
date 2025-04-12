@@ -3,14 +3,14 @@
   "repo": "repository0-crucible",
   "engine": "schedule-3",
   "openIssues": 8,
-  "issuesClosedLastHour": 9,
+  "issuesClosedLastHour": 8,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 0,
-  "diffMinutesMain": 5,
+  "diffMinutes": 2,
+  "diffMinutesMain": 8,
   "commitsLastHour": 4,
-  "commitsLastDay": 26,
+  "commitsLastDay": 25,
   "lastFiveCommitMessages": [
     {
       "time": "05:53",
@@ -40,5 +40,5 @@
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T05:58:30.150Z"
+  "generatedAt": "2025-04-12T06:01:46.543Z"
 }
