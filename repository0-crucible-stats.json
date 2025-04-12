@@ -2,21 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 12,
-  "issuesClosedLastHour": 10,
+  "openIssues": 10,
+  "issuesClosedLastHour": 12,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Refactored DEFAULT_TIMEOUT handling to explicitly detect NaN values and updated tests and README accordingly. (fixes #1421)",
-      "ageMinutes": 1
-    }
-  ],
+  "openPRs": 0,
+  "prDetails": [],
   "diffMinutes": 0,
-  "diffMinutesMain": 10,
-  "commitsLastHour": 5,
-  "commitsLastDay": 35,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 6,
+  "commitsLastDay": 36,
   "lastFiveCommitMessages": [
+    {
+      "time": "08:53",
+      "message": "Refactored DEFAULT_TIMEOUT handling to explicitly detect NaN val..."
+    },
     {
       "time": "08:41",
       "message": "Refined DEFAULT_TIMEOUT validation to include detailed logging o..."
@@ -32,23 +31,14 @@
     {
       "time": "08:12",
       "message": "Add --refresh CLI command to reinitialize ontology state and upd..."
-    },
-    {
-      "time": "07:57",
-      "message": "Added logging before process.exit in handlePersist to ensure --p..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1421",
-        "minutesSinceLastCommit": 1
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 1,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T08:51:56.555Z"
+  "generatedAt": "2025-04-12T08:53:30.976Z"
 }
