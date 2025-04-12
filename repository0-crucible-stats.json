@@ -2,21 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 12,
-  "issuesClosedLastHour": 0,
+  "openIssues": 10,
+  "issuesClosedLastHour": 2,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Inlined the missing GraphDB exporter function into main.js and updated test and README references to fix module not found errors. (fixes #1373)",
-      "ageMinutes": 6
-    }
-  ],
+  "openPRs": 0,
+  "prDetails": [],
   "diffMinutes": 0,
-  "diffMinutesMain": 86,
-  "commitsLastHour": 0,
-  "commitsLastDay": 18,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 1,
+  "commitsLastDay": 19,
   "lastFiveCommitMessages": [
+    {
+      "time": "04:07",
+      "message": "Inlined the missing GraphDB exporter function into main.js and u..."
+    },
     {
       "time": "02:39",
       "message": "Integrated persistence functions into main.js and updated tests ..."
@@ -32,23 +31,14 @@
     {
       "time": "00:20",
       "message": "Maintain ONTOLOGY_MANAGER"
-    },
-    {
-      "time": "00:10",
-      "message": "Update workflow config to adjust WIP limits\n\nRenamed and added W..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1373",
-        "minutesSinceLastCommit": 6
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 6,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T04:06:19.725Z"
+  "generatedAt": "2025-04-12T04:07:18.039Z"
 }
