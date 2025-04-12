@@ -9,10 +9,10 @@
   "prDetails": [
     {
       "title": "Inlined the missing GraphDB exporter function into main.js and updated test and README references to fix module not found errors. (fixes #1373)",
-      "ageMinutes": 5
+      "ageMinutes": 6
     }
   ],
-  "diffMinutes": 5,
+  "diffMinutes": 0,
   "diffMinutesMain": 86,
   "commitsLastHour": 0,
   "commitsLastDay": 18,
@@ -47,8 +47,8 @@
       }
     ]
   },
-  "averagePRAge": 5,
+  "averagePRAge": 6,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T04:06:01.572Z"
+  "generatedAt": "2025-04-12T04:06:19.725Z"
 }
