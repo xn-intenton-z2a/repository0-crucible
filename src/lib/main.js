@@ -621,7 +621,7 @@ function handleFetch(args) {
     } else {
       console.log(JSON.stringify(ontology, null, 2));
     }
-    process.exit(0);
+    // Removed process.exit(0) here to let the async function complete naturally
   })();
 }
 
@@ -934,9 +934,10 @@ function dispatchCommand(args) {
   return console.log('Invalid command');
 }
 
-function main() {
+// Updated main to be async to support async handlers like --fetch
+async function main() {
   const args = process.argv.slice(2);
-  dispatchCommand(args);
+  await Promise.resolve(dispatchCommand(args));
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
