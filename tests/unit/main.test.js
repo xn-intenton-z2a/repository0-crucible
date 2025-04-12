@@ -1,4 +1,4 @@
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, beforeAll } from 'vitest';
 import { spawnSync, spawn } from 'child_process';
 import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSync, mkdirSync, readdirSync } from 'fs';
 import { join } from 'path';
@@ -50,6 +50,7 @@ function clearOntologiesDir() {
     }
   }
 }
+
 
 describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--help flag displays usage information', () => {
