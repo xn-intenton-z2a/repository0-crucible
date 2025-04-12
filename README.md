@@ -28,6 +28,7 @@ npm install repository0-crucible
 - CLI tool for building and managing OWL ontologies.
 - JSON-based persistence and retrieval of OWL ontologies via integrated persistence functions exported from the main module (located in src/lib/main.js).
 - Exports a GraphDB-friendly format from OWL ontology JSON using the new GraphDB Exporter feature (now implemented in src/lib/main.js).
+- Merge functionality: merge two ontology JSON files and persist the merged result via the new --merge-persist CLI option.
 
 ## Usage
 
@@ -60,10 +61,16 @@ node src/lib/main.js --help
   ```
   The --export-graphdb command reads an ontology JSON file, converts it into a GraphDB-friendly format (with nodes and edges), and outputs the result either to stdout or writes it to the provided output file.
 
+- **Merge and Persist Ontologies:**
+  ```bash
+  node src/lib/main.js --merge-persist ontology1.json ontology2.json mergedOntology.json
+  ```
+  This command reads two ontology JSON files, merges them (combining unique classes and merging properties where the second ontology takes precedence), and writes the merged ontology to the specified output file.
+
 For direct use of the persistence functionality in your code, import the module from:
 
 ```javascript
-import { readOntology, persistOntology, exportGraphDB } from './src/lib/main.js';
+import { readOntology, persistOntology, exportGraphDB, mergeOntologies } from './src/lib/main.js';
 ```
 
 ## Incremental Changes Plan

@@ -18,6 +18,16 @@ export function persistOntology(ontology, filePath) {
   writeFileSync(filePath, data, { encoding: "utf-8" });
 }
 
+// Merge two ontologies by combining classes (unique) and merging properties (ontology2 takes precedence)
+export function mergeOntologies(ontology1, ontology2) {
+  const merged = {};
+  merged.name = (ontology1.name && ontology2.name) ? `${ontology1.name} & ${ontology2.name}` : (ontology1.name || ontology2.name || "Merged Ontology");
+  merged.version = ontology1.version || ontology2.version || "unknown";
+  merged.classes = Array.from(new Set([...(ontology1.classes || []), ...(ontology2.classes || [])]));
+  merged.properties = { ...(ontology1.properties || {}), ...(ontology2.properties || {}) };
+  return merged;
+}
+
 // Inlined GraphDB exporter function to replace missing module
 export function exportGraphDB(ontology) {
   const nodes = [];
@@ -27,7 +37,7 @@ export function exportGraphDB(ontology) {
   nodes.push({
     id: "ontology",
     label: ontology.name || "Ontology",
-    version: ontology.version || "unknown"
+    version: ontology.version || "unknown",
   });
 
   // Process classes if available
@@ -115,6 +125,28 @@ export function main(args) {
       }
     } catch (err) {
       console.error('Error exporting GraphDB data:', err.message);
+      process.exit(1);
+    }
+    return;
+  }
+
+  if (args.includes('--merge-persist')) {
+    const index = args.indexOf('--merge-persist');
+    const file1 = args[index + 1];
+    const file2 = args[index + 2];
+    const outputFile = args[index + 3];
+    if (!file1 || !file2 || !outputFile) {
+      console.error('Error: --merge-persist option requires three file path arguments: <ontology1> <ontology2> <output>');
+      process.exit(1);
+    }
+    try {
+      const ontology1 = readOntology(file1);
+      const ontology2 = readOntology(file2);
+      const mergedOntology = mergeOntologies(ontology1, ontology2);
+      persistOntology(mergedOntology, outputFile);
+      console.log(`Merged ontology persisted to ${outputFile}`);
+    } catch (err) {
+      console.error('Error merging ontologies:', err.message);
       process.exit(1);
     }
     return;
