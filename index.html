@@ -25,7 +25,6 @@
     <h1 class="md-github"><a class="md-github__anchor" name="repository0-crucible" href="#repository0-crucible"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>repository0-crucible</h1>
 <p class="md-github"><code class="md-github">repository0-crucible</code> is a demo repository that showcases the GitHub workflows imported from intentïon <a href="https://github.com/xn-intenton-z2a/repository0-crucible" class="md-github">agentic‑lib</a>. Its primary purpose is to demonstrate these automated CI/CD workflows and a modular CLI design.</p>
 <p class="md-github">To create a self-evolving agentic coding system of your own based on this one see the <a href="./TEMPLATE-README.md" class="md-github">TEMPLATE-README.md</a> for more details.</p>
-<p class="md-github">This readme shall evolve into a JavaScript library based on the seed CONTRIBUTING files in [./seeds].</p>
 <h2 class="md-github"><a class="md-github__anchor" name="repository-template" href="#repository-template"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Repository Template</h2>
 <p class="md-github">The repository is intended as a template that includes:</p>
 <ul class="md-github">
@@ -86,6 +85,7 @@
 <li class="md-github"><strong class="md-github">Ontology Content Query:</strong> Use the <strong class="md-github">--query</strong> command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the <code class="md-github">--regex</code> flag to interpret the search term as a regular expression. This command searches within the ontology's name, classes, and properties (both keys and string values) and returns the matching results in JSON format. If no matches are found, an appropriate JSON message is returned.</li>
 <li class="md-github"><strong class="md-github">Fetch Ontology from Public Data Source:</strong> Use the <strong class="md-github">--fetch</strong> command to simulate retrieving data from a public data source, transform it into a valid ontology JSON object, and either output the result to STDOUT or persist it to a file if a file path is provided.</li>
 <li class="md-github"><strong class="md-github">Export OWL/Turtle Format:</strong> Use the <strong class="md-github">--export-owl</strong> command to convert a JSON ontology into a basic OWL representation in Turtle format. The output includes standard prefixes (owl, rdf, ex) and translates ontology classes and properties into OWL declarations. When an output file is provided, the result is saved; otherwise, it is printed to STDOUT.</li>
+<li class="md-github"><strong class="md-github">Export RDF/XML Format:</strong> <strong class="md-github">New!</strong> Use the <strong class="md-github">--export-xml</strong> command to convert a JSON ontology into RDF/XML format. The exporter includes the XML declaration and standard RDF/XML namespaces. The ontology's name, version, classes, and properties are mapped to corresponding RDF/XML elements. If an output file is provided, the result is saved; otherwise, it is printed to STDOUT.</li>
 <li class="md-github"><strong class="md-github">Zod Schema Validation:</strong> Ontology JSON files are validated using a strict Zod schema to ensure they contain the required properties (name, version, classes, and properties) with the correct data types. This integration provides clearer error messages on invalid ontology formats.</li>
 <li class="md-github"><strong class="md-github">Non-deprecated Package Import:</strong> The package version from package.json is now imported using a file read method to avoid using deprecated import assertions.</li>
 </ul>
@@ -167,6 +167,11 @@
 </code></pre>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">Export Ontology to RDF/XML Format (New):</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-xml path/to/ontology.json [path/to/output.xml]
+</code></pre>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">Merge and Persist Ontologies:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --merge-persist ontology1.json ontology2.json mergedOntology.json
 </code></pre>
@@ -221,7 +226,7 @@
 <h2 class="md-github"><a class="md-github__anchor" name="environment-variable-configuration" href="#environment-variable-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Variable Configuration</h2>
 <p class="md-github">The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, the tool logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If a non-numeric or non-finite value (such as &quot;NaN&quot;, &quot;Infinity&quot;, or &quot;-Infinity&quot;) is provided, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value of 5000. Automated tests verify this behavior.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="end-to-end-integration-tests" href="#end-to-end-integration-tests"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>End-to-End Integration Tests</h2>
-<p class="md-github">A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch, export-owl, and diff functionalities. To run the integration tests:</p>
+<p class="md-github">A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch, export-owl, export-xml, and diff functionalities. To run the integration tests:</p>
 <pre class="md-github"><code class="md-github language-bash">npm run test:e2e
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
@@ -231,7 +236,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-12T14:43:06.312Z</p>
+    <p>Generated on 2025-04-12T14:44:38.417Z</p>
   </footer>
 </body>
 </html>

@@ -2,16 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 3,
+  "openIssues": 2,
   "issuesClosedLastHour": 10,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
   "diffMinutes": 0,
-  "diffMinutesMain": 3,
+  "diffMinutesMain": 0,
   "commitsLastHour": 6,
-  "commitsLastDay": 65,
+  "commitsLastDay": 66,
   "lastFiveCommitMessages": [
+    {
+      "time": "14:43",
+      "message": "Added --export-xml command for exporting ontology to RDFXML form..."
+    },
     {
       "time": "14:38",
       "message": "Maintain DATA_FETCHER"
@@ -27,23 +31,14 @@
     {
       "time": "14:11",
       "message": "Add export-owl command to convert ontology JSON to OWLTurtle for..."
-    },
-    {
-      "time": "13:51",
-      "message": "Added --fetch command to support auto-generating ontologies from..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1467",
-        "minutesSinceLastCommit": 0
-      }
-    ]
+    "count": 0,
+    "details": []
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T14:42:44.080Z"
+  "generatedAt": "2025-04-12T14:44:16.052Z"
 }
