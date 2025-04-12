@@ -43,6 +43,7 @@ function clearOntologiesDir() {
   }
 }
 
+
 describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--help flag displays usage information', () => {
     clearLogFile();
@@ -245,10 +246,11 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     expect(logContent).toContain('--build-intermediate');
   });
 
-  test('--build-enhanced flag processes enhanced build', () => {
+  test('--build-enhanced flag processes enhanced build with public API data', () => {
     clearLogFile();
-    const result = spawnSync('node', [cliPath, '--build-enhanced'], { encoding: 'utf-8' });
-    expect(result.stdout).toContain('Enhanced build processed');
+    const result = spawnSync('node', [cliPath, '--build-enhanced'], { encoding: 'utf-8', timeout: 5000 });
+    const output = JSON.parse(result.stdout);
+    expect(output).toHaveProperty('name', 'Enhanced Ontology');
     const logContent = readLogFile();
     expect(logContent).toContain('--build-enhanced');
   });

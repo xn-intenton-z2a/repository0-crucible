@@ -38,7 +38,7 @@ npm install repository0-crucible
 - **System Refresh:** Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.
 - **Build Commands:**
   - **Intermediate Build:** Use --build-intermediate to process and output an intermediate build version of the ontology.
-  - **Enhanced Build:** Use --build-enhanced to process additional steps and output an enhanced build version of the ontology.
+  - **Enhanced Build:** Use --build-enhanced to fetch data from a public API, transform it into an enriched ontology JSON, and output the enhanced build version. This command integrates external public data sources into the ontology creation process.
 - **REST API Server:** Use the --serve flag to launch an HTTP server exposing comprehensive REST API endpoints for ontology operations. The following endpoints are available:
   - **GET /diagnostics:** Returns a diagnostic report (same as CLI diagnostics).
   - **GET /ontology:** Returns a JSON list of persisted ontology definitions.
@@ -127,7 +127,7 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --build-enhanced
   ```
-  Processes and outputs an enhanced build version of the ontology.
+  Fetches data from a public API, transforms it into an enriched ontology JSON, and outputs the enhanced build version.
 
 - **REST API Server:**
   ```bash
