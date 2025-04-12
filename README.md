@@ -32,7 +32,7 @@ npm install repository0-crucible
 - **Version Display:** Use the --version flag to display the current package version as specified in package.json.
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions. The help output includes the effective DEFAULT_TIMEOUT value after environment validation.
 - **Custom Ontology Persistence:** Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.
-- **Enhanced Environment Variable Validation:** The CLI tool now performs explicit checks for special cases including non-numeric inputs, NaN, Infinity and -Infinity. In these cases, a clear warning is logged and a default value of 5000 is used.
+- **Enhanced Environment Variable Validation:** The CLI tool now performs explicit checks for special cases including non-numeric inputs, NaN, Infinity and -Infinity. In these cases, a clear warning is logged and a default value of 5000 is used. (Error messages have been refined to specify the input received.)
 - **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log), with errors reported to stderr for better diagnostics.
 - **Diagnostics Mode:** Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.
 - **System Refresh:** Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.

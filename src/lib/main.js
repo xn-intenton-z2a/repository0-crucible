@@ -41,7 +41,7 @@ function getDefaultTimeout() {
   const rawTimeout = process.env.DEFAULT_TIMEOUT;
   const timeoutValue = Number(rawTimeout);
   if (isNaN(timeoutValue)) {
-    console.error("DEFAULT_TIMEOUT is NaN; using default value of 5000");
+    console.error("DEFAULT_TIMEOUT is NaN; using default value of 5000 (input: " + rawTimeout + ")");
     return 5000;
   }
   if (!isFinite(timeoutValue)) {
