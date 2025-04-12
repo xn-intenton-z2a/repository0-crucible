@@ -55,9 +55,10 @@
 <li class="md-github"><strong class="md-github">Version Display:</strong> Use the new --version flag to display the current package version as specified in package.json.</li>
 <li class="md-github"><strong class="md-github">Help Command:</strong> Use --help (or run without arguments) to display CLI usage instructions.</li>
 <li class="md-github"><strong class="md-github">Custom Ontology Persistence:</strong> Use the new --ontology flag with --persist to supply a custom ontology (as a JSON string or by providing a file path) instead of the default dummy ontology.</li>
-<li class="md-github"><strong class="md-github">Enhanced Environment Variable Validation:</strong> Environment variables such as DEFAULT_TIMEOUT are now robustly validated using a Zod-based schema. If an invalid (non-numeric, NaN, or non-finite) value is provided, a standardized warning is logged and a safe default (e.g., 5000) is used.</li>
+<li class="md-github"><strong class="md-github">Enhanced Environment Variable Validation:</strong> Environment variables such as DEFAULT_TIMEOUT are now robustly validated using a Zod-based schema. If an invalid (non-numeric, NaN, or non-finite) value is provided, the tool will automatically fall back to a safe default (e.g., 5000) and log a standardized warning.</li>
 <li class="md-github"><strong class="md-github">Robust Logging:</strong> Every command execution is logged with a timestamp, command arguments, and outcome in JSON format to a dedicated log file (logs/cli.log). The logging functionality has been enhanced to report errors (such as directory creation or file writing failures) to stderr for better diagnostics.</li>
 <li class="md-github"><strong class="md-github">Schema Validation:</strong> Ontology JSON objects are validated using Zod to ensure they adhere to the expected structure. This enhances error reporting and robustness.</li>
+<li class="md-github"><strong class="md-github">Diagnostics Mode:</strong> Use the new --diagnostics flag to output a detailed JSON report containing diagnostic information such as package version, environment variables, system information, available CLI commands, and the current execution context.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">To run the CLI tool and see help instructions:</p>
@@ -104,13 +105,17 @@
 <p class="md-github"><strong class="md-github">Export Ontology to GraphDB Format:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-graphdb path/to/ontology.json [path/to/output.json]
 </code></pre>
-<p class="md-github">The --export-graphdb command reads an ontology JSON file, converts it into a GraphDB-friendly format (with nodes and edges), and outputs the result either to stdout or writes it to the provided output file.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Merge and Persist Ontologies:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --merge-persist ontology1.json ontology2.json mergedOntology.json
 </code></pre>
-<p class="md-github">This command reads two ontology JSON files, merges them (combining unique classes and merging properties with the second ontology’s values overwriting conflicts), and writes the merged ontology to the specified output file.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Diagnostics Mode:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --diagnostics
+</code></pre>
+<p class="md-github">This command outputs a detailed JSON report with diagnostic information, including the package version, environment variables, system details, available CLI commands, and current execution context.</p>
 </li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="environment-variable-configuration" href="#environment-variable-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Variable Configuration</h2>
@@ -122,7 +127,7 @@ node src/lib/main.js --help
 <h2 class="md-github"><a class="md-github__anchor" name="logging" href="#logging"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Logging</h2>
 <p class="md-github">Every CLI command execution is logged automatically in JSON format. The log entries include a timestamp, the command arguments, and the outcome (success, error, or informational). Logs are stored in a dedicated file at logs/cli.log with automatic directory and file creation as needed. The logging functionality has been enhanced to report errors to stderr if log directory creation or file writing fails, ensuring better diagnostics during execution.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="end-to-end-integration-tests" href="#end-to-end-integration-tests"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>End-to-End Integration Tests</h2>
-<p class="md-github">A suite of end-to-end integration tests has been added to verify all CLI commands, including log creation. These tests simulate realistic usage scenarios including file I/O operations, JSON parsing, and environment variable fallback handling. To run the integration tests, execute:</p>
+<p class="md-github">A suite of end-to-end integration tests has been added to verify all CLI commands, including log creation and the diagnostics mode. These tests simulate realistic usage scenarios including file I/O operations, JSON parsing, and environment variable fallback handling. To run the integration tests, execute:</p>
 <pre class="md-github"><code class="md-github language-bash">npm run test:e2e
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
@@ -132,7 +137,7 @@ node src/lib/main.js --help
 
   </section>
   <footer>
-    <p>Generated on 2025-04-12T07:22:48.951Z</p>
+    <p>Generated on 2025-04-12T07:24:08.972Z</p>
   </footer>
 </body>
 </html>
