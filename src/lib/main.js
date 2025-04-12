@@ -63,21 +63,22 @@ function logError(errorCode, message, context = {}) {
   console.error(`ERROR [${errorCode}] ${message}`);
 }
 
-// Utility: Get validated DEFAULT_TIMEOUT with explicit handling for undefined, NaN and non-finite values
+// Utility: Get validated DEFAULT_TIMEOUT with consolidated handling for undefined, non-numeric, and non-finite values
 function getDefaultTimeout() {
+  const defaultValue = 5000;
   const rawTimeout = process.env.DEFAULT_TIMEOUT;
   if (rawTimeout === undefined) {
-    logError('LOG_ERR_ENV_NOT_SET', 'DEFAULT_TIMEOUT is not set; using default value of 5000', { rawTimeout });
-    return 5000;
+    logError('LOG_ERR_ENV_NOT_SET', `DEFAULT_TIMEOUT is not set; using default value of ${defaultValue}`, { rawTimeout });
+    return defaultValue;
   }
   const timeoutValue = Number(rawTimeout);
   if (isNaN(timeoutValue)) {
-    logError('LOG_ERR_ENV_NAN', `DEFAULT_TIMEOUT is NaN; using default value of 5000 (input: ${rawTimeout})`, { rawTimeout });
-    return 5000;
+    logError('LOG_ERR_ENV_NAN', `DEFAULT_TIMEOUT is not a valid number; using default value of ${defaultValue} (input: ${rawTimeout})`, { rawTimeout });
+    return defaultValue;
   }
   if (!isFinite(timeoutValue)) {
-    logError('LOG_ERR_ENV_NON_FINITE', `DEFAULT_TIMEOUT not set; using default value of 5000 (invalid input: ${rawTimeout})`, { rawTimeout });
-    return 5000;
+    logError('LOG_ERR_ENV_NON_FINITE', `DEFAULT_TIMEOUT must be a finite number; using default value of ${defaultValue} (input: ${rawTimeout})`, { rawTimeout });
+    return defaultValue;
   }
   return timeoutValue;
 }
