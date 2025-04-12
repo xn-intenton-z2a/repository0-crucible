@@ -2,16 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 11,
-  "issuesClosedLastHour": 9,
+  "openIssues": 10,
+  "issuesClosedLastHour": 10,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
   "diffMinutes": 0,
-  "diffMinutesMain": 19,
-  "commitsLastHour": 4,
-  "commitsLastDay": 36,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 5,
+  "commitsLastDay": 37,
   "lastFiveCommitMessages": [
+    {
+      "time": "09:18",
+      "message": "Fixed the --refresh command to clear logs and then log the refre..."
+    },
     {
       "time": "08:53",
       "message": "Refactored DEFAULT_TIMEOUT handling to explicitly detect NaN val..."
@@ -27,23 +31,14 @@
     {
       "time": "08:26",
       "message": "Integrate Zod into DEFAULT_TIMEOUT validation for enhanced envir..."
-    },
-    {
-      "time": "08:12",
-      "message": "Add --refresh CLI command to reinitialize ontology state and upd..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1423",
-        "minutesSinceLastCommit": 0
-      }
-    ]
+    "count": 0,
+    "details": []
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T09:12:44.012Z"
+  "generatedAt": "2025-04-12T09:18:52.227Z"
 }

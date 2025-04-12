@@ -48,18 +48,17 @@
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
-<li class="md-github">CLI tool for building and managing OWL ontologies with a modular command routing. The CLI now implements inline command handlers to simplify the build and test process.</li>
+<li class="md-github">CLI tool for building and managing OWL ontologies with a modular command routing. The CLI now modularizes each command handler directly in the main file, eliminating missing module errors and improving testability.</li>
 <li class="md-github">JSON-based persistence and retrieval of OWL ontologies via integrated persistence functions exported from the main module (located in src/lib/main.js).</li>
 <li class="md-github">Exports a GraphDB-friendly format from OWL ontology JSON using the GraphDB Exporter feature.</li>
 <li class="md-github">Merge functionality: merge two ontology JSON files and persist the merged result via the --merge-persist CLI option.</li>
 <li class="md-github"><strong class="md-github">Version Display:</strong> Use the --version flag to display the current package version as specified in package.json.</li>
 <li class="md-github"><strong class="md-github">Help Command:</strong> Use --help (or run without arguments) to display CLI usage instructions. The help output includes the effective DEFAULT_TIMEOUT value after environment validation.</li>
 <li class="md-github"><strong class="md-github">Custom Ontology Persistence:</strong> Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.</li>
-<li class="md-github"><strong class="md-github">Enhanced Environment Variable Validation:</strong> The CLI tool now performs explicit checks for special cases including non-numeric inputs, NaN, Infinity and -Infinity. In these cases, a clear warning is issued and a default value of 5000 is used.</li>
+<li class="md-github"><strong class="md-github">Enhanced Environment Variable Validation:</strong> The CLI tool now performs explicit checks for special cases including non-numeric inputs, NaN, Infinity and -Infinity. In these cases, a clear warning is logged and a default value of 5000 is used.</li>
 <li class="md-github"><strong class="md-github">Robust Logging:</strong> Every command execution is logged in JSON format to a dedicated log file (logs/cli.log), with errors reported to stderr for better diagnostics.</li>
 <li class="md-github"><strong class="md-github">Diagnostics Mode:</strong> Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.</li>
-<li class="md-github"><strong class="md-github">Modular Command Routing:</strong> CLI command logic is implemented inline to ensure all commands are available without external module dependencies, enhancing testability.</li>
-<li class="md-github"><strong class="md-github">System Refresh:</strong> Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting internal states.</li>
+<li class="md-github"><strong class="md-github">System Refresh:</strong> Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">To run the CLI tool and see help instructions:</p>
@@ -140,7 +139,7 @@ node src/lib/main.js --help
 
   </section>
   <footer>
-    <p>Generated on 2025-04-12T09:13:03.162Z</p>
+    <p>Generated on 2025-04-12T09:19:13.811Z</p>
   </footer>
 </body>
 </html>
