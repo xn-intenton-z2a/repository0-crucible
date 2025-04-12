@@ -206,7 +206,7 @@ describe('End-to-End CLI Integration Tests', () => {
       env: { ...process.env, DEFAULT_TIMEOUT: 'not_a_number' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 5000');
-    expect(result.stderr).toContain('Warning: Environment variable DEFAULT_TIMEOUT is not numeric');
+    expect(result.stderr).toContain("Warning: Received non-numeric value 'not_a_number' for environment variable DEFAULT_TIMEOUT; falling back to default value 5000");
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
@@ -218,7 +218,7 @@ describe('End-to-End CLI Integration Tests', () => {
       env: { ...process.env, DEFAULT_TIMEOUT: '3000' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 3000');
-    expect(result.stderr).not.toContain('Warning: Environment variable DEFAULT_TIMEOUT is not numeric');
+    expect(result.stderr).not.toContain('Warning: Received non-numeric value');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
