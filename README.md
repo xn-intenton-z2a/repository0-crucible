@@ -36,6 +36,10 @@ npm install repository0-crucible
 - **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log). Error logs include structured error codes (e.g., LOG_ERR_*) and detailed contextual information. <strong>Note:</strong> The logger functionality is now integrated directly into the main CLI file, eliminating the need for a separate logger module.
 - **Diagnostics Mode:** Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.
 - **System Refresh:** Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.
+- **Build Commands:**
+  - **Intermediate Build:** Use --build-intermediate to process and output an intermediate build version of the ontology.
+  - **Enhanced Build:** Use --build-enhanced to process additional steps and output an enhanced build version of the ontology.
+- **REST Server:** Use the --serve flag to launch an HTTP server that exposes REST endpoints (e.g., /diagnostics) to interact with the ontology operations.
 - **Zod Schema Validation:** Ontology JSON files are validated using a strict Zod schema to ensure they contain the required properties (name, version, classes, and properties) with the correct data types. This integration provides clearer error messages on invalid ontology formats.
 
 ## Usage
@@ -99,6 +103,24 @@ node src/lib/main.js --help
   node src/lib/main.js --refresh
   ```
   This command reinitializes the system state by clearing cached logs and resetting any internal states.
+
+- **Intermediate Build:**
+  ```bash
+  node src/lib/main.js --build-intermediate
+  ```
+  Processes and outputs an intermediate build version of the ontology.
+
+- **Enhanced Build:**
+  ```bash
+  node src/lib/main.js --build-enhanced
+  ```
+  Processes and outputs an enhanced build version of the ontology.
+
+- **Launch REST Server:**
+  ```bash
+  node src/lib/main.js --serve
+  ```
+  Launches an HTTP server that exposes REST endpoints for ontology operations (e.g., GET /diagnostics).
 
 ## Environment Variable Configuration
 

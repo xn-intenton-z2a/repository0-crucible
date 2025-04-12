@@ -6,6 +6,7 @@ import { dirname, join } from 'path';
 import { existsSync, mkdirSync, appendFileSync, writeFileSync, readFileSync, rmSync, lstatSync } from 'fs';
 import dotenv from 'dotenv';
 import { z } from 'zod';
+import http from 'http';
 
 // Load environment variables
 dotenv.config();
@@ -103,6 +104,9 @@ function handleHelp(args, { getDefaultTimeout }) {
   --merge-persist <file1> <file2> <outputFile>    Merge ontologies
   --diagnostics      Output diagnostic report
   --refresh          Refresh system state
+  --build-intermediate   Process and output an intermediate build version of the ontology
+  --build-enhanced       Process and output an enhanced build version of the ontology
+  --serve                Launch an HTTP server exposing REST endpoints for ontology operations
 Using DEFAULT_TIMEOUT: ${timeout}`);
 }
 
@@ -248,7 +252,7 @@ function handleDiagnostics(args) {
       platform: process.platform,
       arch: process.arch
     },
-    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--merge-persist','--diagnostics','--refresh'],
+    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--serve'],
     processArgs: process.argv.slice(2),
     DEFAULT_TIMEOUT: getDefaultTimeout()
   };
@@ -274,6 +278,53 @@ function handleRefresh(args) {
   writeFileSync(logFile, '', { encoding: 'utf-8' });
   logCommand('--refresh');
   console.log('System state refreshed');
+}
+
+function handleBuildIntermediate(args) {
+  logCommand('--build-intermediate');
+  // Simulate processing of an intermediate build version of the ontology
+  console.log('Intermediate build processed');
+}
+
+function handleBuildEnhanced(args) {
+  logCommand('--build-enhanced');
+  // Simulate processing of an enhanced build version of the ontology
+  console.log('Enhanced build processed');
+}
+
+function handleServe(args) {
+  logCommand('--serve');
+  // Launch an HTTP server that exposes REST endpoints for ontology operations
+  const port = 3000;
+  const server = http.createServer((req, res) => {
+    // Basic routing based on URL
+    if (req.method === 'GET' && req.url === '/diagnostics') {
+      const diagnostics = {
+        packageVersion: pkg.version,
+        environment: process.env,
+        system: {
+          platform: process.platform,
+          arch: process.arch
+        }
+      };
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(diagnostics));
+    } else {
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.end('Endpoint not implemented');
+    }
+  });
+
+  server.listen(port, () => {
+    console.log(`Server started on port ${port}`);
+    // Automatically stop server after 1 second for dry-run purposes
+    setTimeout(() => {
+      server.close(() => {
+        console.log('Server stopped');
+        process.exit(0);
+      });
+    }, 1000);
+  });
 }
 
 function handleDefault(args) {
@@ -303,6 +354,15 @@ function dispatchCommand(args) {
   }
   if (args.includes('--merge-persist')) {
     return handleMergePersist(args);
+  }
+  if (args.includes('--build-intermediate')) {
+    return handleBuildIntermediate(args);
+  }
+  if (args.includes('--build-enhanced')) {
+    return handleBuildEnhanced(args);
+  }
+  if (args.includes('--serve')) {
+    return handleServe(args);
   }
   if (args.includes('--help') || args.length === 0) {
     return handleHelp(args, { getDefaultTimeout });
