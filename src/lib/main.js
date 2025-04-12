@@ -17,20 +17,36 @@ import pkg from '../../package.json' assert { type: 'json' };
 // Get __dirname for ESM modules
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-// Inline logger functions (integrated to avoid missing module error)
-function logCommand(command) {
-  try {
-    const logDir = join(process.cwd(), 'logs');
-    if (!existsSync(logDir)) {
-      mkdirSync(logDir, { recursive: true });
-    } else {
-      // If logDir exists but is not a directory, remove it
+/**
+ * Ensures that the log directory exists and is a directory. 
+ * If a file exists at the log directory path, it will be removed and replaced by a directory.
+ * @returns {string} The absolute path to the log directory.
+ */
+function ensureLogDir() {
+  const logDir = join(process.cwd(), 'logs');
+  if (existsSync(logDir)) {
+    try {
       const stats = lstatSync(logDir);
       if (!stats.isDirectory()) {
+        // Log directory exists as a file; remove it and create a directory
         rmSync(logDir, { force: true });
         mkdirSync(logDir, { recursive: true });
       }
+    } catch (err) {
+      // In case of any error, remove any conflicting file and create directory
+      rmSync(logDir, { force: true });
+      mkdirSync(logDir, { recursive: true });
     }
+  } else {
+    mkdirSync(logDir, { recursive: true });
+  }
+  return logDir;
+}
+
+// Inline logger functions (integrated to avoid missing module error)
+function logCommand(command) {
+  try {
+    const logDir = ensureLogDir();
     const logFile = join(logDir, 'cli.log');
     appendFileSync(logFile, JSON.stringify({ command, timestamp: new Date().toISOString() }) + "\n", { encoding: 'utf-8' });
   } catch (err) {
@@ -40,16 +56,7 @@ function logCommand(command) {
 
 function logError(code, messageStr, details) {
   try {
-    const logDir = join(process.cwd(), 'logs');
-    if (!existsSync(logDir)) {
-      mkdirSync(logDir, { recursive: true });
-    } else {
-      const stats = lstatSync(logDir);
-      if (!stats.isDirectory()) {
-        rmSync(logDir, { force: true });
-        mkdirSync(logDir, { recursive: true });
-      }
-    }
+    const logDir = ensureLogDir();
     const logFile = join(logDir, 'cli.log');
     appendFileSync(logFile, JSON.stringify({ code, message: messageStr, details, timestamp: new Date().toISOString() }) + "\n", { encoding: 'utf-8' });
   } catch (err) {
@@ -260,22 +267,14 @@ function handleDiagnostics(args) {
 }
 
 function handleRefresh(args) {
-  const logDir = join(process.cwd(), 'logs');
+  const logDir = ensureLogDir();
   try {
-    if (existsSync(logDir)) {
-      const stats = lstatSync(logDir);
-      if (!stats.isDirectory()) {
-        rmSync(logDir, { force: true });
-        mkdirSync(logDir, { recursive: true });
-      }
-    } else {
-      mkdirSync(logDir, { recursive: true });
-    }
+    const logFile = join(logDir, 'cli.log');
+    writeFileSync(logFile, '', { encoding: 'utf-8' });
   } catch (err) {
-    mkdirSync(logDir, { recursive: true });
+    // In case of error, attempt to recreate the log directory
+    ensureLogDir();
   }
-  const logFile = join(logDir, 'cli.log');
-  writeFileSync(logFile, '', { encoding: 'utf-8' });
   logCommand('--refresh');
   console.log('System state refreshed');
 }

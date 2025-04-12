@@ -33,7 +33,7 @@ npm install repository0-crucible
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions. The help output includes the effective DEFAULT_TIMEOUT value after environment validation.
 - **Custom Ontology Persistence:** Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.
 - **Enhanced Environment Variable Validation:** The CLI tool now explicitly validates the DEFAULT_TIMEOUT environment variable. If DEFAULT_TIMEOUT is not set, a message is logged indicating the fallback to 5000. If an invalid or non-finite numeric value is provided, a corresponding structured error code is logged with details, and the default value of 5000 is used.
-- **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log). Error logs include structured error codes (e.g., LOG_ERR_*) and detailed contextual information. <strong>Note:</strong> The logger functionality is now integrated directly into the main CLI file, eliminating the need for a separate logger module.
+- **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log). Error logs include structured error codes (e.g., LOG_ERR_*) and detailed contextual information. <strong>Note:</strong> The logger functionality is now integrated directly into the main CLI file and uses a dedicated helper function to ensure the log directory is correctly setup.
 - **Diagnostics Mode:** Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.
 - **System Refresh:** Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.
 - **Build Commands:**
@@ -135,7 +135,7 @@ node src/lib/main.js --help
 
 ## Logging
 
-Every CLI command execution is logged automatically in JSON format. Logs include a timestamp, the command arguments, and detailed error context when failures occur. Error logs feature structured error codes (such as LOG_ERR_PERSIST_PARSE, LOG_ERR_ENV_NAN, etc.) to simplify troubleshooting. Logs are stored in logs/cli.log, with automatic directory creation and detailed error reporting if needed.
+Every CLI command execution is logged automatically in JSON format. Logs include a timestamp, the command arguments, and detailed error context when failures occur. Error logs feature structured error codes (such as LOG_ERR_PERSIST_PARSE, LOG_ERR_ENV_NAN, etc.) to simplify troubleshooting. Logs are stored in logs/cli.log, with automatic directory creation via a dedicated helper function and detailed error reporting if needed.
 
 ## End-to-End Integration Tests
 
