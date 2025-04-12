@@ -1,27 +1,34 @@
 # Ontology Manager
 
-This feature introduces a dedicated ontology management module to support key operations related to OWL ontologies. It provides an integrated CLI command and library functions to build, persist, merge, and query OWL ontologies stored as JSON files.
+This feature introduces a dedicated module to manage OWL ontologies with multiple interfaces. It covers building, persisting, merging, and querying OWL ontologies stored as JSON files, and now extends its functionality by exposing a REST API for broader integration.
 
 ## Overview
 
-The Ontology Manager embraces the mission of owl-builder by enabling users to:
+The Ontology Manager is central to owl-builder and is designed to:
 - Build OWL ontologies from live and verified public data sources.
 - Persist OWL ontologies as JSON files for easy sharing and integration.
-- Merge multiple OWL ontology files into a single coherent model.
-- Query OWL ontologies via a straightforward CLI interface and library function calls.
+- Merge multiple OWL ontology files into a unified model.
+- Query OWL ontologies via a CLI interface, library functions, and now a REST API.
 
-## Features
+## CLI and Library Integration
 
-- **Build Functionality:** Retrieve public data sources and generate OWL ontologies automatically.
-- **Persistence Layer:** Read and write OWL ontology data in JSON format, ensuring consistent data management.
-- **Merge Operations:** Combine multiple JSON representations of OWL ontologies into a unified structure.
-- **Query Interface:** Provide CLI commands and library functions for searching and filtering within OWL ontologies.
-- **Extensible API:** Easy-to-use interfaces that can later be integrated with REST APIs or other delivery mechanisms.
+- **Build Functionality:** Automatically retrieve public data sources and generate OWL ontologies.
+- **Persistence Layer:** Read and write OWL ontology data in JSON format with consistent data management.
+- **Merge Operations:** Combine and streamline multiple JSON ontology representations.
+- **Query Interface:** Provide commands for filtering and searching within OWL ontologies via CLI and library function calls.
 
-## Implementation
+## REST API Extension
 
-- The changes will be introduced in the main repository file in a modular fashion, ensuring minimal changes to existing structure.
-- Unit tests will be added using vitest to cover each functionality.
-- The CLI tool will parse sub-commands and delegate to corresponding functions implemented in separate functions within a new file or as part of the existing module.
+- **HTTP Server Integration:** Introduce a lightweight HTTP API using Node.js built-in modules to expose ontology management operations.
+- **Endpoint Design:** The API will include endpoints for building, persisting, merging, and querying ontologies. These endpoints follow a RESTful approach with clear request and response structures.
+- **Usage and Deployment:** Designed for simple deployment as part of a single repository, the server can be initiated from the CLI, enhancing versatility in integration with external systems 
+  (e.g., GraphDB import workflows).
+- **Testing and Documentation:** Unit tests using vitest will cover new HTTP routes. Documentation and usage examples, including inline code and CLI/HTTP examples, will be added in the README.
 
-This feature adheres to the existing contribution guidelines and builds on the mission statement of owl-builder, aiming to provide immediate valuable functionality in managing OWL ontologies.
+## Implementation Details
+
+- **Single Repository Scope:** All changes will be implemented in the existing module structure with minimal alterations to preserve repository cohesiveness.
+- **Modular Functions:** The REST API endpoints will leverage the same modular functions used by CLI and library components to enforce DRY principles.
+- **Testing:** New tests will be added to verify HTTP channel responses along with the core ontology management functionalities.
+
+This update not only enhances the Ontology Manager’s functionality but also solidifies its alignment with the mission to build and manage OWL ontologies in a simple, integrated manner.
