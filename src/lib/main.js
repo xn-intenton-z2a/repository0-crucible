@@ -84,12 +84,6 @@ function getDefaultTimeout() {
     return defaultValue;
   }
   const timeoutValue = Number(rawTimeout);
-  if (isNaN(timeoutValue)) {
-    const errorMsg = `DEFAULT_TIMEOUT is not a valid number; using default value of ${defaultValue} (input: ${rawTimeout})`;
-    logError('LOG_ERR_ENV_NAN', errorMsg, { rawTimeout });
-    console.error('LOG_ERR_ENV_NAN', errorMsg);
-    return defaultValue;
-  }
   if (!isFinite(timeoutValue)) {
     const errorMsg = `DEFAULT_TIMEOUT must be a finite number; using default value of ${defaultValue} (input: ${rawTimeout})`;
     logError('LOG_ERR_ENV_NON_FINITE', errorMsg, { rawTimeout });

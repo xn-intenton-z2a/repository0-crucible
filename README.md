@@ -150,10 +150,6 @@ export DEFAULT_TIMEOUT=3000
 node src/lib/main.js --help
 ```
 
-## Logging
-
-Every CLI command execution is logged automatically in JSON format. Logs include a timestamp, the command arguments, and detailed error context when failures occur. Error logs feature structured error codes (such as LOG_ERR_PERSIST_PARSE, LOG_ERR_ENV_NAN, etc.) to simplify troubleshooting. Logs are stored in logs/cli.log, with automatic directory creation via a dedicated helper function and detailed error reporting if needed.
-
 ## End-to-End Integration Tests
 
 A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, and the new interactive mode. To run the integration tests:
