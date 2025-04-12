@@ -2,11 +2,16 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 3,
+  "openIssues": 4,
   "issuesClosedLastHour": 10,
   "issuesClosedLastDay": 100,
-  "openPRs": 0,
-  "prDetails": [],
+  "openPRs": 1,
+  "prDetails": [
+    {
+      "title": "Added CLI commands for build-intermediate build-enhanced and serve with corresponding tests and updated docs. (fixes #1435)",
+      "ageMinutes": 0
+    }
+  ],
   "diffMinutes": 0,
   "diffMinutesMain": 12,
   "commitsLastHour": 2,
@@ -45,5 +50,5 @@
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T10:53:56.966Z"
+  "generatedAt": "2025-04-12T10:54:13.755Z"
 }
