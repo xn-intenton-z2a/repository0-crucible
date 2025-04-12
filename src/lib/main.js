@@ -1,32 +1,16 @@
+// File: src/lib/logger.js
 #!/usr/bin/env node
-// src/lib/main.js
 
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import { existsSync, mkdirSync, appendFileSync, writeFileSync, readFileSync, rmSync, lstatSync } from 'fs';
-import dotenv from 'dotenv';
-import { z } from 'zod';
+import { join } from 'path';
+import { existsSync, mkdirSync, appendFileSync, writeFileSync, lstatSync, rmSync } from 'fs';
 
-// Load environment variables
-dotenv.config();
-
-// Import package version from package.json
-import pkg from '../../package.json' assert { type: 'json' };
-
-const __dirname = dirname(fileURLToPath(import.meta.url));
-
-// Define ontology schema using Zod for validation
-const ontologySchema = z.object({
-  name: z.string(),
-  version: z.string(),
-  classes: z.array(z.string()),
-  properties: z.record(z.any())
-});
-
-// Utility: Log command execution to logs/cli.log
-function logCommand(commandFlag) {
+/**
+ * Logs a command execution to the logs/cli.log file.
+ * Ensures the logs directory exists and is a directory.
+ * @param {string} commandFlag - The command flag invoked.
+ */
+export function logCommand(commandFlag) {
   const logDir = join(process.cwd(), 'logs');
-  // Ensure logDir is an actual directory
   if (existsSync(logDir)) {
     try {
       const stats = lstatSync(logDir);
@@ -45,8 +29,13 @@ function logCommand(commandFlag) {
   appendFileSync(logFile, JSON.stringify(logEntry) + "\n", { encoding: 'utf-8' });
 }
 
-// Utility: Log errors with structured error codes and context
-function logError(errorCode, message, context = {}) {
+/**
+ * Logs an error with a structured error code and context to logs/cli.log, and prints to stderr.
+ * @param {string} errorCode - The error code identifier.
+ * @param {string} message - The error message.
+ * @param {object} context - Additional context for the error.
+ */
+export function logError(errorCode, message, context = {}) {
   const logDir = join(process.cwd(), 'logs');
   if (!existsSync(logDir)) {
     try {
@@ -69,6 +58,35 @@ function logError(errorCode, message, context = {}) {
   }
   console.error(`ERROR [${errorCode}] ${message}`);
 }
+
+// File: src/lib/main.js
+#!/usr/bin/env node
+// src/lib/main.js
+
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import { existsSync, mkdirSync, appendFileSync, writeFileSync, readFileSync, rmSync, lstatSync } from 'fs';
+import dotenv from 'dotenv';
+import { z } from 'zod';
+
+// Load environment variables
+dotenv.config();
+
+// Import package version from package.json
+import pkg from '../../package.json' assert { type: 'json' };
+
+// Import logging functions from the dedicated logger module
+import { logCommand, logError } from './logger.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Define ontology schema using Zod for validation
+const ontologySchema = z.object({
+  name: z.string(),
+  version: z.string(),
+  classes: z.array(z.string()),
+  properties: z.record(z.any())
+});
 
 // Utility: Get validated DEFAULT_TIMEOUT with consolidated handling for undefined, non-numeric, and non-finite values
 function getDefaultTimeout() {
