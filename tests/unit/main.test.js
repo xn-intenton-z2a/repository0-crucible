@@ -311,6 +311,42 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       expect(result.stderr).toContain('LOG_ERR_ONTOLOGY_VALIDATE');
       unlinkSync(ontologyFile);
     });
+
+    test('returns matching results using regex when --regex flag is provided', () => {
+      clearLogFile();
+      const ontology = {
+        name: 'RegexOntology',
+        version: '1.0',
+        classes: ['AlphaClass', 'BetaClass'],
+        properties: { info: 'Contains numbers 12345', note: 'Sample note' }
+      };
+      const ontologyFile = join(tempDir, 'regexOntology.json');
+      writeFileSync(ontologyFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
+      const regexPattern = '^RegexOntology$';
+      const result = spawnSync('node', [cliPath, '--query', ontologyFile, regexPattern, '--regex'], { encoding: 'utf-8' });
+      const output = JSON.parse(result.stdout);
+      expect(output).toHaveProperty('name', 'RegexOntology');
+      const logContent = readLogFile();
+      expect(logContent).toContain('--query');
+      unlinkSync(ontologyFile);
+    });
+
+    test('handles invalid regex pattern when --regex flag is provided', () => {
+      clearLogFile();
+      const ontology = {
+        name: 'InvalidRegexOntology',
+        version: '1.0',
+        classes: ['Gamma'],
+        properties: { key: 'value' }
+      };
+      const ontologyFile = join(tempDir, 'invalidRegexOntology.json');
+      writeFileSync(ontologyFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
+      const invalidPattern = '(unclosed';
+      const result = spawnSync('node', [cliPath, '--query', ontologyFile, invalidPattern, '--regex'], { encoding: 'utf-8' });
+      expect(result.stderr).toContain('LOG_ERR_INVALID_REGEX');
+      unlinkSync(ontologyFile);
+    });
+
   });
 });
 
