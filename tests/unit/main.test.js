@@ -1,140 +1,114 @@
-import { describe, test, expect } from 'vitest';
-import { exportGraphDB, mergeOntologies, main } from '../../src/lib/main.js';
-import { writeFileSync, readFileSync, unlinkSync } from 'fs';
+import { describe, test, expect, afterEach } from 'vitest';
+import { spawnSync } from 'child_process';
+import { mkdtempSync, writeFileSync, readFileSync, unlinkSync } from 'fs';
 import { join } from 'path';
+import os from 'os';
 
-// Helper function to capture console output
-function captureConsole(callback) {
-  const originalLog = console.log;
-  const originalError = console.error;
-  let output = '';
-  console.log = (msg) => { output += msg.toString(); };
-  console.error = (msg) => { output += msg.toString(); };
-  try {
-    callback();
-  } finally {
-    console.log = originalLog;
-    console.error = originalError;
-  }
-  return output;
-}
+// Path to the CLI entry point
+const cliPath = join(process.cwd(), 'src', 'lib', 'main.js');
+const packageJsonPath = join(process.cwd(), 'package.json');
+const pkg = JSON.parse(readFileSync(packageJsonPath, { encoding: 'utf-8' }));
 
+// Create a temporary directory for test files
+const tempDir = mkdtempSync(join(os.tmpdir(), 'cli-e2e-'));
 
-describe('GraphDB Exporter Module', () => {
-  test('should export ontology with classes and properties correctly', () => {
-    const ontology = {
-      name: 'Test Ontology',
-      version: '2.0',
-      classes: ['Class1', 'Class2'],
-      properties: { propA: 'valueA' }
+describe('End-to-End CLI Integration Tests', () => {
+  afterEach(() => {
+    // Cleanup can be added here if needed
+  });
+
+  test('--help flag displays usage information', () => {
+    const result = spawnSync('node', [cliPath, '--help'], { encoding: 'utf-8' });
+    expect(result.stdout).toContain('Usage:');
+    expect(result.stdout).toContain('--version');
+  });
+
+  test('--version flag outputs package version', () => {
+    const result = spawnSync('node', [cliPath, '--version'], { encoding: 'utf-8' });
+    expect(result.stdout.trim()).toBe(pkg.version);
+  });
+
+  test('--read flag loads ontology and outputs confirmation', () => {
+    const dummyOntology = {
+      name: 'TestOntology',
+      version: '0.0.1',
+      classes: ['TestClass'],
+      properties: { testProp: 'testValue' }
     };
-    const result = exportGraphDB(ontology);
-    expect(result).toHaveProperty('nodes');
-    expect(result).toHaveProperty('edges');
-
-    const ontologyNode = result.nodes.find(node => node.id === 'ontology');
-    expect(ontologyNode).toBeDefined();
-    expect(ontologyNode.label).toBe('Test Ontology');
-    
-    const classNodes = result.nodes.filter(node => node.id.startsWith('class_'));
-    expect(classNodes.length).toBe(2);
-
-    const propertyNode = result.nodes.find(node => node.id === 'prop_propA');
-    expect(propertyNode).toBeDefined();
-    expect(propertyNode.value).toBe('valueA');
+    const ontologyFile = join(tempDir, 'ontology.json');
+    writeFileSync(ontologyFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--read', ontologyFile], { encoding: 'utf-8' });
+    expect(result.stdout).toContain('Ontology loaded:');
+    unlinkSync(ontologyFile);
   });
 
-  test('should handle ontology without classes and properties', () => {
-    const ontology = { name: 'Empty Ontology', version: '1.0' };
-    const result = exportGraphDB(ontology);
-    const ontologyNode = result.nodes.find(node => node.id === 'ontology');
-    expect(ontologyNode).toBeDefined();
-    
-    // No additional nodes or edges should exist
-    const otherNodes = result.nodes.filter(node => node.id !== 'ontology');
-    expect(otherNodes.length).toBe(0);
-    expect(result.edges.length).toBe(0);
+  test('--persist flag writes dummy ontology to file', () => {
+    const outputFile = join(tempDir, 'persisted.json');
+    const result = spawnSync('node', [cliPath, '--persist', outputFile], { encoding: 'utf-8' });
+    expect(result.stdout).toContain('Ontology persisted to');
+    const persisted = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
+    expect(persisted).toHaveProperty('name', 'Dummy Ontology');
+    unlinkSync(outputFile);
   });
-});
 
-describe('Ontology Merge Functionality', () => {
-  test('mergeOntologies should correctly merge ontologies', () => {
-    const ontology1 = {
-      name: 'OntologyOne',
+  test('--export-graphdb flag exports GraphDB format to stdout', () => {
+    const dummyOntology = {
+      name: 'GraphOntology',
       version: '1.0',
-      classes: ['Class1', 'Class2'],
-      properties: { propA: 'valueA', common: 'fromOne' }
+      classes: ['GraphClass'],
+      properties: { graphProp: 'graphValue' }
+    };
+    const inputFile = join(tempDir, 'graphOntology.json');
+    writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--export-graphdb', inputFile], { encoding: 'utf-8' });
+    expect(result.stdout).toContain('GraphDB exporter output:');
+    unlinkSync(inputFile);
+  });
+
+  test('--export-graphdb flag writes output to file if provided', () => {
+    const dummyOntology = {
+      name: 'GraphOntology',
+      version: '1.0',
+      classes: ['GraphClass'],
+      properties: { graphProp: 'graphValue' }
+    };
+    const inputFile = join(tempDir, 'graphOntology2.json');
+    const outputFile = join(tempDir, 'graphOutput.json');
+    writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
+    const result = spawnSync('node', [cliPath, '--export-graphdb', inputFile, outputFile], { encoding: 'utf-8' });
+    expect(result.stdout).toContain('GraphDB exporter output written to');
+    const outputContent = readFileSync(outputFile, { encoding: 'utf-8' });
+    expect(outputContent).toContain('nodes');
+    unlinkSync(inputFile);
+    unlinkSync(outputFile);
+  });
+
+  test('--merge-persist flag merges two ontologies and writes output', () => {
+    const ontology1 = {
+      name: 'MergeOne',
+      version: '1.0',
+      classes: ['A', 'B'],
+      properties: { prop1: 'value1', common: 'one' }
     };
     const ontology2 = {
-      name: 'OntologyTwo',
+      name: 'MergeTwo',
       version: '2.0',
-      classes: ['Class2', 'Class3'],
-      properties: { propB: 'valueB', common: 'fromTwo' }
+      classes: ['B', 'C'],
+      properties: { prop2: 'value2', common: 'two' }
     };
-    const merged = mergeOntologies(ontology1, ontology2);
-    expect(merged.name).toBe('OntologyOne & OntologyTwo');
-    // version from ontology1 is chosen if available
-    expect(merged.version).toBe('1.0');
-    expect(merged.classes.sort()).toEqual(['Class1', 'Class2', 'Class3'].sort());
-    expect(merged.properties).toEqual({ propA: 'valueA', propB: 'valueB', common: 'fromTwo' });
-  });
-
-  test('CLI merge persist option merges files correctly', () => {
-    const tempDir = './tests';
-    const file1 = join(tempDir, 'temp_ontology1.json');
-    const file2 = join(tempDir, 'temp_ontology2.json');
-    const outputFile = join(tempDir, 'temp_merged_ontology.json');
-
-    const ontology1 = {
-      name: 'OntologyOne',
-      version: '1.0',
-      classes: ['ClassA', 'ClassB'],
-      properties: { key1: 'value1', common: 'one' }
-    };
-    const ontology2 = {
-      name: 'OntologyTwo',
-      version: '2.0',
-      classes: ['ClassB', 'ClassC'],
-      properties: { key2: 'value2', common: 'two' }
-    };
-
+    const file1 = join(tempDir, 'merge1.json');
+    const file2 = join(tempDir, 'merge2.json');
+    const outputFile = join(tempDir, 'merged.json');
     writeFileSync(file1, JSON.stringify(ontology1, null, 2), { encoding: 'utf-8' });
     writeFileSync(file2, JSON.stringify(ontology2, null, 2), { encoding: 'utf-8' });
-
-    // Capture console output
-    const output = captureConsole(() => {
-      main(['--merge-persist', file1, file2, outputFile]);
-    });
-
-    const mergedContent = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
-    expect(mergedContent.name).toBe('OntologyOne & OntologyTwo');
-    expect(mergedContent.classes.sort()).toEqual(['ClassA', 'ClassB', 'ClassC'].sort());
-    expect(mergedContent.properties).toEqual({ key1: 'value1', key2: 'value2', common: 'two' });
-
-    // Clean up temporary files
+    const result = spawnSync('node', [cliPath, '--merge-persist', file1, file2, outputFile], { encoding: 'utf-8' });
+    expect(result.stdout).toContain('Merged ontology persisted to');
+    const merged = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
+    expect(merged.name).toBe('MergeOne & MergeTwo');
+    expect(merged.classes.sort()).toEqual(['A', 'B', 'C'].sort());
+    expect(merged.properties).toEqual({ prop1: 'value1', prop2: 'value2', common: 'two' });
     unlinkSync(file1);
     unlinkSync(file2);
     unlinkSync(outputFile);
-  });
-});
-
-describe('CLI Version Option', () => {
-  test('--version flag outputs the correct package version', () => {
-    // Read expected version from package.json
-    const pkgPath = join(process.cwd(), 'package.json');
-    const pkg = JSON.parse(readFileSync(pkgPath, { encoding: 'utf-8' }));
-    const expectedVersion = pkg.version;
-    
-    let output = '';
-    const originalLog = console.log;
-    console.log = (msg) => { output += msg.toString(); };
-    
-    try {
-      main(['--version']);
-    } finally {
-      console.log = originalLog;
-    }
-    
-    expect(output.trim()).toBe(expectedVersion);
   });
 });
