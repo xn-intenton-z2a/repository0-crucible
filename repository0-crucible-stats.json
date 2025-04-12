@@ -9,11 +9,11 @@
   "prDetails": [
     {
       "title": "Added CLI commands for build-intermediate build-enhanced and serve with corresponding tests and updated docs. (fixes #1435)",
-      "ageMinutes": 0
+      "ageMinutes": 1
     }
   ],
   "diffMinutes": 0,
-  "diffMinutesMain": 12,
+  "diffMinutesMain": 13,
   "commitsLastHour": 2,
   "commitsLastDay": 44,
   "lastFiveCommitMessages": [
@@ -43,12 +43,12 @@
     "details": [
       {
         "branch": "agentic-lib-issue-1435",
-        "minutesSinceLastCommit": 0
+        "minutesSinceLastCommit": 1
       }
     ]
   },
-  "averagePRAge": 0,
+  "averagePRAge": 1,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T10:54:13.755Z"
+  "generatedAt": "2025-04-12T10:55:02.459Z"
 }
