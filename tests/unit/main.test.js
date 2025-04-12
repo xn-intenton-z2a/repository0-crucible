@@ -39,7 +39,6 @@ function writeDummyLog() {
   writeFileSync(logFilePath, 'dummy log content\n', { encoding: 'utf-8' });
 }
 
-
 describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--help flag displays usage information', () => {
     clearLogFile();
@@ -308,5 +307,30 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const logContent = readLogFile();
     expect(logContent).toContain('--refresh');
     expect(logContent).not.toContain('dummy log content');
+  });
+
+  test('--build-intermediate flag processes intermediate build', () => {
+    clearLogFile();
+    const result = spawnSync('node', [cliPath, '--build-intermediate'], { encoding: 'utf-8' });
+    expect(result.stdout).toContain('Intermediate build processed');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--build-intermediate');
+  });
+
+  test('--build-enhanced flag processes enhanced build', () => {
+    clearLogFile();
+    const result = spawnSync('node', [cliPath, '--build-enhanced'], { encoding: 'utf-8' });
+    expect(result.stdout).toContain('Enhanced build processed');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--build-enhanced');
+  });
+
+  test('--serve flag launches and stops the HTTP server', () => {
+    clearLogFile();
+    const result = spawnSync('node', [cliPath, '--serve'], { encoding: 'utf-8', timeout: 5000 });
+    expect(result.stdout).toContain('Server started on port');
+    expect(result.stdout).toContain('Server stopped');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--serve');
   });
 });
