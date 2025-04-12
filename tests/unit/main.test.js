@@ -488,7 +488,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('Interactive Mode Editing Commands', async () => {
     // This test spawns the interactive CLI, sends a series of commands via stdin, and checks for expected outputs.
     await new Promise((resolve, reject) => {
-      const child = spawn('node', [cliPath, '--interactive'], { stdio: ['pipe', 'pipe', 'pipe'] });
+      const child = spawn('node', [cliPath, '--interactive'], { stdio: ['pipe', 'pipe', 'pipe'], env: { NODE_ENV: 'test' } });
       let output = '';
       child.stdout.on('data', (data) => { output += data.toString(); });
 

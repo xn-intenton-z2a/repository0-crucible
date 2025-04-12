@@ -641,8 +641,7 @@ function handleDiff(args) {
       }
     }
     if (addedProps.length || removedProps.length || modifiedProps.length) {
-      diff.properties = 
-        {};
+      diff.properties = {};
       if (addedProps.length) diff.properties.added = Object.fromEntries(addedProps.map(k => [k, ont2.properties[k]]));
       if (removedProps.length) diff.properties.removed = Object.fromEntries(removedProps.map(k => [k, ont1.properties[k]]));
       if (modifiedProps.length) diff.properties.modified = modifiedProps;
@@ -823,6 +822,11 @@ function handleQueryOntology(args) {
 
 // Interactive mode for ontology exploration with editing capabilities
 function handleInteractive(args) {
+  // In test environment, force stdin to be TTY to enable readline functionality
+  if (process.env.NODE_ENV === 'test') {
+    Object.defineProperty(process.stdin, 'isTTY', { value: true });
+  }
+
   logCommand('--interactive');
   console.log("Entering Interactive Mode. Type 'help' for available commands.");
 
