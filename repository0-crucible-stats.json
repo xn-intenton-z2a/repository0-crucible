@@ -2,7 +2,7 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Tests",
+  "lastActivityName": "Automerge",
   "lastActivityBranchName": "main",
   "openIssues": 6,
   "issuesClosedLastHour": 0,
@@ -10,8 +10,8 @@
   "openPRs": 0,
   "averagePRAge": 0,
   "prDetails": [],
-  "diffMinutes": 1,
-  "diffMinutesMain": 2,
+  "diffMinutes": 2,
+  "diffMinutesMain": 3,
   "commitsLastHour": 9,
   "commitsLastDay": 76,
   "lastFiveCommitMessages": [
@@ -30,5 +30,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-12T17:05:44.111Z"
+  "statsGeneratedAt": "2025-04-12T17:05:56.623Z"
 }
