@@ -1,34 +1,49 @@
 # Ontology Manager
 
-This feature introduces a dedicated module to manage OWL ontologies with multiple interfaces. It covers building, persisting, merging, and querying OWL ontologies stored as JSON files, and now extends its functionality by exposing a REST API for broader integration.
+This feature provides a comprehensive module for building, persisting, merging, and querying OWL ontologies stored as JSON files. It integrates multiple interfaces including a CLI, library functions, and an HTTP REST API, all within a single repository. The module is aligned with our mission to provide a simple, integrated tool for ontology management and GraphDB integration.
 
 ## Overview
 
-The Ontology Manager is central to owl-builder and is designed to:
-- Build OWL ontologies from live and verified public data sources.
-- Persist OWL ontologies as JSON files for easy sharing and integration.
-- Merge multiple OWL ontology files into a unified model.
-- Query OWL ontologies via a CLI interface, library functions, and now a REST API.
+- **Build Functionality:** Automatically retrieve and generate OWL ontologies from live, verified public data sources.
+- **Persistence Layer:** Read and write ontology JSON files to enable easy sharing and integration.
+- **Merge Operations:** Combine multiple JSON ontology files into a unified, deduplicated model.
+- **CLI Interface:** Support commands for ontology creation, persistence, merging, and diagnostics using robust logging and environment variable validation.
+- **REST API:** Expose ontology management operations over HTTP, including build, persist, merge, and diagnostics endpoints.
+- **Enhanced Query Endpoint:** New addition to the REST API, which provides a `/query` endpoint to filter and search within the ontology. This endpoint accepts URL parameters (e.g., class names or property filters) and returns matching ontology elements.
 
-## CLI and Library Integration
+## CLI, Library, and REST API Integration
 
-- **Build Functionality:** Automatically retrieve public data sources and generate OWL ontologies.
-- **Persistence Layer:** Read and write OWL ontology data in JSON format with consistent data management.
-- **Merge Operations:** Combine and streamline multiple JSON ontology representations.
-- **Query Interface:** Provide commands for filtering and searching within OWL ontologies via CLI and library function calls.
+### CLI and Library Functions
 
-## REST API Extension
+- **Build & Persist:** Generate ontologies from data sources and save them as JSON files. Validate inputs using Zod schema.
+- **Merge:** Combine two or more ontology files and resolve duplicate entries.
+- **Diagnostics and Refresh:** Provide a full diagnostic report and reset internal system state, including logs.
 
-- **HTTP Server Integration:** Introduce a lightweight HTTP API using Node.js built-in modules to expose ontology management operations.
-- **Endpoint Design:** The API will include endpoints for building, persisting, merging, and querying ontologies. These endpoints follow a RESTful approach with clear request and response structures.
-- **Usage and Deployment:** Designed for simple deployment as part of a single repository, the server can be initiated from the CLI, enhancing versatility in integration with external systems 
-  (e.g., GraphDB import workflows).
-- **Testing and Documentation:** Unit tests using vitest will cover new HTTP routes. Documentation and usage examples, including inline code and CLI/HTTP examples, will be added in the README.
+### REST API Extensions
+
+- **HTTP Server Integration:** Uses Node.js built-in modules to launch a lightweight server exposing ontology management endpoints.
+- **Existing Endpoints:** Includes endpoints for operations like diagnostics (`/diagnostics`) and basic ontology operations.
+- **Enhanced Query Endpoint (`/query`):**
+  - **Purpose:** Allows clients to perform filtered searches within an ontology.
+  - **Usage:** Accepts GET requests with query parameters (e.g., `?class=TestClass`).
+  - **Functionality:** Leverages existing ontology processing functions to return a filtered subset of ontology data.
+  - **Benefits:** Provides an easy, programmatic way to retrieve targeted information from complex ontologies, enhancing integration with external services like GraphDB or user dashboards.
 
 ## Implementation Details
 
-- **Single Repository Scope:** All changes will be implemented in the existing module structure with minimal alterations to preserve repository cohesiveness.
-- **Modular Functions:** The REST API endpoints will leverage the same modular functions used by CLI and library components to enforce DRY principles.
-- **Testing:** New tests will be added to verify HTTP channel responses along with the core ontology management functionalities.
+- **Single Repository Scope:** All changes and enhancements are integrated within the current module structure of the repository.
+- **Modular Design:** New query functionality reuses existing build, persist, and merge functions to adhere to DRY principles.
+- **Testing:** Additional unit tests (with vitest) will cover the new `/query` endpoint, ensuring robust operation under varied query parameters. Integration tests will validate end-to-end functionality.
+- **Documentation:** The README and inline code comments will be updated with usage examples for the `/query` endpoint and detailed guidelines on leveraging new query capabilities.
 
-This update not only enhances the Ontology Manager’s functionality but also solidifies its alignment with the mission to build and manage OWL ontologies in a simple, integrated manner.
+## Usage Example
+
+- **CLI Usage:** No changes to CLI invocation; existing commands remain available. Developers can call internal query functions directly from the library.
+- **REST API Usage:**
+  - To filter ontology data by class, a client can send a GET request to:
+    
+      http://localhost:3000/query?class=TestClass
+    
+  - The server processes the query and responds with a JSON array of matched ontology elements.
+
+This enhancement not only solidifies the core ontology management capabilities but also expands the module's utility through enhanced RESTful querying, addressing both developer needs and integration requirements in a cohesive, single-repository solution.
