@@ -32,24 +32,51 @@ function logCommand(commandFlag) {
     mkdirSync(logDir, { recursive: true });
   }
   const logFile = join(logDir, 'cli.log');
-  const logEntry = JSON.stringify({ timestamp: new Date().toISOString(), command: commandFlag });
-  appendFileSync(logFile, logEntry + "\n", { encoding: 'utf-8' });
+  const logEntry = { timestamp: new Date().toISOString(), command: commandFlag };
+  appendFileSync(logFile, JSON.stringify(logEntry) + "\n", { encoding: 'utf-8' });
+}
+
+// Utility: Log errors with structured error codes and context
+function logError(errorCode, message, context = {}) {
+  const logDir = join(process.cwd(), 'logs');
+  if (!existsSync(logDir)) {
+    try {
+      mkdirSync(logDir, { recursive: true });
+    } catch (err) {
+      // If directory creation fails, output minimal error
+      console.error(`ERROR [LOG_ERR_DIR_CREATE] Failed to create logs directory: ${err.message}`);
+    }
+  }
+  const logFile = join(logDir, 'cli.log');
+  const errorEntry = {
+    timestamp: new Date().toISOString(),
+    errorCode,
+    message,
+    context
+  };
+  try {
+    appendFileSync(logFile, JSON.stringify(errorEntry) + "\n", { encoding: 'utf-8' });
+  } catch (err) {
+    // If logging fails, write to stderr
+    console.error(`ERROR [LOG_ERR_LOG_WRITE] Failed to write to log file: ${err.message}`);
+  }
+  console.error(`ERROR [${errorCode}] ${message}`);
 }
 
 // Utility: Get validated DEFAULT_TIMEOUT with explicit handling for undefined, NaN and non-finite values
 function getDefaultTimeout() {
   const rawTimeout = process.env.DEFAULT_TIMEOUT;
   if (rawTimeout === undefined) {
-    console.error("DEFAULT_TIMEOUT is not set; using default value of 5000");
+    logError('LOG_ERR_ENV_NOT_SET', 'DEFAULT_TIMEOUT is not set; using default value of 5000', { rawTimeout });
     return 5000;
   }
   const timeoutValue = Number(rawTimeout);
   if (isNaN(timeoutValue)) {
-    console.error(`DEFAULT_TIMEOUT is NaN; using default value of 5000 (input: ${rawTimeout})`);
+    logError('LOG_ERR_ENV_NAN', `DEFAULT_TIMEOUT is NaN; using default value of 5000 (input: ${rawTimeout})`, { rawTimeout });
     return 5000;
   }
   if (!isFinite(timeoutValue)) {
-    console.error(`DEFAULT_TIMEOUT not set; using default value of 5000 (invalid input: ${rawTimeout})`);
+    logError('LOG_ERR_ENV_NON_FINITE', `DEFAULT_TIMEOUT not set; using default value of 5000 (invalid input: ${rawTimeout})`, { rawTimeout });
     return 5000;
   }
   return timeoutValue;
@@ -57,7 +84,7 @@ function getDefaultTimeout() {
 
 // Inline command handlers
 function handleHelp(args, { logCommand, getDefaultTimeout }) {
-  logCommand("--help");
+  logCommand('--help');
   const timeout = getDefaultTimeout();
   console.log(`Usage: 
   --help             Display help information
@@ -72,29 +99,29 @@ Using DEFAULT_TIMEOUT: ${timeout}`);
 }
 
 function handleVersion(args, { logCommand }) {
-  logCommand("--version");
+  logCommand('--version');
   console.log(pkg.version);
 }
 
 function handleRead(args, { logCommand }) {
-  logCommand("--read");
+  logCommand('--read');
   const filePath = args[args.indexOf('--read') + 1];
   try {
     const data = readFileSync(filePath, { encoding: 'utf-8' });
     const ontology = JSON.parse(data);
     // Basic validation
     if (typeof ontology.name !== 'string' || typeof ontology.version !== 'string' || !Array.isArray(ontology.classes) || typeof ontology.properties !== 'object') {
-      console.error('Ontology validation failed: Invalid structure');
+      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed: Invalid structure', { command: '--read', file: filePath });
       return;
     }
     console.log(`Ontology loaded: ${ontology.name}`);
   } catch (err) {
-    console.error('Ontology validation failed:', err.message);
+    logError('LOG_ERR_ONTOLOGY_READ', 'Ontology validation failed', { command: '--read', error: err.message, file: filePath });
   }
 }
 
 function handlePersist(args, { logCommand }) {
-  logCommand("--persist");
+  logCommand('--persist');
   const outputFile = args[args.indexOf('--persist') + 1];
   let ontology;
   const ontologyFlagIndex = args.indexOf('--ontology');
@@ -108,7 +135,7 @@ function handlePersist(args, { logCommand }) {
         ontology = JSON.parse(ontologyArg);
       }
     } catch (err) {
-      console.error('Error parsing ontology JSON string');
+      logError('LOG_ERR_PERSIST_PARSE', 'Error parsing ontology JSON string', { command: '--persist', input: ontologyArg });
       return;
     }
   } else {
@@ -123,12 +150,12 @@ function handlePersist(args, { logCommand }) {
     writeFileSync(outputFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
     console.log(`Ontology persisted to ${outputFile}`);
   } catch (err) {
-    console.error('Error persisting ontology:', err.message);
+    logError('LOG_ERR_PERSIST_WRITE', 'Error persisting ontology', { command: '--persist', error: err.message, outputFile });
   }
 }
 
 function handleExportGraphDB(args, { logCommand }) {
-  logCommand("--export-graphdb");
+  logCommand('--export-graphdb');
   const inputFile = args[args.indexOf('--export-graphdb') + 1];
   let outputFile = null;
   const potentialOutput = args[args.indexOf('--export-graphdb') + 2];
@@ -149,12 +176,12 @@ function handleExportGraphDB(args, { logCommand }) {
       console.log(`GraphDB exporter output: ${JSON.stringify(graphOutput)}`);
     }
   } catch (err) {
-    console.error('Error exporting GraphDB:', err.message);
+    logError('LOG_ERR_EXPORT_GRAPHDB', 'Error exporting GraphDB', { command: '--export-graphdb', error: err.message, inputFile });
   }
 }
 
 function handleMergePersist(args, { logCommand }) {
-  logCommand("--merge-persist");
+  logCommand('--merge-persist');
   const index = args.indexOf('--merge-persist');
   const file1 = args[index + 1];
   const file2 = args[index + 2];
@@ -171,12 +198,12 @@ function handleMergePersist(args, { logCommand }) {
     writeFileSync(outputFile, JSON.stringify(merged, null, 2), { encoding: 'utf-8' });
     console.log(`Merged ontology persisted to ${outputFile}`);
   } catch (err) {
-    console.error('Error merging ontologies:', err.message);
+    logError('LOG_ERR_MERGE', 'Error merging ontologies', { command: '--merge-persist', error: err.message, files: [file1, file2, outputFile] });
   }
 }
 
 function handleDiagnostics(args, { logCommand, getDefaultTimeout }) {
-  logCommand("--diagnostics");
+  logCommand('--diagnostics');
   const diagnostics = {
     packageVersion: pkg.version,
     environment: process.env,
@@ -210,7 +237,7 @@ function handleRefresh(args, { logCommand }) {
   // Clear the log file before logging the refresh command
   writeFileSync(logFile, '', { encoding: 'utf-8' });
   // Log the refresh command after clearing the logs
-  logCommand("--refresh");
+  logCommand('--refresh');
   console.log('System state refreshed');
 }
 
