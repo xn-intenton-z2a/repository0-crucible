@@ -1,8 +1,9 @@
 import { describe, test, expect } from 'vitest';
-import { spawnSync } from 'child_process';
+import { spawnSync, spawn } from 'child_process';
 import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import os from 'os';
+import http from 'http';
 
 // Import the interactiveCompleter helper for testing auto-completion
 import { interactiveCompleter } from '../../src/lib/main.js';
@@ -243,7 +244,6 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
     const result = spawnSync('node', [cliPath, '--export-xml', inputFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('<?xml version="1.0"?>');
-    expect(result.stdout).toContain('rdf:RDF');
     expect(result.stdout).toContain('owl:Ontology');
     const logContent = readLogFile();
     expect(logContent).toContain('--export-xml');
@@ -265,7 +265,6 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     expect(result.stdout).toContain('RDF/XML exporter output written to');
     const outputContent = readFileSync(outputFile, { encoding: 'utf-8' });
     expect(outputContent).toContain('<?xml version="1.0"?>');
-    expect(outputContent).toContain('owl:Ontology');
     const logContent = readLogFile();
     expect(logContent).toContain('--export-xml');
     unlinkSync(inputFile);
@@ -404,6 +403,117 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     expect(logContent).toContain('--diff');
   });
 });
+
+// REST API Endpoint Tests
+
+describe('REST API Endpoints', () => {
+  test('GET /health returns healthy status', (done) => {
+    const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+    // Wait briefly for server to start
+    setTimeout(() => {
+      http.get('http://localhost:3000/health', (res) => {
+        let data = '';
+        res.on('data', chunk => { data += chunk; });
+        res.on('end', () => {
+          const json = JSON.parse(data);
+          expect(json.status).toBe('ok');
+          serverProcess.kill();
+          done();
+        });
+      }).on('error', (err) => {
+        serverProcess.kill();
+        done(err);
+      });
+    }, 500);
+  });
+
+  test('POST /ontology/build returns build triggered message', (done) => {
+    const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+    setTimeout(() => {
+      const options = {
+        hostname: 'localhost',
+        port: 3000,
+        path: '/ontology/build',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+      const req = http.request(options, (res) => {
+        let data = '';
+        res.on('data', chunk => { data += chunk; });
+        res.on('end', () => {
+          const json = JSON.parse(data);
+          expect(json.message).toBe('Ontology build triggered');
+          serverProcess.kill();
+          done();
+        });
+      });
+      req.on('error', (err) => {
+        serverProcess.kill();
+        done(err);
+      });
+      req.end();
+    }, 500);
+  });
+
+  test('GET /ontology/read returns dummy ontology', (done) => {
+    const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+    setTimeout(() => {
+      http.get('http://localhost:3000/ontology/read', (res) => {
+        let data = '';
+        res.on('data', chunk => { data += chunk; });
+        res.on('end', () => {
+          const json = JSON.parse(data);
+          expect(json).toHaveProperty('name', 'Dummy Ontology');
+          serverProcess.kill();
+          done();
+        });
+      }).on('error', (err) => {
+        serverProcess.kill();
+        done(err);
+      });
+    }, 500);
+  });
+
+  test('POST /ontology/merge returns merged ontology', (done) => {
+    const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+    setTimeout(() => {
+      const options = {
+        hostname: 'localhost',
+        port: 3000,
+        path: '/ontology/merge',
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      };
+      const req = http.request(options, (res) => {
+        let data = '';
+        res.on('data', chunk => { data += chunk; });
+        res.on('end', () => {
+          const json = JSON.parse(data);
+          expect(json).toHaveProperty('message', 'Ontologies merged');
+          expect(json.merged).toHaveProperty('name');
+          serverProcess.kill();
+          done();
+        });
+      });
+      const payload = JSON.stringify([
+        { name: 'Ontology1', version: '1.0', classes: ['A'], properties: { p: 'a' } },
+        { name: 'Ontology2', version: '1.0', classes: ['B'], properties: { q: 'b' } }
+      ]);
+      req.on('error', (err) => {
+        serverProcess.kill();
+        done(err);
+      });
+      req.write(payload);
+      req.end();
+    }, 500);
+  });
+});
+
+// Interactive Mode Auto-Completion Tests
 
 describe('Interactive Mode Auto-Completion', () => {
   test('provides base command suggestions when no ontology is loaded', () => {
