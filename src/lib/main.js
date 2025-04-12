@@ -304,7 +304,8 @@ function handleBuildEnhanced(args) {
     res.on('data', (chunk) => { rawData += chunk; });
     res.on('end', () => {
       try {
-        const fetchedData = JSON.parse(rawData);
+        // If rawData is empty, default to empty object
+        const fetchedData = rawData.trim() ? JSON.parse(rawData) : {};
         // Transform fetched data into ontology structure
         const ontology = {
           name: 'Enhanced Ontology',
