@@ -261,6 +261,7 @@ export function main(args) {
     return;
   }
 
+  // --merge-persist: Merge and persist two ontology JSON files
   if (args.includes('--merge-persist')) {
     const index = args.indexOf('--merge-persist');
     const file1 = args[index + 1];
