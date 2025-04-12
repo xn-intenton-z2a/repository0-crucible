@@ -53,6 +53,7 @@ npm install repository0-crucible
   - `exit`: Exit interactive mode.
 - **Ontology Content Query:** Use the **--query** command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the `--regex` flag to interpret the search term as a regular expression. This command searches within the ontology's name, classes, and properties (both keys and string values) and returns the matching results in JSON format. If no matches are found, an appropriate JSON message is returned.
 - **Fetch Ontology from Public Data Source:** Use the **--fetch** command to simulate retrieving data from a public data source, transform it into a valid ontology JSON object, and either output the result to STDOUT or persist it to a file if a file path is provided.
+- **Export OWL/Turtle Format:** Use the **--export-owl** command to convert a JSON ontology into a basic OWL representation in Turtle format. The output includes standard prefixes (owl, rdf, ex) and translates ontology classes and properties into OWL declarations. When an output file is provided, the result is saved; otherwise, it is printed to STDOUT.
 - **Zod Schema Validation:** Ontology JSON files are validated using a strict Zod schema to ensure they contain the required properties (name, version, classes, and properties) with the correct data types. This integration provides clearer error messages on invalid ontology formats.
 - **Non-deprecated Package Import:** The package version from package.json is now imported using a file read method to avoid using deprecated import assertions.
 
@@ -99,6 +100,11 @@ node src/lib/main.js --help
 - **Export Ontology to GraphDB Format:**
   ```bash
   node src/lib/main.js --export-graphdb path/to/ontology.json [path/to/output.json]
+  ```
+
+- **Export Ontology to OWL/Turtle Format:**
+  ```bash
+  node src/lib/main.js --export-owl path/to/ontology.json [path/to/output.ttl]
   ```
 
 - **Merge and Persist Ontologies:**
@@ -176,7 +182,7 @@ The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. 
 
 ## End-to-End Integration Tests
 
-A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch functionality. To run the integration tests:
+A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch and export-owl functionalities. To run the integration tests:
 
 ```bash
 npm run test:e2e
