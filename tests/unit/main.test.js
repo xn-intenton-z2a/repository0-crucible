@@ -150,4 +150,23 @@ describe('End-to-End CLI Integration Tests', () => {
     unlinkSync(file2);
     unlinkSync(outputFile);
   });
+
+  test('Environment variable DEFAULT_TIMEOUT fallback when non-numeric', () => {
+    const result = spawnSync('node', [cliPath, '--help'], { 
+      encoding: 'utf-8', 
+      env: { ...process.env, DEFAULT_TIMEOUT: 'not_a_number' }
+    });
+    expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 5000');
+    expect(result.stderr).toContain('Warning: Environment variable DEFAULT_TIMEOUT is not numeric');
+  });
+
+  test('Environment variable DEFAULT_TIMEOUT uses valid numeric value', () => {
+    const result = spawnSync('node', [cliPath, '--help'], { 
+      encoding: 'utf-8', 
+      env: { ...process.env, DEFAULT_TIMEOUT: '3000' }
+    });
+    expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 3000');
+    // Should not emit a warning
+    expect(result.stderr).not.toContain('Warning: Environment variable DEFAULT_TIMEOUT is not numeric');
+  });
 });

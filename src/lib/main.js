@@ -4,8 +4,24 @@
 import { fileURLToPath } from "url";
 import { readFileSync, writeFileSync, existsSync } from "fs";
 import { join, dirname } from "path";
+import dotenv from "dotenv";
+
+// Load environment variables from .env file if available
+dotenv.config();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Helper function to get and validate a numeric environment variable
+function getEnvNumber(name, defaultValue) {
+  const val = process.env[name];
+  if (!val) return defaultValue;
+  const num = Number(val);
+  if (isNaN(num)) {
+    console.warn(`Warning: Environment variable ${name} is not numeric, falling back to ${defaultValue}`);
+    return defaultValue;
+  }
+  return num;
+}
 
 export function readOntology(filePath) {
   const data = readFileSync(filePath, { encoding: "utf-8" });
@@ -65,6 +81,10 @@ export function exportGraphDB(ontology) {
 }
 
 export function main(args) {
+  // Validate and log numeric environment variable DEFAULT_TIMEOUT with fallback
+  const defaultTimeout = getEnvNumber("DEFAULT_TIMEOUT", 5000);
+  console.log("Using DEFAULT_TIMEOUT:", defaultTimeout);
+
   if (args.includes("--help") || args.length === 0) {
     console.log(`Usage:
   --version                     Display package version.
