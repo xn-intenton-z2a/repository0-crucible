@@ -356,7 +356,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     await new Promise((resolve, reject) => {
       const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
       setTimeout(() => {
-        http.get('http://localhost:3000/health', (res) => {
+        http.get('http://127.0.0.1:3000/health', (res) => {
           let data = '';
           res.on('data', chunk => { data += chunk; });
           res.on('end', () => {
@@ -383,7 +383,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
       setTimeout(() => {
         const options = {
-          hostname: 'localhost',
+          hostname: '127.0.0.1',
           port: 3000,
           path: '/ontology/build',
           method: 'POST',
@@ -419,7 +419,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     await new Promise((resolve, reject) => {
       const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
       setTimeout(() => {
-        http.get('http://localhost:3000/ontology/read', (res) => {
+        http.get('http://127.0.0.1:3000/ontology/read', (res) => {
           let data = '';
           res.on('data', chunk => { data += chunk; });
           res.on('end', () => {
@@ -446,7 +446,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
       setTimeout(() => {
         const options = {
-          hostname: 'localhost',
+          hostname: '127.0.0.1',
           port: 3000,
           path: '/ontology/merge',
           method: 'POST',

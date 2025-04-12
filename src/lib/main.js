@@ -111,25 +111,7 @@ function getDefaultTimeout() {
 function handleHelp(args, { getDefaultTimeout }) {
   logCommand('--help');
   const timeout = getDefaultTimeout();
-  console.log(`Usage: 
-  --help             Display help information
-  --version          Show package version
-  --read <path>      Load ontology from file
-  --persist <outputFile> [--ontology <json-string|path>]    Persist ontology
-  --export-graphdb <inputFile> [outputFile]    Export ontology in GraphDB format
-  --export-owl <inputFile> [outputFile]    Export ontology in OWL/Turtle format
-  --export-xml <inputFile> [outputFile]    Export ontology in RDF/XML format
-  --merge-persist <file1> <file2> <outputFile>    Merge ontologies
-  --diagnostics      Output diagnostic report
-  --refresh          Refresh system state
-  --build-intermediate   Process and output an intermediate build version of the ontology
-  --build-enhanced       Process and output an enhanced build version of the ontology
-  --serve                Launch an HTTP server exposing REST endpoints for ontology operations
-  --interactive          Launch the interactive mode for ontology exploration
-  --query <ontologyFile> <searchTerm> [--regex]    Search ontology content for a term. Use '--regex' to interpret the search term as a regex pattern.
-  --fetch [outputFile]    Fetch ontology from public data source
-  --diff <file1> <file2>    Compare two ontology JSON files and output differences
-Using DEFAULT_TIMEOUT: ${timeout}`);
+  console.log(`Usage: \n  --help             Display help information\n  --version          Show package version\n  --read <path>      Load ontology from file\n  --persist <outputFile> [--ontology <json-string|path>]    Persist ontology\n  --export-graphdb <inputFile> [outputFile]    Export ontology in GraphDB format\n  --export-owl <inputFile> [outputFile]    Export ontology in OWL/Turtle format\n  --export-xml <inputFile> [outputFile]    Export ontology in RDF/XML format\n  --merge-persist <file1> <file2> <outputFile>    Merge ontologies\n  --diagnostics      Output diagnostic report\n  --refresh          Refresh system state\n  --build-intermediate   Process and output an intermediate build version of the ontology\n  --build-enhanced       Process and output an enhanced build version of the ontology\n  --serve                Launch an HTTP server exposing REST endpoints for ontology operations\n  --interactive          Launch the interactive mode for ontology exploration\n  --query <ontologyFile> <searchTerm> [--regex]    Search ontology content for a term. Use '--regex' to interpret the search term as a regex pattern.\n  --fetch [outputFile]    Fetch ontology from public data source\n  --diff <file1> <file2>    Compare two ontology JSON files and output differences\nUsing DEFAULT_TIMEOUT: ${timeout}`);
 }
 
 function handleVersion(args) {
@@ -855,16 +837,16 @@ function handleServe(args) {
     }
   });
 
-  server.listen(port, () => {
-    process.stdout.write(`Server started on port ${port}\n`);
+  // Bind server to 127.0.0.1 instead of unspecified to avoid connection issues in tests
+  server.listen(port, '127.0.0.1', () => {
+    console.log(`Server started on port ${port}`);
   });
   
   // Auto shutdown the server after 2000ms for dry-run purposes
   setTimeout(() => {
     server.close(() => {
-      process.stdout.write('Server stopped\n', () => {
-        process.exit(0);
-      });
+      console.log('Server stopped');
+      process.exit(0);
     });
   }, 2000);
 }
