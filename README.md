@@ -30,65 +30,59 @@ npm install repository0-crucible
 - **Version Display:** Use the --version flag to display the current package version as specified in package.json.
 - **Help Command:** Use --help (or run without arguments) to display CLI usage instructions. The help output includes the effective DEFAULT_TIMEOUT value after environment validation.
 - **Custom Ontology Persistence:** Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.
-- **Enhanced Environment Variable Validation:** The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, it logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If DEFAULT_TIMEOUT is provided but is non-numeric (for example, a string that cannot be parsed into a finite number such as "NaN") or is a non-finite numeric value (e.g., Infinity, -Infinity), it logs an error (LOG_ERR_ENV_NON_FINITE) and also defaults to 5000. Automated tests verify this behavior.
+- **Enhanced Environment Variable Validation:** The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, it logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If DEFAULT_TIMEOUT is provided but is non-numeric or non-finite, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value.
 - **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log). Error logs include structured error codes (e.g., LOG_ERR_*) and detailed contextual information.
 - **Diagnostics Mode:** Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.
 - **System Refresh:** Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.
 - **Build Commands:**
   - **Intermediate Build:** Use --build-intermediate to process and output an intermediate build version of the ontology.
   - **Enhanced Build:** Use --build-enhanced to fetch data from a public API, transform it into an enriched ontology JSON, and output the enhanced build version.
-- **REST API Server:** Use the --serve flag to launch an HTTP server exposing comprehensive REST API endpoints for ontology operations. The following endpoints are available:
-  - **GET /diagnostics:** Returns a diagnostic report (same as CLI diagnostics).
-  - **GET /ontology:** Returns a JSON list of persisted ontology definitions.
-  - **POST /ontology:** Accepts a JSON payload representing an ontology, validates it using a Zod schema, persists it with a unique identifier, and returns a creation confirmation.
-  - **PUT /ontology:** Accepts a JSON payload for updating an existing ontology (requires an "id" property), validates and persists the update, and returns a confirmation.
-  - **DELETE /ontology:** Accepts an ontology identifier as a query parameter (e.g., /ontology?id=123) and deletes the corresponding persisted ontology, returning a confirmation.
-- **Interactive Mode with Enhanced Usability:** Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration. In this mode, the CLI supports auto-completion for commands (including dynamic suggestions based on loaded ontology classes) and maintains a command history, allowing easy navigation with the up/down arrow keys. The available interactive commands include:
-  - `load <file>`: Load and validate an ontology from a JSON file.
-  - `show`: Display the loaded ontology details.
-  - `list-classes`: List the classes present in the loaded ontology.
-  - `help`: Show available interactive commands.
-  - `exit`: Exit interactive mode.
-- **Ontology Content Query:** Use the **--query** command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the `--regex` flag to interpret the search term as a regular expression. This command searches within the ontology's name, classes, and properties (both keys and string values) and returns the matching results in JSON format. If no matches are found, an appropriate JSON message is returned.
-- **Fetch Ontology from Public Data Source:** Use the **--fetch** command to simulate retrieving data from a public data source, transform it into a valid ontology JSON object, and either output the result to STDOUT or persist it to a file if a file path is provided.
-- **Export OWL/Turtle Format:** Use the **--export-owl** command to convert a JSON ontology into a basic OWL representation in Turtle format. The output includes standard prefixes (owl, rdf, ex) and translates ontology classes and properties into OWL declarations. When an output file is provided, the result is saved; otherwise, it is printed to STDOUT.
-- **Export RDF/XML Format:** **New!** Use the **--export-xml** command to convert a JSON ontology into RDF/XML format. The exporter includes the XML declaration and standard RDF/XML namespaces. The ontology's name, version, classes, and properties are mapped to corresponding RDF/XML elements. If an output file is provided, the result is saved; otherwise, it is printed to STDOUT.
-- **Zod Schema Validation:** Ontology JSON files are validated using a strict Zod schema to ensure they contain the required properties (name, version, classes, and properties) with the correct data types. This integration provides clearer error messages on invalid ontology formats.
-- **Non-deprecated Package Import:** The package version from package.json is now imported using a file read method to avoid using deprecated import assertions.
+- **REST API Server:**
+  Launch the REST API server using the --serve flag. The server provides the following endpoints:
+  - **GET /health:** Returns a simple health status, e.g., `{ "status": "ok", "message": "Service is healthy" }`.
+  - **POST /ontology/build:** Triggers the ontology build process (stub implementation returns a trigger message).
+  - **GET /ontology/read:** Returns a persisted OWL ontology in JSON format (stub returns a dummy ontology).
+  - **POST /ontology/merge:** Accepts an array of ontology JSON payloads, merges them (stub merge), and returns the merged ontology.
+  - **GET /diagnostics:** Returns a diagnostic report similar to the CLI diagnostics.
+  - Additional endpoints, such as GET /ontology, are available for listing persisted ontologies.
 
-### New Feature: Ontology Difference Comparison (--diff)
+- **Interactive Mode with Enhanced Usability:** Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration. This mode supports auto-completion (including dynamic suggestions from loaded ontology classes) and command history.
+- **Ontology Content Query:** Use the **--query** command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the `--regex` flag to interpret the search term as a regular expression.
+- **Fetch Ontology from Public Data Source:** Use the **--fetch** command to simulate retrieving data from a public source, transform it into a valid ontology JSON object, and either output it to STDOUT or persist it to a file.
+- **Export OWL/Turtle Format:** Use the **--export-owl** command to convert a JSON ontology into an OWL representation in Turtle format.
+- **Export RDF/XML Format:** **New!** Use the **--export-xml** command to convert a JSON ontology into RDF/XML format, including XML declaration and RDF/XML namespace mappings.
+- **Zod Schema Validation:** Ontology JSON files are validated using a strict Zod schema to ensure required properties are present and of the correct types.
+- **Non-deprecated Package Import:** The package version is imported using file read operations to avoid deprecated import assertions.
 
-A new command, **--diff**, has been added. It compares two ontology JSON files and outputs their differences in a structured JSON format. The command performs the following steps:
+## Running the REST API Server
 
-1. Reads, parses, and validates both ontology files using the Zod schema.
-2. Compares key fields such as name, version, classes, and properties.
-   - For classes, it reports additions and removals.
-   - For properties, it reports added, removed, and modified keys and values.
-3. Outputs a JSON object representing the differences. If no differences are found, it returns a message stating "No differences found".
-
-**Usage Example:**
+To launch the REST API server, use the --serve flag:
 
 ```bash
-node src/lib/main.js --diff path/to/ontology1.json path/to/ontology2.json
+node src/lib/main.js --serve
 ```
 
-The output will be a JSON object similar to:
+The server listens on port 3000 and automatically shuts down after a short period (for demo purposes). You can test the endpoints using curl:
 
-```json
-{
-  "name": { "from": "OntologyA", "to": "OntologyB" },
-  "version": { "from": "1.0", "to": "2.0" },
-  "classes": {
-    "added": ["Class3"],
-    "removed": ["Class1"]
-  },
-  "properties": {
-    "added": { "propC": "valueC" },
-    "removed": { "propB": "valueB" },
-    "modified": [{ "key": "propA", "from": "valueA", "to": "valueA_modified" }]
-  }
-}
-```
+- Check health:
+  ```bash
+  curl http://localhost:3000/health
+  ```
+
+- Trigger ontology build:
+  ```bash
+  curl -X POST http://localhost:3000/ontology/build
+  ```
+
+- Read ontology:
+  ```bash
+  curl http://localhost:3000/ontology/read
+  ```
+
+- Merge ontologies (example payload):
+  ```bash
+  curl -X POST -H "Content-Type: application/json" -d '[{"name": "Ontology1", "version": "1.0", "classes": ["A"], "properties": {"p": "a"}}, {"name": "Ontology2", "version": "1.0", "classes": ["B"], "properties": {"q": "b"}}]' http://localhost:3000/ontology/merge
+  ```
 
 ## Usage
 
@@ -195,11 +189,9 @@ node src/lib/main.js --help
   node src/lib/main.js --diff path/to/ontology1.json path/to/ontology2.json
   ```
 
-  This command compares two ontology JSON files and outputs a structured JSON diff. If no differences are detected, it outputs a message indicating "No differences found".
-
 ## Environment Variable Configuration
 
-The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, the tool logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If a non-numeric or non-finite value (such as "NaN", "Infinity", or "-Infinity") is provided, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value of 5000. Automated tests verify this behavior.
+The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, the tool logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If a non-numeric or non-finite value is provided, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value.
 
 ## End-to-End Integration Tests
 

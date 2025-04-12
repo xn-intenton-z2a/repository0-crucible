@@ -403,7 +403,6 @@ function handleBuildIntermediate(args) {
 // Enhanced --build-enhanced command that integrates public data sources
 function handleBuildEnhanced(args) {
   logCommand('--build-enhanced');
-  // If in test environment, return dummy data to avoid external API dependency
   if (process.env.NODE_ENV === 'test') {
     const ontology = {
       name: 'Enhanced Ontology',
@@ -420,16 +419,13 @@ function handleBuildEnhanced(args) {
     res.on('data', (chunk) => { rawData += chunk; });
     res.on('end', () => {
       try {
-        // If rawData is empty, default to empty object
         const fetchedData = rawData.trim() ? JSON.parse(rawData) : {};
-        // Transform fetched data into ontology structure
         const ontology = {
           name: 'Enhanced Ontology',
           version: 'enhanced-build',
           classes: Object.keys(fetchedData || {}),
           properties: fetchedData
         };
-        // Validate using the Zod schema
         ontologySchema.parse(ontology);
         console.log(JSON.stringify(ontology, null, 2));
         process.exit(0);
@@ -460,7 +456,6 @@ function handleQuery(args) {
   try {
     const data = readFileSync(filePath, { encoding: 'utf-8' });
     const ontology = JSON.parse(data);
-    // Validate ontology using Zod schema
     ontologySchema.parse(ontology);
     if (useRegex) {
       let regex;
@@ -546,7 +541,6 @@ function handleQuery(args) {
 // New handler: --fetch command for auto-generating ontology from public data sources
 function handleFetch(args) {
   logCommand('--fetch');
-  // Simulate fetching from public API using dummy data
   const fetchedOntology = {
     name: 'Fetched Ontology',
     version: 'fetched-1.0',
@@ -554,18 +548,15 @@ function handleFetch(args) {
     properties: { fetchedProp: 'value' }
   };
   try {
-    // Validate the fetched ontology
     ontologySchema.parse(fetchedOntology);
   } catch (err) {
     logError('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed', { errors: err.errors });
     console.error('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed');
     return;
   }
-  // Check if an output file is provided
   const fetchIndex = args.indexOf('--fetch');
   const potentialOutput = args[fetchIndex + 1];
   if (potentialOutput && !potentialOutput.startsWith('--')) {
-    // Write to file
     try {
       writeFileSync(potentialOutput, JSON.stringify(fetchedOntology, null, 2), { encoding: 'utf-8' });
       console.log(`Fetched ontology persisted to ${potentialOutput}`);
@@ -574,7 +565,6 @@ function handleFetch(args) {
       console.error('LOG_ERR_FETCH_WRITE', err.message);
     }
   } else {
-    // Output to STDOUT
     console.log(JSON.stringify(fetchedOntology, null, 2));
   }
 }
@@ -594,20 +584,16 @@ function handleDiff(args) {
     const data2 = readFileSync(file2, { encoding: 'utf-8' });
     const ont1 = JSON.parse(data1);
     const ont2 = JSON.parse(data2);
-    // Validate ontologies
     ontologySchema.parse(ont1);
     ontologySchema.parse(ont2);
 
     const diff = {};
-    // Compare name
     if (ont1.name !== ont2.name) {
       diff.name = { from: ont1.name, to: ont2.name };
     }
-    // Compare version
     if (ont1.version !== ont2.version) {
       diff.version = { from: ont1.version, to: ont2.version };
     }
-    // Compare classes
     const classesSet1 = new Set(ont1.classes);
     const classesSet2 = new Set(ont2.classes);
     const addedClasses = [...classesSet2].filter(x => !classesSet1.has(x));
@@ -617,7 +603,6 @@ function handleDiff(args) {
       if (addedClasses.length) diff.classes.added = addedClasses;
       if (removedClasses.length) diff.classes.removed = removedClasses;
     }
-    // Compare properties
     const keys1 = new Set(Object.keys(ont1.properties));
     const keys2 = new Set(Object.keys(ont2.properties));
     const addedProps = [...keys2].filter(x => !keys1.has(x));
@@ -659,7 +644,6 @@ function handleInteractive(args) {
   let loadedOntology = null;
   const baseCommands = ["load", "show", "list-classes", "help", "exit"];
 
-  // Completer function that suggests base commands and, if an ontology is loaded, its classes.
   function completer(line) {
     const suggestions = baseCommands.concat((loadedOntology && Array.isArray(loadedOntology.classes)) ? loadedOntology.classes : []);
     const hits = suggestions.filter(c => c.startsWith(line));
@@ -736,12 +720,109 @@ function handleInteractive(args) {
   });
 }
 
-function handleDefault(args) {
-  logCommand('default');
-  console.log('Invalid command');
+// REST API Server with endpoints for ontology operations
+function handleServe(args) {
+  logCommand('--serve');
+  const port = 3000;
+  const ontDir = ensureOntologiesDir();
+
+  const server = http.createServer((req, res) => {
+    logCommand(`API Request: ${req.method} ${req.url}`);
+    const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+
+    // New REST API endpoints
+    if (req.method === 'GET' && parsedUrl.pathname === '/health') {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ status: 'ok', message: 'Service is healthy' }));
+    } else if (req.method === 'POST' && parsedUrl.pathname === '/ontology/build') {
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Ontology build triggered' }));
+    } else if (req.method === 'GET' && parsedUrl.pathname === '/ontology/read') {
+      // Return a dummy ontology for stub purposes
+      const dummyOntology = { name: 'Dummy Ontology', version: '1.0', classes: [], properties: {} };
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(dummyOntology));
+    } else if (req.method === 'POST' && parsedUrl.pathname === '/ontology/merge') {
+      let body = '';
+      req.on('data', chunk => { body += chunk; });
+      req.on('end', () => {
+        try {
+          const payload = JSON.parse(body);
+          if (!Array.isArray(payload) || payload.length < 2) {
+            res.writeHead(400, { 'Content-Type': 'application/json' });
+            res.end(JSON.stringify({ error: 'Expecting an array of at least two ontology objects' }));
+            return;
+          }
+          const merged = {
+            name: payload.map(o => o.name).join(' & '),
+            version: payload[0].version,
+            classes: Array.from(new Set(payload.flatMap(o => o.classes))),
+            properties: Object.assign({}, ...payload.map(o => o.properties))
+          };
+          res.writeHead(200, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ message: 'Ontologies merged', merged }));
+        } catch (err) {
+          res.writeHead(400, { 'Content-Type': 'application/json' });
+          res.end(JSON.stringify({ error: 'Invalid JSON' }));
+        }
+      });
+    } else if (req.method === 'GET' && parsedUrl.pathname === '/diagnostics') {
+      const diagnostics = {
+        packageVersion: pkg.version,
+        environment: process.env,
+        system: {
+          platform: process.platform,
+          arch: process.arch
+        }
+      };
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify(diagnostics));
+    } else if (req.method === 'GET' && parsedUrl.pathname === '/ontology') {
+      try {
+        let ontologies = [];
+        if (existsSync(ontDir)) {
+          const files = readdirSync(ontDir);
+          for (const file of files) {
+            if (file.endsWith('.json')) {
+              const data = readFileSync(join(ontDir, file), { encoding: 'utf-8' });
+              ontologies.push(JSON.parse(data));
+            }
+          }
+        }
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(ontologies));
+      } catch (err) {
+        logError('LOG_ERR_ONTOLOGY_LIST', 'Error listing ontologies', { error: err.message });
+        res.writeHead(500, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ error: 'Failed to list ontologies' }));
+      }
+    } else {
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      res.end('Endpoint not implemented');
+    }
+  });
+
+  server.listen(port, () => {
+    console.log(`Server started on port ${port}`);
+  });
+  
+  // Auto shutdown the server after 2000ms for dry-run purposes
+  setTimeout(() => {
+    server.close(() => {
+      console.log('Server stopped');
+      process.exit(0);
+    });
+  }, 2000);
 }
 
-// Command dispatcher using inline command handlers
+// Define interactiveCompleter for test auto-completion
+function interactiveCompleter(loadedOntology, line) {
+  const baseCommands = ["load", "show", "list-classes", "help", "exit"];
+  const suggestions = baseCommands.concat((loadedOntology && Array.isArray(loadedOntology.classes)) ? loadedOntology.classes : []);
+  const hits = suggestions.filter(c => c.startsWith(line));
+  return [hits.length ? hits : suggestions, line];
+}
+
 function dispatchCommand(args) {
   if (args.includes('--interactive')) {
     return handleInteractive(args);
@@ -791,144 +872,10 @@ function dispatchCommand(args) {
   if (args.includes('--diff')) {
     return handleDiff(args);
   }
-  if (args.includes('--help') || args.length === 0) {
+  if (args.length === 0 || args.includes('--help')) {
     return handleHelp(args, { getDefaultTimeout });
   }
-  return handleDefault(args);
-}
-
-// Enhanced HTTP server with comprehensive REST API endpoints for ontology management
-function handleServe(args) {
-  logCommand('--serve');
-  const port = 3000;
-  const ontDir = ensureOntologiesDir();
-
-  const server = http.createServer((req, res) => {
-    // Log API request details
-    logCommand(`API Request: ${req.method} ${req.url}`);
-    const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
-    
-    if (req.method === 'GET' && parsedUrl.pathname === '/diagnostics') {
-      const diagnostics = {
-        packageVersion: pkg.version,
-        environment: process.env,
-        system: {
-          platform: process.platform,
-          arch: process.arch
-        }
-      };
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(diagnostics));
-    } else if (req.method === 'GET' && parsedUrl.pathname === '/ontology') {
-      try {
-        let ontologies = [];
-        if (existsSync(ontDir)) {
-          const files = readdirSync(ontDir);
-          for (const file of files) {
-            if (file.endsWith('.json')) {
-              const data = readFileSync(join(ontDir, file), { encoding: 'utf-8' });
-              ontologies.push(JSON.parse(data));
-            }
-          }
-        }
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(ontologies));
-      } catch (err) {
-        logError('LOG_ERR_ONTOLOGY_LIST', 'Error listing ontologies', { error: err.message });
-        res.writeHead(500, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Failed to list ontologies' }));
-      }
-    } else if (req.method === 'POST' && parsedUrl.pathname === '/ontology') {
-      let body = '';
-      req.on('data', (chunk) => { body += chunk; });
-      req.on('end', () => {
-        try {
-          const ont = JSON.parse(body);
-          ontologySchema.parse(ont);
-          const id = Date.now().toString();
-          ont.id = id; // assign a unique id
-          const filePath = join(ontDir, `${id}.json`);
-          writeFileSync(filePath, JSON.stringify(ont, null, 2), { encoding: 'utf-8' });
-          res.writeHead(201, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ message: 'Ontology created', id }));
-        } catch (err) {
-          logError('LOG_ERR_ONTOLOGY_CREATE', 'Failed to create ontology', { error: err.message });
-          res.writeHead(400, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: 'Invalid ontology data' }));
-        }
-      });
-    } else if (req.method === 'PUT' && parsedUrl.pathname === '/ontology') {
-      let body = '';
-      req.on('data', (chunk) => { body += chunk; });
-      req.on('end', () => {
-        try {
-          const ont = JSON.parse(body);
-          if (!ont.id) {
-            throw new Error('Missing ontology id');
-          }
-          ontologySchema.parse(ont);
-          const filePath = join(ontDir, `${ont.id}.json`);
-          if (!existsSync(filePath)) {
-            res.writeHead(404, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Ontology not found' }));
-            return;
-          }
-          writeFileSync(filePath, JSON.stringify(ont, null, 2), { encoding: 'utf-8' });
-          res.writeHead(200, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ message: 'Ontology updated', id: ont.id }));
-        } catch (err) {
-          logError('LOG_ERR_ONTOLOGY_UPDATE', 'Failed to update ontology', { error: err.message });
-          res.writeHead(400, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: 'Invalid ontology data or missing id' }));
-        }
-      });
-    } else if (req.method === 'DELETE' && parsedUrl.pathname === '/ontology') {
-      const id = parsedUrl.searchParams.get('id');
-      if (!id) {
-        res.writeHead(400, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify({ error: 'Missing ontology id in query' }));
-      } else {
-        const filePath = join(ontDir, `${id}.json`);
-        try {
-          if (existsSync(filePath)) {
-            rmSync(filePath, { force: true });
-            res.writeHead(200, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ message: 'Ontology deleted', id }));
-          } else {
-            res.writeHead(404, { 'Content-Type': 'application/json' });
-            res.end(JSON.stringify({ error: 'Ontology not found' }));
-          }
-        } catch (err) {
-          logError('LOG_ERR_ONTOLOGY_DELETE', 'Failed to delete ontology', { error: err.message });
-          res.writeHead(500, { 'Content-Type': 'application/json' });
-          res.end(JSON.stringify({ error: 'Failed to delete ontology' }));
-        }
-      }
-    } else {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.end('Endpoint not implemented');
-    }
-  });
-
-  server.listen(port, () => {
-    console.log(`Server started on port ${port}`);
-  });
-  
-  // Auto shutdown the server after 2000ms for dry-run purposes
-  setTimeout(() => {
-    server.close(() => {
-      console.log('Server stopped');
-      process.exit(0);
-    });
-  }, 2000);
-}
-
-// Define interactiveCompleter for test auto-completion
-function interactiveCompleter(loadedOntology, line) {
-  const baseCommands = ["load", "show", "list-classes", "help", "exit"];
-  const suggestions = baseCommands.concat((loadedOntology && Array.isArray(loadedOntology.classes)) ? loadedOntology.classes : []);
-  const hits = suggestions.filter(c => c.startsWith(line));
-  return [hits.length ? hits : suggestions, line];
+  return console.log('Invalid command');
 }
 
 function main() {
