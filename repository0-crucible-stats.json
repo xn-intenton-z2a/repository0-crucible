@@ -2,21 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 10,
-  "issuesClosedLastHour": 10,
+  "openIssues": 8,
+  "issuesClosedLastHour": 12,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Implemented --merge-persist command for merging ontology files and updated documentation and tests accordingly. (fixes #1376)",
-      "ageMinutes": 1
-    }
-  ],
+  "openPRs": 0,
+  "prDetails": [],
   "diffMinutes": 0,
-  "diffMinutesMain": 10,
-  "commitsLastHour": 5,
-  "commitsLastDay": 25,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 6,
+  "commitsLastDay": 26,
   "lastFiveCommitMessages": [
+    {
+      "time": "05:53",
+      "message": "Implemented --merge-persist command for merging ontology files a..."
+    },
     {
       "time": "05:42",
       "message": "Refactored DEFAULT_TIMEOUT parsing to use console.error for NaN ..."
@@ -32,23 +31,14 @@
     {
       "time": "04:58",
       "message": "Enhanced CLI logging mechanism with automated timestamped JSON l..."
-    },
-    {
-      "time": "04:53",
-      "message": "Reordered --version flag handling to avoid logging DEFAULT_TIMEO..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1376",
-        "minutesSinceLastCommit": 2
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 1,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T05:53:02.949Z"
+  "generatedAt": "2025-04-12T05:53:46.102Z"
 }
