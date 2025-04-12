@@ -5,10 +5,15 @@
   "openIssues": 2,
   "issuesClosedLastHour": 100,
   "issuesClosedLastDay": 100,
-  "openPRs": 0,
-  "prDetails": [],
-  "diffMinutes": 0,
-  "diffMinutesMain": 12,
+  "openPRs": 1,
+  "prDetails": [
+    {
+      "title": "Added missing afterEach import in the test file to resolve ReferenceError in tests. (fixes #1148)",
+      "ageMinutes": 1
+    }
+  ],
+  "diffMinutes": 2,
+  "diffMinutesMain": 17,
   "commitsLastHour": 4,
   "commitsLastDay": 17,
   "lastFiveCommitMessages": [
@@ -38,12 +43,12 @@
     "details": [
       {
         "branch": "agentic-lib-issue-1148",
-        "minutesSinceLastCommit": 40
+        "minutesSinceLastCommit": 2
       }
     ]
   },
-  "averagePRAge": 0,
+  "averagePRAge": 1,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T00:32:34.309Z"
+  "generatedAt": "2025-04-12T00:37:40.033Z"
 }
