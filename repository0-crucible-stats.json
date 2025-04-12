@@ -2,13 +2,18 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 7,
+  "openIssues": 8,
   "issuesClosedLastHour": 12,
   "issuesClosedLastDay": 100,
-  "openPRs": 0,
-  "prDetails": [],
-  "diffMinutes": 0,
-  "diffMinutesMain": 1,
+  "openPRs": 1,
+  "prDetails": [
+    {
+      "title": "Extracted log directory creation into a helper function for improved robustness (fixes #1444)",
+      "ageMinutes": 1
+    }
+  ],
+  "diffMinutes": 1,
+  "diffMinutesMain": 3,
   "commitsLastHour": 6,
   "commitsLastDay": 48,
   "lastFiveCommitMessages": [
@@ -38,12 +43,12 @@
     "details": [
       {
         "branch": "agentic-lib-issue-1444",
-        "minutesSinceLastCommit": 0
+        "minutesSinceLastCommit": 2
       }
     ]
   },
-  "averagePRAge": 0,
+  "averagePRAge": 1,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T11:09:45.720Z"
+  "generatedAt": "2025-04-12T11:11:36.598Z"
 }
