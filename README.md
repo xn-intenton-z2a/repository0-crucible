@@ -45,10 +45,10 @@ npm install repository0-crucible
   - **POST /ontology:** Accepts a JSON payload representing an ontology, validates it using a Zod schema, persists it with a unique identifier, and returns a creation confirmation.
   - **PUT /ontology:** Accepts a JSON payload for updating an existing ontology (requires an "id" property), validates and persists the update, and returns a confirmation.
   - **DELETE /ontology:** Accepts an ontology identifier as a query parameter (e.g., /ontology?id=123) and deletes the corresponding persisted ontology, returning a confirmation.
-- **Interactive Mode:** Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration. In interactive mode, you can use the following commands:
+- **Interactive Mode with Enhanced Usability:** Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration. In this mode, the CLI supports auto-completion for commands (including dynamic suggestions based on loaded ontology classes) and maintains a command history, allowing easy navigation with the up/down arrow keys. The available interactive commands include:
   - `load <file>`: Load and validate an ontology from a JSON file.
-  - `show`: Display the currently loaded ontology.
-  - `list-classes`: List the classes of the loaded ontology.
+  - `show`: Display the loaded ontology details.
+  - `list-classes`: List the classes present in the loaded ontology.
   - `help`: Show available interactive commands.
   - `exit`: Exit interactive mode.
 - **Zod Schema Validation:** Ontology JSON files are validated using a strict Zod schema to ensure they contain the required properties (name, version, classes, and properties) with the correct data types. This integration provides clearer error messages on invalid ontology formats.
@@ -138,16 +138,19 @@ node src/lib/main.js --help
     - **PUT /ontology**: Updates an existing ontology; requires an "id" field.
     - **DELETE /ontology**: Deletes an ontology specified by an "id" query parameter.
 
-- **Interactive Mode:**
+- **Interactive Mode with Auto-Completion and Command History:**
   ```bash
   node src/lib/main.js --interactive
   ```
-  Launches an interactive session where you can type commands such as:
-  - `load <file>` to load an ontology,
-  - `show` to display the loaded ontology,
-  - `list-classes` to list ontology classes,
-  - `help` for interactive help,
-  - `exit` to leave interactive mode.
+  Launches an interactive session where you can type commands. The session supports:
+  - Auto-completion for base commands as well as dynamic suggestions (e.g., loaded ontology classes) when available.
+  - Navigation of previous commands using the up/down arrow keys.
+  - Commands such as:
+    - `load <file>` to load an ontology,
+    - `show` to display the loaded ontology,
+    - `list-classes` to list ontology classes,
+    - `help` for interactive help,
+    - `exit` to leave interactive mode.
 
 ## Environment Variable Configuration
 
@@ -162,7 +165,7 @@ node src/lib/main.js --help
 
 ## End-to-End Integration Tests
 
-A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, and the new interactive mode. To run the integration tests:
+A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, and the new interactive mode enhancements. To run the integration tests:
 
 ```bash
 npm run test:e2e

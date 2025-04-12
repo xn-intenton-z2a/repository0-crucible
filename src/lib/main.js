@@ -425,15 +425,28 @@ function handleServe(args) {
   }, 2000);
 }
 
+// Enhanced Interactive Mode with Auto-Completion and Command History Support
 function handleInteractive(args) {
   logCommand('--interactive');
   console.log("Entering Interactive Mode. Type 'help' for available commands.");
+
+  let loadedOntology = null;
+  const baseCommands = ["load", "show", "list-classes", "help", "exit"];
+
+  // Completer function that suggests base commands and, if an ontology is loaded, its classes.
+  function completer(line) {
+    const suggestions = baseCommands.concat((loadedOntology && loadedOntology.classes) ? loadedOntology.classes : []);
+    const hits = suggestions.filter((c) => c.startsWith(line));
+    return [hits.length ? hits : suggestions, line];
+  }
+
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
-    prompt: 'interactive> '
+    prompt: 'interactive> ',
+    completer
   });
-  let loadedOntology = null;
+
   rl.prompt();
   rl.on('line', (line) => {
     const input = line.trim();
@@ -500,6 +513,14 @@ function handleInteractive(args) {
 function handleDefault(args) {
   logCommand('default');
   console.log('Invalid command');
+}
+
+// Expose a helper completer function for testing purposes
+export function interactiveCompleter(loadedOntology, line) {
+  const baseCommands = ["load", "show", "list-classes", "help", "exit"];
+  const suggestions = baseCommands.concat((loadedOntology && loadedOntology.classes) ? loadedOntology.classes : []);
+  const hits = suggestions.filter(s => s.startsWith(line));
+  return [hits.length ? hits : suggestions, line];
 }
 
 // Command dispatcher using inline command handlers
