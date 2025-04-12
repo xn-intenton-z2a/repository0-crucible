@@ -1,4 +1,4 @@
-import { describe, test, expect, afterEach } from 'vitest';
+import { describe, test, expect } from 'vitest';
 import { spawnSync } from 'child_process';
 import { mkdtempSync, writeFileSync, readFileSync, unlinkSync } from 'fs';
 import { join } from 'path';
@@ -13,10 +13,6 @@ const pkg = JSON.parse(readFileSync(packageJsonPath, { encoding: 'utf-8' }));
 const tempDir = mkdtempSync(join(os.tmpdir(), 'cli-e2e-'));
 
 describe('End-to-End CLI Integration Tests', () => {
-  afterEach(() => {
-    // Cleanup can be added here if needed
-  });
-
   test('--help flag displays usage information', () => {
     const result = spawnSync('node', [cliPath, '--help'], { encoding: 'utf-8' });
     expect(result.stdout).toContain('Usage:');
@@ -42,13 +38,56 @@ describe('End-to-End CLI Integration Tests', () => {
     unlinkSync(ontologyFile);
   });
 
-  test('--persist flag writes dummy ontology to file', () => {
+  test('--persist flag writes dummy ontology to file when no custom ontology is provided', () => {
     const outputFile = join(tempDir, 'persisted.json');
     const result = spawnSync('node', [cliPath, '--persist', outputFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('Ontology persisted to');
     const persisted = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
     expect(persisted).toHaveProperty('name', 'Dummy Ontology');
     unlinkSync(outputFile);
+  });
+
+  test('--persist flag writes custom ontology from JSON string when provided', () => {
+    const outputFile = join(tempDir, 'customPersisted.json');
+    const customOntology = {
+      name: 'Custom Ontology',
+      version: '2.0.0',
+      classes: ['CustomClass'],
+      properties: { customProp: 'customValue' }
+    };
+    const args = [cliPath, '--persist', outputFile, '--ontology', JSON.stringify(customOntology)];
+    const result = spawnSync('node', args, { encoding: 'utf-8' });
+    expect(result.stdout).toContain('Ontology persisted to');
+    const persisted = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
+    expect(persisted).toEqual(customOntology);
+    unlinkSync(outputFile);
+  });
+
+  test('--persist flag reads custom ontology from file when provided', () => {
+    const ontologyInputFile = join(tempDir, 'inputOntology.json');
+    const outputFile = join(tempDir, 'customFilePersisted.json');
+    const customOntology = {
+      name: 'File Ontology',
+      version: '3.0.0',
+      classes: ['FileClass'],
+      properties: { fileProp: 'fileValue' }
+    };
+    writeFileSync(ontologyInputFile, JSON.stringify(customOntology, null, 2), { encoding: 'utf-8' });
+    const args = [cliPath, '--persist', outputFile, '--ontology', ontologyInputFile];
+    const result = spawnSync('node', args, { encoding: 'utf-8' });
+    expect(result.stdout).toContain('Ontology persisted to');
+    const persisted = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
+    expect(persisted).toEqual(customOntology);
+    unlinkSync(ontologyInputFile);
+    unlinkSync(outputFile);
+  });
+
+  test('--persist flag fails gracefully with invalid custom ontology JSON string', () => {
+    const outputFile = join(tempDir, 'invalidPersisted.json');
+    const invalidJSON = '{ invalid json }';
+    const args = [cliPath, '--persist', outputFile, '--ontology', invalidJSON];
+    const result = spawnSync('node', args, { encoding: 'utf-8' });
+    expect(result.stderr).toContain('Error parsing ontology JSON string');
   });
 
   test('--export-graphdb flag exports GraphDB format to stdout', () => {
