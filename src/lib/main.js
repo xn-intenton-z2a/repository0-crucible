@@ -111,7 +111,7 @@ function getDefaultTimeout() {
 function handleHelp(args, { getDefaultTimeout }) {
   logCommand('--help');
   const timeout = getDefaultTimeout();
-  console.log(`Usage: \n  --help             Display help information\n  --version          Show package version\n  --read <path>      Load ontology from file\n  --persist <outputFile> [--ontology <json-string|path>]    Persist ontology\n  --export-graphdb <inputFile> [outputFile]    Export ontology in GraphDB format\n  --export-owl <inputFile> [outputFile]    Export ontology in OWL/Turtle format\n  --export-xml <inputFile> [outputFile]    Export ontology in RDF/XML format\n  --merge-persist <file1> <file2> <outputFile>    Merge ontologies\n  --diagnostics      Output diagnostic report\n  --refresh          Refresh system state\n  --build-intermediate   Process and output an intermediate build version of the ontology\n  --build-enhanced       Process and output an enhanced build version of the ontology\n  --serve                Launch an HTTP server exposing REST endpoints for ontology operations\n  --interactive          Launch the interactive mode for ontology exploration\n  --query <ontologyFile> <searchTerm> [--regex]    Search ontology content for a term. Use '--regex' to interpret the search term as a regex pattern.\n  --fetch [outputFile]    Fetch ontology from public data source\n  --diff <file1> <file2>    Compare two ontology JSON files and output differences\nUsing DEFAULT_TIMEOUT: ${timeout}`);
+  console.log(`Usage: \n  --help             Display help information\n  --version          Show package version\n  --read <path>      Load ontology from file\n  --persist <outputFile> [--ontology <json-string|path>]    Persist ontology\n  --export-graphdb <inputFile> [outputFile]    Export ontology in GraphDB format\n  --export-owl <inputFile> [outputFile]    Export ontology in OWL/Turtle format\n  --export-xml <inputFile> [outputFile]    Export ontology in RDF/XML format\n  --merge-persist <file1> <file2> <outputFile>    Merge ontologies\n  --diagnostics      Output diagnostic report\n  --refresh          Refresh system state\n  --build-intermediate   Process and output an intermediate build version of the ontology\n  --build-enhanced       Process and output an enhanced build version of the ontology\n  --serve                Launch an HTTP server exposing REST endpoints for ontology operations\n  --interactive          Launch the interactive mode for ontology exploration\n  --query <ontologyFile> <searchTerm> [--regex]    Search ontology content for a term. Use '--regex' to interpret the search term as a regex pattern.\n  --fetch [outputFile]    Fetch ontology from public data source\n  --diff <file1> <file2>    Compare two ontology JSON files and output differences\n  --build-ontology [inputFile]    Build ontology from input or use default\n  --merge-ontology <file1> <file2> [outputFile]    Merge ontologies and output merged result\n  --query-ontology <ontologyFile> <searchTerm> [--regex]    Query ontology content\nUsing DEFAULT_TIMEOUT: ${timeout}`);
 }
 
 function handleVersion(args) {
@@ -357,7 +357,7 @@ function handleDiagnostics(args) {
       platform: process.platform,
       arch: process.arch
     },
-    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--export-owl','--export-xml','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--serve','--interactive','--query','--fetch','--diff'],
+    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--export-owl','--export-xml','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--serve','--interactive','--query','--fetch','--diff','--build-ontology','--merge-ontology','--query-ontology'],
     processArgs: process.argv.slice(2),
     DEFAULT_TIMEOUT: getDefaultTimeout()
   };
@@ -467,13 +467,9 @@ function handleQuery(args) {
           matchingValues.push({ key, value });
         }
       }
-      if (matchingKeys.length > 0) {
-        result.propertyKeys = matchingKeys;
-      }
-      if (matchingValues.length > 0) {
-        result.propertyValues = matchingValues;
-      }
-      if (Object.keys(result).length === 0) {
+      result.propertyKeys = matchingKeys;
+      result.propertyValues = matchingValues;
+      if (!result.name && !result.classes && matchingKeys.length === 0 && matchingValues.length === 0) {
         console.log(JSON.stringify({ message: "No matches found" }, null, 2));
       } else {
         console.log(JSON.stringify(result, null, 2));
@@ -498,13 +494,9 @@ function handleQuery(args) {
           matchingValues.push({ key, value });
         }
       }
-      if (matchingKeys.length > 0) {
-        result.propertyKeys = matchingKeys;
-      }
-      if (matchingValues.length > 0) {
-        result.propertyValues = matchingValues;
-      }
-      if (Object.keys(result).length === 0) {
+      result.propertyKeys = matchingKeys;
+      result.propertyValues = matchingValues;
+      if (!result.name && !result.classes && matchingKeys.length === 0 && matchingValues.length === 0) {
         console.log(JSON.stringify({ message: "No matches found" }, null, 2));
       } else {
         console.log(JSON.stringify(result, null, 2));
@@ -667,6 +659,163 @@ function handleDiff(args) {
     } else {
       logError('LOG_ERR_DIFF', 'Error comparing ontologies', { command: '--diff', error: err.message });
       console.error('LOG_ERR_DIFF', err.message);
+    }
+  }
+}
+
+// New handler: --build-ontology command
+function handleBuildOntology(args) {
+  logCommand('--build-ontology');
+  const index = args.indexOf('--build-ontology');
+  const potentialInput = args[index + 1];
+  let ontology;
+  if (potentialInput && !potentialInput.startsWith('--') && existsSync(potentialInput)) {
+    // Build ontology from provided JSON file
+    try {
+      const data = readFileSync(potentialInput, { encoding: 'utf-8' });
+      ontology = JSON.parse(data);
+      ontologySchema.parse(ontology);
+      // Simulate a build process by marking it as built
+      ontology.built = true;
+    } catch (err) {
+      logError('LOG_ERR_BUILD_ONTOLOGY', 'Error building ontology from input file', { error: err.message });
+      console.error('LOG_ERR_BUILD_ONTOLOGY', err.message);
+      return;
+    }
+  } else {
+    // Create a default built ontology
+    ontology = {
+      name: 'Built Ontology',
+      version: '1.0',
+      classes: ['ClassA', 'ClassB'],
+      properties: { key: 'value' },
+      built: true
+    };
+  }
+  console.log(JSON.stringify(ontology, null, 2));
+}
+
+// New handler: --merge-ontology command
+function handleMergeOntology(args) {
+  logCommand('--merge-ontology');
+  const index = args.indexOf('--merge-ontology');
+  const file1 = args[index + 1];
+  const file2 = args[index + 2];
+  if (!file1 || !file2) {
+    console.error('LOG_ERR_MERGE_ONTOLOGY Usage: --merge-ontology <file1> <file2> [outputFile]');
+    return;
+  }
+  let outputFile = null;
+  if (args[index + 3] && !args[index + 3].startsWith('--')) {
+    outputFile = args[index + 3];
+  }
+  try {
+    const ontology1 = JSON.parse(readFileSync(file1, { encoding: 'utf-8' }));
+    const ontology2 = JSON.parse(readFileSync(file2, { encoding: 'utf-8' }));
+    ontologySchema.parse(ontology1);
+    ontologySchema.parse(ontology2);
+    const merged = {
+      name: `${ontology1.name} & ${ontology2.name}`,
+      version: ontology2.version,
+      classes: Array.from(new Set([...(ontology1.classes || []), ...(ontology2.classes || [])])),
+      properties: { ...ontology1.properties, ...ontology2.properties }
+    };
+    if (outputFile) {
+      writeFileSync(outputFile, JSON.stringify(merged, null, 2), { encoding: 'utf-8' });
+      console.log(`Merged ontology written to ${outputFile}`);
+    } else {
+      console.log(JSON.stringify(merged, null, 2));
+    }
+  } catch (err) {
+    logError('LOG_ERR_MERGE_ONTOLOGY', 'Error merging ontologies', { error: err.message });
+    console.error('LOG_ERR_MERGE_ONTOLOGY', err.message);
+  }
+}
+
+// New handler: --query-ontology command
+function handleQueryOntology(args) {
+  logCommand('--query-ontology');
+  const index = args.indexOf('--query-ontology');
+  const filePath = args[index + 1];
+  const searchTerm = args[index + 2];
+  if (!filePath || !searchTerm) {
+    console.error('LOG_ERR_QUERY_ONTOLOGY Usage: --query-ontology <ontologyFile> <searchTerm> [--regex]');
+    return;
+  }
+  const useRegex = args.includes('--regex');
+  try {
+    const data = readFileSync(filePath, { encoding: 'utf-8' });
+    const ontology = JSON.parse(data);
+    ontologySchema.parse(ontology);
+    if (useRegex) {
+      let regex;
+      try {
+        regex = new RegExp(searchTerm);
+      } catch (e) {
+        logError('LOG_ERR_INVALID_REGEX', 'Invalid regex pattern', { pattern: searchTerm });
+        console.error('LOG_ERR_INVALID_REGEX', 'Invalid regex pattern');
+        return;
+      }
+      const result = {};
+      if (ontology.name && regex.test(ontology.name)) {
+        result.name = ontology.name;
+      }
+      const matchingClasses = ontology.classes.filter(cls => regex.test(cls));
+      if (matchingClasses.length > 0) {
+        result.classes = matchingClasses;
+      }
+      const matchingKeys = [];
+      const matchingValues = [];
+      for (const [key, value] of Object.entries(ontology.properties)) {
+        if (regex.test(key)) {
+          matchingKeys.push(key);
+        }
+        if (typeof value === 'string' && regex.test(value)) {
+          matchingValues.push({ key, value });
+        }
+      }
+      result.propertyKeys = matchingKeys;
+      result.propertyValues = matchingValues;
+      if (!result.name && !result.classes && matchingKeys.length === 0 && matchingValues.length === 0) {
+        console.log(JSON.stringify({ message: "No matches found" }, null, 2));
+      } else {
+        console.log(JSON.stringify(result, null, 2));
+      }
+    } else {
+      const term = searchTerm.toLowerCase();
+      const result = {};
+      if (ontology.name && ontology.name.toLowerCase().includes(term)) {
+        result.name = ontology.name;
+      }
+      const matchingClasses = ontology.classes.filter(cls => cls.toLowerCase().includes(term));
+      if (matchingClasses.length > 0) {
+        result.classes = matchingClasses;
+      }
+      const matchingKeys = [];
+      const matchingValues = [];
+      for (const [key, value] of Object.entries(ontology.properties)) {
+        if (key.toLowerCase().includes(term)) {
+          matchingKeys.push(key);
+        }
+        if (typeof value === 'string' && value.toLowerCase().includes(term)) {
+          matchingValues.push({ key, value });
+        }
+      }
+      result.propertyKeys = matchingKeys;
+      result.propertyValues = matchingValues;
+      if (!result.name && !result.classes && matchingKeys.length === 0 && matchingValues.length === 0) {
+        console.log(JSON.stringify({ message: "No matches found" }, null, 2));
+      } else {
+        console.log(JSON.stringify(result, null, 2));
+      }
+    }
+  } catch (err) {
+    if (err instanceof Error && err.name === 'ZodError') {
+      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed for query-ontology', { command: '--query-ontology', file: filePath, errors: err.errors });
+      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
+    } else {
+      logError('LOG_ERR_QUERY_ONTOLOGY', 'Error processing query-ontology command', { command: '--query-ontology', error: err.message, file: filePath });
+      console.error('LOG_ERR_QUERY_ONTOLOGY', err.message);
     }
   }
 }
@@ -924,6 +1073,18 @@ async function dispatchCommand(args) {
   }
   if (args.includes('--diff')) {
     handleDiff(args);
+    return;
+  }
+  if (args.includes('--build-ontology')) {
+    handleBuildOntology(args);
+    return;
+  }
+  if (args.includes('--merge-ontology')) {
+    handleMergeOntology(args);
+    return;
+  }
+  if (args.includes('--query-ontology')) {
+    handleQueryOntology(args);
     return;
   }
   if (args.length === 0 || args.includes('--help')) {
