@@ -84,6 +84,7 @@ function handlePersist(args) {
         ontology = JSON.parse(content);
       } catch (error) {
         console.error('Error parsing ontology JSON string');
+        logCommand('--persist');
         process.exit(1);
       }
     } else {
@@ -91,6 +92,7 @@ function handlePersist(args) {
         ontology = JSON.parse(ontologyArg);
       } catch (error) {
         console.error('Error parsing ontology JSON string');
+        logCommand('--persist');
         process.exit(1);
       }
     }
@@ -100,6 +102,7 @@ function handlePersist(args) {
     console.log(`Ontology persisted to ${outputFile}`);
   } catch (error) {
     console.error('Error writing persisted ontology: ' + error.message);
+    logCommand('--persist');
     process.exit(1);
   }
   logCommand('--persist');
