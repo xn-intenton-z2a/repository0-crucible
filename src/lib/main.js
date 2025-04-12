@@ -588,7 +588,7 @@ async function handleFetch(args) {
       } catch (err) {
         logError('LOG_ERR_FETCH_VALIDATE', 'Fallback ontology validation failed', { errors: err.errors });
         console.error('LOG_ERR_FETCH_VALIDATE', 'Fallback ontology validation failed');
-        process.exit(1);
+        return;
       }
     }
   } else {
@@ -603,7 +603,7 @@ async function handleFetch(args) {
     } catch (err) {
       logError('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed', { errors: err.errors });
       console.error('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed');
-      process.exit(1);
+      return;
     }
   }
   const fetchIndex = args.indexOf('--fetch');
@@ -619,7 +619,8 @@ async function handleFetch(args) {
   } else {
     console.log(JSON.stringify(ontology, null, 2));
   }
-  process.exit(0);
+  // Removed process.exit(0) to allow normal termination and proper flushing of stdout
+  return;
 }
 
 // New handler: --diff command for comparing two ontologies
