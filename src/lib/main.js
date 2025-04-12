@@ -540,60 +540,43 @@ function handleQuery(args) {
 }
 
 // New handler: --fetch command for auto-generating ontology from public data sources with dynamic fetch support
-function handleFetch(args) {
+async function handleFetch(args) {
   logCommand('--fetch');
-  (async () => {
-    // Helper function to fetch data from URL
-    function fetchData(url) {
-      return new Promise((resolve, reject) => {
-        const client = url.startsWith('https') ? https : http;
-        client.get(url, (res) => {
-          let rawData = '';
-          res.on('data', chunk => { rawData += chunk; });
-          res.on('end', () => {
-            try {
-              const data = JSON.parse(rawData);
-              resolve(data);
-            } catch (err) {
-              reject(err);
-            }
-          });
-        }).on('error', reject);
-      });
-    }
+  async function fetchData(url) {
+    return new Promise((resolve, reject) => {
+      const client = url.startsWith('https') ? https : http;
+      client.get(url, (res) => {
+        let rawData = '';
+        res.on('data', chunk => { rawData += chunk; });
+        res.on('end', () => {
+          try {
+            const data = JSON.parse(rawData);
+            resolve(data);
+          } catch (err) {
+            reject(err);
+          }
+        });
+      }).on('error', reject);
+    });
+  }
 
-    const fetchUrl = process.env.FETCH_URL;
-    let ontology;
-    if (fetchUrl) {
-      try {
-        const data = await fetchData(fetchUrl);
-        ontology = {
-          name: data.name || 'Fetched Ontology',
-          version: data.version || new Date().toISOString(),
-          classes: data.classes || Object.keys(data),
-          properties: data.properties || data
-        };
-        // Validate ontology using Zod schema
-        ontologySchema.parse(ontology);
-      } catch (err) {
-        logError('LOG_ERR_FETCH_GET', 'Error fetching ontology from public API', { error: err.message, url: fetchUrl });
-        console.error('LOG_ERR_FETCH_GET', err.message);
-        // Fallback to dummy ontology
-        ontology = {
-          name: 'Fetched Ontology',
-          version: 'fetched-1.0',
-          classes: ['FetchedClassA', 'FetchedClassB'],
-          properties: { fetchedProp: 'value' }
-        };
-        try {
-          ontologySchema.parse(ontology);
-        } catch (err) {
-          logError('LOG_ERR_FETCH_VALIDATE', 'Fallback ontology validation failed', { errors: err.errors });
-          console.error('LOG_ERR_FETCH_VALIDATE', 'Fallback ontology validation failed');
-          process.exit(1);
-        }
-      }
-    } else {
+  const fetchUrl = process.env.FETCH_URL;
+  let ontology;
+  if (fetchUrl) {
+    try {
+      const data = await fetchData(fetchUrl);
+      ontology = {
+        name: data.name || 'Fetched Ontology',
+        version: data.version || new Date().toISOString(),
+        classes: data.classes || Object.keys(data),
+        properties: data.properties || data
+      };
+      // Validate ontology using Zod schema
+      ontologySchema.parse(ontology);
+    } catch (err) {
+      logError('LOG_ERR_FETCH_GET', 'Error fetching ontology from public API', { error: err.message, url: fetchUrl });
+      console.error('LOG_ERR_FETCH_GET', err.message);
+      // Fallback to dummy ontology
       ontology = {
         name: 'Fetched Ontology',
         version: 'fetched-1.0',
@@ -603,26 +586,40 @@ function handleFetch(args) {
       try {
         ontologySchema.parse(ontology);
       } catch (err) {
-        logError('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed', { errors: err.errors });
-        console.error('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed');
+        logError('LOG_ERR_FETCH_VALIDATE', 'Fallback ontology validation failed', { errors: err.errors });
+        console.error('LOG_ERR_FETCH_VALIDATE', 'Fallback ontology validation failed');
         process.exit(1);
       }
     }
-    const fetchIndex = args.indexOf('--fetch');
-    const potentialOutput = args[fetchIndex + 1];
-    if (potentialOutput && !potentialOutput.startsWith('--')) {
-      try {
-        writeFileSync(potentialOutput, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
-        console.log(`Fetched ontology persisted to ${potentialOutput}`);
-      } catch (err) {
-        logError('LOG_ERR_FETCH_WRITE', 'Error writing fetched ontology to file', { error: err.message, outputFile: potentialOutput });
-        console.error('LOG_ERR_FETCH_WRITE', err.message);
-      }
-    } else {
-      console.log(JSON.stringify(ontology, null, 2));
+  } else {
+    ontology = {
+      name: 'Fetched Ontology',
+      version: 'fetched-1.0',
+      classes: ['FetchedClassA', 'FetchedClassB'],
+      properties: { fetchedProp: 'value' }
+    };
+    try {
+      ontologySchema.parse(ontology);
+    } catch (err) {
+      logError('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed', { errors: err.errors });
+      console.error('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed');
+      process.exit(1);
     }
-    // Removed process.exit(0) here to let the async function complete naturally
-  })();
+  }
+  const fetchIndex = args.indexOf('--fetch');
+  const potentialOutput = args[fetchIndex + 1];
+  if (potentialOutput && !potentialOutput.startsWith('--')) {
+    try {
+      writeFileSync(potentialOutput, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
+      console.log(`Fetched ontology persisted to ${potentialOutput}`);
+    } catch (err) {
+      logError('LOG_ERR_FETCH_WRITE', 'Error writing fetched ontology to file', { error: err.message, outputFile: potentialOutput });
+      console.error('LOG_ERR_FETCH_WRITE', err.message);
+    }
+  } else {
+    console.log(JSON.stringify(ontology, null, 2));
+  }
+  process.exit(0);
 }
 
 // New handler: --diff command for comparing two ontologies
@@ -879,57 +876,75 @@ function interactiveCompleter(loadedOntology, line) {
   return [hits.length ? hits : suggestions, line];
 }
 
-function dispatchCommand(args) {
+// Updated dispatchCommand to be async to support async handlers like --fetch
+async function dispatchCommand(args) {
   if (args.includes('--interactive')) {
-    return handleInteractive(args);
+    handleInteractive(args);
+    return;
   }
   if (args.includes('--diagnostics')) {
-    return handleDiagnostics(args);
+    handleDiagnostics(args);
+    return;
   }
   if (args.includes('--refresh')) {
-    return handleRefresh(args);
+    handleRefresh(args);
+    return;
   }
   if (args.includes('--version')) {
-    return handleVersion(args);
+    handleVersion(args);
+    return;
   }
   if (args.includes('--read')) {
-    return handleRead(args);
+    handleRead(args);
+    return;
   }
   if (args.includes('--persist')) {
-    return handlePersist(args);
+    handlePersist(args);
+    return;
   }
   if (args.includes('--export-graphdb')) {
-    return handleExportGraphDB(args);
+    handleExportGraphDB(args);
+    return;
   }
   if (args.includes('--export-owl')) {
-    return handleExportOWL(args);
+    handleExportOWL(args);
+    return;
   }
   if (args.includes('--export-xml')) {
-    return handleExportXML(args);
+    handleExportXML(args);
+    return;
   }
   if (args.includes('--merge-persist')) {
-    return handleMergePersist(args);
+    handleMergePersist(args);
+    return;
   }
   if (args.includes('--build-intermediate')) {
-    return handleBuildIntermediate(args);
+    handleBuildIntermediate(args);
+    return;
   }
   if (args.includes('--build-enhanced')) {
-    return handleBuildEnhanced(args);
+    handleBuildEnhanced(args);
+    return;
   }
   if (args.includes('--serve')) {
-    return handleServe(args);
+    handleServe(args);
+    return;
   }
   if (args.includes('--query')) {
-    return handleQuery(args);
+    handleQuery(args);
+    return;
   }
   if (args.includes('--fetch')) {
-    return handleFetch(args);
+    await handleFetch(args);
+    return;
   }
   if (args.includes('--diff')) {
-    return handleDiff(args);
+    handleDiff(args);
+    return;
   }
   if (args.length === 0 || args.includes('--help')) {
-    return handleHelp(args, { getDefaultTimeout });
+    handleHelp(args, { getDefaultTimeout });
+    return;
   }
   return console.log('Invalid command');
 }
@@ -937,7 +952,7 @@ function dispatchCommand(args) {
 // Updated main to be async to support async handlers like --fetch
 async function main() {
   const args = process.argv.slice(2);
-  await Promise.resolve(dispatchCommand(args));
+  await dispatchCommand(args);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
