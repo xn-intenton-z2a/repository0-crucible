@@ -65,7 +65,16 @@
 <li class="md-github"><strong class="md-github">Enhanced Build:</strong> Use --build-enhanced to process additional steps and output an enhanced build version of the ontology.</li>
 </ul>
 </li>
-<li class="md-github"><strong class="md-github">REST Server:</strong> Use the --serve flag to launch an HTTP server that exposes REST endpoints (e.g., /diagnostics) to interact with the ontology operations.</li>
+<li class="md-github"><strong class="md-github">REST Server:</strong> Use the --serve flag to launch an HTTP server that exposes REST endpoints for ontology operations (e.g., GET /diagnostics).</li>
+<li class="md-github"><strong class="md-github">Interactive Mode:</strong> Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration. In interactive mode, you can use the following commands:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">load &lt;file&gt;</code>: Load and validate an ontology from a JSON file.</li>
+<li class="md-github"><code class="md-github">show</code>: Display the currently loaded ontology.</li>
+<li class="md-github"><code class="md-github">list-classes</code>: List the classes of the loaded ontology.</li>
+<li class="md-github"><code class="md-github">help</code>: Show available interactive commands.</li>
+<li class="md-github"><code class="md-github">exit</code>: Exit interactive mode.</li>
+</ul>
+</li>
 <li class="md-github"><strong class="md-github">Zod Schema Validation:</strong> Ontology JSON files are validated using a strict Zod schema to ensure they contain the required properties (name, version, classes, and properties) with the correct data types. This integration provides clearer error messages on invalid ontology formats.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
@@ -140,10 +149,23 @@
 <p class="md-github">Processes and outputs an enhanced build version of the ontology.</p>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Launch REST Server:</strong></p>
+<p class="md-github"><strong class="md-github">REST Server:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --serve
 </code></pre>
 <p class="md-github">Launches an HTTP server that exposes REST endpoints for ontology operations (e.g., GET /diagnostics).</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Interactive Mode:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --interactive
+</code></pre>
+<p class="md-github">Launches an interactive session where you can type commands such as:</p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">load &lt;file&gt;</code> to load an ontology,</li>
+<li class="md-github"><code class="md-github">show</code> to display the loaded ontology,</li>
+<li class="md-github"><code class="md-github">list-classes</code> to list ontology classes,</li>
+<li class="md-github"><code class="md-github">help</code> for interactive help,</li>
+<li class="md-github"><code class="md-github">exit</code> to leave interactive mode.</li>
+</ul>
 </li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="environment-variable-configuration" href="#environment-variable-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Variable Configuration</h2>
@@ -155,7 +177,7 @@ node src/lib/main.js --help
 <h2 class="md-github"><a class="md-github__anchor" name="logging" href="#logging"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Logging</h2>
 <p class="md-github">Every CLI command execution is logged automatically in JSON format. Logs include a timestamp, the command arguments, and detailed error context when failures occur. Error logs feature structured error codes (such as LOG_ERR_PERSIST_PARSE, LOG_ERR_ENV_NAN, etc.) to simplify troubleshooting. Logs are stored in logs/cli.log, with automatic directory creation via a dedicated helper function and detailed error reporting if needed.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="end-to-end-integration-tests" href="#end-to-end-integration-tests"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>End-to-End Integration Tests</h2>
-<p class="md-github">A suite of end-to-end integration tests verifies all CLI commands, including log creation and diagnostics mode. To run the integration tests:</p>
+<p class="md-github">A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, and the new interactive mode. To run the integration tests:</p>
 <pre class="md-github"><code class="md-github language-bash">npm run test:e2e
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
@@ -165,7 +187,7 @@ node src/lib/main.js --help
 
   </section>
   <footer>
-    <p>Generated on 2025-04-12T11:24:31.164Z</p>
+    <p>Generated on 2025-04-12T11:25:03.390Z</p>
   </footer>
 </body>
 </html>
