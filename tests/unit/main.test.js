@@ -484,7 +484,54 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     });
   });
 
-  // Tests for new commands
+  // Tests for new commands in Interactive Mode Editing
+  test('Interactive Mode Editing Commands', async () => {
+    // This test spawns the interactive CLI, sends a series of commands via stdin, and checks for expected outputs.
+    await new Promise((resolve, reject) => {
+      const child = spawn('node', [cliPath, '--interactive'], { stdio: ['pipe', 'pipe', 'pipe'] });
+      let output = '';
+      child.stdout.on('data', (data) => { output += data.toString(); });
+
+      // Prepare commands: load a dummy ontology, add class, remove class, add property, update property, remove property, then exit
+      const dummyOntology = {
+        name: 'InteractiveTest',
+        version: '1.0',
+        classes: ['InitialClass'],
+        properties: { initialProp: 'initial' }
+      };
+      const ontologyFile = join(tempDir, 'interactiveOntology.json');
+      writeFileSync(ontologyFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
+      const commands = [
+        `load ${ontologyFile}\n`,
+        'add-class Biology\n',
+        'remove-class InitialClass\n',
+        'add-property creator John_Doe\n',
+        'update-property version 2.0\n',
+        'remove-property initialProp\n',
+        'show\n',
+        'exit\n'
+      ];
+      commands.forEach(cmd => child.stdin.write(cmd));
+      child.stdin.end();
+      child.on('close', (code) => {
+        try {
+          expect(output).toContain("Ontology 'InteractiveTest' loaded successfully.");
+          expect(output).toContain("Class 'Biology' added.");
+          expect(output).toContain("Class 'InitialClass' removed.");
+          expect(output).toContain("Property 'creator' added with value 'John_Doe'.");
+          expect(output).toContain("Property 'version' updated to '2.0'.");
+          expect(output).toContain("Property 'initialProp' removed.");
+          expect(output).toContain('Loaded Ontology:');
+          unlinkSync(ontologyFile);
+          resolve();
+        } catch (err) {
+          unlinkSync(ontologyFile);
+          reject(err);
+        }
+      });
+    });
+  });
+
   test('--build-ontology builds ontology from default when no input file provided', () => {
     clearLogFile();
     const result = spawnSync('node', [cliPath, '--build-ontology'], { encoding: 'utf-8' });
@@ -550,18 +597,15 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     writeFileSync(ontologyFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
     const result = spawnSync('node', [cliPath, '--query-ontology', ontologyFile, 'search'], { encoding: 'utf-8' });
     const output = JSON.parse(result.stdout);
-    // Expect propertyValues or propertyKeys to contain search related results; propertyKeys should always be present
     expect(output).toHaveProperty('propertyKeys');
     unlinkSync(ontologyFile);
   });
 });
 
-// Interactive Mode Auto-Completion Tests
-
 describe('Interactive Mode Auto-Completion', () => {
   test('provides base command suggestions when no ontology is loaded', () => {
     const [completions, line] = interactiveCompleter(null, '');
-    expect(completions).toEqual(expect.arrayContaining(['load', 'show', 'list-classes', 'help', 'exit']))
+    expect(completions).toEqual(expect.arrayContaining(['load', 'show', 'list-classes', 'help', 'exit', 'add-class', 'remove-class', 'add-property', 'update-property', 'remove-property']))
   });
 
   test('provides ontology class suggestions when ontology is loaded', () => {
@@ -570,8 +614,6 @@ describe('Interactive Mode Auto-Completion', () => {
     expect(completions).toEqual(expect.arrayContaining(['Person']))
   });
 });
-
-// New tests for enhanced --fetch command
 
 describe('--fetch Command Enhanced Functionality', () => {
   test('--fetch falls back to dummy ontology when FETCH_URL is not set', () => {
@@ -586,7 +628,6 @@ describe('--fetch Command Enhanced Functionality', () => {
 
   test('--fetch retrieves ontology from a dynamic public API when FETCH_URL is set', async () => {
     await new Promise((resolve, reject) => {
-      // Create a temporary HTTP server to simulate a public API
       const testData = {
         name: 'Dynamic Ontology',
         version: 'dynamic-123',

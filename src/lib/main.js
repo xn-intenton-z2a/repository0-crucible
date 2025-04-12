@@ -111,7 +111,7 @@ function getDefaultTimeout() {
 function handleHelp(args, { getDefaultTimeout }) {
   logCommand('--help');
   const timeout = getDefaultTimeout();
-  console.log(`Usage: \n  --help             Display help information\n  --version          Show package version\n  --read <path>      Load ontology from file\n  --persist <outputFile> [--ontology <json-string|path>]    Persist ontology\n  --export-graphdb <inputFile> [outputFile]    Export ontology in GraphDB format\n  --export-owl <inputFile> [outputFile]    Export ontology in OWL/Turtle format\n  --export-xml <inputFile> [outputFile]    Export ontology in RDF/XML format\n  --merge-persist <file1> <file2> <outputFile>    Merge ontologies\n  --diagnostics      Output diagnostic report\n  --refresh          Refresh system state\n  --build-intermediate   Process and output an intermediate build version of the ontology\n  --build-enhanced       Process and output an enhanced build version of the ontology\n  --serve                Launch an HTTP server exposing REST endpoints for ontology operations\n  --interactive          Launch the interactive mode for ontology exploration\n  --query <ontologyFile> <searchTerm> [--regex]    Search ontology content for a term. Use '--regex' to interpret the search term as a regex pattern.\n  --fetch [outputFile]    Fetch ontology from public data source\n  --diff <file1> <file2>    Compare two ontology JSON files and output differences\n  --build-ontology [inputFile]    Build ontology from input or use default\n  --merge-ontology <file1> <file2> [outputFile]    Merge ontologies and output merged result\n  --query-ontology <ontologyFile> <searchTerm> [--regex]    Query ontology content\nUsing DEFAULT_TIMEOUT: ${timeout}`);
+  console.log(`Usage: \n  --help             Display help information\n  --version          Show package version\n  --read <path>      Load ontology from file\n  --persist <outputFile> [--ontology <json-string|path>]    Persist ontology\n  --export-graphdb <inputFile> [outputFile]    Export ontology in GraphDB format\n  --export-owl <inputFile> [outputFile]    Export ontology in OWL/Turtle format\n  --export-xml <inputFile> [outputFile]    Export ontology in RDF/XML format\n  --merge-persist <file1> <file2> <outputFile>    Merge ontologies\n  --diagnostics      Output diagnostic report\n  --refresh          Refresh system state\n  --build-intermediate   Process and output an intermediate build version of the ontology\n  --build-enhanced       Process and output an enhanced build version of the ontology\n  --build-ontology [inputFile]    Build ontology from input or use default\n  --merge-ontology <file1> <file2> [outputFile]    Merge ontologies and output merged result\n  --query-ontology <ontologyFile> <searchTerm> [--regex]    Query ontology content\n  --query <ontologyFile> <searchTerm> [--regex]    Search ontology content for a term.\n  --fetch [outputFile]    Fetch ontology from public data source\n  --diff <file1> <file2>    Compare two ontology JSON files and output differences\n  --serve                Launch an HTTP server exposing REST endpoints for ontology operations\n  --interactive          Launch the interactive mode for ontology exploration\nUsing DEFAULT_TIMEOUT: ${timeout}`);
 }
 
 function handleVersion(args) {
@@ -357,7 +357,7 @@ function handleDiagnostics(args) {
       platform: process.platform,
       arch: process.arch
     },
-    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--export-owl','--export-xml','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--serve','--interactive','--query','--fetch','--diff','--build-ontology','--merge-ontology','--query-ontology'],
+    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--export-owl','--export-xml','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--build-ontology','--merge-ontology','--query','--fetch','--diff','--query-ontology','--serve','--interactive'],
     processArgs: process.argv.slice(2),
     DEFAULT_TIMEOUT: getDefaultTimeout()
   };
@@ -641,7 +641,8 @@ function handleDiff(args) {
       }
     }
     if (addedProps.length || removedProps.length || modifiedProps.length) {
-      diff.properties = {};
+      diff.properties = 
+        {};
       if (addedProps.length) diff.properties.added = Object.fromEntries(addedProps.map(k => [k, ont2.properties[k]]));
       if (removedProps.length) diff.properties.removed = Object.fromEntries(removedProps.map(k => [k, ont1.properties[k]]));
       if (modifiedProps.length) diff.properties.modified = modifiedProps;
@@ -820,13 +821,13 @@ function handleQueryOntology(args) {
   }
 }
 
-// Interactive mode for ontology exploration
+// Interactive mode for ontology exploration with editing capabilities
 function handleInteractive(args) {
   logCommand('--interactive');
   console.log("Entering Interactive Mode. Type 'help' for available commands.");
 
   let loadedOntology = null;
-  const baseCommands = ["load", "show", "list-classes", "help", "exit"];
+  const baseCommands = ["load", "show", "list-classes", "help", "exit", "add-class", "remove-class", "add-property", "update-property", "remove-property"];
 
   function completer(line) {
     const suggestions = baseCommands.concat((loadedOntology && Array.isArray(loadedOntology.classes)) ? loadedOntology.classes : []);
@@ -881,13 +882,101 @@ function handleInteractive(args) {
         }
         logCommand('interactive: list-classes');
         break;
+      case 'add-class':
+        if (!loadedOntology) {
+          console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+        } else if (tokens.length < 2) {
+          console.log("Usage: add-class <className>");
+        } else {
+          const newClass = tokens[1];
+          if (!loadedOntology.classes.includes(newClass)) {
+            loadedOntology.classes.push(newClass);
+            console.log(`Class '${newClass}' added.`);
+            logCommand('interactive: add-class');
+          } else {
+            console.log(`Class '${newClass}' already exists.`);
+          }
+        }
+        break;
+      case 'remove-class':
+        if (!loadedOntology) {
+          console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+        } else if (tokens.length < 2) {
+          console.log("Usage: remove-class <className>");
+        } else {
+          const remClass = tokens[1];
+          const index = loadedOntology.classes.indexOf(remClass);
+          if (index !== -1) {
+            loadedOntology.classes.splice(index, 1);
+            console.log(`Class '${remClass}' removed.`);
+            logCommand('interactive: remove-class');
+          } else {
+            console.log(`Class '${remClass}' not found.`);
+          }
+        }
+        break;
+      case 'add-property':
+        if (!loadedOntology) {
+          console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+        } else if (tokens.length < 3) {
+          console.log("Usage: add-property <key> <value>");
+        } else {
+          const key = tokens[1];
+          const value = tokens.slice(2).join(' ');
+          if (!(key in loadedOntology.properties)) {
+            loadedOntology.properties[key] = value;
+            console.log(`Property '${key}' added with value '${value}'.`);
+            logCommand('interactive: add-property');
+          } else {
+            console.log(`Property '${key}' already exists. Use update-property to change its value.`);
+          }
+        }
+        break;
+      case 'update-property':
+        if (!loadedOntology) {
+          console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+        } else if (tokens.length < 3) {
+          console.log("Usage: update-property <key> <newValue>");
+        } else {
+          const key = tokens[1];
+          const newValue = tokens.slice(2).join(' ');
+          if (key in loadedOntology.properties) {
+            loadedOntology.properties[key] = newValue;
+            console.log(`Property '${key}' updated to '${newValue}'.`);
+            logCommand('interactive: update-property');
+          } else {
+            console.log(`Property '${key}' does not exist. Use add-property to add a new property.`);
+          }
+        }
+        break;
+      case 'remove-property':
+        if (!loadedOntology) {
+          console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+        } else if (tokens.length < 2) {
+          console.log("Usage: remove-property <key>");
+        } else {
+          const key = tokens[1];
+          if (key in loadedOntology.properties) {
+            delete loadedOntology.properties[key];
+            console.log(`Property '${key}' removed.`);
+            logCommand('interactive: remove-property');
+          } else {
+            console.log(`Property '${key}' not found.`);
+          }
+        }
+        break;
       case 'help':
         console.log("Interactive commands:");
-        console.log(" load <file>      - Load ontology from file");
-        console.log(" show             - Show loaded ontology details");
-        console.log(" list-classes     - List classes in the loaded ontology");
-        console.log(" help             - Show this help message");
-        console.log(" exit             - Exit interactive mode");
+        console.log(" load <file>           - Load ontology from file");
+        console.log(" show                  - Show loaded ontology details");
+        console.log(" list-classes          - List classes in the loaded ontology");
+        console.log(" add-class <name>      - Add a new class to the ontology");
+        console.log(" remove-class <name>   - Remove an existing class");
+        console.log(" add-property <k> <v>  - Add a new property");
+        console.log(" update-property <k> <v> - Update an existing property");
+        console.log(" remove-property <k>   - Remove a property");
+        console.log(" help                  - Show this help message");
+        console.log(" exit                  - Exit interactive mode");
         logCommand('interactive: help');
         break;
       case 'exit':
@@ -1003,7 +1092,7 @@ async function handleServe(args) {
 
 // Define interactiveCompleter for test auto-completion
 function interactiveCompleter(loadedOntology, line) {
-  const baseCommands = ["load", "show", "list-classes", "help", "exit"]; 
+  const baseCommands = ["load", "show", "list-classes", "help", "exit", "add-class", "remove-class", "add-property", "update-property", "remove-property"];
   const suggestions = baseCommands.concat((loadedOntology && Array.isArray(loadedOntology.classes)) ? loadedOntology.classes : []);
   const hits = suggestions.filter(c => c.startsWith(line));
   return [hits.length ? hits : suggestions, line];
