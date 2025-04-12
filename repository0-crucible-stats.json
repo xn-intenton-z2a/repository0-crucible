@@ -2,21 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 10,
+  "openIssues": 8,
   "issuesClosedLastHour": 12,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Integrate Zod schema validation for ontology JSON in read persist export and merge commands (fixes #1396)",
-      "ageMinutes": 1
-    }
-  ],
-  "diffMinutes": 1,
-  "diffMinutesMain": 10,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 0,
+  "diffMinutesMain": 0,
   "commitsLastHour": 6,
-  "commitsLastDay": 41,
+  "commitsLastDay": 42,
   "lastFiveCommitMessages": [
+    {
+      "time": "09:53",
+      "message": "Integrate Zod schema validation for ontology JSON in read persis..."
+    },
     {
       "time": "09:41",
       "message": "Consolidated DEFAULT_TIMEOUT validation logic with clear error c..."
@@ -32,23 +31,14 @@
     {
       "time": "09:22",
       "message": "Refined DEFAULT_TIMEOUT validation error messages to differentia..."
-    },
-    {
-      "time": "09:18",
-      "message": "Fixed the --refresh command to clear logs and then log the refre..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1396",
-        "minutesSinceLastCommit": 1
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 1,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T09:52:21.509Z"
+  "generatedAt": "2025-04-12T09:53:58.354Z"
 }
