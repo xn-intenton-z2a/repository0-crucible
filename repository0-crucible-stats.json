@@ -2,21 +2,24 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 13,
+  "openIssues": 11,
   "issuesClosedLastHour": 4,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Updated source file to also output structured error messages to stderr to satisfy test assertions test README and dependencies remain unchanged. (fixes #1433)",
-      "ageMinutes": 0
-    }
-  ],
+  "openPRs": 0,
+  "prDetails": [],
   "diffMinutes": 0,
-  "diffMinutesMain": 46,
-  "commitsLastHour": 2,
-  "commitsLastDay": 42,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 3,
+  "commitsLastDay": 44,
   "lastFiveCommitMessages": [
+    {
+      "time": "10:41",
+      "message": "Remove issue-creator workflow file\n\nDeleted the `issue-creator.y..."
+    },
+    {
+      "time": "10:41",
+      "message": "Updated source file to also output structured error messages to ..."
+    },
     {
       "time": "09:53",
       "message": "Integrate Zod schema validation for ontology JSON in read persis..."
@@ -28,27 +31,14 @@
     {
       "time": "09:33",
       "message": "Enhance CLI logging with structured error codes and detailed dia..."
-    },
-    {
-      "time": "09:29",
-      "message": "Refactored DEFAULT_TIMEOUT validation to clearly differentiate b..."
-    },
-    {
-      "time": "09:22",
-      "message": "Refined DEFAULT_TIMEOUT validation error messages to differentia..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1433",
-        "minutesSinceLastCommit": 1
-      }
-    ]
+    "count": 0,
+    "details": []
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T10:40:21.154Z"
+  "generatedAt": "2025-04-12T10:41:59.778Z"
 }
