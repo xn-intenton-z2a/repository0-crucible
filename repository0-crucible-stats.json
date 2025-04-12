@@ -9,10 +9,10 @@
   "prDetails": [
     {
       "title": "Implemented --merge-persist command for merging ontology files and updated documentation and tests accordingly. (fixes #1376)",
-      "ageMinutes": 0
+      "ageMinutes": 1
     }
   ],
-  "diffMinutes": 1,
+  "diffMinutes": 0,
   "diffMinutesMain": 10,
   "commitsLastHour": 5,
   "commitsLastDay": 25,
@@ -43,12 +43,12 @@
     "details": [
       {
         "branch": "agentic-lib-issue-1376",
-        "minutesSinceLastCommit": 1
+        "minutesSinceLastCommit": 2
       }
     ]
   },
-  "averagePRAge": 0,
+  "averagePRAge": 1,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T05:52:13.995Z"
+  "generatedAt": "2025-04-12T05:53:02.949Z"
 }
