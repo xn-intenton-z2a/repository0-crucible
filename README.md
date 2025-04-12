@@ -29,6 +29,7 @@ npm install repository0-crucible
 - JSON-based persistence and retrieval of OWL ontologies via integrated persistence functions exported from the main module (located in src/lib/main.js).
 - Exports a GraphDB-friendly format from OWL ontology JSON using the new GraphDB Exporter feature (now implemented in src/lib/main.js).
 - Merge functionality: merge two ontology JSON files and persist the merged result via the new --merge-persist CLI option.
+- **Version Display:** Use the new --version flag to display the current package version as specified in package.json.
 
 ## Usage
 
@@ -43,6 +44,11 @@ node src/lib/main.js --help
 - **Default Demo Output:**
   ```bash
   npm run start
+  ```
+
+- **Display Package Version:**
+  ```bash
+  node src/lib/main.js --version
   ```
 
 - **Read Ontology from JSON File:**

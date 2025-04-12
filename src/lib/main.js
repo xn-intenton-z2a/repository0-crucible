@@ -62,6 +62,25 @@ export function exportGraphDB(ontology) {
 }
 
 export function main(args) {
+  // New CLI flag to display package version
+  if (args.includes('--version')) {
+    try {
+      const pkgJsonUrl = new URL('../../package.json', import.meta.url);
+      const pkgData = readFileSync(pkgJsonUrl, { encoding: 'utf-8' });
+      const pkg = JSON.parse(pkgData);
+      if (pkg.version) {
+        console.log(pkg.version);
+      } else {
+        console.error("Package version not found");
+        process.exit(1);
+      }
+    } catch (err) {
+      console.error("Error reading package.json:", err.message);
+      process.exit(1);
+    }
+    return;
+  }
+
   // Check for persistence commands
   if (args.includes('--read')) {
     const index = args.indexOf('--read');

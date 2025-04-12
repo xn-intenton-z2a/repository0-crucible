@@ -1,7 +1,23 @@
-import { describe, test, expect, beforeEach, afterEach } from 'vitest';
+import { describe, test, expect } from 'vitest';
 import { exportGraphDB, mergeOntologies, main } from '../../src/lib/main.js';
 import { writeFileSync, readFileSync, unlinkSync } from 'fs';
 import { join } from 'path';
+
+// Helper function to capture console output
+function captureConsole(callback) {
+  const originalLog = console.log;
+  const originalError = console.error;
+  let output = '';
+  console.log = (msg) => { output += msg.toString(); };
+  console.error = (msg) => { output += msg.toString(); };
+  try {
+    callback();
+  } finally {
+    console.log = originalLog;
+    console.error = originalError;
+  }
+  return output;
+}
 
 
 describe('GraphDB Exporter Module', () => {
@@ -86,15 +102,9 @@ describe('Ontology Merge Functionality', () => {
     writeFileSync(file2, JSON.stringify(ontology2, null, 2), { encoding: 'utf-8' });
 
     // Capture console output
-    let consoleOutput = '';
-    const originalConsoleLog = console.log;
-    console.log = (msg) => { consoleOutput += msg; };
-
-    // Simulate CLI call
-    main(['--merge-persist', file1, file2, outputFile]);
-
-    // Restore console.log
-    console.log = originalConsoleLog;
+    const output = captureConsole(() => {
+      main(['--merge-persist', file1, file2, outputFile]);
+    });
 
     const mergedContent = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
     expect(mergedContent.name).toBe('OntologyOne & OntologyTwo');
@@ -105,5 +115,26 @@ describe('Ontology Merge Functionality', () => {
     unlinkSync(file1);
     unlinkSync(file2);
     unlinkSync(outputFile);
+  });
+});
+
+describe('CLI Version Option', () => {
+  test('--version flag outputs the correct package version', () => {
+    // Read expected version from package.json
+    const pkgPath = join(process.cwd(), 'package.json');
+    const pkg = JSON.parse(readFileSync(pkgPath, { encoding: 'utf-8' }));
+    const expectedVersion = pkg.version;
+    
+    let output = '';
+    const originalLog = console.log;
+    console.log = (msg) => { output += msg.toString(); };
+    
+    try {
+      main(['--version']);
+    } finally {
+      console.log = originalLog;
+    }
+    
+    expect(output.trim()).toBe(expectedVersion);
   });
 });
