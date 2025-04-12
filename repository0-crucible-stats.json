@@ -3,14 +3,14 @@
   "repo": "repository0-crucible",
   "engine": "schedule-3",
   "openIssues": 5,
-  "issuesClosedLastHour": 1,
+  "issuesClosedLastHour": 0,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
-  "diffMinutes": 0,
-  "diffMinutesMain": 48,
-  "commitsLastHour": 1,
-  "commitsLastDay": 19,
+  "diffMinutes": 17,
+  "diffMinutesMain": 65,
+  "commitsLastHour": 0,
+  "commitsLastDay": 17,
   "lastFiveCommitMessages": [
     {
       "time": "01:01",
@@ -38,12 +38,12 @@
     "details": [
       {
         "branch": "agentic-lib-issue-1368",
-        "minutesSinceLastCommit": 0
+        "minutesSinceLastCommit": 17
       }
     ]
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T01:49:47.171Z"
+  "generatedAt": "2025-04-12T02:07:04.207Z"
 }
