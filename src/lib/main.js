@@ -994,6 +994,7 @@ function handleInteractive(args) {
     rl.prompt();
   }).on('close', () => {
     console.log("Exiting Interactive Mode.");
+    process.exit(0);
   });
 }
 
