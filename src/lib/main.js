@@ -37,7 +37,7 @@ function getDefaultTimeout() {
 
 function handleHelp(args) {
   const timeout = getDefaultTimeout();
-  const helpText = `Usage: node main.js [options]\n\nOptions:\n  --help             Show help information\n  --version          Show package version\n  --read <file>      Read ontology from JSON file\n  --persist <file> [--ontology <json|string|file>]   Persist ontology to file\n  --export-graphdb <inputFile> [outputFile]  Export ontology in GraphDB format\n  --merge-persist <file1> <file2> <outputFile>   Merge two ontologies and persist\n  --diagnostics      Output diagnostic report\n\nUsing DEFAULT_TIMEOUT: ${timeout}\n`;
+  const helpText = `Usage: node main.js [options]\n\nOptions:\n  --help             Show help information\n  --version          Show package version\n  --read <file>      Read ontology from JSON file\n  --persist <file> [--ontology <json|string|file>]   Persist ontology to file\n  --export-graphdb <inputFile> [outputFile]  Export ontology in GraphDB format\n  --merge-persist <file1> <file2> <outputFile>   Merge two ontologies and persist\n  --diagnostics      Output diagnostic report\n  --refresh          Reinitialize system state\n\nUsing DEFAULT_TIMEOUT: ${timeout}\n`;
   console.log(helpText);
   logCommand('--help');
 }
@@ -170,11 +170,22 @@ function handleDiagnostics(args) {
     packageVersion: pkg.version,
     environment: process.env,
     system: { platform: process.platform, arch: process.arch },
-    cliCommands: ['--help', '--version', '--read', '--persist', '--export-graphdb', '--merge-persist', '--diagnostics'],
+    cliCommands: ['--help', '--version', '--read', '--persist', '--export-graphdb', '--merge-persist', '--diagnostics', '--refresh'],
     processArgs: process.argv
   };
   console.log(JSON.stringify(diagnostics, null, 2));
   logCommand('--diagnostics');
+}
+
+function handleRefresh(args) {
+  const logDir = join(process.cwd(), 'logs');
+  const logFile = join(logDir, 'cli.log');
+  // Clear the logs to reinitialize the state
+  if (existsSync(logFile)) {
+    writeFileSync(logFile, '', { encoding: 'utf-8' });
+  }
+  console.log('System state refreshed');
+  logCommand('--refresh');
 }
 
 function handleDefault(args) {
@@ -186,6 +197,10 @@ function handleDefault(args) {
 function dispatchCommand(args) {
   if (args.includes('--diagnostics')) {
     handleDiagnostics(args);
+    return;
+  }
+  if (args.includes('--refresh')) {
+    handleRefresh(args);
     return;
   }
   if (args.includes('--version')) {
