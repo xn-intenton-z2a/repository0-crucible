@@ -625,6 +625,14 @@ function main() {
   dispatchCommand(args);
 }
 
+// Define interactiveCompleter for test auto-completion
+function interactiveCompleter(loadedOntology, line) {
+  const baseCommands = ["load", "show", "list-classes", "help", "exit"];
+  const suggestions = baseCommands.concat((loadedOntology && Array.isArray(loadedOntology.classes)) ? loadedOntology.classes : []);
+  const hits = suggestions.filter(c => c.startsWith(line));
+  return [hits.length ? hits : suggestions, line];
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main();
 }

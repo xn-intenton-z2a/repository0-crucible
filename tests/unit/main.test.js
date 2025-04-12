@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { spawnSync } from 'child_process';
-import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSync } from 'fs';
+import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import os from 'os';
 
@@ -227,7 +227,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const logDir = join(process.cwd(), 'logs');
     const logFilePath = join(logDir, 'cli.log');
     if (!existsSync(logDir)) {
-      writeFileSync(logDir, '', { encoding: 'utf-8' });
+      mkdirSync(logDir, { recursive: true });
     }
     writeFileSync(logFilePath, 'dummy log content\n', { encoding: 'utf-8' });
     const result = spawnSync('node', [cliPath, '--refresh'], { encoding: 'utf-8' });
