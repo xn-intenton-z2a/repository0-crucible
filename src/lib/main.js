@@ -3,7 +3,7 @@
 
 import { fileURLToPath } from "url";
 import { readFileSync, writeFileSync } from "fs";
-import { exportGraphDB } from "./graphdbExporter.js"; // New module for GraphDB exporting
+import { exportGraphDB } from "./graphdbExporter.js"; // Import from separate module
 
 export function readOntology(filePath) {
   const data = readFileSync(filePath, { encoding: "utf-8" });
@@ -99,6 +99,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
 // ------------------------------------------------------------------
 // New File: src/lib/graphdbExporter.js
 // Implements the exportGraphDB function used by main.js and tested in unit tests
+
+// Note: This file has been separated from main.js to avoid duplicate export issues.
 
 export function exportGraphDB(ontology) {
   const nodes = [];
