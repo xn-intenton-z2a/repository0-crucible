@@ -2,13 +2,18 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 6,
+  "openIssues": 8,
   "issuesClosedLastHour": 0,
   "issuesClosedLastDay": 100,
-  "openPRs": 0,
-  "prDetails": [],
-  "diffMinutes": 0,
-  "diffMinutesMain": 83,
+  "openPRs": 1,
+  "prDetails": [
+    {
+      "title": "Integrated persistence functions into main.js and updated tests and README to reference them resolving the missing module error. (fixes #1368)",
+      "ageMinutes": 6
+    }
+  ],
+  "diffMinutes": 6,
+  "diffMinutesMain": 89,
   "commitsLastHour": 0,
   "commitsLastDay": 17,
   "lastFiveCommitMessages": [
@@ -38,12 +43,12 @@
     "details": [
       {
         "branch": "agentic-lib-issue-1368",
-        "minutesSinceLastCommit": 0
+        "minutesSinceLastCommit": 6
       }
     ]
   },
-  "averagePRAge": 0,
+  "averagePRAge": 6,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T02:24:50.362Z"
+  "generatedAt": "2025-04-12T02:31:14.054Z"
 }
