@@ -619,7 +619,7 @@ async function handleFetch(args) {
   } else {
     console.log(JSON.stringify(ontology, null, 2));
   }
-  // Removed process.exit(0) to ensure output is flushed for test capture
+  process.exit(0);
 }
 
 // New handler: --diff command for comparing two ontologies
