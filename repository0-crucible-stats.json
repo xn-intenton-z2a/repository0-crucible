@@ -9,11 +9,11 @@
   "prDetails": [
     {
       "title": "Add export-owl command to convert ontology JSON to OWLTurtle format with tests and documentation updates (fixes #1463)",
-      "ageMinutes": 0
+      "ageMinutes": 1
     }
   ],
   "diffMinutes": 0,
-  "diffMinutesMain": 18,
+  "diffMinutesMain": 19,
   "commitsLastHour": 2,
   "commitsLastDay": 61,
   "lastFiveCommitMessages": [
@@ -47,8 +47,8 @@
       }
     ]
   },
-  "averagePRAge": 0,
+  "averagePRAge": 1,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T14:09:59.575Z"
+  "generatedAt": "2025-04-12T14:10:49.825Z"
 }
