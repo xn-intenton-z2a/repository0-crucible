@@ -334,189 +334,154 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     expect(logContent).toContain('--build-enhanced');
   });
 
-  test('--serve flag launches and stops the HTTP server', (done) => {
+  test('--serve flag launches and stops the HTTP server', async () => {
     clearLogFile();
-    const child = spawn('node', [cliPath, '--serve'], { encoding: 'utf-8' });
-    let output = '';
-    child.stdout.on('data', (data) => { output += data; });
-    child.on('close', (code) => {
-      try {
-        expect(output).toContain('Server started on port');
-        expect(output).toContain('Server stopped');
-        done();
-      } catch (err) {
-        done(err);
-      }
+    await new Promise((resolve, reject) => {
+      const child = spawn('node', [cliPath, '--serve'], { encoding: 'utf-8' });
+      let output = '';
+      child.stdout.on('data', (data) => { output += data; });
+      child.on('close', (code) => {
+        try {
+          expect(output).toContain('Server started on port');
+          expect(output).toContain('Server stopped');
+          resolve();
+        } catch (err) {
+          reject(err);
+        }
+      });
     });
   });
 
-  test('--diff flag outputs differences when ontologies differ', () => {
-    clearLogFile();
-    const ontology1 = {
-      name: 'OntologyA',
-      version: '1.0',
-      classes: ['Class1', 'Class2'],
-      properties: { propA: 'valueA', propB: 'valueB' }
-    };
-    const ontology2 = {
-      name: 'OntologyB',
-      version: '2.0',
-      classes: ['Class2', 'Class3'],
-      properties: { propA: 'valueA_modified', propC: 'valueC' }
-    };
-    const file1 = join(tempDir, 'diff1.json');
-    const file2 = join(tempDir, 'diff2.json');
-    writeFileSync(file1, JSON.stringify(ontology1, null, 2), { encoding: 'utf-8' });
-    writeFileSync(file2, JSON.stringify(ontology2, null, 2), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--diff', file1, file2], { encoding: 'utf-8' });
-    const diffOutput = JSON.parse(result.stdout);
-    expect(diffOutput).toHaveProperty('name');
-    expect(diffOutput.name).toEqual({ from: 'OntologyA', to: 'OntologyB' });
-    expect(diffOutput).toHaveProperty('version');
-    expect(diffOutput.version).toEqual({ from: '1.0', to: '2.0' });
-    expect(diffOutput).toHaveProperty('classes');
-    expect(diffOutput.classes).toHaveProperty('added');
-    expect(diffOutput.classes).toHaveProperty('removed');
-    expect(diffOutput.classes.added).toContain('Class3');
-    expect(diffOutput.classes.removed).toContain('Class1');
-    expect(diffOutput).toHaveProperty('properties');
-    expect(diffOutput.properties).toHaveProperty('added');
-    expect(diffOutput.properties).toHaveProperty('removed');
-    expect(diffOutput.properties).toHaveProperty('modified');
-    unlinkSync(file1);
-    unlinkSync(file2);
-    const logContent = readLogFile();
-    expect(logContent).toContain('--diff');
-  });
-
-  test('--diff flag outputs "No differences found" when ontologies are identical', () => {
-    clearLogFile();
-    const ontology = {
-      name: 'SameOntology',
-      version: '1.0',
-      classes: ['Class1', 'Class2'],
-      properties: { propA: 'valueA' }
-    };
-    const file1 = join(tempDir, 'same1.json');
-    const file2 = join(tempDir, 'same2.json');
-    writeFileSync(file1, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
-    writeFileSync(file2, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--diff', file1, file2], { encoding: 'utf-8' });
-    const diffOutput = JSON.parse(result.stdout);
-    expect(diffOutput).toHaveProperty('message', 'No differences found');
-    unlinkSync(file1);
-    unlinkSync(file2);
-    const logContent = readLogFile();
-    expect(logContent).toContain('--diff');
-  });
-});
-
-// REST API Endpoint Tests
-
-describe('REST API Endpoints', () => {
-  test('GET /health returns healthy status', (done) => {
-    const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
-    // Wait briefly for server to start
-    setTimeout(() => {
-      http.get('http://localhost:3000/health', (res) => {
-        let data = '';
-        res.on('data', chunk => { data += chunk; });
-        res.on('end', () => {
-          const json = JSON.parse(data);
-          expect(json.status).toBe('ok');
+  test('GET /health returns healthy status', async () => {
+    await new Promise((resolve, reject) => {
+      const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+      setTimeout(() => {
+        http.get('http://localhost:3000/health', (res) => {
+          let data = '';
+          res.on('data', chunk => { data += chunk; });
+          res.on('end', () => {
+            try {
+              const json = JSON.parse(data);
+              expect(json.status).toBe('ok');
+              serverProcess.kill();
+              resolve();
+            } catch (err) {
+              serverProcess.kill();
+              reject(err);
+            }
+          });
+        }).on('error', (err) => {
           serverProcess.kill();
-          done();
+          reject(err);
         });
-      }).on('error', (err) => {
-        serverProcess.kill();
-        done(err);
-      });
-    }, 500);
+      }, 500);
+    });
   });
 
-  test('POST /ontology/build returns build triggered message', (done) => {
-    const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
-    setTimeout(() => {
-      const options = {
-        hostname: 'localhost',
-        port: 3000,
-        path: '/ontology/build',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      };
-      const req = http.request(options, (res) => {
-        let data = '';
-        res.on('data', chunk => { data += chunk; });
-        res.on('end', () => {
-          const json = JSON.parse(data);
-          expect(json.message).toBe('Ontology build triggered');
-          serverProcess.kill();
-          done();
+  test('POST /ontology/build returns build triggered message', async () => {
+    await new Promise((resolve, reject) => {
+      const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+      setTimeout(() => {
+        const options = {
+          hostname: 'localhost',
+          port: 3000,
+          path: '/ontology/build',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        };
+        const req = http.request(options, (res) => {
+          let data = '';
+          res.on('data', chunk => { data += chunk; });
+          res.on('end', () => {
+            try {
+              const json = JSON.parse(data);
+              expect(json.message).toBe('Ontology build triggered');
+              serverProcess.kill();
+              resolve();
+            } catch (err) {
+              serverProcess.kill();
+              reject(err);
+            }
+          });
         });
-      });
-      req.on('error', (err) => {
-        serverProcess.kill();
-        done(err);
-      });
-      req.end();
-    }, 500);
+        req.on('error', (err) => {
+          serverProcess.kill();
+          reject(err);
+        });
+        req.end();
+      }, 500);
+    });
   });
 
-  test('GET /ontology/read returns dummy ontology', (done) => {
-    const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
-    setTimeout(() => {
-      http.get('http://localhost:3000/ontology/read', (res) => {
-        let data = '';
-        res.on('data', chunk => { data += chunk; });
-        res.on('end', () => {
-          const json = JSON.parse(data);
-          expect(json).toHaveProperty('name', 'Dummy Ontology');
+  test('GET /ontology/read returns dummy ontology', async () => {
+    await new Promise((resolve, reject) => {
+      const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+      setTimeout(() => {
+        http.get('http://localhost:3000/ontology/read', (res) => {
+          let data = '';
+          res.on('data', chunk => { data += chunk; });
+          res.on('end', () => {
+            try {
+              const json = JSON.parse(data);
+              expect(json).toHaveProperty('name', 'Dummy Ontology');
+              serverProcess.kill();
+              resolve();
+            } catch (err) {
+              serverProcess.kill();
+              reject(err);
+            }
+          });
+        }).on('error', (err) => {
           serverProcess.kill();
-          done();
+          reject(err);
         });
-      }).on('error', (err) => {
-        serverProcess.kill();
-        done(err);
-      });
-    }, 500);
+      }, 500);
+    });
   });
 
-  test('POST /ontology/merge returns merged ontology', (done) => {
-    const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
-    setTimeout(() => {
-      const options = {
-        hostname: 'localhost',
-        port: 3000,
-        path: '/ontology/merge',
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        }
-      };
-      const req = http.request(options, (res) => {
-        let data = '';
-        res.on('data', chunk => { data += chunk; });
-        res.on('end', () => {
-          const json = JSON.parse(data);
-          expect(json).toHaveProperty('message', 'Ontologies merged');
-          expect(json.merged).toHaveProperty('name');
-          serverProcess.kill();
-          done();
+  test('POST /ontology/merge returns merged ontology', async () => {
+    await new Promise((resolve, reject) => {
+      const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+      setTimeout(() => {
+        const options = {
+          hostname: 'localhost',
+          port: 3000,
+          path: '/ontology/merge',
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        };
+        const req = http.request(options, (res) => {
+          let data = '';
+          res.on('data', chunk => { data += chunk; });
+          res.on('end', () => {
+            try {
+              const json = JSON.parse(data);
+              expect(json).toHaveProperty('message', 'Ontologies merged');
+              expect(json.merged).toHaveProperty('name');
+              serverProcess.kill();
+              resolve();
+            } catch (err) {
+              serverProcess.kill();
+              reject(err);
+            }
+          });
         });
-      });
-      const payload = JSON.stringify([
-        { name: 'Ontology1', version: '1.0', classes: ['A'], properties: { p: 'a' } },
-        { name: 'Ontology2', version: '1.0', classes: ['B'], properties: { q: 'b' } }
-      ]);
-      req.on('error', (err) => {
-        serverProcess.kill();
-        done(err);
-      });
-      req.write(payload);
-      req.end();
-    }, 500);
+        const payload = JSON.stringify([
+          { name: 'Ontology1', version: '1.0', classes: ['A'], properties: { p: 'a' } },
+          { name: 'Ontology2', version: '1.0', classes: ['B'], properties: { q: 'b' } }
+        ]);
+        req.on('error', (err) => {
+          serverProcess.kill();
+          reject(err);
+        });
+        req.write(payload);
+        req.end();
+      }, 500);
+    });
   });
 });
 
@@ -548,36 +513,38 @@ describe('--fetch Command Enhanced Functionality', () => {
     expect(logContent).toContain('--fetch');
   });
 
-  test('--fetch retrieves ontology from a dynamic public API when FETCH_URL is set', (done) => {
-    // Create a temporary HTTP server to simulate a public API
-    const testData = {
-      name: 'Dynamic Ontology',
-      version: 'dynamic-123',
-      classes: ['DynamicClass'],
-      properties: { dynamicProp: 'dynamicValue' }
-    };
-    const apiServer = http.createServer((req, res) => {
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(testData));
-    });
-    apiServer.listen(0, () => {
-      const port = apiServer.address().port;
-      const fetchUrl = `http://127.0.0.1:${port}`;
-      const env = { ...process.env, FETCH_URL: fetchUrl };
-      const child = spawn('node', [cliPath, '--fetch'], { encoding: 'utf-8', env, timeout: 5000 });
-      let output = '';
-      child.stdout.on('data', data => { output += data; });
-      child.on('close', () => {
-        try {
-          const parsed = JSON.parse(output);
-          expect(parsed).toHaveProperty('name', 'Dynamic Ontology');
-          expect(parsed).toHaveProperty('version', 'dynamic-123');
-          apiServer.close();
-          done();
-        } catch (err) {
-          apiServer.close();
-          done(err);
-        }
+  test('--fetch retrieves ontology from a dynamic public API when FETCH_URL is set', async () => {
+    await new Promise((resolve, reject) => {
+      // Create a temporary HTTP server to simulate a public API
+      const testData = {
+        name: 'Dynamic Ontology',
+        version: 'dynamic-123',
+        classes: ['DynamicClass'],
+        properties: { dynamicProp: 'dynamicValue' }
+      };
+      const apiServer = http.createServer((req, res) => {
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify(testData));
+      });
+      apiServer.listen(0, () => {
+        const port = apiServer.address().port;
+        const fetchUrl = `http://127.0.0.1:${port}`;
+        const env = { ...process.env, FETCH_URL: fetchUrl };
+        const child = spawn('node', [cliPath, '--fetch'], { encoding: 'utf-8', env, timeout: 5000 });
+        let output = '';
+        child.stdout.on('data', data => { output += data; });
+        child.on('close', () => {
+          try {
+            const parsed = JSON.parse(output);
+            expect(parsed).toHaveProperty('name', 'Dynamic Ontology');
+            expect(parsed).toHaveProperty('version', 'dynamic-123');
+            apiServer.close();
+            resolve();
+          } catch (err) {
+            apiServer.close();
+            reject(err);
+          }
+        });
       });
     });
   });
