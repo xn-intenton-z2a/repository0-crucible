@@ -55,9 +55,13 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main(args);
 }
 
-// ==============================
+// ----------------------------------------------------------------------
 // New File: src/lib/persistence.js
-// ==============================
+// ----------------------------------------------------------------------
+
+/*
+  This module provides functions to read and persist OWL ontologies in JSON format.
+*/
 
 import { readFileSync, writeFileSync } from 'fs';
 

@@ -26,7 +26,7 @@ npm install repository0-crucible
 ## Features
 
 - CLI tool for building and managing OWL ontologies.
-- JSON-based persistence and retrieval of OWL ontologies
+- JSON-based persistence and retrieval of OWL ontologies via a dedicated persistence module (located in src/lib/persistence.js).
 
 ## Usage
 
