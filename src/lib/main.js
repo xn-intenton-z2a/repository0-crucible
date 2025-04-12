@@ -7,6 +7,7 @@ import { existsSync, mkdirSync, appendFileSync, writeFileSync, readFileSync, rmS
 import dotenv from 'dotenv';
 import { z } from 'zod';
 import http from 'http';
+import readline from 'readline';
 
 // Load environment variables
 dotenv.config();
@@ -114,6 +115,7 @@ function handleHelp(args, { getDefaultTimeout }) {
   --build-intermediate   Process and output an intermediate build version of the ontology
   --build-enhanced       Process and output an enhanced build version of the ontology
   --serve                Launch an HTTP server exposing REST endpoints for ontology operations
+  --interactive          Launch the interactive mode for ontology exploration
 Using DEFAULT_TIMEOUT: ${timeout}`);
 }
 
@@ -259,7 +261,7 @@ function handleDiagnostics(args) {
       platform: process.platform,
       arch: process.arch
     },
-    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--serve'],
+    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--serve','--interactive'],
     processArgs: process.argv.slice(2),
     DEFAULT_TIMEOUT: getDefaultTimeout()
   };
@@ -326,6 +328,78 @@ function handleServe(args) {
   });
 }
 
+function handleInteractive(args) {
+  logCommand('--interactive');
+  console.log("Entering Interactive Mode. Type 'help' for available commands.");
+  const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout,
+    prompt: 'interactive> '
+  });
+  let loadedOntology = null;
+  rl.prompt();
+  rl.on('line', (line) => {
+    const input = line.trim();
+    const tokens = input.split(' ');
+    const command = tokens[0];
+    switch (command) {
+      case 'load':
+        if (tokens.length < 2) {
+          console.log("Usage: load <file>");
+        } else {
+          const filePath = tokens[1];
+          try {
+            const data = readFileSync(filePath, { encoding: 'utf-8' });
+            const ontology = JSON.parse(data);
+            ontologySchema.parse(ontology);
+            loadedOntology = ontology;
+            logCommand('interactive: load');
+            console.log(`Ontology '${ontology.name}' loaded successfully.`);
+          } catch (err) {
+            logError('LOG_ERR_INTERACTIVE_LOAD', 'Failed to load ontology', { error: err.message });
+            console.error("Error loading ontology:", err.message);
+          }
+        }
+        break;
+      case 'show':
+        if (loadedOntology) {
+          console.log("Loaded Ontology:", JSON.stringify(loadedOntology, null, 2));
+        } else {
+          console.log("No ontology loaded.");
+        }
+        logCommand('interactive: show');
+        break;
+      case 'list-classes':
+        if (loadedOntology && loadedOntology.classes) {
+          console.log("Classes:", loadedOntology.classes.join(', '));
+        } else {
+          console.log("No ontology loaded or ontology has no classes.");
+        }
+        logCommand('interactive: list-classes');
+        break;
+      case 'help':
+        console.log("Interactive commands:");
+        console.log(" load <file>      - Load ontology from file");
+        console.log(" show             - Show loaded ontology details");
+        console.log(" list-classes     - List classes in the loaded ontology");
+        console.log(" help             - Show this help message");
+        console.log(" exit             - Exit interactive mode");
+        logCommand('interactive: help');
+        break;
+      case 'exit':
+        logCommand('interactive: exit');
+        rl.close();
+        return;
+      default:
+        console.log("Unknown command. Type 'help' for available commands.");
+        logCommand(`interactive: unknown command: ${input}`);
+    }
+    rl.prompt();
+  }).on('close', () => {
+    console.log("Exiting Interactive Mode.");
+  });
+}
+
 function handleDefault(args) {
   logCommand('default');
   console.log('Invalid command');
@@ -333,6 +407,9 @@ function handleDefault(args) {
 
 // Command dispatcher using inline command handlers
 function dispatchCommand(args) {
+  if (args.includes('--interactive')) {
+    return handleInteractive(args);
+  }
   if (args.includes('--diagnostics')) {
     return handleDiagnostics(args);
   }
