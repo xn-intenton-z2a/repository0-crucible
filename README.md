@@ -48,7 +48,7 @@ npm install repository0-crucible
 
 - **Interactive Mode with Enhanced Usability:** Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration. This mode supports auto-completion (including dynamic suggestions from loaded ontology classes) and command history.
 - **Ontology Content Query:** Use the **--query** command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the `--regex` flag to interpret the search term as a regular expression.
-- **Fetch Ontology from Public Data Source:** Use the **--fetch** command to simulate retrieving data from a public source, transform it into a valid ontology JSON object, and either output it to STDOUT or persist it to a file.
+- **Fetch Ontology from Public Data Source:** **Enhanced!** Use the **--fetch** command to dynamically retrieve ontology data from a public API. If the environment variable FETCH_URL is set, the CLI will perform an HTTP GET request to that URL and transform the returned JSON into a valid ontology. If FETCH_URL is not set or the fetch fails, it will fall back to a default dummy ontology.
 - **Export OWL/Turtle Format:** Use the **--export-owl** command to convert a JSON ontology into an OWL representation in Turtle format.
 - **Export RDF/XML Format:** **New!** Use the **--export-xml** command to convert a JSON ontology into RDF/XML format, including XML declaration and RDF/XML namespace mappings.
 - **Zod Schema Validation:** Ontology JSON files are validated using a strict Zod schema to ensure required properties are present and of the correct types.
@@ -62,7 +62,7 @@ To launch the REST API server, use the --serve flag:
 node src/lib/main.js --serve
 ```
 
-The server listens on port 3000 and automatically shuts down after a short period (for demo purposes). You can test the endpoints using curl:
+The server listens on port 3000 and automatically shuts down after a short period (for demo purposes, after approximately 3 seconds). You can test the endpoints using curl:
 
 - Check health:
   ```bash
@@ -183,6 +183,7 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --fetch [path/to/output.json]
   ```
+  > When FETCH_URL environment variable is set, the CLI will fetch data from the specified URL and transform it into an ontology.
 
 - **Ontology Difference Comparison:**
   ```bash
@@ -192,6 +193,8 @@ node src/lib/main.js --help
 ## Environment Variable Configuration
 
 The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, the tool logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If a non-numeric or non-finite value is provided, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value.
+
+For the enhanced --fetch command, you can set a FETCH_URL environment variable to dynamically retrieve ontology data from a public API endpoint. If the fetch fails or FETCH_URL is not provided, the command falls back to a default dummy ontology.
 
 ## End-to-End Integration Tests
 

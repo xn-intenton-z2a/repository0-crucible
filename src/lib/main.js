@@ -7,6 +7,7 @@ import { existsSync, mkdirSync, appendFileSync, writeFileSync, readFileSync, rmS
 import dotenv from 'dotenv';
 import { z } from 'zod';
 import http from 'http';
+import https from 'https';
 import readline from 'readline';
 
 // Load environment variables
@@ -110,25 +111,7 @@ function getDefaultTimeout() {
 function handleHelp(args, { getDefaultTimeout }) {
   logCommand('--help');
   const timeout = getDefaultTimeout();
-  console.log(`Usage: 
-  --help             Display help information
-  --version          Show package version
-  --read <path>      Load ontology from file
-  --persist <outputFile> [--ontology <json-string|path>]    Persist ontology
-  --export-graphdb <inputFile> [outputFile]    Export ontology in GraphDB format
-  --export-owl <inputFile> [outputFile]    Export ontology in OWL/Turtle format
-  --export-xml <inputFile> [outputFile]    Export ontology in RDF/XML format
-  --merge-persist <file1> <file2> <outputFile>    Merge ontologies
-  --diagnostics      Output diagnostic report
-  --refresh          Refresh system state
-  --build-intermediate   Process and output an intermediate build version of the ontology
-  --build-enhanced       Process and output an enhanced build version of the ontology
-  --serve                Launch an HTTP server exposing REST endpoints for ontology operations
-  --interactive          Launch the interactive mode for ontology exploration
-  --query <ontologyFile> <searchTerm> [--regex]    Search ontology content for a term. Use '--regex' to interpret the search term as a regex pattern.
-  --fetch [outputFile]    Fetch ontology from public data source
-  --diff <file1> <file2>    Compare two ontology JSON files and output differences
-Using DEFAULT_TIMEOUT: ${timeout}`);
+  console.log(`Usage: \n  --help             Display help information\n  --version          Show package version\n  --read <path>      Load ontology from file\n  --persist <outputFile> [--ontology <json-string|path>]    Persist ontology\n  --export-graphdb <inputFile> [outputFile]    Export ontology in GraphDB format\n  --export-owl <inputFile> [outputFile]    Export ontology in OWL/Turtle format\n  --export-xml <inputFile> [outputFile]    Export ontology in RDF/XML format\n  --merge-persist <file1> <file2> <outputFile>    Merge ontologies\n  --diagnostics      Output diagnostic report\n  --refresh          Refresh system state\n  --build-intermediate   Process and output an intermediate build version of the ontology\n  --build-enhanced       Process and output an enhanced build version of the ontology\n  --serve                Launch an HTTP server exposing REST endpoints for ontology operations\n  --interactive          Launch the interactive mode for ontology exploration\n  --query <ontologyFile> <searchTerm> [--regex]    Search ontology content for a term. Use '--regex' to interpret the search term as a regex pattern.\n  --fetch [outputFile]    Fetch ontology from public data source\n  --diff <file1> <file2>    Compare two ontology JSON files and output differences\nUsing DEFAULT_TIMEOUT: ${timeout}`);
 }
 
 function handleVersion(args) {
@@ -538,35 +521,87 @@ function handleQuery(args) {
   }
 }
 
-// New handler: --fetch command for auto-generating ontology from public data sources
-function handleFetch(args) {
+// New handler: --fetch command for auto-generating ontology from public data sources with dynamic fetch support
+async function handleFetch(args) {
   logCommand('--fetch');
-  const fetchedOntology = {
-    name: 'Fetched Ontology',
-    version: 'fetched-1.0',
-    classes: ['FetchedClassA', 'FetchedClassB'],
-    properties: { fetchedProp: 'value' }
-  };
-  try {
-    ontologySchema.parse(fetchedOntology);
-  } catch (err) {
-    logError('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed', { errors: err.errors });
-    console.error('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed');
-    return;
+  async function fetchData(url) {
+    return new Promise((resolve, reject) => {
+      const client = url.startsWith('https') ? https : http;
+      client.get(url, (res) => {
+        let rawData = '';
+        res.on('data', chunk => { rawData += chunk; });
+        res.on('end', () => {
+          try {
+            const data = JSON.parse(rawData);
+            resolve(data);
+          } catch (err) {
+            reject(err);
+          }
+        });
+      }).on('error', reject);
+    });
+  }
+
+  const fetchUrl = process.env.FETCH_URL;
+  let ontology;
+  if (fetchUrl) {
+    try {
+      const data = await fetchData(fetchUrl);
+      ontology = {
+        name: data.name || 'Fetched Ontology',
+        version: data.version || new Date().toISOString(),
+        classes: data.classes || Object.keys(data),
+        properties: data.properties || data
+      };
+      // Validate ontology using Zod schema
+      ontologySchema.parse(ontology);
+    } catch (err) {
+      logError('LOG_ERR_FETCH_GET', 'Error fetching ontology from public API', { error: err.message, url: fetchUrl });
+      console.error('LOG_ERR_FETCH_GET', err.message);
+      // Fallback to dummy ontology
+      ontology = {
+        name: 'Fetched Ontology',
+        version: 'fetched-1.0',
+        classes: ['FetchedClassA', 'FetchedClassB'],
+        properties: { fetchedProp: 'value' }
+      };
+      try {
+        ontologySchema.parse(ontology);
+      } catch (err) {
+        logError('LOG_ERR_FETCH_VALIDATE', 'Fallback ontology validation failed', { errors: err.errors });
+        console.error('LOG_ERR_FETCH_VALIDATE', 'Fallback ontology validation failed');
+        return;
+      }
+    }
+  } else {
+    ontology = {
+      name: 'Fetched Ontology',
+      version: 'fetched-1.0',
+      classes: ['FetchedClassA', 'FetchedClassB'],
+      properties: { fetchedProp: 'value' }
+    };
+    try {
+      ontologySchema.parse(ontology);
+    } catch (err) {
+      logError('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed', { errors: err.errors });
+      console.error('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed');
+      return;
+    }
   }
   const fetchIndex = args.indexOf('--fetch');
   const potentialOutput = args[fetchIndex + 1];
   if (potentialOutput && !potentialOutput.startsWith('--')) {
     try {
-      writeFileSync(potentialOutput, JSON.stringify(fetchedOntology, null, 2), { encoding: 'utf-8' });
+      writeFileSync(potentialOutput, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
       console.log(`Fetched ontology persisted to ${potentialOutput}`);
     } catch (err) {
       logError('LOG_ERR_FETCH_WRITE', 'Error writing fetched ontology to file', { error: err.message, outputFile: potentialOutput });
       console.error('LOG_ERR_FETCH_WRITE', err.message);
     }
   } else {
-    console.log(JSON.stringify(fetchedOntology, null, 2));
+    console.log(JSON.stringify(ontology, null, 2));
   }
+  return;
 }
 
 // New handler: --diff command for comparing two ontologies
@@ -721,11 +756,10 @@ function handleInteractive(args) {
 }
 
 // REST API Server with endpoints for ontology operations
-function handleServe(args) {
+async function handleServe(args) {
   logCommand('--serve');
   const port = 3000;
   const ontDir = ensureOntologiesDir();
-
   const server = http.createServer((req, res) => {
     logCommand(`API Request: ${req.method} ${req.url}`);
     const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
@@ -802,85 +836,108 @@ function handleServe(args) {
     }
   });
 
-  server.listen(port, () => {
+  // Bind server to 127.0.0.1
+  server.listen(port, '127.0.0.1', () => {
     console.log(`Server started on port ${port}`);
   });
   
-  // Auto shutdown the server after 2000ms for dry-run purposes
-  setTimeout(() => {
-    server.close(() => {
-      console.log('Server stopped');
-      process.exit(0);
-    });
-  }, 2000);
+  // Auto shutdown the server after 3000ms for dry-run purposes
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      server.close(() => {
+        console.log('Server stopped');
+        resolve();
+      });
+    }, 3000);
+  });
 }
 
 // Define interactiveCompleter for test auto-completion
 function interactiveCompleter(loadedOntology, line) {
-  const baseCommands = ["load", "show", "list-classes", "help", "exit"];
+  const baseCommands = ["load", "show", "list-classes", "help", "exit"]; 
   const suggestions = baseCommands.concat((loadedOntology && Array.isArray(loadedOntology.classes)) ? loadedOntology.classes : []);
   const hits = suggestions.filter(c => c.startsWith(line));
   return [hits.length ? hits : suggestions, line];
 }
 
-function dispatchCommand(args) {
+// Updated dispatchCommand to be async to support async handlers like --fetch and --serve
+async function dispatchCommand(args) {
   if (args.includes('--interactive')) {
-    return handleInteractive(args);
+    handleInteractive(args);
+    return;
   }
   if (args.includes('--diagnostics')) {
-    return handleDiagnostics(args);
+    handleDiagnostics(args);
+    return;
   }
   if (args.includes('--refresh')) {
-    return handleRefresh(args);
+    handleRefresh(args);
+    return;
   }
   if (args.includes('--version')) {
-    return handleVersion(args);
+    handleVersion(args);
+    return;
   }
   if (args.includes('--read')) {
-    return handleRead(args);
+    handleRead(args);
+    return;
   }
   if (args.includes('--persist')) {
-    return handlePersist(args);
+    handlePersist(args);
+    return;
   }
   if (args.includes('--export-graphdb')) {
-    return handleExportGraphDB(args);
+    handleExportGraphDB(args);
+    return;
   }
   if (args.includes('--export-owl')) {
-    return handleExportOWL(args);
+    handleExportOWL(args);
+    return;
   }
   if (args.includes('--export-xml')) {
-    return handleExportXML(args);
+    handleExportXML(args);
+    return;
   }
   if (args.includes('--merge-persist')) {
-    return handleMergePersist(args);
+    handleMergePersist(args);
+    return;
   }
   if (args.includes('--build-intermediate')) {
-    return handleBuildIntermediate(args);
+    handleBuildIntermediate(args);
+    return;
   }
   if (args.includes('--build-enhanced')) {
-    return handleBuildEnhanced(args);
+    handleBuildEnhanced(args);
+    return;
   }
   if (args.includes('--serve')) {
-    return handleServe(args);
+    await handleServe(args);
+    return;
   }
   if (args.includes('--query')) {
-    return handleQuery(args);
+    handleQuery(args);
+    return;
   }
   if (args.includes('--fetch')) {
-    return handleFetch(args);
+    await handleFetch(args);
+    return;
   }
   if (args.includes('--diff')) {
-    return handleDiff(args);
+    handleDiff(args);
+    return;
   }
   if (args.length === 0 || args.includes('--help')) {
-    return handleHelp(args, { getDefaultTimeout });
+    handleHelp(args, { getDefaultTimeout });
+    return;
   }
   return console.log('Invalid command');
 }
 
-function main() {
+// Updated main to be async to support async handlers like --fetch and --serve
+async function main() {
   const args = process.argv.slice(2);
-  dispatchCommand(args);
+  await dispatchCommand(args);
+  process.exit(0);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
