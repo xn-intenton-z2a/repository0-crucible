@@ -123,7 +123,7 @@ function handleHelp(args, { getDefaultTimeout }) {
   --build-enhanced       Process and output an enhanced build version of the ontology
   --serve                Launch an HTTP server exposing REST endpoints for ontology operations
   --interactive          Launch the interactive mode for ontology exploration
-  --query <ontologyFile> <searchTerm>    Search ontology content for a term
+  --query <ontologyFile> <searchTerm> [--regex]    Search ontology content for a term. Use '--regex' to interpret the search term as a regex pattern.
 Using DEFAULT_TIMEOUT: ${timeout}`);
 }
 
@@ -301,53 +301,91 @@ function handleBuildEnhanced(args) {
   console.log('Enhanced build processed');
 }
 
-// New handler: --query command for ontology content search
+// New handler: --query command for ontology content search with optional regex support
 function handleQuery(args) {
   logCommand('--query');
   const index = args.indexOf('--query');
   const filePath = args[index + 1];
-  const searchTerm = args[index + 2];
+  let searchTerm = args[index + 2];
   if (!filePath || !searchTerm) {
     console.error('LOG_ERR_QUERY_USAGE Missing ontology file path or search term');
     return;
   }
+  const useRegex = args.includes('--regex');
   try {
     const data = readFileSync(filePath, { encoding: 'utf-8' });
     const ontology = JSON.parse(data);
     // Validate ontology using Zod schema
     ontologySchema.parse(ontology);
-    const term = searchTerm.toLowerCase();
-    const result = {};
-    // Search in name
-    if (ontology.name && ontology.name.toLowerCase().includes(term)) {
-      result.name = ontology.name;
-    }
-    // Search in classes
-    const matchingClasses = ontology.classes.filter(cls => cls.toLowerCase().includes(term));
-    if (matchingClasses.length > 0) {
-      result.classes = matchingClasses;
-    }
-    // Search in properties (keys and string values)
-    const matchingKeys = [];
-    const matchingValues = [];
-    for (const [key, value] of Object.entries(ontology.properties)) {
-      if (key.toLowerCase().includes(term)) {
-        matchingKeys.push(key);
+    if (useRegex) {
+      let regex;
+      try {
+        regex = new RegExp(searchTerm);
+      } catch (e) {
+        logError('LOG_ERR_INVALID_REGEX', 'Invalid regex pattern', { pattern: searchTerm });
+        console.error('LOG_ERR_INVALID_REGEX', 'Invalid regex pattern');
+        return;
       }
-      if (typeof value === 'string' && value.toLowerCase().includes(term)) {
-        matchingValues.push({ key, value });
+      const result = {};
+      if (ontology.name && regex.test(ontology.name)) {
+        result.name = ontology.name;
       }
-    }
-    if (matchingKeys.length > 0) {
-      result.propertyKeys = matchingKeys;
-    }
-    if (matchingValues.length > 0) {
-      result.propertyValues = matchingValues;
-    }
-    if (Object.keys(result).length === 0) {
-      console.log(JSON.stringify({ message: "No matches found" }, null, 2));
+      const matchingClasses = ontology.classes.filter(cls => regex.test(cls));
+      if (matchingClasses.length > 0) {
+        result.classes = matchingClasses;
+      }
+      const matchingKeys = [];
+      const matchingValues = [];
+      for (const [key, value] of Object.entries(ontology.properties)) {
+        if (regex.test(key)) {
+          matchingKeys.push(key);
+        }
+        if (typeof value === 'string' && regex.test(value)) {
+          matchingValues.push({ key, value });
+        }
+      }
+      if (matchingKeys.length > 0) {
+        result.propertyKeys = matchingKeys;
+      }
+      if (matchingValues.length > 0) {
+        result.propertyValues = matchingValues;
+      }
+      if (Object.keys(result).length === 0) {
+        console.log(JSON.stringify({ message: "No matches found" }, null, 2));
+      } else {
+        console.log(JSON.stringify(result, null, 2));
+      }
     } else {
-      console.log(JSON.stringify(result, null, 2));
+      const term = searchTerm.toLowerCase();
+      const result = {};
+      if (ontology.name && ontology.name.toLowerCase().includes(term)) {
+        result.name = ontology.name;
+      }
+      const matchingClasses = ontology.classes.filter(cls => cls.toLowerCase().includes(term));
+      if (matchingClasses.length > 0) {
+        result.classes = matchingClasses;
+      }
+      const matchingKeys = [];
+      const matchingValues = [];
+      for (const [key, value] of Object.entries(ontology.properties)) {
+        if (key.toLowerCase().includes(term)) {
+          matchingKeys.push(key);
+        }
+        if (typeof value === 'string' && value.toLowerCase().includes(term)) {
+          matchingValues.push({ key, value });
+        }
+      }
+      if (matchingKeys.length > 0) {
+        result.propertyKeys = matchingKeys;
+      }
+      if (matchingValues.length > 0) {
+        result.propertyValues = matchingValues;
+      }
+      if (Object.keys(result).length === 0) {
+        console.log(JSON.stringify({ message: "No matches found" }, null, 2));
+      } else {
+        console.log(JSON.stringify(result, null, 2));
+      }
     }
   } catch (err) {
     if (err instanceof Error && err.name === 'ZodError') {
