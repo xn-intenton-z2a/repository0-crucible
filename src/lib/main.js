@@ -756,11 +756,10 @@ function handleInteractive(args) {
 }
 
 // REST API Server with endpoints for ontology operations
-function handleServe(args) {
+async function handleServe(args) {
   logCommand('--serve');
   const port = 3000;
   const ontDir = ensureOntologiesDir();
-
   const server = http.createServer((req, res) => {
     logCommand(`API Request: ${req.method} ${req.url}`);
     const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
@@ -837,18 +836,20 @@ function handleServe(args) {
     }
   });
 
-  // Bind server to 127.0.0.1 instead of unspecified to avoid connection issues in tests
+  // Bind server to 127.0.0.1
   server.listen(port, '127.0.0.1', () => {
     console.log(`Server started on port ${port}`);
   });
   
-  // Auto shutdown the server after 2000ms for dry-run purposes
-  setTimeout(() => {
-    server.close(() => {
-      console.log('Server stopped');
-      process.exit(0);
-    });
-  }, 2000);
+  // Auto shutdown the server after 3000ms for dry-run purposes
+  return new Promise((resolve) => {
+    setTimeout(() => {
+      server.close(() => {
+        console.log('Server stopped');
+        resolve();
+      });
+    }, 3000);
+  });
 }
 
 // Define interactiveCompleter for test auto-completion
@@ -859,7 +860,7 @@ function interactiveCompleter(loadedOntology, line) {
   return [hits.length ? hits : suggestions, line];
 }
 
-// Updated dispatchCommand to be async to support async handlers like --fetch
+// Updated dispatchCommand to be async to support async handlers like --fetch and --serve
 async function dispatchCommand(args) {
   if (args.includes('--interactive')) {
     handleInteractive(args);
@@ -910,7 +911,7 @@ async function dispatchCommand(args) {
     return;
   }
   if (args.includes('--serve')) {
-    handleServe(args);
+    await handleServe(args);
     return;
   }
   if (args.includes('--query')) {
@@ -932,7 +933,7 @@ async function dispatchCommand(args) {
   return console.log('Invalid command');
 }
 
-// Updated main to be async to support async handlers like --fetch
+// Updated main to be async to support async handlers like --fetch and --serve
 async function main() {
   const args = process.argv.slice(2);
   await dispatchCommand(args);
