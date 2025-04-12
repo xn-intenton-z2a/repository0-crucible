@@ -5,7 +5,8 @@ import { fileURLToPath } from 'url';
 import { dirname, join } from 'path';
 import { readFileSync, writeFileSync, existsSync, mkdirSync, appendFileSync } from 'fs';
 import dotenv from 'dotenv';
-import { z } from 'zod';
+// Removed unused zod import since custom validation is now implemented
+// import { z } from 'zod';
 
 // Load environment variables
 dotenv.config();
@@ -23,18 +24,19 @@ function logCommand(commandFlag) {
   appendFileSync(logFile, logEntry + "\n", { encoding: 'utf-8' });
 }
 
-// Utility: Get validated DEFAULT_TIMEOUT using Zod with enhanced logging for invalid inputs
+// Utility: Get validated DEFAULT_TIMEOUT with explicit handling for NaN and non-finite values
 function getDefaultTimeout() {
-  const timeoutSchema = z.preprocess(
-    (a) => Number(a),
-    z.number().refine(n => isFinite(n), { message: `Non-finite value '${process.env.DEFAULT_TIMEOUT}'` })
-  );
-  try {
-    return timeoutSchema.parse(process.env.DEFAULT_TIMEOUT);
-  } catch (error) {
-    console.error("DEFAULT_TIMEOUT not set; using default value of 5000 (invalid input: " + process.env.DEFAULT_TIMEOUT + ")");
+  const rawTimeout = process.env.DEFAULT_TIMEOUT;
+  const timeoutValue = Number(rawTimeout);
+  if (isNaN(timeoutValue)) {
+    console.error("DEFAULT_TIMEOUT is NaN; using default value of 5000");
     return 5000;
   }
+  if (!isFinite(timeoutValue)) {
+    console.error("DEFAULT_TIMEOUT not set; using default value of 5000 (invalid input: " + rawTimeout + ")");
+    return 5000;
+  }
+  return timeoutValue;
 }
 
 // Command handlers implemented inline

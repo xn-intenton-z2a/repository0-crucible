@@ -216,7 +216,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       env: { ...process.env, DEFAULT_TIMEOUT: 'not_a_number' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 5000');
-    expect(result.stderr).toContain('DEFAULT_TIMEOUT not set; using default value of 5000');
+    expect(result.stderr).toContain('DEFAULT_TIMEOUT is NaN; using default value of 5000');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
@@ -228,7 +228,8 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       env: { ...process.env, DEFAULT_TIMEOUT: '3000' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 3000');
-    expect(result.stderr).not.toContain('DEFAULT_TIMEOUT not set; using default value of 5000');
+    expect(result.stderr).not.toContain('DEFAULT_TIMEOUT is NaN');
+    expect(result.stderr).not.toContain('DEFAULT_TIMEOUT not set');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
@@ -253,6 +254,18 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 5000');
     expect(result.stderr).toContain('DEFAULT_TIMEOUT not set; using default value of 5000');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--help');
+  });
+
+  test('Environment variable DEFAULT_TIMEOUT fallback when NaN is provided', () => {
+    clearLogFile();
+    const result = spawnSync('node', [cliPath, '--help'], {
+      encoding: 'utf-8',
+      env: { ...process.env, DEFAULT_TIMEOUT: 'NaN' }
+    });
+    expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 5000');
+    expect(result.stderr).toContain('DEFAULT_TIMEOUT is NaN; using default value of 5000');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
