@@ -29,7 +29,8 @@ function readLogFile() {
   return '';
 }
 
-describe('End-to-End CLI Integration Tests', () => {
+
+describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--help flag displays usage information', () => {
     clearLogFile();
     const result = spawnSync('node', [cliPath, '--help'], { encoding: 'utf-8' });
@@ -200,8 +201,8 @@ describe('End-to-End CLI Integration Tests', () => {
 
   test('Environment variable DEFAULT_TIMEOUT fallback when non-numeric is provided', () => {
     clearLogFile();
-    const result = spawnSync('node', [cliPath, '--help'], { 
-      encoding: 'utf-8', 
+    const result = spawnSync('node', [cliPath, '--help'], {
+      encoding: 'utf-8',
       env: { ...process.env, DEFAULT_TIMEOUT: 'not_a_number' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 5000');
@@ -212,12 +213,12 @@ describe('End-to-End CLI Integration Tests', () => {
 
   test('Environment variable DEFAULT_TIMEOUT uses valid numeric value', () => {
     clearLogFile();
-    const result = spawnSync('node', [cliPath, '--help'], { 
-      encoding: 'utf-8', 
+    const result = spawnSync('node', [cliPath, '--help'], {
+      encoding: 'utf-8',
       env: { ...process.env, DEFAULT_TIMEOUT: '3000' }
     });
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT: 3000');
-    expect(result.stderr).not.toContain('Warning: Received non-finite value');
+    expect(result.stderr).not.toContain('Warning: Received non-finite');
     const logContent = readLogFile();
     expect(logContent).toContain('--help');
   });
