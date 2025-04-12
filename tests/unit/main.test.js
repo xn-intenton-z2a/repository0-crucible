@@ -550,7 +550,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     writeFileSync(ontologyFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
     const result = spawnSync('node', [cliPath, '--query-ontology', ontologyFile, 'search'], { encoding: 'utf-8' });
     const output = JSON.parse(result.stdout);
-    // Expect propertyValues or propertyKeys to contain search related results
+    // Expect propertyValues or propertyKeys to contain search related results; propertyKeys should always be present
     expect(output).toHaveProperty('propertyKeys');
     unlinkSync(ontologyFile);
   });

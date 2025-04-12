@@ -179,7 +179,7 @@ node src/lib/main.js --help
     node src/lib/main.js --build-ontology path/to/ontology.json
     ```
 
-- **Merge Ontology (New):**
+- **Merge Ontology (New):
   ```bash
   node src/lib/main.js --merge-ontology ontology1.json ontology2.json [output.json]
   ```

@@ -467,13 +467,9 @@ function handleQuery(args) {
           matchingValues.push({ key, value });
         }
       }
-      if (matchingKeys.length > 0) {
-        result.propertyKeys = matchingKeys;
-      }
-      if (matchingValues.length > 0) {
-        result.propertyValues = matchingValues;
-      }
-      if (Object.keys(result).length === 0) {
+      result.propertyKeys = matchingKeys;
+      result.propertyValues = matchingValues;
+      if (!result.name && !result.classes && matchingKeys.length === 0 && matchingValues.length === 0) {
         console.log(JSON.stringify({ message: "No matches found" }, null, 2));
       } else {
         console.log(JSON.stringify(result, null, 2));
@@ -498,13 +494,9 @@ function handleQuery(args) {
           matchingValues.push({ key, value });
         }
       }
-      if (matchingKeys.length > 0) {
-        result.propertyKeys = matchingKeys;
-      }
-      if (matchingValues.length > 0) {
-        result.propertyValues = matchingValues;
-      }
-      if (Object.keys(result).length === 0) {
+      result.propertyKeys = matchingKeys;
+      result.propertyValues = matchingValues;
+      if (!result.name && !result.classes && matchingKeys.length === 0 && matchingValues.length === 0) {
         console.log(JSON.stringify({ message: "No matches found" }, null, 2));
       } else {
         console.log(JSON.stringify(result, null, 2));
@@ -782,13 +774,9 @@ function handleQueryOntology(args) {
           matchingValues.push({ key, value });
         }
       }
-      if (matchingKeys.length > 0) {
-        result.propertyKeys = matchingKeys;
-      }
-      if (matchingValues.length > 0) {
-        result.propertyValues = matchingValues;
-      }
-      if (Object.keys(result).length === 0) {
+      result.propertyKeys = matchingKeys;
+      result.propertyValues = matchingValues;
+      if (!result.name && !result.classes && matchingKeys.length === 0 && matchingValues.length === 0) {
         console.log(JSON.stringify({ message: "No matches found" }, null, 2));
       } else {
         console.log(JSON.stringify(result, null, 2));
@@ -813,13 +801,9 @@ function handleQueryOntology(args) {
           matchingValues.push({ key, value });
         }
       }
-      if (matchingKeys.length > 0) {
-        result.propertyKeys = matchingKeys;
-      }
-      if (matchingValues.length > 0) {
-        result.propertyValues = matchingValues;
-      }
-      if (Object.keys(result).length === 0) {
+      result.propertyKeys = matchingKeys;
+      result.propertyValues = matchingValues;
+      if (!result.name && !result.classes && matchingKeys.length === 0 && matchingValues.length === 0) {
         console.log(JSON.stringify({ message: "No matches found" }, null, 2));
       } else {
         console.log(JSON.stringify(result, null, 2));
