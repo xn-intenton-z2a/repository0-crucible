@@ -2,16 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 11,
-  "issuesClosedLastHour": 2,
+  "openIssues": 10,
+  "issuesClosedLastHour": 4,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "prDetails": [],
   "diffMinutes": 0,
-  "diffMinutesMain": 3,
-  "commitsLastHour": 1,
-  "commitsLastDay": 19,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 2,
+  "commitsLastDay": 20,
   "lastFiveCommitMessages": [
+    {
+      "time": "04:11",
+      "message": "Implemented mergeOntologies functionality and added --merge-pers..."
+    },
     {
       "time": "04:07",
       "message": "Inlined the missing GraphDB exporter function into main.js and u..."
@@ -27,23 +31,14 @@
     {
       "time": "00:40",
       "message": "Maintain ONTOLOGY_MANAGER"
-    },
-    {
-      "time": "00:20",
-      "message": "Maintain ONTOLOGY_MANAGER"
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1379",
-        "minutesSinceLastCommit": 0
-      }
-    ]
+    "count": 0,
+    "details": []
   },
   "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T04:10:07.556Z"
+  "generatedAt": "2025-04-12T04:12:11.214Z"
 }
