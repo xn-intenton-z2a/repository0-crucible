@@ -2,21 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 8,
-  "issuesClosedLastHour": 12,
+  "openIssues": 6,
+  "issuesClosedLastHour": 14,
   "issuesClosedLastDay": 100,
-  "openPRs": 1,
-  "prDetails": [
-    {
-      "title": "Extracted log directory creation into a helper function for improved robustness (fixes #1444)",
-      "ageMinutes": 1
-    }
-  ],
-  "diffMinutes": 1,
-  "diffMinutesMain": 3,
-  "commitsLastHour": 6,
-  "commitsLastDay": 48,
+  "openPRs": 0,
+  "prDetails": [],
+  "diffMinutes": 0,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 7,
+  "commitsLastDay": 49,
   "lastFiveCommitMessages": [
+    {
+      "time": "11:12",
+      "message": "Extracted log directory creation into a helper function for impr..."
+    },
     {
       "time": "11:08",
       "message": "Update from agentic-lib"
@@ -32,23 +31,14 @@
     {
       "time": "10:57",
       "message": "Added CLI commands for build-intermediate build-enhanced and ser..."
-    },
-    {
-      "time": "10:41",
-      "message": "Remove issue-creator workflow file\n\nDeleted the `issue-creator.y..."
     }
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      {
-        "branch": "agentic-lib-issue-1444",
-        "minutesSinceLastCommit": 2
-      }
-    ]
+    "count": 0,
+    "details": []
   },
-  "averagePRAge": 1,
+  "averagePRAge": 0,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T11:11:36.598Z"
+  "generatedAt": "2025-04-12T11:13:08.691Z"
 }
