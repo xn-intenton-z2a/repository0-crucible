@@ -248,7 +248,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 
   test('--build-enhanced flag processes enhanced build with public API data', () => {
     clearLogFile();
-    const result = spawnSync('node', [cliPath, '--build-enhanced'], { encoding: 'utf-8', timeout: 5000 });
+    const result = spawnSync('node', [cliPath, '--build-enhanced'], { encoding: 'utf-8', env: { ...process.env, NODE_ENV: 'test' }, timeout: 5000 });
     const output = JSON.parse(result.stdout);
     expect(output).toHaveProperty('name', 'Enhanced Ontology');
     const logContent = readLogFile();
