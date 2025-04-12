@@ -2,13 +2,18 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "openIssues": 4,
+  "openIssues": 5,
   "issuesClosedLastHour": 6,
   "issuesClosedLastDay": 100,
-  "openPRs": 0,
-  "prDetails": [],
-  "diffMinutes": 0,
-  "diffMinutesMain": 8,
+  "openPRs": 1,
+  "prDetails": [
+    {
+      "title": "No changes applied non-actionable prompt received. (fixes #1462)",
+      "ageMinutes": 1
+    }
+  ],
+  "diffMinutes": 1,
+  "diffMinutesMain": 10,
   "commitsLastHour": 3,
   "commitsLastDay": 62,
   "lastFiveCommitMessages": [
@@ -38,12 +43,12 @@
     "details": [
       {
         "branch": "agentic-lib-issue-1462",
-        "minutesSinceLastCommit": 0
+        "minutesSinceLastCommit": 2
       }
     ]
   },
-  "averagePRAge": 0,
+  "averagePRAge": 1,
   "testStatus": "PASS",
   "testsLastPassedMinutes": 15,
-  "generatedAt": "2025-04-12T14:20:10.499Z"
+  "generatedAt": "2025-04-12T14:21:59.783Z"
 }
