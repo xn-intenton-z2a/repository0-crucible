@@ -856,14 +856,15 @@ function handleServe(args) {
   });
 
   server.listen(port, () => {
-    console.log(`Server started on port ${port}`);
+    process.stdout.write(`Server started on port ${port}\n`);
   });
   
   // Auto shutdown the server after 2000ms for dry-run purposes
   setTimeout(() => {
     server.close(() => {
-      console.log('Server stopped');
-      process.exit(0);
+      process.stdout.write('Server stopped\n', () => {
+        process.exit(0);
+      });
     });
   }, 2000);
 }

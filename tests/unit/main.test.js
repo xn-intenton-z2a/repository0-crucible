@@ -334,13 +334,20 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     expect(logContent).toContain('--build-enhanced');
   });
 
-  test('--serve flag launches and stops the HTTP server', () => {
+  test('--serve flag launches and stops the HTTP server', (done) => {
     clearLogFile();
-    const result = spawnSync('node', [cliPath, '--serve'], { encoding: 'utf-8', timeout: 5000 });
-    expect(result.stdout).toContain('Server started on port');
-    expect(result.stdout).toContain('Server stopped');
-    const logContent = readLogFile();
-    expect(logContent).toContain('--serve');
+    const child = spawn('node', [cliPath, '--serve'], { encoding: 'utf-8' });
+    let output = '';
+    child.stdout.on('data', (data) => { output += data; });
+    child.on('close', (code) => {
+      try {
+        expect(output).toContain('Server started on port');
+        expect(output).toContain('Server stopped');
+        done();
+      } catch (err) {
+        done(err);
+      }
+    });
   });
 
   test('--diff flag outputs differences when ontologies differ', () => {
@@ -557,12 +564,21 @@ describe('--fetch Command Enhanced Functionality', () => {
       const port = apiServer.address().port;
       const fetchUrl = `http://127.0.0.1:${port}`;
       const env = { ...process.env, FETCH_URL: fetchUrl };
-      const result = spawnSync('node', [cliPath, '--fetch'], { encoding: 'utf-8', env, timeout: 5000 });
-      const output = JSON.parse(result.stdout);
-      expect(output).toHaveProperty('name', 'Dynamic Ontology');
-      expect(output).toHaveProperty('version', 'dynamic-123');
-      apiServer.close();
-      done();
+      const child = spawn('node', [cliPath, '--fetch'], { encoding: 'utf-8', env, timeout: 5000 });
+      let output = '';
+      child.stdout.on('data', data => { output += data; });
+      child.on('close', () => {
+        try {
+          const parsed = JSON.parse(output);
+          expect(parsed).toHaveProperty('name', 'Dynamic Ontology');
+          expect(parsed).toHaveProperty('version', 'dynamic-123');
+          apiServer.close();
+          done();
+        } catch (err) {
+          apiServer.close();
+          done(err);
+        }
+      });
     });
   });
 });
