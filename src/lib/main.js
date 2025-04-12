@@ -126,6 +126,7 @@ function handleHelp(args, { getDefaultTimeout }) {
   --interactive          Launch the interactive mode for ontology exploration
   --query <ontologyFile> <searchTerm> [--regex]    Search ontology content for a term. Use '--regex' to interpret the search term as a regex pattern.
   --fetch [outputFile]    Fetch ontology from public data source
+  --diff <file1> <file2>    Compare two ontology JSON files and output differences
 Using DEFAULT_TIMEOUT: ${timeout}`);
 }
 
@@ -318,7 +319,7 @@ function handleDiagnostics(args) {
       platform: process.platform,
       arch: process.arch
     },
-    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--export-owl','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--serve','--interactive','--query','--fetch'],
+    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--export-owl','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--serve','--interactive','--query','--fetch','--diff'],
     processArgs: process.argv.slice(2),
     DEFAULT_TIMEOUT: getDefaultTimeout()
   };
@@ -523,6 +524,78 @@ function handleFetch(args) {
   }
 }
 
+// New handler: --diff command for comparing two ontologies
+function handleDiff(args) {
+  logCommand('--diff');
+  const index = args.indexOf('--diff');
+  const file1 = args[index + 1];
+  const file2 = args[index + 2];
+  if (!file1 || !file2) {
+    console.error('LOG_ERR_DIFF_USAGE Missing one or both ontology file paths');
+    return;
+  }
+  try {
+    const data1 = readFileSync(file1, { encoding: 'utf-8' });
+    const data2 = readFileSync(file2, { encoding: 'utf-8' });
+    const ont1 = JSON.parse(data1);
+    const ont2 = JSON.parse(data2);
+    // Validate ontologies
+    ontologySchema.parse(ont1);
+    ontologySchema.parse(ont2);
+
+    const diff = {};
+    // Compare name
+    if (ont1.name !== ont2.name) {
+      diff.name = { from: ont1.name, to: ont2.name };
+    }
+    // Compare version
+    if (ont1.version !== ont2.version) {
+      diff.version = { from: ont1.version, to: ont2.version };
+    }
+    // Compare classes
+    const classesSet1 = new Set(ont1.classes);
+    const classesSet2 = new Set(ont2.classes);
+    const addedClasses = [...classesSet2].filter(x => !classesSet1.has(x));
+    const removedClasses = [...classesSet1].filter(x => !classesSet2.has(x));
+    if (addedClasses.length || removedClasses.length) {
+      diff.classes = {};
+      if (addedClasses.length) diff.classes.added = addedClasses;
+      if (removedClasses.length) diff.classes.removed = removedClasses;
+    }
+    // Compare properties
+    const keys1 = new Set(Object.keys(ont1.properties));
+    const keys2 = new Set(Object.keys(ont2.properties));
+    const addedProps = [...keys2].filter(x => !keys1.has(x));
+    const removedProps = [...keys1].filter(x => !keys2.has(x));
+    const modifiedProps = [];
+    for (const key of keys1) {
+      if (keys2.has(key) && JSON.stringify(ont1.properties[key]) !== JSON.stringify(ont2.properties[key])) {
+        modifiedProps.push({ key, from: ont1.properties[key], to: ont2.properties[key] });
+      }
+    }
+    if (addedProps.length || removedProps.length || modifiedProps.length) {
+      diff.properties = {};
+      if (addedProps.length) diff.properties.added = Object.fromEntries(addedProps.map(k => [k, ont2.properties[k]]));
+      if (removedProps.length) diff.properties.removed = Object.fromEntries(removedProps.map(k => [k, ont1.properties[k]]));
+      if (modifiedProps.length) diff.properties.modified = modifiedProps;
+    }
+
+    if (Object.keys(diff).length === 0) {
+      console.log(JSON.stringify({ message: "No differences found" }, null, 2));
+    } else {
+      console.log(JSON.stringify(diff, null, 2));
+    }
+  } catch (err) {
+    if (err instanceof Error && err.name === 'ZodError') {
+      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed for diff', { command: '--diff', error: err.errors });
+      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
+    } else {
+      logError('LOG_ERR_DIFF', 'Error comparing ontologies', { command: '--diff', error: err.message });
+      console.error('LOG_ERR_DIFF', err.message);
+    }
+  }
+}
+
 // Interactive mode for ontology exploration
 function handleInteractive(args) {
   logCommand('--interactive');
@@ -656,6 +729,9 @@ function dispatchCommand(args) {
   }
   if (args.includes('--fetch')) {
     return handleFetch(args);
+  }
+  if (args.includes('--diff')) {
+    return handleDiff(args);
   }
   if (args.includes('--help') || args.length === 0) {
     return handleHelp(args, { getDefaultTimeout });

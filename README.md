@@ -38,7 +38,7 @@ npm install repository0-crucible
 - **System Refresh:** Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.
 - **Build Commands:**
   - **Intermediate Build:** Use --build-intermediate to process and output an intermediate build version of the ontology.
-  - **Enhanced Build:** Use --build-enhanced to fetch data from a public API, transform it into an enriched ontology JSON, and output the enhanced build version. This command integrates external public data sources into the ontology creation process.
+  - **Enhanced Build:** Use --build-enhanced to fetch data from a public API, transform it into an enriched ontology JSON, and output the enhanced build version.
 - **REST API Server:** Use the --serve flag to launch an HTTP server exposing comprehensive REST API endpoints for ontology operations. The following endpoints are available:
   - **GET /diagnostics:** Returns a diagnostic report (same as CLI diagnostics).
   - **GET /ontology:** Returns a JSON list of persisted ontology definitions.
@@ -56,6 +56,40 @@ npm install repository0-crucible
 - **Export OWL/Turtle Format:** Use the **--export-owl** command to convert a JSON ontology into a basic OWL representation in Turtle format. The output includes standard prefixes (owl, rdf, ex) and translates ontology classes and properties into OWL declarations. When an output file is provided, the result is saved; otherwise, it is printed to STDOUT.
 - **Zod Schema Validation:** Ontology JSON files are validated using a strict Zod schema to ensure they contain the required properties (name, version, classes, and properties) with the correct data types. This integration provides clearer error messages on invalid ontology formats.
 - **Non-deprecated Package Import:** The package version from package.json is now imported using a file read method to avoid using deprecated import assertions.
+
+### New Feature: Ontology Difference Comparison (--diff)
+
+A new command, **--diff**, has been added. It compares two ontology JSON files and outputs their differences in a structured JSON format. The command performs the following steps:
+
+1. Reads, parses, and validates both ontology files using the Zod schema.
+2. Compares key fields such as name, version, classes, and properties.
+   - For classes, it reports additions and removals.
+   - For properties, it reports added, removed, and modified keys and values.
+3. Outputs a JSON object representing the differences. If no differences are found, it returns a message stating "No differences found".
+
+**Usage Example:**
+
+```bash
+node src/lib/main.js --diff path/to/ontology1.json path/to/ontology2.json
+```
+
+The output will be a JSON object similar to:
+
+```json
+{
+  "name": { "from": "OntologyA", "to": "OntologyB" },
+  "version": { "from": "1.0", "to": "2.0" },
+  "classes": {
+    "added": ["Class3"],
+    "removed": ["Class1"]
+  },
+  "properties": {
+    "added": { "propC": "valueC" },
+    "removed": { "propB": "valueB" },
+    "modified": [{ "key": "propA", "from": "valueA", "to": "valueA_modified" }]
+  }
+}
+```
 
 ## Usage
 
@@ -116,65 +150,48 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --diagnostics
   ```
-  This command outputs a detailed JSON report with diagnostic information.
 
 - **System Refresh:**
   ```bash
   node src/lib/main.js --refresh
   ```
-  This command reinitializes the system state by clearing cached logs and resetting any internal states.
 
 - **Intermediate Build:**
   ```bash
   node src/lib/main.js --build-intermediate
   ```
-  Processes and outputs an intermediate build version of the ontology.
 
 - **Enhanced Build:**
   ```bash
   node src/lib/main.js --build-enhanced
   ```
-  Fetches data from a public API, transforms it into an enriched ontology JSON, and outputs the enhanced build version.
 
 - **REST API Server:**
   ```bash
   node src/lib/main.js --serve
   ```
-  Launches an HTTP server that exposes the following endpoints:
-    - **GET /diagnostics**: Returns diagnostic information.
-    - **GET /ontology**: Returns a list of persisted ontologies.
-    - **POST /ontology**: Creates a new ontology from a JSON payload.
-    - **PUT /ontology**: Updates an existing ontology; requires an "id" field.
-    - **DELETE /ontology**: Deletes an ontology specified by an "id" query parameter.
 
 - **Interactive Mode with Auto-Completion and Command History:**
   ```bash
   node src/lib/main.js --interactive
   ```
-  Launches an interactive session where you can type commands. The session supports:
-  - Auto-completion for base commands as well as dynamic suggestions (e.g., loaded ontology classes) when available.
-  - Navigation of previous commands using the up/down arrow keys.
-  - Commands such as:
-    - load <file> to load an ontology,
-    - show to display the loaded ontology,
-    - list-classes to list ontology classes,
-    - help for interactive help,
-    - exit to leave interactive mode.
 
 - **Ontology Content Query:**
   ```bash
   node src/lib/main.js --query path/to/ontology.json searchTerm [--regex]
-  ```
-  Use the optional `--regex` flag to interpret the search term as a regular expression. For example, to match an ontology name exactly:
-  ```bash
-  node src/lib/main.js --query path/to/ontology.json "^OntologyName$" --regex
   ```
 
 - **Fetch Ontology from Public Data Source:**
   ```bash
   node src/lib/main.js --fetch [path/to/output.json]
   ```
-  When no output file is provided, the fetched ontology JSON is printed to STDOUT. If an output file is specified, the ontology JSON is persisted to that file.
+
+- **Ontology Difference Comparison:**
+  ```bash
+  node src/lib/main.js --diff path/to/ontology1.json path/to/ontology2.json
+  ```
+
+  This command compares two ontology JSON files and outputs a structured JSON diff. If no differences are detected, it outputs a message indicating "No differences found".
 
 ## Environment Variable Configuration
 
@@ -182,7 +199,7 @@ The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. 
 
 ## End-to-End Integration Tests
 
-A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch and export-owl functionalities. To run the integration tests:
+A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch, export-owl, and diff functionalities. To run the integration tests:
 
 ```bash
 npm run test:e2e
