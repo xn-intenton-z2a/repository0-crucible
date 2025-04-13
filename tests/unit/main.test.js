@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main, query } from "@src/lib/main.js";
+import { main, query, diagnostics } from "@src/lib/main.js";
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -21,6 +21,17 @@ describe("Query Command Output", () => {
     process.argv = ["node", "src/lib/main.js", "--query"];
     query(["--query"]);
     expect(logSpy).toHaveBeenCalledWith("Querying OWL ontologies (Feature under development)");
+    logSpy.mockRestore();
+  });
+});
+
+describe("Diagnostics Command Output", () => {
+  test("should log diagnostics info", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const args = ["--diagnostics"];
+    diagnostics(args);
+    expect(logSpy).toHaveBeenCalledWith("System Diagnostics:");
+    expect(logSpy).toHaveBeenCalledWith(`Node.js version: ${process.version}`);
     logSpy.mockRestore();
   });
 });
