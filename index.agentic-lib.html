@@ -93,8 +93,13 @@ Launch the REST API server using the --serve flag. The server provides the follo
 </li>
 <li class="md-github"><strong class="md-github">Ontology Content Query:</strong> Use the <strong class="md-github">--query</strong> command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the <code class="md-github">--regex</code> flag to interpret the search term as a regular expression.</li>
 <li class="md-github"><strong class="md-github">Fetch Ontology from Public Data Source:</strong> <strong class="md-github">Enhanced!</strong> Use the <strong class="md-github">--fetch</strong> command to dynamically retrieve ontology data from a public API. If the environment variable FETCH_URL is set, the CLI will perform an HTTP GET request to that URL and transform the returned JSON into a valid ontology. If FETCH_URL is not set or the fetch fails, it will fall back to a default dummy ontology.</li>
+<li class="md-github"><strong class="md-github">Export Formats:</strong>
+<ul class="md-github">
 <li class="md-github"><strong class="md-github">Export OWL/Turtle Format:</strong> Use the <strong class="md-github">--export-owl</strong> command to convert a JSON ontology into an OWL representation in Turtle format.</li>
 <li class="md-github"><strong class="md-github">Export RDF/XML Format:</strong> <strong class="md-github">New!</strong> Use the <strong class="md-github">--export-xml</strong> command to convert a JSON ontology into RDF/XML format, including XML declaration and RDF/XML namespace mappings.</li>
+<li class="md-github"><strong class="md-github">Export JSON-LD Format:</strong> <strong class="md-github">New!</strong> Use the <strong class="md-github">--export-jsonld</strong> command to convert a JSON ontology into a JSON-LD format. The output includes an <code class="md-github">@context</code> with namespace keys (e.g., &quot;owl&quot;, &quot;rdf&quot;, &quot;ex&quot;) and maps the ontology's name, version, classes (as OWL classes), and properties into a JSON-LD structured document.</li>
+</ul>
+</li>
 <li class="md-github"><strong class="md-github">Ontology Difference Comparison:</strong> Use the <strong class="md-github">--diff</strong> command to compare two ontology JSON files and output the differences.</li>
 <li class="md-github"><strong class="md-github">New Commands:</strong>
 <ul class="md-github">
@@ -188,8 +193,13 @@ Launch the REST API server using the --serve flag. The server provides the follo
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Export Ontology to RDF/XML Format (New):</strong></p>
+<p class="md-github"><strong class="md-github">Export Ontology to RDF/XML Format:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-xml path/to/ontology.json [path/to/output.xml]
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Export Ontology to JSON-LD Format:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-jsonld path/to/ontology.json [path/to/output.json]
 </code></pre>
 </li>
 <li class="md-github">
@@ -247,7 +257,6 @@ Launch the REST API server using the --serve flag. The server provides the follo
 <p class="md-github"><strong class="md-github">Interactive Mode with Auto-Completion, Command History, and Editing:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --interactive
 </code></pre>
-<p class="md-github">In interactive mode, in addition to the editing commands, your command history is automatically saved and reloaded from logs/cli_history.txt, enabling you to use arrow keys to navigate through previous commands.</p>
 </li>
 <li class="md-github">
 <p class="md-github">**Ontology Content Query (Legacy):</p>
@@ -272,7 +281,7 @@ Launch the REST API server using the --serve flag. The server provides the follo
 <p class="md-github">The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, the tool logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If a non-numeric or non-finite value is provided, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value.</p>
 <p class="md-github">For the enhanced --fetch command, you can set a FETCH_URL environment variable to dynamically retrieve ontology data from a public API endpoint. If the fetch fails or FETCH_URL is not provided, the command falls back to a default dummy ontology.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="end-to-end-integration-tests" href="#end-to-end-integration-tests"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>End-to-End Integration Tests</h2>
-<p class="md-github">A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements and editing functionality, ontology query functionality, and the new fetch, export-owl, export-xml, diff, build-ontology, merge-ontology, query-ontology, and WebSocket notification functionalities. To run the integration tests:</p>
+<p class="md-github">A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements and editing functionality, ontology query functionality, and the new fetch, export-owl, export-xml, export-jsonld, diff, build-ontology, merge-ontology, query-ontology, and WebSocket notification functionalities. To run the integration tests:</p>
 <pre class="md-github"><code class="md-github language-bash">npm run test:e2e
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
@@ -282,7 +291,7 @@ Launch the REST API server using the --serve flag. The server provides the follo
 
   </section>
   <footer>
-    <p>Generated on 2025-04-13T13:09:35.415Z</p>
+    <p>Generated on 2025-04-13T13:09:47.058Z</p>
   </footer>
 </body>
 </html>
