@@ -127,6 +127,60 @@ function logError(code, messageStr, details) {
   }
 }
 
+// New: Audit logging functions for ontology changes
+function computeOntologyDiff(oldOntology, newOntology) {
+  const diff = {};
+  if (oldOntology.name !== newOntology.name) {
+    diff.name = { before: oldOntology.name, after: newOntology.name };
+  }
+  if (oldOntology.version !== newOntology.version) {
+    diff.version = { before: oldOntology.version, after: newOntology.version };
+  }
+  const oldClasses = new Set(oldOntology.classes || []);
+  const newClasses = new Set(newOntology.classes || []);
+  const addedClasses = [...newClasses].filter(x => !oldClasses.has(x));
+  const removedClasses = [...oldClasses].filter(x => !newClasses.has(x));
+  if (addedClasses.length || removedClasses.length) {
+    diff.classes = {};
+    if (addedClasses.length) diff.classes.added = addedClasses;
+    if (removedClasses.length) diff.classes.removed = removedClasses;
+  }
+  const oldProps = oldOntology.properties || {};
+  const newProps = newOntology.properties || {};
+  const oldKeys = new Set(Object.keys(oldProps));
+  const newKeys = new Set(Object.keys(newProps));
+  const addedProps = [...newKeys].filter(x => !oldKeys.has(x));
+  const removedProps = [...oldKeys].filter(x => !newKeys.has(x));
+  const modifiedProps = [];
+  for (const key of oldKeys) {
+    if (newKeys.has(key) && JSON.stringify(oldProps[key]) !== JSON.stringify(newProps[key])) {
+      modifiedProps.push({ key, before: oldProps[key], after: newProps[key] });
+    }
+  }
+  if (addedProps.length || removedProps.length || modifiedProps.length) {
+    diff.properties = {};
+    if (addedProps.length) diff.properties.added = Object.fromEntries(addedProps.map(key => [key, newProps[key]]));
+    if (removedProps.length) diff.properties.removed = Object.fromEntries(removedProps.map(key => [key, oldProps[key]]));
+    if (modifiedProps.length) diff.properties.modified = modifiedProps;
+  }
+  return diff;
+}
+
+function logOntologyChange(operationType, diff) {
+  try {
+    const logDir = ensureLogDir();
+    const auditFile = join(logDir, 'ontology_audit.log');
+    const entry = {
+      timestamp: new Date().toISOString(),
+      operation: operationType,
+      diff: diff
+    };
+    appendFileSync(auditFile, JSON.stringify(entry, null, 2) + "\n", { encoding: 'utf-8' });
+  } catch (err) {
+    console.error("Failed to log ontology change:", err.message);
+  }
+}
+
 // Define ontology schema using Zod for validation
 const ontologySchema = z.object({
   name: z.string(),
@@ -229,6 +283,8 @@ function handlePersist(args) {
     writeFileSync(outputFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
     console.log(`Ontology persisted to ${outputFile}`);
     broadcastNotification('ontologyPersisted', { outputFile, ontologyName: ontology.name });
+    // Audit log persist operation - no previous state available
+    logOntologyChange('persist', { previous: null, new: ontology });
   } catch (err) {
     logError('LOG_ERR_PERSIST_WRITE', 'Error persisting ontology', { command: '--persist', error: err.message, outputFile });
     console.error('LOG_ERR_PERSIST_WRITE', err.message);
@@ -440,6 +496,8 @@ function handleMergePersist(args) {
     writeFileSync(outputFile, JSON.stringify(merged, null, 2), { encoding: 'utf-8' });
     console.log(`Merged ontology persisted to ${outputFile}`);
     broadcastNotification('ontologyMerged', { outputFile, mergedOntologyName: merged.name });
+    // Audit log merge-persist: log inputs and merged result
+    logOntologyChange('merge-persist', { ontology1, ontology2, merged });
   } catch (err) {
     if (err instanceof Error && err.name === 'ZodError') {
       logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed during merge', { command: '--merge-persist', error: err.errors });
@@ -827,6 +885,8 @@ function handleMergeOntology(args) {
       console.log(JSON.stringify(merged, null, 2));
     }
     broadcastNotification('ontologyMerged', { mergedOntologyName: merged.name });
+    // Audit log merge-ontology
+    logOntologyChange('merge-ontology', { ontology1, ontology2, merged });
   } catch (err) {
     logError('LOG_ERR_MERGE_ONTOLOGY', 'Error merging ontologies', { error: err.message });
     console.error('LOG_ERR_MERGE_ONTOLOGY', err.message);
@@ -982,11 +1042,14 @@ function handleInteractive(args) {
             } else if (tokens.length < 2) {
               console.log('Usage: add-class <className>');
             } else {
+              const oldOntology = JSON.parse(JSON.stringify(loadedOntology));
               const newClass = tokens[1];
               if (!loadedOntology.classes.includes(newClass)) {
                 loadedOntology.classes.push(newClass);
                 console.log(`Class '${newClass}' added.`);
                 logCommand('interactive: add-class');
+                const diff = computeOntologyDiff(oldOntology, loadedOntology);
+                logOntologyChange('add-class', diff);
               } else {
                 console.log(`Class '${newClass}' already exists.`);
               }
@@ -998,12 +1061,15 @@ function handleInteractive(args) {
             } else if (tokens.length < 2) {
               console.log('Usage: remove-class <className>');
             } else {
+              const oldOntology = JSON.parse(JSON.stringify(loadedOntology));
               const remClass = tokens[1];
               const index = loadedOntology.classes.indexOf(remClass);
               if (index !== -1) {
                 loadedOntology.classes.splice(index, 1);
                 console.log(`Class '${remClass}' removed.`);
                 logCommand('interactive: remove-class');
+                const diff = computeOntologyDiff(oldOntology, loadedOntology);
+                logOntologyChange('remove-class', diff);
               } else {
                 console.log(`Class '${remClass}' not found.`);
               }
@@ -1015,12 +1081,15 @@ function handleInteractive(args) {
             } else if (tokens.length < 3) {
               console.log('Usage: add-property <key> <value>');
             } else {
+              const oldOntology = JSON.parse(JSON.stringify(loadedOntology));
               const key = tokens[1];
               const value = tokens.slice(2).join(' ');
               if (!(key in loadedOntology.properties)) {
                 loadedOntology.properties[key] = value;
                 console.log(`Property '${key}' added with value '${value}'.`);
                 logCommand('interactive: add-property');
+                const diff = computeOntologyDiff(oldOntology, loadedOntology);
+                logOntologyChange('add-property', diff);
               } else {
                 console.log(`Property '${key}' already exists. Use update-property to change its value.`);
               }
@@ -1032,11 +1101,14 @@ function handleInteractive(args) {
             } else if (tokens.length < 3) {
               console.log('Usage: update-property <key> <newValue>');
             } else {
+              const oldOntology = JSON.parse(JSON.stringify(loadedOntology));
               const key = tokens[1];
               const newValue = tokens.slice(2).join(' ');
               loadedOntology.properties[key] = newValue;
               console.log(`Property '${key}' updated to '${newValue}'.`);
               logCommand('interactive: update-property');
+              const diff = computeOntologyDiff(oldOntology, loadedOntology);
+              logOntologyChange('update-property', diff);
             }
             break;
           case 'remove-property':
@@ -1045,11 +1117,14 @@ function handleInteractive(args) {
             } else if (tokens.length < 2) {
               console.log('Usage: remove-property <key>');
             } else {
+              const oldOntology = JSON.parse(JSON.stringify(loadedOntology));
               const key = tokens[1];
               if (key in loadedOntology.properties) {
                 delete loadedOntology.properties[key];
                 console.log(`Property '${key}' removed.`);
                 logCommand('interactive: remove-property');
+                const diff = computeOntologyDiff(oldOntology, loadedOntology);
+                logOntologyChange('remove-property', diff);
               } else {
                 console.log(`Property '${key}' not found.`);
               }
@@ -1157,11 +1232,14 @@ function handleInteractive(args) {
           } else if (tokens.length < 2) {
             console.log('Usage: add-class <className>');
           } else {
+            const oldOntology = JSON.parse(JSON.stringify(loadedOntology));
             const newClass = tokens[1];
             if (!loadedOntology.classes.includes(newClass)) {
               loadedOntology.classes.push(newClass);
               console.log(`Class '${newClass}' added.`);
               logCommand('interactive: add-class');
+              const diff = computeOntologyDiff(oldOntology, loadedOntology);
+              logOntologyChange('add-class', diff);
             } else {
               console.log(`Class '${newClass}' already exists.`);
             }
@@ -1173,12 +1251,15 @@ function handleInteractive(args) {
           } else if (tokens.length < 2) {
             console.log('Usage: remove-class <className>');
           } else {
+            const oldOntology = JSON.parse(JSON.stringify(loadedOntology));
             const remClass = tokens[1];
             const index = loadedOntology.classes.indexOf(remClass);
             if (index !== -1) {
               loadedOntology.classes.splice(index, 1);
               console.log(`Class '${remClass}' removed.`);
               logCommand('interactive: remove-class');
+              const diff = computeOntologyDiff(oldOntology, loadedOntology);
+              logOntologyChange('remove-class', diff);
             } else {
               console.log(`Class '${remClass}' not found.`);
             }
@@ -1190,12 +1271,15 @@ function handleInteractive(args) {
           } else if (tokens.length < 3) {
             console.log('Usage: add-property <key> <value>');
           } else {
+            const oldOntology = JSON.parse(JSON.stringify(loadedOntology));
             const key = tokens[1];
             const value = tokens.slice(2).join(' ');
             if (!(key in loadedOntology.properties)) {
               loadedOntology.properties[key] = value;
               console.log(`Property '${key}' added with value '${value}'.`);
               logCommand('interactive: add-property');
+              const diff = computeOntologyDiff(oldOntology, loadedOntology);
+              logOntologyChange('add-property', diff);
             } else {
               console.log(`Property '${key}' already exists. Use update-property to change its value.`);
             }
@@ -1207,11 +1291,14 @@ function handleInteractive(args) {
           } else if (tokens.length < 3) {
             console.log('Usage: update-property <key> <newValue>');
           } else {
+            const oldOntology = JSON.parse(JSON.stringify(loadedOntology));
             const key = tokens[1];
             const newValue = tokens.slice(2).join(' ');
             loadedOntology.properties[key] = newValue;
             console.log(`Property '${key}' updated to '${newValue}'.`);
             logCommand('interactive: update-property');
+            const diff = computeOntologyDiff(oldOntology, loadedOntology);
+            logOntologyChange('update-property', diff);
           }
           break;
         case 'remove-property':
@@ -1220,11 +1307,14 @@ function handleInteractive(args) {
           } else if (tokens.length < 2) {
             console.log('Usage: remove-property <key>');
           } else {
+            const oldOntology = JSON.parse(JSON.stringify(loadedOntology));
             const key = tokens[1];
             if (key in loadedOntology.properties) {
               delete loadedOntology.properties[key];
               console.log(`Property '${key}' removed.`);
               logCommand('interactive: remove-property');
+              const diff = computeOntologyDiff(oldOntology, loadedOntology);
+              logOntologyChange('remove-property', diff);
             } else {
               console.log(`Property '${key}' not found.`);
             }

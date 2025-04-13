@@ -32,6 +32,7 @@ npm install repository0-crucible
 - **Custom Ontology Persistence:** Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.
 - **Enhanced Environment Variable Validation:** The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, it logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If DEFAULT_TIMEOUT is provided but is non-numeric or non-finite, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value.
 - **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log). Error logs include structured error codes (e.g., LOG_ERR_*) and detailed contextual information.
+- **Audit Logging of Ontology Changes:** **New!** The tool now records audit logs for ontology modifications. Whenever an ontology is changed (e.g., adding or removing classes or properties, merging ontologies, or persisting a new ontology), a detailed JSON diff is computed and appended to logs/ontology_audit.log with a timestamp and operation type, enhancing traceability and accountability.
 - **Diagnostics Mode:** Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.
 - **System Refresh:** Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.
 - **Build Commands:**
@@ -110,6 +111,10 @@ The server listens on port 3000 and will automatically shut down after a short p
 ## WebSocket Notifications
 
 The server now includes a WebSocket endpoint on the same port (ws://localhost:3000). Clients can connect to this endpoint to receive real-time JSON notifications about ontology events (e.g., when an ontology is persisted, merged, or built).
+
+## Audit Logging
+
+In addition to standard logging, ontology changes are audited. Every time an ontology is modified via interactive commands (like adding/removing classes or properties) or non-interactive commands (such as merging or persisting ontologies), a detailed JSON log entry with the differences (before and after) is recorded in the file logs/ontology_audit.log.
 
 ## Usage
 

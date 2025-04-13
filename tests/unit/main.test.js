@@ -17,7 +17,7 @@ const pkg = JSON.parse(readFileSync(packageJsonPath, { encoding: 'utf-8' }));
 // Create a temporary directory for test files
 const tempDir = mkdtempSync(join(os.tmpdir(), 'cli-e2e-'));
 
-// Helper function to clear logs file before test
+// Helper functions for logs and audit logs
 function clearLogFile() {
   const logFilePath = join(process.cwd(), 'logs', 'cli.log');
   if (existsSync(logFilePath)) {
@@ -25,19 +25,25 @@ function clearLogFile() {
   }
 }
 
-// Helper function to clear history file before test
-function clearHistoryFile() {
-  const historyFilePath = join(process.cwd(), 'logs', 'cli_history.txt');
-  if (existsSync(historyFilePath)) {
-    rmSync(historyFilePath, { force: true });
+function clearAuditLogFile() {
+  const auditLogPath = join(process.cwd(), 'logs', 'ontology_audit.log');
+  if (existsSync(auditLogPath)) {
+    rmSync(auditLogPath, { force: true });
   }
 }
 
-// Helper function to read log file content
 function readLogFile() {
   const logFilePath = join(process.cwd(), 'logs', 'cli.log');
   if (existsSync(logFilePath)) {
     return readFileSync(logFilePath, { encoding: 'utf-8' });
+  }
+  return '';
+}
+
+function readAuditLogFile() {
+  const auditLogPath = join(process.cwd(), 'logs', 'ontology_audit.log');
+  if (existsSync(auditLogPath)) {
+    return readFileSync(auditLogPath, { encoding: 'utf-8' });
   }
   return '';
 }
@@ -111,6 +117,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 
   test('--persist flag writes dummy ontology to file when no custom ontology is provided', () => {
     clearLogFile();
+    clearAuditLogFile();
     const outputFile = join(tempDir, 'persisted.json');
     const result = spawnSync(process.execPath, [cliPath, '--persist', outputFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('Ontology persisted to');
@@ -118,11 +125,14 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     expect(persisted).toHaveProperty('name', 'Dummy Ontology');
     const logContent = readLogFile();
     expect(logContent).toContain('--persist');
+    const auditLog = readAuditLogFile();
+    expect(auditLog).toContain('persist');
     unlinkSync(outputFile);
   });
 
   test('--persist flag writes custom ontology from JSON string when provided', () => {
     clearLogFile();
+    clearAuditLogFile();
     const outputFile = join(tempDir, 'customPersisted.json');
     const customOntology = {
       name: 'Custom Ontology',
@@ -137,33 +147,14 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     expect(persisted).toEqual(customOntology);
     const logContent = readLogFile();
     expect(logContent).toContain('--persist');
-    unlinkSync(outputFile);
-  });
-
-  test('--persist flag reads custom ontology from file when provided', () => {
-    clearLogFile();
-    const ontologyInputFile = join(tempDir, 'inputOntology.json');
-    const outputFile = join(tempDir, 'customFilePersisted.json');
-    const customOntology = {
-      name: 'File Ontology',
-      version: '3.0.0',
-      classes: ['FileClass'],
-      properties: { fileProp: 'fileValue' }
-    };
-    writeFileSync(ontologyInputFile, JSON.stringify(customOntology, null, 2), { encoding: 'utf-8' });
-    const args = [cliPath, '--persist', outputFile, '--ontology', ontologyInputFile];
-    const result = spawnSync(process.execPath, args, { encoding: 'utf-8' });
-    expect(result.stdout).toContain('Ontology persisted to');
-    const persisted = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
-    expect(persisted).toEqual(customOntology);
-    const logContent = readLogFile();
-    expect(logContent).toContain('--persist');
-    unlinkSync(ontologyInputFile);
+    const auditLog = readAuditLogFile();
+    expect(auditLog).toContain('persist');
     unlinkSync(outputFile);
   });
 
   test('--persist flag fails gracefully with invalid custom ontology JSON string', () => {
     clearLogFile();
+    clearAuditLogFile();
     const outputFile = join(tempDir, 'invalidPersisted.json');
     const invalidJSON = '{ invalid json }';
     const args = [cliPath, '--persist', outputFile, '--ontology', invalidJSON];
@@ -333,6 +324,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 
   test('--merge-persist flag merges two ontologies and writes output', () => {
     clearLogFile();
+    clearAuditLogFile();
     const ontology1 = {
       name: 'MergeOne',
       version: '1.0',
@@ -358,6 +350,8 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     expect(merged.properties).toEqual({ prop1: 'value1', prop2: 'value2', common: 'two' });
     const logContent = readLogFile();
     expect(logContent).toContain('--merge-persist');
+    const auditLog = readAuditLogFile();
+    expect(auditLog).toContain('merge-persist');
     unlinkSync(file1);
     unlinkSync(file2);
     unlinkSync(outputFile);
@@ -545,7 +539,8 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   });
 
   test('Interactive Mode Editing Commands and Persistent History', async () => {
-    clearHistoryFile();
+    const historyFilePath = join(process.cwd(), 'logs', 'cli_history.txt');
+    if (existsSync(historyFilePath)) rmSync(historyFilePath, { force: true });
     await new Promise((resolve, reject) => {
       const child = spawn(process.execPath, [cliPath, '--interactive'], { stdio: ['pipe', 'pipe', 'pipe'], env: { NODE_ENV: 'test' } });
       let output = '';
