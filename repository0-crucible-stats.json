@@ -2,17 +2,19 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Apply Fix on Fail",
+  "lastActivityName": "Automerge",
   "lastActivityBranchName": "main",
   "nextIssue": "[1505] Add JSON-LD Exporter for OWL Ontologies automated, feature",
-  "openIssues": 6,
+  "openIssues": 7,
   "issuesClosedLastHour": 10,
   "issuesClosedLastDay": 47,
-  "openPRs": 0,
+  "openPRs": 1,
   "averagePRAge": 0,
-  "prDetails": [],
+  "prDetails": [
+    "[0m]  (fixes #1503)"
+  ],
   "diffMinutes": 0,
-  "diffMinutesMain": 24,
+  "diffMinutesMain": 25,
   "commitsLastHour": 8,
   "commitsLastDay": 62,
   "lastFiveCommitMessages": [
@@ -34,5 +36,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-13T12:45:53.536Z"
+  "statsGeneratedAt": "2025-04-13T12:46:20.759Z"
 }
