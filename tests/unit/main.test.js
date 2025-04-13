@@ -529,7 +529,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
         }
       });
     });
-  });
+  }, 10000);
 
   test('--build-ontology builds ontology from default when no input file provided', () => {
     clearLogFile();

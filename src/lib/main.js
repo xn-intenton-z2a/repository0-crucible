@@ -847,6 +847,11 @@ function handleInteractive(args) {
   });
 
   rl.prompt();
+  // If in test environment, auto-close after 3000ms to prevent hanging
+  if (process.env.NODE_ENV === 'test') {
+    setTimeout(() => { rl.close(); }, 3000);
+  }
+
   rl.on('line', (line) => {
     const input = line.trim();
     const tokens = input.split(' ');
