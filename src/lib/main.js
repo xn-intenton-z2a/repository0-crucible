@@ -1013,7 +1013,7 @@ function handleInteractive(args) {
                 ontologySchema.parse(ontology);
                 loadedOntology = ontology;
                 logCommand('interactive: load');
-                console.log(`Ontology '\${ontology.name}\' loaded successfully.`);
+                console.log(`Ontology '${ontology.name}' loaded successfully.`);
               } catch (err) {
                 logError('LOG_ERR_INTERACTIVE_LOAD', 'Failed to load ontology', { error: err.message });
                 console.error('Error loading ontology:', err.message);
@@ -1046,12 +1046,12 @@ function handleInteractive(args) {
               const newClass = tokens[1];
               if (!loadedOntology.classes.includes(newClass)) {
                 loadedOntology.classes.push(newClass);
-                console.log(`Class '\${newClass}\' added.`);
+                console.log(`Class '${newClass}' added.`);
                 logCommand('interactive: add-class');
                 const diff = computeOntologyDiff(oldOntology, loadedOntology);
                 logOntologyChange('add-class', diff);
               } else {
-                console.log(`Class '\${newClass}\' already exists.`);
+                console.log(`Class '${newClass}' already exists.`);
               }
             }
             break;
@@ -1066,12 +1066,12 @@ function handleInteractive(args) {
               const index = loadedOntology.classes.indexOf(remClass);
               if (index !== -1) {
                 loadedOntology.classes.splice(index, 1);
-                console.log(`Class '\${remClass}\' removed.`);
+                console.log(`Class '${remClass}' removed.`);
                 logCommand('interactive: remove-class');
                 const diff = computeOntologyDiff(oldOntology, loadedOntology);
                 logOntologyChange('remove-class', diff);
               } else {
-                console.log(`Class '\${remClass}\' not found.`);
+                console.log(`Class '${remClass}' not found.`);
               }
             }
             break;
@@ -1086,12 +1086,12 @@ function handleInteractive(args) {
               const value = tokens.slice(2).join(' ');
               if (!(key in loadedOntology.properties)) {
                 loadedOntology.properties[key] = value;
-                console.log(`Property '\${key}\' added with value '\${value}\'.`);
+                console.log(`Property '${key}' added with value '${value}'.`);
                 logCommand('interactive: add-property');
                 const diff = computeOntologyDiff(oldOntology, loadedOntology);
                 logOntologyChange('add-property', diff);
               } else {
-                console.log(`Property '\${key}\' already exists. Use update-property to change its value.`);
+                console.log(`Property '${key}' already exists. Use update-property to change its value.`);
               }
             }
             break;
@@ -1105,7 +1105,7 @@ function handleInteractive(args) {
               const key = tokens[1];
               const newValue = tokens.slice(2).join(' ');
               loadedOntology.properties[key] = newValue;
-              console.log(`Property '\${key}\' updated to '\${newValue}\'.`);
+              console.log(`Property '${key}' updated to '${newValue}'.`);
               logCommand('interactive: update-property');
               const diff = computeOntologyDiff(oldOntology, loadedOntology);
               logOntologyChange('update-property', diff);
@@ -1121,12 +1121,12 @@ function handleInteractive(args) {
               const key = tokens[1];
               if (key in loadedOntology.properties) {
                 delete loadedOntology.properties[key];
-                console.log(`Property '\${key}\' removed.`);
+                console.log(`Property '${key}' removed.`);
                 logCommand('interactive: remove-property');
                 const diff = computeOntologyDiff(oldOntology, loadedOntology);
                 logOntologyChange('remove-property', diff);
               } else {
-                console.log(`Property '\${key}\' not found.`);
+                console.log(`Property '${key}' not found.`);
               }
             }
             break;
@@ -1203,7 +1203,7 @@ function handleInteractive(args) {
               ontologySchema.parse(ontology);
               loadedOntology = ontology;
               logCommand('interactive: load');
-              console.log(`Ontology '\${ontology.name}\' loaded successfully.`);
+              console.log(`Ontology '${ontology.name}' loaded successfully.`);
             } catch (err) {
               logError('LOG_ERR_INTERACTIVE_LOAD', 'Failed to load ontology', { error: err.message });
               console.error('Error loading ontology:', err.message);
@@ -1236,12 +1236,12 @@ function handleInteractive(args) {
             const newClass = tokens[1];
             if (!loadedOntology.classes.includes(newClass)) {
               loadedOntology.classes.push(newClass);
-              console.log(`Class '\${newClass}\' added.`);
+              console.log(`Class '${newClass}' added.`);
               logCommand('interactive: add-class');
               const diff = computeOntologyDiff(oldOntology, loadedOntology);
               logOntologyChange('add-class', diff);
             } else {
-              console.log(`Class '\${newClass}\' already exists.`);
+              console.log(`Class '${newClass}' already exists.`);
             }
           }
           break;
@@ -1256,12 +1256,12 @@ function handleInteractive(args) {
             const index = loadedOntology.classes.indexOf(remClass);
             if (index !== -1) {
               loadedOntology.classes.splice(index, 1);
-              console.log(`Class '\${remClass}\' removed.`);
+              console.log(`Class '${remClass}' removed.`);
               logCommand('interactive: remove-class');
               const diff = computeOntologyDiff(oldOntology, loadedOntology);
               logOntologyChange('remove-class', diff);
             } else {
-              console.log(`Class '\${remClass}\' not found.`);
+              console.log(`Class '${remClass}' not found.`);
             }
           }
           break;
@@ -1276,12 +1276,12 @@ function handleInteractive(args) {
             const value = tokens.slice(2).join(' ');
             if (!(key in loadedOntology.properties)) {
               loadedOntology.properties[key] = value;
-              console.log(`Property '\${key}\' added with value '\${value}\'.`);
+              console.log(`Property '${key}' added with value '${value}'.`);
               logCommand('interactive: add-property');
               const diff = computeOntologyDiff(oldOntology, loadedOntology);
               logOntologyChange('add-property', diff);
             } else {
-              console.log(`Property '\${key}\' already exists. Use update-property to change its value.`);
+              console.log(`Property '${key}' already exists. Use update-property to change its value.`);
             }
           }
           break;
@@ -1295,7 +1295,7 @@ function handleInteractive(args) {
             const key = tokens[1];
             const newValue = tokens.slice(2).join(' ');
             loadedOntology.properties[key] = newValue;
-            console.log(`Property '\${key}\' updated to '\${newValue}\'.`);
+            console.log(`Property '${key}' updated to '${newValue}'.`);
             logCommand('interactive: update-property');
             const diff = computeOntologyDiff(oldOntology, loadedOntology);
             logOntologyChange('update-property', diff);
@@ -1311,12 +1311,12 @@ function handleInteractive(args) {
             const key = tokens[1];
             if (key in loadedOntology.properties) {
               delete loadedOntology.properties[key];
-              console.log(`Property '\${key}\' removed.`);
+              console.log(`Property '${key}' removed.`);
               logCommand('interactive: remove-property');
               const diff = computeOntologyDiff(oldOntology, loadedOntology);
               logOntologyChange('remove-property', diff);
             } else {
-              console.log(`Property '\${key}\' not found.`);
+              console.log(`Property '${key}' not found.`);
             }
           }
           break;
