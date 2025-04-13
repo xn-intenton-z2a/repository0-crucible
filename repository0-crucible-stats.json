@@ -4,17 +4,17 @@
   "engine": "schedule-3",
   "lastActivityName": "Issue Worker",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1521] Implement --crawl CLI Command for Data Crawling automated, feature",
+  "nextIssue": "[1522] Fix CLI Main Function Default Argument Handling automated, maintenance",
   "openIssues": 4,
-  "issuesClosedLastHour": 9,
+  "issuesClosedLastHour": 8,
   "issuesClosedLastDay": 48,
   "openPRs": 1,
-  "averagePRAge": 18,
+  "averagePRAge": 20,
   "prDetails": [
-    "[18m] Fixed template literal issues in interactive mode messages to correctly output variable values. (fixes #)"
+    "[20m] Fixed template literal issues in interactive mode messages to correctly output variable values. (fixes #)"
   ],
-  "diffMinutes": 0,
-  "diffMinutesMain": 0,
+  "diffMinutes": 1,
+  "diffMinutesMain": 2,
   "commitsLastHour": 8,
   "commitsLastDay": 50,
   "lastFiveCommitMessages": [
@@ -27,14 +27,14 @@
   "branches": {
     "count": 1,
     "details": [
-      "[19m] agentic-lib-fix-main"
+      "[21m] agentic-lib-fix-main"
     ],
     "branchIssueDetails": [
       "[]  "
     ],
-    "averageBranchAge": 19
+    "averageBranchAge": 21
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-13T19:46:18.058Z"
+  "statsGeneratedAt": "2025-04-13T19:48:00.753Z"
 }
