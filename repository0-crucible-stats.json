@@ -2,7 +2,7 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Apply Fix on Fail",
+  "lastActivityName": "Automerge",
   "lastActivityBranchName": "main",
   "nextIssue": "[1517] Refactor Redundant Code in Ontology Export Handlers automated, maintenance, issue-worker-14431121632",
   "openIssues": 9,
@@ -14,7 +14,7 @@
     "[50m] Refactored export handlers to use shared utilities for file reading validation and output. (fixes #1517)",
     "[84m] Imported beforeEach from vitest in the test file to fix the ReferenceError. (fixes #1513)"
   ],
-  "diffMinutes": 0,
+  "diffMinutes": 1,
   "diffMinutesMain": 55,
   "commitsLastHour": 1,
   "commitsLastDay": 49,
@@ -37,5 +37,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-13T17:04:55.542Z"
+  "statsGeneratedAt": "2025-04-13T17:05:01.269Z"
 }
