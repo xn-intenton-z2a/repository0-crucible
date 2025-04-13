@@ -2,19 +2,19 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Issue Worker",
+  "lastActivityName": "Automerge",
   "lastActivityBranchName": "main",
   "nextIssue": "[1515] Refactor and Clarify DEFAULT_TIMEOUT Handling for Improved Robustness automated, maintenance",
   "openIssues": 7,
   "issuesClosedLastHour": 0,
   "issuesClosedLastDay": 41,
   "openPRs": 1,
-  "averagePRAge": 23,
+  "averagePRAge": 25,
   "prDetails": [
-    "[23m] Imported beforeEach from vitest in the test file to fix the ReferenceError. (fixes #1513)"
+    "[25m] Imported beforeEach from vitest in the test file to fix the ReferenceError. (fixes #1513)"
   ],
   "diffMinutes": 1,
-  "diffMinutesMain": 119,
+  "diffMinutesMain": 120,
   "commitsLastHour": 0,
   "commitsLastDay": 57,
   "lastFiveCommitMessages": [
@@ -25,16 +25,12 @@
     "[12:21] - Reduce `attemptsPerBranch` limit in configuration\n\nLowered the `..."
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      "[24m] agentic-lib-issue-1513"
-    ],
-    "branchIssueDetails": [
-      "[1513] Implement Ontology Fetch Caching Mechanism automated, feature, issue-worker-14430636670, apply-fix-14430886491"
-    ],
-    "averageBranchAge": 24
+    "count": 0,
+    "details": [],
+    "branchIssueDetails": [],
+    "averageBranchAge": 0
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-13T16:04:17.956Z"
+  "statsGeneratedAt": "2025-04-13T16:05:38.462Z"
 }
