@@ -4,7 +4,7 @@
 
 To create a self-evolving agentic coding system of your own based on this one see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds].
 
 ## Repository Template
 
@@ -46,7 +46,11 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --query
   ```
-  This command queries OWL ontologies and currently displays a placeholder message indicating that the feature is under development.
+  This command queries OWL ontologies. By default, it displays a placeholder message indicating that the feature is under development. You can now also append search terms after `--query` to filter the query. For example:
+  ```bash
+  node src/lib/main.js --query capital cities
+  ```
+  This will output a message like: "Querying OWL ontologies for: capital cities".
 
 - **Diagnostics Information:**
   ```bash
