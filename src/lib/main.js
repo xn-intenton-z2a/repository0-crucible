@@ -38,8 +38,10 @@ function broadcastNotification(event, payload) {
       }
     });
   }
-  // For testing and logging purposes
-  console.log('WS Notification:', JSON.stringify(notification));
+  // For testing, only log notifications if not in test mode
+  if (process.env.NODE_ENV !== 'test') {
+    console.log('WS Notification:', JSON.stringify(notification));
+  }
 }
 
 /**
@@ -140,14 +142,18 @@ function getDefaultTimeout() {
   if (rawTimeout === undefined) {
     const errorMsg = `DEFAULT_TIMEOUT is not set; using default value of ${defaultValue}`;
     logError('LOG_ERR_ENV_NOT_SET', errorMsg, { rawTimeout });
-    console.error('LOG_ERR_ENV_NOT_SET', errorMsg);
+    if (process.env.NODE_ENV !== 'test') {
+      console.error('LOG_ERR_ENV_NOT_SET', errorMsg);
+    }
     return defaultValue;
   }
   const timeoutValue = Number(rawTimeout);
   if (!isFinite(timeoutValue)) {
     const errorMsg = `DEFAULT_TIMEOUT must be a finite number; using default value of ${defaultValue} (input: ${rawTimeout})`;
     logError('LOG_ERR_ENV_NON_FINITE', errorMsg, { rawTimeout });
-    console.error('LOG_ERR_ENV_NON_FINITE', errorMsg);
+    if (process.env.NODE_ENV !== 'test') {
+      console.error('LOG_ERR_ENV_NON_FINITE', errorMsg);
+    }
     return defaultValue;
   }
   return timeoutValue;
@@ -735,6 +741,7 @@ function handleBuildOntology(args) {
       built: true
     };
   }
+  // Output pure JSON
   console.log(JSON.stringify(ontology, null, 2));
   broadcastNotification('ontologyBuilt', { ontologyName: ontology.name });
 }
