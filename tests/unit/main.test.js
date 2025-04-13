@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main, query, diagnostics, crawlData } from "@src/lib/main.js";
+import { main, query, diagnostics, crawlData, generateCapitalCitiesOwl } from "@src/lib/main.js";
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -11,7 +11,7 @@ describe("Main Module Import", () => {
 describe("Default Demo Output", () => {
   test("should terminate without error", () => {
     process.argv = ["node", "src/lib/main.js"];
-    main();
+    main([]);
   });
 });
 
@@ -50,6 +50,31 @@ describe("Crawl Command Output", () => {
     const args = ["--crawl"];
     crawlData(args);
     expect(logSpy).toHaveBeenCalledWith("Crawling data from public sources...");
+    logSpy.mockRestore();
+  });
+});
+
+describe("Capital Cities Command Output", () => {
+  test("should output valid JSON representing an OWL ontology of capital cities", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    // Call the function directly with the --capital-cities flag
+    generateCapitalCitiesOwl(["--capital-cities"]);
+    expect(logSpy).toHaveBeenCalled();
+    const output = logSpy.mock.calls[0][0];
+    let parsed;
+    try {
+      parsed = JSON.parse(output);
+    } catch (e) {
+      throw new Error("Output is not valid JSON");
+    }
+    expect(parsed).toHaveProperty("type", "owl");
+    expect(parsed).toHaveProperty("capitals");
+    expect(Array.isArray(parsed.capitals)).toBe(true);
+    expect(parsed.capitals.length).toBeGreaterThanOrEqual(3);
+    parsed.capitals.forEach(cityObj => {
+      expect(cityObj).toHaveProperty("city");
+      expect(cityObj).toHaveProperty("country");
+    });
     logSpy.mockRestore();
   });
 });

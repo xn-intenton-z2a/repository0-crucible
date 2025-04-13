@@ -27,6 +27,22 @@ export function crawlData(args) {
   console.log("Crawling data from public sources...");
 }
 
+/**
+ * Generates a dummy OWL ontology in JSON format representing capital cities.
+ * @param {string[]} args - Command line arguments
+ */
+export function generateCapitalCitiesOwl(args) {
+  const ontology = {
+    type: "owl",
+    capitals: [
+      { city: "Washington, D.C.", country: "USA" },
+      { city: "London", country: "UK" },
+      { city: "Tokyo", country: "Japan" }
+    ]
+  };
+  console.log(JSON.stringify(ontology, null, 2));
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   if (args.includes("--diagnostics")) {
@@ -35,6 +51,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     query(args);
   } else if (args.includes("--crawl")) {
     crawlData(args);
+  } else if (args.includes("--capital-cities")) {
+    generateCapitalCitiesOwl(args);
   } else {
     main(args);
   }
