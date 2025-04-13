@@ -8,7 +8,13 @@ export function main(args) {
 }
 
 export function query(args) {
-  console.log("Querying OWL ontologies (Feature under development)");
+  // Remove the '--query' flag from the arguments
+  const searchTerms = args.filter(arg => arg !== "--query");
+  if (searchTerms.length > 0) {
+    console.log(`Querying OWL ontologies for: ${searchTerms.join(" ")}`);
+  } else {
+    console.log("Querying OWL ontologies (Feature under development)");
+  }
 }
 
 export function diagnostics(args) {

@@ -16,11 +16,19 @@ describe("Default Demo Output", () => {
 });
 
 describe("Query Command Output", () => {
-  test("should log query message", () => {
+  test("should log placeholder query message when no extra terms provided", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     process.argv = ["node", "src/lib/main.js", "--query"];
     query(["--query"]);
     expect(logSpy).toHaveBeenCalledWith("Querying OWL ontologies (Feature under development)");
+    logSpy.mockRestore();
+  });
+
+  test("should log detailed query message when search terms are provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const searchArgs = ["--query", "capital", "cities"];
+    query(searchArgs);
+    expect(logSpy).toHaveBeenCalledWith("Querying OWL ontologies for: capital cities");
     logSpy.mockRestore();
   });
 });
