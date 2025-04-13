@@ -999,7 +999,10 @@ function handleInteractive(args) {
     rl.prompt();
   }).on('close', () => {
     console.log("Exiting Interactive Mode.");
-    process.exit(0);
+    // In test environment, do not force exit to allow test output to flush
+    if (process.env.NODE_ENV !== 'test') {
+      process.exit(0);
+    }
   });
 }
 
