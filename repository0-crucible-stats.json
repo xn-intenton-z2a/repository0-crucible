@@ -2,20 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Review Issue",
+  "lastActivityName": "Issue Worker",
   "lastActivityBranchName": "main",
   "nextIssue": "[1517] Refactor Redundant Code in Ontology Export Handlers automated, maintenance, issue-worker-14431121632",
   "openIssues": 9,
   "issuesClosedLastHour": 0,
   "issuesClosedLastDay": 39,
   "openPRs": 2,
-  "averagePRAge": 125,
+  "averagePRAge": 126,
   "prDetails": [
-    "[108m] Refactored export handlers to use shared utilities for file reading validation and output. (fixes #1517)",
-    "[142m] Imported beforeEach from vitest in the test file to fix the ReferenceError. (fixes #1513)"
+    "[109m] Refactored export handlers to use shared utilities for file reading validation and output. (fixes #1517)",
+    "[143m] Imported beforeEach from vitest in the test file to fix the ReferenceError. (fixes #1513)"
   ],
-  "diffMinutes": 16,
-  "diffMinutesMain": 113,
+  "diffMinutes": 1,
+  "diffMinutesMain": 114,
   "commitsLastHour": 0,
   "commitsLastDay": 44,
   "lastFiveCommitMessages": [
@@ -28,14 +28,14 @@
   "branches": {
     "count": 1,
     "details": [
-      "[108m] agentic-lib-issue-1517"
+      "[110m] agentic-lib-issue-1517"
     ],
     "branchIssueDetails": [
       "[1517] Refactor Redundant Code in Ontology Export Handlers automated, maintenance, issue-worker-14431121632"
     ],
-    "averageBranchAge": 108
+    "averageBranchAge": 110
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-13T18:02:53.978Z"
+  "statsGeneratedAt": "2025-04-13T18:04:21.128Z"
 }
