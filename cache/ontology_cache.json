@@ -1,0 +1,11 @@
+{
+  "name": "Fetched Ontology",
+  "version": "fetched-1.0",
+  "classes": [
+    "FetchedClassA",
+    "FetchedClassB"
+  ],
+  "properties": {
+    "fetchedProp": "value"
+  }
+}

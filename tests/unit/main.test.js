@@ -1,4 +1,4 @@
-import { describe, test, expect } from 'vitest';
+import { describe, test, expect, beforeEach } from 'vitest';
 import { spawnSync, spawn } from 'child_process';
 import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSync, mkdirSync, lstatSync } from 'fs';
 import { join } from 'path';
@@ -710,12 +710,12 @@ describe('Fetch Caching Mechanism', () => {
 describe('Interactive Mode Auto-Completion', () => {
   test('provides base command suggestions when no ontology is loaded', () => {
     const [completions, line] = interactiveCompleter(null, '');
-    expect(completions).toEqual(expect.arrayContaining(['load', 'show', 'list-classes', 'help', 'exit', 'add-class', 'remove-class', 'add-property', 'update-property', 'remove-property']))
+    expect(completions).toEqual(expect.arrayContaining(['load', 'show', 'list-classes', 'help', 'exit', 'add-class', 'remove-class', 'add-property', 'update-property', 'remove-property']));
   });
 
   test('provides ontology class suggestions when ontology is loaded', () => {
     const ontology = { classes: ['Person', 'Animal'] };
     const [completions, line] = interactiveCompleter(ontology, 'P');
-    expect(completions).toEqual(expect.arrayContaining(['Person']))
+    expect(completions).toEqual(expect.arrayContaining(['Person']));
   });
 });
