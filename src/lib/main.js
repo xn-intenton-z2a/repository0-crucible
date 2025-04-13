@@ -874,31 +874,31 @@ function handleInteractive(args) {
                 console.log(`Ontology '${ontology.name}' loaded successfully.`);
               } catch (err) {
                 logError('LOG_ERR_INTERACTIVE_LOAD', 'Failed to load ontology', { error: err.message });
-                console.error("Error loading ontology:", err.message);
+                console.error('Error loading ontology:', err.message);
               }
             }
             break;
           case 'show':
             if (loadedOntology) {
-              console.log("Loaded Ontology:", JSON.stringify(loadedOntology, null, 2));
+              console.log('Loaded Ontology:', JSON.stringify(loadedOntology, null, 2));
             } else {
-              console.log("No ontology loaded.");
+              console.log('No ontology loaded.');
             }
             logCommand('interactive: show');
             break;
           case 'list-classes':
             if (loadedOntology && loadedOntology.classes) {
-              console.log("Classes:", loadedOntology.classes.join(', '));
+              console.log('Classes:', loadedOntology.classes.join(', '));
             } else {
-              console.log("No ontology loaded or ontology has no classes.");
+              console.log('No ontology loaded or ontology has no classes.');
             }
             logCommand('interactive: list-classes');
             break;
           case 'add-class':
             if (!loadedOntology) {
-              console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+              console.log('No ontology loaded. Use "load <file>" to load an ontology.');
             } else if (tokens.length < 2) {
-              console.log("Usage: add-class <className>");
+              console.log('Usage: add-class <className>');
             } else {
               const newClass = tokens[1];
               if (!loadedOntology.classes.includes(newClass)) {
@@ -912,9 +912,9 @@ function handleInteractive(args) {
             break;
           case 'remove-class':
             if (!loadedOntology) {
-              console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+              console.log('No ontology loaded. Use "load <file>" to load an ontology.');
             } else if (tokens.length < 2) {
-              console.log("Usage: remove-class <className>");
+              console.log('Usage: remove-class <className>');
             } else {
               const remClass = tokens[1];
               const index = loadedOntology.classes.indexOf(remClass);
@@ -929,9 +929,9 @@ function handleInteractive(args) {
             break;
           case 'add-property':
             if (!loadedOntology) {
-              console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+              console.log('No ontology loaded. Use "load <file>" to load an ontology.');
             } else if (tokens.length < 3) {
-              console.log("Usage: add-property <key> <value>");
+              console.log('Usage: add-property <key> <value>');
             } else {
               const key = tokens[1];
               const value = tokens.slice(2).join(' ');
@@ -946,9 +946,9 @@ function handleInteractive(args) {
             break;
           case 'update-property':
             if (!loadedOntology) {
-              console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+              console.log('No ontology loaded. Use "load <file>" to load an ontology.');
             } else if (tokens.length < 3) {
-              console.log("Usage: update-property <key> <newValue>");
+              console.log('Usage: update-property <key> <newValue>');
             } else {
               const key = tokens[1];
               const newValue = tokens.slice(2).join(' ');
@@ -959,9 +959,9 @@ function handleInteractive(args) {
             break;
           case 'remove-property':
             if (!loadedOntology) {
-              console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+              console.log('No ontology loaded. Use "load <file>" to load an ontology.');
             } else if (tokens.length < 2) {
-              console.log("Usage: remove-property <key>");
+              console.log('Usage: remove-property <key>');
             } else {
               const key = tokens[1];
               if (key in loadedOntology.properties) {
@@ -974,25 +974,25 @@ function handleInteractive(args) {
             }
             break;
           case 'help':
-            console.log("Interactive commands:");
-            console.log(" load <file>           - Load ontology from file");
-            console.log(" show                  - Show loaded ontology details");
-            console.log(" list-classes          - List classes in the loaded ontology");
-            console.log(" add-class <name>      - Add a new class to the ontology");
-            console.log(" remove-class <name>   - Remove an existing class");
-            console.log(" add-property <k> <v>  - Add a new property");
-            console.log(" update-property <k> <v> - Update (or add) an existing property");
-            console.log(" remove-property <k>   - Remove a property");
-            console.log(" help                  - Show this help message");
-            console.log(" exit                  - Exit interactive mode");
+            console.log('Interactive commands:');
+            console.log(' load <file>           - Load ontology from file');
+            console.log(' show                  - Show loaded ontology details');
+            console.log(' list-classes          - List classes in the loaded ontology');
+            console.log(' add-class <name>      - Add a new class to the ontology');
+            console.log(' remove-class <name>   - Remove an existing class');
+            console.log(' add-property <k> <v>  - Add a new property');
+            console.log(' update-property <k> <v> - Update (or add) an existing property');
+            console.log(' remove-property <k>   - Remove a property');
+            console.log(' help                  - Show this help message');
+            console.log(' exit                  - Exit interactive mode');
             logCommand('interactive: help');
             break;
           case 'exit':
             logCommand('interactive: exit');
-            console.log("Exiting Interactive Mode.");
+            console.log('Exiting Interactive Mode.');
             break;
           default:
-            console.log("Unknown command. Type 'help' for available commands.");
+            console.log('Unknown command. Type "help" for available commands.');
             logCommand(`interactive: unknown command: ${line}`);
         }
       }
@@ -1002,7 +1002,7 @@ function handleInteractive(args) {
     // Standard interactive mode using readline
     Object.defineProperty(process.stdin, 'isTTY', { value: true });
     logCommand('--interactive');
-    console.log("Entering Interactive Mode. Type 'help' for available commands.");
+    console.log('Entering Interactive Mode. Type "help" for available commands.');
 
     let loadedOntology = null;
     const baseCommands = ["load", "show", "list-classes", "help", "exit", "add-class", "remove-class", "add-property", "update-property", "remove-property"];
@@ -1037,7 +1037,7 @@ function handleInteractive(args) {
       switch (command) {
         case 'load':
           if (tokens.length < 2) {
-            console.log("Usage: load <file>");
+            console.log('Usage: load <file>');
           } else {
             const filePath = tokens[1];
             try {
@@ -1049,31 +1049,31 @@ function handleInteractive(args) {
               console.log(`Ontology '${ontology.name}' loaded successfully.`);
             } catch (err) {
               logError('LOG_ERR_INTERACTIVE_LOAD', 'Failed to load ontology', { error: err.message });
-              console.error("Error loading ontology:", err.message);
+              console.error('Error loading ontology:', err.message);
             }
           }
           break;
         case 'show':
           if (loadedOntology) {
-            console.log("Loaded Ontology:", JSON.stringify(loadedOntology, null, 2));
+            console.log('Loaded Ontology:', JSON.stringify(loadedOntology, null, 2));
           } else {
-            console.log("No ontology loaded.");
+            console.log('No ontology loaded.');
           }
           logCommand('interactive: show');
           break;
         case 'list-classes':
           if (loadedOntology && loadedOntology.classes) {
-            console.log("Classes:", loadedOntology.classes.join(', '));
+            console.log('Classes:', loadedOntology.classes.join(', '));
           } else {
-            console.log("No ontology loaded or ontology has no classes.");
+            console.log('No ontology loaded or ontology has no classes.');
           }
           logCommand('interactive: list-classes');
           break;
         case 'add-class':
           if (!loadedOntology) {
-            console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+            console.log('No ontology loaded. Use "load <file>" to load an ontology.');
           } else if (tokens.length < 2) {
-            console.log("Usage: add-class <className>");
+            console.log('Usage: add-class <className>');
           } else {
             const newClass = tokens[1];
             if (!loadedOntology.classes.includes(newClass)) {
@@ -1087,9 +1087,9 @@ function handleInteractive(args) {
           break;
         case 'remove-class':
           if (!loadedOntology) {
-            console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+            console.log('No ontology loaded. Use "load <file>" to load an ontology.');
           } else if (tokens.length < 2) {
-            console.log("Usage: remove-class <className>");
+            console.log('Usage: remove-class <className>');
           } else {
             const remClass = tokens[1];
             const index = loadedOntology.classes.indexOf(remClass);
@@ -1104,9 +1104,9 @@ function handleInteractive(args) {
           break;
         case 'add-property':
           if (!loadedOntology) {
-            console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+            console.log('No ontology loaded. Use "load <file>" to load an ontology.');
           } else if (tokens.length < 3) {
-            console.log("Usage: add-property <key> <value>");
+            console.log('Usage: add-property <key> <value>');
           } else {
             const key = tokens[1];
             const value = tokens.slice(2).join(' ');
@@ -1121,9 +1121,9 @@ function handleInteractive(args) {
           break;
         case 'update-property':
           if (!loadedOntology) {
-            console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+            console.log('No ontology loaded. Use "load <file>" to load an ontology.');
           } else if (tokens.length < 3) {
-            console.log("Usage: update-property <key> <newValue>");
+            console.log('Usage: update-property <key> <newValue>');
           } else {
             const key = tokens[1];
             const newValue = tokens.slice(2).join(' ');
@@ -1134,9 +1134,9 @@ function handleInteractive(args) {
           break;
         case 'remove-property':
           if (!loadedOntology) {
-            console.log("No ontology loaded. Use 'load <file>' to load an ontology.");
+            console.log('No ontology loaded. Use "load <file>" to load an ontology.');
           } else if (tokens.length < 2) {
-            console.log("Usage: remove-property <key>");
+            console.log('Usage: remove-property <key>');
           } else {
             const key = tokens[1];
             if (key in loadedOntology.properties) {
@@ -1149,31 +1149,31 @@ function handleInteractive(args) {
           }
           break;
         case 'help':
-          console.log("Interactive commands:");
-          console.log(" load <file>           - Load ontology from file");
-          console.log(" show                  - Show loaded ontology details");
-          console.log(" list-classes          - List classes in the loaded ontology");
-          console.log(" add-class <name>      - Add a new class to the ontology");
-          console.log(" remove-class <name>   - Remove an existing class");
-          console.log(" add-property <k> <v>  - Add a new property");
-          console.log(" update-property <k> <v> - Update (or add) an existing property");
-          console.log(" remove-property <k>   - Remove a property");
-          console.log(" help                  - Show this help message");
-          console.log(" exit                  - Exit interactive mode");
+          console.log('Interactive commands:');
+          console.log(' load <file>           - Load ontology from file');
+          console.log(' show                  - Show loaded ontology details');
+          console.log(' list-classes          - List classes in the loaded ontology');
+          console.log(' add-class <name>      - Add a new class to the ontology');
+          console.log(' remove-class <name>   - Remove an existing class');
+          console.log(' add-property <k> <v>  - Add a new property');
+          console.log(' update-property <k> <v> - Update (or add) an existing property');
+          console.log(' remove-property <k>   - Remove a property');
+          console.log(' help                  - Show this help message');
+          console.log(' exit                  - Exit interactive mode');
           logCommand('interactive: help');
           break;
         case 'exit':
           logCommand('interactive: exit');
-          console.log("Exiting Interactive Mode.");
+          console.log('Exiting Interactive Mode.');
           rl.close();
           break;
         default:
-          console.log("Unknown command. Type 'help' for available commands.");
+          console.log('Unknown command. Type "help" for available commands.');
           logCommand(`interactive: unknown command: ${input}`);
       }
       rl.prompt();
     }).on('close', () => {
-      console.log("Exiting Interactive Mode.");
+      console.log('Exiting Interactive Mode.');
       process.exit(0);
     });
   }
