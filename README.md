@@ -60,8 +60,10 @@ npm install repository0-crucible
   - To exit, type: `exit`
 - **Ontology Content Query:** Use the **--query** command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the `--regex` flag to interpret the search term as a regular expression.
 - **Fetch Ontology from Public Data Source:** **Enhanced!** Use the **--fetch** command to dynamically retrieve ontology data from a public API. If the environment variable FETCH_URL is set, the CLI will perform an HTTP GET request to that URL and transform the returned JSON into a valid ontology. If FETCH_URL is not set or the fetch fails, it will fall back to a default dummy ontology.
-- **Export OWL/Turtle Format:** Use the **--export-owl** command to convert a JSON ontology into an OWL representation in Turtle format.
-- **Export RDF/XML Format:** **New!** Use the **--export-xml** command to convert a JSON ontology into RDF/XML format, including XML declaration and RDF/XML namespace mappings.
+- **Export Formats:**
+  - **Export OWL/Turtle Format:** Use the **--export-owl** command to convert a JSON ontology into an OWL representation in Turtle format.
+  - **Export RDF/XML Format:** **New!** Use the **--export-xml** command to convert a JSON ontology into RDF/XML format, including XML declaration and RDF/XML namespace mappings.
+  - **Export JSON-LD Format:** **New!** Use the **--export-jsonld** command to convert a JSON ontology into a JSON-LD format. The output includes an `@context` with namespace keys (e.g., "owl", "rdf", "ex") and maps the ontology's name, version, classes (as OWL classes), and properties into a JSON-LD structured document.
 - **Ontology Difference Comparison:** Use the **--diff** command to compare two ontology JSON files and output the differences.
 - **New Commands:**
   - **Build Ontology:** `--build-ontology [inputFile]` builds an ontology from a provided JSON file or generates a default built ontology.
@@ -159,9 +161,14 @@ node src/lib/main.js --help
   node src/lib/main.js --export-owl path/to/ontology.json [path/to/output.ttl]
   ```
 
-- **Export Ontology to RDF/XML Format (New):**
+- **Export Ontology to RDF/XML Format:**
   ```bash
   node src/lib/main.js --export-xml path/to/ontology.json [path/to/output.xml]
+  ```
+
+- **Export Ontology to JSON-LD Format:**
+  ```bash
+  node src/lib/main.js --export-jsonld path/to/ontology.json [path/to/output.json]
   ```
 
 - **Merge and Persist Ontologies:**
@@ -218,7 +225,6 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --interactive
   ```
-  In interactive mode, in addition to the editing commands, your command history is automatically saved and reloaded from logs/cli_history.txt, enabling you to use arrow keys to navigate through previous commands.
 
 - **Ontology Content Query (Legacy):
   ```bash
@@ -244,7 +250,7 @@ For the enhanced --fetch command, you can set a FETCH_URL environment variable t
 
 ## End-to-End Integration Tests
 
-A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements and editing functionality, ontology query functionality, and the new fetch, export-owl, export-xml, diff, build-ontology, merge-ontology, query-ontology, and WebSocket notification functionalities. To run the integration tests:
+A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements and editing functionality, ontology query functionality, and the new fetch, export-owl, export-xml, export-jsonld, diff, build-ontology, merge-ontology, query-ontology, and WebSocket notification functionalities. To run the integration tests:
 
 ```bash
 npm run test:e2e

@@ -289,6 +289,48 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     unlinkSync(outputFile);
   });
 
+  test('--export-jsonld flag exports JSON-LD format to STDOUT', () => {
+    clearLogFile();
+    const dummyOntology = {
+      name: 'JSONLDOntology',
+      version: '1.0',
+      classes: ['Class1'],
+      properties: { prop1: 'value1' }
+    };
+    const inputFile = join(tempDir, 'jsonldOntology.json');
+    writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--export-jsonld', inputFile], { encoding: 'utf-8' });
+    const output = JSON.parse(result.stdout);
+    expect(output).toHaveProperty('@context');
+    expect(output['@context']).toHaveProperty('owl', 'http://www.w3.org/2002/07/owl#');
+    expect(output).toHaveProperty('name', dummyOntology.name);
+    const logContent = readLogFile();
+    expect(logContent).toContain('--export-jsonld');
+    unlinkSync(inputFile);
+  });
+
+  test('--export-jsonld flag writes JSON-LD to file if provided', () => {
+    clearLogFile();
+    const dummyOntology = {
+      name: 'JSONLDOntologyFile',
+      version: '1.0',
+      classes: ['Class2'],
+      properties: { prop2: 'value2' }
+    };
+    const inputFile = join(tempDir, 'jsonldOntologyFile.json');
+    const outputFile = join(tempDir, 'jsonldOutput.json');
+    writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--export-jsonld', inputFile, outputFile], { encoding: 'utf-8' });
+    expect(result.stdout).toContain('JSON-LD exporter output written to');
+    const outputContent = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
+    expect(outputContent).toHaveProperty('@context');
+    expect(outputContent).toHaveProperty('name', 'JSONLDOntologyFile');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--export-jsonld');
+    unlinkSync(inputFile);
+    unlinkSync(outputFile);
+  });
+
   test('--merge-persist flag merges two ontologies and writes output', () => {
     clearLogFile();
     const ontology1 = {
@@ -538,7 +580,6 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
           expect(output).toContain("Property 'version' updated to '2.0'.");
           expect(output).toContain("Property 'initialProp' removed.");
           expect(output).toContain('Loaded Ontology:');
-          // Check persistent history file
           const historyContent = readHistoryFile();
           expect(historyContent).toContain('load');
           expect(historyContent).toContain('add-class');
@@ -692,17 +733,13 @@ describe('WebSocket Notifications', () => {
       const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: { ...process.env, NODE_ENV: 'test' } });
       let serverOutput = '';
       serverProcess.stdout.on('data', (data) => { serverOutput += data.toString(); });
-      // Wait for server to start
       setTimeout(() => {
         const ws = new WebSocket('ws://127.0.0.1:3000');
         ws.on('open', () => {
-          // Trigger test notification via HTTP
           http.get('http://127.0.0.1:3000/ontology/notify', (res) => {
             let data = '';
             res.on('data', chunk => { data += chunk; });
-            res.on('end', () => {
-              // Wait for WS message
-            });
+            res.on('end', () => {});
           }).on('error', (err) => { reject(err); });
         });
         ws.on('message', (message) => {
