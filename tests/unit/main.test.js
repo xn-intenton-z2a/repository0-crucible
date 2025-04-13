@@ -24,11 +24,28 @@ function clearLogFile() {
   }
 }
 
+// Helper function to clear history file before test
+function clearHistoryFile() {
+  const historyFilePath = join(process.cwd(), 'logs', 'cli_history.txt');
+  if (existsSync(historyFilePath)) {
+    rmSync(historyFilePath, { force: true });
+  }
+}
+
 // Helper function to read log file content
 function readLogFile() {
   const logFilePath = join(process.cwd(), 'logs', 'cli.log');
   if (existsSync(logFilePath)) {
     return readFileSync(logFilePath, { encoding: 'utf-8' });
+  }
+  return '';
+}
+
+// Helper function to read history file content
+function readHistoryFile() {
+  const historyFilePath = join(process.cwd(), 'logs', 'cli_history.txt');
+  if (existsSync(historyFilePath)) {
+    return readFileSync(historyFilePath, { encoding: 'utf-8' });
   }
   return '';
 }
@@ -43,7 +60,6 @@ function clearOntologiesDir() {
     }
   }
 }
-
 
 describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--help flag displays usage information', () => {
@@ -484,7 +500,8 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     });
   });
 
-  test('Interactive Mode Editing Commands', async () => {
+  test('Interactive Mode Editing Commands and Persistent History', async () => {
+    clearHistoryFile();
     await new Promise((resolve, reject) => {
       const child = spawn(process.execPath, [cliPath, '--interactive'], { stdio: ['pipe', 'pipe', 'pipe'], env: { NODE_ENV: 'test' } });
       let output = '';
@@ -519,6 +536,14 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
           expect(output).toContain("Property 'version' updated to '2.0'.");
           expect(output).toContain("Property 'initialProp' removed.");
           expect(output).toContain('Loaded Ontology:');
+          // Check persistent history file
+          const historyContent = readHistoryFile();
+          expect(historyContent).toContain('load');
+          expect(historyContent).toContain('add-class');
+          expect(historyContent).toContain('remove-class');
+          expect(historyContent).toContain('add-property');
+          expect(historyContent).toContain('update-property');
+          expect(historyContent).toContain('remove-property');
           unlinkSync(ontologyFile);
           resolve();
         } catch (err) {

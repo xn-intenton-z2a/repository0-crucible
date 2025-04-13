@@ -55,6 +55,7 @@ npm install repository0-crucible
   - **Add a new property:** `add-property <key> <value>`
   - **Update an existing property:** `update-property <key> <newValue>` (this command will update the property if it exists or add it if it does not)
   - **Remove a property:** `remove-property <key>`
+  - **Persistent Command History:** All commands entered during an interactive session are automatically saved to a history file (located at logs/cli_history.txt) and reloaded on startup, enabling command recall and auto-completion using arrow keys.
   - For help, type: `help`
   - To exit, type: `exit`
 - **Ontology Content Query:** Use the **--query** command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the `--regex` flag to interpret the search term as a regular expression.
@@ -208,12 +209,7 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --interactive
   ```
-  In interactive mode, you can use the following additional editing commands:
-    - `add-class <className>`: Add a new class to the loaded ontology.
-    - `remove-class <className>`: Remove an existing class from the loaded ontology.
-    - `add-property <k> <v>`: Add a new property to the loaded ontology.
-    - `update-property <k> <v>`: Update (or add) an existing property value in the loaded ontology.
-    - `remove-property <k>`: Remove an existing property from the loaded ontology.
+  In interactive mode, in addition to the editing commands, your command history is automatically saved and reloaded from logs/cli_history.txt, enabling you to use arrow keys to navigate through previous commands.
 
 - **Ontology Content Query (Legacy):
   ```bash
