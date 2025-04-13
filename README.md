@@ -54,6 +54,12 @@ node src/lib/main.js --help
   ```
   This command outputs diagnostic information about the system, such as the Node.js version and other runtime details.
 
+- **Crawl Data:**
+  ```bash
+  node src/lib/main.js --crawl
+  ```
+  This command initiates a data crawl operation from public sources and outputs a placeholder message confirming the action.
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.

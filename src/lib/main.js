@@ -17,12 +17,18 @@ export function diagnostics(args) {
   // You can add more diagnostic information here if needed
 }
 
+export function crawlData(args) {
+  console.log("Crawling data from public sources...");
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   if (args.includes("--diagnostics")) {
     diagnostics(args);
   } else if (args.includes("--query")) {
     query(args);
+  } else if (args.includes("--crawl")) {
+    crawlData(args);
   } else {
     main(args);
   }
