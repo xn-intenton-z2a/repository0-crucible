@@ -1,34 +1,40 @@
 # ONTOLOGY Feature
 
 ## Overview
-This feature merges the functionality of generating an OWL ontology (previously handled by the CAPITAL_CITIES feature) and validating the ontology JSON against a Zod schema (previously handled by the SCHEMA_VALIDATION feature). Users can generate a sample OWL ontology using the `--capital-cities` flag and optionally validate the generated JSON by invoking the `--validate` flag. This consolidated functionality aligns with our mission of providing dynamic, consistent OWL ontologies from public data sources.
+This feature merges multiple aspects of ontology management into a single cohesive experience. It handles generating an OWL ontology (e.g., via the `--capital-cities` flag), validating the ontology JSON against a Zod schema using the `--validate` flag, and extends its functionality with additional commands for refreshing data and persisting changes. This aligns with our mission by ensuring dynamic, consistent, and maintainable OWL ontologies from public data sources.
 
 ## Implementation Details
 - **CLI Integration:**
-  - Update the main CLI parser to recognize both the `--capital-cities` and `--validate` flags.
-  - When the `--capital-cities` flag is used, fetch public data for capital cities and generate a sample OWL ontology in JSON format.
-  - When the `--validate` flag is provided (either alone or alongside `--capital-cities`), validate the generated (or a supplied) OWL ontology JSON using a predefined Zod schema.
+  - Enhance the main CLI parser in `src/lib/main.js` to recognize the following flags:
+    - `--capital-cities`: Generate a sample OWL ontology using public data of capital cities.
+    - `--validate`: Validate the ontology JSON against a predefined Zod schema.
+    - `--build-intermediate` and `--build-enhanced`: Additional processing steps for generating ontologies with varying complexity levels.
+    - `--refresh`: Trigger data refresh from public sources and regenerate the ontology.
+    - `--merge-persist`: Merge new ontology data with persisted JSON data and save the updated ontology.
 
-- **Ontology Transformation:**
-  - Leverage existing library functions to transform the capital cities public data into a compliant OWL ontology JSON structure.
-  - Define and use a Zod schema that captures key properties (ontology ID, classes, relationships, etc.) to verify the structure.
+- **Ontology Generation & Transformation:**
+  - Utilize existing library functions to transform public data into a compliant OWL ontology JSON structure.
+  - Leverage the Zod schema for validation to ensure that generated ontologies contain essential properties such as ontology ID, classes, relationships, etc.
 
 - **Error Handling:**
-  - Provide clear diagnostic messages if data fetching or transformation fails.
-  - Produce detailed validation errors if the ontology JSON does not meet schema requirements.
+  - Provide clear, diagnostic messages if data fetching, transformation, or merging operations fail.
+  - Ensure that validation errors are detailed and actionable, helping users and developers diagnose issues quickly.
 
 ## Testing
-- Update unit tests in the `tests/unit` directory to simulate both CLI flags:
-  - Verify that the `--capital-cities` flag produces the expected OWL ontology JSON output.
-  - Validate that invoking the `--validate` flag causes the generated JSON to be checked against the schema, and appropriate messages are returned for valid and invalid data sets.
-  - Test combinations of the flags to ensure integrated behavior.
+- Develop and update unit tests in the `tests/unit` directory to cover:
+  - CLI flag recognition and proper execution paths for each new flag.
+  - Verification that the generated OWL ontology JSON and its validation output meet expected standards.
+  - Simulated scenarios for refreshing data and merging persisted ontology content.
+  - Edge cases and error handling, ensuring robustness when operations fail.
 
 ## Documentation
-- Update the README file to document the new merged ONTOLOGY feature, including usage examples:
-  - Usage with `--capital-cities` to generate the sample ontology.
-  - Usage with `--validate` to validate the ontology output.
-  - Combined usage instructions.
-
+- Update the README file to include usage examples and detailed instructions for:
+  - Generating the ontology using `--capital-cities`.
+  - Validating the ontology with `--validate`.
+  - Processing intermediate and enhanced builds using `--build-intermediate` and `--build-enhanced`.
+  - Refreshing data sources with `--refresh` and merging/persisting data with `--merge-persist`.
+  
 ## Future Considerations
-- Enhance the feature by exposing additional filters and multiple data sources for ontology generation.
-- Consider integrating automated post-generation validation to improve reliability and resilience of the ontology building workflow.
+- Explore extending the validation process with automated post-generation checks.
+- Consider integrating additional data sources and filters for enhanced ontology generation.
+- Investigate improvements in persistence mechanisms to handle large or incremental updates efficiently.
