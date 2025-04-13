@@ -77,7 +77,7 @@ To launch the REST API server, use the --serve flag:
 node src/lib/main.js --serve
 ```
 
-The server listens on port 3000 and automatically shuts down after a short period (for demo purposes, after approximately 3 seconds). You can test the endpoints using curl:
+The server listens on port 3000 and automatically shuts down after approximately 3 seconds (for demo purposes). You can test the endpoints using curl:
 
 - Check health:
   ```bash
