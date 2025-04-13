@@ -163,7 +163,7 @@ function getDefaultTimeout() {
 function handleHelp(args, { getDefaultTimeout }) {
   logCommand('--help');
   const timeout = getDefaultTimeout();
-  console.log(`Usage: \n  --help             Display help information\n  --version          Show package version\n  --read <path>      Load ontology from file\n  --persist <outputFile> [--ontology <json-string|path>]    Persist ontology\n  --export-graphdb <inputFile> [outputFile]    Export ontology in GraphDB format\n  --export-owl <inputFile> [outputFile]    Export ontology in OWL/Turtle format\n  --export-xml <inputFile> [outputFile]    Export ontology in RDF/XML format\n  --merge-persist <file1> <file2> <outputFile>    Merge ontologies\n  --diagnostics      Output diagnostic report\n  --refresh          Refresh system state\n  --build-intermediate   Process and output an intermediate build version of the ontology\n  --build-enhanced       Process and output an enhanced build version of the ontology\n  --build-ontology [inputFile]    Build ontology from input or use default\n  --merge-ontology <file1> <file2> [outputFile]    Merge ontologies and output merged result\n  --query-ontology <ontologyFile> <searchTerm> [--regex]    Query ontology content\n  --query <ontologyFile> <searchTerm> [--regex]    Search ontology content for a term.\n  --fetch [outputFile]    Fetch ontology from public data source\n  --diff <file1> <file2>    Compare two ontology JSON files and output differences\n  --serve                Launch an HTTP server exposing REST endpoints for ontology operations\n  --interactive          Launch the interactive mode for ontology exploration\nUsing DEFAULT_TIMEOUT: ${timeout}`);
+  console.log(`Usage: \n  --help             Display help information\n  --version          Show package version\n  --read <path>      Load ontology from file\n  --persist <outputFile> [--ontology <json-string|path>]    Persist ontology\n  --export-graphdb <inputFile> [outputFile]    Export ontology in GraphDB format\n  --export-owl <inputFile> [outputFile]    Export ontology in OWL/Turtle format\n  --export-xml <inputFile> [outputFile]    Export ontology in RDF/XML format\n  --export-jsonld <inputFile> [outputFile]    Export ontology in JSON-LD format\n  --merge-persist <file1> <file2> <outputFile>    Merge ontologies\n  --diagnostics      Output diagnostic report\n  --refresh          Refresh system state\n  --build-intermediate   Process and output an intermediate build version of the ontology\n  --build-enhanced       Process and output an enhanced build version of the ontology\n  --build-ontology [inputFile]    Build ontology from input or use default\n  --merge-ontology <file1> <file2> [outputFile]    Merge ontologies and output merged result\n  --query-ontology <ontologyFile> <searchTerm> [--regex]    Query ontology content\n  --query <ontologyFile> <searchTerm> [--regex]    Search ontology content for a term.\n  --fetch [outputFile]    Fetch ontology from public data source\n  --diff <file1> <file2>    Compare two ontology JSON files and output differences\n  --serve                Launch an HTTP server exposing REST endpoints for ontology operations\n  --interactive          Launch the interactive mode for ontology exploration\nUsing DEFAULT_TIMEOUT: ${timeout}`);
 }
 
 function handleVersion(args) {
@@ -370,6 +370,55 @@ function handleExportXML(args) {
   }
 }
 
+// New handler for exporting ontology to JSON-LD format
+function handleExportJSONLD(args) {
+  logCommand('--export-jsonld');
+  const inputFile = args[args.indexOf('--export-jsonld') + 1];
+  let outputFile = null;
+  const potentialOutput = args[args.indexOf('--export-jsonld') + 2];
+  if (potentialOutput && !potentialOutput.startsWith('--')) {
+    outputFile = potentialOutput;
+  }
+  try {
+    const data = readFileSync(inputFile, { encoding: 'utf-8' });
+    const ontology = JSON.parse(data);
+    ontologySchema.parse(ontology);
+    const jsonld = {
+      "@context": {
+        "owl": "http://www.w3.org/2002/07/owl#",
+        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+        "ex": "http://example.org/"
+      },
+      "@type": "owl:Ontology",
+      "name": ontology.name,
+      "version": ontology.version,
+      "classes": ontology.classes.map(cls => ({
+        "@type": "owl:Class",
+        "name": cls,
+        "iri": "ex:" + cls.replace(/\s+/g, '_')
+      })),
+      "properties": Object.fromEntries(
+        Object.entries(ontology.properties).map(([key, value]) => [key, value])
+      )
+    };
+    if (outputFile) {
+      writeFileSync(outputFile, JSON.stringify(jsonld, null, 2), { encoding: 'utf-8' });
+      console.log(`JSON-LD exporter output written to ${outputFile}`);
+    } else {
+      console.log(JSON.stringify(jsonld, null, 2));
+    }
+    broadcastNotification('ontologyExported', { outputFile, ontologyName: ontology.name });
+  } catch (err) {
+    if (err instanceof Error && err.name === 'ZodError') {
+      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed for export-jsonld', { command: '--export-jsonld', file: inputFile, errors: err.errors });
+      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
+    } else {
+      logError('LOG_ERR_EXPORT_JSONLD', 'Error exporting JSON-LD', { command: '--export-jsonld', error: err.message, inputFile });
+      console.error('LOG_ERR_EXPORT_JSONLD', err.message);
+    }
+  }
+}
+
 function handleMergePersist(args) {
   logCommand('--merge-persist');
   const index = args.indexOf('--merge-persist');
@@ -411,7 +460,7 @@ function handleDiagnostics(args) {
       platform: process.platform,
       arch: process.arch
     },
-    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--export-owl','--export-xml','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--build-ontology','--merge-ontology','--query','--fetch','--diff','--query-ontology','--serve','--interactive'],
+    cliCommands: ['--help','--version','--read','--persist','--export-graphdb','--export-owl','--export-xml','--export-jsonld','--merge-persist','--diagnostics','--refresh','--build-intermediate','--build-enhanced','--build-ontology','--merge-ontology','--query','--fetch','--diff','--query-ontology','--serve','--interactive'],
     processArgs: process.argv.slice(2),
     DEFAULT_TIMEOUT: getDefaultTimeout()
   };
@@ -1341,6 +1390,10 @@ async function dispatchCommand(args) {
   }
   if (args.includes('--export-xml')) {
     handleExportXML(args);
+    return;
+  }
+  if (args.includes('--export-jsonld')) {
+    handleExportJSONLD(args);
     return;
   }
   if (args.includes('--merge-persist')) {
