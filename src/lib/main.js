@@ -9,6 +9,7 @@ import { z } from 'zod';
 import http from 'http';
 import https from 'https';
 import readline from 'readline';
+import { WebSocketServer } from 'ws';
 
 // Load environment variables
 dotenv.config();
@@ -19,6 +20,27 @@ const pkg = JSON.parse(readFileSync(pkgPath, { encoding: 'utf-8' }));
 
 // Get __dirname for ESM modules
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// Global WebSocket server variable
+let wss = null;
+
+/**
+ * Broadcasts a notification to all connected WebSocket clients
+ * @param {string} event - The event type
+ * @param {object} payload - The payload data
+ */
+function broadcastNotification(event, payload) {
+  const notification = { event, payload, timestamp: new Date().toISOString() };
+  if (wss) {
+    wss.clients.forEach(client => {
+      if (client.readyState === client.OPEN) {
+        client.send(JSON.stringify(notification));
+      }
+    });
+  }
+  // For testing and logging purposes
+  console.log('WS Notification:', JSON.stringify(notification));
+}
 
 /**
  * Ensures that the log directory exists and is a directory.
@@ -200,6 +222,7 @@ function handlePersist(args) {
   try {
     writeFileSync(outputFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
     console.log(`Ontology persisted to ${outputFile}`);
+    broadcastNotification('ontologyPersisted', { outputFile, ontologyName: ontology.name });
   } catch (err) {
     logError('LOG_ERR_PERSIST_WRITE', 'Error persisting ontology', { command: '--persist', error: err.message, outputFile });
     console.error('LOG_ERR_PERSIST_WRITE', err.message);
@@ -361,6 +384,7 @@ function handleMergePersist(args) {
     };
     writeFileSync(outputFile, JSON.stringify(merged, null, 2), { encoding: 'utf-8' });
     console.log(`Merged ontology persisted to ${outputFile}`);
+    broadcastNotification('ontologyMerged', { outputFile, mergedOntologyName: merged.name });
   } catch (err) {
     if (err instanceof Error && err.name === 'ZodError') {
       logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed during merge', { command: '--merge-persist', error: err.errors });
@@ -535,7 +559,7 @@ function handleQuery(args) {
   }
 }
 
-// New handler: --fetch command for auto-generating ontology from public data sources with dynamic fetch support
+// New handler: --fetch command for auto-generating ontology from public data sources
 async function handleFetch(args) {
   logCommand('--fetch');
   async function fetchData(url) {
@@ -712,6 +736,7 @@ function handleBuildOntology(args) {
     };
   }
   console.log(JSON.stringify(ontology, null, 2));
+  broadcastNotification('ontologyBuilt', { ontologyName: ontology.name });
 }
 
 // New handler: --merge-ontology command
@@ -745,6 +770,7 @@ function handleMergeOntology(args) {
     } else {
       console.log(JSON.stringify(merged, null, 2));
     }
+    broadcastNotification('ontologyMerged', { mergedOntologyName: merged.name });
   } catch (err) {
     logError('LOG_ERR_MERGE_ONTOLOGY', 'Error merging ontologies', { error: err.message });
     console.error('LOG_ERR_MERGE_ONTOLOGY', err.message);
@@ -1187,10 +1213,18 @@ function interactiveCompleter(loadedOntology, line) {
   return [hits.length ? hits : suggestions, line];
 }
 
-// New handler: --serve command to launch REST API server
+// New handler: --serve command to launch REST API server with WebSocket notifications
 async function handleServe(args) {
   const port = 3000;
   const server = http.createServer((req, res) => {
+    // New endpoint for triggering test notification
+    if (req.method === 'GET' && req.url === '/ontology/notify') {
+      const notification = { event: 'testNotification', info: "Test", timestamp: new Date().toISOString() };
+      broadcastNotification('testNotification', { info: "Test", timestamp: notification.timestamp });
+      res.writeHead(200, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message:'Notification sent', notification }));
+      return;
+    }
     if (req.method === 'GET' && req.url === '/health') {
       res.writeHead(200, { 'Content-Type': 'application/json' });
       res.end(JSON.stringify({ status: 'ok', message: 'Service is healthy' }));
@@ -1238,12 +1272,26 @@ async function handleServe(args) {
     }
   });
 
+  // Initialize WebSocket server on upgrade
+  wss = new WebSocketServer({ noServer: true });
+  wss.on('connection', (ws) => {
+    console.log('WebSocket client connected');
+  });
+
+  server.on('upgrade', (request, socket, head) => {
+    if (!wss) { socket.destroy(); return; }
+    wss.handleUpgrade(request, socket, head, (ws) => {
+      wss.emit('connection', ws, request);
+    });
+  });
+
   server.listen(port, () => {
     console.log(`Server started on port ${port}`);
   });
 
   setTimeout(() => {
     server.close(() => {
+      if (wss) wss.close();
       console.log('Server stopped');
       process.exit(0);
     });
