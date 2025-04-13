@@ -2,18 +2,20 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Issue Worker",
+  "lastActivityName": "Review Issue",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1505] Add JSON-LD Exporter for OWL Ontologies automated, feature",
-  "openIssues": 5,
-  "issuesClosedLastHour": 10,
+  "nextIssue": "[1505] Add JSON-LD Exporter for OWL Ontologies automated, feature, issue-worker-14429670483",
+  "openIssues": 6,
+  "issuesClosedLastHour": 9,
   "issuesClosedLastDay": 47,
-  "openPRs": 0,
-  "averagePRAge": 0,
-  "prDetails": [],
-  "diffMinutes": 0,
-  "diffMinutesMain": 8,
-  "commitsLastHour": 5,
+  "openPRs": 1,
+  "averagePRAge": 5,
+  "prDetails": [
+    "[5m] Added --export-jsonld command with JSON-LD export functionality and updated tests and documentation accordingly. (fixes #1505)"
+  ],
+  "diffMinutes": 6,
+  "diffMinutesMain": 14,
+  "commitsLastHour": 3,
   "commitsLastDay": 62,
   "lastFiveCommitMessages": [
     "[12:51] - Clarified that no changes are needed since the prompt did not sp...",
@@ -25,14 +27,14 @@
   "branches": {
     "count": 1,
     "details": [
-      "[0m] agentic-lib-issue-1505"
+      "[6m] agentic-lib-issue-1505"
     ],
     "branchIssueDetails": [
       "[1505] Add JSON-LD Exporter for OWL Ontologies automated, feature, issue-worker-14429670483"
     ],
-    "averageBranchAge": 0
+    "averageBranchAge": 6
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-13T13:00:22.853Z"
+  "statsGeneratedAt": "2025-04-13T13:06:42.494Z"
 }
