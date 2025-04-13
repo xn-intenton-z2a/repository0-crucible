@@ -949,13 +949,9 @@ function handleInteractive(args) {
         } else {
           const key = tokens[1];
           const newValue = tokens.slice(2).join(' ');
-          if (key in loadedOntology.properties) {
-            loadedOntology.properties[key] = newValue;
-            console.log(`Property '${key}' updated to '${newValue}'.`);
-            logCommand('interactive: update-property');
-          } else {
-            console.log(`Property '${key}' does not exist. Use add-property to add a new property.`);
-          }
+          loadedOntology.properties[key] = newValue;
+          console.log(`Property '${key}' updated to '${newValue}'.`);
+          logCommand('interactive: update-property');
         }
         break;
       case 'remove-property':
@@ -982,7 +978,7 @@ function handleInteractive(args) {
         console.log(" add-class <name>      - Add a new class to the ontology");
         console.log(" remove-class <name>   - Remove an existing class");
         console.log(" add-property <k> <v>  - Add a new property");
-        console.log(" update-property <k> <v> - Update an existing property");
+        console.log(" update-property <k> <v> - Update (or add) an existing property");
         console.log(" remove-property <k>   - Remove a property");
         console.log(" help                  - Show this help message");
         console.log(" exit                  - Exit interactive mode");

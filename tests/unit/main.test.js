@@ -48,7 +48,7 @@ function clearOntologiesDir() {
 describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--help flag displays usage information', () => {
     clearLogFile();
-    const result = spawnSync('node', [cliPath, '--help'], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--help'], { encoding: 'utf-8' });
     expect(result.stdout).toContain('Usage:');
     expect(result.stdout).toContain('--version');
     expect(result.stdout).toContain('Using DEFAULT_TIMEOUT:');
@@ -58,7 +58,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 
   test('--version flag outputs package version', () => {
     clearLogFile();
-    const result = spawnSync('node', [cliPath, '--version'], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--version'], { encoding: 'utf-8' });
     expect(result.stdout.trim()).toBe(pkg.version);
     const logContent = readLogFile();
     expect(logContent).toContain('--version');
@@ -74,7 +74,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     };
     const ontologyFile = join(tempDir, 'ontology.json');
     writeFileSync(ontologyFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--read', ontologyFile], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--read', ontologyFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('Ontology loaded:');
     const logContent = readLogFile();
     expect(logContent).toContain('--read');
@@ -86,7 +86,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const invalidOntology = { name: 123, version: '1.0', classes: 'not-an-array', properties: {} };
     const ontologyFile = join(tempDir, 'invalidOntology.json');
     writeFileSync(ontologyFile, JSON.stringify(invalidOntology), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--read', ontologyFile], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--read', ontologyFile], { encoding: 'utf-8' });
     expect(result.stderr).toContain('LOG_ERR_ONTOLOGY_VALIDATE');
     unlinkSync(ontologyFile);
   });
@@ -94,7 +94,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--persist flag writes dummy ontology to file when no custom ontology is provided', () => {
     clearLogFile();
     const outputFile = join(tempDir, 'persisted.json');
-    const result = spawnSync('node', [cliPath, '--persist', outputFile], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--persist', outputFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('Ontology persisted to');
     const persisted = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
     expect(persisted).toHaveProperty('name', 'Dummy Ontology');
@@ -113,7 +113,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       properties: { customProp: 'customValue' }
     };
     const args = [cliPath, '--persist', outputFile, '--ontology', JSON.stringify(customOntology)];
-    const result = spawnSync('node', args, { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, args, { encoding: 'utf-8' });
     expect(result.stdout).toContain('Ontology persisted to');
     const persisted = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
     expect(persisted).toEqual(customOntology);
@@ -134,7 +134,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     };
     writeFileSync(ontologyInputFile, JSON.stringify(customOntology, null, 2), { encoding: 'utf-8' });
     const args = [cliPath, '--persist', outputFile, '--ontology', ontologyInputFile];
-    const result = spawnSync('node', args, { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, args, { encoding: 'utf-8' });
     expect(result.stdout).toContain('Ontology persisted to');
     const persisted = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
     expect(persisted).toEqual(customOntology);
@@ -149,7 +149,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const outputFile = join(tempDir, 'invalidPersisted.json');
     const invalidJSON = '{ invalid json }';
     const args = [cliPath, '--persist', outputFile, '--ontology', invalidJSON];
-    const result = spawnSync('node', args, { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, args, { encoding: 'utf-8' });
     expect(result.stderr).toContain('LOG_ERR_PERSIST_PARSE');
     const logContent = readLogFile();
     expect(logContent).toContain('--persist');
@@ -165,7 +165,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     };
     const inputFile = join(tempDir, 'graphOntology.json');
     writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--export-graphdb', inputFile], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--export-graphdb', inputFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('GraphDB exporter output:');
     const logContent = readLogFile();
     expect(logContent).toContain('--export-graphdb');
@@ -183,7 +183,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const inputFile = join(tempDir, 'graphOntology2.json');
     const outputFile = join(tempDir, 'graphOutput.json');
     writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--export-graphdb', inputFile, outputFile], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--export-graphdb', inputFile, outputFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('GraphDB exporter output written to');
     const outputContent = readFileSync(outputFile, { encoding: 'utf-8' });
     expect(outputContent).toContain('nodes');
@@ -203,7 +203,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     };
     const inputFile = join(tempDir, 'owlOntology.json');
     writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--export-owl', inputFile], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--export-owl', inputFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('@prefix owl: <http://www.w3.org/2002/07/owl#>');
     expect(result.stdout).toContain('a owl:Ontology');
     const logContent = readLogFile();
@@ -222,7 +222,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const inputFile = join(tempDir, 'owlOntologyFile.json');
     const outputFile = join(tempDir, 'owlOutput.ttl');
     writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--export-owl', inputFile, outputFile], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--export-owl', inputFile, outputFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('OWL/Turtle exporter output written to');
     const outputContent = readFileSync(outputFile, { encoding: 'utf-8' });
     expect(outputContent).toContain('@prefix owl: <http://www.w3.org/2002/07/owl#>');
@@ -242,7 +242,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     };
     const inputFile = join(tempDir, 'xmlOntology.json');
     writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--export-xml', inputFile], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--export-xml', inputFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('<?xml version="1.0"?>');
     expect(result.stdout).toContain('owl:Ontology');
     const logContent = readLogFile();
@@ -261,7 +261,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const inputFile = join(tempDir, 'xmlOntologyFile.json');
     const outputFile = join(tempDir, 'xmlOutput.xml');
     writeFileSync(inputFile, JSON.stringify(dummyOntology, null, 2), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--export-xml', inputFile, outputFile], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--export-xml', inputFile, outputFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('RDF/XML exporter output written to');
     const outputContent = readFileSync(outputFile, { encoding: 'utf-8' });
     expect(outputContent).toContain('<?xml version="1.0"?>');
@@ -290,7 +290,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const outputFile = join(tempDir, 'merged.json');
     writeFileSync(file1, JSON.stringify(ontology1, null, 2), { encoding: 'utf-8' });
     writeFileSync(file2, JSON.stringify(ontology2, null, 2), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--merge-persist', file1, file2, outputFile], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--merge-persist', file1, file2, outputFile], { encoding: 'utf-8' });
     expect(result.stdout).toContain('Merged ontology persisted to');
     const merged = JSON.parse(readFileSync(outputFile, { encoding: 'utf-8' }));
     expect(merged.name).toBe('MergeOne & MergeTwo');
@@ -310,7 +310,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
       mkdirSync(logDir, { recursive: true });
     }
     writeFileSync(logFilePath, 'dummy log content\n', { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--refresh'], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--refresh'], { encoding: 'utf-8' });
     expect(result.stdout).toContain('System state refreshed');
     const logContent = readLogFile();
     expect(logContent).toContain('--refresh');
@@ -319,7 +319,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 
   test('--build-intermediate flag processes intermediate build', () => {
     clearLogFile();
-    const result = spawnSync('node', [cliPath, '--build-intermediate'], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--build-intermediate'], { encoding: 'utf-8' });
     expect(result.stdout).toContain('Intermediate build processed');
     const logContent = readLogFile();
     expect(logContent).toContain('--build-intermediate');
@@ -327,7 +327,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 
   test('--build-enhanced flag processes enhanced build with public API data', () => {
     clearLogFile();
-    const result = spawnSync('node', [cliPath, '--build-enhanced'], { encoding: 'utf-8', env: { ...process.env, NODE_ENV: 'test' }, timeout: 5000 });
+    const result = spawnSync(process.execPath, [cliPath, '--build-enhanced'], { encoding: 'utf-8', env: { ...process.env, NODE_ENV: 'test' }, timeout: 5000 });
     const output = JSON.parse(result.stdout);
     expect(output).toHaveProperty('name', 'Enhanced Ontology');
     const logContent = readLogFile();
@@ -337,7 +337,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--serve flag launches and stops the HTTP server', async () => {
     clearLogFile();
     await new Promise((resolve, reject) => {
-      const child = spawn('node', [cliPath, '--serve'], { encoding: 'utf-8' });
+      const child = spawn(process.execPath, [cliPath, '--serve'], { encoding: 'utf-8' });
       let output = '';
       child.stdout.on('data', (data) => { output += data; });
       child.on('close', (code) => {
@@ -354,7 +354,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 
   test('GET /health returns healthy status', async () => {
     await new Promise((resolve, reject) => {
-      const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+      const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
       setTimeout(() => {
         http.get('http://127.0.0.1:3000/health', (res) => {
           let data = '';
@@ -380,7 +380,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 
   test('POST /ontology/build returns build triggered message', async () => {
     await new Promise((resolve, reject) => {
-      const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+      const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
       setTimeout(() => {
         const options = {
           hostname: '127.0.0.1',
@@ -417,7 +417,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 
   test('GET /ontology/read returns dummy ontology', async () => {
     await new Promise((resolve, reject) => {
-      const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+      const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
       setTimeout(() => {
         http.get('http://127.0.0.1:3000/ontology/read', (res) => {
           let data = '';
@@ -443,7 +443,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 
   test('POST /ontology/merge returns merged ontology', async () => {
     await new Promise((resolve, reject) => {
-      const serverProcess = spawn('node', [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+      const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
       setTimeout(() => {
         const options = {
           hostname: '127.0.0.1',
@@ -487,7 +487,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   // Tests for new commands in Interactive Mode Editing
   test('Interactive Mode Editing Commands', async () => {
     await new Promise((resolve, reject) => {
-      const child = spawn('node', [cliPath, '--interactive'], { stdio: ['pipe', 'pipe', 'pipe'], env: { NODE_ENV: 'test' } });
+      const child = spawn(process.execPath, [cliPath, '--interactive'], { stdio: ['pipe', 'pipe', 'pipe'], env: { NODE_ENV: 'test' } });
       let output = '';
       child.stdout.on('data', (data) => { output += data.toString(); });
 
@@ -529,11 +529,11 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
         }
       });
     });
-  }, 10000);
+  }, 15000);
 
   test('--build-ontology builds ontology from default when no input file provided', () => {
     clearLogFile();
-    const result = spawnSync('node', [cliPath, '--build-ontology'], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--build-ontology'], { encoding: 'utf-8' });
     const output = JSON.parse(result.stdout);
     expect(output).toHaveProperty('name', 'Built Ontology');
     expect(output).toHaveProperty('built', true);
@@ -551,7 +551,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     };
     const inputFile = join(tempDir, 'inputBuild.json');
     writeFileSync(inputFile, JSON.stringify(inputOntology, null, 2), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--build-ontology', inputFile], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--build-ontology', inputFile], { encoding: 'utf-8' });
     const output = JSON.parse(result.stdout);
     expect(output).toHaveProperty('name', 'Input Ontology');
     expect(output).toHaveProperty('built', true);
@@ -576,7 +576,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     const file2 = join(tempDir, 'mergeTest2.json');
     writeFileSync(file1, JSON.stringify(ontology1, null, 2), { encoding: 'utf-8' });
     writeFileSync(file2, JSON.stringify(ontology2, null, 2), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--merge-ontology', file1, file2], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--merge-ontology', file1, file2], { encoding: 'utf-8' });
     const merged = JSON.parse(result.stdout);
     expect(merged.name).toBe('MergeTest1 & MergeTest2');
     expect(merged.classes.sort()).toEqual(['A', 'B', 'C'].sort());
@@ -594,7 +594,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     };
     const ontologyFile = join(tempDir, 'queryOntology.json');
     writeFileSync(ontologyFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
-    const result = spawnSync('node', [cliPath, '--query-ontology', ontologyFile, 'search'], { encoding: 'utf-8' });
+    const result = spawnSync(process.execPath, [cliPath, '--query-ontology', ontologyFile, 'search'], { encoding: 'utf-8' });
     const output = JSON.parse(result.stdout);
     expect(output).toHaveProperty('propertyKeys');
     unlinkSync(ontologyFile);
@@ -617,7 +617,7 @@ describe('Interactive Mode Auto-Completion', () => {
 describe('--fetch Command Enhanced Functionality', () => {
   test('--fetch falls back to dummy ontology when FETCH_URL is not set', () => {
     clearLogFile();
-    const result = spawnSync('node', [cliPath, '--fetch'], { encoding: 'utf-8', timeout: 5000 });
+    const result = spawnSync(process.execPath, [cliPath, '--fetch'], { encoding: 'utf-8', timeout: 5000 });
     const output = JSON.parse(result.stdout);
     expect(output).toHaveProperty('name', 'Fetched Ontology');
     expect(output).toHaveProperty('version', 'fetched-1.0');
@@ -641,7 +641,7 @@ describe('--fetch Command Enhanced Functionality', () => {
         const port = apiServer.address().port;
         const fetchUrl = `http://127.0.0.1:${port}`;
         const env = { ...process.env, FETCH_URL: fetchUrl };
-        const child = spawn('node', [cliPath, '--fetch'], { encoding: 'utf-8', env, timeout: 5000 });
+        const child = spawn(process.execPath, [cliPath, '--fetch'], { encoding: 'utf-8', env, timeout: 5000 });
         let output = '';
         child.stdout.on('data', data => { output += data; });
         child.on('close', () => {

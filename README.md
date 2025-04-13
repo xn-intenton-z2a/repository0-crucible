@@ -53,7 +53,7 @@ npm install repository0-crucible
   - **Add a new class:** `add-class <className>`
   - **Remove an existing class:** `remove-class <className>`
   - **Add a new property:** `add-property <key> <value>`
-  - **Update an existing property:** `update-property <key> <newValue>`
+  - **Update an existing property:** `update-property <key> <newValue>` (this command will update the property if it exists or add it if it does not)
   - **Remove a property:** `remove-property <key>`
   - For help, type: `help`
   - To exit, type: `exit`
@@ -194,7 +194,7 @@ node src/lib/main.js --help
   node src/lib/main.js --merge-ontology ontology1.json ontology2.json [output.json]
   ```
 
-- **Query Ontology Content (New):**
+- **Query Ontology Content (New):
   ```bash
   node src/lib/main.js --query-ontology path/to/ontology.json searchTerm [--regex]
   ```
@@ -212,7 +212,7 @@ node src/lib/main.js --help
     - `add-class <className>`: Add a new class to the loaded ontology.
     - `remove-class <className>`: Remove an existing class from the loaded ontology.
     - `add-property <k> <v>`: Add a new property to the loaded ontology.
-    - `update-property <k> <newValue>`: Update an existing property value in the loaded ontology.
+    - `update-property <k> <newValue>`: Update (or add) an existing property value in the loaded ontology.
     - `remove-property <k>`: Remove an existing property from the loaded ontology.
 
 - **Ontology Content Query (Legacy):**
