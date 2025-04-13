@@ -9,14 +9,14 @@
   "issuesClosedLastHour": 0,
   "issuesClosedLastDay": 41,
   "openPRs": 2,
-  "averagePRAge": 70,
+  "averagePRAge": 71,
   "prDetails": [
-    "[53m] Refactored export handlers to use shared utilities for file reading validation and output. (fixes #1517)",
-    "[87m] Imported beforeEach from vitest in the test file to fix the ReferenceError. (fixes #1513)"
+    "[54m] Refactored export handlers to use shared utilities for file reading validation and output. (fixes #1517)",
+    "[89m] Imported beforeEach from vitest in the test file to fix the ReferenceError. (fixes #1513)"
   ],
-  "diffMinutes": 0,
-  "diffMinutesMain": 58,
-  "commitsLastHour": 1,
+  "diffMinutes": 1,
+  "diffMinutesMain": 60,
+  "commitsLastHour": 0,
   "commitsLastDay": 49,
   "lastFiveCommitMessages": [
     "[16:09] - No changes were necessary as the build and tests are passing.",
@@ -28,14 +28,14 @@
   "branches": {
     "count": 1,
     "details": [
-      "[54m] agentic-lib-issue-1517"
+      "[55m] agentic-lib-issue-1517"
     ],
     "branchIssueDetails": [
       "[1517] Refactor Redundant Code in Ontology Export Handlers automated, maintenance, issue-worker-14431121632"
     ],
-    "averageBranchAge": 54
+    "averageBranchAge": 55
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-13T17:08:20.656Z"
+  "statsGeneratedAt": "2025-04-13T17:09:48.611Z"
 }
