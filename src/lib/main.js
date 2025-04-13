@@ -213,6 +213,40 @@ function getDefaultTimeout() {
   return timeoutValue;
 }
 
+// New utility function to read and validate ontology from file
+function readAndValidateOntology(filePath, command) {
+  try {
+    const data = readFileSync(filePath, { encoding: 'utf-8' });
+    const ontology = JSON.parse(data);
+    ontologySchema.parse(ontology);
+    return ontology;
+  } catch (err) {
+    if (err instanceof Error && err.name === 'ZodError') {
+      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed', { command, file: filePath, errors: err.errors });
+      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
+    } else {
+      logError(`LOG_ERR_ONTOLOGY_READ_${command}`, 'Ontology read error', { command, file: filePath, error: err.message });
+      console.error(`LOG_ERR_ONTOLOGY_READ_${command}`, err.message);
+    }
+    return null;
+  }
+}
+
+// Utility function for unified output
+function outputResult(content, outputFile, successMessage) {
+  if (outputFile) {
+    try {
+      writeFileSync(outputFile, content, { encoding: 'utf-8' });
+      console.log(successMessage + ' written to ' + outputFile);
+    } catch (err) {
+      logError('LOG_ERR_WRITE_OUTPUT', 'Error writing output', { outputFile, error: err.message });
+      console.error('LOG_ERR_WRITE_OUTPUT', err.message);
+    }
+  } else {
+    console.log(content);
+  }
+}
+
 // Inline command handlers
 function handleHelp(args, { getDefaultTimeout }) {
   logCommand('--help');
@@ -291,6 +325,7 @@ function handlePersist(args) {
   }
 }
 
+// Refactored export handlers using shared utilities
 function handleExportGraphDB(args) {
   logCommand('--export-graphdb');
   const inputFile = args[args.indexOf('--export-graphdb') + 1];
@@ -299,29 +334,16 @@ function handleExportGraphDB(args) {
   if (potentialOutput && !potentialOutput.startsWith('--')) {
     outputFile = potentialOutput;
   }
-  try {
-    const data = readFileSync(inputFile, { encoding: 'utf-8' });
-    const ontology = JSON.parse(data);
-    // Validate ontology using Zod schema
-    ontologySchema.parse(ontology);
-    const graphOutput = {
-      message: `GraphDB exporter output for ${ontology.name}`,
-      nodes: []
-    };
-    if (outputFile) {
-      writeFileSync(outputFile, JSON.stringify(graphOutput, null, 2), { encoding: 'utf-8' });
-      console.log(`GraphDB exporter output written to ${outputFile}`);
-    } else {
-      console.log(`GraphDB exporter output: ${JSON.stringify(graphOutput)}`);
-    }
-  } catch (err) {
-    if (err instanceof Error && err.name === 'ZodError') {
-      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed', { command: '--export-graphdb', file: inputFile, errors: err.errors });
-      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
-    } else {
-      logError('LOG_ERR_EXPORT_GRAPHDB', 'Error exporting GraphDB', { command: '--export-graphdb', error: err.message, inputFile });
-      console.error('LOG_ERR_EXPORT_GRAPHDB', err.message);
-    }
+  const ontology = readAndValidateOntology(inputFile, '--export-graphdb');
+  if (!ontology) return;
+  const graphOutput = {
+    message: `GraphDB exporter output for ${ontology.name}`,
+    nodes: []
+  };
+  if (outputFile) {
+    outputResult(JSON.stringify(graphOutput, null, 2), outputFile, 'GraphDB exporter output written to');
+  } else {
+    console.log(`GraphDB exporter output: ${JSON.stringify(graphOutput)}`);
   }
 }
 
@@ -333,46 +355,31 @@ function handleExportOWL(args) {
   if (potentialOutput && !potentialOutput.startsWith('--')) {
     outputFile = potentialOutput;
   }
-  try {
-    const data = readFileSync(inputFile, { encoding: 'utf-8' });
-    const ontology = JSON.parse(data);
-    // Validate ontology using Zod schema
-    ontologySchema.parse(ontology);
-    // Build Turtle format output
-    let ttl = '';
-    ttl += '@prefix owl: <http://www.w3.org/2002/07/owl#> .\n';
-    ttl += '@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n';
-    ttl += '@prefix ex: <http://example.org/> .\n\n';
-    ttl += `ex:${ontology.name.replace(/\s+/g, '_')} a owl:Ontology ;\n`;
-    ttl += `    owl:versionInfo "${ontology.version}" .\n\n`;
-    if (Array.isArray(ontology.classes)) {
-      ontology.classes.forEach(cls => {
-        ttl += `ex:${cls.replace(/\s+/g, '_')} a owl:Class .\n`;
-      });
+  const ontology = readAndValidateOntology(inputFile, '--export-owl');
+  if (!ontology) return;
+  let ttl = '';
+  ttl += '@prefix owl: <http://www.w3.org/2002/07/owl#> .\n';
+  ttl += '@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .\n';
+  ttl += '@prefix ex: <http://example.org/> .\n\n';
+  ttl += `ex:${ontology.name.replace(/\s+/g, '_')} a owl:Ontology ;\n`;
+  ttl += `    owl:versionInfo "${ontology.version}" .\n\n`;
+  if (Array.isArray(ontology.classes)) {
+    ontology.classes.forEach(cls => {
+      ttl += `ex:${cls.replace(/\s+/g, '_')} a owl:Class .\n`;
+    });
+  }
+  if (ontology.properties && typeof ontology.properties === 'object') {
+    for (const [key, value] of Object.entries(ontology.properties)) {
+      ttl += `ex:${key.replace(/\s+/g, '_')} "${value}" .\n`;
     }
-    if (ontology.properties && typeof ontology.properties === 'object') {
-      for (const [key, value] of Object.entries(ontology.properties)) {
-        ttl += `ex:${key.replace(/\s+/g, '_')} "${value}" .\n`;
-      }
-    }
-    if (outputFile) {
-      writeFileSync(outputFile, ttl, { encoding: 'utf-8' });
-      console.log(`OWL/Turtle exporter output written to ${outputFile}`);
-    } else {
-      console.log(ttl);
-    }
-  } catch (err) {
-    if (err instanceof Error && err.name === 'ZodError') {
-      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed for export-owl', { command: '--export-owl', file: inputFile, errors: err.errors });
-      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
-    } else {
-      logError('LOG_ERR_EXPORT_OWL', 'Error exporting OWL/Turtle', { command: '--export-owl', error: err.message, inputFile });
-      console.error('LOG_ERR_EXPORT_OWL', err.message);
-    }
+  }
+  if (outputFile) {
+    outputResult(ttl, outputFile, 'OWL/Turtle exporter output written to');
+  } else {
+    console.log(ttl);
   }
 }
 
-// New handler for exporting ontology to RDF/XML format
 function handleExportXML(args) {
   logCommand('--export-xml');
   const inputFile = args[args.indexOf('--export-xml') + 1];
@@ -381,52 +388,38 @@ function handleExportXML(args) {
   if (potentialOutput && !potentialOutput.startsWith('--')) {
     outputFile = potentialOutput;
   }
-  try {
-    const data = readFileSync(inputFile, { encoding: 'utf-8' });
-    const ontology = JSON.parse(data);
-    // Validate ontology using Zod schema
-    ontologySchema.parse(ontology);
-    let xml = '<?xml version="1.0"?>\n';
-    xml += '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ';
-    xml += 'xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" ';
-    xml += 'xmlns:owl="http://www.w3.org/2002/07/owl#">\n';
-    const ontAbout = 'http://example.org/' + ontology.name.replace(/\s+/g, '_');
-    xml += `  <owl:Ontology rdf:about="${ontAbout}">\n`;
-    xml += `    <rdfs:comment>Version: ${ontology.version}</rdfs:comment>\n`;
-    xml += '  </owl:Ontology>\n';
-    if (Array.isArray(ontology.classes)) {
-      ontology.classes.forEach(cls => {
-        const classAbout = 'http://example.org/' + cls.replace(/\s+/g, '_');
-        xml += `  <owl:Class rdf:about="${classAbout}" />\n`;
-      });
+  const ontology = readAndValidateOntology(inputFile, '--export-xml');
+  if (!ontology) return;
+  let xml = '<?xml version="1.0"?>\n';
+  xml += '<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" ';
+  xml += 'xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#" ';
+  xml += 'xmlns:owl="http://www.w3.org/2002/07/owl#">\n';
+  const ontAbout = 'http://example.org/' + ontology.name.replace(/\s+/g, '_');
+  xml += `  <owl:Ontology rdf:about="${ontAbout}">\n`;
+  xml += `    <rdfs:comment>Version: ${ontology.version}</rdfs:comment>\n`;
+  xml += '  </owl:Ontology>\n';
+  if (Array.isArray(ontology.classes)) {
+    ontology.classes.forEach(cls => {
+      const classAbout = 'http://example.org/' + cls.replace(/\s+/g, '_');
+      xml += `  <owl:Class rdf:about="${classAbout}" />\n`;
+    });
+  }
+  if (ontology.properties && typeof ontology.properties === 'object') {
+    for (const [key, value] of Object.entries(ontology.properties)) {
+      const propAbout = 'http://example.org/' + key.replace(/\s+/g, '_');
+      xml += `  <rdf:Description rdf:about="${propAbout}">\n`;
+      xml += `    <rdfs:label>${value}</rdfs:label>\n`;
+      xml += '  </rdf:Description>\n';
     }
-    if (ontology.properties && typeof ontology.properties === 'object') {
-      for (const [key, value] of Object.entries(ontology.properties)) {
-        const propAbout = 'http://example.org/' + key.replace(/\s+/g, '_');
-        xml += `  <rdf:Description rdf:about="${propAbout}">\n`;
-        xml += `    <rdfs:label>${value}</rdfs:label>\n`;
-        xml += '  </rdf:Description>\n';
-      }
-    }
-    xml += '</rdf:RDF>';
-    if (outputFile) {
-      writeFileSync(outputFile, xml, { encoding: 'utf-8' });
-      console.log(`RDF/XML exporter output written to ${outputFile}`);
-    } else {
-      console.log(xml);
-    }
-  } catch (err) {
-    if (err instanceof Error && err.name === 'ZodError') {
-      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed for export-xml', { command: '--export-xml', file: inputFile, errors: err.errors });
-      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
-    } else {
-      logError('LOG_ERR_EXPORT_XML', 'Error exporting RDF/XML', { command: '--export-xml', error: err.message, inputFile });
-      console.error('LOG_ERR_EXPORT_XML', err.message);
-    }
+  }
+  xml += '</rdf:RDF>';
+  if (outputFile) {
+    outputResult(xml, outputFile, 'RDF/XML exporter output written to');
+  } else {
+    console.log(xml);
   }
 }
 
-// New handler for exporting ontology to JSON-LD format
 function handleExportJSONLD(args) {
   logCommand('--export-jsonld');
   const inputFile = args[args.indexOf('--export-jsonld') + 1];
@@ -435,44 +428,32 @@ function handleExportJSONLD(args) {
   if (potentialOutput && !potentialOutput.startsWith('--')) {
     outputFile = potentialOutput;
   }
-  try {
-    const data = readFileSync(inputFile, { encoding: 'utf-8' });
-    const ontology = JSON.parse(data);
-    ontologySchema.parse(ontology);
-    const jsonld = {
-      "@context": {
-        "owl": "http://www.w3.org/2002/07/owl#",
-        "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-        "ex": "http://example.org/"
-      },
-      "@type": "owl:Ontology",
-      "name": ontology.name,
-      "version": ontology.version,
-      "classes": ontology.classes.map(cls => ({
-        "@type": "owl:Class",
-        "name": cls,
-        "iri": "ex:" + cls.replace(/\s+/g, '_')
-      })),
-      "properties": Object.fromEntries(
-        Object.entries(ontology.properties).map(([key, value]) => [key, value])
-      )
-    };
-    if (outputFile) {
-      writeFileSync(outputFile, JSON.stringify(jsonld, null, 2), { encoding: 'utf-8' });
-      console.log(`JSON-LD exporter output written to ${outputFile}`);
-    } else {
-      console.log(JSON.stringify(jsonld, null, 2));
-    }
-    broadcastNotification('ontologyExported', { outputFile, ontologyName: ontology.name });
-  } catch (err) {
-    if (err instanceof Error && err.name === 'ZodError') {
-      logError('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed for export-jsonld', { command: '--export-jsonld', file: inputFile, errors: err.errors });
-      console.error('LOG_ERR_ONTOLOGY_VALIDATE', 'Ontology validation failed');
-    } else {
-      logError('LOG_ERR_EXPORT_JSONLD', 'Error exporting JSON-LD', { command: '--export-jsonld', error: err.message, inputFile });
-      console.error('LOG_ERR_EXPORT_JSONLD', err.message);
-    }
+  const ontology = readAndValidateOntology(inputFile, '--export-jsonld');
+  if (!ontology) return;
+  const jsonld = {
+    "@context": {
+      "owl": "http://www.w3.org/2002/07/owl#",
+      "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+      "ex": "http://example.org/"
+    },
+    "@type": "owl:Ontology",
+    "name": ontology.name,
+    "version": ontology.version,
+    "classes": ontology.classes.map(cls => ({
+      "@type": "owl:Class",
+      "name": cls,
+      "iri": "ex:" + cls.replace(/\s+/g, '_')
+    })),
+    "properties": Object.fromEntries(
+      Object.entries(ontology.properties).map(([key, value]) => [key, value])
+    )
+  };
+  if (outputFile) {
+    outputResult(JSON.stringify(jsonld, null, 2), outputFile, 'JSON-LD exporter output written to');
+  } else {
+    console.log(JSON.stringify(jsonld, null, 2));
   }
+  broadcastNotification('ontologyExported', { outputFile, ontologyName: ontology.name });
 }
 
 function handleMergePersist(args) {
@@ -584,7 +565,7 @@ function handleBuildEnhanced(args) {
   });
 }
 
-// New handler: --query command for ontology content search with optional regex support
+// New handler for --query command for ontology content search with optional regex support
 function handleQuery(args) {
   logCommand('--query');
   const index = args.indexOf('--query');
@@ -672,7 +653,7 @@ function handleQuery(args) {
   }
 }
 
-// New handler: --fetch command for auto-generating ontology from public data sources
+// New handler for --fetch command for auto-generating ontology from public data sources
 async function handleFetch(args) {
   logCommand('--fetch');
   async function fetchData(url) {
@@ -755,7 +736,7 @@ async function handleFetch(args) {
   return;
 }
 
-// New handler: --diff command for comparing two ontologies
+// New handler for --diff command for comparing two ontologies
 function handleDiff(args) {
   logCommand('--diff');
   const index = args.indexOf('--diff');

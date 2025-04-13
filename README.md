@@ -73,6 +73,9 @@ npm install repository0-crucible
 - **Zod Schema Validation:** Ontology JSON files are validated using a strict Zod schema to ensure required properties are present and of the correct types.
 - **Non-deprecated Package Import:** The package version is imported using file read operations to avoid deprecated import assertions.
 
+### Refactored Export Handlers
+The export handlers (for GraphDB, OWL/Turtle, RDF/XML, and JSON-LD formats) have been refactored to extract common functionalities such as file reading, ontology validation, error logging, and output handling into reusable utility functions. This refactoring reduces code redundancy and improves maintainability.
+
 ## Running the REST API Server
 
 To launch the REST API server, use the --serve flag:
