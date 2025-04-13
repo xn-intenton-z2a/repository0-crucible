@@ -484,14 +484,12 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
     });
   });
 
-  // Tests for new commands in Interactive Mode Editing
   test('Interactive Mode Editing Commands', async () => {
     await new Promise((resolve, reject) => {
       const child = spawn(process.execPath, [cliPath, '--interactive'], { stdio: ['pipe', 'pipe', 'pipe'], env: { NODE_ENV: 'test' } });
       let output = '';
       child.stdout.on('data', (data) => { output += data.toString(); });
 
-      // Prepare commands: load a dummy ontology, add class, remove class, add property, update property, remove property, then exit
       const dummyOntology = {
         name: 'InteractiveTest',
         version: '1.0',

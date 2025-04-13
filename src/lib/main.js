@@ -370,7 +370,6 @@ function handleRefresh(args) {
     const logFile = join(logDir, 'cli.log');
     writeFileSync(logFile, '', { encoding: 'utf-8' });
   } catch (err) {
-    // In case of error, attempt to recreate the log directory
     ensureLogDir();
   }
   logCommand('--refresh');
@@ -379,7 +378,6 @@ function handleRefresh(args) {
 
 function handleBuildIntermediate(args) {
   logCommand('--build-intermediate');
-  // Simulate processing of an intermediate build version of the ontology
   console.log('Intermediate build processed');
 }
 
@@ -670,12 +668,10 @@ function handleBuildOntology(args) {
   const potentialInput = args[index + 1];
   let ontology;
   if (potentialInput && !potentialInput.startsWith('--') && existsSync(potentialInput)) {
-    // Build ontology from provided JSON file
     try {
       const data = readFileSync(potentialInput, { encoding: 'utf-8' });
       ontology = JSON.parse(data);
       ontologySchema.parse(ontology);
-      // Simulate a build process by marking it as built
       ontology.built = true;
     } catch (err) {
       logError('LOG_ERR_BUILD_ONTOLOGY', 'Error building ontology from input file', { error: err.message });
@@ -683,7 +679,6 @@ function handleBuildOntology(args) {
       return;
     }
   } else {
-    // Create a default built ontology
     ontology = {
       name: 'Built Ontology',
       version: '1.0',
@@ -823,7 +818,6 @@ function handleQueryOntology(args) {
 // Interactive mode for ontology exploration with editing capabilities
 function handleInteractive(args) {
   if (process.env.NODE_ENV === 'test') {
-    // In test mode, read all input from stdin and process commands synchronously
     let inputData = '';
     process.stdin.resume();
     process.stdin.setEncoding('utf8');
@@ -971,7 +965,7 @@ function handleInteractive(args) {
             logCommand(`interactive: unknown command: ${line}`);
         }
       }
-      process.exit(0);
+      setTimeout(() => { process.exit(0); }, 50);
     });
   } else {
     // Standard interactive mode using readline
@@ -1200,25 +1194,24 @@ async function handleServe(args) {
         }
       });
     } else {
-      res.writeHead(404, { 'Content-Type': 'application/json' });
+      res.writeHead(404, { 'Content-Type':'application/json' });
       res.end(JSON.stringify({ message: 'Not found' }));
     }
   });
 
   server.listen(port, () => {
-    process.stdout.write(`Server started on port ${port}\n`);
+    console.log(`Server started on port ${port}`);
   });
 
-  // Automatically shutdown the server
   setTimeout(() => {
     server.close(() => {
-      process.stdout.write('Server stopped\n');
+      console.log('Server stopped');
       process.exit(0);
     });
   }, process.env.NODE_ENV === 'test' ? 4000 : 3000);
 }
 
-// Updated dispatchCommand to be async to support async handlers like --fetch and --serve
+// Updated dispatchCommand to support async handlers
 async function dispatchCommand(args) {
   if (args.includes('--interactive')) {
     handleInteractive(args);
@@ -1303,11 +1296,13 @@ async function dispatchCommand(args) {
   return console.log('Invalid command');
 }
 
-// Updated main to be async to support async handlers like --fetch and --serve
+// Updated main to avoid premature process.exit in serve or interactive modes
 async function main() {
   const args = process.argv.slice(2);
   await dispatchCommand(args);
-  process.exit(0);
+  if (!args.includes('--serve') && !args.includes('--interactive')) {
+    process.exit(0);
+  }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

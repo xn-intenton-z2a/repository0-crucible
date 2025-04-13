@@ -212,7 +212,7 @@ node src/lib/main.js --help
     - `add-class <className>`: Add a new class to the loaded ontology.
     - `remove-class <className>`: Remove an existing class from the loaded ontology.
     - `add-property <k> <v>`: Add a new property to the loaded ontology.
-    - `update-property <k> <newValue>`: Update (or add) an existing property value in the loaded ontology.
+    - `update-property <k> <v>`: Update (or add) an existing property value in the loaded ontology.
     - `remove-property <k>`: Remove an existing property from the loaded ontology.
 
 - **Ontology Content Query (Legacy):
