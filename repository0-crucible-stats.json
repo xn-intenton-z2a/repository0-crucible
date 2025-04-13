@@ -2,20 +2,17 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Automerge",
+  "lastActivityName": "Tests",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1517] Refactor Redundant Code in Ontology Export Handlers automated, maintenance, issue-worker-14431121632",
-  "openIssues": 9,
-  "issuesClosedLastHour": 0,
-  "issuesClosedLastDay": 39,
-  "openPRs": 2,
-  "averagePRAge": 168,
-  "prDetails": [
-    "[151m] Refactored export handlers to use shared utilities for file reading validation and output. (fixes #1517)",
-    "[185m] Imported beforeEach from vitest in the test file to fix the ReferenceError. (fixes #1513)"
-  ],
-  "diffMinutes": 11,
-  "diffMinutesMain": 12,
+  "nextIssue": "[]  ",
+  "openIssues": 0,
+  "issuesClosedLastHour": 9,
+  "issuesClosedLastDay": 48,
+  "openPRs": 0,
+  "averagePRAge": 0,
+  "prDetails": [],
+  "diffMinutes": 1,
+  "diffMinutesMain": 15,
   "commitsLastHour": 1,
   "commitsLastDay": 44,
   "lastFiveCommitMessages": [
@@ -26,16 +23,12 @@
     "[13:09] - Added --export-jsonld command with JSON-LD export functionality ..."
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      "[152m] agentic-lib-issue-1517"
-    ],
-    "branchIssueDetails": [
-      "[1517] Refactor Redundant Code in Ontology Export Handlers automated, maintenance, issue-worker-14431121632"
-    ],
-    "averageBranchAge": 152
+    "count": 0,
+    "details": [],
+    "branchIssueDetails": [],
+    "averageBranchAge": 0
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-13T18:46:33.983Z"
+  "statsGeneratedAt": "2025-04-13T18:49:35.529Z"
 }
