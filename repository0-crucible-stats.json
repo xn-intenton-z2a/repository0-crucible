@@ -2,9 +2,9 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Automerge",
+  "lastActivityName": "Stats",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1521] Implement --crawl CLI Command for Data Crawling automated, feature, issue-worker-14434127534",
+  "nextIssue": "[1519] Implement --capital-cities CLI Command for Generating OWL JSON Output automated, feature",
   "openIssues": 1,
   "issuesClosedLastHour": 5,
   "issuesClosedLastDay": 44,
@@ -30,5 +30,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-13T22:59:24.210Z"
+  "statsGeneratedAt": "2025-04-13T22:59:28.512Z"
 }
