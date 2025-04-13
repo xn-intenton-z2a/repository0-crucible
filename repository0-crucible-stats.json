@@ -2,17 +2,17 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Create Maintenance Issue",
+  "lastActivityName": "Tests",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1489] Improve Documentation for DEFAULT_TIMEOUT Environment Variable Behavior automated, maintenance",
+  "nextIssue": "[1490] Refactor CLI Command Handlers into Separate Modules automated, maintenance",
   "openIssues": 7,
   "issuesClosedLastHour": 0,
   "issuesClosedLastDay": 100,
   "openPRs": 0,
   "averagePRAge": 0,
   "prDetails": [],
-  "diffMinutes": 2,
-  "diffMinutesMain": 150,
+  "diffMinutes": 0,
+  "diffMinutesMain": 151,
   "commitsLastHour": 0,
   "commitsLastDay": 94,
   "lastFiveCommitMessages": [
@@ -25,14 +25,14 @@
   "branches": {
     "count": 1,
     "details": [
-      "[5m] agentic-lib-issue-1485"
+      "[6m] agentic-lib-issue-1485"
     ],
     "branchIssueDetails": [
       "[1485] Enhance Interactive Mode with Ontology Editing Capabilities automated, feature, issue-worker-14423754077, apply-fix-14423977379, apply-fix-14424155421, apply-fix-14424628382"
     ],
-    "averageBranchAge": 5
+    "averageBranchAge": 6
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-13T00:54:11.575Z"
+  "statsGeneratedAt": "2025-04-13T00:55:16.449Z"
 }
