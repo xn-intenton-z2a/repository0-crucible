@@ -2,7 +2,7 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Tests",
+  "lastActivityName": "Review Issue",
   "lastActivityBranchName": "main",
   "nextIssue": "[1519] Implement --capital-cities CLI Command for Generating OWL JSON Output automated, feature",
   "openIssues": 1,
@@ -11,7 +11,7 @@
   "openPRs": 0,
   "averagePRAge": 0,
   "prDetails": [],
-  "diffMinutes": 3,
+  "diffMinutes": 0,
   "diffMinutesMain": 30,
   "commitsLastHour": 3,
   "commitsLastDay": 38,
@@ -30,5 +30,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-13T23:48:47.350Z"
+  "statsGeneratedAt": "2025-04-13T23:49:04.769Z"
 }
