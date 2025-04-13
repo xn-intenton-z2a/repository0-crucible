@@ -1,4 +1,4 @@
-load /tmp/cli-e2e-BpRo0i/interactiveOntology.json
+load /tmp/cli-e2e-tbi3TV/interactiveOntology.json
 add-class Biology
 remove-class InitialClass
 add-property creator John_Doe
