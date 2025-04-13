@@ -48,6 +48,12 @@ node src/lib/main.js --help
   ```
   This command queries OWL ontologies and currently displays a placeholder message indicating that the feature is under development.
 
+- **Diagnostics Information:**
+  ```bash
+  node src/lib/main.js --diagnostics
+  ```
+  This command outputs diagnostic information about the system, such as the Node.js version and other runtime details.
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.
