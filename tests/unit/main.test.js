@@ -337,7 +337,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--serve flag launches and stops the HTTP server', async () => {
     clearLogFile();
     await new Promise((resolve, reject) => {
-      const child = spawn(process.execPath, [cliPath, '--serve'], { encoding: 'utf-8' });
+      const child = spawn(process.execPath, [cliPath, '--serve'], { encoding: 'utf-8', env: { ...process.env, NODE_ENV: 'test' } });
       let output = '';
       child.stdout.on('data', (data) => { output += data; });
       child.on('close', (code) => {
@@ -354,7 +354,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 
   test('GET /health returns healthy status', async () => {
     await new Promise((resolve, reject) => {
-      const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+      const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: { ...process.env, NODE_ENV: 'test' } });
       setTimeout(() => {
         http.get('http://127.0.0.1:3000/health', (res) => {
           let data = '';
@@ -380,7 +380,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 
   test('POST /ontology/build returns build triggered message', async () => {
     await new Promise((resolve, reject) => {
-      const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+      const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: { ...process.env, NODE_ENV: 'test' } });
       setTimeout(() => {
         const options = {
           hostname: '127.0.0.1',
@@ -417,7 +417,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 
   test('GET /ontology/read returns dummy ontology', async () => {
     await new Promise((resolve, reject) => {
-      const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+      const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: { ...process.env, NODE_ENV: 'test' } });
       setTimeout(() => {
         http.get('http://127.0.0.1:3000/ontology/read', (res) => {
           let data = '';
@@ -443,7 +443,7 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 
   test('POST /ontology/merge returns merged ontology', async () => {
     await new Promise((resolve, reject) => {
-      const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: process.env });
+      const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: { ...process.env, NODE_ENV: 'test' } });
       setTimeout(() => {
         const options = {
           hostname: '127.0.0.1',

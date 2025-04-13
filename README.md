@@ -77,7 +77,7 @@ To launch the REST API server, use the --serve flag:
 node src/lib/main.js --serve
 ```
 
-The server listens on port 3000 and automatically shuts down after approximately 3 seconds (for demo purposes). You can test the endpoints using curl:
+The server listens on port 3000 and will automatically shut down after a short period (unless running in test mode). You can test the endpoints using curl:
 
 - Check health:
   ```bash
@@ -215,7 +215,7 @@ node src/lib/main.js --help
     - `update-property <k> <newValue>`: Update (or add) an existing property value in the loaded ontology.
     - `remove-property <k>`: Remove an existing property from the loaded ontology.
 
-- **Ontology Content Query (Legacy):**
+- **Ontology Content Query (Legacy):
   ```bash
   node src/lib/main.js --query path/to/ontology.json searchTerm [--regex]
   ```
