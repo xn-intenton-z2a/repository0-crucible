@@ -986,7 +986,6 @@ function handleInteractive(args) {
       case 'exit':
         logCommand('interactive: exit');
         rl.close();
-        // In test environment, do not exit the process to allow tests to complete
         break;
       default:
         console.log("Unknown command. Type 'help' for available commands.");
@@ -995,9 +994,7 @@ function handleInteractive(args) {
     rl.prompt();
   }).on('close', () => {
     console.log("Exiting Interactive Mode.");
-    if (process.env.NODE_ENV !== 'test') {
-      process.exit(0);
-    }
+    process.exit(0);
   });
 }
 
