@@ -61,6 +61,7 @@ function clearOntologiesDir() {
   }
 }
 
+
 describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   test('--help flag displays usage information', () => {
     clearLogFile();
