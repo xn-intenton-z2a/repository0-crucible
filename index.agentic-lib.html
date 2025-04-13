@@ -56,6 +56,7 @@
 <li class="md-github"><strong class="md-github">Custom Ontology Persistence:</strong> Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.</li>
 <li class="md-github"><strong class="md-github">Enhanced Environment Variable Validation:</strong> The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, it logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If DEFAULT_TIMEOUT is provided but is non-numeric or non-finite, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value.</li>
 <li class="md-github"><strong class="md-github">Robust Logging:</strong> Every command execution is logged in JSON format to a dedicated log file (logs/cli.log). Error logs include structured error codes (e.g., LOG_ERR_*) and detailed contextual information.</li>
+<li class="md-github"><strong class="md-github">Audit Logging of Ontology Changes:</strong> <strong class="md-github">New!</strong> The tool now records audit logs for ontology modifications. Whenever an ontology is changed (e.g., adding or removing classes or properties, merging ontologies, or persisting a new ontology), a detailed JSON diff is computed and appended to logs/ontology_audit.log with a timestamp and operation type, enhancing traceability and accountability.</li>
 <li class="md-github"><strong class="md-github">Diagnostics Mode:</strong> Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.</li>
 <li class="md-github"><strong class="md-github">System Refresh:</strong> Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.</li>
 <li class="md-github"><strong class="md-github">Build Commands:</strong>
@@ -145,6 +146,8 @@ Launch the REST API server using the --serve flag. The server provides the follo
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="websocket-notifications" href="#websocket-notifications"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>WebSocket Notifications</h2>
 <p class="md-github">The server now includes a WebSocket endpoint on the same port (ws://localhost:3000). Clients can connect to this endpoint to receive real-time JSON notifications about ontology events (e.g., when an ontology is persisted, merged, or built).</p>
+<h2 class="md-github"><a class="md-github__anchor" name="audit-logging" href="#audit-logging"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Audit Logging</h2>
+<p class="md-github">In addition to standard logging, ontology changes are audited. Every time an ontology is modified via interactive commands (like adding/removing classes or properties) or non-interactive commands (such as merging or persisting ontologies), a detailed JSON log entry with the differences (before and after) is recorded in the file logs/ontology_audit.log.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">To run the CLI tool and see help instructions:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
@@ -291,7 +294,7 @@ Launch the REST API server using the --serve flag. The server provides the follo
 
   </section>
   <footer>
-    <p>Generated on 2025-04-13T14:05:23.074Z</p>
+    <p>Generated on 2025-04-13T14:05:35.896Z</p>
   </footer>
 </body>
 </html>
