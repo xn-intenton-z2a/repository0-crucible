@@ -64,6 +64,12 @@ node src/lib/main.js --help
   ```
   This command initiates a data crawl operation from public sources and outputs a placeholder message confirming the action.
 
+- **Generate Capital Cities OWL Ontology:**
+  ```bash
+  node src/lib/main.js --capital-cities
+  ```
+  This command outputs a JSON representation of an OWL ontology containing dummy data about capital cities, including city names and their associated countries.
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.
