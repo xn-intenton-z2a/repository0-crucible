@@ -44,8 +44,8 @@ npm install repository0-crucible
   - **POST /ontology/build:** Triggers the ontology build process (stub implementation returns a trigger message).
   - **GET /ontology/read:** Returns a persisted OWL ontology in JSON format (stub returns a dummy ontology).
   - **POST /ontology/merge:** Accepts an array of ontology JSON payloads, merges them (stub merge), and returns the merged ontology.
-  - **GET /diagnostics:** Returns a diagnostic report similar to the CLI diagnostics.
-  - Additional endpoints, such as GET /ontology, are available for listing persisted ontologies.
+  - **GET /ontology/notify:** Triggers a test WebSocket notification. This endpoint can be used to verify real-time notification functionality.
+  - **WebSocket Notifications:** In addition to the HTTP endpoints, the server now supports real-time WebSocket notifications for ontology update events. Clients can connect to the WebSocket endpoint at `ws://localhost:3000` to receive JSON notifications immediately when ontology modifications occur (e.g., on persist, merge, or build operations).
 - **Interactive Mode with Enhanced Usability and Editing:** Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration and editing. In interactive mode, you can:
   - Load an ontology with: `load <file>`
   - View the loaded ontology with: `show`
@@ -99,6 +99,15 @@ The server listens on port 3000 and will automatically shut down after a short p
   ```bash
   curl -X POST -H "Content-Type: application/json" -d '[{"name": "Ontology1", "version": "1.0", "classes": ["A"], "properties": {"p": "a"}}, {"name": "Ontology2", "version": "1.0", "classes": ["B"], "properties": {"q": "b"}}]' http://localhost:3000/ontology/merge
   ```
+
+- Trigger a test WebSocket notification:
+  ```bash
+  curl http://localhost:3000/ontology/notify
+  ```
+
+## WebSocket Notifications
+
+The server now includes a WebSocket endpoint on the same port (ws://localhost:3000). Clients can connect to this endpoint to receive real-time JSON notifications about ontology events (e.g., when an ontology is persisted, merged, or built).
 
 ## Usage
 
@@ -220,7 +229,7 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --fetch [path/to/output.json]
   ```
-  > When FETCH_URL environment variable is set, the CLI will fetch data from the specified URL and transform it into an ontology.
+  > When FETCH_URL environment variable is set, the CLI will fetch data from the specified URL and transform it into a valid ontology.
 
 - **Ontology Difference Comparison:**
   ```bash
@@ -235,7 +244,7 @@ For the enhanced --fetch command, you can set a FETCH_URL environment variable t
 
 ## End-to-End Integration Tests
 
-A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements and editing functionality, ontology query functionality, and the new fetch, export-owl, export-xml, diff, build-ontology, merge-ontology, and query-ontology functionalities. To run the integration tests:
+A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements and editing functionality, ontology query functionality, and the new fetch, export-owl, export-xml, diff, build-ontology, merge-ontology, query-ontology, and WebSocket notification functionalities. To run the integration tests:
 
 ```bash
 npm run test:e2e

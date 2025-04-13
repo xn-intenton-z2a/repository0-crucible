@@ -4,6 +4,7 @@ import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSyn
 import { join } from 'path';
 import os from 'os';
 import http from 'http';
+import WebSocket from 'ws';
 
 // Import the interactiveCompleter helper for testing auto-completion
 import { interactiveCompleter } from '../../src/lib/main.js';
@@ -681,6 +682,44 @@ describe('--fetch Command Enhanced Functionality', () => {
           }
         });
       });
+    });
+  });
+});
+
+describe('WebSocket Notifications', () => {
+  test('receives test notification on /ontology/notify endpoint', async () => {
+    await new Promise((resolve, reject) => {
+      const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: { ...process.env, NODE_ENV: 'test' } });
+      let serverOutput = '';
+      serverProcess.stdout.on('data', (data) => { serverOutput += data.toString(); });
+      // Wait for server to start
+      setTimeout(() => {
+        const ws = new WebSocket('ws://127.0.0.1:3000');
+        ws.on('open', () => {
+          // Trigger test notification via HTTP
+          http.get('http://127.0.0.1:3000/ontology/notify', (res) => {
+            let data = '';
+            res.on('data', chunk => { data += chunk; });
+            res.on('end', () => {
+              // Wait for WS message
+            });
+          }).on('error', (err) => { reject(err); });
+        });
+        ws.on('message', (message) => {
+          try {
+            const notif = JSON.parse(message);
+            expect(notif).toHaveProperty('event', 'testNotification');
+            expect(notif.payload).toHaveProperty('info', 'Test');
+            ws.close();
+            serverProcess.kill();
+            resolve();
+          } catch (e) {
+            ws.close();
+            serverProcess.kill();
+            reject(e);
+          }
+        });
+      }, 500);
     });
   });
 });
