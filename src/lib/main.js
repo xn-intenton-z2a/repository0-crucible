@@ -850,7 +850,7 @@ function handleInteractive(args) {
   let autoCloseTimer;
   // If in test environment, set auto-close timer; will be cleared on exit command
   if (process.env.NODE_ENV === 'test') {
-    autoCloseTimer = setTimeout(() => { rl.close(); }, 3000);
+    autoCloseTimer = setTimeout(() => { rl.close(); }, 10000);
   }
 
   rl.on('line', (line) => {
