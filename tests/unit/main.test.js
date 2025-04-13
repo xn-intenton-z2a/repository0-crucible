@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main, query, diagnostics } from "@src/lib/main.js";
+import { main, query, diagnostics, crawlData } from "@src/lib/main.js";
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -32,6 +32,16 @@ describe("Diagnostics Command Output", () => {
     diagnostics(args);
     expect(logSpy).toHaveBeenCalledWith("System Diagnostics:");
     expect(logSpy).toHaveBeenCalledWith(`Node.js version: ${process.version}`);
+    logSpy.mockRestore();
+  });
+});
+
+describe("Crawl Command Output", () => {
+  test("should log crawl message", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const args = ["--crawl"];
+    crawlData(args);
+    expect(logSpy).toHaveBeenCalledWith("Crawling data from public sources...");
     logSpy.mockRestore();
   });
 });
