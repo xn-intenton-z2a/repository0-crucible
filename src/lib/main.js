@@ -58,6 +58,30 @@ function ensureOntologiesDir() {
   return ontDir;
 }
 
+// New functions for persistent interactive command history
+function getHistoryFilePath() {
+  return join(ensureLogDir(), 'cli_history.txt');
+}
+
+function recordHistoryCommand(command) {
+  try {
+    const historyFile = getHistoryFilePath();
+    appendFileSync(historyFile, command + "\n", { encoding: 'utf-8' });
+  } catch (err) {
+    console.error('Failed to record history:', err.message);
+  }
+}
+
+function loadHistory() {
+  const historyFile = getHistoryFilePath();
+  if (existsSync(historyFile)) {
+    const content = readFileSync(historyFile, { encoding: 'utf-8' });
+    return content.split("\n").filter(line => line.trim() !== "");
+  } else {
+    return [];
+  }
+}
+
 // Inline logger functions (integrated to avoid missing module error)
 function logCommand(command) {
   try {
@@ -821,7 +845,14 @@ function handleInteractive(args) {
     let inputData = '';
     process.stdin.resume();
     process.stdin.setEncoding('utf8');
-    process.stdin.on('data', chunk => { inputData += chunk; });
+    process.stdin.on('data', chunk => { 
+      inputData += chunk;
+      // Record each chunk as history if it ends with a newline
+      if (chunk.includes('\n')) {
+        const lines = chunk.split('\n').filter(line => line.trim() !== '');
+        lines.forEach(line => recordHistoryCommand(line));
+      }
+    });
     process.stdin.on('end', () => {
       const lines = inputData.split('\n').filter(line => line.trim().length > 0);
       let loadedOntology = null;
@@ -989,9 +1020,17 @@ function handleInteractive(args) {
       completer
     });
 
+    // Load persistent history
+    const history = loadHistory();
+    // Set readline history (most recent command first)
+    rl.history = history.reverse();
+
     rl.prompt();
 
     rl.on('line', (line) => {
+      if(line.trim()) {
+        recordHistoryCommand(line);
+      }
       const input = line.trim();
       const tokens = input.split(' ');
       const command = tokens[0];
@@ -1189,7 +1228,7 @@ async function handleServe(args) {
             res.end(JSON.stringify({ message: 'Invalid payload' }));
           }
         } catch (e) {
-          res.writeHead(500, { 'Content-Type': 'application/json' });
+          res.writeHead(500, { 'Content-Type':'application/json' });
           res.end(JSON.stringify({ message: 'Server error' }));
         }
       });
