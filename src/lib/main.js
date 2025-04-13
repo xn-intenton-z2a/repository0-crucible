@@ -24,6 +24,23 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 // Global WebSocket server variable
 let wss = null;
 
+// Utility functions for caching fetched ontology data
+function ensureCacheDir() {
+  const cacheDir = join(process.cwd(), 'cache');
+  if (!existsSync(cacheDir)) {
+    mkdirSync(cacheDir, { recursive: true });
+  }
+  return cacheDir;
+}
+
+function getCacheFilePath() {
+  return join(ensureCacheDir(), 'ontology_cache.json');
+}
+
+/*********************
+ * Logging Functions *
+ *********************/
+
 /**
  * Broadcasts a notification to all connected WebSocket clients
  * @param {string} event - The event type
@@ -672,9 +689,10 @@ function handleQuery(args) {
   }
 }
 
-// New handler: --fetch command for auto-generating ontology from public data sources
+// New handler: --fetch command for auto-generating ontology from public data sources with caching
 async function handleFetch(args) {
   logCommand('--fetch');
+
   async function fetchData(url) {
     return new Promise((resolve, reject) => {
       const client = url.startsWith('https') ? https : http;
@@ -691,6 +709,21 @@ async function handleFetch(args) {
         });
       }).on('error', reject);
     });
+  }
+
+  // Caching mechanism:
+  const cacheFile = getCacheFilePath();
+  const ttlSeconds = Number(process.env.FETCH_CACHE_TTL) || 60;
+  const ttl = ttlSeconds * 1000;
+  if (existsSync(cacheFile)) {
+    const stats = lstatSync(cacheFile);
+    const age = Date.now() - stats.mtimeMs;
+    if (age < ttl) {
+      logCommand('--fetch cache hit');
+      const cachedData = readFileSync(cacheFile, { encoding: 'utf-8' });
+      console.log(cachedData);
+      return;
+    }
   }
 
   const fetchUrl = process.env.FETCH_URL;
@@ -738,6 +771,13 @@ async function handleFetch(args) {
       console.error('LOG_ERR_FETCH_VALIDATE', 'Fetched ontology validation failed');
       return;
     }
+  }
+  // Write fetched ontology to cache
+  try {
+    writeFileSync(cacheFile, JSON.stringify(ontology, null, 2), { encoding: 'utf-8' });
+    logCommand('--fetch cache miss: fresh fetch and cache written');
+  } catch (err) {
+    logError('LOG_ERR_FETCH_CACHE_WRITE', 'Error writing to cache file', { error: err.message, cacheFile });
   }
   const fetchIndex = args.indexOf('--fetch');
   const potentialOutput = args[fetchIndex + 1];

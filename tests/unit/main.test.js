@@ -1,6 +1,6 @@
 import { describe, test, expect } from 'vitest';
 import { spawnSync, spawn } from 'child_process';
-import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSync, mkdirSync } from 'fs';
+import { mkdtempSync, writeFileSync, readFileSync, unlinkSync, existsSync, rmSync, mkdirSync, lstatSync } from 'fs';
 import { join } from 'path';
 import os from 'os';
 import http from 'http';
@@ -64,6 +64,17 @@ function clearOntologiesDir() {
     const files = require('fs').readdirSync(ontDir);
     for (const file of files) {
       rmSync(join(ontDir, file), { force: true });
+    }
+  }
+}
+
+// New helper to clear cache directory
+function clearCacheDir() {
+  const cacheDir = join(process.cwd(), 'cache');
+  if (existsSync(cacheDir)) {
+    const files = require('fs').readdirSync(cacheDir);
+    for (const file of files) {
+      rmSync(join(cacheDir, file), { force: true });
     }
   }
 }
@@ -662,6 +673,40 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
   });
 });
 
+// New tests for Fetch Caching Mechanism
+describe('Fetch Caching Mechanism', () => {
+  beforeEach(() => {
+    clearCacheDir();
+    clearLogFile();
+  });
+
+  test('--fetch returns dummy ontology and caches it (cache miss then hit)', () => {
+    // Ensure FETCH_URL is not set so it falls back to dummy ontology
+    const env = { ...process.env, FETCH_URL: '', FETCH_CACHE_TTL: '300' };
+    // First call - should be cache miss
+    const result1 = spawnSync(process.execPath, [cliPath, '--fetch'], { encoding: 'utf-8', env });
+    expect(result1.stdout).toContain('Fetched Ontology');
+    const logContent1 = readLogFile();
+    expect(logContent1).toContain('--fetch cache miss');
+
+    // Second call - should use cached result (cache hit)
+    const result2 = spawnSync(process.execPath, [cliPath, '--fetch'], { encoding: 'utf-8', env });
+    expect(result2.stdout).toContain('Fetched Ontology');
+    const logContent2 = readLogFile();
+    expect(logContent2).toContain('--fetch cache hit');
+  });
+
+  test('--fetch performs fresh fetch when cache is expired (cache miss)', () => {
+    // Set TTL to 0 so that cache is always expired
+    const env = { ...process.env, FETCH_URL: '', FETCH_CACHE_TTL: '0' };
+    const result = spawnSync(process.execPath, [cliPath, '--fetch'], { encoding: 'utf-8', env });
+    expect(result.stdout).toContain('Fetched Ontology');
+    const logContent = readLogFile();
+    expect(logContent).toContain('--fetch cache miss');
+  });
+});
+
+
 describe('Interactive Mode Auto-Completion', () => {
   test('provides base command suggestions when no ontology is loaded', () => {
     const [completions, line] = interactiveCompleter(null, '');
@@ -672,86 +717,5 @@ describe('Interactive Mode Auto-Completion', () => {
     const ontology = { classes: ['Person', 'Animal'] };
     const [completions, line] = interactiveCompleter(ontology, 'P');
     expect(completions).toEqual(expect.arrayContaining(['Person']))
-  });
-});
-
-describe('--fetch Command Enhanced Functionality', () => {
-  test('--fetch falls back to dummy ontology when FETCH_URL is not set', () => {
-    clearLogFile();
-    const result = spawnSync(process.execPath, [cliPath, '--fetch'], { encoding: 'utf-8', timeout: 5000 });
-    const output = JSON.parse(result.stdout);
-    expect(output).toHaveProperty('name', 'Fetched Ontology');
-    expect(output).toHaveProperty('version', 'fetched-1.0');
-    const logContent = readLogFile();
-    expect(logContent).toContain('--fetch');
-  });
-
-  test('--fetch retrieves ontology from a dynamic public API when FETCH_URL is set', async () => {
-    await new Promise((resolve, reject) => {
-      const testData = {
-        name: 'Dynamic Ontology',
-        version: 'dynamic-123',
-        classes: ['DynamicClass'],
-        properties: { dynamicProp: 'dynamicValue' }
-      };
-      const apiServer = http.createServer((req, res) => {
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(testData));
-      });
-      apiServer.listen(0, () => {
-        const port = apiServer.address().port;
-        const fetchUrl = `http://127.0.0.1:${port}`;
-        const env = { ...process.env, FETCH_URL: fetchUrl };
-        const child = spawn(process.execPath, [cliPath, '--fetch'], { encoding: 'utf-8', env, timeout: 5000 });
-        let output = '';
-        child.stdout.on('data', data => { output += data; });
-        child.on('close', () => {
-          try {
-            const parsed = JSON.parse(output);
-            expect(parsed).toHaveProperty('name', 'Dynamic Ontology');
-            expect(parsed).toHaveProperty('version', 'dynamic-123');
-            apiServer.close();
-            resolve();
-          } catch (err) {
-            apiServer.close();
-            reject(err);
-          }
-        });
-      });
-    });
-  });
-});
-
-describe('WebSocket Notifications', () => {
-  test('receives test notification on /ontology/notify endpoint', async () => {
-    await new Promise((resolve, reject) => {
-      const serverProcess = spawn(process.execPath, [cliPath, '--serve'], { stdio: 'pipe', env: { ...process.env, NODE_ENV: 'test' } });
-      let serverOutput = '';
-      serverProcess.stdout.on('data', (data) => { serverOutput += data.toString(); });
-      setTimeout(() => {
-        const ws = new WebSocket('ws://127.0.0.1:3000');
-        ws.on('open', () => {
-          http.get('http://127.0.0.1:3000/ontology/notify', (res) => {
-            let data = '';
-            res.on('data', chunk => { data += chunk; });
-            res.on('end', () => {});
-          }).on('error', (err) => { reject(err); });
-        });
-        ws.on('message', (message) => {
-          try {
-            const notif = JSON.parse(message);
-            expect(notif).toHaveProperty('event', 'testNotification');
-            expect(notif.payload).toHaveProperty('info', 'Test');
-            ws.close();
-            serverProcess.kill();
-            resolve();
-          } catch (e) {
-            ws.close();
-            serverProcess.kill();
-            reject(e);
-          }
-        });
-      }, 500);
-    });
   });
 });

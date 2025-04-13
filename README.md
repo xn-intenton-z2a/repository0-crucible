@@ -32,7 +32,7 @@ npm install repository0-crucible
 - **Custom Ontology Persistence:** Use the --ontology flag with --persist to supply a custom ontology (as a JSON string or via a file path) instead of the default dummy ontology.
 - **Enhanced Environment Variable Validation:** The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, it logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If DEFAULT_TIMEOUT is provided but is non-numeric or non-finite, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value.
 - **Robust Logging:** Every command execution is logged in JSON format to a dedicated log file (logs/cli.log). Error logs include structured error codes (e.g., LOG_ERR_*) and detailed contextual information.
-- **Audit Logging of Ontology Changes:** **New!** The tool now records audit logs for ontology modifications. Whenever an ontology is changed (e.g., adding or removing classes or properties, merging ontologies, or persisting a new ontology), a detailed JSON diff is computed and appended to logs/ontology_audit.log with a timestamp and operation type, enhancing traceability and accountability.
+- **Audit Logging of Ontology Changes:** **New!** The tool now records audit logs for ontology modifications. Whenever an ontology is modified via interactive commands (like adding/removing classes or properties) or non-interactive commands (such as merging or persisting ontologies), a detailed JSON log entry with the differences (before and after) is recorded in the file logs/ontology_audit.log with a timestamp and operation type, enhancing traceability and accountability.
 - **Diagnostics Mode:** Use the --diagnostics flag to output a detailed JSON report containing package version, environment variables, system details, available CLI commands, and current execution context.
 - **System Refresh:** Use the --refresh flag to reinitialize the system state by clearing cached logs and resetting any internal states.
 - **Build Commands:**
@@ -60,7 +60,10 @@ npm install repository0-crucible
   - For help, type: `help`
   - To exit, type: `exit`
 - **Ontology Content Query:** Use the **--query** command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the `--regex` flag to interpret the search term as a regular expression.
-- **Fetch Ontology from Public Data Source:** **Enhanced!** Use the **--fetch** command to dynamically retrieve ontology data from a public API. If the environment variable FETCH_URL is set, the CLI will perform an HTTP GET request to that URL and transform the returned JSON into a valid ontology. If FETCH_URL is not set or the fetch fails, it will fall back to a default dummy ontology.
+- **Fetch Ontology from Public Data Source with Caching:** **Enhanced!** Use the **--fetch** command to dynamically retrieve ontology data from a public API. A caching mechanism is now integrated:
+  - A dedicated cache directory (`./cache`) is used to store fetched ontology data.
+  - The cache validity is determined by the environment variable `FETCH_CACHE_TTL` (in seconds). If a valid cached ontology exists (i.e., the cache file exists and is within the TTL), the CLI returns the cached data (cache hit). Otherwise, it performs a fresh fetch and updates the cache (cache miss).
+  - This reduces unnecessary network calls and improves efficiency.
 - **Export Formats:**
   - **Export OWL/Turtle Format:** Use the **--export-owl** command to convert a JSON ontology into an OWL representation in Turtle format.
   - **Export RDF/XML Format:** **New!** Use the **--export-xml** command to convert a JSON ontology into RDF/XML format, including XML declaration and RDF/XML namespace mappings.
@@ -115,6 +118,12 @@ The server now includes a WebSocket endpoint on the same port (ws://localhost:30
 ## Audit Logging
 
 In addition to standard logging, ontology changes are audited. Every time an ontology is modified via interactive commands (like adding/removing classes or properties) or non-interactive commands (such as merging or persisting ontologies), a detailed JSON log entry with the differences (before and after) is recorded in the file logs/ontology_audit.log.
+
+## Fetch Caching
+
+The --fetch command now implements a caching mechanism to reduce unnecessary network calls:
+- Fetched ontology data is stored in a cache file located in the `./cache` directory.
+- The validity of the cache is determined by the `FETCH_CACHE_TTL` environment variable (in seconds). If the cached data is still valid, it is returned directly (cache hit); otherwise, a fresh fetch is performed and the cache is updated (cache miss).
 
 ## Usage
 
@@ -236,11 +245,11 @@ node src/lib/main.js --help
   node src/lib/main.js --query path/to/ontology.json searchTerm [--regex]
   ```
 
-- **Fetch Ontology from Public Data Source:**
+- **Fetch Ontology from Public Data Source with Caching:**
   ```bash
   node src/lib/main.js --fetch [path/to/output.json]
   ```
-  > When FETCH_URL environment variable is set, the CLI will fetch data from the specified URL and transform it into a valid ontology.
+  > The command will check the cache first based on `FETCH_CACHE_TTL` (default 60 seconds) and use the cached data if valid; otherwise it fetches fresh data and updates the cache.
 
 - **Ontology Difference Comparison:**
   ```bash
@@ -251,11 +260,11 @@ node src/lib/main.js --help
 
 The CLI tool validates numeric environment variables including DEFAULT_TIMEOUT. If DEFAULT_TIMEOUT is not set, the tool logs an error (LOG_ERR_ENV_NOT_SET) and defaults to 5000. If a non-numeric or non-finite value is provided, it logs an error (LOG_ERR_ENV_NON_FINITE) and uses the fallback value.
 
-For the enhanced --fetch command, you can set a FETCH_URL environment variable to dynamically retrieve ontology data from a public API endpoint. If the fetch fails or FETCH_URL is not provided, the command falls back to a default dummy ontology.
+For the enhanced --fetch command, set the environment variable FETCH_URL to dynamically retrieve ontology data from a public API endpoint, and FETCH_CACHE_TTL (in seconds) to control the cache time-to-live. If FETCH_URL is not provided or the fetch fails, the command falls back to a default dummy ontology.
 
 ## End-to-End Integration Tests
 
-A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements and editing functionality, ontology query functionality, and the new fetch, export-owl, export-xml, export-jsonld, diff, build-ontology, merge-ontology, query-ontology, and WebSocket notification functionalities. To run the integration tests:
+A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements and editing functionality, ontology query functionality, and the new fetch (with caching), export-owl, export-xml, export-jsonld, diff, build-ontology, merge-ontology, query-ontology, and WebSocket notification functionalities. To run the integration tests:
 
 ```bash
 npm run test:e2e
