@@ -7,7 +7,15 @@ export function main(args) {
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 
+export function query(args) {
+  console.log("Querying OWL ontologies (Feature under development)");
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  main(args);
+  if (args.includes("--query")) {
+    query(args);
+  } else {
+    main(args);
+  }
 }

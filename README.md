@@ -42,6 +42,11 @@ node src/lib/main.js --help
   npm run start
   ```
 
+- **Query Ontologies:**
+  ```bash
+  node src/lib/main.js --query
+  ```
+  This command queries OWL ontologies and currently displays a placeholder message indicating that the feature is under development.
 
 ## Incremental Changes Plan
 
