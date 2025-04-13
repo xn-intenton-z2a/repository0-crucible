@@ -46,7 +46,17 @@ npm install repository0-crucible
   - **POST /ontology/merge:** Accepts an array of ontology JSON payloads, merges them (stub merge), and returns the merged ontology.
   - **GET /diagnostics:** Returns a diagnostic report similar to the CLI diagnostics.
   - Additional endpoints, such as GET /ontology, are available for listing persisted ontologies.
-- **Interactive Mode with Enhanced Usability:** Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration. This mode supports auto-completion (including dynamic suggestions from loaded ontology classes) and command history.
+- **Interactive Mode with Enhanced Usability and Editing:** Use the --interactive flag to launch an interactive session for on-the-fly ontology exploration and editing. In interactive mode, you can:
+  - Load an ontology with: `load <file>`
+  - View the loaded ontology with: `show`
+  - List its classes with: `list-classes`
+  - **Add a new class:** `add-class <className>`
+  - **Remove an existing class:** `remove-class <className>`
+  - **Add a new property:** `add-property <key> <value>`
+  - **Update an existing property:** `update-property <key> <newValue>` (this command will update the property if it exists or add it if it does not)
+  - **Remove a property:** `remove-property <key>`
+  - For help, type: `help`
+  - To exit, type: `exit`
 - **Ontology Content Query:** Use the **--query** command to search within an ontology for specific content. Provide the path to the ontology JSON file and a search term. Optionally, add the `--regex` flag to interpret the search term as a regular expression.
 - **Fetch Ontology from Public Data Source:** **Enhanced!** Use the **--fetch** command to dynamically retrieve ontology data from a public API. If the environment variable FETCH_URL is set, the CLI will perform an HTTP GET request to that URL and transform the returned JSON into a valid ontology. If FETCH_URL is not set or the fetch fails, it will fall back to a default dummy ontology.
 - **Export OWL/Turtle Format:** Use the **--export-owl** command to convert a JSON ontology into an OWL representation in Turtle format.
@@ -67,7 +77,7 @@ To launch the REST API server, use the --serve flag:
 node src/lib/main.js --serve
 ```
 
-The server listens on port 3000 and automatically shuts down after a short period (for demo purposes, after approximately 3 seconds). You can test the endpoints using curl:
+The server listens on port 3000 and will automatically shut down after a short period (unless running in test mode). You can test the endpoints using curl:
 
 - Check health:
   ```bash
@@ -184,7 +194,7 @@ node src/lib/main.js --help
   node src/lib/main.js --merge-ontology ontology1.json ontology2.json [output.json]
   ```
 
-- **Query Ontology Content (New):**
+- **Query Ontology Content (New):
   ```bash
   node src/lib/main.js --query-ontology path/to/ontology.json searchTerm [--regex]
   ```
@@ -194,12 +204,18 @@ node src/lib/main.js --help
   node src/lib/main.js --serve
   ```
 
-- **Interactive Mode with Auto-Completion and Command History:**
+- **Interactive Mode with Auto-Completion, Command History, and Editing:**
   ```bash
   node src/lib/main.js --interactive
   ```
+  In interactive mode, you can use the following additional editing commands:
+    - `add-class <className>`: Add a new class to the loaded ontology.
+    - `remove-class <className>`: Remove an existing class from the loaded ontology.
+    - `add-property <k> <v>`: Add a new property to the loaded ontology.
+    - `update-property <k> <v>`: Update (or add) an existing property value in the loaded ontology.
+    - `remove-property <k>`: Remove an existing property from the loaded ontology.
 
-- **Ontology Content Query (Legacy):**
+- **Ontology Content Query (Legacy):
   ```bash
   node src/lib/main.js --query path/to/ontology.json searchTerm [--regex]
   ```
@@ -223,7 +239,7 @@ For the enhanced --fetch command, you can set a FETCH_URL environment variable t
 
 ## End-to-End Integration Tests
 
-A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements, ontology query functionality, and the new fetch, export-owl, export-xml, diff, build-ontology, merge-ontology, and query-ontology functionalities. To run the integration tests:
+A suite of end-to-end integration tests verifies all CLI commands, including log creation, diagnostics mode, REST API endpoints, interactive mode enhancements and editing functionality, ontology query functionality, and the new fetch, export-owl, export-xml, diff, build-ontology, merge-ontology, and query-ontology functionalities. To run the integration tests:
 
 ```bash
 npm run test:e2e
