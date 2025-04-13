@@ -86,6 +86,7 @@ Launch the REST API server using the --serve flag. The server provides the follo
 <li class="md-github"><strong class="md-github">Add a new property:</strong> <code class="md-github">add-property &lt;key&gt; &lt;value&gt;</code></li>
 <li class="md-github"><strong class="md-github">Update an existing property:</strong> <code class="md-github">update-property &lt;key&gt; &lt;newValue&gt;</code> (this command will update the property if it exists or add it if it does not)</li>
 <li class="md-github"><strong class="md-github">Remove a property:</strong> <code class="md-github">remove-property &lt;key&gt;</code></li>
+<li class="md-github"><strong class="md-github">Persistent Command History:</strong> All commands entered during an interactive session are automatically saved to a history file (located at logs/cli_history.txt) and reloaded on startup, enabling command recall and auto-completion using arrow keys.</li>
 <li class="md-github">For help, type: <code class="md-github">help</code></li>
 <li class="md-github">To exit, type: <code class="md-github">exit</code></li>
 </ul>
@@ -239,14 +240,7 @@ Launch the REST API server using the --serve flag. The server provides the follo
 <p class="md-github"><strong class="md-github">Interactive Mode with Auto-Completion, Command History, and Editing:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --interactive
 </code></pre>
-<p class="md-github">In interactive mode, you can use the following additional editing commands:</p>
-<ul class="md-github">
-<li class="md-github"><code class="md-github">add-class &lt;className&gt;</code>: Add a new class to the loaded ontology.</li>
-<li class="md-github"><code class="md-github">remove-class &lt;className&gt;</code>: Remove an existing class from the loaded ontology.</li>
-<li class="md-github"><code class="md-github">add-property &lt;k&gt; &lt;v&gt;</code>: Add a new property to the loaded ontology.</li>
-<li class="md-github"><code class="md-github">update-property &lt;k&gt; &lt;v&gt;</code>: Update (or add) an existing property value in the loaded ontology.</li>
-<li class="md-github"><code class="md-github">remove-property &lt;k&gt;</code>: Remove an existing property from the loaded ontology.</li>
-</ul>
+<p class="md-github">In interactive mode, in addition to the editing commands, your command history is automatically saved and reloaded from logs/cli_history.txt, enabling you to use arrow keys to navigate through previous commands.</p>
 </li>
 <li class="md-github">
 <p class="md-github">**Ontology Content Query (Legacy):</p>
@@ -281,7 +275,7 @@ Launch the REST API server using the --serve flag. The server provides the follo
 
   </section>
   <footer>
-    <p>Generated on 2025-04-13T09:03:09.111Z</p>
+    <p>Generated on 2025-04-13T09:06:03.483Z</p>
   </footer>
 </body>
 </html>
