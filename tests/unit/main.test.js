@@ -665,13 +665,13 @@ describe('End-to-End CLI Integration Tests - Modular Commands', () => {
 describe('Interactive Mode Auto-Completion', () => {
   test('provides base command suggestions when no ontology is loaded', () => {
     const [completions, line] = interactiveCompleter(null, '');
-    expect(completions).toEqual(expect.arrayContaining(['load', 'show', 'list-classes', 'help', 'exit', 'add-class', 'remove-class', 'add-property', 'update-property', 'remove-property']))
+    expect(completions).toEqual(expect.arrayContaining(['load', 'show', 'list-classes', 'help', 'exit', 'add-class', 'remove-class', 'add-property', 'update-property', 'remove-property']));
   });
 
   test('provides ontology class suggestions when ontology is loaded', () => {
     const ontology = { classes: ['Person', 'Animal'] };
     const [completions, line] = interactiveCompleter(ontology, 'P');
-    expect(completions).toEqual(expect.arrayContaining(['Person']))
+    expect(completions).toEqual(expect.arrayContaining(['Person']));
   });
 });
 
