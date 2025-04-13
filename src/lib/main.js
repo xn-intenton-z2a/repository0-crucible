@@ -847,9 +847,10 @@ function handleInteractive(args) {
   });
 
   rl.prompt();
-  // If in test environment, auto-close after 3000ms to prevent hanging
+  let autoCloseTimer;
+  // If in test environment, set auto-close timer; will be cleared on exit command
   if (process.env.NODE_ENV === 'test') {
-    setTimeout(() => { rl.close(); }, 3000);
+    autoCloseTimer = setTimeout(() => { rl.close(); }, 3000);
   }
 
   rl.on('line', (line) => {
@@ -986,6 +987,9 @@ function handleInteractive(args) {
         break;
       case 'exit':
         logCommand('interactive: exit');
+        if (autoCloseTimer) {
+          clearTimeout(autoCloseTimer);
+        }
         rl.close();
         break;
       default:
