@@ -85,7 +85,8 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
     ```json
     {
       "searchTerms": ["capital", "cities"],
-      "filters": {}
+      "filters": {},
+      "regex": false
     }
     ```
   
@@ -97,7 +98,8 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
     ```json
     {
       "searchTerms": [],
-      "filters": {"country": "USA"}
+      "filters": {"country": "USA"},
+      "regex": false
     }
     ```
   
@@ -109,7 +111,30 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
     ```json
     {
       "searchTerms": ["capital", "cities"],
-      "filters": {"country": "USA"}
+      "filters": {"country": "USA"},
+      "regex": false
+    }
+    ```
+
+- **Query with Regex Filtering:**
+  You can use the `--regex` flag to treat search terms as regular expressions. This flag can be combined with the `--json` flag for structured output. For example:
+  
+  - Standard output with regex filtering:
+    ```bash
+    node src/lib/main.js --query --regex capital cities
+    ```
+    This will output: "Querying OWL ontologies with regex for: capital cities"
+  
+  - JSON output with regex filtering:
+    ```bash
+    node src/lib/main.js --query --regex --json capital cities
+    ```
+    Expected JSON output:
+    ```json
+    {
+      "searchTerms": ["capital", "cities"],
+      "filters": {},
+      "regex": true
     }
     ```
 
