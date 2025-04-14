@@ -2,39 +2,33 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Review Issue",
+  "lastActivityName": "Automerge",
   "lastActivityBranchName": "main",
   "nextIssue": "[1554] Enhance Query Command with Regex Filtering Option automated, feature, issue-worker-14444117725",
-  "openIssues": 3,
-  "issuesClosedLastHour": 5,
-  "issuesClosedLastDay": 76,
-  "openPRs": 1,
+  "openIssues": 1,
+  "issuesClosedLastHour": 7,
+  "issuesClosedLastDay": 78,
+  "openPRs": 0,
   "averagePRAge": 0,
-  "prDetails": [
-    "[0m] Enhance query command to support regex filtering with appropriate test and documentation updates. (fixes #1554)"
-  ],
+  "prDetails": [],
   "diffMinutes": 0,
-  "diffMinutesMain": 12,
-  "commitsLastHour": 4,
-  "commitsLastDay": 55,
+  "diffMinutesMain": 0,
+  "commitsLastHour": 5,
+  "commitsLastDay": 56,
   "lastFiveCommitMessages": [
+    "[11:17] - Enhance query command to support regex filtering with appropriat...",
     "[10:59] - Enhanced buildEnhancedOntology command to support persistence wi...",
     "[10:52] - Maintain ONTOLOGY",
     "[10:47] - Bump express from 4.21.2 to 5.1.0 (#1552)\n\nBumps [express](https...",
-    "[10:18] - Added --refresh command to merge persistent ontology data and up...",
-    "[09:59] - Implement --json flag for the query command to output structured..."
+    "[10:18] - Added --refresh command to merge persistent ontology data and up..."
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      "[1m] agentic-lib-issue-1554"
-    ],
-    "branchIssueDetails": [
-      "[1554] Enhance Query Command with Regex Filtering Option automated, feature, issue-worker-14444117725"
-    ],
-    "averageBranchAge": 1
+    "count": 0,
+    "details": [],
+    "branchIssueDetails": [],
+    "averageBranchAge": 0
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T11:11:58.849Z"
+  "statsGeneratedAt": "2025-04-14T11:18:13.354Z"
 }

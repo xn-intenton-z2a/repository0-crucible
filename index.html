@@ -95,7 +95,8 @@ An enhancement has been added that allows the query command to output its result
 <p class="md-github">Expected JSON output:</p>
 <pre class="md-github"><code class="md-github language-json">{
   &quot;searchTerms&quot;: [&quot;capital&quot;, &quot;cities&quot;],
-  &quot;filters&quot;: {}
+  &quot;filters&quot;: {},
+  &quot;regex&quot;: false
 }
 </code></pre>
 </li>
@@ -106,7 +107,8 @@ An enhancement has been added that allows the query command to output its result
 <p class="md-github">Expected JSON output:</p>
 <pre class="md-github"><code class="md-github language-json">{
   &quot;searchTerms&quot;: [],
-  &quot;filters&quot;: {&quot;country&quot;: &quot;USA&quot;}
+  &quot;filters&quot;: {&quot;country&quot;: &quot;USA&quot;},
+  &quot;regex&quot;: false
 }
 </code></pre>
 </li>
@@ -117,7 +119,32 @@ An enhancement has been added that allows the query command to output its result
 <p class="md-github">Expected JSON output:</p>
 <pre class="md-github"><code class="md-github language-json">{
   &quot;searchTerms&quot;: [&quot;capital&quot;, &quot;cities&quot;],
-  &quot;filters&quot;: {&quot;country&quot;: &quot;USA&quot;}
+  &quot;filters&quot;: {&quot;country&quot;: &quot;USA&quot;},
+  &quot;regex&quot;: false
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Query with Regex Filtering:</strong>
+You can use the <code class="md-github">--regex</code> flag to treat search terms as regular expressions. This flag can be combined with the <code class="md-github">--json</code> flag for structured output. For example:</p>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Standard output with regex filtering:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query --regex capital cities
+</code></pre>
+<p class="md-github">This will output: &quot;Querying OWL ontologies with regex for: capital cities&quot;</p>
+</li>
+<li class="md-github">
+<p class="md-github">JSON output with regex filtering:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query --regex --json capital cities
+</code></pre>
+<p class="md-github">Expected JSON output:</p>
+<pre class="md-github"><code class="md-github language-json">{
+  &quot;searchTerms&quot;: [&quot;capital&quot;, &quot;cities&quot;],
+  &quot;filters&quot;: {},
+  &quot;regex&quot;: true
 }
 </code></pre>
 </li>
@@ -186,7 +213,7 @@ An enhancement has been added that allows the query command to output its result
 
   </section>
   <footer>
-    <p>Generated on 2025-04-14T11:12:22.323Z</p>
+    <p>Generated on 2025-04-14T11:18:34.744Z</p>
   </footer>
 </body>
 </html>
