@@ -1,36 +1,35 @@
-# Ontology Feature Enhancement
+# Ontology Feature Enhancement with MERGE_PERSIST
 
 ## Overview
-This update refines and extends the existing ontology management functionality by fully implementing both the refresh and merge-persist operations. In addition to the already available `--refresh` command, this update adds support for a new `--merge-persist` flag that merges newly fetched ontology data with previously persisted data. The enhancements ensure that ontology data is dynamically updated and seamlessly integrated into our workflow, in line with our mission of managing and transforming OWL ontologies.
+This update refines and extends the existing ontology management functionality by fully integrating a new `--merge-persist` flag. In addition to the current `--refresh` command, the CLI will now support merging freshly crawled ontology data with stored (persisted) ontology data. This update is in line with our mission of dynamically managing OWL ontologies and providing reliable data merging with schema validation.
 
 ## Implementation Details
 - **CLI Argument Parsing:**
-  - Update `src/lib/main.js` to detect both `--refresh` and `--merge-persist` flags.
-  - When the `--refresh` flag is provided, the CLI will call the existing `refresh(args)` function to simulate fetching and output a refreshed ontology in JSON format.
-  - When the `--merge-persist` flag is provided, add a new branch that calls a newly implemented function `mergePersistOntology(args)`. This function will simulate reading a previously persisted ontology, merge it with freshly crawled data, validate the merged ontology using the existing Zod schema, and output the merged result.
+  - Update `src/lib/main.js` to detect the `--merge-persist` flag.
+  - When `--merge-persist` is provided, bypass the default `--refresh` behavior and invoke a new branch that calls the `mergePersistOntology(args)` function.
 
-- **Source Code Changes:**
-  - In `src/lib/main.js`, implement the `mergePersistOntology(args)` function. The implementation should:
-    - Retrieve an in-memory dummy persisted ontology (similar to the one in the capital cities functions).
-    - Simulate the merging of new data (for example, updated capital city information) with the persisted ontology using a merging strategy (e.g., using lodash's `merge`).
-    - Validate the merged ontology with the existing Zod schema (`ontologySchema`).
-    - Output the merged ontology in structured JSON format.
-  - Update the main command handling to include a check for `--merge-persist` prior to defaulting to the main function.
+- **MergePersist Function:**
+  - Implement a new function `mergePersistOntology(args)` in `src/lib/main.js`.
+  - Retrieve a dummy in-memory persisted ontology that simulates previously stored ontology data. For example, using hard-coded JSON reflective of past data (e.g., previous capital cities).
+  - Simulate merging this persisted ontology with freshly crawled data (e.g., update with new or modified capital cities data) using lodash's merge function.
+  - Validate the merged ontology against the existing Zod `ontologySchema` to ensure consistency and integrity.
+  - Output the merged ontology as structured JSON and optionally allow further extension (e.g., persisting to a file if a `--persist` flag is provided alongside a filepath).
 
 - **Testing Enhancements:**
-  - Update `tests/unit/main.test.js` to add new unit test cases for the `--merge-persist` command:
-    - Verify that when `--merge-persist` is provided, the CLI calls `mergePersistOntology(args)` and outputs a valid merged ontology.
-    - Ensure that the merged ontology contains the required properties as defined by the `ontologySchema` (e.g., `type` and `capitals`).
+  - Update `tests/unit/main.test.js` to include unit tests for the `--merge-persist` flag.
+  - Verify that when `--merge-persist` is provided, the CLI calls `mergePersistOntology(args)` and outputs a JSON object that adheres to the ontology schema, including verifying properties like `type` and `capitals`.
 
 - **Documentation Updates:**
-  - Update `README.md` to document the new `--merge-persist` command, including usage examples. For example:
+  - Revise `README.md` to document the new `--merge-persist` command, including example CLI usage:
     ```bash
     node src/lib/main.js --merge-persist
     ```
-    should output the merged ontology in JSON format.
-  - Revise `CONTRIBUTING.md` to include guidelines on extending and testing the merge-persist functionality.
+    which should output the merged ontology.
+  - Update `CONTRIBUTING.md` with testing guidelines and instructions for extending the merge persist functionality.
 
 ## Future Considerations
-- Enhance the merging strategy to better handle conflicts between persisted and new data.
-- Transition the dummy in-memory storage to persistent file operations if necessary.
-- Extend validation and error handling as real-world data sources are integrated.
+- Improve the merging strategy to handle conflicts between old and new data more gracefully.
+- Transition from dummy in-memory storage to persistent file operations if needed.
+- Enhance error handling and logging during the merge process, particularly when schema validation fails.
+
+This enhancement consolidates our ontology management functions under a unified feature while ensuring backward compatibility with existing commands.
