@@ -243,6 +243,7 @@ export function refresh(args) {
  * The merging is done by taking the union of the capitals arrays using the city name as a unique key.
  * If a duplicate city exists, new data overrides the persisted data unless the --prefer-old flag is used.
  * If the --out flag is provided, the merged ontology is persisted to the specified file.
+ * Additionally, if the --sort-merged flag is provided, the capitals array will be sorted alphabetically by city.
  * @param {string[]} args - Command line arguments
  */
 export function mergePersist(args) {
@@ -301,6 +302,11 @@ export function mergePersist(args) {
   }
 
   const mergedOntology = { type: "owl", capitals: Object.values(mergedCapitals) };
+
+  // If --sort-merged flag is provided, sort the merged capitals alphabetically by city
+  if (args.includes("--sort-merged")) {
+    mergedOntology.capitals.sort((a, b) => a.city.localeCompare(b.city));
+  }
 
   // Output the merged ontology
   console.log(JSON.stringify(mergedOntology, null, 2));
@@ -369,7 +375,7 @@ Commands:
   --build-intermediate   Build an intermediate OWL ontology without Zod validation.
   --build-enhanced       Build an enhanced OWL ontology with Zod validation. Optionally, use --persist <filePath> to save the output.
   --refresh              Refresh and merge persistent OWL ontology data (placeholder implementation).
-  --merge-persist        Merge new ontology data with persisted ontology data. Use --persist <filePath> to load persisted data (defaults to empty), and --out <filePath> to write the merged ontology to a file. Add --prefer-old to retain persisted data when duplicates exist.
+  --merge-persist        Merge new ontology data with persisted ontology data. Use --persist <filePath> to load persisted data (defaults to empty), and --out <filePath> to write the merged ontology to a file. Add --prefer-old to retain persisted data when duplicates exist. Use --sort-merged to sort capitals alphabetically by city after merging.
   --validate <filePath>  Validate an ontology JSON file against the schema and output the result.
   --verbose              Enable verbose debug logging.
 

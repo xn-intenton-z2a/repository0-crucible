@@ -413,6 +413,56 @@ describe("Merge Persist Command Output", () => {
     fs.unlinkSync(tempPersistFile);
     logSpy.mockRestore();
   });
+
+  test("should sort merged ontology capitals when '--sort-merged' flag is provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const tmpDir = os.tmpdir();
+    const tempPersistFile = path.join(tmpDir, 'persisted-ontology-sort.json');
+    const persistedData = {
+      type: "owl",
+      capitals: [
+        { city: "Tokyo", country: "Japan" },
+        { city: "Berlin", country: "Germany" }
+      ]
+    };
+    fs.writeFileSync(tempPersistFile, JSON.stringify(persistedData, null, 2));
+    // New ontology capitals: Paris and London; merged result unsorted would be Tokyo, Berlin, Paris, London
+    mergePersist(["--merge-persist", "--persist", tempPersistFile, "--sort-merged"]);
+    const outputCall = logSpy.mock.calls.find(call => {
+      try {
+        const parsed = JSON.parse(call[0]);
+        return parsed.type === "owl" && Array.isArray(parsed.capitals);
+      } catch (e) { return false; }
+    });
+    expect(outputCall).toBeDefined();
+    const mergedOntology = JSON.parse(outputCall[0]);
+    const mergedCities = mergedOntology.capitals.map(item => item.city);
+    const expectedSortedCities = [...mergedCities].sort((a, b) => a.localeCompare(b));
+    expect(mergedCities).toEqual(expectedSortedCities);
+    fs.unlinkSync(tempPersistFile);
+    logSpy.mockRestore();
+  });
+
+  test("should persist sorted merged ontology to file when '--sort-merged' flag is provided along with '--out' flag", () => {
+    const tmpDir = os.tmpdir();
+    const tempPersistFile = path.join(tmpDir, 'persisted-ontology-sort-out.json');
+    const tempOutFile = path.join(tmpDir, 'merged-ontology-sorted.json');
+    const persistedData = {
+      type: "owl",
+      capitals: [
+        { city: "Rome", country: "Italy" }
+      ]
+    };
+    fs.writeFileSync(tempPersistFile, JSON.stringify(persistedData, null, 2));
+    mergePersist(["--merge-persist", "--persist", tempPersistFile, "--out", tempOutFile, "--sort-merged"]);
+    const fileContent = fs.readFileSync(tempOutFile, "utf8");
+    const mergedOntology = JSON.parse(fileContent);
+    const mergedCities = mergedOntology.capitals.map(item => item.city);
+    const expectedSortedCities = [...mergedCities].sort((a, b) => a.localeCompare(b));
+    expect(mergedCities).toEqual(expectedSortedCities);
+    fs.unlinkSync(tempPersistFile);
+    fs.unlinkSync(tempOutFile);
+  });
 });
 
 describe("Validate Ontology Command", () => {
