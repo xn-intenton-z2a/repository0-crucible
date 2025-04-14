@@ -25,10 +25,13 @@ export function query(args) {
   const filteredArgs = args.filter(arg => arg !== "--query");
   const filters = {};
   const searchTerms = [];
-  
+
   filteredArgs.forEach(arg => {
     if (arg.includes("=")) {
-      const [key, value] = arg.split("=", 2);
+      // Split on first '=' to properly capture values with '=' in them
+      const idx = arg.indexOf("=");
+      const key = arg.slice(0, idx);
+      const value = arg.slice(idx + 1);
       if (key && value !== undefined) {
         filters[key] = value;
       } else {
@@ -38,7 +41,7 @@ export function query(args) {
       searchTerms.push(arg);
     }
   });
-  
+
   if (Object.keys(filters).length > 0 && searchTerms.length > 0) {
     console.log(`Querying OWL ontologies for: ${searchTerms.join(" ")} with filters: ${JSON.stringify(filters)}`);
   } else if (Object.keys(filters).length > 0) {
