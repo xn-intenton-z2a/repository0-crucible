@@ -70,6 +70,15 @@ node src/lib/main.js --help
   ```
   This command outputs a JSON representation of an OWL ontology containing dummy data about capital cities, including city names and their associated countries.
 
+- **Serve REST API:**
+  ```bash
+  node src/lib/main.js --serve
+  ```
+  This command starts an Express REST API server on port 3000 (or the port specified by the environment variable PORT). The root endpoint (`/`) returns a JSON object:
+  ```json
+  { "message": "owl-builder REST API" }
+  ```
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.

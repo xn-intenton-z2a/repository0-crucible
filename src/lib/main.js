@@ -2,6 +2,7 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
+import express from "express";
 
 export function main(args) {
   console.log(`Run with: ${JSON.stringify(args)}`);
@@ -43,6 +44,23 @@ export function generateCapitalCitiesOwl(args) {
   console.log(JSON.stringify(ontology, null, 2));
 }
 
+/**
+ * Starts an Express server that provides a REST API.
+ * @param {string[]} args - Command line arguments
+ * @returns {import('http').Server} The server instance.
+ */
+export function serve(args) {
+  const app = express();
+  const port = process.env.PORT || 3000;
+  app.get("/", (req, res) => {
+    res.json({ message: "owl-builder REST API" });
+  });
+  const server = app.listen(port, () => {
+    console.log(`REST API server running on port ${port}`);
+  });
+  return server;
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   if (args.includes("--diagnostics")) {
@@ -53,6 +71,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     crawlData(args);
   } else if (args.includes("--capital-cities")) {
     generateCapitalCitiesOwl(args);
+  } else if (args.includes("--serve")) {
+    serve(args);
   } else {
     main(args);
   }
