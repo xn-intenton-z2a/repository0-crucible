@@ -1,40 +1,30 @@
-# ONTOLOGY Feature
+# ONTOLOGY Feature Update
 
 ## Overview
-This feature merges multiple aspects of ontology management into a single cohesive experience. It handles generating an OWL ontology (e.g., via the `--capital-cities` flag), validating the ontology JSON against a Zod schema using the `--validate` flag, and extends its functionality with additional commands for refreshing data and persisting changes. This aligns with our mission by ensuring dynamic, consistent, and maintainable OWL ontologies from public data sources.
+This update expands the ontology management capabilities by integrating features to refresh and persist ontology data. In addition to generating and validating OWL ontologies from public data (e.g., via the `--capital-cities` flag and enhanced build commands), users can now trigger a data refresh and merge new ontology data with existing persisted JSON data using the `--refresh` and `--merge-persist` flags.
 
 ## Implementation Details
-- **CLI Integration:**
-  - Enhance the main CLI parser in `src/lib/main.js` to recognize the following flags:
-    - `--capital-cities`: Generate a sample OWL ontology using public data of capital cities.
-    - `--validate`: Validate the ontology JSON against a predefined Zod schema.
-    - `--build-intermediate` and `--build-enhanced`: Additional processing steps for generating ontologies with varying complexity levels.
-    - `--refresh`: Trigger data refresh from public sources and regenerate the ontology.
-    - `--merge-persist`: Merge new ontology data with persisted JSON data and save the updated ontology.
+### CLI Integration
+- Update the main CLI parser in `src/lib/main.js` to recognize the new flags:
+  - `--refresh`: Triggers a data refresh from public sources and regenerates the ontology.
+  - `--merge-persist`: Merges newly fetched ontology data with existing persisted JSON data and saves the updated ontology.
+- In the source file, add corresponding function implementations:
+  - `refreshOntology(args)`: Implements fetching fresh data, regenerating the ontology, and outputting the refreshed data.
+  - `mergePersistOntology(args)`: Reads existing persisted ontology (if available), merges with the newly generated ontology, validates the result using the Zod schema, and saves it.
+- Integrate error handling with clear messages in case of data fetch failures, file read/write errors, or validation issues.
 
-- **Ontology Generation & Transformation:**
-  - Utilize existing library functions to transform public data into a compliant OWL ontology JSON structure.
-  - Leverage the Zod schema for validation to ensure that generated ontologies contain essential properties such as ontology ID, classes, relationships, etc.
+### Testing
+- Update tests in `tests/unit/main.test.js` to include new test cases:
+  - A test case for `--refresh` that verifies the transcript of a data-refresh operation.
+  - A test case for `--merge-persist` verifying that merging occurs correctly and the output includes expected data structures such as `type`, `capitals`, and a merged result.
 
-- **Error Handling:**
-  - Provide clear, diagnostic messages if data fetching, transformation, or merging operations fail.
-  - Ensure that validation errors are detailed and actionable, helping users and developers diagnose issues quickly.
+### Documentation
+- Update `README.md` to include a section explaining the new flags with usage examples:
+  - Example: `node src/lib/main.js --refresh` to trigger a data refresh.
+  - Example: `node src/lib/main.js --merge-persist` to merge refreshed ontology data with persisted data.
+- Update `CONTRIBUTING.md` to describe guidelines for extending refresh and persistence functionality.
 
-## Testing
-- Develop and update unit tests in the `tests/unit` directory to cover:
-  - CLI flag recognition and proper execution paths for each new flag.
-  - Verification that the generated OWL ontology JSON and its validation output meet expected standards.
-  - Simulated scenarios for refreshing data and merging persisted ontology content.
-  - Edge cases and error handling, ensuring robustness when operations fail.
-
-## Documentation
-- Update the README file to include usage examples and detailed instructions for:
-  - Generating the ontology using `--capital-cities`.
-  - Validating the ontology with `--validate`.
-  - Processing intermediate and enhanced builds using `--build-intermediate` and `--build-enhanced`.
-  - Refreshing data sources with `--refresh` and merging/persisting data with `--merge-persist`.
-  
 ## Future Considerations
-- Explore extending the validation process with automated post-generation checks.
-- Consider integrating additional data sources and filters for enhanced ontology generation.
-- Investigate improvements in persistence mechanisms to handle large or incremental updates efficiently.
+- Enhance data merging strategies by incorporating conflict resolution and version history.
+- Integrate improvements in error handling and logging to provide users more detailed diagnostic feedback during refresh and merge operations.
+- Consider support for additional data sources or custom user configurations for persistence paths.
