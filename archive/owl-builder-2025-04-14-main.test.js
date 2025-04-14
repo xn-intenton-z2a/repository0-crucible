@@ -13,7 +13,7 @@ import {
   refresh,
   mergePersist,
   validateOntology,
-  addCapital
+  addCapital,
 } from "@src/lib/main.js";
 import fs from "fs";
 import os from "os";
@@ -211,8 +211,8 @@ describe("Crawl Command Simulated Data Output", () => {
     expect(parsed).toEqual({
       data: [
         { city: "SimCity", country: "SimCountry" },
-        { city: "Testopolis", country: "Testland" }
-      ]
+        { city: "Testopolis", country: "Testland" },
+      ],
     });
     logSpy.mockRestore();
   });
@@ -223,7 +223,7 @@ describe("Capital Cities Command Output", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     generateCapitalCitiesOwl(["--capital-cities"]);
     expect(logSpy).toHaveBeenCalled();
-    const outputCall = logSpy.mock.calls.find(call => {
+    const outputCall = logSpy.mock.calls.find((call) => {
       try {
         JSON.parse(call[0]);
         return true;
@@ -242,7 +242,7 @@ describe("Capital Cities Command Output", () => {
     expect(parsed).toHaveProperty("capitals");
     expect(Array.isArray(parsed.capitals)).toBe(true);
     expect(parsed.capitals.length).toBeGreaterThanOrEqual(3);
-    parsed.capitals.forEach(cityObj => {
+    parsed.capitals.forEach((cityObj) => {
       expect(cityObj).toHaveProperty("city");
       expect(cityObj).toHaveProperty("country");
     });
@@ -252,7 +252,7 @@ describe("Capital Cities Command Output", () => {
   test("should output sorted capitals when '--sort' flag is provided", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     generateCapitalCitiesOwl(["--capital-cities", "--sort"]);
-    const outputCall = logSpy.mock.calls.find(call => {
+    const outputCall = logSpy.mock.calls.find((call) => {
       try {
         JSON.parse(call[0]);
         return true;
@@ -266,7 +266,7 @@ describe("Capital Cities Command Output", () => {
     const expected = [
       { city: "London", country: "UK" },
       { city: "Tokyo", country: "Japan" },
-      { city: "Washington, D.C.", country: "USA" }
+      { city: "Washington, D.C.", country: "USA" },
     ];
     expect(parsed.capitals).toEqual(expected);
     logSpy.mockRestore();
@@ -276,7 +276,7 @@ describe("Capital Cities Command Output", () => {
 describe("Serve Command Output", () => {
   test("should start REST API server and respond with expected JSON", async () => {
     const server = serve(["--serve"]);
-    await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise((resolve) => setTimeout(resolve, 100));
     const response = await fetch("http://localhost:3000/");
     expect(response.status).toBe(200);
     const data = await response.json();
@@ -290,10 +290,10 @@ describe("Build Enhanced Ontology Command Output", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const enhancedArgs = ["--build-enhanced"];
     buildEnhancedOntology(enhancedArgs);
-    const output = logSpy.mock.calls.find(call => call[0].includes("Enhanced ontology built and validated:"))[0];
+    const output = logSpy.mock.calls.find((call) => call[0].includes("Enhanced ontology built and validated:"))[0];
     expect(output).toContain("Enhanced ontology built and validated:");
 
-    const jsonStart = output.indexOf('{');
+    const jsonStart = output.indexOf("{");
     expect(jsonStart).toBeGreaterThan(-1);
     const jsonPart = output.substring(jsonStart);
     let parsed;
@@ -308,10 +308,10 @@ describe("Build Enhanced Ontology Command Output", () => {
 
   test("should persist enhanced ontology to file when --persist flag is provided", () => {
     const tmpDir = os.tmpdir();
-    const tempFilePath = path.join(tmpDir, 'temp-ontology.json');
+    const tempFilePath = path.join(tmpDir, "temp-ontology.json");
     const args = ["--build-enhanced", "--persist", tempFilePath];
     buildEnhancedOntology(args);
-    const fileContent = fs.readFileSync(tempFilePath, { encoding: 'utf8' });
+    const fileContent = fs.readFileSync(tempFilePath, { encoding: "utf8" });
     let parsed;
     expect(() => {
       parsed = JSON.parse(fileContent);
@@ -338,10 +338,10 @@ describe("Build Enhanced Ontology Command Output", () => {
 
   test("should persist CSV to file when --export-csv and --persist flags are provided", () => {
     const tmpDir = os.tmpdir();
-    const tempFilePath = path.join(tmpDir, 'temp-ontology.csv');
+    const tempFilePath = path.join(tmpDir, "temp-ontology.csv");
     const args = ["--build-enhanced", "--export-csv", "--persist", tempFilePath];
     buildEnhancedOntology(args);
-    const fileContent = fs.readFileSync(tempFilePath, { encoding: 'utf8' });
+    const fileContent = fs.readFileSync(tempFilePath, { encoding: "utf8" });
     expect(fileContent.startsWith("city,country")).toBe(true);
     const lines = fileContent.split("\n");
     expect(lines.length).toBe(4);
@@ -354,7 +354,7 @@ describe("Build Intermediate Ontology Command Output", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const intermediateArgs = ["--build-intermediate"];
     buildIntermediateOntology(intermediateArgs);
-    const output = logSpy.mock.calls.find(call => call[0].startsWith("Intermediate ontology built:"))[0];
+    const output = logSpy.mock.calls.find((call) => call[0].startsWith("Intermediate ontology built:"))[0];
     expect(output.startsWith("Intermediate ontology built:")).toBe(true);
     const jsonPart = output.replace("Intermediate ontology built: ", "");
     let parsed;
@@ -372,13 +372,15 @@ describe("Refresh Command Output", () => {
   test("should log refreshed ontology message with valid JSON", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     refresh(["--refresh"]);
-    const output = logSpy.mock.calls.find(call => call[0].includes("Refreshed ontology:"))[0];
+    const output = logSpy.mock.calls.find((call) => call[0].includes("Refreshed ontology:"))[0];
     expect(output).toContain("Refreshed ontology:");
-    const jsonStart = output.indexOf('{');
+    const jsonStart = output.indexOf("{");
     expect(jsonStart).toBeGreaterThan(-1);
     const jsonPart = output.substring(jsonStart);
     let parsed;
-    expect(() => { parsed = JSON.parse(jsonPart); }).not.toThrow();
+    expect(() => {
+      parsed = JSON.parse(jsonPart);
+    }).not.toThrow();
     expect(parsed).toHaveProperty("type", "owl");
     expect(parsed).toHaveProperty("capitals");
     expect(Array.isArray(parsed.capitals)).toBe(true);
@@ -398,26 +400,28 @@ describe("Merge Persist Command Output", () => {
   test("should correctly merge persisted and new ontology capitals", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const tmpDir = os.tmpdir();
-    const tempPersistFile = path.join(tmpDir, 'persisted-ontology.json');
+    const tempPersistFile = path.join(tmpDir, "persisted-ontology.json");
     const persistedData = {
       type: "owl",
       capitals: [
         { city: "Washington, D.C.", country: "USA" },
-        { city: "London", country: "UK" }
-      ]
+        { city: "London", country: "UK" },
+      ],
     };
     fs.writeFileSync(tempPersistFile, JSON.stringify(persistedData, null, 2));
     mergePersist(["--merge-persist", "--persist", tempPersistFile]);
-    const outputCall = logSpy.mock.calls.find(call => {
+    const outputCall = logSpy.mock.calls.find((call) => {
       try {
         const parsed = JSON.parse(call[0]);
         return parsed.type === "owl" && Array.isArray(parsed.capitals);
-      } catch (e) { return false; }
+      } catch (e) {
+        return false;
+      }
     });
     expect(outputCall).toBeDefined();
     const mergedOntology = JSON.parse(outputCall[0]);
     const expectedCities = ["Washington, D.C.", "London", "Paris", "Berlin", "Tokyo"];
-    const mergedCities = mergedOntology.capitals.map(item => item.city).sort();
+    const mergedCities = mergedOntology.capitals.map((item) => item.city).sort();
     expect(mergedCities).toEqual(expectedCities.sort());
     fs.unlinkSync(tempPersistFile);
     logSpy.mockRestore();
@@ -425,20 +429,18 @@ describe("Merge Persist Command Output", () => {
 
   test("should persist merged ontology to file when '--out' flag is provided", () => {
     const tmpDir = os.tmpdir();
-    const tempPersistFile = path.join(tmpDir, 'persisted-ontology.json');
-    const tempOutFile = path.join(tmpDir, 'merged-ontology.json');
+    const tempPersistFile = path.join(tmpDir, "persisted-ontology.json");
+    const tempOutFile = path.join(tmpDir, "merged-ontology.json");
     const persistedData = {
       type: "owl",
-      capitals: [
-        { city: "Rome", country: "Italy" }
-      ]
+      capitals: [{ city: "Rome", country: "Italy" }],
     };
     fs.writeFileSync(tempPersistFile, JSON.stringify(persistedData, null, 2));
     mergePersist(["--merge-persist", "--persist", tempPersistFile, "--out", tempOutFile]);
     const fileContent = fs.readFileSync(tempOutFile, "utf8");
     const mergedOntology = JSON.parse(fileContent);
     const expectedCities = ["Rome", "Paris", "Berlin", "Tokyo"];
-    const mergedCities = mergedOntology.capitals.map(item => item.city).sort();
+    const mergedCities = mergedOntology.capitals.map((item) => item.city).sort();
     expect(mergedCities).toEqual(expectedCities.sort());
     fs.unlinkSync(tempPersistFile);
     fs.unlinkSync(tempOutFile);
@@ -447,21 +449,23 @@ describe("Merge Persist Command Output", () => {
   test("should prefer persisted data when --prefer-old flag is used", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const tmpDir = os.tmpdir();
-    const tempPersistFile = path.join(tmpDir, 'persisted-ontology-prefer-old.json');
+    const tempPersistFile = path.join(tmpDir, "persisted-ontology-prefer-old.json");
     const persistedData = {
       type: "owl",
       capitals: [
         { city: "Paris", country: "Old" },
-        { city: "London", country: "UK" }
-      ]
+        { city: "London", country: "UK" },
+      ],
     };
     fs.writeFileSync(tempPersistFile, JSON.stringify(persistedData, null, 2));
     mergePersist(["--merge-persist", "--prefer-old", "--persist", tempPersistFile]);
-    const outputCall = logSpy.mock.calls.find(call => {
+    const outputCall = logSpy.mock.calls.find((call) => {
       try {
         const parsed = JSON.parse(call[0]);
         return parsed.type === "owl" && Array.isArray(parsed.capitals);
-      } catch (e) { return false; }
+      } catch (e) {
+        return false;
+      }
     });
     expect(outputCall).toBeDefined();
     const mergedOntology = JSON.parse(outputCall[0]);
@@ -469,7 +473,7 @@ describe("Merge Persist Command Output", () => {
       { city: "London", country: "UK" },
       { city: "Paris", country: "Old" },
       { city: "Berlin", country: "Germany" },
-      { city: "Tokyo", country: "Japan" }
+      { city: "Tokyo", country: "Japan" },
     ];
     const sortFn = (a, b) => a.city.localeCompare(b.city);
     expect(mergedOntology.capitals.sort(sortFn)).toEqual(expectedCapitals.sort(sortFn));
@@ -480,25 +484,27 @@ describe("Merge Persist Command Output", () => {
   test("should sort merged ontology capitals when '--sort-merged' flag is provided", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const tmpDir = os.tmpdir();
-    const tempPersistFile = path.join(tmpDir, 'persisted-ontology-sort.json');
+    const tempPersistFile = path.join(tmpDir, "persisted-ontology-sort.json");
     const persistedData = {
       type: "owl",
       capitals: [
         { city: "Tokyo", country: "Japan" },
-        { city: "Berlin", country: "Germany" }
-      ]
+        { city: "Berlin", country: "Germany" },
+      ],
     };
     fs.writeFileSync(tempPersistFile, JSON.stringify(persistedData, null, 2));
     mergePersist(["--merge-persist", "--persist", tempPersistFile, "--sort-merged"]);
-    const outputCall = logSpy.mock.calls.find(call => {
+    const outputCall = logSpy.mock.calls.find((call) => {
       try {
         const parsed = JSON.parse(call[0]);
         return parsed.type === "owl" && Array.isArray(parsed.capitals);
-      } catch (e) { return false; }
+      } catch (e) {
+        return false;
+      }
     });
     expect(outputCall).toBeDefined();
     const mergedOntology = JSON.parse(outputCall[0]);
-    const mergedCities = mergedOntology.capitals.map(item => item.city);
+    const mergedCities = mergedOntology.capitals.map((item) => item.city);
     const expectedSortedCities = [...mergedCities].sort((a, b) => a.localeCompare(b));
     expect(mergedCities).toEqual(expectedSortedCities);
     fs.unlinkSync(tempPersistFile);
@@ -507,19 +513,17 @@ describe("Merge Persist Command Output", () => {
 
   test("should persist sorted merged ontology to file when '--sort-merged' flag is provided along with '--out' flag", () => {
     const tmpDir = os.tmpdir();
-    const tempPersistFile = path.join(tmpDir, 'persisted-ontology-sort-out.json');
-    const tempOutFile = path.join(tmpDir, 'merged-ontology-sorted.json');
+    const tempPersistFile = path.join(tmpDir, "persisted-ontology-sort-out.json");
+    const tempOutFile = path.join(tmpDir, "merged-ontology-sorted.json");
     const persistedData = {
       type: "owl",
-      capitals: [
-        { city: "Rome", country: "Italy" }
-      ]
+      capitals: [{ city: "Rome", country: "Italy" }],
     };
     fs.writeFileSync(tempPersistFile, JSON.stringify(persistedData, null, 2));
     mergePersist(["--merge-persist", "--persist", tempPersistFile, "--out", tempOutFile, "--sort-merged"]);
     const fileContent = fs.readFileSync(tempOutFile, "utf8");
     const mergedOntology = JSON.parse(fileContent);
-    const mergedCities = mergedOntology.capitals.map(item => item.city);
+    const mergedCities = mergedOntology.capitals.map((item) => item.city);
     const expectedSortedCities = [...mergedCities].sort((a, b) => a.localeCompare(b));
     expect(mergedCities).toEqual(expectedSortedCities);
     fs.unlinkSync(tempPersistFile);
@@ -528,7 +532,7 @@ describe("Merge Persist Command Output", () => {
 
   test("should log error if persisted file does not exist", () => {
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-    const fakePath = path.join(os.tmpdir(), 'nonexistent.json');
+    const fakePath = path.join(os.tmpdir(), "nonexistent.json");
     mergePersist(["--merge-persist", "--persist", fakePath]);
     expect(errorSpy).toHaveBeenCalledWith(`Persisted ontology file not found at path: ${fakePath}`);
     errorSpy.mockRestore();
@@ -537,10 +541,10 @@ describe("Merge Persist Command Output", () => {
   test("should log error for invalid JSON in persisted file", () => {
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     const tmpDir = os.tmpdir();
-    const invalidFile = path.join(tmpDir, 'invalid-ontology.json');
+    const invalidFile = path.join(tmpDir, "invalid-ontology.json");
     fs.writeFileSync(invalidFile, "{ invalid json }");
     mergePersist(["--merge-persist", "--persist", invalidFile]);
-    const errorLogged = errorSpy.mock.calls.some(call => call[0].includes('Invalid JSON in persisted ontology file'));
+    const errorLogged = errorSpy.mock.calls.some((call) => call[0].includes("Invalid JSON in persisted ontology file"));
     expect(errorLogged).toBe(true);
     fs.unlinkSync(invalidFile);
     errorSpy.mockRestore();
@@ -550,18 +554,18 @@ describe("Merge Persist Command Output", () => {
 describe("Validate Ontology Command", () => {
   test("should confirm valid ontology file", () => {
     const tmpDir = os.tmpdir();
-    const validFile = path.join(tmpDir, 'valid-ontology.json');
+    const validFile = path.join(tmpDir, "valid-ontology.json");
     const validOntology = {
       type: "owl",
       capitals: [
         { city: "Washington, D.C.", country: "USA" },
-        { city: "London", country: "UK" }
-      ]
+        { city: "London", country: "UK" },
+      ],
     };
     fs.writeFileSync(validFile, JSON.stringify(validOntology, null, 2));
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     validateOntology(["--validate", validFile]);
-    const output = logSpy.mock.calls.find(call => call[0].includes("Ontology validation successful:"));
+    const output = logSpy.mock.calls.find((call) => call[0].includes("Ontology validation successful:"));
     expect(output).toBeDefined();
     fs.unlinkSync(validFile);
     logSpy.mockRestore();
@@ -569,15 +573,15 @@ describe("Validate Ontology Command", () => {
 
   test("should log validation errors for invalid ontology file", () => {
     const tmpDir = os.tmpdir();
-    const invalidFile = path.join(tmpDir, 'invalid-ontology.json');
+    const invalidFile = path.join(tmpDir, "invalid-ontology.json");
     const invalidOntology = {
       type: "owl",
-      capitals: "not an array"
+      capitals: "not an array",
     };
     fs.writeFileSync(invalidFile, JSON.stringify(invalidOntology, null, 2));
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     validateOntology(["--validate", invalidFile]);
-    const output = errorSpy.mock.calls.find(call => call[0].includes("Ontology validation failed:"));
+    const output = errorSpy.mock.calls.find((call) => call[0].includes("Ontology validation failed:"));
     expect(output).toBeDefined();
     fs.unlinkSync(invalidFile);
     errorSpy.mockRestore();
@@ -585,17 +589,15 @@ describe("Validate Ontology Command", () => {
 
   test("should work with verbose flag in validateOntology", () => {
     const tmpDir = os.tmpdir();
-    const validFile = path.join(tmpDir, 'valid-ontology-verbose.json');
+    const validFile = path.join(tmpDir, "valid-ontology-verbose.json");
     const validOntology = {
       type: "owl",
-      capitals: [
-        { city: "Tokyo", country: "Japan" }
-      ]
+      capitals: [{ city: "Tokyo", country: "Japan" }],
     };
     fs.writeFileSync(validFile, JSON.stringify(validOntology, null, 2));
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     validateOntology(["--validate", validFile, "--verbose"]);
-    const verboseLog = logSpy.mock.calls.find(call => call[0].includes("Verbose mode enabled in validateOntology"));
+    const verboseLog = logSpy.mock.calls.find((call) => call[0].includes("Verbose mode enabled in validateOntology"));
     expect(verboseLog).toBeDefined();
     fs.unlinkSync(validFile);
     logSpy.mockRestore();
@@ -661,7 +663,7 @@ describe("Add Capital Command", () => {
 
   test("should persist updated ontology to file when --persist flag is provided", () => {
     const tmpDir = os.tmpdir();
-    const tempFilePath = path.join(tmpDir, 'persisted-ontology.json');
+    const tempFilePath = path.join(tmpDir, "persisted-ontology.json");
     const initialOntology = { type: "owl", capitals: [{ city: "Paris", country: "France" }] };
     fs.writeFileSync(tempFilePath, JSON.stringify(initialOntology, null, 2));
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});

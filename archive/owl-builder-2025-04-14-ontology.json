@@ -1,8 +1,4 @@
 {
   "title": "Public Data Ontology",
-  "concepts": [
-    "Concept1",
-    "Concept2",
-    "Concept3"
-  ]
+  "concepts": ["Concept1", "Concept2", "Concept3"]
 }
