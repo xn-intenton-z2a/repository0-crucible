@@ -2,19 +2,19 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Issue Worker",
+  "lastActivityName": "Stats",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1538] Enhance Query Command to Support Complex Filter Values automated, feature, issue-worker-14436748857, apply-fix-14436818724, apply-fix-14437004845",
+  "nextIssue": "[]  ",
   "openIssues": 1,
   "issuesClosedLastHour": 3,
   "issuesClosedLastDay": 68,
   "openPRs": 1,
-  "averagePRAge": 25,
+  "averagePRAge": 27,
   "prDetails": [
-    "[25m] Fixed filter parsing in query command to correctly handle characters in filter values. (fixes #1538)"
+    "[27m] Fixed filter parsing in query command to correctly handle characters in filter values. (fixes #1538)"
   ],
   "diffMinutes": 1,
-  "diffMinutesMain": 1,
+  "diffMinutesMain": 4,
   "commitsLastHour": 3,
   "commitsLastDay": 47,
   "lastFiveCommitMessages": [
@@ -32,5 +32,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T03:57:28.572Z"
+  "statsGeneratedAt": "2025-04-14T03:59:37.015Z"
 }
