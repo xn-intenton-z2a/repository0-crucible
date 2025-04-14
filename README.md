@@ -144,6 +144,8 @@ Real Output (formatted JSON):
 
 #### 4. Crawl Data
 
+**Standard Crawl:**
+
 Command:
 ```bash
 node src/lib/main.js --crawl
@@ -151,6 +153,22 @@ node src/lib/main.js --crawl
 Real Output:
 ```
 Crawling data from public sources...
+```
+
+**Simulated Crawl:**
+
+Command:
+```bash
+node src/lib/main.js --crawl --simulate
+```
+Real Output (formatted JSON):
+```json
+{
+  "data": [
+    { "city": "SimCity", "country": "SimCountry" },
+    { "city": "Testopolis", "country": "Testland" }
+  ]
+}
 ```
 
 #### 5. Generate Capital Cities OWL Ontology

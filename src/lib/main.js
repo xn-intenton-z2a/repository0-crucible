@@ -106,7 +106,18 @@ export function crawlData(args) {
   if (verbose) {
     console.log("Verbose mode enabled in crawlData. Received args: " + JSON.stringify(args));
   }
-  console.log("Crawling data from public sources...");
+  // Check for '--simulate' flag
+  if (args.includes("--simulate")) {
+    const simulatedData = {
+      data: [
+        { city: "SimCity", country: "SimCountry" },
+        { city: "Testopolis", country: "Testland" }
+      ]
+    };
+    console.log(JSON.stringify(simulatedData, null, 2));
+  } else {
+    console.log("Crawling data from public sources...");
+  }
 }
 
 /**
@@ -390,7 +401,7 @@ Commands:
   --help                 Display this help message.
   --diagnostics          Display system diagnostic information. Use --json for JSON output.
   --query [args]         Query OWL ontologies. Append search terms or key=value filters. Add --json for structured JSON output. Use --regex to treat search terms as regular expressions and --fuzzy for fuzzy matching.
-  --crawl                Crawl data from public sources.
+  --crawl                Crawl data from public sources. Use --simulate to output simulated crawled data.
   --capital-cities       Generate an OWL ontology for capital cities. Use --sort to output capitals sorted alphabetically by city name.
   --serve                Start the Express REST API server.
   --build-intermediate   Build an intermediate OWL ontology without Zod validation.
