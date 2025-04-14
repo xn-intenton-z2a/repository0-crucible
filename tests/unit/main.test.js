@@ -16,7 +16,7 @@ describe("Main Output", () => {
 });
 
 describe("Capital Cities Option", () => {
-  test("should output capitalCities OWL ontology JSON", () => {
+  test("should output capitalCities OWL ontology JSON with generatedAt timestamp", () => {
     let output = "";
     const originalLog = console.log;
     console.log = (msg) => { output += msg; };
@@ -34,5 +34,8 @@ describe("Capital Cities Option", () => {
       { country: "Japan", capital: "Tokyo" },
       { country: "Brazil", capital: "Brasília" }
     ]);
+    expect(parsed).toHaveProperty("generatedAt");
+    const iso = new Date(parsed.generatedAt).toISOString();
+    expect(iso).toEqual(parsed.generatedAt);
   });
 });
