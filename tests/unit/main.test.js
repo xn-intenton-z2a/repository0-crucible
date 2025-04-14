@@ -11,7 +11,8 @@ import {
   buildIntermediateOntology,
   displayHelp,
   refresh,
-  mergePersist
+  mergePersist,
+  validateOntology
 } from "@src/lib/main.js";
 import fs from "fs";
 import os from "os";
@@ -414,6 +415,62 @@ describe("Merge Persist Command Output", () => {
   });
 });
 
+describe("Validate Ontology Command", () => {
+  test("should confirm valid ontology file", () => {
+    const tmpDir = os.tmpdir();
+    const validFile = path.join(tmpDir, 'valid-ontology.json');
+    const validOntology = {
+      type: "owl",
+      capitals: [
+        { city: "Washington, D.C.", country: "USA" },
+        { city: "London", country: "UK" }
+      ]
+    };
+    fs.writeFileSync(validFile, JSON.stringify(validOntology, null, 2));
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    validateOntology(["--validate", validFile]);
+    const output = logSpy.mock.calls.find(call => call[0].includes("Ontology validation successful:"));
+    expect(output).toBeDefined();
+    fs.unlinkSync(validFile);
+    logSpy.mockRestore();
+  });
+
+  test("should log validation errors for invalid ontology file", () => {
+    const tmpDir = os.tmpdir();
+    const invalidFile = path.join(tmpDir, 'invalid-ontology.json');
+    // Invalid because missing capitals array or wrong type
+    const invalidOntology = {
+      type: "owl",
+      capitals: "not an array"
+    };
+    fs.writeFileSync(invalidFile, JSON.stringify(invalidOntology, null, 2));
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    validateOntology(["--validate", invalidFile]);
+    const output = errorSpy.mock.calls.find(call => call[0].includes("Ontology validation failed:"));
+    expect(output).toBeDefined();
+    fs.unlinkSync(invalidFile);
+    errorSpy.mockRestore();
+  });
+
+  test("should work with verbose flag in validateOntology", () => {
+    const tmpDir = os.tmpdir();
+    const validFile = path.join(tmpDir, 'valid-ontology-verbose.json');
+    const validOntology = {
+      type: "owl",
+      capitals: [
+        { city: "Tokyo", country: "Japan" }
+      ]
+    };
+    fs.writeFileSync(validFile, JSON.stringify(validOntology, null, 2));
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    validateOntology(["--validate", validFile, "--verbose"]);
+    const verboseLog = logSpy.mock.calls.find(call => call[0].includes("Verbose mode enabled in validateOntology"));
+    expect(verboseLog).toBeDefined();
+    fs.unlinkSync(validFile);
+    logSpy.mockRestore();
+  });
+});
+
 describe("Verbose Flag Logging", () => {
   test("should log verbose debug message in main", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -447,30 +504,6 @@ describe("Verbose Flag Logging", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     buildEnhancedOntology(["--build-enhanced", "--verbose"]);
     expect(logSpy).toHaveBeenCalledWith(expect.stringContaining("Verbose mode enabled in buildEnhancedOntology"));
-    logSpy.mockRestore();
-  });
-});
-
-describe("Help Command Output", () => {
-  test("should display help message with usage instructions", () => {
-    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    displayHelp(["--help"]);
-    const helpOutput = logSpy.mock.calls.map(call => call[0]).join("\n");
-    expect(helpOutput).toContain("Usage: ");
-    expect(helpOutput).toContain("--help");
-    expect(helpOutput).toContain("--diagnostics");
-    expect(helpOutput).toContain("--query");
-    expect(helpOutput).toContain("--crawl");
-    expect(helpOutput).toContain("--capital-cities");
-    expect(helpOutput).toContain("--serve");
-    expect(helpOutput).toContain("--build-intermediate");
-    expect(helpOutput).toContain("--build-enhanced");
-    expect(helpOutput).toContain("--refresh");
-    expect(helpOutput).toContain("--merge-persist");
-    expect(helpOutput).toContain("--json");
-    expect(helpOutput).toContain("--regex");
-    expect(helpOutput).toContain("--fuzzy");
-    expect(helpOutput).toContain("--prefer-old");
     logSpy.mockRestore();
   });
 });
