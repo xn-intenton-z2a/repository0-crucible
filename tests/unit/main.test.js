@@ -146,6 +146,27 @@ describe("Query Command Fuzzy Option", () => {
   });
 });
 
+describe("Query Command Ignore Case Option", () => {
+  test("should output JSON object with lower-case search terms and filters when '--ignore-case' flag is used", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    query(["--query", "--json", "--ignore-case", "CaPItal", "CiTiEs", "CoUnTrY=UsA"]);
+    const output = logSpy.mock.calls[0][0];
+    const parsed = JSON.parse(output);
+    expect(parsed.searchTerms).toEqual(["capital", "cities"]);
+    expect(parsed.filters).toEqual({ country: "usa" });
+    logSpy.mockRestore();
+  });
+
+  test("should log case-normalized message in plain text output when '--ignore-case' flag is used", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    query(["--query", "--ignore-case", "CaPItal", "CiTiEs", "CoUnTrY=UsA"]);
+    const callArgs = logSpy.mock.calls[0][0];
+    expect(callArgs).toContain("capital cities");
+    expect(callArgs).toContain('{"country":"usa"}');
+    logSpy.mockRestore();
+  });
+});
+
 describe("Diagnostics Command Output", () => {
   test("should log diagnostics info", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
