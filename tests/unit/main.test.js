@@ -168,11 +168,30 @@ describe("Diagnostics Command Output", () => {
 });
 
 describe("Crawl Command Output", () => {
-  test("should log crawl message", () => {
+  test("should log crawl message when no simulate flag is provided", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const args = ["--crawl"];
     crawlData(args);
     expect(logSpy).toHaveBeenCalledWith("Crawling data from public sources...");
+    logSpy.mockRestore();
+  });
+});
+
+describe("Crawl Command Simulated Data Output", () => {
+  test("should output simulated JSON data when '--simulate' flag is provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    crawlData(["--crawl", "--simulate"]);
+    const output = logSpy.mock.calls[0][0];
+    let parsed;
+    expect(() => {
+      parsed = JSON.parse(output);
+    }).not.toThrow();
+    expect(parsed).toEqual({
+      data: [
+        { city: "SimCity", country: "SimCountry" },
+        { city: "Testopolis", country: "Testland" }
+      ]
+    });
     logSpy.mockRestore();
   });
 });
