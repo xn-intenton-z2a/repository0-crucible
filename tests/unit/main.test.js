@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main, query, diagnostics, crawlData, generateCapitalCitiesOwl, serve, buildEnhancedOntology } from "@src/lib/main.js";
+import { main, query, diagnostics, crawlData, generateCapitalCitiesOwl, serve, buildEnhancedOntology, buildIntermediateOntology } from "@src/lib/main.js";
 
 // Existing test suites
 
@@ -120,6 +120,25 @@ describe("Build Enhanced Ontology Command Output", () => {
     const jsonStart = output.indexOf('{');
     expect(jsonStart).toBeGreaterThan(-1);
     const jsonPart = output.substring(jsonStart);
+    let parsed;
+    expect(() => {
+      parsed = JSON.parse(jsonPart);
+    }).not.toThrow();
+    expect(parsed).toHaveProperty("type", "owl");
+    expect(parsed).toHaveProperty("capitals");
+    expect(Array.isArray(parsed.capitals)).toBe(true);
+    logSpy.mockRestore();
+  });
+});
+
+describe("Build Intermediate Ontology Command Output", () => {
+  test("should log intermediate ontology build message and valid JSON", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const intermediateArgs = ["--build-intermediate"];
+    buildIntermediateOntology(intermediateArgs);
+    const output = logSpy.mock.calls[0][0];
+    expect(output.startsWith("Intermediate ontology built:")) .toBe(true);
+    const jsonPart = output.replace("Intermediate ontology built: ", "");
     let parsed;
     expect(() => {
       parsed = JSON.parse(jsonPart);

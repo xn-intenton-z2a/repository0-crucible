@@ -78,6 +78,22 @@ export function generateCapitalCitiesOwl(args) {
 }
 
 /**
+ * Builds an intermediate version of the OWL ontology without Zod validation.
+ * @param {string[]} args - Command line arguments
+ */
+export function buildIntermediateOntology(args) {
+  const ontology = {
+    type: "owl",
+    capitals: [
+      { city: "Washington, D.C.", country: "USA" },
+      { city: "London", country: "UK" },
+      { city: "Tokyo", country: "Japan" }
+    ]
+  };
+  console.log(`Intermediate ontology built: ${JSON.stringify(ontology, null, 2)}`);
+}
+
+/**
  * Starts an Express server that provides a REST API.
  * @param {string[]} args - Command line arguments
  * @returns {import('http').Server} The server instance.
@@ -130,6 +146,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     generateCapitalCitiesOwl(args);
   } else if (args.includes("--serve")) {
     serve(args);
+  } else if (args.includes("--build-intermediate")) {
+    buildIntermediateOntology(args);
   } else if (args.includes("--build-enhanced")) {
     buildEnhancedOntology(args);
   } else {
