@@ -493,7 +493,6 @@ describe("Merge Persist Command Output", () => {
     fs.unlinkSync(tempOutFile);
   });
 
-  // New tests for error handling in mergePersist
   test("should log error if persisted file does not exist", () => {
     const logSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     const fakePath = path.join(os.tmpdir(), 'nonexistent.json');
