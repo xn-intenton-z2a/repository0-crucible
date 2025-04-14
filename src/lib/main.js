@@ -471,7 +471,7 @@ Core Features:
   - serve: Start the REST API server.
   - build-intermediate: Build a basic OWL ontology without Zod validation.
   - build-enhanced: Build an enhanced OWL ontology with Zod validation; supports --persist and --export-csv options.
-  - refresh: Refresh and merge ontology data (placeholder functionality).
+  - refresh: Refresh and merge ontology data (Feature under development).
   - merge-persist: Merge persisted ontology data with new data; supports --prefer-old, --sort-merged, and --out options.
   - validate: Validate an ontology JSON file against the predefined schema.
   - add-capital: Add a new capital to the ontology.
