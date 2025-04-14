@@ -1,40 +1,35 @@
 # CLI_TOOL Feature Enhancement
 
 ## Overview
-This feature refines and updates the existing CLI tool to enhance the simulation of OWL ontology transformations and public data source crawling. It consolidates the previous functionalities into a unified interface that aligns with the mission of owl-builder. The updates will be achieved by modifying the source file, updating the test suite, and refining documentation.
+This feature updates the existing CLI tool to fully align with the mission of owl-builder by incorporating new simulation capabilities. The tool will now support three distinct command line flags for ontology transformation, repository example outputs, and data crawling simulation. These enhancements are intended to demonstrate dynamic OWL ontology processing from public data sources while maintaining the simplicity and reusability of the repository.
 
 ## Functionalities
-### Ontology Transform
-- Implement a flag `--ontology-transform` that simulates the conversion of a raw JSON input into an OWL ontology format.
-- Output should be a JSON object with an `ontology` key, which contains the simulated transformation result.
+### Ontology Transformation
+- Introduce a new flag `--ontology-transform` that takes raw JSON input (if provided) and simulates its transformation into an OWL ontology. The output will be a JSON object with an `ontology` key containing the conversion result.
 
 ### OWL Examples
-- Merge the previous CAPITAL_CITIES and OWL_QUERY functionalities into a single flag `--owl-examples`.
-- The CLI output should be a JSON combining example data fields like `capitalCities` and `results`, serving as a demonstration of the ontology examples.
+- Merge previous OWL demonstration functionalities (e.g., CAPITAL_CITIES) into a unified flag `--owl-examples`. With this flag, the CLI will output a JSON object combining example data fields such as `capitalCities` and additional example keys like `results`.
 
 ### Data Crawl Simulation
-- Introduce a new flag `--data-crawl` that simulates crawling free open public data sources.
-- The command should return a JSON object with a `crawledData` key containing dummy record data.
+- Add a flag `--data-crawl` to simulate crawling free open public data sources. The command should return a JSON object with a `crawledData` key containing dummy public records to illustrate the capability.
 
 ## Implementation Details
-### Source Code Changes (`src/lib/main.js`)
-- Update the CLI argument parser to detect and correctly process the three flags: `--ontology-transform`, `--owl-examples`, and `--data-crawl`.
-- Ensure proper handling when multiple flags are provided, either processing sequentially or prioritizing based on command order.
-- Maintain existing CLI structure and improve inline documentation.
+### Source File (`src/lib/main.js`)
+- Modify the argument parser to detect the new flags: `--ontology-transform`, `--owl-examples`, and `--data-crawl`.
+- Implement conditional branches that handle these flags, ensuring that if multiple flags are supplied, they are processed appropriately (either sequentially or based on a defined order).
+- Maintain backwards compatibility with the existing `--capital-cities` functionality.
 
 ### Testing (`tests/unit/main.test.js`)
-- Add unit tests to validate that:
-  - Running with `--ontology-transform` produces a JSON with an `ontology` key.
-  - Running with `--owl-examples` returns a JSON with keys `capitalCities` and `results`.
-  - Running with `--data-crawl` outputs a JSON with a `crawledData` key containing simulated records.
+- Update tests to include new cases verifying that:
+  - Running with `--ontology-transform` produces JSON with an `ontology` key.
+  - Running with `--owl-examples` returns JSON containing keys like `capitalCities` and `results`.
+  - Running with `--data-crawl` outputs JSON with a `crawledData` key and dummy record data.
 
 ### Documentation (`README.md`)
-- Update the usage section with examples of the new flags:
-  - `node src/lib/main.js --ontology-transform`
-  - `node src/lib/main.js --owl-examples`
-  - `node src/lib/main.js --data-crawl`
-- Explain the expected outputs and how they contribute to the mission of providing dynamic OWL ontology simulations.
+- Update the usage examples to list the new flags and describe the expected outputs for each.
+- Ensure that the examples are clear how each flag contributes to demonstrating owl-builder's mission.
 
 ## Testing & Compliance
-- Use `npm test` to ensure all functionality passes the updated tests.
-- Confirm that changes adhere to the guidelines in CONTRIBUTING.md and align with the mission stated in MISSION.md.
+- Run `npm test` to execute the unit tests ensuring all new flags return the correct JSON structure.
+- Verify that inline code changes, test modifications and readme updates follow the coding style guidelines outlined in CONTRIBUTING.md.
+- Confirm that the feature contributes to simulating dynamic OWL ontology transformations and public data crawling as part of the mission.
