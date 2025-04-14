@@ -2,19 +2,19 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Review Issue",
+  "lastActivityName": "Tests",
   "lastActivityBranchName": "main",
   "nextIssue": "[1538] Enhance Query Command to Support Complex Filter Values automated, feature, issue-worker-14436748857, apply-fix-14436818724",
   "openIssues": 2,
   "issuesClosedLastHour": 2,
   "issuesClosedLastDay": 67,
   "openPRs": 1,
-  "averagePRAge": 2,
+  "averagePRAge": 11,
   "prDetails": [
-    "[2m] Fixed filter parsing in query command to correctly handle characters in filter values. (fixes #1538)"
+    "[11m] Fixed filter parsing in query command to correctly handle characters in filter values. (fixes #1538)"
   ],
-  "diffMinutes": 0,
-  "diffMinutesMain": 23,
+  "diffMinutes": 8,
+  "diffMinutesMain": 32,
   "commitsLastHour": 2,
   "commitsLastDay": 46,
   "lastFiveCommitMessages": [
@@ -27,14 +27,14 @@
   "branches": {
     "count": 1,
     "details": [
-      "[3m] agentic-lib-issue-1538"
+      "[12m] agentic-lib-issue-1538"
     ],
     "branchIssueDetails": [
       "[1538] Enhance Query Command to Support Complex Filter Values automated, feature, issue-worker-14436748857, apply-fix-14436818724"
     ],
-    "averageBranchAge": 3
+    "averageBranchAge": 12
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T03:34:41.160Z"
+  "statsGeneratedAt": "2025-04-14T03:43:46.562Z"
 }
