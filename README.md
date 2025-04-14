@@ -35,11 +35,22 @@ To run the CLI tool and see help instructions:
 node src/lib/main.js --help
 ```
 
+To output an example OWL ontology in JSON format representing capital cities, run:
+
+```bash
+node src/lib/main.js --capital-cities
+```
+
 ### Example Commands
 
 - **Default Demo Output:**
   ```bash
   npm run start
+  ```
+
+- **Capital Cities Example:**
+  ```bash
+  node src/lib/main.js --capital-cities
   ```
 
 ## Incremental Changes Plan

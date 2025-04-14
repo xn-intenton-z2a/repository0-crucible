@@ -14,3 +14,25 @@ describe("Main Output", () => {
     main();
   });
 });
+
+describe("Capital Cities Option", () => {
+  test("should output capitalCities OWL ontology JSON", () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (msg) => { output += msg; };
+
+    main(["--capital-cities"]);
+
+    console.log = originalLog;
+
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("owl", "capitalCities");
+    expect(parsed).toHaveProperty("data");
+    expect(Array.isArray(parsed.data)).toBe(true);
+    expect(parsed.data).toEqual([
+      { country: "France", capital: "Paris" },
+      { country: "Japan", capital: "Tokyo" },
+      { country: "Brazil", capital: "Brasília" }
+    ]);
+  });
+});
