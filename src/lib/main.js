@@ -4,6 +4,7 @@
 import { fileURLToPath } from "url";
 import express from "express";
 import { z } from "zod";
+import fs from "fs";
 
 // Define Zod schema for ontology
 const ontologySchema = z.object({
@@ -152,6 +153,7 @@ export function serve(args) {
 
 /**
  * Builds an enhanced OWL ontology, validates it using Zod, and outputs the validated ontology.
+ * If the --persist flag is provided along with a file path, the ontology is written to that file.
  * @param {string[]} args - Command line arguments
  */
 export function buildEnhancedOntology(args) {
@@ -171,8 +173,21 @@ export function buildEnhancedOntology(args) {
   
   // Validate ontology using Zod schema
   const result = ontologySchema.safeParse(ontology);
+  
+  // Check for persist flag
+  const persistIndex = args.indexOf("--persist");
+  let filePath = null;
+  if (persistIndex !== -1 && args.length > persistIndex + 1) {
+    filePath = args[persistIndex + 1];
+  }
+  
   if (result.success) {
-    console.log(`Enhanced ontology built and validated: ${JSON.stringify(ontology, null, 2)}`);
+    if (filePath) {
+      fs.writeFileSync(filePath, JSON.stringify(ontology, null, 2));
+      console.log(`Enhanced ontology built, validated and persisted to file: ${filePath}`);
+    } else {
+      console.log(`Enhanced ontology built and validated: ${JSON.stringify(ontology, null, 2)}`);
+    }
   } else {
     console.error("Ontology validation failed:", result.error);
   }
@@ -215,7 +230,7 @@ Commands:
   --capital-cities       Generate an OWL ontology for capital cities.
   --serve                Start the Express REST API server.
   --build-intermediate   Build an intermediate OWL ontology without Zod validation.
-  --build-enhanced       Build an enhanced OWL ontology with Zod validation.
+  --build-enhanced       Build an enhanced OWL ontology with Zod validation. Optionally, use --persist <filePath> to save the output.
   --refresh              Refresh and merge persistent OWL ontology data (placeholder implementation).
   --verbose              Enable verbose debug logging.
 `);

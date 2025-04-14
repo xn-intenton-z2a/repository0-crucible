@@ -145,6 +145,12 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
   node src/lib/main.js --build-enhanced
   ```
   This command builds an enhanced OWL ontology, validates it using Zod, and outputs the validated ontology in JSON format.
+  
+  Additionally, you can persist the validated ontology to a file by using the `--persist` option followed by the desired file path. For example:
+  ```bash
+  node src/lib/main.js --build-enhanced --persist ./enhanced-ontology.json
+  ```
+  When the `--persist` flag is provided, the tool writes the validated ontology to the specified file and logs a confirmation message with the file path.
 
 - **Intermediate Build Ontology:**
   ```bash

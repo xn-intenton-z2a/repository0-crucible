@@ -1,6 +1,20 @@
 import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main, query, diagnostics, crawlData, generateCapitalCitiesOwl, serve, buildEnhancedOntology, buildIntermediateOntology, displayHelp, refresh } from "@src/lib/main.js";
+import {
+  main,
+  query,
+  diagnostics,
+  crawlData,
+  generateCapitalCitiesOwl,
+  serve,
+  buildEnhancedOntology,
+  buildIntermediateOntology,
+  displayHelp,
+  refresh
+} from "@src/lib/main.js";
+import fs from "fs";
+import os from "os";
+import path from "path";
 
 // Existing test suites
 
@@ -167,6 +181,24 @@ describe("Build Enhanced Ontology Command Output", () => {
     expect(parsed).toHaveProperty("capitals");
     expect(Array.isArray(parsed.capitals)).toBe(true);
     logSpy.mockRestore();
+  });
+
+  test("should persist enhanced ontology to file when --persist flag is provided", () => {
+    const tmpDir = os.tmpdir();
+    const tempFilePath = path.join(tmpDir, 'temp-ontology.json');
+    const args = ["--build-enhanced", "--persist", tempFilePath];
+    buildEnhancedOntology(args);
+    // Read the file and verify its content
+    const fileContent = fs.readFileSync(tempFilePath, { encoding: 'utf8' });
+    let parsed;
+    expect(() => {
+      parsed = JSON.parse(fileContent);
+    }).not.toThrow();
+    expect(parsed).toHaveProperty("type", "owl");
+    expect(parsed).toHaveProperty("capitals");
+    expect(Array.isArray(parsed.capitals)).toBe(true);
+    // Clean up temporary file
+    fs.unlinkSync(tempFilePath);
   });
 });
 
