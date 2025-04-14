@@ -1,27 +1,26 @@
-# JSON_OUTPUT Enhancement
+# JSON_OUTPUT Enhancement Update
 
 ## Overview
-This enhancement refines the JSON output capabilities of the CLI tool. In addition to the existing `--json` flag used by the query command, the diagnostics command will now support a new `--diagnostics-json` flag. When this flag is used, the diagnostics command will output key system metrics in JSON format including the Node.js version, uptime, and memory usage. This change provides a more consistent and informative programmatic interface for both querying data and obtaining system diagnostics.
+This update refines the JSON output capabilities for the diagnostics command. While the query command already supports the `--json` flag, the diagnostics command will now exclusively support a new `--diagnostics-json` flag for structured JSON output. This change improves consistency and clear separation between query and diagnostics JSON outputs.
 
 ## Implementation Details
 - **Source Code Updates:**
-  - In the `diagnostics` function (in `src/lib/main.js`), check for the presence of the `--diagnostics-json` flag.
-  - If `--diagnostics-json` is provided, bypass the default plain-text diagnostics output. Instead, output a JSON object with the following keys:
-    - `nodeVersion`: value from `process.version`.
-    - `uptime`: value from `process.uptime()`.
-    - `memoryUsage`: value from `process.memoryUsage()`.
-  - Maintain the existing behavior for the `--json` flag in query commands, ensuring backward compatibility.
+  - In `src/lib/main.js`, modify the `diagnostics` function to check for the presence of the `--diagnostics-json` flag instead of `--json`. When `--diagnostics-json` is provided, output a JSON object including keys:
+    - `nodeVersion`: value from `process.version`
+    - `platform`: value from `process.platform`
+    - `memoryUsage`: value from `process.memoryUsage()`
+  - Maintain the plain-text output when the flag is not provided.
 
 - **Testing Enhancements:**
-  - Update unit tests in `tests/unit/main.test.js` to add test cases for the new `--diagnostics-json` flag. Verify that when this flag is provided along with `--diagnostics`, the output JSON includes the keys `nodeVersion`, `uptime`, and `memoryUsage`.
+  - In `tests/unit/main.test.js`, update the diagnostics tests to use the new flag `--diagnostics-json` when expecting JSON output. For example, change calls from `diagnostics(["--diagnostics", "--json"])` to `diagnostics(["--diagnostics", "--diagnostics-json"])` and update expected outputs accordingly.
 
 - **Documentation Updates:**
-  - Revise the `README.md` to document the new usage of the `--diagnostics-json` flag with examples. For instance:
+  - In `README.md`, update the usage examples in the Diagnostics section to reflect the new flag:
     ```bash
     node src/lib/main.js --diagnostics --diagnostics-json
     ```
-  - Update `CONTRIBUTING.md` with guidelines on writing and debugging JSON outputs for diagnostics, ensuring contributors know how to add new tests for this functionality.
+  - Update explanatory text in both the README and `CONTRIBUTING.md` to note that the diagnostics JSON output is now triggered exclusively by `--diagnostics-json`.
 
 ## Future Considerations
-- Consider adding additional metrics (e.g., CPU usage or load averages) as part of the diagnostics JSON output in future iterations.
-- Optionally provide configuration options to toggle between summary and detailed diagnostics output.
+- Consider maintaining backward compatibility by optionally supporting both flags for a transitional period, if necessary.
+- Monitor user feedback and adjust the output format or additional diagnostic metrics as requested.
