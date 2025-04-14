@@ -152,6 +152,12 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
   ```
   This command builds an intermediate version of the OWL ontology without Zod validation and outputs it in JSON format, providing a step between basic and enhanced builds.
 
+- **Refresh OWL Ontology Data:**
+  ```bash
+  node src/lib/main.js --refresh
+  ```
+  This command refreshes and merges persistent OWL ontology data with newly crawled data, outputting a placeholder refreshed ontology in JSON format.
+
 ### Verbose Debug Mode
 
 A new `--verbose` flag has been added. When this flag is included in any command, the CLI outputs additional debug information detailing internal state and execution flow. For example:

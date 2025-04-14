@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main, query, diagnostics, crawlData, generateCapitalCitiesOwl, serve, buildEnhancedOntology, buildIntermediateOntology, displayHelp } from "@src/lib/main.js";
+import { main, query, diagnostics, crawlData, generateCapitalCitiesOwl, serve, buildEnhancedOntology, buildIntermediateOntology, displayHelp, refresh } from "@src/lib/main.js";
 
 // Existing test suites
 
@@ -189,6 +189,24 @@ describe("Build Intermediate Ontology Command Output", () => {
   });
 });
 
+describe("Refresh Command Output", () => {
+  test("should log refreshed ontology message with valid JSON", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    refresh(["--refresh"]);
+    const output = logSpy.mock.calls.find(call => call[0].includes("Refreshed ontology:"))[0];
+    expect(output).toContain("Refreshed ontology:");
+    const jsonStart = output.indexOf('{');
+    expect(jsonStart).toBeGreaterThan(-1);
+    const jsonPart = output.substring(jsonStart);
+    let parsed;
+    expect(() => { parsed = JSON.parse(jsonPart); }).not.toThrow();
+    expect(parsed).toHaveProperty("type", "owl");
+    expect(parsed).toHaveProperty("capitals");
+    expect(Array.isArray(parsed.capitals)).toBe(true);
+    logSpy.mockRestore();
+  });
+});
+
 describe("Verbose Flag Logging", () => {
   test("should log verbose debug message in main", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -240,6 +258,7 @@ describe("Help Command Output", () => {
     expect(helpOutput).toContain("--serve");
     expect(helpOutput).toContain("--build-intermediate");
     expect(helpOutput).toContain("--build-enhanced");
+    expect(helpOutput).toContain("--refresh");
     expect(helpOutput).toContain("--json");
     logSpy.mockRestore();
   });

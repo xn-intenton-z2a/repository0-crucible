@@ -179,6 +179,27 @@ export function buildEnhancedOntology(args) {
 }
 
 /**
+ * Refreshes and merges persistent OWL ontology data with newly crawled data.
+ * @param {string[]} args - Command line arguments
+ */
+export function refresh(args) {
+  const verbose = args.includes("--verbose");
+  if (verbose) {
+    console.log("Verbose mode enabled in refresh. Received args: " + JSON.stringify(args));
+  }
+  // Simulate merging process with dummy updated ontology
+  const updatedOntology = {
+    type: "owl",
+    capitals: [
+      { city: "Paris", country: "France" },
+      { city: "Berlin", country: "Germany" },
+      { city: "Tokyo", country: "Japan" }
+    ]
+  };
+  console.log(`Refreshed ontology: ${JSON.stringify(updatedOntology, null, 2)}`);
+}
+
+/**
  * Displays help information with usage instructions for the CLI tool.
  * @param {string[]} args - Command line arguments
  */
@@ -195,6 +216,7 @@ Commands:
   --serve                Start the Express REST API server.
   --build-intermediate   Build an intermediate OWL ontology without Zod validation.
   --build-enhanced       Build an enhanced OWL ontology with Zod validation.
+  --refresh              Refresh and merge persistent OWL ontology data (placeholder implementation).
   --verbose              Enable verbose debug logging.
 `);
 }
@@ -217,6 +239,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     buildIntermediateOntology(args);
   } else if (args.includes("--build-enhanced")) {
     buildEnhancedOntology(args);
+  } else if (args.includes("--refresh")) {
+    refresh(args);
   } else {
     main(args);
   }
