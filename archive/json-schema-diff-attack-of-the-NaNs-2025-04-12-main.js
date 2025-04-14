@@ -148,13 +148,15 @@ async function processNaNConversionInternal(originalStr) {
   const normalizedLower = normalized.toLowerCase();
 
   if (globalThis.DEBUG_NAN) {
-    console.debug(JSON.stringify({ event: 'processNaNConversion_start', input: originalStr, trimmed, normalized }, nanReplacer));
+    console.debug(
+      JSON.stringify({ event: "processNaNConversion_start", input: originalStr, trimmed, normalized }, nanReplacer),
+    );
   }
 
   if (normalizedLower !== "nan") {
     const result = { converted: convertArg(originalStr), conversionMethod: "default" };
     if (globalThis.DEBUG_NAN) {
-      console.debug(JSON.stringify({ event: 'processNaNConversion_default', input: originalStr, result }, nanReplacer));
+      console.debug(JSON.stringify({ event: "processNaNConversion_default", input: originalStr, result }, nanReplacer));
     }
     return result;
   }
@@ -171,29 +173,40 @@ async function processNaNConversionInternal(originalStr) {
       }
       result = { converted: handledValue, conversionMethod: "custom" };
       if (globalThis.DEBUG_NAN) {
-        console.debug(JSON.stringify({ event: 'processNaNConversion_custom', input: originalStr, result }, nanReplacer));
+        console.debug(
+          JSON.stringify({ event: "processNaNConversion_custom", input: originalStr, result }, nanReplacer),
+        );
       }
     } catch (e) {
       if (globalThis.DEBUG_NAN) {
-        console.debug(JSON.stringify({ event: 'processNaNConversion_custom_error', input: originalStr, error: e.message }, nanReplacer));
+        console.debug(
+          JSON.stringify(
+            { event: "processNaNConversion_custom_error", input: originalStr, error: e.message },
+            nanReplacer,
+          ),
+        );
       }
       throw new Error(`Error in custom NaN handler: ${e.message}`);
     }
   } else if (useStrictNan) {
     const errorMsg = `Strict NaN mode error: encountered 'NaN' input without a registered custom handler. To resolve this, please register a custom NaN handler using the '--custom-nan <value>' flag, update your .repositoryConfig.json with a valid "customNan" value, or set the CUSTOM_NAN environment variable. Input was: '${originalStr}'`;
     if (globalThis.DEBUG_NAN) {
-      console.debug(JSON.stringify({ event: 'processNaNConversion_strict', input: originalStr, error: errorMsg }, nanReplacer));
+      console.debug(
+        JSON.stringify({ event: "processNaNConversion_strict", input: originalStr, error: errorMsg }, nanReplacer),
+      );
     }
     throw new Error(errorMsg);
   } else if (useNativeNanConfig) {
     result = { converted: NaN, conversionMethod: "native" };
     if (globalThis.DEBUG_NAN) {
-      console.debug(JSON.stringify({ event: 'processNaNConversion_native', input: originalStr, result }, nanReplacer));
+      console.debug(JSON.stringify({ event: "processNaNConversion_native", input: originalStr, result }, nanReplacer));
     }
   } else {
     result = { converted: convertArg(originalStr), conversionMethod: "default" };
     if (globalThis.DEBUG_NAN) {
-      console.debug(JSON.stringify({ event: 'processNaNConversion_fallback', input: originalStr, result }, nanReplacer));
+      console.debug(
+        JSON.stringify({ event: "processNaNConversion_fallback", input: originalStr, result }, nanReplacer),
+      );
     }
   }
   return result;
@@ -210,7 +223,12 @@ async function processNaNConversion(originalStr) {
   if (nanConversionCache.has(normalizedKey)) {
     const cachedResult = nanConversionCache.get(normalizedKey);
     if (globalThis.DEBUG_NAN) {
-      console.debug(JSON.stringify({ event: 'processNaNConversion_cache_hit', input: originalStr, normalizedKey, result: cachedResult }, nanReplacer));
+      console.debug(
+        JSON.stringify(
+          { event: "processNaNConversion_cache_hit", input: originalStr, normalizedKey, result: cachedResult },
+          nanReplacer,
+        ),
+      );
     }
     return cachedResult;
   }
@@ -230,9 +248,9 @@ async function processNaNConversion(originalStr) {
  * @returns {object} - The resolved configuration
  */
 function resolveNaNConfig(args) {
-  let effectiveNativeNan = false,
-    effectiveStrictNan = false,
-    effectiveCustomNan = null;
+  let effectiveNativeNan = false;
+  let effectiveStrictNan = false;
+  let effectiveCustomNan = null;
 
   // CLI flags take highest precedence
   if (args.includes("--native-nan")) {
@@ -363,7 +381,7 @@ export async function main(args = []) {
       }
     }
     console.info("Starting benchmark with caching enabled");
-    let startTime = performance.now();
+    const startTime = performance.now();
     const resultsEnabled = [];
     for (const arg of bulkArgs) {
       if (normalizeValue(arg).toLowerCase() === "nan") {
@@ -375,7 +393,7 @@ export async function main(args = []) {
     const durationEnabled = performance.now() - startTime;
 
     console.info("Starting benchmark with caching disabled");
-    let startTimeDisabled = performance.now();
+    const startTimeDisabled = performance.now();
     const resultsDisabled = [];
     for (const arg of bulkArgs) {
       if (normalizeValue(arg).toLowerCase() === "nan") {
@@ -388,7 +406,12 @@ export async function main(args = []) {
     }
     const durationDisabled = performance.now() - startTimeDisabled;
 
-    console.log(JSON.stringify({ benchmark: { count: bulkCount, cachingEnabled: durationEnabled, cachingDisabled: durationDisabled } }, nanReplacer));
+    console.log(
+      JSON.stringify(
+        { benchmark: { count: bulkCount, cachingEnabled: durationEnabled, cachingDisabled: durationDisabled } },
+        nanReplacer,
+      ),
+    );
     return;
   }
 
@@ -403,7 +426,12 @@ export async function main(args = []) {
 
   if (args.includes("--custom-nan")) {
     const customIndex = args.indexOf("--custom-nan");
-    if (args.length > customIndex + 1 && args[customIndex + 1].trim() !== "NaN" && args[customIndex + 1].trim().toLowerCase() !== "nan" && args[customIndex + 1].trim() !== "NAN") {
+    if (
+      args.length > customIndex + 1 &&
+      args[customIndex + 1].trim() !== "NaN" &&
+      args[customIndex + 1].trim().toLowerCase() !== "nan" &&
+      args[customIndex + 1].trim() !== "NAN"
+    ) {
       registerNaNHandler(() => args[customIndex + 1]);
     } else {
       throw new Error("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
@@ -431,7 +459,7 @@ export async function main(args = []) {
       nativeNan: useNativeNanConfig,
       strictNan: useStrictNan,
       customNan: customNaNHandler ? customNaNHandler() : null,
-      plugins: getPlugins().map(fn => fn.name || "anonymous"),
+      plugins: getPlugins().map((fn) => fn.name || "anonymous"),
     };
     console.log(JSON.stringify(configDump, nanReplacer));
     return;
@@ -447,8 +475,23 @@ export async function main(args = []) {
   // Remove configuration flags from arguments before processing
   const processedArgs = [];
   for (let i = 0; i < args.length; i++) {
-    if (["--use-plugins", "--native-nan", "--strict-nan", "--debug-nan", "--trace-plugins", "--dump-config", "--serve", "--refresh-config"].includes(args[i])) continue;
-    if (args[i] === "--custom-nan") { i++; continue; }
+    if (
+      [
+        "--use-plugins",
+        "--native-nan",
+        "--strict-nan",
+        "--debug-nan",
+        "--trace-plugins",
+        "--dump-config",
+        "--serve",
+        "--refresh-config",
+      ].includes(args[i])
+    )
+      continue;
+    if (args[i] === "--custom-nan") {
+      i++;
+      continue;
+    }
     processedArgs.push(args[i]);
   }
 
@@ -502,7 +545,7 @@ export async function main(args = []) {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  main(args).catch(e => {
+  main(args).catch((e) => {
     console.error(e);
     process.exit(1);
   });

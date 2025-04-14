@@ -164,7 +164,7 @@ describe("Plugin Integration in CLI", () => {
   test("should process arguments through plugins when a custom plugin is registered", async () => {
     const plugins = getPlugins();
     plugins.length = 0;
-    registerPlugin(data => data.map(item => typeof item === 'number' ? item * 2 : item));
+    registerPlugin((data) => data.map((item) => (typeof item === "number" ? item * 2 : item)));
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--use-plugins", "50", "hello"]);
     expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: [100, "hello"] });
@@ -179,20 +179,20 @@ describe("Custom NaN Handler Plugin", () => {
   });
 
   test("should use custom NaN handler when registered (synchronous)", async () => {
-    registerNaNHandler(() => 'customNaN');
+    registerNaNHandler(() => "customNaN");
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["NaN", "100"]);
-    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ['customNaN', 100] });
+    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["customNaN", 100] });
     logSpy.mockRestore();
   });
 
   test("should use async custom NaN handler when registered", async () => {
     registerNaNHandler(async () => {
-      return new Promise(resolve => setTimeout(() => resolve('asyncCustomNaN'), 10));
+      return new Promise((resolve) => setTimeout(() => resolve("asyncCustomNaN"), 10));
     });
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["NaN", "100"]);
-    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ['asyncCustomNaN', 100] });
+    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["asyncCustomNaN", 100] });
     logSpy.mockRestore();
   });
 
@@ -211,16 +211,22 @@ describe("Strict NaN Mode", () => {
   });
 
   test("should throw an error in strict mode when no custom handler is registered (using CLI flag)", async () => {
-    await expect(main(["--strict-nan", "NaN", "100"]).catch(e => { throw e; })).rejects.toThrow(/Strict NaN mode error: encountered 'NaN' input without a registered custom handler.*(--custom-nan|\.repositoryConfig\.json|CUSTOM_NAN)/);
+    await expect(
+      main(["--strict-nan", "NaN", "100"]).catch((e) => {
+        throw e;
+      }),
+    ).rejects.toThrow(
+      /Strict NaN mode error: encountered 'NaN' input without a registered custom handler.*(--custom-nan|\.repositoryConfig\.json|CUSTOM_NAN)/,
+    );
   });
 
   test("should use custom handler in strict mode and log an info message (using CLI flag)", async () => {
-    registerNaNHandler(() => 'customStrictNaN');
+    registerNaNHandler(() => "customStrictNaN");
     const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--strict-nan", "NaN", "100"]);
     expect(infoSpy).toHaveBeenCalledWith("Strict NaN mode active: using custom NaN handler.");
-    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ['customStrictNaN', 100] });
+    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["customStrictNaN", 100] });
     infoSpy.mockRestore();
     logSpy.mockRestore();
   });
@@ -228,19 +234,27 @@ describe("Strict NaN Mode", () => {
   test("should throw an error in strict mode when enabled via configuration file without custom handler", async () => {
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"strictNan": true}');
-    await expect(main(["NaN", "100"]).catch(e => { throw e; })).rejects.toThrow(/Strict NaN mode error: encountered 'NaN' input without a registered custom handler.*(--custom-nan|\.repositoryConfig\.json|CUSTOM_NAN)/);
+    await expect(
+      main(["NaN", "100"]).catch((e) => {
+        throw e;
+      }),
+    ).rejects.toThrow(
+      /Strict NaN mode error: encountered 'NaN' input without a registered custom handler.*(--custom-nan|\.repositoryConfig\.json|CUSTOM_NAN)/,
+    );
     existsSyncSpy.mockRestore();
     readFileSyncSpy.mockRestore();
   });
 
   test("should use custom handler in strict mode when enabled via configuration file and log an info message", async () => {
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
-    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"strictNan": true, "customNan": "customConfigStrictNaN"}');
+    const readFileSyncSpy = vi
+      .spyOn(fs, "readFileSync")
+      .mockReturnValue('{"strictNan": true, "customNan": "customConfigStrictNaN"}');
     const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["NaN", "100"]);
     expect(infoSpy).toHaveBeenCalledWith("Strict NaN mode active: using custom NaN handler.");
-    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ['customConfigStrictNaN', 100] });
+    expect(getLoggedOutput(logSpy)).toEqual({ message: "Run with", data: ["customConfigStrictNaN", 100] });
     existsSyncSpy.mockRestore();
     readFileSyncSpy.mockRestore();
     infoSpy.mockRestore();
@@ -258,23 +272,21 @@ describe("Debug NaN Mode", () => {
   afterEach(() => {
     existsSyncSpy.mockRestore();
   });
-  
+
   test("should include debug info for NaN conversion when --debug-nan flag is provided", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--debug-nan", "NaN", "100"]);
     const output = getLoggedOutput(logSpy);
-    expect(output).toHaveProperty('debugNan');
-    expect(output.debugNan).toEqual([
-      { raw: "NaN", normalized: "NaN", converted: "NaN", conversionMethod: "default" }
-    ]);
+    expect(output).toHaveProperty("debugNan");
+    expect(output.debugNan).toEqual([{ raw: "NaN", normalized: "NaN", converted: "NaN", conversionMethod: "default" }]);
     logSpy.mockRestore();
   });
-  
+
   test("should include debug info with native NaN conversion when both --native-nan and --debug-nan flags are provided", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--debug-nan", "--native-nan", "NaN", "100"]);
     const output = getLoggedOutput(logSpy);
-    expect(output).toHaveProperty('debugNan');
+    expect(output).toHaveProperty("debugNan");
     expect(Number.isNaN(output.debugNan[0].converted)).toBe(true);
     expect(output.debugNan[0].conversionMethod).toBe("native");
     expect(output.debugNan[0].normalized).toBe("NaN");
@@ -331,7 +343,11 @@ describe("CLI Custom --custom-nan Flag", () => {
   });
 
   test("should throw error if --custom-nan is provided without a replacement", async () => {
-    await expect(main(["--custom-nan", "NaN"]).catch(e => { throw e; })).rejects.toThrow("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
+    await expect(
+      main(["--custom-nan", "NaN"]).catch((e) => {
+        throw e;
+      }),
+    ).rejects.toThrow("The --custom-nan flag requires a non-'NaN' replacement value immediately following the flag.");
   });
 });
 
@@ -381,8 +397,8 @@ describe("Plugin Transformation Trace Logging", () => {
   test("should include pluginTrace with intermediate results when plugins are registered", async () => {
     const plugins = getPlugins();
     plugins.length = 0;
-    const plugin1 = (data) => data.map(item => typeof item === 'number' ? item + 10 : item);
-    const plugin2 = (data) => data.map(item => typeof item === 'number' ? item * 2 : item);
+    const plugin1 = (data) => data.map((item) => (typeof item === "number" ? item + 10 : item));
+    const plugin2 = (data) => data.map((item) => (typeof item === "number" ? item * 2 : item));
     registerPlugin(plugin1);
     registerPlugin(plugin2);
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -442,14 +458,20 @@ describe("Dynamic Configuration Refresh", () => {
   test("should update configuration dynamically when --refresh-config flag is provided", async () => {
     const infoSpy = vi.spyOn(console, "info").mockImplementation(() => {});
     const existsSyncSpy = vi.spyOn(fs, "existsSync").mockReturnValue(true);
-    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockReturnValue('{"nativeNan": true, "customNan": "dynamicCustom", "strictNan": false}');
+    const readFileSyncSpy = vi
+      .spyOn(fs, "readFileSync")
+      .mockReturnValue('{"nativeNan": true, "customNan": "dynamicCustom", "strictNan": false}');
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--refresh-config", "--dump-config"]);
     const output = JSON.parse(logSpy.mock.calls[0][0]);
     expect(output.nativeNan).toBe(true);
     expect(output.strictNan).toBe(false);
     expect(output.customNan).toBe("dynamicCustom");
-    expect(infoSpy).toHaveBeenCalledWith("Dynamic configuration refresh applied", { effectiveNativeNan: true, effectiveStrictNan: false, effectiveCustomNan: "dynamicCustom" });
+    expect(infoSpy).toHaveBeenCalledWith("Dynamic configuration refresh applied", {
+      effectiveNativeNan: true,
+      effectiveStrictNan: false,
+      effectiveCustomNan: "dynamicCustom",
+    });
     infoSpy.mockRestore();
     logSpy.mockRestore();
     existsSyncSpy.mockRestore();
@@ -471,10 +493,10 @@ describe("Benchmark Performance Tests", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--benchmark"]);
     const output = JSON.parse(logSpy.mock.calls[0][0]);
-    expect(output).toHaveProperty('benchmark');
-    expect(typeof output.benchmark.count).toBe('number');
-    expect(typeof output.benchmark.cachingEnabled).toBe('number');
-    expect(typeof output.benchmark.cachingDisabled).toBe('number');
+    expect(output).toHaveProperty("benchmark");
+    expect(typeof output.benchmark.count).toBe("number");
+    expect(typeof output.benchmark.cachingEnabled).toBe("number");
+    expect(typeof output.benchmark.cachingDisabled).toBe("number");
     logSpy.mockRestore();
   });
 });

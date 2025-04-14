@@ -12,9 +12,9 @@ const ontologySchema = z.object({
   capitals: z.array(
     z.object({
       city: z.string(),
-      country: z.string()
-    })
-  )
+      country: z.string(),
+    }),
+  ),
 });
 
 export function main(args) {
@@ -23,7 +23,7 @@ export function main(args) {
     console.log("Verbose mode enabled in main. Received args: " + JSON.stringify(args));
   }
   // Filter out verbose flag for the primary output message
-  const filteredArgs = args.filter(arg => arg !== "--verbose");
+  const filteredArgs = args.filter((arg) => arg !== "--verbose");
   console.log(`Run with: ${JSON.stringify(filteredArgs)}`);
 }
 
@@ -32,7 +32,7 @@ export function query(args) {
   if (verbose) {
     console.log("Verbose mode enabled in query. Received args: " + JSON.stringify(args));
   }
-  
+
   // Determine if JSON, regex, fuzzy and ignore-case flags are provided
   const jsonFlag = args.includes("--json");
   const regexFlag = args.includes("--regex");
@@ -40,12 +40,14 @@ export function query(args) {
   const ignoreCaseFlag = args.includes("--ignore-case");
 
   // Remove the '--query', '--verbose', '--json', '--regex', '--fuzzy', and '--ignore-case' flags from the arguments
-  const filteredArgs = args.filter(arg => !["--query", "--verbose", "--json", "--regex", "--fuzzy", "--ignore-case"].includes(arg));
-  
+  const filteredArgs = args.filter(
+    (arg) => !["--query", "--verbose", "--json", "--regex", "--fuzzy", "--ignore-case"].includes(arg),
+  );
+
   const filters = {};
   const searchTerms = [];
 
-  filteredArgs.forEach(arg => {
+  filteredArgs.forEach((arg) => {
     if (arg.includes("=")) {
       const parts = arg.split("=");
       if (parts.length === 2) {
@@ -75,7 +77,9 @@ export function query(args) {
   const prefix = flags.length > 0 ? "with " + flags.join(" and ") + " " : "";
 
   if (Object.keys(filters).length > 0 && searchTerms.length > 0) {
-    console.log(`Querying OWL ontologies ${prefix}for: ${searchTerms.join(" ")} with filters: ${JSON.stringify(filters)}`);
+    console.log(
+      `Querying OWL ontologies ${prefix}for: ${searchTerms.join(" ")} with filters: ${JSON.stringify(filters)}`,
+    );
   } else if (Object.keys(filters).length > 0) {
     console.log(`Querying OWL ontologies ${prefix}with filters: ${JSON.stringify(filters)}`);
   } else if (searchTerms.length > 0) {
@@ -90,17 +94,17 @@ export function diagnostics(args) {
   if (verbose) {
     console.log("Verbose mode enabled in diagnostics. Received args: " + JSON.stringify(args));
   }
-  
+
   if (args.includes("--json")) {
     const diag = {
       nodeVersion: process.version,
       platform: process.platform,
-      memoryUsage: process.memoryUsage()
+      memoryUsage: process.memoryUsage(),
     };
     console.log(JSON.stringify(diag, null, 2));
     return;
   }
-  
+
   console.log("System Diagnostics:");
   console.log(`Node.js version: ${process.version}`);
   // You can add more diagnostic information here if needed
@@ -116,8 +120,8 @@ export function crawlData(args) {
     const simulatedData = {
       data: [
         { city: "SimCity", country: "SimCountry" },
-        { city: "Testopolis", country: "Testland" }
-      ]
+        { city: "Testopolis", country: "Testland" },
+      ],
     };
     console.log(JSON.stringify(simulatedData, null, 2));
   } else {
@@ -139,8 +143,8 @@ export function generateCapitalCitiesOwl(args) {
     capitals: [
       { city: "Washington, D.C.", country: "USA" },
       { city: "London", country: "UK" },
-      { city: "Tokyo", country: "Japan" }
-    ]
+      { city: "Tokyo", country: "Japan" },
+    ],
   };
   // If '--sort' flag is present, sort the capitals array alphabetically by city name
   if (args.includes("--sort")) {
@@ -163,8 +167,8 @@ export function buildIntermediateOntology(args) {
     capitals: [
       { city: "Washington, D.C.", country: "USA" },
       { city: "London", country: "UK" },
-      { city: "Tokyo", country: "Japan" }
-    ]
+      { city: "Tokyo", country: "Japan" },
+    ],
   };
   console.log(`Intermediate ontology built: ${JSON.stringify(ontology, null, 2)}`);
 }
@@ -207,25 +211,25 @@ export function buildEnhancedOntology(args) {
     capitals: [
       { city: "Washington, D.C.", country: "USA" },
       { city: "London", country: "UK" },
-      { city: "Tokyo", country: "Japan" }
-    ]
+      { city: "Tokyo", country: "Japan" },
+    ],
   };
-  
+
   // Validate ontology using Zod schema
   const result = ontologySchema.safeParse(ontology);
-  
+
   // Check for persist flag
   const persistIndex = args.indexOf("--persist");
   let filePath = null;
   if (persistIndex !== -1 && args.length > persistIndex + 1) {
     filePath = args[persistIndex + 1];
   }
-  
+
   if (result.success) {
     // Check if CSV export is requested
     if (args.includes("--export-csv")) {
       const header = "city,country";
-      const rows = ontology.capitals.map(capital => `${capital.city},${capital.country}`);
+      const rows = ontology.capitals.map((capital) => `${capital.city},${capital.country}`);
       const csv = [header, ...rows].join("\n");
       if (filePath) {
         fs.writeFileSync(filePath, csv);
@@ -261,8 +265,8 @@ export function refresh(args) {
     capitals: [
       { city: "Paris", country: "France" },
       { city: "Berlin", country: "Germany" },
-      { city: "Tokyo", country: "Japan" }
-    ]
+      { city: "Tokyo", country: "Japan" },
+    ],
   };
   console.log(`Refreshed ontology: ${JSON.stringify(updatedOntology, null, 2)}`);
 }
@@ -281,7 +285,7 @@ export function mergePersist(args) {
   if (verbose) {
     console.log("Verbose mode enabled in mergePersist. Received args: " + JSON.stringify(args));
   }
-  
+
   // Check for --prefer-old flag
   const preferOld = args.includes("--prefer-old");
 
@@ -306,33 +310,33 @@ export function mergePersist(args) {
       console.error(`Error reading persisted ontology file at ${filePath}: ${error.message}`);
     }
   }
-  
+
   // Simulate new ontology data (dummy updated ontology)
   const newOntology = {
     type: "owl",
     capitals: [
       { city: "Paris", country: "France" },
       { city: "Berlin", country: "Germany" },
-      { city: "Tokyo", country: "Japan" }
-    ]
+      { city: "Tokyo", country: "Japan" },
+    ],
   };
-  
+
   // Merge capitals arrays using city as unique key
   const mergedCapitals = {};
   if (preferOld) {
     // Retain persisted data if duplicate exists
-    persistedOntology.capitals.forEach(cityObj => {
+    persistedOntology.capitals.forEach((cityObj) => {
       mergedCapitals[cityObj.city] = cityObj;
     });
-    newOntology.capitals.forEach(cityObj => {
+    newOntology.capitals.forEach((cityObj) => {
       if (!mergedCapitals.hasOwnProperty(cityObj.city)) {
         mergedCapitals[cityObj.city] = cityObj;
       }
     });
   } else {
     // Default behavior: new data overrides old
-    [persistedOntology.capitals, newOntology.capitals].forEach(capitalsArr => {
-      capitalsArr.forEach(cityObj => {
+    [persistedOntology.capitals, newOntology.capitals].forEach((capitalsArr) => {
+      capitalsArr.forEach((cityObj) => {
         mergedCapitals[cityObj.city] = cityObj;
       });
     });
@@ -406,10 +410,12 @@ export function addCapital(args) {
     console.log("Verbose mode enabled in addCapital. Received args: " + JSON.stringify(args));
   }
   // Filter out flags
-  const filteredArgs = args.filter(arg => !["--add-capital", "--verbose", "--persist"].includes(arg) && !arg.startsWith("--persist"));
-  
+  const filteredArgs = args.filter(
+    (arg) => !["--add-capital", "--verbose", "--persist"].includes(arg) && !arg.startsWith("--persist"),
+  );
+
   const capitalData = {};
-  filteredArgs.forEach(arg => {
+  filteredArgs.forEach((arg) => {
     if (arg.includes("=")) {
       const [key, value] = arg.split("=");
       capitalData[key] = value;
