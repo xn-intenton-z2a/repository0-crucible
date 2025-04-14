@@ -2,9 +2,9 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Issue Worker",
+  "lastActivityName": "Review Issue",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1542] Implement Merge Persist Ontology Command for owl-builder CLI automated, feature",
+  "nextIssue": "[1542] Implement Merge Persist Ontology Command for owl-builder CLI automated, feature, issue-worker-14444966044",
   "openIssues": 1,
   "issuesClosedLastHour": 4,
   "issuesClosedLastDay": 77,
@@ -34,5 +34,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T11:57:47.390Z"
+  "statsGeneratedAt": "2025-04-14T11:57:48.492Z"
 }
