@@ -2,15 +2,17 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Issue Worker",
+  "lastActivityName": "Review Issue",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1563] Add --sort Flag for Sorted Capital Cities OWL Ontology automated, feature",
-  "openIssues": 1,
+  "nextIssue": "[1563] Add --sort Flag for Sorted Capital Cities OWL Ontology automated, feature, issue-worker-14449114771",
+  "openIssues": 2,
   "issuesClosedLastHour": 2,
   "issuesClosedLastDay": 66,
-  "openPRs": 0,
+  "openPRs": 1,
   "averagePRAge": 0,
-  "prDetails": [],
+  "prDetails": [
+    "[0m] Add --sort flag to sort capital cities in generated OWL ontology (fixes #1563)"
+  ],
   "diffMinutes": 0,
   "diffMinutesMain": 20,
   "commitsLastHour": 2,
@@ -25,14 +27,14 @@
   "branches": {
     "count": 1,
     "details": [
-      "[0m] agentic-lib-issue-1563"
+      "[1m] agentic-lib-issue-1563"
     ],
     "branchIssueDetails": [
       "[1563] Add --sort Flag for Sorted Capital Cities OWL Ontology automated, feature, issue-worker-14449114771"
     ],
-    "averageBranchAge": 0
+    "averageBranchAge": 1
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T15:11:59.808Z"
+  "statsGeneratedAt": "2025-04-14T15:12:36.438Z"
 }
