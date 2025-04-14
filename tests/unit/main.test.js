@@ -368,21 +368,89 @@ describe("Build Intermediate Ontology Command Output", () => {
   });
 });
 
-describe("Refresh Command Output", () => {
-  test("should log refreshed ontology message with valid JSON", () => {
+describe("Refresh Command Enhanced Behavior", () => {
+  test("should output new ontology when no --persist flag is provided", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     refresh(["--refresh"]);
-    const output = logSpy.mock.calls.find(call => call[0].includes("Refreshed ontology:"))[0];
+    const output = logSpy.mock.calls[0][0];
     expect(output).toContain("Refreshed ontology:");
     const jsonStart = output.indexOf('{');
     expect(jsonStart).toBeGreaterThan(-1);
     const jsonPart = output.substring(jsonStart);
-    let parsed;
-    expect(() => { parsed = JSON.parse(jsonPart); }).not.toThrow();
+    const parsed = JSON.parse(jsonPart);
     expect(parsed).toHaveProperty("type", "owl");
-    expect(parsed).toHaveProperty("capitals");
-    expect(Array.isArray(parsed.capitals)).toBe(true);
+    expect(parsed.capitals).toEqual([
+      { city: "Paris", country: "France" },
+      { city: "Berlin", country: "Germany" },
+      { city: "Tokyo", country: "Japan" }
+    ]);
     logSpy.mockRestore();
+  });
+
+  test("should merge persisted ontology with new data when --persist flag is provided", () => {
+    const tmpDir = os.tmpdir();
+    const tempFilePath = path.join(tmpDir, 'persisted-refresh.json');
+    const persistedData = {
+      type: "owl",
+      capitals: [
+        { city: "Washington, D.C.", country: "USA" },
+        { city: "London", country: "UK" }
+      ]
+    };
+    fs.writeFileSync(tempFilePath, JSON.stringify(persistedData, null, 2));
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    refresh(["--refresh", "--persist", tempFilePath]);
+    const output = logSpy.mock.calls[0][0];
+    expect(output).toContain("Refreshed ontology:");
+    const jsonStart = output.indexOf('{');
+    const jsonPart = output.substring(jsonStart);
+    const merged = JSON.parse(jsonPart);
+    const capitals = merged.capitals.map(c => c.city);
+    expect(capitals).toEqual(expect.arrayContaining(["Washington, D.C.", "London", "Paris", "Berlin", "Tokyo"]));
+    fs.unlinkSync(tempFilePath);
+    logSpy.mockRestore();
+  });
+
+  test("should prefer persisted data when --prefer-old flag is used", () => {
+    const tmpDir = os.tmpdir();
+    const tempFilePath = path.join(tmpDir, 'persisted-refresh-prefer-old.json');
+    const persistedData = {
+      type: "owl",
+      capitals: [
+        { city: "Paris", country: "Old" },
+        { city: "London", country: "UK" }
+      ]
+    };
+    fs.writeFileSync(tempFilePath, JSON.stringify(persistedData, null, 2));
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    refresh(["--refresh", "--prefer-old", "--persist", tempFilePath]);
+    const output = logSpy.mock.calls[0][0];
+    const jsonStart = output.indexOf('{');
+    const merged = JSON.parse(output.substring(jsonStart));
+    const result = merged.capitals.find(c => c.city === "Paris");
+    expect(result.country).toBe("Old");
+    fs.unlinkSync(tempFilePath);
+    logSpy.mockRestore();
+  });
+
+  test("should persist merged ontology to file when --out flag is provided", () => {
+    const tmpDir = os.tmpdir();
+    const tempPersistFile = path.join(tmpDir, 'persisted-refresh.json');
+    const tempOutFile = path.join(tmpDir, 'merged-refresh.json');
+    const persistedData = {
+      type: "owl",
+      capitals: [
+        { city: "Rome", country: "Italy" }
+      ]
+    };
+    fs.writeFileSync(tempPersistFile, JSON.stringify(persistedData, null, 2));
+    refresh(["--refresh", "--persist", tempPersistFile, "--out", tempOutFile]);
+    const fileContent = fs.readFileSync(tempOutFile, "utf8");
+    const merged = JSON.parse(fileContent);
+    const cities = merged.capitals.map(c => c.city);
+    expect(cities).toEqual(expect.arrayContaining(["Rome", "Paris", "Berlin", "Tokyo"]));
+    fs.unlinkSync(tempPersistFile);
+    fs.unlinkSync(tempOutFile);
   });
 });
 

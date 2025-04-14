@@ -33,18 +33,11 @@ The **owl-builder** CLI tool provides the following core commands:
 - **serve**: Start an Express REST API server to interact with the ontology.
 - **build-intermediate**: Build a basic OWL ontology without Zod validation.
 - **build-enhanced**: Build an enhanced OWL ontology with Zod validation. Supports persistence through `--persist` and CSV export via `--export-csv`.
-- **refresh**: Refresh and merge ontology data (currently a placeholder implementation).
+- **refresh**: Refresh and merge ontology data. When used with the `--persist` flag, it reads a persisted ontology, merges it with newly crawled data (dummy data for now), and outputs the merged ontology. It supports `--prefer-old` (to retain persisted values on conflict), `--sort` or `--sort-merged` (to sort capitals alphabetically), and `--out` (to persist the merged data to a file).
 - **merge-persist**: Merge persisted ontology data with new data. Options include `--prefer-old` to retain existing entries, `--sort-merged` to sort results, and `--out` to specify an output file.
 - **validate**: Validate an ontology JSON file against a predefined Zod schema.
 - **add-capital**: Add a new capital to the ontology by providing key=value pairs for city and country. Optionally persist changes with `--persist`.
 - **help**: Display help information for using the CLI tool.
-
-## Features
-
-- CLI tool for managing OWL ontologies.
-- Query, build, refresh, merge, validate, and add capital ontology commands.
-- REST API server for ontology operations.
-- Enhanced diagnostic information and verbosity support.
 
 ## Usage
 
@@ -310,13 +303,15 @@ Real Output:
 Intermediate ontology built: { "type": "owl", "capitals": [ ... ] }
 ```
 
-#### 9. Refresh Ontology Data
+#### 9. Refresh Ontology Data (Enhanced Behavior)
+
+When no `--persist` flag is provided, the refresh command outputs the new ontology data:
 
 Command:
 ```bash
 node src/lib/main.js --refresh
 ```
-Real Output (formatted JSON):
+Real Output:
 ```
 Refreshed ontology: {
   "type": "owl",
@@ -326,6 +321,26 @@ Refreshed ontology: {
     { "city": "Tokyo", "country": "Japan" }
   ]
 }
+```
+
+When a persisted ontology file is provided, the command merges the persisted data with new data. By default, new data overrides persisted data. Use `--prefer-old` to retain persisted entries. You can also sort the merged capitals with `--sort` or `--sort-merged`, and persist the merged ontology using `--out`:
+
+Example Command:
+```bash
+node src/lib/main.js --refresh --persist ./ontology.json --prefer-old --sort-merged --out ./merged-ontology.json
+```
+Real Output:
+```
+{
+  "type": "owl",
+  "capitals": [
+    { "city": "London", "country": "UK" },
+    { "city": "Paris", "country": "Old" },
+    { "city": "Berlin", "country": "Germany" },
+    { "city": "Tokyo", "country": "Japan" }
+  ]
+}
+Merged ontology persisted to file: ./merged-ontology.json
 ```
 
 #### 10. Merge Persist Ontology

@@ -248,6 +248,9 @@ export function buildEnhancedOntology(args) {
 
 /**
  * Refreshes and merges persistent OWL ontology data with newly crawled data.
+ * If the '--persist' flag is provided with a file path, it reads the persisted ontology and merges it with new ontology data.
+ * Merging uses the city name as a unique key. The new data overrides persisted data unless '--prefer-old' is provided.
+ * Supports sorting via '--sort' or '--sort-merged'. If an '--out' flag is provided, the merged ontology is persisted to that file.
  * @param {string[]} args - Command line arguments
  */
 export function refresh(args) {
@@ -255,8 +258,9 @@ export function refresh(args) {
   if (verbose) {
     console.log("Verbose mode enabled in refresh. Received args: " + JSON.stringify(args));
   }
-  // Simulate merging process with dummy updated ontology
-  const updatedOntology = {
+  
+  // New ontology data (simulated crawled data)
+  const newOntology = {
     type: "owl",
     capitals: [
       { city: "Paris", country: "France" },
@@ -264,7 +268,87 @@ export function refresh(args) {
       { city: "Tokyo", country: "Japan" }
     ]
   };
-  console.log(`Refreshed ontology: ${JSON.stringify(updatedOntology, null, 2)}`);
+  
+  // Check if '--persist' flag is provided to load persisted ontology
+  const persistIndex = args.indexOf("--persist");
+  let persistedOntology = { type: "owl", capitals: [] };
+  let filePath = null;
+
+  if (persistIndex !== -1 && args.length > persistIndex + 1) {
+    filePath = args[persistIndex + 1];
+    try {
+      if (fs.existsSync(filePath)) {
+        const fileContent = fs.readFileSync(filePath, "utf8");
+        try {
+          persistedOntology = JSON.parse(fileContent);
+        } catch (parseError) {
+          console.error(`Invalid JSON in persisted ontology file at ${filePath}: ${parseError.message}`);
+        }
+      } else {
+        console.error(`Persisted ontology file not found at path: ${filePath}`);
+      }
+    } catch (error) {
+      console.error(`Error reading persisted ontology file at ${filePath}: ${error.message}`);
+    }
+  }
+
+  // Merge newOntology with persistedOntology if persistedOntology is provided
+  const mergedCapitals = {};
+  const preferOld = args.includes("--prefer-old");
+
+  if (filePath) {
+    // Merge capitals from persistedOntology and newOntology
+    if (preferOld) {
+      persistedOntology.capitals.forEach(cap => {
+        mergedCapitals[cap.city] = cap;
+      });
+      newOntology.capitals.forEach(cap => {
+        if (!mergedCapitals.hasOwnProperty(cap.city)) {
+          mergedCapitals[cap.city] = cap;
+        }
+      });
+    } else {
+      // New data overrides old
+      persistedOntology.capitals.forEach(cap => {
+        mergedCapitals[cap.city] = cap;
+      });
+      newOntology.capitals.forEach(cap => {
+        mergedCapitals[cap.city] = cap;
+      });
+    }
+  } else {
+    // No persisted data provided, use new ontology
+    newOntology.capitals.forEach(cap => {
+      mergedCapitals[cap.city] = cap;
+    });
+  }
+
+  const mergedOntology = { type: "owl", capitals: Object.values(mergedCapitals) };
+
+  // Sort capitals if '--sort' or '--sort-merged' flag is provided
+  if (args.includes("--sort") || args.includes("--sort-merged")) {
+    mergedOntology.capitals.sort((a, b) => a.city.localeCompare(b.city));
+  }
+
+  // If '--persist' flag was provided, output merged ontology; otherwise output new ontology with a prefix
+  if (filePath) {
+    // Check for '--out' flag to persist merged ontology to a specific file
+    const outIndex = args.indexOf("--out");
+    if (outIndex !== -1 && args.length > outIndex + 1) {
+      const outPath = args[outIndex + 1];
+      try {
+        fs.writeFileSync(outPath, JSON.stringify(mergedOntology, null, 2));
+        console.log(JSON.stringify(mergedOntology, null, 2));
+        console.log(`Merged ontology persisted to file: ${outPath}`);
+      } catch (error) {
+        console.error("Error writing merged ontology to file:", error);
+      }
+    } else {
+      console.log("Refreshed ontology: " + JSON.stringify(mergedOntology, null, 2));
+    }
+  } else {
+    console.log("Refreshed ontology: " + JSON.stringify(newOntology, null, 2));
+  }
 }
 
 /**
@@ -476,7 +560,7 @@ Core Features:
   - serve: Start the REST API server.
   - build-intermediate: Build a basic OWL ontology without Zod validation.
   - build-enhanced: Build an enhanced OWL ontology with Zod validation; supports --persist and --export-csv options.
-  - refresh: Refresh and merge ontology data (Feature under development).
+  - refresh: Refresh and merge ontology data with persisted data; supports --persist, --prefer-old, --sort, and --out options.
   - merge-persist: Merge persisted ontology data with new data; supports --prefer-old, --sort-merged, and --out options.
   - validate: Validate an ontology JSON file against a predefined schema.
   - add-capital: Add a new capital to the ontology.
@@ -493,7 +577,8 @@ Commands:
   --build-intermediate   Build an intermediate OWL ontology without Zod validation.
   --build-enhanced       Build an enhanced OWL ontology with Zod validation. Optionally, use --persist <filePath> to save the output.
                          Add --export-csv with --build-enhanced to output a CSV representation of capitals.
-  --refresh              Refresh and merge persistent OWL ontology data (placeholder implementation).
+  --refresh              Refresh and merge ontology data. If --persist is provided, merges persisted data with new data.
+                         Use --prefer-old to retain persisted entries in conflicts, --sort or --sort-merged to sort capitals alphabetically, and --out <filePath> to persist merged ontology.
   --merge-persist        Merge new ontology data with persisted ontology data. Use --persist <filePath> to load persisted data (defaults to empty), and --out <filePath> to write the merged ontology to a file.
                          Add --prefer-old to retain persisted data when duplicates exist. Use --sort-merged to sort capitals alphabetically by city after merging.
   --validate <filePath>  Validate an ontology JSON file against the schema and output the result.
