@@ -258,15 +258,22 @@ export function mergePersist(args) {
   // Retrieve persisted ontology if provided via --persist flag
   const persistIndex = args.indexOf("--persist");
   let persistedOntology = { type: "owl", capitals: [] };
+  let filePath = null;
   if (persistIndex !== -1 && args.length > persistIndex + 1) {
-    const filePath = args[persistIndex + 1];
+    filePath = args[persistIndex + 1];
     try {
       if (fs.existsSync(filePath)) {
         const fileContent = fs.readFileSync(filePath, "utf8");
-        persistedOntology = JSON.parse(fileContent);
+        try {
+          persistedOntology = JSON.parse(fileContent);
+        } catch (parseError) {
+          console.error(`Invalid JSON in persisted ontology file at ${filePath}: ${parseError.message}`);
+        }
+      } else {
+        console.error(`Persisted ontology file not found at path: ${filePath}`);
       }
     } catch (error) {
-      console.error("Error reading persisted ontology file:", error);
+      console.error(`Error reading persisted ontology file at ${filePath}: ${error.message}`);
     }
   }
   

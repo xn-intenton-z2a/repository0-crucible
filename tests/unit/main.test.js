@@ -463,6 +463,28 @@ describe("Merge Persist Command Output", () => {
     fs.unlinkSync(tempPersistFile);
     fs.unlinkSync(tempOutFile);
   });
+
+  // New tests for error handling in mergePersist
+  test("should log error if persisted file does not exist", () => {
+    const logSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const fakePath = path.join(os.tmpdir(), 'nonexistent.json');
+    mergePersist(["--merge-persist", "--persist", fakePath]);
+    expect(logSpy).toHaveBeenCalledWith(`Persisted ontology file not found at path: ${fakePath}`);
+    logSpy.mockRestore();
+  });
+
+  test("should log error for invalid JSON in persisted file", () => {
+    const logSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const tmpDir = os.tmpdir();
+    const invalidFile = path.join(tmpDir, 'invalid-ontology.json');
+    fs.writeFileSync(invalidFile, "{ invalid json }");
+    mergePersist(["--merge-persist", "--persist", invalidFile]);
+    // The error message should contain 'Invalid JSON in persisted ontology file'
+    const errorLogged = logSpy.mock.calls.some(call => call[0].includes('Invalid JSON in persisted ontology file'));
+    expect(errorLogged).toBe(true);
+    fs.unlinkSync(invalidFile);
+    logSpy.mockRestore();
+  });
 });
 
 describe("Validate Ontology Command", () => {
