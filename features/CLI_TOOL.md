@@ -1,45 +1,35 @@
 # CLI_TOOL Feature Enhancement
 
 ## Overview
-This enhancement updates the existing CLI tool to implement missing functionality as described in the project guidelines. In addition to the pre-existing `--capital-cities` flag, the tool will now support three new flags:
+This feature extends the existing CLI tool to include additional functionality for dynamic OWL ontology processing and data simulation. In addition to the pre-existing `--capital-cities` option, the following new flags will be implemented:
 
-- `--ontology-transform`: Simulates the transformation of raw JSON input into an OWL ontology and returns a JSON object with an `ontology` key.
-- `--owl-examples`: Consolidates legacy OWL examples (e.g., CAPITAL_CITIES) into a unified command that outputs a JSON object containing keys such as `capitalCities` and additional example results.
-- `--data-crawl`: Simulates the crawling of public data sources, returning dummy public records in a JSON structure with a `crawledData` key.
+- `--ontology-transform`: Accepts raw JSON input and simulates transforming it into an OWL ontology. The output will be a JSON object with an `ontology` key including the simulated transformation result. If no input is provided, a default transformation will be applied.
 
-The implementation will be done within a single source file (`src/lib/main.js`), with corresponding updates to tests (`tests/unit/main.test.js`), documentation (`README.md`) and dependency verification if needed.
+- `--owl-examples`: Consolidates and extends the legacy capital cities example. This flag will output a JSON object combining the original `capitalCities` data with additional demonstration results under keys like `results`.
 
-## Functionalities
-### Ontology Transformation
-- Detect the `--ontology-transform` flag in command line arguments.
-- If present, check for optional raw JSON input and simulate transforming it into an OWL ontology output.
-- Output a JSON object with an `ontology` key containing the transformation result, along with appropriate messaging if input is absent.
+- `--data-crawl`: Simulates crawling free open public data sources and returns dummy public records. The output will be a JSON object with a `crawledData` key.
 
-### OWL Examples
-- Consolidate and extend the original CAPITAL_CITIES command into a unified flag `--owl-examples` that provides a broader set of demonstration data.
-- Output a JSON object containing keys like `capitalCities` and additional results such as `results` to illustrate extended examples.
-
-### Data Crawl Simulation
-- Introduce the `--data-crawl` flag to simulate a web crawl on free open public data sources with dummy record data.
-- Return a JSON response containing a `crawledData` key, filled with simulated public records.
+The tool will process multiple flags sequentially if provided, ensuring backward compatibility for the `--capital-cities` functionality.
 
 ## Implementation Details
+
 ### Source Code Updates (`src/lib/main.js`)
-- Extend the argument parser to detect `--ontology-transform`, `--owl-examples`, and `--data-crawl` along with preserving backward compatibility for `--capital-cities`.
-- Implement separate conditional branches for each flag. If multiple flags are provided, process them in a defined order (e.g., sequentially).
-- Ensure that for the `--ontology-transform` flag, the program accepts raw JSON if provided; otherwise, simulate a default transformation.
+- Extend the argument parser to detect `--ontology-transform`, `--owl-examples`, and `--data-crawl` alongside the original `--capital-cities` flag.
+- For `--ontology-transform`, check if the CLI receives raw JSON input; otherwise, apply a default transformation simulation.
+- For `--owl-examples`, combine and enhance output with both `capitalCities` and additional `results` data.
+- For `--data-crawl`, simulate the process of retrieving dummy public records and output a JSON structure containing `crawledData`.
+- Ensure the CLI processes multiple flags in a defined sequential order.
 
 ### Testing Enhancements (`tests/unit/main.test.js`)
-- Add new test cases in addition to the existing `--capital-cities` tests:
-  - Verify that running with `--ontology-transform` produces a JSON output containing the `ontology` key.
-  - Confirm that using the `--owl-examples` flag returns JSON with keys `capitalCities` and `results`.
-  - Validate that invoking `--data-crawl` outputs a JSON object with the `crawledData` key containing dummy public records.
+- Add test cases to verify that invoking `--ontology-transform` returns a JSON object with an `ontology` key. 
+- Ensure that using `--owl-examples` produces JSON output containing both `capitalCities` and `results` keys.
+- Validate that the `--data-crawl` flag returns a JSON object with a correctly populated `crawledData` key.
 
 ### Documentation Updates (`README.md`)
-- Update CLI usage examples to include the new flags and provide clear instructions on how each flag functions.
-- Detail in the documentation how these commands serve the mission of owl-builder by simulating dynamic OWL ontology processing and public data crawling.
+- Update the CLI usage section to describe the new flags, their expected inputs, and outputs.
+- Provide examples of command line invocations for each new flag, demonstrating their intended behavior.
 
 ## Compliance & Testing
-- Ensure that all changes adhere to coding styles and guidelines provided in CONTRIBUTING.md.
-- Run tests using `npm test` ensuring all new functionality returns the correct JSON structure and that existing functionalities remain intact.
-- Maintain the self-contained nature of the feature within the current repository structure (only updates to source, test, readme and dependency files are permitted).
+- Follow the coding style and guidelines as outlined in the [CONTRIBUTING.md](./CONTRIBUTING.md) file.
+- Run all tests with `npm test` to ensure all functionalities produce the correct output without interfering with existing features.
+- Ensure all changes remain self-contained within the existing repository files (source, test, README, and dependencies).
