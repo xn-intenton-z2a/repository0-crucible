@@ -472,7 +472,7 @@ Core Features:
   - query: Query OWL ontologies with options such as --json, --regex, --fuzzy, and now --ignore-case for case-insensitive searches.
   - diagnostics: Output system diagnostics in human-readable or JSON format.
   - crawl: Crawl data from public sources (use --simulate for simulated data).
-  - capital-cities: Generate an OWL ontology for capital cities (use --sort to sort the capitals alphabetically).
+  - capital-cities: Generate an OWL ontology for capital cities (use --sort to sort the capitals alphabetically by city name).
   - serve: Start the REST API server.
   - build-intermediate: Build a basic OWL ontology without Zod validation.
   - build-enhanced: Build an enhanced OWL ontology with Zod validation; supports --persist and --export-csv options.
