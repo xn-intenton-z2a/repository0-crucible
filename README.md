@@ -99,6 +99,12 @@ node src/lib/main.js --help
   ```
   This command builds an enhanced OWL ontology, validates it using Zod, and outputs the validated ontology in JSON format.
 
+- **Intermediate Build Ontology:**
+  ```bash
+  node src/lib/main.js --build-intermediate
+  ```
+  This command builds an intermediate version of the OWL ontology without Zod validation and outputs it in JSON format, providing a step between basic and enhanced builds.
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.
