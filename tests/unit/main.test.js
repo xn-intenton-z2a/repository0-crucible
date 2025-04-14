@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main, query, diagnostics, crawlData, generateCapitalCitiesOwl, serve, buildEnhancedOntology, buildIntermediateOntology } from "@src/lib/main.js";
+import { main, query, diagnostics, crawlData, generateCapitalCitiesOwl, serve, buildEnhancedOntology, buildIntermediateOntology, displayHelp } from "@src/lib/main.js";
 
 // Existing test suites
 
@@ -76,14 +76,15 @@ describe("Capital Cities Command Output", () => {
     // Call the function directly with the --capital-cities flag
     generateCapitalCitiesOwl(["--capital-cities"]);
     expect(logSpy).toHaveBeenCalled();
-    const output = logSpy.mock.calls.find(call => {
+    const outputCall = logSpy.mock.calls.find(call => {
       try {
         JSON.parse(call[0]);
         return true;
       } catch (e) {
         return false;
       }
-    })[0];
+    });
+    const output = outputCall[0];
     let parsed;
     try {
       parsed = JSON.parse(output);
@@ -144,7 +145,7 @@ describe("Build Intermediate Ontology Command Output", () => {
     const intermediateArgs = ["--build-intermediate"];
     buildIntermediateOntology(intermediateArgs);
     const output = logSpy.mock.calls.find(call => call[0].startsWith("Intermediate ontology built:"))[0];
-    expect(output.startsWith("Intermediate ontology built:")) .toBe(true);
+    expect(output.startsWith("Intermediate ontology built:")).toBe(true);
     const jsonPart = output.replace("Intermediate ontology built: ", "");
     let parsed;
     expect(() => {
@@ -190,6 +191,24 @@ describe("Verbose Flag Logging", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     buildEnhancedOntology(["--build-enhanced", "--verbose"]);
     expect(logSpy).toHaveBeenCalledWith(expect.stringContaining("Verbose mode enabled in buildEnhancedOntology"));
+    logSpy.mockRestore();
+  });
+});
+
+describe("Help Command Output", () => {
+  test("should display help message with usage instructions", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    displayHelp(["--help"]);
+    const helpOutput = logSpy.mock.calls.map(call => call[0]).join("\n");
+    expect(helpOutput).toContain("Usage: ");
+    expect(helpOutput).toContain("--help");
+    expect(helpOutput).toContain("--diagnostics");
+    expect(helpOutput).toContain("--query");
+    expect(helpOutput).toContain("--crawl");
+    expect(helpOutput).toContain("--capital-cities");
+    expect(helpOutput).toContain("--serve");
+    expect(helpOutput).toContain("--build-intermediate");
+    expect(helpOutput).toContain("--build-enhanced");
     logSpy.mockRestore();
   });
 });

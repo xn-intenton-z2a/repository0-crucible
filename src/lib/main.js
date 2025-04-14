@@ -168,9 +168,32 @@ export function buildEnhancedOntology(args) {
   }
 }
 
+/**
+ * Displays help information with usage instructions for the CLI tool.
+ * @param {string[]} args - Command line arguments
+ */
+export function displayHelp(args) {
+  console.log(`
+Usage: node src/lib/main.js [command] [options]
+
+Commands:
+  --help                 Display this help message.
+  --diagnostics          Display system diagnostic information.
+  --query [args]         Query OWL ontologies. Append search terms or key=value filters.
+  --crawl                Crawl data from public sources.
+  --capital-cities       Generate an OWL ontology for capital cities.
+  --serve                Start the Express REST API server.
+  --build-intermediate   Build an intermediate OWL ontology without Zod validation.
+  --build-enhanced       Build an enhanced OWL ontology with Zod validation.
+  --verbose              Enable verbose debug logging.
+`);
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  if (args.includes("--diagnostics")) {
+  if (args.includes("--help")) {
+    displayHelp(args);
+  } else if (args.includes("--diagnostics")) {
     diagnostics(args);
   } else if (args.includes("--query")) {
     query(args);
