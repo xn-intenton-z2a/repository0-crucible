@@ -213,7 +213,6 @@ describe("Build Enhanced Ontology Command Output", () => {
     const tempFilePath = path.join(tmpDir, 'temp-ontology.json');
     const args = ["--build-enhanced", "--persist", tempFilePath];
     buildEnhancedOntology(args);
-    // Read the file and verify its content
     const fileContent = fs.readFileSync(tempFilePath, { encoding: 'utf8' });
     let parsed;
     expect(() => {
@@ -222,7 +221,6 @@ describe("Build Enhanced Ontology Command Output", () => {
     expect(parsed).toHaveProperty("type", "owl");
     expect(parsed).toHaveProperty("capitals");
     expect(Array.isArray(parsed.capitals)).toBe(true);
-    // Clean up temporary file
     fs.unlinkSync(tempFilePath);
   });
 });
@@ -268,8 +266,59 @@ describe("Merge Persist Command Output", () => {
   test("should log merge persist message when '--merge-persist' flag is provided", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     mergePersist(["--merge-persist"]);
-    expect(logSpy).toHaveBeenCalledWith("Merging new ontology data with persisted ontology data...");
+    // Not checking placeholder message as mergePersist now outputs merged ontology
+    const output = logSpy.mock.calls[0][0];
+    expect(output).toContain("owl");
     logSpy.mockRestore();
+  });
+
+  test("should correctly merge persisted and new ontology capitals", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const tmpDir = os.tmpdir();
+    const tempPersistFile = path.join(tmpDir, 'persisted-ontology.json');
+    const persistedData = {
+      type: "owl",
+      capitals: [
+        { city: "Washington, D.C.", country: "USA" },
+        { city: "London", country: "UK" }
+      ]
+    };
+    fs.writeFileSync(tempPersistFile, JSON.stringify(persistedData, null, 2));
+    mergePersist(["--merge-persist", "--persist", tempPersistFile]);
+    const outputCall = logSpy.mock.calls.find(call => {
+      try {
+        const parsed = JSON.parse(call[0]);
+        return parsed.type === "owl" && Array.isArray(parsed.capitals);
+      } catch (e) { return false; }
+    });
+    expect(outputCall).toBeDefined();
+    const mergedOntology = JSON.parse(outputCall[0]);
+    const expectedCities = ["Washington, D.C.", "London", "Paris", "Berlin", "Tokyo"];
+    const mergedCities = mergedOntology.capitals.map(item => item.city).sort();
+    expect(mergedCities).toEqual(expectedCities.sort());
+    fs.unlinkSync(tempPersistFile);
+    logSpy.mockRestore();
+  });
+
+  test("should persist merged ontology to file when '--out' flag is provided", () => {
+    const tmpDir = os.tmpdir();
+    const tempPersistFile = path.join(tmpDir, 'persisted-ontology.json');
+    const tempOutFile = path.join(tmpDir, 'merged-ontology.json');
+    const persistedData = {
+      type: "owl",
+      capitals: [
+        { city: "Rome", country: "Italy" }
+      ]
+    };
+    fs.writeFileSync(tempPersistFile, JSON.stringify(persistedData, null, 2));
+    mergePersist(["--merge-persist", "--persist", tempPersistFile, "--out", tempOutFile]);
+    const fileContent = fs.readFileSync(tempOutFile, "utf8");
+    const mergedOntology = JSON.parse(fileContent);
+    const expectedCities = ["Rome", "Paris", "Berlin", "Tokyo"];
+    const mergedCities = mergedOntology.capitals.map(item => item.city).sort();
+    expect(mergedCities).toEqual(expectedCities.sort());
+    fs.unlinkSync(tempPersistFile);
+    fs.unlinkSync(tempOutFile);
   });
 });
 
