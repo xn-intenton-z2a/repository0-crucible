@@ -31,8 +31,13 @@ export function query(args) {
   if (verbose) {
     console.log("Verbose mode enabled in query. Received args: " + JSON.stringify(args));
   }
-  // Remove the '--query' and '--verbose' flags from the arguments
-  const filteredArgs = args.filter(arg => arg !== "--query" && arg !== "--verbose");
+  
+  // Determine if JSON flag is provided
+  const jsonFlag = args.includes("--json");
+  
+  // Remove the '--query', '--verbose', and '--json' flags from the arguments
+  const filteredArgs = args.filter(arg => arg !== "--query" && arg !== "--verbose" && arg !== "--json");
+  
   const filters = {};
   const searchTerms = [];
 
@@ -49,6 +54,11 @@ export function query(args) {
       searchTerms.push(arg);
     }
   });
+
+  if (jsonFlag) {
+    console.log(JSON.stringify({ searchTerms, filters }, null, 2));
+    return;
+  }
 
   if (Object.keys(filters).length > 0 && searchTerms.length > 0) {
     console.log(`Querying OWL ontologies for: ${searchTerms.join(" ")} with filters: ${JSON.stringify(filters)}`);
@@ -179,7 +189,7 @@ Usage: node src/lib/main.js [command] [options]
 Commands:
   --help                 Display this help message.
   --diagnostics          Display system diagnostic information.
-  --query [args]         Query OWL ontologies. Append search terms or key=value filters.
+  --query [args]         Query OWL ontologies. Append search terms or key=value filters. Add --json for structured JSON output.
   --crawl                Crawl data from public sources.
   --capital-cities       Generate an OWL ontology for capital cities.
   --serve                Start the Express REST API server.

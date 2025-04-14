@@ -49,6 +49,40 @@ describe("Query Command Output", () => {
   });
 });
 
+describe("Query Command JSON Output", () => {
+  test("should output JSON object with only search terms", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    query(["--query", "--json", "capital", "cities"]);
+    const output = logSpy.mock.calls[0][0];
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("searchTerms");
+    expect(parsed).toHaveProperty("filters");
+    expect(parsed.searchTerms).toEqual(["capital", "cities"]);
+    expect(parsed.filters).toEqual({});
+    logSpy.mockRestore();
+  });
+
+  test("should output JSON object with only filters", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    query(["--query", "--json", "country=USA"]);
+    const output = logSpy.mock.calls[0][0];
+    const parsed = JSON.parse(output);
+    expect(parsed.searchTerms).toEqual([]);
+    expect(parsed.filters).toEqual({ country: "USA" });
+    logSpy.mockRestore();
+  });
+
+  test("should output JSON object with both search terms and filters", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    query(["--query", "--json", "capital", "cities", "country=USA"]);
+    const output = logSpy.mock.calls[0][0];
+    const parsed = JSON.parse(output);
+    expect(parsed.searchTerms).toEqual(["capital", "cities"]);
+    expect(parsed.filters).toEqual({ country: "USA" });
+    logSpy.mockRestore();
+  });
+});
+
 describe("Diagnostics Command Output", () => {
   test("should log diagnostics info", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -73,7 +107,6 @@ describe("Crawl Command Output", () => {
 describe("Capital Cities Command Output", () => {
   test("should output valid JSON representing an OWL ontology of capital cities", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    // Call the function directly with the --capital-cities flag
     generateCapitalCitiesOwl(["--capital-cities"]);
     expect(logSpy).toHaveBeenCalled();
     const outputCall = logSpy.mock.calls.find(call => {
@@ -106,7 +139,6 @@ describe("Capital Cities Command Output", () => {
 describe("Serve Command Output", () => {
   test("should start REST API server and respond with expected JSON", async () => {
     const server = serve(["--serve"]);
-    // Wait a short time to ensure the server is running
     await new Promise(resolve => setTimeout(resolve, 100));
     const response = await fetch("http://localhost:3000/");
     expect(response.status).toBe(200);
@@ -124,7 +156,6 @@ describe("Build Enhanced Ontology Command Output", () => {
     const output = logSpy.mock.calls.find(call => call[0].includes("Enhanced ontology built and validated:"))[0];
     expect(output).toContain("Enhanced ontology built and validated:");
 
-    // Extract JSON part from the output
     const jsonStart = output.indexOf('{');
     expect(jsonStart).toBeGreaterThan(-1);
     const jsonPart = output.substring(jsonStart);
@@ -209,6 +240,7 @@ describe("Help Command Output", () => {
     expect(helpOutput).toContain("--serve");
     expect(helpOutput).toContain("--build-intermediate");
     expect(helpOutput).toContain("--build-enhanced");
+    expect(helpOutput).toContain("--json");
     logSpy.mockRestore();
   });
 });

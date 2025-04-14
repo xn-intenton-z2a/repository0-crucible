@@ -62,7 +62,7 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
   ```
   This will output a message like: "Querying OWL ontologies for: capital cities"
 
-  Additionally, you can now provide key=value filters. For example:
+  Additionally, you can provide key=value filters. For example:
   ```bash
   node src/lib/main.js --query country=USA
   ```
@@ -73,6 +73,45 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
   node src/lib/main.js --query capital cities country=USA
   ```
   which outputs: "Querying OWL ontologies for: capital cities with filters: {\"country\":\"USA\"}"
+
+- **Query with JSON Output:**
+  An enhancement has been added that allows the query command to output its results as structured JSON when using the `--json` flag. For example:
+  
+  - With search terms only:
+    ```bash
+    node src/lib/main.js --query --json capital cities
+    ```
+    Expected JSON output:
+    ```json
+    {
+      "searchTerms": ["capital", "cities"],
+      "filters": {}
+    }
+    ```
+  
+  - With filters only:
+    ```bash
+    node src/lib/main.js --query --json country=USA
+    ```
+    Expected JSON output:
+    ```json
+    {
+      "searchTerms": [],
+      "filters": {"country": "USA"}
+    }
+    ```
+  
+  - With both search terms and filters:
+    ```bash
+    node src/lib/main.js --query --json capital cities country=USA
+    ```
+    Expected JSON output:
+    ```json
+    {
+      "searchTerms": ["capital", "cities"],
+      "filters": {"country": "USA"}
+    }
+    ```
 
 - **Diagnostics Information:**
   ```bash
