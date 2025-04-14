@@ -12,7 +12,8 @@ import {
   displayHelp,
   refresh,
   mergePersist,
-  validateOntology
+  validateOntology,
+  addCapital
 } from "@src/lib/main.js";
 import fs from "fs";
 import os from "os";
@@ -307,9 +308,7 @@ describe("Build Enhanced Ontology Command Output", () => {
     const args = ["--build-enhanced", "--export-csv"];
     buildEnhancedOntology(args);
     const output = logSpy.mock.calls[0][0];
-    // Check that the output starts with CSV header
     expect(output.startsWith("city,country")).toBe(true);
-    // Check that there are three lines (header + 3 capitals)
     const lines = output.split("\n");
     expect(lines.length).toBe(4);
     expect(lines[1]).toContain("Washington, D.C.");
@@ -324,7 +323,6 @@ describe("Build Enhanced Ontology Command Output", () => {
     const args = ["--build-enhanced", "--export-csv", "--persist", tempFilePath];
     buildEnhancedOntology(args);
     const fileContent = fs.readFileSync(tempFilePath, { encoding: 'utf8' });
-    // Check that the file content is CSV formatted
     expect(fileContent.startsWith("city,country")).toBe(true);
     const lines = fileContent.split("\n");
     expect(lines.length).toBe(4);
@@ -431,7 +429,6 @@ describe("Merge Persist Command Output", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const tmpDir = os.tmpdir();
     const tempPersistFile = path.join(tmpDir, 'persisted-ontology-prefer-old.json');
-    // Persisted ontology has a duplicate with different data
     const persistedData = {
       type: "owl",
       capitals: [
@@ -440,7 +437,6 @@ describe("Merge Persist Command Output", () => {
       ]
     };
     fs.writeFileSync(tempPersistFile, JSON.stringify(persistedData, null, 2));
-
     mergePersist(["--merge-persist", "--prefer-old", "--persist", tempPersistFile]);
     const outputCall = logSpy.mock.calls.find(call => {
       try {
@@ -474,7 +470,6 @@ describe("Merge Persist Command Output", () => {
       ]
     };
     fs.writeFileSync(tempPersistFile, JSON.stringify(persistedData, null, 2));
-    // New ontology capitals: Paris and London; merged result unsorted would be Tokyo, Berlin, Paris, London
     mergePersist(["--merge-persist", "--persist", tempPersistFile, "--sort-merged"]);
     const outputCall = logSpy.mock.calls.find(call => {
       try {
@@ -513,23 +508,23 @@ describe("Merge Persist Command Output", () => {
   });
 
   test("should log error if persisted file does not exist", () => {
-    const logSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     const fakePath = path.join(os.tmpdir(), 'nonexistent.json');
     mergePersist(["--merge-persist", "--persist", fakePath]);
-    expect(logSpy).toHaveBeenCalledWith(`Persisted ontology file not found at path: ${fakePath}`);
-    logSpy.mockRestore();
+    expect(errorSpy).toHaveBeenCalledWith(`Persisted ontology file not found at path: ${fakePath}`);
+    errorSpy.mockRestore();
   });
 
   test("should log error for invalid JSON in persisted file", () => {
-    const logSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     const tmpDir = os.tmpdir();
     const invalidFile = path.join(tmpDir, 'invalid-ontology.json');
     fs.writeFileSync(invalidFile, "{ invalid json }");
     mergePersist(["--merge-persist", "--persist", invalidFile]);
-    const errorLogged = logSpy.mock.calls.some(call => call[0].includes('Invalid JSON in persisted ontology file'));
+    const errorLogged = errorSpy.mock.calls.some(call => call[0].includes('Invalid JSON in persisted ontology file'));
     expect(errorLogged).toBe(true);
     fs.unlinkSync(invalidFile);
-    logSpy.mockRestore();
+    errorSpy.mockRestore();
   });
 });
 
@@ -622,5 +617,42 @@ describe("Verbose Flag Logging", () => {
     buildEnhancedOntology(["--build-enhanced", "--verbose"]);
     expect(logSpy).toHaveBeenCalledWith(expect.stringContaining("Verbose mode enabled in buildEnhancedOntology"));
     logSpy.mockRestore();
+  });
+});
+
+describe("Add Capital Command", () => {
+  test("should append a new capital when valid city and country are provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const args = ["--add-capital", "city=NewYork", "country=USA"];
+    mainModule.addCapital(args);
+    const output = logSpy.mock.calls[0][0];
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("type", "owl");
+    expect(parsed.capitals).toEqual([{ city: "NewYork", country: "USA" }]);
+    logSpy.mockRestore();
+  });
+
+  test("should log error when a required key is missing", () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const args = ["--add-capital", "city=Berlin"];
+    mainModule.addCapital(args);
+    expect(errorSpy).toHaveBeenCalledWith("Error: Both 'city' and 'country' must be provided.");
+    errorSpy.mockRestore();
+  });
+
+  test("should persist updated ontology to file when --persist flag is provided", () => {
+    const tmpDir = os.tmpdir();
+    const tempFilePath = path.join(tmpDir, 'persisted-ontology.json');
+    const initialOntology = { type: "owl", capitals: [{ city: "Paris", country: "France" }] };
+    fs.writeFileSync(tempFilePath, JSON.stringify(initialOntology, null, 2));
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const args = ["--add-capital", "city=Rome", "country=Italy", "--persist", tempFilePath];
+    mainModule.addCapital(args);
+    const fileContent = fs.readFileSync(tempFilePath, "utf8");
+    const updatedOntology = JSON.parse(fileContent);
+    expect(updatedOntology.capitals).toContainEqual({ city: "Rome", country: "Italy" });
+    expect(updatedOntology.capitals).toContainEqual({ city: "Paris", country: "France" });
+    logSpy.mockRestore();
+    fs.unlinkSync(tempFilePath);
   });
 });

@@ -24,7 +24,7 @@ npm install repository0-crucible
 ## Features
 
 - CLI tool for managing OWL ontologies.
-- Query, build, refresh, merge, and validate ontology commands.
+- Query, build, refresh, merge, validate, and add capital ontology commands.
 - REST API server for ontology operations.
 - Enhanced diagnostic information and verbosity support.
 
@@ -385,7 +385,38 @@ Real Output for an invalid file:
 Ontology validation failed: [ detailed error messages ]
 ```
 
-#### 12. Verbose Debug Mode
+#### 12. Add Capital Command
+
+Append a new capital to the ontology by providing key=value pairs for city and country.
+
+**Without Persistence:**
+
+Command:
+```bash
+node src/lib/main.js --add-capital city=NewYork country=USA
+```
+Real Output (formatted JSON):
+```
+{
+  "type": "owl",
+  "capitals": [
+    { "city": "NewYork", "country": "USA" }
+  ]
+}
+```
+
+**With Persistence:**
+
+Command:
+```bash
+node src/lib/main.js --add-capital city=Rome country=Italy --persist ./ontology.json
+```
+Real Output:
+```
+Updated ontology persisted to file: ./ontology.json
+```
+
+#### 13. Verbose Debug Mode
 
 Add the `--verbose` flag with any command to see detailed debug logging. For example:
 
