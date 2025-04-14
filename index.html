@@ -96,7 +96,8 @@ An enhancement has been added that allows the query command to output its result
 <pre class="md-github"><code class="md-github language-json">{
   &quot;searchTerms&quot;: [&quot;capital&quot;, &quot;cities&quot;],
   &quot;filters&quot;: {},
-  &quot;regex&quot;: false
+  &quot;regex&quot;: false,
+  &quot;fuzzy&quot;: false
 }
 </code></pre>
 </li>
@@ -107,8 +108,9 @@ An enhancement has been added that allows the query command to output its result
 <p class="md-github">Expected JSON output:</p>
 <pre class="md-github"><code class="md-github language-json">{
   &quot;searchTerms&quot;: [],
-  &quot;filters&quot;: {&quot;country&quot;: &quot;USA&quot;},
-  &quot;regex&quot;: false
+  &quot;filters&quot;: {&quot;country&quot;:&quot;USA&quot;},
+  &quot;regex&quot;: false,
+  &quot;fuzzy&quot;: false
 }
 </code></pre>
 </li>
@@ -119,32 +121,34 @@ An enhancement has been added that allows the query command to output its result
 <p class="md-github">Expected JSON output:</p>
 <pre class="md-github"><code class="md-github language-json">{
   &quot;searchTerms&quot;: [&quot;capital&quot;, &quot;cities&quot;],
-  &quot;filters&quot;: {&quot;country&quot;: &quot;USA&quot;},
-  &quot;regex&quot;: false
+  &quot;filters&quot;: {&quot;country&quot;:&quot;USA&quot;},
+  &quot;regex&quot;: false,
+  &quot;fuzzy&quot;: false
 }
 </code></pre>
 </li>
 </ul>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Query with Regex Filtering:</strong>
-You can use the <code class="md-github">--regex</code> flag to treat search terms as regular expressions. This flag can be combined with the <code class="md-github">--json</code> flag for structured output. For example:</p>
+<p class="md-github"><strong class="md-github">Query with Regex and Fuzzy Filtering:</strong>
+You can use the <code class="md-github">--regex</code> flag to treat search terms as regular expressions and the new <code class="md-github">--fuzzy</code> flag for fuzzy matching. These flags can be combined with the <code class="md-github">--json</code> flag for structured output. For example:</p>
 <ul class="md-github">
 <li class="md-github">
-<p class="md-github">Standard output with regex filtering:</p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query --regex capital cities
+<p class="md-github">Standard output with fuzzy search:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query --fuzzy capital cities
 </code></pre>
-<p class="md-github">This will output: &quot;Querying OWL ontologies with regex for: capital cities&quot;</p>
+<p class="md-github">This will output: &quot;Querying OWL ontologies with fuzzy search for: capital cities&quot;</p>
 </li>
 <li class="md-github">
-<p class="md-github">JSON output with regex filtering:</p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query --regex --json capital cities
+<p class="md-github">JSON output with fuzzy search:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query --json --fuzzy capital cities
 </code></pre>
 <p class="md-github">Expected JSON output:</p>
 <pre class="md-github"><code class="md-github language-json">{
   &quot;searchTerms&quot;: [&quot;capital&quot;, &quot;cities&quot;],
   &quot;filters&quot;: {},
-  &quot;regex&quot;: true
+  &quot;regex&quot;: false,
+  &quot;fuzzy&quot;: true
 }
 </code></pre>
 </li>
@@ -225,7 +229,7 @@ You can use the <code class="md-github">--regex</code> flag to treat search term
 
   </section>
   <footer>
-    <p>Generated on 2025-04-14T13:19:07.816Z</p>
+    <p>Generated on 2025-04-14T13:24:08.001Z</p>
   </footer>
 </body>
 </html>

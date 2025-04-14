@@ -2,37 +2,33 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Issue Worker",
+  "lastActivityName": "Automerge",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1559] Enhance Query Command with Fuzzy Search Support automated, feature",
-  "openIssues": 1,
+  "nextIssue": "[1559] Enhance Query Command with Fuzzy Search Support automated, feature, issue-worker-14446602426",
+  "openIssues": 0,
   "issuesClosedLastHour": 2,
-  "issuesClosedLastDay": 68,
+  "issuesClosedLastDay": 70,
   "openPRs": 0,
   "averagePRAge": 0,
   "prDetails": [],
   "diffMinutes": 0,
-  "diffMinutesMain": 17,
+  "diffMinutesMain": 0,
   "commitsLastHour": 2,
-  "commitsLastDay": 48,
+  "commitsLastDay": 49,
   "lastFiveCommitMessages": [
+    "[13:23] - Added fuzzy search support to the query command and updated test...",
     "[13:01] - Maintain REST_API",
     "[12:20] - Implement mergePersist function to merge ontology data and suppo...",
     "[11:59] - Add mergePersist command to CLI and update tests and documentati...",
-    "[11:51] - Maintain ONTOLOGY",
-    "[11:17] - Enhance query command to support regex filtering with appropriat..."
+    "[11:51] - Maintain ONTOLOGY"
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      "[0m] agentic-lib-issue-1559"
-    ],
-    "branchIssueDetails": [
-      "[1559] Enhance Query Command with Fuzzy Search Support automated, feature, issue-worker-14446602426"
-    ],
+    "count": 0,
+    "details": [],
+    "branchIssueDetails": [],
     "averageBranchAge": 0
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T13:18:49.466Z"
+  "statsGeneratedAt": "2025-04-14T13:23:39.249Z"
 }
