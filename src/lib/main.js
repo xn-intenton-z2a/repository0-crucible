@@ -319,6 +319,39 @@ export function mergePersist(args) {
 }
 
 /**
+ * Validates an ontology JSON file against the predefined Zod schema.
+ * If the --validate flag is provided followed by a file path, it reads and validates the file.
+ * Logs a confirmation message on success or error details on failure.
+ * @param {string[]} args - Command line arguments
+ */
+export function validateOntology(args) {
+  const verbose = args.includes("--verbose");
+  if (verbose) {
+    console.log("Verbose mode enabled in validateOntology. Received args: " + JSON.stringify(args));
+  }
+  const validateIndex = args.indexOf("--validate");
+  let filePath = null;
+  if (validateIndex !== -1 && args.length > validateIndex + 1) {
+    filePath = args[validateIndex + 1];
+  } else {
+    console.error("No file path provided for --validate");
+    return;
+  }
+  try {
+    const fileContent = fs.readFileSync(filePath, "utf8");
+    const parsed = JSON.parse(fileContent);
+    const result = ontologySchema.safeParse(parsed);
+    if (result.success) {
+      console.log(`Ontology validation successful: ${filePath} conforms to the schema.`);
+    } else {
+      console.error("Ontology validation failed:", result.error.errors);
+    }
+  } catch (error) {
+    console.error("Error reading or parsing file:", error.message);
+  }
+}
+
+/**
  * Displays help information with usage instructions for the CLI tool.
  * @param {string[]} args - Command line arguments
  */
@@ -337,6 +370,7 @@ Commands:
   --build-enhanced       Build an enhanced OWL ontology with Zod validation. Optionally, use --persist <filePath> to save the output.
   --refresh              Refresh and merge persistent OWL ontology data (placeholder implementation).
   --merge-persist        Merge new ontology data with persisted ontology data. Use --persist <filePath> to load persisted data (defaults to empty), and --out <filePath> to write the merged ontology to a file. Add --prefer-old to retain persisted data when duplicates exist.
+  --validate <filePath>  Validate an ontology JSON file against the schema and output the result.
   --verbose              Enable verbose debug logging.
 
 `);
@@ -364,6 +398,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     refresh(args);
   } else if (args.includes("--merge-persist")) {
     mergePersist(args);
+  } else if (args.includes("--validate")) {
+    validateOntology(args);
   } else {
     main(args);
   }

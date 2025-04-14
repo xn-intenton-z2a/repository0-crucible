@@ -224,6 +224,12 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
   - **New Option:** Add `--prefer-old` to retain the persisted (old) data in the event of duplicates instead of overriding them with new data.
   - Optionally, use the `--out <filePath>` flag to persist the merged ontology to a file.
 
+- **Validate Ontology:**
+  ```bash
+  node src/lib/main.js --validate ./path/to/ontology.json
+  ```
+  This new command reads the specified ontology JSON file, validates its structure against the built-in schema, and outputs a success message if the file conforms or detailed error information if it fails validation.
+
 ### Verbose Debug Mode
 
 A new `--verbose` flag has been added. When this flag is included in any command, the CLI outputs additional debug information detailing internal state and execution flow. For example:
