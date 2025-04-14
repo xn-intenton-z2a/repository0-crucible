@@ -2,17 +2,19 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Issue Worker",
+  "lastActivityName": "Review Issue",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1554] Enhance Query Command with Regex Filtering Option automated, feature",
-  "openIssues": 2,
+  "nextIssue": "[1554] Enhance Query Command with Regex Filtering Option automated, feature, issue-worker-14444117725",
+  "openIssues": 3,
   "issuesClosedLastHour": 5,
   "issuesClosedLastDay": 76,
-  "openPRs": 0,
+  "openPRs": 1,
   "averagePRAge": 0,
-  "prDetails": [],
+  "prDetails": [
+    "[0m] Enhance query command to support regex filtering with appropriate test and documentation updates. (fixes #1554)"
+  ],
   "diffMinutes": 0,
-  "diffMinutesMain": 11,
+  "diffMinutesMain": 12,
   "commitsLastHour": 4,
   "commitsLastDay": 55,
   "lastFiveCommitMessages": [
@@ -25,14 +27,14 @@
   "branches": {
     "count": 1,
     "details": [
-      "[0m] agentic-lib-issue-1554"
+      "[1m] agentic-lib-issue-1554"
     ],
     "branchIssueDetails": [
       "[1554] Enhance Query Command with Regex Filtering Option automated, feature, issue-worker-14444117725"
     ],
-    "averageBranchAge": 0
+    "averageBranchAge": 1
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T11:11:15.416Z"
+  "statsGeneratedAt": "2025-04-14T11:11:58.849Z"
 }
