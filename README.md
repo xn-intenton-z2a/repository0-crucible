@@ -105,6 +105,16 @@ node src/lib/main.js --help
   ```
   This command builds an intermediate version of the OWL ontology without Zod validation and outputs it in JSON format, providing a step between basic and enhanced builds.
 
+### Verbose Debug Mode
+
+A new `--verbose` flag has been added. When this flag is included in any command, the CLI outputs additional debug information detailing internal state and execution flow. For example:
+
+```bash
+node src/lib/main.js --query capital cities --verbose
+```
+
+This will output extra messages, such as the received arguments, before processing the command. This feature is intended to assist in troubleshooting and understanding the internal processing of commands.
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.
