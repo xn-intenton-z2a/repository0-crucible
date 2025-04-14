@@ -10,8 +10,29 @@ export function main(args) {
 
 export function query(args) {
   // Remove the '--query' flag from the arguments
-  const searchTerms = args.filter(arg => arg !== "--query");
-  if (searchTerms.length > 0) {
+  const filteredArgs = args.filter(arg => arg !== "--query");
+  const filters = {};
+  const searchTerms = [];
+  
+  filteredArgs.forEach(arg => {
+    if (arg.includes("=")) {
+      const parts = arg.split("=");
+      if (parts.length === 2) {
+        const [key, value] = parts;
+        filters[key] = value;
+      } else {
+        searchTerms.push(arg);
+      }
+    } else {
+      searchTerms.push(arg);
+    }
+  });
+  
+  if (Object.keys(filters).length > 0 && searchTerms.length > 0) {
+    console.log(`Querying OWL ontologies for: ${searchTerms.join(" ")} with filters: ${JSON.stringify(filters)}`);
+  } else if (Object.keys(filters).length > 0) {
+    console.log(`Querying OWL ontologies with filters: ${JSON.stringify(filters)}`);
+  } else if (searchTerms.length > 0) {
     console.log(`Querying OWL ontologies for: ${searchTerms.join(" ")}`);
   } else {
     console.log("Querying OWL ontologies (Feature under development)");
