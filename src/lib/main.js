@@ -11,7 +11,8 @@ export function main(args = []) {
         { country: "France", capital: "Paris" },
         { country: "Japan", capital: "Tokyo" },
         { country: "Brazil", capital: "Brasília" }
-      ]
+      ],
+      generatedAt: new Date().toISOString()
     };
     console.log(JSON.stringify(owlOntology, null, 2));
     return;
