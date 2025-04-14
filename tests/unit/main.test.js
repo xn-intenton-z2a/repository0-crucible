@@ -112,7 +112,7 @@ describe("Query Command Regex Option", () => {
     query(["--query", "--json", "--regex", "capital", "cities", "country=USA"]);
     const output = logSpy.mock.calls[0][0];
     const parsed = JSON.parse(output);
-    expect(parsed.searchTerms).toEqual(["capital", "cities", "country=USA"].filter(term => !term.includes('=')));
+    expect(parsed.searchTerms).toEqual(["capital", "cities"]);
     expect(parsed.filters).toEqual({ country: "USA" });
     expect(parsed).toHaveProperty("regex", true);
     logSpy.mockRestore();
