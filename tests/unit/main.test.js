@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main, query, diagnostics, crawlData, generateCapitalCitiesOwl, serve } from "@src/lib/main.js";
+import { main, query, diagnostics, crawlData, generateCapitalCitiesOwl, serve, buildEnhancedOntology } from "@src/lib/main.js";
 
 // Existing test suites
 
@@ -105,5 +105,28 @@ describe("Serve Command Output", () => {
     const data = await response.json();
     expect(data).toHaveProperty("message", "owl-builder REST API");
     server.close();
+  });
+});
+
+describe("Build Enhanced Ontology Command Output", () => {
+  test("should log enhanced ontology build success message and valid JSON", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const enhancedArgs = ["--build-enhanced"];
+    buildEnhancedOntology(enhancedArgs);
+    const output = logSpy.mock.calls[0][0];
+    expect(output).toContain("Enhanced ontology built and validated:");
+
+    // Extract JSON part from the output
+    const jsonStart = output.indexOf('{');
+    expect(jsonStart).toBeGreaterThan(-1);
+    const jsonPart = output.substring(jsonStart);
+    let parsed;
+    expect(() => {
+      parsed = JSON.parse(jsonPart);
+    }).not.toThrow();
+    expect(parsed).toHaveProperty("type", "owl");
+    expect(parsed).toHaveProperty("capitals");
+    expect(Array.isArray(parsed.capitals)).toBe(true);
+    logSpy.mockRestore();
   });
 });

@@ -93,6 +93,12 @@ node src/lib/main.js --help
   { "message": "owl-builder REST API" }
   ```
 
+- **Enhanced Build Ontology:**
+  ```bash
+  node src/lib/main.js --build-enhanced
+  ```
+  This command builds an enhanced OWL ontology, validates it using Zod, and outputs the validated ontology in JSON format.
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.

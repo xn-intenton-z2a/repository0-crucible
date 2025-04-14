@@ -3,6 +3,18 @@
 
 import { fileURLToPath } from "url";
 import express from "express";
+import { z } from "zod";
+
+// Define Zod schema for ontology
+const ontologySchema = z.object({
+  type: z.literal("owl"),
+  capitals: z.array(
+    z.object({
+      city: z.string(),
+      country: z.string()
+    })
+  )
+});
 
 export function main(args) {
   console.log(`Run with: ${JSON.stringify(args)}`);
@@ -82,6 +94,30 @@ export function serve(args) {
   return server;
 }
 
+/**
+ * Builds an enhanced OWL ontology, validates it using Zod, and outputs the validated ontology.
+ * @param {string[]} args - Command line arguments
+ */
+export function buildEnhancedOntology(args) {
+  // Reuse the dummy ontology from generateCapitalCitiesOwl
+  const ontology = {
+    type: "owl",
+    capitals: [
+      { city: "Washington, D.C.", country: "USA" },
+      { city: "London", country: "UK" },
+      { city: "Tokyo", country: "Japan" }
+    ]
+  };
+  
+  // Validate ontology using Zod schema
+  const result = ontologySchema.safeParse(ontology);
+  if (result.success) {
+    console.log(`Enhanced ontology built and validated: ${JSON.stringify(ontology, null, 2)}`);
+  } else {
+    console.error("Ontology validation failed:", result.error);
+  }
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   if (args.includes("--diagnostics")) {
@@ -94,6 +130,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     generateCapitalCitiesOwl(args);
   } else if (args.includes("--serve")) {
     serve(args);
+  } else if (args.includes("--build-enhanced")) {
+    buildEnhancedOntology(args);
   } else {
     main(args);
   }
