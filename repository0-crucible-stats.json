@@ -2,7 +2,7 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Stats",
+  "lastActivityName": "Automerge",
   "lastActivityBranchName": "main",
   "nextIssue": "[]  ",
   "openIssues": 1,
@@ -13,7 +13,7 @@
   "prDetails": [
     "[27m] Fixed filter parsing in query command to correctly handle characters in filter values. (fixes #1538)"
   ],
-  "diffMinutes": 1,
+  "diffMinutes": 0,
   "diffMinutesMain": 4,
   "commitsLastHour": 3,
   "commitsLastDay": 47,
@@ -32,5 +32,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T03:59:37.015Z"
+  "statsGeneratedAt": "2025-04-14T03:59:55.159Z"
 }
