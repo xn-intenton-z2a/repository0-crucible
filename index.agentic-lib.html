@@ -161,6 +161,19 @@ You can use the <code class="md-github">--regex</code> flag to treat search term
 <p class="md-github">This command outputs diagnostic information about the system, such as the Node.js version and other runtime details.</p>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">Diagnostics with JSON Output:</strong>
+With the new <code class="md-github">--json</code> option, you can get diagnostics info in JSON format:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --diagnostics --json
+</code></pre>
+<p class="md-github">Expected JSON output (example):</p>
+<pre class="md-github"><code class="md-github language-json">{
+  &quot;nodeVersion&quot;: &quot;v20.x.x&quot;,
+  &quot;platform&quot;: &quot;linux&quot;,
+  &quot;memoryUsage&quot;: { ... }
+}
+</code></pre>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">Crawl Data:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --crawl
 </code></pre>
@@ -234,7 +247,7 @@ You can use the <code class="md-github">--regex</code> flag to treat search term
 
   </section>
   <footer>
-    <p>Generated on 2025-04-14T16:13:32.186Z</p>
+    <p>Generated on 2025-04-14T16:20:04.861Z</p>
   </footer>
 </body>
 </html>
