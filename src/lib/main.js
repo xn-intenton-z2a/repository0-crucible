@@ -226,7 +226,7 @@ export function refresh(args) {
  * Merges new ontology data with persisted ontology data. (New Feature)
  * Merges capitals from a persisted ontology (if provided via --persist flag) with new ontology data.
  * The merging is done by taking the union of the capitals arrays using the city name as a unique key.
- * If a duplicate city exists, new data overrides the persisted data.
+ * If a duplicate city exists, new data overrides the persisted data unless the --prefer-old flag is used.
  * If the --out flag is provided, the merged ontology is persisted to the specified file.
  * @param {string[]} args - Command line arguments
  */
@@ -236,6 +236,9 @@ export function mergePersist(args) {
     console.log("Verbose mode enabled in mergePersist. Received args: " + JSON.stringify(args));
   }
   
+  // Check for --prefer-old flag
+  const preferOld = args.includes("--prefer-old");
+
   // Retrieve persisted ontology if provided via --persist flag
   const persistIndex = args.indexOf("--persist");
   let persistedOntology = { type: "owl", capitals: [] };
@@ -261,13 +264,27 @@ export function mergePersist(args) {
     ]
   };
   
-  // Merge capitals arrays using city as unique key; new data overrides old entries
+  // Merge capitals arrays using city as unique key
   const mergedCapitals = {};
-  [persistedOntology.capitals, newOntology.capitals].forEach(capitalsArr => {
-    capitalsArr.forEach(cityObj => {
+  if (preferOld) {
+    // Retain persisted data if duplicate exists
+    persistedOntology.capitals.forEach(cityObj => {
       mergedCapitals[cityObj.city] = cityObj;
     });
-  });
+    newOntology.capitals.forEach(cityObj => {
+      if (!mergedCapitals.hasOwnProperty(cityObj.city)) {
+        mergedCapitals[cityObj.city] = cityObj;
+      }
+    });
+  } else {
+    // Default behavior: new data overrides old
+    [persistedOntology.capitals, newOntology.capitals].forEach(capitalsArr => {
+      capitalsArr.forEach(cityObj => {
+        mergedCapitals[cityObj.city] = cityObj;
+      });
+    });
+  }
+
   const mergedOntology = { type: "owl", capitals: Object.values(mergedCapitals) };
 
   // Output the merged ontology
@@ -304,7 +321,7 @@ Commands:
   --build-intermediate   Build an intermediate OWL ontology without Zod validation.
   --build-enhanced       Build an enhanced OWL ontology with Zod validation. Optionally, use --persist <filePath> to save the output.
   --refresh              Refresh and merge persistent OWL ontology data (placeholder implementation).
-  --merge-persist        Merge new ontology data with persisted ontology data. Use --persist <filePath> to load persisted data (defaults to empty) and --out <filePath> to write the merged ontology to a file.
+  --merge-persist        Merge new ontology data with persisted ontology data. Use --persist <filePath> to load persisted data (defaults to empty), and --out <filePath> to write the merged ontology to a file. Add --prefer-old to retain persisted data when duplicates exist.
   --verbose              Enable verbose debug logging.
 
 `);
