@@ -75,7 +75,7 @@
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query capital cities
 </code></pre>
 <p class="md-github">This will output a message like: &quot;Querying OWL ontologies for: capital cities&quot;</p>
-<p class="md-github">Additionally, you can now provide key=value filters. For example:</p>
+<p class="md-github">Additionally, you can provide key=value filters. For example:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query country=USA
 </code></pre>
 <p class="md-github">will output a message like: &quot;Querying OWL ontologies with filters: {&quot;country&quot;:&quot;USA&quot;}&quot;</p>
@@ -83,6 +83,45 @@
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query capital cities country=USA
 </code></pre>
 <p class="md-github">which outputs: &quot;Querying OWL ontologies for: capital cities with filters: {&quot;country&quot;:&quot;USA&quot;}&quot;</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Query with JSON Output:</strong>
+An enhancement has been added that allows the query command to output its results as structured JSON when using the <code class="md-github">--json</code> flag. For example:</p>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">With search terms only:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query --json capital cities
+</code></pre>
+<p class="md-github">Expected JSON output:</p>
+<pre class="md-github"><code class="md-github language-json">{
+  &quot;searchTerms&quot;: [&quot;capital&quot;, &quot;cities&quot;],
+  &quot;filters&quot;: {}
+}
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">With filters only:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query --json country=USA
+</code></pre>
+<p class="md-github">Expected JSON output:</p>
+<pre class="md-github"><code class="md-github language-json">{
+  &quot;searchTerms&quot;: [],
+  &quot;filters&quot;: {&quot;country&quot;: &quot;USA&quot;}
+}
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">With both search terms and filters:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query --json capital cities country=USA
+</code></pre>
+<p class="md-github">Expected JSON output:</p>
+<pre class="md-github"><code class="md-github language-json">{
+  &quot;searchTerms&quot;: [&quot;capital&quot;, &quot;cities&quot;],
+  &quot;filters&quot;: {&quot;country&quot;: &quot;USA&quot;}
+}
+</code></pre>
+</li>
+</ul>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Diagnostics Information:</strong></p>
@@ -137,7 +176,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-14T09:58:06.016Z</p>
+    <p>Generated on 2025-04-14T09:59:48.451Z</p>
   </footer>
 </body>
 </html>
