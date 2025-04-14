@@ -63,10 +63,19 @@
 <p class="md-github"><strong class="md-github">Query Ontologies:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query
 </code></pre>
-<p class="md-github">This command queries OWL ontologies. By default, it displays a placeholder message indicating that the feature is under development. You can now also append search terms after <code class="md-github">--query</code> to filter the query. For example:</p>
+<p class="md-github">This command queries OWL ontologies. By default, it displays a placeholder message indicating that the feature is under development.</p>
+<p class="md-github">You can also append search terms after <code class="md-github">--query</code> to filter the query. For example:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query capital cities
 </code></pre>
-<p class="md-github">This will output a message like: &quot;Querying OWL ontologies for: capital cities&quot;.</p>
+<p class="md-github">This will output a message like: &quot;Querying OWL ontologies for: capital cities&quot;</p>
+<p class="md-github">Additionally, you can now provide key=value filters. For example:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query country=USA
+</code></pre>
+<p class="md-github">will output a message like: &quot;Querying OWL ontologies with filters: {&quot;country&quot;:&quot;USA&quot;}&quot;</p>
+<p class="md-github">Or, you can combine search terms with filters:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query capital cities country=USA
+</code></pre>
+<p class="md-github">which outputs: &quot;Querying OWL ontologies for: capital cities with filters: {&quot;country&quot;:&quot;USA&quot;}&quot;</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Diagnostics Information:</strong></p>
@@ -104,7 +113,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-14T01:38:55.565Z</p>
+    <p>Generated on 2025-04-14T01:53:34.314Z</p>
   </footer>
 </body>
 </html>
