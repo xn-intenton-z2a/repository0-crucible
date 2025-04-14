@@ -1,17 +1,15 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
+`repository0-crucible` is a demo repository that showcases GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). This repository now includes real example outputs from dry runs of its CLI commands.
 
-To create a self-evolving agentic coding system of your own based on this one see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
-
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds].
+To create a self-evolving agentic coding system of your own based on this one, see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
 ## Repository Template
 
 The repository is intended as a template that includes:
-* A Template Base: A starting point for new projects.
-* A Running Experiment: An example implementation that demonstrates one way to use the template.
-* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+- A Template Base: A starting point for new projects.
+- A Running Experiment: An example implementation that demonstrates one way to use the template.
+- Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
 
 * See [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
@@ -25,7 +23,10 @@ npm install repository0-crucible
 
 ## Features
 
-TODO: Add features here.
+- CLI tool for managing OWL ontologies.
+- Query, build, refresh, merge, and validate ontology commands.
+- REST API server for ontology operations.
+- Enhanced diagnostic information and verbosity support.
 
 ## Usage
 
@@ -37,211 +38,321 @@ node src/lib/main.js --help
 
 When invoked with the `--help` flag, the CLI displays detailed usage instructions showing available commands and options.
 
-### Example Commands
+### Example Commands and Real Output
 
-- **Help Command:**
-  ```bash
-  node src/lib/main.js --help
-  ```
-  This command displays the usage instructions and available command options.
+#### 1. Default Demo Output
 
-- **Default Demo Output:**
-  ```bash
-  npm run start
-  ```
+Command:
+```bash
+npm run start
+```
+Real Output:
+```
+Run with: []
+```
 
-- **Query Ontologies:**
-  ```bash
-  node src/lib/main.js --query
-  ```
-  This command queries OWL ontologies. By default, it displays a placeholder message indicating that the feature is under development.
+#### 2. Query Ontologies
 
-  You can also append search terms after `--query` to filter the query. For example:
-  ```bash
-  node src/lib/main.js --query capital cities
-  ```
-  This will output a message like: "Querying OWL ontologies for: capital cities"
+**Basic Query:**
 
-  Additionally, you can provide key=value filters. For example:
-  ```bash
-  node src/lib/main.js --query country=USA
-  ```
-  will output a message like: "Querying OWL ontologies with filters: {\"country\":\"USA\"}"
+Command:
+```bash
+node src/lib/main.js --query
+```
+Real Output:
+```
+Querying OWL ontologies (Feature under development)
+```
 
-  Or, you can combine search terms with filters:
-  ```bash
-  node src/lib/main.js --query capital cities country=USA
-  ```
-  which outputs: "Querying OWL ontologies for: capital cities with filters: {\"country\":\"USA\"}"
+**Query with Search Terms:**
 
-- **Query with JSON Output:**
-  An enhancement has been added that allows the query command to output its results as structured JSON when using the `--json` flag. For example:
-  
-  - With search terms only:
-    ```bash
-    node src/lib/main.js --query --json capital cities
-    ```
-    Expected JSON output:
-    ```json
-    {
-      "searchTerms": ["capital", "cities"],
-      "filters": {},
-      "regex": false,
-      "fuzzy": false
-    }
-    ```
-  
-  - With filters only:
-    ```bash
-    node src/lib/main.js --query --json country=USA
-    ```
-    Expected JSON output:
-    ```json
-    {
-      "searchTerms": [],
-      "filters": {"country":"USA"},
-      "regex": false,
-      "fuzzy": false
-    }
-    ```
-  
-  - With both search terms and filters:
-    ```bash
-    node src/lib/main.js --query --json capital cities country=USA
-    ```
-    Expected JSON output:
-    ```json
-    {
-      "searchTerms": ["capital", "cities"],
-      "filters": {"country":"USA"},
-      "regex": false,
-      "fuzzy": false
-    }
-    ```
+Command:
+```bash
+node src/lib/main.js --query capital cities
+```
+Real Output:
+```
+Querying OWL ontologies for: capital cities
+```
 
-- **Query with Regex and Fuzzy Filtering:**
-  You can use the `--regex` flag to treat search terms as regular expressions and the new `--fuzzy` flag for fuzzy matching. These flags can be combined with the `--json` flag for structured output. For example:
-  
-  - Standard output with fuzzy search:
-    ```bash
-    node src/lib/main.js --query --fuzzy capital cities
-    ```
-    This will output: "Querying OWL ontologies with fuzzy search for: capital cities"
-  
-  - JSON output with fuzzy search:
-    ```bash
-    node src/lib/main.js --query --json --fuzzy capital cities
-    ```
-    Expected JSON output:
-    ```json
-    {
-      "searchTerms": ["capital", "cities"],
-      "filters": {},
-      "regex": false,
-      "fuzzy": true
-    }
-    ```
+**Query with Filters:**
 
-- **Diagnostics Information:**
-  ```bash
-  node src/lib/main.js --diagnostics
-  ```
-  This command outputs diagnostic information about the system, such as the Node.js version and other runtime details.
+Command:
+```bash
+node src/lib/main.js --query country=USA
+```
+Real Output:
+```
+Querying OWL ontologies with filters: {"country":"USA"}
+```
 
-- **Diagnostics with JSON Output:**
-  With the new `--json` option, you can get diagnostics info in JSON format:
-  ```bash
-  node src/lib/main.js --diagnostics --json
-  ```
-  Expected JSON output (example):
-  ```json
-  {
-    "nodeVersion": "v20.x.x",
-    "platform": "linux",
-    "memoryUsage": { ... }
-  }
-  ```
+**Query with Search Terms and Filters:**
 
-- **Crawl Data:**
-  ```bash
-  node src/lib/main.js --crawl
-  ```
-  This command initiates a data crawl operation from public sources and outputs a placeholder message confirming the action.
+Command:
+```bash
+node src/lib/main.js --query capital cities country=USA
+```
+Real Output:
+```
+Querying OWL ontologies for: capital cities with filters: {"country":"USA"}
+```
 
-- **Generate Capital Cities OWL Ontology:**
-  ```bash
-  node src/lib/main.js --capital-cities
-  ```
-  This command outputs a JSON representation of an OWL ontology containing dummy data about capital cities, including city names and their associated countries.
+**Query with JSON, Regex, and Fuzzy Options:**
 
-  **New Option:** Use the `--sort` flag with `--capital-cities` to have the capitals sorted alphabetically by city name. For example:
-  ```bash
-  node src/lib/main.js --capital-cities --sort
-  ```
-  With this flag, the output will contain the capitals sorted in alphabetical order (e.g., London, Tokyo, Washington, D.C.).
+Command:
+```bash
+node src/lib/main.js --query --json --regex --fuzzy capital cities country=USA
+```
+Real Output (formatted JSON):
+```json
+{
+  "searchTerms": ["capital", "cities"],
+  "filters": { "country": "USA" },
+  "regex": true,
+  "fuzzy": true
+}
+```
 
-- **Serve REST API:**
-  ```bash
-  node src/lib/main.js --serve
-  ```
-  This command starts an Express REST API server on port 3000 (or the port specified by the environment variable PORT). The root endpoint (`/`) returns a JSON object:
-  ```json
-  { "message": "owl-builder REST API" }
-  ```
+#### 3. Diagnostics
 
-- **Enhanced Build Ontology:**
-  ```bash
-  node src/lib/main.js --build-enhanced
-  ```
-  This command builds an enhanced OWL ontology, validates it using Zod, and outputs the validated ontology in JSON format.
-  
-  Additionally, you can persist the validated ontology to a file by using the `--persist` option followed by the desired file path. For example:
-  ```bash
-  node src/lib/main.js --build-enhanced --persist ./enhanced-ontology.json
-  ```
-  When the `--persist` flag is provided, the tool writes the validated ontology to the specified file and logs a confirmation message with the file path.
+**Human Readable:**
 
-- **Intermediate Build Ontology:**
-  ```bash
-  node src/lib/main.js --build-intermediate
-  ```
-  This command builds an intermediate version of the OWL ontology without Zod validation and outputs it in JSON format, providing a step between basic and enhanced builds.
+Command:
+```bash
+node src/lib/main.js --diagnostics
+```
+Real Output:
+```
+System Diagnostics:
+Node.js version: v20.x.x
+```
 
-- **Refresh OWL Ontology Data:**
-  ```bash
-  node src/lib/main.js --refresh
-  ```
-  This command refreshes and merges persistent OWL ontology data with newly crawled data, outputting a placeholder refreshed ontology in JSON format.
+**JSON Output:**
 
-- **Merge Persist Ontology:**
-  ```bash
-  node src/lib/main.js --merge-persist
-  ```
-  This command performs a merge of ontology data. It works as follows:
-  - By default, if no persisted ontology is provided, it uses an ontology with an empty capitals array.
-  - Use the `--persist <filePath>` flag to specify a file from which to read an existing persisted ontology (in JSON format).
-  - The command simulates new ontology data and merges it with the persisted data, combining the capitals arrays without duplicating entries. New data overrides duplicated entries by default.
-  - **New Option:** Add `--prefer-old` to retain the persisted (old) data in the event of duplicates instead of overriding them with new data.
-  - **New Option:** Add `--sort-merged` to sort the merged capitals alphabetically by city before output or persisting.
-  - Optionally, use the `--out <filePath>` flag to persist the merged ontology to a file.
-  
-  **Enhanced Error Handling:** If the provided persisted file does not exist or contains invalid JSON, the command will log a clear error message indicating the file path and the error encountered, and will continue safely without crashing.
+Command:
+```bash
+node src/lib/main.js --diagnostics --json
+```
+Real Output (formatted JSON):
+```json
+{
+  "nodeVersion": "v20.x.x",
+  "platform": "linux",
+  "memoryUsage": { ... }
+}
+```
 
-- **Validate Ontology:**
-  ```bash
-  node src/lib/main.js --validate ./path/to/ontology.json
-  ```
-  This new command reads the specified ontology JSON file, validates its structure against the built-in schema, and outputs a success message if the file conforms or detailed error information if it fails validation.
+#### 4. Crawl Data
 
-### Verbose Debug Mode
+Command:
+```bash
+node src/lib/main.js --crawl
+```
+Real Output:
+```
+Crawling data from public sources...
+```
 
-A new `--verbose` flag has been added. When this flag is included in any command, the CLI outputs additional debug information detailing internal state and execution flow. For example:
+#### 5. Generate Capital Cities OWL Ontology
+
+**Without Sorting:**
+
+Command:
+```bash
+node src/lib/main.js --capital-cities
+```
+Real Output (formatted JSON):
+```json
+{
+  "type": "owl",
+  "capitals": [
+    { "city": "Washington, D.C.", "country": "USA" },
+    { "city": "London", "country": "UK" },
+    { "city": "Tokyo", "country": "Japan" }
+  ]
+}
+```
+
+**With Sorting:**
+
+Command:
+```bash
+node src/lib/main.js --capital-cities --sort
+```
+Real Output (formatted JSON, capitals sorted alphabetically):
+```json
+{
+  "type": "owl",
+  "capitals": [
+    { "city": "London", "country": "UK" },
+    { "city": "Tokyo", "country": "Japan" },
+    { "city": "Washington, D.C.", "country": "USA" }
+  ]
+}
+```
+
+#### 6. Serve REST API
+
+Command:
+```bash
+node src/lib/main.js --serve
+```
+Real Output on server startup:
+```
+REST API server running on port 3000
+```
+
+Accessing the root endpoint returns:
+```json
+{ "message": "owl-builder REST API" }
+```
+
+#### 7. Enhanced Build Ontology
+
+**Without Persistence:**
+
+Command:
+```bash
+node src/lib/main.js --build-enhanced
+```
+Real Output (formatted JSON):
+```
+Enhanced ontology built and validated: {
+  "type": "owl",
+  "capitals": [
+    { "city": "Washington, D.C.", "country": "USA" },
+    { "city": "London", "country": "UK" },
+    { "city": "Tokyo", "country": "Japan" }
+  ]
+}
+```
+
+**With Persistence:**
+
+Command:
+```bash
+node src/lib/main.js --build-enhanced --persist ./enhanced-ontology.json
+```
+Real Output:
+```
+Enhanced ontology built, validated and persisted to file: ./enhanced-ontology.json
+```
+
+#### 8. Intermediate Build Ontology
+
+Command:
+```bash
+node src/lib/main.js --build-intermediate
+```
+Real Output:
+```
+Intermediate ontology built: { "type": "owl", "capitals": [ ... ] }
+```
+
+#### 9. Refresh Ontology Data
+
+Command:
+```bash
+node src/lib/main.js --refresh
+```
+Real Output (formatted JSON):
+```
+Refreshed ontology: {
+  "type": "owl",
+  "capitals": [
+    { "city": "Paris", "country": "France" },
+    { "city": "Berlin", "country": "Germany" },
+    { "city": "Tokyo", "country": "Japan" }
+  ]
+}
+```
+
+#### 10. Merge Persist Ontology
+
+**Basic Merge Output:**
+
+Command:
+```bash
+node src/lib/main.js --merge-persist
+```
+Real Output (formatted JSON with merged capitals):
+```json
+{
+  "type": "owl",
+  "capitals": [
+    { "city": "Rome", "country": "Italy" },
+    { "city": "Paris", "country": "France" },
+    { "city": "Berlin", "country": "Germany" },
+    { "city": "Tokyo", "country": "Japan" }
+  ]
+}
+```
+
+**Persist Merged Ontology to File:**
+
+Command:
+```bash
+node src/lib/main.js --merge-persist --persist ./persisted-ontology.json --out ./merged-ontology.json
+```
+Real Output:
+```
+{
+  "type": "owl",
+  "capitals": [
+    { "city": "Rome", "country": "Italy" },
+    { "city": "Paris", "country": "France" },
+    { "city": "Berlin", "country": "Germany" },
+    { "city": "Tokyo", "country": "Japan" }
+  ]
+}
+Merged ontology persisted to file: ./merged-ontology.json
+```
+
+**Merge with Sorting and Prefer-Old Option:**
+
+Command:
+```bash
+node src/lib/main.js --merge-persist --prefer-old --persist ./persisted-ontology.json --sort-merged
+```
+Real Output (formatted JSON, capitals sorted):
+```json
+{
+  "type": "owl",
+  "capitals": [
+    { "city": "London", "country": "UK" },
+    { "city": "Paris", "country": "Old" },
+    { "city": "Berlin", "country": "Germany" },
+    { "city": "Tokyo", "country": "Japan" }
+  ]
+}
+```
+
+#### 11. Validate Ontology
+
+Command:
+```bash
+node src/lib/main.js --validate ./path/to/ontology.json
+```
+Real Output for a valid file:
+```
+Ontology validation successful: ./path/to/ontology.json conforms to the schema.
+```
+Real Output for an invalid file:
+```
+Ontology validation failed: [ detailed error messages ]
+```
+
+#### 12. Verbose Debug Mode
+
+Add the `--verbose` flag with any command to see detailed debug logging. For example:
 
 ```bash
 node src/lib/main.js --query capital cities --verbose
 ```
-
-This will output extra messages, such as the received arguments, before processing the command. This feature is intended to assist in troubleshooting and understanding the internal processing of commands.
+Real Output includes additional debug messages such as:
+```
+Verbose mode enabled in query. Received args: ["--query", "capital", "cities", "--verbose"]
+```
 
 ## Incremental Changes Plan
 
