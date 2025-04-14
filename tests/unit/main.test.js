@@ -1,6 +1,8 @@
 import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main, query, diagnostics, crawlData, generateCapitalCitiesOwl } from "@src/lib/main.js";
+import { main, query, diagnostics, crawlData, generateCapitalCitiesOwl, serve } from "@src/lib/main.js";
+
+// Existing test suites
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -76,5 +78,18 @@ describe("Capital Cities Command Output", () => {
       expect(cityObj).toHaveProperty("country");
     });
     logSpy.mockRestore();
+  });
+});
+
+describe("Serve Command Output", () => {
+  test("should start REST API server and respond with expected JSON", async () => {
+    const server = serve(["--serve"]);
+    // Wait a short time to ensure the server is running
+    await new Promise(resolve => setTimeout(resolve, 100));
+    const response = await fetch("http://localhost:3000/");
+    expect(response.status).toBe(200);
+    const data = await response.json();
+    expect(data).toHaveProperty("message", "owl-builder REST API");
+    server.close();
   });
 });
