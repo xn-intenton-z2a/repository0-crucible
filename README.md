@@ -21,6 +21,24 @@ Install via npm:
 npm install repository0-crucible
 ```
 
+## Core Features
+
+The **owl-builder** CLI tool provides the following core commands:
+
+- **main**: Default execution of the CLI tool.
+- **query**: Query OWL ontologies with options such as `--json`, `--regex`, and `--fuzzy` to structure and refine your search.
+- **diagnostics**: Output system diagnostics in either human-readable or JSON format.
+- **crawl**: Crawl data from public sources with an optional simulation mode (`--simulate`).
+- **capital-cities**: Generate an OWL ontology for capital cities. Use `--sort` to have the capitals sorted alphabetically.
+- **serve**: Start an Express REST API server to interact with the ontology.
+- **build-intermediate**: Build a basic OWL ontology without Zod validation.
+- **build-enhanced**: Build an enhanced OWL ontology with Zod validation. Supports persistence through `--persist` and CSV export via `--export-csv`.
+- **refresh**: Refresh and merge ontology data (currently a placeholder implementation).
+- **merge-persist**: Merge persisted ontology data with new data. Options include `--prefer-old` to retain existing entries, `--sort-merged` to sort results, and `--out` to specify an output file.
+- **validate**: Validate an ontology JSON file against a predefined Zod schema.
+- **add-capital**: Add a new capital to the ontology by providing key=value pairs for city and country. Optionally persist changes with `--persist`.
+- **help**: Display help information for using the CLI tool.
+
 ## Features
 
 - CLI tool for managing OWL ontologies.
@@ -36,7 +54,7 @@ To run the CLI tool and see help instructions:
 node src/lib/main.js --help
 ```
 
-When invoked with the `--help` flag, the CLI displays detailed usage instructions showing available commands and options.
+When invoked with the `--help` flag, the CLI displays detailed usage instructions showing available commands and options, including the core features listed above.
 
 ### Example Commands and Real Output
 

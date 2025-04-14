@@ -459,8 +459,23 @@ export function addCapital(args) {
  * @param {string[]} args - Command line arguments
  */
 export function displayHelp(args) {
-  console.log(`
+  const helpText = `
 Usage: node src/lib/main.js [command] [options]
+
+Core Features:
+  - main: Default execution of the CLI tool.
+  - query: Query OWL ontologies with options such as --json, --regex, and --fuzzy.
+  - diagnostics: Output system diagnostics in human-readable or JSON format.
+  - crawl: Crawl data from public sources (use --simulate for simulated data).
+  - capital-cities: Generate an OWL ontology for capital cities (use --sort to sort the capitals).
+  - serve: Start the REST API server.
+  - build-intermediate: Build a basic OWL ontology without Zod validation.
+  - build-enhanced: Build an enhanced OWL ontology with Zod validation; supports --persist and --export-csv options.
+  - refresh: Refresh and merge ontology data (placeholder functionality).
+  - merge-persist: Merge persisted ontology data with new data; supports --prefer-old, --sort-merged, and --out options.
+  - validate: Validate an ontology JSON file against the predefined schema.
+  - add-capital: Add a new capital to the ontology.
+  - help: Display this help message.
 
 Commands:
   --help                 Display this help message.
@@ -478,7 +493,8 @@ Commands:
   --add-capital          Append a new capital to the ontology. Provide key=value pairs for city and country. Optionally, use --persist <filePath> to save the updated ontology.
   --verbose              Enable verbose debug logging.
 
-`);
+`;
+  console.log(helpText);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
