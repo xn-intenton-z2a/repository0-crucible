@@ -206,11 +206,12 @@ You can use the <code class="md-github">--regex</code> flag to treat search term
 <p class="md-github"><strong class="md-github">Merge Persist Ontology:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --merge-persist
 </code></pre>
-<p class="md-github">This command now performs an actual merge of ontology data. It works as follows:</p>
+<p class="md-github">This command performs a merge of ontology data. It works as follows:</p>
 <ul class="md-github">
 <li class="md-github">By default, if no persisted ontology is provided, it uses an ontology with an empty capitals array.</li>
 <li class="md-github">Use the <code class="md-github">--persist &lt;filePath&gt;</code> flag to specify a file from which to read an existing persisted ontology (in JSON format).</li>
-<li class="md-github">The command simulates new ontology data and merges it with the persisted data, combining the capitals arrays without duplicating entries (new data overrides duplicates).</li>
+<li class="md-github">The command simulates new ontology data and merges it with the persisted data, combining the capitals arrays without duplicating entries. New data overrides duplicated entries by default.</li>
+<li class="md-github"><strong class="md-github">New Option:</strong> Add <code class="md-github">--prefer-old</code> to retain the persisted (old) data in the event of duplicates instead of overriding them with new data.</li>
 <li class="md-github">Optionally, use the <code class="md-github">--out &lt;filePath&gt;</code> flag to persist the merged ontology to a file.</li>
 </ul>
 </li>
@@ -229,7 +230,7 @@ You can use the <code class="md-github">--regex</code> flag to treat search term
 
   </section>
   <footer>
-    <p>Generated on 2025-04-14T14:12:41.409Z</p>
+    <p>Generated on 2025-04-14T14:19:23.801Z</p>
   </footer>
 </body>
 </html>
