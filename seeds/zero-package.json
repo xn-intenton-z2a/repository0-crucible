@@ -1,6 +1,6 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
-  "version": "0.1.4-0",
+  "version": "1.1.0-0",
   "description": "add repository description here",
   "type": "module",
   "main": "src/lib/main.js",
@@ -28,8 +28,8 @@
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
-    "openai": "^4.91.1",
-    "dotenv": "^16.4.7",
+    "openai": "^4.94.0",
+    "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
     "zod": "^3.24.2"
   },
@@ -60,9 +60,19 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "files": ["package.json"],
+  "files": [
+    "package.json"
+  ],
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
-  "eslintIgnore": ["archive/**", "build/", "coverage/", "dist/", "exports/", "node_modules/", "eslint.config.js"]
+  "eslintIgnore": [
+    "archive/**",
+    "build/",
+    "coverage/",
+    "dist/",
+    "exports/",
+    "node_modules/",
+    "eslint.config.js"
+  ]
 }
