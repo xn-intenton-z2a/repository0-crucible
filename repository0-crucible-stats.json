@@ -2,17 +2,19 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Issue Worker",
+  "lastActivityName": "Review Issue",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1544] Implement JSON Output for Query Command in owl-builder CLI automated, feature",
-  "openIssues": 3,
+  "nextIssue": "[1544] Implement JSON Output for Query Command in owl-builder CLI automated, feature, issue-worker-14442744767",
+  "openIssues": 4,
   "issuesClosedLastHour": 4,
   "issuesClosedLastDay": 71,
-  "openPRs": 0,
+  "openPRs": 1,
   "averagePRAge": 0,
-  "prDetails": [],
+  "prDetails": [
+    "[0m] Implement --json flag for the query command to output structured JSON and update documentation and tests accordingly. (fixes #1544)"
+  ],
   "diffMinutes": 0,
-  "diffMinutesMain": 5,
+  "diffMinutesMain": 6,
   "commitsLastHour": 3,
   "commitsLastDay": 53,
   "lastFiveCommitMessages": [
@@ -34,5 +36,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T09:57:16.180Z"
+  "statsGeneratedAt": "2025-04-14T09:57:49.164Z"
 }
