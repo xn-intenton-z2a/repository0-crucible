@@ -209,13 +209,13 @@ Accessing the root endpoint returns:
 
 #### 7. Enhanced Build Ontology
 
-**Without Persistence:**
+**Without Persistence (JSON Output):**
 
 Command:
 ```bash
 node src/lib/main.js --build-enhanced
 ```
-Real Output (formatted JSON):
+Real Output:
 ```
 Enhanced ontology built and validated: {
   "type": "owl",
@@ -227,7 +227,7 @@ Enhanced ontology built and validated: {
 }
 ```
 
-**With Persistence:**
+**With Persistence (JSON Output):**
 
 Command:
 ```bash
@@ -236,6 +236,31 @@ node src/lib/main.js --build-enhanced --persist ./enhanced-ontology.json
 Real Output:
 ```
 Enhanced ontology built, validated and persisted to file: ./enhanced-ontology.json
+```
+
+**With CSV Export:**
+
+Command:
+```bash
+node src/lib/main.js --build-enhanced --export-csv
+```
+Real Output (CSV formatted):
+```
+city,country
+Washington, D.C.,USA
+London,UK
+Tokyo,Japan
+```
+
+You can also persist the CSV output using the --persist flag:
+
+Command:
+```bash
+node src/lib/main.js --build-enhanced --export-csv --persist ./enhanced-ontology.csv
+```
+Real Output:
+```
+Enhanced ontology built, validated and persisted to CSV file: ./enhanced-ontology.csv
 ```
 
 #### 8. Intermediate Build Ontology
