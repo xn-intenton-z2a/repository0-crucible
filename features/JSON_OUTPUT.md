@@ -1,25 +1,26 @@
-# Overview
-This feature consolidates and enhances the existing diagnostics and query functionalities by introducing structured JSON output modes. Users will now be able to utilize the new flags `--diagnostics-json` and `--query-json` to receive machine-readable diagnostic and query responses. This merger provides a consistent JSON output across different commands, facilitating easier integration with monitoring tools and automated workflows.
+# JSON_OUTPUT Enhancement
 
-# Implementation Details
+## Overview
+This enhancement extends the existing JSON_OUTPUT feature to fully support structured JSON responses across both query and diagnostics commands. In addition to the already implemented `--query-json` flag, the CLI tool will now detect a new `--diagnostics-json` flag. When provided, the diagnostics command will output key system information as a JSON object rather than plain text.
+
+## Implementation Details
 - **CLI Argument Parsing:**
-  - Update `src/lib/main.js` to detect the new flags `--diagnostics-json` and `--query-json` alongside the existing `--diagnostics` and `--query` commands.
-  - When `--diagnostics-json` is provided, bypass the standard textual diagnostics and invoke a new function (or enhanced branch) that gathers system diagnostics (e.g., Node.js version, process uptime, memory usage) and outputs a JSON-formatted string.
-  - When `--query-json` is provided, modify the query handling logic to construct and output a JSON object containing keys like `searchTerms`, `filters`, and a summary `message` rather than plain text.
+  - Update `src/lib/main.js` to detect the new `--diagnostics-json` flag for the diagnostics command.
+  - When `--diagnostics-json` is present, bypass the standard plain-text output and instead invoke a branch that gathers system details (e.g., Node.js version, process uptime, memory usage) and prints them as a structured JSON object.
 
 - **Source Code Changes:**
-  - In `src/lib/main.js`, implement or extend functions for handling JSON responses in diagnostics and query commands.
-  - Ensure backward compatibility by retaining the original behavior when the JSON flags are not used.
+  - In the `diagnostics` function, add a check for `--diagnostics-json` and, if found, build an object (e.g., `{ nodeVersion, uptime, memoryUsage }`) and output it using `JSON.stringify` with appropriate formatting.
+  - Retain the existing behavior when the JSON flag is not present.
 
 - **Testing Enhancements:**
-  - Update `tests/unit/main.test.js` to include new test cases that simulate the use of `--diagnostics-json` and `--query-json`.
-  - Validate that the JSON outputs contain the necessary keys and that the outputs parse correctly with `JSON.parse`.
+  - Update `tests/unit/main.test.js` to include new test cases that simulate the `--diagnostics-json` flag. For example, validate that the JSON output contains keys such as `nodeVersion`, `uptime`, and `memoryUsage`.
+  - Ensure that traditional diagnostic output remains unchanged when the flag is not provided.
 
 - **Documentation Updates:**
-  - Revise `README.md` to document the new JSON output flags, including examples of how to invoke the CLI with `--diagnostics-json` and `--query-json`.
-  - Update `CONTRIBUTING.md` to include guidelines for extending JSON output functionality and testing these enhancements.
+  - Revise `README.md` to document the new `--diagnostics-json` flag alongside `--query-json`, including usage examples.
+  - Update `CONTRIBUTING.md` with guidelines on testing JSON output across different commands and adding further system metrics if needed.
 
-# Future Considerations
-- Further refine the JSON schemas to include additional system metrics or query metadata.
-- Provide configuration options to allow users to choose between global human-readable and JSON outputs across all commands.
-- Extend similar JSON output formats to other commands as needed in future iterations.
+## Future Considerations
+- Expand the JSON schema to include additional system diagnostics such as CPU usage or custom environment variables.
+- Provide configuration options allowing users to select between detailed and summary JSON diagnostics in future iterations.
+- Ensure that both human-readable and JSON modes are thoroughly tested to maintain backward compatibility.
