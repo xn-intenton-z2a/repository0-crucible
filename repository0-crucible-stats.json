@@ -2,17 +2,17 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Issue Worker",
+  "lastActivityName": "Automerge",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1538] Enhance Query Command to Support Complex Filter Values automated, feature",
+  "nextIssue": "[1538] Enhance Query Command to Support Complex Filter Values automated, feature, issue-worker-14436748857",
   "openIssues": 1,
   "issuesClosedLastHour": 2,
   "issuesClosedLastDay": 67,
   "openPRs": 0,
   "averagePRAge": 0,
   "prDetails": [],
-  "diffMinutes": 0,
-  "diffMinutesMain": 14,
+  "diffMinutes": 2,
+  "diffMinutesMain": 17,
   "commitsLastHour": 2,
   "commitsLastDay": 46,
   "lastFiveCommitMessages": [
@@ -25,14 +25,14 @@
   "branches": {
     "count": 1,
     "details": [
-      "[0m] agentic-lib-issue-1538"
+      "[3m] agentic-lib-issue-1538"
     ],
     "branchIssueDetails": [
       "[1538] Enhance Query Command to Support Complex Filter Values automated, feature, issue-worker-14436748857"
     ],
-    "averageBranchAge": 0
+    "averageBranchAge": 3
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T03:25:47.266Z"
+  "statsGeneratedAt": "2025-04-14T03:28:26.419Z"
 }
