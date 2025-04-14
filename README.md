@@ -26,7 +26,7 @@ npm install repository0-crucible
 The **owl-builder** CLI tool provides the following core commands:
 
 - **main**: Default execution of the CLI tool.
-- **query**: Query OWL ontologies with options such as `--json`, `--regex`, and `--fuzzy` to structure and refine your search.
+- **query**: Query OWL ontologies with options such as `--json`, `--regex`, `--fuzzy`, and now `--ignore-case` to perform case-insensitive searches.
 - **diagnostics**: Output system diagnostics in either human-readable or JSON format.
 - **crawl**: Crawl data from public sources with an optional simulation mode (`--simulate`).
 - **capital-cities**: Generate an OWL ontology for capital cities. Use `--sort` to have the capitals sorted alphabetically.
@@ -115,17 +115,17 @@ Real Output:
 Querying OWL ontologies for: capital cities with filters: {"country":"USA"}
 ```
 
-**Query with JSON, Regex, and Fuzzy Options:**
+**Query with JSON, Regex, Fuzzy, and Ignore-Case Options:**
 
 Command:
 ```bash
-node src/lib/main.js --query --json --regex --fuzzy capital cities country=USA
+node src/lib/main.js --query --json --regex --fuzzy --ignore-case CaPItal CiTiEs CoUnTrY=UsA
 ```
 Real Output (formatted JSON):
 ```json
 {
   "searchTerms": ["capital", "cities"],
-  "filters": { "country": "USA" },
+  "filters": { "country": "usa" },
   "regex": true,
   "fuzzy": true
 }

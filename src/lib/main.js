@@ -33,13 +33,14 @@ export function query(args) {
     console.log("Verbose mode enabled in query. Received args: " + JSON.stringify(args));
   }
   
-  // Determine if JSON, regex, and fuzzy flags are provided
+  // Determine if JSON, regex, fuzzy and ignore-case flags are provided
   const jsonFlag = args.includes("--json");
   const regexFlag = args.includes("--regex");
   const fuzzyFlag = args.includes("--fuzzy");
+  const ignoreCaseFlag = args.includes("--ignore-case");
 
-  // Remove the '--query', '--verbose', '--json', '--regex', and '--fuzzy' flags from the arguments
-  const filteredArgs = args.filter(arg => !["--query", "--verbose", "--json", "--regex", "--fuzzy"].includes(arg));
+  // Remove the '--query', '--verbose', '--json', '--regex', '--fuzzy', and '--ignore-case' flags from the arguments
+  const filteredArgs = args.filter(arg => !["--query", "--verbose", "--json", "--regex", "--fuzzy", "--ignore-case"].includes(arg));
   
   const filters = {};
   const searchTerms = [];
@@ -48,13 +49,17 @@ export function query(args) {
     if (arg.includes("=")) {
       const parts = arg.split("=");
       if (parts.length === 2) {
-        const [key, value] = parts;
+        let [key, value] = parts;
+        if (ignoreCaseFlag) {
+          key = key.toLowerCase();
+          value = value.toLowerCase();
+        }
         filters[key] = value;
       } else {
-        searchTerms.push(arg);
+        searchTerms.push(ignoreCaseFlag ? arg.toLowerCase() : arg);
       }
     } else {
-      searchTerms.push(arg);
+      searchTerms.push(ignoreCaseFlag ? arg.toLowerCase() : arg);
     }
   });
 
@@ -464,23 +469,24 @@ Usage: node src/lib/main.js [command] [options]
 
 Core Features:
   - main: Default execution of the CLI tool.
-  - query: Query OWL ontologies with options such as --json, --regex, and --fuzzy.
+  - query: Query OWL ontologies with options such as --json, --regex, --fuzzy, and now --ignore-case for case-insensitive searches.
   - diagnostics: Output system diagnostics in human-readable or JSON format.
   - crawl: Crawl data from public sources (use --simulate for simulated data).
-  - capital-cities: Generate an OWL ontology for capital cities (use --sort to sort the capitals).
+  - capital-cities: Generate an OWL ontology for capital cities (use --sort to sort the capitals alphabetically).
   - serve: Start the REST API server.
   - build-intermediate: Build a basic OWL ontology without Zod validation.
   - build-enhanced: Build an enhanced OWL ontology with Zod validation; supports --persist and --export-csv options.
   - refresh: Refresh and merge ontology data (Feature under development).
   - merge-persist: Merge persisted ontology data with new data; supports --prefer-old, --sort-merged, and --out options.
-  - validate: Validate an ontology JSON file against the predefined schema.
+  - validate: Validate an ontology JSON file against a predefined schema.
   - add-capital: Add a new capital to the ontology.
   - help: Display this help message.
 
 Commands:
   --help                 Display this help message.
   --diagnostics          Display system diagnostic information. Use --json for JSON output.
-  --query [args]         Query OWL ontologies. Append search terms or key=value filters. Add --json for structured JSON output. Use --regex to treat search terms as regular expressions and --fuzzy for fuzzy matching.
+  --query [args]         Query OWL ontologies. Append search terms or key=value filters. Add --json for structured JSON output.
+                         Use --regex to treat search terms as regular expressions, --fuzzy for fuzzy matching, and --ignore-case for case-insensitive search.
   --crawl                Crawl data from public sources. Use --simulate to output simulated crawled data.
   --capital-cities       Generate an OWL ontology for capital cities. Use --sort to output capitals sorted alphabetically by city name.
   --serve                Start the Express REST API server.
@@ -488,7 +494,8 @@ Commands:
   --build-enhanced       Build an enhanced OWL ontology with Zod validation. Optionally, use --persist <filePath> to save the output.
                          Add --export-csv with --build-enhanced to output a CSV representation of capitals.
   --refresh              Refresh and merge persistent OWL ontology data (placeholder implementation).
-  --merge-persist        Merge new ontology data with persisted ontology data. Use --persist <filePath> to load persisted data (defaults to empty), and --out <filePath> to write the merged ontology to a file. Add --prefer-old to retain persisted data when duplicates exist. Use --sort-merged to sort capitals alphabetically by city after merging.
+  --merge-persist        Merge new ontology data with persisted ontology data. Use --persist <filePath> to load persisted data (defaults to empty), and --out <filePath> to write the merged ontology to a file.
+                         Add --prefer-old to retain persisted data when duplicates exist. Use --sort-merged to sort capitals alphabetically by city after merging.
   --validate <filePath>  Validate an ontology JSON file against the schema and output the result.
   --add-capital          Append a new capital to the ontology. Provide key=value pairs for city and country. Optionally, use --persist <filePath> to save the updated ontology.
   --verbose              Enable verbose debug logging.
