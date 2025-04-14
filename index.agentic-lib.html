@@ -167,11 +167,11 @@ Node.js version: v20.x.x
 <pre class="md-github"><code class="md-github language-json">{ &quot;message&quot;: &quot;owl-builder REST API&quot; }
 </code></pre>
 <h4 class="md-github"><a class="md-github__anchor" name="7-enhanced-build-ontology" href="#7-enhanced-build-ontology"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7. Enhanced Build Ontology</h4>
-<p class="md-github"><strong class="md-github">Without Persistence:</strong></p>
+<p class="md-github"><strong class="md-github">Without Persistence (JSON Output):</strong></p>
 <p class="md-github">Command:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-enhanced
 </code></pre>
-<p class="md-github">Real Output (formatted JSON):</p>
+<p class="md-github">Real Output:</p>
 <pre class="md-github"><code class="md-github">Enhanced ontology built and validated: {
   &quot;type&quot;: &quot;owl&quot;,
   &quot;capitals&quot;: [
@@ -181,12 +181,29 @@ Node.js version: v20.x.x
   ]
 }
 </code></pre>
-<p class="md-github"><strong class="md-github">With Persistence:</strong></p>
+<p class="md-github"><strong class="md-github">With Persistence (JSON Output):</strong></p>
 <p class="md-github">Command:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-enhanced --persist ./enhanced-ontology.json
 </code></pre>
 <p class="md-github">Real Output:</p>
 <pre class="md-github"><code class="md-github">Enhanced ontology built, validated and persisted to file: ./enhanced-ontology.json
+</code></pre>
+<p class="md-github"><strong class="md-github">With CSV Export:</strong></p>
+<p class="md-github">Command:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-enhanced --export-csv
+</code></pre>
+<p class="md-github">Real Output (CSV formatted):</p>
+<pre class="md-github"><code class="md-github">city,country
+Washington, D.C.,USA
+London,UK
+Tokyo,Japan
+</code></pre>
+<p class="md-github">You can also persist the CSV output using the --persist flag:</p>
+<p class="md-github">Command:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-enhanced --export-csv --persist ./enhanced-ontology.csv
+</code></pre>
+<p class="md-github">Real Output:</p>
+<pre class="md-github"><code class="md-github">Enhanced ontology built, validated and persisted to CSV file: ./enhanced-ontology.csv
 </code></pre>
 <h4 class="md-github"><a class="md-github__anchor" name="8-intermediate-build-ontology" href="#8-intermediate-build-ontology"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>8. Intermediate Build Ontology</h4>
 <p class="md-github">Command:</p>
@@ -282,7 +299,7 @@ Merged ontology persisted to file: ./merged-ontology.json
 
   </section>
   <footer>
-    <p>Generated on 2025-04-14T19:12:49.469Z</p>
+    <p>Generated on 2025-04-14T19:18:58.314Z</p>
   </footer>
 </body>
 </html>
