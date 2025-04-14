@@ -86,7 +86,8 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
     {
       "searchTerms": ["capital", "cities"],
       "filters": {},
-      "regex": false
+      "regex": false,
+      "fuzzy": false
     }
     ```
   
@@ -98,8 +99,9 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
     ```json
     {
       "searchTerms": [],
-      "filters": {"country": "USA"},
-      "regex": false
+      "filters": {"country":"USA"},
+      "regex": false,
+      "fuzzy": false
     }
     ```
   
@@ -111,30 +113,32 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
     ```json
     {
       "searchTerms": ["capital", "cities"],
-      "filters": {"country": "USA"},
-      "regex": false
+      "filters": {"country":"USA"},
+      "regex": false,
+      "fuzzy": false
     }
     ```
 
-- **Query with Regex Filtering:**
-  You can use the `--regex` flag to treat search terms as regular expressions. This flag can be combined with the `--json` flag for structured output. For example:
+- **Query with Regex and Fuzzy Filtering:**
+  You can use the `--regex` flag to treat search terms as regular expressions and the new `--fuzzy` flag for fuzzy matching. These flags can be combined with the `--json` flag for structured output. For example:
   
-  - Standard output with regex filtering:
+  - Standard output with fuzzy search:
     ```bash
-    node src/lib/main.js --query --regex capital cities
+    node src/lib/main.js --query --fuzzy capital cities
     ```
-    This will output: "Querying OWL ontologies with regex for: capital cities"
+    This will output: "Querying OWL ontologies with fuzzy search for: capital cities"
   
-  - JSON output with regex filtering:
+  - JSON output with fuzzy search:
     ```bash
-    node src/lib/main.js --query --regex --json capital cities
+    node src/lib/main.js --query --json --fuzzy capital cities
     ```
     Expected JSON output:
     ```json
     {
       "searchTerms": ["capital", "cities"],
       "filters": {},
-      "regex": true
+      "regex": false,
+      "fuzzy": true
     }
     ```
 

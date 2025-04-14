@@ -75,6 +75,7 @@ describe("Query Command JSON Output", () => {
     expect(parsed.searchTerms).toEqual(["capital", "cities"]);
     expect(parsed.filters).toEqual({});
     expect(parsed).toHaveProperty("regex", false);
+    expect(parsed).toHaveProperty("fuzzy", false);
     logSpy.mockRestore();
   });
 
@@ -86,6 +87,7 @@ describe("Query Command JSON Output", () => {
     expect(parsed.searchTerms).toEqual([]);
     expect(parsed.filters).toEqual({ country: "USA" });
     expect(parsed).toHaveProperty("regex", false);
+    expect(parsed).toHaveProperty("fuzzy", false);
     logSpy.mockRestore();
   });
 
@@ -97,6 +99,7 @@ describe("Query Command JSON Output", () => {
     expect(parsed.searchTerms).toEqual(["capital", "cities"]);
     expect(parsed.filters).toEqual({ country: "USA" });
     expect(parsed).toHaveProperty("regex", false);
+    expect(parsed).toHaveProperty("fuzzy", false);
     logSpy.mockRestore();
   });
 });
@@ -118,6 +121,25 @@ describe("Query Command Regex Option", () => {
     query(["--query", "--regex", "capital", "cities", "country=USA"]);
     const callArgs = logSpy.mock.calls[0][0];
     expect(callArgs).toContain("with regex");
+    logSpy.mockRestore();
+  });
+});
+
+describe("Query Command Fuzzy Option", () => {
+  test("should output JSON object with fuzzy property true when '--fuzzy' flag is provided along with '--json'", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    query(["--query", "--json", "--fuzzy", "capital", "cities", "country=USA"]);
+    const output = logSpy.mock.calls[0][0];
+    const parsed = JSON.parse(output);
+    expect(parsed.fuzzy).toBe(true);
+    logSpy.mockRestore();
+  });
+
+  test("should log message with fuzzy search indication when '--fuzzy' flag is provided without '--json'", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    query(["--query", "--fuzzy", "capital", "cities", "country=USA"]);
+    const callArgs = logSpy.mock.calls[0][0];
+    expect(callArgs).toContain("fuzzy search");
     logSpy.mockRestore();
   });
 });
@@ -377,6 +399,7 @@ describe("Help Command Output", () => {
     expect(helpOutput).toContain("--merge-persist");
     expect(helpOutput).toContain("--json");
     expect(helpOutput).toContain("--regex");
+    expect(helpOutput).toContain("--fuzzy");
     logSpy.mockRestore();
   });
 });
