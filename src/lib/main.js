@@ -85,6 +85,17 @@ export function diagnostics(args) {
   if (verbose) {
     console.log("Verbose mode enabled in diagnostics. Received args: " + JSON.stringify(args));
   }
+  
+  if (args.includes("--json")) {
+    const diag = {
+      nodeVersion: process.version,
+      platform: process.platform,
+      memoryUsage: process.memoryUsage()
+    };
+    console.log(JSON.stringify(diag, null, 2));
+    return;
+  }
+  
   console.log("System Diagnostics:");
   console.log(`Node.js version: ${process.version}`);
   // You can add more diagnostic information here if needed
@@ -317,7 +328,7 @@ Usage: node src/lib/main.js [command] [options]
 
 Commands:
   --help                 Display this help message.
-  --diagnostics          Display system diagnostic information.
+  --diagnostics          Display system diagnostic information. Use --json for JSON output.
   --query [args]         Query OWL ontologies. Append search terms or key=value filters. Add --json for structured JSON output. Use --regex to treat search terms as regular expressions and --fuzzy for fuzzy matching.
   --crawl                Crawl data from public sources.
   --capital-cities       Generate an OWL ontology for capital cities. Use --sort to output capitals sorted alphabetically by city name.

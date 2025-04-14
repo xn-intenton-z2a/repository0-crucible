@@ -148,6 +148,20 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
   ```
   This command outputs diagnostic information about the system, such as the Node.js version and other runtime details.
 
+- **Diagnostics with JSON Output:**
+  With the new `--json` option, you can get diagnostics info in JSON format:
+  ```bash
+  node src/lib/main.js --diagnostics --json
+  ```
+  Expected JSON output (example):
+  ```json
+  {
+    "nodeVersion": "v20.x.x",
+    "platform": "linux",
+    "memoryUsage": { ... }
+  }
+  ```
+
 - **Crawl Data:**
   ```bash
   node src/lib/main.js --crawl

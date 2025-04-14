@@ -153,6 +153,17 @@ describe("Diagnostics Command Output", () => {
     expect(logSpy).toHaveBeenCalledWith(`Node.js version: ${process.version}`);
     logSpy.mockRestore();
   });
+
+  test("should output diagnostics in JSON when '--json' flag is provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    diagnostics(["--diagnostics", "--json"]);
+    const output = logSpy.mock.calls[0][0];
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("nodeVersion", process.version);
+    expect(parsed).toHaveProperty("platform");
+    expect(parsed).toHaveProperty("memoryUsage");
+    logSpy.mockRestore();
+  });
 });
 
 describe("Crawl Command Output", () => {
