@@ -288,7 +288,6 @@ describe("Merge Persist Command Output", () => {
   test("should log merge persist message when '--merge-persist' flag is provided", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     mergePersist(["--merge-persist"]);
-    // Not checking placeholder message as mergePersist now outputs merged ontology
     const output = logSpy.mock.calls[0][0];
     expect(output).toContain("owl");
     logSpy.mockRestore();
@@ -341,6 +340,42 @@ describe("Merge Persist Command Output", () => {
     expect(mergedCities).toEqual(expectedCities.sort());
     fs.unlinkSync(tempPersistFile);
     fs.unlinkSync(tempOutFile);
+  });
+
+  test("should prefer persisted data when --prefer-old flag is used", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const tmpDir = os.tmpdir();
+    const tempPersistFile = path.join(tmpDir, 'persisted-ontology-prefer-old.json');
+    // Persisted ontology has a duplicate with different data
+    const persistedData = {
+      type: "owl",
+      capitals: [
+        { city: "Paris", country: "Old" },
+        { city: "London", country: "UK" }
+      ]
+    };
+    fs.writeFileSync(tempPersistFile, JSON.stringify(persistedData, null, 2));
+
+    mergePersist(["--merge-persist", "--prefer-old", "--persist", tempPersistFile]);
+    const outputCall = logSpy.mock.calls.find(call => {
+      try {
+        const parsed = JSON.parse(call[0]);
+        return parsed.type === "owl" && Array.isArray(parsed.capitals);
+      } catch (e) { return false; }
+    });
+    expect(outputCall).toBeDefined();
+    const mergedOntology = JSON.parse(outputCall[0]);
+    const expectedCapitals = [
+      { city: "London", country: "UK" },
+      { city: "Paris", country: "Old" },
+      { city: "Berlin", country: "Germany" },
+      { city: "Tokyo", country: "Japan" }
+    ];
+    // Sort by city name for comparison
+    const sortFn = (a, b) => a.city.localeCompare(b.city);
+    expect(mergedOntology.capitals.sort(sortFn)).toEqual(expectedCapitals.sort(sortFn));
+    fs.unlinkSync(tempPersistFile);
+    logSpy.mockRestore();
   });
 });
 
@@ -400,6 +435,7 @@ describe("Help Command Output", () => {
     expect(helpOutput).toContain("--json");
     expect(helpOutput).toContain("--regex");
     expect(helpOutput).toContain("--fuzzy");
+    expect(helpOutput).toContain("--prefer-old");
     logSpy.mockRestore();
   });
 });

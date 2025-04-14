@@ -197,10 +197,11 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
   ```bash
   node src/lib/main.js --merge-persist
   ```
-  This command now performs an actual merge of ontology data. It works as follows:
+  This command performs a merge of ontology data. It works as follows:
   - By default, if no persisted ontology is provided, it uses an ontology with an empty capitals array.
   - Use the `--persist <filePath>` flag to specify a file from which to read an existing persisted ontology (in JSON format).
-  - The command simulates new ontology data and merges it with the persisted data, combining the capitals arrays without duplicating entries (new data overrides duplicates).
+  - The command simulates new ontology data and merges it with the persisted data, combining the capitals arrays without duplicating entries. New data overrides duplicated entries by default.
+  - **New Option:** Add `--prefer-old` to retain the persisted (old) data in the event of duplicates instead of overriding them with new data.
   - Optionally, use the `--out <filePath>` flag to persist the merged ontology to a file.
 
 ### Verbose Debug Mode
