@@ -390,6 +390,71 @@ export function validateOntology(args) {
 }
 
 /**
+ * Adds a new capital to the OWL ontology. Expects key=value pairs for 'city' and 'country'.
+ * If the --persist flag is provided with a file path, it reads the existing ontology (or initializes a new one)
+ * and appends the new capital. Otherwise, logs the updated ontology.
+ * @param {string[]} args - Command line arguments
+ */
+export function addCapital(args) {
+  const verbose = args.includes("--verbose");
+  if (verbose) {
+    console.log("Verbose mode enabled in addCapital. Received args: " + JSON.stringify(args));
+  }
+  // Filter out flags
+  const filteredArgs = args.filter(arg => !["--add-capital", "--verbose", "--persist"].includes(arg) && !arg.startsWith("--persist"));
+  
+  const capitalData = {};
+  filteredArgs.forEach(arg => {
+    if (arg.includes("=")) {
+      const [key, value] = arg.split("=");
+      capitalData[key] = value;
+    }
+  });
+
+  if (!capitalData.city || !capitalData.country) {
+    console.error("Error: Both 'city' and 'country' must be provided.");
+    return;
+  }
+
+  let ontology = { type: "owl", capitals: [] };
+  const persistIndex = args.indexOf("--persist");
+  let filePath = null;
+  if (persistIndex !== -1 && args.length > persistIndex + 1) {
+    filePath = args[persistIndex + 1];
+    try {
+      if (fs.existsSync(filePath)) {
+        const fileContent = fs.readFileSync(filePath, "utf8");
+        try {
+          ontology = JSON.parse(fileContent);
+        } catch (e) {
+          console.error(`Invalid JSON in persisted ontology file at ${filePath}: ${e.message}`);
+          return;
+        }
+      } else {
+        // File does not exist; use a new ontology
+      }
+    } catch (error) {
+      console.error(`Error reading persisted ontology file at ${filePath}: ${error.message}`);
+      return;
+    }
+  }
+
+  // Append new capital
+  ontology.capitals.push({ city: capitalData.city, country: capitalData.country });
+
+  if (filePath) {
+    try {
+      fs.writeFileSync(filePath, JSON.stringify(ontology, null, 2));
+      console.log(`Updated ontology persisted to file: ${filePath}`);
+    } catch (error) {
+      console.error("Error writing updated ontology to file:", error);
+    }
+  } else {
+    console.log(JSON.stringify(ontology, null, 2));
+  }
+}
+
+/**
  * Displays help information with usage instructions for the CLI tool.
  * @param {string[]} args - Command line arguments
  */
@@ -410,6 +475,7 @@ Commands:
   --refresh              Refresh and merge persistent OWL ontology data (placeholder implementation).
   --merge-persist        Merge new ontology data with persisted ontology data. Use --persist <filePath> to load persisted data (defaults to empty), and --out <filePath> to write the merged ontology to a file. Add --prefer-old to retain persisted data when duplicates exist. Use --sort-merged to sort capitals alphabetically by city after merging.
   --validate <filePath>  Validate an ontology JSON file against the schema and output the result.
+  --add-capital          Append a new capital to the ontology. Provide key=value pairs for city and country. Optionally, use --persist <filePath> to save the updated ontology.
   --verbose              Enable verbose debug logging.
 
 `);
@@ -439,6 +505,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     mergePersist(args);
   } else if (args.includes("--validate")) {
     validateOntology(args);
+  } else if (args.includes("--add-capital")) {
+    addCapital(args);
   } else {
     main(args);
   }
