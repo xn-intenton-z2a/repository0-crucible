@@ -227,9 +227,7 @@ describe("Capital Cities Command Output", () => {
     });
     logSpy.mockRestore();
   });
-});
 
-describe("Capital Cities Command Sorted Output", () => {
   test("should output sorted capitals when '--sort' flag is provided", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     generateCapitalCitiesOwl(["--capital-cities", "--sort"]);
@@ -654,5 +652,26 @@ describe("Add Capital Command", () => {
     expect(updatedOntology.capitals).toContainEqual({ city: "Paris", country: "France" });
     logSpy.mockRestore();
     fs.unlinkSync(tempFilePath);
+  });
+});
+
+describe("Help Command Output", () => {
+  test("should include a Core Features section in the help output", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    displayHelp([]);
+    const output = logSpy.mock.calls[0][0];
+    expect(output).toContain("Core Features:");
+    expect(output).toContain("- query: Query OWL ontologies");
+    expect(output).toContain("- diagnostics: Output system diagnostics");
+    expect(output).toContain("- crawl: Crawl data from public sources");
+    expect(output).toContain("- capital-cities: Generate an OWL ontology for capital cities");
+    expect(output).toContain("- serve: Start the REST API server");
+    expect(output).toContain("- build-intermediate: Build a basic OWL ontology");
+    expect(output).toContain("- build-enhanced: Build an enhanced OWL ontology");
+    expect(output).toContain("- refresh: Refresh and merge ontology data");
+    expect(output).toContain("- merge-persist: Merge persisted ontology data with new data");
+    expect(output).toContain("- validate: Validate an ontology JSON file");
+    expect(output).toContain("- add-capital: Add a new capital to the ontology");
+    logSpy.mockRestore();
   });
 });
