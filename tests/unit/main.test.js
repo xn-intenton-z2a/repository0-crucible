@@ -282,6 +282,35 @@ describe("Build Enhanced Ontology Command Output", () => {
     expect(Array.isArray(parsed.capitals)).toBe(true);
     fs.unlinkSync(tempFilePath);
   });
+
+  test("should output CSV when --export-csv flag is provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const args = ["--build-enhanced", "--export-csv"];
+    buildEnhancedOntology(args);
+    const output = logSpy.mock.calls[0][0];
+    // Check that the output starts with CSV header
+    expect(output.startsWith("city,country")).toBe(true);
+    // Check that there are three lines (header + 3 capitals)
+    const lines = output.split("\n");
+    expect(lines.length).toBe(4);
+    expect(lines[1]).toContain("Washington, D.C.");
+    expect(lines[2]).toContain("London");
+    expect(lines[3]).toContain("Tokyo");
+    logSpy.mockRestore();
+  });
+
+  test("should persist CSV to file when --export-csv and --persist flags are provided", () => {
+    const tmpDir = os.tmpdir();
+    const tempFilePath = path.join(tmpDir, 'temp-ontology.csv');
+    const args = ["--build-enhanced", "--export-csv", "--persist", tempFilePath];
+    buildEnhancedOntology(args);
+    const fileContent = fs.readFileSync(tempFilePath, { encoding: 'utf8' });
+    // Check that the file content is CSV formatted
+    expect(fileContent.startsWith("city,country")).toBe(true);
+    const lines = fileContent.split("\n");
+    expect(lines.length).toBe(4);
+    fs.unlinkSync(tempFilePath);
+  });
 });
 
 describe("Build Intermediate Ontology Command Output", () => {
@@ -479,7 +508,6 @@ describe("Merge Persist Command Output", () => {
     const invalidFile = path.join(tmpDir, 'invalid-ontology.json');
     fs.writeFileSync(invalidFile, "{ invalid json }");
     mergePersist(["--merge-persist", "--persist", invalidFile]);
-    // The error message should contain 'Invalid JSON in persisted ontology file'
     const errorLogged = logSpy.mock.calls.some(call => call[0].includes('Invalid JSON in persisted ontology file'));
     expect(errorLogged).toBe(true);
     fs.unlinkSync(invalidFile);
@@ -510,7 +538,6 @@ describe("Validate Ontology Command", () => {
   test("should log validation errors for invalid ontology file", () => {
     const tmpDir = os.tmpdir();
     const invalidFile = path.join(tmpDir, 'invalid-ontology.json');
-    // Invalid because missing capitals array or wrong type
     const invalidOntology = {
       type: "owl",
       capitals: "not an array"

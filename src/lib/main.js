@@ -177,6 +177,7 @@ export function serve(args) {
 /**
  * Builds an enhanced OWL ontology, validates it using Zod, and outputs the validated ontology.
  * If the --persist flag is provided along with a file path, the ontology is written to that file.
+ * Also supports exporting the ontology in CSV format when --export-csv flag is provided.
  * @param {string[]} args - Command line arguments
  */
 export function buildEnhancedOntology(args) {
@@ -205,11 +206,24 @@ export function buildEnhancedOntology(args) {
   }
   
   if (result.success) {
-    if (filePath) {
-      fs.writeFileSync(filePath, JSON.stringify(ontology, null, 2));
-      console.log(`Enhanced ontology built, validated and persisted to file: ${filePath}`);
+    // Check if CSV export is requested
+    if (args.includes("--export-csv")) {
+      const header = "city,country";
+      const rows = ontology.capitals.map(capital => `${capital.city},${capital.country}`);
+      const csv = [header, ...rows].join("\n");
+      if (filePath) {
+        fs.writeFileSync(filePath, csv);
+        console.log(`Enhanced ontology built, validated and persisted to CSV file: ${filePath}`);
+      } else {
+        console.log(csv);
+      }
     } else {
-      console.log(`Enhanced ontology built and validated: ${JSON.stringify(ontology, null, 2)}`);
+      if (filePath) {
+        fs.writeFileSync(filePath, JSON.stringify(ontology, null, 2));
+        console.log(`Enhanced ontology built, validated and persisted to file: ${filePath}`);
+      } else {
+        console.log(`Enhanced ontology built and validated: ${JSON.stringify(ontology, null, 2)}`);
+      }
     }
   } else {
     console.error("Ontology validation failed:", result.error);
@@ -381,6 +395,7 @@ Commands:
   --serve                Start the Express REST API server.
   --build-intermediate   Build an intermediate OWL ontology without Zod validation.
   --build-enhanced       Build an enhanced OWL ontology with Zod validation. Optionally, use --persist <filePath> to save the output.
+                         Add --export-csv with --build-enhanced to output a CSV representation of capitals.
   --refresh              Refresh and merge persistent OWL ontology data (placeholder implementation).
   --merge-persist        Merge new ontology data with persisted ontology data. Use --persist <filePath> to load persisted data (defaults to empty), and --out <filePath> to write the merged ontology to a file. Add --prefer-old to retain persisted data when duplicates exist. Use --sort-merged to sort capitals alphabetically by city after merging.
   --validate <filePath>  Validate an ontology JSON file against the schema and output the result.
