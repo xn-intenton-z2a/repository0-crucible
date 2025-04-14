@@ -33,11 +33,12 @@ export function query(args) {
     console.log("Verbose mode enabled in query. Received args: " + JSON.stringify(args));
   }
   
-  // Determine if JSON flag is provided
+  // Determine if JSON and regex flags are provided
   const jsonFlag = args.includes("--json");
-  
-  // Remove the '--query', '--verbose', and '--json' flags from the arguments
-  const filteredArgs = args.filter(arg => arg !== "--query" && arg !== "--verbose" && arg !== "--json");
+  const regexFlag = args.includes("--regex");
+
+  // Remove the '--query', '--verbose', '--json', and '--regex' flags from the arguments
+  const filteredArgs = args.filter(arg => !["--query", "--verbose", "--json", "--regex"].includes(arg));
   
   const filters = {};
   const searchTerms = [];
@@ -57,16 +58,21 @@ export function query(args) {
   });
 
   if (jsonFlag) {
-    console.log(JSON.stringify({ searchTerms, filters }, null, 2));
+    console.log(JSON.stringify({ searchTerms, filters, regex: regexFlag }, null, 2));
     return;
   }
 
+  let prefix = "";
+  if (regexFlag) {
+    prefix = "with regex ";
+  }
+
   if (Object.keys(filters).length > 0 && searchTerms.length > 0) {
-    console.log(`Querying OWL ontologies for: ${searchTerms.join(" ")} with filters: ${JSON.stringify(filters)}`);
+    console.log(`Querying OWL ontologies ${prefix}for: ${searchTerms.join(" ")} with filters: ${JSON.stringify(filters)}`);
   } else if (Object.keys(filters).length > 0) {
-    console.log(`Querying OWL ontologies with filters: ${JSON.stringify(filters)}`);
+    console.log(`Querying OWL ontologies ${prefix}with filters: ${JSON.stringify(filters)}`);
   } else if (searchTerms.length > 0) {
-    console.log(`Querying OWL ontologies for: ${searchTerms.join(" ")}`);
+    console.log(`Querying OWL ontologies ${prefix}for: ${searchTerms.join(" ")}`);
   } else {
     console.log("Querying OWL ontologies (Feature under development)");
   }
@@ -225,7 +231,7 @@ Usage: node src/lib/main.js [command] [options]
 Commands:
   --help                 Display this help message.
   --diagnostics          Display system diagnostic information.
-  --query [args]         Query OWL ontologies. Append search terms or key=value filters. Add --json for structured JSON output.
+  --query [args]         Query OWL ontologies. Append search terms or key=value filters. Add --json for structured JSON output. Use --regex to treat search terms as regular expressions.
   --crawl                Crawl data from public sources.
   --capital-cities       Generate an OWL ontology for capital cities.
   --serve                Start the Express REST API server.
@@ -233,6 +239,7 @@ Commands:
   --build-enhanced       Build an enhanced OWL ontology with Zod validation. Optionally, use --persist <filePath> to save the output.
   --refresh              Refresh and merge persistent OWL ontology data (placeholder implementation).
   --verbose              Enable verbose debug logging.
+
 `);
 }
 

@@ -73,6 +73,7 @@ describe("Query Command JSON Output", () => {
     expect(parsed).toHaveProperty("filters");
     expect(parsed.searchTerms).toEqual(["capital", "cities"]);
     expect(parsed.filters).toEqual({});
+    expect(parsed).toHaveProperty("regex", false);
     logSpy.mockRestore();
   });
 
@@ -83,6 +84,7 @@ describe("Query Command JSON Output", () => {
     const parsed = JSON.parse(output);
     expect(parsed.searchTerms).toEqual([]);
     expect(parsed.filters).toEqual({ country: "USA" });
+    expect(parsed).toHaveProperty("regex", false);
     logSpy.mockRestore();
   });
 
@@ -93,6 +95,29 @@ describe("Query Command JSON Output", () => {
     const parsed = JSON.parse(output);
     expect(parsed.searchTerms).toEqual(["capital", "cities"]);
     expect(parsed.filters).toEqual({ country: "USA" });
+    expect(parsed).toHaveProperty("regex", false);
+    logSpy.mockRestore();
+  });
+});
+
+describe("Query Command Regex Option", () => {
+  test("should output JSON object with regex property true when '--regex' flag is provided along with '--json'", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    query(["--query", "--json", "--regex", "capital", "cities", "country=USA"]);
+    const output = logSpy.mock.calls[0][0];
+    const parsed = JSON.parse(output);
+    expect(parsed.searchTerms).toEqual(["capital", "cities", "country=USA"].filter(term => !term.includes('=')));
+    // Since the test splits key=value, adjust accordingly
+    expect(parsed.filters).toEqual({ country: "USA" });
+    expect(parsed).toHaveProperty("regex", true);
+    logSpy.mockRestore();
+  });
+
+  test("should log message with regex indication when '--regex' flag is provided without '--json'", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    query(["--query", "--regex", "capital", "cities", "country=USA"]);
+    const callArgs = logSpy.mock.calls[0][0];
+    expect(callArgs).toContain("with regex");
     logSpy.mockRestore();
   });
 });
@@ -292,6 +317,7 @@ describe("Help Command Output", () => {
     expect(helpOutput).toContain("--build-enhanced");
     expect(helpOutput).toContain("--refresh");
     expect(helpOutput).toContain("--json");
+    expect(helpOutput).toContain("--regex");
     logSpy.mockRestore();
   });
 });
