@@ -2,37 +2,33 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Issue Worker",
+  "lastActivityName": "Automerge",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1550] Implement Refresh Command for owl-builder CLI automated, feature",
-  "openIssues": 3,
-  "issuesClosedLastHour": 4,
-  "issuesClosedLastDay": 73,
+  "nextIssue": "[1550] Implement Refresh Command for owl-builder CLI automated, feature, issue-worker-14443024340",
+  "openIssues": 2,
+  "issuesClosedLastHour": 5,
+  "issuesClosedLastDay": 75,
   "openPRs": 0,
   "averagePRAge": 0,
   "prDetails": [],
   "diffMinutes": 0,
-  "diffMinutesMain": 14,
+  "diffMinutesMain": 0,
   "commitsLastHour": 3,
-  "commitsLastDay": 54,
+  "commitsLastDay": 55,
   "lastFiveCommitMessages": [
+    "[10:18] - Added --refresh command to merge persistent ontology data and up...",
     "[09:59] - Implement --json flag for the query command to output structured...",
     "[09:51] - Maintain ONTOLOGY",
     "[09:19] - Added --help command to display usage instructions in the CLI an...",
-    "[08:59] - Implemented verbose flag to output enhanced debug logging in all...",
-    "[08:53] - Maintain JSON_OUTPUT"
+    "[08:59] - Implemented verbose flag to output enhanced debug logging in all..."
   ],
   "branches": {
-    "count": 1,
-    "details": [
-      "[0m] agentic-lib-issue-1550"
-    ],
-    "branchIssueDetails": [
-      "[1550] Implement Refresh Command for owl-builder CLI automated, feature, issue-worker-14443024340"
-    ],
+    "count": 0,
+    "details": [],
+    "branchIssueDetails": [],
     "averageBranchAge": 0
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T10:13:18.802Z"
+  "statsGeneratedAt": "2025-04-14T10:19:15.649Z"
 }
