@@ -2,19 +2,19 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Stats",
+  "lastActivityName": "Automerge",
   "lastActivityBranchName": "main",
   "nextIssue": "[1544] Implement JSON Output for Query Command in owl-builder CLI automated, feature",
   "openIssues": 6,
   "issuesClosedLastHour": 0,
   "issuesClosedLastDay": 68,
   "openPRs": 2,
-  "averagePRAge": 246,
+  "averagePRAge": 247,
   "prDetails": [
     "[227m] Implemented --build-intermediate command and added tests and documentation for it. (fixes #1540)",
-    "[266m] Fixed filter parsing in query command to correctly handle characters in filter values. (fixes #1538)"
+    "[267m] Fixed filter parsing in query command to correctly handle characters in filter values. (fixes #1538)"
   ],
-  "diffMinutes": 1,
+  "diffMinutes": 0,
   "diffMinutesMain": 7,
   "commitsLastHour": 1,
   "commitsLastDay": 50,
@@ -37,5 +37,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T07:59:24.267Z"
+  "statsGeneratedAt": "2025-04-14T07:59:42.530Z"
 }
