@@ -17,15 +17,25 @@ const ontologySchema = z.object({
 });
 
 export function main(args) {
-  console.log(`Run with: ${JSON.stringify(args)}`);
+  const verbose = args.includes("--verbose");
+  if (verbose) {
+    console.log("Verbose mode enabled in main. Received args: " + JSON.stringify(args));
+  }
+  // Filter out verbose flag for the primary output message
+  const filteredArgs = args.filter(arg => arg !== "--verbose");
+  console.log(`Run with: ${JSON.stringify(filteredArgs)}`);
 }
 
 export function query(args) {
-  // Remove the '--query' flag from the arguments
-  const filteredArgs = args.filter(arg => arg !== "--query");
+  const verbose = args.includes("--verbose");
+  if (verbose) {
+    console.log("Verbose mode enabled in query. Received args: " + JSON.stringify(args));
+  }
+  // Remove the '--query' and '--verbose' flags from the arguments
+  const filteredArgs = args.filter(arg => arg !== "--query" && arg !== "--verbose");
   const filters = {};
   const searchTerms = [];
-  
+
   filteredArgs.forEach(arg => {
     if (arg.includes("=")) {
       const parts = arg.split("=");
@@ -39,7 +49,7 @@ export function query(args) {
       searchTerms.push(arg);
     }
   });
-  
+
   if (Object.keys(filters).length > 0 && searchTerms.length > 0) {
     console.log(`Querying OWL ontologies for: ${searchTerms.join(" ")} with filters: ${JSON.stringify(filters)}`);
   } else if (Object.keys(filters).length > 0) {
@@ -52,12 +62,20 @@ export function query(args) {
 }
 
 export function diagnostics(args) {
+  const verbose = args.includes("--verbose");
+  if (verbose) {
+    console.log("Verbose mode enabled in diagnostics. Received args: " + JSON.stringify(args));
+  }
   console.log("System Diagnostics:");
   console.log(`Node.js version: ${process.version}`);
   // You can add more diagnostic information here if needed
 }
 
 export function crawlData(args) {
+  const verbose = args.includes("--verbose");
+  if (verbose) {
+    console.log("Verbose mode enabled in crawlData. Received args: " + JSON.stringify(args));
+  }
   console.log("Crawling data from public sources...");
 }
 
@@ -66,6 +84,10 @@ export function crawlData(args) {
  * @param {string[]} args - Command line arguments
  */
 export function generateCapitalCitiesOwl(args) {
+  const verbose = args.includes("--verbose");
+  if (verbose) {
+    console.log("Verbose mode enabled in generateCapitalCitiesOwl. Received args: " + JSON.stringify(args));
+  }
   const ontology = {
     type: "owl",
     capitals: [
@@ -82,6 +104,10 @@ export function generateCapitalCitiesOwl(args) {
  * @param {string[]} args - Command line arguments
  */
 export function buildIntermediateOntology(args) {
+  const verbose = args.includes("--verbose");
+  if (verbose) {
+    console.log("Verbose mode enabled in buildIntermediateOntology. Received args: " + JSON.stringify(args));
+  }
   const ontology = {
     type: "owl",
     capitals: [
@@ -99,6 +125,10 @@ export function buildIntermediateOntology(args) {
  * @returns {import('http').Server} The server instance.
  */
 export function serve(args) {
+  const verbose = args.includes("--verbose");
+  if (verbose) {
+    console.log("Verbose mode enabled in serve. Received args: " + JSON.stringify(args));
+  }
   const app = express();
   const port = process.env.PORT || 3000;
   app.get("/", (req, res) => {
@@ -115,6 +145,10 @@ export function serve(args) {
  * @param {string[]} args - Command line arguments
  */
 export function buildEnhancedOntology(args) {
+  const verbose = args.includes("--verbose");
+  if (verbose) {
+    console.log("Verbose mode enabled in buildEnhancedOntology. Received args: " + JSON.stringify(args));
+  }
   // Reuse the dummy ontology from generateCapitalCitiesOwl
   const ontology = {
     type: "owl",

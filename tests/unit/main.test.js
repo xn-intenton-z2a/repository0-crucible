@@ -76,7 +76,14 @@ describe("Capital Cities Command Output", () => {
     // Call the function directly with the --capital-cities flag
     generateCapitalCitiesOwl(["--capital-cities"]);
     expect(logSpy).toHaveBeenCalled();
-    const output = logSpy.mock.calls[0][0];
+    const output = logSpy.mock.calls.find(call => {
+      try {
+        JSON.parse(call[0]);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    })[0];
     let parsed;
     try {
       parsed = JSON.parse(output);
@@ -113,7 +120,7 @@ describe("Build Enhanced Ontology Command Output", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const enhancedArgs = ["--build-enhanced"];
     buildEnhancedOntology(enhancedArgs);
-    const output = logSpy.mock.calls[0][0];
+    const output = logSpy.mock.calls.find(call => call[0].includes("Enhanced ontology built and validated:"))[0];
     expect(output).toContain("Enhanced ontology built and validated:");
 
     // Extract JSON part from the output
@@ -136,7 +143,7 @@ describe("Build Intermediate Ontology Command Output", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
     const intermediateArgs = ["--build-intermediate"];
     buildIntermediateOntology(intermediateArgs);
-    const output = logSpy.mock.calls[0][0];
+    const output = logSpy.mock.calls.find(call => call[0].startsWith("Intermediate ontology built:"))[0];
     expect(output.startsWith("Intermediate ontology built:")) .toBe(true);
     const jsonPart = output.replace("Intermediate ontology built: ", "");
     let parsed;
@@ -146,6 +153,43 @@ describe("Build Intermediate Ontology Command Output", () => {
     expect(parsed).toHaveProperty("type", "owl");
     expect(parsed).toHaveProperty("capitals");
     expect(Array.isArray(parsed.capitals)).toBe(true);
+    logSpy.mockRestore();
+  });
+});
+
+describe("Verbose Flag Logging", () => {
+  test("should log verbose debug message in main", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--verbose"]);
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining("Verbose mode enabled in main"));
+    logSpy.mockRestore();
+  });
+
+  test("should log verbose debug message in query", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    query(["--query", "--verbose", "test"]);
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining("Verbose mode enabled in query"));
+    logSpy.mockRestore();
+  });
+
+  test("should log verbose debug message in diagnostics", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    diagnostics(["--diagnostics", "--verbose"]);
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining("Verbose mode enabled in diagnostics"));
+    logSpy.mockRestore();
+  });
+
+  test("should log verbose debug message in crawlData", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    crawlData(["--crawl", "--verbose"]);
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining("Verbose mode enabled in crawlData"));
+    logSpy.mockRestore();
+  });
+
+  test("should log verbose debug message in buildEnhancedOntology", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    buildEnhancedOntology(["--build-enhanced", "--verbose"]);
+    expect(logSpy).toHaveBeenCalledWith(expect.stringContaining("Verbose mode enabled in buildEnhancedOntology"));
     logSpy.mockRestore();
   });
 });
