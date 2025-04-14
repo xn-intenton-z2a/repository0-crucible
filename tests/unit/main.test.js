@@ -197,6 +197,31 @@ describe("Capital Cities Command Output", () => {
   });
 });
 
+describe("Capital Cities Command Sorted Output", () => {
+  test("should output sorted capitals when '--sort' flag is provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    generateCapitalCitiesOwl(["--capital-cities", "--sort"]);
+    const outputCall = logSpy.mock.calls.find(call => {
+      try {
+        JSON.parse(call[0]);
+        return true;
+      } catch (e) {
+        return false;
+      }
+    });
+    expect(outputCall).toBeDefined();
+    const output = outputCall[0];
+    const parsed = JSON.parse(output);
+    const expected = [
+      { city: "London", country: "UK" },
+      { city: "Tokyo", country: "Japan" },
+      { city: "Washington, D.C.", country: "USA" }
+    ];
+    expect(parsed.capitals).toEqual(expected);
+    logSpy.mockRestore();
+  });
+});
+
 describe("Serve Command Output", () => {
   test("should start REST API server and respond with expected JSON", async () => {
     const server = serve(["--serve"]);
@@ -371,7 +396,6 @@ describe("Merge Persist Command Output", () => {
       { city: "Berlin", country: "Germany" },
       { city: "Tokyo", country: "Japan" }
     ];
-    // Sort by city name for comparison
     const sortFn = (a, b) => a.city.localeCompare(b.city);
     expect(mergedOntology.capitals.sort(sortFn)).toEqual(expectedCapitals.sort(sortFn));
     fs.unlinkSync(tempPersistFile);

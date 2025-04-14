@@ -160,6 +160,12 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
   ```
   This command outputs a JSON representation of an OWL ontology containing dummy data about capital cities, including city names and their associated countries.
 
+  **New Option:** Use the `--sort` flag with `--capital-cities` to have the capitals sorted alphabetically by city name. For example:
+  ```bash
+  node src/lib/main.js --capital-cities --sort
+  ```
+  With this flag, the output will contain the capitals sorted in alphabetical order (e.g., London, Tokyo, Washington, D.C.).
+
 - **Serve REST API:**
   ```bash
   node src/lib/main.js --serve

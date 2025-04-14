@@ -115,6 +115,10 @@ export function generateCapitalCitiesOwl(args) {
       { city: "Tokyo", country: "Japan" }
     ]
   };
+  // If '--sort' flag is present, sort the capitals array alphabetically by city name
+  if (args.includes("--sort")) {
+    ontology.capitals.sort((a, b) => a.city.localeCompare(b.city));
+  }
   console.log(JSON.stringify(ontology, null, 2));
 }
 
@@ -316,7 +320,7 @@ Commands:
   --diagnostics          Display system diagnostic information.
   --query [args]         Query OWL ontologies. Append search terms or key=value filters. Add --json for structured JSON output. Use --regex to treat search terms as regular expressions and --fuzzy for fuzzy matching.
   --crawl                Crawl data from public sources.
-  --capital-cities       Generate an OWL ontology for capital cities.
+  --capital-cities       Generate an OWL ontology for capital cities. Use --sort to output capitals sorted alphabetically by city name.
   --serve                Start the Express REST API server.
   --build-intermediate   Build an intermediate OWL ontology without Zod validation.
   --build-enhanced       Build an enhanced OWL ontology with Zod validation. Optionally, use --persist <filePath> to save the output.
