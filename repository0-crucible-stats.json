@@ -2,17 +2,17 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Review Issue",
+  "lastActivityName": "Issue Worker",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1559] Enhance Query Command with Fuzzy Search Support automated, feature, issue-worker-14446602426",
+  "nextIssue": "[1559] Enhance Query Command with Fuzzy Search Support automated, feature",
   "openIssues": 1,
   "issuesClosedLastHour": 2,
   "issuesClosedLastDay": 68,
   "openPRs": 0,
   "averagePRAge": 0,
   "prDetails": [],
-  "diffMinutes": 3,
-  "diffMinutesMain": 16,
+  "diffMinutes": 0,
+  "diffMinutesMain": 17,
   "commitsLastHour": 2,
   "commitsLastDay": 48,
   "lastFiveCommitMessages": [
@@ -23,12 +23,16 @@
     "[11:17] - Enhance query command to support regex filtering with appropriat..."
   ],
   "branches": {
-    "count": 0,
-    "details": [],
-    "branchIssueDetails": [],
+    "count": 1,
+    "details": [
+      "[0m] agentic-lib-issue-1559"
+    ],
+    "branchIssueDetails": [
+      "[1559] Enhance Query Command with Fuzzy Search Support automated, feature, issue-worker-14446602426"
+    ],
     "averageBranchAge": 0
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T13:18:04.933Z"
+  "statsGeneratedAt": "2025-04-14T13:18:49.466Z"
 }
