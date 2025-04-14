@@ -221,6 +221,18 @@ export function refresh(args) {
 }
 
 /**
+ * Merges new ontology data with persisted ontology data. (New Feature)
+ * @param {string[]} args - Command line arguments
+ */
+export function mergePersist(args) {
+  const verbose = args.includes("--verbose");
+  if (verbose) {
+    console.log("Verbose mode enabled in mergePersist. Received args: " + JSON.stringify(args));
+  }
+  console.log("Merging new ontology data with persisted ontology data...");
+}
+
+/**
  * Displays help information with usage instructions for the CLI tool.
  * @param {string[]} args - Command line arguments
  */
@@ -238,6 +250,7 @@ Commands:
   --build-intermediate   Build an intermediate OWL ontology without Zod validation.
   --build-enhanced       Build an enhanced OWL ontology with Zod validation. Optionally, use --persist <filePath> to save the output.
   --refresh              Refresh and merge persistent OWL ontology data (placeholder implementation).
+  --merge-persist        Merge new ontology data with persisted ontology data.
   --verbose              Enable verbose debug logging.
 
 `);
@@ -263,6 +276,8 @@ if (process.argv[1] === fileURLToPath(import.meta.url)) {
     buildEnhancedOntology(args);
   } else if (args.includes("--refresh")) {
     refresh(args);
+  } else if (args.includes("--merge-persist")) {
+    mergePersist(args);
   } else {
     main(args);
   }

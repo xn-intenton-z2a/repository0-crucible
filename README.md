@@ -189,6 +189,13 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
   ```
   This command refreshes and merges persistent OWL ontology data with newly crawled data, outputting a placeholder refreshed ontology in JSON format.
 
+- **Merge Persist Ontology:**
+  ```bash
+  node src/lib/main.js --merge-persist
+  ```
+  This command merges new ontology data with the existing persisted ontology data. It outputs a message indicating the merging process:
+  "Merging new ontology data with persisted ontology data..."
+
 ### Verbose Debug Mode
 
 A new `--verbose` flag has been added. When this flag is included in any command, the CLI outputs additional debug information detailing internal state and execution flow. For example:

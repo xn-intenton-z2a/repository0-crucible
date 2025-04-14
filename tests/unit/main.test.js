@@ -10,7 +10,8 @@ import {
   buildEnhancedOntology,
   buildIntermediateOntology,
   displayHelp,
-  refresh
+  refresh,
+  mergePersist
 } from "@src/lib/main.js";
 import fs from "fs";
 import os from "os";
@@ -107,7 +108,6 @@ describe("Query Command Regex Option", () => {
     const output = logSpy.mock.calls[0][0];
     const parsed = JSON.parse(output);
     expect(parsed.searchTerms).toEqual(["capital", "cities", "country=USA"].filter(term => !term.includes('=')));
-    // Since the test splits key=value, adjust accordingly
     expect(parsed.filters).toEqual({ country: "USA" });
     expect(parsed).toHaveProperty("regex", true);
     logSpy.mockRestore();
@@ -264,6 +264,15 @@ describe("Refresh Command Output", () => {
   });
 });
 
+describe("Merge Persist Command Output", () => {
+  test("should log merge persist message when '--merge-persist' flag is provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    mergePersist(["--merge-persist"]);
+    expect(logSpy).toHaveBeenCalledWith("Merging new ontology data with persisted ontology data...");
+    logSpy.mockRestore();
+  });
+});
+
 describe("Verbose Flag Logging", () => {
   test("should log verbose debug message in main", () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -316,6 +325,7 @@ describe("Help Command Output", () => {
     expect(helpOutput).toContain("--build-intermediate");
     expect(helpOutput).toContain("--build-enhanced");
     expect(helpOutput).toContain("--refresh");
+    expect(helpOutput).toContain("--merge-persist");
     expect(helpOutput).toContain("--json");
     expect(helpOutput).toContain("--regex");
     logSpy.mockRestore();
