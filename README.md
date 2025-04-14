@@ -46,11 +46,25 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --query
   ```
-  This command queries OWL ontologies. By default, it displays a placeholder message indicating that the feature is under development. You can now also append search terms after `--query` to filter the query. For example:
+  This command queries OWL ontologies. By default, it displays a placeholder message indicating that the feature is under development.
+
+  You can also append search terms after `--query` to filter the query. For example:
   ```bash
   node src/lib/main.js --query capital cities
   ```
-  This will output a message like: "Querying OWL ontologies for: capital cities".
+  This will output a message like: "Querying OWL ontologies for: capital cities"
+
+  Additionally, you can now provide key=value filters. For example:
+  ```bash
+  node src/lib/main.js --query country=USA
+  ```
+  will output a message like: "Querying OWL ontologies with filters: {\"country\":\"USA\"}"
+
+  Or, you can combine search terms with filters:
+  ```bash
+  node src/lib/main.js --query capital cities country=USA
+  ```
+  which outputs: "Querying OWL ontologies for: capital cities with filters: {\"country\":\"USA\"}"
 
 - **Diagnostics Information:**
   ```bash

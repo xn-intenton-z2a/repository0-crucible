@@ -33,6 +33,20 @@ describe("Query Command Output", () => {
     expect(logSpy).toHaveBeenCalledWith("Querying OWL ontologies for: capital cities");
     logSpy.mockRestore();
   });
+
+  test("should log filter object when a key=value pair is provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    query(["--query", "country=USA"]);
+    expect(logSpy).toHaveBeenCalledWith('Querying OWL ontologies with filters: {"country":"USA"}');
+    logSpy.mockRestore();
+  });
+
+  test("should log both search terms and filters when both are provided", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    query(["--query", "capital", "cities", "country=USA"]);
+    expect(logSpy).toHaveBeenCalledWith('Querying OWL ontologies for: capital cities with filters: {"country":"USA"}');
+    logSpy.mockRestore();
+  });
 });
 
 describe("Diagnostics Command Output", () => {
