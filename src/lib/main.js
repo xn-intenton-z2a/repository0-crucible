@@ -28,9 +28,8 @@ export function query(args) {
   
   filteredArgs.forEach(arg => {
     if (arg.includes("=")) {
-      const parts = arg.split("=");
-      if (parts.length === 2) {
-        const [key, value] = parts;
+      const [key, value] = arg.split("=", 2);
+      if (key && value !== undefined) {
         filters[key] = value;
       } else {
         searchTerms.push(arg);

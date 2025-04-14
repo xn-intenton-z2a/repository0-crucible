@@ -66,6 +66,14 @@ node src/lib/main.js --help
   ```
   which outputs: "Querying OWL ontologies for: capital cities with filters: {\"country\":\"USA\"}"
 
+  **Enhanced Filter Parsing:**
+
+  Filter parameters now support values that include the '=' character. For example:
+  ```bash
+  node src/lib/main.js --query description=key=value
+  ```
+  will correctly parse the filter as { description: "key=value" }.
+
 - **Diagnostics Information:**
   ```bash
   node src/lib/main.js --diagnostics
