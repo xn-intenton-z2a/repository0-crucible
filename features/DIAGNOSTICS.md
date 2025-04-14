@@ -1,26 +1,30 @@
-# DIAGNOSTICS Feature Update with JSON Output
+# DIAGNOSTICS Feature Update
 
 ## Overview
-This update enhances the diagnostics functionality of the CLI tool by adding support for a new flag `--diagnostics-json`. In addition to the existing human-readable diagnostics output from the `--diagnostics` flag, the new JSON output mode will provide structured diagnostic information suitable for automated monitoring and integration into external systems.
+This feature enhances the CLI tool's diagnostics capability by adding a new JSON output mode. In addition to the existing human-readable output provided by the `--diagnostics` flag, the new `--diagnostics-json` flag will return structured JSON containing system metrics such as the Node.js version, process uptime, and memory usage. This structured output is designed for automated monitoring and integration into external systems.
 
 ## Implementation Details
 - **CLI Integration:**
-  - Update the command line argument parsing in `src/lib/main.js` to detect the new `--diagnostics-json` flag.
+  - Update the argument parser in `src/lib/main.js` to detect the `--diagnostics-json` flag.
   - When this flag is present, bypass the default diagnostics function and invoke a new function, `diagnosticsJson`.
 
 - **JSON Diagnostics Function:**
-  - Implement a function `diagnosticsJson` in `src/lib/main.js` that collects the same diagnostic information provided by the human-readable diagnostics (e.g. Node.js version) and additional runtime data if available (memory usage, uptime, etc.).
-  - Use `JSON.stringify` to serialize the diagnostic information and output it. Include error handling for JSON serialization errors, ensuring that any failure is logged with a clear and descriptive error message.
+  - Implement `diagnosticsJson` in `src/lib/main.js` to gather diagnostic data, including:
+    - Node.js version
+    - Process uptime
+    - Memory usage (via `process.memoryUsage()`)
+  - Use `JSON.stringify` to format the gathered data into a JSON string.
+  - Include error handling for scenarios when JSON serialization fails, with clear error messages logged.
 
 - **Testing:**
-  - Update the unit tests in `tests/unit/main.test.js`:
-    - Add tests to verify that when the `--diagnostics-json` flag is used, the output is valid JSON.
-    - Check that the JSON output contains key fields such as `nodeVersion` (and other relevant details if added).
+  - Update tests in `tests/unit/main.test.js`:
+    - Add a test case to verify that using the `--diagnostics-json` flag outputs valid JSON.
+    - Ensure the returned JSON contains key fields such as `nodeVersion`, `uptime`, and `memoryUsage`.
 
 - **Documentation:**
-  - Update `README.md` to include a new section that describes the `--diagnostics-json` option, providing examples of how to use it and explanations of the returned JSON structure.
-  - Update `CONTRIBUTING.md` if necessary to reflect the enhancements to diagnostics functionality.
+  - Update the `README.md` to include a section on the `--diagnostics-json` flag, complete with usage examples and explanations of the JSON output structure.
+  - Reflect these updates in `CONTRIBUTING.md` as guidelines for extending diagnostics functionality.
 
 ## Future Considerations
-- Enhance the diagnostic output by including additional system metrics and making the set of diagnostics configurable via further command line options.
-- Consider performance optimizations if the diagnostic data collection becomes computationally expensive.
+- Further enhance diagnostic output by allowing users to configure which metrics to report via additional CLI options.
+- Optimize performance if further diagnostic computations are added in the future.
