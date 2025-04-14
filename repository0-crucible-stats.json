@@ -2,17 +2,19 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Apply Fix on Fail",
+  "lastActivityName": "Deploy",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1538] Enhance Query Command to Support Complex Filter Values automated, feature, issue-worker-14436748857",
-  "openIssues": 1,
+  "nextIssue": "[1538] Enhance Query Command to Support Complex Filter Values automated, feature, issue-worker-14436748857, apply-fix-14436818724",
+  "openIssues": 2,
   "issuesClosedLastHour": 2,
   "issuesClosedLastDay": 67,
-  "openPRs": 0,
-  "averagePRAge": 0,
-  "prDetails": [],
-  "diffMinutes": 0,
-  "diffMinutesMain": 20,
+  "openPRs": 1,
+  "averagePRAge": 1,
+  "prDetails": [
+    "[1m] Fixed filter parsing in query command to correctly handle characters in filter values. (fixes #1538)"
+  ],
+  "diffMinutes": 1,
+  "diffMinutesMain": 22,
   "commitsLastHour": 2,
   "commitsLastDay": 46,
   "lastFiveCommitMessages": [
@@ -25,14 +27,14 @@
   "branches": {
     "count": 1,
     "details": [
-      "[0m] agentic-lib-issue-1538"
+      "[2m] agentic-lib-issue-1538"
     ],
     "branchIssueDetails": [
       "[1538] Enhance Query Command to Support Complex Filter Values automated, feature, issue-worker-14436748857, apply-fix-14436818724"
     ],
-    "averageBranchAge": 0
+    "averageBranchAge": 2
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T03:32:00.725Z"
+  "statsGeneratedAt": "2025-04-14T03:34:01.212Z"
 }
