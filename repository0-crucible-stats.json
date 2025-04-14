@@ -2,17 +2,19 @@
   "owner": "xn-intenton-z2a",
   "repo": "repository0-crucible",
   "engine": "schedule-3",
-  "lastActivityName": "Issue Worker",
+  "lastActivityName": "Review Issue",
   "lastActivityBranchName": "main",
-  "nextIssue": "[1547] Add CLI Help Command to Display Usage Instructions automated, feature",
-  "openIssues": 4,
+  "nextIssue": "[1547] Add CLI Help Command to Display Usage Instructions automated, feature, issue-worker-14441844251",
+  "openIssues": 5,
   "issuesClosedLastHour": 5,
   "issuesClosedLastDay": 69,
-  "openPRs": 0,
+  "openPRs": 1,
   "averagePRAge": 0,
-  "prDetails": [],
+  "prDetails": [
+    "[0m] Added --help command to display usage instructions in the CLI and updated tests and documentation accordingly (fixes #1547)"
+  ],
   "diffMinutes": 0,
-  "diffMinutesMain": 12,
+  "diffMinutesMain": 13,
   "commitsLastHour": 3,
   "commitsLastDay": 51,
   "lastFiveCommitMessages": [
@@ -34,5 +36,5 @@
   },
   "testStatusOnBranch": "PASS",
   "testsLastPassedMinutes": 15,
-  "statsGeneratedAt": "2025-04-14T09:12:10.092Z"
+  "statsGeneratedAt": "2025-04-14T09:12:45.367Z"
 }
