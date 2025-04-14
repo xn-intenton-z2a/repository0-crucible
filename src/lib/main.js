@@ -33,12 +33,13 @@ export function query(args) {
     console.log("Verbose mode enabled in query. Received args: " + JSON.stringify(args));
   }
   
-  // Determine if JSON and regex flags are provided
+  // Determine if JSON, regex, and fuzzy flags are provided
   const jsonFlag = args.includes("--json");
   const regexFlag = args.includes("--regex");
+  const fuzzyFlag = args.includes("--fuzzy");
 
-  // Remove the '--query', '--verbose', '--json', and '--regex' flags from the arguments
-  const filteredArgs = args.filter(arg => !["--query", "--verbose", "--json", "--regex"].includes(arg));
+  // Remove the '--query', '--verbose', '--json', '--regex', and '--fuzzy' flags from the arguments
+  const filteredArgs = args.filter(arg => !["--query", "--verbose", "--json", "--regex", "--fuzzy"].includes(arg));
   
   const filters = {};
   const searchTerms = [];
@@ -58,14 +59,15 @@ export function query(args) {
   });
 
   if (jsonFlag) {
-    console.log(JSON.stringify({ searchTerms, filters, regex: regexFlag }, null, 2));
+    const resultObj = { searchTerms, filters, regex: regexFlag, fuzzy: fuzzyFlag };
+    console.log(JSON.stringify(resultObj, null, 2));
     return;
   }
 
-  let prefix = "";
-  if (regexFlag) {
-    prefix = "with regex ";
-  }
+  const flags = [];
+  if (regexFlag) flags.push("regex");
+  if (fuzzyFlag) flags.push("fuzzy search");
+  const prefix = flags.length > 0 ? "with " + flags.join(" and ") + " " : "";
 
   if (Object.keys(filters).length > 0 && searchTerms.length > 0) {
     console.log(`Querying OWL ontologies ${prefix}for: ${searchTerms.join(" ")} with filters: ${JSON.stringify(filters)}`);
@@ -295,7 +297,7 @@ Usage: node src/lib/main.js [command] [options]
 Commands:
   --help                 Display this help message.
   --diagnostics          Display system diagnostic information.
-  --query [args]         Query OWL ontologies. Append search terms or key=value filters. Add --json for structured JSON output. Use --regex to treat search terms as regular expressions.
+  --query [args]         Query OWL ontologies. Append search terms or key=value filters. Add --json for structured JSON output. Use --regex to treat search terms as regular expressions and --fuzzy for fuzzy matching.
   --crawl                Crawl data from public sources.
   --capital-cities       Generate an OWL ontology for capital cities.
   --serve                Start the Express REST API server.
