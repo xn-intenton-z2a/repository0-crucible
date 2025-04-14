@@ -154,6 +154,10 @@ An enhancement has been added that allows the query command to output its result
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-enhanced
 </code></pre>
 <p class="md-github">This command builds an enhanced OWL ontology, validates it using Zod, and outputs the validated ontology in JSON format.</p>
+<p class="md-github">Additionally, you can persist the validated ontology to a file by using the <code class="md-github">--persist</code> option followed by the desired file path. For example:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-enhanced --persist ./enhanced-ontology.json
+</code></pre>
+<p class="md-github">When the <code class="md-github">--persist</code> flag is provided, the tool writes the validated ontology to the specified file and logs a confirmation message with the file path.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Intermediate Build Ontology:</strong></p>
@@ -182,7 +186,7 @@ An enhancement has been added that allows the query command to output its result
 
   </section>
   <footer>
-    <p>Generated on 2025-04-14T10:59:51.924Z</p>
+    <p>Generated on 2025-04-14T10:59:58.548Z</p>
   </footer>
 </body>
 </html>
