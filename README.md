@@ -224,6 +224,8 @@ When invoked with the `--help` flag, the CLI displays detailed usage instruction
   - **New Option:** Add `--prefer-old` to retain the persisted (old) data in the event of duplicates instead of overriding them with new data.
   - **New Option:** Add `--sort-merged` to sort the merged capitals alphabetically by city before output or persisting.
   - Optionally, use the `--out <filePath>` flag to persist the merged ontology to a file.
+  
+  **Enhanced Error Handling:** If the provided persisted file does not exist or contains invalid JSON, the command will log a clear error message indicating the file path and the error encountered, and will continue safely without crashing.
 
 - **Validate Ontology:**
   ```bash
