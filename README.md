@@ -35,13 +35,23 @@ To run the CLI tool and see help instructions:
 node src/lib/main.js --help
 ```
 
+When running without the `--help` flag, the tool prints the arguments it receives:
+
+```bash
+node src/lib/main.js [options]
+```
+
 ### Example Commands
+
+- **Display Help:**
+  ```bash
+  node src/lib/main.js --help
+  ```
 
 - **Default Demo Output:**
   ```bash
   npm run start
   ```
-
 
 ## Incremental Changes Plan
 
