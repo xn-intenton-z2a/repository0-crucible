@@ -1,34 +1,24 @@
-# Node.js Documentation
-## https://nodejs.org/en/docs/
-The official Node.js documentation covering topics such as modules, process management, asynchronous programming, and memory management. Essential for understanding the runtime environment used in this project.
+# GitHub Actions Documentation
+## https://docs.github.com/en/actions
+Official documentation for GitHub Actions, providing guidance on creating CI/CD workflows, automating testing, and deployment processes. This is highly relevant for integrating automated processes similar to those in this repository.
+## CC BY-SA
+
+# Oclif Documentation
+## https://oclif.io/docs/
+Oclif is a popular CLI framework for building command line applications in Node.js. Its documentation offers insights into command registration, argument parsing, and best practices for building robust CLI tools, which can be contrasted with the custom CLI implementation in this repository.
 ## MIT License
 
-# ESLint Documentation
-## https://eslint.org/docs/latest/
-Official documentation for ESLint, a popular linting tool for JavaScript. It provides guidelines on configuration and best practices for maintaining code quality.
+# MDN JavaScript Guide
+## https://developer.mozilla.org/en-US/docs/Web/JavaScript
+A comprehensive resource for modern JavaScript language features and best practices. This documentation offers in-depth explanations and examples for both beginners and advanced developers, supporting the continuous learning and improvement philosophy of the project.
+## CC BY-SA
+
+# EJS Documentation
+## https://ejs.co/
+Official documentation for EJS, a templating engine used for generating dynamic content. The resource details usage patterns, syntax, and integration methods which are valuable when working with dynamic HTML content or server-side rendering.
 ## MIT License
 
-# Prettier Documentation
-## https://prettier.io/docs/en/index.html
-The official Prettier documentation offers comprehensive details on code formatting, configuration, and integration with other tools to maintain a consistent code style.
-## MIT License
-
-# GitHub REST API Documentation
-## https://docs.github.com/en/rest
-Official GitHub documentation outlining the REST API endpoints. This is useful for automation tasks, CI/CD integrations, and managing repository interactions.
-## GitHub Documentation Terms
-
-# Vitest Documentation
-## https://vitest.dev/guide/
-Official documentation for Vitest, a cutting-edge testing framework used for unit and integration testing in this repository. It covers configuration, usage, and best practices for testing JavaScript projects.
-## MIT License
-
-# Zod Documentation
-## https://github.com/colinhacks/zod
-Documentation and API reference for Zod, a robust schema validation library that helps with input validation and configuration management in the project.
-## MIT License
-
-# OpenAI API Documentation
-## https://platform.openai.com/docs
-Official documentation for the OpenAI API. This source provides guidelines on endpoints, authentication, and integration patterns that can inspire self-improvement and AI-assisted features.
-## Terms of Use Apply
+# Node.js ES Modules Documentation
+## https://nodejs.org/api/esm.html
+This resource provides detailed information on the use of ECMAScript modules (ESM) in Node.js, including syntax, interoperability, and migration tips. It is essential for projects adopting the modern JavaScript module system, as seen in this repository.
+## Node.js Documentation License
