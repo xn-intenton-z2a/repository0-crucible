@@ -107,7 +107,7 @@ node src/lib/main.js [options]
   node src/lib/main.js --echo arg1 arg2
   ```
   This flag outputs the received command-line arguments (excluding the '--echo' flag) in a structured JSON format, for example:
-  
+
   ```json
   { "echo": ["arg1", "arg2"] }
   ```
@@ -117,6 +117,12 @@ node src/lib/main.js [options]
   node src/lib/main.js --memory
   ```
   This flag displays an in-memory log of all command invocations with timestamps, providing a basic demonstration of the Memory feature.
+
+- **Help-Seeking:**
+  ```bash
+  node src/lib/main.js --help-seeking
+  ```
+  This flag activates help-seeking mode, outputting a message that indicates the system is consulting external assistance.
 
 - **Default Demo Output:**
   ```bash
