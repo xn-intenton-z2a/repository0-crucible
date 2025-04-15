@@ -35,11 +35,19 @@ To run the CLI tool and see help instructions:
 node src/lib/main.js --help
 ```
 
+When executed with the --help option, the tool will output a JSON with usage instructions and available options.
+
 ### Example Commands
 
 - **Default Demo Output:**
   ```bash
   npm run start
+  ```
+
+- **Display Help Information:**
+  To display the help message with usage instructions, run:
+  ```bash
+  node src/lib/main.js --help
   ```
 
 - **Query OWL Ontologies (Static Output):**

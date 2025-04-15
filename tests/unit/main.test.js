@@ -10,12 +10,26 @@ describe("Main Module Import", () => {
   });
 });
 
+
 describe("Main Output", () => {
   test("should terminate without error", () => {
     process.argv = ["node", "src/lib/main.js"];
     main();
   });
 });
+
+
+describe("Help Option", () => {
+  test("should output help instructions", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--help"]);
+    const output = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(output).toHaveProperty("usage");
+    expect(output).toHaveProperty("options");
+    logSpy.mockRestore();
+  });
+});
+
 
 describe("Query OWL Option", () => {
   test("should output sample OWL query result when no additional parameter is provided", () => {
@@ -26,6 +40,7 @@ describe("Query OWL Option", () => {
   });
 });
 
+
 describe("Dynamic Query OWL Option", () => {
   test("should output dynamic OWL query result for provided query", () => {
     const logSpy = vi.spyOn(console, "log");
@@ -34,6 +49,7 @@ describe("Dynamic Query OWL Option", () => {
     logSpy.mockRestore();
   });
 });
+
 
 describe("Transform Option", () => {
   test("should output transformed ontology for valid JSON input", () => {
@@ -59,6 +75,7 @@ describe("Transform Option", () => {
   });
 });
 
+
 describe("Crawl Option", () => {
   test("should output simulated OWL ontology from crawl command", () => {
     const logSpy = vi.spyOn(console, "log");
@@ -70,6 +87,7 @@ describe("Crawl Option", () => {
     logSpy.mockRestore();
   });
 });
+
 
 describe("Diagnostics Option", () => {
   test("should output environment diagnostic info", () => {
@@ -83,6 +101,7 @@ describe("Diagnostics Option", () => {
     logSpy.mockRestore();
   });
 });
+
 
 describe("Save Ontology Option", () => {
   test("should save ontology to specified file and output confirmation message", () => {
@@ -108,6 +127,7 @@ describe("Save Ontology Option", () => {
   });
 });
 
+
 describe("Data Sources Option", () => {
   test("should output a hard-coded list of public data source URLs", () => {
     const logSpy = vi.spyOn(console, "log");
@@ -116,6 +136,7 @@ describe("Data Sources Option", () => {
     logSpy.mockRestore();
   });
 });
+
 
 describe("Merge Persist Option", () => {
   test("should merge two ontology files and save to specified file", () => {

@@ -18,6 +18,26 @@ export function crawlDataSources() {
 }
 
 export function main(args = process.argv.slice(2)) {
+  // Handle '--help' option to output usage instructions
+  const helpIndex = args.indexOf("--help");
+  if (helpIndex !== -1) {
+    const helpMessage = {
+      usage: "node src/lib/main.js [options]",
+      options: {
+        "--help": "Display this help message",
+        "--diagnostics": "Output diagnostic information about the current environment",
+        "--data-sources": "Output a hard-coded list of public data source URLs",
+        "--crawl": "Simulate crawling of public data sources and output an OWL ontology in JSON format",
+        "--transform": "Transform a JSON string into an OWL ontology structure",
+        "--query-owl": "Query the OWL ontology with an optional query parameter",
+        "--save-ontology": "Save the generated ontology to a file (optionally specify filename)",
+        "--merge-persist": "Merge two ontology files and save the merged result to a file"
+      }
+    };
+    console.log(JSON.stringify(helpMessage, null, 2));
+    return;
+  }
+
   // Handle '--diagnostics' option to output environment diagnostic information
   const diagnosticsIndex = args.indexOf("--diagnostics");
   if (diagnosticsIndex !== -1) {
