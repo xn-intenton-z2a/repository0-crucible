@@ -53,6 +53,14 @@ To simulate crawling public data sources and output dynamic JSON data, run:
 node src/lib/main.js --crawl-data
 ```
 
+To refresh the data (simulate a data refresh operation), run:
+
+```bash
+node src/lib/main.js --refresh
+```
+
+The expected output is a JSON object that includes a message confirming the refresh and a refreshedAt property with the current ISO timestamp.
+
 To start a simple HTTP server that serves the OWL ontology for capital cities, run:
 
 ```bash
@@ -90,6 +98,11 @@ to retrieve the capital cities ontology in JSON format.
 - **Crawl Data Simulation (outputs simulated crawl data with fetchedAt timestamp):**
   ```bash
   node src/lib/main.js --crawl-data
+  ```
+
+- **Refresh Data Simulation (outputs a refresh confirmation with refreshedAt timestamp):**
+  ```bash
+  node src/lib/main.js --refresh
   ```
 
 - **Serve Capital Cities Server:**
