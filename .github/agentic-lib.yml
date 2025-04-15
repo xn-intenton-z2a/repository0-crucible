@@ -1,7 +1,7 @@
 # Which agentic-lib workflow schedule should be used?
 schedule: schedule-4
-sourcesLimit: 100
-documentsLimit: 100
+sourcesLimit: 1000
+documentsLimit: 1000
 featuresWipLimit: 6
 featureDevelopmentIssuesWipLimit: 6
 maintenanceIssuesWipLimit: 2
