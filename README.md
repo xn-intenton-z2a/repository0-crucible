@@ -31,6 +31,7 @@ npm install repository0-crucible
 - Includes an HTTP server to serve the ontology.
 - New: Validates the exported ontology JSON file using the `--validate-ontology` option.
 - New: Provides extended help information using the `--help-extended` option.
+- New: Displays the application version using the `--version` option.
 
 ## Usage
 
@@ -76,6 +77,9 @@ Extended Help:
          Example: node src/lib/main.js --export-ontology
 
 ... and so on for other options.
+
+--version: Displays the application version.
+         Example: node src/lib/main.js --version
 ```
 
 To output an example OWL ontology in JSON format representing capital cities with a generation timestamp, run:
@@ -156,11 +160,23 @@ This command outputs a single consolidated JSON object containing the following 
 - **enhancedBuild**: Simulated enhanced build result with a `builtAt` timestamp.
 - **mergePersist**: Simulated merge and persist operation result with a `mergedAt` timestamp.
 
+To display the current application version, run:
+
+```bash
+node src/lib/main.js --version
+```
+
+The output will be in the format:
+
+```
+Version: x.y.z
+```
+
 Once the server is running, send an HTTP GET request to:
 
 http://localhost:3000/capital-cities
 
- to retrieve the capital cities ontology in JSON format.
+to retrieve the capital cities ontology in JSON format.
 
 ### Handling Unsupported Options
 

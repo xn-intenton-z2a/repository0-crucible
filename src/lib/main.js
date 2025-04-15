@@ -12,6 +12,7 @@ const helpMessage = [
   "Options:",
   "  --help              Show help message",
   "  --help-json         Show help message in JSON format",
+  "  --help-extended     Show extended help message",
   "  --diagnostics       Output diagnostics information",
   "  --capital-cities    Output capital cities OWL ontology JSON",
   "  --crawl-data          Simulate crawling public data sources and output JSON",
@@ -23,6 +24,7 @@ const helpMessage = [
   "  --export-ontology     Export the capital cities OWL ontology to a file",
   "  --build-detailed      Simulate a comprehensive build pipeline with multiple steps",
   "  --validate-ontology   Validate exported OWL ontology JSON file",
+  "  --version             Display the application version"
 ].join("\n");
 
 const extendedHelpMessage = [
@@ -69,9 +71,24 @@ const extendedHelpMessage = [
   "",
   "--serve: Starts the HTTP server to serve the ontology.",
   "         Example: node src/lib/main.js --serve",
+  "",
+  "--version: Displays the application version.",
+  "         Example: node src/lib/main.js --version"
 ].join("\n");
 
 export function main(args = []) {
+  // If --version is provided, display version and return immediately.
+  if (args.includes("--version")) {
+    try {
+      const pkgContent = fs.readFileSync("package.json", "utf-8");
+      const pkg = JSON.parse(pkgContent);
+      console.log(`Version: ${pkg.version}`);
+    } catch (error) {
+      console.error("Error: Could not read package.json");
+    }
+    return;
+  }
+
   const validOptions = new Set([
     "--help",
     "--help-json",
@@ -86,17 +103,17 @@ export function main(args = []) {
     "--serve",
     "--export-ontology",
     "--build-detailed",
-    "--validate-ontology",
+    "--validate-ontology"
   ]);
 
-  // Check for unknown options
+  // Check for unknown options (if not version, already handled)
   const unknownArgs = args.filter(
-    (arg) => arg.startsWith("--") && !validOptions.has(arg),
+    (arg) => arg.startsWith("--") && !validOptions.has(arg) && arg !== "--version"
   );
   if (unknownArgs.length > 0) {
     const plural = unknownArgs.length > 1 ? "s" : "";
     console.error(
-      `Error: Unknown option${plural}: ${unknownArgs.join(", ")}`,
+      `Error: Unknown option${plural}: ${unknownArgs.join(", ")}`
     );
     // Only print the first line of the help message to match test expectations
     console.error(helpMessage.split("\n")[0]);
@@ -125,6 +142,7 @@ export function main(args = []) {
       "--export-ontology",
       "--build-detailed",
       "--validate-ontology",
+      "--version"
     ];
     console.log(JSON.stringify({ usage, options }, null, 2));
     return;
@@ -153,6 +171,7 @@ export function main(args = []) {
         "--export-ontology",
         "--build-detailed",
         "--validate-ontology",
+        "--version"
       ],
     };
     console.log(JSON.stringify(diagnostics, null, 2));
@@ -185,7 +204,7 @@ export function main(args = []) {
     };
     fs.writeFileSync(
       "exported_ontology.json",
-      JSON.stringify(owlOntology, null, 2),
+      JSON.stringify(owlOntology, null, 2)
     );
     console.log("Ontology exported to exported_ontology.json");
     return;
@@ -291,7 +310,7 @@ export function main(args = []) {
     } catch (e) {
       console.error(
         "Validation failed:",
-        e.errors ? e.errors : e.message,
+        e.errors ? e.errors : e.message
       );
     }
     return;

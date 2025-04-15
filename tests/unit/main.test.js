@@ -12,6 +12,26 @@ const cleanupExportedFile = () => {
   }
 };
 
+// Utility function to capture console output
+const captureOutput = (fn) => {
+  let output = "";
+  const originalLog = console.log;
+  console.log = (msg) => { output += msg; };
+  fn();
+  console.log = originalLog;
+  return output;
+};
+
+// Utility function to capture console error output
+const captureError = (fn) => {
+  let output = "";
+  const originalError = console.error;
+  console.error = (msg) => { output += msg + "\n"; };
+  fn();
+  console.error = originalError;
+  return output;
+};
+
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -28,16 +48,7 @@ describe("Main Output", () => {
 
 describe("Capital Cities Option", () => {
   test("should output capitalCities OWL ontology JSON with generatedAt timestamp", () => {
-    let output = "";
-    const originalLog = console.log;
-    console.log = (msg) => {
-      output += msg;
-    };
-
-    main(["--capital-cities"]);
-
-    console.log = originalLog;
-
+    let output = captureOutput(() => { main(["--capital-cities"]); });
     const parsed = JSON.parse(output);
     expect(parsed).toHaveProperty("owl", "capitalCities");
     expect(parsed).toHaveProperty("data");
@@ -45,7 +56,7 @@ describe("Capital Cities Option", () => {
     expect(parsed.data).toEqual([
       { country: "France", capital: "Paris" },
       { country: "Japan", capital: "Tokyo" },
-      { country: "Brazil", capital: "Brasília" },
+      { country: "Brazil", capital: "Brasília" }
     ]);
     expect(parsed).toHaveProperty("generatedAt");
     const iso = new Date(parsed.generatedAt).toISOString();
@@ -55,16 +66,7 @@ describe("Capital Cities Option", () => {
 
 describe("Diagnostics Option", () => {
   test("should output diagnostics JSON with required keys", () => {
-    let output = "";
-    const originalLog = console.log;
-    console.log = (msg) => {
-      output += msg;
-    };
-
-    main(["--diagnostics"]);
-
-    console.log = originalLog;
-
+    let output = captureOutput(() => { main(["--diagnostics"]); });
     const parsed = JSON.parse(output);
     expect(parsed).toHaveProperty("nodeVersion", process.versions.node);
     expect(parsed).toHaveProperty("platform", process.platform);
@@ -77,7 +79,7 @@ describe("Diagnostics Option", () => {
         "--serve",
         "--build-intermediate",
         "--build-enhanced",
-        "--refresh",
+        "--refresh"
       ])
     );
   });
@@ -99,12 +101,8 @@ describe("Serve Option", () => {
     const responsePromise = new Promise((resolve, reject) => {
       const req = http.request(options, (res) => {
         let data = "";
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
-        res.on("end", () => {
-          resolve({ statusCode: res.statusCode, data });
-        });
+        res.on("data", (chunk) => { data += chunk; });
+        res.on("end", () => { resolve({ statusCode: res.statusCode, data }); });
       });
       req.on("error", reject);
       req.end();
@@ -120,7 +118,7 @@ describe("Serve Option", () => {
     expect(parsed.data).toEqual([
       { country: "France", capital: "Paris" },
       { country: "Japan", capital: "Tokyo" },
-      { country: "Brazil", capital: "Brasília" },
+      { country: "Brazil", capital: "Brasília" }
     ]);
     expect(parsed).toHaveProperty("generatedAt");
     const iso = new Date(parsed.generatedAt).toISOString();
@@ -132,16 +130,7 @@ describe("Serve Option", () => {
 
 describe("Crawl Data Option", () => {
   test("should output simulated crawl data JSON with fetchedAt timestamp", () => {
-    let output = "";
-    const originalLog = console.log;
-    console.log = (msg) => {
-      output += msg;
-    };
-
-    main(["--crawl-data"]);
-
-    console.log = originalLog;
-
+    let output = captureOutput(() => { main(["--crawl-data"]); });
     const parsed = JSON.parse(output);
     expect(parsed).toHaveProperty("source", "publicData");
     expect(parsed).toHaveProperty("data");
@@ -155,16 +144,7 @@ describe("Crawl Data Option", () => {
 
 describe("Refresh Option", () => {
   test("should output refresh JSON with refreshedAt timestamp", () => {
-    let output = "";
-    const originalLog = console.log;
-    console.log = (msg) => {
-      output += msg;
-    };
-
-    main(["--refresh"]);
-
-    console.log = originalLog;
-
+    let output = captureOutput(() => { main(["--refresh"]); });
     const parsed = JSON.parse(output);
     expect(parsed).toHaveProperty("message", "Data refreshed");
     expect(parsed).toHaveProperty("refreshedAt");
@@ -175,16 +155,7 @@ describe("Refresh Option", () => {
 
 describe("Build Intermediate Option", () => {
   test("should output intermediate build JSON with builtAt timestamp", () => {
-    let output = "";
-    const originalLog = console.log;
-    console.log = (msg) => {
-      output += msg;
-    };
-
-    main(["--build-intermediate"]);
-
-    console.log = originalLog;
-
+    let output = captureOutput(() => { main(["--build-intermediate"]); });
     const parsed = JSON.parse(output);
     expect(parsed).toHaveProperty("intermediateBuild", "Intermediate build completed");
     expect(parsed).toHaveProperty("builtAt");
@@ -195,16 +166,7 @@ describe("Build Intermediate Option", () => {
 
 describe("Build Enhanced Option", () => {
   test("should output enhanced build JSON with builtAt timestamp", () => {
-    let output = "";
-    const originalLog = console.log;
-    console.log = (msg) => {
-      output += msg;
-    };
-
-    main(["--build-enhanced"]);
-
-    console.log = originalLog;
-
+    let output = captureOutput(() => { main(["--build-enhanced"]); });
     const parsed = JSON.parse(output);
     expect(parsed).toHaveProperty("enhancedBuild", "Enhanced build completed");
     expect(parsed).toHaveProperty("builtAt");
@@ -215,16 +177,7 @@ describe("Build Enhanced Option", () => {
 
 describe("Merge Persist Option", () => {
   test("should output merge persist JSON with mergedAt timestamp", () => {
-    let output = "";
-    const originalLog = console.log;
-    console.log = (msg) => {
-      output += msg;
-    };
-
-    main(["--merge-persist"]);
-
-    console.log = originalLog;
-
+    let output = captureOutput(() => { main(["--merge-persist"]); });
     const parsed = JSON.parse(output);
     expect(parsed).toHaveProperty("mergePersist", "Data merged and persisted successfully");
     expect(parsed).toHaveProperty("mergedAt");
@@ -235,18 +188,9 @@ describe("Merge Persist Option", () => {
 
 describe("Build Detailed Option", () => {
   test("should output detailed build JSON with keys for each build step", () => {
-    let output = "";
-    const originalLog = console.log;
-    console.log = (msg) => {
-      output += msg;
-    };
-
-    main(["--build-detailed"]);
-
-    console.log = originalLog;
-
+    let output = captureOutput(() => { main(["--build-detailed"]); });
     const parsed = JSON.parse(output);
-
+    
     // Validate crawlData
     expect(parsed).toHaveProperty("crawlData");
     expect(parsed.crawlData).toHaveProperty("source", "publicData");
@@ -279,10 +223,7 @@ describe("Build Detailed Option", () => {
 
     // Validate mergePersist
     expect(parsed).toHaveProperty("mergePersist");
-    expect(parsed.mergePersist).toHaveProperty(
-      "mergePersist",
-      "Data merged and persisted successfully"
-    );
+    expect(parsed.mergePersist).toHaveProperty("mergePersist", "Data merged and persisted successfully");
     expect(parsed.mergePersist).toHaveProperty("mergedAt");
     const iso5 = new Date(parsed.mergePersist.mergedAt).toISOString();
     expect(iso5).toEqual(parsed.mergePersist.mergedAt);
@@ -291,15 +232,7 @@ describe("Build Detailed Option", () => {
 
 describe("Unknown Option", () => {
   test("should output error message and usage when provided with an unknown option", () => {
-    let output = "";
-    const originalError = console.error;
-    console.error = (msg) => {
-      output += msg + "\n";
-    };
-
-    main(["--unknown"]);
-
-    console.error = originalError;
+    let output = captureError(() => { main(["--unknown"]); });
     expect(output).toMatch(/Error: Unknown option: --unknown/);
     expect(output).toMatch(/Usage: node src\/lib\/main.js \[options\]/);
   });
@@ -307,16 +240,7 @@ describe("Unknown Option", () => {
 
 describe("Help JSON Option", () => {
   test("should output JSON formatted help message with 'usage' and 'options' keys", () => {
-    let output = "";
-    const originalLog = console.log;
-    console.log = (msg) => {
-      output += msg;
-    };
-
-    main(["--help-json"]);
-
-    console.log = originalLog;
-
+    let output = captureOutput(() => { main(["--help-json"]); });
     const parsed = JSON.parse(output);
     expect(parsed).toHaveProperty("usage", "Usage: node src/lib/main.js [options]");
     expect(parsed).toHaveProperty("options");
@@ -327,16 +251,7 @@ describe("Help JSON Option", () => {
 
 describe("Help Extended Option", () => {
   test("should output extended help message containing detailed descriptions and usage examples", () => {
-    let output = "";
-    const originalLog = console.log;
-    console.log = (msg) => {
-      output += msg;
-    };
-
-    main(["--help-extended"]);
-
-    console.log = originalLog;
-
+    let output = captureOutput(() => { main(["--help-extended"]); });
     expect(output).toMatch(/Extended Help:/);
     expect(output).toMatch(/--help-extended: Displays detailed help information/);
     expect(output).toMatch(/Example: node src\/lib\/main.js --help-extended/);
@@ -351,20 +266,8 @@ describe("Export Ontology Option", () => {
   });
 
   test("should export the OWL ontology to a file with proper content and confirmation message", () => {
-    let output = "";
-    const originalLog = console.log;
-    console.log = (msg) => {
-      output += msg;
-    };
-
-    main(["--export-ontology"]);
-
-    console.log = originalLog;
-
-    // Check confirmation message
+    let output = captureOutput(() => { main(["--export-ontology"]); });
     expect(output).toContain("Ontology exported to exported_ontology.json");
-
-    // Read the exported file and verify contents
     expect(fs.existsSync(exportedFile)).toBe(true);
     const fileContent = fs.readFileSync(exportedFile, "utf-8");
     const parsed = JSON.parse(fileContent);
@@ -374,7 +277,7 @@ describe("Export Ontology Option", () => {
     expect(parsed.data).toEqual([
       { country: "France", capital: "Paris" },
       { country: "Japan", capital: "Tokyo" },
-      { country: "Brazil", capital: "Brasília" },
+      { country: "Brazil", capital: "Brasília" }
     ]);
     expect(parsed).toHaveProperty("generatedAt");
     const iso = new Date(parsed.generatedAt).toISOString();
@@ -388,34 +291,23 @@ describe("Validate Ontology Option", () => {
   });
 
   test("should validate ontology successfully when a valid file exists", () => {
-    // First export a valid ontology file
     main(["--export-ontology"]);
-
-    let output = "";
-    const originalLog = console.log;
-    console.log = (msg) => {
-      output += msg;
-    };
-    
-    main(["--validate-ontology"]);
-    console.log = originalLog;
-    
+    let output = captureOutput(() => { main(["--validate-ontology"]); });
     expect(output).toContain("Ontology is valid");
   });
 
   test("should output error when ontology file is not found", () => {
-    // Ensure the exported file does not exist
     cleanupExportedFile();
-
-    let output = "";
-    const originalError = console.error;
-    console.error = (msg) => {
-      output += msg;
-    };
-    
-    main(["--validate-ontology"]);
-    console.error = originalError;
-    
+    let output = captureError(() => { main(["--validate-ontology"]); });
     expect(output).toContain("Error: Exported ontology file 'exported_ontology.json' not found.");
+  });
+});
+
+describe("Version Option", () => {
+  test("should output version from package.json prefixed with 'Version:'", () => {
+    let output = captureOutput(() => { main(["--version"]); });
+    // Read package.json to verify the version
+    const pkg = JSON.parse(fs.readFileSync("package.json", "utf-8"));
+    expect(output.trim()).toBe(`Version: ${pkg.version}`);
   });
 });
