@@ -1,84 +1,34 @@
-# PM2 Process Manager Documentation
-## https://pm2.keymetrics.io/docs/usage/quick-start/
-PM2 is a production process manager for Node.js applications that allows easy clustering, monitoring, and automatic restarts. Its robust process management and replication capabilities provide useful insights for implementing parallel execution and fault tolerance in our agentic CLI tool. It is widely adopted in production environments for scaling Node.js workloads.
-## Apache-2.0
-
-# V8 Engine Documentation
-## https://v8.dev/docs
-The V8 documentation offers in-depth information on performance optimizations and memory management techniques used by the JavaScript engine. This knowledge is vital for understanding and improving self-improvement metrics, memory tracking, and optimization aspects of our application.
-## BSD License
-
-# JavaScript Event Loop and Concurrency Model
-## https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
-This MDN guide explains the JavaScript event loop, asynchronous programming, and the concurrency model. It lays the theoretical foundation for parallel processing, replication, and the overall coordination of asynchronous tasks in Node.js applications.
-## Public Domain
-
-# OpenAI Cookbook
-## https://github.com/openai/openai-cookbook
-The OpenAI Cookbook provides practical examples, best practices, and sample code for integrating and optimizing interactions with the OpenAI API. This resource complements our use of help-seeking features by offering advanced usage patterns and troubleshooting tips.
+# Node.js Cluster Documentation
+## https://nodejs.org/api/cluster.html
+Documentation on Node.js' built-in clustering module that allows you to create child processes which share server ports. This is useful for scaling applications and implementing replication strategies in agentic systems, enabling parallel execution and fault tolerance improvements.
 ## MIT License
 
-# GitHub Actions Documentation
-## https://docs.github.com/en/actions
-GitHub Actions documentation details workflows, CI/CD pipelines, and automation across repositories. It is relevant for designing automated, cross-repository updates and integrations within our agentic system.
+# Node.js Worker Threads Documentation
+## https://nodejs.org/api/worker_threads.html
+Provides an in-depth guide on utilizing Worker Threads in Node.js for performing CPU-intensive JavaScript operations in parallel. The content is particularly relevant for enhancing replication and self-improvement features in environments that require concurrent task handling.
+## MIT License
+
+# Using Promises for Concurrency in JavaScript
+## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises
+A comprehensive guide from MDN that covers asynchronous programming using promises, including patterns for error handling and concurrent execution. This source is useful for understanding and implementing parallel command execution and the associated performance optimizations.
+## Public Domain
+
+# GitHub REST API Documentation for Repository Management
+## https://docs.github.com/en/rest/repos
+Offers detailed documentation on managing repositories via GitHub's REST API. This resource is essential for projects that involve cross-repository automation and integration, supporting features like automated repository updates and management within the agentic system.
 ## GitHub Terms
 
-# Modern CLI Usability Guide
-## https://www.nngroup.com/articles/command-line-interfaces/
-This article by the Nielsen Norman Group explores best practices and usability principles for designing modern command-line interfaces. Its insights can help refine the user experience and command handling in our repository’s CLI tool.
-## © Nielsen Norman Group
-
-# Structured Logging in Node.js
-## https://www.loggly.com/ultimate-guide/nodejs-logging-basics/
-This guide outlines best practices for structured logging and monitoring in Node.js applications. It is particularly useful for implementing observable, self-improving, and diagnostic features that track performance and error metrics.
-## Public Domain
-
-# Node.js Documentation
-## https://nodejs.org/en/docs/
-The official Node.js documentation covers a comprehensive range of topics including API references, process management, asynchronous programming, and performance optimization. It is an authoritative source crucial for understanding the underpinnings of the Node.js runtime and its ecosystem.
+# Node.js ES Modules Guide
+## https://nodejs.org/api/esm.html
+Official documentation on ECMAScript Modules (ESM) in Node.js. It explains the modern module system and its usage in Node.js, which is critical for maintaining contemporary codebases and ensuring compatibility with the latest JavaScript standards.
 ## MIT License
 
-# OpenAI API Reference
-## https://platform.openai.com/docs/api-reference
-This resource is the official reference for the OpenAI API, providing detailed guidelines on API usage, model behaviors, authentication, and error handling. It is particularly relevant for implementing the help-seeking feature and ensuring robust interactions with external AI services.
-## OpenAI Terms
+# Autonomous Agents in Modern Software
+## https://www.infoq.com/articles/autonomous-agents-software/
+An insightful article that explores the evolution, design principles, and future trends of autonomous agents in software development. It provides context and best practices for implementing self-improvement, planning, and goal decomposition features.
+## Free Access (Publication date not specified)
 
-# AWS Lambda Developer Guide
-## https://docs.aws.amazon.com/lambda/latest/dg/welcome.html
-The AWS Lambda Developer Guide offers essential information on building, deploying, and managing serverless functions. This documentation is beneficial for understanding serverless architectures and scaling strategies, especially in the context of enabling replication and parallel processing for agentic features.
-## Amazon Software License
-
-# Vitest Documentation
-## https://vitest.dev/
-Vitest is a fast and lightweight unit testing framework for Vite projects and Node.js environments. Its documentation provides comprehensive details on test configuration, writing test cases, and leveraging coverage tools, supporting reliable and efficient testing of our repository's codebase.
-## MIT License
-
-# Zod Schema Validation Documentation
-## https://zod.dev/
-Zod is a TypeScript-first schema declaration and validation library. Its documentation provides comprehensive guidelines on building schemas, validating data structures, and integrating with various TypeScript projects. It is essential for ensuring data integrity and robust validation in modern applications.
-## MIT License
-
-# dotenv Documentation
-## https://github.com/motdotla/dotenv#readme
-dotenv is a zero-dependency module that loads environment variables from a .env file into process.env. This documentation outlines configuration, usage patterns, and best practices for managing sensitive configuration data in Node.js applications.
-## MIT License
-
-# EJS Templating Documentation
-## https://ejs.co
-EJS is a simple templating language that lets you generate HTML markup with plain JavaScript. The documentation details its syntax, usage examples, and customization options, making it a valuable resource for server-side templating and dynamic content rendering.
-## MIT License
-
-# Prettier Code Formatter Documentation
-## https://prettier.io/docs/en/index.html
-Prettier is an opinionated code formatter that supports many languages and integrates with most editors. The documentation explains configuration options, usage patterns, and integration guidelines to ensure consistent code style across projects.
-## MIT License
-
-# ESLint Documentation
-## https://eslint.org/docs/user-guide/getting-started
-ESLint is a pluggable linting utility for JavaScript and TypeScript. Its documentation covers installation, configuration, rule customization, and best practices, making it an essential resource for maintaining code quality and consistency.
-## MIT License
-
-# npm-check-updates Documentation
-## https://github.com/raineorshine/npm-check-updates
-npm-check-updates is a tool for managing dependency updates in Node.js projects. The documentation provides insights on usage, configuration, and integration with CI/CD pipelines to help keep dependencies up-to-date.
-## MIT License
+# JavaScript Memory Management in V8
+## https://v8.dev/blog/memory-management
+This resource delves into the memory management techniques used by the V8 JavaScript engine, offering valuable insights into performance optimization and self-improvement metrics. Its deep technical explanation is useful for developers looking to refine memory handling in their applications.
+## BSD License
