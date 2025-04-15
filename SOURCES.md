@@ -52,3 +52,33 @@ The AWS Lambda Developer Guide offers essential information on building, deployi
 ## https://vitest.dev/
 Vitest is a fast and lightweight unit testing framework for Vite projects and Node.js environments. Its documentation provides comprehensive details on test configuration, writing test cases, and leveraging coverage tools, supporting reliable and efficient testing of our repository's codebase.
 ## MIT License
+
+# Zod Schema Validation Documentation
+## https://zod.dev/
+Zod is a TypeScript-first schema declaration and validation library. Its documentation provides comprehensive guidelines on building schemas, validating data structures, and integrating with various TypeScript projects. It is essential for ensuring data integrity and robust validation in modern applications.
+## MIT License
+
+# dotenv Documentation
+## https://github.com/motdotla/dotenv#readme
+dotenv is a zero-dependency module that loads environment variables from a .env file into process.env. This documentation outlines configuration, usage patterns, and best practices for managing sensitive configuration data in Node.js applications.
+## MIT License
+
+# EJS Templating Documentation
+## https://ejs.co
+EJS is a simple templating language that lets you generate HTML markup with plain JavaScript. The documentation details its syntax, usage examples, and customization options, making it a valuable resource for server-side templating and dynamic content rendering.
+## MIT License
+
+# Prettier Code Formatter Documentation
+## https://prettier.io/docs/en/index.html
+Prettier is an opinionated code formatter that supports many languages and integrates with most editors. The documentation explains configuration options, usage patterns, and integration guidelines to ensure consistent code style across projects.
+## MIT License
+
+# ESLint Documentation
+## https://eslint.org/docs/user-guide/getting-started
+ESLint is a pluggable linting utility for JavaScript and TypeScript. Its documentation covers installation, configuration, rule customization, and best practices, making it an essential resource for maintaining code quality and consistency.
+## MIT License
+
+# npm-check-updates Documentation
+## https://github.com/raineorshine/npm-check-updates
+npm-check-updates is a tool for managing dependency updates in Node.js projects. The documentation provides insights on usage, configuration, and integration with CI/CD pipelines to help keep dependencies up-to-date.
+## MIT License
