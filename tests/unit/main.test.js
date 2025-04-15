@@ -11,14 +11,12 @@ describe("Main Module Import", () => {
   });
 });
 
-
 describe("Main Output", () => {
   test("should terminate without error", async () => {
     process.argv = ["node", "src/lib/main.js"];
     await main();
   });
 });
-
 
 describe("Help Option", () => {
   test("should output help instructions", () => {
@@ -31,7 +29,6 @@ describe("Help Option", () => {
   });
 });
 
-
 describe("Version Option", () => {
   test("should output tool version from package.json", () => {
     const logSpy = vi.spyOn(console, "log");
@@ -42,7 +39,6 @@ describe("Version Option", () => {
   });
 });
 
-
 describe("Query OWL Option", () => {
   test("should output sample OWL query result when no additional parameter is provided", () => {
     const logSpy = vi.spyOn(console, "log");
@@ -52,7 +48,6 @@ describe("Query OWL Option", () => {
   });
 });
 
-
 describe("Dynamic Query OWL Option", () => {
   test("should output dynamic OWL query result for provided query", () => {
     const logSpy = vi.spyOn(console, "log");
@@ -61,7 +56,6 @@ describe("Dynamic Query OWL Option", () => {
     logSpy.mockRestore();
   });
 });
-
 
 describe("Transform Option", () => {
   test("should output transformed ontology for valid JSON input", () => {
@@ -87,7 +81,6 @@ describe("Transform Option", () => {
   });
 });
 
-
 describe("Crawl Option", () => {
   test("should output simulated OWL ontology from crawl command", () => {
     const logSpy = vi.spyOn(console, "log");
@@ -99,7 +92,6 @@ describe("Crawl Option", () => {
     logSpy.mockRestore();
   });
 });
-
 
 describe("Diagnostics Option", () => {
   test("should output environment diagnostic info", () => {
@@ -113,7 +105,6 @@ describe("Diagnostics Option", () => {
     logSpy.mockRestore();
   });
 });
-
 
 describe("Save Ontology Option", () => {
   test("should save ontology to specified file and output confirmation message", () => {
@@ -139,7 +130,6 @@ describe("Save Ontology Option", () => {
   });
 });
 
-
 describe("Data Sources Option", () => {
   test("should output a hard-coded list of public data source URLs", () => {
     const logSpy = vi.spyOn(console, "log");
@@ -148,7 +138,6 @@ describe("Data Sources Option", () => {
     logSpy.mockRestore();
   });
 });
-
 
 describe("Merge Persist Option", () => {
   test("should merge two ontology files and save to specified file", () => {
@@ -248,7 +237,6 @@ describe("Merge Persist Option", () => {
   });
 });
 
-
 describe("Filter Data Option", () => {
   test("should filter ontology data with valid key and value", () => {
     const logSpy = vi.spyOn(console, "log");
@@ -274,7 +262,6 @@ describe("Filter Data Option", () => {
     logSpy.mockRestore();
   });
 });
-
 
 describe("Validate Ontology Option", () => {
   test("should output valid message for a correct ontology JSON", () => {
@@ -348,7 +335,6 @@ describe("Validate Ontology Option", () => {
   });
 });
 
-
 describe("Ontology Info Option", () => {
   test("should output ontology summary for valid ontology file", () => {
     const validOntology = {
@@ -408,7 +394,6 @@ describe("Ontology Info Option", () => {
   });
 });
 
-
 describe("Serve Option", () => {
   test("should start HTTP server and serve ontology", async () => {
     // Start the server
@@ -434,19 +419,16 @@ describe("Serve Option", () => {
   });
 });
 
-// New Test for Capital Cities Option
-describe("Capital Cities Option", () => {
-  test("should output sample OWL ontology for capital cities", () => {
+describe("Export RDF Option", () => {
+  test("should output RDF/XML representation of ontology", () => {
     const logSpy = vi.spyOn(console, "log");
-    main(["--capital-cities"]);
-    const output = JSON.parse(logSpy.mock.calls[0][0]);
-    expect(output).toHaveProperty("capitalCities");
-    expect(Array.isArray(output.capitalCities)).toBe(true);
-    expect(output.capitalCities).toEqual([
-      { name: "Washington D.C.", country: "USA" },
-      { name: "London", country: "UK" },
-      { name: "Tokyo", country: "Japan" }
-    ]);
+    main(["--export-rdf"]);
+    const output = logSpy.mock.calls[0][0];
+    expect(output).toContain('<?xml version="1.0" encoding="UTF-8"?>');
+    expect(output).toContain('<owl:Ontology>');
+    expect(output).toContain('<source>public</source>');
+    expect(output).toContain('<description>Simulated crawling of public data sources</description>');
+    expect(output).toContain('<entry>');
     logSpy.mockRestore();
   });
 });
@@ -460,14 +442,12 @@ describe("Refresh Option", () => {
     expect(output).toHaveProperty("owl:ontology");
     expect(output["owl:ontology"]).toHaveProperty("timestamp");
     const timestamp = output["owl:ontology"].timestamp;
-    // Check if the timestamp is a valid ISO string
     expect(typeof timestamp).toBe("string");
     expect(timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
     logSpy.mockRestore();
   });
 });
 
-// New Test for Build Enhanced Option
 describe("Build Enhanced Option", () => {
   test("should output enhanced ontology with 'enhanced' property set to true", () => {
     const logSpy = vi.spyOn(console, "log");
@@ -479,7 +459,6 @@ describe("Build Enhanced Option", () => {
   });
 });
 
-// New Test for Build Intermediate Option
 describe("Build Intermediate Option", () => {
   test("should output intermediate ontology with 'intermediate' property set to true", () => {
     const logSpy = vi.spyOn(console, "log");

@@ -5,6 +5,15 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 import { createServer } from "http";
 
+// Helper function to escape XML special characters
+function escapeXML(str) {
+  return str.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&apos;');
+}
+
 // Simulate crawling public data sources and transforming them into an OWL ontology represented as a JSON object
 export function crawlDataSources() {
   return {
@@ -21,7 +30,7 @@ export function crawlDataSources() {
 export let serverInstance = null;
 
 export async function main(args = process.argv.slice(2)) {
-  // New: Handle '--version' option to output package version
+  // Handle '--version' option to output package version
   const versionIndex = args.indexOf("--version");
   if (versionIndex !== -1) {
     try {
@@ -59,7 +68,7 @@ export async function main(args = process.argv.slice(2)) {
         "--refresh": "Re-crawl public data sources, attach a current timestamp, and output the refreshed ontology JSON",
         "--build-intermediate": "Simulate intermediate processing of ontology data with intermediate output",
         "--build-enhanced": "Simulate advanced processing of ontology data with enhanced output",
-        "--version": "Display the current version of the tool"
+        "--export-rdf": "Export the generated ontology as RDF/XML"
       }
     };
     console.log(JSON.stringify(helpMessage, null, 2));
@@ -351,6 +360,31 @@ export async function main(args = process.argv.slice(2)) {
     const ontology = crawlDataSources();
     ontology["owl:ontology"].enhanced = true;
     console.log(JSON.stringify(ontology, null, 2));
+    return;
+  }
+
+  // Handle '--export-rdf' option to export ontology as RDF/XML
+  const exportRdfIndex = args.indexOf("--export-rdf");
+  if (exportRdfIndex !== -1) {
+    const ontology = crawlDataSources()["owl:ontology"];
+    const xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>';
+    let rdfOutput = xmlHeader + "\n";
+    rdfOutput += `<owl:Ontology>\n`;
+    rdfOutput += `  <source>${escapeXML(ontology.source)}</source>\n`;
+    rdfOutput += `  <description>${escapeXML(ontology.description)}</description>\n`;
+    rdfOutput += `  <data>\n`;
+    if (Array.isArray(ontology.data)) {
+      ontology.data.forEach(item => {
+        rdfOutput += `    <entry>\n`;
+        Object.keys(item).forEach(key => {
+          rdfOutput += `      <${key}>${escapeXML(String(item[key]))}</${key}>\n`;
+        });
+        rdfOutput += `    </entry>\n`;
+      });
+    }
+    rdfOutput += `  </data>\n`;
+    rdfOutput += `</owl:Ontology>`;
+    console.log(rdfOutput);
     return;
   }
 
