@@ -25,10 +25,57 @@ const helpMessage = [
   "  --validate-ontology   Validate exported OWL ontology JSON file"
 ].join("\n");
 
+const extendedHelpMessage = [
+  "Extended Help:",
+  "",
+  "--help: Displays a brief help message.",
+  "         Example: node src/lib/main.js --help",
+  "",
+  "--help-json: Displays help in JSON format.",
+  "         Example: node src/lib/main.js --help-json",
+  "",
+  "--help-extended: Displays detailed help information with descriptions and usage examples for each command.",
+  "         Example: node src/lib/main.js --help-extended",
+  "",
+  "--diagnostics: Outputs diagnostics info about the current environment.",
+  "         Example: node src/lib/main.js --diagnostics",
+  "",
+  "--capital-cities: Outputs the capital cities OWL ontology in JSON format.",
+  "         Example: node src/lib/main.js --capital-cities",
+  "",
+  "--export-ontology: Exports the OWL ontology to a file named exported_ontology.json.",
+  "         Example: node src/lib/main.js --export-ontology",
+  "",
+  "--crawl-data: Simulates crawling data and outputs JSON.",
+  "         Example: node src/lib/main.js --crawl-data",
+  "",
+  "--refresh: Simulates a data refresh operation.",
+  "         Example: node src/lib/main.js --refresh",
+  "",
+  "--build-intermediate: Simulates an intermediate build process.",
+  "         Example: node src/lib/main.js --build-intermediate",
+  "",
+  "--build-enhanced: Simulates an enhanced build process.",
+  "         Example: node src/lib/main.js --build-enhanced",
+  "",
+  "--merge-persist: Simulates merging and persisting data.",
+  "         Example: node src/lib/main.js --merge-persist",
+  "",
+  "--build-detailed: Simulates a detailed build pipeline with multiple steps.",
+  "         Example: node src/lib/main.js --build-detailed",
+  "",
+  "--validate-ontology: Validates the exported ontology JSON file.",
+  "         Example: node src/lib/main.js --validate-ontology",
+  "",
+  "--serve: Starts the HTTP server to serve the ontology.",
+  "         Example: node src/lib/main.js --serve"
+].join("\n");
+
 export function main(args = []) {
   const validOptions = new Set([
     "--help",
     "--help-json",
+    "--help-extended",
     "--diagnostics",
     "--capital-cities",
     "--crawl-data",
@@ -49,6 +96,11 @@ export function main(args = []) {
     console.error(`Error: Unknown option${plural}: ${unknownArgs.join(", ")}`);
     // Only print the first line of the help message to match test expectations
     console.error(helpMessage.split("\n")[0]);
+    return;
+  }
+
+  if (args.includes("--help-extended")) {
+    console.log(extendedHelpMessage);
     return;
   }
 

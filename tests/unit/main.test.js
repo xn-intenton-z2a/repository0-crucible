@@ -322,6 +322,24 @@ describe("Help JSON Option", () => {
   });
 });
 
+describe("Help Extended Option", () => {
+  test("should output extended help message containing detailed descriptions and usage examples", () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (msg) => { output += msg; };
+
+    main(["--help-extended"]);
+
+    console.log = originalLog;
+
+    expect(output).toMatch(/Extended Help:/);
+    expect(output).toMatch(/--help-extended: Displays detailed help information/);
+    expect(output).toMatch(/Example: node src\/lib\/main.js --help-extended/);
+    expect(output).toMatch(/--capital-cities: Outputs the capital cities OWL ontology/);
+    expect(output).toMatch(/--export-ontology: Exports the OWL ontology/);
+  });
+});
+
 describe("Export Ontology Option", () => {
   afterEach(() => {
     cleanupExportedFile();
