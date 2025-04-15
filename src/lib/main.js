@@ -123,6 +123,35 @@ export function main(args = process.argv.slice(2)) {
     return;
   }
 
+  // Handle '--filter-data' option for filtering ontology data based on key-value pairs
+  const filterIndex = args.indexOf("--filter-data");
+  if (filterIndex !== -1) {
+    const keyParam = args[filterIndex + 1];
+    const valueParam = args[filterIndex + 2];
+    if (!keyParam) {
+      console.log(JSON.stringify({ error: "Error: Missing filter key parameter for --filter-data" }));
+      return;
+    }
+    if (!valueParam) {
+      console.log(JSON.stringify({ error: "Error: Missing filter value parameter for --filter-data" }));
+      return;
+    }
+    const ontology = crawlDataSources();
+    if (!ontology["owl:ontology"] || !Array.isArray(ontology["owl:ontology"].data)) {
+      console.log(JSON.stringify({ error: "Error: Ontology data is missing or not in expected format." }));
+      return;
+    }
+    const filteredData = ontology["owl:ontology"].data.filter(entry => entry[keyParam] === valueParam);
+    const filteredOntology = {
+      "owl:ontology": {
+        ...ontology["owl:ontology"],
+        data: filteredData
+      }
+    };
+    console.log(JSON.stringify(filteredOntology));
+    return;
+  }
+
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 

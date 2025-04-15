@@ -128,6 +128,13 @@ node src/lib/main.js --help
   node src/lib/main.js --merge-persist ontology1.json ontology2.json
   ```
 
+- **Filter Ontology Data:**
+  The new `--filter-data` option allows you to filter the ontology data entries based on a provided key-value pair. For example, to filter entries where the `info` field matches "Sample data entry":
+  ```bash
+  node src/lib/main.js --filter-data info "Sample data entry"
+  ```
+  If the key or value parameter is missing, an error message will be output in JSON format.
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.
