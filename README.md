@@ -250,17 +250,21 @@ When executed with the --help option, the tool will output a JSON with usage ins
   ```bash
   node src/lib/main.js --export-csv
   ```
-  For the sample ontology, this outputs:
-  ```csv
-  id,info
-  "1","Sample data entry"
-  ```
 
 - **Export Ontology as YAML:**
-  The new `--export-yaml` option exports the generated ontology in YAML format. It uses the js-yaml library to convert the ontology JSON into a well-formatted YAML string. For example:
+  The `--export-yaml` option exports the generated ontology in YAML format. It uses the js-yaml library to convert the ontology JSON into a well-formatted YAML string. For example:
   ```bash
   node src/lib/main.js --export-yaml
   ```
+
+- **Export Ontology as HTML:**
+  The new `--export-html` option exports the generated ontology as a nicely formatted HTML document. The HTML document includes the ontology's source, description, and a table displaying the data entries.
+  
+  **Example:**
+  ```bash
+  node src/lib/main.js --export-html
+  ```
+  The output will be a complete HTML document starting with `<!DOCTYPE html>` and containing details of the ontology.
 
 ## Incremental Changes Plan
 

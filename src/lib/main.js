@@ -73,7 +73,8 @@ export async function main(args = process.argv.slice(2)) {
         "--export-turtle": "Export the generated ontology in Turtle (TTL) format",
         "--export-jsonld": "Export the generated ontology as JSON-LD",
         "--export-csv": "Export the generated ontology as CSV",
-        "--export-yaml": "Export the generated ontology as YAML"
+        "--export-yaml": "Export the generated ontology as YAML",
+        "--export-html": "Export the generated ontology as a formatted HTML document"
       }
     };
     console.log(JSON.stringify(helpMessage, null, 2));
@@ -474,6 +475,56 @@ export async function main(args = process.argv.slice(2)) {
       csv += row + "\n";
     });
     console.log(csv);
+    return;
+  }
+
+  // Handle '--export-html' option to export ontology as an HTML document
+  const exportHtmlIndex = args.indexOf("--export-html");
+  if (exportHtmlIndex !== -1) {
+    const ontology = crawlDataSources()["owl:ontology"];
+    const data = ontology.data;
+    // Determine headers from data entries
+    let headers = [];
+    if (Array.isArray(data)) {
+      data.forEach(item => {
+        Object.keys(item).forEach(key => {
+          if (!headers.includes(key)) {
+            headers.push(key);
+          }
+        });
+      });
+    }
+    // Create table header
+    let tableHeader = headers.length > 0 ? '<tr>' + headers.map(h => `<th>${escapeXML(h)}</th>`).join("") + '</tr>' : '';
+    // Create table rows
+    let tableRows = "";
+    if (Array.isArray(data)) {
+      data.forEach(item => {
+        let row = '<tr>' + headers.map(h => `<td>${escapeXML(String(item[h] !== undefined ? item[h] : ""))}</td>`).join("") + '</tr>';
+        tableRows += row;
+      });
+    }
+    const htmlOutput = `<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>OWL Ontology Export</title>
+</head>
+<body>
+  <h1>Ontology Export</h1>
+  <h2>Source: ${escapeXML(ontology.source)}</h2>
+  <p>Description: ${escapeXML(ontology.description)}</p>
+  <table border="1">
+    <thead>
+      ${tableHeader}
+    </thead>
+    <tbody>
+      ${tableRows}
+    </tbody>
+  </table>
+</body>
+</html>`;
+    console.log(htmlOutput);
     return;
   }
 
