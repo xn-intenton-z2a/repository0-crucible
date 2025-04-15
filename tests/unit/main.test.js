@@ -308,7 +308,8 @@ describe("Validate Ontology Option", () => {
   test("should output error when ontology property is missing", () => {
     const invalidOntology = { notOntology: {} };
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation((filePath) => {
-      return JSON.stringify(invalidOntology);
+      if (filePath === "missingOntology.json") return JSON.stringify(invalidOntology);
+      return '';
     });
     const logSpy = vi.spyOn(console, "log");
     main(["--validate-ontology", "missingOntology.json"]);
@@ -435,6 +436,22 @@ describe("Capital Cities Option", () => {
       { name: "London", country: "UK" },
       { name: "Tokyo", country: "Japan" }
     ]);
+    logSpy.mockRestore();
+  });
+});
+
+// New Test for Refresh Option
+describe("Refresh Option", () => {
+  test("should output refreshed ontology with a valid ISO timestamp", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--refresh"]);
+    const output = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(output).toHaveProperty("owl:ontology");
+    expect(output["owl:ontology"]).toHaveProperty("timestamp");
+    const timestamp = output["owl:ontology"].timestamp;
+    // Check if the timestamp is a valid ISO string
+    expect(typeof timestamp).toBe("string");
+    expect(timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
     logSpy.mockRestore();
   });
 });

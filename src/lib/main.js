@@ -40,7 +40,8 @@ export async function main(args = process.argv.slice(2)) {
         "--live-crawl": "Retrieve live data from https://api.publicapis.org/entries and output an OWL ontology in JSON format",
         "--ontology-info": "Read an ontology JSON file and output a summary with source, description, total data entries, and optional timestamp",
         "--serve": "Start an HTTP server on port 3000 that serves the OWL ontology at the '/ontology' endpoint",
-        "--capital-cities": "Output a sample OWL ontology of capital cities"
+        "--capital-cities": "Output a sample OWL ontology of capital cities",
+        "--refresh": "Re-crawl public data sources, attach a current timestamp, and output the refreshed ontology JSON"
       }
     };
     console.log(JSON.stringify(helpMessage, null, 2));
@@ -136,6 +137,15 @@ export async function main(args = process.argv.slice(2)) {
     } else {
       console.log(JSON.stringify({ result: "Sample OWL query output" }));
     }
+    return;
+  }
+
+  // Handle '--refresh' option for re-crawling and refreshing ontology with a current timestamp
+  const refreshIndex = args.indexOf("--refresh");
+  if (refreshIndex !== -1) {
+    const ontology = crawlDataSources();
+    ontology["owl:ontology"].timestamp = new Date().toISOString();
+    console.log(JSON.stringify(ontology, null, 2));
     return;
   }
 
