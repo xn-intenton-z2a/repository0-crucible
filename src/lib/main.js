@@ -24,7 +24,8 @@ const helpMessage = [
   "  --export-ontology     Export the capital cities OWL ontology to a file",
   "  --build-detailed      Simulate a comprehensive build pipeline with multiple steps",
   "  --validate-ontology   Validate exported OWL ontology JSON file",
-  "  --version             Display the application version"
+  "  --version             Display the application version",
+  "  --debug               Output enhanced diagnostic information for troubleshooting"
 ].join("\n");
 
 const extendedHelpMessage = [
@@ -73,7 +74,10 @@ const extendedHelpMessage = [
   "         Example: node src/lib/main.js --serve",
   "",
   "--version: Displays the application version.",
-  "         Example: node src/lib/main.js --version"
+  "         Example: node src/lib/main.js --version",
+  "",
+  "--debug: Outputs enhanced diagnostic information including current working directory and selected environment variables.",
+  "         Example: node src/lib/main.js --debug"
 ].join("\n");
 
 export function main(args = []) {
@@ -86,6 +90,37 @@ export function main(args = []) {
     } catch (error) {
       console.error("Error: Could not read package.json");
     }
+    return;
+  }
+
+  // '--debug' takes precedence over other options
+  if (args.includes("--debug")) {
+    const debugDiagnostics = {
+      nodeVersion: process.versions.node,
+      platform: process.platform,
+      availableCommands: [
+        "--capital-cities",
+        "--diagnostics",
+        "--serve",
+        "--build-intermediate",
+        "--build-enhanced",
+        "--refresh",
+        "--merge-persist",
+        "--crawl-data",
+        "--help",
+        "--help-json",
+        "--export-ontology",
+        "--build-detailed",
+        "--validate-ontology",
+        "--version",
+        "--debug"
+      ],
+      currentWorkingDirectory: process.cwd(),
+      debugEnv: {
+        NODE_ENV: process.env.NODE_ENV || "undefined"
+      }
+    };
+    console.log(JSON.stringify(debugDiagnostics, null, 2));
     return;
   }
 
@@ -103,7 +138,8 @@ export function main(args = []) {
     "--serve",
     "--export-ontology",
     "--build-detailed",
-    "--validate-ontology"
+    "--validate-ontology",
+    "--debug"
   ]);
 
   // Check for unknown options (if not version, already handled)
@@ -142,7 +178,8 @@ export function main(args = []) {
       "--export-ontology",
       "--build-detailed",
       "--validate-ontology",
-      "--version"
+      "--version",
+      "--debug"
     ];
     console.log(JSON.stringify({ usage, options }, null, 2));
     return;
@@ -171,7 +208,7 @@ export function main(args = []) {
         "--export-ontology",
         "--build-detailed",
         "--validate-ontology",
-        "--version"
+        "--debug"
       ],
     };
     console.log(JSON.stringify(diagnostics, null, 2));
@@ -184,7 +221,7 @@ export function main(args = []) {
       data: [
         { country: "France", capital: "Paris" },
         { country: "Japan", capital: "Tokyo" },
-        { country: "Brazil", capital: "Brasília" },
+        { country: "Brazil", capital: "Brasília" }
       ],
       generatedAt: new Date().toISOString(),
     };
@@ -198,7 +235,7 @@ export function main(args = []) {
       data: [
         { country: "France", capital: "Paris" },
         { country: "Japan", capital: "Tokyo" },
-        { country: "Brazil", capital: "Brasília" },
+        { country: "Brazil", capital: "Brasília" }
       ],
       generatedAt: new Date().toISOString(),
     };
@@ -335,7 +372,7 @@ export function serve() {
         data: [
           { country: "France", capital: "Paris" },
           { country: "Japan", capital: "Tokyo" },
-          { country: "Brazil", capital: "Brasília" },
+          { country: "Brazil", capital: "Brasília" }
         ],
         generatedAt: new Date().toISOString(),
       };

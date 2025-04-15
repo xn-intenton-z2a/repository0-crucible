@@ -32,6 +32,7 @@ npm install repository0-crucible
 - New: Validates the exported ontology JSON file using the `--validate-ontology` option.
 - New: Provides extended help information using the `--help-extended` option.
 - New: Displays the application version using the `--version` option.
+- New: Provides enhanced diagnostic information with the `--debug` option, including current working directory and selected environment variables (e.g., NODE_ENV).
 
 ## Usage
 
@@ -76,10 +77,35 @@ Extended Help:
 --export-ontology: Exports the OWL ontology to a file named exported_ontology.json.
          Example: node src/lib/main.js --export-ontology
 
-... and so on for other options.
+--crawl-data: Simulates crawling public data sources and outputs JSON.
+         Example: node src/lib/main.js --crawl-data
+
+--refresh: Simulates a data refresh operation.
+         Example: node src/lib/main.js --refresh
+
+--build-intermediate: Simulates an intermediate build process.
+         Example: node src/lib/main.js --build-intermediate
+
+--build-enhanced: Simulates an enhanced build process.
+         Example: node src/lib/main.js --build-enhanced
+
+--merge-persist: Simulates merging and persisting OWL ontology data.
+         Example: node src/lib/main.js --merge-persist
+
+--build-detailed: Simulates a detailed build pipeline with multiple steps.
+         Example: node src/lib/main.js --build-detailed
+
+--validate-ontology: Validates the exported ontology JSON file.
+         Example: node src/lib/main.js --validate-ontology
+
+--serve: Starts the HTTP server to serve the ontology.
+         Example: node src/lib/main.js --serve
 
 --version: Displays the application version.
          Example: node src/lib/main.js --version
+
+--debug: Outputs enhanced diagnostic information including the current working directory and selected environment variables (e.g., NODE_ENV).
+         Example: node src/lib/main.js --debug
 ```
 
 To output an example OWL ontology in JSON format representing capital cities with a generation timestamp, run:
@@ -92,6 +118,12 @@ To output diagnostics information about the current environment including Node.j
 
 ```bash
 node src/lib/main.js --diagnostics
+```
+
+To output enhanced diagnostic information including the current working directory and environment variables, run:
+
+```bash
+node src/lib/main.js --debug
 ```
 
 To simulate crawling public data sources and output dynamic JSON data, run:

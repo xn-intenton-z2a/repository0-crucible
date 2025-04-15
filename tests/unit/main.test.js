@@ -85,6 +85,41 @@ describe("Diagnostics Option", () => {
   });
 });
 
+describe("Debug Option", () => {
+  test("should output enhanced debug diagnostics with required keys", () => {
+    let output = captureOutput(() => { main(["--debug"]); });
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("nodeVersion", process.versions.node);
+    expect(parsed).toHaveProperty("platform", process.platform);
+    expect(parsed).toHaveProperty("availableCommands");
+    expect(Array.isArray(parsed.availableCommands)).toBe(true);
+    expect(parsed.availableCommands).toEqual(
+      expect.arrayContaining([
+        "--capital-cities",
+        "--diagnostics",
+        "--serve",
+        "--build-intermediate",
+        "--build-enhanced",
+        "--refresh",
+        "--merge-persist",
+        "--crawl-data",
+        "--help",
+        "--help-json",
+        "--export-ontology",
+        "--build-detailed",
+        "--validate-ontology",
+        "--version",
+        "--debug"
+      ])
+    );
+    expect(parsed).toHaveProperty("currentWorkingDirectory", process.cwd());
+    expect(parsed).toHaveProperty("debugEnv");
+    expect(typeof parsed.debugEnv).toBe('object');
+    // NODE_ENV might be undefined, so we check for its presence
+    expect(parsed.debugEnv).toHaveProperty("NODE_ENV");
+  });
+});
+
 describe("Serve Option", () => {
   test("should serve capitalCities ontology on /capital-cities endpoint", async () => {
     const server = serve();
