@@ -34,7 +34,8 @@ export async function main(args = process.argv.slice(2)) {
         "--merge-persist": "Merge two ontology files and save the merged result to a file",
         "--filter-data": "Filter ontology data based on key-value pairs",
         "--validate-ontology": "Validate the structure of an ontology JSON file",
-        "--live-crawl": "Retrieve live data from https://api.publicapis.org/entries and output an OWL ontology in JSON format"
+        "--live-crawl": "Retrieve live data from https://api.publicapis.org/entries and output an OWL ontology in JSON format",
+        "--ontology-info": "Read an ontology JSON file and output a summary with source, description, total data entries, and optional timestamp"
       }
     };
     console.log(JSON.stringify(helpMessage, null, 2));
@@ -227,6 +228,43 @@ export async function main(args = process.argv.slice(2)) {
         return;
       }
       console.log(JSON.stringify({ result: "Ontology structure is valid" }));
+    } catch (err) {
+      console.log(JSON.stringify({ error: "Error: " + err.message }));
+    }
+    return;
+  }
+
+  // Handle '--ontology-info' option for summarizing ontology metadata
+  const ontologyInfoIndex = args.indexOf("--ontology-info");
+  if (ontologyInfoIndex !== -1) {
+    const filePath = args[ontologyInfoIndex + 1];
+    if (!filePath || filePath.startsWith("--")) {
+      console.log(JSON.stringify({ error: "Error: Missing ontology file path argument for --ontology-info" }));
+      return;
+    }
+    try {
+      const fileContent = fs.readFileSync(filePath, "utf-8");
+      const parsed = JSON.parse(fileContent);
+      if (!parsed["owl:ontology"] || typeof parsed["owl:ontology"] !== "object") {
+        console.log(JSON.stringify({ error: "Error: Ontology JSON does not contain a valid 'owl:ontology' property." }));
+        return;
+      }
+      const ontology = parsed["owl:ontology"];
+      if (typeof ontology.source !== "string" || typeof ontology.description !== "string" || !Array.isArray(ontology.data)) {
+        console.log(JSON.stringify({ error: "Error: Ontology file does not have valid source, description or data properties." }));
+        return;
+      }
+      const summary = {
+        ontologyInfo: {
+          source: ontology.source,
+          description: ontology.description,
+          totalDataEntries: ontology.data.length
+        }
+      };
+      if (ontology.timestamp) {
+        summary.ontologyInfo.timestamp = ontology.timestamp;
+      }
+      console.log(JSON.stringify(summary));
     } catch (err) {
       console.log(JSON.stringify({ error: "Error: " + err.message }));
     }
