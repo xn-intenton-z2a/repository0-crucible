@@ -72,6 +72,24 @@ node src/lib/main.js [options]
   ```
   This flag initiates a merge and persist operation. Currently, it prints a confirmation message indicating that the merge and persist process has been initiated.
 
+- **Start Server:**
+  ```bash
+  node src/lib/main.js --serve
+  ```
+  This flag starts the server and prints "Starting server...".
+
+- **Build with Intermediate Options:**
+  ```bash
+  node src/lib/main.js --build-intermediate
+  ```
+  This flag builds the application with intermediate options and prints "Building with intermediate options...".
+
+- **Build with Enhanced Options:**
+  ```bash
+  node src/lib/main.js --build-enhanced
+  ```
+  This flag builds the application with enhanced options and prints "Building with enhanced options...".
+
 - **Default Demo Output:**
   ```bash
   npm run start
