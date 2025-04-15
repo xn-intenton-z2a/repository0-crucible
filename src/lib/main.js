@@ -20,7 +20,7 @@ const helpMessage = [
   "  --merge-persist       Merge and persist the data (simulated operation)",
   "  --serve               Start the HTTP server",
   "  --export-ontology     Export the capital cities OWL ontology to a file",
-  "  --build-detailed      Simulate a comprehensive build pipeline with multiple steps"
+  "  --build-detailed      Simulate a comprehensive build pipeline with multiple steps",
 ].join("\n");
 
 export function main(args = []) {
@@ -36,11 +36,11 @@ export function main(args = []) {
     "--merge-persist",
     "--serve",
     "--export-ontology",
-    "--build-detailed"
+    "--build-detailed",
   ]);
 
   // Check for unknown options
-  const unknownArgs = args.filter(arg => arg.startsWith("--") && !validOptions.has(arg));
+  const unknownArgs = args.filter((arg) => arg.startsWith("--") && !validOptions.has(arg));
   if (unknownArgs.length > 0) {
     const plural = unknownArgs.length > 1 ? "s" : "";
     console.error(`Error: Unknown option${plural}: ${unknownArgs.join(", ")}`);
@@ -64,7 +64,7 @@ export function main(args = []) {
       "--merge-persist",
       "--crawl-data",
       "--export-ontology",
-      "--build-detailed"
+      "--build-detailed",
     ];
     console.log(JSON.stringify({ usage, options }, null, 2));
     return;
@@ -91,8 +91,8 @@ export function main(args = []) {
         "--help",
         "--help-json",
         "--export-ontology",
-        "--build-detailed"
-      ]
+        "--build-detailed",
+      ],
     };
     console.log(JSON.stringify(diagnostics, null, 2));
     return;
@@ -104,9 +104,9 @@ export function main(args = []) {
       data: [
         { country: "France", capital: "Paris" },
         { country: "Japan", capital: "Tokyo" },
-        { country: "Brazil", capital: "Brasília" }
+        { country: "Brazil", capital: "Brasília" },
       ],
-      generatedAt: new Date().toISOString()
+      generatedAt: new Date().toISOString(),
     };
     console.log(JSON.stringify(owlOntology, null, 2));
     return;
@@ -118,11 +118,11 @@ export function main(args = []) {
       data: [
         { country: "France", capital: "Paris" },
         { country: "Japan", capital: "Tokyo" },
-        { country: "Brazil", capital: "Brasília" }
+        { country: "Brazil", capital: "Brasília" },
       ],
-      generatedAt: new Date().toISOString()
+      generatedAt: new Date().toISOString(),
     };
-    fs.writeFileSync('exported_ontology.json', JSON.stringify(owlOntology, null, 2));
+    fs.writeFileSync("exported_ontology.json", JSON.stringify(owlOntology, null, 2));
     console.log("Ontology exported to exported_ontology.json");
     return;
   }
@@ -130,8 +130,8 @@ export function main(args = []) {
   if (args.includes("--crawl-data")) {
     const crawlData = {
       source: "publicData",
-      data: [ { id: 1, description: "Sample data" } ],
-      fetchedAt: new Date().toISOString()
+      data: [{ id: 1, description: "Sample data" }],
+      fetchedAt: new Date().toISOString(),
     };
     console.log(JSON.stringify(crawlData, null, 2));
     return;
@@ -140,7 +140,7 @@ export function main(args = []) {
   if (args.includes("--refresh")) {
     const refreshData = {
       message: "Data refreshed",
-      refreshedAt: new Date().toISOString()
+      refreshedAt: new Date().toISOString(),
     };
     console.log(JSON.stringify(refreshData, null, 2));
     return;
@@ -149,7 +149,7 @@ export function main(args = []) {
   if (args.includes("--build-intermediate")) {
     const intermediateBuild = {
       intermediateBuild: "Intermediate build completed",
-      builtAt: new Date().toISOString()
+      builtAt: new Date().toISOString(),
     };
     console.log(JSON.stringify(intermediateBuild, null, 2));
     return;
@@ -158,7 +158,7 @@ export function main(args = []) {
   if (args.includes("--build-enhanced")) {
     const enhancedBuild = {
       enhancedBuild: "Enhanced build completed",
-      builtAt: new Date().toISOString()
+      builtAt: new Date().toISOString(),
     };
     console.log(JSON.stringify(enhancedBuild, null, 2));
     return;
@@ -167,7 +167,7 @@ export function main(args = []) {
   if (args.includes("--merge-persist")) {
     const mergePersistData = {
       mergePersist: "Data merged and persisted successfully",
-      mergedAt: new Date().toISOString()
+      mergedAt: new Date().toISOString(),
     };
     console.log(JSON.stringify(mergePersistData, null, 2));
     return;
@@ -176,31 +176,31 @@ export function main(args = []) {
   if (args.includes("--build-detailed")) {
     const crawlData = {
       source: "publicData",
-      data: [ { id: 1, description: "Sample data" } ],
-      fetchedAt: new Date().toISOString()
+      data: [{ id: 1, description: "Sample data" }],
+      fetchedAt: new Date().toISOString(),
     };
     const refreshData = {
       message: "Data refreshed",
-      refreshedAt: new Date().toISOString()
+      refreshedAt: new Date().toISOString(),
     };
     const intermediateBuild = {
       intermediateBuild: "Intermediate build completed",
-      builtAt: new Date().toISOString()
+      builtAt: new Date().toISOString(),
     };
     const enhancedBuild = {
       enhancedBuild: "Enhanced build completed",
-      builtAt: new Date().toISOString()
+      builtAt: new Date().toISOString(),
     };
     const mergePersistData = {
       mergePersist: "Data merged and persisted successfully",
-      mergedAt: new Date().toISOString()
+      mergedAt: new Date().toISOString(),
     };
     const detailedBuild = {
       crawlData,
       refreshData,
       intermediateBuild,
       enhancedBuild,
-      mergePersist: mergePersistData
+      mergePersist: mergePersistData,
     };
     console.log(JSON.stringify(detailedBuild, null, 2));
     return;
@@ -225,9 +225,9 @@ export function serve() {
         data: [
           { country: "France", capital: "Paris" },
           { country: "Japan", capital: "Tokyo" },
-          { country: "Brazil", capital: "Brasília" }
+          { country: "Brazil", capital: "Brasília" },
         ],
-        generatedAt: new Date().toISOString()
+        generatedAt: new Date().toISOString(),
       };
       res.writeHead(200, { "Content-Type": "application/json" });
       res.end(JSON.stringify(owlOntology, null, 2));
@@ -236,11 +236,11 @@ export function serve() {
       res.end("Not Found");
     }
   });
-  
+
   server.listen(3000, () => {
     console.log("Server listening on port 3000");
   });
-  
+
   return server;
 }
 
