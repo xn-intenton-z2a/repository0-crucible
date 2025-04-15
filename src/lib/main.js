@@ -9,19 +9,20 @@ const helpMessage = [
   "",
   "Options:",
   "  --help              Show help message",
+  "  --help-json         Show help message in JSON format",
   "  --diagnostics       Output diagnostics information",
   "  --capital-cities    Output capital cities OWL ontology JSON",
-  "  --serve             Start the HTTP server to serve the OWL ontology",
+  "  --crawl-data          Simulate crawling public data sources and output JSON",
+  "  --refresh             Refresh the data (simulated operation)",
   "  --build-intermediate  Build with intermediate steps (simulated operation)",
   "  --build-enhanced      Build with enhanced features (if implemented)",
-  "  --refresh             Refresh the data (simulated operation)",
-  "  --merge-persist       Merge and persist the data (simulated operation)",
-  "  --crawl-data          Simulate crawling public data sources and output JSON"
+  "  --merge-persist       Merge and persist the data (simulated operation)"
 ].join("\n");
 
 export function main(args = []) {
   const validOptions = new Set([
     "--help",
+    "--help-json",
     "--diagnostics",
     "--capital-cities",
     "--crawl-data",
@@ -42,6 +43,17 @@ export function main(args = []) {
     return;
   }
 
+  if (args.includes("--help-json")) {
+    const lines = helpMessage.split("\n");
+    const usage = lines[0];
+    // Extract only the option flag from each line
+    const options = lines
+      .filter(line => line.trim().startsWith("--"))
+      .map(line => line.trim().split(/\s+/)[0]);
+    console.log(JSON.stringify({ usage, options }, null, 2));
+    return;
+  }
+
   if (args.includes("--help")) {
     console.log(helpMessage);
     return;
@@ -59,7 +71,9 @@ export function main(args = []) {
         "--build-enhanced",
         "--refresh",
         "--merge-persist",
-        "--crawl-data"
+        "--crawl-data",
+        "--help",
+        "--help-json"
       ]
     };
     console.log(JSON.stringify(diagnostics, null, 2));
