@@ -1,29 +1,32 @@
 # CAPITAL_CITIES Feature Enhancement
 
 ## Overview
-This update extends the existing CAPITAL_CITIES feature to support advanced options for generating an OWL ontology of capital cities. In addition to the basic output, the feature now supports optional parameters to filter by country, select the output format (JSON or JSON-LD), and sort the results in ascending or descending order. The feature also includes robust error handling for invalid sort parameters.
+This update refines the CAPITAL_CITIES feature to fully implement advanced options as described in the guidelines. Users can now filter the list of capital cities by country, choose the desired output format (JSON or JSON-LD), and sort the capitals in ascending or descending order. This enhancement aligns with the mission of owl-builder by providing a more flexible and user-friendly tool for generating OWL ontologies from public data sources.
 
 ## Implementation Details
-- Modify the CLI branch for `--capital-cities` in `src/lib/main.js` to parse additional flags:
-  - `--country=<COUNTRY_NAME>`: Filter the list to include only capital cities from the specified country.
-  - `--format=<FORMAT>`: Allow output in two formats: `json` (default OWL JSON) or `jsonld` for JSON-LD representation.
-  - `--sort=<ORDER>`: Sort the list of capital cities in either `asc` or `desc` order. If an invalid order is provided, display an informative error message and exit gracefully.
-- Update the internal simulation of the data to support these operations: filtering and ordering of the array elements.
-- Ensure that the new implementation remains backward compatible when no additional option is provided.
+- **CLI Updates:**
+  - Modify the `--capital-cities` option in `src/lib/main.js` to parse additional flags:
+    - `--country=<COUNTRY_NAME>`: Filter the list to include only the capital cities from the specified country.
+    - `--format=<FORMAT>`: Accept `json` (default) or `jsonld` to specify the output format.
+    - `--sort=<ORDER>`: Sort the list in either `asc` or `desc` order. If an invalid order is provided, return an informative error message and exit gracefully.
+  - Integrate new logic to filter and sort the static list of capitals accordingly.
 
-## Testing
-- Update the unit tests in `tests/unit/main.test.js` to cover:
-  - Expected output when no additional parameter is provided.
-  - Handling of the `--country` flag to correctly filter results.
-  - Behavior of the `--format` flag by comparing output structure in both `json` and `jsonld` modes.
-  - Sorting functionality by providing valid (`asc`, `desc`) and invalid sort orders and verifying error messages.
+- **Error Handling:**
+  - For invalid values on the `--sort` or `--format` flags, display clear error messages.
 
-## Documentation
-- Revise the README in `README.md` to include updated usage examples for the `--capital-cities` command. For instance:
-  ```bash
-  node src/lib/main.js --capital-cities --country=France
-  node src/lib/main.js --capital-cities --format=jsonld --sort=asc
-  ```
+- **Testing:**
+  - Update `tests/unit/main.test.js` with unit tests to cover:
+    - Default output when no extra parameter is provided.
+    - Filtering by country using the `--country` flag.
+    - Output format verification by using the `--format` flag in both `json` and `jsonld` modes.
+    - Sorting functionality with valid (`asc`, `desc`) and invalid sort orders.
+
+- **Documentation:**
+  - Revise the `README.md` to include updated usage examples for the `--capital-cities` command, demonstrating the new flags:
+    ```bash
+    node src/lib/main.js --capital-cities --country=France
+    node src/lib/main.js --capital-cities --format=jsonld --sort=asc
+    ```
 
 ## Alignment with Mission
-This enhancement solidifies the mission of owl-builder by providing additional flexibility in generating tailored OWL ontologies from public data sources. The refinement makes the tool more robust and user-friendly, aligning with the core objective of transforming live data into structured and queryable OWL representations.
+This enhancement deepens the tool's capability to transform public data sources into structured OWL ontologies by allowing users to tailor the output to their specific needs. The increased flexibility and robust error handling contribute directly to the mission of making owl-builder a user-centric, dependable CLI tool for managing ontology data.
