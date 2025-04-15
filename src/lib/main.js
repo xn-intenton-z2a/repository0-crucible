@@ -4,6 +4,7 @@
 import { fileURLToPath } from "url";
 import fs from "fs";
 import { createServer } from "http";
+import yaml from "js-yaml";
 
 // Helper function to escape XML special characters
 function escapeXML(str) {
@@ -71,7 +72,8 @@ export async function main(args = process.argv.slice(2)) {
         "--export-rdf": "Export the generated ontology as RDF/XML",
         "--export-turtle": "Export the generated ontology in Turtle (TTL) format",
         "--export-jsonld": "Export the generated ontology as JSON-LD",
-        "--export-csv": "Export the generated ontology as CSV"
+        "--export-csv": "Export the generated ontology as CSV",
+        "--export-yaml": "Export the generated ontology as YAML"
       }
     };
     console.log(JSON.stringify(helpMessage, null, 2));
@@ -391,7 +393,7 @@ export async function main(args = process.argv.slice(2)) {
     return;
   }
 
-  // Handle '--export-turtle' option to export ontology as Turtle (TTL)
+  // Handle '--export-turtle' option to export ontology as Turtle (TTL) format
   const exportTurtleIndex = args.indexOf("--export-turtle");
   if (exportTurtleIndex !== -1) {
     const ontology = crawlDataSources()["owl:ontology"];
@@ -434,6 +436,15 @@ export async function main(args = process.argv.slice(2)) {
       "data": ontology.data
     };
     console.log(JSON.stringify(jsonld, null, 2));
+    return;
+  }
+
+  // Handle '--export-yaml' option to export ontology as YAML
+  const exportYamlIndex = args.indexOf("--export-yaml");
+  if (exportYamlIndex !== -1) {
+    const ontology = crawlDataSources()["owl:ontology"];
+    const yamlOutput = yaml.dump(ontology);
+    console.log(yamlOutput);
     return;
   }
 
