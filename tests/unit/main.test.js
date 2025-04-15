@@ -460,3 +460,16 @@ describe("Export JSONLD Option", () => {
     logSpy.mockRestore();
   });
 });
+
+describe("Export CSV Option", () => {
+  test("should output CSV representation of ontology", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--export-csv"]);
+    const output = logSpy.mock.calls[0][0];
+    const lines = output.trim().split("\n");
+    // For the simulated ontology the keys are id and info sorted alphabetically
+    expect(lines[0]).toBe("id,info");
+    expect(lines[1]).toBe("\"1\",\"Sample data entry\"");
+    logSpy.mockRestore();
+  });
+});
