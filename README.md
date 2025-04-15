@@ -42,6 +42,13 @@ node src/lib/main.js --help
   npm run start
   ```
 
+- **Query OWL Ontologies:**
+  To simulate querying an OWL ontology stored as JSON, run:
+  ```bash
+  node src/lib/main.js --query-owl
+  ```
+  This will output a sample JSON: `{ "result": "Sample OWL query output" }`.
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.
