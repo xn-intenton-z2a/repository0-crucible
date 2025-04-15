@@ -257,7 +257,7 @@ export function main(args = []) {
       refreshData,
       intermediateBuild,
       enhancedBuild,
-      mergePersist: mergePersistData,
+      mergePersist: mergePersistData
     };
     console.log(JSON.stringify(detailedBuild, null, 2));
     return;
