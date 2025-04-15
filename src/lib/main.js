@@ -61,7 +61,7 @@ export async function main(args = process.argv.slice(2)) {
         "--merge-persist": "Merge two ontology files and save the merged result to a file",
         "--filter-data": "Filter ontology data based on key-value pairs",
         "--validate-ontology": "Validate the structure of an ontology JSON file",
-        "--live-crawl": "Retrieve live data from https://api.publicapis.org/entries and output an OWL ontology in JSON format",
+        "--live-crawl": "Output live crawl from https://api.publicapis.org/entries",
         "--ontology-info": "Read an ontology JSON file and output a summary with source, description, total data entries, and optional timestamp",
         "--serve": "Start an HTTP server on port 3000 that serves the OWL ontology at the '/ontology' endpoint",
         "--capital-cities": "Output a sample OWL ontology of capital cities",
@@ -70,7 +70,8 @@ export async function main(args = process.argv.slice(2)) {
         "--build-enhanced": "Simulate advanced processing of ontology data with enhanced output",
         "--export-rdf": "Export the generated ontology as RDF/XML",
         "--export-turtle": "Export the generated ontology in Turtle (TTL) format",
-        "--export-jsonld": "Export the generated ontology as JSON-LD"
+        "--export-jsonld": "Export the generated ontology as JSON-LD",
+        "--export-csv": "Export the generated ontology as CSV"
       }
     };
     console.log(JSON.stringify(helpMessage, null, 2));
@@ -433,6 +434,35 @@ export async function main(args = process.argv.slice(2)) {
       "data": ontology.data
     };
     console.log(JSON.stringify(jsonld, null, 2));
+    return;
+  }
+
+  // Handle '--export-csv' option to export ontology data as CSV
+  const exportCsvIndex = args.indexOf("--export-csv");
+  if (exportCsvIndex !== -1) {
+    const ontology = crawlDataSources()["owl:ontology"];
+    const data = ontology.data;
+    if (!Array.isArray(data)) {
+      console.log(JSON.stringify({ error: "Ontology data is not an array." }));
+      return;
+    }
+    // Get union of all keys from each data entry and sort them for consistency
+    const keysSet = new Set();
+    data.forEach(entry => {
+      Object.keys(entry).forEach(key => keysSet.add(key));
+    });
+    const keys = Array.from(keysSet).sort();
+    let csv = keys.join(",") + "\n";
+    data.forEach(entry => {
+      const row = keys.map(key => {
+        const value = entry[key] !== undefined ? String(entry[key]) : "";
+        // Escape double quotes by doubling them
+        const escaped = value.replace(/"/g, '""');
+        return `"${escaped}"`;
+      }).join(",");
+      csv += row + "\n";
+    });
+    console.log(csv);
     return;
   }
 

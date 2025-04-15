@@ -232,62 +232,28 @@ When executed with the --help option, the tool will output a JSON with usage ins
   ```bash
   node src/lib/main.js --export-rdf
   ```
-  This will output an RDF/XML representation similar to:
-  ```xml
-  <?xml version="1.0" encoding="UTF-8"?>
-  <owl:Ontology>
-    <source>public</source>
-    <description>Simulated crawling of public data sources</description>
-    <data>
-      <entry>
-        <id>1</id>
-        <info>Sample data entry</info>
-      </entry>
-    </data>
-  </owl:Ontology>
-  ```
 
 - **Export Ontology as Turtle (TTL):**
   The `--export-turtle` option exports the generated ontology in Turtle format. When invoked, it outputs a TTL formatted string with prefix declarations and the ontology's source, description, and data entries. For example:
   ```bash
   node src/lib/main.js --export-turtle
   ```
-  A sample output might look like:
-  ```ttl
-  @prefix ex: <http://example.com/> .
-
-  ex:Ontology {
-    ex:source "public" ;
-    ex:description "Simulated crawling of public data sources" ;
-    ex:data [
-      [
-        ex:id "1" ;
-        ex:info "Sample data entry"
-      ]
-    ]
-  }
-  ```
 
 - **Export Ontology as JSON-LD:**
-  The new `--export-jsonld` option exports the generated ontology in JSON-LD format. When invoked, it outputs a JSON-LD structure with a defined @context and @type. For example:
+  The `--export-jsonld` option exports the generated ontology in JSON-LD format. When invoked, it outputs a JSON-LD structure with a defined @context and @type. For example:
   ```bash
   node src/lib/main.js --export-jsonld
   ```
-  A sample output might look like:
-  ```json
-  {
-    "@context": {
-      "source": "http://example.com/source",
-      "description": "http://example.com/description",
-      "data": "http://example.com/data"
-    },
-    "@type": "Ontology",
-    "source": "public",
-    "description": "Simulated crawling of public data sources",
-    "data": [
-      { "id": 1, "info": "Sample data entry" }
-    ]
-  }
+
+- **Export Ontology as CSV:**
+  The new `--export-csv` option exports the generated ontology in CSV format. It outputs the ontology's data with a header row containing all unique keys (sorted alphabetically) from the data entries, followed by rows for each entry. For example:
+  ```bash
+  node src/lib/main.js --export-csv
+  ```
+  For the sample ontology, this outputs:
+  ```csv
+  id,info
+  "1","Sample data entry"
   ```
 
 ## Incremental Changes Plan
