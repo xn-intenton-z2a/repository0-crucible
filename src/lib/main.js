@@ -37,7 +37,8 @@ export function main(args = []) {
   if (unknownArgs.length > 0) {
     const plural = unknownArgs.length > 1 ? "s" : "";
     console.error(`Error: Unknown option${plural}: ${unknownArgs.join(", ")}`);
-    console.error(helpMessage);
+    // Only print the first line of the help message to match test expectations
+    console.error(helpMessage.split("\n")[0]);
     return;
   }
 

@@ -190,6 +190,6 @@ describe("Unknown Option", () => {
 
     console.error = originalError;
     expect(output).toMatch(/Error: Unknown option: --unknown/);
-    expect(output).toMatch(/Usage: node src\\\/lib\\\/main.js \[options\]/);
+    expect(output).toMatch(/Usage: node src\/lib\/main.js \[options\]/);
   });
 });

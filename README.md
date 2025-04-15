@@ -90,15 +90,6 @@ Will output:
 ```
 Error: Unknown option: --foo
 Usage: node src/lib/main.js [options]
-  --help              Show help message
-  --diagnostics       Output diagnostics information
-  --capital-cities    Output capital cities OWL ontology JSON
-  --serve             Start the HTTP server to serve the OWL ontology
-  --build-intermediate  Build with intermediate steps (simulated operation)
-  --build-enhanced      Build with enhanced features (if implemented)
-  --refresh             Refresh the data (simulated operation)
-  --merge-persist       Merge and persist the data (if implemented)
-  --crawl-data          Simulate crawling public data sources and output JSON
 ```
 
 ## Incremental Changes Plan
