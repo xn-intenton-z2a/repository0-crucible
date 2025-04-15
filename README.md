@@ -25,14 +25,7 @@ npm install repository0-crucible
 
 ## Features
 
-- Provides a CLI tool for generating and handling OWL ontologies in JSON format.
-- Supports exporting OWL ontology of capital cities with a generation timestamp.
-- Simulates various operations: diagnostics, data crawling, refreshing data, and build processes.
-- Includes an HTTP server to serve the ontology.
-- New: Validates the exported ontology JSON file using the `--validate-ontology` option.
-- New: Provides extended help information using the `--help-extended` option.
-- New: Displays the application version using the `--version` option.
-- New: Provides enhanced diagnostic information with the `--debug` option, including current working directory and selected environment variables (e.g., NODE_ENV).
+TODO: Add features here.
 
 ## Usage
 
@@ -42,167 +35,13 @@ To run the CLI tool and see help instructions:
 node src/lib/main.js --help
 ```
 
-To get the help message in JSON format for programmatic use:
+### Example Commands
 
-```bash
-node src/lib/main.js --help-json
-```
+- **Default Demo Output:**
+  ```bash
+  npm run start
+  ```
 
-To get extended help information with detailed descriptions and usage examples for each command, run:
-
-```bash
-node src/lib/main.js --help-extended
-```
-
-Example extended help output:
-
-```
-Extended Help:
-
---help: Displays a brief help message.
-         Example: node src/lib/main.js --help
-
---help-json: Displays help in JSON format.
-         Example: node src/lib/main.js --help-json
-
---help-extended: Displays detailed help information with descriptions and usage examples for each command.
-         Example: node src/lib/main.js --help-extended
-
---diagnostics: Outputs diagnostics info about the current environment.
-         Example: node src/lib/main.js --diagnostics
-
---capital-cities: Outputs the capital cities OWL ontology in JSON format.
-         Example: node src/lib/main.js --capital-cities
-
---export-ontology: Exports the OWL ontology to a file named exported_ontology.json.
-         Example: node src/lib/main.js --export-ontology
-
---crawl-data: Simulates crawling public data sources and outputs JSON.
-         Example: node src/lib/main.js --crawl-data
-
---refresh: Simulates a data refresh operation.
-         Example: node src/lib/main.js --refresh
-
---build-intermediate: Simulates an intermediate build process.
-         Example: node src/lib/main.js --build-intermediate
-
---build-enhanced: Simulates an enhanced build process.
-         Example: node src/lib/main.js --build-enhanced
-
---merge-persist: Simulates merging and persisting OWL ontology data.
-         Example: node src/lib/main.js --merge-persist
-
---build-detailed: Simulates a detailed build pipeline with multiple steps.
-         Example: node src/lib/main.js --build-detailed
-
---validate-ontology: Validates the exported ontology JSON file.
-         Example: node src/lib/main.js --validate-ontology
-
---serve: Starts the HTTP server to serve the ontology.
-         Example: node src/lib/main.js --serve
-
---version: Displays the application version.
-         Example: node src/lib/main.js --version
-
---debug: Outputs enhanced diagnostic information including the current working directory and selected environment variables (e.g., NODE_ENV).
-         Example: node src/lib/main.js --debug
-```
-
-To output an example OWL ontology in JSON format representing capital cities with a generation timestamp, run:
-
-```bash
-node src/lib/main.js --capital-cities
-```
-
-To output diagnostics information about the current environment including Node.js version, OS platform, and available commands, run:
-
-```bash
-node src/lib/main.js --diagnostics
-```
-
-To output enhanced diagnostic information including the current working directory and environment variables, run:
-
-```bash
-node src/lib/main.js --debug
-```
-
-To simulate crawling public data sources and output dynamic JSON data, run:
-
-```bash
-node src/lib/main.js --crawl-data
-```
-
-To refresh the data (simulate a data refresh operation), run:
-
-```bash
-node src/lib/main.js --refresh
-```
-
-To simulate an intermediate build process, run:
-
-```bash
-node src/lib/main.js --build-intermediate
-```
-
-To simulate an enhanced build process, run:
-
-```bash
-node src/lib/main.js --build-enhanced
-```
-
-To simulate merging and persisting OWL ontology data, run:
-
-```bash
-node src/lib/main.js --merge-persist
-```
-
-To start a simple HTTP server that serves the OWL ontology for capital cities, run:
-
-```bash
-node src/lib/main.js --serve
-```
-
-To export the OWL ontology for capital cities to a file, run:
-
-```bash
-node src/lib/main.js --export-ontology
-```
-
-This command writes the ontology JSON to a file named `exported_ontology.json` and outputs a confirmation message.
-
-To validate the exported OWL ontology JSON file and ensure its structure is correct, run:
-
-```bash
-node src/lib/main.js --validate-ontology
-```
-
-If the file exists and is valid, the tool will output "Ontology is valid". If the file is missing or invalid, an appropriate error message will be displayed.
-
-To simulate a comprehensive build pipeline that sequentially executes multiple steps, run:
-
-```bash
-node src/lib/main.js --build-detailed
-```
-
-This command outputs a single consolidated JSON object containing the following keys:
-
-- **crawlData**: Simulated data crawl result with a `fetchedAt` timestamp.
-- **refreshData**: Simulated data refresh result with a `refreshedAt` timestamp.
-- **intermediateBuild**: Simulated intermediate build result with a `builtAt` timestamp.
-- **enhancedBuild**: Simulated enhanced build result with a `builtAt` timestamp.
-- **mergePersist**: Simulated merge and persist operation result with a `mergedAt` timestamp.
-
-To display the current application version, run:
-
-```bash
-node src/lib/main.js --version
-```
-
-This will output a line like:
-
-```
-Version: x.y.z
-```
 
 ## Incremental Changes Plan
 
