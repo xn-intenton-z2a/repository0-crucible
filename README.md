@@ -122,7 +122,6 @@ When executed with the --help option, the tool will output a JSON with usage ins
     "currentWorkingDirectory": "your-current-directory"
   }
   ```
-  where the values reflect your current Node.js environment.
 
 - **Save Ontology to File:**
   To save the generated OWL ontology to a file, use the `--save-ontology` option. You can provide a filename or let it default to `ontology.json`.
@@ -169,6 +168,25 @@ When executed with the --help option, the tool will output a JSON with usage ins
   { "result": "Ontology structure is valid" }
   ```
   Otherwise, it will output an error message detailing the issue.
+
+- **Display Ontology Info:**
+  The new `--ontology-info` option reads a provided ontology JSON file and outputs a summary including the ontology's source, description, and the total number of data entries. Optionally, it will include a timestamp if available.
+  
+  **Example:**
+  ```bash
+  node src/lib/main.js --ontology-info path/to/ontology.json
+  ```
+  This will output a JSON summary like:
+  ```json
+  {
+    "ontologyInfo": {
+      "source": "public",
+      "description": "Test ontology",
+      "totalDataEntries": 2,
+      "timestamp": "2023-10-10T10:10:10Z"
+    }
+  }
+  ```
 
 ## Incremental Changes Plan
 

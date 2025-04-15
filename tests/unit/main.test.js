@@ -335,36 +335,63 @@ describe("Validate Ontology Option", () => {
   });
 });
 
-// New tests for the --live-crawl option
+// New tests for the --ontology-info option
 
-describe("Live Crawl Option", () => {
-  test("should output live ontology", async () => {
-    const fakeEntry = { API: "Cat Facts", Description: "Daily cat facts", Link: "https://cat-fact.herokuapp.com" };
-    global.fetch = vi.fn().mockResolvedValue({
-      ok: true,
-      json: async () => ({ entries: [fakeEntry] })
+describe("Ontology Info Option", () => {
+  test("should output ontology summary for valid ontology file", () => {
+    const validOntology = {
+      "owl:ontology": {
+        source: "public",
+        description: "Test ontology",
+        data: [{ a: 1 }, { a: 2 }],
+        timestamp: "2023-10-10T10:10:10Z"
+      }
+    };
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation((filePath) => {
+      if (filePath === "validOntology.json") return JSON.stringify(validOntology);
+      return "";
     });
     const logSpy = vi.spyOn(console, "log");
-    await main(["--live-crawl"]);
-    const output = JSON.parse(logSpy.mock.calls[0][0]);
-    expect(output).toHaveProperty("owl:ontology");
-    expect(output["owl:ontology"]).toHaveProperty("source", "live");
-    expect(output["owl:ontology"]).toHaveProperty("description", "Live crawl from https://api.publicapis.org/entries");
-    expect(output["owl:ontology"]).toHaveProperty("data");
-    expect(Array.isArray(output["owl:ontology"].data)).toBe(true);
-    expect(output["owl:ontology"].data[0]).toEqual(fakeEntry);
+    main(["--ontology-info", "validOntology.json"]);
+    const expectedOutput = {
+      ontologyInfo: {
+        source: "public",
+        description: "Test ontology",
+        totalDataEntries: 2,
+        timestamp: "2023-10-10T10:10:10Z"
+      }
+    };
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify(expectedOutput));
+    readFileSyncSpy.mockRestore();
     logSpy.mockRestore();
-    global.fetch.mockRestore();
   });
 
-  test("should output error if fetch fails", async () => {
-    const errorMessage = "Network Error";
-    global.fetch = vi.fn().mockRejectedValue(new Error(errorMessage));
+  test("should output error when file path is missing for --ontology-info", () => {
     const logSpy = vi.spyOn(console, "log");
-    await main(["--live-crawl"]);
-    const output = JSON.parse(logSpy.mock.calls[0][0]);
-    expect(output).toHaveProperty("error", "Error fetching live data: " + errorMessage);
+    main(["--ontology-info"]);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Missing ontology file path argument for --ontology-info" }));
     logSpy.mockRestore();
-    global.fetch.mockRestore();
+  });
+
+  test("should output error for invalid JSON in ontology file", () => {
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation(() => "not-a-json");
+    const logSpy = vi.spyOn(console, "log");
+    main(["--ontology-info", "invalid.json"]);
+    expect(logSpy.mock.calls[0][0]).toContain("Error:");
+    readFileSyncSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+
+  test("should output error when ontology file is missing required properties", () => {
+    const invalidOntology = { "owl:ontology": { source: 123, description: true, data: "not-an-array" } };
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation((filePath) => {
+      if (filePath === "badOntology.json") return JSON.stringify(invalidOntology);
+      return "";
+    });
+    const logSpy = vi.spyOn(console, "log");
+    main(["--ontology-info", "badOntology.json"]);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Ontology file does not have valid source, description or data properties." }));
+    readFileSyncSpy.mockRestore();
+    logSpy.mockRestore();
   });
 });
