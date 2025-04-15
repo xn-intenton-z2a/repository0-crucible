@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 
 export async function main(args = process.argv.slice(2)) {
   if (args.includes('--help')) {
-    console.log(`Usage: node src/lib/main.js [options]\n\nOptions:\n  --help                Display help information about the CLI tool.\n  --version             Display the current application version.\n  --diagnostics         Run diagnostics.\n  --extended-diagnostics  Run extended diagnostics.\n  --self-refine         Perform self-refinement analysis.\n  --serve               Start the server.\n  --build-intermediate  Build with intermediate options.\n  --build-enhanced      Build with enhanced options.\n  --refresh             Refresh the application state.\n  --merge-persist       Merge and persist changes.\n`
+    console.log(`Usage: node src/lib/main.js [options]\n\nOptions:\n  --help                Display help information about the CLI tool.\n  --version             Display the current application version.\n  --diagnostics         Run diagnostics.\n  --extended-diagnostics  Run extended diagnostics.\n  --self-refine         Perform self-refinement analysis.\n  --serve               Start the server.\n  --build-intermediate  Build with intermediate options.\n  --build-enhanced      Build with enhanced options.\n  --refresh             Refresh the application state.\n  --merge-persist       Merge and persist changes.\n  --echo                Output the remaining arguments in JSON format.\n`
     );
     return;
   }
@@ -64,6 +64,12 @@ export async function main(args = process.argv.slice(2)) {
   
   if (args.includes('--build-enhanced')) {
     console.log("Building with enhanced options...");
+    return;
+  }
+  
+  if (args.includes('--echo')) {
+    const echoArgs = args.filter(arg => arg !== '--echo');
+    console.log(JSON.stringify({ echo: echoArgs }));
     return;
   }
   
