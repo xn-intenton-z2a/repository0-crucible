@@ -4,6 +4,24 @@
 import { fileURLToPath } from "url";
 
 export function main(args = []) {
+  if (args.includes("--help")) {
+    const helpMessage = [
+      "Usage: node src/lib/main.js [options]",
+      "",
+      "Options:",
+      "  --help          Show help message",
+      "  --diagnostics   Output diagnostics information",
+      "  --capital-cities  Output capital cities OWL ontology JSON",
+      "  --serve         Start the server (if implemented)",
+      "  --build-intermediate  Build with intermediate steps (if implemented)",
+      "  --build-enhanced      Build with enhanced features (if implemented)",
+      "  --refresh             Refresh the data (if implemented)",
+      "  --merge-persist       Merge and persist the data (if implemented)"
+    ].join("\n");
+    console.log(helpMessage);
+    return;
+  }
+
   if (args.includes("--diagnostics")) {
     const diagnostics = {
       nodeVersion: process.versions.node,

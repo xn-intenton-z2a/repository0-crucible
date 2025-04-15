@@ -54,6 +54,11 @@ node src/lib/main.js --diagnostics
   npm run start
   ```
 
+- **Help Message:**
+  ```bash
+  node src/lib/main.js --help
+  ```
+
 - **Capital Cities Example (includes generatedAt timestamp):**
   ```bash
   node src/lib/main.js --capital-cities
