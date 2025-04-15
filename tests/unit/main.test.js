@@ -1,8 +1,16 @@
-import { describe, test, expect } from "vitest";
+import { describe, test, expect, afterEach } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main, serve } from "@src/lib/main.js";
 import http from "http";
+import fs from "fs";
 
+// Utility function to clean up exported file if exists
+const exportedFile = 'exported_ontology.json';
+const cleanupExportedFile = () => {
+  if (fs.existsSync(exportedFile)) {
+    fs.unlinkSync(exportedFile);
+  }
+};
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -10,14 +18,12 @@ describe("Main Module Import", () => {
   });
 });
 
-
 describe("Main Output", () => {
   test("should terminate without error", () => {
     process.argv = ["node", "src/lib/main.js"];
     main();
   });
 });
-
 
 describe("Capital Cities Option", () => {
   test("should output capitalCities OWL ontology JSON with generatedAt timestamp", () => {
@@ -44,7 +50,6 @@ describe("Capital Cities Option", () => {
   });
 });
 
-
 describe("Diagnostics Option", () => {
   test("should output diagnostics JSON with required keys", () => {
     let output = "";
@@ -70,7 +75,6 @@ describe("Diagnostics Option", () => {
     ]));
   });
 });
-
 
 describe("Serve Option", () => {
   test("should serve capitalCities ontology on /capital-cities endpoint", async () => {
@@ -117,7 +121,6 @@ describe("Serve Option", () => {
   });
 });
 
-
 describe("Crawl Data Option", () => {
   test("should output simulated crawl data JSON with fetchedAt timestamp", () => {
     let output = "";
@@ -141,7 +144,6 @@ describe("Crawl Data Option", () => {
   });
 });
 
-
 describe("Refresh Option", () => {
   test("should output refresh JSON with refreshedAt timestamp", () => {
     let output = "";
@@ -159,7 +161,6 @@ describe("Refresh Option", () => {
     expect(iso).toEqual(parsed.refreshedAt);
   });
 });
-
 
 describe("Build Intermediate Option", () => {
   test("should output intermediate build JSON with builtAt timestamp", () => {
@@ -179,7 +180,6 @@ describe("Build Intermediate Option", () => {
   });
 });
 
-
 describe("Merge Persist Option", () => {
   test("should output merge persist JSON with mergedAt timestamp", () => {
     let output = "";
@@ -198,7 +198,6 @@ describe("Merge Persist Option", () => {
   });
 });
 
-
 describe("Unknown Option", () => {
   test("should output error message and usage when provided with an unknown option", () => {
     let output = "";
@@ -212,7 +211,6 @@ describe("Unknown Option", () => {
     expect(output).toMatch(/Usage: node src\/lib\/main.js \[options\]/);
   });
 });
-
 
 describe("Help JSON Option", () => {
   test("should output JSON formatted help message with 'usage' and 'options' keys", () => {
@@ -229,5 +227,40 @@ describe("Help JSON Option", () => {
     expect(parsed).toHaveProperty("options");
     expect(Array.isArray(parsed.options)).toBe(true);
     expect(parsed.options.every(option => option.startsWith("--"))).toBe(true);
+  });
+});
+
+describe("Export Ontology Option", () => {
+  afterEach(() => {
+    cleanupExportedFile();
+  });
+
+  test("should export the OWL ontology to a file with proper content and confirmation message", () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (msg) => { output += msg; };
+
+    main(["--export-ontology"]);
+
+    console.log = originalLog;
+    
+    // Check confirmation message
+    expect(output).toContain("Ontology exported to exported_ontology.json");
+    
+    // Read the exported file and verify contents
+    expect(fs.existsSync(exportedFile)).toBe(true);
+    const fileContent = fs.readFileSync(exportedFile, 'utf-8');
+    const parsed = JSON.parse(fileContent);
+    expect(parsed).toHaveProperty("owl", "capitalCities");
+    expect(parsed).toHaveProperty("data");
+    expect(Array.isArray(parsed.data)).toBe(true);
+    expect(parsed.data).toEqual([
+      { country: "France", capital: "Paris" },
+      { country: "Japan", capital: "Tokyo" },
+      { country: "Brazil", capital: "Brasília" }
+    ]);
+    expect(parsed).toHaveProperty("generatedAt");
+    const iso = new Date(parsed.generatedAt).toISOString();
+    expect(iso).toEqual(parsed.generatedAt);
   });
 });

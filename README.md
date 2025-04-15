@@ -56,7 +56,8 @@ Example output:
     "--build-enhanced",
     "--refresh",
     "--merge-persist",
-    "--crawl-data"
+    "--crawl-data",
+    "--export-ontology"
   ]
 }
 ```
@@ -102,6 +103,14 @@ To start a simple HTTP server that serves the OWL ontology for capital cities, r
 ```bash
 node src/lib/main.js --serve
 ```
+
+To export the OWL ontology for capital cities to a file, run:
+
+```bash
+node src/lib/main.js --export-ontology
+```
+
+This command writes the ontology JSON to a file named `exported_ontology.json` and outputs a confirmation message.
 
 Once the server is running, send an HTTP GET request to:
 
