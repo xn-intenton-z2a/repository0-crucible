@@ -15,7 +15,7 @@ const helpMessage = [
   "  --build-intermediate  Build with intermediate steps (simulated operation)",
   "  --build-enhanced      Build with enhanced features (if implemented)",
   "  --refresh             Refresh the data (simulated operation)",
-  "  --merge-persist       Merge and persist the data (if implemented)",
+  "  --merge-persist       Merge and persist the data (simulated operation)",
   "  --crawl-data          Simulate crawling public data sources and output JSON"
 ].join("\n");
 
@@ -108,13 +108,22 @@ export function main(args = []) {
     return;
   }
 
+  if (args.includes("--merge-persist")) {
+    const mergePersistData = {
+      mergePersist: "Data merged and persisted successfully",
+      mergedAt: new Date().toISOString()
+    };
+    console.log(JSON.stringify(mergePersistData, null, 2));
+    return;
+  }
+
   if (args.includes("--serve")) {
     // Start the HTTP server
     serve();
     return;
   }
 
-  // For recognized options like --build-enhanced and --merge-persist that are not implemented,
+  // For recognized options like --build-enhanced that are not implemented,
   // or when no options are provided, simply log the arguments provided.
   console.log(`Run with: ${JSON.stringify(args)}`);
 }

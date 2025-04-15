@@ -65,6 +65,14 @@ To simulate an intermediate build process, run:
 node src/lib/main.js --build-intermediate
 ```
 
+To simulate merging and persisting OWL ontology data, run:
+
+```bash
+node src/lib/main.js --merge-persist
+```
+
+This command returns a JSON object with a merge message and a timestamp indicating when the merge occurred.
+
 To start a simple HTTP server that serves the OWL ontology for capital cities, run:
 
 ```bash

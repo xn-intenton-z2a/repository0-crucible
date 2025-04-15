@@ -180,6 +180,25 @@ describe("Build Intermediate Option", () => {
 });
 
 
+describe("Merge Persist Option", () => {
+  test("should output merge persist JSON with mergedAt timestamp", () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (msg) => { output += msg; };
+
+    main(["--merge-persist"]);
+
+    console.log = originalLog;
+
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("mergePersist", "Data merged and persisted successfully");
+    expect(parsed).toHaveProperty("mergedAt");
+    const iso = new Date(parsed.mergedAt).toISOString();
+    expect(iso).toEqual(parsed.mergedAt);
+  });
+});
+
+
 describe("Unknown Option", () => {
   test("should output error message and usage when provided with an unknown option", () => {
     let output = "";
