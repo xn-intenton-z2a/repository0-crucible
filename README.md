@@ -41,6 +41,12 @@ To output an example OWL ontology in JSON format representing capital cities wit
 node src/lib/main.js --capital-cities
 ```
 
+To output diagnostics information about the current environment including Node.js version, OS platform, and available commands, run:
+
+```bash
+node src/lib/main.js --diagnostics
+```
+
 ### Example Commands
 
 - **Default Demo Output:**
@@ -51,6 +57,11 @@ node src/lib/main.js --capital-cities
 - **Capital Cities Example (includes generatedAt timestamp):**
   ```bash
   node src/lib/main.js --capital-cities
+  ```
+
+- **Diagnostics Example (shows environment and command listing):**
+  ```bash
+  node src/lib/main.js --diagnostics
   ```
 
 ## Incremental Changes Plan

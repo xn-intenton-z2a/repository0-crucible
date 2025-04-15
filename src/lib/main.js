@@ -4,6 +4,24 @@
 import { fileURLToPath } from "url";
 
 export function main(args = []) {
+  if (args.includes("--diagnostics")) {
+    const diagnostics = {
+      nodeVersion: process.versions.node,
+      platform: process.platform,
+      availableCommands: [
+        "--capital-cities",
+        "--diagnostics",
+        "--serve",
+        "--build-intermediate",
+        "--build-enhanced",
+        "--refresh",
+        "--merge-persist"
+      ]
+    };
+    console.log(JSON.stringify(diagnostics, null, 2));
+    return;
+  }
+
   if (args.includes("--capital-cities")) {
     const owlOntology = {
       owl: "capitalCities",
@@ -17,6 +35,7 @@ export function main(args = []) {
     console.log(JSON.stringify(owlOntology, null, 2));
     return;
   }
+
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 

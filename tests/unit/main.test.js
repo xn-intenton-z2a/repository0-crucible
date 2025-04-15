@@ -39,3 +39,27 @@ describe("Capital Cities Option", () => {
     expect(iso).toEqual(parsed.generatedAt);
   });
 });
+
+describe("Diagnostics Option", () => {
+  test("should output diagnostics JSON with required keys", () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (msg) => { output += msg; };
+
+    main(["--diagnostics"]);
+
+    console.log = originalLog;
+
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("nodeVersion", process.versions.node);
+    expect(parsed).toHaveProperty("platform", process.platform);
+    expect(parsed).toHaveProperty("availableCommands");
+    expect(Array.isArray(parsed.availableCommands)).toBe(true);
+    // Verify that some expected commands are included
+    expect(parsed.availableCommands).toEqual(expect.arrayContaining([
+      "--capital-cities",
+      "--diagnostics",
+      "--serve"
+    ]));
+  });
+});
