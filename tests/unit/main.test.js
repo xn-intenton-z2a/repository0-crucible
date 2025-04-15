@@ -461,8 +461,7 @@ describe("Refresh Option", () => {
     expect(output["owl:ontology"]).toHaveProperty("timestamp");
     const timestamp = output["owl:ontology"].timestamp;
     // Check if the timestamp is a valid ISO string
-    expect(typeof timestamp).toBe("string
-    ");
+    expect(typeof timestamp).toBe("string");
     expect(timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
     logSpy.mockRestore();
   });
