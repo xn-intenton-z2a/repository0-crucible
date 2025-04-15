@@ -1,67 +1,60 @@
-# Overview
+# Ontology Transform Update
 
-This feature introduces two new CLI flags: `--ontology-transform` and `--owl-examples`. The `--ontology-transform` flag accepts a JSON string as its argument, transforms the JSON by wrapping it within an `ontology` key and appending a `generatedAt` timestamp, and outputs the result. If the provided JSON is invalid or missing, the feature outputs a default transformation object. The optional `--owl-examples` flag, when used in conjunction with any output (such as from a capital cities ontology command), will augment the output by appending a `results` key with demonstration sample data.
+## Overview
+This update refines the existing ontology transform functionality by introducing support for two new CLI flags: `--ontology-transform` and `--owl-examples`. The `--ontology-transform` flag accepts a JSON string as its argument, wraps the parsed JSON inside an `ontology` key, and appends a `generatedAt` timestamp. If the JSON is invalid or missing, a default error object is returned. Optionally, when the `--owl-examples` flag is provided alongside the transform flag, the output is augmented with a `results` key containing demonstration sample data. This update aims to enhance custom ontology transformations without altering other core CLI functionalities.
 
-# Implementation Details
+## Implementation Details
+### Source File (`src/lib/main.js`)
+- **Flag Addition**:
+  - Update the valid options set to include `--ontology-transform` and `--owl-examples`.
+- **`--ontology-transform` Flag Handling**:
+  - Detect the flag and retrieve the next argument as the JSON input.
+  - Attempt to parse the JSON; if valid, wrap it in an object of the form:
+    ```json
+    {
+      "ontology": <parsed_JSON>,
+      "generatedAt": "<current ISO timestamp>"
+    }
+    ```
+  - If the JSON is invalid or missing, output:
+    ```json
+    {
+      "ontology": {"error": "Invalid or missing input"},
+      "generatedAt": "<current ISO timestamp>"
+    }
+    ```
+- **`--owl-examples` Flag Handling**:
+  - When this flag is provided in combination with a transform command, append a `results` key to the output. For example:
+    ```json
+    "results": [{"sample": "example data"}]
+    ```
+- **Placement**:
+  - The new flags are checked before other command branches so that they override and provide dedicated transformation behavior.
 
-## Source File (`src/lib/main.js`)
-- **Flag Handling**:
-  - Check if the CLI arguments include `--ontology-transform`.
-  - Retrieve the argument immediately following the flag.
-  - Attempt to parse the following argument as JSON.
-    - On success, output an object of the form:
-      ```json
-      {
-        "ontology": <parsed_JSON>,
-        "generatedAt": "<current ISO timestamp>"
-      }
-      ```
-    - On failure, output a default object such as:
-      ```json
-      {
-        "ontology": {"error": "Invalid or missing input"},
-        "generatedAt": "<current ISO timestamp>"
-      }
-      ```
-  - Check if the CLI arguments include `--owl-examples`.
-    - If present, take the existing output (from any command that supports transformation) and append a `results` key containing a demonstration array, e.g., sample OWL-enhanced data.
-
-- **Code Integration**:
-  - Place the new flag checks alongside the existing CLI option checks in the main function of `src/lib/main.js`.
-  - Ensure these new flags do not interfere with already-existing commands.
-
-## Test File Updates (`tests/unit/main.test.js`)
+### Test File Updates (`tests/unit/main.test.js`)
 - **New Test Cases**:
-  - Test that providing valid JSON input with `--ontology-transform` results in an output object containing an `ontology` key with the parsed JSON and includes a valid `generatedAt` timestamp.
-  - Test that providing invalid or missing JSON input results in the default transformation output.
-  - Test that when `--owl-examples` is used in conjunction with any output command (e.g. `--capital-cities`), the resulting output includes an additional `results` key with demonstration data.
+  - Verify that a valid JSON input with `--ontology-transform` returns an output containing the parsed JSON under the `ontology` key and a valid `generatedAt` timestamp.
+  - Verify that invalid or missing JSON input yields the default error object.
+  - Check that when both `--ontology-transform` and `--owl-examples` are supplied, the final output includes a `results` key with demonstration data.
 
-## Documentation Updates (`README.md`)
-- Add new sections in the CLI usage documentation:
-  - Explain the purpose and usage of `--ontology-transform`, providing examples for valid and invalid inputs.
-  - Describe how the `--owl-examples` flag augments regular command output by appending additional example data.
+### Documentation Updates (`README.md`)
+- **CLI Usage Section**:
+  - Add a description for the `--ontology-transform` flag with examples showing how to pass valid and invalid JSON inputs.
+  - Document the optional `--owl-examples` flag and how it augments the CLI output with additional sample data.
 
-## Dependencies File Updates (`package.json`)
-- No new dependencies are required for this feature. Existing libraries, such as `zod` and native JSON handling, are sufficient.
+### Dependencies File Updates (`package.json`)
+- No additional dependencies are required. The current dependencies (including `zod` for JSON schema validation) suffice.
 
-# Compliance and Roll-out Strategy
-
-- **Backward Compatibility:**
-  - The implementation ensures that if neither `--ontology-transform` nor `--owl-examples` is specified, all existing behavior remains unchanged.
-
-- **Testing Coverage:**
-  - Comprehensive unit tests will be added to cover both valid and fallback behavior of the new flags.
-
-- **Manual Testing:**
-  - Test the implementation manually by running commands, for example:
+## Roll-out Strategy
+- **Backward Compatibility**:
+  - The new code path is isolated to the transformation command; if neither flag is provided, existing CLI behavior remains unchanged.
+- **Testing**:
+  - Run the entire test suite (`npm test`) to ensure all cases pass, including the new transformation and augmentation behaviors.
+- **Manual Testing**:
+  - Test via the command line:
     ```bash
     node src/lib/main.js --ontology-transform '{"sample": "data"}'
-    node src/lib/main.js --capital-cities --owl-examples
+    node src/lib/main.js --ontology-transform '{"sample": "data"}' --owl-examples
     ```
 
-- **Mission Alignment:**
-  - This feature aligns with the owl-builder mission by expanding transformation capabilities and providing enhanced example outputs for better ontology management.
-
-# Summary
-
-The `ONTOLOGY_TRANSFORM` feature extends the CLI tool to include dynamic input transformation and output augmentation using two new flags. This feature integrates seamlessly into the existing codebase, adheres to coding and testing standards as per CONTRIBUTING.md, and enhances the demo value showcased in the repository.
+This enhancement aligns with the mission of providing dynamic and accurate OWL ontology management while keeping the feature set lean and focused.
