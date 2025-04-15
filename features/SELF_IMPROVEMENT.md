@@ -1,22 +1,30 @@
 # SELF_IMPROVEMENT
 
 ## Overview
-Self-improvement gives the agent an introspective capability: the power to analyze its own performance and make adjustments or suggestions for its evolution. In an agentic system, this means the agent doesn’t just carry out commands blindly; it also monitors metrics like how many times it has run, how long tasks take, and how often errors occur. By having the agent review these aspects, it can identify inefficiencies or recurring problems and either fix them autonomously or flag them for developers. This trait is crucial for a system meant to evolve continuously — it closes the loop where the agent not only *does* tasks but also *learns* from them. Initially, self-improvement will focus on simple quantitative feedback (counters, timings, error tracking). Over time, it can grow into more complex behavior like the agent tuning its strategies or proposing code changes to improve itself.
+This feature enhances the agent’s ability to monitor its own performance by tracking error counts and execution timing. It builds on the existing `--self-refine` CLI flag and expands its utility by logging these metrics in the global state. The agent will also support a self-review command (e.g. `self_improve`) that outputs a detailed performance report to help guide adjustments or improvements.
 
 ## Implementation Details
-1. **Track Performance Metrics:** Augment the global state and logging to collect data useful for self-assessment. In `src/lib/main.js`, introduce global counters if not already present:
-  - `globalThis.errorCount` – initialize to 0, increment whenever the agent encounters a processing error (for example, in the `catch` block of `agenticHandler` or when logging an error for invalid input).
-  - `globalThis.totalExecutionTime` – initialize to 0, and add each command’s `executionTimeMS` to this total after processing it. This, combined with the existing `callCount`, can be used to compute average execution time per command.
-2. **Extend Status Reporting:** The agent already has a `statusHandler()` that produces a status summary (used by the `--status` CLI flag). Update this status output to include the new metrics:
-  - Add an `errorCount` field showing the total number of errors encountered so far in the runtime.
-  - Add an `avgExecutionTimeMS` field, calculated as `totalExecutionTime / callCount` (if callCount is 0, this can be 0). This provides a simple efficiency metric.
-    Including these in the JSON output of `--status` gives immediate visibility into agent performance and will be useful for the agent itself to reason about its performance.
-3. **Self-Check Command:** Introduce a special agentic command for triggering a self-assessment. For example, if `payload.command === "self_improve"` or `"self_review"`, the `agenticHandler` can produce a report or suggestion instead of doing a normal action. In this initial implementation, the self-review could compile the metrics (calls, errors, average time) and maybe a placeholder suggestion. E.g., return an object `{ status: "analysis", callCount, errorCount, avgExecutionTimeMS, suggestion: "No immediate improvements identified." }`. The suggestion string can be basic for now (or based on simple rules, like if `errorCount > 0` suggest improving input validation).
-4. **Unit Tests:** Write tests in `main.test.js` to ensure self-improvement features work:
-  - After some commands have been processed, call `statusHandler()` (directly or via `agenticLib.main(["--status"])`) and verify that `errorCount` and `avgExecutionTimeMS` appear in the output, and that they have reasonable values (e.g., no errors => errorCount 0, average time is non-negative number). This ensures the metrics are being tracked.
-  - Simulate an error scenario (e.g., call `agenticHandler({ command: "" })` inside a test and catch the exception). After that, check that `globalThis.errorCount` incremented by 1.
-  - Test the self-review command: e.g., `const analysis = await agenticLib.agenticHandler({ command: "self_improve" });` and expect the returned object to include keys like `callCount` and `errorCount`. If possible, manipulate the environment (call a few commands first, trigger an error) before invoking self_improve and then verify the suggestion reflects the situation (for example, if there were errors, maybe the suggestion notes that).
-5. **Documentation:** In the README’s feature list, document **Self-Improvement and Diagnostics:** Explain that the agent now monitors its own performance statistics (number of commands run, errors, timing). Mention that the `--status` output includes these metrics, and describe any special command or mode (like `"self_improve"`) that prints a self-analysis. This lets users know the agent is not a black box — it’s observing itself and will eventually use this data to get better.
+1. **Performance Metric Tracking:**
+   - In the source file (`src/lib/main.js`), initialize global counters such as `globalThis.errorCount` and `globalThis.totalExecutionTime` (if not already present). These should be incremented or updated whenever a command results in an error or when a command’s execution completes.
+   - Enhance existing logging to record metrics; for example, wrap command execution in timing logic and capture errors in try/catch blocks.
+
+2. **Status Handler Enhancement:**
+   - Update the status reporting (triggered via the `--status` CLI flag, or on specific self-review commands) to include new fields: `errorCount` and `avgExecutionTimeMS` (calculated as `totalExecutionTime / callCount`).
+
+3. **Self-Review Command:**
+   - Modify the `agenticHandler` in `src/lib/main.js` to recognize a self-review command (for instance, when `payload.command` is set to `self_improve`).
+   - This command should compile the performance metrics into a report and output an object containing `callCount`, `errorCount`, `avgExecutionTimeMS` and a placeholder suggestion such as “No immediate improvements identified.”
+
+## Tests
+- **Metrics Verification:** Update unit tests in `tests/unit/main.test.js` to:
+  - Simulate a normal command execution and then call the status handler to verify that the `errorCount` is correctly reported (e.g. zero for successful runs) and that the average execution time is a non-negative number.
+  - Trigger an error intentionally (e.g. call a command with invalid input) and verify that `globalThis.errorCount` increments appropriately.
+
+- **Self-Review Command Test:** Write tests to invoke `agenticHandler` with the `self_improve` command to ensure that the returned report object includes all the expected metric keys (such as `callCount`, `errorCount`, and `avgExecutionTimeMS`).
+
+## Documentation
+- **README Update:**
+   - Update the README’s Features section to include a bullet point for **Self-Improvement and Diagnostics**. Describe that the agent continually monitors its own performance, adjusts its metrics with every command, and can perform a self-review to generate a performance report. This will help users understand that the agent is not a black box but is designed to self-optimize over time.
 
 ## Long-Term Direction
-Self-improvement is a pathway to the agent becoming more autonomous and reliable over time. In the future, this could involve the agent proactively using its self-assessment data. For example, if errorCount is growing, the agent might decide to refine its input parsing or call out for help (linking with the help-seeking trait). If certain tasks are slow (high avg execution time), the agent might look for optimizations or algorithm changes. A very ambitious extension is to integrate the OpenAI API or another AI service to critique the agent’s own code or logic: the agent could feed parts of its code (or logs of its decisions) to an LLM and ask for improvement suggestions, then turn those into new feature proposals or automated fixes. In a continuous deployment scenario, the agent might even create pull requests to adjust its own code based on observed inefficiencies. All these steps ensure that as the agent scales to more repositories and complex tasks, it doesn’t just handle more work — it also *evolves* and refines its capabilities, increasingly reducing the need for human intervention in its maintenance.
+The current implementation establishes a foundation for self-monitoring. In the future, these metrics can be used to trigger automated refinements—such as adjusting input parsing or modifying internal logic—without manual intervention. This paves the way for further autonomy and continuous improvement in line with the overarching mission of agentic intelligent automation.
