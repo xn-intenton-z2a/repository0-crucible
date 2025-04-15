@@ -75,6 +75,18 @@ describe("Main Extended Diagnostics", () => {
 });
 
 
+describe("Main Self-Refine", () => {
+  test("should display self-refinement message when '--self-refine' flag is provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--self-refine"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    expect(output).toContain("Performing self-refinement analysis...");
+    spy.mockRestore();
+  });
+});
+
+
 describe("Main Refresh", () => {
   test("should display refresh message when '--refresh' flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
