@@ -1,42 +1,36 @@
 # CLI_TOOL Feature Enhancement Update
 
 ## Overview
-This update expands the CLI tool’s capabilities by adding two new flags: **--ontology-transform** and **--owl-examples**. 
+This feature update extends the CLI tool functionality by adding support for the new flags:
 
-- **--ontology-transform**: When provided, the CLI checks if a raw JSON input is available following the flag. If valid JSON is supplied, the tool simulates transforming it into an OWL ontology by outputting a JSON object with an `ontology` key containing the transformed content. If no valid JSON is detected, a default transformation is applied.
+- **--ontology-transform**: Accepts an optional JSON string argument. If a valid JSON is provided, the CLI transforms it into an OWL ontology format by wrapping the object in an `ontology` key along with a timestamp. If the JSON input is invalid or missing, it returns a default transformed ontology.
 
-- **--owl-examples**: This flag instructs the CLI to combine the existing capital cities output (generated with the `--capital-cities` flag) with additional demonstration data. The resulting JSON includes both the original capital cities data and an extra `results` key containing sample examples.
+- **--owl-examples**: Augments the existing capital cities output by adding a static `results` key containing demonstration data. This flag allows users to see combined output that includes both the standard `capitalCities` data and sample examples.
 
-The update preserves backward compatibility with existing flags such as **--help**, **--diagnostics**, **--capital-cities**, **--crawl-data** and **--serve**.
+The new flags will be processed sequentially, ensuring that when multiple flags are provided, each one is handled in a clear and non-conflicting sequence with consistent output.
 
-## Implementation Details
-
-### Source File Updates (`src/lib/main.js`):
-- Extend the argument parser to detect **--ontology-transform** and **--owl-examples** flags.
+## Source File Updates (`src/lib/main.js`)
+- Extend the argument parser to detect the **--ontology-transform** and **--owl-examples** flags.
 - For **--ontology-transform**:
-  - Check if the argument list includes this flag. 
-  - Determine if a subsequent argument exists and if it can be parsed as JSON. If yes, simulate a transformation by wrapping the parsed JSON inside an object with the key `ontology` along with a timestamp. Otherwise, return a default transformed object.
-
+  - Check for the flag in the arguments. If a subsequent argument exists and can be parsed as valid JSON, wrap it in an object with an `ontology` key and include a timestamp.
+  - If no valid JSON is provided, output a default transformed object with pre-determined content and a timestamp.
 - For **--owl-examples**:
-  - First generate the standard capital cities OWL ontology (as done for `--capital-cities`). 
-  - Augment this output by adding a `results` key containing sample demonstration data (e.g., a static array of example objects).
+  - Generate the standard capital cities ontology (as with the **--capital-cities** flag).
+  - Augment the output by adding a `results` key with sample demonstration data.
+- Ensure any combination of existing and new flags triggers full processing without conflict.
 
-- Ensure that if multiple flags are provided, each is processed sequentially with clear, non-conflicting output.
+## Testing Enhancements (`tests/unit/main.test.js`)
+- Add unit tests for **--ontology-transform** to confirm:
+  - Valid JSON input yields an output object containing an `ontology` property with a proper timestamp.
+  - Missing or invalid JSON input results in the default transformation behavior.
+- Add unit tests for **--owl-examples** to ensure that:
+  - The output comprises both the standard `capitalCities` data and an additional `results` key housing sample example data.
 
-### Testing Enhancements (`tests/unit/main.test.js`):
-- Add a test case for **--ontology-transform**:
-  - Verify that when provided with a valid JSON string, the CLI outputs an object containing an `ontology` key and a correct timestamp.
-  - Also test the default transformation scenario when no JSON input is provided.
+## Documentation Updates (`README.md`)
+- Update the CLI usage documentation to include the new **--ontology-transform** and **--owl-examples** flags.
+- Provide clear usage examples in the README to demonstrate how the new flags interact with existing options.
 
-- Add a test case for **--owl-examples**:
-  - Confirm that the output includes both the standard `capitalCities` data and an additional `results` key with demonstration data.
-
-### Documentation Updates (`README.md`):
-- Update the CLI usage section to document the newly added **--ontology-transform** and **--owl-examples** flags. 
-- Provide clear examples on how to use these flags individually and in combination with existing options.
-
-## Compliance and Code Style
-
-- All new code will adhere to the existing coding standards as outlined in [CONTRIBUTING.md](./CONTRIBUTING.md).
-- Functionality will be verified using `npm test` ensuring integration with existing features without regression.
-- Documentation and testing updates will be applied consistently across the repository to maintain clarity and ease of maintenance.
+## Compliance and Integration
+- Ensure that the code modifications adhere to the coding guidelines stipulated in [CONTRIBUTING.md](./CONTRIBUTING.md).
+- Verify consistency with the mission outlined in [MISSION.md](./MISSION.md) by demonstrating enhanced data transformation and output clarity.
+- Confirm all changes through existing test suites by running `npm test`, ensuring backward compatibility with current functionalities.
