@@ -16,7 +16,7 @@ export function main(args = []) {
       "  --serve             Start the HTTP server to serve the OWL ontology",
       "  --build-intermediate  Build with intermediate steps (if implemented)",
       "  --build-enhanced      Build with enhanced features (if implemented)",
-      "  --refresh             Refresh the data (if implemented)",
+      "  --refresh             Refresh the data (simulated operation)",
       "  --merge-persist       Merge and persist the data (if implemented)",
       "  --crawl-data          Simulate crawling public data sources and output JSON"
     ].join("\n");
@@ -64,6 +64,15 @@ export function main(args = []) {
       fetchedAt: new Date().toISOString()
     };
     console.log(JSON.stringify(crawlData, null, 2));
+    return;
+  }
+
+  if (args.includes("--refresh")) {
+    const refreshData = {
+      message: "Data refreshed",
+      refreshedAt: new Date().toISOString()
+    };
+    console.log(JSON.stringify(refreshData, null, 2));
     return;
   }
 

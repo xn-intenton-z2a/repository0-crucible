@@ -10,12 +10,14 @@ describe("Main Module Import", () => {
   });
 });
 
+
 describe("Main Output", () => {
   test("should terminate without error", () => {
     process.argv = ["node", "src/lib/main.js"];
     main();
   });
 });
+
 
 describe("Capital Cities Option", () => {
   test("should output capitalCities OWL ontology JSON with generatedAt timestamp", () => {
@@ -42,6 +44,7 @@ describe("Capital Cities Option", () => {
   });
 });
 
+
 describe("Diagnostics Option", () => {
   test("should output diagnostics JSON with required keys", () => {
     let output = "";
@@ -62,10 +65,12 @@ describe("Diagnostics Option", () => {
       "--capital-cities",
       "--diagnostics",
       "--serve",
-      "--crawl-data"
+      "--crawl-data",
+      "--refresh"
     ]));
   });
 });
+
 
 describe("Serve Option", () => {
   test("should serve capitalCities ontology on /capital-cities endpoint", async () => {
@@ -112,6 +117,7 @@ describe("Serve Option", () => {
   });
 });
 
+
 describe("Crawl Data Option", () => {
   test("should output simulated crawl data JSON with fetchedAt timestamp", () => {
     let output = "";
@@ -132,5 +138,24 @@ describe("Crawl Data Option", () => {
     expect(parsed).toHaveProperty("fetchedAt");
     const iso = new Date(parsed.fetchedAt).toISOString();
     expect(iso).toEqual(parsed.fetchedAt);
+  });
+});
+
+
+describe("Refresh Option", () => {
+  test("should output refresh JSON with refreshedAt timestamp", () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (msg) => { output += msg; };
+
+    main(["--refresh"]);
+
+    console.log = originalLog;
+
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("message", "Data refreshed");
+    expect(parsed).toHaveProperty("refreshedAt");
+    const iso = new Date(parsed.refreshedAt).toISOString();
+    expect(iso).toEqual(parsed.refreshedAt);
   });
 });
