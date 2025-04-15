@@ -166,31 +166,10 @@ To display the current application version, run:
 node src/lib/main.js --version
 ```
 
-The output will be in the format:
+This will output a line like:
 
 ```
 Version: x.y.z
-```
-
-Once the server is running, send an HTTP GET request to:
-
-http://localhost:3000/capital-cities
-
-to retrieve the capital cities ontology in JSON format.
-
-### Handling Unsupported Options
-
-If an unsupported CLI option is provided, the tool will output an error message along with usage instructions. For example:
-
-```bash
-node src/lib/main.js --foo
-```
-
-Will output:
-
-```
-Error: Unknown option: --foo
-Usage: node src/lib/main.js [options]
 ```
 
 ## Incremental Changes Plan
