@@ -65,8 +65,6 @@ To simulate an intermediate build process, run:
 node src/lib/main.js --build-intermediate
 ```
 
-The above command will output a JSON object containing an "intermediateBuild" message along with a "builtAt" timestamp in ISO format.
-
 To start a simple HTTP server that serves the OWL ontology for capital cities, run:
 
 ```bash
@@ -79,48 +77,29 @@ http://localhost:3000/capital-cities
 
 to retrieve the capital cities ontology in JSON format.
 
-### Example Commands
+### Handling Unsupported Options
 
-- **Default Demo Output:**
-  ```bash
-  npm run start
-  ```
+If an unsupported CLI option is provided, the tool will output an error message along with usage instructions. For example:
 
-- **Help Message:**
-  ```bash
-  node src/lib/main.js --help
-  ```
+```bash
+node src/lib/main.js --foo
+```
 
-- **Capital Cities Example (includes generatedAt timestamp):**
-  ```bash
-  node src/lib/main.js --capital-cities
-  ```
+Will output:
 
-- **Diagnostics Example (shows environment and command listing):**
-  ```bash
-  node src/lib/main.js --diagnostics
-  ```
-
-- **Crawl Data Simulation (outputs simulated crawl data with fetchedAt timestamp):**
-  ```bash
-  node src/lib/main.js --crawl-data
-  ```
-
-- **Refresh Data Simulation (outputs a refresh confirmation with refreshedAt timestamp):**
-  ```bash
-  node src/lib/main.js --refresh
-  ```
-
-- **Intermediate Build Simulation (outputs simulated intermediate build data):**
-  ```bash
-  node src/lib/main.js --build-intermediate
-  ```
-
-- **Serve Capital Cities Server:**
-  ```bash
-  node src/lib/main.js --serve
-  ```
-  This starts a simple HTTP server on port 3000. Send a GET request to http://localhost:3000/capital-cities to receive the OWL ontology JSON for capital cities.
+```
+Error: Unknown option: --foo
+Usage: node src/lib/main.js [options]
+  --help              Show help message
+  --diagnostics       Output diagnostics information
+  --capital-cities    Output capital cities OWL ontology JSON
+  --serve             Start the HTTP server to serve the OWL ontology
+  --build-intermediate  Build with intermediate steps (simulated operation)
+  --build-enhanced      Build with enhanced features (if implemented)
+  --refresh             Refresh the data (simulated operation)
+  --merge-persist       Merge and persist the data (if implemented)
+  --crawl-data          Simulate crawling public data sources and output JSON
+```
 
 ## Incremental Changes Plan
 

@@ -60,7 +60,6 @@ describe("Diagnostics Option", () => {
     expect(parsed).toHaveProperty("platform", process.platform);
     expect(parsed).toHaveProperty("availableCommands");
     expect(Array.isArray(parsed.availableCommands)).toBe(true);
-    // Verify that some expected commands are included
     expect(parsed.availableCommands).toEqual(expect.arrayContaining([
       "--capital-cities",
       "--diagnostics",
@@ -177,5 +176,20 @@ describe("Build Intermediate Option", () => {
     expect(parsed).toHaveProperty("builtAt");
     const iso = new Date(parsed.builtAt).toISOString();
     expect(iso).toEqual(parsed.builtAt);
+  });
+});
+
+
+describe("Unknown Option", () => {
+  test("should output error message and usage when provided with an unknown option", () => {
+    let output = "";
+    const originalError = console.error;
+    console.error = (msg) => { output += msg + "\n"; };
+
+    main(["--unknown"]);
+
+    console.error = originalError;
+    expect(output).toMatch(/Error: Unknown option: --unknown/);
+    expect(output).toMatch(/Usage: node src\\\/lib\\\/main.js \[options\]/);
   });
 });
