@@ -1,19 +1,26 @@
 # CAPITAL_CITIES Feature Specification
 
 ## Overview
-This feature introduces a new CLI command `--capital-cities` that, when invoked, outputs a JSON file showcasing a sample OWL ontology containing capital cities. This aligns with the mission of owl-builder by providing a concrete example of transforming public data into an OWL ontology.
+This feature introduces a CLI command `--capital-cities` that outputs a JSON file containing a sample OWL ontology of capital cities. In this enhanced version, users can optionally filter the output by country using a `--country=NAME` flag. This aligns with the mission of owl-builder by demonstrating a dynamic transformation of public data into an OWL ontology and providing filtering capability to target specific datasets.
 
 ## Implementation Details
-- Update the main source file (src/lib/main.js) to check for the argument `--capital-cities`.
-- When the command is detected, output a formatted JSON representation of an OWL ontology capturing essential details for capital cities (e.g., city names, countries, etc.).
-- Utilize existing library functions if available or inline JSON data to simulate the output.
+- Update the main source file (src/lib/main.js) to check for the `--capital-cities` command.
+- Detect an optional parameter `--country=<COUNTRY_NAME>`. If provided, filter the inlined (or generated) JSON data to include only the capital cities in the specified country.
+- If the filter is not provided, output the full OWL ontology example for capital cities.
+- The JSON output should maintain a clear hierarchical structure: include city names, country names, and other metadata necessary for an OWL ontology.
+- Use existing inline JSON data or library functions to simulate the data output.
 
 ## Testing
-- Extend the test file (tests/unit/main.test.js) to include a test that simulates passing the `--capital-cities` argument and verifies that the output contains the  expected OWL JSON structure.
+- Modify the test file (tests/unit/main.test.js) to simulate running the CLI with `--capital-cities` and, when relevant, the `--country` flag.
+- Add tests that verify:
+  - The basic command outputs the expected JSON structure containing capital cities.
+  - The `--capital-cities` command with the `--country` option filters the output correctly to include only capitals for the specified country.
 
 ## Documentation
-- Update the README.md file to include a section on usage of the `--capital-cities` command. Provide code examples and expected output to clearly demonstrate how the feature works and its purpose in the context of the repository.
-- Ensure the documentation reflects the updated CLI behavior and overall mission alignment.
+- Update the README.md file to document the enhanced `--capital-cities` command, detailing its usage with examples:
+  - Without filtering: `node src/lib/main.js --capital-cities`
+  - With filtering: `node src/lib/main.js --capital-cities --country=France`
+- Include sample output and describe how the filtering improves data relevance and user experience.
 
 ## Dependencies
-No additional external dependencies are needed for this feature. It uses vanilla JavaScript to append the new behavior.
+- No new external dependencies are required. This feature continues to use vanilla JavaScript for CLI argument parsing and JSON manipulation.
