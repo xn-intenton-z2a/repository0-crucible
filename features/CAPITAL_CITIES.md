@@ -1,42 +1,36 @@
-# CAPITAL_CITIES Feature Specification
+# CAPITAL_CITIES Feature Update
 
 ## Overview
-
-This feature adds a new CLI command `--capital-cities` to the repository. It enables users to generate an OWL ontology that specifically represents world capital cities. The command supports several options:
-
-- **Filtering:** `--country=<COUNTRY_NAME>` to limit results to a given country.
-- **Formatting:** `--format=<FORMAT>` to output the results in either standard OWL JSON or JSON-LD format.
-- **Sorting:** `--sort=<ORDER>` to sort the list in ascending (`asc`) or descending (`desc`) order. In addition, the feature validates the sort parameter and provides an informative error if an invalid value is provided.
-
-This feature aligns with the mission of providing simple yet robust tools for managing OWL ontologies derived from public data sources.
+This update refines the existing CAPITAL_CITIES feature to fully implement the CLI command `--capital-cities`. This command will generate an OWL ontology JSON object representing world capital cities. The updated feature offers enhanced options including filtering by country, selecting output format (OWL JSON or JSON-LD), and sorting the results in ascending or descending order. It also provides robust error handling for invalid sort values.
 
 ## Implementation Details
+- **Source Code (src/lib/main.js):**
+  - Add a new branch to detect the `--capital-cities` flag after processing all other primary commands.
+  - When `--capital-cities` is detected, parse additional CLI arguments:
+    - `--country=<COUNTRY_NAME>`: Filter the dataset to include only capital cities from the specified country.
+    - `--format=<FORMAT>`: Support output in `json` (standard OWL JSON) or `jsonld` (JSON-LD) formats.
+    - `--sort=<ORDER>`: Sort the list of capital cities in either `asc` or `desc` order. If an invalid order is provided, output an informative error message.
+  - The command will simulate a data source containing capital cities, constructing an OWL ontology with properties such as `source`, `description`, and a `data` array containing the capital cities entries.
 
-### Source Code Modifications (src/lib/main.js)
+## Testing
+- **Unit Tests (tests/unit/main.test.js):**
+  - Add tests to ensure that calling `--capital-cities` produces a valid OWL ontology JSON structure for capital cities.
+  - Test that filtering by country accurately restricts the results.
+  - Verify that the output format changes when the `--format` flag is used, including testing both accepted formats (json and jsonld).
+  - Confirm that sorting works correctly for both ascending and descending orders, and that an invalid sort parameter triggers the correct error message.
 
-- Add a new branch in the CLI command parser that checks for the `--capital-cities` flag.
-- Parse additional CLI arguments for filtering (--country), formatting (--format), and sorting (--sort) options.
-- Implement functionality to construct an OWL ontology JSON object dedicated to capital cities. This may involve a simulated data source or a subset of the existing data.
-- Validate the sort order parameter; if an invalid sort order is provided, output a clear error message.
+## Documentation
+- **README.md:**
+  - Update the usage section with examples for the `--capital-cities` command:
+    - Example usage with filtering:
+      ```bash
+      node src/lib/main.js --capital-cities --country=France
+      ```
+    - Example usage with format and sort options:
+      ```bash
+      node src/lib/main.js --capital-cities --format=jsonld --sort=asc
+      ```
+  - Clearly document the behavior and available parameters, as well as error messages for invalid inputs.
 
-### Testing (tests/unit/main.test.js)
-
-- Create and/or update unit tests to ensure:
-  - The `--capital-cities` command produces a valid OWL ontology JSON containing capital cities.
-  - Filtering by country works as expected.
-  - Proper output formatting is applied when the `--format` option is used.
-  - Sorting behavior is correctly implemented, including error handling for invalid sort parameters.
-
-### Documentation (README.md)
-
-- Update the README file with usage examples for the new `--capital-cities` command. Include sample commands and expected JSON output.
-- Provide detailed instructions on the available parameters and error messages.
-
-## Future Considerations
-
-- Expand filtering options (e.g., by continent) if additional data becomes available.
-- Allow integration with external APIs to fetch real-time capital cities data.
-
-## Value and Alignment with Mission
-
-This feature enhances the CLI tool by expanding its capabilities in generating specialized OWL ontologies. It improves user experience with added flexibility and robust error handling, in line with the mission of providing resilient tools for managing OWL ontologies.
+## Alignment with Mission
+This refinement directly supports the mission of `owl-builder` by providing users an effective tool to generate and manage OWL ontologies derived from public data sources. It offers a targeted and valuable functionality that exemplifies the core capability of transforming live data into structured OWL representations.
