@@ -3,6 +3,7 @@
 
 import { fileURLToPath } from "url";
 import http from "http";
+import fs from "fs";
 
 const helpMessage = [
   "Usage: node src/lib/main.js [options]",
@@ -16,7 +17,9 @@ const helpMessage = [
   "  --refresh             Refresh the data (simulated operation)",
   "  --build-intermediate  Build with intermediate steps (simulated operation)",
   "  --build-enhanced      Build with enhanced features (if implemented)",
-  "  --merge-persist       Merge and persist the data (simulated operation)"
+  "  --merge-persist       Merge and persist the data (simulated operation)",
+  "  --serve               Start the HTTP server",
+  "  --export-ontology     Export the capital cities OWL ontology to a file"
 ].join("\n");
 
 export function main(args = []) {
@@ -30,7 +33,8 @@ export function main(args = []) {
     "--build-intermediate",
     "--build-enhanced",
     "--merge-persist",
-    "--serve"
+    "--serve",
+    "--export-ontology"
   ]);
 
   // Check for unknown options
@@ -73,7 +77,8 @@ export function main(args = []) {
         "--merge-persist",
         "--crawl-data",
         "--help",
-        "--help-json"
+        "--help-json",
+        "--export-ontology"
       ]
     };
     console.log(JSON.stringify(diagnostics, null, 2));
@@ -91,6 +96,21 @@ export function main(args = []) {
       generatedAt: new Date().toISOString()
     };
     console.log(JSON.stringify(owlOntology, null, 2));
+    return;
+  }
+
+  if (args.includes("--export-ontology")) {
+    const owlOntology = {
+      owl: "capitalCities",
+      data: [
+        { country: "France", capital: "Paris" },
+        { country: "Japan", capital: "Tokyo" },
+        { country: "Brazil", capital: "Brasília" }
+      ],
+      generatedAt: new Date().toISOString()
+    };
+    fs.writeFileSync('exported_ontology.json', JSON.stringify(owlOntology, null, 2));
+    console.log("Ontology exported to exported_ontology.json");
     return;
   }
 
