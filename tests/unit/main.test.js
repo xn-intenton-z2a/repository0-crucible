@@ -32,6 +32,17 @@ describe("Help Option", () => {
 });
 
 
+describe("Version Option", () => {
+  test("should output tool version from package.json", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--version"]);
+    // Assuming version in package.json is 1.1.0-0 as per dependencies file
+    expect(logSpy.mock.calls[0][0]).toEqual(JSON.stringify({ version: "1.1.0-0" }, null, 2));
+    logSpy.mockRestore();
+  });
+});
+
+
 describe("Query OWL Option", () => {
   test("should output sample OWL query result when no additional parameter is provided", () => {
     const logSpy = vi.spyOn(console, "log");
