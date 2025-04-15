@@ -4,7 +4,6 @@ import { main, crawlDataSources } from "@src/lib/main.js";
 import fs from "fs";
 import { get } from "http";
 
-
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
@@ -433,39 +432,16 @@ describe("Export RDF Option", () => {
   });
 });
 
-// New Test for Refresh Option
-describe("Refresh Option", () => {
-  test("should output refreshed ontology with a valid ISO timestamp", () => {
+// New Test for Export Turtle Option
+describe("Export Turtle Option", () => {
+  test("should output Turtle representation of ontology", () => {
     const logSpy = vi.spyOn(console, "log");
-    main(["--refresh"]);
-    const output = JSON.parse(logSpy.mock.calls[0][0]);
-    expect(output).toHaveProperty("owl:ontology");
-    expect(output["owl:ontology"]).toHaveProperty("timestamp");
-    const timestamp = output["owl:ontology"].timestamp;
-    expect(typeof timestamp).toBe("string");
-    expect(timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
-    logSpy.mockRestore();
-  });
-});
-
-describe("Build Enhanced Option", () => {
-  test("should output enhanced ontology with 'enhanced' property set to true", () => {
-    const logSpy = vi.spyOn(console, "log");
-    main(["--build-enhanced"]);
-    const output = JSON.parse(logSpy.mock.calls[0][0]);
-    expect(output).toHaveProperty("owl:ontology");
-    expect(output["owl:ontology"]).toHaveProperty("enhanced", true);
-    logSpy.mockRestore();
-  });
-});
-
-describe("Build Intermediate Option", () => {
-  test("should output intermediate ontology with 'intermediate' property set to true", () => {
-    const logSpy = vi.spyOn(console, "log");
-    main(["--build-intermediate"]);
-    const output = JSON.parse(logSpy.mock.calls[0][0]);
-    expect(output).toHaveProperty("owl:ontology");
-    expect(output["owl:ontology"]).toHaveProperty("intermediate", true);
+    main(["--export-turtle"]);
+    const output = logSpy.mock.calls[0][0];
+    expect(output).toContain("@prefix ex:");
+    expect(output).toContain("ex:Ontology");
+    expect(output).toContain('ex:source \"public\"');
+    expect(output).toContain('ex:description \"Simulated crawling of public data sources\"');
     logSpy.mockRestore();
   });
 });

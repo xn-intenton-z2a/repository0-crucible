@@ -68,7 +68,8 @@ export async function main(args = process.argv.slice(2)) {
         "--refresh": "Re-crawl public data sources, attach a current timestamp, and output the refreshed ontology JSON",
         "--build-intermediate": "Simulate intermediate processing of ontology data with intermediate output",
         "--build-enhanced": "Simulate advanced processing of ontology data with enhanced output",
-        "--export-rdf": "Export the generated ontology as RDF/XML"
+        "--export-rdf": "Export the generated ontology as RDF/XML",
+        "--export-turtle": "Export the generated ontology in Turtle (TTL) format"
       }
     };
     console.log(JSON.stringify(helpMessage, null, 2));
@@ -385,6 +386,33 @@ export async function main(args = process.argv.slice(2)) {
     rdfOutput += `  </data>\n`;
     rdfOutput += `</owl:Ontology>`;
     console.log(rdfOutput);
+    return;
+  }
+
+  // Handle '--export-turtle' option to export ontology as Turtle (TTL)
+  const exportTurtleIndex = args.indexOf("--export-turtle");
+  if (exportTurtleIndex !== -1) {
+    const ontology = crawlDataSources()["owl:ontology"];
+    let turtleOutput = "@prefix ex: <http://example.com/> .\n\n";
+    turtleOutput += "ex:Ontology {\n";
+    turtleOutput += `  ex:source \"${escapeXML(ontology.source)}\" ;\n`;
+    turtleOutput += `  ex:description \"${escapeXML(ontology.description)}\" ;\n`;
+    if (Array.isArray(ontology.data) && ontology.data.length > 0) {
+      turtleOutput += "  ex:data [\n";
+      ontology.data.forEach((item, index) => {
+        turtleOutput += "    [\n";
+        const keys = Object.keys(item);
+        keys.forEach((key, i) => {
+          turtleOutput += `      ex:${key} \"${escapeXML(String(item[key]))}\"`;
+          turtleOutput += (i < keys.length - 1 ? " ;\n" : "\n");
+        });
+        turtleOutput += "    ]";
+        turtleOutput += (index < ontology.data.length - 1 ? " ,\n" : "\n");
+      });
+      turtleOutput += "  ]\n";
+    }
+    turtleOutput += "}";
+    console.log(turtleOutput);
     return;
   }
 
