@@ -69,7 +69,8 @@ export async function main(args = process.argv.slice(2)) {
         "--build-intermediate": "Simulate intermediate processing of ontology data with intermediate output",
         "--build-enhanced": "Simulate advanced processing of ontology data with enhanced output",
         "--export-rdf": "Export the generated ontology as RDF/XML",
-        "--export-turtle": "Export the generated ontology in Turtle (TTL) format"
+        "--export-turtle": "Export the generated ontology in Turtle (TTL) format",
+        "--export-jsonld": "Export the generated ontology as JSON-LD"
       }
     };
     console.log(JSON.stringify(helpMessage, null, 2));
@@ -413,6 +414,25 @@ export async function main(args = process.argv.slice(2)) {
     }
     turtleOutput += "}";
     console.log(turtleOutput);
+    return;
+  }
+
+  // Handle '--export-jsonld' option to export ontology as JSON-LD
+  const exportJsonldIndex = args.indexOf("--export-jsonld");
+  if (exportJsonldIndex !== -1) {
+    const ontology = crawlDataSources()["owl:ontology"];
+    const jsonld = {
+      "@context": {
+        "source": "http://example.com/source",
+        "description": "http://example.com/description",
+        "data": "http://example.com/data"
+      },
+      "@type": "Ontology",
+      "source": ontology.source,
+      "description": ontology.description,
+      "data": ontology.data
+    };
+    console.log(JSON.stringify(jsonld, null, 2));
     return;
   }
 
