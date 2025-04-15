@@ -98,16 +98,6 @@ When executed with the --help option, the tool will output a JSON with usage ins
   ```bash
   node src/lib/main.js --live-crawl
   ```
-  This command will fetch live data, extract a representative entry, and output a JSON similar to:
-  ```json
-  {
-    "owl:ontology": {
-      "source": "live",
-      "description": "Live crawl from https://api.publicapis.org/entries",
-      "data": [ { /* entry data */ } ]
-    }
-  }
-  ```
 
 - **Diagnostics Environment Information:**
   To output essential environment diagnostic information, run:
@@ -194,6 +184,22 @@ When executed with the --help option, the tool will output a JSON with usage ins
   node src/lib/main.js --serve
   ```
   Then, visiting [http://localhost:3000/ontology](http://localhost:3000/ontology) in your browser or via an HTTP client will return the ontology data.
+
+- **Capital Cities Option:**
+  The new `--capital-cities` option outputs a sample OWL ontology representing capital cities. When invoked, it returns a JSON structured as follows:
+  ```json
+  {
+    "capitalCities": [
+      { "name": "Washington D.C.", "country": "USA" },
+      { "name": "London", "country": "UK" },
+      { "name": "Tokyo", "country": "Japan" }
+    ]
+  }
+  ```
+  **Example:**
+  ```bash
+  node src/lib/main.js --capital-cities
+  ```
 
 ## Incremental Changes Plan
 

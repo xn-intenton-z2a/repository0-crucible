@@ -421,3 +421,20 @@ describe("Serve Option", () => {
     }
   });
 });
+
+// New Test for Capital Cities Option
+describe("Capital Cities Option", () => {
+  test("should output sample OWL ontology for capital cities", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--capital-cities"]);
+    const output = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(output).toHaveProperty("capitalCities");
+    expect(Array.isArray(output.capitalCities)).toBe(true);
+    expect(output.capitalCities).toEqual([
+      { name: "Washington D.C.", country: "USA" },
+      { name: "London", country: "UK" },
+      { name: "Tokyo", country: "Japan" }
+    ]);
+    logSpy.mockRestore();
+  });
+});
