@@ -58,6 +58,23 @@ describe("Main Diagnostics", () => {
 });
 
 
+describe("Main Extended Diagnostics", () => {
+  test("should display extended diagnostics information when '--extended-diagnostics' flag is provided", async () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    await main(["--extended-diagnostics"]);
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining("Extended Diagnostics:"));
+    const calls = spy.mock.calls.map(call => call[0]);
+    const hasMemoryUsage = calls.some(text => String(text).includes("Memory Usage:"));
+    const hasProcessUptime = calls.some(text => String(text).includes("Process Uptime:"));
+    const hasProcessPlatform = calls.some(text => String(text).includes("Process Platform:"));
+    expect(hasMemoryUsage).toBe(true);
+    expect(hasProcessUptime).toBe(true);
+    expect(hasProcessPlatform).toBe(true);
+    spy.mockRestore();
+  });
+});
+
+
 describe("Main Refresh", () => {
   test("should display refresh message when '--refresh' flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});

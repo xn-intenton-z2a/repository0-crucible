@@ -60,6 +60,12 @@ node src/lib/main.js [options]
   ```
   This flag displays diagnostic information including Node version, executable path, current working directory, and environment variables.
 
+- **Run Extended Diagnostics:**
+  ```bash
+  node src/lib/main.js --extended-diagnostics
+  ```
+  This flag displays additional diagnostic information including memory usage, process uptime, and the process platform.
+
 - **Refresh Application State:**
   ```bash
   node src/lib/main.js --refresh
