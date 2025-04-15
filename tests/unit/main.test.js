@@ -1,8 +1,7 @@
 import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main } from "@src/lib/main.js";
+import { main, crawlDataSources } from "@src/lib/main.js";
 import fs from "fs";
-
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -108,7 +107,7 @@ describe("Save Ontology Option", () => {
     const writeFileSyncSpy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
     const logSpy = vi.spyOn(console, "log");
     main(["--save-ontology", "myOntology.json"]);
-    const ontology = mainModule.crawlDataSources();
+    const ontology = crawlDataSources();
     expect(writeFileSyncSpy).toHaveBeenCalledWith("myOntology.json", JSON.stringify(ontology, null, 2));
     expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ result: "Ontology saved to myOntology.json" }));
     writeFileSyncSpy.mockRestore();
@@ -119,7 +118,7 @@ describe("Save Ontology Option", () => {
     const writeFileSyncSpy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
     const logSpy = vi.spyOn(console, "log");
     main(["--save-ontology"]);
-    const ontology = mainModule.crawlDataSources();
+    const ontology = crawlDataSources();
     expect(writeFileSyncSpy).toHaveBeenCalledWith("ontology.json", JSON.stringify(ontology, null, 2));
     expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ result: "Ontology saved to ontology.json" }));
     writeFileSyncSpy.mockRestore();
@@ -236,11 +235,12 @@ describe("Merge Persist Option", () => {
   });
 });
 
+
 describe("Filter Data Option", () => {
   test("should filter ontology data with valid key and value", () => {
     const logSpy = vi.spyOn(console, "log");
     main(["--filter-data", "info", "Sample data entry"]);
-    const ontology = mainModule.crawlDataSources();
+    const ontology = crawlDataSources();
     const filteredData = ontology["owl:ontology"].data.filter(entry => entry.info === "Sample data entry");
     const expectedOntology = { "owl:ontology": { ...ontology["owl:ontology"], data: filteredData } };
     expect(logSpy).toHaveBeenCalledWith(JSON.stringify(expectedOntology));
@@ -258,6 +258,78 @@ describe("Filter Data Option", () => {
     const logSpy = vi.spyOn(console, "log");
     main(["--filter-data", "info"]);
     expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Missing filter value parameter for --filter-data" }));
+    logSpy.mockRestore();
+  });
+});
+
+
+describe("Validate Ontology Option", () => {
+  test("should output valid message for a correct ontology JSON", () => {
+    const validOntology = {
+      "owl:ontology": {
+        source: "public",
+        description: "A valid ontology",
+        data: [{ id: 1 }]
+      }
+    };
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation((filePath) => {
+      if (filePath === "validOntology.json") {
+        return JSON.stringify(validOntology);
+      }
+      return '';
+    });
+    const logSpy = vi.spyOn(console, "log");
+    main(["--validate-ontology", "validOntology.json"]);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ result: "Ontology structure is valid" }));
+    readFileSyncSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+
+  test("should output error when file path is missing", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--validate-ontology"]);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Missing ontology file path argument for --validate-ontology" }));
+    logSpy.mockRestore();
+  });
+
+  test("should output error for invalid JSON", () => {
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation((filePath) => {
+      return "not-a-json";
+    });
+    const logSpy = vi.spyOn(console, "log");
+    main(["--validate-ontology", "invalid.json"]);
+    expect(logSpy.mock.calls[0][0]).toContain("Error:");
+    readFileSyncSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+
+  test("should output error when ontology property is missing", () => {
+    const invalidOntology = { notOntology: {} };
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation((filePath) => {
+      return JSON.stringify(invalidOntology);
+    });
+    const logSpy = vi.spyOn(console, "log");
+    main(["--validate-ontology", "missingOntology.json"]);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Ontology JSON does not contain a valid 'owl:ontology' property." }));
+    readFileSyncSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+
+  test("should output error when property types are incorrect", () => {
+    const invalidOntology = {
+      "owl:ontology": {
+        source: 123,
+        description: true,
+        data: "not-an-array"
+      }
+    };
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation((filePath) => {
+      return JSON.stringify(invalidOntology);
+    });
+    const logSpy = vi.spyOn(console, "log");
+    main(["--validate-ontology", "wrongTypes.json"]);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: 'source' property must be a string." }));
+    readFileSyncSpy.mockRestore();
     logSpy.mockRestore();
   });
 });

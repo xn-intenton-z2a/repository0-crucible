@@ -31,7 +31,9 @@ export function main(args = process.argv.slice(2)) {
         "--transform": "Transform a JSON string into an OWL ontology structure",
         "--query-owl": "Query the OWL ontology with an optional query parameter",
         "--save-ontology": "Save the generated ontology to a file (optionally specify filename)",
-        "--merge-persist": "Merge two ontology files and save the merged result to a file"
+        "--merge-persist": "Merge two ontology files and save the merged result to a file",
+        "--filter-data": "Filter ontology data based on key-value pairs",
+        "--validate-ontology": "Validate the structure of an ontology JSON file"
       }
     };
     console.log(JSON.stringify(helpMessage, null, 2));
@@ -169,6 +171,41 @@ export function main(args = process.argv.slice(2)) {
       }
     };
     console.log(JSON.stringify(filteredOntology));
+    return;
+  }
+
+  // Handle '--validate-ontology' option for validating OWL ontology JSON file
+  const validateIndex = args.indexOf("--validate-ontology");
+  if (validateIndex !== -1) {
+    const filePath = args[validateIndex + 1];
+    if (!filePath || filePath.startsWith("--")) {
+      console.log(JSON.stringify({ error: "Error: Missing ontology file path argument for --validate-ontology" }));
+      return;
+    }
+    try {
+      const fileContent = fs.readFileSync(filePath, "utf-8");
+      const parsed = JSON.parse(fileContent);
+      if (!parsed["owl:ontology"] || typeof parsed["owl:ontology"] !== "object") {
+        console.log(JSON.stringify({ error: "Error: Ontology JSON does not contain a valid 'owl:ontology' property." }));
+        return;
+      }
+      const ontology = parsed["owl:ontology"];
+      if (typeof ontology.source !== "string") {
+        console.log(JSON.stringify({ error: "Error: 'source' property must be a string." }));
+        return;
+      }
+      if (typeof ontology.description !== "string") {
+        console.log(JSON.stringify({ error: "Error: 'description' property must be a string." }));
+        return;
+      }
+      if (!Array.isArray(ontology.data)) {
+        console.log(JSON.stringify({ error: "Error: 'data' property must be an array." }));
+        return;
+      }
+      console.log(JSON.stringify({ result: "Ontology structure is valid" }));
+    } catch (err) {
+      console.log(JSON.stringify({ error: "Error: " + err.message }));
+    }
     return;
   }
 

@@ -76,7 +76,7 @@ When executed with the --help option, the tool will output a JSON with usage ins
   ```
 
 - **Crawl Public Data Sources:**
-  The new `--crawl` option simulates crawling public data sources to generate an OWL ontology in JSON format. For example:
+  The `--crawl` option simulates crawling public data sources to generate an OWL ontology in JSON format. For example:
   ```bash
   node src/lib/main.js --crawl
   ```
@@ -137,11 +137,24 @@ When executed with the --help option, the tool will output a JSON with usage ins
   ```
 
 - **Filter Ontology Data:**
-  The new `--filter-data` option allows you to filter the ontology data entries based on a provided key-value pair. For example, to filter entries where the `info` field matches "Sample data entry":
+  The `--filter-data` option allows you to filter the ontology data entries based on a provided key-value pair. For example, to filter entries where the `info` field matches "Sample data entry":
   ```bash
   node src/lib/main.js --filter-data info "Sample data entry"
   ```
   If the key or value parameter is missing, an error message will be output in JSON format.
+
+- **Validate Ontology JSON Structure:**
+  The new `--validate-ontology` option allows you to validate the structure of an ontology JSON file. The tool checks that the file contains an `owl:ontology` object with the properties `source` (string), `description` (string), and `data` (array).
+  
+  **Example:**
+  ```bash
+  node src/lib/main.js --validate-ontology path/to/ontology.json
+  ```
+  This command will output a confirmation message if the ontology is valid:
+  ```json
+  { "result": "Ontology structure is valid" }
+  ```
+  Otherwise, it will output an error message detailing the issue.
 
 ## Incremental Changes Plan
 
