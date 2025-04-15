@@ -1,33 +1,33 @@
 # CLI_TOOL Feature Enhancement Update
 
 ## Overview
-This update refines the existing CLI tool to incorporate additional data transformation and simulation capabilities. In addition to the current `--capital-cities` functionality, the tool will now support:
+This update enhances the CLI tool by expanding its data processing capabilities with three new flags. In addition to the existing `--capital-cities`, users can now use:
 
-- **--ontology-transform**: Processes raw JSON input to simulate a transformation into an OWL ontology. If no input is provided, a default transformation simulation is applied.
-- **--owl-examples**: Enhances the legacy capital cities functionality by combining the original data with new demonstration outputs under a `results` key.
-- **--data-crawl**: Simulates crawling open public data sources and returns a JSON object containing a `crawledData` key with dummy public records.
+- **--ontology-transform**: Processes raw JSON input if provided to simulate transforming the data into an OWL ontology; otherwise applies a default transformation.
+- **--owl-examples**: Combines the original capital cities output with additional demonstration data under a `results` key.
+- **--data-crawl**: Simulates crawling open public data sources and returns JSON with a `crawledData` key.
 
-This update keeps backward compatibility and allows sequential processing of multiple flags provided in a single command invocation.
+All flags will be processed sequentially if multiple options are provided in a single command invocation. This update maintains backward compatibility and adheres to the mission of providing dynamic OWL ontology capabilities from public data.
 
 ## Implementation Details
+- **Source File Updates (`src/lib/main.js`):**
+  - Extend the argument parser to detect three new flags: `--ontology-transform`, `--owl-examples`, and `--data-crawl`.
+  - For `--ontology-transform`, check if raw JSON input is provided via command-line argument; if yes, simulate transforming the JSON into an OWL ontology, else apply a default transformation.
+  - For `--owl-examples`, merge the output from the `--capital-cities` flag with additional dummy data placed under a new key `results`.
+  - For `--data-crawl`, simulate fetching public data by generating a JSON object with a `crawledData` key and dummy content.
+  - Ensure the sequential processing of flags with clear and consistent output formatting.
 
-### Source Code Updates (`src/lib/main.js`)
-- Extend the argument parser to detect new flags (`--ontology-transform`, `--owl-examples`, `--data-crawl`) alongside `--capital-cities`.
-- For `--ontology-transform`, check if raw JSON input is supplied. If so, simulate an OWL transformation; else, apply a default transformation.
-- For `--owl-examples`, merge the output from `capitalCities` with additional dummy data under a `results` key and output a consolidated JSON object.
-- For `--data-crawl`, simulate crawling public data and output a JSON object with a `crawledData` key.
-- Ensure the flags are processed in a defined sequential order to maintain consistency in output.
+- **Testing Enhancements (`tests/unit/main.test.js`):**
+  - Add test cases to verify that `--ontology-transform` returns a JSON object containing an `ontology` key with expected data.
+  - Add tests ensuring that `--owl-examples` outputs a JSON object with both `capitalCities` and `results` keys correctly populated.
+  - Validate that using `--data-crawl` yields a JSON object containing the `crawledData` key with simulated crawl data.
 
-### Testing Enhancements (`tests/unit/main.test.js`)
-- Add test cases to verify that using `--ontology-transform` returns an object containing an `ontology` key with expected transformation results.
-- Ensure that `--owl-examples` outputs a JSON object containing both `capitalCities` and `results` keys.
-- Validate that the `--data-crawl` flag returns a JSON object containing the `crawledData` key populated with simulated data.
+## Documentation Updates
+- **README.md:**
+  - Update the CLI usage section to document the new flags, including clear examples of how to invoke them individually or in combination.
+  - Include example command lines illustrating the new functionality, and update expected outputs.
 
-### Documentation Updates (`README.md`)
-- Update the CLI usage section to document the new flags, including examples and expected outputs.
-- Provide updated command line examples to illustrate how to invoke each new flag individually and in combination.
-
-## Compliance & Testing
-- Follow the coding and documentation guidelines in [CONTRIBUTING.md](./CONTRIBUTING.md).
-- Run all tests using `npm test` to ensure that the new functionality integrates seamlessly with the existing CLI features.
-- Maintain consistency in code style and structure throughout the implementation.
+## Compliance, Testing and Code Style
+- Ensure all new code follows the coding standards described in [CONTRIBUTING.md](./CONTRIBUTING.md).
+- Verify functionality using `npm test` to ensure integration with the existing CLI features without breaking backward compatibility.
+- Maintain consistency in code style, documentation, and testing coverage as per the repository guidelines.
