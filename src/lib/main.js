@@ -20,14 +20,12 @@ Options:
   }
   
   if (args.includes('--version')) {
-    // Dynamically import package.json to get version information
-    import("../../package.json", { assert: { type: "json" } })
-      .then(pkg => {
-        console.log(pkg.default?.version || pkg.version);
-      })
-      .catch(err => {
-        console.error('Error loading version:', err);
-      });
+    try {
+      const pkg = await import("../../package.json", { assert: { type: "json" } });
+      console.log(pkg.default?.version || pkg.version);
+    } catch (err) {
+      console.error('Error loading version:', err);
+    }
     return;
   }
   
