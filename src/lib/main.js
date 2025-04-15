@@ -3,6 +3,7 @@
 
 import { fileURLToPath } from "url";
 import fs from "fs";
+import { createServer } from "http";
 
 // Simulate crawling public data sources and transforming them into an OWL ontology represented as a JSON object
 export function crawlDataSources() {
@@ -16,6 +17,8 @@ export function crawlDataSources() {
     }
   };
 }
+
+export let serverInstance = null;
 
 export async function main(args = process.argv.slice(2)) {
   // Handle '--help' option to output usage instructions
@@ -35,7 +38,8 @@ export async function main(args = process.argv.slice(2)) {
         "--filter-data": "Filter ontology data based on key-value pairs",
         "--validate-ontology": "Validate the structure of an ontology JSON file",
         "--live-crawl": "Retrieve live data from https://api.publicapis.org/entries and output an OWL ontology in JSON format",
-        "--ontology-info": "Read an ontology JSON file and output a summary with source, description, total data entries, and optional timestamp"
+        "--ontology-info": "Read an ontology JSON file and output a summary with source, description, total data entries, and optional timestamp",
+        "--serve": "Start an HTTP server on port 3000 that serves the OWL ontology at the '/ontology' endpoint"
       }
     };
     console.log(JSON.stringify(helpMessage, null, 2));
@@ -268,6 +272,25 @@ export async function main(args = process.argv.slice(2)) {
     } catch (err) {
       console.log(JSON.stringify({ error: "Error: " + err.message }));
     }
+    return;
+  }
+
+  // Handle '--serve' option to start an HTTP server
+  const serveIndex = args.indexOf("--serve");
+  if (serveIndex !== -1) {
+    serverInstance = createServer((req, res) => {
+      if (req.method === "GET" && req.url === "/ontology") {
+        const ontology = crawlDataSources();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(ontology, null, 2));
+      } else {
+        res.writeHead(404, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "Endpoint not found" }));
+      }
+    });
+    serverInstance.listen(3000, () => {
+      console.log("Server started on port 3000");
+    });
     return;
   }
 

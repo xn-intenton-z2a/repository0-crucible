@@ -2,6 +2,7 @@ import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main, crawlDataSources } from "@src/lib/main.js";
 import fs from "fs";
+import { get } from "http";
 
 
 describe("Main Module Import", () => {
@@ -335,7 +336,6 @@ describe("Validate Ontology Option", () => {
   });
 });
 
-// New tests for the --ontology-info option
 
 describe("Ontology Info Option", () => {
   test("should output ontology summary for valid ontology file", () => {
@@ -393,5 +393,32 @@ describe("Ontology Info Option", () => {
     expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Ontology file does not have valid source, description or data properties." }));
     readFileSyncSpy.mockRestore();
     logSpy.mockRestore();
+  });
+});
+
+// New test for the --serve option
+
+describe("Serve Option", () => {
+  test("should start HTTP server and serve ontology", async () => {
+    // Start the server
+    main(["--serve"]);
+    // Wait for server to initialize
+    await new Promise(resolve => setTimeout(resolve, 200));
+
+    const responseData = await new Promise((resolve, reject) => {
+      get("http://localhost:3000/ontology", (res) => {
+        let data = "";
+        res.on("data", chunk => data += chunk);
+        res.on("end", () => resolve(data));
+      }).on("error", reject);
+    });
+
+    const parsed = JSON.parse(responseData);
+    expect(parsed).toHaveProperty("owl:ontology");
+
+    // Close the server instance
+    if (mainModule.serverInstance && typeof mainModule.serverInstance.close === 'function') {
+      mainModule.serverInstance.close();
+    }
   });
 });
