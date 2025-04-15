@@ -112,6 +112,12 @@ node src/lib/main.js [options]
   { "echo": ["arg1", "arg2"] }
   ```
 
+- **Memory Logging:**
+  ```bash
+  node src/lib/main.js --memory
+  ```
+  This flag displays an in-memory log of all command invocations with timestamps, providing a basic demonstration of the Memory feature.
+
 - **Default Demo Output:**
   ```bash
   npm run start
