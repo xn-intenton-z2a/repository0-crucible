@@ -1,30 +1,37 @@
 # SELF_IMPROVEMENT
 
 ## Overview
-This feature enhances the agent’s ability to monitor its own performance by tracking error counts and execution timing. It builds on the existing `--self-refine` CLI flag and expands its utility by logging these metrics in the global state. The agent will also support a self-review command (e.g. `self_improve`) that outputs a detailed performance report to help guide adjustments or improvements.
+This update enhances the existing self-improvement feature by integrating a verbose logging mode. In addition to tracking error counts and execution timings, the agent will now support a `--verbose` flag. When activated, the CLI will provide detailed, step-by-step logging for debugging, including entry and exit logs of critical functions, detailed timing for each operation, and expanded error information with stack traces where applicable. This additional data will facilitate deeper insights during self-review and make it easier to diagnose issues in real time.
 
 ## Implementation Details
-1. **Performance Metric Tracking:**
-   - In the source file (`src/lib/main.js`), initialize global counters such as `globalThis.errorCount` and `globalThis.totalExecutionTime` (if not already present). These should be incremented or updated whenever a command results in an error or when a command’s execution completes.
-   - Enhance existing logging to record metrics; for example, wrap command execution in timing logic and capture errors in try/catch blocks.
+1. **Verbose Mode Activation:**
+   - Update the source file (`src/lib/main.js`) to check if `--verbose` is present in the command-line arguments. If so, set a global flag (e.g. `globalThis.verboseMode = true`).
+   - When verbose mode is enabled, wrap major operations with additional logging statements that output detailed progress information, including function entry/exit, internal state snapshots, and more granular timing metrics.
 
-2. **Status Handler Enhancement:**
-   - Update the status reporting (triggered via the `--status` CLI flag, or on specific self-review commands) to include new fields: `errorCount` and `avgExecutionTimeMS` (calculated as `totalExecutionTime / callCount`).
+2. **Integration with Self-Improvement Metrics:**
+   - Enhance the existing self-improvement tracking mechanism by including verbose logs in the performance report. Alongside `errorCount` and `avgExecutionTimeMS`, additional metrics (such as per-command execution breakdown) should be logged.
+   - Modify the self-review command (triggered e.g. by `self_improve`) to optionally include verbose details if verbose mode was active during command execution.
 
-3. **Self-Review Command:**
-   - Modify the `agenticHandler` in `src/lib/main.js` to recognize a self-review command (for instance, when `payload.command` is set to `self_improve`).
-   - This command should compile the performance metrics into a report and output an object containing `callCount`, `errorCount`, `avgExecutionTimeMS` and a placeholder suggestion such as “No immediate improvements identified.”
+3. **Source File Modification:**
+   - In `src/lib/main.js`, add logic that intercepts the `--verbose` flag and stores its state in a global variable.
+   - Modify all major logging calls so that when `globalThis.verboseMode` is true, they output additional diagnostic information.
 
 ## Tests
-- **Metrics Verification:** Update unit tests in `tests/unit/main.test.js` to:
-  - Simulate a normal command execution and then call the status handler to verify that the `errorCount` is correctly reported (e.g. zero for successful runs) and that the average execution time is a non-negative number.
-  - Trigger an error intentionally (e.g. call a command with invalid input) and verify that `globalThis.errorCount` increments appropriately.
+1. **Verbose Flag Test:**
+   - Update the unit tests in `tests/unit/main.test.js` to simulate a CLI invocation with the `--verbose` flag.
+   - Verify that upon running with `--verbose`, additional log outputs (e.g., detailed start and end messages for each operation) are produced.
 
-- **Self-Review Command Test:** Write tests to invoke `agenticHandler` with the `self_improve` command to ensure that the returned report object includes all the expected metric keys (such as `callCount`, `errorCount`, and `avgExecutionTimeMS`).
+2. **Self-Review Report Test:**
+   - Execute the self-review command with verbose mode enabled and check that the returned report object includes the additional verbose metrics, confirming that extra diagnostic data is registered.
 
 ## Documentation
-- **README Update:**
-   - Update the README’s Features section to include a bullet point for **Self-Improvement and Diagnostics**. Describe that the agent continually monitors its own performance, adjusts its metrics with every command, and can perform a self-review to generate a performance report. This will help users understand that the agent is not a black box but is designed to self-optimize over time.
+1. **README Update:**
+   - In README.md, update the **CLI Options** section to include a bullet point for **Verbose Logging**:
+     - **Verbose Logging:**
+       ```bash
+       node src/lib/main.js --verbose
+       ```
+       When this flag is used, the agent outputs detailed logs, including step-by-step diagnostic information, which is integrated with the self-improvement performance metrics.
 
-## Long-Term Direction
-The current implementation establishes a foundation for self-monitoring. In the future, these metrics can be used to trigger automated refinements—such as adjusting input parsing or modifying internal logic—without manual intervention. This paves the way for further autonomy and continuous improvement in line with the overarching mission of agentic intelligent automation.
+2. **Long-Term Direction:**
+   - This enhancement not only improves immediate observability and debugging but also lays the groundwork for more sophisticated self-analysis. Future iterations may use the verbose logs as a basis for automated adjustments or proactive improvements based on in-depth runtime diagnostics.
