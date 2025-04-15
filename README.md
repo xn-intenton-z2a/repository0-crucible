@@ -30,6 +30,7 @@ npm install repository0-crucible
 - Simulates various operations: diagnostics, data crawling, refreshing data, and build processes.
 - Includes an HTTP server to serve the ontology.
 - New: Validates the exported ontology JSON file using the `--validate-ontology` option.
+- New: Provides extended help information using the `--help-extended` option.
 
 ## Usage
 
@@ -45,27 +46,36 @@ To get the help message in JSON format for programmatic use:
 node src/lib/main.js --help-json
 ```
 
-Example output:
+To get extended help information with detailed descriptions and usage examples for each command, run:
 
-```json
-{
-  "usage": "Usage: node src/lib/main.js [options]",
-  "options": [
-    "--help",
-    "--help-json",
-    "--diagnostics",
-    "--capital-cities",
-    "--serve",
-    "--build-intermediate",
-    "--build-enhanced",
-    "--refresh",
-    "--merge-persist",
-    "--crawl-data",
-    "--export-ontology",
-    "--build-detailed",
-    "--validate-ontology"
-  ]
-}
+```bash
+node src/lib/main.js --help-extended
+```
+
+Example extended help output:
+
+```
+Extended Help:
+
+--help: Displays a brief help message.
+         Example: node src/lib/main.js --help
+
+--help-json: Displays help in JSON format.
+         Example: node src/lib/main.js --help-json
+
+--help-extended: Displays detailed help information with descriptions and usage examples for each command.
+         Example: node src/lib/main.js --help-extended
+
+--diagnostics: Outputs diagnostics info about the current environment.
+         Example: node src/lib/main.js --diagnostics
+
+--capital-cities: Outputs the capital cities OWL ontology in JSON format.
+         Example: node src/lib/main.js --capital-cities
+
+--export-ontology: Exports the OWL ontology to a file named exported_ontology.json.
+         Example: node src/lib/main.js --export-ontology
+
+... and so on for other options.
 ```
 
 To output an example OWL ontology in JSON format representing capital cities with a generation timestamp, run:
