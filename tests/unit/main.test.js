@@ -182,6 +182,7 @@ describe("Main Memory Logging", () => {
   });
 });
 
+
 describe("Main Help-Seeking", () => {
   test("should display help-seeking message when '--help-seeking' flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
