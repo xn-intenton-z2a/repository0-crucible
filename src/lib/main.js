@@ -57,6 +57,7 @@ export async function main(args = process.argv.slice(2)) {
         "--serve": "Start an HTTP server on port 3000 that serves the OWL ontology at the '/ontology' endpoint",
         "--capital-cities": "Output a sample OWL ontology of capital cities",
         "--refresh": "Re-crawl public data sources, attach a current timestamp, and output the refreshed ontology JSON",
+        "--build-enhanced": "Simulate advanced processing of ontology data with enhanced output",
         "--version": "Display the current version of the tool"
       }
     };
@@ -331,6 +332,15 @@ export async function main(args = process.argv.slice(2)) {
     serverInstance.listen(3000, () => {
       console.log("Server started on port 3000");
     });
+    return;
+  }
+
+  // Handle '--build-enhanced' option for advanced OWL ontology generation
+  const buildEnhancedIndex = args.indexOf("--build-enhanced");
+  if (buildEnhancedIndex !== -1) {
+    const ontology = crawlDataSources();
+    ontology["owl:ontology"].enhanced = true;
+    console.log(JSON.stringify(ontology, null, 2));
     return;
   }
 

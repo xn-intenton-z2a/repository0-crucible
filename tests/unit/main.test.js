@@ -461,8 +461,21 @@ describe("Refresh Option", () => {
     expect(output["owl:ontology"]).toHaveProperty("timestamp");
     const timestamp = output["owl:ontology"].timestamp;
     // Check if the timestamp is a valid ISO string
-    expect(typeof timestamp).toBe("string");
+    expect(typeof timestamp).toBe("string
+").toBeTruthy();
     expect(timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    logSpy.mockRestore();
+  });
+});
+
+// New Test for Build Enhanced Option
+describe("Build Enhanced Option", () => {
+  test("should output enhanced ontology with 'enhanced' property set to true", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--build-enhanced"]);
+    const output = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(output).toHaveProperty("owl:ontology");
+    expect(output["owl:ontology"]).toHaveProperty("enhanced", true);
     logSpy.mockRestore();
   });
 });

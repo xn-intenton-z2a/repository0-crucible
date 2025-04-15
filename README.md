@@ -206,19 +206,21 @@ When executed with the --help option, the tool will output a JSON with usage ins
     ]
   }
   ```
-  **Example:**
-  ```bash
-  node src/lib/main.js --capital-cities
-  ```
 
 - **Refresh Ontology Data:**
-  The new `--refresh` option re-crawls the public data sources, attaches a current ISO timestamp to the generated ontology, and outputs the refreshed JSON.
+  The `--refresh` option re-crawls the public data sources, attaches a current ISO timestamp to the generated ontology, and outputs the refreshed JSON.
   
   **Example:**
   ```bash
   node src/lib/main.js --refresh
   ```
-  This outputs the refreshed ontology JSON including a `timestamp` property.
+
+- **Advanced Build with Enhancements:**
+  The new `--build-enhanced` option simulates advanced processing of ontology data. It calls the standard crawl function and adds an extra property `enhanced` set to true in the ontology output. For example:
+  ```bash
+  node src/lib/main.js --build-enhanced
+  ```
+  This command will output the enhanced ontology JSON including the `enhanced` flag.
 
 ## Incremental Changes Plan
 
