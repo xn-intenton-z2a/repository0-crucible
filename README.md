@@ -115,6 +115,16 @@ node src/lib/main.js --help
   ```
   This will write the ontology to `ontology.json` by default.
 
+- **List Data Sources:**
+  The new `--data-sources` option outputs a hard-coded list of public data source URLs. For example:
+  ```bash
+  node src/lib/main.js --data-sources
+  ```
+  This will output a JSON object like:
+  ```json
+  { "dataSources": ["https://example.com/api1", "https://example.com/api2"] }
+  ```
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.
