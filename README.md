@@ -170,7 +170,7 @@ When executed with the --help option, the tool will output a JSON with usage ins
   Otherwise, it will output an error message detailing the issue.
 
 - **Display Ontology Info:**
-  The new `--ontology-info` option reads a provided ontology JSON file and outputs a summary including the ontology's source, description, and the total number of data entries. Optionally, it will include a timestamp if available.
+  The `--ontology-info` option reads a provided ontology JSON file and outputs a summary including the ontology's source, description, and the total number of data entries. Optionally, it will include a timestamp if available.
   
   **Example:**
   ```bash
@@ -187,6 +187,13 @@ When executed with the --help option, the tool will output a JSON with usage ins
     }
   }
   ```
+
+- **Serve Ontology via HTTP:**
+  The new `--serve` option starts an HTTP server on port 3000. When you access the `/ontology` endpoint, the server responds with the OWL ontology in JSON format. For example:
+  ```bash
+  node src/lib/main.js --serve
+  ```
+  Then, visiting [http://localhost:3000/ontology](http://localhost:3000/ontology) in your browser or via an HTTP client will return the ontology data.
 
 ## Incremental Changes Plan
 
