@@ -478,3 +478,15 @@ describe("Build Enhanced Option", () => {
     logSpy.mockRestore();
   });
 });
+
+// New Test for Build Intermediate Option
+describe("Build Intermediate Option", () => {
+  test("should output intermediate ontology with 'intermediate' property set to true", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--build-intermediate"]);
+    const output = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(output).toHaveProperty("owl:ontology");
+    expect(output["owl:ontology"]).toHaveProperty("intermediate", true);
+    logSpy.mockRestore();
+  });
+});

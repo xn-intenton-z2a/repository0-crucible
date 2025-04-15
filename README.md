@@ -216,11 +216,18 @@ When executed with the --help option, the tool will output a JSON with usage ins
   ```
 
 - **Advanced Build with Enhancements:**
-  The new `--build-enhanced` option simulates advanced processing of ontology data. It calls the standard crawl function and adds an extra property `enhanced` set to true in the ontology output. For example:
+  The `--build-enhanced` option simulates advanced processing of ontology data. It calls the standard crawl function and adds an extra property `enhanced` set to true in the ontology output. For example:
   ```bash
   node src/lib/main.js --build-enhanced
   ```
   This command will output the enhanced ontology JSON including the `enhanced` flag.
+
+- **Intermediate Build Option:**
+  The new `--build-intermediate` option simulates an intermediate processing step on ontology data. It calls the standard crawl function and attaches an extra property `intermediate` set to true in the ontology output. For example:
+  ```bash
+  node src/lib/main.js --build-intermediate
+  ```
+  This command will output the ontology JSON including the `intermediate` flag.
 
 ## Incremental Changes Plan
 

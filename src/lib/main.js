@@ -57,6 +57,7 @@ export async function main(args = process.argv.slice(2)) {
         "--serve": "Start an HTTP server on port 3000 that serves the OWL ontology at the '/ontology' endpoint",
         "--capital-cities": "Output a sample OWL ontology of capital cities",
         "--refresh": "Re-crawl public data sources, attach a current timestamp, and output the refreshed ontology JSON",
+        "--build-intermediate": "Simulate intermediate processing of ontology data with intermediate output",
         "--build-enhanced": "Simulate advanced processing of ontology data with enhanced output",
         "--version": "Display the current version of the tool"
       }
@@ -162,6 +163,15 @@ export async function main(args = process.argv.slice(2)) {
   if (refreshIndex !== -1) {
     const ontology = crawlDataSources();
     ontology["owl:ontology"].timestamp = new Date().toISOString();
+    console.log(JSON.stringify(ontology, null, 2));
+    return;
+  }
+
+  // Handle '--build-intermediate' option for intermediate processing step
+  const buildIntermediateIndex = args.indexOf("--build-intermediate");
+  if (buildIntermediateIndex !== -1) {
+    const ontology = crawlDataSources();
+    ontology["owl:ontology"].intermediate = true;
     console.log(JSON.stringify(ontology, null, 2));
     return;
   }
