@@ -432,7 +432,6 @@ describe("Export RDF Option", () => {
   });
 });
 
-// New Test for Export Turtle Option
 describe("Export Turtle Option", () => {
   test("should output Turtle representation of ontology", () => {
     const logSpy = vi.spyOn(console, "log");
@@ -442,6 +441,22 @@ describe("Export Turtle Option", () => {
     expect(output).toContain("ex:Ontology");
     expect(output).toContain('ex:source "public"');
     expect(output).toContain('ex:description "Simulated crawling of public data sources"');
+    logSpy.mockRestore();
+  });
+});
+
+describe("Export JSONLD Option", () => {
+  test("should output valid JSON-LD representation of ontology", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--export-jsonld"]);
+    const output = logSpy.mock.calls[0][0];
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("@context");
+    expect(parsed).toHaveProperty("@type", "Ontology");
+    const ontology = crawlDataSources()["owl:ontology"];
+    expect(parsed).toHaveProperty("source", ontology.source);
+    expect(parsed).toHaveProperty("description", ontology.description);
+    expect(parsed).toHaveProperty("data", ontology.data);
     logSpy.mockRestore();
   });
 });

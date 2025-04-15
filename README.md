@@ -248,7 +248,7 @@ When executed with the --help option, the tool will output a JSON with usage ins
   ```
 
 - **Export Ontology as Turtle (TTL):**
-  The new `--export-turtle` option exports the generated ontology in Turtle format. When invoked, it outputs a TTL formatted string with prefix declarations and the ontology's source, description, and data entries. For example:
+  The `--export-turtle` option exports the generated ontology in Turtle format. When invoked, it outputs a TTL formatted string with prefix declarations and the ontology's source, description, and data entries. For example:
   ```bash
   node src/lib/main.js --export-turtle
   ```
@@ -264,6 +264,28 @@ When executed with the --help option, the tool will output a JSON with usage ins
         ex:id "1" ;
         ex:info "Sample data entry"
       ]
+    ]
+  }
+  ```
+
+- **Export Ontology as JSON-LD:**
+  The new `--export-jsonld` option exports the generated ontology in JSON-LD format. When invoked, it outputs a JSON-LD structure with a defined @context and @type. For example:
+  ```bash
+  node src/lib/main.js --export-jsonld
+  ```
+  A sample output might look like:
+  ```json
+  {
+    "@context": {
+      "source": "http://example.com/source",
+      "description": "http://example.com/description",
+      "data": "http://example.com/data"
+    },
+    "@type": "Ontology",
+    "source": "public",
+    "description": "Simulated crawling of public data sources",
+    "data": [
+      { "id": 1, "info": "Sample data entry" }
     ]
   }
   ```
