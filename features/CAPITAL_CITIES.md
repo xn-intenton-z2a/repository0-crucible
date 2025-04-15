@@ -1,36 +1,37 @@
 # CAPITAL_CITIES Feature Specification
 
 ## Overview
-This feature provides a CLI command `--capital-cities` that outputs a JSON file containing a sample OWL ontology of world capital cities. In this updated version, users have two optional enhancements:
+This feature provides an enhanced CLI command `--capital-cities` that outputs an OWL ontology of world capital cities as a JSON file. The functionality includes optional flags:
 
-- A `--country=NAME` flag to filter the output to a specific country.
-- A new `--format=FORMAT` flag to choose the output format. By default, the output is in standard OWL JSON format, but users can set `--format=JSONLD` to receive the output as JSON-LD, adhering to linked data standards.
+- `--country=<COUNTRY_NAME>`: Filters the ontology to include only the capital cities of the specified country.
+- `--format=<FORMAT>`: Changes the output format. The default is standard OWL JSON format, but if set to `JSONLD`, the output will be transformed into JSON-LD format compliant with linked data standards.
 
-These enhancements reflect the mission of owl-builder by offering dynamic data transformation and flexible output formats to enhance usability.
+An additional error handling mechanism is included to manage unsupported format values, ensuring users receive a clear error message or fallback to standard behavior.
 
-## Implementation Details
-- Update the main source file (src/lib/main.js) to:
-  - Recognize the `--capital-cities` command.
-  - Detect the optional `--country=<COUNTRY_NAME>` flag and filter the JSON output to include only capital cities of the specified country.
-  - Detect the new optional `--format=<FORMAT>` flag. If the flag is set to `JSONLD`, transform the standard OWL JSON output into a JSON-LD format. If not specified or set to any other value, default to the standard OWL JSON format.
-- Use inlined JSON data or available library functions to simulate data output.
-- Ensure proper error handling in case an unsupported format is provided.
+## Implementation
+- **Source File Updates (src/lib/main.js):**
+  - Parse CLI arguments to detect `--capital-cities` along with optional `--country` and `--format` flags.
+  - Implement filtering logic for the `--country` flag using inlined JSON or library functions.
+  - Add transformation logic to convert OWL JSON output into JSON-LD when `--format=JSONLD` is specified.
+  - Validate the format flag’s value and handle unsupported formats by providing an error message or defaulting to standard output.
 
 ## Testing
-- Modify the test file (tests/unit/main.test.js) to simulate the CLI invocation for:
-  - Running the command without any optional flags and verifying that the full OWL ontology is produced.
-  - Running the command with `--capital-cities --country=France` to ensure filtering works correctly.
-  - Running the command with `--capital-cities --format=JSONLD` to validate that the output is in the correct JSON-LD format.
-  - Running the command with a combination of `--capital-cities --country=France --format=JSONLD` for combined behavior.
-- Add tests to verify that unsupported formats result in a clear error message or default to standard behavior.
+- **Test File Updates (tests/unit/main.test.js):**
+  - Create tests simulating different CLI invocations:
+    - Default behavior: `node src/lib/main.js --capital-cities`
+    - Filter by country: `node src/lib/main.js --capital-cities --country=France`
+    - Format change: `node src/lib/main.js --capital-cities --format=JSONLD`
+    - Combined usage: `node src/lib/main.js --capital-cities --country=France --format=JSONLD`
+  - Include tests to verify error handling for unsupported format values.
 
 ## Documentation
-- Update the README.md file to document the enhanced behavior of the `--capital-cities` command with new usage examples:
-  - Without filtering and with default format: `node src/lib/main.js --capital-cities`
-  - With filtering: `node src/lib/main.js --capital-cities --country=France`
-  - With output format change: `node src/lib/main.js --capital-cities --format=JSONLD`
-  - Combined usage: `node src/lib/main.js --capital-cities --country=France --format=JSONLD`
-- Include example outputs and guidance on how each flag affects the JSON structure.
+- **README.md Updates:**
+  - Provide usage examples for the enhanced command:
+    - Without filtering: `node src/lib/main.js --capital-cities`
+    - With filtering: `node src/lib/main.js --capital-cities --country=France`
+    - With format change: `node src/lib/main.js --capital-cities --format=JSONLD`
+    - Combined usage: `node src/lib/main.js --capital-cities --country=France --format=JSONLD`
+  - Document the expected JSON output structure and the error messages when using unsupported formats.
 
 ## Dependencies
-- No additional external dependencies are required as the feature will utilize vanilla JavaScript for CLI argument parsing and JSON transformation.
+- No additional external dependencies required. The implementation uses vanilla JavaScript for argument parsing and JSON transformation, keeping the repository lightweight and in line with the project mission.
