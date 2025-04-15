@@ -12,12 +12,11 @@ const helpMessage = [
   "  --help-json         Show help message in JSON format",
   "  --diagnostics       Output diagnostics information",
   "  --capital-cities    Output capital cities OWL ontology JSON",
-  "  --serve             Start the HTTP server to serve the OWL ontology",
+  "  --crawl-data          Simulate crawling public data sources and output JSON",
+  "  --refresh             Refresh the data (simulated operation)",
   "  --build-intermediate  Build with intermediate steps (simulated operation)",
   "  --build-enhanced      Build with enhanced features (if implemented)",
-  "  --refresh             Refresh the data (simulated operation)",
-  "  --merge-persist       Merge and persist the data (simulated operation)",
-  "  --crawl-data          Simulate crawling public data sources and output JSON"
+  "  --merge-persist       Merge and persist the data (simulated operation)"
 ].join("\n");
 
 export function main(args = []) {
@@ -46,9 +45,11 @@ export function main(args = []) {
 
   if (args.includes("--help-json")) {
     const lines = helpMessage.split("\n");
-    // The first line is usage, and options are from the lines that start with '--'
     const usage = lines[0];
-    const options = lines.filter(line => line.trim().startsWith("--"));
+    // Extract only the option flag from each line
+    const options = lines
+      .filter(line => line.trim().startsWith("--"))
+      .map(line => line.trim().split(/\s+/)[0]);
     console.log(JSON.stringify({ usage, options }, null, 2));
     return;
   }
