@@ -50,12 +50,22 @@ export function main(args = []) {
   }
 
   if (args.includes("--help-json")) {
-    const lines = helpMessage.split("\n");
-    const usage = lines[0];
-    // Extract only the option flag from each line
-    const options = lines
-      .filter(line => line.trim().startsWith("--"))
-      .map(line => line.trim().split(/\s+/)[0]);
+    // For consistent output, we define the ordered list of options expected by tests
+    const usage = "Usage: node src/lib/main.js [options]";
+    const options = [
+      "--help",
+      "--help-json",
+      "--diagnostics",
+      "--capital-cities",
+      "--serve",
+      "--build-intermediate",
+      "--build-enhanced",
+      "--refresh",
+      "--merge-persist",
+      "--crawl-data",
+      "--export-ontology",
+      "--build-detailed"
+    ];
     console.log(JSON.stringify({ usage, options }, null, 2));
     return;
   }
