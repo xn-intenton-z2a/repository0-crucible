@@ -1,36 +1,34 @@
 # CAPITAL_CITIES Feature Specification
 
 ## Overview
-This feature implements and enhances the CLI command `--capital-cities`, which outputs an OWL ontology of world capital cities filtered and formatted as JSON. In addition to the existing optional flags, it adds a new flag `--sort` to allow sorting of the output list alphabetically. The user can control the sort order by specifying `asc` or `desc`. 
+This feature implements and enhances the CLI command `--capital-cities` to output an OWL ontology of world capital cities. It supports several optional flags that allow users to filter, format, and sort the output. The key functionalities include:
 
-## Implementation
-- **Source File Updates (src/lib/main.js):**
-  - Add a new branch that listens for the `--capital-cities` flag.
-  - Parse additional CLI arguments: 
-    - `--country=<COUNTRY_NAME>` to filter by country.
-    - `--format=<FORMAT>` to output in standard OWL JSON or JSON-LD format (transformation logic already in place).
-    - `--sort=<ORDER>` where `<ORDER>` can be either `asc` for ascending or `desc` for descending, to sort the list of capital cities alphabetically.
-  - Integrate sorting logic into the workflow: after filtering, if the sort flag is provided, sort the resulting list of capital cities accordingly.
+- **Filtering:** Use `--country=<COUNTRY_NAME>` to display capital cities from a particular country.
+- **Formatting:** Use `--format=<FORMAT>` to output in standard OWL JSON or JSON-LD format.
+- **Sorting:** Use `--sort=<ORDER>` where `<ORDER>` is either `asc` or `desc` for alphabetical sorting. Additionally, the implementation now validates the sort parameter and gracefully handles invalid options.
 
-## Testing
-- **Test File Updates (tests/unit/main.test.js):**
-  - Add test cases to simulate the CLI invocation with the `--capital-cities` option combined with the new `--sort` flag:
-    - Verify that providing `--sort=asc` returns the capital cities in ascending order.
-    - Verify that providing `--sort=desc` returns the capital cities in descending order.
-  - Ensure existing tests for the `--capital-cities` feature (including usage of `--country` and `--format`) remain valid.
+This update improves the robustness of the sorting functionality and ensures a seamless user experience when interacting with the CLI tool.
 
-## Documentation
-- **README.md Updates:**
-  - Add usage examples for the enhanced command:
-    - Basic usage: `node src/lib/main.js --capital-cities`
-    - Filtering by country: `node src/lib/main.js --capital-cities --country=France`
-    - Changing format: `node src/lib/main.js --capital-cities --format=JSONLD`
-    - Sorting output: 
-      - Ascending: `node src/lib/main.js --capital-cities --sort=asc`
-      - Descending: `node src/lib/main.js --capital-cities --sort=desc`
-  - Describe the expected JSON output structure, error messages, and behavior when using unexpected sort values.
+## Implementation Details
+- **Source File (src/lib/main.js):**
+  - Add a new branch in the command parser for `--capital-cities`.
+  - Parse additional CLI arguments: `--country`, `--format`, and `--sort`.
+  - Integrate sorting logic using built-in array sorting with localeCompare. Validate the sort parameter; if an invalid value is provided, output an informative error message.
 
-## Dependencies
-- No additional dependencies are required. The implementation uses existing JavaScript libraries for CLI argument parsing and built-in array sorting mechanisms.
+- **Testing (tests/unit/main.test.js):**
+  - Add unit tests to cover the new error handling for the sort option:
+    - Test for valid sort orders (`asc` and `desc`).
+    - Test for an invalid sort parameter to confirm the proper error message is returned.
+  - Ensure that previous tests for filtering and formatting remain valid and complete.
 
-This update builds on the existing CAPITAL_CITIES functionality and enhances it with a useful and achievable value-add: enabling users to receive a sorted list of capital cities directly from the CLI, aligning with the mission of creating user-friendly tools for OWL ontology management.
+- **Documentation (README.md):**
+  - Update usage examples to include the proper syntax for the new sorting feature and error handling behavior.
+  - Document expected output structure, including error messages when the sort parameter is invalid.
+
+## Value and Alignment with Mission
+This refinement builds on the existing functionality by adding robust error handling and input validation. It enhances the reliability of the output and aligns with the mission of providing user-friendly and resilient tools for managing OWL ontologies.
+
+## Future Considerations
+- Add more filtering options (e.g., by continent) if data becomes available.
+- Enhance output customization based on further user feedback.
+
