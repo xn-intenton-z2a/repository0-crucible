@@ -172,13 +172,23 @@ describe("Main Memory Logging", () => {
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[spy.mock.calls.length - 1][0];
     expect(output).toContain("Memory Log:");
-    // Check that the log contains at least one entry with a timestamp and args
     const jsonPart = output.replace('Memory Log:', '').trim();
     const logOutput = JSON.parse(jsonPart);
     expect(Array.isArray(logOutput)).toBe(true);
     expect(logOutput.length).toBeGreaterThanOrEqual(1);
     expect(logOutput[0]).toHaveProperty('timestamp');
     expect(logOutput[0]).toHaveProperty('args');
+    spy.mockRestore();
+  });
+});
+
+describe("Main Help-Seeking", () => {
+  test("should display help-seeking message when '--help-seeking' flag is provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--help-seeking"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    expect(output).toContain("Help-Seeking activated: consulting external assistance...");
     spy.mockRestore();
   });
 });
