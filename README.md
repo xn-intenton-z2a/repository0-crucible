@@ -42,7 +42,6 @@ node src/lib/main.js --help
   npm run start
   ```
 
-
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.
