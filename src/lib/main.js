@@ -116,7 +116,7 @@ export async function main(args = process.argv.slice(2)) {
   // Handle '--data-sources' option to output a hard-coded list of public data source URLs
   const dataSourcesIndex = args.indexOf("--data-sources");
   if (dataSourcesIndex !== -1) {
-    const dataSources = ["https://example.com/api1", "https://example.com/api2"];
+    const dataSources = ["https://example.com/api1", "https://example.com/api2"]; 
     console.log(JSON.stringify({ dataSources }));
     return;
   }
