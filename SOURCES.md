@@ -1,24 +1,19 @@
-# GitHub Actions Documentation
-## https://docs.github.com/en/actions
-Official documentation for GitHub Actions, providing guidance on creating CI/CD workflows, automating testing, and deployment processes. This is highly relevant for integrating automated processes similar to those in this repository.
-## CC BY-SA
-
-# Oclif Documentation
-## https://oclif.io/docs/
-Oclif is a popular CLI framework for building command line applications in Node.js. Its documentation offers insights into command registration, argument parsing, and best practices for building robust CLI tools, which can be contrasted with the custom CLI implementation in this repository.
+# Vitest Testing Framework
+## https://vitest.dev/
+Vitest is a modern, blazing fast unit testing framework designed for Vite and Node.js environments. Its comprehensive documentation provides guidance on setup, configuration, and writing tests for JavaScript and TypeScript projects.
 ## MIT License
 
-# MDN JavaScript Guide
-## https://developer.mozilla.org/en-US/docs/Web/JavaScript
-A comprehensive resource for modern JavaScript language features and best practices. This documentation offers in-depth explanations and examples for both beginners and advanced developers, supporting the continuous learning and improvement philosophy of the project.
-## CC BY-SA
+# OpenAI API Documentation
+## https://platform.openai.com/docs/api-reference
+OpenAI's API documentation covers integration, best practices, and endpoint usage for implementing intelligent features driven by AI models. This resource is vital for projects leveraging OpenAI capabilities to drive self-improvement and advanced automation.
+## OpenAI API Terms of Service
 
-# EJS Documentation
-## https://ejs.co/
-Official documentation for EJS, a templating engine used for generating dynamic content. The resource details usage patterns, syntax, and integration methods which are valuable when working with dynamic HTML content or server-side rendering.
+# Zod API Reference
+## https://zod.dev/
+Zod is a powerful TypeScript-first schema validation library that ensures robust type safety and runtime validation for JavaScript applications. Its extensive documentation is beneficial for implementing secure and maintainable input handling in CLI tools.
 ## MIT License
 
-# Node.js ES Modules Documentation
-## https://nodejs.org/api/esm.html
-This resource provides detailed information on the use of ECMAScript modules (ESM) in Node.js, including syntax, interoperability, and migration tips. It is essential for projects adopting the modern JavaScript module system, as seen in this repository.
-## Node.js Documentation License
+# dotenv Documentation
+## https://github.com/motdotla/dotenv
+Dotenv is a module that loads environment variables from a .env file into process.env, simplifying configuration management across development and production environments. This ease of configuration management is crucial for secure and reproducible software deployment.
+## MIT License
