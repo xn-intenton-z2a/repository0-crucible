@@ -47,6 +47,12 @@ To output diagnostics information about the current environment including Node.j
 node src/lib/main.js --diagnostics
 ```
 
+To simulate crawling public data sources and output dynamic JSON data, run:
+
+```bash
+node src/lib/main.js --crawl-data
+```
+
 To start a simple HTTP server that serves the OWL ontology for capital cities, run:
 
 ```bash
@@ -79,6 +85,11 @@ to retrieve the capital cities ontology in JSON format.
 - **Diagnostics Example (shows environment and command listing):**
   ```bash
   node src/lib/main.js --diagnostics
+  ```
+
+- **Crawl Data Simulation (outputs simulated crawl data with fetchedAt timestamp):**
+  ```bash
+  node src/lib/main.js --crawl-data
   ```
 
 - **Serve Capital Cities Server:**

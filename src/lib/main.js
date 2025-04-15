@@ -17,7 +17,8 @@ export function main(args = []) {
       "  --build-intermediate  Build with intermediate steps (if implemented)",
       "  --build-enhanced      Build with enhanced features (if implemented)",
       "  --refresh             Refresh the data (if implemented)",
-      "  --merge-persist       Merge and persist the data (if implemented)"
+      "  --merge-persist       Merge and persist the data (if implemented)",
+      "  --crawl-data          Simulate crawling public data sources and output JSON"
     ].join("\n");
     console.log(helpMessage);
     return;
@@ -34,7 +35,8 @@ export function main(args = []) {
         "--build-intermediate",
         "--build-enhanced",
         "--refresh",
-        "--merge-persist"
+        "--merge-persist",
+        "--crawl-data"
       ]
     };
     console.log(JSON.stringify(diagnostics, null, 2));
@@ -52,6 +54,16 @@ export function main(args = []) {
       generatedAt: new Date().toISOString()
     };
     console.log(JSON.stringify(owlOntology, null, 2));
+    return;
+  }
+
+  if (args.includes("--crawl-data")) {
+    const crawlData = {
+      source: "publicData",
+      data: [ { id: 1, description: "Sample data" } ],
+      fetchedAt: new Date().toISOString()
+    };
+    console.log(JSON.stringify(crawlData, null, 2));
     return;
   }
 

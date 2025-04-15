@@ -61,7 +61,8 @@ describe("Diagnostics Option", () => {
     expect(parsed.availableCommands).toEqual(expect.arrayContaining([
       "--capital-cities",
       "--diagnostics",
-      "--serve"
+      "--serve",
+      "--crawl-data"
     ]));
   });
 });
@@ -108,5 +109,28 @@ describe("Serve Option", () => {
     expect(iso).toEqual(parsed.generatedAt);
     
     await new Promise(resolve => server.close(resolve));
+  });
+});
+
+describe("Crawl Data Option", () => {
+  test("should output simulated crawl data JSON with fetchedAt timestamp", () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (msg) => { output += msg; };
+
+    main(["--crawl-data"]);
+
+    console.log = originalLog;
+
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("source", "publicData");
+    expect(parsed).toHaveProperty("data");
+    expect(Array.isArray(parsed.data)).toBe(true);
+    expect(parsed.data).toEqual([
+      { id: 1, description: "Sample data" }
+    ]);
+    expect(parsed).toHaveProperty("fetchedAt");
+    const iso = new Date(parsed.fetchedAt).toISOString();
+    expect(iso).toEqual(parsed.fetchedAt);
   });
 });
