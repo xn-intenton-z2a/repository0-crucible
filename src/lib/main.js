@@ -39,7 +39,8 @@ export async function main(args = process.argv.slice(2)) {
         "--validate-ontology": "Validate the structure of an ontology JSON file",
         "--live-crawl": "Retrieve live data from https://api.publicapis.org/entries and output an OWL ontology in JSON format",
         "--ontology-info": "Read an ontology JSON file and output a summary with source, description, total data entries, and optional timestamp",
-        "--serve": "Start an HTTP server on port 3000 that serves the OWL ontology at the '/ontology' endpoint"
+        "--serve": "Start an HTTP server on port 3000 that serves the OWL ontology at the '/ontology' endpoint",
+        "--capital-cities": "Output a sample OWL ontology of capital cities"
       }
     };
     console.log(JSON.stringify(helpMessage, null, 2));
@@ -272,6 +273,19 @@ export async function main(args = process.argv.slice(2)) {
     } catch (err) {
       console.log(JSON.stringify({ error: "Error: " + err.message }));
     }
+    return;
+  }
+
+  // Handle '--capital-cities' option to output a sample OWL ontology of capital cities
+  if (args.indexOf("--capital-cities") !== -1) {
+    const capitalOntology = {
+      capitalCities: [
+        { name: "Washington D.C.", country: "USA" },
+        { name: "London", country: "UK" },
+        { name: "Tokyo", country: "Japan" }
+      ]
+    };
+    console.log(JSON.stringify(capitalOntology, null, 2));
     return;
   }
 
