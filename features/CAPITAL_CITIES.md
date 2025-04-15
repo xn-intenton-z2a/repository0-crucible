@@ -1,37 +1,36 @@
 # CAPITAL_CITIES Feature Specification
 
 ## Overview
-This feature provides an enhanced CLI command `--capital-cities` that outputs an OWL ontology of world capital cities as a JSON file. The functionality includes optional flags:
-
-- `--country=<COUNTRY_NAME>`: Filters the ontology to include only the capital cities of the specified country.
-- `--format=<FORMAT>`: Changes the output format. The default is standard OWL JSON format, but if set to `JSONLD`, the output will be transformed into JSON-LD format compliant with linked data standards.
-
-An additional error handling mechanism is included to manage unsupported format values, ensuring users receive a clear error message or fallback to standard behavior.
+This feature implements and enhances the CLI command `--capital-cities`, which outputs an OWL ontology of world capital cities filtered and formatted as JSON. In addition to the existing optional flags, it adds a new flag `--sort` to allow sorting of the output list alphabetically. The user can control the sort order by specifying `asc` or `desc`. 
 
 ## Implementation
 - **Source File Updates (src/lib/main.js):**
-  - Parse CLI arguments to detect `--capital-cities` along with optional `--country` and `--format` flags.
-  - Implement filtering logic for the `--country` flag using inlined JSON or library functions.
-  - Add transformation logic to convert OWL JSON output into JSON-LD when `--format=JSONLD` is specified.
-  - Validate the format flag’s value and handle unsupported formats by providing an error message or defaulting to standard output.
+  - Add a new branch that listens for the `--capital-cities` flag.
+  - Parse additional CLI arguments: 
+    - `--country=<COUNTRY_NAME>` to filter by country.
+    - `--format=<FORMAT>` to output in standard OWL JSON or JSON-LD format (transformation logic already in place).
+    - `--sort=<ORDER>` where `<ORDER>` can be either `asc` for ascending or `desc` for descending, to sort the list of capital cities alphabetically.
+  - Integrate sorting logic into the workflow: after filtering, if the sort flag is provided, sort the resulting list of capital cities accordingly.
 
 ## Testing
 - **Test File Updates (tests/unit/main.test.js):**
-  - Create tests simulating different CLI invocations:
-    - Default behavior: `node src/lib/main.js --capital-cities`
-    - Filter by country: `node src/lib/main.js --capital-cities --country=France`
-    - Format change: `node src/lib/main.js --capital-cities --format=JSONLD`
-    - Combined usage: `node src/lib/main.js --capital-cities --country=France --format=JSONLD`
-  - Include tests to verify error handling for unsupported format values.
+  - Add test cases to simulate the CLI invocation with the `--capital-cities` option combined with the new `--sort` flag:
+    - Verify that providing `--sort=asc` returns the capital cities in ascending order.
+    - Verify that providing `--sort=desc` returns the capital cities in descending order.
+  - Ensure existing tests for the `--capital-cities` feature (including usage of `--country` and `--format`) remain valid.
 
 ## Documentation
 - **README.md Updates:**
-  - Provide usage examples for the enhanced command:
-    - Without filtering: `node src/lib/main.js --capital-cities`
-    - With filtering: `node src/lib/main.js --capital-cities --country=France`
-    - With format change: `node src/lib/main.js --capital-cities --format=JSONLD`
-    - Combined usage: `node src/lib/main.js --capital-cities --country=France --format=JSONLD`
-  - Document the expected JSON output structure and the error messages when using unsupported formats.
+  - Add usage examples for the enhanced command:
+    - Basic usage: `node src/lib/main.js --capital-cities`
+    - Filtering by country: `node src/lib/main.js --capital-cities --country=France`
+    - Changing format: `node src/lib/main.js --capital-cities --format=JSONLD`
+    - Sorting output: 
+      - Ascending: `node src/lib/main.js --capital-cities --sort=asc`
+      - Descending: `node src/lib/main.js --capital-cities --sort=desc`
+  - Describe the expected JSON output structure, error messages, and behavior when using unexpected sort values.
 
 ## Dependencies
-- No additional external dependencies required. The implementation uses vanilla JavaScript for argument parsing and JSON transformation, keeping the repository lightweight and in line with the project mission.
+- No additional dependencies are required. The implementation uses existing JavaScript libraries for CLI argument parsing and built-in array sorting mechanisms.
+
+This update builds on the existing CAPITAL_CITIES functionality and enhances it with a useful and achievable value-add: enabling users to receive a sorted list of capital cities directly from the CLI, aligning with the mission of creating user-friendly tools for OWL ontology management.
