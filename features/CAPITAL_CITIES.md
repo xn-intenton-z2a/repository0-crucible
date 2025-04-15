@@ -1,36 +1,29 @@
-# CAPITAL_CITIES Feature Update
+# CAPITAL_CITIES Feature Enhancement
 
 ## Overview
-This update refines the existing CAPITAL_CITIES feature to fully implement the CLI command `--capital-cities`. This command will generate an OWL ontology JSON object representing world capital cities. The updated feature offers enhanced options including filtering by country, selecting output format (OWL JSON or JSON-LD), and sorting the results in ascending or descending order. It also provides robust error handling for invalid sort values.
+This update extends the existing CAPITAL_CITIES feature to support advanced options for generating an OWL ontology of capital cities. In addition to the basic output, the feature now supports optional parameters to filter by country, select the output format (JSON or JSON-LD), and sort the results in ascending or descending order. The feature also includes robust error handling for invalid sort parameters.
 
 ## Implementation Details
-- **Source Code (src/lib/main.js):**
-  - Add a new branch to detect the `--capital-cities` flag after processing all other primary commands.
-  - When `--capital-cities` is detected, parse additional CLI arguments:
-    - `--country=<COUNTRY_NAME>`: Filter the dataset to include only capital cities from the specified country.
-    - `--format=<FORMAT>`: Support output in `json` (standard OWL JSON) or `jsonld` (JSON-LD) formats.
-    - `--sort=<ORDER>`: Sort the list of capital cities in either `asc` or `desc` order. If an invalid order is provided, output an informative error message.
-  - The command will simulate a data source containing capital cities, constructing an OWL ontology with properties such as `source`, `description`, and a `data` array containing the capital cities entries.
+- Modify the CLI branch for `--capital-cities` in `src/lib/main.js` to parse additional flags:
+  - `--country=<COUNTRY_NAME>`: Filter the list to include only capital cities from the specified country.
+  - `--format=<FORMAT>`: Allow output in two formats: `json` (default OWL JSON) or `jsonld` for JSON-LD representation.
+  - `--sort=<ORDER>`: Sort the list of capital cities in either `asc` or `desc` order. If an invalid order is provided, display an informative error message and exit gracefully.
+- Update the internal simulation of the data to support these operations: filtering and ordering of the array elements.
+- Ensure that the new implementation remains backward compatible when no additional option is provided.
 
 ## Testing
-- **Unit Tests (tests/unit/main.test.js):**
-  - Add tests to ensure that calling `--capital-cities` produces a valid OWL ontology JSON structure for capital cities.
-  - Test that filtering by country accurately restricts the results.
-  - Verify that the output format changes when the `--format` flag is used, including testing both accepted formats (json and jsonld).
-  - Confirm that sorting works correctly for both ascending and descending orders, and that an invalid sort parameter triggers the correct error message.
+- Update the unit tests in `tests/unit/main.test.js` to cover:
+  - Expected output when no additional parameter is provided.
+  - Handling of the `--country` flag to correctly filter results.
+  - Behavior of the `--format` flag by comparing output structure in both `json` and `jsonld` modes.
+  - Sorting functionality by providing valid (`asc`, `desc`) and invalid sort orders and verifying error messages.
 
 ## Documentation
-- **README.md:**
-  - Update the usage section with examples for the `--capital-cities` command:
-    - Example usage with filtering:
-      ```bash
-      node src/lib/main.js --capital-cities --country=France
-      ```
-    - Example usage with format and sort options:
-      ```bash
-      node src/lib/main.js --capital-cities --format=jsonld --sort=asc
-      ```
-  - Clearly document the behavior and available parameters, as well as error messages for invalid inputs.
+- Revise the README in `README.md` to include updated usage examples for the `--capital-cities` command. For instance:
+  ```bash
+  node src/lib/main.js --capital-cities --country=France
+  node src/lib/main.js --capital-cities --format=jsonld --sort=asc
+  ```
 
 ## Alignment with Mission
-This refinement directly supports the mission of `owl-builder` by providing users an effective tool to generate and manage OWL ontologies derived from public data sources. It offers a targeted and valuable functionality that exemplifies the core capability of transforming live data into structured OWL representations.
+This enhancement solidifies the mission of owl-builder by providing additional flexibility in generating tailored OWL ontologies from public data sources. The refinement makes the tool more robust and user-friendly, aligning with the core objective of transforming live data into structured and queryable OWL representations.
