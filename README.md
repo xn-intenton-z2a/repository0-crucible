@@ -160,7 +160,7 @@ Once the server is running, send an HTTP GET request to:
 
 http://localhost:3000/capital-cities
 
-to retrieve the capital cities ontology in JSON format.
+ to retrieve the capital cities ontology in JSON format.
 
 ### Handling Unsupported Options
 

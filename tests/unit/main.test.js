@@ -45,7 +45,7 @@ describe("Capital Cities Option", () => {
     expect(parsed.data).toEqual([
       { country: "France", capital: "Paris" },
       { country: "Japan", capital: "Tokyo" },
-      { country: "Brazil", capital: "Brasília" }
+      { country: "Brazil", capital: "Brasília" },
     ]);
     expect(parsed).toHaveProperty("generatedAt");
     const iso = new Date(parsed.generatedAt).toISOString();
@@ -75,9 +75,9 @@ describe("Diagnostics Option", () => {
         "--capital-cities",
         "--diagnostics",
         "--serve",
-        "--crawl-data",
+        "--build-intermediate",
+        "--build-enhanced",
         "--refresh",
-        "--build-intermediate"
       ])
     );
   });
@@ -120,7 +120,7 @@ describe("Serve Option", () => {
     expect(parsed.data).toEqual([
       { country: "France", capital: "Paris" },
       { country: "Japan", capital: "Tokyo" },
-      { country: "Brazil", capital: "Brasília" }
+      { country: "Brazil", capital: "Brasília" },
     ]);
     expect(parsed).toHaveProperty("generatedAt");
     const iso = new Date(parsed.generatedAt).toISOString();
@@ -279,7 +279,10 @@ describe("Build Detailed Option", () => {
 
     // Validate mergePersist
     expect(parsed).toHaveProperty("mergePersist");
-    expect(parsed.mergePersist).toHaveProperty("mergePersist", "Data merged and persisted successfully");
+    expect(parsed.mergePersist).toHaveProperty(
+      "mergePersist",
+      "Data merged and persisted successfully"
+    );
     expect(parsed.mergePersist).toHaveProperty("mergedAt");
     const iso5 = new Date(parsed.mergePersist.mergedAt).toISOString();
     expect(iso5).toEqual(parsed.mergePersist.mergedAt);
@@ -326,7 +329,9 @@ describe("Help Extended Option", () => {
   test("should output extended help message containing detailed descriptions and usage examples", () => {
     let output = "";
     const originalLog = console.log;
-    console.log = (msg) => { output += msg; };
+    console.log = (msg) => {
+      output += msg;
+    };
 
     main(["--help-extended"]);
 
@@ -369,7 +374,7 @@ describe("Export Ontology Option", () => {
     expect(parsed.data).toEqual([
       { country: "France", capital: "Paris" },
       { country: "Japan", capital: "Tokyo" },
-      { country: "Brazil", capital: "Brasília" }
+      { country: "Brazil", capital: "Brasília" },
     ]);
     expect(parsed).toHaveProperty("generatedAt");
     const iso = new Date(parsed.generatedAt).toISOString();
