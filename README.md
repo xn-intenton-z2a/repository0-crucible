@@ -60,6 +60,12 @@ node src/lib/main.js [options]
   ```
   This flag displays diagnostic information including Node version, executable path, current working directory, and environment variables.
 
+- **Refresh Application State:**
+  ```bash
+  node src/lib/main.js --refresh
+  ```
+  This flag triggers a refresh of the application state and displays a refresh message.
+
 - **Merge and Persist Changes:**
   ```bash
   node src/lib/main.js --merge-persist
