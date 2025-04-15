@@ -56,6 +56,17 @@ node src/lib/main.js --help
   ```
   This command will output a JSON result like: `{ "result": "OWL query output for query: cities" }`.
 
+- **Transform JSON to OWL Ontology:**
+  To transform a JSON string into a simulated OWL ontology structure, run:
+  ```bash
+  node src/lib/main.js --transform '{"data":"example"}'
+  ```
+  This will output a transformed JSON structure like: `{ "owl:transformed": { "data": "example" } }`.
+  If an invalid JSON string is provided or none is provided, it will output a default transformation:
+  ```bash
+  { "result": "Default OWL transformation output" }
+  ```
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.
