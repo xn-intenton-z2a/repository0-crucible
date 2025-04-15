@@ -66,6 +66,12 @@ node src/lib/main.js [options]
   ```
   This flag displays additional diagnostic information including memory usage, process uptime, and the process platform.
 
+- **Self-Refinement Analysis:**
+  ```bash
+  node src/lib/main.js --self-refine
+  ```
+  This flag triggers a self-refinement analysis, demonstrating the agent's ability to self-improve by outputting a message indicating that such an analysis is in progress.
+
 - **Refresh Application State:**
   ```bash
   node src/lib/main.js --refresh
