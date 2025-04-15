@@ -245,7 +245,7 @@ describe("Help JSON Option", () => {
     expect(parsed).toHaveProperty("usage", "Usage: node src/lib/main.js [options]");
     expect(parsed).toHaveProperty("options");
     expect(Array.isArray(parsed.options)).toBe(true);
-    expect(parsed.options.every((option) => option.startsWith("--")).toBe(true));
+    expect(parsed.options.every((option) => option.startsWith("--"))).toBe(true);
   });
 });
 
