@@ -235,3 +235,29 @@ describe("Merge Persist Option", () => {
     logSpy.mockRestore();
   });
 });
+
+describe("Filter Data Option", () => {
+  test("should filter ontology data with valid key and value", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--filter-data", "info", "Sample data entry"]);
+    const ontology = mainModule.crawlDataSources();
+    const filteredData = ontology["owl:ontology"].data.filter(entry => entry.info === "Sample data entry");
+    const expectedOntology = { "owl:ontology": { ...ontology["owl:ontology"], data: filteredData } };
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify(expectedOntology));
+    logSpy.mockRestore();
+  });
+
+  test("should output error when filter key parameter is missing", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--filter-data"]);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Missing filter key parameter for --filter-data" }));
+    logSpy.mockRestore();
+  });
+
+  test("should output error when filter value parameter is missing", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--filter-data", "info"]);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Missing filter value parameter for --filter-data" }));
+    logSpy.mockRestore();
+  });
+});
