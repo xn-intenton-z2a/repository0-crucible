@@ -4,6 +4,8 @@ import { main, crawlDataSources } from "@src/lib/main.js";
 import fs from "fs";
 import { get } from "http";
 
+// Existing tests...
+
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
@@ -470,6 +472,18 @@ describe("Export CSV Option", () => {
     // For the simulated ontology the keys are id and info sorted alphabetically
     expect(lines[0]).toBe("id,info");
     expect(lines[1]).toBe("\"1\",\"Sample data entry\"");
+    logSpy.mockRestore();
+  });
+});
+
+describe("Export YAML Option", () => {
+  test("should output YAML representation of ontology", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--export-yaml"]);
+    const output = logSpy.mock.calls[0][0];
+    // Check that output contains YAML keys
+    expect(output).toContain("source: public");
+    expect(output).toContain("description: Simulated crawling of public data sources");
     logSpy.mockRestore();
   });
 });

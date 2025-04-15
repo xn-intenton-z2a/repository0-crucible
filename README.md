@@ -246,7 +246,7 @@ When executed with the --help option, the tool will output a JSON with usage ins
   ```
 
 - **Export Ontology as CSV:**
-  The new `--export-csv` option exports the generated ontology in CSV format. It outputs the ontology's data with a header row containing all unique keys (sorted alphabetically) from the data entries, followed by rows for each entry. For example:
+  The `--export-csv` option exports the generated ontology in CSV format. It outputs the ontology's data with a header row containing all unique keys (sorted alphabetically) from the data entries, followed by rows for each entry. For example:
   ```bash
   node src/lib/main.js --export-csv
   ```
@@ -254,6 +254,12 @@ When executed with the --help option, the tool will output a JSON with usage ins
   ```csv
   id,info
   "1","Sample data entry"
+  ```
+
+- **Export Ontology as YAML:**
+  The new `--export-yaml` option exports the generated ontology in YAML format. It uses the js-yaml library to convert the ontology JSON into a well-formatted YAML string. For example:
+  ```bash
+  node src/lib/main.js --export-yaml
   ```
 
 ## Incremental Changes Plan
