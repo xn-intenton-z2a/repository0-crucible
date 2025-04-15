@@ -217,6 +217,57 @@ describe("Merge Persist Option", () => {
   });
 });
 
+describe("Build Detailed Option", () => {
+  test("should output detailed build JSON with keys for each build step", () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (msg) => { output += msg; };
+
+    main(["--build-detailed"]);
+
+    console.log = originalLog;
+
+    const parsed = JSON.parse(output);
+
+    // Validate crawlData
+    expect(parsed).toHaveProperty("crawlData");
+    expect(parsed.crawlData).toHaveProperty("source", "publicData");
+    expect(parsed.crawlData).toHaveProperty("data");
+    expect(Array.isArray(parsed.crawlData.data)).toBe(true);
+    expect(parsed.crawlData).toHaveProperty("fetchedAt");
+    const iso1 = new Date(parsed.crawlData.fetchedAt).toISOString();
+    expect(iso1).toEqual(parsed.crawlData.fetchedAt);
+
+    // Validate refreshData
+    expect(parsed).toHaveProperty("refreshData");
+    expect(parsed.refreshData).toHaveProperty("message", "Data refreshed");
+    expect(parsed.refreshData).toHaveProperty("refreshedAt");
+    const iso2 = new Date(parsed.refreshData.refreshedAt).toISOString();
+    expect(iso2).toEqual(parsed.refreshData.refreshedAt);
+
+    // Validate intermediateBuild
+    expect(parsed).toHaveProperty("intermediateBuild");
+    expect(parsed.intermediateBuild).toHaveProperty("intermediateBuild", "Intermediate build completed");
+    expect(parsed.intermediateBuild).toHaveProperty("builtAt");
+    const iso3 = new Date(parsed.intermediateBuild.builtAt).toISOString();
+    expect(iso3).toEqual(parsed.intermediateBuild.builtAt);
+
+    // Validate enhancedBuild
+    expect(parsed).toHaveProperty("enhancedBuild");
+    expect(parsed.enhancedBuild).toHaveProperty("enhancedBuild", "Enhanced build completed");
+    expect(parsed.enhancedBuild).toHaveProperty("builtAt");
+    const iso4 = new Date(parsed.enhancedBuild.builtAt).toISOString();
+    expect(iso4).toEqual(parsed.enhancedBuild.builtAt);
+
+    // Validate mergePersist
+    expect(parsed).toHaveProperty("mergePersist");
+    expect(parsed.mergePersist).toHaveProperty("mergePersist", "Data merged and persisted successfully");
+    expect(parsed.mergePersist).toHaveProperty("mergedAt");
+    const iso5 = new Date(parsed.mergePersist.mergedAt).toISOString();
+    expect(iso5).toEqual(parsed.mergePersist.mergedAt);
+  });
+});
+
 describe("Unknown Option", () => {
   test("should output error message and usage when provided with an unknown option", () => {
     let output = "";

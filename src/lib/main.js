@@ -19,7 +19,8 @@ const helpMessage = [
   "  --build-enhanced      Build with enhanced features (simulated operation)",
   "  --merge-persist       Merge and persist the data (simulated operation)",
   "  --serve               Start the HTTP server",
-  "  --export-ontology     Export the capital cities OWL ontology to a file"
+  "  --export-ontology     Export the capital cities OWL ontology to a file",
+  "  --build-detailed      Simulate a comprehensive build pipeline with multiple steps"
 ].join("\n");
 
 export function main(args = []) {
@@ -34,7 +35,8 @@ export function main(args = []) {
     "--build-enhanced",
     "--merge-persist",
     "--serve",
-    "--export-ontology"
+    "--export-ontology",
+    "--build-detailed"
   ]);
 
   // Check for unknown options
@@ -78,7 +80,8 @@ export function main(args = []) {
         "--crawl-data",
         "--help",
         "--help-json",
-        "--export-ontology"
+        "--export-ontology",
+        "--build-detailed"
       ]
     };
     console.log(JSON.stringify(diagnostics, null, 2));
@@ -157,6 +160,39 @@ export function main(args = []) {
       mergedAt: new Date().toISOString()
     };
     console.log(JSON.stringify(mergePersistData, null, 2));
+    return;
+  }
+
+  if (args.includes("--build-detailed")) {
+    const crawlData = {
+      source: "publicData",
+      data: [ { id: 1, description: "Sample data" } ],
+      fetchedAt: new Date().toISOString()
+    };
+    const refreshData = {
+      message: "Data refreshed",
+      refreshedAt: new Date().toISOString()
+    };
+    const intermediateBuild = {
+      intermediateBuild: "Intermediate build completed",
+      builtAt: new Date().toISOString()
+    };
+    const enhancedBuild = {
+      enhancedBuild: "Enhanced build completed",
+      builtAt: new Date().toISOString()
+    };
+    const mergePersistData = {
+      mergePersist: "Data merged and persisted successfully",
+      mergedAt: new Date().toISOString()
+    };
+    const detailedBuild = {
+      crawlData,
+      refreshData,
+      intermediateBuild,
+      enhancedBuild,
+      mergePersist: mergePersistData
+    };
+    console.log(JSON.stringify(detailedBuild, null, 2));
     return;
   }
 

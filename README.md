@@ -57,7 +57,8 @@ Example output:
     "--refresh",
     "--merge-persist",
     "--crawl-data",
-    "--export-ontology"
+    "--export-ontology",
+    "--build-detailed"
   ]
 }
 ```
@@ -98,8 +99,6 @@ To simulate an enhanced build process, run:
 node src/lib/main.js --build-enhanced
 ```
 
-This command simulates an enhanced build process by returning a JSON object with build details.
-
 To simulate merging and persisting OWL ontology data, run:
 
 ```bash
@@ -119,6 +118,20 @@ node src/lib/main.js --export-ontology
 ```
 
 This command writes the ontology JSON to a file named `exported_ontology.json` and outputs a confirmation message.
+
+To simulate a comprehensive build pipeline that sequentially executes multiple steps, run:
+
+```bash
+node src/lib/main.js --build-detailed
+```
+
+This command outputs a single consolidated JSON object containing the following keys:
+
+- **crawlData**: Simulated data crawl result with a `fetchedAt` timestamp.
+- **refreshData**: Simulated data refresh result with a `refreshedAt` timestamp.
+- **intermediateBuild**: Simulated intermediate build result with a `builtAt` timestamp.
+- **enhancedBuild**: Simulated enhanced build result with a `builtAt` timestamp.
+- **mergePersist**: Simulated merge and persist operation result with a `mergedAt` timestamp.
 
 Once the server is running, send an HTTP GET request to:
 
