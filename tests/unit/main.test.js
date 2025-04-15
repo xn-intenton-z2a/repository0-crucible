@@ -54,3 +54,14 @@ describe("Main Diagnostics", () => {
     spy.mockRestore();
   });
 });
+
+describe("Main Merge Persist", () => {
+  test("should display merge persist message when '--merge-persist' flag is provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--merge-persist"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    expect(output).toContain("Merging and persisting changes...");
+    spy.mockRestore();
+  });
+});
