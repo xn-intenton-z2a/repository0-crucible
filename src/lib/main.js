@@ -22,7 +22,7 @@ const helpMessage = [
   "  --serve               Start the HTTP server",
   "  --export-ontology     Export the capital cities OWL ontology to a file",
   "  --build-detailed      Simulate a comprehensive build pipeline with multiple steps",
-  "  --validate-ontology   Validate exported OWL ontology JSON file"
+  "  --validate-ontology   Validate exported OWL ontology JSON file",
 ].join("\n");
 
 const extendedHelpMessage = [
@@ -68,7 +68,7 @@ const extendedHelpMessage = [
   "         Example: node src/lib/main.js --validate-ontology",
   "",
   "--serve: Starts the HTTP server to serve the ontology.",
-  "         Example: node src/lib/main.js --serve"
+  "         Example: node src/lib/main.js --serve",
 ].join("\n");
 
 export function main(args = []) {
@@ -86,14 +86,18 @@ export function main(args = []) {
     "--serve",
     "--export-ontology",
     "--build-detailed",
-    "--validate-ontology"
+    "--validate-ontology",
   ]);
 
   // Check for unknown options
-  const unknownArgs = args.filter((arg) => arg.startsWith("--") && !validOptions.has(arg));
+  const unknownArgs = args.filter(
+    (arg) => arg.startsWith("--") && !validOptions.has(arg),
+  );
   if (unknownArgs.length > 0) {
     const plural = unknownArgs.length > 1 ? "s" : "";
-    console.error(`Error: Unknown option${plural}: ${unknownArgs.join(", ")}`);
+    console.error(
+      `Error: Unknown option${plural}: ${unknownArgs.join(", ")}`,
+    );
     // Only print the first line of the help message to match test expectations
     console.error(helpMessage.split("\n")[0]);
     return;
@@ -120,7 +124,7 @@ export function main(args = []) {
       "--crawl-data",
       "--export-ontology",
       "--build-detailed",
-      "--validate-ontology"
+      "--validate-ontology",
     ];
     console.log(JSON.stringify({ usage, options }, null, 2));
     return;
@@ -148,7 +152,7 @@ export function main(args = []) {
         "--help-json",
         "--export-ontology",
         "--build-detailed",
-        "--validate-ontology"
+        "--validate-ontology",
       ],
     };
     console.log(JSON.stringify(diagnostics, null, 2));
@@ -179,7 +183,10 @@ export function main(args = []) {
       ],
       generatedAt: new Date().toISOString(),
     };
-    fs.writeFileSync("exported_ontology.json", JSON.stringify(owlOntology, null, 2));
+    fs.writeFileSync(
+      "exported_ontology.json",
+      JSON.stringify(owlOntology, null, 2),
+    );
     console.log("Ontology exported to exported_ontology.json");
     return;
   }
@@ -275,12 +282,17 @@ export function main(args = []) {
       const ontologySchema = z.object({
         owl: z.literal("capitalCities"),
         data: z.array(z.object({ country: z.string(), capital: z.string() })),
-        generatedAt: z.string().refine((val) => !isNaN(Date.parse(val)), { message: "Invalid ISO date format" }),
+        generatedAt: z.string().refine((val) => !isNaN(Date.parse(val)), {
+          message: "Invalid ISO date format",
+        }),
       });
       ontologySchema.parse(data);
       console.log("Ontology is valid");
     } catch (e) {
-      console.error("Validation failed:", e.errors ? e.errors : e.message);
+      console.error(
+        "Validation failed:",
+        e.errors ? e.errors : e.message,
+      );
     }
     return;
   }
