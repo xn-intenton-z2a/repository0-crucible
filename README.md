@@ -41,12 +41,18 @@ When running without the `--help` flag, the tool prints the arguments it receive
 node src/lib/main.js [options]
 ```
 
-### Example Commands
+### CLI Options
 
 - **Display Help:**
   ```bash
   node src/lib/main.js --help
   ```
+
+- **Display Version:**
+  ```bash
+  node src/lib/main.js --version
+  ```
+  This flag displays the current application version dynamically read from package.json.
 
 - **Default Demo Output:**
   ```bash
