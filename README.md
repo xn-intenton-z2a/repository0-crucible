@@ -35,6 +35,32 @@ To run the CLI tool and see help instructions:
 node src/lib/main.js --help
 ```
 
+To get the help message in JSON format for programmatic use:
+
+```bash
+node src/lib/main.js --help-json
+```
+
+Example output:
+
+```json
+{
+  "usage": "Usage: node src/lib/main.js [options]",
+  "options": [
+    "--help",
+    "--help-json",
+    "--diagnostics",
+    "--capital-cities",
+    "--serve",
+    "--build-intermediate",
+    "--build-enhanced",
+    "--refresh",
+    "--merge-persist",
+    "--crawl-data"
+  ]
+}
+```
+
 To output an example OWL ontology in JSON format representing capital cities with a generation timestamp, run:
 
 ```bash
@@ -70,8 +96,6 @@ To simulate merging and persisting OWL ontology data, run:
 ```bash
 node src/lib/main.js --merge-persist
 ```
-
-This command returns a JSON object with a merge message and a timestamp indicating when the merge occurred.
 
 To start a simple HTTP server that serves the OWL ontology for capital cities, run:
 

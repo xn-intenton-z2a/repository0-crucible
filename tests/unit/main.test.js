@@ -212,3 +212,22 @@ describe("Unknown Option", () => {
     expect(output).toMatch(/Usage: node src\/lib\/main.js \[options\]/);
   });
 });
+
+
+describe("Help JSON Option", () => {
+  test("should output JSON formatted help message with 'usage' and 'options' keys", () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (msg) => { output += msg; };
+
+    main(["--help-json"]);
+
+    console.log = originalLog;
+
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("usage", "Usage: node src/lib/main.js [options]");
+    expect(parsed).toHaveProperty("options");
+    expect(Array.isArray(parsed.options)).toBe(true);
+    expect(parsed.options.every(option => option.startsWith("--"))).toBe(true);
+  });
+});
