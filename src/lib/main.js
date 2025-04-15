@@ -14,7 +14,7 @@ export function main(args = []) {
       "  --diagnostics       Output diagnostics information",
       "  --capital-cities    Output capital cities OWL ontology JSON",
       "  --serve             Start the HTTP server to serve the OWL ontology",
-      "  --build-intermediate  Build with intermediate steps (if implemented)",
+      "  --build-intermediate  Build with intermediate steps (simulated operation)",
       "  --build-enhanced      Build with enhanced features (if implemented)",
       "  --refresh             Refresh the data (simulated operation)",
       "  --merge-persist       Merge and persist the data (if implemented)",
@@ -73,6 +73,15 @@ export function main(args = []) {
       refreshedAt: new Date().toISOString()
     };
     console.log(JSON.stringify(refreshData, null, 2));
+    return;
+  }
+
+  if (args.includes("--build-intermediate")) {
+    const intermediateBuild = {
+      intermediateBuild: "Intermediate build completed",
+      builtAt: new Date().toISOString()
+    };
+    console.log(JSON.stringify(intermediateBuild, null, 2));
     return;
   }
 

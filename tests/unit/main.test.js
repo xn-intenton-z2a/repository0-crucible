@@ -66,7 +66,8 @@ describe("Diagnostics Option", () => {
       "--diagnostics",
       "--serve",
       "--crawl-data",
-      "--refresh"
+      "--refresh",
+      "--build-intermediate"
     ]));
   });
 });
@@ -157,5 +158,24 @@ describe("Refresh Option", () => {
     expect(parsed).toHaveProperty("refreshedAt");
     const iso = new Date(parsed.refreshedAt).toISOString();
     expect(iso).toEqual(parsed.refreshedAt);
+  });
+});
+
+
+describe("Build Intermediate Option", () => {
+  test("should output intermediate build JSON with builtAt timestamp", () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (msg) => { output += msg; };
+
+    main(["--build-intermediate"]);
+
+    console.log = originalLog;
+
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("intermediateBuild", "Intermediate build completed");
+    expect(parsed).toHaveProperty("builtAt");
+    const iso = new Date(parsed.builtAt).toISOString();
+    expect(iso).toEqual(parsed.builtAt);
   });
 });

@@ -59,7 +59,13 @@ To refresh the data (simulate a data refresh operation), run:
 node src/lib/main.js --refresh
 ```
 
-The expected output is a JSON object that includes a message confirming the refresh and a refreshedAt property with the current ISO timestamp.
+To simulate an intermediate build process, run:
+
+```bash
+node src/lib/main.js --build-intermediate
+```
+
+The above command will output a JSON object containing an "intermediateBuild" message along with a "builtAt" timestamp in ISO format.
 
 To start a simple HTTP server that serves the OWL ontology for capital cities, run:
 
@@ -103,6 +109,11 @@ to retrieve the capital cities ontology in JSON format.
 - **Refresh Data Simulation (outputs a refresh confirmation with refreshedAt timestamp):**
   ```bash
   node src/lib/main.js --refresh
+  ```
+
+- **Intermediate Build Simulation (outputs simulated intermediate build data):**
+  ```bash
+  node src/lib/main.js --build-intermediate
   ```
 
 - **Serve Capital Cities Server:**
