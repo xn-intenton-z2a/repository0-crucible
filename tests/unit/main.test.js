@@ -3,6 +3,7 @@ import * as mainModule from "@src/lib/main.js";
 import { main, crawlDataSources } from "@src/lib/main.js";
 import fs from "fs";
 
+
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
@@ -11,9 +12,9 @@ describe("Main Module Import", () => {
 
 
 describe("Main Output", () => {
-  test("should terminate without error", () => {
+  test("should terminate without error", async () => {
     process.argv = ["node", "src/lib/main.js"];
-    main();
+    await main();
   });
 });
 
@@ -331,5 +332,39 @@ describe("Validate Ontology Option", () => {
     expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: 'source' property must be a string." }));
     readFileSyncSpy.mockRestore();
     logSpy.mockRestore();
+  });
+});
+
+// New tests for the --live-crawl option
+
+describe("Live Crawl Option", () => {
+  test("should output live ontology", async () => {
+    const fakeEntry = { API: "Cat Facts", Description: "Daily cat facts", Link: "https://cat-fact.herokuapp.com" };
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({ entries: [fakeEntry] })
+    });
+    const logSpy = vi.spyOn(console, "log");
+    await main(["--live-crawl"]);
+    const output = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(output).toHaveProperty("owl:ontology");
+    expect(output["owl:ontology"]).toHaveProperty("source", "live");
+    expect(output["owl:ontology"]).toHaveProperty("description", "Live crawl from https://api.publicapis.org/entries");
+    expect(output["owl:ontology"]).toHaveProperty("data");
+    expect(Array.isArray(output["owl:ontology"].data)).toBe(true);
+    expect(output["owl:ontology"].data[0]).toEqual(fakeEntry);
+    logSpy.mockRestore();
+    global.fetch.mockRestore();
+  });
+
+  test("should output error if fetch fails", async () => {
+    const errorMessage = "Network Error";
+    global.fetch = vi.fn().mockRejectedValue(new Error(errorMessage));
+    const logSpy = vi.spyOn(console, "log");
+    await main(["--live-crawl"]);
+    const output = JSON.parse(logSpy.mock.calls[0][0]);
+    expect(output).toHaveProperty("error", "Error fetching live data: " + errorMessage);
+    logSpy.mockRestore();
+    global.fetch.mockRestore();
   });
 });

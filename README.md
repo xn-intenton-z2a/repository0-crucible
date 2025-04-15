@@ -93,6 +93,22 @@ When executed with the --help option, the tool will output a JSON with usage ins
   }
   ```
 
+- **Live Crawl for Real-time Data:**
+  The new `--live-crawl` option retrieves live data from a public API (https://api.publicapis.org/entries) and outputs an OWL ontology as a JSON object. For example:
+  ```bash
+  node src/lib/main.js --live-crawl
+  ```
+  This command will fetch live data, extract a representative entry, and output a JSON similar to:
+  ```json
+  {
+    "owl:ontology": {
+      "source": "live",
+      "description": "Live crawl from https://api.publicapis.org/entries",
+      "data": [ { /* entry data */ } ]
+    }
+  }
+  ```
+
 - **Diagnostics Environment Information:**
   To output essential environment diagnostic information, run:
   ```bash
@@ -115,13 +131,11 @@ When executed with the --help option, the tool will output a JSON with usage ins
   ```bash
   node src/lib/main.js --save-ontology myOntology.json
   ```
-  This will write the ontology to `myOntology.json` and output a confirmation message.
 
   **Example with the default filename:**
   ```bash
   node src/lib/main.js --save-ontology
   ```
-  This will write the ontology to `ontology.json` by default.
 
 - **Merge Ontologies:**
   To merge two ontology JSON files and save the combined output, use the `--merge-persist` option. You must provide two input file paths and an optional output file name (defaulting to `merged-ontology.json`). The command merges the 'data' arrays from each ontology and concatenates metadata fields.
@@ -144,7 +158,7 @@ When executed with the --help option, the tool will output a JSON with usage ins
   If the key or value parameter is missing, an error message will be output in JSON format.
 
 - **Validate Ontology JSON Structure:**
-  The new `--validate-ontology` option allows you to validate the structure of an ontology JSON file. The tool checks that the file contains an `owl:ontology` object with the properties `source` (string), `description` (string), and `data` (array).
+  The `--validate-ontology` option allows you to validate the structure of an ontology JSON file. The tool checks that the file contains an `owl:ontology` object with the properties `source` (string), `description` (string), and `data` (array).
   
   **Example:**
   ```bash
