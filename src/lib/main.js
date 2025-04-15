@@ -4,6 +4,10 @@
 import { fileURLToPath } from "url";
 
 export function main(args = process.argv.slice(2)) {
+  if (args.includes("--query-owl")) {
+    console.log(JSON.stringify({ result: "Sample OWL query output" }));
+    return;
+  }
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 
