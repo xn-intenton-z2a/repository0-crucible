@@ -54,6 +54,12 @@ node src/lib/main.js [options]
   ```
   This flag displays the current application version dynamically read from package.json.
 
+- **Run Diagnostics:**
+  ```bash
+  node src/lib/main.js --diagnostics
+  ```
+  This flag displays diagnostic information including Node version, executable path, current working directory, and environment variables.
+
 - **Default Demo Output:**
   ```bash
   npm run start

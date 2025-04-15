@@ -40,3 +40,17 @@ describe("Main Version", () => {
     spy.mockRestore();
   });
 });
+
+describe("Main Diagnostics", () => {
+  test("should display diagnostics information when '--diagnostics' flag is provided", async () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    await main(["--diagnostics"]);
+    // Check that at least one call outputs the diagnostics header
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining("Diagnostics:"));
+    // Check that one of the calls includes Node Version
+    const calls = spy.mock.calls.map(call => call[0]);
+    const hasNodeVersion = calls.some(text => String(text).includes("Node Version:"));
+    expect(hasNodeVersion).toBe(true);
+    spy.mockRestore();
+  });
+});
