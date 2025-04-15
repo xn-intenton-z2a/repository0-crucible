@@ -47,6 +47,18 @@ To output diagnostics information about the current environment including Node.j
 node src/lib/main.js --diagnostics
 ```
 
+To start a simple HTTP server that serves the OWL ontology for capital cities, run:
+
+```bash
+node src/lib/main.js --serve
+```
+
+Once the server is running, send an HTTP GET request to:
+
+http://localhost:3000/capital-cities
+
+to retrieve the capital cities ontology in JSON format.
+
 ### Example Commands
 
 - **Default Demo Output:**
@@ -68,6 +80,12 @@ node src/lib/main.js --diagnostics
   ```bash
   node src/lib/main.js --diagnostics
   ```
+
+- **Serve Capital Cities Server:**
+  ```bash
+  node src/lib/main.js --serve
+  ```
+  This starts a simple HTTP server on port 3000. Send a GET request to http://localhost:3000/capital-cities to receive the OWL ontology JSON for capital cities.
 
 ## Incremental Changes Plan
 
