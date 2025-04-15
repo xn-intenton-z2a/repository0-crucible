@@ -107,3 +107,12 @@ describe("Save Ontology Option", () => {
     logSpy.mockRestore();
   });
 });
+
+describe("Data Sources Option", () => {
+  test("should output a hard-coded list of public data source URLs", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--data-sources"]);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ dataSources: ["https://example.com/api1", "https://example.com/api2"] }));
+    logSpy.mockRestore();
+  });
+});
