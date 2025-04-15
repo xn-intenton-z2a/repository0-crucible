@@ -100,6 +100,21 @@ node src/lib/main.js --help
   ```
   where the values reflect your current Node.js environment.
 
+- **Save Ontology to File:**
+  To save the generated OWL ontology to a file, use the `--save-ontology` option. You can provide a filename or let it default to `ontology.json`.
+  
+  **Example with a specified filename:**
+  ```bash
+  node src/lib/main.js --save-ontology myOntology.json
+  ```
+  This will write the ontology to `myOntology.json` and output a confirmation message.
+
+  **Example with the default filename:**
+  ```bash
+  node src/lib/main.js --save-ontology
+  ```
+  This will write the ontology to `ontology.json` by default.
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.

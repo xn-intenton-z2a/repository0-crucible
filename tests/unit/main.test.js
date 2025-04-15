@@ -1,6 +1,8 @@
 import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main } from "@src/lib/main.js";
+import fs from "fs";
+
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -78,6 +80,30 @@ describe("Diagnostics Option", () => {
     expect(parsedOutput).toHaveProperty("nodeVersion", process.version);
     expect(parsedOutput).toHaveProperty("platform", process.platform);
     expect(parsedOutput).toHaveProperty("currentWorkingDirectory", process.cwd());
+    logSpy.mockRestore();
+  });
+});
+
+describe("Save Ontology Option", () => {
+  test("should save ontology to specified file and output confirmation message", () => {
+    const writeFileSyncSpy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
+    const logSpy = vi.spyOn(console, "log");
+    main(["--save-ontology", "myOntology.json"]);
+    const ontology = mainModule.crawlDataSources();
+    expect(writeFileSyncSpy).toHaveBeenCalledWith("myOntology.json", JSON.stringify(ontology, null, 2));
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ result: "Ontology saved to myOntology.json" }));
+    writeFileSyncSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+
+  test("should default to 'ontology.json' when no filename is provided", () => {
+    const writeFileSyncSpy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
+    const logSpy = vi.spyOn(console, "log");
+    main(["--save-ontology"]);
+    const ontology = mainModule.crawlDataSources();
+    expect(writeFileSyncSpy).toHaveBeenCalledWith("ontology.json", JSON.stringify(ontology, null, 2));
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ result: "Ontology saved to ontology.json" }));
+    writeFileSyncSpy.mockRestore();
     logSpy.mockRestore();
   });
 });

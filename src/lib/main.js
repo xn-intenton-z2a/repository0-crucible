@@ -2,6 +2,7 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 // Simulate crawling public data sources and transforming them into an OWL ontology represented as a JSON object
 export function crawlDataSources() {
@@ -26,6 +27,16 @@ export function main(args = process.argv.slice(2)) {
       currentWorkingDirectory: process.cwd()
     };
     console.log(JSON.stringify(diagnostics));
+    return;
+  }
+
+  // Handle '--save-ontology' option to persist the generated ontology to a file
+  const saveOntologyIndex = args.indexOf("--save-ontology");
+  if (saveOntologyIndex !== -1) {
+    const targetFilename = (args[saveOntologyIndex + 1] && !args[saveOntologyIndex + 1].startsWith("--")) ? args[saveOntologyIndex + 1] : "ontology.json";
+    const ontology = crawlDataSources();
+    fs.writeFileSync(targetFilename, JSON.stringify(ontology, null, 2));
+    console.log(JSON.stringify({ result: "Ontology saved to " + targetFilename }));
     return;
   }
 
