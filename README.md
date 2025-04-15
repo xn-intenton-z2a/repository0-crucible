@@ -179,14 +179,14 @@ When executed with the --help option, the tool will output a JSON with usage ins
   ```
 
 - **Serve Ontology via HTTP:**
-  The new `--serve` option starts an HTTP server on port 3000. When you access the `/ontology` endpoint, the server responds with the OWL ontology in JSON format. For example:
+  The `--serve` option starts an HTTP server on port 3000. When you access the `/ontology` endpoint, the server responds with the OWL ontology in JSON format. For example:
   ```bash
   node src/lib/main.js --serve
   ```
   Then, visiting [http://localhost:3000/ontology](http://localhost:3000/ontology) in your browser or via an HTTP client will return the ontology data.
 
 - **Capital Cities Option:**
-  The new `--capital-cities` option outputs a sample OWL ontology representing capital cities. When invoked, it returns a JSON structured as follows:
+  The `--capital-cities` option outputs a sample OWL ontology representing capital cities. When invoked, it returns a JSON structured as follows:
   ```json
   {
     "capitalCities": [
@@ -200,6 +200,15 @@ When executed with the --help option, the tool will output a JSON with usage ins
   ```bash
   node src/lib/main.js --capital-cities
   ```
+
+- **Refresh Ontology Data:**
+  The new `--refresh` option re-crawls the public data sources, attaches a current ISO timestamp to the generated ontology, and outputs the refreshed JSON.
+  
+  **Example:**
+  ```bash
+  node src/lib/main.js --refresh
+  ```
+  This outputs the refreshed ontology JSON including a `timestamp` property.
 
 ## Incremental Changes Plan
 
