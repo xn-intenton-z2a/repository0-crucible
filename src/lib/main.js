@@ -4,22 +4,45 @@
 import { fileURLToPath } from "url";
 import http from "http";
 
+const helpMessage = [
+  "Usage: node src/lib/main.js [options]",
+  "",
+  "Options:",
+  "  --help              Show help message",
+  "  --diagnostics       Output diagnostics information",
+  "  --capital-cities    Output capital cities OWL ontology JSON",
+  "  --serve             Start the HTTP server to serve the OWL ontology",
+  "  --build-intermediate  Build with intermediate steps (simulated operation)",
+  "  --build-enhanced      Build with enhanced features (if implemented)",
+  "  --refresh             Refresh the data (simulated operation)",
+  "  --merge-persist       Merge and persist the data (if implemented)",
+  "  --crawl-data          Simulate crawling public data sources and output JSON"
+].join("\n");
+
 export function main(args = []) {
+  const validOptions = new Set([
+    "--help",
+    "--diagnostics",
+    "--capital-cities",
+    "--crawl-data",
+    "--refresh",
+    "--build-intermediate",
+    "--build-enhanced",
+    "--merge-persist",
+    "--serve"
+  ]);
+
+  // Check for unknown options
+  const unknownArgs = args.filter(arg => arg.startsWith("--") && !validOptions.has(arg));
+  if (unknownArgs.length > 0) {
+    const plural = unknownArgs.length > 1 ? "s" : "";
+    console.error(`Error: Unknown option${plural}: ${unknownArgs.join(", ")}`);
+    // Only print the first line of the help message to match test expectations
+    console.error(helpMessage.split("\n")[0]);
+    return;
+  }
+
   if (args.includes("--help")) {
-    const helpMessage = [
-      "Usage: node src/lib/main.js [options]",
-      "",
-      "Options:",
-      "  --help              Show help message",
-      "  --diagnostics       Output diagnostics information",
-      "  --capital-cities    Output capital cities OWL ontology JSON",
-      "  --serve             Start the HTTP server to serve the OWL ontology",
-      "  --build-intermediate  Build with intermediate steps (simulated operation)",
-      "  --build-enhanced      Build with enhanced features (if implemented)",
-      "  --refresh             Refresh the data (simulated operation)",
-      "  --merge-persist       Merge and persist the data (if implemented)",
-      "  --crawl-data          Simulate crawling public data sources and output JSON"
-    ].join("\n");
     console.log(helpMessage);
     return;
   }
@@ -91,6 +114,8 @@ export function main(args = []) {
     return;
   }
 
+  // For recognized options like --build-enhanced and --merge-persist that are not implemented,
+  // or when no options are provided, simply log the arguments provided.
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 
