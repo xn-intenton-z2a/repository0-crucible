@@ -17,7 +17,7 @@ export function crawlDataSources() {
   };
 }
 
-export function main(args = process.argv.slice(2)) {
+export async function main(args = process.argv.slice(2)) {
   // Handle '--help' option to output usage instructions
   const helpIndex = args.indexOf("--help");
   if (helpIndex !== -1) {
@@ -33,7 +33,8 @@ export function main(args = process.argv.slice(2)) {
         "--save-ontology": "Save the generated ontology to a file (optionally specify filename)",
         "--merge-persist": "Merge two ontology files and save the merged result to a file",
         "--filter-data": "Filter ontology data based on key-value pairs",
-        "--validate-ontology": "Validate the structure of an ontology JSON file"
+        "--validate-ontology": "Validate the structure of an ontology JSON file",
+        "--live-crawl": "Retrieve live data from https://api.publicapis.org/entries and output an OWL ontology in JSON format"
       }
     };
     console.log(JSON.stringify(helpMessage, null, 2));
@@ -49,6 +50,30 @@ export function main(args = process.argv.slice(2)) {
       currentWorkingDirectory: process.cwd()
     };
     console.log(JSON.stringify(diagnostics));
+    return;
+  }
+
+  // Handle '--live-crawl' option: fetch live data from a public API
+  const liveCrawlIndex = args.indexOf("--live-crawl");
+  if (liveCrawlIndex !== -1) {
+    try {
+      const response = await fetch("https://api.publicapis.org/entries");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const jsonResponse = await response.json();
+      const entry = (Array.isArray(jsonResponse.entries) && jsonResponse.entries.length) ? jsonResponse.entries[0] : {};
+      const liveOntology = {
+        "owl:ontology": {
+          source: "live",
+          description: "Live crawl from https://api.publicapis.org/entries",
+          data: [entry]
+        }
+      };
+      console.log(JSON.stringify(liveOntology, null, 2));
+    } catch (err) {
+      console.log(JSON.stringify({ error: "Error fetching live data: " + err.message }));
+    }
     return;
   }
 
@@ -99,7 +124,6 @@ export function main(args = process.argv.slice(2)) {
   // Handle '--query-owl' option
   const queryIndex = args.indexOf("--query-owl");
   if (queryIndex !== -1) {
-    // Check if there is an additional argument after '--query-owl' that does not start with '--'
     const queryParam = args[queryIndex + 1];
     if (queryParam && !queryParam.startsWith("--")) {
       console.log(JSON.stringify({ result: `OWL query output for query: ${queryParam}` }));
@@ -214,5 +238,7 @@ export function main(args = process.argv.slice(2)) {
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  main(args);
+  (async () => {
+    await main(args);
+  })();
 }
