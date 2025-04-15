@@ -2,6 +2,7 @@ import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main } from "@src/lib/main.js";
 
+
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
@@ -53,6 +54,18 @@ describe("Transform Option", () => {
     const logSpy = vi.spyOn(console, "log");
     main(["--transform"]);
     expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ result: "Default OWL transformation output" }));
+    logSpy.mockRestore();
+  });
+});
+
+describe("Crawl Option", () => {
+  test("should output simulated OWL ontology from crawl command", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--crawl"]);
+    const output = logSpy.mock.calls[0][0];
+    const parsedOutput = JSON.parse(output);
+    expect(parsedOutput).toHaveProperty("owl:ontology");
+    expect(parsedOutput["owl:ontology"]).toHaveProperty("source", "public");
     logSpy.mockRestore();
   });
 });

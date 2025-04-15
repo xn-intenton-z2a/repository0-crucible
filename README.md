@@ -67,6 +67,24 @@ node src/lib/main.js --help
   { "result": "Default OWL transformation output" }
   ```
 
+- **Crawl Public Data Sources:**
+  The new `--crawl` option simulates crawling public data sources to generate an OWL ontology in JSON format. For example:
+  ```bash
+  node src/lib/main.js --crawl
+  ```
+  This will output a JSON similar to:
+  ```json
+  {
+    "owl:ontology": {
+      "source": "public",
+      "description": "Simulated crawling of public data sources",
+      "data": [
+        { "id": 1, "info": "Sample data entry" }
+      ]
+    }
+  }
+  ```
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.
