@@ -396,7 +396,6 @@ describe("Ontology Info Option", () => {
   });
 });
 
-// New test for the --serve option
 
 describe("Serve Option", () => {
   test("should start HTTP server and serve ontology", async () => {
