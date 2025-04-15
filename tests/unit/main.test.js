@@ -2,7 +2,6 @@ import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main } from "@src/lib/main.js";
 
-
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
@@ -66,6 +65,19 @@ describe("Crawl Option", () => {
     const parsedOutput = JSON.parse(output);
     expect(parsedOutput).toHaveProperty("owl:ontology");
     expect(parsedOutput["owl:ontology"]).toHaveProperty("source", "public");
+    logSpy.mockRestore();
+  });
+});
+
+describe("Diagnostics Option", () => {
+  test("should output environment diagnostic info", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--diagnostics"]);
+    const output = logSpy.mock.calls[0][0];
+    const parsedOutput = JSON.parse(output);
+    expect(parsedOutput).toHaveProperty("nodeVersion", process.version);
+    expect(parsedOutput).toHaveProperty("platform", process.platform);
+    expect(parsedOutput).toHaveProperty("currentWorkingDirectory", process.cwd());
     logSpy.mockRestore();
   });
 });
