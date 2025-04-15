@@ -1,6 +1,6 @@
 import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main } from "@src/lib/main.js";
+import { main, memoryLog } from "@src/lib/main.js";
 
 
 describe("Main Module Import", () => {
@@ -156,6 +156,29 @@ describe("Main Echo", () => {
     const parsed = JSON.parse(output);
     expect(parsed).toHaveProperty("echo");
     expect(parsed.echo).toEqual(["arg1", "arg2"]);
+    spy.mockRestore();
+  });
+});
+
+
+describe("Main Memory Logging", () => {
+  test("should display memory log when '--memory' flag is provided", () => {
+    // Clear the memory log before running the test
+    memoryLog.length = 0;
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    // First invocation to record a log entry, then call --memory
+    main(["dummy"]);
+    main(["--memory"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[spy.mock.calls.length - 1][0];
+    expect(output).toContain("Memory Log:");
+    // Check that the log contains at least one entry with a timestamp and args
+    const jsonPart = output.replace('Memory Log:', '').trim();
+    const logOutput = JSON.parse(jsonPart);
+    expect(Array.isArray(logOutput)).toBe(true);
+    expect(logOutput.length).toBeGreaterThanOrEqual(1);
+    expect(logOutput[0]).toHaveProperty('timestamp');
+    expect(logOutput[0]).toHaveProperty('args');
     spy.mockRestore();
   });
 });
