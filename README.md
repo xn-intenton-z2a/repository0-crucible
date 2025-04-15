@@ -92,6 +92,14 @@ To simulate an intermediate build process, run:
 node src/lib/main.js --build-intermediate
 ```
 
+To simulate an enhanced build process, run:
+
+```bash
+node src/lib/main.js --build-enhanced
+```
+
+This command simulates an enhanced build process by returning a JSON object with build details.
+
 To simulate merging and persisting OWL ontology data, run:
 
 ```bash

@@ -16,7 +16,7 @@ const helpMessage = [
   "  --crawl-data          Simulate crawling public data sources and output JSON",
   "  --refresh             Refresh the data (simulated operation)",
   "  --build-intermediate  Build with intermediate steps (simulated operation)",
-  "  --build-enhanced      Build with enhanced features (if implemented)",
+  "  --build-enhanced      Build with enhanced features (simulated operation)",
   "  --merge-persist       Merge and persist the data (simulated operation)",
   "  --serve               Start the HTTP server",
   "  --export-ontology     Export the capital cities OWL ontology to a file"
@@ -139,6 +139,15 @@ export function main(args = []) {
       builtAt: new Date().toISOString()
     };
     console.log(JSON.stringify(intermediateBuild, null, 2));
+    return;
+  }
+
+  if (args.includes("--build-enhanced")) {
+    const enhancedBuild = {
+      enhancedBuild: "Enhanced build completed",
+      builtAt: new Date().toISOString()
+    };
+    console.log(JSON.stringify(enhancedBuild, null, 2));
     return;
   }
 

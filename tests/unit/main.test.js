@@ -181,6 +181,24 @@ describe("Build Intermediate Option", () => {
   });
 });
 
+describe("Build Enhanced Option", () => {
+  test("should output enhanced build JSON with builtAt timestamp", () => {
+    let output = "";
+    const originalLog = console.log;
+    console.log = (msg) => { output += msg; };
+
+    main(["--build-enhanced"]);
+
+    console.log = originalLog;
+
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("enhancedBuild", "Enhanced build completed");
+    expect(parsed).toHaveProperty("builtAt");
+    const iso = new Date(parsed.builtAt).toISOString();
+    expect(iso).toEqual(parsed.builtAt);
+  });
+});
+
 describe("Merge Persist Option", () => {
   test("should output merge persist JSON with mergedAt timestamp", () => {
     let output = "";
