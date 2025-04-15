@@ -17,6 +17,18 @@ export function crawlDataSources() {
 }
 
 export function main(args = process.argv.slice(2)) {
+  // Handle '--diagnostics' option to output environment diagnostic information
+  const diagnosticsIndex = args.indexOf("--diagnostics");
+  if (diagnosticsIndex !== -1) {
+    const diagnostics = {
+      nodeVersion: process.version,
+      platform: process.platform,
+      currentWorkingDirectory: process.cwd()
+    };
+    console.log(JSON.stringify(diagnostics));
+    return;
+  }
+
   // Check for '--crawl' option to simulate data crawling and OWL ontology generation
   const crawlIndex = args.indexOf("--crawl");
   if (crawlIndex !== -1) {

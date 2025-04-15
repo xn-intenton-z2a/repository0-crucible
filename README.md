@@ -85,6 +85,21 @@ node src/lib/main.js --help
   }
   ```
 
+- **Diagnostics Environment Information:**
+  To output essential environment diagnostic information, run:
+  ```bash
+  node src/lib/main.js --diagnostics
+  ```
+  This command will output a JSON with the following structure:
+  ```json
+  {
+    "nodeVersion": "vXX.XX.X",
+    "platform": "your-platform",
+    "currentWorkingDirectory": "your-current-directory"
+  }
+  ```
+  where the values reflect your current Node.js environment.
+
 ## Incremental Changes Plan
 
 TODO: Add forthcoming changes here.
