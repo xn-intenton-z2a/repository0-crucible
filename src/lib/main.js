@@ -87,6 +87,42 @@ export function main(args = process.argv.slice(2)) {
     return;
   }
 
+  // Handle '--merge-persist' option for merging two ontology files
+  const mergePersistIndex = args.indexOf("--merge-persist");
+  if (mergePersistIndex !== -1) {
+    if (args.length <= mergePersistIndex + 2) {
+      console.log(JSON.stringify({ error: "Error: Insufficient arguments for merge-persist. Two ontology file paths required." }));
+      return;
+    }
+    try {
+      const file1Path = args[mergePersistIndex + 1];
+      const file2Path = args[mergePersistIndex + 2];
+      const outputPath = (args[mergePersistIndex + 3] && !args[mergePersistIndex + 3].startsWith("--")) ? args[mergePersistIndex + 3] : "merged-ontology.json";
+      const file1Content = fs.readFileSync(file1Path, "utf-8");
+      const file2Content = fs.readFileSync(file2Path, "utf-8");
+      const ontology1 = JSON.parse(file1Content);
+      const ontology2 = JSON.parse(file2Content);
+      if (!ontology1["owl:ontology"] || !ontology2["owl:ontology"]) {
+        console.log(JSON.stringify({ error: "Error: One or both input files do not contain 'owl:ontology' property." }));
+        return;
+      }
+      const ont1 = ontology1["owl:ontology"];
+      const ont2 = ontology2["owl:ontology"];
+      const mergedOntology = {
+        "owl:ontology": {
+          source: `${ont1.source || "unknown"}; ${ont2.source || "unknown"}`,
+          description: `Merged ontology: ${ont1.description || ""} | ${ont2.description || ""}`,
+          data: [...(ont1.data || []), ...(ont2.data || [])]
+        }
+      };
+      fs.writeFileSync(outputPath, JSON.stringify(mergedOntology, null, 2));
+      console.log(JSON.stringify({ result: "Ontology merged and saved to " + outputPath }));
+    } catch (err) {
+      console.log(JSON.stringify({ error: "Error: " + err.message }));
+    }
+    return;
+  }
+
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 

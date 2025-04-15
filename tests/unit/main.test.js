@@ -116,3 +116,101 @@ describe("Data Sources Option", () => {
     logSpy.mockRestore();
   });
 });
+
+describe("Merge Persist Option", () => {
+  test("should merge two ontology files and save to specified file", () => {
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation((filePath) => {
+      if (filePath === "ontology1.json") {
+        return JSON.stringify({
+          "owl:ontology": {
+            source: "public1",
+            description: "First ontology",
+            data: [{ id: 1, info: "Data1" }]
+          }
+        });
+      }
+      if (filePath === "ontology2.json") {
+        return JSON.stringify({
+          "owl:ontology": {
+            source: "public2",
+            description: "Second ontology",
+            data: [{ id: 2, info: "Data2" }]
+          }
+        });
+      }
+      return '';
+    });
+    const writeFileSyncSpy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
+    const logSpy = vi.spyOn(console, "log");
+    main(["--merge-persist", "ontology1.json", "ontology2.json", "merged.json"]);
+    const expectedMerged = {
+      "owl:ontology": {
+        source: "public1; public2",
+        description: "Merged ontology: First ontology | Second ontology",
+        data: [{ id: 1, info: "Data1" }, { id: 2, info: "Data2" }]
+      }
+    };
+    expect(writeFileSyncSpy).toHaveBeenCalledWith("merged.json", JSON.stringify(expectedMerged, null, 2));
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ result: "Ontology merged and saved to merged.json" }));
+    readFileSyncSpy.mockRestore();
+    writeFileSyncSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+
+  test("should merge two ontology files and save to default file", () => {
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation((filePath) => {
+      if (filePath === "ontology1.json") {
+        return JSON.stringify({
+          "owl:ontology": {
+            source: "public1",
+            description: "First ontology",
+            data: [{ id: 1, info: "Data1" }]
+          }
+        });
+      }
+      if (filePath === "ontology2.json") {
+        return JSON.stringify({
+          "owl:ontology": {
+            source: "public2",
+            description: "Second ontology",
+            data: [{ id: 2, info: "Data2" }]
+          }
+        });
+      }
+      return '';
+    });
+    const writeFileSyncSpy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
+    const logSpy = vi.spyOn(console, "log");
+    main(["--merge-persist", "ontology1.json", "ontology2.json"]);
+    const expectedMerged = {
+      "owl:ontology": {
+        source: "public1; public2",
+        description: "Merged ontology: First ontology | Second ontology",
+        data: [{ id: 1, info: "Data1" }, { id: 2, info: "Data2" }]
+      }
+    };
+    expect(writeFileSyncSpy).toHaveBeenCalledWith("merged-ontology.json", JSON.stringify(expectedMerged, null, 2));
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ result: "Ontology merged and saved to merged-ontology.json" }));
+    readFileSyncSpy.mockRestore();
+    writeFileSyncSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+
+  test("should output error for insufficient arguments", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--merge-persist", "onlyone.json"]);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Insufficient arguments for merge-persist. Two ontology file paths required." }));
+    logSpy.mockRestore();
+  });
+
+  test("should output error when input file doesn't contain 'owl:ontology'", () => {
+    const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation(() => {
+      return JSON.stringify({ notOntology: {} });
+    });
+    const logSpy = vi.spyOn(console, "log");
+    main(["--merge-persist", "ontology1.json", "ontology2.json"]);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: One or both input files do not contain 'owl:ontology' property." }));
+    readFileSyncSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+});
