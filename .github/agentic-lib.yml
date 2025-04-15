@@ -1,6 +1,6 @@
 # Which agentic-lib workflow schedule should be used?
 schedule: schedule-4
-featuresWipLimit: 3
+featuresWipLimit: 6
 featureDevelopmentIssuesWipLimit: 6
 maintenanceIssuesWipLimit: 2
 attemptsPerBranch: 2

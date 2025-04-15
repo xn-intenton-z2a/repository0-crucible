@@ -2,396 +2,487 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
-import http from "http";
 import fs from "fs";
-import { z } from "zod";
+import { createServer } from "http";
+import yaml from "js-yaml";
 
-const helpMessage = [
-  "Usage: node src/lib/main.js [options]",
-  "",
-  "Options:",
-  "  --help              Show help message",
-  "  --help-json         Show help message in JSON format",
-  "  --help-extended     Show extended help message",
-  "  --diagnostics       Output diagnostics information",
-  "  --capital-cities    Output capital cities OWL ontology JSON",
-  "  --crawl-data          Simulate crawling public data sources and output JSON",
-  "  --refresh             Refresh the data (simulated operation)",
-  "  --build-intermediate  Build with intermediate steps (simulated operation)",
-  "  --build-enhanced      Build with enhanced features (simulated operation)",
-  "  --merge-persist       Merge and persist the data (simulated operation)",
-  "  --serve               Start the HTTP server",
-  "  --export-ontology     Export the capital cities OWL ontology to a file",
-  "  --build-detailed      Simulate a comprehensive build pipeline with multiple steps",
-  "  --validate-ontology   Validate exported OWL ontology JSON file",
-  "  --version             Display the application version",
-  "  --debug               Output enhanced diagnostic information for troubleshooting"
-].join("\n");
+// Helper function to escape XML special characters
+function escapeXML(str) {
+  return str.replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&apos;');
+}
 
-const extendedHelpMessage = [
-  "Extended Help:",
-  "",
-  "--help: Displays a brief help message.",
-  "         Example: node src/lib/main.js --help",
-  "",
-  "--help-json: Displays help in JSON format.",
-  "         Example: node src/lib/main.js --help-json",
-  "",
-  "--help-extended: Displays detailed help information with descriptions and usage examples for each command.",
-  "         Example: node src/lib/main.js --help-extended",
-  "",
-  "--diagnostics: Outputs diagnostics info about the current environment.",
-  "         Example: node src/lib/main.js --diagnostics",
-  "",
-  "--capital-cities: Outputs the capital cities OWL ontology in JSON format.",
-  "         Example: node src/lib/main.js --capital-cities",
-  "",
-  "--export-ontology: Exports the OWL ontology to a file named exported_ontology.json.",
-  "         Example: node src/lib/main.js --export-ontology",
-  "",
-  "--crawl-data: Simulates crawling data and outputs JSON.",
-  "         Example: node src/lib/main.js --crawl-data",
-  "",
-  "--refresh: Simulates a data refresh operation.",
-  "         Example: node src/lib/main.js --refresh",
-  "",
-  "--build-intermediate: Simulates an intermediate build process.",
-  "         Example: node src/lib/main.js --build-intermediate",
-  "",
-  "--build-enhanced: Simulates an enhanced build process.",
-  "         Example: node src/lib/main.js --build-enhanced",
-  "",
-  "--merge-persist: Simulates merging and persisting data.",
-  "         Example: node src/lib/main.js --merge-persist",
-  "",
-  "--build-detailed: Simulates a detailed build pipeline with multiple steps.",
-  "         Example: node src/lib/main.js --build-detailed",
-  "",
-  "--validate-ontology: Validates the exported ontology JSON file.",
-  "         Example: node src/lib/main.js --validate-ontology",
-  "",
-  "--serve: Starts the HTTP server to serve the ontology.",
-  "         Example: node src/lib/main.js --serve",
-  "",
-  "--version: Displays the application version.",
-  "         Example: node src/lib/main.js --version",
-  "",
-  "--debug: Outputs enhanced diagnostic information including current working directory and selected environment variables.",
-  "         Example: node src/lib/main.js --debug"
-].join("\n");
+// Simulate crawling public data sources and transforming them into an OWL ontology represented as a JSON object
+export function crawlDataSources() {
+  return {
+    "owl:ontology": {
+      source: "public",
+      description: "Simulated crawling of public data sources",
+      data: [
+        { id: 1, info: "Sample data entry" }
+      ]
+    }
+  };
+}
 
-export function main(args = []) {
-  // If --version is provided, display version and return immediately.
-  if (args.includes("--version")) {
+export let serverInstance = null;
+
+export async function main(args = process.argv.slice(2)) {
+  // Handle '--version' option to output package version
+  const versionIndex = args.indexOf("--version");
+  if (versionIndex !== -1) {
     try {
-      const pkgContent = fs.readFileSync("package.json", "utf-8");
-      const pkg = JSON.parse(pkgContent);
-      console.log(`Version: ${pkg.version}`);
-    } catch (error) {
-      console.error("Error: Could not read package.json");
+      // Assuming package.json is located in the current working directory
+      const packagePath = process.cwd() + "/package.json";
+      const packageContent = fs.readFileSync(packagePath, "utf-8");
+      const packageJson = JSON.parse(packageContent);
+      console.log(JSON.stringify({ version: packageJson.version }, null, 2));
+    } catch (err) {
+      console.log(JSON.stringify({ error: "Error reading package.json: " + err.message }));
     }
     return;
   }
 
-  // '--debug' takes precedence over other options
-  if (args.includes("--debug")) {
-    const debugDiagnostics = {
-      nodeVersion: process.versions.node,
-      platform: process.platform,
-      availableCommands: [
-        "--capital-cities",
-        "--diagnostics",
-        "--serve",
-        "--build-intermediate",
-        "--build-enhanced",
-        "--refresh",
-        "--merge-persist",
-        "--crawl-data",
-        "--help",
-        "--help-json",
-        "--export-ontology",
-        "--build-detailed",
-        "--validate-ontology",
-        "--version",
-        "--debug"
-      ],
-      currentWorkingDirectory: process.cwd(),
-      debugEnv: {
-        NODE_ENV: process.env.NODE_ENV || "undefined"
+  // Handle '--help' option to output usage instructions
+  const helpIndex = args.indexOf("--help");
+  if (helpIndex !== -1) {
+    const helpMessage = {
+      usage: "node src/lib/main.js [options]",
+      options: {
+        "--help": "Display this help message",
+        "--diagnostics": "Output diagnostic information about the current environment",
+        "--data-sources": "Output a hard-coded list of public data source URLs",
+        "--crawl": "Simulate crawling of public data sources and output an OWL ontology in JSON format",
+        "--transform": "Transform a JSON string into an OWL ontology structure",
+        "--query-owl": "Query the OWL ontology with an optional query parameter",
+        "--save-ontology": "Save the generated ontology to a file (optionally specify filename)",
+        "--merge-persist": "Merge two ontology files and save the merged result to a file",
+        "--filter-data": "Filter ontology data based on key-value pairs",
+        "--validate-ontology": "Validate the structure of an ontology JSON file",
+        "--live-crawl": "Output live crawl from https://api.publicapis.org/entries",
+        "--ontology-info": "Read an ontology JSON file and output a summary with source, description, total data entries, and optional timestamp",
+        "--serve": "Start an HTTP server on port 3000 that serves the OWL ontology at the '/ontology' endpoint",
+        "--capital-cities": "Output a sample OWL ontology of capital cities",
+        "--refresh": "Re-crawl public data sources, attach a current timestamp, and output the refreshed ontology JSON",
+        "--build-intermediate": "Simulate intermediate processing of ontology data with intermediate output",
+        "--build-enhanced": "Simulate advanced processing of ontology data with enhanced output",
+        "--export-rdf": "Export the generated ontology as RDF/XML",
+        "--export-turtle": "Export the generated ontology in Turtle (TTL) format",
+        "--export-jsonld": "Export the generated ontology as JSON-LD",
+        "--export-csv": "Export the generated ontology as CSV",
+        "--export-yaml": "Export the generated ontology as YAML"
       }
     };
-    console.log(JSON.stringify(debugDiagnostics, null, 2));
+    console.log(JSON.stringify(helpMessage, null, 2));
     return;
   }
 
-  const validOptions = new Set([
-    "--help",
-    "--help-json",
-    "--help-extended",
-    "--diagnostics",
-    "--capital-cities",
-    "--crawl-data",
-    "--refresh",
-    "--build-intermediate",
-    "--build-enhanced",
-    "--merge-persist",
-    "--serve",
-    "--export-ontology",
-    "--build-detailed",
-    "--validate-ontology",
-    "--debug"
-  ]);
-
-  // Check for unknown options (if not version, already handled)
-  const unknownArgs = args.filter(
-    (arg) => arg.startsWith("--") && !validOptions.has(arg) && arg !== "--version"
-  );
-  if (unknownArgs.length > 0) {
-    const plural = unknownArgs.length > 1 ? "s" : "";
-    console.error(
-      `Error: Unknown option${plural}: ${unknownArgs.join(", ")}`
-    );
-    // Only print the first line of the help message to match test expectations
-    console.error(helpMessage.split("\n")[0]);
-    return;
-  }
-
-  if (args.includes("--help-extended")) {
-    console.log(extendedHelpMessage);
-    return;
-  }
-
-  if (args.includes("--help-json")) {
-    // For consistent output, we define the ordered list of options expected by tests
-    const usage = "Usage: node src/lib/main.js [options]";
-    const options = [
-      "--help",
-      "--help-json",
-      "--diagnostics",
-      "--capital-cities",
-      "--serve",
-      "--build-intermediate",
-      "--build-enhanced",
-      "--refresh",
-      "--merge-persist",
-      "--crawl-data",
-      "--export-ontology",
-      "--build-detailed",
-      "--validate-ontology",
-      "--version",
-      "--debug"
-    ];
-    console.log(JSON.stringify({ usage, options }, null, 2));
-    return;
-  }
-
-  if (args.includes("--help")) {
-    console.log(helpMessage);
-    return;
-  }
-
-  if (args.includes("--diagnostics")) {
+  // Handle '--diagnostics' option to output environment diagnostic information
+  const diagnosticsIndex = args.indexOf("--diagnostics");
+  if (diagnosticsIndex !== -1) {
     const diagnostics = {
-      nodeVersion: process.versions.node,
+      nodeVersion: process.version,
       platform: process.platform,
-      availableCommands: [
-        "--capital-cities",
-        "--diagnostics",
-        "--serve",
-        "--build-intermediate",
-        "--build-enhanced",
-        "--refresh",
-        "--merge-persist",
-        "--crawl-data",
-        "--help",
-        "--help-json",
-        "--export-ontology",
-        "--build-detailed",
-        "--validate-ontology",
-        "--debug"
-      ],
+      currentWorkingDirectory: process.cwd()
     };
-    console.log(JSON.stringify(diagnostics, null, 2));
+    console.log(JSON.stringify(diagnostics));
     return;
   }
 
-  if (args.includes("--capital-cities")) {
-    const owlOntology = {
-      owl: "capitalCities",
-      data: [
-        { country: "France", capital: "Paris" },
-        { country: "Japan", capital: "Tokyo" },
-        { country: "Brazil", capital: "Brasília" }
-      ],
-      generatedAt: new Date().toISOString(),
-    };
-    console.log(JSON.stringify(owlOntology, null, 2));
+  // Handle '--live-crawl' option: fetch live data from a public API
+  const liveCrawlIndex = args.indexOf("--live-crawl");
+  if (liveCrawlIndex !== -1) {
+    try {
+      const response = await fetch("https://api.publicapis.org/entries");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const jsonResponse = await response.json();
+      const entry = (Array.isArray(jsonResponse.entries) && jsonResponse.entries.length) ? jsonResponse.entries[0] : {};
+      const liveOntology = {
+        "owl:ontology": {
+          source: "live",
+          description: "Live crawl from https://api.publicapis.org/entries",
+          data: [entry]
+        }
+      };
+      console.log(JSON.stringify(liveOntology, null, 2));
+    } catch (err) {
+      console.log(JSON.stringify({ error: "Error fetching live data: " + err.message }));
+    }
     return;
   }
 
-  if (args.includes("--export-ontology")) {
-    const owlOntology = {
-      owl: "capitalCities",
-      data: [
-        { country: "France", capital: "Paris" },
-        { country: "Japan", capital: "Tokyo" },
-        { country: "Brazil", capital: "Brasília" }
-      ],
-      generatedAt: new Date().toISOString(),
-    };
-    fs.writeFileSync(
-      "exported_ontology.json",
-      JSON.stringify(owlOntology, null, 2)
-    );
-    console.log("Ontology exported to exported_ontology.json");
+  // Handle '--data-sources' option to output a hard-coded list of public data source URLs
+  const dataSourcesIndex = args.indexOf("--data-sources");
+  if (dataSourcesIndex !== -1) {
+    const dataSources = ["https://example.com/api1", "https://example.com/api2"];
+    console.log(JSON.stringify({ dataSources }));
     return;
   }
 
-  if (args.includes("--crawl-data")) {
-    const crawlData = {
-      source: "publicData",
-      data: [{ id: 1, description: "Sample data" }],
-      fetchedAt: new Date().toISOString(),
-    };
-    console.log(JSON.stringify(crawlData, null, 2));
+  // Handle '--save-ontology' option to persist the generated ontology to a file
+  const saveOntologyIndex = args.indexOf("--save-ontology");
+  if (saveOntologyIndex !== -1) {
+    const targetFilename = (args[saveOntologyIndex + 1] && !args[saveOntologyIndex + 1].startsWith("--")) ? args[saveOntologyIndex + 1] : "ontology.json";
+    const ontology = crawlDataSources();
+    fs.writeFileSync(targetFilename, JSON.stringify(ontology, null, 2));
+    console.log(JSON.stringify({ result: "Ontology saved to " + targetFilename }));
     return;
   }
 
-  if (args.includes("--refresh")) {
-    const refreshData = {
-      message: "Data refreshed",
-      refreshedAt: new Date().toISOString(),
-    };
-    console.log(JSON.stringify(refreshData, null, 2));
+  // Check for '--crawl' option to simulate data crawling and OWL ontology generation
+  const crawlIndex = args.indexOf("--crawl");
+  if (crawlIndex !== -1) {
+    console.log(JSON.stringify(crawlDataSources()));
     return;
   }
 
-  if (args.includes("--build-intermediate")) {
-    const intermediateBuild = {
-      intermediateBuild: "Intermediate build completed",
-      builtAt: new Date().toISOString(),
-    };
-    console.log(JSON.stringify(intermediateBuild, null, 2));
+  // Handle '--transform' option for JSON-to-OWL transformation
+  const transformIndex = args.indexOf("--transform");
+  if (transformIndex !== -1) {
+    const jsonInput = args[transformIndex + 1];
+    let transformedOutput;
+    if (jsonInput) {
+      try {
+        const parsed = JSON.parse(jsonInput);
+        transformedOutput = { "owl:transformed": parsed };
+      } catch (err) {
+        transformedOutput = { result: "Default OWL transformation output" };
+      }
+    } else {
+      transformedOutput = { result: "Default OWL transformation output" };
+    }
+    console.log(JSON.stringify(transformedOutput));
     return;
   }
 
-  if (args.includes("--build-enhanced")) {
-    const enhancedBuild = {
-      enhancedBuild: "Enhanced build completed",
-      builtAt: new Date().toISOString(),
-    };
-    console.log(JSON.stringify(enhancedBuild, null, 2));
+  // Handle '--query-owl' option
+  const queryIndex = args.indexOf("--query-owl");
+  if (queryIndex !== -1) {
+    const queryParam = args[queryIndex + 1];
+    if (queryParam && !queryParam.startsWith("--")) {
+      console.log(JSON.stringify({ result: `OWL query output for query: ${queryParam}` }));
+    } else {
+      console.log(JSON.stringify({ result: "Sample OWL query output" }));
+    }
     return;
   }
 
-  if (args.includes("--merge-persist")) {
-    const mergePersistData = {
-      mergePersist: "Data merged and persisted successfully",
-      mergedAt: new Date().toISOString(),
-    };
-    console.log(JSON.stringify(mergePersistData, null, 2));
+  // Handle '--refresh' option for re-crawling and refreshing ontology with a current timestamp
+  const refreshIndex = args.indexOf("--refresh");
+  if (refreshIndex !== -1) {
+    const ontology = crawlDataSources();
+    ontology["owl:ontology"].timestamp = new Date().toISOString();
+    console.log(JSON.stringify(ontology, null, 2));
     return;
   }
 
-  if (args.includes("--build-detailed")) {
-    const crawlData = {
-      source: "publicData",
-      data: [{ id: 1, description: "Sample data" }],
-      fetchedAt: new Date().toISOString(),
-    };
-    const refreshData = {
-      message: "Data refreshed",
-      refreshedAt: new Date().toISOString(),
-    };
-    const intermediateBuild = {
-      intermediateBuild: "Intermediate build completed",
-      builtAt: new Date().toISOString(),
-    };
-    const enhancedBuild = {
-      enhancedBuild: "Enhanced build completed",
-      builtAt: new Date().toISOString(),
-    };
-    const mergePersistData = {
-      mergePersist: "Data merged and persisted successfully",
-      mergedAt: new Date().toISOString(),
-    };
-    const detailedBuild = {
-      crawlData,
-      refreshData,
-      intermediateBuild,
-      enhancedBuild,
-      mergePersist: mergePersistData
-    };
-    console.log(JSON.stringify(detailedBuild, null, 2));
+  // Handle '--build-intermediate' option for intermediate processing step
+  const buildIntermediateIndex = args.indexOf("--build-intermediate");
+  if (buildIntermediateIndex !== -1) {
+    const ontology = crawlDataSources();
+    ontology["owl:ontology"].intermediate = true;
+    console.log(JSON.stringify(ontology, null, 2));
     return;
   }
 
-  if (args.includes("--validate-ontology")) {
-    const fileName = "exported_ontology.json";
-    if (!fs.existsSync(fileName)) {
-      console.error(`Error: Exported ontology file '${fileName}' not found.`);
+  // Handle '--merge-persist' option for merging two ontology files
+  const mergePersistIndex = args.indexOf("--merge-persist");
+  if (mergePersistIndex !== -1) {
+    if (args.length <= mergePersistIndex + 2) {
+      console.log(JSON.stringify({ error: "Error: Insufficient arguments for merge-persist. Two ontology file paths required." }));
       return;
     }
     try {
-      const fileContent = fs.readFileSync(fileName, "utf-8");
-      const data = JSON.parse(fileContent);
-      const ontologySchema = z.object({
-        owl: z.literal("capitalCities"),
-        data: z.array(z.object({ country: z.string(), capital: z.string() })),
-        generatedAt: z.string().refine((val) => !isNaN(Date.parse(val)), {
-          message: "Invalid ISO date format",
-        }),
-      });
-      ontologySchema.parse(data);
-      console.log("Ontology is valid");
-    } catch (e) {
-      console.error(
-        "Validation failed:",
-        e.errors ? e.errors : e.message
-      );
-    }
-    return;
-  }
-
-  if (args.includes("--serve")) {
-    // Start the HTTP server
-    serve();
-    return;
-  }
-
-  // For recognized options like --build-enhanced that are not implemented,
-  // or when no options are provided, simply log the arguments provided.
-  console.log(`Run with: ${JSON.stringify(args)}`);
-}
-
-export function serve() {
-  const server = http.createServer((req, res) => {
-    if (req.method === "GET" && req.url === "/capital-cities") {
-      const owlOntology = {
-        owl: "capitalCities",
-        data: [
-          { country: "France", capital: "Paris" },
-          { country: "Japan", capital: "Tokyo" },
-          { country: "Brazil", capital: "Brasília" }
-        ],
-        generatedAt: new Date().toISOString(),
+      const file1Path = args[mergePersistIndex + 1];
+      const file2Path = args[mergePersistIndex + 2];
+      const outputPath = (args[mergePersistIndex + 3] && !args[mergePersistIndex + 3].startsWith("--")) ? args[mergePersistIndex + 3] : "merged-ontology.json";
+      const file1Content = fs.readFileSync(file1Path, "utf-8");
+      const file2Content = fs.readFileSync(file2Path, "utf-8");
+      const ontology1 = JSON.parse(file1Content);
+      const ontology2 = JSON.parse(file2Content);
+      if (!ontology1["owl:ontology"] || !ontology2["owl:ontology"]) {
+        console.log(JSON.stringify({ error: "Error: One or both input files do not contain 'owl:ontology' property." }));
+        return;
+      }
+      const ont1 = ontology1["owl:ontology"];
+      const ont2 = ontology2["owl:ontology"];
+      const mergedOntology = {
+        "owl:ontology": {
+          source: `${ont1.source || "unknown"}; ${ont2.source || "unknown"}`,
+          description: `Merged ontology: ${ont1.description || ""} | ${ont2.description || ""}`,
+          data: [...(ont1.data || []), ...(ont2.data || [])]
+        }
       };
-      res.writeHead(200, { "Content-Type": "application/json" });
-      res.end(JSON.stringify(owlOntology, null, 2));
-    } else {
-      res.writeHead(404, { "Content-Type": "text/plain" });
-      res.end("Not Found");
+      fs.writeFileSync(outputPath, JSON.stringify(mergedOntology, null, 2));
+      console.log(JSON.stringify({ result: "Ontology merged and saved to " + outputPath }));
+    } catch (err) {
+      console.log(JSON.stringify({ error: "Error: " + err.message }));
     }
-  });
+    return;
+  }
 
-  server.listen(3000, () => {
-    console.log("Server listening on port 3000");
-  });
+  // Handle '--filter-data' option for filtering ontology data based on key-value pairs
+  const filterIndex = args.indexOf("--filter-data");
+  if (filterIndex !== -1) {
+    const keyParam = args[filterIndex + 1];
+    const valueParam = args[filterIndex + 2];
+    if (!keyParam) {
+      console.log(JSON.stringify({ error: "Error: Missing filter key parameter for --filter-data" }));
+      return;
+    }
+    if (!valueParam) {
+      console.log(JSON.stringify({ error: "Error: Missing filter value parameter for --filter-data" }));
+      return;
+    }
+    const ontology = crawlDataSources();
+    if (!ontology["owl:ontology"] || !Array.isArray(ontology["owl:ontology"].data)) {
+      console.log(JSON.stringify({ error: "Error: Ontology data is missing or not in expected format." }));
+      return;
+    }
+    const filteredData = ontology["owl:ontology"].data.filter(entry => entry[keyParam] === valueParam);
+    const filteredOntology = {
+      "owl:ontology": {
+        ...ontology["owl:ontology"],
+        data: filteredData
+      }
+    };
+    console.log(JSON.stringify(filteredOntology));
+    return;
+  }
 
-  return server;
+  // Handle '--validate-ontology' option for validating OWL ontology JSON file
+  const validateIndex = args.indexOf("--validate-ontology");
+  if (validateIndex !== -1) {
+    const filePath = args[validateIndex + 1];
+    if (!filePath || filePath.startsWith("--")) {
+      console.log(JSON.stringify({ error: "Error: Missing ontology file path argument for --validate-ontology" }));
+      return;
+    }
+    try {
+      const fileContent = fs.readFileSync(filePath, "utf-8");
+      const parsed = JSON.parse(fileContent);
+      if (!parsed["owl:ontology"] || typeof parsed["owl:ontology"] !== "object") {
+        console.log(JSON.stringify({ error: "Error: Ontology JSON does not contain a valid 'owl:ontology' property." }));
+        return;
+      }
+      const ontology = parsed["owl:ontology"];
+      if (typeof ontology.source !== "string") {
+        console.log(JSON.stringify({ error: "Error: 'source' property must be a string." }));
+        return;
+      }
+      if (typeof ontology.description !== "string") {
+        console.log(JSON.stringify({ error: "Error: 'description' property must be a string." }));
+        return;
+      }
+      if (!Array.isArray(ontology.data)) {
+        console.log(JSON.stringify({ error: "Error: 'data' property must be an array." }));
+        return;
+      }
+      console.log(JSON.stringify({ result: "Ontology structure is valid" }));
+    } catch (err) {
+      console.log(JSON.stringify({ error: "Error: " + err.message }));
+    }
+    return;
+  }
+
+  // Handle '--ontology-info' option for summarizing ontology metadata
+  const ontologyInfoIndex = args.indexOf("--ontology-info");
+  if (ontologyInfoIndex !== -1) {
+    const filePath = args[ontologyInfoIndex + 1];
+    if (!filePath || filePath.startsWith("--")) {
+      console.log(JSON.stringify({ error: "Error: Missing ontology file path argument for --ontology-info" }));
+      return;
+    }
+    try {
+      const fileContent = fs.readFileSync(filePath, "utf-8");
+      const parsed = JSON.parse(fileContent);
+      if (!parsed["owl:ontology"] || typeof parsed["owl:ontology"] !== "object") {
+        console.log(JSON.stringify({ error: "Error: Ontology JSON does not contain a valid 'owl:ontology' property." }));
+        return;
+      }
+      const ontology = parsed["owl:ontology"];
+      if (typeof ontology.source !== "string" || typeof ontology.description !== "string" || !Array.isArray(ontology.data)) {
+        console.log(JSON.stringify({ error: "Error: Ontology file does not have valid source, description or data properties." }));
+        return;
+      }
+      const summary = {
+        ontologyInfo: {
+          source: ontology.source,
+          description: ontology.description,
+          totalDataEntries: ontology.data.length
+        }
+      };
+      if (ontology.timestamp) {
+        summary.ontologyInfo.timestamp = ontology.timestamp;
+      }
+      console.log(JSON.stringify(summary));
+    } catch (err) {
+      console.log(JSON.stringify({ error: "Error: " + err.message }));
+    }
+    return;
+  }
+
+  // Handle '--capital-cities' option to output a sample OWL ontology of capital cities
+  if (args.indexOf("--capital-cities") !== -1) {
+    const capitalOntology = {
+      capitalCities: [
+        { name: "Washington D.C.", country: "USA" },
+        { name: "London", country: "UK" },
+        { name: "Tokyo", country: "Japan" }
+      ]
+    };
+    console.log(JSON.stringify(capitalOntology, null, 2));
+    return;
+  }
+
+  // Handle '--serve' option to start an HTTP server
+  const serveIndex = args.indexOf("--serve");
+  if (serveIndex !== -1) {
+    serverInstance = createServer((req, res) => {
+      if (req.method === "GET" && req.url === "/ontology") {
+        const ontology = crawlDataSources();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(ontology, null, 2));
+      } else {
+        res.writeHead(404, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "Endpoint not found" }));
+      }
+    });
+    serverInstance.listen(3000, () => {
+      console.log("Server started on port 3000");
+    });
+    return;
+  }
+
+  // Handle '--build-enhanced' option for advanced OWL ontology generation
+  const buildEnhancedIndex = args.indexOf("--build-enhanced");
+  if (buildEnhancedIndex !== -1) {
+    const ontology = crawlDataSources();
+    ontology["owl:ontology"].enhanced = true;
+    console.log(JSON.stringify(ontology, null, 2));
+    return;
+  }
+
+  // Handle '--export-rdf' option to export ontology as RDF/XML
+  const exportRdfIndex = args.indexOf("--export-rdf");
+  if (exportRdfIndex !== -1) {
+    const ontology = crawlDataSources()["owl:ontology"];
+    const xmlHeader = '<?xml version="1.0" encoding="UTF-8"?>';
+    let rdfOutput = xmlHeader + "\n";
+    rdfOutput += `<owl:Ontology>\n`;
+    rdfOutput += `  <source>${escapeXML(ontology.source)}</source>\n`;
+    rdfOutput += `  <description>${escapeXML(ontology.description)}</description>\n`;
+    rdfOutput += `  <data>\n`;
+    if (Array.isArray(ontology.data)) {
+      ontology.data.forEach(item => {
+        rdfOutput += `    <entry>\n`;
+        Object.keys(item).forEach(key => {
+          rdfOutput += `      <${key}>${escapeXML(String(item[key]))}</${key}>\n`;
+        });
+        rdfOutput += `    </entry>\n`;
+      });
+    }
+    rdfOutput += `  </data>\n`;
+    rdfOutput += `</owl:Ontology>`;
+    console.log(rdfOutput);
+    return;
+  }
+
+  // Handle '--export-turtle' option to export ontology as Turtle (TTL) format
+  const exportTurtleIndex = args.indexOf("--export-turtle");
+  if (exportTurtleIndex !== -1) {
+    const ontology = crawlDataSources()["owl:ontology"];
+    let turtleOutput = "@prefix ex: <http://example.com/> .\n\n";
+    turtleOutput += "ex:Ontology {\n";
+    turtleOutput += `  ex:source "${escapeXML(ontology.source)}" ;\n`;
+    turtleOutput += `  ex:description "${escapeXML(ontology.description)}" ;\n`;
+    if (Array.isArray(ontology.data) && ontology.data.length > 0) {
+      turtleOutput += "  ex:data [\n";
+      ontology.data.forEach((item, index) => {
+        turtleOutput += "    [\n";
+        const keys = Object.keys(item);
+        keys.forEach((key, i) => {
+          turtleOutput += `      ex:${key} "${escapeXML(String(item[key]))}"`;
+          turtleOutput += (i < keys.length - 1 ? " ;\n" : "\n");
+        });
+        turtleOutput += "    ]";
+        turtleOutput += (index < ontology.data.length - 1 ? " ,\n" : "\n");
+      });
+      turtleOutput += "  ]\n";
+    }
+    turtleOutput += "}";
+    console.log(turtleOutput);
+    return;
+  }
+
+  // Handle '--export-jsonld' option to export ontology as JSON-LD
+  const exportJsonldIndex = args.indexOf("--export-jsonld");
+  if (exportJsonldIndex !== -1) {
+    const ontology = crawlDataSources()["owl:ontology"];
+    const jsonld = {
+      "@context": {
+        "source": "http://example.com/source",
+        "description": "http://example.com/description",
+        "data": "http://example.com/data"
+      },
+      "@type": "Ontology",
+      "source": ontology.source,
+      "description": ontology.description,
+      "data": ontology.data
+    };
+    console.log(JSON.stringify(jsonld, null, 2));
+    return;
+  }
+
+  // Handle '--export-yaml' option to export ontology as YAML
+  const exportYamlIndex = args.indexOf("--export-yaml");
+  if (exportYamlIndex !== -1) {
+    const ontology = crawlDataSources()["owl:ontology"];
+    const yamlOutput = yaml.dump(ontology);
+    console.log(yamlOutput);
+    return;
+  }
+
+  // Handle '--export-csv' option to export ontology data as CSV
+  const exportCsvIndex = args.indexOf("--export-csv");
+  if (exportCsvIndex !== -1) {
+    const ontology = crawlDataSources()["owl:ontology"];
+    const data = ontology.data;
+    if (!Array.isArray(data)) {
+      console.log(JSON.stringify({ error: "Ontology data is not an array." }));
+      return;
+    }
+    // Get union of all keys from each data entry and sort them for consistency
+    const keysSet = new Set();
+    data.forEach(entry => {
+      Object.keys(entry).forEach(key => keysSet.add(key));
+    });
+    const keys = Array.from(keysSet).sort();
+    let csv = keys.join(",") + "\n";
+    data.forEach(entry => {
+      const row = keys.map(key => {
+        const value = entry[key] !== undefined ? String(entry[key]) : "";
+        // Escape double quotes by doubling them
+        const escaped = value.replace(/"/g, '""');
+        return `"${escaped}"`;
+      }).join(",");
+      csv += row + "\n";
+    });
+    console.log(csv);
+    return;
+  }
+
+  console.log(`Run with: ${JSON.stringify(args)}`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  main(args);
+  (async () => {
+    await main(args);
+  })();
 }
