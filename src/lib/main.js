@@ -2,6 +2,7 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
+import http from "http";
 
 export function main(args = []) {
   if (args.includes("--help")) {
@@ -9,10 +10,10 @@ export function main(args = []) {
       "Usage: node src/lib/main.js [options]",
       "",
       "Options:",
-      "  --help          Show help message",
-      "  --diagnostics   Output diagnostics information",
-      "  --capital-cities  Output capital cities OWL ontology JSON",
-      "  --serve         Start the server (if implemented)",
+      "  --help              Show help message",
+      "  --diagnostics       Output diagnostics information",
+      "  --capital-cities    Output capital cities OWL ontology JSON",
+      "  --serve             Start the HTTP server to serve the OWL ontology",
       "  --build-intermediate  Build with intermediate steps (if implemented)",
       "  --build-enhanced      Build with enhanced features (if implemented)",
       "  --refresh             Refresh the data (if implemented)",
@@ -54,7 +55,40 @@ export function main(args = []) {
     return;
   }
 
+  if (args.includes("--serve")) {
+    // Start the HTTP server
+    serve();
+    return;
+  }
+
   console.log(`Run with: ${JSON.stringify(args)}`);
+}
+
+export function serve() {
+  const server = http.createServer((req, res) => {
+    if (req.method === "GET" && req.url === "/capital-cities") {
+      const owlOntology = {
+        owl: "capitalCities",
+        data: [
+          { country: "France", capital: "Paris" },
+          { country: "Japan", capital: "Tokyo" },
+          { country: "Brazil", capital: "Brasília" }
+        ],
+        generatedAt: new Date().toISOString()
+      };
+      res.writeHead(200, { "Content-Type": "application/json" });
+      res.end(JSON.stringify(owlOntology, null, 2));
+    } else {
+      res.writeHead(404, { "Content-Type": "text/plain" });
+      res.end("Not Found");
+    }
+  });
+  
+  server.listen(3000, () => {
+    console.log("Server listening on port 3000");
+  });
+  
+  return server;
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

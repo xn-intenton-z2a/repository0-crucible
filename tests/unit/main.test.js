@@ -1,6 +1,8 @@
 import { describe, test, expect } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main } from "@src/lib/main.js";
+import { main, serve } from "@src/lib/main.js";
+import http from "http";
+
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -61,5 +63,50 @@ describe("Diagnostics Option", () => {
       "--diagnostics",
       "--serve"
     ]));
+  });
+});
+
+describe("Serve Option", () => {
+  test("should serve capitalCities ontology on /capital-cities endpoint", async () => {
+    const server = serve();
+    // Wait for the server to start listening
+    await new Promise(resolve => setTimeout(resolve, 100));
+    
+    const options = {
+      hostname: 'localhost',
+      port: 3000,
+      path: '/capital-cities',
+      method: 'GET'
+    };
+    
+    const responsePromise = new Promise((resolve, reject) => {
+      const req = http.request(options, res => {
+        let data = '';
+        res.on('data', chunk => { data += chunk; });
+        res.on('end', () => {
+          resolve({ statusCode: res.statusCode, data });
+        });
+      });
+      req.on('error', reject);
+      req.end();
+    });
+    
+    const { statusCode, data } = await responsePromise;
+    expect(statusCode).toBe(200);
+    
+    const parsed = JSON.parse(data);
+    expect(parsed).toHaveProperty("owl", "capitalCities");
+    expect(parsed).toHaveProperty("data");
+    expect(Array.isArray(parsed.data)).toBe(true);
+    expect(parsed.data).toEqual([
+      { country: "France", capital: "Paris" },
+      { country: "Japan", capital: "Tokyo" },
+      { country: "Brazil", capital: "Brasília" }
+    ]);
+    expect(parsed).toHaveProperty("generatedAt");
+    const iso = new Date(parsed.generatedAt).toISOString();
+    expect(iso).toEqual(parsed.generatedAt);
+    
+    await new Promise(resolve => server.close(resolve));
   });
 });
