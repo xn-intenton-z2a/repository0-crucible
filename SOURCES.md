@@ -32,3 +32,23 @@ This article by the Nielsen Norman Group explores best practices and usability p
 ## https://www.loggly.com/ultimate-guide/nodejs-logging-basics/
 This guide outlines best practices for structured logging and monitoring in Node.js applications. It is particularly useful for implementing observable, self-improving, and diagnostic features that track performance and error metrics.
 ## Public Domain
+
+# Node.js Documentation
+## https://nodejs.org/en/docs/
+The official Node.js documentation covers a comprehensive range of topics including API references, process management, asynchronous programming, and performance optimization. It is an authoritative source crucial for understanding the underpinnings of the Node.js runtime and its ecosystem.
+## MIT License
+
+# OpenAI API Reference
+## https://platform.openai.com/docs/api-reference
+This resource is the official reference for the OpenAI API, providing detailed guidelines on API usage, model behaviors, authentication, and error handling. It is particularly relevant for implementing the help-seeking feature and ensuring robust interactions with external AI services.
+## OpenAI Terms
+
+# AWS Lambda Developer Guide
+## https://docs.aws.amazon.com/lambda/latest/dg/welcome.html
+The AWS Lambda Developer Guide offers essential information on building, deploying, and managing serverless functions. This documentation is beneficial for understanding serverless architectures and scaling strategies, especially in the context of enabling replication and parallel processing for agentic features.
+## Amazon Software License
+
+# Vitest Documentation
+## https://vitest.dev/
+Vitest is a fast and lightweight unit testing framework for Vite projects and Node.js environments. Its documentation provides comprehensive details on test configuration, writing test cases, and leveraging coverage tools, supporting reliable and efficient testing of our repository's codebase.
+## MIT License
