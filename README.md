@@ -115,14 +115,17 @@ node src/lib/main.js --help
   ```
   This will write the ontology to `ontology.json` by default.
 
-- **List Data Sources:**
-  The new `--data-sources` option outputs a hard-coded list of public data source URLs. For example:
+- **Merge Ontologies:**
+  To merge two ontology JSON files and save the combined output, use the `--merge-persist` option. You must provide two input file paths and an optional output file name (defaulting to `merged-ontology.json`). The command merges the 'data' arrays from each ontology and concatenates metadata fields.
+  
+  **Example with a specified output filename:**
   ```bash
-  node src/lib/main.js --data-sources
+  node src/lib/main.js --merge-persist ontology1.json ontology2.json mergedOntology.json
   ```
-  This will output a JSON object like:
-  ```json
-  { "dataSources": ["https://example.com/api1", "https://example.com/api2"] }
+
+  **Example using the default output filename:**
+  ```bash
+  node src/lib/main.js --merge-persist ontology1.json ontology2.json
   ```
 
 ## Incremental Changes Plan
