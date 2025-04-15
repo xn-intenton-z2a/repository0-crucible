@@ -440,8 +440,8 @@ describe("Export Turtle Option", () => {
     const output = logSpy.mock.calls[0][0];
     expect(output).toContain("@prefix ex:");
     expect(output).toContain("ex:Ontology");
-    expect(output).toContain('ex:source \"public\"');
-    expect(output).toContain('ex:description \"Simulated crawling of public data sources\"');
+    expect(output).toContain('ex:source "public"');
+    expect(output).toContain('ex:description "Simulated crawling of public data sources"');
     logSpy.mockRestore();
   });
 });

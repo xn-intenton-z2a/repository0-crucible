@@ -395,15 +395,15 @@ export async function main(args = process.argv.slice(2)) {
     const ontology = crawlDataSources()["owl:ontology"];
     let turtleOutput = "@prefix ex: <http://example.com/> .\n\n";
     turtleOutput += "ex:Ontology {\n";
-    turtleOutput += `  ex:source \"${escapeXML(ontology.source)}\" ;\n`;
-    turtleOutput += `  ex:description \"${escapeXML(ontology.description)}\" ;\n`;
+    turtleOutput += `  ex:source "${escapeXML(ontology.source)}" ;\n`;
+    turtleOutput += `  ex:description "${escapeXML(ontology.description)}" ;\n`;
     if (Array.isArray(ontology.data) && ontology.data.length > 0) {
       turtleOutput += "  ex:data [\n";
       ontology.data.forEach((item, index) => {
         turtleOutput += "    [\n";
         const keys = Object.keys(item);
         keys.forEach((key, i) => {
-          turtleOutput += `      ex:${key} \"${escapeXML(String(item[key]))}\"`;
+          turtleOutput += `      ex:${key} "${escapeXML(String(item[key]))}"`;
           turtleOutput += (i < keys.length - 1 ? " ;\n" : "\n");
         });
         turtleOutput += "    ]";
