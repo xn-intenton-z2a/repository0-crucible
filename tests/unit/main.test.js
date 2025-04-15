@@ -9,12 +9,14 @@ describe("Main Module Import", () => {
   });
 });
 
+
 describe("Main Output", () => {
   test("should terminate without error", () => {
     process.argv = ["node", "src/lib/main.js"];
     main();
   });
 });
+
 
 describe("Main Help", () => {
   test("should display help message when '--help' flag is provided", () => {
@@ -27,6 +29,7 @@ describe("Main Help", () => {
     spy.mockRestore();
   });
 });
+
 
 describe("Main Version", () => {
   test("should display version number from package.json when '--version' flag is provided", async () => {
@@ -41,6 +44,7 @@ describe("Main Version", () => {
   });
 });
 
+
 describe("Main Diagnostics", () => {
   test("should display diagnostics information when '--diagnostics' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -54,6 +58,19 @@ describe("Main Diagnostics", () => {
     spy.mockRestore();
   });
 });
+
+
+describe("Main Refresh", () => {
+  test("should display refresh message when '--refresh' flag is provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--refresh"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    expect(output).toContain("Refreshing application state...");
+    spy.mockRestore();
+  });
+});
+
 
 describe("Main Merge Persist", () => {
   test("should display merge persist message when '--merge-persist' flag is provided", () => {

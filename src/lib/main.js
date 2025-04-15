@@ -5,7 +5,7 @@ import { fileURLToPath } from "url";
 
 export async function main(args = process.argv.slice(2)) {
   if (args.includes('--help')) {
-    console.log(`Usage: node src/lib/main.js [options]\n\nOptions:\n  --help                Display help information about the CLI tool.\n  --version             Display the current application version.\n  --diagnostics         Run diagnostics.\n  --serve               Start the server.\n  --build-intermediate  Build with intermediate options.\n  --build-enhanced      Build with enhanced options.\n  --refresh             Refresh the application.\n  --merge-persist       Merge and persist changes.`);
+    console.log(`Usage: node src/lib/main.js [options]\n\nOptions:\n  --help                Display help information about the CLI tool.\n  --version             Display the current application version.\n  --diagnostics         Run diagnostics.\n  --serve               Start the server.\n  --build-intermediate  Build with intermediate options.\n  --build-enhanced      Build with enhanced options.\n  --refresh             Refresh the application state.\n  --merge-persist       Merge and persist changes.`);
     return;
   }
   
@@ -25,6 +25,11 @@ export async function main(args = process.argv.slice(2)) {
     console.log("Executable Path:", process.execPath);
     console.log("Current Working Directory:", process.cwd());
     console.log("Environment Variables:", process.env);
+    return;
+  }
+  
+  if (args.includes('--refresh')) {
+    console.log("Refreshing application state...");
     return;
   }
   
