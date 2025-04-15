@@ -16,10 +16,19 @@ describe("Main Output", () => {
 });
 
 describe("Query OWL Option", () => {
-  test("should output sample OWL query result", () => {
+  test("should output sample OWL query result when no additional parameter is provided", () => {
     const logSpy = vi.spyOn(console, "log");
     main(["--query-owl"]);
     expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ result: "Sample OWL query output" }));
+    logSpy.mockRestore();
+  });
+});
+
+describe("Dynamic Query OWL Option", () => {
+  test("should output dynamic OWL query result for provided query", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--query-owl", "cities"]);
+    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ result: "OWL query output for query: cities" }));
     logSpy.mockRestore();
   });
 });

@@ -4,7 +4,7 @@
 
 To create a self-evolving agentic coding system of your own based on this one see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds].
 
 ## Repository Template
 
@@ -42,12 +42,19 @@ node src/lib/main.js --help
   npm run start
   ```
 
-- **Query OWL Ontologies:**
-  To simulate querying an OWL ontology stored as JSON, run:
+- **Query OWL Ontologies (Static Output):**
+  To simulate querying an OWL ontology stored as JSON without any additional query parameter, run:
   ```bash
   node src/lib/main.js --query-owl
   ```
   This will output a sample JSON: `{ "result": "Sample OWL query output" }`.
+
+- **Query OWL Ontologies (Dynamic Query):**
+  You can also provide a query parameter to customize the output. For example:
+  ```bash
+  node src/lib/main.js --query-owl cities
+  ```
+  This command will output a JSON result like: `{ "result": "OWL query output for query: cities" }`.
 
 ## Incremental Changes Plan
 
