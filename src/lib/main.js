@@ -38,6 +38,21 @@ export async function main(args = process.argv.slice(2)) {
     return;
   }
   
+  if (args.includes('--serve')) {
+    console.log("Starting server...");
+    return;
+  }
+  
+  if (args.includes('--build-intermediate')) {
+    console.log("Building with intermediate options...");
+    return;
+  }
+  
+  if (args.includes('--build-enhanced')) {
+    console.log("Building with enhanced options...");
+    return;
+  }
+  
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 

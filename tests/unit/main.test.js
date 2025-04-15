@@ -49,9 +49,7 @@ describe("Main Diagnostics", () => {
   test("should display diagnostics information when '--diagnostics' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--diagnostics"]);
-    // Check that at least one call outputs the diagnostics header
     expect(spy).toHaveBeenCalledWith(expect.stringContaining("Diagnostics:"));
-    // Check that one of the calls includes Node Version
     const calls = spy.mock.calls.map(call => call[0]);
     const hasNodeVersion = calls.some(text => String(text).includes("Node Version:"));
     expect(hasNodeVersion).toBe(true);
@@ -79,6 +77,42 @@ describe("Main Merge Persist", () => {
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     expect(output).toContain("Merging and persisting changes...");
+    spy.mockRestore();
+  });
+});
+
+
+describe("Main Serve", () => {
+  test("should display serve message when '--serve' flag is provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--serve"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    expect(output).toContain("Starting server...");
+    spy.mockRestore();
+  });
+});
+
+
+describe("Main Build Intermediate", () => {
+  test("should display intermediate build message when '--build-intermediate' flag is provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--build-intermediate"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    expect(output).toContain("Building with intermediate options...");
+    spy.mockRestore();
+  });
+});
+
+
+describe("Main Build Enhanced", () => {
+  test("should display enhanced build message when '--build-enhanced' flag is provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--build-enhanced"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    expect(output).toContain("Building with enhanced options...");
     spy.mockRestore();
   });
 });
