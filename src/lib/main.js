@@ -28,6 +28,15 @@ Options:
     }
     return;
   }
+
+  if (args.includes('--diagnostics')) {
+    console.log("Diagnostics:");
+    console.log("Node Version:", process.version);
+    console.log("Executable Path:", process.execPath);
+    console.log("Current Working Directory:", process.cwd());
+    console.log("Environment Variables:", process.env);
+    return;
+  }
   
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
