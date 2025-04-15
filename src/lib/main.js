@@ -5,17 +5,7 @@ import { fileURLToPath } from "url";
 
 export async function main(args = process.argv.slice(2)) {
   if (args.includes('--help')) {
-    console.log(`Usage: node src/lib/main.js [options]
-
-Options:
-  --help                Display help information about the CLI tool.
-  --version             Display the current application version.
-  --diagnostics         Run diagnostics.
-  --serve               Start the server.
-  --build-intermediate  Build with intermediate options.
-  --build-enhanced      Build with enhanced options.
-  --refresh             Refresh the application.
-  --merge-persist       Merge and persist changes.`);
+    console.log(`Usage: node src/lib/main.js [options]\n\nOptions:\n  --help                Display help information about the CLI tool.\n  --version             Display the current application version.\n  --diagnostics         Run diagnostics.\n  --serve               Start the server.\n  --build-intermediate  Build with intermediate options.\n  --build-enhanced      Build with enhanced options.\n  --refresh             Refresh the application.\n  --merge-persist       Merge and persist changes.`);
     return;
   }
   
