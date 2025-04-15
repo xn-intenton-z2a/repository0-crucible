@@ -38,6 +38,11 @@ Options:
     return;
   }
   
+  if (args.includes('--merge-persist')) {
+    console.log("Merging and persisting changes...");
+    return;
+  }
+  
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 

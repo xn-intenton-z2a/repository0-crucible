@@ -60,6 +60,12 @@ node src/lib/main.js [options]
   ```
   This flag displays diagnostic information including Node version, executable path, current working directory, and environment variables.
 
+- **Merge and Persist Changes:**
+  ```bash
+  node src/lib/main.js --merge-persist
+  ```
+  This flag initiates a merge and persist operation. Currently, it prints a confirmation message indicating that the merge and persist process has been initiated.
+
 - **Default Demo Output:**
   ```bash
   npm run start
