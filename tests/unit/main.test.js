@@ -173,7 +173,8 @@ describe("Main Memory Logging", () => {
     const output = spy.mock.calls[spy.mock.calls.length - 1][0];
     expect(output).toContain("Memory Log:");
     // Check that the log contains at least one entry with a timestamp and args
-    const logOutput = JSON.parse(output.replace('Memory Log:', '').trim());
+    const jsonPart = output.replace('Memory Log:', '').trim();
+    const logOutput = JSON.parse(jsonPart);
     expect(Array.isArray(logOutput)).toBe(true);
     expect(logOutput.length).toBeGreaterThanOrEqual(1);
     expect(logOutput[0]).toHaveProperty('timestamp');

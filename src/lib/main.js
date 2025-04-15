@@ -80,7 +80,7 @@ export async function main(args = process.argv.slice(2)) {
   }
 
   if (args.includes('--memory')) {
-    console.log('Memory Log:', JSON.stringify(memoryLog, null, 2));
+    console.log('Memory Log:' + JSON.stringify(memoryLog, null, 2));
     return;
   }
   
