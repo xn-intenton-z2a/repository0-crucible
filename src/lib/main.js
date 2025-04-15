@@ -21,6 +21,21 @@ export function crawlDataSources() {
 export let serverInstance = null;
 
 export async function main(args = process.argv.slice(2)) {
+  // New: Handle '--version' option to output package version
+  const versionIndex = args.indexOf("--version");
+  if (versionIndex !== -1) {
+    try {
+      // Assuming package.json is located in the current working directory
+      const packagePath = process.cwd() + "/package.json";
+      const packageContent = fs.readFileSync(packagePath, "utf-8");
+      const packageJson = JSON.parse(packageContent);
+      console.log(JSON.stringify({ version: packageJson.version }, null, 2));
+    } catch (err) {
+      console.log(JSON.stringify({ error: "Error reading package.json: " + err.message }));
+    }
+    return;
+  }
+
   // Handle '--help' option to output usage instructions
   const helpIndex = args.indexOf("--help");
   if (helpIndex !== -1) {
@@ -41,7 +56,8 @@ export async function main(args = process.argv.slice(2)) {
         "--ontology-info": "Read an ontology JSON file and output a summary with source, description, total data entries, and optional timestamp",
         "--serve": "Start an HTTP server on port 3000 that serves the OWL ontology at the '/ontology' endpoint",
         "--capital-cities": "Output a sample OWL ontology of capital cities",
-        "--refresh": "Re-crawl public data sources, attach a current timestamp, and output the refreshed ontology JSON"
+        "--refresh": "Re-crawl public data sources, attach a current timestamp, and output the refreshed ontology JSON",
+        "--version": "Display the current version of the tool"
       }
     };
     console.log(JSON.stringify(helpMessage, null, 2));

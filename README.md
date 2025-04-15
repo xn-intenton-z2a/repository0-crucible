@@ -50,6 +50,16 @@ When executed with the --help option, the tool will output a JSON with usage ins
   node src/lib/main.js --help
   ```
 
+- **Display Version Information:**
+  To display the current version of the tool, run:
+  ```bash
+  node src/lib/main.js --version
+  ```
+  This will output a JSON like:
+  ```json
+  { "version": "1.1.0-0" }
+  ```
+
 - **Query OWL Ontologies (Static Output):**
   To simulate querying an OWL ontology stored as JSON without any additional query parameter, run:
   ```bash
