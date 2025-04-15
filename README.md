@@ -25,7 +25,11 @@ npm install repository0-crucible
 
 ## Features
 
-TODO: Add features here.
+- Provides a CLI tool for generating and handling OWL ontologies in JSON format.
+- Supports exporting OWL ontology of capital cities with a generation timestamp.
+- Simulates various operations: diagnostics, data crawling, refreshing data, and build processes.
+- Includes an HTTP server to serve the ontology.
+- New: Validates the exported ontology JSON file using the `--validate-ontology` option.
 
 ## Usage
 
@@ -58,7 +62,8 @@ Example output:
     "--merge-persist",
     "--crawl-data",
     "--export-ontology",
-    "--build-detailed"
+    "--build-detailed",
+    "--validate-ontology"
   ]
 }
 ```
@@ -118,6 +123,14 @@ node src/lib/main.js --export-ontology
 ```
 
 This command writes the ontology JSON to a file named `exported_ontology.json` and outputs a confirmation message.
+
+To validate the exported OWL ontology JSON file and ensure its structure is correct, run:
+
+```bash
+node src/lib/main.js --validate-ontology
+```
+
+If the file exists and is valid, the tool will output "Ontology is valid". If the file is missing or invalid, an appropriate error message will be displayed.
 
 To simulate a comprehensive build pipeline that sequentially executes multiple steps, run:
 

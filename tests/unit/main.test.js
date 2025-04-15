@@ -45,7 +45,7 @@ describe("Capital Cities Option", () => {
     expect(parsed.data).toEqual([
       { country: "France", capital: "Paris" },
       { country: "Japan", capital: "Tokyo" },
-      { country: "Brazil", capital: "Brasília" },
+      { country: "Brazil", capital: "Brasília" }
     ]);
     expect(parsed).toHaveProperty("generatedAt");
     const iso = new Date(parsed.generatedAt).toISOString();
@@ -77,7 +77,7 @@ describe("Diagnostics Option", () => {
         "--serve",
         "--crawl-data",
         "--refresh",
-        "--build-intermediate",
+        "--build-intermediate"
       ])
     );
   });
@@ -120,7 +120,7 @@ describe("Serve Option", () => {
     expect(parsed.data).toEqual([
       { country: "France", capital: "Paris" },
       { country: "Japan", capital: "Tokyo" },
-      { country: "Brazil", capital: "Brasília" },
+      { country: "Brazil", capital: "Brasília" }
     ]);
     expect(parsed).toHaveProperty("generatedAt");
     const iso = new Date(parsed.generatedAt).toISOString();
@@ -351,10 +351,48 @@ describe("Export Ontology Option", () => {
     expect(parsed.data).toEqual([
       { country: "France", capital: "Paris" },
       { country: "Japan", capital: "Tokyo" },
-      { country: "Brazil", capital: "Brasília" },
+      { country: "Brazil", capital: "Brasília" }
     ]);
     expect(parsed).toHaveProperty("generatedAt");
     const iso = new Date(parsed.generatedAt).toISOString();
     expect(iso).toEqual(parsed.generatedAt);
+  });
+});
+
+describe("Validate Ontology Option", () => {
+  afterEach(() => {
+    cleanupExportedFile();
+  });
+
+  test("should validate ontology successfully when a valid file exists", () => {
+    // First export a valid ontology file
+    main(["--export-ontology"]);
+
+    let output = "";
+    const originalLog = console.log;
+    console.log = (msg) => {
+      output += msg;
+    };
+    
+    main(["--validate-ontology"]);
+    console.log = originalLog;
+    
+    expect(output).toContain("Ontology is valid");
+  });
+
+  test("should output error when ontology file is not found", () => {
+    // Ensure the exported file does not exist
+    cleanupExportedFile();
+
+    let output = "";
+    const originalError = console.error;
+    console.error = (msg) => {
+      output += msg;
+    };
+    
+    main(["--validate-ontology"]);
+    console.error = originalError;
+    
+    expect(output).toContain("Error: Exported ontology file 'exported_ontology.json' not found.");
   });
 });

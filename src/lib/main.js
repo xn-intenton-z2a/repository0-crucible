@@ -4,6 +4,7 @@
 import { fileURLToPath } from "url";
 import http from "http";
 import fs from "fs";
+import { z } from "zod";
 
 const helpMessage = [
   "Usage: node src/lib/main.js [options]",
@@ -21,6 +22,7 @@ const helpMessage = [
   "  --serve               Start the HTTP server",
   "  --export-ontology     Export the capital cities OWL ontology to a file",
   "  --build-detailed      Simulate a comprehensive build pipeline with multiple steps",
+  "  --validate-ontology   Validate exported OWL ontology JSON file"
 ].join("\n");
 
 export function main(args = []) {
@@ -37,6 +39,7 @@ export function main(args = []) {
     "--serve",
     "--export-ontology",
     "--build-detailed",
+    "--validate-ontology"
   ]);
 
   // Check for unknown options
@@ -65,6 +68,7 @@ export function main(args = []) {
       "--crawl-data",
       "--export-ontology",
       "--build-detailed",
+      "--validate-ontology"
     ];
     console.log(JSON.stringify({ usage, options }, null, 2));
     return;
@@ -92,6 +96,7 @@ export function main(args = []) {
         "--help-json",
         "--export-ontology",
         "--build-detailed",
+        "--validate-ontology"
       ],
     };
     console.log(JSON.stringify(diagnostics, null, 2));
@@ -203,6 +208,28 @@ export function main(args = []) {
       mergePersist: mergePersistData,
     };
     console.log(JSON.stringify(detailedBuild, null, 2));
+    return;
+  }
+
+  if (args.includes("--validate-ontology")) {
+    const fileName = "exported_ontology.json";
+    if (!fs.existsSync(fileName)) {
+      console.error(`Error: Exported ontology file '${fileName}' not found.`);
+      return;
+    }
+    try {
+      const fileContent = fs.readFileSync(fileName, "utf-8");
+      const data = JSON.parse(fileContent);
+      const ontologySchema = z.object({
+        owl: z.literal("capitalCities"),
+        data: z.array(z.object({ country: z.string(), capital: z.string() })),
+        generatedAt: z.string().refine((val) => !isNaN(Date.parse(val)), { message: "Invalid ISO date format" }),
+      });
+      ontologySchema.parse(data);
+      console.log("Ontology is valid");
+    } catch (e) {
+      console.error("Validation failed:", e.errors ? e.errors : e.message);
+    }
     return;
   }
 
