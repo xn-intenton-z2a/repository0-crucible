@@ -481,9 +481,23 @@ describe("Export YAML Option", () => {
     const logSpy = vi.spyOn(console, "log");
     main(["--export-yaml"]);
     const output = logSpy.mock.calls[0][0];
-    // Check that output contains YAML keys
     expect(output).toContain("source: public");
     expect(output).toContain("description: Simulated crawling of public data sources");
+    logSpy.mockRestore();
+  });
+});
+
+describe("Export HTML Option", () => {
+  test("should output HTML representation of ontology", () => {
+    const logSpy = vi.spyOn(console, "log");
+    main(["--export-html"]);
+    const output = logSpy.mock.calls[0][0];
+    expect(output.startsWith("<!DOCTYPE html>"));
+    expect(output).toContain("<html>");
+    expect(output).toContain("<table");
+    // Check that ontology source and description are present
+    expect(output).toContain("Source: public");
+    expect(output).toContain("Description: Simulated crawling of public data sources");
     logSpy.mockRestore();
   });
 });
