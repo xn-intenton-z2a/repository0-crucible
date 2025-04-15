@@ -102,6 +102,16 @@ node src/lib/main.js [options]
   ```
   This flag builds the application with enhanced options and prints "Building with enhanced options...".
 
+- **Echo Arguments:**
+  ```bash
+  node src/lib/main.js --echo arg1 arg2
+  ```
+  This flag outputs the received command-line arguments (excluding the '--echo' flag) in a structured JSON format, for example:
+  
+  ```json
+  { "echo": ["arg1", "arg2"] }
+  ```
+
 - **Default Demo Output:**
   ```bash
   npm run start

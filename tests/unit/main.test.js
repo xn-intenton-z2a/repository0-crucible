@@ -145,3 +145,17 @@ describe("Main Build Enhanced", () => {
     spy.mockRestore();
   });
 });
+
+
+describe("Main Echo", () => {
+  test("should output structured JSON with echo property excluding '--echo'", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--echo", "arg1", "arg2"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("echo");
+    expect(parsed.echo).toEqual(["arg1", "arg2"]);
+    spy.mockRestore();
+  });
+});
