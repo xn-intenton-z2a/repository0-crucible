@@ -2,6 +2,16 @@ import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main, memoryLog } from "@src/lib/main.js";
 
+// Utility function to run main with given arguments and capture error output
+async function runMainWithArgs(args) {
+  const originalError = console.error;
+  let errorMsg = "";
+  console.error = (msg) => { errorMsg = msg; };
+  await main(args);
+  console.error = originalError;
+  return errorMsg;
+}
+
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
@@ -149,9 +159,9 @@ describe("Main Echo", () => {
 
 // Test for unrecognized input with standardized error message using console.error
 describe("Main Unrecognized Input", () => {
-  test("should display standardized error message for unrecognized input", () => {
+  test("should display standardized error message for unrecognized input", async () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    main(["invalid-flag"]);
+    await main(["invalid-flag"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     const expected = "Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.";
@@ -162,9 +172,9 @@ describe("Main Unrecognized Input", () => {
 
 // Test enhanced error message for numeric-like input 'NaN'
 describe("Main Unrecognized NaN", () => {
-  test("should display enhanced error message for 'NaN' input", () => {
+  test("should display enhanced error message for 'NaN' input", async () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    main(["NaN"]);
+    await main(["NaN"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     const expected = "Error: 'NaN' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.";
@@ -175,12 +185,49 @@ describe("Main Unrecognized NaN", () => {
 
 // Test enhanced error message for numeric-like input '123'
 describe("Main Unrecognized Numeric", () => {
-  test("should display enhanced error message for numeric string input", () => {
+  test("should display enhanced error message for numeric string input", async () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    main(["123"]);
+    await main(["123"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     const expected = "Error: '123' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.";
+    expect(output).toEqual(expected);
+    spy.mockRestore();
+  });
+});
+
+// Additional tests for negative and decimal numeric-like inputs
+describe("Main Unrecognized Negative Integer", () => {
+  test("should display enhanced error message for '-5' input", async () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    await main(["-5"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    const expected = "Error: '-5' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.";
+    expect(output).toEqual(expected);
+    spy.mockRestore();
+  });
+});
+
+describe("Main Unrecognized Positive Decimal", () => {
+  test("should display enhanced error message for '3.14' input", async () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    await main(["3.14"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    const expected = "Error: '3.14' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.";
+    expect(output).toEqual(expected);
+    spy.mockRestore();
+  });
+});
+
+describe("Main Unrecognized Negative Decimal", () => {
+  test("should display enhanced error message for '-2.718' input", async () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    await main(["-2.718"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    const expected = "Error: '-2.718' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.";
     expect(output).toEqual(expected);
     spy.mockRestore();
   });
