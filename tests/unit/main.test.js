@@ -201,7 +201,7 @@ describe("Main Unrecognized NaN", () => {
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     expect(output).toContain(
-      "Error: 'NaN' is not a valid option. Please use '--help' to see the list of available commands.",
+      "Error: 'NaN' is not a valid option. Please use '--help' to see the list of available commands."
     );
     spy.mockRestore();
   });
