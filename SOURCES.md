@@ -57,3 +57,28 @@ Prettier documentation offers extensive details on its code formatting capabilit
 ## https://github.com/colinhacks/zod
 Zod’s official documentation covers its TypeScript-first schema declaration and validation library. It plays a significant role in runtime validation and error handling in modern JavaScript applications.
 ## MIT License
+
+# Tree of Thoughts Research Paper
+## https://arxiv.org/abs/2205.11223
+This research paper introduces the "Tree of Thoughts" framework, an advanced method for enabling multi-step, deliberative problem-solving with large language models. It builds on concepts from the ReAct pattern by allowing for structured exploration of reasoning paths and alternative solutions.
+## Public Domain (Research Paper)
+
+# Prompt Engineering Guide
+## https://github.com/dair-ai/Prompt-Engineering-Guide
+A community-driven guide that consolidates best practices and innovative approaches in prompt engineering. This resource is invaluable for developers looking to optimize prompt strategies for AI models, which is particularly useful for help-seeking and self-improvement functionalities.
+## MIT License
+
+# OpenAI Cookbook
+## https://github.com/openai/openai-cookbook
+A practical collection of examples and guides designed to help developers utilize the OpenAI API effectively. This resource includes recipes for troubleshooting, advanced prompt techniques, and self-improvement strategies in AI systems.
+## MIT License
+
+# Pinecone Documentation
+## https://docs.pinecone.io
+Pinecone's documentation provides an in-depth look into their vector database service, which is designed to support scalable memory storage for AI applications, enabling efficient similarity search and embedding-based retrieval – key components for building long-term memory features.
+## Pinecone Service Terms
+
+# Auto-GPT Documentation
+## https://github.com/Significant-Gravitas/auto-gpt
+Auto-GPT is an experimental open-source application that showcases the potential of autonomous AI agents to plan, decompose goals, and self-improve. This documentation offers insights and examples of applying these advanced techniques in real-world scenarios.
+## AGPL-3.0
