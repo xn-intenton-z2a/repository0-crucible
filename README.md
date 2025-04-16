@@ -42,17 +42,17 @@ node src/lib/main.js invalid-flag
 # Output (sent to stderr): Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
 ```
 
-### Error Handling for Invalid Inputs
+### Error Handling for Invalid and Numeric-like Inputs
 
-Any unrecognized input will result in an error message sent to stderr via console.error. The tool differentiates between general invalid commands and numeric-like inputs:
+The CLI tool distinguishes between general unrecognized commands and numeric-like inputs. 
 
-- For general invalid commands (e.g., `invalid-flag`), the output is:
+- For general invalid commands (e.g., `invalid-flag`), the error message is:
 
 ```
 Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
 ```
 
-- For numeric-like inputs (for example, `NaN` or `123`), the CLI tool outputs an extended error message that advises users to provide a valid command. The extended error message is exactly:
+- For numeric-like inputs (such as `NaN` or numeric strings like `123`), the CLI outputs an extended error message that advises the user to provide a valid command. The message is exactly:
 
 ```
 Error: '<input>' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.
