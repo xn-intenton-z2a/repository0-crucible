@@ -77,3 +77,33 @@ Prettier is an opinionated code formatter that supports multiple languages and f
 ## https://swagger.io/specification/
 This specification details the OpenAPI standard for building and documenting RESTful APIs. It is essential for developers looking to integrate API documentation, auto-generation tools, and client SDKs into their workflow.
 ## Apache-2.0
+
+# GitLab REST API Documentation
+## https://docs.gitlab.com/ee/api/
+GitLab's REST API documentation provides comprehensive insights into accessing and managing GitLab's repository management, CI/CD pipelines, issues, and merge requests. It serves as a competitor reference to GitHub’s API and is useful for cross-platform integrations.
+## GitLab License
+
+# Node.js Best Practices Documentation
+## https://nodejs.dev/learn
+This guide offers updated best practices for Node.js development, covering performance optimization, security, and maintainability. It is an excellent resource for developers aiming to build efficient and modern Node.js applications.
+## OpenJS Foundation
+
+# dotenv Documentation
+## https://github.com/motdotla/dotenv
+The dotenv documentation explains how to use the dotenv package to load environment variables from a .env file, promoting secure and flexible configuration management for Node.js applications.
+## MIT License
+
+# GitHub Copilot Documentation
+## https://docs.github.com/en/copilot
+GitHub Copilot documentation provides insights into using the AI pair programming tool to generate code suggestions and accelerate development workflows. It highlights setup, usage instructions, and limitations of the service.
+## GitHub Terms of Service
+
+# Markdown-it Documentation
+## https://github.com/markdown-it/markdown-it
+The markdown-it documentation details how to use this powerful markdown parser that supports plugins and GitHub-flavored markdown. It's an essential resource when working with dynamic markdown content in projects.
+## MIT License
+
+# Airbnb JavaScript Style Guide
+## https://github.com/airbnb/javascript
+The Airbnb JavaScript Style Guide is a comprehensive set of coding conventions and best practices for JavaScript development. It has significantly influenced many linter configurations and coding standards in the industry.
+## MIT License
