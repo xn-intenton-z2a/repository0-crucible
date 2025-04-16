@@ -30,7 +30,7 @@ describe("Main Help", () => {
 describe("Main Version", () => {
   test("should display version number from package.json when '--version' flag is provided", async () => {
     const pkg = await import("../../package.json", { assert: { type: "json" } });
-    const version = pkg.default?.version || pkg.version;
+    const version = (pkg.default && pkg.default.version) ? pkg.default.version : pkg.version;
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--version"]);
     expect(spy).toHaveBeenCalled();
