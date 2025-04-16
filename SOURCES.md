@@ -5,25 +5,50 @@ This article from RisingStack provides a comprehensive guide on building command
 
 # Node.js Memory Management
 ## https://nodejs.dev/learn/nodejs-memory-management
-This tutorial on nodejs.dev explains the intricacies of how Node.js manages memory, including concepts like garbage collection, heap, and stack. It offers best practices for monitoring and optimizing memory usage in Node.js applications, which is particularly relevant for projects that incorporate detailed memory logging and performance tracking features.
+This tutorial explains the intricacies of how Node.js manages memory, including garbage collection, heap, and stack. It offers best practices for monitoring and optimizing memory usage in Node.js applications, which is particularly relevant for projects with detailed memory logging and performance tracking.
 ## MIT License (assumed)
 
 # Multi-Agent Systems in Autonomous Automation
 ## https://arxiv.org/abs/1811.00102
-While this source is already referenced in parts of the repository, it remains highly relevant. It surveys autonomous agents and multi-agent systems with a focus on cooperation and distributed problem-solving – principles that underpin features such as replication and parallel processing within the project.
+This research paper surveys autonomous agents and multi-agent systems with a focus on cooperation and distributed problem solving. Its insights underpin features such as replication, parallel processing, and enhanced strategic planning in agentic systems.
 ## Public Domain (Research Paper)
 
 # Effective CLI Design and Usability
 ## https://www.smashingmagazine.com/2018/02/command-line-interface-design/
-This article offers an in-depth exploration into the best practices for designing intuitive and user-friendly command-line interfaces. It covers key topics such as error messaging, layout, and overall usability—important aspects for ensuring that the CLI tool remains accessible and effective even as new features like verbose logging and interactive spinners are added.
+This article offers an in-depth exploration of designing intuitive and user-friendly command-line interfaces with best practices including error messaging, layout design, and overall usability enhancements.
 ## N/A
 
 # Modern Configuration Management with 12-Factor App
 ## https://12factor.net/config
-This resource provides a clear overview of configuration management principles as advocated in the 12-Factor App methodology. It explains the importance of externalizing configuration, which aligns well with the repository's enhancements to environment variable handling via dotenv and its emphasis on runtime flexibility.
+This resource provides a clear overview of configuration management as advocated by the 12-Factor App methodology. It emphasizes externalizing configuration, which is crucial for runtime flexibility and secure environment management in modern applications.
 ## Public Domain
 
 # Observability and Distributed Tracing in Node.js
 ## https://opentelemetry.io/docs/
-The OpenTelemetry documentation offers comprehensive guidelines for implementing observability and distributed tracing in applications. It is a valuable resource for developers looking to enhance diagnostic logging and performance monitoring, aligning with features such as memory logging and extended diagnostics.
+The OpenTelemetry documentation offers comprehensive guidelines for implementing observability and distributed tracing in applications. It supports enhanced diagnostic logging and performance monitoring through standardized practices.
 ## Apache License 2.0
+
+# Ora: Spinners for CLI
+## https://github.com/sindresorhus/ora
+Ora is a elegant terminal spinner library that enhances user feedback during long-running CLI operations. Its documentation covers various usage patterns, customization options, and integration tips, which are particularly relevant for enhancing command-line interactivity.
+## MIT License
+
+# Chalk: Terminal String Styling
+## https://github.com/chalk/chalk
+Chalk is a popular library for styling terminal string output, used to provide colorized and formatted messages in CLI applications. Its documentation details usage scenarios, API methods, and customization options that help in making console outputs more readable and engaging.
+## MIT License
+
+# dotenv: Load Environment Variables
+## https://github.com/motdotla/dotenv
+Dotenv is a zero-dependency module that loads environment variables from a .env file into process.env. This documentation is essential for developers looking to manage configuration settings securely and efficiently in Node.js applications.
+## BSD-2-Clause License
+
+# MDN Promise.all Documentation
+## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
+This MDN documentation explains the Promise.all method, which is crucial for handling multiple asynchronous operations concurrently. It provides detailed examples and usage patterns that support features such as parallel execution and replication in modern JavaScript.
+## CC BY-SA 2.5 (or later)
+
+# MDN Async/Await Guide
+## https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await
+This guide from MDN covers the fundamentals of asynchronous programming in JavaScript using async and await. It offers practical examples, error handling strategies, and performance considerations, making it a valuable resource for implementing modern concurrency patterns in Node.js.
+## CC BY-SA 2.5 (or later)
