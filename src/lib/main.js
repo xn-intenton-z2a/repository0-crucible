@@ -7,6 +7,16 @@ import { fileURLToPath } from "url";
 export const memoryLog = [];
 
 /**
+ * Handles unrecognized CLI inputs by outputting a standardized error message.
+ * @param {string[]} args - The CLI arguments that were not recognized
+ */
+function handleInvalidCommand(args) {
+  const input = args.join(" ");
+  const errorMsg = `Error: '${input}' is not a recognized command. Use '--help' for available options.`;
+  console.log(errorMsg);
+}
+
+/**
  * Main entry point for the CLI tool.
  * Logs each CLI invocation with a timestamp and processes various flags.
  *
@@ -130,9 +140,8 @@ export async function main(args = process.argv.slice(2)) {
     return;
   }
 
-  // Standardized error message for invalid inputs
-  const invalidInput = args.join(" ");
-  console.log(`Error: '${invalidInput}' is not a recognized command. Use '--help' for available options.`);
+  // Handle unrecognized commands
+  handleInvalidCommand(args);
   return;
 }
 
