@@ -1,31 +1,32 @@
 # MEMORY_PERFORMANCE
 
 ## Overview
-This update enhances the existing memory logging feature by incorporating execution duration for each CLI command. In addition to logging the timestamp and arguments, the tool will now measure and store the duration of each invocation. This provides developers and users with insight into the performance of commands, aligning with our mission of continuous self-improvement and autonomous debugging.
+This update enhances the memory logging mechanism by adding execution duration tracking for each CLI command. Every invocation will now record a start time and, upon completion of processing, compute the execution time. This extra data point provides insights into the performance of commands and supports future self-improvement and optimization efforts.
 
 ## Implementation Details
 1. **Timing Measurement:**
-   - At the very beginning of the `main` function in `src/lib/main.js`, record the start time (e.g., `const startTime = Date.now();`).
-   - Before exiting the function (after processing commands or flags), compute the elapsed time (`Date.now() - startTime`) and include it as a `duration` property in the log object.
-   - Update the global `memoryLog` to store entries as: `{ timestamp, args, duration }`.
+   - At the very beginning of the `main` function in `src/lib/main.js`, record the start time (e.g. `const startTime = Date.now();`).
+   - Before each early return or after processing the main command logic, compute the elapsed time (`Date.now() - startTime`).
+   - Update the corresponding log entry in the global `memoryLog` to include a new property `duration` (in milliseconds) along with the existing `timestamp` and `args`.
 
-2. **Source File Modifications (`src/lib/main.js`):
-   - Insert the timing start code at the top of the `main` function.
-   - After processing flags (or before each early return), calculate the duration and enhance the corresponding memory log entry with a new property `duration` (in milliseconds).
+2. **Source File Modifications (`src/lib/main.js`):**
+   - Insert timing code at the top of `main`:
+     ```js
+     const startTime = Date.now();
+     ```
+   - Just before each return point, add the duration to the last log entry with:
+     ```js
+     memoryLog[memoryLog.length - 1].duration = Date.now() - startTime;
+     ```
+   - Ensure every CLI command execution (help, version, diagnostics, etc.) is wrapped by these timing calculations.
 
-3. **Testing Updates (`tests/unit/main.test.js`):
-   - Extend the existing memory logging tests to assert that each log entry now includes a `duration` field.
-   - Verify that this field is a non-negative number.
-   - Ensure that other aspects of the log (like `timestamp` and `args`) remain unchanged.
+3. **Testing Updates (`tests/unit/main.test.js`):**
+   - Enhance the memory logging tests to verify that each log entry contains a non-negative `duration` field.
+   - Update test cases to check for both the presence and correctness (i.e., non-negative value) of the `duration` property.
 
-4. **Documentation Updates (README.md):
-   - Update the Memory Logging section to describe the enriched log format, including the execution duration of each CLI invocation.
-   - Provide an example output showing a log entry with the `duration` field.
-
-5. **Dependencies and Compatibility:**
-   - No new dependencies are required for this enhancement. All changes adhere to the project requirements and are fully testable within a single repository modification.
+4. **Documentation Updates (README.md):**
+   - Update the Memory Logging section to describe the enriched format including the execution duration.
+   - Include an example log entry in the README that shows `timestamp`, `args`, and `duration`.
 
 ## Long-Term Direction
-By merging performance tracking with memory logging, the tool lays the foundation for self-improvement initiatives. In future iterations, these performance metrics can guide optimizations, help pinpoint bottlenecks, and provide a richer context for automated error handling and self-refinement processes.
-
-This update is a straightforward enhancement to existing functionality, providing tangible value without overcomplicating the repository.
+This enhancement not only aids in monitoring performance but also lays the groundwork for automated tuning and optimization. Over time, collected duration metrics could be used to identify bottlenecks, inform dynamic re-planning, and support self-improvement initiatives, in line with the mission of intelligent, autonomous automation.
