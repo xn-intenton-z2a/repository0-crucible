@@ -8,6 +8,8 @@ export const memoryLog = [];
 
 /**
  * Handles unrecognized CLI inputs by outputting a standardized error message.
+ * This function ensures that any input not matching recognized commands is reported
+ * in a consistent manner to aid in debugging and user guidance.
  * 
  * @param {string[]} args - The CLI arguments that were not recognized
  */
