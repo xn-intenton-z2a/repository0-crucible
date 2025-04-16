@@ -39,7 +39,7 @@ When running with unrecognized inputs, the tool displays an error message guidin
 
 ```bash
 node src/lib/main.js [unrecognized-options]
-# Output: Error: '<input>' is not a valid option. Please use '--help' to see the list of available commands.
+# Output: Error: '<input>' is not a recognized command. Use '--help' for available options.
 ```
 
 Note: In addition to unrecognized inputs, specific inputs such as `NaN` are explicitly handled by the CLI. For example, if you run:
@@ -51,7 +51,7 @@ node src/lib/main.js NaN
 The output will be:
 
 ```
-Error: 'NaN' is not a valid option. Please use '--help' to see the list of available commands.
+Error: 'NaN' is not a recognized command. Use '--help' for available options.
 ```
 
 This ensures that users are clearly informed about the invalidity of such input and advised to use the `--help` command for guidance on valid options.

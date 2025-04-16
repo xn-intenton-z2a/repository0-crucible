@@ -132,7 +132,7 @@ export async function main(args = process.argv.slice(2)) {
 
   // Standardized error message for invalid inputs
   const invalidInput = args.join(" ");
-  console.log(`Error: '${invalidInput}' is not a valid option. Please use '--help' to see the list of available commands.`);
+  console.log(`Error: '${invalidInput}' is not a recognized command. Use '--help' for available options.`);
   return;
 }
 
