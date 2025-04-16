@@ -1,34 +1,42 @@
-# INPUT_VALIDATION Feature
+# INPUT_VALIDATION
 
 ## Overview
-This feature introduces robust input validation for the CLI tool. By leveraging the existing Zod dependency, the feature ensures that incoming command-line arguments are validated against a predefined schema. This increases reliability by preventing malformed or unexpected inputs, ensuring that users receive clear error messages and guidance. The validation occurs as soon as the tool starts, so that only recognized and properly formatted flags and arguments are processed.
+This feature introduces robust and standardized input validation for the CLI tool. Building on the existing use of Zod, this update refines the argument validation process by incorporating a dedicated error formatter, ensuring that users receive clear and consistent feedback on input errors. Additionally, it enforces stricter checks on the CLI arguments and provides suggestions for corrective action.
 
 ## Implementation Details
-1. **Schema Definition:**
-   - Define a Zod schema for the allowed CLI arguments. For example, validate that flags like `--help`, `--version`, `--diagnostics`, etc. conform to expected boolean values or string patterns.
-   - Incorporate checks for special cases, such as excluding non-standard inputs like 'NaN'.
+1. **Schema Definition and Enforcement:**
+   - Define a comprehensive Zod schema for accepted CLI arguments (e.g., flags such as `--help`, `--version`, `--diagnostics`, etc.) in `src/lib/main.js`.
+   - Validate the command-line arguments (`process.argv.slice(2)`) as soon as the CLI starts.
+   - Include custom validations to prevent inputs like `NaN` or other malformed strings from passing through.
 
-2. **Integration Into Main.js:**
-   - At the beginning of `src/lib/main.js`, import Zod and instantiate the validation schema.
-   - Before processing any flags, validate `process.argv.slice(2)` using Zod. If validation fails, output a clear error message indicating the nature of the input error and a suggestion to use `--help` for guidance.
-   - Ensure that valid inputs simply pass through to the existing command handlings without disrupting current functionalities.
+2. **Error Formatting:**
+   - Integrate a new errorFormatter function in the source file that captures Zod validation errors.
+   - When a validation error occurs, output a structured error message that clearly states the invalid inputs and offers guidance (e.g., "Use '--help' for available options").
+   - Ensure that this output does not interrupt the logging of valid invocations or alter the expected display of help information.
 
-3. **Error Handling:**
-   - In case of invalid inputs, the tool should log a friendly error message and exit gracefully. This prevents unexpected behavior or cryptic errors during runtime.
+3. **Integration into Main Process Flow:**
+   - Place the validation logic at the very beginning of the `main` function in `src/lib/main.js`.
+   - If the validation passes, allow the rest of the command processing to proceed as usual.
+   - If validation fails, log the error using the standardized error formatter and exit gracefully.
+
+4. **Dependency and File Updates:**
+   - Since Zod is already a dependency, no changes are needed in the dependency file. Only enhancements to the usage and error handling in the source file and tests are required.
 
 ## Testing
-1. **Unit Tests Update:**
-   - Update `tests/unit/main.test.js` with new test cases that feed malformed or non-compliant arguments to the CLI.
-   - Verify that erroneous inputs (e.g., unexpected string values or arrays of flags) trigger the appropriate error messages.
-   - Maintain tests for valid inputs to ensure that they are processed as before.
+1. **Unit Tests:**
+   - Enhance the existing test suite in `tests/unit/main.test.js` to include scenarios where malformed inputs (like unexpected strings or special values such as `NaN`) are provided.
+   - Verify that the CLI outputs the standardized error message for invalid inputs, and suggest using `--help` for valid options.
+   - Ensure that valid inputs proceed normally, without interference from the new validation logic.
 
 2. **Edge Cases:**
-   - Test boundary cases such as no arguments provided, or arguments with nested quotes, ensuring that the schema validation distinguishes valid and invalid cases appropriately.
+   - Test cases with no arguments should still default to help display.
+   - Include tests where multiple invalid flags are provided, and confirm that the error messaging aggregates the issues.
 
 ## Documentation
 1. **README Update:**
-   - Add a new section documenting the input validation feature. Explain that the CLI now uses Zod to validate incoming arguments, list the supported flags, and detail the error messages for invalid inputs.
-   - Provide usage examples to help users understand the acceptable format for CLI options.
+   - Update the CLI Options section in the README to mention that inputs are now validated using Zod.
+   - Document the standardized error output and provide examples of how invalid input messages will appear.
+   - Clarify that the CLI now enforces strict validation rules to improve reliability and user guidance.
 
 ## Long-Term Direction
-The INPUT_VALIDATION feature lays the groundwork for further enhancement in user input handling. Future iterations might refine the schema to handle more complex command-line inputs, incorporate auto-correction suggestions, and extend validation to configuration files or environment variables. As the CLI scales, a robust validation layer will be critical for maintaining reliability and ensuring that users have a smooth experience.
+This update to INPUT_VALIDATION lays the groundwork for a more resilient command-line interface. Future iterations may include advanced auto-correction suggestions, dynamic schema updates based on context, and extended support for configuration file validations. By providing clear and structured error messaging, the tool ensures that users are accurately informed about the nature of their input errors and how to resolve them, thereby aligning with the mission of delivering dependable autonomous automation.
