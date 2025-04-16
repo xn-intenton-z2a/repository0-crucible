@@ -193,3 +193,17 @@ describe("Main Help-Seeking", () => {
     spy.mockRestore();
   });
 });
+
+// New test for unrecognized input
+describe("Main Unrecognized Input", () => {
+  test("should display error message for unrecognized input", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["invalid-flag"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    expect(output).toContain("Error: Unrecognized input");
+    expect(output).toContain("invalid-flag");
+    expect(output).toContain("--help");
+    spy.mockRestore();
+  });
+});

@@ -35,10 +35,11 @@ To run the CLI tool and see help instructions:
 node src/lib/main.js --help
 ```
 
-When running without the `--help` flag, the tool prints the arguments it receives:
+When running with unrecognized inputs, the tool displays an error message guiding the user to use the `--help` flag for available options:
 
 ```bash
-node src/lib/main.js [options]
+node src/lib/main.js [unrecognized-options]
+# Output: Error: Unrecognized input ["option"]. Use '--help' for available options.
 ```
 
 ### CLI Options
@@ -121,11 +122,8 @@ node src/lib/main.js [options]
   ```
   Activates help-seeking mode, indicating that external assistance is being consulted.
 
-- **Default Output:**
-  Running the CLI without a specific flag will output the received arguments:
-  ```bash
-  node src/lib/main.js [options]
-  ```
+- **Default Output for Unrecognized Inputs:**
+  When invoking the CLI with unrecognized arguments, the tool will display an error message indicating that the input is unrecognized and instructing the user to use the `--help` flag for available options.
 
 ## Incremental Changes Plan
 

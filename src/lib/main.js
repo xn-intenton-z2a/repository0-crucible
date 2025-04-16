@@ -122,8 +122,8 @@ export async function main(args = process.argv.slice(2)) {
     return;
   }
   
-  // Default behavior: print the received arguments
-  console.log(`Run with: ${JSON.stringify(args)}`);
+  // Default behavior for unrecognized arguments: provide clear guidance
+  console.log(`Error: Unrecognized input ${JSON.stringify(args)}. Use '--help' for available options.`);
 }
 
 // If the file is executed directly, run the main function with CLI arguments
