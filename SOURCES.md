@@ -82,3 +82,28 @@ Pinecone's documentation provides an in-depth look into their vector database se
 ## https://github.com/Significant-Gravitas/auto-gpt
 Auto-GPT is an experimental open-source application that showcases the potential of autonomous AI agents to plan, decompose goals, and self-improve. This documentation offers insights and examples of applying these advanced techniques in real-world scenarios.
 ## AGPL-3.0
+
+# GitHub REST API Documentation
+## https://docs.github.com/en/rest
+The GitHub REST API documentation offers comprehensive guides and reference material for interacting with GitHub programmatically. It covers endpoints for repository management, issues, pull requests, and more, making it essential for automated repository tools.
+## GitHub Terms of Service
+
+# GitHub CLI Documentation
+## https://cli.github.com/manual
+This documentation provides detailed instructions for using the GitHub CLI, a command-line tool that facilitates interaction with GitHub repositories, issues, and pull requests. It’s a useful resource for integrating CLI-based workflows with GitHub operations.
+## MIT License
+
+# Hugging Face Transformers Documentation
+## https://huggingface.co/docs/transformers/index
+A comprehensive resource covering the usage, fine-tuning, and deployment of transformer-based models. This documentation is particularly valuable for developers looking to integrate advanced NLP and AI capabilities into autonomous systems.
+## Apache License 2.0
+
+# Spinning Up in Deep RL
+## https://spinningup.openai.com/en/latest/
+Spinning Up in Deep RL is an educational resource provided by OpenAI that introduces fundamental concepts and practical implementations in deep reinforcement learning. Its insights are valuable for understanding decision-making and planning in autonomous agents.
+## MIT License
+
+# Serverless Framework Documentation
+## https://www.serverless.com/framework/docs
+The Serverless Framework documentation offers guidance on deploying serverless applications, managing infrastructure as code, and optimizing cloud-based workflows. It is relevant for understanding and implementing replication and parallel execution strategies in modern automation.
+## MIT License
