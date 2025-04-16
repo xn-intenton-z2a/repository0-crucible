@@ -292,3 +292,13 @@ Chalk is a popular library for styling terminal strings with color, used to enha
 ## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
 This MDN documentation provides a comprehensive guide to Promise.all, a method used to handle multiple asynchronous operations concurrently. The page is highly authoritative and regularly updated, making it a reliable source for understanding concurrent promise aggregation.
 ## CC BY-SA 2.5
+
+# Child Process Documentation
+## https://nodejs.org/api/child_process.html
+The Node.js child_process documentation provides detailed insights into creating and managing child processes. This is particularly useful for enabling parallel task execution and offloading work in CLI applications.
+## OpenJS Foundation
+
+# Error Handling Best Practices in Node.js
+## https://www.digitalocean.com/community/tutorials/nodejs-best-practices-error-handling
+This guide from DigitalOcean discusses effective error handling strategies in Node.js applications. It emphasizes the importance of standardized error messages, detailed logging, and graceful failure management—principles that align well with the CLI tool's approach to handling invalid inputs and diagnostics.
+## DigitalOcean Community License
