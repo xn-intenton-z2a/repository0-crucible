@@ -42,6 +42,8 @@ node src/lib/main.js [unrecognized-options]
 # Output: Error: Unrecognized input ["option"]. Use '--help' for available options.
 ```
 
+Note: Inputs such as 'NaN' are also considered non-standard and will trigger the same error message instructing the user to use the '--help' flag for available options.
+
 ### CLI Options
 
 - **Display Help:**
