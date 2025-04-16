@@ -136,10 +136,16 @@ This ensures that users are clearly informed about the invalidity of such input 
   ```
   Activates help-seeking mode, indicating that external assistance is being consulted.
 
-- **Default Output for Unrecognized Inputs:**
-  When invoking the CLI with unrecognized arguments, the tool will display an error message indicating that the input is unrecognized and instructing the user to use the `--help` flag for available options. Specifically, if the input is `NaN`, the output will be:
-
+- **Special Handling for NaN Input:**
+  ```bash
+  node src/lib/main.js NaN
+  ```
+  The CLI explicitly handles the input "NaN" and outputs:
+  
   "Error: 'NaN' is not a valid option. Please use '--help' to see the list of available commands."
+
+- **Default Output for Unrecognized Inputs:**
+  When invoking the CLI with unrecognized arguments, the tool will display an error message indicating that the input is unrecognized and instructing the user to use the `--help` flag for available options.
 
 ## Incremental Changes Plan
 
