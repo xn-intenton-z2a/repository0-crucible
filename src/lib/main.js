@@ -11,6 +11,9 @@ export const memoryLog = [];
  * This function ensures that any input not matching recognized commands is reported
  * in a consistent manner to aid in debugging and user guidance.
  * 
+ * Note: Inputs like 'NaN' and other unusual strings are explicitly handled and will
+ * trigger the standardized error message.
+ * 
  * @param {string[]} args - The CLI arguments that were not recognized
  */
 function handleInvalidCommand(args) {

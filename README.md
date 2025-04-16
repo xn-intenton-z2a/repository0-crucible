@@ -49,6 +49,8 @@ The CLI tool is designed to handle any unrecognized commands by outputting a sta
 Error: '<input>' is not a recognized command. Use '--help' for available options.
 ```
 
+Note: Special inputs such as 'NaN' and other unusual or malformed strings are treated as unrecognized commands and will trigger the standard error message above.
+
 For example, if you run:
 
 ```bash
@@ -60,8 +62,6 @@ The output (sent to stderr) will be:
 ```bash
 Error: 'NaN' is not a recognized command. Use '--help' for available options.
 ```
-
-Note: The CLI treats any unrecognized input—including special cases like 'NaN' or any other unusual/malformed inputs—in the same standardized way by outputting the error message above. This ensures consistency and clear guidance for users.
 
 ## Usage
 
