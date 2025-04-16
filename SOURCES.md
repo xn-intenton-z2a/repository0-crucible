@@ -302,3 +302,23 @@ The Node.js child_process documentation provides detailed insights into creating
 ## https://www.digitalocean.com/community/tutorials/nodejs-best-practices-error-handling
 This guide from DigitalOcean discusses effective error handling strategies in Node.js applications. It emphasizes the importance of standardized error messages, detailed logging, and graceful failure management—principles that align well with the CLI tool's approach to handling invalid inputs and diagnostics.
 ## DigitalOcean Community License
+
+# JavaScript Info - Concurrency
+## https://javascript.info/concurrency
+This article explains JavaScript's concurrency model, covering topics such as the event loop, asynchronous programming with promises, and async/await. It provides essential context for understanding how modern CLI tools manage parallel execution and replication of tasks.
+## Unknown License
+
+# GitHub Copilot Documentation
+## https://docs.github.com/en/copilot
+GitHub Copilot's documentation provides guidance on using AI-assisted coding tools to enhance developer productivity. It outlines features, limitations, and integration steps that offer insights complementary to help-seeking and self-refinement strategies in autonomous systems.
+## GitHub Terms of Service
+
+# Effective Logging in Node.js
+## https://www.loggly.com/ultimate-guide/node-logging/
+This guide offers comprehensive insights into logging best practices for Node.js applications. It discusses various logging libraries, including Winston and others, and provides strategies for capturing detailed runtime information, which is crucial for monitoring memory performance and debugging CLI applications.
+## All Rights Reserved
+
+# Distributed Tracing with Jaeger
+## https://www.jaegertracing.io/docs/
+The Jaeger documentation details distributed tracing techniques that are essential for monitoring and debugging complex, microservices-based architectures. Its guidance is particularly useful for developers implementing detailed performance logging and diagnostics in autonomous, parallel-processing systems.
+## Apache License 2.0
