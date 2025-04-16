@@ -67,13 +67,13 @@
 <p class="md-github">The CLI tool is designed to handle any unrecognized commands by outputting a standardized error message. If an input does not match any of the recognized flags, the tool outputs an error message in the following format:</p>
 <pre class="md-github"><code class="md-github language-bash">Error: '&lt;input&gt;' is not a recognized command. Use '--help' for available options.
 </code></pre>
+<p class="md-github">Note: Special inputs such as 'NaN' and other unusual or malformed strings are treated as unrecognized commands and will trigger the standard error message above.</p>
 <p class="md-github">For example, if you run:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js NaN
 </code></pre>
 <p class="md-github">The output (sent to stderr) will be:</p>
 <pre class="md-github"><code class="md-github language-bash">Error: 'NaN' is not a recognized command. Use '--help' for available options.
 </code></pre>
-<p class="md-github">Note: The CLI treats any unrecognized input—including special cases like 'NaN'—in the same standardized way by outputting the error message above. This ensures consistency and clear guidance for users.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">To run the CLI tool and see help instructions:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
@@ -172,7 +172,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-16T22:24:53.053Z</p>
+    <p>Generated on 2025-04-16T23:24:01.802Z</p>
   </footer>
 </body>
 </html>
