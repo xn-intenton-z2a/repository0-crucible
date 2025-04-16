@@ -42,16 +42,16 @@ node src/lib/main.js invalid-flag
 # Output (sent to stderr): Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
 ```
 
-Similarly, specific invalid inputs like `NaN` are handled uniformly. For instance:
+Similarly, specific invalid inputs like `NaN` or other numeric-like inputs (e.g., "123") are handled uniformly with enhanced guidance. For instance:
 
 ```bash
 $ node src/lib/main.js NaN
-Error: 'NaN' is not a recognized command. Use '--help' for available options.
+Error: 'NaN' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.
 ```
 
 ### Error Handling for Invalid Inputs
 
-Any unrecognized input, including but not limited to commands like `NaN`, will result in a standardized error message sent to stderr using console.error. This message instructs the user to use the `--help` flag to display the available options.
+Any unrecognized input, including numeric-like inputs, will result in an error message sent to stderr using console.error. Numeric-like inputs (such as 'NaN' or '123') will receive additional guidance instructing the user to provide a valid command and consult the help documentation by using the `--help` flag.
 
 ### CLI Options
 

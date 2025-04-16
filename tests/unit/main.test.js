@@ -192,14 +192,27 @@ describe("Main Unrecognized Input", () => {
   });
 });
 
-// Updated test for unrecognized 'NaN' input with standardized error message using console.error
+// Updated test for unrecognized 'NaN' input with enhanced error message
 describe("Main Unrecognized NaN", () => {
-  test("should display standardized error message for 'NaN' input", () => {
+  test("should display enhanced error message for 'NaN' input", () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     main(["NaN"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
-    const expected = "Error: 'NaN' is not a recognized command. Use '--help' for available options.";
+    const expected = "Error: 'NaN' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.";
+    expect(output).toEqual(expected);
+    spy.mockRestore();
+  });
+});
+
+// New test for unrecognized numeric string input
+describe("Main Unrecognized Numeric", () => {
+  test("should display enhanced error message for numeric string input", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    main(["123"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    const expected = "Error: '123' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.";
     expect(output).toEqual(expected);
     spy.mockRestore();
   });
