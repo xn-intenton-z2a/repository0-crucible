@@ -157,14 +157,35 @@ describe("Main Echo", () => {
   });
 });
 
-// Test for unrecognized input with standardized error message using console.error
+// Extended tests for unrecognized input with various edge cases
+
 describe("Main Unrecognized Input", () => {
-  test("should display standardized error message for unrecognized input", async () => {
+  test("should display standardized error message for a single unrecognized input", async () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     await main(["invalid-flag"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     const expected = "Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.";
+    expect(output).toEqual(expected);
+    spy.mockRestore();
+  });
+
+  test("should display standardized error message for multiple unrecognized inputs", async () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    await main(["foo", "bar"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    const expected = "Error: 'foo bar' is not a recognized command. Use '--help' for available options.";
+    expect(output).toEqual(expected);
+    spy.mockRestore();
+  });
+
+  test("should handle unusual input patterns gracefully", async () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    await main(["???"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    const expected = "Error: '???' is not a recognized command. Use '--help' for available options.";
     expect(output).toEqual(expected);
     spy.mockRestore();
   });

@@ -41,6 +41,17 @@ The CLI tool provides the following features:
 - Display an in-memory log of CLI invocations using `--memory`.
 - Activate help-seeking mode with `--help-seeking`.
 
+## Handling Unrecognized Commands
+
+The CLI tool is designed to handle any unrecognized commands by outputting a standardized error message. If an input does not match any of the recognized flags, the tool will output an error message such as:
+
+```bash
+node src/lib/main.js invalid-flag
+# Output (stderr): Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
+```
+
+This ensures that users are guided towards using the supported options and makes troubleshooting easier.
+
 ## Usage
 
 To run the CLI tool and see help instructions:
@@ -54,15 +65,6 @@ When running with unrecognized inputs, the tool uses a standardized error handli
 ```bash
 node src/lib/main.js invalid-flag
 # Output (sent to stderr): Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
-```
-
-### Error Handling for Invalid Inputs
-
-The CLI tool distinguishes unrecognized commands and outputs a standardized error message. For example:
-
-```bash
-node src/lib/main.js invalid-flag
-# Output: Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
 ```
 
 ### CLI Options
