@@ -197,3 +197,23 @@ The Kubernetes documentation offers exhaustive resources on container orchestrat
 ## https://github.com/yoheinakajima/babyagi
 BabyAGI presents a minimalist implementation of an autonomous agent that integrates planning, goal decomposition, and execution. Its documentation and repository insights provide valuable perspectives on designing agentic systems and comparing different architectures for autonomous decision-making.
 ## MIT License
+
+# Node Best Practices
+## https://github.com/goldbergyoni/nodebestpractices
+A comprehensive repository of best practices for Node.js applications. This resource covers various aspects including performance optimization, security, error handling, and code maintainability, making it highly relevant for developers building robust CLI tools and automation systems.
+## MIT License
+
+# Microservices Patterns
+## https://microservices.io/
+An authoritative resource providing insights and design patterns for building scalable microservices architectures. The site discusses replication, scalability, and resilience patterns, which are useful for conceptualizing distributed autonomous systems.
+## Apache License 2.0
+
+# Worker Threads in Node.js
+## https://nodejs.org/api/worker_threads.html
+The Node.js Worker Threads documentation provides a guide to utilizing multithreading in Node.js. This is especially relevant for building scalable, parallel command processing in autonomous CLI tools without relying solely on the cluster module.
+## MIT License
+
+# oclif Framework Documentation
+## https://oclif.io/docs/introduction.html
+The oclif documentation provides guidance on building command-line interfaces with Node.js. It offers insights into command parsing, help generation, and extensibility which can inspire enhancements in CLI design and modularity for agentic systems.
+## MIT License
