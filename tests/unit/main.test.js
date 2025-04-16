@@ -24,8 +24,8 @@ describe("Main Help", () => {
     main(["--help"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
-    expect(output).toContain("Usage:");
-    expect(output).toContain("--help");
+    expect(output).toContain("Usage: node src/lib/main.js [options]");
+    expect(output).toContain("--help                Display help information about the CLI tool.");
     spy.mockRestore();
   });
 });
