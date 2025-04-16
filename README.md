@@ -4,7 +4,7 @@
 
 To create a self-evolving agentic coding system of your own based on this one see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+This readme shall evolve into a JavaScript library based on the seed CONTRIBUTING files in [./seeds](./seeds).
 
 ## Repository Template
 
@@ -47,86 +47,84 @@ node src/lib/main.js [options]
   ```bash
   node src/lib/main.js --help
   ```
+  Displays a detailed help message listing all available CLI options.
 
 - **Display Version:**
   ```bash
   node src/lib/main.js --version
   ```
-  This flag displays the current application version dynamically read from package.json.
+  Dynamically reads and displays the current application version from package.json.
 
 - **Run Diagnostics:**
   ```bash
   node src/lib/main.js --diagnostics
   ```
-  This flag displays diagnostic information including Node version, executable path, current working directory, and environment variables.
+  Shows basic diagnostics including Node version, executable path, working directory, and environment variables.
 
 - **Run Extended Diagnostics:**
   ```bash
   node src/lib/main.js --extended-diagnostics
   ```
-  This flag displays additional diagnostic information including memory usage, process uptime, and the process platform.
+  Provides extended diagnostics information such as memory usage, process uptime, and platform details.
 
 - **Self-Refinement Analysis:**
   ```bash
   node src/lib/main.js --self-refine
   ```
-  This flag triggers a self-refinement analysis, demonstrating the agent's ability to self-improve by outputting a message indicating that such an analysis is in progress.
+  Initiates a self-refinement analysis, outputting a message that the process is in progress.
 
 - **Refresh Application State:**
   ```bash
   node src/lib/main.js --refresh
   ```
-  This flag triggers a refresh of the application state and displays a refresh message.
+  Refreshes the application state and outputs a confirmation message.
 
 - **Merge and Persist Changes:**
   ```bash
   node src/lib/main.js --merge-persist
   ```
-  This flag initiates a merge and persist operation. Currently, it prints a confirmation message indicating that the merge and persist process has been initiated.
+  Initiates a merge and persist operation, displaying a merge confirmation message.
 
 - **Start Server:**
   ```bash
   node src/lib/main.js --serve
   ```
-  This flag starts the server and prints "Starting server...".
+  Starts the server and prints a startup message.
 
 - **Build with Intermediate Options:**
   ```bash
   node src/lib/main.js --build-intermediate
   ```
-  This flag builds the application with intermediate options and prints "Building with intermediate options...".
+  Executes a build using intermediate options, providing a corresponding message.
 
 - **Build with Enhanced Options:**
   ```bash
   node src/lib/main.js --build-enhanced
   ```
-  This flag builds the application with enhanced options and prints "Building with enhanced options...".
+  Executes a build using enhanced options, providing a corresponding message.
 
 - **Echo Arguments:**
   ```bash
   node src/lib/main.js --echo arg1 arg2
   ```
-  This flag outputs the received command-line arguments (excluding the '--echo' flag) in a structured JSON format, for example:
-
-  ```json
-  { "echo": ["arg1", "arg2"] }
-  ```
+  Outputs the provided arguments (excluding '--echo') in a structured JSON format.
 
 - **Memory Logging:**
   ```bash
   node src/lib/main.js --memory
   ```
-  This flag displays an in-memory log of all command invocations with timestamps, providing a basic demonstration of the Memory feature.
+  Displays an in-memory log of all CLI invocations along with timestamps.
 
 - **Help-Seeking:**
   ```bash
   node src/lib/main.js --help-seeking
   ```
-  This flag activates help-seeking mode, outputting a message that indicates the system is consulting external assistance.
+  Activates help-seeking mode, indicating that external assistance is being consulted.
 
-- **Default Demo Output:**
+- **Default Output:**
+  Running the CLI without a specific flag will output the received arguments:
   ```bash
-  npm run start
+  node src/lib/main.js [options]
   ```
 
 ## Incremental Changes Plan

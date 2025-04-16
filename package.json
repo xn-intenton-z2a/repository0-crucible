@@ -1,7 +1,7 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
   "version": "1.2.0-0",
-  "description": "add repository description here",
+  "description": "CLI tool for automating repository tasks",
   "type": "module",
   "main": "src/lib/main.js",
   "scripts": {
