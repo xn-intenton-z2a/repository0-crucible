@@ -1,25 +1,31 @@
 # MEMORY_PERFORMANCE
 
 ## Overview
-This feature merges the existing MEMORY logging capability with performance tracking. In addition to storing a log of CLI invocations with timestamps and arguments, the updated functionality now records the execution duration of each command. This enriched logging enables users and developers to gain insights into the performance of each command invocation, paving the way for self-improvement and optimization.
+This update enhances the existing memory logging feature by incorporating execution duration for each CLI command. In addition to logging the timestamp and arguments, the tool will now measure and store the duration of each invocation. This provides developers and users with insight into the performance of commands, aligning with our mission of continuous self-improvement and autonomous debugging.
 
 ## Implementation Details
-1. **Global Memory and Timing Recording:**
-   - In `src/lib/main.js`, extend the global memory log to include a new property `duration` for each CLI invocation.
-   - At the start of the `main` function, record the current time (e.g. using `const startTime = Date.now()`).
-   - Just before the function exits (after processing any flag), calculate the elapsed time and append it as `duration` (in milliseconds) to the log entry.
-   - Ensure that all log entries now have the following structure: `{ timestamp, args, duration }`.
+1. **Timing Measurement:**
+   - At the very beginning of the `main` function in `src/lib/main.js`, record the start time (e.g., `const startTime = Date.now();`).
+   - Before exiting the function (after processing commands or flags), compute the elapsed time (`Date.now() - startTime`) and include it as a `duration` property in the log object.
+   - Update the global `memoryLog` to store entries as: `{ timestamp, args, duration }`.
 
-2. **Source File Modifications:**
-   - Update the logic in `src/lib/main.js` so that whenever a CLI invocation is logged into `memoryLog`, it also captures the execution duration.
-   - Ensure that this measurement does not impact the CLI output or behavior.
+2. **Source File Modifications (`src/lib/main.js`):
+   - Insert the timing start code at the top of the `main` function.
+   - After processing flags (or before each early return), calculate the duration and enhance the corresponding memory log entry with a new property `duration` (in milliseconds).
 
-3. **Testing Updates:**
-   - In `tests/unit/main.test.js`, add assertions to verify that when the `--memory` flag is used, the returned log entries include a valid `duration` field (a non-negative number).
-   - Update existing tests which check the memory log to account for this additional field.
+3. **Testing Updates (`tests/unit/main.test.js`):
+   - Extend the existing memory logging tests to assert that each log entry now includes a `duration` field.
+   - Verify that this field is a non-negative number.
+   - Ensure that other aspects of the log (like `timestamp` and `args`) remain unchanged.
 
-4. **Documentation:**
-   - Revise the README to include details about the merged memory and performance logging feature. Add a bullet point under CLI Options explaining that the `--memory` flag now displays each command's execution duration along with its timestamp and arguments.
+4. **Documentation Updates (README.md):
+   - Update the Memory Logging section to describe the enriched log format, including the execution duration of each CLI invocation.
+   - Provide an example output showing a log entry with the `duration` field.
+
+5. **Dependencies and Compatibility:**
+   - No new dependencies are required for this enhancement. All changes adhere to the project requirements and are fully testable within a single repository modification.
 
 ## Long-Term Direction
-By merging memory logging with performance tracking, the agent lays the groundwork for future self-improvement initiatives. This enriched logging will help diagnose performance bottlenecks and guide future optimizations. In later iterations, more advanced metrics (such as CPU and memory profiling per command) could be integrated to enhance monitoring and drive further automation improvements.
+By merging performance tracking with memory logging, the tool lays the foundation for self-improvement initiatives. In future iterations, these performance metrics can guide optimizations, help pinpoint bottlenecks, and provide a richer context for automated error handling and self-refinement processes.
+
+This update is a straightforward enhancement to existing functionality, providing tangible value without overcomplicating the repository.
