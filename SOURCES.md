@@ -165,7 +165,7 @@ This article on Towards Data Science explores the architecture and applications 
 
 # Understanding the JavaScript Event Loop
 ## https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
-This MDN article explains the mechanics of the JavaScript event loop, including how asynchronous operations and the single-threaded nature of JavaScript influence performance and parallel execution. It is highly regarded for clarity and educational value, with updates reflecting recent best practices in asynchronous programming.
+This MDN article explains the mechanics of the JavaScript event loop, including how asynchronous operations and the single-threaded nature of JavaScript influence performance and parallel execution. It is highly regarded for clarity and educational value.
 ## CC BY-SA 2.5
 
 # A Survey on Autonomous Agents and Multi-Agent Systems
@@ -257,3 +257,28 @@ This source provides an overview of Hierarchical Task Networks (HTNs), a plannin
 ## https://www.infoq.com/articles/multi-agent-systems/
 This article explores strategies for replicating autonomous agents within distributed systems. It discusses techniques for parallel command execution and scaling automation tasks across multiple environments, aligning with the REPLICATION feature’s goal of enhancing throughput and enabling multi-agent orchestration.
 ## N/A
+
+# Winston Logger Documentation
+## https://github.com/winstonjs/winston
+Winston is a versatile logging library for Node.js that provides flexible logging features, including the ability to log to multiple transports. This makes it an excellent resource for enhancing memory logging and debugging capabilities in CLI tools and automation systems.
+## MIT License
+
+# Node.js Performance Best Practices
+## https://nodejs.org/en/docs/guides/simple-profiling/
+This official guide from Node.js delves into profiling and performance optimization techniques. It covers memory management, execution timing, and performance tuning strategies, which are critical for implementing detailed memory performance logging in modern automation tools.
+## N/A
+
+# Advanced CLI Design and Usability
+## https://www.smashingmagazine.com/2018/02/command-line-interface-design/
+This article offers an in-depth look at best practices for designing intuitive and effective command-line interfaces. It covers aspects such as error messaging, layout, and usability, insights that can be applied to improve the user experience of CLI tools.
+## N/A
+
+# DeepMind: Learning to Think
+## https://deepmind.com/blog/article/learning-to-think
+This DeepMind blog post discusses innovative strategies in AI for planning, reasoning, and self-improvement. The concepts presented can inspire methods for enhancing autonomous agent architectures, particularly in areas like iterative planning and self-refinement.
+## N/A
+
+# Building Scalable Node.js Applications
+## https://nodejs.org/en/docs/guides/building-scalable-applications/
+This guide provides comprehensive insights into scaling Node.js applications, including effective strategies for handling concurrency, process management, and performance optimization. These principles are directly applicable to implementing replication and parallel execution in agentic systems.
+## MIT License
