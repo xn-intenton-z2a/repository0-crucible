@@ -42,7 +42,9 @@ node src/lib/main.js [unrecognized-options]
 # Output: Error: Unrecognized input ["option"]. Use '--help' for available options.
 ```
 
-Note: Inputs such as 'NaN' are also considered non-standard. In such cases, the error message will explicitly state that "NaN" is not a valid option and will instruct the user to use '--help' for available options.
+Note: Inputs such as 'NaN' are also considered non-standard. In such cases, the error message will explicitly state: 
+
+"Error: 'NaN' is not a valid option. Please use '--help' to see the list of available commands."
 
 ### CLI Options
 
@@ -125,7 +127,9 @@ Note: Inputs such as 'NaN' are also considered non-standard. In such cases, the 
   Activates help-seeking mode, indicating that external assistance is being consulted.
 
 - **Default Output for Unrecognized Inputs:**
-  When invoking the CLI with unrecognized arguments, the tool will display an error message indicating that the input is unrecognized and instructing the user to use the `--help` flag for available options. Additionally, if the input is 'NaN', the error message explicitly notes that 'NaN' is not a valid option.
+  When invoking the CLI with unrecognized arguments, the tool will display an error message indicating that the input is unrecognized and instructing the user to use the `--help` flag for available options. Specifically, if the input is 'NaN', the output will be:
+
+  "Error: 'NaN' is not a valid option. Please use '--help' to see the list of available commands."
 
 ## Incremental Changes Plan
 
