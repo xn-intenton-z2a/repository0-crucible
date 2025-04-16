@@ -172,6 +172,7 @@ describe("Main Echo", () => {
 
 
 describe("Main Unrecognized Input", () => {
+  // This behavior is documented in README.md under the 'Handling Unrecognized Commands and Inputs' section.
   test("should display standardized error message for a single unrecognized input", async () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     await main(["invalid-flag"]);
