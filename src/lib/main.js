@@ -129,14 +129,10 @@ export async function main(args = process.argv.slice(2)) {
     return;
   }
 
-  // Default behavior for unrecognized arguments with enhanced error messaging for 'NaN'
-  if (args.length === 1 && args[0] === "NaN") {
-    console.log("Error: 'NaN' is not a valid option. Please use '--help' to see the list of available commands.");
-    return;
-  } else {
-    console.log(`Error: Unrecognized input ${JSON.stringify(args)}. Use '--help' for available options.`);
-    return;
-  }
+  // Standardized error message for invalid inputs
+  const invalidInput = args.join(" ");
+  console.log(`Error: '${invalidInput}' is not a valid option. Please use '--help' to see the list of available commands.`);
+  return;
 }
 
 // If the file is executed directly, run the main function with CLI arguments
