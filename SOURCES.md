@@ -177,3 +177,23 @@ This research paper surveys the field of autonomous agents and multi-agent syste
 ## https://clig.dev
 This resource outlines best practices for designing command-line interfaces. It covers command conventions, usability, and design principles that are essential for building intuitive CLI tools, directly informing the design and development of repository automation systems.
 ## MIT License
+
+# OpenTelemetry Documentation
+## https://opentelemetry.io/docs/
+The OpenTelemetry documentation provides comprehensive guides for implementing observability, distributed tracing, and logging in modern applications. Its robust framework supports monitoring performance and diagnosing issues in complex, distributed agentic systems. Regular updates and community contributions make it a highly authoritative resource for modern telemetry needs.
+## Apache License 2.0
+
+# PM2 Documentation
+## https://pm2.keymetrics.io/docs/usage/quick-start/
+PM2 is a production process manager for Node.js applications. Its documentation covers process management, clustering, load balancing, and real-time logging, which are crucial for scaling applications and supporting parallel task execution in autonomous systems.
+## MIT License
+
+# Kubernetes Official Documentation
+## https://kubernetes.io/docs/home/
+The Kubernetes documentation offers exhaustive resources on container orchestration, deployment, scaling, and management in cloud-native environments. This resource is indispensable for developers looking to implement and scale autonomous systems across distributed infrastructures.
+## Apache License 2.0
+
+# BabyAGI Documentation
+## https://github.com/yoheinakajima/babyagi
+BabyAGI presents a minimalist implementation of an autonomous agent that integrates planning, goal decomposition, and execution. Its documentation and repository insights provide valuable perspectives on designing agentic systems and comparing different architectures for autonomous decision-making.
+## MIT License
