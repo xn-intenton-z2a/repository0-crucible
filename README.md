@@ -39,7 +39,7 @@ When running with unrecognized inputs, the tool uses a standardized error handli
 
 ```bash
 node src/lib/main.js invalid-flag
-# Output: Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
+# Output (sent to stderr): Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
 ```
 
 Similarly, specific invalid inputs like `NaN` are handled uniformly. For instance:
@@ -48,7 +48,7 @@ Similarly, specific invalid inputs like `NaN` are handled uniformly. For instanc
 node src/lib/main.js NaN
 ```
 
-The output will be:
+The output will be sent to stderr:
 
 ```
 Error: 'NaN' is not a recognized command. Use '--help' for available options.
@@ -56,7 +56,7 @@ Error: 'NaN' is not a recognized command. Use '--help' for available options.
 
 ### Error Handling for Invalid Inputs
 
-Any unrecognized input, including but not limited to commands like `NaN`, will result in a standardized error message. This message instructs the user to use the `--help` flag to display the available options.
+Any unrecognized input, including but not limited to commands like `NaN`, will result in a standardized error message sent to stderr using console.error. This message instructs the user to use the `--help` flag to display the available options.
 
 ### CLI Options
 
