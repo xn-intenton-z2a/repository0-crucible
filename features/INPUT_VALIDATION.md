@@ -1,30 +1,52 @@
 # INPUT_VALIDATION
 
 ## Overview
-This feature reinforces the robustness of CLI input validation by not only employing comprehensive schema definitions (via Zod) and standardized error formatting but also by enhancing the user experience through colored and more legible output. By integrating a lightweight colorization layer into error and help messages, users can immediately identify errors (displayed in red) and important CLI information (using accents for help text), ensuring clarity and reducing confusion during command execution.
+This update enhances the robustness and usability of our CLI input validation by integrating colored output for errors and help messages using the popular `chalk` library. The objective is to make error messages more understandable and to visually differentiate critical information (errors in red, help text in accent colors), aligning with our mission of clear communication and autonomous intelligent automation.
 
 ## Implementation Details
-1. **Schema Definition and Enforcement:**
-   - Maintain the Zod schema for CLI arguments such as `--help`, `--version`, `--diagnostics`, etc., to ensure only valid inputs proceed.
-   - Validate `process.argv.slice(2)` at the start of the CLI execution.
-   - Include custom checks to catch malformed and numeric-like strings (e.g., 'NaN', '123').
+1. **Integration of Chalk:**
+   - Add `chalk` as a dependency in the `package.json` file. For example:
+     ```json
+     "dependencies": {
+       ...,
+       "chalk": "^5.1.0"
+     }
+     ```
+   - Import chalk in `src/lib/main.js`:
+     ```js
+     import chalk from 'chalk';
+     ```
 
-2. **Enhanced Error Formatting with Colors:**
-   - Introduce a dependency on a colorization library (e.g., `chalk`) to add visual cues. Update the dependencies file to include `chalk`.
-   - Develop an enhanced `errorFormatter` that wraps error messages in red text, while help pointers (such as usage suggestions) can utilize a contrasting color (e.g., blue or yellow) for emphasis.
-   - In the source file (`src/lib/main.js`), update the functions handling unrecognized commands to utilize these colorized outputs when using `console.error` and `console.log`.
+2. **Enhanced Error Formatting:**
+   - Update the `handleInvalidCommand` function in `src/lib/main.js` to output the error messages using `chalk.red` for errors and include additional colored accent text for suggestions (e.g., using chalk.blue or chalk.yellow for help prompts).
+   - Example modification:
+     ```js
+     function handleInvalidCommand(args) {
+       const input = args.join(" ");
+       if (/^(NaN|-?\d+(\.\d+)?)$/.test(input)) {
+         const errorMsg = chalk.red(`Error: '${input}' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.`);
+         console.error(errorMsg);
+       } else {
+         const errorMsg = chalk.red(`Error: '${input}' is not a recognized command. Use '--help' for available options.`);
+         console.error(errorMsg);
+       }
+     }
+     ```
 
-3. **Help and Informational Messages:**
-   - Update the CLI help output (triggered with `--help`) so that sections are clearly delineated using colored headings. For example, display the usage header in a distinct color.
-   - Ensure that both error and help outputs are consistent with the mission of clear communication and autonomous intelligent automation.
+3. **Enhanced Help Message:**
+   - Update the help message output (triggered by `--help`) to use colored headings and accents. For example, use `chalk.green` for titles and `chalk.blue` for usage instructions.
 
 4. **Testing Adjustments:**
-   - Refine unit tests in `tests/unit/main.test.js` to account for the colorized output. Tests should either strip out ANSI color codes before assertion or compare against expected output that includes such codes.
-   - Add tests to verify that error messages triggered by invalid inputs (including numeric-like strings) feature the proper color coding.
+   - Update unit tests in `tests/unit/main.test.js` to either strip ANSI color codes from the actual output before comparing or to include the expected chalk color codes. This ensures that tests validate the functionality without being affected by color codes.
+   - Example approach in tests:
+     ```js
+     // Use a regex to remove ANSI escape sequences before assertion
+     const cleanOutput = output.replace(/\u001B\[[0-9;]*m/g, "");
+     expect(cleanOutput).toEqual(expectedMessage);
+     ```
 
 5. **Documentation Updates:**
-   - In the README, include a section that documents the colored output behavior. Explain that errors will be displayed in red, while usage and informational text will use accent colors.
-   - Provide usage examples that show how output appears with color, improving overall usability and accessibility.
+   - Update the README (README.md) to document the colored output behavior, specifying that errors are shown in red and help texts in accent colors. Include examples in the CLI options section.
 
 ## Long-Term Direction
-This update not only standardizes and fortifies input validation using Zod but also enhances the user interface of the CLI. By integrating colorized output, the tool becomes more intuitive, allowing users to quickly recognize errors and critical information. In the future, similar principles may be applied to other CLI outputs (e.g., diagnostic or verbose logs) to further align with the mission of delivering clear, autonomous automation with minimal human intervention.
+This update not only standardizes input validation using robust schema checking with Zod but also significantly improves user experience through visual differentiation. As further enhancements, additional user feedback might be integrated into all CLI outputs (e.g., diagnostics and verbose logs) to ensure clarity and to support deeper self-improvement mechanisms. This change reinforces our commitment to making the automation process both technically robust and user-friendly.
