@@ -322,3 +322,8 @@ This guide offers comprehensive insights into logging best practices for Node.js
 ## https://www.jaegertracing.io/docs/
 The Jaeger documentation details distributed tracing techniques that are essential for monitoring and debugging complex, microservices-based architectures. Its guidance is particularly useful for developers implementing detailed performance logging and diagnostics in autonomous, parallel-processing systems.
 ## Apache License 2.0
+
+# Ora Spinner Documentation
+## https://github.com/sindresorhus/ora
+Ora is an elegant terminal spinner for Node.js and CLI applications that provides easy-to-use visual feedback for long-running tasks. It offers a simple API to start and stop spinners, making it ideal for enhancing user experience during extended operations. Its lightweight and modular design has made it a popular choice in the Node.js community.
+## MIT License
