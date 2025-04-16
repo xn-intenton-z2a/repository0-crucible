@@ -162,3 +162,18 @@ OpenAI's research page offers insights into cutting-edge advancements in intelli
 ## https://towardsdatascience.com/autonomous-agents-architecture-and-applications-c0b536a1d7a
 This article on Towards Data Science explores the architecture and applications of autonomous agents, discussing how these systems can perceive, decide, and act autonomously. It provides a comprehensive overview that is useful for designing agentic systems.
 ## CC BY-NC-ND 4.0
+
+# Understanding the JavaScript Event Loop
+## https://developer.mozilla.org/en-US/docs/Web/JavaScript/EventLoop
+This MDN article explains the mechanics of the JavaScript event loop, including how asynchronous operations and the single-threaded nature of JavaScript influence performance and parallel execution. It is highly regarded for clarity and educational value, with updates reflecting recent best practices in asynchronous programming.
+## CC BY-SA 2.5
+
+# A Survey on Autonomous Agents and Multi-Agent Systems
+## https://arxiv.org/abs/1811.00102
+This research paper surveys the field of autonomous agents and multi-agent systems, offering insights into agent architectures, cooperation, and distributed problem-solving strategies. It provides a theoretical foundation for building self-improving and autonomous systems.
+## Public Domain (Research Paper)
+
+# CLI Guidelines
+## https://clig.dev
+This resource outlines best practices for designing command-line interfaces. It covers command conventions, usability, and design principles that are essential for building intuitive CLI tools, directly informing the design and development of repository automation systems.
+## MIT License
