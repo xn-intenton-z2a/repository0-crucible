@@ -42,19 +42,25 @@ node src/lib/main.js invalid-flag
 # Output (sent to stderr): Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
 ```
 
-Similarly, numeric-like invalid inputs such as `NaN` or `123` are handled uniformly. They produce the following error message format:
+### Error Handling for Invalid Inputs
+
+Any unrecognized input, including numeric-like inputs (such as 'NaN', '123', or any other numeric value), will result in an error message sent to stderr using console.error. When the input is numeric-like, the CLI tool outputs an extended error message:
 
 ```
 Error: '<input>' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.
 ```
 
-### Error Handling for Invalid Inputs
+For example:
 
-Any unrecognized input, including numeric-like inputs (such as 'NaN', '123', or any other numeric value), will result in an error message sent to stderr using console.error. The error message is standardized to prompt the user to consult the help documentation by using the `--help` flag.
+```bash
+node src/lib/main.js NaN
+# Output: Error: 'NaN' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.
+```
 
-### Special Handling for 'NaN' Input
-
-In addition to the general error handling, the CLI tool provides an enhanced error message when the input is exactly 'NaN' (or any numeric string). This enhanced output reminds the user to use the `--help` flag to view valid commands and ensures clarity in case of numeric-like inputs.
+```bash
+node src/lib/main.js 123
+# Output: Error: '123' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.
+```
 
 ### CLI Options
 
