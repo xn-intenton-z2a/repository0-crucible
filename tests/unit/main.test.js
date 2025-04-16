@@ -147,7 +147,7 @@ describe("Main Echo", () => {
   });
 });
 
-// Updated test for unrecognized input with standardized error message using console.error
+// Test for unrecognized input with standardized error message using console.error
 describe("Main Unrecognized Input", () => {
   test("should display standardized error message for unrecognized input", () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
@@ -160,7 +160,7 @@ describe("Main Unrecognized Input", () => {
   });
 });
 
-// Updated test for unrecognized 'NaN' input with enhanced error message
+// Test enhanced error message for numeric-like input 'NaN'
 describe("Main Unrecognized NaN", () => {
   test("should display enhanced error message for 'NaN' input", () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
@@ -173,7 +173,7 @@ describe("Main Unrecognized NaN", () => {
   });
 });
 
-// New test for unrecognized numeric string input
+// Test enhanced error message for numeric-like input '123'
 describe("Main Unrecognized Numeric", () => {
   test("should display enhanced error message for numeric string input", () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
