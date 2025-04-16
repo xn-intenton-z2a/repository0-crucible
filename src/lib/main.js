@@ -13,7 +13,7 @@ export const memoryLog = [];
 function handleInvalidCommand(args) {
   const input = args.join(" ");
   const errorMsg = `Error: '${input}' is not a recognized command. Use '--help' for available options.`;
-  console.log(errorMsg);
+  console.error(errorMsg);
 }
 
 /**

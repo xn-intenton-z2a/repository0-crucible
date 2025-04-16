@@ -179,10 +179,10 @@ describe("Main Help-Seeking", () => {
   });
 });
 
-// Updated test for unrecognized input with standardized error message
+// Updated test for unrecognized input with standardized error message using console.error
 describe("Main Unrecognized Input", () => {
   test("should display standardized error message for unrecognized input", () => {
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     main(["invalid-flag"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
@@ -192,10 +192,10 @@ describe("Main Unrecognized Input", () => {
   });
 });
 
-// Updated test for unrecognized 'NaN' input with standardized error message
+// Updated test for unrecognized 'NaN' input with standardized error message using console.error
 describe("Main Unrecognized NaN", () => {
   test("should display standardized error message for 'NaN' input", () => {
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     main(["NaN"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
