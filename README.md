@@ -52,6 +52,10 @@ Error: '<input>' is not a recognized command. Use '--help' for available options
 
 Any unrecognized input, including numeric-like inputs (such as 'NaN', '123', or any other numeric value), will result in an error message sent to stderr using console.error. The error message is standardized to prompt the user to consult the help documentation by using the `--help` flag.
 
+### Special Handling for 'NaN' Input
+
+In addition to the general error handling, the CLI tool provides an enhanced error message when the input is exactly 'NaN' (or any numeric string). This enhanced output reminds the user to use the `--help` flag to view valid commands and ensures clarity in case of numeric-like inputs.
+
 ### CLI Options
 
 - **Display Help:**
