@@ -10,12 +10,14 @@ describe("Main Module Import", () => {
 });
 
 
+
 describe("Main Output", () => {
   test("should terminate without error", () => {
     process.argv = ["node", "src/lib/main.js"];
     main();
   });
 });
+
 
 
 describe("Main Help", () => {
@@ -29,6 +31,7 @@ describe("Main Help", () => {
     spy.mockRestore();
   });
 });
+
 
 
 describe("Main Version", () => {
@@ -45,6 +48,7 @@ describe("Main Version", () => {
 });
 
 
+
 describe("Main Diagnostics", () => {
   test("should display diagnostics information when '--diagnostics' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -56,6 +60,7 @@ describe("Main Diagnostics", () => {
     spy.mockRestore();
   });
 });
+
 
 
 describe("Main Extended Diagnostics", () => {
@@ -75,6 +80,7 @@ describe("Main Extended Diagnostics", () => {
 });
 
 
+
 describe("Main Self-Refine", () => {
   test("should display self-refinement message when '--self-refine' flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -85,6 +91,7 @@ describe("Main Self-Refine", () => {
     spy.mockRestore();
   });
 });
+
 
 
 describe("Main Refresh", () => {
@@ -99,6 +106,7 @@ describe("Main Refresh", () => {
 });
 
 
+
 describe("Main Merge Persist", () => {
   test("should display merge persist message when '--merge-persist' flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -109,6 +117,7 @@ describe("Main Merge Persist", () => {
     spy.mockRestore();
   });
 });
+
 
 
 describe("Main Serve", () => {
@@ -123,6 +132,7 @@ describe("Main Serve", () => {
 });
 
 
+
 describe("Main Build Intermediate", () => {
   test("should display intermediate build message when '--build-intermediate' flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -133,6 +143,7 @@ describe("Main Build Intermediate", () => {
     spy.mockRestore();
   });
 });
+
 
 
 describe("Main Build Enhanced", () => {
@@ -147,6 +158,7 @@ describe("Main Build Enhanced", () => {
 });
 
 
+
 describe("Main Echo", () => {
   test("should output structured JSON with echo property excluding '--echo'", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -159,6 +171,7 @@ describe("Main Echo", () => {
     spy.mockRestore();
   });
 });
+
 
 
 describe("Main Memory Logging", () => {
@@ -181,6 +194,7 @@ describe("Main Memory Logging", () => {
     spy.mockRestore();
   });
 });
+
 
 
 describe("Main Help-Seeking", () => {
