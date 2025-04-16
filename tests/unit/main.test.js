@@ -12,11 +12,13 @@ async function runMainWithArgs(args) {
   return errorMsg;
 }
 
+
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
   });
 });
+
 
 describe("Main Output", () => {
   test("should terminate without error", async () => {
@@ -24,6 +26,7 @@ describe("Main Output", () => {
     await main();
   });
 });
+
 
 describe("Main Help", () => {
   test("should display help message when '--help' flag is provided", async () => {
@@ -36,6 +39,7 @@ describe("Main Help", () => {
     spy.mockRestore();
   });
 });
+
 
 describe("Main Version", () => {
   test("should display version number from package.json when '--version' flag is provided", async () => {
@@ -50,6 +54,7 @@ describe("Main Version", () => {
   });
 });
 
+
 describe("Main Diagnostics", () => {
   test("should display diagnostics information when '--diagnostics' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -61,6 +66,7 @@ describe("Main Diagnostics", () => {
     spy.mockRestore();
   });
 });
+
 
 describe("Main Extended Diagnostics", () => {
   test("should display extended diagnostics information when '--extended-diagnostics' flag is provided", async () => {
@@ -78,6 +84,7 @@ describe("Main Extended Diagnostics", () => {
   });
 });
 
+
 describe("Main Self-Refine", () => {
   test("should display self-refinement message when '--self-refine' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -88,6 +95,7 @@ describe("Main Self-Refine", () => {
     spy.mockRestore();
   });
 });
+
 
 describe("Main Refresh", () => {
   test("should display refresh message when '--refresh' flag is provided", async () => {
@@ -100,6 +108,7 @@ describe("Main Refresh", () => {
   });
 });
 
+
 describe("Main Merge Persist", () => {
   test("should display merge persist message when '--merge-persist' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -110,6 +119,7 @@ describe("Main Merge Persist", () => {
     spy.mockRestore();
   });
 });
+
 
 describe("Main Serve", () => {
   test("should display serve message when '--serve' flag is provided", async () => {
@@ -122,6 +132,7 @@ describe("Main Serve", () => {
   });
 });
 
+
 describe("Main Build Intermediate", () => {
   test("should display intermediate build message when '--build-intermediate' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -133,6 +144,7 @@ describe("Main Build Intermediate", () => {
   });
 });
 
+
 describe("Main Build Enhanced", () => {
   test("should display enhanced build message when '--build-enhanced' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -143,6 +155,7 @@ describe("Main Build Enhanced", () => {
     spy.mockRestore();
   });
 });
+
 
 describe("Main Echo", () => {
   test("should output structured JSON with echo property excluding '--echo'", async () => {
@@ -157,7 +170,6 @@ describe("Main Echo", () => {
   });
 });
 
-// Extended tests for unrecognized input with various edge cases
 
 describe("Main Unrecognized Input", () => {
   test("should display standardized error message for a single unrecognized input", async () => {
@@ -186,6 +198,16 @@ describe("Main Unrecognized Input", () => {
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     const expected = "Error: '???' is not a recognized command. Use '--help' for available options.";
+    expect(output).toEqual(expected);
+    spy.mockRestore();
+  });
+
+  test("should display standardized error message for 'NaN' input", async () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    await main(["NaN"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    const expected = "Error: 'NaN' is not a recognized command. Use '--help' for available options.";
     expect(output).toEqual(expected);
     spy.mockRestore();
   });
