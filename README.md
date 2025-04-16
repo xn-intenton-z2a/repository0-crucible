@@ -35,14 +35,14 @@ To run the CLI tool and see help instructions:
 node src/lib/main.js --help
 ```
 
-When running with unrecognized inputs, the tool displays an error message guiding the user to use the `--help` flag for available options:
+When running with unrecognized inputs, the tool displays an error message guiding the user to use the `--help` flag for available options. For example:
 
 ```bash
 node src/lib/main.js [unrecognized-options]
 # Output: Error: Unrecognized input ["option"]. Use '--help' for available options.
 ```
 
-Note: Inputs such as 'NaN' are also considered non-standard and will trigger the same error message instructing the user to use the '--help' flag for available options.
+Note: Inputs such as 'NaN' are also considered non-standard. In such cases, the error message will explicitly state that "NaN" is not a valid option and will instruct the user to use '--help' for available options.
 
 ### CLI Options
 
@@ -125,7 +125,7 @@ Note: Inputs such as 'NaN' are also considered non-standard and will trigger the
   Activates help-seeking mode, indicating that external assistance is being consulted.
 
 - **Default Output for Unrecognized Inputs:**
-  When invoking the CLI with unrecognized arguments, the tool will display an error message indicating that the input is unrecognized and instructing the user to use the `--help` flag for available options.
+  When invoking the CLI with unrecognized arguments, the tool will display an error message indicating that the input is unrecognized and instructing the user to use the `--help` flag for available options. Additionally, if the input is 'NaN', the error message explicitly notes that 'NaN' is not a valid option.
 
 ## Incremental Changes Plan
 

@@ -127,8 +127,12 @@ export async function main(args = process.argv.slice(2)) {
     return;
   }
   
-  // Default behavior for unrecognized arguments: provide clear guidance
-  console.log(`Error: Unrecognized input ${JSON.stringify(args)}. Use '--help' for available options.`);
+  // Default behavior for unrecognized arguments with enhanced error messaging for 'NaN'
+  if (args.length === 1 && args[0] === "NaN") {
+    console.log("Error: Unrecognized input [\"NaN\"]. Note: 'NaN' is not a valid option. Use '--help' for available options.");
+  } else {
+    console.log(`Error: Unrecognized input ${JSON.stringify(args)}. Use '--help' for available options.`);
+  }
 }
 
 // If the file is executed directly, run the main function with CLI arguments

@@ -218,6 +218,8 @@ describe("Main Unrecognized NaN", () => {
     expect(output).toContain("Error: Unrecognized input");
     expect(output).toContain("NaN");
     expect(output).toContain("--help");
+    // Check for the specific note about NaN
+    expect(output).toContain("Note: 'NaN' is not a valid option");
     spy.mockRestore();
   });
 });
