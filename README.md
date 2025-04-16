@@ -44,7 +44,7 @@ node src/lib/main.js invalid-flag
 
 ### Error Handling for Invalid Inputs
 
-Any unrecognized input, including numeric-like inputs (such as 'NaN', '123', or any other numeric value), will result in an error message sent to stderr using console.error. When the input is numeric-like, the CLI tool outputs an extended error message:
+Any unrecognized input, including numeric-like inputs (such as 'NaN', '123', or any other numeric value), will result in an error message sent to stderr using console.error. When the input is numeric-like, the CLI tool outputs an extended error message that reminds the user to provide a valid command. The message reads as follows:
 
 ```
 Error: '<input>' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.

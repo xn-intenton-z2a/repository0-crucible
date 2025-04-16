@@ -9,6 +9,7 @@ export const memoryLog = [];
 /**
  * Handles unrecognized CLI inputs by outputting a standardized error message.
  * If the input is numeric-like (e.g., 'NaN' or a number), it outputs a standardized extended message.
+ * This enhanced error message reminds the user to provide a valid command and to use '--help' for guidance.
  * @param {string[]} args - The CLI arguments that were not recognized
  */
 function handleInvalidCommand(args) {
