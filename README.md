@@ -35,14 +35,14 @@ To run the CLI tool and see help instructions:
 node src/lib/main.js --help
 ```
 
-When running with unrecognized inputs, the tool now uses a standardized error handling mechanism. For example:
+When running with unrecognized inputs, the tool uses a standardized error handling mechanism. For example:
 
 ```bash
 node src/lib/main.js invalid-flag
 # Output: Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
 ```
 
-Similarly, specific invalid inputs like `NaN` are handled uniformly:
+Similarly, specific invalid inputs like `NaN` are handled uniformly. For instance:
 
 ```bash
 node src/lib/main.js NaN
@@ -54,7 +54,9 @@ The output will be:
 Error: 'NaN' is not a recognized command. Use '--help' for available options.
 ```
 
-This centralizes error handling and ensures maintainability by delegating unrecognized inputs to a dedicated helper function.
+### Error Handling for Invalid Inputs
+
+Any unrecognized input, including but not limited to commands like `NaN`, will result in a standardized error message. This message instructs the user to use the `--help` flag to display the available options.
 
 ### CLI Options
 
@@ -135,12 +137,6 @@ This centralizes error handling and ensures maintainability by delegating unreco
   node src/lib/main.js --help-seeking
   ```
   Activates help-seeking mode, indicating that external assistance is being consulted.
-
-- **Error Handling for Invalid Inputs:**
-  Unrecognized commands are processed by a dedicated error handler, which provides the following standardized message:
-  ```
-  Error: '<input>' is not a recognized command. Use '--help' for available options.
-  ```
 
 ## Incremental Changes Plan
 
