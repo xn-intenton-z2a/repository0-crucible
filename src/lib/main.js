@@ -10,15 +10,20 @@ export const memoryLog = [];
  * Handles unrecognized CLI inputs by outputting a standardized error message.
  * If the input is numeric-like (e.g., 'NaN' or a number), it outputs a standardized extended message.
  * This enhanced error message reminds the user to provide a valid command and to use '--help' for guidance.
- * 
- * Note: The current handling for numeric-like inputs including 'NaN' is intentionally kept as-is to avoid duplication with existing issue discussions.
+ *
+ * Note: Numeric-like inputs often indicate accidental or incorrect command usage. The extended message
+ * provides additional guidance to ensure users are aware that non-command inputs (like numbers) require
+ * correction. This behavior is clearly separated from other invalid commands.
  * 
  * @param {string[]} args - The CLI arguments that were not recognized
  */
 function handleInvalidCommand(args) {
   const input = args.join(" ");
   // Use a regex to check if the input is numeric-like or the literal 'NaN'
+  // Numeric-like inputs (such as 'NaN' or numeric strings) trigger an enhanced error message.
   if (/^(NaN|-?\d+(\.\d+)?)$/.test(input)) {
+    // Numeric-like input detected. Extended error message provided because numeric inputs 
+    // might indicate accidental or incorrect command usage.
     const errorMsg = `Error: '${input}' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.`;
     console.error(errorMsg);
   } else {
