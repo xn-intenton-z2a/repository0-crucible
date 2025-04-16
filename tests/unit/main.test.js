@@ -194,7 +194,7 @@ describe("Main Help-Seeking", () => {
   });
 });
 
-// New test for unrecognized input
+// Existing test for unrecognized input
 describe("Main Unrecognized Input", () => {
   test("should display error message for unrecognized input", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -203,6 +203,20 @@ describe("Main Unrecognized Input", () => {
     const output = spy.mock.calls[0][0];
     expect(output).toContain("Error: Unrecognized input");
     expect(output).toContain("invalid-flag");
+    expect(output).toContain("--help");
+    spy.mockRestore();
+  });
+});
+
+// New test for unrecognized 'NaN' input
+describe("Main Unrecognized NaN", () => {
+  test("should display error message for 'NaN' input", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["NaN"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    expect(output).toContain("Error: Unrecognized input");
+    expect(output).toContain("NaN");
     expect(output).toContain("--help");
     spy.mockRestore();
   });
