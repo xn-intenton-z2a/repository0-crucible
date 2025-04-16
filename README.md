@@ -52,7 +52,7 @@ The CLI tool distinguishes between general unrecognized commands and numeric-lik
 Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
 ```
 
-- For numeric-like inputs (such as `NaN`, numeric strings like `123`, negative numbers like `-5`, or decimals like `3.14` and `-2.718`), the CLI outputs an extended error message that advises the user to provide a valid command. The message is exactly:
+- For numeric-like inputs (such as `NaN`, numeric strings like `123`, negative numbers like `-5`, or decimals like `3.14` and `-2.718`), the CLI outputs an enhanced error message. The message is exactly:
 
 ```
 Error: '<input>' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.
