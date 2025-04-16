@@ -1,37 +1,28 @@
 # SELF_IMPROVEMENT
 
 ## Overview
-This update enhances the existing self-improvement feature by integrating a verbose logging mode. In addition to tracking error counts and execution timings, the agent will now support a `--verbose` flag. When activated, the CLI will provide detailed, step-by-step logging for debugging, including entry and exit logs of critical functions, detailed timing for each operation, and expanded error information with stack traces where applicable. This additional data will facilitate deeper insights during self-review and make it easier to diagnose issues in real time.
+This enhancement refines the existing self-improvement feature by integrating a comprehensive verbose logging mode. Activated via the `--verbose` flag, the feature provides detailed, step-by-step logging of critical operations, thereby improving observability and aiding in troubleshooting. The verbose mode lays the groundwork for future adaptive self-improvement processes.
 
 ## Implementation Details
-1. **Verbose Mode Activation:**
-   - Update the source file (`src/lib/main.js`) to check if `--verbose` is present in the command-line arguments. If so, set a global flag (e.g. `globalThis.verboseMode = true`).
-   - When verbose mode is enabled, wrap major operations with additional logging statements that output detailed progress information, including function entry/exit, internal state snapshots, and more granular timing metrics.
+1. **Verbose Flag Activation:**
+   - Update `src/lib/main.js` to inspect command-line arguments for the `--verbose` flag. 
+   - If present, establish a global flag (e.g., `globalThis.verboseMode = true`) early in the function execution to conditionally enable detailed logging.
 
-2. **Integration with Self-Improvement Metrics:**
-   - Enhance the existing self-improvement tracking mechanism by including verbose logs in the performance report. Alongside `errorCount` and `avgExecutionTimeMS`, additional metrics (such as per-command execution breakdown) should be logged.
-   - Modify the self-review command (triggered e.g. by `self_improve`) to optionally include verbose details if verbose mode was active during command execution.
+2. **Enhanced Logging:**
+   - Wrap key operations (such as diagnostics, command execution, memory logging, and help-seeking) with additional logging statements when verbose mode is active.
+   - Log entry and exit of major functions along with timestamps and contextual information to help trace the flow of execution.
 
-3. **Source File Modification:**
-   - In `src/lib/main.js`, add logic that intercepts the `--verbose` flag and stores its state in a global variable.
-   - Modify all major logging calls so that when `globalThis.verboseMode` is true, they output additional diagnostic information.
+3. **Test Updates:**
+   - Modify tests in `tests/unit/main.test.js` to simulate CLI invocations using the `--verbose` flag.
+   - Use spies on `console.log` to verify that, when verbose mode is enabled, detailed log messages (for example, markers like "Entering <function>" and "Exiting <function>") are produced without interfering with standard outputs.
 
-## Tests
-1. **Verbose Flag Test:**
-   - Update the unit tests in `tests/unit/main.test.js` to simulate a CLI invocation with the `--verbose` flag.
-   - Verify that upon running with `--verbose`, additional log outputs (e.g., detailed start and end messages for each operation) are produced.
+4. **Documentation:**
+   - Update the README (`README.md`) to document the new `--verbose` CLI option.
+   - Provide usage examples to show how the verbose logging mode enhances diagnostic output and supports troubleshooting.
 
-2. **Self-Review Report Test:**
-   - Execute the self-review command with verbose mode enabled and check that the returned report object includes the additional verbose metrics, confirming that extra diagnostic data is registered.
+## Testing & Validation
+- Ensure that without the `--verbose` flag, the CLI operates with the standard logging level while retaining all existing functionalities.
+- When `--verbose` is active, verify that additional logs are emitted for each critical step without altering the overall behavior of the CLI.
 
-## Documentation
-1. **README Update:**
-   - In README.md, update the **CLI Options** section to include a bullet point for **Verbose Logging**:
-     - **Verbose Logging:**
-       ```bash
-       node src/lib/main.js --verbose
-       ```
-       When this flag is used, the agent outputs detailed logs, including step-by-step diagnostic information, which is integrated with the self-improvement performance metrics.
-
-2. **Long-Term Direction:**
-   - This enhancement not only improves immediate observability and debugging but also lays the groundwork for more sophisticated self-analysis. Future iterations may use the verbose logs as a basis for automated adjustments or proactive improvements based on in-depth runtime diagnostics.
+## Long-Term Direction
+This verbose logging mechanism is a foundational step towards more advanced self-improvement capabilities. In future iterations, the enhanced logging data may be leveraged for dynamic performance tracking, automated adjustments, and proactive error resolution, thereby progressively refining the agent’s operational efficiency.
