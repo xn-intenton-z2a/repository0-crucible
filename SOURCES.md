@@ -107,3 +107,23 @@ Spinning Up in Deep RL is an educational resource provided by OpenAI that introd
 ## https://www.serverless.com/framework/docs
 The Serverless Framework documentation offers guidance on deploying serverless applications, managing infrastructure as code, and optimizing cloud-based workflows. It is relevant for understanding and implementing replication and parallel execution strategies in modern automation.
 ## MIT License
+
+# Fast Downward Planning System
+## https://www.fast-downward.org/
+Fast Downward is a state-of-the-art planning system used in AI research for automated planning tasks. Its documentation provides insights into heuristic search, planning algorithms, and optimization techniques that are valuable for understanding goal decomposition and planning in complex systems.
+## Academic / Open Research
+
+# Chain-of-Thought Prompting Research
+## https://arxiv.org/abs/2201.11903
+This research paper explores chain-of-thought prompting techniques in large language models, detailing how multi-step reasoning can be elicited through structured prompt design. It complements the ReAct and Tree of Thoughts frameworks by emphasizing the sequential unfolding of reasoning steps.
+## Public Domain (Research Paper)
+
+# Azure Functions Documentation
+## https://learn.microsoft.com/en-us/azure/azure-functions/
+Azure Functions documentation offers guidelines for deploying serverless functions on Microsoft Azure, concentrating on scalability, event-driven architectures, and integration with cloud services. It provides a robust resource for understanding modern serverless computing.
+## Microsoft Terms of Service
+
+# GitLab REST API Documentation
+## https://docs.gitlab.com/ee/api/
+The GitLab REST API documentation provides comprehensive guides and reference material for automating interactions with GitLab repositories. It covers a wide range of functionalities including issue tracking, merge requests, and CI/CD pipelines, serving as an alternative to GitHub's API for repository automation.
+## GitLab Terms of Service
