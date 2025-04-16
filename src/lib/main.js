@@ -13,8 +13,8 @@ export const memoryLog = [];
  */
 function handleInvalidCommand(args) {
   const input = args.join(" ");
-  // Check if the input is numeric-like
-  if (input === "NaN" || /^-?\d+(\.\d+)?$/.test(input)) {
+  // Use a regex to check if the input is numeric-like or the literal 'NaN'
+  if (/^(NaN|-?\d+(\.\d+)?)$/.test(input)) {
     const errorMsg = `Error: '${input}' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.`;
     console.error(errorMsg);
   } else {
