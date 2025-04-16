@@ -49,9 +49,7 @@ The CLI tool is designed to handle any unrecognized commands by outputting a sta
 Error: '<input>' is not a recognized command. Use '--help' for available options.
 ```
 
-Note: Special inputs such as 'NaN' and other unusual or malformed strings are treated as unrecognized commands and will trigger the standard error message above.
-
-For example, if you run:
+Note: Inputs such as 'NaN' and other unusual or malformed strings are treated as unrecognized commands and will trigger the standard error message. For example, if you run:
 
 ```bash
 node src/lib/main.js NaN
