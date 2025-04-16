@@ -8,11 +8,12 @@ import yaml from "js-yaml";
 
 // Helper function to escape XML special characters
 function escapeXML(str) {
-  return str.replace(/&/g, '&amp;')
-            .replace(/</g, '&lt;')
-            .replace(/>/g, '&gt;')
-            .replace(/"/g, '&quot;')
-            .replace(/'/g, '&apos;');
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&apos;");
 }
 
 // Simulate crawling public data sources and transforming them into an OWL ontology represented as a JSON object
@@ -21,10 +22,8 @@ export function crawlDataSources() {
     "owl:ontology": {
       source: "public",
       description: "Simulated crawling of public data sources",
-      data: [
-        { id: 1, info: "Sample data entry" }
-      ]
-    }
+      data: [{ id: 1, info: "Sample data entry" }],
+    },
   };
 }
 
@@ -63,7 +62,8 @@ export async function main(args = process.argv.slice(2)) {
         "--filter-data": "Filter ontology data based on key-value pairs",
         "--validate-ontology": "Validate the structure of an ontology JSON file",
         "--live-crawl": "Output live crawl from https://api.publicapis.org/entries",
-        "--ontology-info": "Read an ontology JSON file and output a summary with source, description, total data entries, and optional timestamp",
+        "--ontology-info":
+          "Read an ontology JSON file and output a summary with source, description, total data entries, and optional timestamp",
         "--serve": "Start an HTTP server on port 3000 that serves the OWL ontology at the '/ontology' endpoint",
         "--capital-cities": "Output a sample OWL ontology of capital cities",
         "--refresh": "Re-crawl public data sources, attach a current timestamp, and output the refreshed ontology JSON",
@@ -73,8 +73,8 @@ export async function main(args = process.argv.slice(2)) {
         "--export-turtle": "Export the generated ontology in Turtle (TTL) format",
         "--export-jsonld": "Export the generated ontology as JSON-LD",
         "--export-csv": "Export the generated ontology as CSV",
-        "--export-yaml": "Export the generated ontology as YAML"
-      }
+        "--export-yaml": "Export the generated ontology as YAML",
+      },
     };
     console.log(JSON.stringify(helpMessage, null, 2));
     return;
@@ -86,7 +86,7 @@ export async function main(args = process.argv.slice(2)) {
     const diagnostics = {
       nodeVersion: process.version,
       platform: process.platform,
-      currentWorkingDirectory: process.cwd()
+      currentWorkingDirectory: process.cwd(),
     };
     console.log(JSON.stringify(diagnostics));
     return;
@@ -101,13 +101,13 @@ export async function main(args = process.argv.slice(2)) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
       const jsonResponse = await response.json();
-      const entry = (Array.isArray(jsonResponse.entries) && jsonResponse.entries.length) ? jsonResponse.entries[0] : {};
+      const entry = Array.isArray(jsonResponse.entries) && jsonResponse.entries.length ? jsonResponse.entries[0] : {};
       const liveOntology = {
         "owl:ontology": {
           source: "live",
           description: "Live crawl from https://api.publicapis.org/entries",
-          data: [entry]
-        }
+          data: [entry],
+        },
       };
       console.log(JSON.stringify(liveOntology, null, 2));
     } catch (err) {
@@ -127,7 +127,10 @@ export async function main(args = process.argv.slice(2)) {
   // Handle '--save-ontology' option to persist the generated ontology to a file
   const saveOntologyIndex = args.indexOf("--save-ontology");
   if (saveOntologyIndex !== -1) {
-    const targetFilename = (args[saveOntologyIndex + 1] && !args[saveOntologyIndex + 1].startsWith("--")) ? args[saveOntologyIndex + 1] : "ontology.json";
+    const targetFilename =
+      args[saveOntologyIndex + 1] && !args[saveOntologyIndex + 1].startsWith("--")
+        ? args[saveOntologyIndex + 1]
+        : "ontology.json";
     const ontology = crawlDataSources();
     fs.writeFileSync(targetFilename, JSON.stringify(ontology, null, 2));
     console.log(JSON.stringify({ result: "Ontology saved to " + targetFilename }));
@@ -194,19 +197,26 @@ export async function main(args = process.argv.slice(2)) {
   const mergePersistIndex = args.indexOf("--merge-persist");
   if (mergePersistIndex !== -1) {
     if (args.length <= mergePersistIndex + 2) {
-      console.log(JSON.stringify({ error: "Error: Insufficient arguments for merge-persist. Two ontology file paths required." }));
+      console.log(
+        JSON.stringify({ error: "Error: Insufficient arguments for merge-persist. Two ontology file paths required." }),
+      );
       return;
     }
     try {
       const file1Path = args[mergePersistIndex + 1];
       const file2Path = args[mergePersistIndex + 2];
-      const outputPath = (args[mergePersistIndex + 3] && !args[mergePersistIndex + 3].startsWith("--")) ? args[mergePersistIndex + 3] : "merged-ontology.json";
+      const outputPath =
+        args[mergePersistIndex + 3] && !args[mergePersistIndex + 3].startsWith("--")
+          ? args[mergePersistIndex + 3]
+          : "merged-ontology.json";
       const file1Content = fs.readFileSync(file1Path, "utf-8");
       const file2Content = fs.readFileSync(file2Path, "utf-8");
       const ontology1 = JSON.parse(file1Content);
       const ontology2 = JSON.parse(file2Content);
       if (!ontology1["owl:ontology"] || !ontology2["owl:ontology"]) {
-        console.log(JSON.stringify({ error: "Error: One or both input files do not contain 'owl:ontology' property." }));
+        console.log(
+          JSON.stringify({ error: "Error: One or both input files do not contain 'owl:ontology' property." }),
+        );
         return;
       }
       const ont1 = ontology1["owl:ontology"];
@@ -215,8 +225,8 @@ export async function main(args = process.argv.slice(2)) {
         "owl:ontology": {
           source: `${ont1.source || "unknown"}; ${ont2.source || "unknown"}`,
           description: `Merged ontology: ${ont1.description || ""} | ${ont2.description || ""}`,
-          data: [...(ont1.data || []), ...(ont2.data || [])]
-        }
+          data: [...(ont1.data || []), ...(ont2.data || [])],
+        },
       };
       fs.writeFileSync(outputPath, JSON.stringify(mergedOntology, null, 2));
       console.log(JSON.stringify({ result: "Ontology merged and saved to " + outputPath }));
@@ -244,12 +254,12 @@ export async function main(args = process.argv.slice(2)) {
       console.log(JSON.stringify({ error: "Error: Ontology data is missing or not in expected format." }));
       return;
     }
-    const filteredData = ontology["owl:ontology"].data.filter(entry => entry[keyParam] === valueParam);
+    const filteredData = ontology["owl:ontology"].data.filter((entry) => entry[keyParam] === valueParam);
     const filteredOntology = {
       "owl:ontology": {
         ...ontology["owl:ontology"],
-        data: filteredData
-      }
+        data: filteredData,
+      },
     };
     console.log(JSON.stringify(filteredOntology));
     return;
@@ -267,7 +277,9 @@ export async function main(args = process.argv.slice(2)) {
       const fileContent = fs.readFileSync(filePath, "utf-8");
       const parsed = JSON.parse(fileContent);
       if (!parsed["owl:ontology"] || typeof parsed["owl:ontology"] !== "object") {
-        console.log(JSON.stringify({ error: "Error: Ontology JSON does not contain a valid 'owl:ontology' property." }));
+        console.log(
+          JSON.stringify({ error: "Error: Ontology JSON does not contain a valid 'owl:ontology' property." }),
+        );
         return;
       }
       const ontology = parsed["owl:ontology"];
@@ -302,20 +314,28 @@ export async function main(args = process.argv.slice(2)) {
       const fileContent = fs.readFileSync(filePath, "utf-8");
       const parsed = JSON.parse(fileContent);
       if (!parsed["owl:ontology"] || typeof parsed["owl:ontology"] !== "object") {
-        console.log(JSON.stringify({ error: "Error: Ontology JSON does not contain a valid 'owl:ontology' property." }));
+        console.log(
+          JSON.stringify({ error: "Error: Ontology JSON does not contain a valid 'owl:ontology' property." }),
+        );
         return;
       }
       const ontology = parsed["owl:ontology"];
-      if (typeof ontology.source !== "string" || typeof ontology.description !== "string" || !Array.isArray(ontology.data)) {
-        console.log(JSON.stringify({ error: "Error: Ontology file does not have valid source, description or data properties." }));
+      if (
+        typeof ontology.source !== "string" ||
+        typeof ontology.description !== "string" ||
+        !Array.isArray(ontology.data)
+      ) {
+        console.log(
+          JSON.stringify({ error: "Error: Ontology file does not have valid source, description or data properties." }),
+        );
         return;
       }
       const summary = {
         ontologyInfo: {
           source: ontology.source,
           description: ontology.description,
-          totalDataEntries: ontology.data.length
-        }
+          totalDataEntries: ontology.data.length,
+        },
       };
       if (ontology.timestamp) {
         summary.ontologyInfo.timestamp = ontology.timestamp;
@@ -333,8 +353,8 @@ export async function main(args = process.argv.slice(2)) {
       capitalCities: [
         { name: "Washington D.C.", country: "USA" },
         { name: "London", country: "UK" },
-        { name: "Tokyo", country: "Japan" }
-      ]
+        { name: "Tokyo", country: "Japan" },
+      ],
     };
     console.log(JSON.stringify(capitalOntology, null, 2));
     return;
@@ -379,9 +399,9 @@ export async function main(args = process.argv.slice(2)) {
     rdfOutput += `  <description>${escapeXML(ontology.description)}</description>\n`;
     rdfOutput += `  <data>\n`;
     if (Array.isArray(ontology.data)) {
-      ontology.data.forEach(item => {
+      ontology.data.forEach((item) => {
         rdfOutput += `    <entry>\n`;
-        Object.keys(item).forEach(key => {
+        Object.keys(item).forEach((key) => {
           rdfOutput += `      <${key}>${escapeXML(String(item[key]))}</${key}>\n`;
         });
         rdfOutput += `    </entry>\n`;
@@ -408,10 +428,10 @@ export async function main(args = process.argv.slice(2)) {
         const keys = Object.keys(item);
         keys.forEach((key, i) => {
           turtleOutput += `      ex:${key} "${escapeXML(String(item[key]))}"`;
-          turtleOutput += (i < keys.length - 1 ? " ;\n" : "\n");
+          turtleOutput += i < keys.length - 1 ? " ;\n" : "\n";
         });
         turtleOutput += "    ]";
-        turtleOutput += (index < ontology.data.length - 1 ? " ,\n" : "\n");
+        turtleOutput += index < ontology.data.length - 1 ? " ,\n" : "\n";
       });
       turtleOutput += "  ]\n";
     }
@@ -426,14 +446,14 @@ export async function main(args = process.argv.slice(2)) {
     const ontology = crawlDataSources()["owl:ontology"];
     const jsonld = {
       "@context": {
-        "source": "http://example.com/source",
-        "description": "http://example.com/description",
-        "data": "http://example.com/data"
+        source: "http://example.com/source",
+        description: "http://example.com/description",
+        data: "http://example.com/data",
       },
       "@type": "Ontology",
       "source": ontology.source,
       "description": ontology.description,
-      "data": ontology.data
+      "data": ontology.data,
     };
     console.log(JSON.stringify(jsonld, null, 2));
     return;
@@ -459,18 +479,20 @@ export async function main(args = process.argv.slice(2)) {
     }
     // Get union of all keys from each data entry and sort them for consistency
     const keysSet = new Set();
-    data.forEach(entry => {
-      Object.keys(entry).forEach(key => keysSet.add(key));
+    data.forEach((entry) => {
+      Object.keys(entry).forEach((key) => keysSet.add(key));
     });
     const keys = Array.from(keysSet).sort();
     let csv = keys.join(",") + "\n";
-    data.forEach(entry => {
-      const row = keys.map(key => {
-        const value = entry[key] !== undefined ? String(entry[key]) : "";
-        // Escape double quotes by doubling them
-        const escaped = value.replace(/"/g, '""');
-        return `"${escaped}"`;
-      }).join(",");
+    data.forEach((entry) => {
+      const row = keys
+        .map((key) => {
+          const value = entry[key] !== undefined ? String(entry[key]) : "";
+          // Escape double quotes by doubling them
+          const escaped = value.replace(/"/g, '""');
+          return `"${escaped}"`;
+        })
+        .join(",");
       csv += row + "\n";
     });
     console.log(csv);

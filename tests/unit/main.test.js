@@ -2,13 +2,11 @@ import { describe, test, expect, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main, memoryLog } from "@src/lib/main.js";
 
-
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
   });
 });
-
 
 describe("Main Output", () => {
   test("should terminate without error", () => {
@@ -16,7 +14,6 @@ describe("Main Output", () => {
     main();
   });
 });
-
 
 describe("Main Help", () => {
   test("should display help message when '--help' flag is provided", () => {
@@ -29,7 +26,6 @@ describe("Main Help", () => {
     spy.mockRestore();
   });
 });
-
 
 describe("Main Version", () => {
   test("should display version number from package.json when '--version' flag is provided", async () => {
@@ -44,36 +40,33 @@ describe("Main Version", () => {
   });
 });
 
-
 describe("Main Diagnostics", () => {
   test("should display diagnostics information when '--diagnostics' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--diagnostics"]);
     expect(spy).toHaveBeenCalledWith(expect.stringContaining("Diagnostics:"));
-    const calls = spy.mock.calls.map(call => call[0]);
-    const hasNodeVersion = calls.some(text => String(text).includes("Node Version:"));
+    const calls = spy.mock.calls.map((call) => call[0]);
+    const hasNodeVersion = calls.some((text) => String(text).includes("Node Version:"));
     expect(hasNodeVersion).toBe(true);
     spy.mockRestore();
   });
 });
-
 
 describe("Main Extended Diagnostics", () => {
   test("should display extended diagnostics information when '--extended-diagnostics' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--extended-diagnostics"]);
     expect(spy).toHaveBeenCalledWith(expect.stringContaining("Extended Diagnostics:"));
-    const calls = spy.mock.calls.map(call => call[0]);
-    const hasMemoryUsage = calls.some(text => String(text).includes("Memory Usage:"));
-    const hasProcessUptime = calls.some(text => String(text).includes("Process Uptime:"));
-    const hasProcessPlatform = calls.some(text => String(text).includes("Process Platform:"));
+    const calls = spy.mock.calls.map((call) => call[0]);
+    const hasMemoryUsage = calls.some((text) => String(text).includes("Memory Usage:"));
+    const hasProcessUptime = calls.some((text) => String(text).includes("Process Uptime:"));
+    const hasProcessPlatform = calls.some((text) => String(text).includes("Process Platform:"));
     expect(hasMemoryUsage).toBe(true);
     expect(hasProcessUptime).toBe(true);
     expect(hasProcessPlatform).toBe(true);
     spy.mockRestore();
   });
 });
-
 
 describe("Main Self-Refine", () => {
   test("should display self-refinement message when '--self-refine' flag is provided", () => {
@@ -86,7 +79,6 @@ describe("Main Self-Refine", () => {
   });
 });
 
-
 describe("Main Refresh", () => {
   test("should display refresh message when '--refresh' flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -97,7 +89,6 @@ describe("Main Refresh", () => {
     spy.mockRestore();
   });
 });
-
 
 describe("Main Merge Persist", () => {
   test("should display merge persist message when '--merge-persist' flag is provided", () => {
@@ -110,7 +101,6 @@ describe("Main Merge Persist", () => {
   });
 });
 
-
 describe("Main Serve", () => {
   test("should display serve message when '--serve' flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -121,7 +111,6 @@ describe("Main Serve", () => {
     spy.mockRestore();
   });
 });
-
 
 describe("Main Build Intermediate", () => {
   test("should display intermediate build message when '--build-intermediate' flag is provided", () => {
@@ -134,7 +123,6 @@ describe("Main Build Intermediate", () => {
   });
 });
 
-
 describe("Main Build Enhanced", () => {
   test("should display enhanced build message when '--build-enhanced' flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -145,7 +133,6 @@ describe("Main Build Enhanced", () => {
     spy.mockRestore();
   });
 });
-
 
 describe("Main Echo", () => {
   test("should output structured JSON with echo property excluding '--echo'", () => {
@@ -160,7 +147,6 @@ describe("Main Echo", () => {
   });
 });
 
-
 describe("Main Memory Logging", () => {
   test("should display memory log when '--memory' flag is provided", () => {
     // Clear the memory log before running the test
@@ -172,16 +158,15 @@ describe("Main Memory Logging", () => {
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[spy.mock.calls.length - 1][0];
     expect(output).toContain("Memory Log:");
-    const jsonPart = output.replace('Memory Log:', '').trim();
+    const jsonPart = output.replace("Memory Log:", "").trim();
     const logOutput = JSON.parse(jsonPart);
     expect(Array.isArray(logOutput)).toBe(true);
     expect(logOutput.length).toBeGreaterThanOrEqual(1);
-    expect(logOutput[0]).toHaveProperty('timestamp');
-    expect(logOutput[0]).toHaveProperty('args');
+    expect(logOutput[0]).toHaveProperty("timestamp");
+    expect(logOutput[0]).toHaveProperty("args");
     spy.mockRestore();
   });
 });
-
 
 describe("Main Help-Seeking", () => {
   test("should display help-seeking message when '--help-seeking' flag is provided", () => {
@@ -215,7 +200,9 @@ describe("Main Unrecognized NaN", () => {
     main(["NaN"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
-    expect(output).toContain("Error: 'NaN' is not a valid option. Please use '--help' to see the list of available commands.");
+    expect(output).toContain(
+      "Error: 'NaN' is not a valid option. Please use '--help' to see the list of available commands.",
+    );
     spy.mockRestore();
   });
 });
