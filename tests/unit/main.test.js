@@ -186,7 +186,7 @@ describe("Main Unrecognized Input", () => {
     main(["invalid-flag"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
-    const expected = "Error: 'invalid-flag' is not a valid option. Please use '--help' to see the list of available commands.";
+    const expected = "Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.";
     expect(output).toEqual(expected);
     spy.mockRestore();
   });
@@ -199,7 +199,7 @@ describe("Main Unrecognized NaN", () => {
     main(["NaN"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
-    const expected = "Error: 'NaN' is not a valid option. Please use '--help' to see the list of available commands.";
+    const expected = "Error: 'NaN' is not a recognized command. Use '--help' for available options.";
     expect(output).toEqual(expected);
     spy.mockRestore();
   });
