@@ -56,50 +56,14 @@ node src/lib/main.js invalid-flag
 # Output (sent to stderr): Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
 ```
 
-### Error Handling for Invalid and Numeric-like Inputs
+### Error Handling for Invalid Inputs
 
-The CLI tool distinguishes between general unrecognized commands and numeric-like inputs. 
-
-- For general invalid commands (e.g., `invalid-flag`), the error message is:
-
-```
-Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
-```
-
-- For numeric-like inputs (such as `NaN`, numeric strings like `123`, negative numbers like `-5`, or decimals like `3.14` and `-2.718`), the CLI outputs an enhanced error message which advises the user to provide a valid command. The message is exactly:
-
-```
-Error: '<input>' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.
-```
-
-For example:
+The CLI tool distinguishes unrecognized commands and outputs a standardized error message. For example:
 
 ```bash
-node src/lib/main.js NaN
-# Output: Error: 'NaN' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.
+node src/lib/main.js invalid-flag
+# Output: Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
 ```
-
-```bash
-node src/lib/main.js 123
-# Output: Error: '123' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.
-```
-
-```bash
-node src/lib/main.js -5
-# Output: Error: '-5' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.
-```
-
-```bash
-node src/lib/main.js 3.14
-# Output: Error: '3.14' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.
-```
-
-```bash
-node src/lib/main.js -2.718
-# Output: Error: '-2.718' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.
-```
-
-> Note: Numeric-like inputs trigger an enhanced error message that includes additional guidance to help users correct their input mistakes.
 
 ### CLI Options
 
