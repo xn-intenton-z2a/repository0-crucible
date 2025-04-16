@@ -61,7 +61,7 @@ The output (sent to stderr) will be:
 Error: 'NaN' is not a recognized command. Use '--help' for available options.
 ```
 
-Note: The CLI treats the input 'NaN' (Not a Number) like any other unrecognized command, ensuring users are guided to valid options.
+Note: The CLI treats any unrecognized input—including special cases like 'NaN'—in the same standardized way by outputting the error message above. This ensures consistency and clear guidance for users.
 
 ## Usage
 
