@@ -282,3 +282,13 @@ This DeepMind blog post discusses innovative strategies in AI for planning, reas
 ## https://nodejs.org/en/docs/guides/building-scalable-applications/
 This guide provides comprehensive insights into scaling Node.js applications, including effective strategies for handling concurrency, process management, and performance optimization. These principles are directly applicable to implementing replication and parallel execution in agentic systems.
 ## MIT License
+
+# Chalk Documentation
+## https://github.com/chalk/chalk
+Chalk is a popular library for styling terminal strings with color, used to enhance CLI error messages and help texts. It is widely used in Node.js projects to add visual clarity and is actively maintained by the community.
+## MIT License
+
+# Promise.all - JavaScript | MDN
+## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/all
+This MDN documentation provides a comprehensive guide to Promise.all, a method used to handle multiple asynchronous operations concurrently. The page is highly authoritative and regularly updated, making it a reliable source for understanding concurrent promise aggregation.
+## CC BY-SA 2.5
