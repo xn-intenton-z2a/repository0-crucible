@@ -11,7 +11,7 @@ export const memoryLog = [];
  * If the input is numeric-like (e.g., 'NaN' or a number), it outputs a standardized extended message.
  * This enhanced error message reminds the user to provide a valid command and to use '--help' for guidance.
  *
- * Note: Numeric-like inputs often indicate accidental or incorrect command usage. The extended message
+ * Note: Numeric-like inputs often indicate accidental or incorrect command usage. The extended error message
  * provides additional guidance to ensure users are aware that non-command inputs (like numbers) require
  * correction. This behavior is clearly separated from other invalid commands.
  * 
