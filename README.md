@@ -25,7 +25,21 @@ npm install repository0-crucible
 
 ## Features
 
-TODO: Add features here.
+The CLI tool provides the following features:
+
+- Display help instructions with `--help`.
+- Dynamically show the application version using `--version`.
+- Show basic system diagnostics with `--diagnostics`.
+- Display extended diagnostics including memory usage and uptime with `--extended-diagnostics`.
+- Perform self-refinement analysis using `--self-refine`.
+- Refresh the application state with `--refresh`.
+- Merge and persist changes with `--merge-persist`.
+- Start the server using `--serve`.
+- Build with intermediate options using `--build-intermediate`.
+- Build with enhanced options using `--build-enhanced`.
+- Echo provided arguments in JSON format with `--echo`.
+- Display an in-memory log of CLI invocations using `--memory`.
+- Activate help-seeking mode with `--help-seeking`.
 
 ## Usage
 
