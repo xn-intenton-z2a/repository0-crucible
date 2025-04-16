@@ -127,3 +127,38 @@ Azure Functions documentation offers guidelines for deploying serverless functio
 ## https://docs.gitlab.com/ee/api/
 The GitLab REST API documentation provides comprehensive guides and reference material for automating interactions with GitLab repositories. It covers a wide range of functionalities including issue tracking, merge requests, and CI/CD pipelines, serving as an alternative to GitHub's API for repository automation.
 ## GitLab Terms of Service
+
+# Agentic Strategies in AI Systems
+## https://www.ibm.com/cloud/learn/autonomous-agents
+IBM provides an overview of autonomous agents, discussing how systems can self-manage and improve with minimal human intervention. The page covers key concepts in autonomous operation, making it a useful reference for systems that incorporate planning, memory, and self-improvement.
+## IBM Cloud Terms of Use
+
+# Input Validation in JavaScript Applications
+## https://developer.mozilla.org/en-US/docs/Learn/Forms/Form_validation
+The MDN documentation on form validation explains techniques for validating user inputs in JavaScript applications, offering guidelines and best practices that can also be applied to CLI input validation. It provides detailed examples and browser compatibility tips.
+## CC BY-SA 2.5 (attributed)
+
+# Parallel Processing in Node.js
+## https://nodejs.org/api/cluster.html
+This section of the Node.js documentation explains how to achieve parallel processing using the cluster module. It is relevant for implementing replication and parallel command execution, as it provides insights into managing multiple processes concurrently.
+## MIT License
+
+# AWS Lambda Concurrency
+## https://docs.aws.amazon.com/lambda/latest/dg/configuration-concurrency.html
+AWS Lambda's documentation on concurrency details how to configure and manage simultaneous executions of Lambda functions. This is essential for understanding replication in serverless environments and scaling autonomous tasks.
+## AWS Terms of Service
+
+# Configuration Management with 12-Factor App
+## https://12factor.net/config
+This resource explains the principles of configuration management in modern applications, advocating for externalizing configuration to improve maintainability and scalability. It is a valuable reference for understanding best practices in managing environment variables and configuration.
+## Public Domain
+
+# Intelligent Automation Research by OpenAI
+## https://openai.com/research
+OpenAI's research page offers insights into cutting-edge advancements in intelligent automation and autonomous agents. It covers a wide range of topics from reinforcement learning to help-seeking behaviors, informing the development of self-improving systems.
+## Various Licenses
+
+# Autonomy in Software Agents
+## https://towardsdatascience.com/autonomous-agents-architecture-and-applications-c0b536a1d7a
+This article on Towards Data Science explores the architecture and applications of autonomous agents, discussing how these systems can perceive, decide, and act autonomously. It provides a comprehensive overview that is useful for designing agentic systems.
+## CC BY-NC-ND 4.0
