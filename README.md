@@ -52,7 +52,7 @@ Any unrecognized input will result in an error message sent to stderr via consol
 Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
 ```
 
-- For numeric-like inputs (for example, `NaN` or `123`), the CLI tool outputs an enhanced error message that reminds the user to provide a valid command and to consult help. The output follows this pattern:
+- For numeric-like inputs (for example, `NaN` or `123`), the CLI tool outputs an enhanced error message that reminds the user to provide a valid command and to consult help. The error message is exactly:
 
 ```
 Error: '<input>' is not a recognized command. Use '--help' for available options. Please ensure you are providing a valid command. Use '--help' to view all available options.
