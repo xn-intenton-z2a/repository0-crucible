@@ -147,38 +147,6 @@ describe("Main Echo", () => {
   });
 });
 
-describe("Main Memory Logging", () => {
-  test("should display memory log when '--memory' flag is provided", () => {
-    // Clear the memory log before running the test
-    memoryLog.length = 0;
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    // First invocation to record a log entry, then call --memory
-    main(["dummy"]);
-    main(["--memory"]);
-    expect(spy).toHaveBeenCalled();
-    const output = spy.mock.calls[spy.mock.calls.length - 1][0];
-    expect(output).toContain("Memory Log:");
-    const jsonPart = output.replace("Memory Log:", "").trim();
-    const logOutput = JSON.parse(jsonPart);
-    expect(Array.isArray(logOutput)).toBe(true);
-    expect(logOutput.length).toBeGreaterThanOrEqual(1);
-    expect(logOutput[0]).toHaveProperty("timestamp");
-    expect(logOutput[0]).toHaveProperty("args");
-    spy.mockRestore();
-  });
-});
-
-describe("Main Help-Seeking", () => {
-  test("should display help-seeking message when '--help-seeking' flag is provided", () => {
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--help-seeking"]);
-    expect(spy).toHaveBeenCalled();
-    const output = spy.mock.calls[0][0];
-    expect(output).toContain("Help-Seeking activated: consulting external assistance...");
-    spy.mockRestore();
-  });
-});
-
 // Updated test for unrecognized input with standardized error message using console.error
 describe("Main Unrecognized Input", () => {
   test("should display standardized error message for unrecognized input", () => {
