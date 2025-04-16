@@ -179,28 +179,28 @@ describe("Main Help-Seeking", () => {
   });
 });
 
-// Existing test for unrecognized input
+// Updated test for unrecognized input with standardized error message
 describe("Main Unrecognized Input", () => {
-  test("should display error message for unrecognized input", () => {
+  test("should display standardized error message for unrecognized input", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["invalid-flag"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
-    expect(output).toContain("Error: Unrecognized input");
-    expect(output).toContain("invalid-flag");
-    expect(output).toContain("--help");
+    const expected = "Error: 'invalid-flag' is not a valid option. Please use '--help' to see the list of available commands.";
+    expect(output).toEqual(expected);
     spy.mockRestore();
   });
 });
 
-// New test for unrecognized 'NaN' input
+// Updated test for unrecognized 'NaN' input with standardized error message
 describe("Main Unrecognized NaN", () => {
-  test("should display error message for 'NaN' input", () => {
+  test("should display standardized error message for 'NaN' input", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["NaN"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
-    expect(output).toContain("Error: 'NaN' is not a valid option. Please use '--help' to see the list of available commands.");
+    const expected = "Error: 'NaN' is not a valid option. Please use '--help' to see the list of available commands.";
+    expect(output).toEqual(expected);
     spy.mockRestore();
   });
 });
