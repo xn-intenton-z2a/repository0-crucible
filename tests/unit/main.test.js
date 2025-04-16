@@ -172,7 +172,8 @@ describe("Main Echo", () => {
 
 
 describe("Main Unrecognized Input", () => {
-  // This behavior is documented in README.md under the 'Handling Unrecognized Commands and Inputs' section.
+  // The following tests ensure that inputs, including unusual
+  // ones like 'NaN', are handled with a standardized error message.
   test("should display standardized error message for a single unrecognized input", async () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     await main(["invalid-flag"]);
@@ -204,6 +205,7 @@ describe("Main Unrecognized Input", () => {
   });
 
   test("should display standardized error message for 'NaN' input", async () => {
+    // Testing that the special input 'NaN' is treated as an unrecognized command
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     await main(["NaN"]);
     expect(spy).toHaveBeenCalled();
