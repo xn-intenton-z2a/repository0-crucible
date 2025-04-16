@@ -217,3 +217,13 @@ The Node.js Worker Threads documentation provides a guide to utilizing multithre
 ## https://oclif.io/docs/introduction.html
 The oclif documentation provides guidance on building command-line interfaces with Node.js. It offers insights into command parsing, help generation, and extensibility which can inspire enhancements in CLI design and modularity for agentic systems.
 ## MIT License
+
+# GitHub Actions Documentation
+## https://docs.github.com/en/actions
+The official GitHub Actions documentation provides comprehensive guidance on creating, configuring, and troubleshooting workflows for continuous integration, deployment, and automated repository management. It covers topics such as workflow triggers, job dependencies, and artifact management, making it an essential resource for automating repository tasks.
+## GitHub Terms of Service
+
+# ChatGPT Plugins Documentation
+## https://platform.openai.com/docs/plugins/introduction
+This documentation introduces the creation and integration of plugins for ChatGPT, enabling extended functionalities and external assistance in AI-driven applications. It offers step-by-step guides and best practices for developing and deploying plugins, which can enrich the help-seeking capabilities in autonomous systems.
+## OpenAI API Terms of Service
