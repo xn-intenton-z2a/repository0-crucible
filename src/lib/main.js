@@ -31,6 +31,11 @@ export async function main(args = process.argv.slice(2)) {
   // Log every invocation with a timestamp
   memoryLog.push({ timestamp: new Date().toISOString(), args });
 
+  // If no arguments provided, default to '--help'
+  if (args.length === 0) {
+    args = ["--help"];
+  }
+  
   // Process '--help' flag: display help information
   if (args.includes('--help')) {
     console.log(`Usage: node src/lib/main.js [options]\n\nOptions:\n  --help                Display help information about the CLI tool.\n  --version             Display the current application version from package.json.\n  --diagnostics         Show Node and environment diagnostic information.\n  --extended-diagnostics Display detailed diagnostics including memory usage, uptime, and platform info.\n  --self-refine         Perform self-refinement analysis.\n  --serve               Start the server.\n  --build-intermediate  Build with intermediate options.\n  --build-enhanced      Build with enhanced options.\n  --refresh             Refresh the application state.\n  --merge-persist       Merge and persist changes.\n  --echo                Output the remaining arguments in JSON format.\n  --memory              Display the in-memory log of CLI invocations.\n  --help-seeking        Activate help-seeking mode to consult external assistance.\n`);
@@ -72,7 +77,7 @@ export async function main(args = process.argv.slice(2)) {
     console.log("Performing self-refinement analysis...");
     return;
   }
-  
+
   // Process '--refresh' flag: refresh application state
   if (args.includes('--refresh')) {
     console.log("Refreshing application state...");
