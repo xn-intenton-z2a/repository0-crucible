@@ -1,41 +1,38 @@
-# Overview
-This feature combines automated planning and goal decomposition into a single cohesive module. It allows the CLI tool to accept high-level goals, break them down into a sequence of manageable sub-tasks, and optionally execute these tasks sequentially. Users can choose to simply view the decomposition for review or initiate execution. This consolidation streamlines command processing while aligning with the overall mission of building an autonomous agent that plans, decomposes, and acts.
+# PLAN_DECOMPOSITION
 
-# Implementation Details
-1. **Payload Extension:**
-   - Modify the agenticHandler in `src/lib/main.js` to detect a `goal` property in the input payload. 
-   - If a payload contains `goal`, parse it using simple heuristics (e.g., delimiters like ". ", ";", or "then") to generate a list of sub-tasks.
+## Overview
+This feature refines the goal planning and decomposition capability of the CLI tool. It continues to allow users to provide a high-level goal that is split into sub-tasks, but now includes enhanced parsing techniques, improved error tolerance, and tighter integration with memory logging. The feature remains closely aligned with the mission of autonomous intelligent automation by making goal execution more transparent and reliable.
 
-2. **Decomposition and Execution Modes:**
-   - If the payload includes a flag (e.g. `decomposeOnly`), output the sub-task list in JSON format without executing them. 
-   - Otherwise, treat each sub-task as a sequential command and process them (e.g., by recursively calling the same handler or iterating through tasks). 
-   - Ensure that each sub-task increments the global call count and is logged in the memory log.
+## Implementation Details
+1. **Enhanced Goal Parsing:**
+   - Extend the parsing logic in `src/lib/main.js` to handle a wider range of delimiters (such as commas, semicolons, "then", and newline characters) to better split multi-part goals.
+   - Improve heuristics to detect poorly structured or ambiguous commands, and provide graceful fallback messages for malformed goals.
 
-3. **Source File Changes:**
-   - Update `src/lib/main.js` to implement the parsing logic and integrate both planning and decomposition modes.
-   - Ensure consistent error handling and fallback behavior if the goal is malformed or missing clear delimiters.
+2. **Dual Modes of Operation:**
+   - **Decomposition Mode:** If the input payload includes a flag (e.g. `decomposeOnly`), output the list of sub-tasks in JSON without executing them.
+   - **Execution Mode:** In the absence of the `decomposeOnly` flag, sequentially execute each parsed sub-task while updating the global call count and appending the processed information to the in-memory log.
 
-# Testing
-1. **Decomposition Mode:**
-   - Write unit tests in `tests/unit/main.test.js` to verify that providing a payload like `{ goal: "Step one. Then step two.", decomposeOnly: true }` returns the correct list of sub-tasks without executing them.
+3. **Integration with Memory:**
+   - Ensure that each decomposed sub-task and its result (or error) are logged into the global memoryLog, enhancing traceability and accountability for each planning action.
 
-2. **Execution Mode:**
-   - Validate that a goal provided without the decomposeOnly flag results in sequential execution of parsed sub-tasks, with each sub-task being logged appropriately.
+4. **Error Handling:**
+   - Refine error messages for cases when a goal cannot be correctly parsed. Provide actionable feedback such as suggesting use of clearer delimiters or checking the goal format.
 
-3. **Edge Cases:**
-   - Test scenarios where the goal is a single sentence or uses unconventional delimiters, ensuring graceful handling by either treating the entire goal as one command or providing useful error feedback.
+## Testing
+1. **Unit Tests:**
+   - Update tests in `tests/unit/main.test.js` to include payloads with various delimiter types. Verify that even partial goal definitions provide a useful list of sub-tasks.
+   - Test scenarios where the input goal is ambiguous or malformed to confirm that the tool returns a descriptive error without crashing.
 
-# Documentation
+2. **Integration Verification:**
+   - Simulate both decomposeOnly mode and execution mode to check that sub-tasks are appropriately processed and logged in memory.
+
+## Documentation
 1. **README Update:**
-   - Add a section under CLI Options to document the new planning and decomposition functionality.
-   - Example usage:
+   - Enhance the CLI Options section to document the improved planning and decomposition functionality. For example:
      ```bash
-     node src/lib/main.js --agentic '{"goal": "Initialize project. Then configure settings.", "decomposeOnly": true}'
+     node src/lib/main.js --agentic '{ "goal": "Initialize project. Then, setup configuration; finally, run tests.", "decomposeOnly": true }'
      ```
-   - Explain the differences between preview (decomposition only) and execution modes.
+   - Clearly differentiate between preview (decomposition mode) and full execution mode.
 
-2. **Usage Notes:**
-   - Clearly state that this unified feature enhances clarity and reduces redundancy by merging previous planning and goal decomposition capabilities.
-
-# Long-Term Direction
-This feature lays the groundwork for more advanced goal interpretation and execution strategies. Future iterations may incorporate dynamic re-planning based on sub-task outcomes, integrate natural language processing for more sophisticated goal parsing, and provide a richer interactive interface for reviewing and approving the action plan before execution.
+## Long-Term Direction
+This enhancement forms a bridge to future improvements such as dynamic re-planning based on sub-task outcomes and more advanced natural language processing. The updated PLAN_DECOMPOSITION feature sets a robust foundation that ensures clearer goal articulation and enhanced operational logging, fully supporting the mission's vision of intelligent, autonomous task management.
