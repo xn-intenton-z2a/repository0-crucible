@@ -45,12 +45,7 @@ node src/lib/main.js invalid-flag
 Similarly, specific invalid inputs like `NaN` are handled uniformly. For instance:
 
 ```bash
-node src/lib/main.js NaN
-```
-
-The output will be sent to stderr:
-
-```
+$ node src/lib/main.js NaN
 Error: 'NaN' is not a recognized command. Use '--help' for available options.
 ```
 
