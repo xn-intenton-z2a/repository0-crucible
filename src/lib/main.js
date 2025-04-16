@@ -48,7 +48,8 @@ export async function main(args = process.argv.slice(2)) {
   if (args.includes("--version")) {
     try {
       const pkg = await import("../../package.json", { assert: { type: "json" } });
-      console.log(pkg.default?.version || pkg.version);
+      const version = (pkg.default && pkg.default.version) ? pkg.default.version : pkg.version;
+      console.log(version);
     } catch (err) {
       console.error("Error loading version:", err);
     }

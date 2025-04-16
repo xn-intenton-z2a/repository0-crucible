@@ -136,18 +136,8 @@ This ensures that users are clearly informed about the invalidity of such input 
   ```
   Activates help-seeking mode, indicating that external assistance is being consulted.
 
-- **Special Handling for NaN Input:**
-  ```bash
-  node src/lib/main.js NaN
-  ```
-  The CLI explicitly handles the input "NaN" and outputs:
-  
-  "Error: 'NaN' is not a valid option. Please use '--help' to see the list of available commands."
-
-- **Default Output for Unrecognized Inputs:**
-  When invoking the CLI with unrecognized arguments, the tool will display an error message like:
-
-  "Error: '<input>' is not a valid option. Please use '--help' to see the list of available commands."
+- **Linting Consideration:**
+  The repository is configured to ignore the archive folder during linting. This avoids processing legacy or archived files with known issues. If you encounter linting warnings or errors, ensure that your changes are within the source files and tests, and that the archive folder remains excluded.
 
 ## Incremental Changes Plan
 
