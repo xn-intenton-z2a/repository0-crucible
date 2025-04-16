@@ -347,3 +347,8 @@ The ChatGPT blog by OpenAI offers cutting-edge insights into the evolution of co
 ## https://blog.risingstack.com/node-js-cluster-worker-threads/
 This blog post explores the differences between Node.js clustering and worker threads, providing practical examples and performance benchmarks that inform the design of the replication feature for parallel command execution.
 ## MIT License
+
+# Node.js ECMAScript Modules Documentation
+## https://nodejs.org/api/esm.html
+This official Node.js documentation provides in-depth guides and reference material on working with ECMAScript Modules in Node.js. It covers differences between CommonJS and ESM, the import/export syntax, and best practices for module resolution—essential for modern JavaScript projects that leverage ESM.
+## MIT License
