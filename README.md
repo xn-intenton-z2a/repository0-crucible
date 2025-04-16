@@ -35,14 +35,14 @@ To run the CLI tool and see help instructions:
 node src/lib/main.js --help
 ```
 
-When running with unrecognized inputs, the tool displays an error message guiding the user to use the `--help` flag for available options. For example:
+When running with unrecognized inputs, the tool now uses a standardized error handling mechanism. For example:
 
 ```bash
-node src/lib/main.js [unrecognized-options]
-# Output: Error: '<input>' is not a recognized command. Use '--help' for available options.
+node src/lib/main.js invalid-flag
+# Output: Error: 'invalid-flag' is not a recognized command. Use '--help' for available options.
 ```
 
-Note: In addition to unrecognized inputs, specific inputs such as `NaN` are explicitly handled by the CLI. For example, if you run:
+Similarly, specific invalid inputs like `NaN` are handled uniformly:
 
 ```bash
 node src/lib/main.js NaN
@@ -54,7 +54,7 @@ The output will be:
 Error: 'NaN' is not a recognized command. Use '--help' for available options.
 ```
 
-This ensures that users are clearly informed about the invalidity of such input and advised to use the `--help` command for guidance on valid options.
+This centralizes error handling and ensures maintainability by delegating unrecognized inputs to a dedicated helper function.
 
 ### CLI Options
 
@@ -136,8 +136,11 @@ This ensures that users are clearly informed about the invalidity of such input 
   ```
   Activates help-seeking mode, indicating that external assistance is being consulted.
 
-- **Linting Consideration:**
-  The repository is configured to ignore the archive folder during linting. This avoids processing legacy or archived files with known issues. If you encounter linting warnings or errors, ensure that your changes are within the source files and tests, and that the archive folder remains excluded.
+- **Error Handling for Invalid Inputs:**
+  Unrecognized commands are processed by a dedicated error handler, which provides the following standardized message:
+  ```
+  Error: '<input>' is not a recognized command. Use '--help' for available options.
+  ```
 
 ## Incremental Changes Plan
 
