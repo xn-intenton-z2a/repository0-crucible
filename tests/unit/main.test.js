@@ -19,16 +19,16 @@ describe("Main Module Import", () => {
 });
 
 describe("Main Output", () => {
-  test("should terminate without error", () => {
+  test("should terminate without error", async () => {
     process.argv = ["node", "src/lib/main.js"];
-    main();
+    await main();
   });
 });
 
 describe("Main Help", () => {
-  test("should display help message when '--help' flag is provided", () => {
+  test("should display help message when '--help' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--help"]);
+    await main(["--help"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     expect(output).toContain("Usage: node src/lib/main.js [options]");
@@ -79,9 +79,9 @@ describe("Main Extended Diagnostics", () => {
 });
 
 describe("Main Self-Refine", () => {
-  test("should display self-refinement message when '--self-refine' flag is provided", () => {
+  test("should display self-refinement message when '--self-refine' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--self-refine"]);
+    await main(["--self-refine"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     expect(output).toContain("Performing self-refinement analysis...");
@@ -90,9 +90,9 @@ describe("Main Self-Refine", () => {
 });
 
 describe("Main Refresh", () => {
-  test("should display refresh message when '--refresh' flag is provided", () => {
+  test("should display refresh message when '--refresh' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--refresh"]);
+    await main(["--refresh"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     expect(output).toContain("Refreshing application state...");
@@ -101,9 +101,9 @@ describe("Main Refresh", () => {
 });
 
 describe("Main Merge Persist", () => {
-  test("should display merge persist message when '--merge-persist' flag is provided", () => {
+  test("should display merge persist message when '--merge-persist' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--merge-persist"]);
+    await main(["--merge-persist"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     expect(output).toContain("Merging and persisting changes...");
@@ -112,9 +112,9 @@ describe("Main Merge Persist", () => {
 });
 
 describe("Main Serve", () => {
-  test("should display serve message when '--serve' flag is provided", () => {
+  test("should display serve message when '--serve' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--serve"]);
+    await main(["--serve"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     expect(output).toContain("Starting server...");
@@ -123,9 +123,9 @@ describe("Main Serve", () => {
 });
 
 describe("Main Build Intermediate", () => {
-  test("should display intermediate build message when '--build-intermediate' flag is provided", () => {
+  test("should display intermediate build message when '--build-intermediate' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--build-intermediate"]);
+    await main(["--build-intermediate"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     expect(output).toContain("Building with intermediate options...");
@@ -134,9 +134,9 @@ describe("Main Build Intermediate", () => {
 });
 
 describe("Main Build Enhanced", () => {
-  test("should display enhanced build message when '--build-enhanced' flag is provided", () => {
+  test("should display enhanced build message when '--build-enhanced' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--build-enhanced"]);
+    await main(["--build-enhanced"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     expect(output).toContain("Building with enhanced options...");
@@ -145,9 +145,9 @@ describe("Main Build Enhanced", () => {
 });
 
 describe("Main Echo", () => {
-  test("should output structured JSON with echo property excluding '--echo'", () => {
+  test("should output structured JSON with echo property excluding '--echo'", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--echo", "arg1", "arg2"]);
+    await main(["--echo", "arg1", "arg2"]);
     expect(spy).toHaveBeenCalled();
     const output = spy.mock.calls[0][0];
     const parsed = JSON.parse(output);
