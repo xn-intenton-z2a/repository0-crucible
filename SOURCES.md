@@ -247,3 +247,13 @@ AgentGPT is another experimental project that focuses on autonomous AI agents. T
 ## https://docs.github.com/en/graphql
 This documentation provides detailed guidelines on utilizing GitHub’s GraphQL API for more efficient data retrieval and mutation operations. It is designed for developers who need fine-grained control over GitHub data, allowing for more tailored queries compared to the REST API. The comprehensive examples and interactive explorer make it an essential resource for automating repository workflows.
 ## GitHub Terms of Service
+
+# Hierarchical Task Networks in AI Planning
+## https://en.wikipedia.org/wiki/Hierarchical_task_network
+This source provides an overview of Hierarchical Task Networks (HTNs), a planning method in artificial intelligence that decomposes complex goals into manageable sub-tasks. Its structured approach offers valuable insights for refining the PLAN_DECOMPOSITION feature by clearly illustrating how large objectives can be broken down into actionable steps.
+## CC BY-SA 3.0
+
+# Replicating Agents in Distributed Systems
+## https://www.infoq.com/articles/multi-agent-systems/
+This article explores strategies for replicating autonomous agents within distributed systems. It discusses techniques for parallel command execution and scaling automation tasks across multiple environments, aligning with the REPLICATION feature’s goal of enhancing throughput and enabling multi-agent orchestration.
+## N/A
