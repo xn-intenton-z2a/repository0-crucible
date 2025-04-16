@@ -135,7 +135,9 @@ describe("Data Sources Option", () => {
   test("should output a hard-coded list of public data source URLs", () => {
     const logSpy = vi.spyOn(console, "log");
     main(["--data-sources"]);
-    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ dataSources: ["https://example.com/api1", "https://example.com/api2"] }));
+    expect(logSpy).toHaveBeenCalledWith(
+      JSON.stringify({ dataSources: ["https://example.com/api1", "https://example.com/api2"] }),
+    );
     logSpy.mockRestore();
   });
 });
@@ -148,8 +150,8 @@ describe("Merge Persist Option", () => {
           "owl:ontology": {
             source: "public1",
             description: "First ontology",
-            data: [{ id: 1, info: "Data1" }]
-          }
+            data: [{ id: 1, info: "Data1" }],
+          },
         });
       }
       if (filePath === "ontology2.json") {
@@ -157,11 +159,11 @@ describe("Merge Persist Option", () => {
           "owl:ontology": {
             source: "public2",
             description: "Second ontology",
-            data: [{ id: 2, info: "Data2" }]
-          }
+            data: [{ id: 2, info: "Data2" }],
+          },
         });
       }
-      return '';
+      return "";
     });
     const writeFileSyncSpy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
     const logSpy = vi.spyOn(console, "log");
@@ -170,8 +172,11 @@ describe("Merge Persist Option", () => {
       "owl:ontology": {
         source: "public1; public2",
         description: "Merged ontology: First ontology | Second ontology",
-        data: [{ id: 1, info: "Data1" }, { id: 2, info: "Data2" }]
-      }
+        data: [
+          { id: 1, info: "Data1" },
+          { id: 2, info: "Data2" },
+        ],
+      },
     };
     expect(writeFileSyncSpy).toHaveBeenCalledWith("merged.json", JSON.stringify(expectedMerged, null, 2));
     expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ result: "Ontology merged and saved to merged.json" }));
@@ -187,8 +192,8 @@ describe("Merge Persist Option", () => {
           "owl:ontology": {
             source: "public1",
             description: "First ontology",
-            data: [{ id: 1, info: "Data1" }]
-          }
+            data: [{ id: 1, info: "Data1" }],
+          },
         });
       }
       if (filePath === "ontology2.json") {
@@ -196,11 +201,11 @@ describe("Merge Persist Option", () => {
           "owl:ontology": {
             source: "public2",
             description: "Second ontology",
-            data: [{ id: 2, info: "Data2" }]
-          }
+            data: [{ id: 2, info: "Data2" }],
+          },
         });
       }
-      return '';
+      return "";
     });
     const writeFileSyncSpy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
     const logSpy = vi.spyOn(console, "log");
@@ -209,11 +214,16 @@ describe("Merge Persist Option", () => {
       "owl:ontology": {
         source: "public1; public2",
         description: "Merged ontology: First ontology | Second ontology",
-        data: [{ id: 1, info: "Data1" }, { id: 2, info: "Data2" }]
-      }
+        data: [
+          { id: 1, info: "Data1" },
+          { id: 2, info: "Data2" },
+        ],
+      },
     };
     expect(writeFileSyncSpy).toHaveBeenCalledWith("merged-ontology.json", JSON.stringify(expectedMerged, null, 2));
-    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ result: "Ontology merged and saved to merged-ontology.json" }));
+    expect(logSpy).toHaveBeenCalledWith(
+      JSON.stringify({ result: "Ontology merged and saved to merged-ontology.json" }),
+    );
     readFileSyncSpy.mockRestore();
     writeFileSyncSpy.mockRestore();
     logSpy.mockRestore();
@@ -222,7 +232,9 @@ describe("Merge Persist Option", () => {
   test("should output error for insufficient arguments", () => {
     const logSpy = vi.spyOn(console, "log");
     main(["--merge-persist", "onlyone.json"]);
-    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Insufficient arguments for merge-persist. Two ontology file paths required." }));
+    expect(logSpy).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Error: Insufficient arguments for merge-persist. Two ontology file paths required." }),
+    );
     logSpy.mockRestore();
   });
 
@@ -232,7 +244,9 @@ describe("Merge Persist Option", () => {
     });
     const logSpy = vi.spyOn(console, "log");
     main(["--merge-persist", "ontology1.json", "ontology2.json"]);
-    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: One or both input files do not contain 'owl:ontology' property." }));
+    expect(logSpy).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Error: One or both input files do not contain 'owl:ontology' property." }),
+    );
     readFileSyncSpy.mockRestore();
     logSpy.mockRestore();
   });
@@ -243,7 +257,7 @@ describe("Filter Data Option", () => {
     const logSpy = vi.spyOn(console, "log");
     main(["--filter-data", "info", "Sample data entry"]);
     const ontology = crawlDataSources();
-    const filteredData = ontology["owl:ontology"].data.filter(entry => entry.info === "Sample data entry");
+    const filteredData = ontology["owl:ontology"].data.filter((entry) => entry.info === "Sample data entry");
     const expectedOntology = { "owl:ontology": { ...ontology["owl:ontology"], data: filteredData } };
     expect(logSpy).toHaveBeenCalledWith(JSON.stringify(expectedOntology));
     logSpy.mockRestore();
@@ -252,14 +266,18 @@ describe("Filter Data Option", () => {
   test("should output error when filter key parameter is missing", () => {
     const logSpy = vi.spyOn(console, "log");
     main(["--filter-data"]);
-    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Missing filter key parameter for --filter-data" }));
+    expect(logSpy).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Error: Missing filter key parameter for --filter-data" }),
+    );
     logSpy.mockRestore();
   });
 
   test("should output error when filter value parameter is missing", () => {
     const logSpy = vi.spyOn(console, "log");
     main(["--filter-data", "info"]);
-    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Missing filter value parameter for --filter-data" }));
+    expect(logSpy).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Error: Missing filter value parameter for --filter-data" }),
+    );
     logSpy.mockRestore();
   });
 });
@@ -270,14 +288,14 @@ describe("Validate Ontology Option", () => {
       "owl:ontology": {
         source: "public",
         description: "A valid ontology",
-        data: [{ id: 1 }]
-      }
+        data: [{ id: 1 }],
+      },
     };
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation((filePath) => {
       if (filePath === "validOntology.json") {
         return JSON.stringify(validOntology);
       }
-      return '';
+      return "";
     });
     const logSpy = vi.spyOn(console, "log");
     main(["--validate-ontology", "validOntology.json"]);
@@ -289,7 +307,9 @@ describe("Validate Ontology Option", () => {
   test("should output error when file path is missing", () => {
     const logSpy = vi.spyOn(console, "log");
     main(["--validate-ontology"]);
-    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Missing ontology file path argument for --validate-ontology" }));
+    expect(logSpy).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Error: Missing ontology file path argument for --validate-ontology" }),
+    );
     logSpy.mockRestore();
   });
 
@@ -308,11 +328,13 @@ describe("Validate Ontology Option", () => {
     const invalidOntology = { notOntology: {} };
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation((filePath) => {
       if (filePath === "missingOntology.json") return JSON.stringify(invalidOntology);
-      return '';
+      return "";
     });
     const logSpy = vi.spyOn(console, "log");
     main(["--validate-ontology", "missingOntology.json"]);
-    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Ontology JSON does not contain a valid 'owl:ontology' property." }));
+    expect(logSpy).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Error: Ontology JSON does not contain a valid 'owl:ontology' property." }),
+    );
     readFileSyncSpy.mockRestore();
     logSpy.mockRestore();
   });
@@ -322,8 +344,8 @@ describe("Validate Ontology Option", () => {
       "owl:ontology": {
         source: 123,
         description: true,
-        data: "not-an-array"
-      }
+        data: "not-an-array",
+      },
     };
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation((filePath) => {
       return JSON.stringify(invalidOntology);
@@ -343,8 +365,8 @@ describe("Ontology Info Option", () => {
         source: "public",
         description: "Test ontology",
         data: [{ a: 1 }, { a: 2 }],
-        timestamp: "2023-10-10T10:10:10Z"
-      }
+        timestamp: "2023-10-10T10:10:10Z",
+      },
     };
     const readFileSyncSpy = vi.spyOn(fs, "readFileSync").mockImplementation((filePath) => {
       if (filePath === "validOntology.json") return JSON.stringify(validOntology);
@@ -357,8 +379,8 @@ describe("Ontology Info Option", () => {
         source: "public",
         description: "Test ontology",
         totalDataEntries: 2,
-        timestamp: "2023-10-10T10:10:10Z"
-      }
+        timestamp: "2023-10-10T10:10:10Z",
+      },
     };
     expect(logSpy).toHaveBeenCalledWith(JSON.stringify(expectedOutput));
     readFileSyncSpy.mockRestore();
@@ -368,7 +390,9 @@ describe("Ontology Info Option", () => {
   test("should output error when file path is missing for --ontology-info", () => {
     const logSpy = vi.spyOn(console, "log");
     main(["--ontology-info"]);
-    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Missing ontology file path argument for --ontology-info" }));
+    expect(logSpy).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Error: Missing ontology file path argument for --ontology-info" }),
+    );
     logSpy.mockRestore();
   });
 
@@ -389,7 +413,9 @@ describe("Ontology Info Option", () => {
     });
     const logSpy = vi.spyOn(console, "log");
     main(["--ontology-info", "badOntology.json"]);
-    expect(logSpy).toHaveBeenCalledWith(JSON.stringify({ error: "Error: Ontology file does not have valid source, description or data properties." }));
+    expect(logSpy).toHaveBeenCalledWith(
+      JSON.stringify({ error: "Error: Ontology file does not have valid source, description or data properties." }),
+    );
     readFileSyncSpy.mockRestore();
     logSpy.mockRestore();
   });
@@ -400,12 +426,12 @@ describe("Serve Option", () => {
     // Start the server
     main(["--serve"]);
     // Wait for server to initialize
-    await new Promise(resolve => setTimeout(resolve, 200));
+    await new Promise((resolve) => setTimeout(resolve, 200));
 
     const responseData = await new Promise((resolve, reject) => {
       get("http://localhost:3000/ontology", (res) => {
         let data = "";
-        res.on("data", chunk => data += chunk);
+        res.on("data", (chunk) => (data += chunk));
         res.on("end", () => resolve(data));
       }).on("error", reject);
     });
@@ -414,7 +440,7 @@ describe("Serve Option", () => {
     expect(parsed).toHaveProperty("owl:ontology");
 
     // Close the server instance
-    if (mainModule.serverInstance && typeof mainModule.serverInstance.close === 'function') {
+    if (mainModule.serverInstance && typeof mainModule.serverInstance.close === "function") {
       mainModule.serverInstance.close();
     }
   });
@@ -426,10 +452,10 @@ describe("Export RDF Option", () => {
     main(["--export-rdf"]);
     const output = logSpy.mock.calls[0][0];
     expect(output).toContain('<?xml version="1.0" encoding="UTF-8"?>');
-    expect(output).toContain('<owl:Ontology>');
-    expect(output).toContain('<source>public</source>');
-    expect(output).toContain('<description>Simulated crawling of public data sources</description>');
-    expect(output).toContain('<entry>');
+    expect(output).toContain("<owl:Ontology>");
+    expect(output).toContain("<source>public</source>");
+    expect(output).toContain("<description>Simulated crawling of public data sources</description>");
+    expect(output).toContain("<entry>");
     logSpy.mockRestore();
   });
 });
@@ -471,7 +497,7 @@ describe("Export CSV Option", () => {
     const lines = output.trim().split("\n");
     // For the simulated ontology the keys are id and info sorted alphabetically
     expect(lines[0]).toBe("id,info");
-    expect(lines[1]).toBe("\"1\",\"Sample data entry\"");
+    expect(lines[1]).toBe('"1","Sample data entry"');
     logSpy.mockRestore();
   });
 });
