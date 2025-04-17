@@ -11,6 +11,27 @@ let maxMemoryEntries = 100;
 // In-memory log to store the command arguments across invocations
 let memoryLog = [];
 
+// New variable to hold custom memory file path if provided via CLI flag
+let customMemoryPath = null;
+
+/**
+ * Returns the effective memory file path to use based on the customMemoryPath flag or defaults.
+ * If customMemoryPath is provided, that is used. Otherwise, if a compressed file exists, use it; else use plain text default.
+ */
+function getEffectiveMemoryPath() {
+  if (customMemoryPath) {
+    return customMemoryPath;
+  } else {
+    if (fs.existsSync("memory.log.gz")) {
+      return "memory.log.gz";
+    } else if (fs.existsSync("memory.log")) {
+      return "memory.log";
+    } else {
+      return "memory.log";
+    }
+  }
+}
+
 /**
  * Main function that processes command line arguments.
  * @param {string[]} args - The command line arguments.
@@ -32,30 +53,42 @@ export function main(args = []) {
     maxMemoryEntries = limit;
   }
 
-  // On startup, auto-load persisted memory from compressed file if available, else from plain text file
-  if (fs.existsSync("memory.log.gz")) {
-    try {
-      const compressedData = fs.readFileSync("memory.log.gz");
-      const decompressed = zlib.gunzipSync(compressedData).toString("utf-8");
-      memoryLog = JSON.parse(decompressed);
-    } catch (error) {
-      console.error("Error loading compressed persisted memory:", error);
+  // Parse --memory-path flag if provided
+  if (args.includes("--memory-path")) {
+    const idx = args.indexOf("--memory-path");
+    const pathStr = args[idx + 1];
+    if (!pathStr || pathStr.startsWith("--")) {
+      console.error("No file path provided for --memory-path flag");
+      return;
     }
-  } else if (fs.existsSync("memory.log")) {
+    customMemoryPath = pathStr;
+  }
+
+  // Determine effective memory file path
+  const effectiveMemoryPath = getEffectiveMemoryPath();
+
+  // On startup, auto-load persisted memory from the custom file if provided, else use default
+  if (fs.existsSync(effectiveMemoryPath)) {
     try {
-      const data = fs.readFileSync("memory.log", { encoding: "utf-8" });
-      memoryLog = JSON.parse(data);
+      if (effectiveMemoryPath.endsWith(".gz")) {
+        const compressedData = fs.readFileSync(effectiveMemoryPath);
+        const decompressed = zlib.gunzipSync(compressedData).toString("utf-8");
+        memoryLog = JSON.parse(decompressed);
+      } else {
+        const data = fs.readFileSync(effectiveMemoryPath, { encoding: "utf-8" });
+        memoryLog = JSON.parse(data);
+      }
     } catch (error) {
-      console.error("Error loading persisted memory:", error);
+      console.error("Error loading persisted memory from " + effectiveMemoryPath + ":", error);
     }
   }
 
   // Handle --merge-persist flag for merging in-memory log with persisted log
   if (args.includes("--merge-persist")) {
     let persistedEntries = [];
-    if (fs.existsSync("memory.log")) {
+    if (fs.existsSync(effectiveMemoryPath)) {
       try {
-        const fileData = fs.readFileSync("memory.log", { encoding: "utf-8" });
+        const fileData = fs.readFileSync(effectiveMemoryPath, { encoding: "utf-8" });
         persistedEntries = JSON.parse(fileData);
       } catch (error) {
         console.error("Error reading persisted memory for merge:", error);
@@ -81,9 +114,15 @@ export function main(args = []) {
     }
     memoryLog = merged;
     try {
-      fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+      if (args.includes("--compress-memory")) {
+        const jsonStr = JSON.stringify(memoryLog);
+        const compressed = zlib.gzipSync(jsonStr);
+        fs.writeFileSync(effectiveMemoryPath, compressed);
+      } else {
+        fs.writeFileSync(effectiveMemoryPath, JSON.stringify(memoryLog));
+      }
     } catch (error) {
-      console.error("Error writing merged memory.log:", error);
+      console.error("Error writing merged memory to " + effectiveMemoryPath + ":", error);
     }
     console.log(`Merged memory log: ${initialCount} entries before merge, ${memoryLog.length} entries after merge.`);
     return;
@@ -105,19 +144,17 @@ export function main(args = []) {
       const now = Date.now();
       entry.modified = new Date(now + 1).toISOString();
       console.log("Memory log entry updated:", JSON.stringify(entry));
-      // If memory.log exists, auto-persist the updated memoryLog
-      if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
+      if (fs.existsSync(effectiveMemoryPath)) {
         try {
-          // Persist using compression if needed
           if (args.includes("--compress-memory")) {
             const jsonStr = JSON.stringify(memoryLog);
             const compressed = zlib.gzipSync(jsonStr);
-            fs.writeFileSync("memory.log.gz", compressed);
+            fs.writeFileSync(effectiveMemoryPath, compressed);
           } else {
-            fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+            fs.writeFileSync(effectiveMemoryPath, JSON.stringify(memoryLog));
           }
         } catch (error) {
-          console.error("Error persisting memory.log:", error);
+          console.error("Error persisting memory to " + effectiveMemoryPath + ":", error);
         }
       }
     } else {
@@ -138,21 +175,20 @@ export function main(args = []) {
     const entry = memoryLog.find(e => e.sessionId === sessionId);
     if (entry) {
       entry.annotation = newAnnotation;
-      // Ensure modified timestamp is different by adding 1 ms
       const now = Date.now();
       entry.modified = new Date(now + 1).toISOString();
       console.log("Memory log entry annotation updated:", JSON.stringify(entry));
-      if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
+      if (fs.existsSync(effectiveMemoryPath)) {
         try {
           if (args.includes("--compress-memory")) {
             const jsonStr = JSON.stringify(memoryLog);
             const compressed = zlib.gzipSync(jsonStr);
-            fs.writeFileSync("memory.log.gz", compressed);
+            fs.writeFileSync(effectiveMemoryPath, compressed);
           } else {
-            fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+            fs.writeFileSync(effectiveMemoryPath, JSON.stringify(memoryLog));
           }
         } catch (error) {
-          console.error("Error persisting memory.log:", error);
+          console.error("Error persisting memory to " + effectiveMemoryPath + ":", error);
         }
       }
     } else {
@@ -172,17 +208,17 @@ export function main(args = []) {
     const originalLength = memoryLog.length;
     memoryLog = memoryLog.filter(entry => !(entry.tag && entry.tag.toLowerCase() === tagValue.toLowerCase()));
     const removedCount = originalLength - memoryLog.length;
-    if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
+    if (fs.existsSync(effectiveMemoryPath)) {
       try {
         if (args.includes("--compress-memory")) {
           const jsonStr = JSON.stringify(memoryLog);
           const compressed = zlib.gzipSync(jsonStr);
-          fs.writeFileSync("memory.log.gz", compressed);
+          fs.writeFileSync(effectiveMemoryPath, compressed);
         } else {
-          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+          fs.writeFileSync(effectiveMemoryPath, JSON.stringify(memoryLog));
         }
       } catch (error) {
-        console.error("Error writing memory.log after deletion:", error);
+        console.error("Error writing memory after deletion to " + effectiveMemoryPath + ":", error);
       }
     }
     console.log(`Deleted ${removedCount} entries with tag: ${tagValue}`);
@@ -200,17 +236,17 @@ export function main(args = []) {
     const originalLength = memoryLog.length;
     memoryLog = memoryLog.filter(entry => !(entry.annotation && entry.annotation.toLowerCase() === annotationValueToDelete.toLowerCase()));
     const removedCount = originalLength - memoryLog.length;
-    if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
+    if (fs.existsSync(effectiveMemoryPath)) {
       try {
         if (args.includes("--compress-memory")) {
           const jsonStr = JSON.stringify(memoryLog);
           const compressed = zlib.gzipSync(jsonStr);
-          fs.writeFileSync("memory.log.gz", compressed);
+          fs.writeFileSync(effectiveMemoryPath, compressed);
         } else {
-          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+          fs.writeFileSync(effectiveMemoryPath, JSON.stringify(memoryLog));
         }
       } catch (error) {
-        console.error("Error writing memory.log after deletion:", error);
+        console.error("Error writing memory after deletion to " + effectiveMemoryPath + ":", error);
       }
     }
     console.log(`Deleted ${removedCount} entries with annotation: ${annotationValueToDelete}`);
@@ -233,23 +269,22 @@ export function main(args = []) {
       return;
     }
     const originalLength = memoryLog.length;
-    // Remove entries whose timestamp falls between startDate and endDate (inclusive)
     memoryLog = memoryLog.filter(entry => {
       const entryDate = new Date(entry.timestamp);
       return entryDate < startDate || entryDate > endDate;
     });
     const deletedCount = originalLength - memoryLog.length;
-    if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
+    if (fs.existsSync(effectiveMemoryPath)) {
       try {
         if (args.includes("--compress-memory")) {
           const jsonStr = JSON.stringify(memoryLog);
           const compressed = zlib.gzipSync(jsonStr);
-          fs.writeFileSync("memory.log.gz", compressed);
+          fs.writeFileSync(effectiveMemoryPath, compressed);
         } else {
-          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+          fs.writeFileSync(effectiveMemoryPath, JSON.stringify(memoryLog));
         }
       } catch (error) {
-        console.error("Error writing memory.log after delete:", error);
+        console.error("Error writing memory after delete to " + effectiveMemoryPath + ":", error);
       }
     }
     console.log(`Deleted ${deletedCount} entries from memory log between ${startDateStr} and ${endDateStr}.`);
@@ -261,7 +296,7 @@ export function main(args = []) {
     const detailedDiag = {
       memoryLimit: maxMemoryEntries,
       memoryLogCount: memoryLog.length,
-      memoryFilePersisted: fs.existsSync("memory.log") || fs.existsSync("memory.log.gz"),
+      memoryFilePersisted: fs.existsSync(effectiveMemoryPath),
       memorySessionIds: memoryLog.map(entry => entry.sessionId)
     };
     console.log(JSON.stringify(detailedDiag));
@@ -273,7 +308,7 @@ export function main(args = []) {
     const diagnostics = {
       memoryLimit: maxMemoryEntries,
       memoryLogCount: memoryLog.length,
-      memoryFilePersisted: fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")
+      memoryFilePersisted: fs.existsSync(effectiveMemoryPath)
     };
     console.log(JSON.stringify(diagnostics));
     return;
@@ -368,18 +403,11 @@ export function main(args = []) {
   // Handle --clear-memory flag: clear the in-memory and persisted memory log
   if (args.includes("--clear-memory")) {
     resetMemory();
-    if (fs.existsSync("memory.log")) {
+    if (fs.existsSync(effectiveMemoryPath)) {
       try {
-        fs.unlinkSync("memory.log");
+        fs.unlinkSync(effectiveMemoryPath);
       } catch (error) {
-        console.error("Error deleting memory.log:", error);
-      }
-    }
-    if (fs.existsSync("memory.log.gz")) {
-      try {
-        fs.unlinkSync("memory.log.gz");
-      } catch (error) {
-        console.error("Error deleting memory.log.gz:", error);
+        console.error("Error deleting " + effectiveMemoryPath + ":", error);
       }
     }
     console.log("Memory log cleared");
@@ -398,7 +426,6 @@ export function main(args = []) {
         const importedLog = JSON.parse(fileContent);
         if (Array.isArray(importedLog)) {
           memoryLog = importedLog;
-          // Enforce memory log size limit after import
           while (memoryLog.length > maxMemoryEntries) {
             memoryLog.shift();
           }
@@ -431,17 +458,17 @@ export function main(args = []) {
       return ts >= cutoff;
     });
     const expiredCount = originalLength - memoryLog.length;
-    if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
+    if (fs.existsSync(effectiveMemoryPath)) {
       try {
         if (args.includes("--compress-memory")) {
           const jsonStr = JSON.stringify(memoryLog);
           const compressed = zlib.gzipSync(jsonStr);
-          fs.writeFileSync("memory.log.gz", compressed);
+          fs.writeFileSync(effectiveMemoryPath, compressed);
         } else {
-          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+          fs.writeFileSync(effectiveMemoryPath, JSON.stringify(memoryLog));
         }
       } catch (error) {
-        console.error("Error writing memory.log after expiration:", error);
+        console.error("Error writing memory after expiration to " + effectiveMemoryPath + ":", error);
       }
     }
     console.log(`Expired ${expiredCount} entries older than ${minutes} minutes.`);
@@ -545,7 +572,6 @@ export function main(args = []) {
 
   // Handle export-memory flag with optional custom filename
   if (args.includes("--export-memory")) {
-    // Record this command invocation
     const nowForExport = new Date().toISOString();
     const sessionIdForExport = nowForExport + "-" + Math.random().toString(36).slice(2);
     const logEntryForExport = { sessionId: sessionIdForExport, args, timestamp: nowForExport };
@@ -598,7 +624,6 @@ export function main(args = []) {
     logEntry.annotation = annotationValue;
   }
   memoryLog.push(logEntry);
-  // Enforce memory log size limit
   while (memoryLog.length > maxMemoryEntries) {
     memoryLog.shift();
   }
@@ -609,12 +634,12 @@ export function main(args = []) {
       if (args.includes("--compress-memory")) {
         const jsonStr = JSON.stringify(memoryLog);
         const compressed = zlib.gzipSync(jsonStr);
-        fs.writeFileSync("memory.log.gz", compressed);
+        fs.writeFileSync(effectiveMemoryPath, compressed);
       } else {
-        fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+        fs.writeFileSync(effectiveMemoryPath, JSON.stringify(memoryLog));
       }
     } catch (error) {
-      console.error("Error writing memory.log:", error);
+      console.error("Error writing memory to " + effectiveMemoryPath + ":", error);
     }
   }
 

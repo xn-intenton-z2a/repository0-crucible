@@ -28,60 +28,43 @@ npm install repository0-crucible
 - CLI Tool for running commands with argument output.
 - Memory Logging: The CLI tool now retains a log of command arguments from each invocation. Each log entry is an object that includes a unique session identifier (a combination of the current timestamp and a random string), the command line arguments used, and an explicit **timestamp** property with the ISO creation time. This helps group and trace commands executed during a single runtime session. The log can be displayed using the `--show-memory` flag. Programmatically, you can access the log using the `getMemory()` function.
 - **Modification Timestamp:** When a memory log entry is updated via the `--update-memory-tag` or `--update-memory-annotation` commands, an additional property `modified` is added to the entry containing the update timestamp in ISO format.
-- Persistence: With the new `--persist-memory` flag, the tool now saves the memory log to a file. By default, it saves to `memory.log`, but if the `--compress-memory` flag is also provided, the log is compressed using Node's zlib module and saved as `memory.log.gz`. On startup, if `memory.log.gz` exists, it is automatically decompressed and loaded.
-- Auto-load Persisted Memory: On startup, if a persisted memory file exists (`memory.log` or `memory.log.gz`), its contents are automatically loaded into the tool's memory log, providing continuity.
-- Clear Memory: A new `--clear-memory` flag has been added that resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.
-- Log Size Limit: The memory logging feature now includes a configurable size limit. By default, it is set to 100 entries, but you can override it at runtime using the `--memory-limit <number>` flag. For example, `node src/lib/main.js --memory-limit 50` will set the maximum log entries to 50. Note that if a non-numeric or invalid value is provided (for example, `NaN`), the CLI will output the error "Invalid memory limit provided. It must be a positive integer.".
-- Export Memory: The new `--export-memory` flag exports the current memory log to a file. By default, it exports to `memory_export.json`, but you can now optionally provide a custom filename. For example:
+- Persistence: With the new `--persist-memory` flag, the tool now saves the memory log to a file. By default, it saves to `memory.log`, but if the `--compress-memory` flag is also provided, the log is compressed using Node's zlib module and saved as `memory.log.gz`. On startup, if a persisted memory file exists, its contents are automatically loaded into the tool's memory log, providing continuity.
+- Clear Memory: A new `--clear-memory` flag resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.
+- Log Size Limit: The memory logging feature now includes a configurable size limit. By default, it is set to 100 entries, but you can override it at runtime using the `--memory-limit <number>` flag. For example, `node src/lib/main.js --memory-limit 50` will set the maximum log entries to 50. If a non-numeric or invalid value is provided, the CLI will output an error.
+- Export Memory: The new `--export-memory` flag exports the current memory log to a file. By default, it exports to `memory_export.json`, but you can optionally provide a custom filename. For example:
   ```bash
   node src/lib/main.js --export-memory custom_log.json
   ```
-- Export Memory with Compression: You can now export the memory log in a compressed gzip format by using the `--compress` flag in conjunction with `--export-memory`. For example:
+- Export Memory with Compression: You can export the memory log in a compressed gzip format by using the `--compress` flag with `--export-memory`. For example:
   ```bash
   node src/lib/main.js --export-memory compressed_log.json --compress
   ```
-- **Export as CSV:** A new `--export-csv` flag has been added to export the memory log in CSV format. The CSV file will include the following columns: sessionId, timestamp, modified, args, tag, and annotation. By default, it exports to `memory_export.csv` unless a custom filename is provided immediately after the flag.
-- Import Memory: The new `--import-memory <filename>` flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.
-- Query Memory: The new `--query-memory <query>` flag allows users to filter the memory log entries based on a search term. The search is case-insensitive, ensuring that values like "anotherAlpha" match when searching for "alpha". Only those entries whose command arguments contain the specified query will be output.
-- Query by Tag: The new `--query-tag <tag>` flag allows users to filter memory log entries based on a custom tag. The filtering is case-insensitive and only returns entries that have a matching tag.
-- Query by Annotation: The new `--query-annotation <query>` flag allows users to filter memory log entries based on their annotation content. This search is case-insensitive and will return all entries where the annotation contains the provided query string. For example:
+- **Export as CSV:** The new `--export-csv` flag exports the memory log in CSV format. The file will include columns: sessionId, timestamp, modified, args, tag, and annotation. By default, it exports to `memory_export.csv` unless a custom filename is provided.
+- Import Memory: The `--import-memory <filename>` flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.
+- Query Memory: The `--query-memory <query>` flag allows filtering of memory log entries based on a search term (case-insensitive). Only entries whose command arguments contain the query are output.
+- Query by Tag: Use the `--query-tag <tag>` flag to filter memory log entries based on a custom tag (case-insensitive).
+- Query by Annotation: The `--query-annotation <query>` flag filters memory log entries based on their annotation content (case-insensitive).
+- **Date Range Query:** The `--query-memory-range <start-date> <end-date>` flag filters entries with timestamps between the provided ISO dates (inclusive).
+- **Delete Memory by Date Range:** The `--delete-memory-range <start-date> <end-date>` flag deletes all entries with timestamps within the specified range (inclusive).
+- Update Memory Tag: The `--update-memory-tag <sessionId> <newTag>` flag updates the tag of an existing memory log entry. The update is persisted if a memory log file exists, and a `modified` timestamp is recorded.
+- Update Memory Annotation: The `--update-memory-annotation <sessionId> <newAnnotation>` flag updates the annotation of an entry, with persistence and a `modified` timestamp.
+- Delete Memory by Tag: The `--delete-memory-by-tag <tag>` flag removes all entries with a matching tag (case-insensitive).
+- Delete Memory by Annotation: The `--delete-memory-by-annotation <annotation>` flag removes all entries whose annotation exactly matches the provided value (case-insensitive).
+- Show Memory in Reverse Order: Use the `--show-memory` flag to display the memory log in reverse chronological order (newest first).
+- Show Memory in Chronological Order: The `--show-memory-chronological` flag displays the memory log in natural order (oldest first).
+- Diagnostics: The `--diagnostics` flag outputs diagnostic information in JSON format, including memory log size, memory limit, and whether a persisted file exists.
+- Detailed Diagnostics: The `--detailed-diagnostics` flag provides an enhanced diagnostic snapshot, including an array of all memory session IDs.
+- Tagging and Annotation: Use `--tag-memory <tag>` and `--annotate-memory <annotation>` to attach custom tags and annotations to log entries.
+- Memory Stats: The `--memory-stats` flag outputs statistics about the in-memory log, including total count, oldest and newest session IDs.
+- Merge Persisted Memory: The `--merge-persist` flag merges the current in-memory log with the persisted file, removing duplicates and trimming to the memory limit.
+- Frequency Statistics: The `--frequency-stats` flag outputs a JSON object showing the frequency of each command argument across all entries.
+- **Memory Expiration:** The `--expire-memory <minutes>` flag automatically removes entries older than the specified number of minutes.
+- **Detailed Memory Statistics:** The `--memory-detailed-stats` flag outputs detailed statistics including total count, earliest/latest timestamps, average interval between entries, and the most frequent command argument.
+- **Custom Memory File Path:** **New Feature:** Use the `--memory-path <filepath>` flag to specify a custom file path for persisting and loading the memory log. For example:
   ```bash
-  node src/lib/main.js --query-annotation review
+  node src/lib/main.js --persist-memory --memory-path custom_memory.log
   ```
-- **Date Range Query:** The new `--query-memory-range <start-date> <end-date>` flag allows users to filter memory log entries that have timestamps between the provided ISO date-time values (inclusive). For example:
-  ```bash
-  node src/lib/main.js --query-memory-range 2025-04-17T00:00:00.000Z 2025-04-18T00:00:00.000Z
-  ```
-- **Delete Memory by Date Range:** The new `--delete-memory-range <start-date> <end-date>` flag allows users to delete all memory log entries whose timestamps fall within the specified date range (inclusive). For example:
-  ```bash
-  node src/lib/main.js --delete-memory-range 2025-04-17T10:00:00.000Z 2025-04-17T13:00:00.000Z
-  ```
-- Update Memory Tag: The new `--update-memory-tag <sessionId> <newTag>` flag allows updating the tag of an existing memory log entry identified by its sessionId. When a memory.log file exists, the update is automatically persisted. Upon update, a `modified` property is also recorded containing the update timestamp.
-- Update Memory Annotation: The new `--update-memory-annotation <sessionId> <newAnnotation>` flag allows updating the annotation of an existing memory log entry identified by its sessionId. If a memory.log file exists, the change is automatically persisted. A `modified` property is similarly recorded upon an update.
-- Delete Memory by Tag: Use the new `--delete-memory-by-tag <tag>` flag to remove all memory log entries that have a matching tag (case-insensitive). This helps in clearing out categorized log entries when needed. For example:
-  ```bash
-  node src/lib/main.js --delete-memory-by-tag myCustomTag
-  ```
-- Delete Memory by Annotation: Use the new `--delete-memory-by-annotation <annotation>` flag to remove all memory log entries that have an annotation that exactly matches (case-insensitively) the provided value. For example:
-  ```bash
-  node src/lib/main.js --delete-memory-by-annotation "review needed"
-  ```
-- Show Memory in Reverse Order: When using the `--show-memory` flag, the memory log is now displayed in reverse chronological order (newest entries first).
-- Show Memory in Chronological Order: The newly added `--show-memory-chronological` flag displays the memory log in natural, chronological order (oldest entries first), which can be useful for tracking the order in which commands were executed. Note: This flag does not record the query invocation itself.
-- Diagnostics: A new `--diagnostics` flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.
-- Detailed Diagnostics: The new `--detailed-diagnostics` flag provides an enhanced diagnostic output. In addition to the basic diagnostics, it outputs a detailed snapshot including an array of all memory session IDs under the property `memorySessionIds`.
-- Tagging: With the new `--tag-memory <tag>` flag, users can attach a custom tag to a memory log entry. This allows for enhanced categorization and traceability of logged commands.
-- Annotation: With the new `--annotate-memory <annotation>` flag, users can attach a custom annotation to a memory log entry. This provides additional context or notes for the command invocation.
-- Memory Stats: The new `--memory-stats` flag outputs diagnostic statistics about the in-memory log, including the total count of log entries, the session ID of the oldest entry, and the session ID of the newest entry.
-- Merge Persisted Memory: The new `--merge-persist` flag merges the current in-memory memory log with the persisted log from the disk. It removes duplicate entries (based on sessionId) and trims the result to respect the current memory limit.
-- Frequency Statistics: The new `--frequency-stats` flag computes and outputs a JSON object that shows the frequency count of each command argument from the in-memory log.
-- **Memory Expiration:** The new `--expire-memory <minutes>` flag automatically removes memory log entries older than the specified number of minutes.
-- **Detailed Memory Statistics:** The new `--memory-detailed-stats` flag outputs a JSON object containing detailed statistics about the memory log, including:
-  - Total count of log entries
-  - The earliest timestamp
-  - The latest timestamp
-  - The average interval (in seconds) between consecutive entries
-  - The most frequent command argument across all log entries
+  When used in combination with `--compress-memory`, if the provided file path ends with `.gz`, the log will be saved and read in compressed format.
 
 ## Usage
 
@@ -248,5 +231,9 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --memory-detailed-stats
   ```
-  This command outputs detailed statistics about the memory log, including total count, earliest and latest timestamps, average interval between entries (in seconds), and the most frequent command argument.
 
+- **Custom Memory File Path:**
+  ```bash
+  node src/lib/main.js --persist-memory --memory-path custom_memory.log
+  ```
+  When used with --compress-memory, if the path ends with .gz (e.g. custom_memory.log.gz), the log will be stored in compressed format.
