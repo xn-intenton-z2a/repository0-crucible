@@ -266,6 +266,17 @@ describe("Memory Logging Feature", () => {
     const mem = getMemory();
     expect(mem.length).toBe(initialLength);
   });
+
+  // New test for non-numeric value for --memory-limit
+  test("should error when non-numeric memory limit is provided", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const initialLength = getMemory().length;
+    main(["--memory-limit", "NaN"]);
+    expect(spy).toHaveBeenCalledWith("Invalid memory limit provided. It must be a positive integer.");
+    spy.mockRestore();
+    const mem = getMemory();
+    expect(mem.length).toBe(initialLength);
+  });
 });
 
 describe("Diagnostics Flag", () => {
