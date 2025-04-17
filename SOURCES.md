@@ -107,3 +107,18 @@ This research paper introduces the concept of chain-of-thought prompting, where 
 ## https://nodejs.dev/learn/error-handling-in-nodejs
 This guide outlines effective error handling strategies in Node.js, including try/catch patterns, asynchronous error management, and best practices for logging and debugging. It is crucial for implementing robust help-seeking features within automated agents.
 ## MIT License (assumed)
+
+# Vitest Documentation
+## https://vitest.dev/
+Vitest is a blazing fast unit test framework built for Vite. This documentation covers installation, configuration, and best practices for testing Node.js and browser-based projects. Its active community and rapid release cycle make it a highly authoritative resource for modern JavaScript testing.
+## MIT License
+
+# Node.js Debugging Guide
+## https://nodejs.org/en/docs/guides/debugging-getting-started/
+This official Node.js guide provides insights into debugging techniques and diagnostic tools for Node.js applications. It is essential for diagnosing runtime issues and understanding the inner workings of Node.js, thereby aiding the self-diagnostic and self-improvement aspects of CLI tools.
+## Public Domain (Node.js Documentation)
+
+# MDN JavaScript Modules Guide
+## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Modules
+This MDN guide explains the fundamentals of JavaScript modules, including ES modules usage, import/export syntax, and best practices for organizing code in modern JavaScript applications. It offers a reliable reference for developers building ESM-based applications.
+## CC BY-SA 2.5 (or later)
