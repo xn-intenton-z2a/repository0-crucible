@@ -35,7 +35,7 @@ npm install repository0-crucible
 - Import Memory: The new `--import-memory <filename>` flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.
 - Query Memory: The new `--query-memory <query>` flag allows users to filter the memory log entries based on a search term. The search is case-insensitive, ensuring that values like "anotherAlpha" match when searching for "alpha". Only those entries whose command arguments contain the specified query will be output.
 - Show Memory in Reverse Order: When using the `--show-memory` flag, the memory log is now displayed in reverse chronological order (newest entries first).
-- Diagnostics: A new `--diagnostics` flag has been added to output diagnostic information in JSON format. The output includes the current memory limit, the count of entries in the memory log, and a flag indicating whether the persisted memory file exists.
+- Diagnostics: A new `--diagnostics` flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.
 
 ## Usage
 
