@@ -2,44 +2,52 @@
 
 ## Overview
 
-The MEMORY feature provides persistent in-memory logging of command invocations along with sophisticated management capabilities. It is responsible for retaining a session-based log where each entry includes a unique session identifier, command arguments, and timestamps. In addition to basic logging, this enhanced MEMORY feature now integrates auto archiving, export/import functionality, query and update operations (by tag, annotation, and date range), detailed diagnostics including statistics and frequency analysis, and memory expiration to automatically prune older entries.
+The MEMORY feature provides persistent in-memory logging of command invocations along with sophisticated management capabilities. It is responsible for retaining a session-based log where each entry includes a unique session identifier, the command arguments passed, and timestamps. In addition to basic logging, this enhanced MEMORY feature now integrates auto archiving, export/import functionality (including JSON and CSV formats), query and update operations (by tag, annotation, and date range), detailed diagnostics including statistics and frequency analysis, and memory expiration to automatically prune older entries.
 
 ## Implementation Details
 
 - **Memory Logging & Persistence:**
   - Maintains an in-memory log with each entry recording a unique sessionId, the arguments passed, and a timestamp.
   - On startup, if a persisted file exists (either as plain text `memory.log` or compressed `memory.log.gz`), the log is auto-loaded to provide continuity.
-  
+
 - **Auto Archiving & Expiration:**
-  - The feature now includes auto archiving: using the `--archive-memory` flag, the current log is archived to a timestamped file (compressed if `--compress-memory` is provided) and then cleared from active memory.
-  - A new `--expire-memory <minutes>` flag purges entries older than the specified number of minutes, ensuring the log remains manageable.
+  - Supports auto archiving using the `--archive-memory` flag, which compresses and saves the current log, then resets in-memory storage.
+  - A new `--expire-memory <minutes>` flag purges entries older than the specified time period.
 
 - **Export & Import:**
-  - Use `--export-memory` (with an optional filename and `--compress`) to export the current log. The exported file can be later imported using `--import-memory <filename>`, replacing the active log.
+  - The feature supports exporting the current memory log via the `--export-memory` flag. By default, export is in JSON format to `memory_export.json`, but users can provide a custom filename.
+  - **CSV Export:** A new `--export-csv` flag enables exporting the memory log in CSV format. The CSV includes columns for: sessionId, timestamp, modified, args, tag, and annotation. A custom filename can be optionally provided immediately after the flag.
+  - Import functionality is provided through the `--import-memory <filename>` flag, which replaces the current log with the contents of the specified file.
 
-- **Query & Update Operations:**
-  - Supports querying via `--query-memory <query>`, filtering if any command argument contains the case-insensitive query.
-  - Enhanced queries include filtering by tag (`--query-tag <tag>`), annotation (`--query-annotation <query>`), and date range (`--query-memory-range <start> <end>`).
-  - Users can update individual memory entries with `--update-memory-tag <sessionId> <newTag>` or `--update-memory-annotation <sessionId> <newAnnotation>`, which also records a modification timestamp.
+- **Query, Update, & Deletion Operations:**
+  - Supports various query operations:
+    - `--query-memory <query>` for filtering entries by command argument (case-insensitive).
+    - `--query-tag <tag>` for filtering by a custom tag.
+    - `--query-annotation <query>` for filtering based on annotation content.
+    - `--query-memory-range <start> <end>` for filtering entries within a date range.
+  - Update operations include:
+    - `--update-memory-tag <sessionId> <newTag>` to change the tag of a specific entry.
+    - `--update-memory-annotation <sessionId> <newAnnotation>` to modify the annotation, both adding a `modified` timestamp.
+  - Deletion operations allow removal of entries by tag (`--delete-memory-by-tag <tag>`), annotation (`--delete-memory-by-annotation <annotation>`), or date range (`--delete-memory-range <start> <end>`).
 
-- **Additional Diagnostics & Statistics:**
-  - Basic diagnostics (`--diagnostics`) provide current memory count, memory limit, and persistence status.
-  - Detailed diagnostics (`--detailed-diagnostics` and `--memory-detailed-stats`) output extended snapshots including session IDs, average intervals between entries, and frequency statistics of command arguments.
-  - The `--memory-stats` flag outputs the count, oldest, and newest session details.
+- **Diagnostics & Statistics:**
+  - Basic diagnostics are available via the `--diagnostics` flag, which returns current memory log count, memory limit, and persistence status.
+  - Detailed diagnostics (`--detailed-diagnostics`) provides an extended report including an array of sessionIds.
+  - The `--memory-stats` flag outputs statistics such as the total count, oldest and newest session IDs, while `--frequency-stats` calculates the frequency of each command argument.
+  - A new `--memory-detailed-stats` flag offers insights into average intervals between entries and the most frequent command argument.
 
 ## Testing
 
 - **Unit Tests:**
-  - The test suite in `tests/unit/main.test.js` covers logging behavior, auto-loading, persistence (with and without compression), querying, updating, and deletion of log entries.
-  - Tests validate proper trimming of the log when exceeding the configured memory limit (e.g., via the `--memory-limit` flag).
-  - Edge cases such as invalid flag usage, error handling for file operations, and consistent timestamp recording upon updates are thoroughly verified.
+  - The test suite in `tests/unit/main.test.js` has been extended to cover various scenarios including the new CSV export functionality, ensuring that file output in CSV matches expected formatting and content.
+  - Tests verify export, query, update, deletion, and expiration functionalities.
 
 ## Long-Term Direction
 
-This unified MEMORY feature lays the groundwork for advanced self-improvement and adaptive automation. Future iterations could include:
+Enhancing MEMORY not only simplifies tracking and diagnostics of the agent's actions, but also lays the groundwork for advanced features such as shared memory across agent instances. Future iterations may include:
+- Integration with external monitoring dashboards for real-time diagnostics.
+- Enhanced data transformation capabilities (e.g., exporting in additional formats beyond JSON and CSV).
+- Automated memory pruning strategies based on dynamic usage patterns leveraging self-improvement metrics.
+- Improved inter-agent memory sharing for collective learning.
 
-- Sharing memory logs across replicated agent instances for collective learning.
-- Integrating memory entries with external monitoring dashboards for real-time diagnostics.
-- Leveraging historical memory data to automatically adjust the behavior of planning and replication features.
-
-By consolidating functionalities – including auto archiving (formerly in a separate feature) – into MEMORY, the system maintains a tight, interdependent architecture that supports agentic, cross-repository intelligent automation.
+By incorporating CSV export and refining the export/import pipeline, the MEMORY feature now provides even more flexibility and transparency, aligning with the mission of enabling autonomous, intelligent, and efficient cross-repository operations.
