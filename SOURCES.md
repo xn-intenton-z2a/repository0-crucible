@@ -82,3 +82,28 @@ Inquirer.js is an interactive command line user interface tool. Its documentatio
 ## https://nodejs.org/api/worker_threads.html
 The official Node.js documentation for Worker Threads explains how to create multi-threaded applications. This is essential for implementing parallel processing and concurrency beyond the event loop, aligning with features like replication and performance logging in modern CLI tools.
 ## Public Domain
+
+# OpenAI API Documentation
+## https://platform.openai.com/docs/introduction
+This documentation provides comprehensive guidance on using the OpenAI API, detailing authentication, request formatting, model usage, and best practices. It is increasingly relevant for projects integrating AI-driven self-improvement and planning features.
+## License: Unknown
+
+# Docker Swarm Mode and Replication
+## https://docs.docker.com/engine/swarm/how-swarm-mode-works/
+This resource explains Docker Swarm's approach to service replication and scaling, offering insights into replication strategies that can inspire implementations of agent duplication and parallel processing in software systems.
+## Docker License (proprietary terms apply)
+
+# GitHub Actions Documentation
+## https://docs.github.com/en/actions
+GitHub Actions documentation covers the setup, configuration, and best practices for CI/CD workflows. Its guidance is beneficial for designing automated deployment pipelines and integrating continuous improvement mechanisms within software projects.
+## CC BY 4.0 (or later)
+
+# Chain-of-Thought Prompting for LLMs
+## https://arxiv.org/abs/2201.11903
+This research paper introduces the concept of chain-of-thought prompting, where large language models generate intermediate reasoning steps before arriving at a final answer. It provides valuable insights for enhancing goal decomposition and planning in autonomous systems.
+## Public Domain
+
+# Effective Error Handling in Node.js
+## https://nodejs.dev/learn/error-handling-in-nodejs
+This guide outlines effective error handling strategies in Node.js, including try/catch patterns, asynchronous error management, and best practices for logging and debugging. It is crucial for implementing robust help-seeking features within automated agents.
+## MIT License (assumed)
