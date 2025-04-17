@@ -69,6 +69,7 @@ npm install repository0-crucible
   node src/lib/main.js --merge-persist
   ```
   This command will combine the logs from the previous sessions with the current session, ensuring continuity in command history.
+- Frequency Statistics: The new `--frequency-stats` flag computes and outputs a JSON object that shows the frequency count of each command argument from the in-memory log. This provides an analytical view of how often each argument appears.
 
 ## Usage
 
@@ -154,7 +155,6 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --detailed-diagnostics
   ```
-  This will output a JSON object with properties such as `memoryLimit`, `memoryLogCount`, `memoryFilePersisted`, and `memorySessionIds` (an array of session IDs).
 
 - **Memory Stats:**
   ```bash
@@ -165,6 +165,12 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --merge-persist
   ```
+
+- **Frequency Statistics:**
+  ```bash
+  node src/lib/main.js --frequency-stats
+  ```
+  This will output a JSON object where each key is a command argument and the value is the number of times it appears in the memory log.
 
 ## Incremental Changes Plan
 
