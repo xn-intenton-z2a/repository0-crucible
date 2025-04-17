@@ -293,16 +293,21 @@ describe("Memory Logging Feature", () => {
   });
 
   describe("Update Memory Tag Feature", () => {
-    test("should update memory log tag when valid sessionId and new tag provided", () => {
+    test("should update memory log tag when valid sessionId and new tag provided and add modified timestamp", () => {
       main(["testCommand", "--tag-memory", "oldTag"]);
       const memBefore = getMemory();
       const sessionId = memBefore[0].sessionId;
+      const originalTimestamp = memBefore[0].timestamp;
       const spy = vi.spyOn(console, "log").mockImplementation(() => {});
       main(["--update-memory-tag", sessionId, "newTestTag", "--compress-memory"]);
       const memAfter = getMemory();
       const updatedEntry = memAfter.find(e => e.sessionId === sessionId);
       expect(updatedEntry).toBeDefined();
       expect(updatedEntry.tag).toBe("newTestTag");
+      expect(updatedEntry).toHaveProperty("modified");
+      expect(updatedEntry.modified).not.toBe(originalTimestamp);
+      // Check that modified is a valid ISO string
+      expect(updatedEntry.modified).toMatch(/\d{4}-\d{2}-\d{2}T/);
       spy.mockRestore();
     });
 
@@ -325,16 +330,20 @@ describe("Memory Logging Feature", () => {
   });
 
   describe("Update Memory Annotation Feature", () => {
-    test("should update memory log annotation when valid sessionId and new annotation provided", () => {
+    test("should update memory log annotation when valid sessionId and new annotation provided and add modified timestamp", () => {
       main(["annotateCommand", "--annotate-memory", "initialNote"]);
       const memBefore = getMemory();
       const sessionId = memBefore[0].sessionId;
+      const originalTimestamp = memBefore[0].timestamp;
       const spy = vi.spyOn(console, "log").mockImplementation(() => {});
       main(["--update-memory-annotation", sessionId, "updatedNote", "--compress-memory"]);
       const memAfter = getMemory();
       const updatedEntry = memAfter.find(e => e.sessionId === sessionId);
       expect(updatedEntry).toBeDefined();
       expect(updatedEntry.annotation).toBe("updatedNote");
+      expect(updatedEntry).toHaveProperty("modified");
+      expect(updatedEntry.modified).not.toBe(originalTimestamp);
+      expect(updatedEntry.modified).toMatch(/\d{4}-\d{2}-\d{2}T/);
       spy.mockRestore();
     });
 
@@ -508,7 +517,6 @@ describe("Memory Logging Feature", () => {
   describe("Detailed Memory Statistics", () => {
     test("should output detailed memory statistics with correct fields", () => {
       resetMemory();
-      // Manually populate memory log with controlled timestamps and args
       const entry1 = { sessionId: "s1", args: ["arg1", "common"], timestamp: "2025-04-17T10:00:00.000Z" };
       const entry2 = { sessionId: "s2", args: ["arg2", "common"], timestamp: "2025-04-17T10:00:10.000Z" };
       const entry3 = { sessionId: "s3", args: ["arg3"], timestamp: "2025-04-17T10:00:20.000Z" };
@@ -522,10 +530,8 @@ describe("Memory Logging Feature", () => {
       expect(stats).toHaveProperty("count", 3);
       expect(stats).toHaveProperty("earliest", "2025-04-17T10:00:00.000Z");
       expect(stats).toHaveProperty("latest", "2025-04-17T10:00:20.000Z");
-      // Average interval: (20 seconds / (3-1)) = 10 seconds
       expect(stats).toHaveProperty("averageIntervalSeconds");
       expect(stats.averageIntervalSeconds).toBeCloseTo(10);
-      // Most frequent argument should be "common" (appears twice)
       expect(stats).toHaveProperty("mostFrequentArgument", "common");
       spy.mockRestore();
     });
