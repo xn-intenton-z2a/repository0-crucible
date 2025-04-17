@@ -485,41 +485,49 @@ export function main(args = []) {
     return;
   }
 
-  // Handle --tag-memory flag if provided
-  let tagValue = null;
-  if (args.includes("--tag-memory")) {
-    const idx = args.indexOf("--tag-memory");
-    const tagStr = args[idx + 1];
-    if (!tagStr || tagStr.startsWith("--")) {
-      console.error("No tag value provided for --tag-memory flag");
-      return;
+  // New flag: Handle --export-csv for exporting memory log in CSV format
+  if (args.includes("--export-csv")) {
+    const idx = args.indexOf("--export-csv");
+    let csvFilename = "memory_export.csv";
+    if (args.length > idx + 1 && !args[idx + 1].startsWith("--")) {
+      csvFilename = args[idx + 1];
     }
-    tagValue = tagStr;
+    const headers = ["sessionId", "timestamp", "modified", "args", "tag", "annotation"];
+    const csvRows = [headers.join(",")];
+    for (const entry of memoryLog) {
+      const modifiedField = entry.modified ? entry.modified : "";
+      const argsField = Array.isArray(entry.args) ? entry.args.join(" ") : "";
+      const tagField = entry.tag ? entry.tag : "";
+      const annotationField = entry.annotation ? entry.annotation : "";
+      const row = [entry.sessionId, entry.timestamp, modifiedField, "\"" + argsField + "\"", tagField, annotationField].join(",");
+      csvRows.push(row);
+    }
+    try {
+      fs.writeFileSync(csvFilename, csvRows.join("\n"));
+      console.log(`Memory log exported to ${csvFilename} in CSV format`);
+    } catch (error) {
+      console.error("Error exporting memory log to CSV:", error);
+    }
+    return;
   }
 
-  // Process --annotate-memory flag if provided
-  let annotationValue = null;
-  if (args.includes("--annotate-memory")) {
-    const idx = args.indexOf("--annotate-memory");
-    const annotationStr = args[idx + 1];
-    if (!annotationStr || annotationStr.startsWith("--")) {
-      console.error("No annotation value provided for --annotate-memory flag");
-      return;
-    }
-    annotationValue = annotationStr;
-  }
-
-  // Handle export-memory flag with optional custom filename
+  // Handle --export-memory flag: export the memory log to a file (JSON format)
   if (args.includes("--export-memory")) {
     // Record this command invocation
     const nowForExport = new Date().toISOString();
     const sessionIdForExport = nowForExport + "-" + Math.random().toString(36).slice(2);
     const logEntryForExport = { sessionId: sessionIdForExport, args, timestamp: nowForExport };
-    if (tagValue !== null) {
-      logEntryForExport.tag = tagValue;
+    if (args.includes("--tag-memory")) {
+      const tagIdx = args.indexOf("--tag-memory");
+      if (args[tagIdx + 1] && !args[tagIdx + 1].startsWith("--")) {
+        logEntryForExport.tag = args[tagIdx + 1];
+      }
     }
-    if (annotationValue !== null) {
-      logEntryForExport.annotation = annotationValue;
+    if (args.includes("--annotate-memory")) {
+      const annIdx = args.indexOf("--annotate-memory");
+      if (args[annIdx + 1] && !args[annIdx + 1].startsWith("--")) {
+        logEntryForExport.annotation = args[annIdx + 1];
+      }
     }
     memoryLog.push(logEntryForExport);
     while (memoryLog.length > maxMemoryEntries) {
@@ -557,11 +565,23 @@ export function main(args = []) {
   const now = new Date().toISOString();
   const sessionId = now + "-" + Math.random().toString(36).slice(2);
   const logEntry = { sessionId, args, timestamp: now };
-  if (tagValue !== null) {
-    logEntry.tag = tagValue;
+  if (args.includes("--tag-memory")) {
+    const tagIdx = args.indexOf("--tag-memory");
+    if (args[tagIdx + 1] && !args[tagIdx + 1].startsWith("--")) {
+      logEntry.tag = args[tagIdx + 1];
+    } else {
+      console.error("No tag value provided for --tag-memory flag");
+      return;
+    }
   }
-  if (annotationValue !== null) {
-    logEntry.annotation = annotationValue;
+  if (args.includes("--annotate-memory")) {
+    const annIdx = args.indexOf("--annotate-memory");
+    if (args[annIdx + 1] && !args[annIdx + 1].startsWith("--")) {
+      logEntry.annotation = args[annIdx + 1];
+    } else {
+      console.error("No annotation value provided for --annotate-memory flag");
+      return;
+    }
   }
   memoryLog.push(logEntry);
   // Enforce memory log size limit

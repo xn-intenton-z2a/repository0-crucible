@@ -49,8 +49,11 @@ describe("Memory Logging Feature", () => {
     if (existsSync("custom_export.json")) {
       unlinkSync("custom_export.json");
     }
-    if (existsSync("compressed_export.json")) {
-      unlinkSync("compressed_export.json");
+    if (existsSync("compressed_export.csv")) {
+      unlinkSync("compressed_export.csv");
+    }
+    if (existsSync("default_export.csv")) {
+      unlinkSync("default_export.csv");
     }
   });
 
@@ -67,8 +70,11 @@ describe("Memory Logging Feature", () => {
     if (existsSync("custom_export.json")) {
       unlinkSync("custom_export.json");
     }
-    if (existsSync("compressed_export.json")) {
-      unlinkSync("compressed_export.json");
+    if (existsSync("default_export.csv")) {
+      unlinkSync("default_export.csv");
+    }
+    if (existsSync("custom_export.csv")) {
+      unlinkSync("custom_export.csv");
     }
   });
 
@@ -210,6 +216,32 @@ describe("Memory Logging Feature", () => {
     const decompressed = zlib.gunzipSync(exportedData).toString("utf-8");
     const parsedData = JSON.parse(decompressed);
     expect(Array.isArray(parsedData)).toBe(true);
+  });
+
+  // New tests for CSV export functionality
+  describe("CSV Export Feature", () => {
+    test("should export memory log to CSV with default filename", () => {
+      main(["csvTest1", "csvTest2"]);
+      main(["--export-csv"]);
+      // Default filename is memory_export.csv
+      expect(existsSync("memory_export.csv")).toBe(true);
+      const csvContent = readFileSync("memory_export.csv", { encoding: "utf-8" });
+      // Check headers
+      expect(csvContent.startsWith("sessionId,timestamp,modified,args,tag,annotation")).toBe(true);
+      const rows = csvContent.split("\n");
+      // +1 header row
+      expect(rows.length).toBe(getMemory().length + 1);
+    });
+    
+    test("should export memory log to a custom CSV file when filename is provided", () => {
+      main(["csvCustomTest"]);
+      main(["--export-csv", "custom_export.csv"]);
+      expect(existsSync("custom_export.csv")).toBe(true);
+      const csvContent = readFileSync("custom_export.csv", { encoding: "utf-8" });
+      expect(csvContent.startsWith("sessionId,timestamp,modified,args,tag,annotation")).toBe(true);
+      const rows = csvContent.split("\n");
+      expect(rows.length).toBe(getMemory().length + 1);
+    });
   });
 
   test("should handle import error when file does not exist", () => {
