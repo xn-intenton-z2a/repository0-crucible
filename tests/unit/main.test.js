@@ -97,6 +97,18 @@ describe("Main Self-Refine", () => {
 });
 
 
+describe("Main Plan", () => {
+  test("should display planning message when '--plan' flag is provided", async () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    await main(["--plan"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    expect(output).toContain("Planning: generating execution plan based on current state...");
+    spy.mockRestore();
+  });
+});
+
+
 describe("Main Refresh", () => {
   test("should display refresh message when '--refresh' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -172,8 +184,6 @@ describe("Main Echo", () => {
 
 
 describe("Main Unrecognized Input", () => {
-  // The following tests ensure that inputs, including unusual
-  // ones like 'NaN', are handled with a standardized error message.
   test("should display standardized error message for a single unrecognized input", async () => {
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     await main(["invalid-flag"]);
@@ -205,7 +215,6 @@ describe("Main Unrecognized Input", () => {
   });
 
   test("should display standardized error message for 'NaN' input", async () => {
-    // Testing that the special input 'NaN' is treated as an unrecognized command
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     await main(["NaN"]);
     expect(spy).toHaveBeenCalled();

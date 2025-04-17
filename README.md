@@ -32,6 +32,7 @@ The CLI tool provides the following features:
 - Show basic system diagnostics with `--diagnostics`.
 - Display extended diagnostics including memory usage and uptime with `--extended-diagnostics`.
 - Perform self-refinement analysis using `--self-refine`.
+- Initiate planning and goal decomposition with `--plan`.
 - Refresh the application state with `--refresh`.
 - Merge and persist changes with `--merge-persist`.
 - Start the server using `--serve`.
@@ -107,6 +108,12 @@ node src/lib/main.js invalid-flag
   node src/lib/main.js --self-refine
   ```
   Initiates a self-refinement analysis, outputting a message that the process is in progress.
+
+- **Planning and Goal Decomposition:**
+  ```bash
+  node src/lib/main.js --plan
+  ```
+  Initiates planning by generating an execution plan based on the current state.
 
 - **Refresh Application State:**
   ```bash

@@ -28,7 +28,7 @@ function handleInvalidCommand(args) {
  */
 function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\n\nOptions:\n  --help                Display help information about the CLI tool.\n  --version             Display the current application version from package.json.\n  --diagnostics         Show Node and environment diagnostic information.\n  --extended-diagnostics Display detailed diagnostics including memory usage, uptime, and platform info.\n  --self-refine         Perform self-refinement analysis.\n  --serve               Start the server.\n  --build-intermediate  Build with intermediate options.\n  --build-enhanced      Build with enhanced options.\n  --refresh             Refresh the application state.\n  --merge-persist       Merge and persist changes.\n  --echo                Output the remaining arguments in JSON format.\n  --memory              Display the in-memory log of CLI invocations.\n  --help-seeking        Activate help-seeking mode to consult external assistance.\n`
+    `Usage: node src/lib/main.js [options]\n\nOptions:\n  --help                Display help information about the CLI tool.\n  --version             Display the current application version from package.json.\n  --diagnostics         Show Node and environment diagnostic information.\n  --extended-diagnostics Display detailed diagnostics including memory usage, uptime, and platform info.\n  --self-refine         Perform self-refinement analysis.\n  --plan                Initiate planning and goal decomposition.\n  --serve               Start the server.\n  --build-intermediate  Build with intermediate options.\n  --build-enhanced      Build with enhanced options.\n  --refresh             Refresh the application state.\n  --merge-persist       Merge and persist changes.\n  --echo                Output the remaining arguments in JSON format.\n  --memory              Display the in-memory log of CLI invocations.\n  --help-seeking        Activate help-seeking mode to consult external assistance.\n`
   );
 }
 
@@ -71,6 +71,13 @@ function displayExtendedDiagnostics() {
  */
 function selfRefine() {
   console.log("Performing self-refinement analysis...");
+}
+
+/**
+ * Initiates the planning feature which involves planning and goal decomposition.
+ */
+function plan() {
+  console.log("Planning: generating execution plan based on current state...");
 }
 
 /**
@@ -154,6 +161,7 @@ export async function main(args = process.argv.slice(2)) {
     { flag: "--diagnostics", handler: () => { displayDiagnostics(); } },
     { flag: "--extended-diagnostics", handler: () => { displayExtendedDiagnostics(); } },
     { flag: "--self-refine", handler: () => { selfRefine(); } },
+    { flag: "--plan", handler: () => { plan(); } },
     { flag: "--refresh", handler: () => { refreshState(); } },
     { flag: "--merge-persist", handler: () => { mergePersist(); } },
     { flag: "--serve", handler: () => { serve(); } },
