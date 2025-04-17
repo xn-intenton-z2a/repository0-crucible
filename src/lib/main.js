@@ -442,7 +442,7 @@ export function main(args = []) {
     return;
   }
 
-  // Process --tag-memory flag if provided
+  // Handle --tag-memory flag if provided
   let tagValue = null;
   if (args.includes("--tag-memory")) {
     const idx = args.indexOf("--tag-memory");
@@ -489,8 +489,15 @@ export function main(args = []) {
       exportFilename = args[idx + 1];
     }
     try {
-      fs.writeFileSync(exportFilename, JSON.stringify(memoryLog));
-      console.log(`Memory log exported to ${exportFilename}`);
+      if (args.includes("--compress")) {
+        const jsonStr = JSON.stringify(memoryLog);
+        const compressed = zlib.gzipSync(jsonStr);
+        fs.writeFileSync(exportFilename, compressed);
+        console.log(`Memory log exported to ${exportFilename} (compressed)`);
+      } else {
+        fs.writeFileSync(exportFilename, JSON.stringify(memoryLog));
+        console.log(`Memory log exported to ${exportFilename}`);
+      }
     } catch (error) {
       console.error("Error exporting memory log:", error);
     }
