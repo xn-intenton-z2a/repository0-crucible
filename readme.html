@@ -60,11 +60,14 @@
 <li class="md-github">Query by Tag: The new <code class="md-github">--query-tag &lt;tag&gt;</code> flag allows users to filter memory log entries based on a custom tag. The filtering is case-insensitive and only returns entries that have a matching tag.</li>
 <li class="md-github">Update Memory Tag: The new <code class="md-github">--update-memory-tag &lt;sessionId&gt; &lt;newTag&gt;</code> flag allows updating the tag of an existing memory log entry identified by its sessionId. When a memory.log file exists, the update is automatically persisted. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --update-memory-tag &lt;sessionId&gt; newTag
 </code></pre>
-This command searches for the memory log entry with the provided sessionId, updates its tag if found (and auto-saves the change), and outputs a confirmation message. If the sessionId is not found or arguments are missing, an appropriate error message is displayed.</li>
+This command updates the tag of an existing memory log entry identified by the given sessionId, and if a memory.log file exists, the change is automatically persisted.</li>
 <li class="md-github">Show Memory in Reverse Order: When using the <code class="md-github">--show-memory</code> flag, the memory log is now displayed in reverse chronological order (newest entries first).</li>
 <li class="md-github">Diagnostics: A new <code class="md-github">--diagnostics</code> flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.</li>
 <li class="md-github">Tagging: With the new <code class="md-github">--tag-memory &lt;tag&gt;</code> flag, users can attach a custom tag to a memory log entry. This allows for enhanced categorization and traceability of logged commands.</li>
 <li class="md-github">Memory Stats: The new <code class="md-github">--memory-stats</code> flag outputs diagnostic statistics about the in-memory log, including the total count of log entries, the session ID of the oldest entry, and the session ID of the newest entry.</li>
+<li class="md-github">Merge Persisted Memory: The new <code class="md-github">--merge-persist</code> flag merges the current in-memory memory log with the persisted log from <code class="md-github">memory.log</code>. It removes duplicate entries (based on sessionId) and trims the result to respect the current memory limit. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --merge-persist
+</code></pre>
+This command will combine the logs from the previous sessions with the current session, ensuring continuity in command history.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">To run the CLI tool and see help instructions:</p>
@@ -111,19 +114,16 @@ This command searches for the memory log entry with the provided sessionId, upda
 <p class="md-github"><strong class="md-github">Query by Tag:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query-tag myCustomTag
 </code></pre>
-<p class="md-github">This will output all memory log entries that have been tagged with &quot;myCustomTag&quot;.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Update Memory Tag (with auto-persistence):</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --update-memory-tag &lt;sessionId&gt; newTag
 </code></pre>
-<p class="md-github">This command updates the tag of an existing memory log entry identified by the given sessionId, and if a memory.log file exists, the change is automatically persisted.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Set Custom Memory Limit:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --memory-limit 50
 </code></pre>
-<p class="md-github">Note: Providing an invalid memory limit (e.g., non-numeric like &quot;NaN&quot;) will result in the error: &quot;Invalid memory limit provided. It must be a positive integer.&quot;.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Tag a Memory Entry:</strong></p>
@@ -134,11 +134,15 @@ This command searches for the memory log entry with the provided sessionId, upda
 <p class="md-github"><strong class="md-github">Diagnostics Output:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --diagnostics
 </code></pre>
-<p class="md-github">This command outputs diagnostic information in JSON format, including the current memory log size, the memory limit, and whether a persisted memory file exists.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Memory Stats:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --memory-stats
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Merge Persisted Memory:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --merge-persist
 </code></pre>
 </li>
 </ul>
@@ -151,7 +155,7 @@ This command searches for the memory log entry with the provided sessionId, upda
 
   </section>
   <footer>
-    <p>Generated on 2025-04-17T10:25:08.546Z</p>
+    <p>Generated on 2025-04-17T11:22:48.779Z</p>
   </footer>
 </body>
 </html>
