@@ -42,7 +42,7 @@ npm install repository0-crucible
   ```bash
   node src/lib/main.js --update-memory-tag <sessionId> newTag
   ```
-  This command updates the tag of an existing memory log entry identified by the given sessionId, and if a memory.log file exists, the change is automatically persisted.
+- Update Memory Annotation: The new `--update-memory-annotation <sessionId> <newAnnotation>` flag allows updating the annotation of an existing memory log entry identified by its sessionId. If a memory.log file exists, the change is automatically persisted.
 - Delete Memory by Tag: Use the new `--delete-memory-by-tag <tag>` flag to remove all memory log entries that have a matching tag (case-insensitive). This helps in clearing out categorized log entries when needed. For example:
   ```bash
   node src/lib/main.js --delete-memory-by-tag myCustomTag
@@ -73,7 +73,6 @@ npm install repository0-crucible
   ```bash
   node src/lib/main.js --merge-persist
   ```
-  This command will combine the logs from the previous sessions with the current session, ensuring continuity in command history.
 - Frequency Statistics: The new `--frequency-stats` flag computes and outputs a JSON object that shows the frequency count of each command argument from the in-memory log. This provides an analytical view of how often each argument appears.
 
 ## Usage
@@ -139,6 +138,11 @@ node src/lib/main.js --help
 - **Update Memory Tag (with auto-persistence):**
   ```bash
   node src/lib/main.js --update-memory-tag <sessionId> newTag
+  ```
+
+- **Update Memory Annotation (with auto-persistence):**
+  ```bash
+  node src/lib/main.js --update-memory-annotation <sessionId> newAnnotation
   ```
 
 - **Delete Memory by Tag:**
