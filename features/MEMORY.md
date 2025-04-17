@@ -1,74 +1,38 @@
 # MEMORY
 
 ## Overview
-The MEMORY feature is responsible for retaining a comprehensive log of command invocations across sessions and providing various functionalities such as persistence, querying, tagging, updating, and deletion of log entries. In this update, we introduce a new capability: Auto Archiving. This enhancement allows the agent to archive the in-memory log into a time-stamped file when the user supplies the `--archive-memory` CLI flag, thereby preserving historical data and clearing the active log to prevent bloat.
+The MEMORY feature has been enhanced to not only retain and manage command invocation logs, but now also supports customizable log export formats. By merging the capabilities of the original MEMORY and CUSTOM_LOG features, this unified module retains its persistent, archived, and queryable log functionalities while adding the flexibility to output logs in a user-defined format using EJS templating. This integration supports auto archiving, filtering, and enhanced diagnostics, aligning with the mission to build a self-aware and continuously improving agent.
 
 ## Implementation Details
-- **Existing Capabilities:**
-  - **Memory Logging & Persistence:**
-    - Retains a log of command invocations with unique session IDs, CLI arguments, and ISO-formatted timestamps.
-    - Automatically loads persisted log from `memory.log` during startup.
-    - Can persist the current log when the `--persist-memory` flag is used.
-  - **Querying and Updating:**
-    - Supports querying the log by keywords via `--query-memory`, filtering by tags through `--query-tag`, and filtering by date range using `--query-memory-range`.
-    - Updates to log entries can be made with `--update-memory-tag` and `--update-memory-annotation`.
-    - Deletion of log entries by tag is handled with `--delete-memory-by-tag`.
-  - **View Options:**
-    - Displays the log in reverse chronological order (`--show-memory`) or natural order (`--show-memory-chronological`).
-    - Provides diagnostic outputs with `--diagnostics`, `--detailed-diagnostics`, and `--memory-stats`.
-  - **Analytical Tools:**
-    - Computes frequency statistics of command arguments using the `--frequency-stats` flag.
+- **Memory Logging and Persistence:**
+  - Retain full logs of command invocations with unique session IDs and ISO-formatted timestamps.
+  - Persist logs to disk via the `--persist-memory` flag and auto-load them on startup if a `memory.log` file exists.
+  - Allow clearing of logs using the `--clear-memory` flag.
+  
+- **Custom Log Export with Templating:**
+  - Introduce support for an optional CLI flag `--log-template` to be used with `--export-memory`. When provided, the log export routine will use the given EJS template string to generate the output file.
+  - If a custom template is supplied, compile and render the memory log data using the EJS library; if the template is invalid, trigger error handling to fallback gracefully to the default JSON export.
+  - Allow the user to optionally specify a custom filename for the exported memory log.
 
-- **Auto Archiving (New Addition):**
-  - **CLI Flag:**
-    - Introduce the new flag `--archive-memory`. When provided, the agent will:
-      - Serialize the current in-memory log.
-      - Write the serialized data to an archive file whose name is generated using the current timestamp (e.g., `memory_archive_2025-04-17T10-20-00Z.json`).
-      - Clear the in-memory log immediately after a successful archival.
-      - Delete the persisted file (`memory.log`) from disk if it exists, reflecting the cleared state.
-  - **User Feedback:**
-    - Output a confirmation message indicating the archive filename and that the memory log has been cleared.
-
-- **Source Code Changes:**
-  - In `src/lib/main.js`, add a new block to detect the `--archive-memory` flag before processing other commands:
-    ```js
-    if (args.includes("--archive-memory")) {
-      const archiveTimestamp = new Date().toISOString().replace(/[:]/g, '-');
-      const archiveFilename = `memory_archive_${archiveTimestamp}.json`;
-      try {
-        fs.writeFileSync(archiveFilename, JSON.stringify(memoryLog));
-        // Clear in-memory log
-        resetMemory();
-        // Delete persisted memory file if it exists
-        if (fs.existsSync("memory.log")) {
-          fs.unlinkSync("memory.log");
-        }
-        console.log(`Archived memory log to ${archiveFilename} and cleared current memory.`);
-      } catch (error) {
-        console.error("Error during archiving memory log:", error);
-      }
-      return;
-    }
-    ```
-
-- **Testing Enhancements:**
-  - Update `tests/unit/main.test.js` to include test cases for the `--archive-memory` flag:
-    - Verify that after archiving, an archive file exists with a timestamp in its filename.
-    - Confirm that the in-memory log is cleared and any persisted `memory.log` file is deleted.
-    - Use spies on `console.log` to ensure the correct confirmation message is output.
-
-- **Documentation Updates:**
-  - In the `README.md`, add an example usage for the archival feature:
-    ```bash
-    node src/lib/main.js --archive-memory
-    ```
-  - Document that this flag archives the current memory log to a time-stamped file and resets the active log.
+- **Additional Features Integrated:**
+  - Auto Archiving: With the `--archive-memory` flag, the system will archive the in-memory log into a timestamped file and clear the active log.
+  - Query, Update, and Delete Operations: The existing query features (`--query-memory`, `--query-tag`, `--query-annotation`, and `--query-memory-range`) and update operations (`--update-memory-tag`, `--update-memory-annotation`, and deletion by tag/annotation) remain fully supported.
+  - Frequency and Statistics: The `--frequency-stats` and `--memory-stats` flags offer diagnostic insights into log usage.
 
 ## Testing
 - **Unit Tests:**
-  - Ensure that invoking the `--archive-memory` flag creates an archive file with the expected naming convention.
-  - Test that subsequent calls after archiving show an empty memory log.
-  - Confirm deletion of the persisted file when archiving occurs.
+  - Extend tests in the unit test file to incorporate scenarios for exporting memory logs with a custom EJS template.
+  - Verify that when `--log-template` is provided, the exported file content matches the expected output format based on the template.
+  - Ensure that invalid templates trigger proper error messages and that the system falls back to the default JSON export format.
+
+## Documentation Updates
+- **README.md:**
+  - Update documentation to reflect that the MEMORY feature now includes customizable log export functionality. 
+  - Provide usage examples demonstrating how to combine `--export-memory` with `--log-template`, for instance:
+    ```bash
+    node src/lib/main.js --export-memory custom_log.json --log-template '<%= JSON.stringify(memoryLog, null, 2) %>'
+    ```
+  - Document that the custom template must be a valid EJS template. Also, continue to detail other memory log operations such as persistence, archiving, and query features.
 
 ## Long-Term Direction
-- Future enhancements might include automated scheduling of archival operations, integration with external backup or analytics systems, and finer controls for selecting which log entries to archive. This capability not only preserves historical command data but also helps maintain optimal performance by preventing log overload.
+Integrating customizable log export within the MEMORY feature not only simplifies user interactions with log data but also lays the groundwork for future extensions. In subsequent versions, further customizations (such as dynamic formatting options and integration with external logging services) might be introduced, adhering to our mission of developing an intelligent, self-improving agent. This unified approach ensures consistency, ease of maintenance, and scalability for cross-repository intelligent automation.
