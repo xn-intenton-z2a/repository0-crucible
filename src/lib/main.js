@@ -256,8 +256,9 @@ export function main(args = []) {
   // Handle export-memory flag with optional custom filename
   if (args.includes("--export-memory")) {
     // Record this command invocation
-    const sessionId = new Date().toISOString() + "-" + Math.random().toString(36).slice(2);
-    const logEntry = { sessionId, args };
+    const now = new Date().toISOString();
+    const sessionId = now + "-" + Math.random().toString(36).slice(2);
+    const logEntry = { sessionId, args, timestamp: now };
     memoryLog.push(logEntry);
     while (memoryLog.length > maxMemoryEntries) {
       memoryLog.shift();
@@ -278,8 +279,9 @@ export function main(args = []) {
   }
 
   // Record the arguments in memory along with the session identifier
-  const sessionId = new Date().toISOString() + "-" + Math.random().toString(36).slice(2);
-  const logEntry = { sessionId, args };
+  const now = new Date().toISOString();
+  const sessionId = now + "-" + Math.random().toString(36).slice(2);
+  const logEntry = { sessionId, args, timestamp: now };
   if (tagValue !== null) {
     logEntry.tag = tagValue;
   }

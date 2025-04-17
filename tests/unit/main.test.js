@@ -64,6 +64,10 @@ describe("Memory Logging Feature", () => {
     expect(typeof mem[0].sessionId).toBe("string");
     expect(mem[0].sessionId).not.toEqual("");
     expect(mem[0].args).toEqual(["first", "second"]);
+    // New timestamp assertions
+    expect(mem[0]).toHaveProperty("timestamp");
+    expect(typeof mem[0].timestamp).toBe("string");
+    expect(mem[0].timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
   });
 
   test("should output memory log in reverse order when --show-memory flag is provided", () => {
@@ -90,6 +94,7 @@ describe("Memory Logging Feature", () => {
     expect(parsed).toHaveLength(1);
     expect(parsed[0]).toHaveProperty("sessionId");
     expect(parsed[0].args).toEqual(["test1", "--persist-memory"]);
+    expect(parsed[0]).toHaveProperty("timestamp");
   });
 
   test("should clear memory log and delete persisted file when --clear-memory flag is provided", () => {
@@ -105,13 +110,15 @@ describe("Memory Logging Feature", () => {
   });
 
   test("should auto-load persisted memory log on startup", () => {
-    const persisted = JSON.stringify([{ sessionId: "oldSession", args: ["old", "command"] }]);
+    const persisted = JSON.stringify([{ sessionId: "oldSession", args: ["old", "command"], timestamp: "2025-04-17T10:00:00.000Z" }]);
     writeFileSync(MEMORY_LOG_FILE, persisted, { encoding: "utf-8" });
     main(["new"]);
     const mem = getMemory();
     expect(mem.length).toBe(2);
     expect(mem[0].args).toEqual(["old", "command"]);
     expect(mem[1].args).toEqual(["new"]);
+    expect(mem[0]).toHaveProperty("timestamp");
+    expect(mem[1]).toHaveProperty("timestamp");
   });
 
   test("should limit memory log to 100 entries when more than 100 entries are added", () => {
@@ -127,6 +134,9 @@ describe("Memory Logging Feature", () => {
     expect(mem).toHaveLength(100);
     expect(mem[0].args).toEqual(["command5"]);
     expect(mem[99].args).toEqual(["command104"]);
+    mem.forEach(entry => {
+      expect(entry).toHaveProperty("timestamp");
+    });
   });
 
   test("should export memory log to a file when --export-memory flag is provided with default filename", () => {
@@ -137,6 +147,7 @@ describe("Memory Logging Feature", () => {
     const exportedLog = JSON.parse(exportedContent);
     expect(exportedLog.length).toBe(2);
     expect(exportedLog[0].args).toEqual(["exportTest1", "exportTest2"]);
+    expect(exportedLog[0]).toHaveProperty("timestamp");
   });
 
   test("should export memory log to a custom file when custom filename is provided with --export-memory", () => {
@@ -147,10 +158,11 @@ describe("Memory Logging Feature", () => {
     const exportedLog = JSON.parse(exportedContent);
     expect(exportedLog.length).toBe(2);
     expect(exportedLog[0].args).toEqual(["customExportTest"]);
+    expect(exportedLog[0]).toHaveProperty("timestamp");
   });
 
   test("should import memory log from a file when --import-memory flag is provided", () => {
-    const tempLog = [{ sessionId: "importSession", args: ["imported", "command"] }];
+    const tempLog = [{ sessionId: "importSession", args: ["imported", "command"], timestamp: "2025-04-17T10:05:00.000Z" }];
     const tempFilename = "temp_import.json";
     writeFileSync(tempFilename, JSON.stringify(tempLog), { encoding: "utf-8" });
     main(["existing"]);
@@ -195,6 +207,9 @@ describe("Memory Logging Feature", () => {
     expect(filtered.length).toBe(2);
     expect(filtered[0].args).toEqual(["alphaCommand"]);
     expect(filtered[1].args).toEqual(["anotherAlpha"]);
+    filtered.forEach(entry => {
+      expect(entry).toHaveProperty("timestamp");
+    });
     spy.mockRestore();
   });
 
@@ -210,6 +225,9 @@ describe("Memory Logging Feature", () => {
     expect(filtered.length).toBe(2);
     expect(filtered[0].tag.toLowerCase()).toBe("mytag");
     expect(filtered[1].tag.toLowerCase()).toBe("mytag");
+    filtered.forEach(entry => {
+      expect(entry).toHaveProperty("timestamp");
+    });
     spy.mockRestore();
   });
 
@@ -231,6 +249,9 @@ describe("Memory Logging Feature", () => {
     }
     const mem = getMemory();
     expect(mem.length).toBeLessThanOrEqual(customLimit);
+    mem.forEach(entry => {
+      expect(entry).toHaveProperty("timestamp");
+    });
   });
 
   test("should log command arguments with tag when --tag-memory flag is provided", () => {
@@ -240,6 +261,7 @@ describe("Memory Logging Feature", () => {
     expect(mem).toHaveLength(1);
     expect(mem[0]).toHaveProperty("tag", "testTag");
     expect(mem[0].args).toEqual(["sampleCommand", "--tag-memory", "testTag"]);
+    expect(mem[0]).toHaveProperty("timestamp");
   });
 
   test("should error when --tag-memory flag is provided without a tag value", () => {
@@ -264,6 +286,7 @@ describe("Memory Logging Feature", () => {
       const updatedEntry = memAfter.find(e => e.sessionId === sessionId);
       expect(updatedEntry).toBeDefined();
       expect(updatedEntry.tag).toBe("newTestTag");
+      expect(updatedEntry).toHaveProperty("timestamp");
       expect(spy).toHaveBeenCalledWith("Memory log entry updated:", JSON.stringify(updatedEntry));
       spy.mockRestore();
     });
@@ -286,7 +309,7 @@ describe("Memory Logging Feature", () => {
     });
 
     test("should persist memory tag update to disk when --update-memory-tag flag is provided", () => {
-      const initialEntry = { sessionId: "persistTestSession", args: ["persistTest"], tag: "oldPersistTag" };
+      const initialEntry = { sessionId: "persistTestSession", args: ["persistTest"], tag: "oldPersistTag", timestamp: "2025-04-17T10:10:00.000Z" };
       writeFileSync(MEMORY_LOG_FILE, JSON.stringify([initialEntry]));
       main(["dummy"]);
       main(["--update-memory-tag", "persistTestSession", "newPersistTag"]);
@@ -294,6 +317,7 @@ describe("Memory Logging Feature", () => {
       const updatedEntry = updatedData.find(e => e.sessionId === "persistTestSession");
       expect(updatedEntry).toBeDefined();
       expect(updatedEntry.tag).toBe("newPersistTag");
+      expect(updatedEntry).toHaveProperty("timestamp");
     });
   });
 
@@ -315,9 +339,9 @@ describe("Memory Logging Feature", () => {
 
     test("should persist deletion to disk when memory.log exists", () => {
       const entries = [
-        { sessionId: "1", args: ["cmd1"], tag: "deleteMe" },
-        { sessionId: "2", args: ["cmd2"], tag: "keepMe" },
-        { sessionId: "3", args: ["cmd3"], tag: "deleteMe" }
+        { sessionId: "1", args: ["cmd1"], tag: "deleteMe", timestamp: "2025-04-17T10:15:00.000Z" },
+        { sessionId: "2", args: ["cmd2"], tag: "keepMe", timestamp: "2025-04-17T10:16:00.000Z" },
+        { sessionId: "3", args: ["cmd3"], tag: "deleteMe", timestamp: "2025-04-17T10:17:00.000Z" }
       ];
       writeFileSync(MEMORY_LOG_FILE, JSON.stringify(entries));
       main(["dummy"]);
