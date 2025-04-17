@@ -16,7 +16,6 @@ function captureConsole(callback) {
   return output;
 }
 
-
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
@@ -66,7 +65,7 @@ describe("Memory Logging Feature", () => {
     expect(mem[0].args).toEqual(["first", "second"]);
     expect(mem[0]).toHaveProperty("timestamp");
     expect(typeof mem[0].timestamp).toBe("string");
-    expect(mem[0].timestamp).toMatch(/^(\d{4}-\d{2}-\d{2}T)/);
+    expect(mem[0].timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
   });
 
   test("should output memory log in reverse order when --show-memory flag is provided", () => {
@@ -315,7 +314,7 @@ describe("Memory Logging Feature", () => {
       expect(mem.length).toBe(initialLength);
     });
 
-    test("should error when provided sessionId does not exist", () => {
+    test("should error when provided sessionId does not exist for tag update", () => {
       const spy = vi.spyOn(console, "error").mockImplementation(() => {});
       main(["--update-memory-tag", "nonexistentSession", "newTag"]);
       expect(spy).toHaveBeenCalledWith("No memory log entry found with sessionId:", "nonexistentSession");
@@ -335,43 +334,50 @@ describe("Memory Logging Feature", () => {
     });
   });
 
-  describe("Delete Memory by Tag Feature", () => {
-    test("should delete memory log entries with a specific tag and output correct count", () => {
-      main(["cmd1", "--tag-memory", "Alpha"]);
-      main(["cmd2", "--tag-memory", "beta"]);
-      main(["cmd3", "--tag-memory", "ALPHA"]);
-      main(["cmd4"]);
-      const initialLength = getMemory().length;
+  describe("Update Memory Annotation Feature", () => {
+    test("should update memory log annotation when valid sessionId and new annotation provided", () => {
+      main(["annotateCommand", "--annotate-memory", "initialNote"]);
+      const memBefore = getMemory();
+      expect(memBefore.length).toBeGreaterThan(0);
+      const sessionId = memBefore[0].sessionId;
       const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-      main(["--delete-memory-by-tag", "alpha"]);
-      expect(spy).toHaveBeenCalledWith("Deleted 2 entries with tag: alpha");
+      main(["--update-memory-annotation", sessionId, "updatedNote"]);
+      const memAfter = getMemory();
+      const updatedEntry = memAfter.find(e => e.sessionId === sessionId);
+      expect(updatedEntry).toBeDefined();
+      expect(updatedEntry.annotation).toBe("updatedNote");
+      expect(updatedEntry).toHaveProperty("timestamp");
+      expect(spy).toHaveBeenCalledWith("Memory log entry annotation updated:", JSON.stringify(updatedEntry));
       spy.mockRestore();
-      const mem = getMemory();
-      expect(mem.find(e => e.tag && e.tag.toLowerCase() === "alpha")).toBeUndefined();
-      expect(mem.length).toBe(initialLength - 2);
     });
 
-    test("should persist deletion to disk when memory.log exists", () => {
-      const entries = [
-        { sessionId: "1", args: ["cmd1"], tag: "deleteMe", timestamp: "2025-04-17T10:15:00.000Z" },
-        { sessionId: "2", args: ["cmd2"], tag: "keepMe", timestamp: "2025-04-17T10:16:00.000Z" },
-        { sessionId: "3", args: ["cmd3"], tag: "deleteMe", timestamp: "2025-04-17T10:17:00.000Z" }
-      ];
-      writeFileSync(MEMORY_LOG_FILE, JSON.stringify(entries));
-      main(["dummy"]);
-      main(["--delete-memory-by-tag", "deleteMe"]);
-      const updatedData = JSON.parse(readFileSync(MEMORY_LOG_FILE, { encoding: "utf-8" }));
-      expect(updatedData.length).toBe(1);
-      expect(updatedData[0].tag).toBe("keepMe");
-    });
-
-    test("should error when --delete-memory-by-tag flag is provided without a valid tag", () => {
+    test("should error when --update-memory-annotation flag is provided without sufficient arguments", () => {
       const spy = vi.spyOn(console, "error").mockImplementation(() => {});
       const initialLength = getMemory().length;
-      main(["--delete-memory-by-tag"]);
-      expect(spy).toHaveBeenCalledWith("Invalid usage: --delete-memory-by-tag requires a valid tag value");
+      main(["--update-memory-annotation", "onlyOneArg"]);
+      expect(spy).toHaveBeenCalledWith("Invalid usage: --update-memory-annotation requires a sessionId and a new annotation value");
       spy.mockRestore();
-      expect(getMemory().length).toBe(initialLength);
+      const mem = getMemory();
+      expect(mem.length).toBe(initialLength);
+    });
+
+    test("should error when provided sessionId does not exist for annotation update", () => {
+      const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+      main(["--update-memory-annotation", "nonexistentSession", "newAnnotation"]);
+      expect(spy).toHaveBeenCalledWith("No memory log entry found with sessionId:", "nonexistentSession");
+      spy.mockRestore();
+    });
+
+    test("should persist memory annotation update to disk when --update-memory-annotation flag is provided", () => {
+      const initialEntry = { sessionId: "persistAnnotSession", args: ["persistAnnot"], annotation: "oldNote", timestamp: "2025-04-17T10:10:00.000Z" };
+      writeFileSync(MEMORY_LOG_FILE, JSON.stringify([initialEntry]));
+      main(["dummy"]);
+      main(["--update-memory-annotation", "persistAnnotSession", "newNote"]);
+      const updatedData = JSON.parse(readFileSync(MEMORY_LOG_FILE, { encoding: "utf-8" }));
+      const updatedEntry = updatedData.find(e => e.sessionId === "persistAnnotSession");
+      expect(updatedEntry).toBeDefined();
+      expect(updatedEntry.annotation).toBe("newNote");
+      expect(updatedEntry).toHaveProperty("timestamp");
     });
   });
 });

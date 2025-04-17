@@ -107,6 +107,32 @@ export function main(args = []) {
     return;
   }
 
+  // Handle --update-memory-annotation flag for updating a memory log entry's annotation
+  if (args.includes("--update-memory-annotation")) {
+    const idx = args.indexOf("--update-memory-annotation");
+    const sessionId = args[idx + 1];
+    const newAnnotation = args[idx + 2];
+    if (!sessionId || !newAnnotation || sessionId.startsWith("--") || newAnnotation.startsWith("--")) {
+      console.error("Invalid usage: --update-memory-annotation requires a sessionId and a new annotation value");
+      return;
+    }
+    const entry = memoryLog.find(e => e.sessionId === sessionId);
+    if (entry) {
+      entry.annotation = newAnnotation;
+      console.log("Memory log entry annotation updated:", JSON.stringify(entry));
+      if (fs.existsSync("memory.log")) {
+        try {
+          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+        } catch (error) {
+          console.error("Error persisting memory.log:", error);
+        }
+      }
+    } else {
+      console.error("No memory log entry found with sessionId:", sessionId);
+    }
+    return;
+  }
+
   // Handle --delete-memory-by-tag flag for removing entries by tag (case-insensitive)
   if (args.includes("--delete-memory-by-tag")) {
     const idx = args.indexOf("--delete-memory-by-tag");
