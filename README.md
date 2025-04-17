@@ -30,6 +30,7 @@ npm install repository0-crucible
 - Persistence: With the new `--persist-memory` flag, the tool now saves the memory log to a file called `memory.log`, ensuring the log is retained across separate invocations.
 - Auto-load Persisted Memory: On startup, if a `memory.log` file exists, its contents are automatically loaded into the tool's memory log, providing continuity across invocations.
 - Clear Memory: A new `--clear-memory` flag has been added that resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.
+- Log Size Limit: The memory logging feature now includes a size limit (default of 100 entries) to prevent unbounded log growth.
 
 ## Usage
 

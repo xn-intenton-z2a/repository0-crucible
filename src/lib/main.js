@@ -4,6 +4,8 @@
 import { fileURLToPath } from "url";
 import fs from "fs";
 
+const MAX_MEMORY_ENTRIES = 100;
+
 // In-memory log to store the command arguments across invocations
 let memoryLog = [];
 
@@ -38,6 +40,10 @@ export function main(args = []) {
 
   // Record the arguments in memory
   memoryLog.push(args);
+  // Enforce memory log size limit
+  while (memoryLog.length > MAX_MEMORY_ENTRIES) {
+    memoryLog.shift();
+  }
 
   // If '--persist-memory' flag is provided, write the memory log to disk
   if (args.includes("--persist-memory")) {
