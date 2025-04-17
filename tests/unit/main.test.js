@@ -66,7 +66,7 @@ describe("Memory Logging Feature", () => {
     expect(mem[0].args).toEqual(["first", "second"]);
     expect(mem[0]).toHaveProperty("timestamp");
     expect(typeof mem[0].timestamp).toBe("string");
-    expect(mem[0].timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    expect(mem[0].timestamp).toMatch(/^(\d{4}-\d{2}-\d{2}T)/);
   });
 
   test("should output memory log in reverse order when --show-memory flag is provided", () => {
@@ -81,6 +81,21 @@ describe("Memory Logging Feature", () => {
     expect(parsedOutput[0].args).toEqual(["--show-memory"]);
     expect(parsedOutput[1].args).toEqual(["c", "d"]);
     expect(parsedOutput[2].args).toEqual(["a", "b"]);
+    spy.mockRestore();
+  });
+
+  test("should output memory log in chronological order when --show-memory-chronological flag is provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    resetMemory();
+    main(["first"]);
+    main(["second"]);
+    main(["--show-memory-chronological"]);
+    expect(spy).toHaveBeenCalled();
+    const loggedOutput = spy.mock.calls[spy.mock.calls.length - 1][0];
+    const parsedOutput = JSON.parse(loggedOutput);
+    expect(parsedOutput).toHaveLength(2);
+    expect(parsedOutput[0].args).toEqual(["first"]);
+    expect(parsedOutput[1].args).toEqual(["second"]);
     spy.mockRestore();
   });
 

@@ -268,16 +268,16 @@ export function main(args = []) {
   // Handle export-memory flag with optional custom filename
   if (args.includes("--export-memory")) {
     // Record this command invocation
-    const now = new Date().toISOString();
-    const sessionId = now + "-" + Math.random().toString(36).slice(2);
-    const logEntry = { sessionId, args, timestamp: now };
+    const nowForExport = new Date().toISOString();
+    const sessionIdForExport = nowForExport + "-" + Math.random().toString(36).slice(2);
+    const logEntryForExport = { sessionId: sessionIdForExport, args, timestamp: nowForExport };
     if (tagValue !== null) {
-      logEntry.tag = tagValue;
+      logEntryForExport.tag = tagValue;
     }
     if (annotationValue !== null) {
-      logEntry.annotation = annotationValue;
+      logEntryForExport.annotation = annotationValue;
     }
-    memoryLog.push(logEntry);
+    memoryLog.push(logEntryForExport);
     while (memoryLog.length > maxMemoryEntries) {
       memoryLog.shift();
     }
@@ -293,6 +293,12 @@ export function main(args = []) {
     } catch (error) {
       console.error("Error exporting memory log:", error);
     }
+    return;
+  }
+
+  // New flag: If '--show-memory-chronological' flag is provided, output the memory log in chronological order (oldest first) BEFORE recording this invocation
+  if (args.includes("--show-memory-chronological")) {
+    console.log(JSON.stringify(memoryLog));
     return;
   }
 
@@ -322,9 +328,6 @@ export function main(args = []) {
   }
 
   // If '--import-memory' flag was provided, record that action as well
-  if (args.includes("--import-memory")) {
-    // Do nothing extra here, as importing was handled earlier
-  }
 
   // If '--show-memory' flag is provided, output the memory log in reverse chronological order
   if (args.includes("--show-memory")) {

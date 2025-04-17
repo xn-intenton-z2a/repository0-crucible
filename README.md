@@ -48,6 +48,7 @@ npm install repository0-crucible
   node src/lib/main.js --delete-memory-by-tag myCustomTag
   ```
 - Show Memory in Reverse Order: When using the `--show-memory` flag, the memory log is now displayed in reverse chronological order (newest entries first).
+- Show Memory in Chronological Order: The newly added `--show-memory-chronological` flag displays the memory log in natural, chronological order (oldest entries first), which can be useful for tracking the order in which commands were executed. Note: This flag does not record the query invocation itself.
 - Diagnostics: A new `--diagnostics` flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.
 - Detailed Diagnostics: The new `--detailed-diagnostics` flag provides an enhanced diagnostic output. In addition to the basic diagnostics, it outputs a detailed snapshot including an array of all memory session IDs under the property `memorySessionIds`. For example:
   ```json
@@ -63,7 +64,7 @@ npm install repository0-crucible
   }
   ```
 - Tagging: With the new `--tag-memory <tag>` flag, users can attach a custom tag to a memory log entry. This allows for enhanced categorization and traceability of logged commands.
-- Annotation: With the new `--annotate-memory <annotation>` flag, users can attach a custom annotation to a memory log entry. This provides additional context or notes for the command invocation. For example, 
+- Annotation: With the new `--annotate-memory <annotation>` flag, users can attach a custom annotation to a memory log entry. This provides additional context or notes for the command invocation. For example,
   ```bash
   node src/lib/main.js --annotate-memory "review this command"
   ```
@@ -93,6 +94,11 @@ node src/lib/main.js --help
 - **Show Memory Log (reverse chronological order):**
   ```bash
   node src/lib/main.js --show-memory
+  ```
+
+- **Show Memory Log (chronological order):**
+  ```bash
+  node src/lib/main.js --show-memory-chronological
   ```
 
 - **Persist Memory Log:**
