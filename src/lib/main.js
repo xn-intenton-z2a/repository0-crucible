@@ -14,9 +14,6 @@ let memoryLog = [];
  * @param {string[]} args - The command line arguments.
  */
 export function main(args = []) {
-  // Generate a unique session identifier for this runtime instance.
-  const sessionId = new Date().toISOString() + '-' + Math.random().toString(36).slice(2);
-
   // On startup, auto-load persisted memory if memory.log exists
   if (fs.existsSync("memory.log")) {
     try {
@@ -25,6 +22,19 @@ export function main(args = []) {
     } catch (error) {
       console.error("Error loading persisted memory:", error);
     }
+  }
+
+  // Handle query-memory functionality
+  if (args.includes("--query-memory")) {
+    const index = args.indexOf("--query-memory");
+    if (args.length <= index + 1 || args[index + 1].startsWith("--")) {
+      console.error("No query string specified for --query-memory flag");
+      return;
+    }
+    const query = args[index + 1];
+    const filtered = memoryLog.filter(entry => entry.args.some(arg => arg.includes(query)));
+    console.log(JSON.stringify(filtered));
+    return;
   }
 
   // If '--clear-memory' flag is provided, clear the in-memory and persisted memory log
@@ -67,6 +77,7 @@ export function main(args = []) {
   }
 
   // Record the arguments in memory along with the session identifier
+  const sessionId = new Date().toISOString() + '-' + Math.random().toString(36).slice(2);
   memoryLog.push({ sessionId, args });
   // Enforce memory log size limit
   while (memoryLog.length > MAX_MEMORY_ENTRIES) {
