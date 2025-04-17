@@ -61,6 +61,7 @@
 <li class="md-github">Export Memory with Compression: You can now export the memory log in a compressed gzip format by using the <code class="md-github">--compress</code> flag in conjunction with <code class="md-github">--export-memory</code>. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-memory compressed_log.json --compress
 </code></pre>
 </li>
+<li class="md-github"><strong class="md-github">Export as CSV:</strong> A new <code class="md-github">--export-csv</code> flag has been added to export the memory log in CSV format. The CSV file will include the following columns: sessionId, timestamp, modified, args, tag, and annotation. By default, it exports to <code class="md-github">memory_export.csv</code> unless a custom filename is provided immediately after the flag.</li>
 <li class="md-github">Import Memory: The new <code class="md-github">--import-memory &lt;filename&gt;</code> flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.</li>
 <li class="md-github">Query Memory: The new <code class="md-github">--query-memory &lt;query&gt;</code> flag allows users to filter the memory log entries based on a search term. The search is case-insensitive, ensuring that values like &quot;anotherAlpha&quot; match when searching for &quot;alpha&quot;. Only those entries whose command arguments contain the specified query will be output.</li>
 <li class="md-github">Query by Tag: The new <code class="md-github">--query-tag &lt;tag&gt;</code> flag allows users to filter memory log entries based on a custom tag. The filtering is case-insensitive and only returns entries that have a matching tag.</li>
@@ -138,18 +139,28 @@
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Export Memory Log (default filename):</strong></p>
+<p class="md-github"><strong class="md-github">Export Memory Log (default JSON):</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-memory
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Export Memory Log with Custom Filename:</strong></p>
+<p class="md-github"><strong class="md-github">Export Memory Log with Custom Filename (JSON):</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-memory custom_log.json
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Export Memory Log with Compression:</strong></p>
+<p class="md-github"><strong class="md-github">Export Memory Log with Compression (JSON):</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-memory compressed_log.json --compress
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Export Memory Log in CSV Format (default filename):</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-csv
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Export Memory Log in CSV Format with Custom Filename:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-csv custom_export.csv
 </code></pre>
 </li>
 <li class="md-github">
@@ -258,7 +269,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-17T19:22:02.005Z</p>
+    <p>Generated on 2025-04-17T20:25:08.551Z</p>
   </footer>
 </body>
 </html>
