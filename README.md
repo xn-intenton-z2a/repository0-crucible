@@ -46,6 +46,10 @@ npm install repository0-crucible
   ```bash
   node src/lib/main.js --query-memory-range 2025-04-17T00:00:00.000Z 2025-04-18T00:00:00.000Z
   ```
+- **Delete Memory by Date Range:** The new `--delete-memory-range <start-date> <end-date>` flag allows users to delete all memory log entries whose timestamps fall within the specified date range (inclusive). For example:
+  ```bash
+  node src/lib/main.js --delete-memory-range 2025-04-17T10:00:00.000Z 2025-04-17T13:00:00.000Z
+  ```
 - Update Memory Tag: The new `--update-memory-tag <sessionId> <newTag>` flag allows updating the tag of an existing memory log entry identified by its sessionId. When a memory.log file exists, the update is automatically persisted. For example:
   ```bash
   node src/lib/main.js --update-memory-tag <sessionId> newTag
@@ -157,6 +161,11 @@ node src/lib/main.js --help
   node src/lib/main.js --query-memory-range 2025-04-17T00:00:00.000Z 2025-04-18T00:00:00.000Z
   ```
 
+- **Delete Memory by Date Range:**
+  ```bash
+  node src/lib/main.js --delete-memory-range 2025-04-17T10:00:00.000Z 2025-04-17T13:00:00.000Z
+  ```
+
 - **Update Memory Tag (with auto-persistence):**
   ```bash
   node src/lib/main.js --update-memory-tag <sessionId> newTag
@@ -216,7 +225,6 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --frequency-stats
   ```
-  This will output a JSON object where each key is a command argument and the value is the number of times it appears in the memory log.
 
 ## Incremental Changes Plan
 
