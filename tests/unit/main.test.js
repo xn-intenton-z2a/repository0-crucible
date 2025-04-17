@@ -50,7 +50,8 @@ describe("Memory Logging Feature", () => {
     main(["a", "b"]);
     main(["--show-memory"]);
     expect(spy).toHaveBeenCalled();
-    const loggedOutput = spy.mock.calls[0][0];
+    // Use the last call for --show-memory output
+    const loggedOutput = spy.mock.calls[spy.mock.calls.length - 1][0];
     const parsedOutput = JSON.parse(loggedOutput);
     expect(parsedOutput).toHaveLength(2);
     expect(parsedOutput[0]).toHaveProperty("sessionId");
