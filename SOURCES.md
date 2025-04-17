@@ -42,3 +42,28 @@ AWS Lambda documentation provides detailed information on creating, deploying, a
 ## https://docs.github.com/en/rest
 This documentation is the official source for GitHub's REST API. It details endpoints for interacting with GitHub services, including authentication, rate limiting, and error handling, and is essential for developers integrating GitHub functionality into their applications.
 ## License not specified
+
+# ES Modules Documentation
+## https://nodejs.org/api/esm.html
+The Node.js ES Modules documentation provides an in-depth look into using ECMAScript modules in Node.js. It covers the syntax, usage patterns, and caveats associated with importing and exporting modules in modern JavaScript, particularly in a Node environment.
+## MIT License
+
+# Markdown-It Documentation
+## https://github.com/markdown-it/markdown-it
+The Markdown-It documentation offers guidance on integrating this flexible markdown parser into JavaScript projects. It includes details on configuration options, usage examples, and plugin integration, making it a dependable resource for developers looking to render markdown content with precision and speed.
+## MIT License
+
+# Dotenv Documentation
+## https://github.com/motdotla/dotenv
+The dotenv documentation outlines how to securely load environment variables from a .env file into process.env in Node.js applications. This concise guide details setup procedures, configuration options, and best practices for managing environment-specific settings.
+## MIT License
+
+# NPM Documentation
+## https://docs.npmjs.com/
+The official NPM documentation covers all aspects of package management for JavaScript applications. It includes guidelines for installing, updating, configuring, and publishing packages, making it an essential resource for developers managing Node.js projects.
+## License not specified
+
+# ESLint Plugin Security Documentation
+## https://github.com/nodesecurity/eslint-plugin-security
+This documentation provides instructions and best practices for using the ESLint Plugin Security, which helps identify security vulnerabilities in JavaScript code. The guide covers installation, configuration, and rule customization to ensure codebases remain secure.
+## MIT License
