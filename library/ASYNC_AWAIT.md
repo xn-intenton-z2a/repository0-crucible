@@ -1,7 +1,7 @@
 # ASYNC_AWAIT
 
 ## Crawl Summary
-The MDN Async/Await guide provides a detailed explanation of asynchronous JavaScript, illustrating event handling, theme adjustment, and concurrency. The source is highly authoritative, though its complexity can challenge beginners. It combines practical coding examples with a comprehensive overview of async patterns.
+The crawled content from MDN's Async/Await Guide outlines asynchronous programming in JavaScript, detailing how async functions and the await keyword streamline asynchronous operations. It also touches on DOM event handling and localStorage usage for theme management, reflecting MDN's authoritative content.
 
 ## Original Source
 MDN Async/Await Guide
@@ -9,36 +9,33 @@ https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_awa
 
 ## Digest of ASYNC_AWAIT
 
-# Async/Await Analysis
-
-## Original Content
-
-Extracted from MDN Async/Await Guide on 2023-10-11:
+# Original Content
 
 ```
-if(document.body.addEventListener("load",(t=>{t.target.classList.contains("interactive")&&t.target.setAttribute("data-readystate","complete")}),{capture:!0}),window&&document.documentElement){const t={light:"#ffffff",dark:"#1b1b1b"} ...
+if(document.body.addEventListener("load",(t=>{t.target.classList.contains("interactive")&&t.target.setAttribute("data-readystate","complete")}),{capture:!0}),window&&document.documentElement){const t={light:"#ffffff",dark:"#1b1b1b"};try{const e=window.localStorage.getItem("theme");e&&(document.documentElement.className=e,document.documentElement.style.backgroundColor=t[e]);const o=window.localStorage.getItem("nop");o&&(document.documentElement.dataset.nop=o)}catch(t){console.warn("Unable to read theme from localStorage",t)}}
 ```
 
-## Detailed Digest
+# Detailed Digest
 
-The MDN guide on async/await is a seminal resource that illustrates the fundamentals of JavaScript's asynchronous programming model. The crawled content, with a data size of 1351580 bytes and 1514 links, demonstrates real-world code snippets that enable event handling and dynamic theme settings based on local storage. This source is reputable and meticulously maintained, providing developers with a robust reference to implement asynchronous patterns. However, while the content is authoritative, the complexity of the examples may demand a solid understanding of event-driven programming. The journalistic critique highlights the balance between practical code implementation and the abstract explanation of concurrency, urging developers to study additional examples for clarity.
+On 2023-10-15, the crawled content from MDN's Async/Await Guide was retrieved. The material outlines how asynchronous functions in JavaScript harness the power of the async and await keywords to simplify handling asynchronous operations. It details event-driven mechanisms, including the use of listeners in the DOM and interactions with localStorage for state management. This source, published on MDN, holds high authority given its educational reputation and comprehensive code examples. However, while the detailed preview displays practical code snippets, it omits contextual explanations that newer developers might require. The digest provides a balanced view by recognizing its technical depth and its limitations for a novice audience.
 
-**Retrieved on:** 2023-10-11
+# Attribution & Data
 
-**Attribution:** Data Size - 1351580 bytes; Links Found - 1514
+Data Size: 2073630 bytes | Links Found: 2258
 
-## Glossary
+# Glossary
 
-- **Async/Await:** Language constructs that simplify working with promises in asynchronous code.
-- **Event-Driven:** A programming paradigm based on the occurrence of events.
+- localStorage: A browser-based storage mechanism for persisting data.
+- DOM: Document Object Model, representing the structure of a webpage.
+
 
 ## Attribution
 - Source: MDN Async/Await Guide
 - URL: https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await
 - License: CC BY-SA 2.5 (or later)
-- Crawl Date: 2025-04-17T00:24:36.040Z
-- Data Size: 1351580 bytes
-- Links Found: 1514
+- Crawl Date: 2025-04-17T00:45:11.761Z
+- Data Size: 2073630 bytes
+- Links Found: 2258
 
 ## Retrieved
 2025-04-17
