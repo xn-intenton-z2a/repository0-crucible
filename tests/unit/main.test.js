@@ -159,9 +159,9 @@ describe("Memory Logging Feature", () => {
     // Import the temporary file
     main(["--import-memory", tempFilename]);
 
-    // After import, the memory log should be merged
+    // After import, the memory log should be replaced by the imported log and then appended with the current call
     const mergedMemory = getMemory();
-    expect(mergedMemory.length).toBe(initialLength + tempLog.length);
+    expect(mergedMemory.length).toBe(tempLog.length + 1);
     expect(mergedMemory[mergedMemory.length - 1].args).toEqual(["--import-memory", tempFilename]);
     
     // Clean up temporary file

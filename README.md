@@ -32,7 +32,7 @@ npm install repository0-crucible
 - Clear Memory: A new `--clear-memory` flag has been added that resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.
 - Log Size Limit: The memory logging feature now includes a size limit (default of 100 entries) to prevent unbounded log growth.
 - Export Memory: The new `--export-memory` flag exports the current memory log to a file (default: `memory_export.json`).
-- Import Memory: The new `--import-memory <filename>` flag imports a memory log from the specified file and merges it with the current session’s memory (while ensuring the log does not exceed 100 entries).
+- Import Memory: The new `--import-memory <filename>` flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.
 
 ## Usage
 
@@ -74,7 +74,7 @@ node src/lib/main.js --help
   node src/lib/main.js --import-memory backup_memory.json
   ```
 
-The `--persist-memory` flag causes the current in-memory log of command arguments to be saved to a file named `memory.log` on disk, and the `--clear-memory` flag clears both the in-memory and persisted logs. The `--export-memory` flag writes the current log to `memory_export.json`, and the `--import-memory <filename>` flag will merge a log from the provided file with the current session's memory.
+The `--persist-memory` flag causes the current in-memory log of command arguments to be saved to a file named `memory.log` on disk, and the `--clear-memory` flag clears both the in-memory and persisted logs. The `--export-memory` flag writes the current log to `memory_export.json`, and the `--import-memory <filename>` flag replaces the current memory log with the log from the provided file.
 
 ## Incremental Changes Plan
 

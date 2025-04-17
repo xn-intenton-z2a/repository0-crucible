@@ -41,7 +41,7 @@ export function main(args = []) {
     return;
   }
 
-  // If '--import-memory' flag is provided, read the specified file and merge its contents
+  // If '--import-memory' flag is provided, read the specified file and replace current contents with its contents
   if (args.includes("--import-memory")) {
     const index = args.indexOf("--import-memory");
     const filename = args[index + 1];
@@ -52,8 +52,8 @@ export function main(args = []) {
         const fileContent = fs.readFileSync(filename, { encoding: "utf-8" });
         const importedLog = JSON.parse(fileContent);
         if (Array.isArray(importedLog)) {
-          memoryLog = memoryLog.concat(importedLog);
-          // Enforce memory log size limit after merging
+          memoryLog = importedLog;
+          // Enforce memory log size limit after import
           while (memoryLog.length > MAX_MEMORY_ENTRIES) {
             memoryLog.shift();
           }
