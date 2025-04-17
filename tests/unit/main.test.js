@@ -6,6 +6,16 @@ const { main, getMemory, resetMemory } = mainModule;
 const MEMORY_LOG_FILE = "memory.log";
 const EXPORT_FILE = "memory_export.json";
 
+// Helper function to capture console output
+function captureConsole(callback) {
+  const originalLog = console.log;
+  let output = "";
+  console.log = (msg) => { output += msg; };
+  callback();
+  console.log = originalLog;
+  return output;
+}
+
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
@@ -336,6 +346,56 @@ describe("Memory Logging Feature", () => {
       const updatedEntry = updatedData.find(e => e.sessionId === "persistTestSession");
       expect(updatedEntry).toBeDefined();
       expect(updatedEntry.tag).toBe("newPersistTag");
+    });
+  });
+
+  // New tests for --delete-memory-by-tag feature
+  describe("Delete Memory by Tag Feature", () => {
+    test("should delete memory log entries with a specific tag and output correct count", () => {
+      // Add entries with different tags
+      main(["cmd1", "--tag-memory", "Alpha"]);
+      main(["cmd2", "--tag-memory", "beta"]);
+      main(["cmd3", "--tag-memory", "ALPHA"]);
+      main(["cmd4"]); // no tag
+      const initialLength = getMemory().length;
+      // Capture output
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+      // Delete entries with tag 'alpha' (case-insensitive)
+      main(["--delete-memory-by-tag", "alpha"]);
+      expect(spy).toHaveBeenCalledWith("Deleted 2 entries with tag: alpha");
+      spy.mockRestore();
+      const mem = getMemory();
+      // Ensure that the two entries with tag alpha are removed
+      expect(mem.find(e => e.tag && e.tag.toLowerCase() === "alpha" )).toBeUndefined();
+      // In-memory log length should be initialLength - 2
+      expect(mem.length).toBe(initialLength - 2);
+    });
+
+    test("should persist deletion to disk when memory.log exists", () => {
+      // Pre-populate memory.log with entries
+      const entries = [
+        { sessionId: "1", args: ["cmd1"], tag: "deleteMe" },
+        { sessionId: "2", args: ["cmd2"], tag: "keepMe" },
+        { sessionId: "3", args: ["cmd3"], tag: "deleteMe" }
+      ];
+      writeFileSync(MEMORY_LOG_FILE, JSON.stringify(entries));
+      // Load persisted memory
+      main(["dummy"]);
+      // Delete entries with tag 'deleteMe'
+      main(["--delete-memory-by-tag", "deleteMe"]);
+      const updatedData = JSON.parse(readFileSync(MEMORY_LOG_FILE, { encoding: "utf-8" }));
+      // Only one entry should remain
+      expect(updatedData.length).toBe(1);
+      expect(updatedData[0].tag).toBe("keepMe");
+    });
+
+    test("should error when --delete-memory-by-tag flag is provided without a valid tag", () => {
+      const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const initialLength = getMemory().length;
+      main(["--delete-memory-by-tag"]);
+      expect(spy).toHaveBeenCalledWith("Invalid usage: --delete-memory-by-tag requires a valid tag value");
+      spy.mockRestore();
+      expect(getMemory().length).toBe(initialLength);
     });
   });
 });

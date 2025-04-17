@@ -43,6 +43,10 @@ npm install repository0-crucible
   node src/lib/main.js --update-memory-tag <sessionId> newTag
   ```
   This command updates the tag of an existing memory log entry identified by the given sessionId, and if a memory.log file exists, the change is automatically persisted.
+- Delete Memory by Tag: Use the new `--delete-memory-by-tag <tag>` flag to remove all memory log entries that have a matching tag (case-insensitive). This helps in clearing out categorized log entries when needed. For example:
+  ```bash
+  node src/lib/main.js --delete-memory-by-tag myCustomTag
+  ```
 - Show Memory in Reverse Order: When using the `--show-memory` flag, the memory log is now displayed in reverse chronological order (newest entries first).
 - Diagnostics: A new `--diagnostics` flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.
 - Tagging: With the new `--tag-memory <tag>` flag, users can attach a custom tag to a memory log entry. This allows for enhanced categorization and traceability of logged commands.
@@ -111,6 +115,11 @@ node src/lib/main.js --help
 - **Update Memory Tag (with auto-persistence):**
   ```bash
   node src/lib/main.js --update-memory-tag <sessionId> newTag
+  ```
+
+- **Delete Memory by Tag:**
+  ```bash
+  node src/lib/main.js --delete-memory-by-tag myCustomTag
   ```
 
 - **Set Custom Memory Limit:**
