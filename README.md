@@ -31,7 +31,10 @@ npm install repository0-crucible
 - Auto-load Persisted Memory: On startup, if a `memory.log` file exists, its contents are automatically loaded into the tool's memory log, providing continuity.
 - Clear Memory: A new `--clear-memory` flag has been added that resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.
 - Log Size Limit: The memory logging feature now includes a configurable size limit. By default, it is set to 100 entries, but you can override it at runtime using the `--memory-limit <number>` flag. For example, `node src/lib/main.js --memory-limit 50` will set the maximum log entries to 50. Note that if a non-numeric or invalid value is provided (for example, `NaN`), the CLI will output the error "Invalid memory limit provided. It must be a positive integer.".
-- Export Memory: The new `--export-memory` flag exports the current memory log to a file (default: `memory_export.json`).
+- Export Memory: The new `--export-memory` flag exports the current memory log to a file. By default, it exports to `memory_export.json`, but you can now optionally provide a custom filename. For example:
+  ```bash
+  node src/lib/main.js --export-memory custom_log.json
+  ```
 - Import Memory: The new `--import-memory <filename>` flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.
 - Query Memory: The new `--query-memory <query>` flag allows users to filter the memory log entries based on a search term. The search is case-insensitive, ensuring that values like "anotherAlpha" match when searching for "alpha". Only those entries whose command arguments contain the specified query will be output.
 - Query by Tag: The new `--query-tag <tag>` flag allows users to filter memory log entries based on a custom tag. The filtering is case-insensitive and only returns entries that have a matching tag.
@@ -80,9 +83,14 @@ node src/lib/main.js --help
   node src/lib/main.js --clear-memory
   ```
 
-- **Export Memory Log:**
+- **Export Memory Log (default filename):**
   ```bash
   node src/lib/main.js --export-memory
+  ```
+
+- **Export Memory Log with Custom Filename:**
+  ```bash
+  node src/lib/main.js --export-memory custom_log.json
   ```
 
 - **Import Memory Log:**
