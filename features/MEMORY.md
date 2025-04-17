@@ -1,15 +1,32 @@
 # MEMORY
 
 ## Overview
-Memory is the agent’s capability to retain and utilize information from past events or interactions. By equipping the CLI/Lambda agent with a form of memory, it can remember previous commands, results, or context across its operations. This trait enhances consistency and enables learning over time – for example, recalling what changes were made earlier or what issues were previously encountered. In practical terms, implementing memory means the agent won’t always start from scratch; it can accumulate a knowledge base (even if simple) to inform its future decisions within a single run or even across runs.
+The MEMORY feature provides the agent with the ability to retain a history of command executions across runs. It works by maintaining an in-memory log that is augmented with persistent storage, ensuring continuity between sessions. In this update, the MEMORY feature is extended to include additional management capabilities such as querying, importing/exporting, clearing logs, and setting a custom size limit.
 
 ## Implementation Details
-- **In-Memory Log:** Introduce a global memory structure (e.g. `globalThis.memoryLog = []`) in `main.js` that records key details of each processed command. After each successful command execution in `agenticHandler`, append an entry containing information like the command name, a timestamp, and a brief result summary. This provides a running log of the agent’s activity that functions as its short-term memory.
-- **Context Utilization:** Modify the command processing so that before executing a new command, the agent can optionally consult `memoryLog`. For instance, if a command is similar to a recent one, the agent could warn or adjust (initially, this might simply be noted for future use). This ensures the memory isn’t just stored but is available for use in decision-making (even if the initial step is just to make the data accessible).
-- **Testing the Memory:** Add unit tests in `main.test.js` to verify memory behavior. For example, after running a sequence of two or three commands via `agenticHandler` (perhaps by simulating a batch of commands), check that `globalThis.memoryLog` contains the corresponding number of entries and that each entry has the expected command name. Another test could execute two identical commands in a row and (in a future scenario) ensure the agent recognizes the repetition via the memory log – but for now, simply confirm the log is accumulating records correctly.
-- **README Update:** Document the new memory feature in the README.md. Explain that the agent keeps an internal log of actions during execution, and describe how a developer can access or reset this memory (e.g., noting that `memoryLog` resets each new run unless persisted). While this initial memory is ephemeral (lasting only per process), clarify its purpose and lay the groundwork for more persistent memory in the future.
-- **No New Dependencies:** This memory mechanism can be implemented with plain JavaScript objects/arrays. There’s no need for an external database or file at this stage, keeping the implementation simple and within the current project’s scope (just updating `main.js` and tests accordingly).
+- **In-Memory Log and Persistence:**
+  - The core memory is implemented as a global array that records each command execution with a unique session ID, arguments, and a timestamp.
+  - On startup, the agent auto-loads the persisted memory from a file (e.g. `memory.log`) if it exists.
+  - New command-line flags include:
+    - `--persist-memory`: Saves the current memory log to disk.
+    - `--clear-memory`: Clears both the in-memory log and deletes the persisted file.
 
-## Long-Term Direction
-In the long run, the memory trait can evolve from a basic log into a sophisticated memory module. Future enhancements might include persistent memory across runs (for example, saving `memoryLog` to a file or cloud storage at the end of execution and loading it at the start of the next run). With anticipated larger context windows (e.g., models handling 100k+ lines of input), the agent could even summarize and feed relevant memory back into the prompt for context-aware reasoning. As the codebase grows, one could imagine a forked memory SDK or integration with a vector database to allow semantic search of past interactions. The goal is for the agent to develop **long-term memory** – remembering important details from weeks or months of activity – thereby becoming more effective and personalized over time.
+- **Memory Size Management:**
+  - A configurable memory limit (`--memory-limit <number>`) is implemented, allowing users to control the maximum number of entries stored. If the log exceeds this limit, older entries are removed.
 
+- **Enhanced Memory Operations:**
+  - **Query Memory (`--query-memory <query>`):** Filters the memory log for entries that match a given query string (case-insensitive), showing only relevant command logs.
+  - **Export Memory (`--export-memory`):** Exports the current memory log to a designated file (e.g. `memory_export.json`).
+  - **Import Memory (`--import-memory <filename>`):** Replaces the current memory log with contents from an external file, while ensuring that the size limit is still enforced after import.
+
+- **Integration and Diagnostics:**
+  - These extended capabilities are designed to work seamlessly with existing functionality such as automatic logging of new commands and diagnostics reporting. The memory log not only aids in debugging and tracing but also lays the foundation for future enhancements like context-aware command processing.
+
+## Testing and Documentation
+- **Testing:**
+  - Unit tests have been extended to cover scenarios for querying, exporting, importing, clearing the log, and enforcing the memory limit.
+  - Additional tests ensure the robustness of file I/O operations associated with persistence.
+
+- **Documentation:**
+  - The README has been updated to document the new flags and their usage examples. Developers are guided on how to manage the memory log and adjust its limits.
+  - This update improves overall observability and sets the stage for future memory enhancements.
