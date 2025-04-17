@@ -1,34 +1,35 @@
 # MEMORY
 
 ## Overview
-The MEMORY feature is responsible for retaining a comprehensive log of command executions across sessions, now enhanced to include command replay capabilities. This consolidated feature merges the traditional memory logging, persistence, querying, and tagging functionalities with the previously separate command replay functionality. Users can not only view and manage past commands but also retrieve specific command sessions using a new replay mechanism.
+The MEMORY feature is responsible for retaining a comprehensive log of command executions across sessions and offering various management functionalities such as persistence, querying, tagging, and command replay. In this update, we introduce an additional capability: Auto Archiving. This enhancement enables the agent to archive the in-memory log into a time-stamped file when the user invokes a specific CLI flag, thereby preventing log bloat and preserving historical data in an organized manner.
 
 ## Implementation Details
-- **Memory Logging & Persistence:**
-  - Maintain an in-memory log that records each command execution with a unique session identifier, the command arguments, and optional tags.
-  - On startup, automatically load persisted memory from a file (e.g., `memory.log`) if it exists.
-  - Enforce a configurable memory size limit (default 100 entries) which can be overridden using the `--memory-limit <number>` flag.
-  - Support exporting (`--export-memory`) and importing (`--import-memory <filename>`) the memory log.
+- **Existing Capabilities:**
+  - Memory Logging & Persistence: Retains a log of commands with unique session identifiers, timestamps, and optional tags. Auto-loads persisted memory from disk if available.
+  - Querying, Tagging & Replay: Enables filtering log entries via query or tag, supports updating or deleting entries, and can replay a session command.
 
-- **Querying and Tagging:**
-  - Offer a `--query-memory <query>` flag for case-insensitive search across memory log entries.
-  - Implement a `--query-tag <tag>` flag to filter entries by custom tags.
-  - Enable tagging of entries via the `--tag-memory <tag>` flag and allow updates to existing tags using the `--update-memory-tag <sessionId> <newTag>` flag.
+- **Auto Archiving:**
+  - **CLI Flag:** Introduce a new flag `--archive-memory` in the CLI. When this flag is provided, the agent will perform an archival operation.
+  - **Archive Process:**
+    - The current in-memory log is serialized and written to an archive file. The archive filename is generated using the current timestamp (e.g., `memory_archive_2025-04-17T10-20-00Z.json`).
+    - After successful archival, the in-memory log is cleared. If a persisted memory log file (e.g., `memory.log`) exists on disk, it is deleted to reflect the cleared state.
+  - **User Feedback:** Upon successful archival, the tool outputs a message indicating the archive file name and that the memory log has been cleared.
 
-- **Command Replay Functionality:**
-  - Integrate a new `--replay-session <sessionId>` flag within the MEMORY feature that allows users to retrieve the original command arguments from a specified session.
-  - If the session is found in the memory log, output the command for review, thereby laying the groundwork for potential future re-execution. If not found, an error message is displayed.
+## Testing
+- **Unit Tests:**
+  - Add test cases in `tests/unit/main.test.js` that simulate invocation of the `--archive-memory` flag.
+  - Validate that an archive file is created with a filename containing a timestamp.
+  - Verify that after archiving, the in-memory log is cleared and the persisted `memory.log` file (if present) is deleted.
+  - Use spy techniques on `console.log` to ensure that the correct confirmation message is output.
 
-- **Diagnostics and Statistics:**
-  - Provide a `--diagnostics` flag to output JSON diagnostics that include current memory log size, memory limit, and persistence status.
-  - Offer a `--memory-stats` flag to display statistics such as the count of entries, the oldest session, and the most recent session.
-
-## Testing and Documentation
-- **Testing:**
-  - Unit tests should cover the integration of memory logging, file persistence, querying, tagging, and the replay functionality. Spy utilities are used to confirm that the correct outputs and error messages are produced.
-
-- **Documentation Updates:**
-  - README and contributing guides will be updated to reflect this unified memory and replay feature, providing clear usage examples for each CLI flag.
+## Documentation Updates
+- **README.md:**
+  - Update the Features section to document the new Auto Archiving capability.
+  - Provide examples on how to invoke the feature, such as:
+    ```bash
+    node src/lib/main.js --archive-memory
+    ```
+  - Explain that upon invocation, the current memory log will be saved to a time-stamped archive file and then cleared, ensuring that archived data is preserved separately.
 
 ## Long-Term Direction
-This merge not only simplifies the architecture by consolidating related functionalities but also sets the stage for future enhancements—such as automatic re-execution of commands and more advanced memory management techniques—that will further empower the agent to learn from and adapt its behaviors over time.
+This enhancement not only helps in managing large memory logs by archiving historical data but also lays the groundwork for future features such as automated log rotation, analytics on archived data, or integration with external archival storage solutions. By ensuring that the memory log remains concise during active sessions while preserving historical records, the agent can better support both real-time operations and long-term diagnostics.
