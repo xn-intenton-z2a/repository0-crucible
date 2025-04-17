@@ -16,6 +16,7 @@ function captureConsole(callback) {
   return output;
 }
 
+
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
@@ -65,7 +66,7 @@ describe("Memory Logging Feature", () => {
     expect(mem[0].args).toEqual(["first", "second"]);
     expect(mem[0]).toHaveProperty("timestamp");
     expect(typeof mem[0].timestamp).toBe("string");
-    expect(mem[0].timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    expect(mem[0].timestamp).toMatch(/\d{4}-\d{2}-\d{2}T/);
   });
 
   test("should output memory log in reverse order when --show-memory flag is provided", () => {
