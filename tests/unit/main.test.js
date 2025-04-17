@@ -18,6 +18,9 @@ function captureConsole(callback) {
   return output;
 }
 
+// New helper for CSV file
+const CSV_EXPORT_FILE = "memory_export.csv";
+const CUSTOM_CSV_FILE = "custom_export.csv";
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -25,14 +28,12 @@ describe("Main Module Import", () => {
   });
 });
 
-
 describe("Main Output", () => {
   test("should terminate without error", () => {
     process.argv = ["node", "src/lib/main.js"];
     main();
   });
 });
-
 
 describe("Memory Logging Feature", () => {
   beforeEach(() => {
@@ -46,11 +47,11 @@ describe("Memory Logging Feature", () => {
     if (existsSync(EXPORT_FILE)) {
       unlinkSync(EXPORT_FILE);
     }
-    if (existsSync("custom_export.json")) {
-      unlinkSync("custom_export.json");
+    if (existsSync(CSV_EXPORT_FILE)) {
+      unlinkSync(CSV_EXPORT_FILE);
     }
-    if (existsSync("compressed_export.json")) {
-      unlinkSync("compressed_export.json");
+    if (existsSync(CUSTOM_CSV_FILE)) {
+      unlinkSync(CUSTOM_CSV_FILE);
     }
   });
 
@@ -64,11 +65,11 @@ describe("Memory Logging Feature", () => {
     if (existsSync(EXPORT_FILE)) {
       unlinkSync(EXPORT_FILE);
     }
-    if (existsSync("custom_export.json")) {
-      unlinkSync("custom_export.json");
+    if (existsSync(CSV_EXPORT_FILE)) {
+      unlinkSync(CSV_EXPORT_FILE);
     }
-    if (existsSync("compressed_export.json")) {
-      unlinkSync("compressed_export.json");
+    if (existsSync(CUSTOM_CSV_FILE)) {
+      unlinkSync(CUSTOM_CSV_FILE);
     }
   });
 
@@ -210,6 +211,31 @@ describe("Memory Logging Feature", () => {
     const decompressed = zlib.gunzipSync(exportedData).toString("utf-8");
     const parsedData = JSON.parse(decompressed);
     expect(Array.isArray(parsedData)).toBe(true);
+  });
+
+  // New tests for CSV export
+  test("should export memory log in CSV format with default filename when --export-csv flag is provided", () => {
+    // Add some log entries
+    main(["csvTest1"]);
+    main(["csvTest2", "additionalArg"]);
+    main(["--export-csv"]);
+    expect(existsSync(CSV_EXPORT_FILE)).toBe(true);
+    const csvContent = readFileSync(CSV_EXPORT_FILE, { encoding: "utf-8" });
+    // Check that CSV contains header and two data rows
+    const lines = csvContent.split("\n");
+    expect(lines[0]).toBe("sessionId,timestamp,modified,args,tag,annotation");
+    // There should be at least 3 lines (header + 2 rows)
+    expect(lines.length).toBeGreaterThanOrEqual(3);
+  });
+
+  test("should export memory log in CSV format with custom filename when provided via --export-csv flag", () => {
+    main(["csvCustomTest"]);
+    main(["--export-csv", "custom_export.csv"]);
+    expect(existsSync(CUSTOM_CSV_FILE)).toBe(true);
+    const csvContent = readFileSync(CUSTOM_CSV_FILE, { encoding: "utf-8" });
+    const lines = csvContent.split("\n");
+    expect(lines[0]).toBe("sessionId,timestamp,modified,args,tag,annotation");
+    expect(lines.length).toBeGreaterThanOrEqual(2);
   });
 
   test("should handle import error when file does not exist", () => {
