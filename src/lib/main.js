@@ -155,6 +155,28 @@ export function main(args = []) {
     return;
   }
 
+  // Handle --delete-memory-by-annotation flag for removing entries by annotation (case-insensitive)
+  if (args.includes("--delete-memory-by-annotation")) {
+    const idx = args.indexOf("--delete-memory-by-annotation");
+    const annotationValueToDelete = args[idx + 1];
+    if (!annotationValueToDelete || annotationValueToDelete.startsWith("--")) {
+      console.error("Invalid usage: --delete-memory-by-annotation requires a valid annotation value");
+      return;
+    }
+    const originalLength = memoryLog.length;
+    memoryLog = memoryLog.filter(entry => !(entry.annotation && entry.annotation.toLowerCase() === annotationValueToDelete.toLowerCase()));
+    const removedCount = originalLength - memoryLog.length;
+    if (fs.existsSync("memory.log")) {
+      try {
+        fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+      } catch (error) {
+        console.error("Error writing memory.log after deletion:", error);
+      }
+    }
+    console.log(`Deleted ${removedCount} entries with annotation: ${annotationValueToDelete}`);
+    return;
+  }
+
   // Handle --detailed-diagnostics flag for enhanced diagnostics
   if (args.includes("--detailed-diagnostics")) {
     const detailedDiag = {
