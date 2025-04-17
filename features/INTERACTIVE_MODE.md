@@ -1,31 +1,34 @@
 # INTERACTIVE_MODE
 
 ## Overview
-This feature introduces an interactive mode to the CLI tool, allowing users to enter commands in a REPL (read-eval-print loop) style. Instead of supplying all command arguments at startup, users can engage with the tool asynchronously, test commands on the fly, and view immediate feedback. This enhances usability, especially during development, debugging, or exploration of the agent’s capabilities.
+This update adds an interactive Read-Eval-Print Loop (REPL) mode to the CLI tool. When run with the `--interactive` flag, the tool will enter a live session allowing users to input commands one-by-one, receive immediate feedback, and test behavior dynamically. This feature improves usability and debugging by letting developers experiment with commands in real time.
 
 ## Implementation Details
-- **Interactive Flag Detection:**
-  - Modify the main function in `src/lib/main.js` to check for a new `--interactive` flag. When this flag is detected, the tool should initiate an interactive session via Node.js’s `readline` module.
+- **Flag Detection:**
+  - Modify the main function in `src/lib/main.js` to check for the `--interactive` flag.
 
 - **Readline Integration:**
-  - Import the `readline` module and create an interface that reads from `process.stdin` and writes to `process.stdout`.
-  - In the interactive session, display a prompt (e.g., `agent> `) where users can input commands.
-  - For each command entered, process it using the same logic as supplied command-line arguments (logging into memory, supporting other flags if applicable), and then provide prompt feedback via `console.log`.
-  - Implement an `exit` command (or detect `Ctrl+C`) that gracefully terminates the interactive session.
+  - Import Node.js’s `readline` module.
+  - When the flag is detected, create a readline interface that listens on `process.stdin` and outputs to `process.stdout`.
+  - Display a prompt (e.g. `agent> `) and process each input using the same logic as non-interactive commands.
+  - Allow a dedicated command (for example, `exit`) or detect `Ctrl+C` to gracefully terminate the session.
 
-- **Memory Logging and Persistence:**
-  - As each command is entered, record the command in the in-memory `memoryLog` as done in non-interactive mode. This ensures consistency and traceability.
+- **Command Processing:**
+  - Each entered command should be handled using the existing logic—logging the command to memory, obeying flags like `--persist-memory` if applicable, and finally echoing the result.
+  - Ensure that the interactive session does not record commands redundantly (i.e. both as interactive entries and as startup arguments) unless needed for traceability.
 
-- **Test Enhancements:**
-  - Update the test file (`tests/unit/main.test.js`) to simulate the interactive mode. Use spies on `console.log` to verify that the prompt is displayed and that commands are processed correctly.
-  - Simulate an interactive session by programmatically injecting commands and capturing outputs, ensuring that the session terminates when `exit` is entered.
+## Testing
+- **Unit Tests Update:**
+  - Extend `tests/unit/main.test.js` to simulate an interactive session. Use mocks/spies on `console.log` to verify that the prompt is displayed and that input is processed correctly.
+  - Simulate a sequence of commands entered in interactive mode (e.g., a couple of normal commands followed by an `exit` command) and verify that the session terminates as expected.
 
-- **Documentation Updates:**
-  - Update the `README.md` to include usage instructions for the interactive mode. Provide an example:
+## Documentation Updates
+- **README.md:**
+  - Update the usage section to include instructions for interactive mode with an example:
     ```bash
     node src/lib/main.js --interactive
     ```
-  - Explain how users can enter commands, view immediate responses, and exit the session.
+  - Explain that interactive mode is intended for live testing and debugging of agent commands.
 
 ## Long-Term Direction
-This interactive mode lays the groundwork for future enhancements such as contextual help, dynamic diagnostics queries, and richer command autocompletion. It supports the overall aim of making the CLI tool not just a batch processor but a flexible, user-friendly assistant aligned with the agentic mission.
+Enhancing interactive mode sets the stage for future improvements such as contextual help, command autocompletion, and dynamic diagnostics queries within the live session. This will further align the CLI tool with the mission of building an intelligent, self-reflective agent capable of adaptive behavior based on real-time input.
