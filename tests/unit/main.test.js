@@ -18,11 +18,13 @@ function captureConsole(callback) {
   return output;
 }
 
+
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
   });
 });
+
 
 describe("Main Output", () => {
   test("should terminate without error", () => {
@@ -30,6 +32,7 @@ describe("Main Output", () => {
     main();
   });
 });
+
 
 describe("Memory Logging Feature", () => {
   beforeEach(() => {
@@ -306,7 +309,6 @@ describe("Memory Logging Feature", () => {
       expect(updatedEntry.tag).toBe("newTestTag");
       expect(updatedEntry).toHaveProperty("modified");
       expect(updatedEntry.modified).not.toBe(originalTimestamp);
-      // Check that modified is a valid ISO string
       expect(updatedEntry.modified).toMatch(/\d{4}-\d{2}-\d{2}T/);
       spy.mockRestore();
     });
