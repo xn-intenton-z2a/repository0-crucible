@@ -12,6 +12,20 @@ let memoryLog = [];
  * @param {string[]} args - The command line arguments.
  */
 export function main(args = []) {
+  // If '--clear-memory' flag is provided, clear the in-memory and persisted memory log
+  if (args.includes("--clear-memory")) {
+    resetMemory();
+    if (fs.existsSync("memory.log")) {
+      try {
+        fs.unlinkSync("memory.log");
+      } catch (error) {
+        console.error('Error deleting memory.log:', error);
+      }
+    }
+    console.log("Memory log cleared");
+    return;
+  }
+
   // Record the arguments in memory
   memoryLog.push(args);
 
