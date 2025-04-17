@@ -253,12 +253,30 @@ export function main(args = []) {
     tagValue = tagStr;
   }
 
+  // Process --annotate-memory flag if provided
+  let annotationValue = null;
+  if (args.includes("--annotate-memory")) {
+    const idx = args.indexOf("--annotate-memory");
+    const annotationStr = args[idx + 1];
+    if (!annotationStr || annotationStr.startsWith("--")) {
+      console.error("No annotation value provided for --annotate-memory flag");
+      return;
+    }
+    annotationValue = annotationStr;
+  }
+
   // Handle export-memory flag with optional custom filename
   if (args.includes("--export-memory")) {
     // Record this command invocation
     const now = new Date().toISOString();
     const sessionId = now + "-" + Math.random().toString(36).slice(2);
     const logEntry = { sessionId, args, timestamp: now };
+    if (tagValue !== null) {
+      logEntry.tag = tagValue;
+    }
+    if (annotationValue !== null) {
+      logEntry.annotation = annotationValue;
+    }
     memoryLog.push(logEntry);
     while (memoryLog.length > maxMemoryEntries) {
       memoryLog.shift();
@@ -284,6 +302,9 @@ export function main(args = []) {
   const logEntry = { sessionId, args, timestamp: now };
   if (tagValue !== null) {
     logEntry.tag = tagValue;
+  }
+  if (annotationValue !== null) {
+    logEntry.annotation = annotationValue;
   }
   memoryLog.push(logEntry);
   // Enforce memory log size limit

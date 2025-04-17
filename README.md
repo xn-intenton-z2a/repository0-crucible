@@ -63,6 +63,10 @@ npm install repository0-crucible
   }
   ```
 - Tagging: With the new `--tag-memory <tag>` flag, users can attach a custom tag to a memory log entry. This allows for enhanced categorization and traceability of logged commands.
+- Annotation: With the new `--annotate-memory <annotation>` flag, users can attach a custom annotation to a memory log entry. This provides additional context or notes for the command invocation. For example, 
+  ```bash
+  node src/lib/main.js --annotate-memory "review this command"
+  ```
 - Memory Stats: The new `--memory-stats` flag outputs diagnostic statistics about the in-memory log, including the total count of log entries, the session ID of the oldest entry, and the session ID of the newest entry.
 - Merge Persisted Memory: The new `--merge-persist` flag merges the current in-memory memory log with the persisted log from `memory.log`. It removes duplicate entries (based on sessionId) and trims the result to respect the current memory limit. For example:
   ```bash
@@ -144,6 +148,11 @@ node src/lib/main.js --help
 - **Tag a Memory Entry:**
   ```bash
   node src/lib/main.js --tag-memory "myCustomTag"
+  ```
+
+- **Annotate a Memory Entry:**
+  ```bash
+  node src/lib/main.js --annotate-memory "review this command"
   ```
 
 - **Diagnostics Output:**

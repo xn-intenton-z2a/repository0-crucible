@@ -64,10 +64,10 @@ describe("Memory Logging Feature", () => {
     expect(typeof mem[0].sessionId).toBe("string");
     expect(mem[0].sessionId).not.toEqual("");
     expect(mem[0].args).toEqual(["first", "second"]);
-    // New timestamp assertions
     expect(mem[0]).toHaveProperty("timestamp");
     expect(typeof mem[0].timestamp).toBe("string");
-    expect(mem[0].timestamp).toMatch(/^\d{4}-\d{2}-\d{2}T/);
+    expect(mem[0].timestamp).toMatch(/^
+\d{4}-\d{2}-\d{2}T/);
   });
 
   test("should output memory log in reverse order when --show-memory flag is provided", () => {
@@ -441,5 +441,27 @@ describe("Frequency Stats Flag", () => {
       "gamma": 1
     });
     spy.mockRestore();
+  });
+});
+
+describe("Annotate Memory Feature", () => {
+  test("should log command arguments with annotation when --annotate-memory flag is provided", () => {
+    resetMemory();
+    main(["sampleCommand", "--annotate-memory", "note1"]);
+    const mem = getMemory();
+    expect(mem).toHaveLength(1);
+    expect(mem[0]).toHaveProperty("annotation", "note1");
+    expect(mem[0].args).toEqual(["sampleCommand", "--annotate-memory", "note1"]);
+    expect(mem[0]).toHaveProperty("timestamp");
+  });
+
+  test("should error when --annotate-memory flag is provided without a valid annotation", () => {
+    const initialLength = getMemory().length;
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    main(["sampleCommand", "--annotate-memory"]);
+    expect(spy).toHaveBeenCalledWith("No annotation value provided for --annotate-memory flag");
+    spy.mockRestore();
+    const mem = getMemory();
+    expect(mem.length).toBe(initialLength);
   });
 });
