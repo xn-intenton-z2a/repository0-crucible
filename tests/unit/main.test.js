@@ -215,7 +215,7 @@ describe("Memory Logging Feature", () => {
     // Populate memory with tagged commands
     main(["alphaCommand", "--tag-memory", "myTag"]);
     main(["betaCommand"]);
-    main(["gammaCommand", "--tag-memory", "MYTAG"]); // same tag different case
+    main(["gammaCommand", "--tag-memory", "MYTAG"]);
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--query-tag", "mytag"]);
     expect(spy).toHaveBeenCalled();
@@ -319,6 +319,52 @@ describe("Memory Logging Feature", () => {
       const updatedEntry = updatedData.find(e => e.sessionId === "persistTestSession");
       expect(updatedEntry).toBeDefined();
       expect(updatedEntry.tag).toBe("newPersistTag");
+    });
+  });
+
+  // New tests for --delete-memory-entry feature
+  describe("Delete Memory Entry Feature", () => {
+    test("should delete memory log entry and update persisted file if exists", () => {
+      // Log an entry
+      main(["deleteTest"]);
+      const memBefore = getMemory();
+      expect(memBefore.length).toBeGreaterThan(0);
+      const sessionId = memBefore[0].sessionId;
+      // Persist memory
+      main(["--persist-memory"]);
+      expect(existsSync(MEMORY_LOG_FILE)).toBe(true);
+      // Delete the entry
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+      main(["--delete-memory-entry", sessionId]);
+      expect(spy).toHaveBeenCalledWith(`Memory log entry deleted: ${sessionId}`);
+      spy.mockRestore();
+      // Check that the entry is removed
+      const memAfter = getMemory();
+      expect(memAfter.find(e => e.sessionId === sessionId)).toBeUndefined();
+      // If memory.log exists, verify it's updated
+      if (existsSync(MEMORY_LOG_FILE)) {
+        const fileContent = readFileSync(MEMORY_LOG_FILE, { encoding: "utf-8" });
+        const parsed = JSON.parse(fileContent);
+        expect(parsed.find(e => e.sessionId === sessionId)).toBeUndefined();
+      }
+    });
+
+    test("should error when deleting non-existent memory log entry", () => {
+      const initialLength = getMemory().length;
+      const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+      main(["--delete-memory-entry", "nonexistentSession"]);
+      expect(spy).toHaveBeenCalledWith("No memory log entry found with sessionId:", "nonexistentSession");
+      spy.mockRestore();
+      expect(getMemory().length).toBe(initialLength);
+    });
+
+    test("should error when no sessionId provided for --delete-memory-entry flag", () => {
+      const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const initialLength = getMemory().length;
+      main(["--delete-memory-entry"]);
+      expect(spy).toHaveBeenCalledWith("No sessionId provided for --delete-memory-entry flag");
+      spy.mockRestore();
+      expect(getMemory().length).toBe(initialLength);
     });
   });
 });

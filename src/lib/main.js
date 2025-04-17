@@ -68,6 +68,31 @@ export function main(args = []) {
     return;
   }
 
+  // Handle --delete-memory-entry flag for deleting a specific memory log entry
+  if (args.includes("--delete-memory-entry")) {
+    const idx = args.indexOf("--delete-memory-entry");
+    const sessionIdToDelete = args[idx + 1];
+    if (!sessionIdToDelete || sessionIdToDelete.startsWith("--")) {
+      console.error("No sessionId provided for --delete-memory-entry flag");
+      return;
+    }
+    const entryIndex = memoryLog.findIndex(e => e.sessionId === sessionIdToDelete);
+    if (entryIndex !== -1) {
+      memoryLog.splice(entryIndex, 1);
+      console.log(`Memory log entry deleted: ${sessionIdToDelete}`);
+      if (fs.existsSync("memory.log")) {
+        try {
+          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+        } catch (error) {
+          console.error("Error updating memory.log after deletion:", error);
+        }
+      }
+    } else {
+      console.error("No memory log entry found with sessionId:", sessionIdToDelete);
+    }
+    return;
+  }
+
   // If --diagnostics flag is provided, output diagnostic information and return early
   if (args.includes("--diagnostics")) {
     const diagnostics = {
