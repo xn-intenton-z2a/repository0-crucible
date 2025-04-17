@@ -363,3 +363,59 @@ describe("Memory Stats Flag", () => {
     spy.mockRestore();
   });
 });
+
+// New test suite for --merge-persist flag
+describe("Merge Persist Flag", () => {
+  beforeEach(() => {
+    resetMemory();
+    if (existsSync(MEMORY_LOG_FILE)) {
+      unlinkSync(MEMORY_LOG_FILE);
+    }
+  });
+
+  test("should merge persisted memory log with in-memory log when memory.log exists", () => {
+    // Prepopulate persisted log with one entry
+    const persisted = [{ sessionId: "session1", args: ["oldCommand"] }];
+    writeFileSync(MEMORY_LOG_FILE, JSON.stringify(persisted), { encoding: "utf-8" });
+
+    // In-memory log contains a new unique entry and a duplicate
+    main(["newCommand"]);
+    // Duplicate entry (simulate same session as in persisted)
+    const duplicateEntry = { sessionId: "session1", args: ["duplicateCommand"] };
+    const currentLog = getMemory();
+    currentLog.push(duplicateEntry);
+    
+    // Call merge persist
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--merge-persist"]);
+
+    // After merge, the merged log should have unique entries only
+    const mergedLog = getMemory();
+    // Expected: persisted entry and the newCommand entry (duplicate not added)
+    expect(mergedLog.length).toBeLessThanOrEqual(100);
+    // Check that session1 entry is present and is from persisted (or first seen)
+    const session1Entries = mergedLog.filter(e => e.sessionId === "session1");
+    expect(session1Entries).toHaveLength(1);
+
+    // Check merge message output
+    const mergeMessage = spy.mock.calls[0][0];
+    expect(mergeMessage).toMatch(/Merged memory log:/);
+    spy.mockRestore();
+  });
+
+  test("should handle --merge-persist gracefully when memory.log does not exist", () => {
+    // Ensure no persisted file
+    if (existsSync(MEMORY_LOG_FILE)) {
+      unlinkSync(MEMORY_LOG_FILE);
+    }
+    main(["uniqueCommand"]);
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--merge-persist"]);
+    // Should simply merge in-memory with empty persisted log
+    const mergedLog = getMemory();
+    expect(mergedLog.length).toBe(1);
+    const mergeMessage = spy.mock.calls[0][0];
+    expect(mergeMessage).toMatch(/Merged memory log:/);
+    spy.mockRestore();
+  });
+});

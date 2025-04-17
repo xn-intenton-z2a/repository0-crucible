@@ -44,6 +44,11 @@ npm install repository0-crucible
 - Diagnostics: A new `--diagnostics` flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.
 - Tagging: With the new `--tag-memory <tag>` flag, users can attach a custom tag to a memory log entry. This allows for enhanced categorization and traceability of logged commands.
 - Memory Stats: The new `--memory-stats` flag outputs diagnostic statistics about the in-memory log, including the total count of log entries, the session ID of the oldest entry, and the session ID of the newest entry.
+- Merge Persisted Memory: The new `--merge-persist` flag merges the current in-memory memory log with the persisted log from `memory.log`. It removes duplicate entries (based on sessionId) and trims the result to respect the current memory limit. For example:
+  ```bash
+  node src/lib/main.js --merge-persist
+  ```
+  This command will combine the logs from the previous sessions with the current session, ensuring continuity in command history.
 
 ## Usage
 
@@ -94,19 +99,16 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --query-tag myCustomTag
   ```
-  This will output all memory log entries that have been tagged with "myCustomTag".
 
 - **Update Memory Tag (with auto-persistence):**
   ```bash
   node src/lib/main.js --update-memory-tag <sessionId> newTag
   ```
-  This command updates the tag of an existing memory log entry identified by the given sessionId, and if a memory.log file exists, the change is automatically persisted.
 
 - **Set Custom Memory Limit:**
   ```bash
   node src/lib/main.js --memory-limit 50
   ```
-  Note: Providing an invalid memory limit (e.g., non-numeric like "NaN") will result in the error: "Invalid memory limit provided. It must be a positive integer.".
 
 - **Tag a Memory Entry:**
   ```bash
@@ -117,11 +119,15 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --diagnostics
   ```
-  This command outputs diagnostic information in JSON format, including the current memory log size, the memory limit, and whether a persisted memory file exists.
 
 - **Memory Stats:**
   ```bash
   node src/lib/main.js --memory-stats
+  ```
+
+- **Merge Persisted Memory:**
+  ```bash
+  node src/lib/main.js --merge-persist
   ```
 
 ## Incremental Changes Plan

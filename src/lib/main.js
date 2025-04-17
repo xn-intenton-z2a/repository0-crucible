@@ -41,6 +41,45 @@ export function main(args = []) {
     }
   }
 
+  // Handle --merge-persist flag for merging in-memory log with persisted log
+  if (args.includes("--merge-persist")) {
+    let persistedEntries = [];
+    if (fs.existsSync("memory.log")) {
+      try {
+        const fileData = fs.readFileSync("memory.log", { encoding: "utf-8" });
+        persistedEntries = JSON.parse(fileData);
+      } catch (error) {
+        console.error("Error reading persisted memory for merge:", error);
+      }
+    }
+    const initialCount = persistedEntries.length + memoryLog.length;
+    const mergedMap = new Map();
+    // Add persisted entries first
+    for (const entry of persistedEntries) {
+      mergedMap.set(entry.sessionId, entry);
+    }
+    // Add in-memory entries if not duplicate
+    for (const entry of memoryLog) {
+      if (!mergedMap.has(entry.sessionId)) {
+        mergedMap.set(entry.sessionId, entry);
+      }
+    }
+    // Convert map back to array preserving insertion order
+    let merged = Array.from(mergedMap.values());
+    // Trim the merged log if it exceeds maxMemoryEntries (remove oldest entries first)
+    while (merged.length > maxMemoryEntries) {
+      merged.shift();
+    }
+    memoryLog = merged;
+    try {
+      fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+    } catch (error) {
+      console.error("Error writing merged memory.log:", error);
+    }
+    console.log(`Merged memory log: ${initialCount} entries before merge, ${memoryLog.length} entries after merge.`);
+    return;
+  }
+
   // Handle --update-memory-tag flag for updating a memory log entry's tag
   if (args.includes("--update-memory-tag")) {
     const idx = args.indexOf("--update-memory-tag");
