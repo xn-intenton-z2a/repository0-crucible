@@ -41,6 +41,25 @@ export function main(args = []) {
     }
   }
 
+  // Handle --update-memory-tag flag for updating a memory log entry's tag
+  if (args.includes("--update-memory-tag")) {
+    const idx = args.indexOf("--update-memory-tag");
+    const sessionId = args[idx + 1];
+    const newTag = args[idx + 2];
+    if (!sessionId || !newTag || sessionId.startsWith("--") || newTag.startsWith("--")) {
+      console.error("Invalid usage: --update-memory-tag requires a sessionId and a new tag value");
+      return;
+    }
+    const entry = memoryLog.find(e => e.sessionId === sessionId);
+    if (entry) {
+      entry.tag = newTag;
+      console.log("Memory log entry updated:", JSON.stringify(entry));
+    } else {
+      console.error("No memory log entry found with sessionId:", sessionId);
+    }
+    return;
+  }
+
   // If --diagnostics flag is provided, output diagnostic information and return early
   if (args.includes("--diagnostics")) {
     const diagnostics = {

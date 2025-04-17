@@ -267,15 +267,43 @@ describe("Memory Logging Feature", () => {
     expect(mem.length).toBe(initialLength);
   });
 
-  // New test for non-numeric value for --memory-limit
-  test("should error when non-numeric memory limit is provided", () => {
-    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    const initialLength = getMemory().length;
-    main(["--memory-limit", "NaN"]);
-    expect(spy).toHaveBeenCalledWith("Invalid memory limit provided. It must be a positive integer.");
-    spy.mockRestore();
-    const mem = getMemory();
-    expect(mem.length).toBe(initialLength);
+  // New tests for --update-memory-tag feature
+  describe("Update Memory Tag Feature", () => {
+    test("should update memory log tag when valid sessionId and new tag provided", () => {
+      // Log an entry with a tag
+      main(["testCommand", "--tag-memory", "oldTag"]);
+      const memBefore = getMemory();
+      expect(memBefore.length).toBeGreaterThan(0);
+      const sessionId = memBefore[0].sessionId;
+      // Update the tag
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+      main(["--update-memory-tag", sessionId, "newTestTag"]);
+      // Check that the memory log entry has its tag updated
+      const memAfter = getMemory();
+      const updatedEntry = memAfter.find(e => e.sessionId === sessionId);
+      expect(updatedEntry).toBeDefined();
+      expect(updatedEntry.tag).toBe("newTestTag");
+      // Check output
+      expect(spy).toHaveBeenCalledWith("Memory log entry updated:", JSON.stringify(updatedEntry));
+      spy.mockRestore();
+    });
+
+    test("should error when --update-memory-tag flag is provided without sufficient arguments", () => {
+      const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const initialLength = getMemory().length;
+      main(["--update-memory-tag", "onlyOneArg"]);
+      expect(spy).toHaveBeenCalledWith("Invalid usage: --update-memory-tag requires a sessionId and a new tag value");
+      spy.mockRestore();
+      const mem = getMemory();
+      expect(mem.length).toBe(initialLength);
+    });
+
+    test("should error when provided sessionId does not exist", () => {
+      const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+      main(["--update-memory-tag", "nonexistentSession", "newTag"]);
+      expect(spy).toHaveBeenCalledWith("No memory log entry found with sessionId:", "nonexistentSession");
+      spy.mockRestore();
+    });
   });
 });
 

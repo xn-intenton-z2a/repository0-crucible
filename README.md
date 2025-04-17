@@ -35,10 +35,15 @@ npm install repository0-crucible
 - Import Memory: The new `--import-memory <filename>` flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.
 - Query Memory: The new `--query-memory <query>` flag allows users to filter the memory log entries based on a search term. The search is case-insensitive, ensuring that values like "anotherAlpha" match when searching for "alpha". Only those entries whose command arguments contain the specified query will be output.
 - Query by Tag: The new `--query-tag <tag>` flag allows users to filter memory log entries based on a custom tag. The filtering is case-insensitive and only returns entries that have a matching tag.
+- Update Memory Tag: The new `--update-memory-tag <sessionId> <newTag>` flag allows updating the tag of an existing memory log entry identified by its sessionId. For example:
+  ```bash
+  node src/lib/main.js --update-memory-tag <sessionId> newTag
+  ```
+  This command searches for the memory log entry with the provided sessionId, updates its tag if found, and outputs a confirmation message. If the sessionId is not found or arguments are missing, an appropriate error message is displayed.
 - Show Memory in Reverse Order: When using the `--show-memory` flag, the memory log is now displayed in reverse chronological order (newest entries first).
 - Diagnostics: A new `--diagnostics` flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.
 - Tagging: With the new `--tag-memory <tag>` flag, users can attach a custom tag to a memory log entry. This allows for enhanced categorization and traceability of logged commands.
-- Memory Stats: The new `--memory-stats` flag outputs diagnostic statistics about the in-memory log, including the total count of entries, the session ID of the oldest entry, and the session ID of the newest entry.
+- Memory Stats: The new `--memory-stats` flag outputs diagnostic statistics about the in-memory log, including the total count of log entries, the session ID of the oldest entry, and the session ID of the newest entry.
 
 ## Usage
 
@@ -91,6 +96,12 @@ node src/lib/main.js --help
   ```
   This will output all memory log entries that have been tagged with "myCustomTag".
 
+- **Update Memory Tag:**
+  ```bash
+  node src/lib/main.js --update-memory-tag <sessionId> newTag
+  ```
+  This command updates the tag of an existing memory log entry identified by the given sessionId.
+
 - **Set Custom Memory Limit:**
   ```bash
   node src/lib/main.js --memory-limit 50
@@ -112,7 +123,6 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --memory-stats
   ```
-  This command outputs JSON diagnostics about the memory log, including the total count of log entries, the session ID of the oldest entry, and the session ID of the newest entry.
 
 ## Incremental Changes Plan
 
