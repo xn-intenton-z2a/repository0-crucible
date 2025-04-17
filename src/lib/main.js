@@ -107,6 +107,28 @@ export function main(args = []) {
     return;
   }
 
+  // Handle --delete-memory-by-tag flag for removing entries by tag (case-insensitive)
+  if (args.includes("--delete-memory-by-tag")) {
+    const idx = args.indexOf("--delete-memory-by-tag");
+    const tagValue = args[idx + 1];
+    if (!tagValue || tagValue.startsWith("--")) {
+      console.error("Invalid usage: --delete-memory-by-tag requires a valid tag value");
+      return;
+    }
+    const originalLength = memoryLog.length;
+    memoryLog = memoryLog.filter(entry => !(entry.tag && entry.tag.toLowerCase() === tagValue.toLowerCase()));
+    const removedCount = originalLength - memoryLog.length;
+    if (fs.existsSync("memory.log")) {
+      try {
+        fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+      } catch (error) {
+        console.error("Error writing memory.log after deletion:", error);
+      }
+    }
+    console.log(`Deleted ${removedCount} entries with tag: ${tagValue}`);
+    return;
+  }
+
   // If --diagnostics flag is provided, output diagnostic information and return early
   if (args.includes("--diagnostics")) {
     const diagnostics = {
