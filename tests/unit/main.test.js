@@ -1,4 +1,4 @@
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import * as mainModule from "../../src/lib/main.js";
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
 import zlib from "zlib";
