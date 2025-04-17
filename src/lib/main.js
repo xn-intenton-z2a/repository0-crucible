@@ -2,6 +2,7 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
+import fs from "fs";
 
 // In-memory log to store the command arguments across invocations
 let memoryLog = [];
@@ -13,6 +14,15 @@ let memoryLog = [];
 export function main(args = []) {
   // Record the arguments in memory
   memoryLog.push(args);
+
+  // If '--persist-memory' flag is provided, write the memory log to disk
+  if (args.includes("--persist-memory")) {
+    try {
+      fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+    } catch (error) {
+      console.error('Error writing memory.log:', error);
+    }
+  }
 
   // If '--show-memory' flag is provided, output the memory log
   if (args.includes("--show-memory")) {
