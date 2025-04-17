@@ -4,7 +4,8 @@
 import { fileURLToPath } from "url";
 import fs from "fs";
 
-const MAX_MEMORY_ENTRIES = 100;
+// Use a mutable variable for maximum memory entries so it can be updated via CLI flag
+let maxMemoryEntries = 100;
 
 // In-memory log to store the command arguments across invocations
 let memoryLog = [];
@@ -14,6 +15,22 @@ let memoryLog = [];
  * @param {string[]} args - The command line arguments.
  */
 export function main(args = []) {
+  // Parse --memory-limit flag if provided
+  if (args.includes("--memory-limit")) {
+    const idx = args.indexOf("--memory-limit");
+    const limitStr = args[idx + 1];
+    if (!limitStr || limitStr.startsWith("--")) {
+      console.error("No memory limit value provided for --memory-limit flag");
+      return;
+    }
+    const limit = parseInt(limitStr, 10);
+    if (isNaN(limit) || limit <= 0) {
+      console.error("Invalid memory limit provided. It must be a positive integer.");
+      return;
+    }
+    maxMemoryEntries = limit;
+  }
+
   // On startup, auto-load persisted memory if memory.log exists
   if (fs.existsSync("memory.log")) {
     try {
@@ -65,7 +82,7 @@ export function main(args = []) {
         if (Array.isArray(importedLog)) {
           memoryLog = importedLog;
           // Enforce memory log size limit after import
-          while (memoryLog.length > MAX_MEMORY_ENTRIES) {
+          while (memoryLog.length > maxMemoryEntries) {
             memoryLog.shift();
           }
         } else {
@@ -81,7 +98,7 @@ export function main(args = []) {
   const sessionId = new Date().toISOString() + "-" + Math.random().toString(36).slice(2);
   memoryLog.push({ sessionId, args });
   // Enforce memory log size limit
-  while (memoryLog.length > MAX_MEMORY_ENTRIES) {
+  while (memoryLog.length > maxMemoryEntries) {
     memoryLog.shift();
   }
 
