@@ -54,20 +54,38 @@
 <li class="md-github">Auto-load Persisted Memory: On startup, if a <code class="md-github">memory.log</code> file exists, its contents are automatically loaded into the tool's memory log, providing continuity.</li>
 <li class="md-github">Clear Memory: A new <code class="md-github">--clear-memory</code> flag has been added that resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.</li>
 <li class="md-github">Log Size Limit: The memory logging feature now includes a configurable size limit. By default, it is set to 100 entries, but you can override it at runtime using the <code class="md-github">--memory-limit &lt;number&gt;</code> flag. For example, <code class="md-github">node src/lib/main.js --memory-limit 50</code> will set the maximum log entries to 50. Note that if a non-numeric or invalid value is provided (for example, <code class="md-github">NaN</code>), the CLI will output the error &quot;Invalid memory limit provided. It must be a positive integer.&quot;.</li>
-<li class="md-github">Export Memory: The new <code class="md-github">--export-memory</code> flag exports the current memory log to a file (default: <code class="md-github">memory_export.json</code>).</li>
+<li class="md-github">Export Memory: The new <code class="md-github">--export-memory</code> flag exports the current memory log to a file. By default, it exports to <code class="md-github">memory_export.json</code>, but you can now optionally provide a custom filename. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-memory custom_log.json
+</code></pre>
+</li>
 <li class="md-github">Import Memory: The new <code class="md-github">--import-memory &lt;filename&gt;</code> flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.</li>
 <li class="md-github">Query Memory: The new <code class="md-github">--query-memory &lt;query&gt;</code> flag allows users to filter the memory log entries based on a search term. The search is case-insensitive, ensuring that values like &quot;anotherAlpha&quot; match when searching for &quot;alpha&quot;. Only those entries whose command arguments contain the specified query will be output.</li>
 <li class="md-github">Query by Tag: The new <code class="md-github">--query-tag &lt;tag&gt;</code> flag allows users to filter memory log entries based on a custom tag. The filtering is case-insensitive and only returns entries that have a matching tag.</li>
 <li class="md-github">Update Memory Tag: The new <code class="md-github">--update-memory-tag &lt;sessionId&gt; &lt;newTag&gt;</code> flag allows updating the tag of an existing memory log entry identified by its sessionId. When a memory.log file exists, the update is automatically persisted. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --update-memory-tag &lt;sessionId&gt; newTag
 </code></pre>
 This command updates the tag of an existing memory log entry identified by the given sessionId, and if a memory.log file exists, the change is automatically persisted.</li>
+<li class="md-github">Delete Memory by Tag: Use the new <code class="md-github">--delete-memory-by-tag &lt;tag&gt;</code> flag to remove all memory log entries that have a matching tag (case-insensitive). This helps in clearing out categorized log entries when needed. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --delete-memory-by-tag myCustomTag
+</code></pre>
+</li>
 <li class="md-github">Show Memory in Reverse Order: When using the <code class="md-github">--show-memory</code> flag, the memory log is now displayed in reverse chronological order (newest entries first).</li>
 <li class="md-github">Diagnostics: A new <code class="md-github">--diagnostics</code> flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.</li>
+<li class="md-github">Detailed Diagnostics: The new <code class="md-github">--detailed-diagnostics</code> flag provides an enhanced diagnostic output. In addition to the basic diagnostics, it outputs a detailed snapshot including an array of all memory session IDs under the property <code class="md-github">memorySessionIds</code>. For example:<pre class="md-github"><code class="md-github language-json">{
+  &quot;memoryLimit&quot;: 100,
+  &quot;memoryLogCount&quot;: 3,
+  &quot;memoryFilePersisted&quot;: true,
+  &quot;memorySessionIds&quot;: [
+    &quot;2025-04-17T10:00:00.000Z-abc123&quot;,
+    &quot;2025-04-17T10:05:00.000Z-def456&quot;,
+    &quot;2025-04-17T10:10:00.000Z-ghi789&quot;
+  ]
+}
+</code></pre>
+</li>
 <li class="md-github">Tagging: With the new <code class="md-github">--tag-memory &lt;tag&gt;</code> flag, users can attach a custom tag to a memory log entry. This allows for enhanced categorization and traceability of logged commands.</li>
 <li class="md-github">Memory Stats: The new <code class="md-github">--memory-stats</code> flag outputs diagnostic statistics about the in-memory log, including the total count of log entries, the session ID of the oldest entry, and the session ID of the newest entry.</li>
 <li class="md-github">Merge Persisted Memory: The new <code class="md-github">--merge-persist</code> flag merges the current in-memory memory log with the persisted log from <code class="md-github">memory.log</code>. It removes duplicate entries (based on sessionId) and trims the result to respect the current memory limit. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --merge-persist
 </code></pre>
 This command will combine the logs from the previous sessions with the current session, ensuring continuity in command history.</li>
+<li class="md-github">Frequency Statistics: The new <code class="md-github">--frequency-stats</code> flag computes and outputs a JSON object that shows the frequency count of each command argument from the in-memory log. This provides an analytical view of how often each argument appears.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">To run the CLI tool and see help instructions:</p>
@@ -96,8 +114,13 @@ This command will combine the logs from the previous sessions with the current s
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Export Memory Log:</strong></p>
+<p class="md-github"><strong class="md-github">Export Memory Log (default filename):</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-memory
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Export Memory Log with Custom Filename:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-memory custom_log.json
 </code></pre>
 </li>
 <li class="md-github">
@@ -121,6 +144,11 @@ This command will combine the logs from the previous sessions with the current s
 </code></pre>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">Delete Memory by Tag:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --delete-memory-by-tag myCustomTag
+</code></pre>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">Set Custom Memory Limit:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --memory-limit 50
 </code></pre>
@@ -136,6 +164,11 @@ This command will combine the logs from the previous sessions with the current s
 </code></pre>
 </li>
 <li class="md-github">
+<p class="md-github"><strong class="md-github">Detailed Diagnostics Output:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --detailed-diagnostics
+</code></pre>
+</li>
+<li class="md-github">
 <p class="md-github"><strong class="md-github">Memory Stats:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --memory-stats
 </code></pre>
@@ -144,6 +177,12 @@ This command will combine the logs from the previous sessions with the current s
 <p class="md-github"><strong class="md-github">Merge Persisted Memory:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --merge-persist
 </code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Frequency Statistics:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --frequency-stats
+</code></pre>
+<p class="md-github">This will output a JSON object where each key is a command argument and the value is the number of times it appears in the memory log.</p>
 </li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="incremental-changes-plan" href="#incremental-changes-plan"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Incremental Changes Plan</h2>
@@ -155,7 +194,7 @@ This command will combine the logs from the previous sessions with the current s
 
   </section>
   <footer>
-    <p>Generated on 2025-04-17T11:22:48.894Z</p>
+    <p>Generated on 2025-04-17T12:27:18.207Z</p>
   </footer>
 </body>
 </html>
