@@ -1,32 +1,40 @@
 # SELF_IMPROVEMENT
 
 ## Overview
-This feature enhances the agent’s self-improvement capability by implementing an explicit CLI diagnostics command. The diagnostics mode provides immediate runtime feedback by outputting key metrics such as the number of processed commands and errors encountered. This update builds on the existing self-improvement foundation and ensures that the agent is introspective and can guide developers during troubleshooting.
+This feature enhances the agent’s self-improvement capabilities by adding a diagnostics mode to the CLI. When activated via the `--diagnostics` flag, the agent will immediately output runtime metrics that include command counts and error counts. This diagnostics mode assists developers in quickly assessing the internal state of the agent and streamlines troubleshooting.
 
 ## Implementation Details
-- **CLI Diagnostics Flag:**
-  - Update the main source file (`src/lib/main.js`) to parse the CLI arguments. When the flag `--diagnostics` is present in the arguments, bypass normal processing and output a diagnostics summary.
-  - The summary should include metrics such as `globalThis.callCount` (command count) and `globalThis.errorCount` (error count). For example, log a message in the form: "Self-Check: X commands executed, Y errors, environment OK".
+- **Global Diagnostics Counters:**
+  - Initialize `globalThis.callCount` and `globalThis.errorCount` at the start of execution in the main source file (`src/lib/main.js`).
+  - Increment `globalThis.callCount` each time a command is processed. In case of errors, increment `globalThis.errorCount` accordingly.
 
-- **Runtime Metrics Tracking:**
-  - Initialize global counters (`globalThis.callCount` and `globalThis.errorCount`) at the start of the execution.
-  - Increment `globalThis.callCount` for each command processed and update `globalThis.errorCount` whenever an error is encountered.
+- **CLI Flag Handling:**
+  - In the main function (`main(args)`), check for the `--diagnostics` flag among the command-line arguments.
+  - If present, bypass the normal processing and print a diagnostic summary in the format:
+    ```
+    Self-Check: X commands executed, Y errors, environment OK
+    ```
+    where X is the value of `globalThis.callCount` and Y is the value of `globalThis.errorCount`.
 
-- **Test Enhancements:**
-  - Update `tests/unit/main.test.js` to include tests that simulate running the agent with the `--diagnostics` flag. The test should capture the output and verify that the expected diagnostic keys are present.
+- **Source File Changes (`src/lib/main.js`):**
+  - Add initialization for `globalThis.callCount` and `globalThis.errorCount` if they are undefined.
+  - Include a conditional branch to check for the `--diagnostics` flag and output the diagnostics summary immediately.
 
-- **README Documentation Updates:**
-  - Amend `README.md` to document the new diagnostics flag. Include usage examples such as:
+- **Test Enhancements (`tests/unit/main.test.js`):**
+  - Add tests that simulate running the agent with the `--diagnostics` flag.
+  - Capture the console output and verify that the expected diagnostic summary appears, reflecting the current command count and error count.
+
+- **README Documentation Updates (`README.md`):
+  - Update the Features section and Usage examples to document the new `--diagnostics` flag.
+  - Provide a usage example such as:
     ```bash
     node src/lib/main.js --diagnostics
     ```
-  - Explain that diagnostics mode is intended to provide immediate feedback on runtime performance and error tracking.
+  - Explain that the diagnostics mode outputs internal runtime metrics to assist with troubleshooting.
 
-## Integration with Repository Scope
-This update is achieved by modifying existing files only:
-- Source file: `src/lib/main.js` (CLI flag parsing and diagnostics output).
-- Test file: `tests/unit/main.test.js` (new test case for diagnostics).
-- README file: `README.md` (documentation update).
-- Dependencies: No new external dependencies are added; the update uses the existing Node environment and libraries.
+- **Dependencies and Integration:**
+  - No new dependencies are added. The update leverages the existing Node.js environment and libraries.
+  - This enhancement remains within the current project’s scope by updating only the source, test, README, and dependencies file content.
 
-This refined self-improvement feature aligns with the repository’s mission of creating an autonomous, introspective agent capable of self-assessment and continuous improvement.
+## Long-Term Direction
+In future iterations, the diagnostics data could be used to automatically adjust runtime strategies or feed into the agent’s self-improvement routines. Additionally, more in-depth metrics may be gathered to further enhance the agent's introspection and performance optimization capabilities.
