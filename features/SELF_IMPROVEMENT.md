@@ -1,38 +1,34 @@
 # SELF_IMPROVEMENT
 
 ## Overview
-Enhance the agent's self-improvement capabilities by adding a diagnostics mode. When running the CLI with the `--diagnostics` flag, the agent should output its runtime metrics including the total number of commands processed (`callCount`) and the number of errors encountered (`errorCount`). This mode bypasses the regular processing steps and provides a quick self-check, laying the foundation for future automated tuning and self-adaptation.
+This feature enhances the agent’s self-diagnostic and introspection capabilities. In addition to the original diagnostics mode that outputs runtime metrics, this update adds a new CLI flag `--version` that prints the current version of the agent (retrieved from the package.json file). By incorporating version reporting into self-improvement, the agent provides a more comprehensive snapshot of its internal state, which is valuable for debugging and ensuring consistency across deployments.
 
 ## Implementation Details
-- **Global Counters:**
-  - In `src/lib/main.js`, introduce two global counters: `globalThis.callCount` and `globalThis.errorCount`.
-  - Initialize these counters at the very start of the `main()` function if they are not already defined.
-  - Increment `globalThis.callCount` each time a command is processed.
-  - In every error handling block, increment `globalThis.errorCount` appropriately.
+- **Global Metrics Tracking:**
+  - In `src/lib/main.js`, the global counters `globalThis.callCount` and `globalThis.errorCount` are maintained to track the number of processed commands and errors respectively.
+  - The diagnostics flow remains unchanged; when the `--diagnostics` flag is detected, the agent outputs these metrics in JSON format.
 
-- **Diagnostics Flag Handling:**
-  - Update the CLI argument parsing to detect the `--diagnostics` flag.
-  - When this flag is present, immediately output a summary in the format:
+- **Version Reporting Integration:**
+  - Update the CLI argument parsing to detect the `--version` flag.
+  - When the `--version` flag is provided, the agent reads the current version from the `package.json` file and outputs it to the console in plain text, then exits immediately.
+  - Ensure that this version reporting occurs before any other processing (i.e. it bypasses standard execution).
+
+- **CLI Argument Parsing:**
+  - Enhance the argument parsing block in `src/lib/main.js` to branch on `--version`.
+  - Use asynchronous file reading if necessary (or synchronous read since it is a one-off call) to fetch the version information from `package.json`.
+
+- **Documentation Updates:**
+  - Update `README.md` under the Usage section to document the new `--version` flag with an example:
+    ```bash
+    node src/lib/main.js --version
     ```
-    Self-Check: X commands executed, Y errors, environment OK
-    ```
-    where X and Y represent the current values of `globalThis.callCount` and `globalThis.errorCount` respectively.
-  - After outputting the diagnostics summary, skip all further execution and exit.
+  - Briefly explain that the version output provides insight into the specific build of the agent, supporting traceability and debugging.
 
 ## Testing
 - **Unit Tests:**
-  - In `tests/unit/main.test.js`, add tests that simulate execution with the `--diagnostics` flag.
-  - Use spies on `console.log` to assert that the correct diagnostics message is printed.
-  - Confirm that when diagnostics mode is active, other functionalities (like memory logging) are bypassed.
-
-## Documentation Updates
-- **README.md:**
-  - Update the usage section to document the `--diagnostics` flag.
-  - Provide an example usage:
-    ```bash
-    node src/lib/main.js --diagnostics
-    ```
-  - Explain that this mode is intended for quick self-checks and performance diagnostics.
+  - Extend tests in `tests/unit/main.test.js` to simulate invocation with the `--version` flag.
+  - Use spies on `console.log` to verify that the output string matches the version fetched from the `package.json` file.
+  - Confirm that when `--version` is active, no other processing (e.g. command logging or memory operations) takes place.
 
 ## Long-Term Direction
-This enhancement is a stepping stone towards a more comprehensive self-improvement framework. In future iterations, the collected diagnostic data could drive automated adjustments in runtime behavior and contribute to broader performance tuning strategies.
+Integrating version reporting within self-improvement paves the way for richer introspection. In future iterations, the diagnostics output could be expanded to include build metadata, dependency versions, and even runtime environment details. This will support automated tuning and provide comprehensive context for the agent’s operations, in alignment with our mission of creating a self-aware, autonomous system.
