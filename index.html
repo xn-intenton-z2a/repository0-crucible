@@ -53,9 +53,11 @@
 <li class="md-github">Persistence: With the new <code class="md-github">--persist-memory</code> flag, the tool now saves the memory log to a file called <code class="md-github">memory.log</code>, ensuring the log is retained across separate invocations.</li>
 <li class="md-github">Auto-load Persisted Memory: On startup, if a <code class="md-github">memory.log</code> file exists, its contents are automatically loaded into the tool's memory log, providing continuity.</li>
 <li class="md-github">Clear Memory: A new <code class="md-github">--clear-memory</code> flag has been added that resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.</li>
-<li class="md-github">Log Size Limit: The memory logging feature now includes a size limit (default of 100 entries) to prevent unbounded log growth.</li>
+<li class="md-github">Log Size Limit: The memory logging feature now includes a configurable size limit. By default, it is set to 100 entries, but you can override it at runtime using the <code class="md-github">--memory-limit &lt;number&gt;</code> flag. For example, <code class="md-github">node src/lib/main.js --memory-limit 50</code> will set the maximum log entries to 50.</li>
 <li class="md-github">Export Memory: The new <code class="md-github">--export-memory</code> flag exports the current memory log to a file (default: <code class="md-github">memory_export.json</code>).</li>
 <li class="md-github">Import Memory: The new <code class="md-github">--import-memory &lt;filename&gt;</code> flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.</li>
+<li class="md-github">Query Memory: The new <code class="md-github">--query-memory &lt;query&gt;</code> flag allows users to filter the memory log entries based on a search term. The search is case-insensitive, ensuring that values like &quot;anotherAlpha&quot; match when searching for &quot;alpha&quot;. Only those entries whose command arguments contain the specified query will be output.</li>
+<li class="md-github">Show Memory in Reverse Order: When using the <code class="md-github">--show-memory</code> flag, the memory log is now displayed in reverse chronological order (newest entries first).</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">To run the CLI tool and see help instructions:</p>
@@ -69,7 +71,7 @@
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Show Memory Log:</strong></p>
+<p class="md-github"><strong class="md-github">Show Memory Log (reverse chronological order):</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --show-memory
 </code></pre>
 </li>
@@ -93,8 +95,18 @@
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --import-memory backup_memory.json
 </code></pre>
 </li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Query Memory Log:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query-memory test
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Set Custom Memory Limit:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --memory-limit 50
+</code></pre>
+</li>
 </ul>
-<p class="md-github">The <code class="md-github">--persist-memory</code> flag causes the current in-memory log of command arguments to be saved to a file named <code class="md-github">memory.log</code> on disk, and the <code class="md-github">--clear-memory</code> flag clears both the in-memory and persisted logs. The <code class="md-github">--export-memory</code> flag writes the current log to <code class="md-github">memory_export.json</code>, and the <code class="md-github">--import-memory &lt;filename&gt;</code> flag replaces the current memory log with the log from the provided file.</p>
+<p class="md-github">The <code class="md-github">--persist-memory</code> flag causes the current in-memory log of command arguments to be saved to a file named <code class="md-github">memory.log</code> on disk, and the <code class="md-github">--clear-memory</code> flag clears both the in-memory and persisted logs. The <code class="md-github">--export-memory</code> flag writes the current log to <code class="md-github">memory_export.json</code>, the <code class="md-github">--import-memory &lt;filename&gt;</code> flag replaces the current memory log with the log from the provided file, and the <code class="md-github">--query-memory &lt;query&gt;</code> flag filters the log entries by the specified search term. Displaying the memory log with <code class="md-github">--show-memory</code> now shows the most recent commands first.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="incremental-changes-plan" href="#incremental-changes-plan"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Incremental Changes Plan</h2>
 <p class="md-github">TODO: Add forthcoming changes here.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
@@ -104,7 +116,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-17T06:26:11.962Z</p>
+    <p>Generated on 2025-04-17T07:24:49.676Z</p>
   </footer>
 </body>
 </html>
