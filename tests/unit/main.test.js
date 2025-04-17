@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { existsSync, readFileSync, unlinkSync } from "fs";
+import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
 const { main, getMemory, resetMemory } = mainModule;
 
 const MEMORY_LOG_FILE = "memory.log";
@@ -81,5 +81,16 @@ describe("Memory Logging Feature", () => {
     // Confirmation message should be output
     expect(spy).toHaveBeenCalledWith("Memory log cleared");
     spy.mockRestore();
+  });
+
+  test("should auto-load persisted memory log on startup", () => {
+    // Write a temporary memory.log with known content
+    const persisted = JSON.stringify([ ["old", "command"] ]);
+    writeFileSync(MEMORY_LOG_FILE, persisted, { encoding: 'utf-8' });
+
+    // Call main with a new command, which should auto-load and then push the new args
+    main(["new"]);
+    const mem = getMemory();
+    expect(mem).toEqual([ ["old", "command"], ["new"] ]);
   });
 });

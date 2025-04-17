@@ -12,6 +12,16 @@ let memoryLog = [];
  * @param {string[]} args - The command line arguments.
  */
 export function main(args = []) {
+  // On startup, auto-load persisted memory if memory.log exists
+  if (fs.existsSync("memory.log")) {
+    try {
+      const data = fs.readFileSync("memory.log", { encoding: "utf-8" });
+      memoryLog = JSON.parse(data);
+    } catch (error) {
+      console.error("Error loading persisted memory:", error);
+    }
+  }
+
   // If '--clear-memory' flag is provided, clear the in-memory and persisted memory log
   if (args.includes("--clear-memory")) {
     resetMemory();
