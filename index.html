@@ -60,11 +60,20 @@
 <li class="md-github">Import Memory: The new <code class="md-github">--import-memory &lt;filename&gt;</code> flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.</li>
 <li class="md-github">Query Memory: The new <code class="md-github">--query-memory &lt;query&gt;</code> flag allows users to filter the memory log entries based on a search term. The search is case-insensitive, ensuring that values like &quot;anotherAlpha&quot; match when searching for &quot;alpha&quot;. Only those entries whose command arguments contain the specified query will be output.</li>
 <li class="md-github">Query by Tag: The new <code class="md-github">--query-tag &lt;tag&gt;</code> flag allows users to filter memory log entries based on a custom tag. The filtering is case-insensitive and only returns entries that have a matching tag.</li>
+<li class="md-github">Query by Annotation: The new <code class="md-github">--query-annotation &lt;query&gt;</code> flag allows users to filter memory log entries based on their annotation content. This search is case-insensitive and will return all entries where the annotation contains the provided query string. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query-annotation review
+</code></pre>
+</li>
+<li class="md-github"><strong class="md-github">Date Range Query:</strong> The new <code class="md-github">--query-memory-range &lt;start-date&gt; &lt;end-date&gt;</code> flag allows users to filter memory log entries that have timestamps between the provided ISO date-time values (inclusive). For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query-memory-range 2025-04-17T00:00:00.000Z 2025-04-18T00:00:00.000Z
+</code></pre>
+</li>
 <li class="md-github">Update Memory Tag: The new <code class="md-github">--update-memory-tag &lt;sessionId&gt; &lt;newTag&gt;</code> flag allows updating the tag of an existing memory log entry identified by its sessionId. When a memory.log file exists, the update is automatically persisted. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --update-memory-tag &lt;sessionId&gt; newTag
 </code></pre>
 </li>
 <li class="md-github">Update Memory Annotation: The new <code class="md-github">--update-memory-annotation &lt;sessionId&gt; &lt;newAnnotation&gt;</code> flag allows updating the annotation of an existing memory log entry identified by its sessionId. If a memory.log file exists, the change is automatically persisted.</li>
 <li class="md-github">Delete Memory by Tag: Use the new <code class="md-github">--delete-memory-by-tag &lt;tag&gt;</code> flag to remove all memory log entries that have a matching tag (case-insensitive). This helps in clearing out categorized log entries when needed. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --delete-memory-by-tag myCustomTag
+</code></pre>
+</li>
+<li class="md-github">Delete Memory by Annotation: Use the new <code class="md-github">--delete-memory-by-annotation &lt;annotation&gt;</code> flag to remove all memory log entries that have an annotation that exactly matches (case-insensitively) the provided value. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --delete-memory-by-annotation &quot;review needed&quot;
 </code></pre>
 </li>
 <li class="md-github">Show Memory in Reverse Order: When using the <code class="md-github">--show-memory</code> flag, the memory log is now displayed in reverse chronological order (newest entries first).</li>
@@ -139,13 +148,23 @@
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Query Memory Log:</strong></p>
+<p class="md-github"><strong class="md-github">Query Memory Log by Command Arguments:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query-memory test
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Query by Tag:</strong></p>
+<p class="md-github"><strong class="md-github">Query Memory Log by Tag:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query-tag myCustomTag
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Query Memory Log by Annotation:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query-annotation review
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Query Memory by Date Range:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --query-memory-range 2025-04-17T00:00:00.000Z 2025-04-18T00:00:00.000Z
 </code></pre>
 </li>
 <li class="md-github">
@@ -161,6 +180,11 @@
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Delete Memory by Tag:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --delete-memory-by-tag myCustomTag
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Delete Memory by Annotation:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --delete-memory-by-annotation &quot;review needed&quot;
 </code></pre>
 </li>
 <li class="md-github">
@@ -214,7 +238,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-17T15:25:19.168Z</p>
+    <p>Generated on 2025-04-17T16:25:49.830Z</p>
   </footer>
 </body>
 </html>
