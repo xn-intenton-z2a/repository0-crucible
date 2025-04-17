@@ -1,44 +1,38 @@
 # SELF_IMPROVEMENT
 
 ## Overview
-This feature enhances the agent’s internal diagnostic capabilities by incorporating a diagnostics mode. When activated via the `--diagnostics` flag, the CLI tool will output runtime metrics such as command invocation counts and error counts. This enhancement not only provides immediate insight into the agent’s performance but also lays the groundwork for self-improvement by tracking operational health.
+Enhance the agent's self-improvement capabilities by adding a diagnostics mode. When running the CLI with the `--diagnostics` flag, the agent should output its runtime metrics including the total number of commands processed (`callCount`) and the number of errors encountered (`errorCount`). This mode bypasses the regular processing steps and provides a quick self-check, laying the foundation for future automated tuning and self-adaptation.
 
 ## Implementation Details
 - **Global Counters:**
-  - Introduce and initialize two global counters in the main source file (`src/lib/main.js`), for example `globalThis.callCount` and `globalThis.errorCount`.
+  - In `src/lib/main.js`, introduce two global counters: `globalThis.callCount` and `globalThis.errorCount`.
+  - Initialize these counters at the very start of the `main()` function if they are not already defined.
   - Increment `globalThis.callCount` each time a command is processed.
-  - Inside error handling blocks, increment `globalThis.errorCount` accordingly.
+  - In every error handling block, increment `globalThis.errorCount` appropriately.
 
 - **Diagnostics Flag Handling:**
-  - In the `main` function, check the provided command line arguments for the `--diagnostics` flag.
-  - If the flag is present, immediately output a diagnostic summary in the format:
+  - Update the CLI argument parsing to detect the `--diagnostics` flag.
+  - When this flag is present, immediately output a summary in the format:
     ```
     Self-Check: X commands executed, Y errors, environment OK
     ```
-    and then exit without performing any further processing.
+    where X and Y represent the current values of `globalThis.callCount` and `globalThis.errorCount` respectively.
+  - After outputting the diagnostics summary, skip all further execution and exit.
 
-- **Source File Changes (`src/lib/main.js`):**
-  - At the start of the `main` function, initialize `globalThis.callCount` and `globalThis.errorCount` if they are undefined.
-  - Add a conditional branch to detect `--diagnostics` and output the current counts.
-  - Ensure that normal processing (like memory logging) is skipped when diagnostics mode is active.
+## Testing
+- **Unit Tests:**
+  - In `tests/unit/main.test.js`, add tests that simulate execution with the `--diagnostics` flag.
+  - Use spies on `console.log` to assert that the correct diagnostics message is printed.
+  - Confirm that when diagnostics mode is active, other functionalities (like memory logging) are bypassed.
 
-- **Test Enhancements (`tests/unit/main.test.js`):
-  - Add new tests that simulate running the CLI with the `--diagnostics` flag.
-  - Use spies on `console.log` to assert that the output message correctly displays the current call and error counts.
-  - Ensure that when `--diagnostics` is provided, no additional processing (such as memory logging) occurs.
-
-- **README Documentation Updates (`README.md`):
-  - Update the Features and Usage sections to document the new `--diagnostics` flag.
-  - Provide a usage example such as:
+## Documentation Updates
+- **README.md:**
+  - Update the usage section to document the `--diagnostics` flag.
+  - Provide an example usage:
     ```bash
     node src/lib/main.js --diagnostics
     ```
-  - Explain that diagnostics mode outputs internal runtime metrics for troubleshooting purposes.
-
-## Tests
-- Verify that when `--diagnostics` is provided, the CLI outputs a message like "Self-Check: X commands executed, Y errors, environment OK".
-- Confirm that global counters are properly updated during normal command processing when diagnostics mode is not active.
-- Ensure that the diagnostics flag bypasses other operations (like memory persistence and logging) to focus solely on outputting the metrics.
+  - Explain that this mode is intended for quick self-checks and performance diagnostics.
 
 ## Long-Term Direction
-This diagnostics feature will serve as the foundation for more advanced self-improvement capabilities. In future iterations, the diagnostics data could be analyzed further to automatically adjust runtime behavior or optimize performance, and potentially feed into a more comprehensive self-improvement strategy.
+This enhancement is a stepping stone towards a more comprehensive self-improvement framework. In future iterations, the collected diagnostic data could drive automated adjustments in runtime behavior and contribute to broader performance tuning strategies.
