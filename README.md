@@ -25,7 +25,8 @@ npm install repository0-crucible
 
 ## Features
 
-TODO: Add features here.
+- CLI Tool for running commands with argument output.
+- Memory Logging: The CLI tool now retains a log of command arguments from each invocation. This in-memory log provides action continuity and can be displayed using the `--show-memory` flag. Programmatically, you can access the log using the `getMemory()` function.
 
 ## Usage
 
@@ -42,6 +43,10 @@ node src/lib/main.js --help
   npm run start
   ```
 
+- **Show Memory Log:**
+  ```bash
+  node src/lib/main.js --show-memory
+  ```
 
 ## Incremental Changes Plan
 
