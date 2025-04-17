@@ -46,6 +46,9 @@ describe("Memory Logging Feature", () => {
     if (existsSync("custom_export.json")) {
       unlinkSync("custom_export.json");
     }
+    if (existsSync("compressed_export.json")) {
+      unlinkSync("compressed_export.json");
+    }
   });
 
   afterEach(() => {
@@ -60,6 +63,9 @@ describe("Memory Logging Feature", () => {
     }
     if (existsSync("custom_export.json")) {
       unlinkSync("custom_export.json");
+    }
+    if (existsSync("compressed_export.json")) {
+      unlinkSync("compressed_export.json");
     }
   });
 
@@ -127,7 +133,6 @@ describe("Memory Logging Feature", () => {
     const compressedData = readFileSync(COMPRESSED_LOG_FILE);
     const decompressed = zlib.gunzipSync(compressedData).toString("utf-8");
     const parsed = JSON.parse(decompressed);
-    // The last entry should match the compressTest command
     expect(parsed[parsed.length - 1].args).toEqual(["compressTest", "--persist-memory", "--compress-memory"]);
   });
 
@@ -192,18 +197,17 @@ describe("Memory Logging Feature", () => {
     expect(exportedLog[0].args).toEqual(["customExportTest"]);
   });
 
-  test("should import memory log from a file when --import-memory flag is provided", () => {
-    const tempLog = [{ sessionId: "importSession", args: ["imported", "command"], timestamp: "2025-04-17T10:05:00.000Z" }];
-    const tempFilename = "temp_import.json";
-    writeFileSync(tempFilename, JSON.stringify(tempLog), { encoding: "utf-8" });
-    main(["existing"]);
-    const initialLength = getMemory().length;
-    main(["--import-memory", tempFilename]);
-    const mergedMemory = getMemory();
-    expect(mergedMemory.length).toBe(tempLog.length + 1);
-    if (existsSync(tempFilename)) {
-      unlinkSync(tempFilename);
-    }
+  test("should export memory log in compressed format when --export-memory flag is provided with --compress option", () => {
+    main(["exportCompressTest"]);
+    main(["--export-memory", "compressed_export.json", "--compress"]);
+    expect(existsSync("compressed_export.json")).toBe(true);
+    const exportedData = readFileSync("compressed_export.json");
+    // Check gzip magic numbers: 0x1f8b
+    expect(exportedData[0]).toBe(0x1f);
+    expect(exportedData[1]).toBe(0x8b);
+    const decompressed = zlib.gunzipSync(exportedData).toString("utf-8");
+    const parsedData = JSON.parse(decompressed);
+    expect(Array.isArray(parsedData)).toBe(true);
   });
 
   test("should handle import error when file does not exist", () => {

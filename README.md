@@ -35,6 +35,10 @@ npm install repository0-crucible
   ```bash
   node src/lib/main.js --export-memory custom_log.json
   ```
+- Export Memory with Compression: You can now export the memory log in a compressed gzip format by using the `--compress` flag in conjunction with `--export-memory`. For example:
+  ```bash
+  node src/lib/main.js --export-memory compressed_log.json --compress
+  ```
 - Import Memory: The new `--import-memory <filename>` flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.
 - Query Memory: The new `--query-memory <query>` flag allows users to filter the memory log entries based on a search term. The search is case-insensitive, ensuring that values like "anotherAlpha" match when searching for "alpha". Only those entries whose command arguments contain the specified query will be output.
 - Query by Tag: The new `--query-tag <tag>` flag allows users to filter memory log entries based on a custom tag. The filtering is case-insensitive and only returns entries that have a matching tag.
@@ -122,6 +126,11 @@ node src/lib/main.js --help
 - **Export Memory Log with Custom Filename:**
   ```bash
   node src/lib/main.js --export-memory custom_log.json
+  ```
+
+- **Export Memory Log with Compression:**
+  ```bash
+  node src/lib/main.js --export-memory compressed_log.json --compress
   ```
 
 - **Import Memory Log:**
