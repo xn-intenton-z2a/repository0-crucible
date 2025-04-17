@@ -30,6 +30,9 @@ describe("Memory Logging Feature", () => {
     if (existsSync(EXPORT_FILE)) {
       unlinkSync(EXPORT_FILE);
     }
+    if (existsSync("custom_export.json")) {
+      unlinkSync("custom_export.json");
+    }
   });
 
   afterEach(() => {
@@ -39,6 +42,9 @@ describe("Memory Logging Feature", () => {
     }
     if (existsSync(EXPORT_FILE)) {
       unlinkSync(EXPORT_FILE);
+    }
+    if (existsSync("custom_export.json")) {
+      unlinkSync("custom_export.json");
     }
   });
 
@@ -137,7 +143,7 @@ describe("Memory Logging Feature", () => {
     expect(mem[99].args).toEqual(["command104"]);
   });
 
-  test("should export memory log to a file when --export-memory flag is provided", () => {
+  test("should export memory log to a file when --export-memory flag is provided with default filename", () => {
     main(["exportTest1", "exportTest2"]);
     main(["--export-memory"]);
     expect(existsSync(EXPORT_FILE)).toBe(true);
@@ -146,6 +152,17 @@ describe("Memory Logging Feature", () => {
     // Should include the previous log plus the export command entry
     expect(exportedLog.length).toBe(2);
     expect(exportedLog[0].args).toEqual(["exportTest1", "exportTest2"]);
+  });
+
+  test("should export memory log to a custom file when custom filename is provided with --export-memory", () => {
+    main(["customExportTest"]);
+    main(["--export-memory", "custom_export.json"]);
+    expect(existsSync("custom_export.json")).toBe(true);
+    const exportedContent = readFileSync("custom_export.json", { encoding: "utf-8" });
+    const exportedLog = JSON.parse(exportedContent);
+    // Should include the previous log plus the export command entry
+    expect(exportedLog.length).toBe(2);
+    expect(exportedLog[0].args).toEqual(["customExportTest"]);
   });
 
   test("should import memory log from a file when --import-memory flag is provided", () => {
@@ -365,6 +382,7 @@ describe("Memory Stats Flag", () => {
 });
 
 // New test suite for --merge-persist flag
+
 describe("Merge Persist Flag", () => {
   beforeEach(() => {
     resetMemory();

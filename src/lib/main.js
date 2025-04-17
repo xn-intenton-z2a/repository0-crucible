@@ -207,6 +207,22 @@ export function main(args = []) {
     tagValue = tagStr;
   }
 
+  // Handle export-memory flag with optional custom filename
+  if (args.includes("--export-memory")) {
+    const idx = args.indexOf("--export-memory");
+    let exportFilename = "memory_export.json";
+    if (args.length > idx + 1 && !args[idx + 1].startsWith("--")) {
+      exportFilename = args[idx + 1];
+    }
+    try {
+      fs.writeFileSync(exportFilename, JSON.stringify(memoryLog));
+      console.log(`Memory log exported to ${exportFilename}`);
+    } catch (error) {
+      console.error("Error exporting memory log:", error);
+    }
+    return;
+  }
+
   // Record the arguments in memory along with the session identifier
   const sessionId = new Date().toISOString() + "-" + Math.random().toString(36).slice(2);
   const logEntry = { sessionId, args };
@@ -228,14 +244,9 @@ export function main(args = []) {
     }
   }
 
-  // If '--export-memory' flag is provided, export the memory log to memory_export.json
-  if (args.includes("--export-memory")) {
-    try {
-      fs.writeFileSync("memory_export.json", JSON.stringify(memoryLog));
-      console.log("Memory log exported to memory_export.json");
-    } catch (error) {
-      console.error("Error exporting memory log:", error);
-    }
+  // If '--import-memory' flag was provided, record that action as well
+  if (args.includes("--import-memory")) {
+    // Do nothing extra here, as importing was handled earlier
   }
 
   // If '--show-memory' flag is provided, output the memory log in reverse chronological order
