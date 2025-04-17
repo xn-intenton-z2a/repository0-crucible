@@ -93,4 +93,20 @@ describe("Memory Logging Feature", () => {
     const mem = getMemory();
     expect(mem).toEqual([ ["old", "command"], ["new"] ]);
   });
+
+  test("should limit memory log to 100 entries when more than 100 entries are added", () => {
+    resetMemory();
+    if (existsSync(MEMORY_LOG_FILE)) {
+      unlinkSync(MEMORY_LOG_FILE);
+    }
+    const totalEntries = 105;
+    for (let i = 0; i < totalEntries; i++) {
+      main([`command${i}`]);
+    }
+    const mem = getMemory();
+    expect(mem).toHaveLength(100);
+    // The first entry should be command5 since the first 5 entries are removed
+    expect(mem[0]).toEqual(["command5"]);
+    expect(mem[99]).toEqual(["command104"]);
+  });
 });
