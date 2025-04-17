@@ -63,4 +63,23 @@ describe("Memory Logging Feature", () => {
     // Since resetMemory was called before, memoryLog should have one entry
     expect(fileContent).toBe(JSON.stringify([ ["test1", "--persist-memory"] ]));
   });
+
+  test("should clear memory log and delete persisted file when --clear-memory flag is provided", () => {
+    // First, simulate some memory logging and persist to disk
+    main(["sample", "--persist-memory"]);
+    expect(getMemory().length).toBe(1);
+    expect(existsSync(MEMORY_LOG_FILE)).toBe(true);
+
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+
+    // Now, clear the memory
+    main(["--clear-memory"]);
+    // In-memory log should be empty
+    expect(getMemory().length).toBe(0);
+    // The memory file should be deleted
+    expect(existsSync(MEMORY_LOG_FILE)).toBe(false);
+    // Confirmation message should be output
+    expect(spy).toHaveBeenCalledWith("Memory log cleared");
+    spy.mockRestore();
+  });
 });
