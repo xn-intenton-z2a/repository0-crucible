@@ -249,4 +249,3 @@ node src/lib/main.js --help
   node src/lib/main.js --memory-detailed-stats
   ```
   This command outputs detailed statistics about the memory log, including total count, earliest and latest timestamps, average interval between entries (in seconds), and the most frequent command argument.
-
