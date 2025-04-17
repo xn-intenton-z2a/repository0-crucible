@@ -3,8 +3,38 @@
 
 import { fileURLToPath } from "url";
 
-export function main(args) {
-  console.log(`Run with: ${JSON.stringify(args)}`);
+// In-memory log to store the command arguments across invocations
+let memoryLog = [];
+
+/**
+ * Main function that processes command line arguments.
+ * @param {string[]} args - The command line arguments.
+ */
+export function main(args = []) {
+  // Record the arguments in memory
+  memoryLog.push(args);
+
+  // If '--show-memory' flag is provided, output the memory log
+  if (args.includes("--show-memory")) {
+    console.log(JSON.stringify(memoryLog));
+  } else {
+    console.log(`Run with: ${JSON.stringify(args)}`);
+  }
+}
+
+/**
+ * Returns the current memory log of command arguments.
+ * @returns {Array} The memory log array.
+ */
+export function getMemory() {
+  return memoryLog;
+}
+
+/**
+ * Resets the in-memory log. Useful for testing purposes.
+ */
+export function resetMemory() {
+  memoryLog = [];
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
