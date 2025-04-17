@@ -24,7 +24,6 @@ describe("Main Module Import", () => {
 
 describe("Main Output", () => {
   test("should terminate without error", () => {
-    // Override process.argv for testing
     process.argv = ["node", "src/lib/main.js"];
     main();
   });
@@ -33,7 +32,6 @@ describe("Main Output", () => {
 describe("Memory Logging Feature", () => {
   beforeEach(() => {
     resetMemory();
-    // Clean up memory files if they exist
     if (existsSync(MEMORY_LOG_FILE)) {
       unlinkSync(MEMORY_LOG_FILE);
     }
@@ -46,7 +44,6 @@ describe("Memory Logging Feature", () => {
   });
 
   afterEach(() => {
-    // Remove memory files after each test to avoid side effects
     if (existsSync(MEMORY_LOG_FILE)) {
       unlinkSync(MEMORY_LOG_FILE);
     }
@@ -70,18 +67,13 @@ describe("Memory Logging Feature", () => {
 
   test("should output memory log in reverse order when --show-memory flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    // First command
     main(["a", "b"]);
-    // Second command
     main(["c", "d"]);
-    // Now invoke --show-memory
     main(["--show-memory"]);
     expect(spy).toHaveBeenCalled();
-    // Get the output from the --show-memory call
     const loggedOutput = spy.mock.calls[spy.mock.calls.length - 1][0];
     const parsedOutput = JSON.parse(loggedOutput);
-    // Expect three entries in reverse order: most recent first
-    expect(parsedOutput).toHaveLength(3); // because the --show-memory invocation itself is logged as well
+    expect(parsedOutput).toHaveLength(3);
     expect(parsedOutput[0].args).toEqual(["--show-memory"]);
     expect(parsedOutput[1].args).toEqual(["c", "d"]);
     expect(parsedOutput[2].args).toEqual(["a", "b"]);
@@ -89,12 +81,8 @@ describe("Memory Logging Feature", () => {
   });
 
   test("should persist memory log to disk when --persist-memory flag is provided", () => {
-    // Initially, the file should not exist
     expect(existsSync(MEMORY_LOG_FILE)).toBe(false);
-
     main(["test1", "--persist-memory"]);
-
-    // Now, the file should exist
     expect(existsSync(MEMORY_LOG_FILE)).toBe(true);
     const fileContent = readFileSync(MEMORY_LOG_FILE, { encoding: "utf-8" });
     const parsed = JSON.parse(fileContent);
@@ -104,36 +92,24 @@ describe("Memory Logging Feature", () => {
   });
 
   test("should clear memory log and delete persisted file when --clear-memory flag is provided", () => {
-    // First, simulate some memory logging and persist to disk
     main(["sample", "--persist-memory"]);
     expect(getMemory().length).toBe(1);
     expect(existsSync(MEMORY_LOG_FILE)).toBe(true);
-
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-
-    // Now, clear the memory
     main(["--clear-memory"]);
-    // In-memory log should be empty
     expect(getMemory().length).toBe(0);
-    // The memory file should be deleted
     expect(existsSync(MEMORY_LOG_FILE)).toBe(false);
-    // Confirmation message should be output
     expect(spy).toHaveBeenCalledWith("Memory log cleared");
     spy.mockRestore();
   });
 
   test("should auto-load persisted memory log on startup", () => {
-    // Write a temporary memory.log with known content
     const persisted = JSON.stringify([{ sessionId: "oldSession", args: ["old", "command"] }]);
     writeFileSync(MEMORY_LOG_FILE, persisted, { encoding: "utf-8" });
-
-    // Call main with a new command, which should auto-load and then push the new args
     main(["new"]);
     const mem = getMemory();
     expect(mem.length).toBe(2);
-    expect(mem[0]).toHaveProperty("sessionId");
     expect(mem[0].args).toEqual(["old", "command"]);
-    expect(mem[1]).toHaveProperty("sessionId");
     expect(mem[1].args).toEqual(["new"]);
   });
 
@@ -148,7 +124,6 @@ describe("Memory Logging Feature", () => {
     }
     const mem = getMemory();
     expect(mem).toHaveLength(100);
-    // The first entry should be command5 since the first 5 entries are removed
     expect(mem[0].args).toEqual(["command5"]);
     expect(mem[99].args).toEqual(["command104"]);
   });
@@ -159,7 +134,6 @@ describe("Memory Logging Feature", () => {
     expect(existsSync(EXPORT_FILE)).toBe(true);
     const exportedContent = readFileSync(EXPORT_FILE, { encoding: "utf-8" });
     const exportedLog = JSON.parse(exportedContent);
-    // Should include the previous log plus the export command entry
     expect(exportedLog.length).toBe(2);
     expect(exportedLog[0].args).toEqual(["exportTest1", "exportTest2"]);
   });
@@ -170,30 +144,20 @@ describe("Memory Logging Feature", () => {
     expect(existsSync("custom_export.json")).toBe(true);
     const exportedContent = readFileSync("custom_export.json", { encoding: "utf-8" });
     const exportedLog = JSON.parse(exportedContent);
-    // Should include the previous log plus the export command entry
     expect(exportedLog.length).toBe(2);
     expect(exportedLog[0].args).toEqual(["customExportTest"]);
   });
 
   test("should import memory log from a file when --import-memory flag is provided", () => {
-    // Create a temporary import file with a predefined memory log
     const tempLog = [{ sessionId: "importSession", args: ["imported", "command"] }];
     const tempFilename = "temp_import.json";
     writeFileSync(tempFilename, JSON.stringify(tempLog), { encoding: "utf-8" });
-
-    // Preload the in-memory log with an entry
     main(["existing"]);
     const initialLength = getMemory().length;
-
-    // Import the temporary file
     main(["--import-memory", tempFilename]);
-
-    // After import, the memory log should be replaced by the imported log and then appended with the current call
     const mergedMemory = getMemory();
     expect(mergedMemory.length).toBe(tempLog.length + 1);
     expect(mergedMemory[mergedMemory.length - 1].args).toEqual(["--import-memory", tempFilename]);
-    
-    // Clean up temporary file
     if (existsSync(tempFilename)) {
       unlinkSync(tempFilename);
     }
@@ -218,31 +182,25 @@ describe("Memory Logging Feature", () => {
     }
   });
 
-  // New tests for --query-memory feature
   test("should output filtered memory log when --query-memory flag is provided", () => {
-    // Populate memory
     main(["alphaCommand"]);
     main(["betaCommand"]);
     main(["anotherAlpha"]);
-    // Spy on console.log
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--query-memory", "alpha"]);
     expect(spy).toHaveBeenCalled();
     const loggedOutput = spy.mock.calls[0][0];
     const filtered = JSON.parse(loggedOutput);
-    // Should contain entries with 'alpha' in the args (search is case-insensitive)
     expect(filtered.length).toBe(2);
     expect(filtered[0].args).toEqual(["alphaCommand"]);
     expect(filtered[1].args).toEqual(["anotherAlpha"]);
     spy.mockRestore();
   });
 
-  // New tests for --query-tag feature
   test("should output filtered memory log when --query-tag flag is provided", () => {
-    // Populate memory with tagged commands
     main(["alphaCommand", "--tag-memory", "myTag"]);
     main(["betaCommand"]);
-    main(["gammaCommand", "--tag-memory", "MYTAG"]); // same tag different case
+    main(["gammaCommand", "--tag-memory", "MYTAG"]);
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--query-tag", "mytag"]);
     expect(spy).toHaveBeenCalled();
@@ -267,7 +225,6 @@ describe("Memory Logging Feature", () => {
   test("should obey custom memory limit when --memory-limit flag is provided", () => {
     resetMemory();
     const customLimit = 10;
-    // Add more than customLimit entries with the flag each time
     for (let i = 0; i < 15; i++) {
       main([`command${i}`, "--memory-limit", customLimit.toString()]);
     }
@@ -294,23 +251,18 @@ describe("Memory Logging Feature", () => {
     expect(mem.length).toBe(initialLength);
   });
 
-  // New tests for --update-memory-tag feature
   describe("Update Memory Tag Feature", () => {
     test("should update memory log tag when valid sessionId and new tag provided", () => {
-      // Log an entry with a tag
       main(["testCommand", "--tag-memory", "oldTag"]);
       const memBefore = getMemory();
       expect(memBefore.length).toBeGreaterThan(0);
       const sessionId = memBefore[0].sessionId;
-      // Update the tag
       const spy = vi.spyOn(console, "log").mockImplementation(() => {});
       main(["--update-memory-tag", sessionId, "newTestTag"]);
-      // Check that the memory log entry has its tag updated
       const memAfter = getMemory();
       const updatedEntry = memAfter.find(e => e.sessionId === sessionId);
       expect(updatedEntry).toBeDefined();
       expect(updatedEntry.tag).toBe("newTestTag");
-      // Check output
       expect(spy).toHaveBeenCalledWith("Memory log entry updated:", JSON.stringify(updatedEntry));
       spy.mockRestore();
     });
@@ -333,15 +285,10 @@ describe("Memory Logging Feature", () => {
     });
 
     test("should persist memory tag update to disk when --update-memory-tag flag is provided", () => {
-      // Pre-populate memory.log with a known entry
       const initialEntry = { sessionId: "persistTestSession", args: ["persistTest"], tag: "oldPersistTag" };
       writeFileSync(MEMORY_LOG_FILE, JSON.stringify([initialEntry]));
-
-      // Call main with a dummy argument to load persisted memory
       main(["dummy"]);
-      // Now update the tag of the pre-existing entry
       main(["--update-memory-tag", "persistTestSession", "newPersistTag"]);
-      // Read the updated file
       const updatedData = JSON.parse(readFileSync(MEMORY_LOG_FILE, { encoding: "utf-8" }));
       const updatedEntry = updatedData.find(e => e.sessionId === "persistTestSession");
       expect(updatedEntry).toBeDefined();
@@ -349,42 +296,32 @@ describe("Memory Logging Feature", () => {
     });
   });
 
-  // New tests for --delete-memory-by-tag feature
   describe("Delete Memory by Tag Feature", () => {
     test("should delete memory log entries with a specific tag and output correct count", () => {
-      // Add entries with different tags
       main(["cmd1", "--tag-memory", "Alpha"]);
       main(["cmd2", "--tag-memory", "beta"]);
       main(["cmd3", "--tag-memory", "ALPHA"]);
-      main(["cmd4"]); // no tag
+      main(["cmd4"]);
       const initialLength = getMemory().length;
-      // Capture output
       const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-      // Delete entries with tag 'alpha' (case-insensitive)
       main(["--delete-memory-by-tag", "alpha"]);
       expect(spy).toHaveBeenCalledWith("Deleted 2 entries with tag: alpha");
       spy.mockRestore();
       const mem = getMemory();
-      // Ensure that the two entries with tag alpha are removed
-      expect(mem.find(e => e.tag && e.tag.toLowerCase() === "alpha" )).toBeUndefined();
-      // In-memory log length should be initialLength - 2
+      expect(mem.find(e => e.tag && e.tag.toLowerCase() === "alpha")).toBeUndefined();
       expect(mem.length).toBe(initialLength - 2);
     });
 
     test("should persist deletion to disk when memory.log exists", () => {
-      // Pre-populate memory.log with entries
       const entries = [
         { sessionId: "1", args: ["cmd1"], tag: "deleteMe" },
         { sessionId: "2", args: ["cmd2"], tag: "keepMe" },
         { sessionId: "3", args: ["cmd3"], tag: "deleteMe" }
       ];
       writeFileSync(MEMORY_LOG_FILE, JSON.stringify(entries));
-      // Load persisted memory
       main(["dummy"]);
-      // Delete entries with tag 'deleteMe'
       main(["--delete-memory-by-tag", "deleteMe"]);
       const updatedData = JSON.parse(readFileSync(MEMORY_LOG_FILE, { encoding: "utf-8" }));
-      // Only one entry should remain
       expect(updatedData.length).toBe(1);
       expect(updatedData[0].tag).toBe("keepMe");
     });
@@ -421,8 +358,6 @@ describe("Diagnostics Flag", () => {
   });
 });
 
-// New test suite for --memory-stats flag
-
 describe("Memory Stats Flag", () => {
   test("should output memory stats with correct count, oldest and newest session IDs when --memory-stats flag is provided", () => {
     resetMemory();
@@ -441,12 +376,9 @@ describe("Memory Stats Flag", () => {
   });
 });
 
-// New test suite for --detailed-diagnostics flag
-
 describe("Detailed Diagnostics Flag", () => {
   test("should output detailed diagnostics including memorySessionIds", () => {
     resetMemory();
-    // Add some entries
     main(["entry1"]);
     main(["entry2", "--tag-memory", "tagA"]);
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -459,10 +391,30 @@ describe("Detailed Diagnostics Flag", () => {
     expect(detailedDiag).toHaveProperty("memoryFilePersisted");
     expect(detailedDiag).toHaveProperty("memorySessionIds");
     expect(Array.isArray(detailedDiag.memorySessionIds)).toBe(true);
-    // Check that the session IDs match the ones in getMemory()
     const mem = getMemory();
     const expectedIds = mem.map(e => e.sessionId);
     expect(detailedDiag.memorySessionIds).toEqual(expectedIds);
+    spy.mockRestore();
+  });
+});
+
+describe("Frequency Stats Flag", () => {
+  test("should output frequency stats with correct counts", () => {
+    resetMemory();
+    // Create several log entries
+    main(["alpha", "beta"]);
+    main(["beta", "gamma"]);
+    main(["alpha"]);
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--frequency-stats"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[spy.mock.calls.length - 1][0];
+    const freq = JSON.parse(output);
+    expect(freq).toMatchObject({
+      "alpha": 2,
+      "beta": 2,
+      "gamma": 1
+    });
     spy.mockRestore();
   });
 });

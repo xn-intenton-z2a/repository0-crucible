@@ -163,7 +163,19 @@ export function main(args = []) {
     return;
   }
 
-  // Handle query-memory functionality
+  // Handle --frequency-stats flag for computing frequency of command arguments
+  if (args.includes("--frequency-stats")) {
+    const frequency = {};
+    for (const entry of memoryLog) {
+      for (const token of entry.args) {
+        frequency[token] = (frequency[token] || 0) + 1;
+      }
+    }
+    console.log(JSON.stringify(frequency));
+    return;
+  }
+
+  // Handle --query-memory functionality
   if (args.includes("--query-memory")) {
     const index = args.indexOf("--query-memory");
     if (args.length <= index + 1 || args[index + 1].startsWith("--")) {
