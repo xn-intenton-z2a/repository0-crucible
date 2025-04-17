@@ -177,6 +177,39 @@ export function main(args = []) {
     return;
   }
 
+  // Handle --delete-memory-range flag for removing entries by date range
+  if (args.includes("--delete-memory-range")) {
+    const index = args.indexOf("--delete-memory-range");
+    if (args.length <= index + 2 || args[index + 1].startsWith("--") || args[index + 2].startsWith("--")) {
+      console.error("Invalid usage: --delete-memory-range requires two ISO date arguments: startDate and endDate");
+      return;
+    }
+    const startDateStr = args[index + 1];
+    const endDateStr = args[index + 2];
+    const startDate = new Date(startDateStr);
+    const endDate = new Date(endDateStr);
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      console.error("Invalid date format provided to --delete-memory-range flag. Dates must be valid ISO strings.");
+      return;
+    }
+    const originalLength = memoryLog.length;
+    // Remove entries whose timestamp falls between startDate and endDate (inclusive)
+    memoryLog = memoryLog.filter(entry => {
+      const entryDate = new Date(entry.timestamp);
+      return entryDate < startDate || entryDate > endDate;
+    });
+    const deletedCount = originalLength - memoryLog.length;
+    if (fs.existsSync("memory.log")) {
+      try {
+        fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+      } catch (error) {
+        console.error("Error writing memory.log after delete:", error);
+      }
+    }
+    console.log(`Deleted ${deletedCount} entries from memory log between ${startDateStr} and ${endDateStr}.`);
+    return;
+  }
+
   // Handle --detailed-diagnostics flag for enhanced diagnostics
   if (args.includes("--detailed-diagnostics")) {
     const detailedDiag = {

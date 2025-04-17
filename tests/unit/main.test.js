@@ -423,13 +423,11 @@ describe("Memory Logging Feature", () => {
       main(["cmd1", "--annotate-memory", "review"]);
       main(["cmd2", "--annotate-memory", "other"]);
       main(["cmd3", "--annotate-memory", "review"]);
-      const initialCount = getMemory().length;
       const spy = vi.spyOn(console, "log").mockImplementation(() => {});
       main(["--delete-memory-by-annotation", "review"]);
       const output = spy.mock.calls[spy.mock.calls.length - 1][0];
       expect(output).toBe("Deleted 2 entries with annotation: review");
       const mem = getMemory();
-      // Only the entry with annotation "other" should remain along with any other non-annotated entries
       expect(mem.some(e => e.annotation && e.annotation.toLowerCase() === "review")).toBe(false);
       spy.mockRestore();
     });
@@ -454,6 +452,36 @@ describe("Memory Logging Feature", () => {
       expect(spy).toHaveBeenCalledWith("Invalid usage: --delete-memory-by-annotation requires a valid annotation value");
       const mem = getMemory();
       expect(mem.length).toBe(initialCount);
+      spy.mockRestore();
+    });
+  });
+
+  describe("Delete Memory by Date Range Feature", () => {
+    test("should delete entries with timestamps within the specified date range", () => {
+      resetMemory();
+      // Manually add entries with fixed timestamps
+      const entries = [
+        { sessionId: "s1", args: ["cmd1"], timestamp: "2025-04-17T10:00:00.000Z" },
+        { sessionId: "s2", args: ["cmd2"], timestamp: "2025-04-17T12:00:00.000Z" },
+        { sessionId: "s3", args: ["cmd3"], timestamp: "2025-04-17T15:00:00.000Z" }
+      ];
+      // Directly set the in-memory log
+      const mem = getMemory();
+      entries.forEach(e => mem.push(e));
+      // Also persist the memory log
+      writeFileSync(MEMORY_LOG_FILE, JSON.stringify(getMemory()));
+      
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+      // Delete entries between 10:00 and 13:00, should remove s1 and s2
+      main(["--delete-memory-range", "2025-04-17T10:00:00.000Z", "2025-04-17T13:00:00.000Z"]);
+      expect(spy).toHaveBeenCalledWith("Deleted 2 entries from memory log between 2025-04-17T10:00:00.000Z and 2025-04-17T13:00:00.000Z.");
+      const updatedMem = getMemory();
+      expect(updatedMem).toHaveLength(1);
+      expect(updatedMem[0].sessionId).toBe("s3");
+      // Check persisted file
+      const persisted = JSON.parse(readFileSync(MEMORY_LOG_FILE, { encoding: "utf-8" }));
+      expect(persisted).toHaveLength(1);
+      expect(persisted[0].sessionId).toBe("s3");
       spy.mockRestore();
     });
   });
