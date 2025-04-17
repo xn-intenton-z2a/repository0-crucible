@@ -228,3 +228,24 @@ describe("Memory Logging Feature", () => {
     expect(mem.length).toBeLessThanOrEqual(customLimit);
   });
 });
+
+describe("Diagnostics Flag", () => {
+  beforeEach(() => {
+    resetMemory();
+    if (existsSync(MEMORY_LOG_FILE)) {
+      unlinkSync(MEMORY_LOG_FILE);
+    }
+  });
+
+  test("should output diagnostics information when --diagnostics flag is provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--diagnostics"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    const diag = JSON.parse(output);
+    expect(diag).toHaveProperty("memoryLimit");
+    expect(diag).toHaveProperty("memoryLogCount");
+    expect(diag).toHaveProperty("memoryFilePersisted");
+    spy.mockRestore();
+  });
+});
