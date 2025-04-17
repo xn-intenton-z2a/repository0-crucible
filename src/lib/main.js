@@ -228,6 +228,29 @@ export function main(args = []) {
     return;
   }
 
+  // Handle --query-memory-range flag for filtering memory log entries by a date range
+  if (args.includes("--query-memory-range")) {
+    const index = args.indexOf("--query-memory-range");
+    if (args.length <= index + 2 || args[index + 1].startsWith("--") || args[index + 2].startsWith("--")) {
+      console.error("Invalid usage: --query-memory-range requires two arguments: start date and end date in ISO format");
+      return;
+    }
+    const startDateStr = args[index + 1];
+    const endDateStr = args[index + 2];
+    const startDate = new Date(startDateStr);
+    const endDate = new Date(endDateStr);
+    if (isNaN(startDate.getTime()) || isNaN(endDate.getTime())) {
+      console.error("Invalid date format: Start and end dates must be valid ISO date strings");
+      return;
+    }
+    const filtered = memoryLog.filter(entry => {
+      const entryDate = new Date(entry.timestamp);
+      return entryDate >= startDate && entryDate <= endDate;
+    });
+    console.log(JSON.stringify(filtered));
+    return;
+  }
+
   // If '--clear-memory' flag is provided, clear the in-memory and persisted memory log
   if (args.includes("--clear-memory")) {
     resetMemory();

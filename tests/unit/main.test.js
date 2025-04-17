@@ -23,12 +23,14 @@ describe("Main Module Import", () => {
   });
 });
 
+
 describe("Main Output", () => {
   test("should terminate without error", () => {
     process.argv = ["node", "src/lib/main.js"];
     main();
   });
 });
+
 
 describe("Memory Logging Feature", () => {
   beforeEach(() => {
@@ -484,5 +486,43 @@ describe("Annotate Memory Feature", () => {
     spy.mockRestore();
     const mem = getMemory();
     expect(mem.length).toBe(initialLength);
+  });
+});
+
+// New tests for --query-memory-range flag
+describe("Date Range Query Feature", () => {
+  test("should filter memory entries within specified date range", () => {
+    resetMemory();
+    // Add first entry and set a specific timestamp
+    main(["entry1"]);
+    let mem = getMemory();
+    mem[0].timestamp = "2025-04-17T05:00:00.000Z";
+    // Add second entry and set a different timestamp
+    main(["entry2"]);
+    mem = getMemory();
+    mem[1].timestamp = "2025-04-18T10:00:00.000Z";
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    // Query range that includes only the first entry
+    main(["--query-memory-range", "2025-04-17T00:00:00.000Z", "2025-04-17T23:59:59.999Z"]);
+    expect(spy).toHaveBeenCalled();
+    const output = spy.mock.calls[0][0];
+    const filtered = JSON.parse(output);
+    expect(filtered).toHaveLength(1);
+    expect(filtered[0].args).toEqual(["entry1"]);
+    spy.mockRestore();
+  });
+
+  test("should error when date range arguments are missing", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    main(["--query-memory-range", "2025-04-17T00:00:00.000Z"]);
+    expect(spy).toHaveBeenCalledWith("Invalid usage: --query-memory-range requires two arguments: start date and end date in ISO format");
+    spy.mockRestore();
+  });
+
+  test("should error when provided dates are invalid", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    main(["--query-memory-range", "invalid-date", "2025-04-18T00:00:00.000Z"]);
+    expect(spy).toHaveBeenCalledWith("Invalid date format: Start and end dates must be valid ISO date strings");
+    spy.mockRestore();
   });
 });
