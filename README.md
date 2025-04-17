@@ -38,6 +38,7 @@ npm install repository0-crucible
 - Show Memory in Reverse Order: When using the `--show-memory` flag, the memory log is now displayed in reverse chronological order (newest entries first).
 - Diagnostics: A new `--diagnostics` flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.
 - Tagging: With the new `--tag-memory <tag>` flag, users can attach a custom tag to a memory log entry. This allows for enhanced categorization and traceability of logged commands.
+- Memory Stats: The new `--memory-stats` flag outputs diagnostic statistics about the in-memory log, including the total count of entries, the session ID of the oldest entry, and the session ID of the newest entry.
 
 ## Usage
 
@@ -106,6 +107,12 @@ node src/lib/main.js --help
   node src/lib/main.js --diagnostics
   ```
   This command outputs diagnostic information in JSON format, including the current memory log size, the memory limit, and whether a persisted memory file exists.
+
+- **Memory Stats:**
+  ```bash
+  node src/lib/main.js --memory-stats
+  ```
+  This command outputs JSON diagnostics about the memory log, including the total count of log entries, the session ID of the oldest entry, and the session ID of the newest entry.
 
 ## Incremental Changes Plan
 
