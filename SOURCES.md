@@ -1,6 +1,6 @@
 # Vitest Documentation
 ## https://vitest.dev
-Vitest is a fast unit testing framework built for Vite and Node.js. It offers efficient test execution, built-in coverage reporting, and a modern testing experience. This source is frequently updated and is considered authoritative for projects using modern testing approaches in JavaScript/TypeScript. Last updated frequently. 
+Vitest is a fast unit testing framework built for Vite and Node.js. It offers efficient test execution, built-in coverage reporting, and a modern testing experience. This source is frequently updated and is considered authoritative for projects using modern testing approaches in JavaScript/TypeScript. Last updated frequently.
 ## MIT License
 
 # Prettier Documentation
@@ -37,3 +37,18 @@ This guide from MDN provides a comprehensive overview of ECMAScript Modules (ESM
 ## https://platform.openai.com/docs/guides/gpt-best-practices
 This resource outlines effective strategies for prompting GPT-based models to elicit clear, contextual responses. It provides insights into constructing queries and understanding model behaviors, which is especially relevant for the help-seeking and self-improvement features of autonomous agents.
 ## N/A
+
+# GitHub REST API Documentation
+## https://docs.github.com/en/rest
+This documentation provides comprehensive details on how to interact with the GitHub REST API. It covers endpoints, authentication methods, rate limits, and best practices for integrating GitHub functionalities into your projects. Being an official GitHub source, it is a highly authoritative and frequently updated resource.
+## N/A
+
+# GitHub Actions Documentation
+## https://docs.github.com/en/actions
+The GitHub Actions documentation explains how to set up, configure, and use GitHub Actions to automate software workflows. It covers basic usage, advanced customizations, and integration with other GitHub features, making it an essential guide for managing CI/CD pipelines.
+## N/A
+
+# OpenAI Cookbook
+## https://github.com/openai/openai-cookbook
+The OpenAI Cookbook is a repository that contains a collection of practical examples and guides for using the OpenAI API effectively. It demonstrates solution patterns, code snippets, and troubleshooting advice, providing a hands-on approach for developers working with AI-powered applications.
+## MIT License
