@@ -90,6 +90,11 @@ npm install repository0-crucible
   node src/lib/main.js --merge-persist
   ```
 - Frequency Statistics: The new `--frequency-stats` flag computes and outputs a JSON object that shows the frequency count of each command argument from the in-memory log. This provides an analytical view of how often each argument appears.
+- **Memory Expiration:** The new `--expire-memory <minutes>` flag automatically removes memory log entries older than the specified number of minutes. For example, running:
+  ```bash
+  node src/lib/main.js --expire-memory 60
+  ```
+  will purge any memory log entries older than 60 minutes.
 
 ## Usage
 
@@ -225,6 +230,12 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --frequency-stats
   ```
+
+- **Memory Expiration:**
+  ```bash
+  node src/lib/main.js --expire-memory 60
+  ```
+  This command will remove any memory log entries older than 60 minutes.
 
 ## Incremental Changes Plan
 

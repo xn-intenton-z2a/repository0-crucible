@@ -465,10 +465,8 @@ describe("Memory Logging Feature", () => {
         { sessionId: "s2", args: ["cmd2"], timestamp: "2025-04-17T12:00:00.000Z" },
         { sessionId: "s3", args: ["cmd3"], timestamp: "2025-04-17T15:00:00.000Z" }
       ];
-      // Directly set the in-memory log
       const mem = getMemory();
       entries.forEach(e => mem.push(e));
-      // Also persist the memory log
       writeFileSync(MEMORY_LOG_FILE, JSON.stringify(getMemory()));
       
       const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -478,10 +476,73 @@ describe("Memory Logging Feature", () => {
       const updatedMem = getMemory();
       expect(updatedMem).toHaveLength(1);
       expect(updatedMem[0].sessionId).toBe("s3");
-      // Check persisted file
       const persisted = JSON.parse(readFileSync(MEMORY_LOG_FILE, { encoding: "utf-8" }));
       expect(persisted).toHaveLength(1);
       expect(persisted[0].sessionId).toBe("s3");
+      spy.mockRestore();
+    });
+  });
+
+  describe("Memory Expiration Feature", () => {
+    beforeEach(() => {
+      resetMemory();
+      if (existsSync(MEMORY_LOG_FILE)) {
+        unlinkSync(MEMORY_LOG_FILE);
+      }
+    });
+
+    test("should expire entries older than specified minutes", () => {
+      // Create two entries: one older than 60 minutes, one newer
+      const oldTimestamp = new Date(Date.now() - 70 * 60 * 1000).toISOString(); // 70 minutes ago
+      const newTimestamp = new Date(Date.now() - 30 * 60 * 1000).toISOString(); // 30 minutes ago
+      const oldEntry = { sessionId: "oldEntry", args: ["old"], timestamp: oldTimestamp };
+      const newEntry = { sessionId: "newEntry", args: ["new"], timestamp: newTimestamp };
+      getMemory().push(oldEntry, newEntry);
+      writeFileSync(MEMORY_LOG_FILE, JSON.stringify(getMemory()));
+
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+      main(["--expire-memory", "60"]);
+      const memAfter = getMemory();
+      expect(memAfter).toHaveLength(1);
+      expect(memAfter[0].sessionId).toBe("newEntry");
+      const output = spy.mock.calls[0][0];
+      expect(output).toBe("Expired 1 entries older than 60 minutes.");
+      spy.mockRestore();
+    });
+
+    test("should not expire any entries if all are within cutoff", () => {
+      resetMemory();
+      const newTimestamp1 = new Date(Date.now() - 10 * 60 * 1000).toISOString();
+      const newTimestamp2 = new Date(Date.now() - 5 * 60 * 1000).toISOString();
+      const entry1 = { sessionId: "entry1", args: ["test"], timestamp: newTimestamp1 };
+      const entry2 = { sessionId: "entry2", args: ["test"], timestamp: newTimestamp2 };
+      getMemory().push(entry1, entry2);
+      writeFileSync(MEMORY_LOG_FILE, JSON.stringify(getMemory()));
+
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+      main(["--expire-memory", "60"]);
+      const memAfter = getMemory();
+      expect(memAfter).toHaveLength(2);
+      const output = spy.mock.calls[0][0];
+      expect(output).toBe("Expired 0 entries older than 60 minutes.");
+      spy.mockRestore();
+    });
+
+    test("should handle invalid usage when no minutes provided", () => {
+      const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const initialLength = getMemory().length;
+      main(["--expire-memory"]);
+      expect(spy).toHaveBeenCalledWith("Invalid usage: --expire-memory requires a number of minutes");
+      expect(getMemory().length).toBe(initialLength);
+      spy.mockRestore();
+    });
+
+    test("should handle invalid minutes value", () => {
+      const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const initialLength = getMemory().length;
+      main(["--expire-memory", "-5"]);
+      expect(spy).toHaveBeenCalledWith("Invalid minutes value provided. It must be a positive integer.");
+      expect(getMemory().length).toBe(initialLength);
       spy.mockRestore();
     });
   });
