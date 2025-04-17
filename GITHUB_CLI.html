@@ -24,52 +24,357 @@
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="github_cli" href="#github_cli"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GITHUB_CLI</h1>
 <h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
-<p class="md-github">The crawl reveals an extensive manual structured around GitHub CLI commands. It highlights core commands like alias, delete, and auth, providing developers with a toolkit to efficiently manage GitHub operations directly from the terminal.</p>
+<p class="md-github">The GitHub CLI documentation details commands for installation, configuration, core functions (issues, PRs, repositories), GitHub Enterprise authentication, API interactions, alias management, and attestation procedures. It includes command-line examples with exact flags such as --method, --header, -f/--raw-field, and provides best practices for verbose output and alias clobbering for troubleshooting.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
-<p class="md-github">Summary: The document encapsulates core GitHub CLI functionalities such as command operations for aliasing, deletion, importing, and authentication, promoting enhanced developer productivity.</p>
 <p class="md-github">Table of Contents:</p>
 <ol class="md-github">
-<li class="md-github">Introduction</li>
-<li class="md-github">Command Overview</li>
-<li class="md-github">Key Functionalities</li>
-<li class="md-github">Usage Guidelines</li>
+<li class="md-github">Installation
+<ul class="md-github">
+<li class="md-github">Command: <code class="md-github">brew install gh</code> for macOS; Download links for Windows and Linux.</li>
+</ul>
+</li>
+<li class="md-github">Configuration
+<ul class="md-github">
+<li class="md-github">Authentication: <code class="md-github">gh auth login</code> or use GITHUB_TOKEN</li>
+<li class="md-github">Editor setting: <code class="md-github">gh config set editor &lt;editor&gt;</code></li>
+<li class="md-github">Alias declaration: <code class="md-github">gh alias set &lt;alias&gt; &lt;expansion&gt;</code></li>
+</ul>
+</li>
+<li class="md-github">GitHub Enterprise
+<ul class="md-github">
+<li class="md-github">Command: <code class="md-github">gh auth login --hostname &lt;hostname&gt;</code>, set GH_HOST and GH_ENTERPRISE_TOKEN</li>
+</ul>
+</li>
+<li class="md-github">Core Commands
+<ul class="md-github">
+<li class="md-github">Issues: <code class="md-github">gh issue list</code>, <code class="md-github">gh issue create</code></li>
+<li class="md-github">Pull Requests: <code class="md-github">gh pr status</code>, <code class="md-github">gh pr checkout &lt;id&gt;</code>, <code class="md-github">gh pr create</code></li>
+<li class="md-github">Releases: <code class="md-github">gh release create &lt;tag&gt;</code></li>
+<li class="md-github">Repository: <code class="md-github">gh repo view</code>, <code class="md-github">gh repo clone &lt;repo&gt;</code></li>
+</ul>
+</li>
+<li class="md-github">Additional Commands
+<ul class="md-github">
+<li class="md-github">Alias management: <code class="md-github">gh alias list</code>, <code class="md-github">gh alias set</code>, <code class="md-github">gh alias delete</code>, <code class="md-github">gh alias import</code></li>
+<li class="md-github">API command: <code class="md-github">gh api &lt;endpoint&gt; [flags]</code> with detailed flags such as <code class="md-github">-f</code>, <code class="md-github">-F</code>, <code class="md-github">--method</code>, <code class="md-github">--paginate</code>, <code class="md-github">--template</code></li>
+</ul>
+</li>
+<li class="md-github">Attestation Commands (Preview)
+<ul class="md-github">
+<li class="md-github">Download: <code class="md-github">gh attestation download [file-path|oci://...]</code></li>
+<li class="md-github">Trusted Root: <code class="md-github">gh attestation trusted-root [--tuf-url &lt;url&gt; --tuf-root &lt;file-path&gt;] [--verify-only]</code></li>
+<li class="md-github">Verify: <code class="md-github">gh attestation verify [file-path|oci://...] [--owner|--repo]</code></li>
+</ul>
+</li>
 </ol>
-<p class="md-github">Introduction: The source is a comprehensive manual outlining the GitHub CLI commands and their usage. The introduction sets the stage by emphasizing ease of navigation and command structure.</p>
-<p class="md-github">Command Overview: An extensive list of commands is provided, including alias, delete, import, list, set, and authentication commands. Each command is designed to streamline user tasks.</p>
-<p class="md-github">Key Functionalities: Detailed exploration of individual commands highlights their roles in managing repositories, enhancing automation, and reinforcing security protocols.</p>
-<p class="md-github">Usage Guidelines: Best practices are outlined to encourage efficient use, with an emphasis on clarity and error handling for robust development workflows.</p>
+<p class="md-github">Each section includes exact command syntax, flags, environment variable requirements, and example outputs (e.g., branch switching details in <code class="md-github">gh pr checkout</code>).</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Technical Specifications:</p>
+<ul class="md-github">
+<li class="md-github">Installation: Use system-specific commands (brew, download links) with no additional parameters required.</li>
+<li class="md-github">Authentication: Requires either <code class="md-github">gh auth login</code> or environment variable GITHUB_TOKEN. For GitHub Enterprise, must use <code class="md-github">--hostname</code> flag and set GH_HOST/ GH_ENTERPRISE_TOKEN.</li>
+<li class="md-github">Command Flags:
+<ul class="md-github">
+<li class="md-github">For API commands: <code class="md-github">--method</code> (string, default GET) controls the HTTP method. Use <code class="md-github">-f/--raw-field</code> for static string parameters.</li>
+<li class="md-github">For alias commands: <code class="md-github">--clobber</code> to overwrite existing aliases; <code class="md-github">--shell</code> to indicate shell command processing.</li>
+<li class="md-github">For attestation commands:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">--digest-alg</code>: string, defaults to &quot;sha256&quot;.</li>
+<li class="md-github"><code class="md-github">--limit</code>: integer, default 30.</li>
+<li class="md-github"><code class="md-github">--hostname</code> for specifying a custom host.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="md-github">Troubleshooting Steps:
+<ol class="md-github">
+<li class="md-github">Use <code class="md-github">--verbose</code> flag with API commands to get detailed HTTP request/response.</li>
+<li class="md-github">Check environment variables if authentication fails.</li>
+<li class="md-github">Use <code class="md-github">--clobber</code> when re-importing alias definitions.</li>
+<li class="md-github">For pagination issues, combine <code class="md-github">--paginate</code> and <code class="md-github">--slurp</code>.</li>
+</ol>
+</li>
+<li class="md-github">Best Practices:
+<ul class="md-github">
+<li class="md-github">Always check the output of <code class="md-github">gh alias list</code> after setting aliases.</li>
+<li class="md-github">Validate API responses using the <code class="md-github">--jq</code> flag with a proper jq query.</li>
+<li class="md-github">In shell scripts, use the explicit commands (e.g., <code class="md-github">gh pr checkout &lt;id&gt;</code>) to avoid context issues.</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specifications &amp; Command Details:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">gh auth</p>
+<ul class="md-github">
+<li class="md-github">Signature: <code class="md-github">gh auth login [flags]</code></li>
+<li class="md-github">Flags: --hostname <string></li>
+<li class="md-github">Return: Initiates authentication process</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">gh config</p>
+<ul class="md-github">
+<li class="md-github">Set editor: <code class="md-github">gh config set editor &lt;editor&gt;</code></li>
+<li class="md-github">No return value; sets configuration</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">gh alias set</p>
+<ul class="md-github">
+<li class="md-github">Signature: <code class="md-github">gh alias set &lt;alias&gt; &lt;expansion&gt; [flags]</code></li>
+<li class="md-github">Options:
+--clobber : Overwrite existing alias
+--shell (-s): Treat expansion as shell command</li>
+<li class="md-github">Example:
+<h1 class="md-github"><a class="md-github__anchor" name="set-alias-for-pull-request-view" href="#set-alias-for-pull-request-view"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Set alias for pull request view</h1>
+$ gh alias set pv 'pr view'
+$ gh pv -w 123  # Executes 'gh pr view -w 123'</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">gh alias delete</p>
+<ul class="md-github">
+<li class="md-github">Signature: <code class="md-github">gh alias delete {&lt;alias&gt;|--all} [flags]</code></li>
+<li class="md-github">Option: --all deletes all aliases</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">gh api</p>
+<ul class="md-github">
+<li class="md-github">Signature: <code class="md-github">gh api &lt;endpoint&gt; [flags]</code></li>
+<li class="md-github">Parameters:
+<ul class="md-github">
+<li class="md-github"><endpoint>: e.g., repos/{owner}/{repo}/releases</li>
+<li class="md-github">Flags:
+--method <string> (Default: GET)
+-f/--raw-field &lt;key=value&gt;: Add static string parameter
+-F/--field &lt;key=value&gt;: Add typed parameter with auto type-conversion
+--header <a href="key:value" class="md-github">key:value</a>: Add HTTP header
+--paginate: Retrieve paginated results
+--input <file>: Body read from file or stdin
+--jq <string>: Filter response using jq
+--template <string>: Format output using Go templates
+--verbose: Include full HTTP request/response details</li>
+</ul>
+</li>
+<li class="md-github">Example:
+<h1 class="md-github"><a class="md-github__anchor" name="list-releases" href="#list-releases"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>List releases</h1>
+$ gh api repos/{owner}/{repo}/releases</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">gh attestation download</p>
+<ul class="md-github">
+<li class="md-github">Signature: <code class="md-github">gh attestation download [&lt;file-path&gt; | oci://&lt;image-uri&gt;] [--owner | --repo] [flags]</code></li>
+<li class="md-github">Options:
+-d, --digest-alg <string> (default &quot;sha256&quot;)
+-L, --limit <int> (default 30)
+-o, --owner <string>
+-R, --repo <string> (Format: <owner>/<repo>)</li>
+<li class="md-github">Example:
+$ gh attestation download example.bin -R github/example</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">gh attestation trusted-root</p>
+<ul class="md-github">
+<li class="md-github">Signature: <code class="md-github">gh attestation trusted-root [--tuf-url &lt;url&gt; --tuf-root &lt;file-path&gt;] [--verify-only] [flags]</code></li>
+<li class="md-github">Use: Outputs trusted_root.jsonl contents for offline verification</li>
+<li class="md-github">Example:
+$ gh attestation trusted-root</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">gh attestation verify</p>
+<ul class="md-github">
+<li class="md-github">Signature: <code class="md-github">gh attestation verify [&lt;file-path&gt; | oci://&lt;image-uri&gt;] [--owner | --repo] [flags]</code></li>
+<li class="md-github">Validates the artifact's attestations against certificate details and workflow identity</li>
+<li class="md-github">Example:
+$ gh attestation verify example.bin --owner github</li>
+</ul>
+</li>
+</ol>
+<p class="md-github">Troubleshooting:</p>
+<ul class="md-github">
+<li class="md-github">For authentication errors, confirm that environment variables (GITHUB_TOKEN, GH_HOST) are properly exported.</li>
+<li class="md-github">In API command failures, run with <code class="md-github">--verbose</code> to inspect header and payload details.</li>
+<li class="md-github">When aliases do not work as expected, run <code class="md-github">gh alias list</code> to review definitions and use <code class="md-github">--clobber</code> with <code class="md-github">gh alias set</code> to update.</li>
+<li class="md-github">Use shell redirection and <code class="md-github">--input</code> flag for reading complex JSON payloads when posting data.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="full-code-example-for-setting-an-alias" href="#full-code-example-for-setting-an-alias"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Full Code Example for Setting an Alias:</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="on-bash-linuxmac" href="#on-bash-linuxmac"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>On Bash (Linux/Mac):</h1>
+<p class="md-github">$ gh alias set pv 'pr view'</p>
+<h1 class="md-github"><a class="md-github__anchor" name="test-the-alias" href="#test-the-alias"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Test the alias:</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="-gh-pv--w-123" href="#-gh-pv--w-123"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>$ gh pv -w 123</h2>
+<p class="md-github">These detailed API specifications and command samples provide a complete technical reference for developers using GitHub CLI.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
 <p class="md-github">GitHub CLI Documentation
-https://cli.github.com/manual</p>
+https://cli.github.com/manual/</p>
 <h2 class="md-github"><a class="md-github__anchor" name="digest-of-github_cli" href="#digest-of-github_cli"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of GITHUB_CLI</h2>
-<h1 class="md-github"><a class="md-github__anchor" name="github-cli-documentation-digest" href="#github-cli-documentation-digest"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GitHub CLI Documentation Digest</h1>
-<p class="md-github">This document presents a concise digest of the GitHub CLI manual content, originally sourced from the GitHub CLI Documentation (Entry 7) available at <a href="https://cli.github.com/manual" class="md-github">GitHub CLI Manual</a>. The content, predominantly showcasing command categories such as alias, delete, import, and other management commands, underlines the platform’s commitment to developer efficiency and streamlined workflow management.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="original-content-snapshot" href="#original-content-snapshot"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Content Snapshot</h2>
-<blockquote class="md-github">
-<p class="md-github">&quot;Skip to content... CLI Manual Release notes... Getting started... gh... alias, delete, import, list, set, api, attestation, download, trusted-root, verify, auth, login, logout...&quot;</p>
-</blockquote>
-<p class="md-github">Content retrieved on: 2023-10-18</p>
-<p class="md-github">This curated digest confirms the source’s authority as it stands as an essential reference for both newcomers and seasoned engineers integrating GitHub’s CLI into their development lifecycle. It provides clarity on command functionalities, encouraging both experimentation and structured utilization. Journalistic scrutiny reaffirms that while the documentation is comprehensive, further elaborations on edge-case scenarios would enhance its teaching value.</p>
-<p class="md-github"><strong class="md-github">Glossary</strong>:</p>
+<h1 class="md-github"><a class="md-github__anchor" name="github-cli-manual-details-retrieved-2023-10-06" href="#github-cli-manual-details-retrieved-2023-10-06"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GitHub CLI Manual Details (Retrieved: 2023-10-06)</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
 <ul class="md-github">
-<li class="md-github">CLI: Command Line Interface, a text-based interface to interact with software.</li>
-<li class="md-github">Alias: Alternative command shorthand designed for efficiency.</li>
+<li class="md-github">Use Homebrew on Mac: <code class="md-github">brew install gh</code></li>
+<li class="md-github">Download executable for Mac or Windows</li>
+<li class="md-github">Install for Linux via package repository</li>
+<li class="md-github">Refer to the README for full installation instructions</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="configuration" href="#configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration</h2>
+<ul class="md-github">
+<li class="md-github">Authenticate by running: <code class="md-github">gh auth login</code>
+<ul class="md-github">
+<li class="md-github">Alternatively, set environment variable: <code class="md-github">GITHUB_TOKEN</code></li>
+</ul>
+</li>
+<li class="md-github">Set the preferred editor: <code class="md-github">gh config set editor &lt;editor&gt;</code></li>
+<li class="md-github">Declare command aliases: <code class="md-github">gh alias set &lt;alias&gt; &lt;expansion&gt;</code></li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="github-enterprise-configuration" href="#github-enterprise-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GitHub Enterprise Configuration</h2>
+<ul class="md-github">
+<li class="md-github">Authenticate with a GitHub Enterprise server:
+<ul class="md-github">
+<li class="md-github">Command: <code class="md-github">gh auth login --hostname &lt;hostname&gt;</code></li>
+</ul>
+</li>
+<li class="md-github">Set default host: <code class="md-github">export GH_HOST=&lt;hostname&gt;</code></li>
+<li class="md-github">For scripting/automation, set: <code class="md-github">export GH_ENTERPRISE_TOKEN=&lt;access-token&gt;</code></li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="core-commands" href="#core-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Core Commands</h2>
+<ul class="md-github">
+<li class="md-github">Examples:
+<ul class="md-github">
+<li class="md-github">List issues: <code class="md-github">gh issue list</code></li>
+<li class="md-github">View repo: <code class="md-github">gh repo view</code></li>
+<li class="md-github">Checkout a pull request: <code class="md-github">gh pr checkout &lt;id&gt;</code></li>
+<li class="md-github">Create a PR: <code class="md-github">gh pr create</code></li>
+<li class="md-github">Check PR status: <code class="md-github">gh pr status</code></li>
+<li class="md-github">Create a release: <code class="md-github">gh release create &lt;tag&gt;</code></li>
+<li class="md-github">Set alias: <code class="md-github">gh alias set bugs 'issue list --label=&quot;bugs&quot;'</code></li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="github-actions-commands" href="#github-actions-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GitHub Actions Commands</h2>
+<ul class="md-github">
+<li class="md-github">Cache command: <code class="md-github">gh cache</code></li>
+<li class="md-github">Run command: <code class="md-github">gh run</code></li>
+<li class="md-github">Workflow command: <code class="md-github">gh workflow</code></li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="additional-commands" href="#additional-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Additional Commands</h2>
+<ul class="md-github">
+<li class="md-github">Aliases, API, Codespace, Gist, and more:
+<ul class="md-github">
+<li class="md-github">For alias management:
+<ul class="md-github">
+<li class="md-github">List: <code class="md-github">gh alias list</code> or <code class="md-github">gh alias ls</code></li>
+<li class="md-github">Delete: <code class="md-github">gh alias delete {&lt;alias&gt;|--all}</code></li>
+<li class="md-github">Import: <code class="md-github">gh alias import [&lt;filename&gt;|-] [--clobber]</code></li>
+<li class="md-github">Set: <code class="md-github">gh alias set &lt;alias&gt; &lt;expansion&gt; [--shell] [--clobber]</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="options--flags" href="#options--flags"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Options &amp; Flags</h2>
+<ul class="md-github">
+<li class="md-github">Global flag: <code class="md-github">--version</code> displays current version</li>
+<li class="md-github">In commands like <code class="md-github">gh api</code>, various options include:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">--method &lt;string&gt;</code> (default &quot;GET&quot;)</li>
+<li class="md-github"><code class="md-github">-f/--raw-field &lt;key=value&gt;</code> for string parameters</li>
+<li class="md-github"><code class="md-github">-F/--field &lt;key=value&gt;</code> for typed parameters (converts true, false, null, integers)</li>
+<li class="md-github"><code class="md-github">--header &lt;key:value&gt;</code> to add a HTTP header</li>
+<li class="md-github"><code class="md-github">--paginate</code> to fetch all pages if paginated results exist</li>
+<li class="md-github"><code class="md-github">--template &lt;string&gt;</code> for formatting output</li>
+<li class="md-github"><code class="md-github">--verbose</code> to include full HTTP request/response</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="command-examples-and-use-cases" href="#command-examples-and-use-cases"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Command Examples and Use Cases</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="issue-commands" href="#issue-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Issue Commands</h3>
+<ul class="md-github">
+<li class="md-github">Create an issue: <code class="md-github">$ gh issue create</code></li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="repository-commands" href="#repository-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Repository Commands</h3>
+<ul class="md-github">
+<li class="md-github">Clone a repository: <code class="md-github">$ gh repo clone cli/cli</code></li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="pull-request-commands" href="#pull-request-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Pull Request Commands</h3>
+<ul class="md-github">
+<li class="md-github">Checkout PR (e.g., <code class="md-github">gh pr checkout 12</code>):
+<ul class="md-github">
+<li class="md-github">Displays progress output with object counting and branch switching details</li>
+</ul>
+</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="api-commands" href="#api-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Commands</h3>
+<ul class="md-github">
+<li class="md-github">Making a call: <code class="md-github">$ gh api repos/{owner}/{repo}/releases</code></li>
+<li class="md-github">Post an comment: <code class="md-github">$ gh api repos/{owner}/{repo}/issues/123/comments -f body='Hi from CLI'</code></li>
+<li class="md-github">Use GraphQL endpoint: <code class="md-github">$ gh api graphql -F owner='{owner}' -F name='{repo}' -f query='&lt;graphql query&gt;'</code></li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="aliases-details" href="#aliases-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Aliases Details</h2>
+<ul class="md-github">
+<li class="md-github">Set alias example:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">$ gh alias set pv 'pr view'</code> then use with <code class="md-github">$ gh pv -w 123</code></li>
+</ul>
+</li>
+<li class="md-github">Example with shell:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">$ gh alias set --shell igrep 'gh issue list --label=&quot;$1&quot; | grep &quot;$2&quot;'</code></li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attestation-commands-preview" href="#attestation-commands-preview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attestation Commands (Preview)</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="download-attestation" href="#download-attestation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Download Attestation</h3>
+<ul class="md-github">
+<li class="md-github">Usage: <code class="md-github">gh attestation download [&lt;file-path&gt; | oci://&lt;image-uri&gt;] [--owner|--repo]</code></li>
+<li class="md-github">Options:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">-d, --digest-alg &lt;string&gt;</code> (default &quot;sha256&quot;)</li>
+<li class="md-github"><code class="md-github">-L, --limit &lt;int&gt;</code> (default 30)</li>
+</ul>
+</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="trusted-root" href="#trusted-root"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Trusted Root</h3>
+<ul class="md-github">
+<li class="md-github">Command: <code class="md-github">gh attestation trusted-root [--tuf-url &lt;url&gt; --tuf-root &lt;file-path&gt;] [--verify-only]</code></li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="verify-attestation" href="#verify-attestation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Verify Attestation</h3>
+<ul class="md-github">
+<li class="md-github">Command: <code class="md-github">gh attestation verify [&lt;file-path&gt; | oci://&lt;image-uri&gt;] [--owner|--repo]</code></li>
+<li class="md-github">Ensures artifact provenance by validating the certificate, subject alternative names, and workflow identity.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="troubleshooting-and-best-practices" href="#troubleshooting-and-best-practices"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting and Best Practices</h2>
+<ul class="md-github">
+<li class="md-github">Ensure correct environment variables (<code class="md-github">GITHUB_TOKEN</code>, <code class="md-github">GH_HOST</code>, <code class="md-github">GH_ENTERPRISE_TOKEN</code>) are set.</li>
+<li class="md-github">Use <code class="md-github">--clobber</code> flag if re-importing or resetting aliases to avoid duplication.</li>
+<li class="md-github">Use verbose mode (<code class="md-github">--verbose</code>) on API commands to debug HTTP request issues.</li>
+<li class="md-github">For pagination issues with <code class="md-github">gh api</code>, use <code class="md-github">--paginate</code> together with <code class="md-github">--slurp</code> to collate multiple arrays.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
 <ul class="md-github">
+<li class="md-github">Crawled Data Size: 1227914 bytes</li>
+<li class="md-github">Retrieved from: https://cli.github.com/manual/</li>
+<li class="md-github">Links Found: 45187</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution-1" href="#attribution-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
 <li class="md-github">Source: GitHub CLI Documentation</li>
-<li class="md-github">URL: https://cli.github.com/manual</li>
-<li class="md-github">License: GitHub Docs License (assumed)</li>
-<li class="md-github">Crawl Date: 2025-04-17T06:27:06.212Z</li>
-<li class="md-github">Data Size: 4049535 bytes</li>
-<li class="md-github">Links Found: 3125</li>
+<li class="md-github">URL: https://cli.github.com/manual/</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-04-17T14:25:50.309Z</li>
+<li class="md-github">Data Size: 1227914 bytes</li>
+<li class="md-github">Links Found: 45187</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
 <p class="md-github">2025-04-17</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-17T09:25:15.857Z</p>
+    <p>Generated on 2025-04-17T15:25:18.932Z</p>
   </footer>
 </body>
 </html>
