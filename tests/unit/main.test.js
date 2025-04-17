@@ -345,6 +345,7 @@ describe("Diagnostics Flag", () => {
 });
 
 // New test suite for --memory-stats flag
+
 describe("Memory Stats Flag", () => {
   test("should output memory stats with correct count, oldest and newest session IDs when --memory-stats flag is provided", () => {
     resetMemory();
