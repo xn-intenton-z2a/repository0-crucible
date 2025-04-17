@@ -66,6 +66,19 @@ export function main(args = []) {
     return;
   }
 
+  // Handle --query-tag functionality for filtering by tag
+  if (args.includes("--query-tag")) {
+    const index = args.indexOf("--query-tag");
+    if (args.length <= index + 1 || args[index + 1].startsWith("--")) {
+      console.error("No tag specified for --query-tag flag");
+      return;
+    }
+    const tagQuery = args[index + 1].toLowerCase();
+    const filtered = memoryLog.filter(entry => entry.tag && entry.tag.toLowerCase() === tagQuery);
+    console.log(JSON.stringify(filtered));
+    return;
+  }
+
   // If '--clear-memory' flag is provided, clear the in-memory and persisted memory log
   if (args.includes("--clear-memory")) {
     resetMemory();

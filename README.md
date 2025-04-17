@@ -34,6 +34,7 @@ npm install repository0-crucible
 - Export Memory: The new `--export-memory` flag exports the current memory log to a file (default: `memory_export.json`).
 - Import Memory: The new `--import-memory <filename>` flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.
 - Query Memory: The new `--query-memory <query>` flag allows users to filter the memory log entries based on a search term. The search is case-insensitive, ensuring that values like "anotherAlpha" match when searching for "alpha". Only those entries whose command arguments contain the specified query will be output.
+- Query by Tag: The new `--query-tag <tag>` flag allows users to filter memory log entries based on a custom tag. The filtering is case-insensitive and only returns entries that have a matching tag.
 - Show Memory in Reverse Order: When using the `--show-memory` flag, the memory log is now displayed in reverse chronological order (newest entries first).
 - Diagnostics: A new `--diagnostics` flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.
 - Tagging: With the new `--tag-memory <tag>` flag, users can attach a custom tag to a memory log entry. This allows for enhanced categorization and traceability of logged commands.
@@ -82,6 +83,12 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --query-memory test
   ```
+
+- **Query by Tag:**
+  ```bash
+  node src/lib/main.js --query-tag myCustomTag
+  ```
+  This will output all memory log entries that have been tagged with "myCustomTag".
 
 - **Set Custom Memory Limit:**
   ```bash
