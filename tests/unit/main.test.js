@@ -84,6 +84,21 @@ describe("Memory Logging Feature", () => {
     spy.mockRestore();
   });
 
+  test("should output memory log in chronological order when --show-memory-chronological flag is provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    resetMemory();
+    main(["first"]);
+    main(["second"]);
+    main(["--show-memory-chronological"]);
+    expect(spy).toHaveBeenCalled();
+    const loggedOutput = spy.mock.calls[spy.mock.calls.length - 1][0];
+    const parsedOutput = JSON.parse(loggedOutput);
+    expect(parsedOutput).toHaveLength(2);
+    expect(parsedOutput[0].args).toEqual(["first"]);
+    expect(parsedOutput[1].args).toEqual(["second"]);
+    spy.mockRestore();
+  });
+
   test("should persist memory log to disk when --persist-memory flag is provided", () => {
     expect(existsSync(MEMORY_LOG_FILE)).toBe(false);
     main(["test1", "--persist-memory"]);

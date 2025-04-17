@@ -326,6 +326,12 @@ export function main(args = []) {
     // Do nothing extra here, as importing was handled earlier
   }
 
+  // New flag: If '--show-memory-chronological' flag is provided, output the memory log in chronological order (oldest first)
+  if (args.includes("--show-memory-chronological")) {
+    console.log(JSON.stringify(memoryLog));
+    return;
+  }
+
   // If '--show-memory' flag is provided, output the memory log in reverse chronological order
   if (args.includes("--show-memory")) {
     console.log(JSON.stringify([...memoryLog].reverse()));
