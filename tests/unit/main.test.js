@@ -4,6 +4,7 @@ import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
 const { main, getMemory, resetMemory } = mainModule;
 
 const MEMORY_LOG_FILE = "memory.log";
+const EXPORT_FILE = "memory_export.json";
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -22,16 +23,22 @@ describe("Main Output", () => {
 describe("Memory Logging Feature", () => {
   beforeEach(() => {
     resetMemory();
-    // Clean up memory.log if exists
+    // Clean up memory files if they exist
     if (existsSync(MEMORY_LOG_FILE)) {
       unlinkSync(MEMORY_LOG_FILE);
+    }
+    if (existsSync(EXPORT_FILE)) {
+      unlinkSync(EXPORT_FILE);
     }
   });
 
   afterEach(() => {
-    // Remove memory.log after each test to avoid side effects
+    // Remove memory files after each test to avoid side effects
     if (existsSync(MEMORY_LOG_FILE)) {
       unlinkSync(MEMORY_LOG_FILE);
+    }
+    if (existsSync(EXPORT_FILE)) {
+      unlinkSync(EXPORT_FILE);
     }
   });
 
@@ -126,5 +133,59 @@ describe("Memory Logging Feature", () => {
     // The first entry should be command5 since the first 5 entries are removed
     expect(mem[0].args).toEqual(["command5"]);
     expect(mem[99].args).toEqual(["command104"]);
+  });
+
+  test("should export memory log to a file when --export-memory flag is provided", () => {
+    main(["exportTest1", "exportTest2"]);
+    main(["--export-memory"]);
+    expect(existsSync(EXPORT_FILE)).toBe(true);
+    const exportedContent = readFileSync(EXPORT_FILE, { encoding: 'utf-8' });
+    const exportedLog = JSON.parse(exportedContent);
+    // Should include the previous log plus the export command entry
+    expect(exportedLog.length).toBe(2);
+    expect(exportedLog[0].args).toEqual(["exportTest1", "exportTest2"]);
+  });
+
+  test("should import memory log from a file when --import-memory flag is provided", () => {
+    // Create a temporary import file with a predefined memory log
+    const tempLog = [{ sessionId: "importSession", args: ["imported", "command"] }];
+    const tempFilename = "temp_import.json";
+    writeFileSync(tempFilename, JSON.stringify(tempLog), { encoding: 'utf-8' });
+
+    // Preload the in-memory log with an entry
+    main(["existing"]);
+    const initialLength = getMemory().length;
+
+    // Import the temporary file
+    main(["--import-memory", tempFilename]);
+
+    // After import, the memory log should be merged
+    const mergedMemory = getMemory();
+    expect(mergedMemory.length).toBe(initialLength + tempLog.length);
+    expect(mergedMemory[mergedMemory.length - 1].args).toEqual(["--import-memory", tempFilename]);
+    
+    // Clean up temporary file
+    if (existsSync(tempFilename)) {
+      unlinkSync(tempFilename);
+    }
+  });
+
+  test("should handle import error when file does not exist", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    main(["--import-memory", "nonexistent.json"]);
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+  });
+
+  test("should handle import error when file has invalid JSON", () => {
+    const tempFilename = "temp_invalid.json";
+    writeFileSync(tempFilename, "invalid json", { encoding: 'utf-8' });
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    main(["--import-memory", tempFilename]);
+    expect(spy).toHaveBeenCalled();
+    spy.mockRestore();
+    if (existsSync(tempFilename)) {
+      unlinkSync(tempFilename);
+    }
   });
 });

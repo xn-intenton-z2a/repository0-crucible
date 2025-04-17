@@ -41,6 +41,31 @@ export function main(args = []) {
     return;
   }
 
+  // If '--import-memory' flag is provided, read the specified file and merge its contents
+  if (args.includes("--import-memory")) {
+    const index = args.indexOf("--import-memory");
+    const filename = args[index + 1];
+    if (!filename) {
+      console.error("No filename specified for --import-memory flag");
+    } else {
+      try {
+        const fileContent = fs.readFileSync(filename, { encoding: "utf-8" });
+        const importedLog = JSON.parse(fileContent);
+        if (Array.isArray(importedLog)) {
+          memoryLog = memoryLog.concat(importedLog);
+          // Enforce memory log size limit after merging
+          while (memoryLog.length > MAX_MEMORY_ENTRIES) {
+            memoryLog.shift();
+          }
+        } else {
+          console.error("Imported file does not contain an array of log entries");
+        }
+      } catch (error) {
+        console.error("Error importing memory from file:", error);
+      }
+    }
+  }
+
   // Record the arguments in memory along with the session identifier
   memoryLog.push({ sessionId, args });
   // Enforce memory log size limit
@@ -54,6 +79,16 @@ export function main(args = []) {
       fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
     } catch (error) {
       console.error('Error writing memory.log:', error);
+    }
+  }
+
+  // If '--export-memory' flag is provided, export the memory log to memory_export.json
+  if (args.includes("--export-memory")) {
+    try {
+      fs.writeFileSync("memory_export.json", JSON.stringify(memoryLog));
+      console.log("Memory log exported to memory_export.json");
+    } catch (error) {
+      console.error("Error exporting memory log:", error);
     }
   }
 

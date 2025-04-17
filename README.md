@@ -28,9 +28,11 @@ npm install repository0-crucible
 - CLI Tool for running commands with argument output.
 - Memory Logging: The CLI tool now retains a log of command arguments from each invocation. Each log entry is an object that includes a unique session identifier (a combination of the current timestamp and a random string) and the command line arguments used. This helps group and trace commands executed during a single runtime session. The log can be displayed using the `--show-memory` flag. Programmatically, you can access the log using the `getMemory()` function.
 - Persistence: With the new `--persist-memory` flag, the tool now saves the memory log to a file called `memory.log`, ensuring the log is retained across separate invocations.
-- Auto-load Persisted Memory: On startup, if a `memory.log` file exists, its contents are automatically loaded into the tool's memory log, providing continuity across invocations.
+- Auto-load Persisted Memory: On startup, if a `memory.log` file exists, its contents are automatically loaded into the tool's memory log, providing continuity.
 - Clear Memory: A new `--clear-memory` flag has been added that resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.
 - Log Size Limit: The memory logging feature now includes a size limit (default of 100 entries) to prevent unbounded log growth.
+- Export Memory: The new `--export-memory` flag exports the current memory log to a file (default: `memory_export.json`).
+- Import Memory: The new `--import-memory <filename>` flag imports a memory log from the specified file and merges it with the current session’s memory (while ensuring the log does not exceed 100 entries).
 
 ## Usage
 
@@ -62,7 +64,17 @@ node src/lib/main.js --help
   node src/lib/main.js --clear-memory
   ```
 
-The `--persist-memory` flag causes the current in-memory log of command arguments to be saved to a file named `memory.log` on disk, and the `--clear-memory` flag clears both the in-memory and persisted logs. On startup, if a persisted memory log exists, it is automatically loaded, ensuring continuity.
+- **Export Memory Log:**
+  ```bash
+  node src/lib/main.js --export-memory
+  ```
+
+- **Import Memory Log:**
+  ```bash
+  node src/lib/main.js --import-memory backup_memory.json
+  ```
+
+The `--persist-memory` flag causes the current in-memory log of command arguments to be saved to a file named `memory.log` on disk, and the `--clear-memory` flag clears both the in-memory and persisted logs. The `--export-memory` flag writes the current log to `memory_export.json`, and the `--import-memory <filename>` flag will merge a log from the provided file with the current session's memory.
 
 ## Incremental Changes Plan
 
