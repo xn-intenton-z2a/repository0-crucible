@@ -14,6 +14,9 @@ let memoryLog = [];
  * @param {string[]} args - The command line arguments.
  */
 export function main(args = []) {
+  // Generate a unique session identifier for this runtime instance.
+  const sessionId = new Date().toISOString() + '-' + Math.random().toString(36).slice(2);
+
   // On startup, auto-load persisted memory if memory.log exists
   if (fs.existsSync("memory.log")) {
     try {
@@ -38,8 +41,8 @@ export function main(args = []) {
     return;
   }
 
-  // Record the arguments in memory
-  memoryLog.push(args);
+  // Record the arguments in memory along with the session identifier
+  memoryLog.push({ sessionId, args });
   // Enforce memory log size limit
   while (memoryLog.length > MAX_MEMORY_ENTRIES) {
     memoryLog.shift();
