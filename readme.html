@@ -54,6 +54,7 @@
 <li class="md-github">Show basic system diagnostics with <code class="md-github">--diagnostics</code>.</li>
 <li class="md-github">Display extended diagnostics including memory usage and uptime with <code class="md-github">--extended-diagnostics</code>.</li>
 <li class="md-github">Perform self-refinement analysis using <code class="md-github">--self-refine</code>.</li>
+<li class="md-github">Initiate planning and goal decomposition with <code class="md-github">--plan</code>.</li>
 <li class="md-github">Refresh the application state with <code class="md-github">--refresh</code>.</li>
 <li class="md-github">Merge and persist changes with <code class="md-github">--merge-persist</code>.</li>
 <li class="md-github">Start the server using <code class="md-github">--serve</code>.</li>
@@ -67,8 +68,7 @@
 <p class="md-github">The CLI tool is designed to handle any unrecognized commands by outputting a standardized error message. If an input does not match any of the recognized flags, the tool outputs an error message in the following format:</p>
 <pre class="md-github"><code class="md-github language-bash">Error: '&lt;input&gt;' is not a recognized command. Use '--help' for available options.
 </code></pre>
-<p class="md-github">Note: Special inputs such as 'NaN' and other unusual or malformed strings are treated as unrecognized commands and will trigger the standard error message above.</p>
-<p class="md-github">For example, if you run:</p>
+<p class="md-github">Note: Inputs such as 'NaN' and other unusual or malformed strings are treated as unrecognized commands and will trigger the standard error message. For example, if you run:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js NaN
 </code></pre>
 <p class="md-github">The output (sent to stderr) will be:</p>
@@ -113,6 +113,12 @@
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --self-refine
 </code></pre>
 <p class="md-github">Initiates a self-refinement analysis, outputting a message that the process is in progress.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Planning and Goal Decomposition:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --plan
+</code></pre>
+<p class="md-github">Initiates planning by generating an execution plan based on the current state.</p>
 </li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Refresh Application State:</strong></p>
@@ -172,7 +178,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-16T23:24:01.802Z</p>
+    <p>Generated on 2025-04-17T00:36:52.135Z</p>
   </footer>
 </body>
 </html>
