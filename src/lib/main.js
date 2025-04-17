@@ -41,6 +41,17 @@ export function main(args = []) {
     }
   }
 
+  // If --diagnostics flag is provided, output diagnostic information and return early
+  if (args.includes("--diagnostics")) {
+    const diagnostics = {
+      memoryLimit: maxMemoryEntries,
+      memoryLogCount: memoryLog.length,
+      memoryFilePersisted: fs.existsSync("memory.log")
+    };
+    console.log(JSON.stringify(diagnostics));
+    return;
+  }
+
   // Handle query-memory functionality
   if (args.includes("--query-memory")) {
     const index = args.indexOf("--query-memory");
