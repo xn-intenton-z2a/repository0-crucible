@@ -319,7 +319,7 @@ export function main(args = []) {
     return;
   }
 
-  // If '--clear-memory' flag is provided, clear the in-memory and persisted memory log
+  // Handle --clear-memory flag: clear the in-memory and persisted memory log
   if (args.includes("--clear-memory")) {
     resetMemory();
     if (fs.existsSync("memory.log")) {
@@ -333,7 +333,7 @@ export function main(args = []) {
     return;
   }
 
-  // If '--import-memory' flag is provided, read the specified file and replace current contents with its contents
+  // Handle --import-memory flag: read the specified file and replace current contents with its contents
   if (args.includes("--import-memory")) {
     const index = args.indexOf("--import-memory");
     const filename = args[index + 1];
@@ -356,6 +356,37 @@ export function main(args = []) {
         console.error("Error importing memory from file:", error);
       }
     }
+  }
+
+  // New flag: Handle --expire-memory for expiring memory log entries older than specified minutes
+  if (args.includes("--expire-memory")) {
+    const index = args.indexOf("--expire-memory");
+    const minutesStr = args[index + 1];
+    if (!minutesStr || minutesStr.startsWith("--")) {
+      console.error("Invalid usage: --expire-memory requires a number of minutes");
+      return;
+    }
+    const minutes = parseInt(minutesStr, 10);
+    if (isNaN(minutes) || minutes <= 0) {
+      console.error("Invalid minutes value provided. It must be a positive integer.");
+      return;
+    }
+    const cutoff = Date.now() - minutes * 60 * 1000;
+    const originalLength = memoryLog.length;
+    memoryLog = memoryLog.filter(entry => {
+      const ts = new Date(entry.timestamp).getTime();
+      return ts >= cutoff;
+    });
+    const expiredCount = originalLength - memoryLog.length;
+    if (fs.existsSync("memory.log")) {
+      try {
+        fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+      } catch (error) {
+        console.error("Error writing memory.log after expiration:", error);
+      }
+    }
+    console.log(`Expired ${expiredCount} entries older than ${minutes} minutes.`);
+    return;
   }
 
   // Process --tag-memory flag if provided
