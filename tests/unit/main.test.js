@@ -201,7 +201,7 @@ describe("Memory Logging Feature", () => {
     expect(spy).toHaveBeenCalled();
     const loggedOutput = spy.mock.calls[0][0];
     const filtered = JSON.parse(loggedOutput);
-    // Should contain entries with 'alpha' in the args
+    // Should contain entries with 'alpha' in the args (search is case-insensitive)
     expect(filtered.length).toBe(2);
     expect(filtered[0].args).toEqual(["alphaCommand"]);
     expect(filtered[1].args).toEqual(["anotherAlpha"]);

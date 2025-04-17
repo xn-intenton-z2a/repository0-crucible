@@ -32,7 +32,8 @@ export function main(args = []) {
       return;
     }
     const query = args[index + 1];
-    const filtered = memoryLog.filter(entry => entry.args.some(arg => arg.includes(query)));
+    const lowerQuery = query.toLowerCase();
+    const filtered = memoryLog.filter(entry => entry.args.some(arg => arg.toLowerCase().includes(lowerQuery)));
     console.log(JSON.stringify(filtered));
     return;
   }
