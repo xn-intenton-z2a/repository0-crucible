@@ -38,6 +38,10 @@ npm install repository0-crucible
 - Import Memory: The new `--import-memory <filename>` flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.
 - Query Memory: The new `--query-memory <query>` flag allows users to filter the memory log entries based on a search term. The search is case-insensitive, ensuring that values like "anotherAlpha" match when searching for "alpha". Only those entries whose command arguments contain the specified query will be output.
 - Query by Tag: The new `--query-tag <tag>` flag allows users to filter memory log entries based on a custom tag. The filtering is case-insensitive and only returns entries that have a matching tag.
+- **Date Range Query:** The new `--query-memory-range <start-date> <end-date>` flag allows users to filter memory log entries that have timestamps between the provided ISO date-time values (inclusive). For example:
+  ```bash
+  node src/lib/main.js --query-memory-range 2025-04-17T00:00:00.000Z 2025-04-18T00:00:00.000Z
+  ```
 - Update Memory Tag: The new `--update-memory-tag <sessionId> <newTag>` flag allows updating the tag of an existing memory log entry identified by its sessionId. When a memory.log file exists, the update is automatically persisted. For example:
   ```bash
   node src/lib/main.js --update-memory-tag <sessionId> newTag
@@ -133,6 +137,11 @@ node src/lib/main.js --help
 - **Query by Tag:**
   ```bash
   node src/lib/main.js --query-tag myCustomTag
+  ```
+
+- **Query Memory by Date Range:**
+  ```bash
+  node src/lib/main.js --query-memory-range 2025-04-17T00:00:00.000Z 2025-04-18T00:00:00.000Z
   ```
 
 - **Update Memory Tag (with auto-persistence):**
