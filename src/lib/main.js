@@ -3,6 +3,7 @@
 
 import { fileURLToPath } from "url";
 import fs from "fs";
+import zlib from "zlib";
 
 // Use a mutable variable for maximum memory entries so it can be updated via CLI flag
 let maxMemoryEntries = 100;
@@ -31,8 +32,16 @@ export function main(args = []) {
     maxMemoryEntries = limit;
   }
 
-  // On startup, auto-load persisted memory if memory.log exists
-  if (fs.existsSync("memory.log")) {
+  // On startup, auto-load persisted memory from compressed file if available, else from plain text file
+  if (fs.existsSync("memory.log.gz")) {
+    try {
+      const compressedData = fs.readFileSync("memory.log.gz");
+      const decompressed = zlib.gunzipSync(compressedData).toString("utf-8");
+      memoryLog = JSON.parse(decompressed);
+    } catch (error) {
+      console.error("Error loading compressed persisted memory:", error);
+    }
+  } else if (fs.existsSync("memory.log")) {
     try {
       const data = fs.readFileSync("memory.log", { encoding: "utf-8" });
       memoryLog = JSON.parse(data);
@@ -94,9 +103,16 @@ export function main(args = []) {
       entry.tag = newTag;
       console.log("Memory log entry updated:", JSON.stringify(entry));
       // If memory.log exists, auto-persist the updated memoryLog
-      if (fs.existsSync("memory.log")) {
+      if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
         try {
-          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+          // Persist using compression if needed
+          if (args.includes("--compress-memory")) {
+            const jsonStr = JSON.stringify(memoryLog);
+            const compressed = zlib.gzipSync(jsonStr);
+            fs.writeFileSync("memory.log.gz", compressed);
+          } else {
+            fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+          }
         } catch (error) {
           console.error("Error persisting memory.log:", error);
         }
@@ -120,9 +136,15 @@ export function main(args = []) {
     if (entry) {
       entry.annotation = newAnnotation;
       console.log("Memory log entry annotation updated:", JSON.stringify(entry));
-      if (fs.existsSync("memory.log")) {
+      if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
         try {
-          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+          if (args.includes("--compress-memory")) {
+            const jsonStr = JSON.stringify(memoryLog);
+            const compressed = zlib.gzipSync(jsonStr);
+            fs.writeFileSync("memory.log.gz", compressed);
+          } else {
+            fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+          }
         } catch (error) {
           console.error("Error persisting memory.log:", error);
         }
@@ -144,9 +166,15 @@ export function main(args = []) {
     const originalLength = memoryLog.length;
     memoryLog = memoryLog.filter(entry => !(entry.tag && entry.tag.toLowerCase() === tagValue.toLowerCase()));
     const removedCount = originalLength - memoryLog.length;
-    if (fs.existsSync("memory.log")) {
+    if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
       try {
-        fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+        if (args.includes("--compress-memory")) {
+          const jsonStr = JSON.stringify(memoryLog);
+          const compressed = zlib.gzipSync(jsonStr);
+          fs.writeFileSync("memory.log.gz", compressed);
+        } else {
+          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+        }
       } catch (error) {
         console.error("Error writing memory.log after deletion:", error);
       }
@@ -166,9 +194,15 @@ export function main(args = []) {
     const originalLength = memoryLog.length;
     memoryLog = memoryLog.filter(entry => !(entry.annotation && entry.annotation.toLowerCase() === annotationValueToDelete.toLowerCase()));
     const removedCount = originalLength - memoryLog.length;
-    if (fs.existsSync("memory.log")) {
+    if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
       try {
-        fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+        if (args.includes("--compress-memory")) {
+          const jsonStr = JSON.stringify(memoryLog);
+          const compressed = zlib.gzipSync(jsonStr);
+          fs.writeFileSync("memory.log.gz", compressed);
+        } else {
+          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+        }
       } catch (error) {
         console.error("Error writing memory.log after deletion:", error);
       }
@@ -199,9 +233,15 @@ export function main(args = []) {
       return entryDate < startDate || entryDate > endDate;
     });
     const deletedCount = originalLength - memoryLog.length;
-    if (fs.existsSync("memory.log")) {
+    if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
       try {
-        fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+        if (args.includes("--compress-memory")) {
+          const jsonStr = JSON.stringify(memoryLog);
+          const compressed = zlib.gzipSync(jsonStr);
+          fs.writeFileSync("memory.log.gz", compressed);
+        } else {
+          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+        }
       } catch (error) {
         console.error("Error writing memory.log after delete:", error);
       }
@@ -215,7 +255,7 @@ export function main(args = []) {
     const detailedDiag = {
       memoryLimit: maxMemoryEntries,
       memoryLogCount: memoryLog.length,
-      memoryFilePersisted: fs.existsSync("memory.log"),
+      memoryFilePersisted: fs.existsSync("memory.log") || fs.existsSync("memory.log.gz"),
       memorySessionIds: memoryLog.map(entry => entry.sessionId)
     };
     console.log(JSON.stringify(detailedDiag));
@@ -227,7 +267,7 @@ export function main(args = []) {
     const diagnostics = {
       memoryLimit: maxMemoryEntries,
       memoryLogCount: memoryLog.length,
-      memoryFilePersisted: fs.existsSync("memory.log")
+      memoryFilePersisted: fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")
     };
     console.log(JSON.stringify(diagnostics));
     return;
@@ -329,6 +369,13 @@ export function main(args = []) {
         console.error("Error deleting memory.log:", error);
       }
     }
+    if (fs.existsSync("memory.log.gz")) {
+      try {
+        fs.unlinkSync("memory.log.gz");
+      } catch (error) {
+        console.error("Error deleting memory.log.gz:", error);
+      }
+    }
     console.log("Memory log cleared");
     return;
   }
@@ -378,9 +425,15 @@ export function main(args = []) {
       return ts >= cutoff;
     });
     const expiredCount = originalLength - memoryLog.length;
-    if (fs.existsSync("memory.log")) {
+    if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
       try {
-        fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+        if (args.includes("--compress-memory")) {
+          const jsonStr = JSON.stringify(memoryLog);
+          const compressed = zlib.gzipSync(jsonStr);
+          fs.writeFileSync("memory.log.gz", compressed);
+        } else {
+          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+        }
       } catch (error) {
         console.error("Error writing memory.log after expiration:", error);
       }
@@ -469,7 +522,13 @@ export function main(args = []) {
   // If '--persist-memory' flag is provided, write the memory log to disk
   if (args.includes("--persist-memory")) {
     try {
-      fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+      if (args.includes("--compress-memory")) {
+        const jsonStr = JSON.stringify(memoryLog);
+        const compressed = zlib.gzipSync(jsonStr);
+        fs.writeFileSync("memory.log.gz", compressed);
+      } else {
+        fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+      }
     } catch (error) {
       console.error("Error writing memory.log:", error);
     }
