@@ -30,7 +30,7 @@ npm install repository0-crucible
 - Persistence: With the new `--persist-memory` flag, the tool now saves the memory log to a file called `memory.log`, ensuring the log is retained across separate invocations.
 - Auto-load Persisted Memory: On startup, if a `memory.log` file exists, its contents are automatically loaded into the tool's memory log, providing continuity.
 - Clear Memory: A new `--clear-memory` flag has been added that resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.
-- Log Size Limit: The memory logging feature now includes a size limit (default of 100 entries) to prevent unbounded log growth.
+- Log Size Limit: The memory logging feature now includes a configurable size limit. By default, it is set to 100 entries, but you can override it at runtime using the `--memory-limit <number>` flag. For example, `node src/lib/main.js --memory-limit 50` will set the maximum log entries to 50.
 - Export Memory: The new `--export-memory` flag exports the current memory log to a file (default: `memory_export.json`).
 - Import Memory: The new `--import-memory <filename>` flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.
 - Query Memory: The new `--query-memory <query>` flag allows users to filter the memory log entries based on a search term. The search is case-insensitive, ensuring that values like "anotherAlpha" match when searching for "alpha". Only those entries whose command arguments contain the specified query will be output.
@@ -79,6 +79,11 @@ node src/lib/main.js --help
 - **Query Memory Log:**
   ```bash
   node src/lib/main.js --query-memory test
+  ```
+
+- **Set Custom Memory Limit:**
+  ```bash
+  node src/lib/main.js --memory-limit 50
   ```
 
 The `--persist-memory` flag causes the current in-memory log of command arguments to be saved to a file named `memory.log` on disk, and the `--clear-memory` flag clears both the in-memory and persisted logs. The `--export-memory` flag writes the current log to `memory_export.json`, the `--import-memory <filename>` flag replaces the current memory log with the log from the provided file, and the `--query-memory <query>` flag filters the log entries by the specified search term. Displaying the memory log with `--show-memory` now shows the most recent commands first.

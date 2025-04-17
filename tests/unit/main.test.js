@@ -64,9 +64,8 @@ describe("Memory Logging Feature", () => {
     // Get the output from the --show-memory call
     const loggedOutput = spy.mock.calls[spy.mock.calls.length - 1][0];
     const parsedOutput = JSON.parse(loggedOutput);
-    // Expect two entries in reverse order: most recent first
+    // Expect three entries in reverse order: most recent first
     expect(parsedOutput).toHaveLength(3); // because the --show-memory invocation itself is logged as well
-    // The last invocation is the --show-memory command, so it should be first in the reversed output
     expect(parsedOutput[0].args).toEqual(["--show-memory"]);
     expect(parsedOutput[1].args).toEqual(["c", "d"]);
     expect(parsedOutput[2].args).toEqual(["a", "b"]);
@@ -216,5 +215,16 @@ describe("Memory Logging Feature", () => {
     main(["--query-memory"]);
     expect(spy).toHaveBeenCalledWith("No query string specified for --query-memory flag");
     spy.mockRestore();
+  });
+
+  test("should obey custom memory limit when --memory-limit flag is provided", () => {
+    resetMemory();
+    const customLimit = 10;
+    // Add more than customLimit entries with the flag each time
+    for (let i = 0; i < 15; i++) {
+      main([`command${i}`, "--memory-limit", customLimit.toString()]);
+    }
+    const mem = getMemory();
+    expect(mem.length).toBeLessThanOrEqual(customLimit);
   });
 });
