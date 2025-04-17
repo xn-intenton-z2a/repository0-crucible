@@ -51,6 +51,7 @@
 <li class="md-github">CLI Tool for running commands with argument output.</li>
 <li class="md-github">Memory Logging: The CLI tool now retains a log of command arguments from each invocation. This in-memory log provides action continuity and can be displayed using the <code class="md-github">--show-memory</code> flag. Programmatically, you can access the log using the <code class="md-github">getMemory()</code> function.</li>
 <li class="md-github">Persistence: With the new <code class="md-github">--persist-memory</code> flag, the tool now saves the memory log to a file called <code class="md-github">memory.log</code>, ensuring the log is retained across separate invocations.</li>
+<li class="md-github">Auto-load Persisted Memory: On startup, if a <code class="md-github">memory.log</code> file exists, its contents are automatically loaded into the tool's memory log, providing continuity across invocations.</li>
 <li class="md-github">Clear Memory: A new <code class="md-github">--clear-memory</code> flag has been added that resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
@@ -80,7 +81,7 @@
 </code></pre>
 </li>
 </ul>
-<p class="md-github">The <code class="md-github">--persist-memory</code> flag causes the current in-memory log of command arguments to be saved to a file named <code class="md-github">memory.log</code> on disk, and the <code class="md-github">--clear-memory</code> flag clears both the in-memory and persisted logs.</p>
+<p class="md-github">The <code class="md-github">--persist-memory</code> flag causes the current in-memory log of command arguments to be saved to a file named <code class="md-github">memory.log</code> on disk, and the <code class="md-github">--clear-memory</code> flag clears both the in-memory and persisted logs. On startup, if a persisted memory log exists, it is automatically loaded, ensuring continuity.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="incremental-changes-plan" href="#incremental-changes-plan"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Incremental Changes Plan</h2>
 <p class="md-github">TODO: Add forthcoming changes here.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
@@ -90,7 +91,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-17T03:28:32.717Z</p>
+    <p>Generated on 2025-04-17T04:25:54.018Z</p>
   </footer>
 </body>
 </html>
