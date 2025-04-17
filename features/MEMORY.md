@@ -1,41 +1,45 @@
 # MEMORY
 
 ## Overview
-The MEMORY feature has been enhanced to not only retain, manage, and query a persistent log of command invocations but now also supports flexible log export, auto archiving, and detailed diagnostic queries. The feature retains in-memory logs with unique session identifiers and timestamps. It merges capabilities from the previous MEMORY and CUSTOM_LOG features, ensuring continuous context between sessions and enabling further self-improvement and replication tasks.
+
+The MEMORY feature provides persistent in-memory logging of command invocations along with sophisticated management capabilities. It is responsible for retaining a session-based log where each entry includes a unique session identifier, command arguments, and timestamps. In addition to basic logging, this enhanced MEMORY feature now integrates auto archiving, export/import functionality, query and update operations (by tag, annotation, and date range), detailed diagnostics including statistics and frequency analysis, and memory expiration to automatically prune older entries.
 
 ## Implementation Details
-- **Memory Logging and Persistence:**
-  - Retain full logs of command invocations with unique session IDs and ISO-formatted timestamps.
-  - Persist logs to disk via the `--persist-memory` flag. The log is saved to `memory.log` by default, or compressed to `memory.log.gz` if `--compress-memory` is provided.
-  - On startup, the tool auto-loads the persisted memory log from either `memory.log.gz` (if exists) or `memory.log`.
 
-- **Log Export and Import:**
-  - The `--export-memory` flag allows exporting the current memory log to a file. A custom filename can be provided and if used with `--compress`, the export is gzip-compressed.
-  - The `--import-memory <filename>` flag imports a log file, replacing the current session’s log.
+- **Memory Logging & Persistence:**
+  - Maintains an in-memory log with each entry recording a unique sessionId, the arguments passed, and a timestamp.
+  - On startup, if a persisted file exists (either as plain text `memory.log` or compressed `memory.log.gz`), the log is auto-loaded to provide continuity.
+  
+- **Auto Archiving & Expiration:**
+  - The feature now includes auto archiving: using the `--archive-memory` flag, the current log is archived to a timestamped file (compressed if `--compress-memory` is provided) and then cleared from active memory.
+  - A new `--expire-memory <minutes>` flag purges entries older than the specified number of minutes, ensuring the log remains manageable.
 
-- **Query and Update Operations:**
-  - The feature offers several CLI flags for querying memory: `--query-memory`, `--query-tag`, `--query-annotation`, and `--query-memory-range` for filtering by command content or date range.
-  - Update operations include `--update-memory-tag` and `--update-memory-annotation` flags to modify existing log entries.
-  - Deletion operations are available with `--delete-memory-by-tag`, `--delete-memory-by-annotation`, and `--delete-memory-range` to remove specific entries based on tags, annotations, or dates.
+- **Export & Import:**
+  - Use `--export-memory` (with an optional filename and `--compress`) to export the current log. The exported file can be later imported using `--import-memory <filename>`, replacing the active log.
 
-- **Diagnostics and Statistics:**
-  - Simple diagnostics flags `--diagnostics` and enhanced diagnostics `--detailed-diagnostics` provide JSON outputs detailing log size, configured limits, file persistence status, and session identifiers.
-  - The `--memory-stats` flag outputs key statistics (total count, oldest and newest session IDs).
-  - Frequency analysis is available via the `--frequency-stats` flag, which computes the occurrence count for each command argument.
+- **Query & Update Operations:**
+  - Supports querying via `--query-memory <query>`, filtering if any command argument contains the case-insensitive query.
+  - Enhanced queries include filtering by tag (`--query-tag <tag>`), annotation (`--query-annotation <query>`), and date range (`--query-memory-range <start> <end>`).
+  - Users can update individual memory entries with `--update-memory-tag <sessionId> <newTag>` or `--update-memory-annotation <sessionId> <newAnnotation>`, which also records a modification timestamp.
 
-- **Auto Archiving:**
-  - **New:** The MEMORY feature now includes an auto archiving capability. When the `--archive-memory` flag is provided, the current memory log is archived to a separate file and then cleared.
-  - **Behavior:**
-    - Upon invocation of `--archive-memory`, the tool creates an archive file named `memory_archive_<TIMESTAMP>.json`. If the `--compress-memory` flag is also present, the file is saved in compressed format (e.g., `memory_archive_<TIMESTAMP>.gz`).
-    - The archived file preserves all current log entries, ensuring historical data isn’t lost while freeing the current log for new sessions.
-    - This functionality supports clearing memory after archiving, which helps manage log size and maintain performance over long-running processes.
+- **Additional Diagnostics & Statistics:**
+  - Basic diagnostics (`--diagnostics`) provide current memory count, memory limit, and persistence status.
+  - Detailed diagnostics (`--detailed-diagnostics` and `--memory-detailed-stats`) output extended snapshots including session IDs, average intervals between entries, and frequency statistics of command arguments.
+  - The `--memory-stats` flag outputs the count, oldest, and newest session details.
 
 ## Testing
+
 - **Unit Tests:**
-  - Extend tests in `tests/unit/main.test.js` to simulate the auto archiving functionality:
-    - Verify that invoking `--archive-memory` creates an archive file (with or without compression as specified).
-    - Confirm that the archived file contains the correct JSON log array and that the in-memory log is reset after archiving.
-  - Ensure that all existing functionalities (query, update, persist, and export/import) continue to work seamlessly with the new archiving option.
+  - The test suite in `tests/unit/main.test.js` covers logging behavior, auto-loading, persistence (with and without compression), querying, updating, and deletion of log entries.
+  - Tests validate proper trimming of the log when exceeding the configured memory limit (e.g., via the `--memory-limit` flag).
+  - Edge cases such as invalid flag usage, error handling for file operations, and consistent timestamp recording upon updates are thoroughly verified.
 
 ## Long-Term Direction
-Enhancements to MEMORY set the stage for improved self-awareness and historical analysis in the agent. Future versions may include scheduled archiving, integration with external logging frameworks, and more flexible data retention policies. This added archiving functionality further aligns with our mission of creating a self-improving, autonomous agent with robust internal state management.
+
+This unified MEMORY feature lays the groundwork for advanced self-improvement and adaptive automation. Future iterations could include:
+
+- Sharing memory logs across replicated agent instances for collective learning.
+- Integrating memory entries with external monitoring dashboards for real-time diagnostics.
+- Leveraging historical memory data to automatically adjust the behavior of planning and replication features.
+
+By consolidating functionalities – including auto archiving (formerly in a separate feature) – into MEMORY, the system maintains a tight, interdependent architecture that supports agentic, cross-repository intelligent automation.
