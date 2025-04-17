@@ -299,3 +299,22 @@ describe("Diagnostics Flag", () => {
     spy.mockRestore();
   });
 });
+
+// New test suite for --memory-stats flag
+describe("Memory Stats Flag", () => {
+  test("should output memory stats with correct count, oldest and newest session IDs when --memory-stats flag is provided", () => {
+    resetMemory();
+    main(["first"]);
+    main(["second"]);
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--memory-stats"]);
+    expect(spy).toHaveBeenCalled();
+    const loggedOutput = spy.mock.calls[spy.mock.calls.length - 1][0];
+    const stats = JSON.parse(loggedOutput);
+    expect(stats.count).toBe(2);
+    const mem = getMemory();
+    expect(stats.oldest).toEqual(mem[0].sessionId);
+    expect(stats.newest).toEqual(mem[mem.length - 1].sessionId);
+    spy.mockRestore();
+  });
+});

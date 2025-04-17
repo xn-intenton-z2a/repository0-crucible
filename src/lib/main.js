@@ -52,6 +52,17 @@ export function main(args = []) {
     return;
   }
 
+  // If --memory-stats flag is provided, output memory log statistics and return early
+  if (args.includes("--memory-stats")) {
+    const stats = {
+      count: memoryLog.length,
+      oldest: memoryLog.length > 0 ? memoryLog[0].sessionId : null,
+      newest: memoryLog.length > 0 ? memoryLog[memoryLog.length - 1].sessionId : null
+    };
+    console.log(JSON.stringify(stats));
+    return;
+  }
+
   // Handle query-memory functionality
   if (args.includes("--query-memory")) {
     const index = args.indexOf("--query-memory");
