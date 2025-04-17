@@ -210,11 +210,31 @@ describe("Memory Logging Feature", () => {
     spy.mockRestore();
   });
 
-  test("should error when --query-memory flag is provided without a query string", () => {
-    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    main(["--query-memory"]);
-    expect(spy).toHaveBeenCalledWith("No query string specified for --query-memory flag");
+  // New tests for --query-tag feature
+  test("should output filtered memory log when --query-tag flag is provided", () => {
+    // Populate memory with tagged commands
+    main(["alphaCommand", "--tag-memory", "myTag"]);
+    main(["betaCommand"]);
+    main(["gammaCommand", "--tag-memory", "MYTAG"]); // same tag different case
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--query-tag", "mytag"]);
+    expect(spy).toHaveBeenCalled();
+    const loggedOutput = spy.mock.calls[spy.mock.calls.length - 1][0];
+    const filtered = JSON.parse(loggedOutput);
+    expect(filtered.length).toBe(2);
+    expect(filtered[0].tag.toLowerCase()).toBe("mytag");
+    expect(filtered[1].tag.toLowerCase()).toBe("mytag");
     spy.mockRestore();
+  });
+
+  test("should error when --query-tag flag is provided without a tag value", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const initialLength = getMemory().length;
+    main(["sampleCommand", "--query-tag"]);
+    expect(spy).toHaveBeenCalledWith("No tag specified for --query-tag flag");
+    spy.mockRestore();
+    const mem = getMemory();
+    expect(mem.length).toBe(initialLength);
   });
 
   test("should obey custom memory limit when --memory-limit flag is provided", () => {
