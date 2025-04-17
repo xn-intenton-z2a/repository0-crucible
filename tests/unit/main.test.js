@@ -81,7 +81,7 @@ describe("Memory Logging Feature", () => {
 
     // Now, the file should exist
     expect(existsSync(MEMORY_LOG_FILE)).toBe(true);
-    const fileContent = readFileSync(MEMORY_LOG_FILE, { encoding: 'utf-8' });
+    const fileContent = readFileSync(MEMORY_LOG_FILE, { encoding: "utf-8" });
     const parsed = JSON.parse(fileContent);
     expect(parsed).toHaveLength(1);
     expect(parsed[0]).toHaveProperty("sessionId");
@@ -110,7 +110,7 @@ describe("Memory Logging Feature", () => {
   test("should auto-load persisted memory log on startup", () => {
     // Write a temporary memory.log with known content
     const persisted = JSON.stringify([{ sessionId: "oldSession", args: ["old", "command"] }]);
-    writeFileSync(MEMORY_LOG_FILE, persisted, { encoding: 'utf-8' });
+    writeFileSync(MEMORY_LOG_FILE, persisted, { encoding: "utf-8" });
 
     // Call main with a new command, which should auto-load and then push the new args
     main(["new"]);
@@ -142,7 +142,7 @@ describe("Memory Logging Feature", () => {
     main(["exportTest1", "exportTest2"]);
     main(["--export-memory"]);
     expect(existsSync(EXPORT_FILE)).toBe(true);
-    const exportedContent = readFileSync(EXPORT_FILE, { encoding: 'utf-8' });
+    const exportedContent = readFileSync(EXPORT_FILE, { encoding: "utf-8" });
     const exportedLog = JSON.parse(exportedContent);
     // Should include the previous log plus the export command entry
     expect(exportedLog.length).toBe(2);
@@ -153,7 +153,7 @@ describe("Memory Logging Feature", () => {
     // Create a temporary import file with a predefined memory log
     const tempLog = [{ sessionId: "importSession", args: ["imported", "command"] }];
     const tempFilename = "temp_import.json";
-    writeFileSync(tempFilename, JSON.stringify(tempLog), { encoding: 'utf-8' });
+    writeFileSync(tempFilename, JSON.stringify(tempLog), { encoding: "utf-8" });
 
     // Preload the in-memory log with an entry
     main(["existing"]);
@@ -182,7 +182,7 @@ describe("Memory Logging Feature", () => {
 
   test("should handle import error when file has invalid JSON", () => {
     const tempFilename = "temp_invalid.json";
-    writeFileSync(tempFilename, "invalid json", { encoding: 'utf-8' });
+    writeFileSync(tempFilename, "invalid json", { encoding: "utf-8" });
     const spy = vi.spyOn(console, "error").mockImplementation(() => {});
     main(["--import-memory", tempFilename]);
     expect(spy).toHaveBeenCalled();

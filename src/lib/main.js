@@ -33,7 +33,7 @@ export function main(args = []) {
     }
     const query = args[index + 1];
     const lowerQuery = query.toLowerCase();
-    const filtered = memoryLog.filter(entry => entry.args.some(arg => arg.toLowerCase().includes(lowerQuery)));
+    const filtered = memoryLog.filter((entry) => entry.args.some((arg) => arg.toLowerCase().includes(lowerQuery)));
     console.log(JSON.stringify(filtered));
     return;
   }
@@ -45,7 +45,7 @@ export function main(args = []) {
       try {
         fs.unlinkSync("memory.log");
       } catch (error) {
-        console.error('Error deleting memory.log:', error);
+        console.error("Error deleting memory.log:", error);
       }
     }
     console.log("Memory log cleared");
@@ -78,7 +78,7 @@ export function main(args = []) {
   }
 
   // Record the arguments in memory along with the session identifier
-  const sessionId = new Date().toISOString() + '-' + Math.random().toString(36).slice(2);
+  const sessionId = new Date().toISOString() + "-" + Math.random().toString(36).slice(2);
   memoryLog.push({ sessionId, args });
   // Enforce memory log size limit
   while (memoryLog.length > MAX_MEMORY_ENTRIES) {
@@ -90,7 +90,7 @@ export function main(args = []) {
     try {
       fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
     } catch (error) {
-      console.error('Error writing memory.log:', error);
+      console.error("Error writing memory.log:", error);
     }
   }
 
