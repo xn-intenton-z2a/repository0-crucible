@@ -1,5 +1,5 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
-import * as mainModule from "@src/lib/main.js";
+import * as mainModule from "../../src/lib/main.js";
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
 const { main, getMemory, resetMemory } = mainModule;
 
