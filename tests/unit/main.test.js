@@ -39,15 +39,27 @@ describe("Memory Logging Feature", () => {
     main(["first", "second"]);
     const mem = getMemory();
     expect(mem).toHaveLength(1);
-    expect(mem[0]).toEqual(["first", "second"]);
+    expect(mem[0]).toHaveProperty("sessionId");
+    expect(typeof mem[0].sessionId).toBe("string");
+    expect(mem[0].sessionId).not.toEqual("");
+    expect(mem[0].args).toEqual(["first", "second"]);
   });
 
   test("should output memory log when --show-memory flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["a", "b"]);
     main(["--show-memory"]);
-    // The memory should show both calls
-    expect(spy).toHaveBeenCalledWith(JSON.stringify([ ["a", "b"], ["--show-memory"] ]));
+    expect(spy).toHaveBeenCalled();
+    // Use the last call for --show-memory output
+    const loggedOutput = spy.mock.calls[spy.mock.calls.length - 1][0];
+    const parsedOutput = JSON.parse(loggedOutput);
+    expect(parsedOutput).toHaveLength(2);
+    expect(parsedOutput[0]).toHaveProperty("sessionId");
+    expect(typeof parsedOutput[0].sessionId).toBe("string");
+    expect(parsedOutput[0].args).toEqual(["a", "b"]);
+    expect(parsedOutput[1]).toHaveProperty("sessionId");
+    expect(typeof parsedOutput[1].sessionId).toBe("string");
+    expect(parsedOutput[1].args).toEqual(["--show-memory"]);
     spy.mockRestore();
   });
 
@@ -60,8 +72,10 @@ describe("Memory Logging Feature", () => {
     // Now, the file should exist
     expect(existsSync(MEMORY_LOG_FILE)).toBe(true);
     const fileContent = readFileSync(MEMORY_LOG_FILE, { encoding: 'utf-8' });
-    // Since resetMemory was called before, memoryLog should have one entry
-    expect(fileContent).toBe(JSON.stringify([ ["test1", "--persist-memory"] ]));
+    const parsed = JSON.parse(fileContent);
+    expect(parsed).toHaveLength(1);
+    expect(parsed[0]).toHaveProperty("sessionId");
+    expect(parsed[0].args).toEqual(["test1", "--persist-memory"]);
   });
 
   test("should clear memory log and delete persisted file when --clear-memory flag is provided", () => {
@@ -85,13 +99,17 @@ describe("Memory Logging Feature", () => {
 
   test("should auto-load persisted memory log on startup", () => {
     // Write a temporary memory.log with known content
-    const persisted = JSON.stringify([ ["old", "command"] ]);
+    const persisted = JSON.stringify([{ sessionId: "oldSession", args: ["old", "command"] }]);
     writeFileSync(MEMORY_LOG_FILE, persisted, { encoding: 'utf-8' });
 
     // Call main with a new command, which should auto-load and then push the new args
     main(["new"]);
     const mem = getMemory();
-    expect(mem).toEqual([ ["old", "command"], ["new"] ]);
+    expect(mem.length).toBe(2);
+    expect(mem[0]).toHaveProperty("sessionId");
+    expect(mem[0].args).toEqual(["old", "command"]);
+    expect(mem[1]).toHaveProperty("sessionId");
+    expect(mem[1].args).toEqual(["new"]);
   });
 
   test("should limit memory log to 100 entries when more than 100 entries are added", () => {
@@ -106,7 +124,7 @@ describe("Memory Logging Feature", () => {
     const mem = getMemory();
     expect(mem).toHaveLength(100);
     // The first entry should be command5 since the first 5 entries are removed
-    expect(mem[0]).toEqual(["command5"]);
-    expect(mem[99]).toEqual(["command104"]);
+    expect(mem[0].args).toEqual(["command5"]);
+    expect(mem[99].args).toEqual(["command104"]);
   });
 });

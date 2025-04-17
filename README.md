@@ -26,7 +26,7 @@ npm install repository0-crucible
 ## Features
 
 - CLI Tool for running commands with argument output.
-- Memory Logging: The CLI tool now retains a log of command arguments from each invocation. This in-memory log provides action continuity and can be displayed using the `--show-memory` flag. Programmatically, you can access the log using the `getMemory()` function.
+- Memory Logging: The CLI tool now retains a log of command arguments from each invocation. Each log entry is an object that includes a unique session identifier (a combination of the current timestamp and a random string) and the command line arguments used. This helps group and trace commands executed during a single runtime session. The log can be displayed using the `--show-memory` flag. Programmatically, you can access the log using the `getMemory()` function.
 - Persistence: With the new `--persist-memory` flag, the tool now saves the memory log to a file called `memory.log`, ensuring the log is retained across separate invocations.
 - Auto-load Persisted Memory: On startup, if a `memory.log` file exists, its contents are automatically loaded into the tool's memory log, providing continuity across invocations.
 - Clear Memory: A new `--clear-memory` flag has been added that resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.
