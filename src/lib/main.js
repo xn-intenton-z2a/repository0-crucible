@@ -209,6 +209,14 @@ export function main(args = []) {
 
   // Handle export-memory flag with optional custom filename
   if (args.includes("--export-memory")) {
+    // Record this command invocation
+    const sessionId = new Date().toISOString() + "-" + Math.random().toString(36).slice(2);
+    const logEntry = { sessionId, args };
+    memoryLog.push(logEntry);
+    while (memoryLog.length > maxMemoryEntries) {
+      memoryLog.shift();
+    }
+
     const idx = args.indexOf("--export-memory");
     let exportFilename = "memory_export.json";
     if (args.length > idx + 1 && !args[idx + 1].startsWith("--")) {
