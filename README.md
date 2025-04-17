@@ -39,7 +39,7 @@ npm install repository0-crucible
   ```bash
   node src/lib/main.js --update-memory-tag <sessionId> newTag
   ```
-  This command searches for the memory log entry with the provided sessionId, updates its tag if found (and auto-saves the change), and outputs a confirmation message. If the sessionId is not found or arguments are missing, an appropriate error message is displayed.
+  This command updates the tag of an existing memory log entry identified by the given sessionId, and if a memory.log file exists, the change is automatically persisted.
 - Show Memory in Reverse Order: When using the `--show-memory` flag, the memory log is now displayed in reverse chronological order (newest entries first).
 - Diagnostics: A new `--diagnostics` flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.
 - Tagging: With the new `--tag-memory <tag>` flag, users can attach a custom tag to a memory log entry. This allows for enhanced categorization and traceability of logged commands.
