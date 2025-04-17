@@ -104,9 +104,9 @@ export function main(args = []) {
     }
   }
 
-  // If '--show-memory' flag is provided, output the memory log
+  // If '--show-memory' flag is provided, output the memory log in reverse chronological order
   if (args.includes("--show-memory")) {
-    console.log(JSON.stringify(memoryLog));
+    console.log(JSON.stringify([...memoryLog].reverse()));
   } else {
     console.log(`Run with: ${JSON.stringify(args)}`);
   }
