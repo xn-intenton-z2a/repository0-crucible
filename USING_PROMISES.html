@@ -1,0 +1,524 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="using_promises" href="#using_promises"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>USING_PROMISES</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">The extracted content details JavaScript promises, including using .then() and .catch() for asynchronous operations, chaining for sequence control, error handling patterns, and async/await equivalents. It explains nesting for error scoping, concurrent composition with Promise.all and sequential promise chaining via reduce, along with advanced topics like cancellation, microtasks vs. tasks, and wrapping legacy callback APIs. The content includes precise code examples and API method signatures as provided by MDN.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<h2 class="md-github"><a class="md-github__anchor" name="table-of-contents" href="#table-of-contents"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Table of Contents</h2>
+<ol class="md-github">
+<li class="md-github">Definition and Basic Usage</li>
+<li class="md-github">Promise Chaining and Callback Hell</li>
+<li class="md-github">Async/Await Pattern</li>
+<li class="md-github">Error Handling</li>
+<li class="md-github">Nesting and Composition</li>
+<li class="md-github">Advanced Topics (Cancellation, Timing, Global Rejection Events, Wrapping Callbacks)</li>
+</ol>
+<h3 class="md-github"><a class="md-github__anchor" name="1-definition-and-basic-usage" href="#1-definition-and-basic-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Definition and Basic Usage</h3>
+<ul class="md-github">
+<li class="md-github">Promises represent asynchronous operations.</li>
+<li class="md-github">Use .then() to attach success and failure callbacks.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Code Example:</strong></p>
+<pre class="md-github"><code class="md-github language-js">function successCallback(result) {
+  console.log(`Audio file ready at URL: ${result}`);
+}
+
+function failureCallback(error) {
+  console.error(`Error generating audio file: ${error}`);
+}
+
+createAudioFileAsync(audioSettings).then(successCallback, failureCallback);
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="2-promise-chaining-and-callback-hell" href="#2-promise-chaining-and-callback-hell"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Promise Chaining and Callback Hell</h3>
+<ul class="md-github">
+<li class="md-github">Chain asynchronous operations using .then().</li>
+<li class="md-github">Always return promises from callbacks.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Chained Example:</strong></p>
+<pre class="md-github"><code class="md-github language-js">doSomething()
+  .then((result) =&gt; doSomethingElse(result))
+  .then((newResult) =&gt; doThirdThing(newResult))
+  .then((finalResult) =&gt; console.log(`Got the final result: ${finalResult}`))
+  .catch(failureCallback);
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="3-asyncawait-pattern" href="#3-asyncawait-pattern"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. Async/Await Pattern</h3>
+<ul class="md-github">
+<li class="md-github">Use async functions with await to simplify promise management.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Example:</strong></p>
+<pre class="md-github"><code class="md-github language-js">async function logIngredients() {
+  const url = await doSomething();
+  const res = await fetch(url);
+  const data = await res.json();
+  listOfIngredients.push(data);
+  console.log(listOfIngredients);
+}
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="4-error-handling" href="#4-error-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Error Handling</h3>
+<ul class="md-github">
+<li class="md-github">Use .catch() at the end of the chain.</li>
+<li class="md-github">With async/await, utilize try/catch blocks.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Async/Await Error Handling:</strong></p>
+<pre class="md-github"><code class="md-github language-js">async function foo() {
+  try {
+    const result = await doSomething();
+    const newResult = await doSomethingElse(result);
+    const finalResult = await doThirdThing(newResult);
+    console.log(`Got the final result: ${finalResult}`);
+  } catch (error) {
+    failureCallback(error);
+  }
+}
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="5-nesting-and-composition" href="#5-nesting-and-composition"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. Nesting and Composition</h3>
+<ul class="md-github">
+<li class="md-github">Nest promises to restrict the catch scope.</li>
+<li class="md-github">Use Promise.all for concurrent tasks, and reduce chaining for sequential execution.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Composition Example:</strong></p>
+<pre class="md-github"><code class="md-github language-js">Promise.all([func1(), func2(), func3()]).then(([result1, result2, result3]) =&gt; {
+  // use results
+});
+</code></pre>
+<p class="md-github"><strong class="md-github">Sequential using reduce:</strong></p>
+<pre class="md-github"><code class="md-github language-js">[func1, func2, func3]
+  .reduce((p, f) =&gt; p.then(f), Promise.resolve())
+  .then((result) =&gt; {
+    // final result
+  });
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="6-advanced-topics" href="#6-advanced-topics"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6. Advanced Topics</h3>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Cancellation:</strong> Use AbortController to cancel fetch requests.</li>
+<li class="md-github"><strong class="md-github">Timing:</strong> .then() callbacks run as microtasks; setTimeout callbacks run as tasks.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Microtask Example:</strong></p>
+<pre class="md-github"><code class="md-github language-js">Promise.resolve().then(() =&gt; console.log(2));
+console.log(1);
+</code></pre>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Global Rejection Handling (Browser):</strong> Listen for &quot;unhandledrejection&quot; events.</li>
+<li class="md-github"><strong class="md-github">Global Rejection Handling (Node.js):</strong></li>
+</ul>
+<pre class="md-github"><code class="md-github language-js">process.on(&quot;unhandledRejection&quot;, (reason, promise) =&gt; {
+  // inspect reason and promise
+});
+</code></pre>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Wrapping Callback APIs:</strong></li>
+</ul>
+<pre class="md-github"><code class="md-github language-js">const wait = (ms) =&gt; new Promise((resolve) =&gt; setTimeout(resolve, ms));
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="supplementary-technical-specifications" href="#supplementary-technical-specifications"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Technical Specifications</h3>
+<ul class="md-github">
+<li class="md-github">Promise Constructor: new Promise((resolve, reject) =&gt; { ... })
+<ul class="md-github">
+<li class="md-github">Parameters: executor function with resolve(value) and reject(reason).</li>
+<li class="md-github">Example:</li>
+</ul>
+</li>
+</ul>
+<pre class="md-github"><code class="md-github language-js">function doSomething() {
+  return new Promise((resolve) =&gt; {
+    setTimeout(() =&gt; {
+      console.log(&quot;Did something&quot;);
+      resolve(&quot;https://example.com/&quot;);
+    }, 200);
+  });
+}
+</code></pre>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Chaining: The then() method signature</p>
+<ul class="md-github">
+<li class="md-github">then(onFulfilled?: (value: any) =&gt; any, onRejected?: (reason: any) =&gt; any): Promise</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Async/Await: Mark function with async; await returns the fulfillment value.</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration Options:</p>
+<ul class="md-github">
+<li class="md-github">For timeouts, setTimeout(ms) is used (e.g., 10 * 1000 for 10 seconds).</li>
+<li class="md-github">AbortController can be used to cancel fetch: new AbortController(), passing controller.signal to fetch().</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Always return a promise in a then() callback.</li>
+<li class="md-github">Flatten promise chains to avoid nested error handling.</li>
+<li class="md-github">Attach a global unhandledRejection handler in Node.js to log all errors.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Troubleshooting Procedures:</p>
+<ul class="md-github">
+<li class="md-github">If a promise resolution seems to occur out-of-order, inspect microtask vs. task queue using console logs.</li>
+<li class="md-github">Use try/catch in async functions to capture errors.</li>
+<li class="md-github">Validate that all asynchronous calls return a promise by checking using Promise.resolve().</li>
+<li class="md-github">For Node.js, add:</li>
+</ul>
+</li>
+</ul>
+<pre class="md-github"><code class="md-github language-bash">node -e &quot;process.on('unhandledRejection', (r, p) =&gt; console.error(r)); require('./yourScript');&quot;
+</code></pre>
+<p class="md-github">to capture unhandled promise rejections.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="complete-api-specifications-and-implementation-patterns" href="#complete-api-specifications-and-implementation-patterns"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Complete API Specifications and Implementation Patterns</h3>
+<h4 class="md-github"><a class="md-github__anchor" name="promise-constructor" href="#promise-constructor"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Promise Constructor</h4>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Syntax:</p>
+<p class="md-github">new Promise((resolve: (value?: any) =&gt; void, reject: (reason?: any) =&gt; void) =&gt; { ... })</p>
+</li>
+<li class="md-github">
+<p class="md-github">Example:</p>
+</li>
+</ul>
+<pre class="md-github"><code class="md-github language-js">function doSomething(): Promise&lt;string&gt; {
+  return new Promise((resolve, reject) =&gt; {
+    setTimeout(() =&gt; {
+      // Additional operations here
+      console.log(&quot;Did something&quot;);
+      resolve(&quot;https://example.com/&quot;);
+    }, 200);
+  });
+}
+</code></pre>
+<h4 class="md-github"><a class="md-github__anchor" name="then-method" href="#then-method"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.then() Method</h4>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Signature:</p>
+<p class="md-github">promise.then(onFulfilled?: (value: any) =&gt; any, onRejected?: (reason: any) =&gt; any): Promise</p>
+</li>
+<li class="md-github">
+<p class="md-github">Usage Example:</p>
+</li>
+</ul>
+<pre class="md-github"><code class="md-github language-js">const promise = doSomething();
+const promise2 = promise.then(
+  (result) =&gt; {
+    // Process result which is a string representing URL
+    return fetch(result); // fetch returns a promise
+  },
+  (error) =&gt; {
+    console.error(`Error encountered: ${error}`);
+    throw error; // rethrow for further catch
+  }
+);
+</code></pre>
+<h4 class="md-github"><a class="md-github__anchor" name="catch-method" href="#catch-method"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.catch() Method</h4>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Signature:</p>
+<p class="md-github">promise.catch(onRejected: (reason: any) =&gt; any): Promise</p>
+</li>
+<li class="md-github">
+<p class="md-github">Usage Example:</p>
+</li>
+</ul>
+<pre class="md-github"><code class="md-github language-js">doSomething()
+  .then((result) =&gt; doSomethingElse(result))
+  .catch((error) =&gt; {
+    console.error(`Caught error: ${error}`);
+  });
+</code></pre>
+<h4 class="md-github"><a class="md-github__anchor" name="asyncawait" href="#asyncawait"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Async/Await</h4>
+<ul class="md-github">
+<li class="md-github">Function Declaration:</li>
+</ul>
+<pre class="md-github"><code class="md-github language-js">async function foo(): Promise&lt;void&gt; {
+  try {
+    const result = await doSomething();
+    const newResult = await doSomethingElse(result);
+    const finalResult = await doThirdThing(newResult);
+    console.log(`Got the final result: ${finalResult}`);
+  } catch (error) {
+    failureCallback(error);
+  }
+}
+</code></pre>
+<h4 class="md-github"><a class="md-github__anchor" name="configuration-and-cancellation" href="#configuration-and-cancellation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration and Cancellation</h4>
+<ul class="md-github">
+<li class="md-github">Using AbortController with fetch:</li>
+</ul>
+<pre class="md-github"><code class="md-github language-js">const controller = new AbortController();
+const signal = controller.signal;
+
+fetch('https://example.com/', { signal })
+  .then(response =&gt; response.json())
+  .then(data =&gt; console.log(data))
+  .catch(error =&gt; {
+    if (error.name === 'AbortError') {
+      console.log('Fetch aborted');
+    } else {
+      console.error('Fetch error:', error);
+    }
+  });
+
+// To cancel the request:
+controller.abort();
+</code></pre>
+<h4 class="md-github"><a class="md-github__anchor" name="best-practices-and-troubleshooting" href="#best-practices-and-troubleshooting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Best Practices and Troubleshooting</h4>
+<ul class="md-github">
+<li class="md-github">Always ensure .then() callbacks return a promise when chaining asynchronous operations.</li>
+<li class="md-github">Flatten chains to avoid nested callbacks and ambiguous error handling.</li>
+<li class="md-github">Global Error Handling in Node.js:</li>
+</ul>
+<pre class="md-github"><code class="md-github language-js">process.on('unhandledRejection', (reason, promise) =&gt; {
+  console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+</code></pre>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Troubleshooting Commands:</p>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Running Node.js with verbose unhandled rejection logging:</p>
+<pre class="md-github"><code class="md-github language-bash">node --trace-warnings yourScript.js
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Validate promise resolution by inserting logging statements immediately after promise creation and in .then() callbacks.</p>
+</li>
+</ul>
+</li>
+</ul>
+<p class="md-github">This complete reference provides developers with concrete SDK method signatures, code examples, configuration options, and detailed implementation and troubleshooting steps to effectively use promises in JavaScript.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">MDN Web Docs: Using Promises
+https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-using_promises" href="#digest-of-using_promises"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of USING_PROMISES</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="using-promises" href="#using-promises"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Using Promises</h1>
+<p class="md-github">Retrieved: 2025-04-03</p>
+<p class="md-github">This document extracts the precise technical details regarding the usage of Promises in JavaScript as described on MDN Web Docs. It includes actual code examples, method signatures, exact implementation patterns, configuration details, and complete API specifications.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="core-promise-concepts" href="#core-promise-concepts"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Core Promise Concepts</h2>
+<ul class="md-github">
+<li class="md-github">A Promise is an object representing the eventual completion or failure of an asynchronous operation.</li>
+<li class="md-github">Instead of passing callbacks directly to a function, the function returns a promise to which callbacks are attached using .then() and .catch().</li>
+</ul>
+<p class="md-github"><strong class="md-github">Example using call-back to promise conversion:</strong></p>
+<pre class="md-github"><code class="md-github language-js">function successCallback(result) {
+  console.log(`Audio file ready at URL: ${result}`);
+}
+
+function failureCallback(error) {
+  console.error(`Error generating audio file: ${error}`);
+}
+
+// Old callback-based API
+ncreateAudioFileAsync(audioSettings, successCallback, failureCallback);
+
+// Promise-based API
+createAudioFileAsync(audioSettings).then(successCallback, failureCallback);
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="promise-chaining--callback-hell" href="#promise-chaining--callback-hell"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Promise Chaining &amp; Callback Hell</h2>
+<ul class="md-github">
+<li class="md-github">Promise chaining provides a solution to callback hell by returning a new promise from then().</li>
+</ul>
+<p class="md-github"><strong class="md-github">Example of chaining to avoid callback hell:</strong></p>
+<pre class="md-github"><code class="md-github language-js">doSomething()
+  .then((result) =&gt; doSomethingElse(result))
+  .then((newResult) =&gt; doThirdThing(newResult))
+  .then((finalResult) =&gt; {
+    console.log(`Got the final result: ${finalResult}`);
+  })
+  .catch(failureCallback);
+</code></pre>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Important Rule:</strong> Always return a promise from then callbacks. Failure to do so results in a &quot;floating&quot; promise that cannot be tracked.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Faulty example:</strong></p>
+<pre class="md-github"><code class="md-github language-js">doSomething()
+  .then((url) =&gt; {
+    // Missing return causes undefined result
+    fetch(url);
+  })
+  .then((result) =&gt; {
+    // result will be undefined
+  });
+</code></pre>
+<p class="md-github"><strong class="md-github">Corrected example:</strong></p>
+<pre class="md-github"><code class="md-github language-js">doSomething()
+  .then((url) =&gt; {
+    return fetch(url);
+  })
+  .then((result) =&gt; {
+    // result is a Response object
+  });
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="asyncawait-pattern" href="#asyncawait-pattern"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Async/Await Pattern</h2>
+<ul class="md-github">
+<li class="md-github">The async/await syntax makes asynchronous code look synchronous. Use the <code class="md-github">await</code> keyword to wait for a promise to settle.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Example converting promise chain to async/await:</strong></p>
+<pre class="md-github"><code class="md-github language-js">async function logIngredients() {
+  const url = await doSomething();
+  const res = await fetch(url);
+  const data = await res.json();
+  listOfIngredients.push(data);
+  console.log(listOfIngredients);
+}
+</code></pre>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Note:</strong> Omission of the <code class="md-github">await</code> keyword leads to type mismatches and runtime errors.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="error-handling" href="#error-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Error Handling</h2>
+<ul class="md-github">
+<li class="md-github">Errors in a promise chain are caught using <code class="md-github">.catch()</code>. This works similarly to a try/catch in synchronous code.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Standard error handling with promises:</strong></p>
+<pre class="md-github"><code class="md-github language-js">doSomething()
+  .then((result) =&gt; doSomethingElse(result))
+  .then((newResult) =&gt; doThirdThing(newResult))
+  .then((finalResult) =&gt; console.log(`Got the final result: ${finalResult}`))
+  .catch(failureCallback);
+</code></pre>
+<ul class="md-github">
+<li class="md-github">With async/await:</li>
+</ul>
+<pre class="md-github"><code class="md-github language-js">async function foo() {
+  try {
+    const result = await doSomething();
+    const newResult = await doSomethingElse(result);
+    const finalResult = await doThirdThing(newResult);
+    console.log(`Got the final result: ${finalResult}`);
+  } catch (error) {
+    failureCallback(error);
+  }
+}
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="nesting-and-composition" href="#nesting-and-composition"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Nesting and Composition</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Nesting:</strong> Use nested promises to limit the scope of error handling.</li>
+</ul>
+<pre class="md-github"><code class="md-github language-js">doSomethingCritical()
+  .then((result) =&gt;
+    doSomethingOptional(result)
+      .then((optionalResult) =&gt; doSomethingExtraNice(optionalResult))
+      .catch((e) =&gt; {})
+  )
+  .then(() =&gt; moreCriticalStuff())
+  .catch((e) =&gt; console.error(`Critical failure: ${e.message}`));
+</code></pre>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Composition Tools:</strong>
+<ul class="md-github">
+<li class="md-github">Promise.all(): Runs promises concurrently and returns when all are fulfilled or one rejects.</li>
+<li class="md-github">Promise.allSettled(), Promise.any(), and Promise.race() offer different patterns for concurrent execution.</li>
+</ul>
+</li>
+</ul>
+<p class="md-github"><strong class="md-github">Concurrent execution example:</strong></p>
+<pre class="md-github"><code class="md-github language-js">Promise.all([func1(), func2(), func3()]).then(([result1, result2, result3]) =&gt; {
+  // use the results
+});
+</code></pre>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Sequential Composition using reduce:</strong></li>
+</ul>
+<pre class="md-github"><code class="md-github language-js">[func1, func2, func3]
+  .reduce((p, f) =&gt; p.then(f), Promise.resolve())
+  .then((result3) =&gt; {
+    // use result3
+  });
+</code></pre>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Reusable compose function:</strong></li>
+</ul>
+<pre class="md-github"><code class="md-github language-js">const applyAsync = (acc, val) =&gt; acc.then(val);
+
+const composeAsync = (...funcs) =&gt; (x) =&gt; funcs.reduce(applyAsync, Promise.resolve(x));
+
+const transformData = composeAsync(func1, func2, func3);
+const result3 = transformData(data);
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="advanced-topics" href="#advanced-topics"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Advanced Topics</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="cancellation" href="#cancellation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Cancellation</h3>
+<ul class="md-github">
+<li class="md-github">While Promise API does not include cancellation, you can cancel underlying asynchronous operations using tools like AbortController.</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="timing-and-task-queue-vs-microtasks" href="#timing-and-task-queue-vs-microtasks"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Timing and Task Queue vs Microtasks</h3>
+<ul class="md-github">
+<li class="md-github">.then() callbacks are enqueued to a microtask queue, ensuring they run after the current event loop finishes.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Example demonstrating microtask scheduling:</strong></p>
+<pre class="md-github"><code class="md-github language-js">Promise.resolve().then(() =&gt; console.log(2));
+console.log(1);
+// Output: 1 then 2
+</code></pre>
+<p class="md-github"><strong class="md-github">Microtask example with setTimeout:</strong></p>
+<pre class="md-github"><code class="md-github language-js">const wait = (ms) =&gt; new Promise((resolve) =&gt; setTimeout(resolve, ms));
+
+wait(0).then(() =&gt; console.log(4));
+Promise.resolve()
+  .then(() =&gt; console.log(2))
+  .then(() =&gt; console.log(3));
+console.log(1);
+// Expected Output: 1, 2, 3, 4
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="promise-rejection-events" href="#promise-rejection-events"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Promise Rejection Events</h3>
+<ul class="md-github">
+<li class="md-github">Global events: <code class="md-github">unhandledrejection</code> and <code class="md-github">rejectionhandled</code> are used in browsers, and in Node.js use <code class="md-github">process.on(&quot;unhandledRejection&quot;, ...)</code>.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Node.js example:</strong></p>
+<pre class="md-github"><code class="md-github language-js">process.on(&quot;unhandledRejection&quot;, (reason, promise) =&gt; {
+  // Examine promise and reason
+});
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="wrapping-callback-apis" href="#wrapping-callback-apis"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Wrapping Callback APIs</h3>
+<ul class="md-github">
+<li class="md-github">Promises can be created by wrapping older callback-based APIs using the Promise constructor.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Example wrapping setTimeout:</strong></p>
+<pre class="md-github"><code class="md-github language-js">const wait = (ms) =&gt; new Promise((resolve) =&gt; setTimeout(resolve, ms));
+
+wait(10 * 1000)
+  .then(() =&gt; saySomething(&quot;10 seconds passed&quot;))
+  .catch(failureCallback);
+</code></pre>
+<p class="md-github">The executor function is provided with <code class="md-github">resolve</code> (and optionally <code class="md-github">reject</code>), which are called to settle the promise.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: MDN Web Docs: Using Promises</li>
+<li class="md-github">URL: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises</li>
+<li class="md-github">License: CC BY-SA 2.5</li>
+<li class="md-github">Crawl Date: 2025-04-17T18:27:12.044Z</li>
+<li class="md-github">Data Size: 4749435 bytes</li>
+<li class="md-github">Links Found: 47218</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-17</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-17T19:22:01.428Z</p>
+  </footer>
+</body>
+</html>

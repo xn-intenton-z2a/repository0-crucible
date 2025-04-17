@@ -50,6 +50,7 @@
 <ul class="md-github">
 <li class="md-github">CLI Tool for running commands with argument output.</li>
 <li class="md-github">Memory Logging: The CLI tool now retains a log of command arguments from each invocation. Each log entry is an object that includes a unique session identifier (a combination of the current timestamp and a random string), the command line arguments used, and an explicit <strong class="md-github">timestamp</strong> property with the ISO creation time. This helps group and trace commands executed during a single runtime session. The log can be displayed using the <code class="md-github">--show-memory</code> flag. Programmatically, you can access the log using the <code class="md-github">getMemory()</code> function.</li>
+<li class="md-github"><strong class="md-github">Modification Timestamp:</strong> When a memory log entry is updated via the <code class="md-github">--update-memory-tag</code> or <code class="md-github">--update-memory-annotation</code> commands, an additional property <code class="md-github">modified</code> is added to the entry containing the update timestamp in ISO format.</li>
 <li class="md-github">Persistence: With the new <code class="md-github">--persist-memory</code> flag, the tool now saves the memory log to a file. By default, it saves to <code class="md-github">memory.log</code>, but if the <code class="md-github">--compress-memory</code> flag is also provided, the log is compressed using Node's zlib module and saved as <code class="md-github">memory.log.gz</code>. On startup, if <code class="md-github">memory.log.gz</code> exists, it is automatically decompressed and loaded.</li>
 <li class="md-github">Auto-load Persisted Memory: On startup, if a persisted memory file exists (<code class="md-github">memory.log</code> or <code class="md-github">memory.log.gz</code>), its contents are automatically loaded into the tool's memory log, providing continuity.</li>
 <li class="md-github">Clear Memory: A new <code class="md-github">--clear-memory</code> flag has been added that resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.</li>
@@ -72,10 +73,8 @@
 <li class="md-github"><strong class="md-github">Delete Memory by Date Range:</strong> The new <code class="md-github">--delete-memory-range &lt;start-date&gt; &lt;end-date&gt;</code> flag allows users to delete all memory log entries whose timestamps fall within the specified date range (inclusive). For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --delete-memory-range 2025-04-17T10:00:00.000Z 2025-04-17T13:00:00.000Z
 </code></pre>
 </li>
-<li class="md-github">Update Memory Tag: The new <code class="md-github">--update-memory-tag &lt;sessionId&gt; &lt;newTag&gt;</code> flag allows updating the tag of an existing memory log entry identified by its sessionId. When a memory.log file exists, the update is automatically persisted. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --update-memory-tag &lt;sessionId&gt; newTag
-</code></pre>
-</li>
-<li class="md-github">Update Memory Annotation: The new <code class="md-github">--update-memory-annotation &lt;sessionId&gt; &lt;newAnnotation&gt;</code> flag allows updating the annotation of an existing memory log entry identified by its sessionId. If a memory.log file exists, the change is automatically persisted.</li>
+<li class="md-github">Update Memory Tag: The new <code class="md-github">--update-memory-tag &lt;sessionId&gt; &lt;newTag&gt;</code> flag allows updating the tag of an existing memory log entry identified by its sessionId. When a memory.log file exists, the update is automatically persisted. Upon update, a <code class="md-github">modified</code> property is also recorded containing the update timestamp.</li>
+<li class="md-github">Update Memory Annotation: The new <code class="md-github">--update-memory-annotation &lt;sessionId&gt; &lt;newAnnotation&gt;</code> flag allows updating the annotation of an existing memory log entry identified by its sessionId. If a memory.log file exists, the change is automatically persisted. A <code class="md-github">modified</code> property is similarly recorded upon an update.</li>
 <li class="md-github">Delete Memory by Tag: Use the new <code class="md-github">--delete-memory-by-tag &lt;tag&gt;</code> flag to remove all memory log entries that have a matching tag (case-insensitive). This helps in clearing out categorized log entries when needed. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --delete-memory-by-tag myCustomTag
 </code></pre>
 </li>
@@ -259,7 +258,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-17T18:26:14.355Z</p>
+    <p>Generated on 2025-04-17T19:22:02.005Z</p>
   </footer>
 </body>
 </html>
