@@ -65,7 +65,11 @@ export function main(args = []) {
   }
 
   // Determine effective memory file path
-  const effectiveMemoryPath = getEffectiveMemoryPath();
+  let effectiveMemoryPath = getEffectiveMemoryPath();
+  // If compress flag is provided and no custom path is set, force the file extension to .gz
+  if (args.includes("--compress-memory") && !customMemoryPath) {
+    effectiveMemoryPath = "memory.log.gz";
+  }
 
   // On startup, auto-load persisted memory from the custom file if provided, else use default
   if (fs.existsSync(effectiveMemoryPath)) {
@@ -88,7 +92,13 @@ export function main(args = []) {
     let persistedEntries = [];
     if (fs.existsSync(effectiveMemoryPath)) {
       try {
-        const fileData = fs.readFileSync(effectiveMemoryPath, { encoding: "utf-8" });
+        let fileData;
+        if (effectiveMemoryPath.endsWith(".gz")) {
+          const compressedData = fs.readFileSync(effectiveMemoryPath);
+          fileData = zlib.gunzipSync(compressedData).toString("utf-8");
+        } else {
+          fileData = fs.readFileSync(effectiveMemoryPath, { encoding: "utf-8" });
+        }
         persistedEntries = JSON.parse(fileData);
       } catch (error) {
         console.error("Error reading persisted memory for merge:", error);

@@ -135,7 +135,7 @@ describe("Memory Logging Feature", () => {
       unlinkSync(COMPRESSED_LOG_FILE);
     }
     main(["compressTest", "--persist-memory", "--compress-memory"]);
-    expect(existsSync(COMPRESSED_LOG_FILE) || existsSync(MEMORY_LOG_FILE)).toBe(true);
+    expect(existsSync(COMPRESSED_LOG_FILE)).toBe(true);
     let effectivePath = existsSync(COMPRESSED_LOG_FILE) ? COMPRESSED_LOG_FILE : MEMORY_LOG_FILE;
     const data = readFileSync(effectivePath);
     if (effectivePath.endsWith(".gz")) {
