@@ -485,6 +485,40 @@ export function main(args = []) {
     return;
   }
 
+  // New flag: Handle --export-csv flag to export memory log in CSV format
+  if (args.includes("--export-csv")) {
+    const idx = args.indexOf("--export-csv");
+    let exportFilename = "memory_export.csv";
+    if (args.length > idx + 1 && !args[idx + 1].startsWith("--")) {
+      exportFilename = args[idx + 1];
+    }
+    const header = "sessionId,timestamp,modified,args,tag,annotation";
+    const rows = memoryLog.map(entry => {
+      const sessionId = entry.sessionId || "";
+      const timestamp = entry.timestamp || "";
+      const modified = entry.modified || "";
+      const argsStr = Array.isArray(entry.args) ? entry.args.join(" ") : "";
+      const tag = entry.tag || "";
+      const annotation = entry.annotation || "";
+      function escapeCsv(field) {
+        if (typeof field !== 'string') field = String(field);
+        if (field.includes(",") || field.includes('"') || field.includes("\n")) {
+          field = '"' + field.replace(/"/g, '""') + '"';
+        }
+        return field;
+      }
+      return [sessionId, timestamp, modified, argsStr, tag, annotation].map(escapeCsv).join(",");
+    });
+    const csvContent = header + "\n" + rows.join("\n");
+    try {
+      fs.writeFileSync(exportFilename, csvContent);
+      console.log(`Memory log exported to ${exportFilename} in CSV format`);
+    } catch (error) {
+      console.error("Error exporting CSV memory log:", error);
+    }
+    return;
+  }
+
   // Handle --tag-memory flag if provided
   let tagValue = null;
   if (args.includes("--tag-memory")) {
