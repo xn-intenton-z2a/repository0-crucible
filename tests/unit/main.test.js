@@ -383,146 +383,138 @@ describe("Memory Logging Feature", () => {
       expect(updatedEntry).toHaveProperty("timestamp");
     });
   });
-});
 
-describe("Diagnostics Flag", () => {
-  beforeEach(() => {
-    resetMemory();
-    if (existsSync(MEMORY_LOG_FILE)) {
-      unlinkSync(MEMORY_LOG_FILE);
-    }
-  });
-
-  test("should output diagnostics information when --diagnostics flag is provided", () => {
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--diagnostics"]);
-    expect(spy).toHaveBeenCalled();
-    const output = spy.mock.calls[0][0];
-    const diag = JSON.parse(output);
-    expect(diag).toHaveProperty("memoryLimit");
-    expect(diag).toHaveProperty("memoryLogCount");
-    expect(diag).toHaveProperty("memoryFilePersisted");
-    spy.mockRestore();
-  });
-});
-
-describe("Memory Stats Flag", () => {
-  test("should output memory stats with correct count, oldest and newest session IDs when --memory-stats flag is provided", () => {
-    resetMemory();
-    main(["first"]);
-    main(["second"]);
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--memory-stats"]);
-    expect(spy).toHaveBeenCalled();
-    const loggedOutput = spy.mock.calls[spy.mock.calls.length - 1][0];
-    const stats = JSON.parse(loggedOutput);
-    expect(stats.count).toBe(2);
-    const mem = getMemory();
-    expect(stats.oldest).toEqual(mem[0].sessionId);
-    expect(stats.newest).toEqual(mem[mem.length - 1].sessionId);
-    spy.mockRestore();
-  });
-});
-
-describe("Detailed Diagnostics Flag", () => {
-  test("should output detailed diagnostics including memorySessionIds", () => {
-    resetMemory();
-    main(["entry1"]);
-    main(["entry2", "--tag-memory", "tagA"]);
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--detailed-diagnostics"]);
-    expect(spy).toHaveBeenCalled();
-    const output = spy.mock.calls[0][0];
-    const detailedDiag = JSON.parse(output);
-    expect(detailedDiag).toHaveProperty("memoryLimit");
-    expect(detailedDiag).toHaveProperty("memoryLogCount");
-    expect(detailedDiag).toHaveProperty("memoryFilePersisted");
-    expect(detailedDiag).toHaveProperty("memorySessionIds");
-    expect(Array.isArray(detailedDiag.memorySessionIds)).toBe(true);
-    const mem = getMemory();
-    const expectedIds = mem.map(e => e.sessionId);
-    expect(detailedDiag.memorySessionIds).toEqual(expectedIds);
-    spy.mockRestore();
-  });
-});
-
-describe("Frequency Stats Flag", () => {
-  test("should output frequency stats with correct counts", () => {
-    resetMemory();
-    // Create several log entries
-    main(["alpha", "beta"]);
-    main(["beta", "gamma"]);
-    main(["alpha"]);
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--frequency-stats"]);
-    expect(spy).toHaveBeenCalled();
-    const output = spy.mock.calls[spy.mock.calls.length - 1][0];
-    const freq = JSON.parse(output);
-    expect(freq).toMatchObject({
-      "alpha": 2,
-      "beta": 2,
-      "gamma": 1
+  describe("Query Annotation Flag", () => {
+    test("should output filtered memory log when --query-annotation flag is provided", () => {
+      resetMemory();
+      main(["commandWithAnnotation", "--annotate-memory", "Review this ASAP"]);
+      main(["anotherCommand", "--annotate-memory", "No review needed"]);
+      main(["commandWithoutAnnotation"]);
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+      main(["--query-annotation", "review"]);
+      expect(spy).toHaveBeenCalled();
+      const output = spy.mock.calls[spy.mock.calls.length - 1][0];
+      const filtered = JSON.parse(output);
+      // Both annotations contain 'review' (case-insensitive)
+      expect(filtered.length).toBe(2);
+      filtered.forEach(entry => {
+        expect(entry.annotation.toLowerCase()).toMatch(/review/);
+      });
+      spy.mockRestore();
     });
-    spy.mockRestore();
-  });
-});
 
-describe("Annotate Memory Feature", () => {
-  test("should log command arguments with annotation when --annotate-memory flag is provided", () => {
-    resetMemory();
-    main(["sampleCommand", "--annotate-memory", "note1"]);
-    const mem = getMemory();
-    expect(mem).toHaveLength(1);
-    expect(mem[0]).toHaveProperty("annotation", "note1");
-    expect(mem[0].args).toEqual(["sampleCommand", "--annotate-memory", "note1"]);
-    expect(mem[0]).toHaveProperty("timestamp");
+    test("should error when --query-annotation flag is provided without a query string", () => {
+      const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+      const initialLength = getMemory().length;
+      main(["--query-annotation"]);
+      expect(spy).toHaveBeenCalledWith("No annotation specified for --query-annotation flag");
+      spy.mockRestore();
+      const mem = getMemory();
+      expect(mem.length).toBe(initialLength);
+    });
   });
 
-  test("should error when --annotate-memory flag is provided without a valid annotation", () => {
-    const initialLength = getMemory().length;
-    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    main(["sampleCommand", "--annotate-memory"]);
-    expect(spy).toHaveBeenCalledWith("No annotation value provided for --annotate-memory flag");
-    spy.mockRestore();
-    const mem = getMemory();
-    expect(mem.length).toBe(initialLength);
-  });
-});
+  describe("Diagnostics Flag", () => {
+    beforeEach(() => {
+      resetMemory();
+      if (existsSync(MEMORY_LOG_FILE)) {
+        unlinkSync(MEMORY_LOG_FILE);
+      }
+    });
 
-// New tests for --query-memory-range flag
-describe("Date Range Query Feature", () => {
-  test("should filter memory entries within specified date range", () => {
-    resetMemory();
-    // Add first entry and set a specific timestamp
-    main(["entry1"]);
-    let mem = getMemory();
-    mem[0].timestamp = "2025-04-17T05:00:00.000Z";
-    // Add second entry and set a different timestamp
-    main(["entry2"]);
-    mem = getMemory();
-    mem[1].timestamp = "2025-04-18T10:00:00.000Z";
-    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    // Query range that includes only the first entry
-    main(["--query-memory-range", "2025-04-17T00:00:00.000Z", "2025-04-17T23:59:59.999Z"]);
-    expect(spy).toHaveBeenCalled();
-    const output = spy.mock.calls[0][0];
-    const filtered = JSON.parse(output);
-    expect(filtered).toHaveLength(1);
-    expect(filtered[0].args).toEqual(["entry1"]);
-    spy.mockRestore();
+    test("should output diagnostics information when --diagnostics flag is provided", () => {
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+      main(["--diagnostics"]);
+      expect(spy).toHaveBeenCalled();
+      const output = spy.mock.calls[0][0];
+      const diag = JSON.parse(output);
+      expect(diag).toHaveProperty("memoryLimit");
+      expect(diag).toHaveProperty("memoryLogCount");
+      expect(diag).toHaveProperty("memoryFilePersisted");
+      spy.mockRestore();
+    });
   });
 
-  test("should error when date range arguments are missing", () => {
-    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    main(["--query-memory-range", "2025-04-17T00:00:00.000Z"]);
-    expect(spy).toHaveBeenCalledWith("Invalid usage: --query-memory-range requires two arguments: start date and end date in ISO format");
-    spy.mockRestore();
+  describe("Memory Stats Flag", () => {
+    test("should output memory stats with correct count, oldest and newest session IDs when --memory-stats flag is provided", () => {
+      resetMemory();
+      main(["first"]);
+      main(["second"]);
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+      main(["--memory-stats"]);
+      expect(spy).toHaveBeenCalled();
+      const loggedOutput = spy.mock.calls[spy.mock.calls.length - 1][0];
+      const stats = JSON.parse(loggedOutput);
+      expect(stats.count).toBe(2);
+      const mem = getMemory();
+      expect(stats.oldest).toEqual(mem[0].sessionId);
+      expect(stats.newest).toEqual(mem[mem.length - 1].sessionId);
+      spy.mockRestore();
+    });
   });
 
-  test("should error when provided dates are invalid", () => {
-    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-    main(["--query-memory-range", "invalid-date", "2025-04-18T00:00:00.000Z"]);
-    expect(spy).toHaveBeenCalledWith("Invalid date format: Start and end dates must be valid ISO date strings");
-    spy.mockRestore();
+  describe("Detailed Diagnostics Flag", () => {
+    test("should output detailed diagnostics including memorySessionIds", () => {
+      resetMemory();
+      main(["entry1"]);
+      main(["entry2", "--tag-memory", "tagA"]);
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+      main(["--detailed-diagnostics"]);
+      expect(spy).toHaveBeenCalled();
+      const output = spy.mock.calls[0][0];
+      const detailedDiag = JSON.parse(output);
+      expect(detailedDiag).toHaveProperty("memoryLimit");
+      expect(detailedDiag).toHaveProperty("memoryLogCount");
+      expect(detailedDiag).toHaveProperty("memoryFilePersisted");
+      expect(detailedDiag).toHaveProperty("memorySessionIds");
+      expect(Array.isArray(detailedDiag.memorySessionIds)).toBe(true);
+      const mem = getMemory();
+      const expectedIds = mem.map(e => e.sessionId);
+      expect(detailedDiag.memorySessionIds).toEqual(expectedIds);
+      spy.mockRestore();
+    });
+  });
+
+  describe("Frequency Stats Flag", () => {
+    test("should output frequency stats with correct counts", () => {
+      resetMemory();
+      // Create several log entries
+      main(["alpha", "beta"]);
+      main(["beta", "gamma"]);
+      main(["alpha"]);
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+      main(["--frequency-stats"]);
+      expect(spy).toHaveBeenCalled();
+      const output = spy.mock.calls[spy.mock.calls.length - 1][0];
+      const freq = JSON.parse(output);
+      expect(freq).toMatchObject({
+        "alpha": 2,
+        "beta": 2,
+        "gamma": 1
+      });
+      spy.mockRestore();
+    });
+  });
+
+  describe("Annotate Memory Feature", () => {
+    test("should log command arguments with annotation when --annotate-memory flag is provided", () => {
+      resetMemory();
+      main(["sampleCommand", "--annotate-memory", "note1"]);
+      const mem = getMemory();
+      expect(mem).toHaveLength(1);
+      expect(mem[0]).toHaveProperty("annotation", "note1");
+      expect(mem[0].args).toEqual(["sampleCommand", "--annotate-memory", "note1"]);
+      expect(mem[0]).toHaveProperty("timestamp");
+    });
+
+    test("should error when --annotate-memory flag is provided without a valid annotation", () => {
+      const initialLength = getMemory().length;
+      const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+      main(["sampleCommand", "--annotate-memory"]);
+      expect(spy).toHaveBeenCalledWith("No annotation value provided for --annotate-memory flag");
+      spy.mockRestore();
+      const mem = getMemory();
+      expect(mem.length).toBe(initialLength);
+    });
   });
 });

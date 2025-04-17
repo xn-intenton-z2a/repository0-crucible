@@ -228,6 +228,19 @@ export function main(args = []) {
     return;
   }
 
+  // Handle --query-annotation functionality for filtering by annotation (case-insensitive)
+  if (args.includes("--query-annotation")) {
+    const index = args.indexOf("--query-annotation");
+    if (args.length <= index + 1 || args[index + 1].startsWith("--")) {
+      console.error("No annotation specified for --query-annotation flag");
+      return;
+    }
+    const annotationQuery = args[index + 1].toLowerCase();
+    const filtered = memoryLog.filter(entry => entry.annotation && entry.annotation.toLowerCase().includes(annotationQuery));
+    console.log(JSON.stringify(filtered));
+    return;
+  }
+
   // Handle --query-memory-range flag for filtering memory log entries by a date range
   if (args.includes("--query-memory-range")) {
     const index = args.indexOf("--query-memory-range");
@@ -375,8 +388,6 @@ export function main(args = []) {
       console.error("Error writing memory.log:", error);
     }
   }
-
-  // If '--import-memory' flag was provided, record that action as well
 
   // If '--show-memory' flag is provided, output the memory log in reverse chronological order
   if (args.includes("--show-memory")) {
