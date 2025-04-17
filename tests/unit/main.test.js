@@ -304,6 +304,22 @@ describe("Memory Logging Feature", () => {
       expect(spy).toHaveBeenCalledWith("No memory log entry found with sessionId:", "nonexistentSession");
       spy.mockRestore();
     });
+
+    test("should persist memory tag update to disk when --update-memory-tag flag is provided", () => {
+      // Pre-populate memory.log with a known entry
+      const initialEntry = { sessionId: "persistTestSession", args: ["persistTest"], tag: "oldPersistTag" };
+      writeFileSync(MEMORY_LOG_FILE, JSON.stringify([initialEntry]));
+
+      // Call main with a dummy argument to load persisted memory
+      main(["dummy"]);
+      // Now update the tag of the pre-existing entry
+      main(["--update-memory-tag", "persistTestSession", "newPersistTag"]);
+      // Read the updated file
+      const updatedData = JSON.parse(readFileSync(MEMORY_LOG_FILE, { encoding: "utf-8" }));
+      const updatedEntry = updatedData.find(e => e.sessionId === "persistTestSession");
+      expect(updatedEntry).toBeDefined();
+      expect(updatedEntry.tag).toBe("newPersistTag");
+    });
   });
 });
 

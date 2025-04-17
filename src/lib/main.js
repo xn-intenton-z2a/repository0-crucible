@@ -54,6 +54,14 @@ export function main(args = []) {
     if (entry) {
       entry.tag = newTag;
       console.log("Memory log entry updated:", JSON.stringify(entry));
+      // If memory.log exists, auto-persist the updated memoryLog
+      if (fs.existsSync("memory.log")) {
+        try {
+          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
+        } catch (error) {
+          console.error("Error persisting memory.log:", error);
+        }
+      }
     } else {
       console.error("No memory log entry found with sessionId:", sessionId);
     }
