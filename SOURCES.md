@@ -1,6 +1,6 @@
 # OpenAI API Documentation
 ## https://platform.openai.com/docs
-The official documentation for OpenAI's API provides comprehensive guides, reference materials, and usage examples for integrating OpenAI models into applications. It is frequently updated to reflect the latest capabilities and pricing models, making it a reliable and authoritative source for developers. 
+The official documentation for OpenAI's API provides comprehensive guides, reference materials, and usage examples for integrating OpenAI models into applications. It is frequently updated to reflect the latest capabilities and pricing models, making it a reliable and authoritative source for developers.
 ## OpenAI API Terms
 
 # Vitest Testing Framework Documentation
@@ -37,3 +37,23 @@ This resource details GitHub's official Command Line Interface (CLI), including 
 ## https://www.serverless.com/framework/docs/
 The Serverless Framework Documentation offers comprehensive guides and tutorials on building and deploying serverless applications. It covers configuration, deployment strategies, and troubleshooting, serving as a vital resource for developers working in serverless environments.
 ## Apache License 2.0
+
+# Node.js Official Documentation
+## https://nodejs.org/en/docs/
+Node.js provides comprehensive documentation for its JavaScript runtime environment, covering setup, API references, and advanced topics such as asynchronous programming and performance optimization. It is maintained by the Node.js Foundation and updated regularly to reflect new features and improvements.
+## MIT License
+
+# Node.js ES Modules Documentation
+## https://nodejs.org/api/esm.html
+This section of the Node.js documentation explains the usage of ES Modules in Node.js, covering import/export syntax, module resolution, and interoperability with CommonJS. It offers practical guidance for modern JavaScript development.
+## MIT License
+
+# npm-check-updates Documentation
+## https://github.com/raineorshine/npm-check-updates
+npm-check-updates is a utility that helps you find the latest versions of project dependencies and update your package.json accordingly. The repository documentation covers installation, usage, and configuration to ensure projects remain up-to-date.
+## MIT License (assumed)
+
+# ESLint Plugin Security Documentation
+## https://github.com/nodesecurity/eslint-plugin-security
+This documentation provides guidelines and examples for using ESLint Plugin Security, which helps identify potential security vulnerabilities in JavaScript code. It outlines best practices for integrating security checks into your linting process.
+## MIT License (assumed)
