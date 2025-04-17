@@ -77,6 +77,12 @@ npm install repository0-crucible
 - Merge Persisted Memory: The new `--merge-persist` flag merges the current in-memory memory log with the persisted log from the disk. It removes duplicate entries (based on sessionId) and trims the result to respect the current memory limit.
 - Frequency Statistics: The new `--frequency-stats` flag computes and outputs a JSON object that shows the frequency count of each command argument from the in-memory log.
 - **Memory Expiration:** The new `--expire-memory <minutes>` flag automatically removes memory log entries older than the specified number of minutes.
+- **Detailed Memory Statistics:** The new `--memory-detailed-stats` flag outputs a JSON object containing detailed statistics about the memory log, including:
+  - Total count of log entries
+  - The earliest timestamp
+  - The latest timestamp
+  - The average interval (in seconds) between consecutive entries
+  - The most frequent command argument across all log entries
 
 ## Usage
 
@@ -228,3 +234,10 @@ node src/lib/main.js --help
   node src/lib/main.js --expire-memory 60
   ```
   This command will remove any memory log entries older than 60 minutes.
+
+- **Detailed Memory Statistics:**
+  ```bash
+  node src/lib/main.js --memory-detailed-stats
+  ```
+  This command outputs detailed statistics about the memory log, including total count, earliest and latest timestamps, average interval between entries (in seconds), and the most frequent command argument.
+

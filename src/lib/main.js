@@ -442,6 +442,43 @@ export function main(args = []) {
     return;
   }
 
+  // New flag: Handle --memory-detailed-stats for detailed memory statistics and exit
+  if (args.includes("--memory-detailed-stats")) {
+    const count = memoryLog.length;
+    const earliest = count > 0 ? memoryLog[0].timestamp : null;
+    const latest = count > 0 ? memoryLog[count - 1].timestamp : null;
+    let averageIntervalSeconds = 0;
+    if (count >= 2) {
+      const diffMs = new Date(latest) - new Date(earliest);
+      averageIntervalSeconds = diffMs / 1000 / (count - 1);
+    }
+    let frequency = {};
+    memoryLog.forEach(entry => {
+      if (Array.isArray(entry.args)) {
+        entry.args.forEach(arg => {
+          frequency[arg] = (frequency[arg] || 0) + 1;
+        });
+      }
+    });
+    let mostFrequentArgument = null;
+    let maxFreq = -1;
+    for (const arg in frequency) {
+      if (frequency[arg] > maxFreq) {
+        maxFreq = frequency[arg];
+        mostFrequentArgument = arg;
+      }
+    }
+    const detailedStats = {
+      count,
+      earliest,
+      latest,
+      averageIntervalSeconds,
+      mostFrequentArgument
+    };
+    console.log(JSON.stringify(detailedStats));
+    return;
+  }
+
   // Handle --tag-memory flag if provided
   let tagValue = null;
   if (args.includes("--tag-memory")) {

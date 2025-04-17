@@ -202,7 +202,6 @@ describe("Memory Logging Feature", () => {
     main(["--export-memory", "compressed_export.json", "--compress"]);
     expect(existsSync("compressed_export.json")).toBe(true);
     const exportedData = readFileSync("compressed_export.json");
-    // Check gzip magic numbers: 0x1f8b
     expect(exportedData[0]).toBe(0x1f);
     expect(exportedData[1]).toBe(0x8b);
     const decompressed = zlib.gunzipSync(exportedData).toString("utf-8");
@@ -502,6 +501,32 @@ describe("Memory Logging Feature", () => {
       main(["--expire-memory", "-5"]);
       expect(spy).toHaveBeenCalledWith("Invalid minutes value provided. It must be a positive integer.");
       expect(getMemory().length).toBe(initialLength);
+      spy.mockRestore();
+    });
+  });
+
+  describe("Detailed Memory Statistics", () => {
+    test("should output detailed memory statistics with correct fields", () => {
+      resetMemory();
+      // Manually populate memory log with controlled timestamps and args
+      const entry1 = { sessionId: "s1", args: ["arg1", "common"], timestamp: "2025-04-17T10:00:00.000Z" };
+      const entry2 = { sessionId: "s2", args: ["arg2", "common"], timestamp: "2025-04-17T10:00:10.000Z" };
+      const entry3 = { sessionId: "s3", args: ["arg3"], timestamp: "2025-04-17T10:00:20.000Z" };
+      const mem = getMemory();
+      mem.push(entry1, entry2, entry3);
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+      main(["--memory-detailed-stats"]);
+      expect(spy).toHaveBeenCalled();
+      const output = spy.mock.calls[0][0];
+      const stats = JSON.parse(output);
+      expect(stats).toHaveProperty("count", 3);
+      expect(stats).toHaveProperty("earliest", "2025-04-17T10:00:00.000Z");
+      expect(stats).toHaveProperty("latest", "2025-04-17T10:00:20.000Z");
+      // Average interval: (20 seconds / (3-1)) = 10 seconds
+      expect(stats).toHaveProperty("averageIntervalSeconds");
+      expect(stats.averageIntervalSeconds).toBeCloseTo(10);
+      // Most frequent argument should be "common" (appears twice)
+      expect(stats).toHaveProperty("mostFrequentArgument", "common");
       spy.mockRestore();
     });
   });
