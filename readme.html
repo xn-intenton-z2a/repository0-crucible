@@ -50,11 +50,14 @@
 <ul class="md-github">
 <li class="md-github">CLI Tool for running commands with argument output.</li>
 <li class="md-github">Memory Logging: The CLI tool now retains a log of command arguments from each invocation. Each log entry is an object that includes a unique session identifier (a combination of the current timestamp and a random string), the command line arguments used, and an explicit <strong class="md-github">timestamp</strong> property with the ISO creation time. This helps group and trace commands executed during a single runtime session. The log can be displayed using the <code class="md-github">--show-memory</code> flag. Programmatically, you can access the log using the <code class="md-github">getMemory()</code> function.</li>
-<li class="md-github">Persistence: With the new <code class="md-github">--persist-memory</code> flag, the tool now saves the memory log to a file called <code class="md-github">memory.log</code>, ensuring the log is retained across separate invocations.</li>
-<li class="md-github">Auto-load Persisted Memory: On startup, if a <code class="md-github">memory.log</code> file exists, its contents are automatically loaded into the tool's memory log, providing continuity.</li>
+<li class="md-github">Persistence: With the new <code class="md-github">--persist-memory</code> flag, the tool now saves the memory log to a file. By default, it saves to <code class="md-github">memory.log</code>, but if the <code class="md-github">--compress-memory</code> flag is also provided, the log is compressed using Node's zlib module and saved as <code class="md-github">memory.log.gz</code>. On startup, if <code class="md-github">memory.log.gz</code> exists, it is automatically decompressed and loaded.</li>
+<li class="md-github">Auto-load Persisted Memory: On startup, if a persisted memory file exists (<code class="md-github">memory.log</code> or <code class="md-github">memory.log.gz</code>), its contents are automatically loaded into the tool's memory log, providing continuity.</li>
 <li class="md-github">Clear Memory: A new <code class="md-github">--clear-memory</code> flag has been added that resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.</li>
 <li class="md-github">Log Size Limit: The memory logging feature now includes a configurable size limit. By default, it is set to 100 entries, but you can override it at runtime using the <code class="md-github">--memory-limit &lt;number&gt;</code> flag. For example, <code class="md-github">node src/lib/main.js --memory-limit 50</code> will set the maximum log entries to 50. Note that if a non-numeric or invalid value is provided (for example, <code class="md-github">NaN</code>), the CLI will output the error &quot;Invalid memory limit provided. It must be a positive integer.&quot;.</li>
 <li class="md-github">Export Memory: The new <code class="md-github">--export-memory</code> flag exports the current memory log to a file. By default, it exports to <code class="md-github">memory_export.json</code>, but you can now optionally provide a custom filename. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-memory custom_log.json
+</code></pre>
+</li>
+<li class="md-github">Export Memory with Compression: You can now export the memory log in a compressed gzip format by using the <code class="md-github">--compress</code> flag in conjunction with <code class="md-github">--export-memory</code>. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-memory compressed_log.json --compress
 </code></pre>
 </li>
 <li class="md-github">Import Memory: The new <code class="md-github">--import-memory &lt;filename&gt;</code> flag imports a memory log from the specified file and replaces the current session’s memory with the imported data.</li>
@@ -82,30 +85,22 @@
 <li class="md-github">Show Memory in Reverse Order: When using the <code class="md-github">--show-memory</code> flag, the memory log is now displayed in reverse chronological order (newest entries first).</li>
 <li class="md-github">Show Memory in Chronological Order: The newly added <code class="md-github">--show-memory-chronological</code> flag displays the memory log in natural, chronological order (oldest entries first), which can be useful for tracking the order in which commands were executed. Note: This flag does not record the query invocation itself.</li>
 <li class="md-github">Diagnostics: A new <code class="md-github">--diagnostics</code> flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.</li>
-<li class="md-github">Detailed Diagnostics: The new <code class="md-github">--detailed-diagnostics</code> flag provides an enhanced diagnostic output. In addition to the basic diagnostics, it outputs a detailed snapshot including an array of all memory session IDs under the property <code class="md-github">memorySessionIds</code>. For example:<pre class="md-github"><code class="md-github language-json">{
-  &quot;memoryLimit&quot;: 100,
-  &quot;memoryLogCount&quot;: 3,
-  &quot;memoryFilePersisted&quot;: true,
-  &quot;memorySessionIds&quot;: [
-    &quot;2025-04-17T10:00:00.000Z-abc123&quot;,
-    &quot;2025-04-17T10:05:00.000Z-def456&quot;,
-    &quot;2025-04-17T10:10:00.000Z-ghi789&quot;
-  ]
-}
-</code></pre>
-</li>
+<li class="md-github">Detailed Diagnostics: The new <code class="md-github">--detailed-diagnostics</code> flag provides an enhanced diagnostic output. In addition to the basic diagnostics, it outputs a detailed snapshot including an array of all memory session IDs under the property <code class="md-github">memorySessionIds</code>.</li>
 <li class="md-github">Tagging: With the new <code class="md-github">--tag-memory &lt;tag&gt;</code> flag, users can attach a custom tag to a memory log entry. This allows for enhanced categorization and traceability of logged commands.</li>
-<li class="md-github">Annotation: With the new <code class="md-github">--annotate-memory &lt;annotation&gt;</code> flag, users can attach a custom annotation to a memory log entry. This provides additional context or notes for the command invocation. For example,<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --annotate-memory &quot;review this command&quot;
-</code></pre>
-</li>
+<li class="md-github">Annotation: With the new <code class="md-github">--annotate-memory &lt;annotation&gt;</code> flag, users can attach a custom annotation to a memory log entry. This provides additional context or notes for the command invocation.</li>
 <li class="md-github">Memory Stats: The new <code class="md-github">--memory-stats</code> flag outputs diagnostic statistics about the in-memory log, including the total count of log entries, the session ID of the oldest entry, and the session ID of the newest entry.</li>
-<li class="md-github">Merge Persisted Memory: The new <code class="md-github">--merge-persist</code> flag merges the current in-memory memory log with the persisted log from <code class="md-github">memory.log</code>. It removes duplicate entries (based on sessionId) and trims the result to respect the current memory limit. For example:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --merge-persist
-</code></pre>
+<li class="md-github">Merge Persisted Memory: The new <code class="md-github">--merge-persist</code> flag merges the current in-memory memory log with the persisted log from the disk. It removes duplicate entries (based on sessionId) and trims the result to respect the current memory limit.</li>
+<li class="md-github">Frequency Statistics: The new <code class="md-github">--frequency-stats</code> flag computes and outputs a JSON object that shows the frequency count of each command argument from the in-memory log.</li>
+<li class="md-github"><strong class="md-github">Memory Expiration:</strong> The new <code class="md-github">--expire-memory &lt;minutes&gt;</code> flag automatically removes memory log entries older than the specified number of minutes.</li>
+<li class="md-github"><strong class="md-github">Detailed Memory Statistics:</strong> The new <code class="md-github">--memory-detailed-stats</code> flag outputs a JSON object containing detailed statistics about the memory log, including:
+<ul class="md-github">
+<li class="md-github">Total count of log entries</li>
+<li class="md-github">The earliest timestamp</li>
+<li class="md-github">The latest timestamp</li>
+<li class="md-github">The average interval (in seconds) between consecutive entries</li>
+<li class="md-github">The most frequent command argument across all log entries</li>
+</ul>
 </li>
-<li class="md-github">Frequency Statistics: The new <code class="md-github">--frequency-stats</code> flag computes and outputs a JSON object that shows the frequency count of each command argument from the in-memory log. This provides an analytical view of how often each argument appears.</li>
-<li class="md-github"><strong class="md-github">Memory Expiration:</strong> The new <code class="md-github">--expire-memory &lt;minutes&gt;</code> flag automatically removes memory log entries older than the specified number of minutes. For example, running:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --expire-memory 60
-</code></pre>
-will purge any memory log entries older than 60 minutes.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">To run the CLI tool and see help instructions:</p>
@@ -129,8 +124,13 @@ will purge any memory log entries older than 60 minutes.</li>
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github"><strong class="md-github">Persist Memory Log:</strong></p>
+<p class="md-github"><strong class="md-github">Persist Memory Log (without compression):</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --persist-memory
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Persist Memory Log with Compression:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --persist-memory --compress-memory
 </code></pre>
 </li>
 <li class="md-github">
@@ -146,6 +146,11 @@ will purge any memory log entries older than 60 minutes.</li>
 <li class="md-github">
 <p class="md-github"><strong class="md-github">Export Memory Log with Custom Filename:</strong></p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-memory custom_log.json
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Export Memory Log with Compression:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --export-memory compressed_log.json --compress
 </code></pre>
 </li>
 <li class="md-github">
@@ -244,17 +249,17 @@ will purge any memory log entries older than 60 minutes.</li>
 </code></pre>
 <p class="md-github">This command will remove any memory log entries older than 60 minutes.</p>
 </li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Detailed Memory Statistics:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --memory-detailed-stats
+</code></pre>
+<p class="md-github">This command outputs detailed statistics about the memory log, including total count, earliest and latest timestamps, average interval between entries (in seconds), and the most frequent command argument.</p>
+</li>
 </ul>
-<h2 class="md-github"><a class="md-github__anchor" name="incremental-changes-plan" href="#incremental-changes-plan"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Incremental Changes Plan</h2>
-<p class="md-github">TODO: Add forthcoming changes here.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
-<p class="md-github">We welcome contributions! Please review our <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines on how to contribute effectively.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
-<p class="md-github">Released under the MIT License (see <a href="./LICENSE" class="md-github">LICENSE</a>).</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-17T17:24:22.380Z</p>
+    <p>Generated on 2025-04-17T18:26:14.248Z</p>
   </footer>
 </body>
 </html>
