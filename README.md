@@ -49,6 +49,19 @@ npm install repository0-crucible
   ```
 - Show Memory in Reverse Order: When using the `--show-memory` flag, the memory log is now displayed in reverse chronological order (newest entries first).
 - Diagnostics: A new `--diagnostics` flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.
+- Detailed Diagnostics: The new `--detailed-diagnostics` flag provides an enhanced diagnostic output. In addition to the basic diagnostics, it outputs a detailed snapshot including an array of all memory session IDs under the property `memorySessionIds`. For example:
+  ```json
+  {
+    "memoryLimit": 100,
+    "memoryLogCount": 3,
+    "memoryFilePersisted": true,
+    "memorySessionIds": [
+      "2025-04-17T10:00:00.000Z-abc123",
+      "2025-04-17T10:05:00.000Z-def456",
+      "2025-04-17T10:10:00.000Z-ghi789"
+    ]
+  }
+  ```
 - Tagging: With the new `--tag-memory <tag>` flag, users can attach a custom tag to a memory log entry. This allows for enhanced categorization and traceability of logged commands.
 - Memory Stats: The new `--memory-stats` flag outputs diagnostic statistics about the in-memory log, including the total count of log entries, the session ID of the oldest entry, and the session ID of the newest entry.
 - Merge Persisted Memory: The new `--merge-persist` flag merges the current in-memory memory log with the persisted log from `memory.log`. It removes duplicate entries (based on sessionId) and trims the result to respect the current memory limit. For example:
@@ -136,6 +149,12 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --diagnostics
   ```
+
+- **Detailed Diagnostics Output:**
+  ```bash
+  node src/lib/main.js --detailed-diagnostics
+  ```
+  This will output a JSON object with properties such as `memoryLimit`, `memoryLogCount`, `memoryFilePersisted`, and `memorySessionIds` (an array of session IDs).
 
 - **Memory Stats:**
   ```bash

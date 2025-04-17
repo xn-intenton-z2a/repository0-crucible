@@ -129,6 +129,18 @@ export function main(args = []) {
     return;
   }
 
+  // Handle --detailed-diagnostics flag for enhanced diagnostics
+  if (args.includes("--detailed-diagnostics")) {
+    const detailedDiag = {
+      memoryLimit: maxMemoryEntries,
+      memoryLogCount: memoryLog.length,
+      memoryFilePersisted: fs.existsSync("memory.log"),
+      memorySessionIds: memoryLog.map(entry => entry.sessionId)
+    };
+    console.log(JSON.stringify(detailedDiag));
+    return;
+  }
+
   // If --diagnostics flag is provided, output diagnostic information and return early
   if (args.includes("--diagnostics")) {
     const diagnostics = {
