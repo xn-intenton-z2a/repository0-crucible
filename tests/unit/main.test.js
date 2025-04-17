@@ -52,21 +52,24 @@ describe("Memory Logging Feature", () => {
     expect(mem[0].args).toEqual(["first", "second"]);
   });
 
-  test("should output memory log when --show-memory flag is provided", () => {
+  test("should output memory log in reverse order when --show-memory flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    // First command
     main(["a", "b"]);
+    // Second command
+    main(["c", "d"]);
+    // Now invoke --show-memory
     main(["--show-memory"]);
     expect(spy).toHaveBeenCalled();
-    // Use the last call for --show-memory output
+    // Get the output from the --show-memory call
     const loggedOutput = spy.mock.calls[spy.mock.calls.length - 1][0];
     const parsedOutput = JSON.parse(loggedOutput);
-    expect(parsedOutput).toHaveLength(2);
-    expect(parsedOutput[0]).toHaveProperty("sessionId");
-    expect(typeof parsedOutput[0].sessionId).toBe("string");
-    expect(parsedOutput[0].args).toEqual(["a", "b"]);
-    expect(parsedOutput[1]).toHaveProperty("sessionId");
-    expect(typeof parsedOutput[1].sessionId).toBe("string");
-    expect(parsedOutput[1].args).toEqual(["--show-memory"]);
+    // Expect two entries in reverse order: most recent first
+    expect(parsedOutput).toHaveLength(3); // because the --show-memory invocation itself is logged as well
+    // The last invocation is the --show-memory command, so it should be first in the reversed output
+    expect(parsedOutput[0].args).toEqual(["--show-memory"]);
+    expect(parsedOutput[1].args).toEqual(["c", "d"]);
+    expect(parsedOutput[2].args).toEqual(["a", "b"]);
     spy.mockRestore();
   });
 
