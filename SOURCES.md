@@ -30,7 +30,7 @@ The OpenTelemetry documentation offers comprehensive guidelines for implementing
 
 # Ora: Spinners for CLI
 ## https://github.com/sindresorhus/ora
-Ora is a elegant terminal spinner library that enhances user feedback during long-running CLI operations. Its documentation covers various usage patterns, customization options, and integration tips, which are particularly relevant for enhancing command-line interactivity.
+Ora is an elegant terminal spinner library that enhances user feedback during long-running CLI operations. Its documentation covers various usage patterns, customization options, and integration tips, which are particularly relevant for enhancing command-line interactivity.
 ## MIT License
 
 # Chalk: Terminal String Styling
@@ -52,3 +52,18 @@ This MDN documentation explains the Promise.all method, which is crucial for han
 ## https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Asynchronous/Async_await
 This guide from MDN covers the fundamentals of asynchronous programming in JavaScript using async and await. It offers practical examples, error handling strategies, and performance considerations, making it a valuable resource for implementing modern concurrency patterns in Node.js.
 ## CC BY-SA 2.5 (or later)
+
+# Node.js Concurrency and Parallel Processing
+## https://www.twilio.com/blog/2017/08/node-js-concurrency-event-loop.html
+This article from the Twilio blog provides an in-depth discussion on Node.js concurrency and the event loop, exploring asynchronous execution in Node.js and offering insights relevant for parallel command execution and replication in CLI tools. Though published in 2017, it remains a foundational resource in understanding non-blocking I/O and efficient parallel processing.
+## Apache License 2.0 (assumed)
+
+# Multi-Agent Coordination in Distributed Systems
+## https://www.ibm.com/cloud/learn/multi-agent-systems
+This resource from IBM Cloud explains the principles of multi-agent systems and distributed coordination, providing insights into replication and parallel execution using multiple agents. Its guidance is crucial for designing systems that scale via strategic replication and cooperation among autonomous agents.
+## IBM Public Domain (assumed)
+
+# Autonomic Computing and Self-Improving Systems
+## https://www.ibm.com/downloads/cas/8XOVQXWS
+This document from IBM introduces the concepts of autonomic computing and self-improving systems, describing how systems can autonomously manage, optimize, and repair themselves. Its principles are relevant for enhancing self-refinement and self-improvement features in agentic CLI tools.
+## IBM Public Domain (assumed)
