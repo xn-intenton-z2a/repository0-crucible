@@ -188,4 +188,30 @@ describe("Memory Logging Feature", () => {
       unlinkSync(tempFilename);
     }
   });
+
+  // New tests for --query-memory feature
+  test("should output filtered memory log when --query-memory flag is provided", () => {
+    // Populate memory
+    main(["alphaCommand"]);
+    main(["betaCommand"]);
+    main(["anotherAlpha"]);
+    // Spy on console.log
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--query-memory", "alpha"]);
+    expect(spy).toHaveBeenCalled();
+    const loggedOutput = spy.mock.calls[0][0];
+    const filtered = JSON.parse(loggedOutput);
+    // Should contain entries with 'alpha' in the args (search is case-insensitive)
+    expect(filtered.length).toBe(2);
+    expect(filtered[0].args).toEqual(["alphaCommand"]);
+    expect(filtered[1].args).toEqual(["anotherAlpha"]);
+    spy.mockRestore();
+  });
+
+  test("should error when --query-memory flag is provided without a query string", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    main(["--query-memory"]);
+    expect(spy).toHaveBeenCalledWith("No query string specified for --query-memory flag");
+    spy.mockRestore();
+  });
 });
