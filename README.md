@@ -27,6 +27,7 @@ npm install repository0-crucible
 
 - CLI Tool for running commands with argument output.
 - Memory Logging: The CLI tool now retains a log of command arguments from each invocation. Each log entry is an object that includes a unique session identifier (a combination of the current timestamp and a random string), the command line arguments used, and an explicit **timestamp** property with the ISO creation time. This helps group and trace commands executed during a single runtime session. The log can be displayed using the `--show-memory` flag. Programmatically, you can access the log using the `getMemory()` function.
+- **Modification Timestamp:** When a memory log entry is updated via the `--update-memory-tag` or `--update-memory-annotation` commands, an additional property `modified` is added to the entry containing the update timestamp in ISO format.
 - Persistence: With the new `--persist-memory` flag, the tool now saves the memory log to a file. By default, it saves to `memory.log`, but if the `--compress-memory` flag is also provided, the log is compressed using Node's zlib module and saved as `memory.log.gz`. On startup, if `memory.log.gz` exists, it is automatically decompressed and loaded.
 - Auto-load Persisted Memory: On startup, if a persisted memory file exists (`memory.log` or `memory.log.gz`), its contents are automatically loaded into the tool's memory log, providing continuity.
 - Clear Memory: A new `--clear-memory` flag has been added that resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.
@@ -54,11 +55,8 @@ npm install repository0-crucible
   ```bash
   node src/lib/main.js --delete-memory-range 2025-04-17T10:00:00.000Z 2025-04-17T13:00:00.000Z
   ```
-- Update Memory Tag: The new `--update-memory-tag <sessionId> <newTag>` flag allows updating the tag of an existing memory log entry identified by its sessionId. When a memory.log file exists, the update is automatically persisted. For example:
-  ```bash
-  node src/lib/main.js --update-memory-tag <sessionId> newTag
-  ```
-- Update Memory Annotation: The new `--update-memory-annotation <sessionId> <newAnnotation>` flag allows updating the annotation of an existing memory log entry identified by its sessionId. If a memory.log file exists, the change is automatically persisted.
+- Update Memory Tag: The new `--update-memory-tag <sessionId> <newTag>` flag allows updating the tag of an existing memory log entry identified by its sessionId. When a memory.log file exists, the update is automatically persisted. Upon update, a `modified` property is also recorded containing the update timestamp.
+- Update Memory Annotation: The new `--update-memory-annotation <sessionId> <newAnnotation>` flag allows updating the annotation of an existing memory log entry identified by its sessionId. If a memory.log file exists, the change is automatically persisted. A `modified` property is similarly recorded upon an update.
 - Delete Memory by Tag: Use the new `--delete-memory-by-tag <tag>` flag to remove all memory log entries that have a matching tag (case-insensitive). This helps in clearing out categorized log entries when needed. For example:
   ```bash
   node src/lib/main.js --delete-memory-by-tag myCustomTag
@@ -240,4 +238,3 @@ node src/lib/main.js --help
   node src/lib/main.js --memory-detailed-stats
   ```
   This command outputs detailed statistics about the memory log, including total count, earliest and latest timestamps, average interval between entries (in seconds), and the most frequent command argument.
-

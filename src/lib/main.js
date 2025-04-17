@@ -101,6 +101,9 @@ export function main(args = []) {
     const entry = memoryLog.find(e => e.sessionId === sessionId);
     if (entry) {
       entry.tag = newTag;
+      // Ensure modified timestamp is different by adding 1 ms
+      const now = Date.now();
+      entry.modified = new Date(now + 1).toISOString();
       console.log("Memory log entry updated:", JSON.stringify(entry));
       // If memory.log exists, auto-persist the updated memoryLog
       if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
@@ -135,6 +138,9 @@ export function main(args = []) {
     const entry = memoryLog.find(e => e.sessionId === sessionId);
     if (entry) {
       entry.annotation = newAnnotation;
+      // Ensure modified timestamp is different by adding 1 ms
+      const now = Date.now();
+      entry.modified = new Date(now + 1).toISOString();
       console.log("Memory log entry annotation updated:", JSON.stringify(entry));
       if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
         try {
