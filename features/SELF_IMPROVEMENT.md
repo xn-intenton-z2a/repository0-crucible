@@ -1,14 +1,31 @@
 # SELF_IMPROVEMENT
 
 ## Overview
-Self-improvement is the agent’s capacity to evaluate and enhance its own performance over time. This trait allows the system to not only execute tasks but also reflect on how well it did and how it could do better next time – a stepping stone toward an autonomous, improving AI. In our project’s context, self-improvement means the CLI/Lambda agent can perform self-diagnostics and make adjustments or surface suggestions without explicit external commands. This could involve monitoring its success/failure rates, ensuring its dependencies are up to date, or recognizing when its approach to a problem isn’t effective. By implementing even a simple form of self-improvement, we ensure the agent isn’t a static tool, but one that actively seeks to refine and optimize its behavior with each iteration.
+Enhance the self-improvement capability to include an explicit CLI diagnostics command. This update introduces a new flag (e.g. `--diagnostics`) that allows the agent to output key runtime metrics and internal state information. By doing so, the agent not only tracks its performance in terms of call count and error count but also provides immediate feedback and suggestions for improvement during execution.
 
 ## Implementation Details
-- **Diagnostics Command:** Add a new CLI flag (e.g. `--self-check` or extend the existing `--diagnostics`) that makes the agent perform an internal audit. In `main.js`, when this mode is triggered, skip normal command processing and instead output a summary of the agent’s state: for example, how many commands it has processed (`globalThis.callCount`), how many errors occurred in this run, and whether all tests are currently passing (if accessible). The agent can simply log something like “Self-Check: X commands executed, 0 errors, environment OK” and then exit. This gives users a way to see a quick health report of the agent.
-- **Runtime Self-Metrics:** Augment the agent’s execution flow to track simple performance metrics. For instance, maintain a counter for errors or unsuccessful operations (e.g., `globalThis.errorCount`). Each time `agenticHandler` encounters an invalid input or an exception, increment this. Similarly, keep track of improvements like number of fixes applied. These metrics can be included in the agent’s output (perhaps in the `--status` JSON output or when the diagnostics flag is used) so that there’s feedback on how the agent is doing.
-- **Automatic Suggestions:** Implement a basic rule-based feedback at the end of a run. After processing a batch of commands, if certain conditions are met (for example, `errorCount > 0` or a command took an unusually long time), have the agent output a suggestion for improvement. This could be as simple as: “Suggestion: Consider reviewing the failed commands or increasing the MAX_BATCH_COMMANDS limit if tasks were truncated.” While the agent isn’t rewriting itself yet, it’s beginning to point out areas for improvement in its usage or configuration.
-- **Testing Self-Check:** Write unit tests to validate the self-improvement hooks. One test can invoke the agent with the self-check/diagnostics flag and assert that the output contains expected keys (like “commands executed” or a version number). Another test can simulate an error (perhaps by calling `agenticHandler` with an invalid command) then call the status function to ensure `errorCount` reflects that error and that a suggestion message is present. This ensures the groundwork for self-monitoring is functioning.
-- **README Documentation:** Update README.md to introduce the concept of the agent’s self-improvement. Document the new flag (if added) and show an example output of a self-diagnostic run. Explain that the agent tracks its calls and errors, and how a developer might use that information (e.g., to decide when to intervene or adjust parameters). By clarifying this, users understand that the system is semi-autonomous and keeping an eye on its own behavior.
+- **CLI Diagnostics Flag:**
+  - Update `main.js` to recognize a new flag `--diagnostics`.
+  - When the diagnostics flag is detected, bypass normal command processing and instead output a summary that includes metrics such as `globalThis.callCount` and `globalThis.errorCount`.
+  - For instance, log a message like: "Self-Check: X commands executed, Y errors, environment OK".
 
-## Long-Term Direction
-The long-term vision for self-improvement is an agent that can truly modify its own code or strategy in response to experience – **recursive self-enhancement**. In future iterations, the agent might automatically refactor parts of its codebase if it detects inefficiencies (for example, it could open a pull request to optimize a function that frequently causes slowdowns). It could also use machine learning to adjust its prompts or choose better tools based on past outcomes. As the context limit grows, the agent could maintain a history of past actions and outcomes, analyze this history with an LLM, and derive insights (like “I tend to fail on networking tasks, maybe I should use a different library”). Eventually, a forked “Auto-Improver” module or API could be developed to systematically test and fine-tune the agent’s performance (similar to continuous integration for AI behavior). The end goal is an agent that gets smarter and more efficient the more it’s used, requiring less human tuning as time goes on.
+- **Runtime Metrics Tracking:**
+  - Integrate counters into the agent's execution path. Increment `globalThis.callCount` for each command processed and update `globalThis.errorCount` whenever an error or invalid input is encountered.
+  - Optionally, include a basic rule-based suggestion (e.g. "Suggestion: Review failed commands") when errors are detected.
+
+- **Test Enhancements:**
+  - Extend unit tests in `tests/unit/main.test.js` to simulate running the agent with the `--diagnostics` flag. Verify that the output includes the expected keys (such as command count and error count) and that the agent exits correctly without additional processing.
+
+- **README Documentation Updates:**
+  - Update `README.md` to introduce the new diagnostics capability. Document usage with examples, for instance:
+    ```bash
+    node src/lib/main.js --diagnostics
+    ```
+  - Explain that this flag is intended to help users quickly assess the agent's state and that it is part of the self-improvement approach to monitor and enhance performance.
+
+## Benefits
+- Provides immediate visibility into runtime performance and error states, facilitating quicker debugging and iterative improvements.
+- Lays the groundwork for further self-improvement enhancements (such as automated suggestions and adjustments based on runtime metrics).
+- Aligns with the long-term vision of an agent that is not only autonomous in execution but also introspective and capable of learning from its own operations.
+
+This update respects the current repository constraints by only modifying existing source, test, README, and dependency files while significantly augmenting the self-improvement feature set.
