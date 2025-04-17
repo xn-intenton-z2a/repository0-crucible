@@ -55,6 +55,10 @@ npm install repository0-crucible
   ```bash
   node src/lib/main.js --delete-memory-by-tag myCustomTag
   ```
+- Delete Memory by Annotation: Use the new `--delete-memory-by-annotation <annotation>` flag to remove all memory log entries that have an annotation that exactly matches (case-insensitively) the provided value. For example:
+  ```bash
+  node src/lib/main.js --delete-memory-by-annotation "review needed"
+  ```
 - Show Memory in Reverse Order: When using the `--show-memory` flag, the memory log is now displayed in reverse chronological order (newest entries first).
 - Show Memory in Chronological Order: The newly added `--show-memory-chronological` flag displays the memory log in natural, chronological order (oldest entries first), which can be useful for tracking the order in which commands were executed. Note: This flag does not record the query invocation itself.
 - Diagnostics: A new `--diagnostics` flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.
@@ -166,6 +170,11 @@ node src/lib/main.js --help
 - **Delete Memory by Tag:**
   ```bash
   node src/lib/main.js --delete-memory-by-tag myCustomTag
+  ```
+
+- **Delete Memory by Annotation:**
+  ```bash
+  node src/lib/main.js --delete-memory-by-annotation "review needed"
   ```
 
 - **Set Custom Memory Limit:**

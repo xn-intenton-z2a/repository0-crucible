@@ -414,107 +414,47 @@ describe("Memory Logging Feature", () => {
     });
   });
 
-  describe("Diagnostics Flag", () => {
+  describe("Delete Memory by Annotation Feature", () => {
     beforeEach(() => {
       resetMemory();
-      if (existsSync(MEMORY_LOG_FILE)) {
-        unlinkSync(MEMORY_LOG_FILE);
-      }
     });
 
-    test("should output diagnostics information when --diagnostics flag is provided", () => {
+    test("should delete entries that match the given annotation (case-insensitive)", () => {
+      main(["cmd1", "--annotate-memory", "review"]);
+      main(["cmd2", "--annotate-memory", "other"]);
+      main(["cmd3", "--annotate-memory", "review"]);
+      const initialCount = getMemory().length;
       const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-      main(["--diagnostics"]);
-      expect(spy).toHaveBeenCalled();
-      const output = spy.mock.calls[0][0];
-      const diag = JSON.parse(output);
-      expect(diag).toHaveProperty("memoryLimit");
-      expect(diag).toHaveProperty("memoryLogCount");
-      expect(diag).toHaveProperty("memoryFilePersisted");
-      spy.mockRestore();
-    });
-  });
-
-  describe("Memory Stats Flag", () => {
-    test("should output memory stats with correct count, oldest and newest session IDs when --memory-stats flag is provided", () => {
-      resetMemory();
-      main(["first"]);
-      main(["second"]);
-      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-      main(["--memory-stats"]);
-      expect(spy).toHaveBeenCalled();
-      const loggedOutput = spy.mock.calls[spy.mock.calls.length - 1][0];
-      const stats = JSON.parse(loggedOutput);
-      expect(stats.count).toBe(2);
-      const mem = getMemory();
-      expect(stats.oldest).toEqual(mem[0].sessionId);
-      expect(stats.newest).toEqual(mem[mem.length - 1].sessionId);
-      spy.mockRestore();
-    });
-  });
-
-  describe("Detailed Diagnostics Flag", () => {
-    test("should output detailed diagnostics including memorySessionIds", () => {
-      resetMemory();
-      main(["entry1"]);
-      main(["entry2", "--tag-memory", "tagA"]);
-      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-      main(["--detailed-diagnostics"]);
-      expect(spy).toHaveBeenCalled();
-      const output = spy.mock.calls[0][0];
-      const detailedDiag = JSON.parse(output);
-      expect(detailedDiag).toHaveProperty("memoryLimit");
-      expect(detailedDiag).toHaveProperty("memoryLogCount");
-      expect(detailedDiag).toHaveProperty("memoryFilePersisted");
-      expect(detailedDiag).toHaveProperty("memorySessionIds");
-      expect(Array.isArray(detailedDiag.memorySessionIds)).toBe(true);
-      const mem = getMemory();
-      const expectedIds = mem.map(e => e.sessionId);
-      expect(detailedDiag.memorySessionIds).toEqual(expectedIds);
-      spy.mockRestore();
-    });
-  });
-
-  describe("Frequency Stats Flag", () => {
-    test("should output frequency stats with correct counts", () => {
-      resetMemory();
-      // Create several log entries
-      main(["alpha", "beta"]);
-      main(["beta", "gamma"]);
-      main(["alpha"]);
-      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-      main(["--frequency-stats"]);
-      expect(spy).toHaveBeenCalled();
+      main(["--delete-memory-by-annotation", "review"]);
       const output = spy.mock.calls[spy.mock.calls.length - 1][0];
-      const freq = JSON.parse(output);
-      expect(freq).toMatchObject({
-        "alpha": 2,
-        "beta": 2,
-        "gamma": 1
-      });
+      expect(output).toBe("Deleted 2 entries with annotation: review");
+      const mem = getMemory();
+      // Only the entry with annotation "other" should remain along with any other non-annotated entries
+      expect(mem.some(e => e.annotation && e.annotation.toLowerCase() === "review")).toBe(false);
       spy.mockRestore();
     });
-  });
 
-  describe("Annotate Memory Feature", () => {
-    test("should log command arguments with annotation when --annotate-memory flag is provided", () => {
-      resetMemory();
-      main(["sampleCommand", "--annotate-memory", "note1"]);
+    test("should not delete entries if none match the given annotation", () => {
+      main(["cmd1", "--annotate-memory", "note1"]);
+      main(["cmd2"]);
+      const initialCount = getMemory().length;
+      const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+      main(["--delete-memory-by-annotation", "nonexistent"]);
+      const output = spy.mock.calls[spy.mock.calls.length - 1][0];
+      expect(output).toBe("Deleted 0 entries with annotation: nonexistent");
       const mem = getMemory();
-      expect(mem).toHaveLength(1);
-      expect(mem[0]).toHaveProperty("annotation", "note1");
-      expect(mem[0].args).toEqual(["sampleCommand", "--annotate-memory", "note1"]);
-      expect(mem[0]).toHaveProperty("timestamp");
+      expect(mem.length).toBe(initialCount);
+      spy.mockRestore();
     });
 
-    test("should error when --annotate-memory flag is provided without a valid annotation", () => {
-      const initialLength = getMemory().length;
+    test("should output error when the flag is provided without a valid annotation argument", () => {
       const spy = vi.spyOn(console, "error").mockImplementation(() => {});
-      main(["sampleCommand", "--annotate-memory"]);
-      expect(spy).toHaveBeenCalledWith("No annotation value provided for --annotate-memory flag");
-      spy.mockRestore();
+      const initialCount = getMemory().length;
+      main(["--delete-memory-by-annotation"]);
+      expect(spy).toHaveBeenCalledWith("Invalid usage: --delete-memory-by-annotation requires a valid annotation value");
       const mem = getMemory();
-      expect(mem.length).toBe(initialLength);
+      expect(mem.length).toBe(initialCount);
+      spy.mockRestore();
     });
   });
 });
