@@ -105,9 +105,25 @@ export function main(args = []) {
     }
   }
 
+  // Process --tag-memory flag if provided
+  let tagValue = null;
+  if (args.includes("--tag-memory")) {
+    const idx = args.indexOf("--tag-memory");
+    const tagStr = args[idx + 1];
+    if (!tagStr || tagStr.startsWith("--")) {
+      console.error("No tag value provided for --tag-memory flag");
+      return;
+    }
+    tagValue = tagStr;
+  }
+
   // Record the arguments in memory along with the session identifier
   const sessionId = new Date().toISOString() + "-" + Math.random().toString(36).slice(2);
-  memoryLog.push({ sessionId, args });
+  const logEntry = { sessionId, args };
+  if (tagValue !== null) {
+    logEntry.tag = tagValue;
+  }
+  memoryLog.push(logEntry);
   // Enforce memory log size limit
   while (memoryLog.length > maxMemoryEntries) {
     memoryLog.shift();

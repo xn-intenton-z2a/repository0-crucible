@@ -227,6 +227,25 @@ describe("Memory Logging Feature", () => {
     const mem = getMemory();
     expect(mem.length).toBeLessThanOrEqual(customLimit);
   });
+
+  test("should log command arguments with tag when --tag-memory flag is provided", () => {
+    resetMemory();
+    main(["sampleCommand", "--tag-memory", "testTag"]);
+    const mem = getMemory();
+    expect(mem).toHaveLength(1);
+    expect(mem[0]).toHaveProperty("tag", "testTag");
+    expect(mem[0].args).toEqual(["sampleCommand", "--tag-memory", "testTag"]);
+  });
+
+  test("should error when --tag-memory flag is provided without a tag value", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const initialLength = getMemory().length;
+    main(["sampleCommand", "--tag-memory"]);
+    expect(spy).toHaveBeenCalledWith("No tag value provided for --tag-memory flag");
+    spy.mockRestore();
+    const mem = getMemory();
+    expect(mem.length).toBe(initialLength);
+  });
 });
 
 describe("Diagnostics Flag", () => {

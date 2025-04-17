@@ -36,6 +36,7 @@ npm install repository0-crucible
 - Query Memory: The new `--query-memory <query>` flag allows users to filter the memory log entries based on a search term. The search is case-insensitive, ensuring that values like "anotherAlpha" match when searching for "alpha". Only those entries whose command arguments contain the specified query will be output.
 - Show Memory in Reverse Order: When using the `--show-memory` flag, the memory log is now displayed in reverse chronological order (newest entries first).
 - Diagnostics: A new `--diagnostics` flag has been added to output diagnostic information in JSON format. The output includes the current memory log size, the memory limit, and whether a persisted memory file exists.
+- Tagging: With the new `--tag-memory <tag>` flag, users can attach a custom tag to a memory log entry. This allows for enhanced categorization and traceability of logged commands.
 
 ## Usage
 
@@ -85,6 +86,11 @@ node src/lib/main.js --help
 - **Set Custom Memory Limit:**
   ```bash
   node src/lib/main.js --memory-limit 50
+  ```
+
+- **Tag a Memory Entry:**
+  ```bash
+  node src/lib/main.js --tag-memory "myCustomTag"
   ```
 
 - **Diagnostics Output:**
