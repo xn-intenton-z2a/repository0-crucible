@@ -1,24 +1,19 @@
-# Vitest Documentation
-## https://vitest.dev/
-Vitest is a fast unit testing framework built for modern JavaScript and TypeScript projects. Its documentation provides comprehensive guides on writing tests, configuring coverage reports, and utilizing mocks and spies. This source is maintained actively with frequent updates, making it a reliable reference for testing workflows in contemporary projects.
+# Jest Documentation
+## https://jestjs.io/docs/getting-started
+Jest is a popular JavaScript testing framework known for its simplicity and powerful mocking capabilities. Maintained by Facebook, its documentation provides detailed guides on configuration, snapshot testing, and integration into various ecosystems. It is regularly updated, ensuring that developers have access to current best practices.
 ## MIT License
 
-# ESLint Documentation
-## https://eslint.org/docs/user-guide/getting-started
-ESLint is a widely adopted tool for identifying and reporting on patterns in JavaScript code, ensuring code quality and consistency. The documentation offers extensive guidance on configuration, usage with various plugins, and integration into development pipelines. It is the authoritative source for best practices in linting JavaScript applications.
+# GitHub REST API Documentation
+## https://docs.github.com/en/rest
+The GitHub REST API documentation offers an extensive guide to GitHub's API endpoints, covering repository management, issues, pull requests, and more. This resource is maintained by GitHub and is essential for integrating with GitHub's services. It is frequently updated to incorporate the latest features and improvements.
+## GitHub Terms of Service
+
+# TypeScript Handbook
+## https://www.typescriptlang.org/docs/
+The TypeScript Handbook is the definitive guide for developers looking to understand TypeScript’s advanced type system, tooling, and integration with JavaScript applications. It is an authoritative resource maintained by the TypeScript team and regularly updated to reflect new language features and best practices.
+## Apache-2.0 License
+
+# Prettier Documentation
+## https://prettier.io/docs/en/index.html
+Prettier is an opinionated code formatter that enforces a consistent style by parsing code and reprinting it with its own rules. The documentation covers installation, configuration, and usage guidelines, making it an invaluable resource for ensuring code consistency across projects.
 ## MIT License
-
-# OpenAI API Documentation
-## https://platform.openai.com/docs/api-reference
-The OpenAI API documentation provides detailed information on accessing and utilizing OpenAI's language models. It covers available endpoints, parameter options, error handling, and examples of integrating AI functionalities into applications. This source, maintained by OpenAI, is updated regularly to reflect the latest capabilities and best practices.
-## OpenAI API Terms
-
-# Node.js Process Documentation
-## https://nodejs.org/api/process.html
-This section of the Node.js documentation details the process object and its methods, which are essential for managing environment variables, process lifecycle, and performance monitoring in Node applications. It is a critical resource for developers building CLI tools and server-side applications.
-## MIT License (assumed)
-
-# Zod Documentation
-## https://github.com/colinhacks/zod
-Zod is a TypeScript-first schema declaration and validation library. The documentation provides thorough insights into type inference, schema declaration, error handling, and integrating runtime validation into JavaScript and TypeScript projects. Its clear examples and active maintenance make it a valuable resource for ensuring robust data validation.
-## MIT License (assumed)
