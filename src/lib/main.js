@@ -411,7 +411,7 @@ export function main(args = []) {
   if (args.includes("--memory-detailed-stats")) {
     const count = memoryLog.length;
     const earliest = count > 0 ? memoryLog[0].timestamp : null;
-    const latest = count > 0 ? memoryLog[count - 1].timestamp : null;
+    const latest = count > 0 ? memoryLog[memoryLog.length - 1].timestamp : null;
     let averageIntervalSeconds = 0;
     if (count >= 2) {
       const diffMs = new Date(latest) - new Date(earliest);
