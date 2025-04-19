@@ -12,6 +12,28 @@ let maxMemoryEntries = 100;
 let memoryLog = [];
 
 /**
+ * Helper function to persist the memory log to disk.
+ * @param {Array} log - The memory log array.
+ * @param {boolean} compress - Flag indicating whether to compress the log.
+ * @param {string|null} filePath - Optional file path override. Defaults to 'memory.log' or 'memory.log.gz'.
+ */
+function persistMemoryLog(log, compress, filePath = null) {
+  try {
+    const jsonStr = JSON.stringify(log);
+    if (compress) {
+      const target = filePath || "memory.log.gz";
+      const compressed = zlib.gzipSync(jsonStr);
+      fs.writeFileSync(target, compressed);
+    } else {
+      const target = filePath || "memory.log";
+      fs.writeFileSync(target, jsonStr);
+    }
+  } catch (error) {
+    console.error("Error persisting memory.log:", error);
+  }
+}
+
+/**
  * Main function that processes command line arguments.
  * @param {string[]} args - The command line arguments.
  */
@@ -80,11 +102,7 @@ export function main(args = []) {
       merged.shift();
     }
     memoryLog = merged;
-    try {
-      fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
-    } catch (error) {
-      console.error("Error writing merged memory.log:", error);
-    }
+    persistMemoryLog(memoryLog, args.includes("--compress-memory"));
     console.log(`Merged memory log: ${initialCount} entries before merge, ${memoryLog.length} entries after merge.`);
     return;
   }
@@ -105,20 +123,8 @@ export function main(args = []) {
       const now = Date.now();
       entry.modified = new Date(now + 1).toISOString();
       console.log("Memory log entry updated:", JSON.stringify(entry));
-      // If memory.log exists, auto-persist the updated memoryLog
       if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
-        try {
-          // Persist using compression if needed
-          if (args.includes("--compress-memory")) {
-            const jsonStr = JSON.stringify(memoryLog);
-            const compressed = zlib.gzipSync(jsonStr);
-            fs.writeFileSync("memory.log.gz", compressed);
-          } else {
-            fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
-          }
-        } catch (error) {
-          console.error("Error persisting memory.log:", error);
-        }
+        persistMemoryLog(memoryLog, args.includes("--compress-memory"));
       }
     } else {
       console.error("No memory log entry found with sessionId:", sessionId);
@@ -143,17 +149,7 @@ export function main(args = []) {
       entry.modified = new Date(now + 1).toISOString();
       console.log("Memory log entry annotation updated:", JSON.stringify(entry));
       if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
-        try {
-          if (args.includes("--compress-memory")) {
-            const jsonStr = JSON.stringify(memoryLog);
-            const compressed = zlib.gzipSync(jsonStr);
-            fs.writeFileSync("memory.log.gz", compressed);
-          } else {
-            fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
-          }
-        } catch (error) {
-          console.error("Error persisting memory.log:", error);
-        }
+        persistMemoryLog(memoryLog, args.includes("--compress-memory"));
       }
     } else {
       console.error("No memory log entry found with sessionId:", sessionId);
@@ -173,17 +169,7 @@ export function main(args = []) {
     memoryLog = memoryLog.filter(entry => !(entry.tag && entry.tag.toLowerCase() === tagValue.toLowerCase()));
     const removedCount = originalLength - memoryLog.length;
     if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
-      try {
-        if (args.includes("--compress-memory")) {
-          const jsonStr = JSON.stringify(memoryLog);
-          const compressed = zlib.gzipSync(jsonStr);
-          fs.writeFileSync("memory.log.gz", compressed);
-        } else {
-          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
-        }
-      } catch (error) {
-        console.error("Error writing memory.log after deletion:", error);
-      }
+      persistMemoryLog(memoryLog, args.includes("--compress-memory"));
     }
     console.log(`Deleted ${removedCount} entries with tag: ${tagValue}`);
     return;
@@ -201,17 +187,7 @@ export function main(args = []) {
     memoryLog = memoryLog.filter(entry => !(entry.annotation && entry.annotation.toLowerCase() === annotationValueToDelete.toLowerCase()));
     const removedCount = originalLength - memoryLog.length;
     if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
-      try {
-        if (args.includes("--compress-memory")) {
-          const jsonStr = JSON.stringify(memoryLog);
-          const compressed = zlib.gzipSync(jsonStr);
-          fs.writeFileSync("memory.log.gz", compressed);
-        } else {
-          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
-        }
-      } catch (error) {
-        console.error("Error writing memory.log after deletion:", error);
-      }
+      persistMemoryLog(memoryLog, args.includes("--compress-memory"));
     }
     console.log(`Deleted ${removedCount} entries with annotation: ${annotationValueToDelete}`);
     return;
@@ -240,17 +216,7 @@ export function main(args = []) {
     });
     const deletedCount = originalLength - memoryLog.length;
     if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
-      try {
-        if (args.includes("--compress-memory")) {
-          const jsonStr = JSON.stringify(memoryLog);
-          const compressed = zlib.gzipSync(jsonStr);
-          fs.writeFileSync("memory.log.gz", compressed);
-        } else {
-          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
-        }
-      } catch (error) {
-        console.error("Error writing memory.log after delete:", error);
-      }
+      persistMemoryLog(memoryLog, args.includes("--compress-memory"));
     }
     console.log(`Deleted ${deletedCount} entries from memory log between ${startDateStr} and ${endDateStr}.`);
     return;
@@ -432,17 +398,7 @@ export function main(args = []) {
     });
     const expiredCount = originalLength - memoryLog.length;
     if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
-      try {
-        if (args.includes("--compress-memory")) {
-          const jsonStr = JSON.stringify(memoryLog);
-          const compressed = zlib.gzipSync(jsonStr);
-          fs.writeFileSync("memory.log.gz", compressed);
-        } else {
-          fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
-        }
-      } catch (error) {
-        console.error("Error writing memory.log after expiration:", error);
-      }
+      persistMemoryLog(memoryLog, args.includes("--compress-memory"));
     }
     console.log(`Expired ${expiredCount} entries older than ${minutes} minutes.`);
     return;
@@ -566,13 +522,10 @@ export function main(args = []) {
       exportFilename = args[idx + 1];
     }
     try {
+      persistMemoryLog(memoryLog, args.includes("--compress"), exportFilename);
       if (args.includes("--compress")) {
-        const jsonStr = JSON.stringify(memoryLog);
-        const compressed = zlib.gzipSync(jsonStr);
-        fs.writeFileSync(exportFilename, compressed);
         console.log(`Memory log exported to ${exportFilename} (compressed)`);
       } else {
-        fs.writeFileSync(exportFilename, JSON.stringify(memoryLog));
         console.log(`Memory log exported to ${exportFilename}`);
       }
     } catch (error) {
@@ -605,17 +558,7 @@ export function main(args = []) {
 
   // If '--persist-memory' flag is provided, write the memory log to disk
   if (args.includes("--persist-memory")) {
-    try {
-      if (args.includes("--compress-memory")) {
-        const jsonStr = JSON.stringify(memoryLog);
-        const compressed = zlib.gzipSync(jsonStr);
-        fs.writeFileSync("memory.log.gz", compressed);
-      } else {
-        fs.writeFileSync("memory.log", JSON.stringify(memoryLog));
-      }
-    } catch (error) {
-      console.error("Error writing memory.log:", error);
-    }
+    persistMemoryLog(memoryLog, args.includes("--compress-memory"));
   }
 
   // If '--show-memory' flag is provided, output the memory log in reverse chronological order
