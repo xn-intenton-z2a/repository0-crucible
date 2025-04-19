@@ -31,7 +31,7 @@ npm install repository0-crucible
 - Persistence: With the new `--persist-memory` flag, the tool now saves the memory log to a file. By default, it saves to `memory.log`, but if the `--compress-memory` flag is also provided, the log is compressed using Node's zlib module and saved as `memory.log.gz`. On startup, if `memory.log.gz` exists, it is automatically decompressed and loaded. **Note:** The persistence logic has been refactored into a helper function to ensure consistent behavior and easier maintenance.
 - Auto-load Persisted Memory: On startup, if a persisted memory file exists (`memory.log` or `memory.log.gz`), its contents are automatically loaded into the tool's memory log, providing continuity.
 - Clear Memory: A new `--clear-memory` flag has been added that resets the in-memory log and deletes the persisted memory log file, allowing you to easily clear the history.
-- Log Size Limit: The memory logging feature now includes a configurable size limit. By default, it is set to 100 entries, but you can override it at runtime using the `--memory-limit <number>` flag. For example, `node src/lib/main.js --memory-limit 50` will set the maximum log entries to 50. Note that if a non-numeric or invalid value is provided (for example, `NaN`), the CLI will output the error "Invalid memory limit provided. It must be a positive integer.".
+- Log Size Limit: The memory logging feature now includes a configurable size limit. By default, it is set to 100 entries, but you can override it at runtime using the `--memory-limit <number>` flag. For example, `node src/lib/main.js --memory-limit 50` will set the maximum log entries to 50. If a non-numeric or invalid value is provided (for example, `NaN`), the CLI will output the error "Invalid memory limit provided. It must be a positive integer." and the memory log will remain unchanged.
 - Export Memory: The new `--export-memory` flag exports the current memory log to a file. By default, it exports to `memory_export.json`, but you can now optionally provide a custom filename. For example:
   ```bash
   node src/lib/main.js --export-memory custom_log.json
@@ -202,6 +202,7 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --memory-limit 50
   ```
+  If a non-numeric value is provided (e.g., `NaN`), the CLI will output "Invalid memory limit provided. It must be a positive integer." and the memory log remains unchanged.
 
 - **Tag a Memory Entry:**
   ```bash
@@ -249,3 +250,7 @@ node src/lib/main.js --help
   node src/lib/main.js --memory-detailed-stats
   ```
   This command outputs detailed statistics about the memory log, including total count, earliest and latest timestamps, average interval between entries (in seconds), and the most frequent command argument.
+
+## Contributing
+
+For contributions, please refer to [CONTRIBUTING.md](./CONTRIBUTING.md).
