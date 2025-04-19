@@ -569,4 +569,14 @@ describe("Memory Logging Feature", () => {
       spy.mockRestore();
     });
   });
+
+  // New test for non-numeric memory limit input
+  test("should output error when non-numeric memory limit value is provided", () => {
+    const spy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const initialMemory = [...getMemory()];
+    main(["--memory-limit", "NaN"]);
+    expect(spy).toHaveBeenCalledWith("Invalid memory limit provided. It must be a positive integer.");
+    expect(getMemory()).toEqual(initialMemory);
+    spy.mockRestore();
+  });
 });
