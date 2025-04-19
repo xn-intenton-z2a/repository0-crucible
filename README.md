@@ -202,7 +202,7 @@ node src/lib/main.js --help
   ```bash
   node src/lib/main.js --memory-limit 50
   ```
-  If a non-numeric value is provided (e.g., `NaN`), the CLI will output "Invalid memory limit provided. It must be a positive integer." and the memory log remains unchanged.
+  If a non-numeric value is provided (for example, `NaN`), the CLI will output "Invalid memory limit provided. It must be a positive integer." and the memory log remains unchanged.
 
 - **Tag a Memory Entry:**
   ```bash

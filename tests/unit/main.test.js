@@ -236,8 +236,8 @@ describe("Memory Logging Feature", () => {
   test("should export memory log in CSV format with custom filename when provided via --export-csv flag", () => {
     main(["csvCustomTest"]);
     main(["--export-csv", "custom_export.csv"]);
-    expect(existsSync(CUSTOM_CSV_FILE)).toBe(true);
-    const csvContent = readFileSync(CUSTOM_CSV_FILE, { encoding: "utf-8" });
+    expect(existsSync("custom_export.csv")).toBe(true);
+    const csvContent = readFileSync("custom_export.csv", { encoding: "utf-8" });
     const lines = csvContent.split("\n");
     expect(lines[0]).toBe("sessionId,timestamp,modified,args,tag,annotation");
     expect(lines.length).toBeGreaterThanOrEqual(2);
