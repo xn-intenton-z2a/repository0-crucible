@@ -185,7 +185,7 @@ export function main(args = []) {
     }
     const originalLength = memoryLog.length;
     memoryLog = memoryLog.filter(
-      (entry) => !(entry.annotation && entry.annotation.toLowerCase() === annotationValueToDelete.toLowerCase()),
+      (entry) => !(entry.annotation && entry.annotation.toLowerCase() === annotationValueToDelete.toLowerCase())
     );
     const removedCount = originalLength - memoryLog.length;
     if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
@@ -306,7 +306,7 @@ export function main(args = []) {
     }
     const annotationQuery = args[index + 1].toLowerCase();
     const filtered = memoryLog.filter(
-      (entry) => entry.annotation && entry.annotation.toLowerCase().includes(annotationQuery),
+      (entry) => entry.annotation && entry.annotation.toLowerCase().includes(annotationQuery)
     );
     console.log(JSON.stringify(filtered));
     return;
@@ -317,7 +317,7 @@ export function main(args = []) {
     const index = args.indexOf("--query-memory-range");
     if (args.length <= index + 2 || args[index + 1].startsWith("--") || args[index + 2].startsWith("--")) {
       console.error(
-        "Invalid usage: --query-memory-range requires two arguments: start date and end date in ISO format",
+        "Invalid usage: --query-memory-range requires two arguments: start date and end date in ISO format"
       );
       return;
     }

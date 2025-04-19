@@ -385,7 +385,7 @@ describe("Memory Logging Feature", () => {
       const initialLength = getMemory().length;
       main(["--update-memory-annotation", "onlyOneArg"]);
       expect(spy).toHaveBeenCalledWith(
-        "Invalid usage: --update-memory-annotation requires a sessionId and a new annotation value",
+        "Invalid usage: --update-memory-annotation requires a sessionId and a new annotation value"
       );
       spy.mockRestore();
       const mem = getMemory();
@@ -461,7 +461,7 @@ describe("Memory Logging Feature", () => {
       const initialCount = getMemory().length;
       main(["--delete-memory-by-annotation"]);
       expect(spy).toHaveBeenCalledWith(
-        "Invalid usage: --delete-memory-by-annotation requires a valid annotation value",
+        "Invalid usage: --delete-memory-by-annotation requires a valid annotation value"
       );
       const mem = getMemory();
       expect(mem.length).toBe(initialCount);
@@ -483,7 +483,7 @@ describe("Memory Logging Feature", () => {
       const spy = vi.spyOn(console, "log").mockImplementation(() => {});
       main(["--delete-memory-range", "2025-04-17T10:00:00.000Z", "2025-04-17T13:00:00.000Z"]);
       expect(spy).toHaveBeenCalledWith(
-        "Deleted 2 entries from memory log between 2025-04-17T10:00:00.000Z and 2025-04-17T13:00:00.000Z.",
+        "Deleted 2 entries from memory log between 2025-04-17T10:00:00.000Z and 2025-04-17T13:00:00.000Z."
       );
       const updatedMem = getMemory();
       expect(updatedMem).toHaveLength(1);
