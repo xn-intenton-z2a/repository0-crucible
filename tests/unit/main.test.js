@@ -2,6 +2,7 @@ import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import * as mainModule from "../../src/lib/main.js";
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
 import zlib from "zlib";
+
 const { main, getMemory, resetMemory } = mainModule;
 
 const MEMORY_LOG_FILE = "memory.log";
@@ -12,7 +13,9 @@ const EXPORT_FILE = "memory_export.json";
 function captureConsole(callback) {
   const originalLog = console.log;
   let output = "";
-  console.log = (msg) => { output += msg; };
+  console.log = (msg) => {
+    output += msg;
+  };
   callback();
   console.log = originalLog;
   return output;
@@ -154,7 +157,9 @@ describe("Memory Logging Feature", () => {
   });
 
   test("should auto-load persisted memory log on startup", () => {
-    const persisted = JSON.stringify([{ sessionId: "oldSession", args: ["old", "command"], timestamp: "2025-04-17T10:00:00.000Z" }]);
+    const persisted = JSON.stringify([
+      { sessionId: "oldSession", args: ["old", "command"], timestamp: "2025-04-17T10:00:00.000Z" },
+    ]);
     writeFileSync(MEMORY_LOG_FILE, persisted, { encoding: "utf-8" });
     main(["new"]);
     const mem = getMemory();
@@ -176,7 +181,7 @@ describe("Memory Logging Feature", () => {
     expect(mem).toHaveLength(100);
     expect(mem[0].args).toEqual(["command5"]);
     expect(mem[99].args).toEqual(["command104"]);
-    mem.forEach(entry => {
+    mem.forEach((entry) => {
       expect(entry).toHaveProperty("timestamp");
     });
   });
@@ -330,7 +335,7 @@ describe("Memory Logging Feature", () => {
       const spy = vi.spyOn(console, "log").mockImplementation(() => {});
       main(["--update-memory-tag", sessionId, "newTestTag", "--compress-memory"]);
       const memAfter = getMemory();
-      const updatedEntry = memAfter.find(e => e.sessionId === sessionId);
+      const updatedEntry = memAfter.find((e) => e.sessionId === sessionId);
       expect(updatedEntry).toBeDefined();
       expect(updatedEntry.tag).toBe("newTestTag");
       expect(updatedEntry).toHaveProperty("modified");
@@ -366,7 +371,7 @@ describe("Memory Logging Feature", () => {
       const spy = vi.spyOn(console, "log").mockImplementation(() => {});
       main(["--update-memory-annotation", sessionId, "updatedNote", "--compress-memory"]);
       const memAfter = getMemory();
-      const updatedEntry = memAfter.find(e => e.sessionId === sessionId);
+      const updatedEntry = memAfter.find((e) => e.sessionId === sessionId);
       expect(updatedEntry).toBeDefined();
       expect(updatedEntry.annotation).toBe("updatedNote");
       expect(updatedEntry).toHaveProperty("modified");
@@ -379,7 +384,9 @@ describe("Memory Logging Feature", () => {
       const spy = vi.spyOn(console, "error").mockImplementation(() => {});
       const initialLength = getMemory().length;
       main(["--update-memory-annotation", "onlyOneArg"]);
-      expect(spy).toHaveBeenCalledWith("Invalid usage: --update-memory-annotation requires a sessionId and a new annotation value");
+      expect(spy).toHaveBeenCalledWith(
+        "Invalid usage: --update-memory-annotation requires a sessionId and a new annotation value",
+      );
       spy.mockRestore();
       const mem = getMemory();
       expect(mem.length).toBe(initialLength);
@@ -432,7 +439,7 @@ describe("Memory Logging Feature", () => {
       const output = spy.mock.calls[spy.mock.calls.length - 1][0];
       expect(output).toBe("Deleted 2 entries with annotation: review");
       const mem = getMemory();
-      expect(mem.some(e => e.annotation && e.annotation.toLowerCase() === "review")).toBe(false);
+      expect(mem.some((e) => e.annotation && e.annotation.toLowerCase() === "review")).toBe(false);
       spy.mockRestore();
     });
 
@@ -453,7 +460,9 @@ describe("Memory Logging Feature", () => {
       const spy = vi.spyOn(console, "error").mockImplementation(() => {});
       const initialCount = getMemory().length;
       main(["--delete-memory-by-annotation"]);
-      expect(spy).toHaveBeenCalledWith("Invalid usage: --delete-memory-by-annotation requires a valid annotation value");
+      expect(spy).toHaveBeenCalledWith(
+        "Invalid usage: --delete-memory-by-annotation requires a valid annotation value",
+      );
       const mem = getMemory();
       expect(mem.length).toBe(initialCount);
       spy.mockRestore();
@@ -466,14 +475,16 @@ describe("Memory Logging Feature", () => {
       const entries = [
         { sessionId: "s1", args: ["cmd1"], timestamp: "2025-04-17T10:00:00.000Z" },
         { sessionId: "s2", args: ["cmd2"], timestamp: "2025-04-17T12:00:00.000Z" },
-        { sessionId: "s3", args: ["cmd3"], timestamp: "2025-04-17T15:00:00.000Z" }
+        { sessionId: "s3", args: ["cmd3"], timestamp: "2025-04-17T15:00:00.000Z" },
       ];
       const mem = getMemory();
-      entries.forEach(e => mem.push(e));
+      entries.forEach((e) => mem.push(e));
       writeFileSync(MEMORY_LOG_FILE, JSON.stringify(getMemory()));
       const spy = vi.spyOn(console, "log").mockImplementation(() => {});
       main(["--delete-memory-range", "2025-04-17T10:00:00.000Z", "2025-04-17T13:00:00.000Z"]);
-      expect(spy).toHaveBeenCalledWith("Deleted 2 entries from memory log between 2025-04-17T10:00:00.000Z and 2025-04-17T13:00:00.000Z.");
+      expect(spy).toHaveBeenCalledWith(
+        "Deleted 2 entries from memory log between 2025-04-17T10:00:00.000Z and 2025-04-17T13:00:00.000Z.",
+      );
       const updatedMem = getMemory();
       expect(updatedMem).toHaveLength(1);
       expect(updatedMem[0].sessionId).toBe("s3");

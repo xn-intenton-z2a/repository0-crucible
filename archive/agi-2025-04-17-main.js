@@ -28,7 +28,7 @@ function handleInvalidCommand(args) {
  */
 function displayHelp() {
   console.log(
-    `Usage: node src/lib/main.js [options]\n\nOptions:\n  --help                Display help information about the CLI tool.\n  --version             Display the current application version from package.json.\n  --diagnostics         Show Node and environment diagnostic information.\n  --extended-diagnostics Display detailed diagnostics including memory usage, uptime, and platform info.\n  --self-refine         Perform self-refinement analysis.\n  --plan                Initiate planning and goal decomposition.\n  --serve               Start the server.\n  --build-intermediate  Build with intermediate options.\n  --build-enhanced      Build with enhanced options.\n  --refresh             Refresh the application state.\n  --merge-persist       Merge and persist changes.\n  --echo                Output the remaining arguments in JSON format.\n  --memory              Display the in-memory log of CLI invocations.\n  --help-seeking        Activate help-seeking mode to consult external assistance.\n`
+    `Usage: node src/lib/main.js [options]\n\nOptions:\n  --help                Display help information about the CLI tool.\n  --version             Display the current application version from package.json.\n  --diagnostics         Show Node and environment diagnostic information.\n  --extended-diagnostics Display detailed diagnostics including memory usage, uptime, and platform info.\n  --self-refine         Perform self-refinement analysis.\n  --plan                Initiate planning and goal decomposition.\n  --serve               Start the server.\n  --build-intermediate  Build with intermediate options.\n  --build-enhanced      Build with enhanced options.\n  --refresh             Refresh the application state.\n  --merge-persist       Merge and persist changes.\n  --echo                Output the remaining arguments in JSON format.\n  --memory              Display the in-memory log of CLI invocations.\n  --help-seeking        Activate help-seeking mode to consult external assistance.\n`,
   );
 }
 
@@ -38,7 +38,7 @@ function displayHelp() {
 async function displayVersion() {
   try {
     const pkg = await import("../../package.json", { assert: { type: "json" } });
-    const version = (pkg.default && pkg.default.version) ? pkg.default.version : pkg.version;
+    const version = pkg.default && pkg.default.version ? pkg.default.version : pkg.version;
     console.log(version);
   } catch (err) {
     console.error("Error loading version:", err);
@@ -117,11 +117,11 @@ function buildEnhanced() {
 
 /**
  * Echoes the provided arguments in JSON format, excluding the '--echo' flag.
- * 
- * @param {string[]} args 
+ *
+ * @param {string[]} args
  */
 function echoArgs(args) {
-  const filtered = args.filter(arg => arg !== "--echo");
+  const filtered = args.filter((arg) => arg !== "--echo");
   console.log(JSON.stringify({ echo: filtered }));
 }
 
@@ -156,20 +156,85 @@ export async function main(args = process.argv.slice(2)) {
 
   // Dispatch table mapping CLI flags to their handler functions
   const commandHandlers = [
-    { flag: "--help", handler: () => { displayHelp(); } },
+    {
+      flag: "--help",
+      handler: () => {
+        displayHelp();
+      },
+    },
     { flag: "--version", handler: () => displayVersion() },
-    { flag: "--diagnostics", handler: () => { displayDiagnostics(); } },
-    { flag: "--extended-diagnostics", handler: () => { displayExtendedDiagnostics(); } },
-    { flag: "--self-refine", handler: () => { selfRefine(); } },
-    { flag: "--plan", handler: () => { plan(); } },
-    { flag: "--refresh", handler: () => { refreshState(); } },
-    { flag: "--merge-persist", handler: () => { mergePersist(); } },
-    { flag: "--serve", handler: () => { serve(); } },
-    { flag: "--build-intermediate", handler: () => { buildIntermediate(); } },
-    { flag: "--build-enhanced", handler: () => { buildEnhanced(); } },
-    { flag: "--echo", handler: () => { echoArgs(args); } },
-    { flag: "--memory", handler: () => { displayMemory(); } },
-    { flag: "--help-seeking", handler: () => { helpSeeking(); } }
+    {
+      flag: "--diagnostics",
+      handler: () => {
+        displayDiagnostics();
+      },
+    },
+    {
+      flag: "--extended-diagnostics",
+      handler: () => {
+        displayExtendedDiagnostics();
+      },
+    },
+    {
+      flag: "--self-refine",
+      handler: () => {
+        selfRefine();
+      },
+    },
+    {
+      flag: "--plan",
+      handler: () => {
+        plan();
+      },
+    },
+    {
+      flag: "--refresh",
+      handler: () => {
+        refreshState();
+      },
+    },
+    {
+      flag: "--merge-persist",
+      handler: () => {
+        mergePersist();
+      },
+    },
+    {
+      flag: "--serve",
+      handler: () => {
+        serve();
+      },
+    },
+    {
+      flag: "--build-intermediate",
+      handler: () => {
+        buildIntermediate();
+      },
+    },
+    {
+      flag: "--build-enhanced",
+      handler: () => {
+        buildEnhanced();
+      },
+    },
+    {
+      flag: "--echo",
+      handler: () => {
+        echoArgs(args);
+      },
+    },
+    {
+      flag: "--memory",
+      handler: () => {
+        displayMemory();
+      },
+    },
+    {
+      flag: "--help-seeking",
+      handler: () => {
+        helpSeeking();
+      },
+    },
   ];
 
   // Process commands based on the first matching flag (priority order)

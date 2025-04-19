@@ -96,7 +96,7 @@ export function main(args = []) {
       }
     }
     // Convert map back to array preserving insertion order
-    let merged = Array.from(mergedMap.values());
+    const merged = Array.from(mergedMap.values());
     // Trim the merged log if it exceeds maxMemoryEntries (remove oldest entries first)
     while (merged.length > maxMemoryEntries) {
       merged.shift();
@@ -116,7 +116,7 @@ export function main(args = []) {
       console.error("Invalid usage: --update-memory-tag requires a sessionId and a new tag value");
       return;
     }
-    const entry = memoryLog.find(e => e.sessionId === sessionId);
+    const entry = memoryLog.find((e) => e.sessionId === sessionId);
     if (entry) {
       entry.tag = newTag;
       // Ensure modified timestamp is different by adding 1 ms
@@ -141,7 +141,7 @@ export function main(args = []) {
       console.error("Invalid usage: --update-memory-annotation requires a sessionId and a new annotation value");
       return;
     }
-    const entry = memoryLog.find(e => e.sessionId === sessionId);
+    const entry = memoryLog.find((e) => e.sessionId === sessionId);
     if (entry) {
       entry.annotation = newAnnotation;
       // Ensure modified timestamp is different by adding 1 ms
@@ -166,7 +166,7 @@ export function main(args = []) {
       return;
     }
     const originalLength = memoryLog.length;
-    memoryLog = memoryLog.filter(entry => !(entry.tag && entry.tag.toLowerCase() === tagValue.toLowerCase()));
+    memoryLog = memoryLog.filter((entry) => !(entry.tag && entry.tag.toLowerCase() === tagValue.toLowerCase()));
     const removedCount = originalLength - memoryLog.length;
     if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
       persistMemoryLog(memoryLog, args.includes("--compress-memory"));
@@ -184,7 +184,9 @@ export function main(args = []) {
       return;
     }
     const originalLength = memoryLog.length;
-    memoryLog = memoryLog.filter(entry => !(entry.annotation && entry.annotation.toLowerCase() === annotationValueToDelete.toLowerCase()));
+    memoryLog = memoryLog.filter(
+      (entry) => !(entry.annotation && entry.annotation.toLowerCase() === annotationValueToDelete.toLowerCase()),
+    );
     const removedCount = originalLength - memoryLog.length;
     if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
       persistMemoryLog(memoryLog, args.includes("--compress-memory"));
@@ -210,7 +212,7 @@ export function main(args = []) {
     }
     const originalLength = memoryLog.length;
     // Remove entries whose timestamp falls between startDate and endDate (inclusive)
-    memoryLog = memoryLog.filter(entry => {
+    memoryLog = memoryLog.filter((entry) => {
       const entryDate = new Date(entry.timestamp);
       return entryDate < startDate || entryDate > endDate;
     });
@@ -228,7 +230,7 @@ export function main(args = []) {
       memoryLimit: maxMemoryEntries,
       memoryLogCount: memoryLog.length,
       memoryFilePersisted: fs.existsSync("memory.log") || fs.existsSync("memory.log.gz"),
-      memorySessionIds: memoryLog.map(entry => entry.sessionId)
+      memorySessionIds: memoryLog.map((entry) => entry.sessionId),
     };
     console.log(JSON.stringify(detailedDiag));
     return;
@@ -239,7 +241,7 @@ export function main(args = []) {
     const diagnostics = {
       memoryLimit: maxMemoryEntries,
       memoryLogCount: memoryLog.length,
-      memoryFilePersisted: fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")
+      memoryFilePersisted: fs.existsSync("memory.log") || fs.existsSync("memory.log.gz"),
     };
     console.log(JSON.stringify(diagnostics));
     return;
@@ -250,7 +252,7 @@ export function main(args = []) {
     const stats = {
       count: memoryLog.length,
       oldest: memoryLog.length > 0 ? memoryLog[0].sessionId : null,
-      newest: memoryLog.length > 0 ? memoryLog[memoryLog.length - 1].sessionId : null
+      newest: memoryLog.length > 0 ? memoryLog[memoryLog.length - 1].sessionId : null,
     };
     console.log(JSON.stringify(stats));
     return;
@@ -290,7 +292,7 @@ export function main(args = []) {
       return;
     }
     const tagQuery = args[index + 1].toLowerCase();
-    const filtered = memoryLog.filter(entry => entry.tag && entry.tag.toLowerCase() === tagQuery);
+    const filtered = memoryLog.filter((entry) => entry.tag && entry.tag.toLowerCase() === tagQuery);
     console.log(JSON.stringify(filtered));
     return;
   }
@@ -303,7 +305,9 @@ export function main(args = []) {
       return;
     }
     const annotationQuery = args[index + 1].toLowerCase();
-    const filtered = memoryLog.filter(entry => entry.annotation && entry.annotation.toLowerCase().includes(annotationQuery));
+    const filtered = memoryLog.filter(
+      (entry) => entry.annotation && entry.annotation.toLowerCase().includes(annotationQuery),
+    );
     console.log(JSON.stringify(filtered));
     return;
   }
@@ -312,7 +316,9 @@ export function main(args = []) {
   if (args.includes("--query-memory-range")) {
     const index = args.indexOf("--query-memory-range");
     if (args.length <= index + 2 || args[index + 1].startsWith("--") || args[index + 2].startsWith("--")) {
-      console.error("Invalid usage: --query-memory-range requires two arguments: start date and end date in ISO format");
+      console.error(
+        "Invalid usage: --query-memory-range requires two arguments: start date and end date in ISO format",
+      );
       return;
     }
     const startDateStr = args[index + 1];
@@ -323,7 +329,7 @@ export function main(args = []) {
       console.error("Invalid date format: Start and end dates must be valid ISO date strings");
       return;
     }
-    const filtered = memoryLog.filter(entry => {
+    const filtered = memoryLog.filter((entry) => {
       const entryDate = new Date(entry.timestamp);
       return entryDate >= startDate && entryDate <= endDate;
     });
@@ -392,7 +398,7 @@ export function main(args = []) {
     }
     const cutoff = Date.now() - minutes * 60 * 1000;
     const originalLength = memoryLog.length;
-    memoryLog = memoryLog.filter(entry => {
+    memoryLog = memoryLog.filter((entry) => {
       const ts = new Date(entry.timestamp).getTime();
       return ts >= cutoff;
     });
@@ -414,10 +420,10 @@ export function main(args = []) {
       const diffMs = new Date(latest) - new Date(earliest);
       averageIntervalSeconds = diffMs / 1000 / (count - 1);
     }
-    let frequency = {};
-    memoryLog.forEach(entry => {
+    const frequency = {};
+    memoryLog.forEach((entry) => {
       if (Array.isArray(entry.args)) {
-        entry.args.forEach(arg => {
+        entry.args.forEach((arg) => {
           frequency[arg] = (frequency[arg] || 0) + 1;
         });
       }
@@ -435,7 +441,7 @@ export function main(args = []) {
       earliest,
       latest,
       averageIntervalSeconds,
-      mostFrequentArgument
+      mostFrequentArgument,
     };
     console.log(JSON.stringify(detailedStats));
     return;
@@ -449,7 +455,7 @@ export function main(args = []) {
       exportFilename = args[idx + 1];
     }
     const header = "sessionId,timestamp,modified,args,tag,annotation";
-    const rows = memoryLog.map(entry => {
+    const rows = memoryLog.map((entry) => {
       const sessionId = entry.sessionId || "";
       const timestamp = entry.timestamp || "";
       const modified = entry.modified || "";
@@ -457,7 +463,7 @@ export function main(args = []) {
       const tag = entry.tag || "";
       const annotation = entry.annotation || "";
       function escapeCsv(field) {
-        if (typeof field !== 'string') field = String(field);
+        if (typeof field !== "string") field = String(field);
         if (field.includes(",") || field.includes('"') || field.includes("\n")) {
           field = '"' + field.replace(/"/g, '""') + '"';
         }
