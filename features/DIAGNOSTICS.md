@@ -1,34 +1,27 @@
 # DIAGNOSTICS
 
 ## Overview
-This feature merges and enhances the existing VERBOSE_MODE and SELF_IMPROVEMENT capabilities into a unified diagnostics module. The new DIAGNOSTICS feature introduces both a detailed output mode and self-reporting functionality. When enabled, it provides enriched logging details (timestamps, session identifiers, and extended diagnostic context) alongside self-introspection data including version reporting. This unified approach streamlines troubleshooting, performance monitoring, and overall observability of the agent.
+This update refines the unified DIAGNOSTICS feature to further enhance the agent's self-improvement capabilities by incorporating performance metrics. In addition to detailed log outputs, version reporting, and self-introspection data, the CLI now records the execution time of each command invocation. Every memory log entry is augmented with a new property `execTime` (measured in milliseconds) representing the duration from the start of command processing to completion. Moreover, diagnostic outputs (e.g. from `--detailed-diagnostics` and `--memory-detailed-stats`) now include aggregated performance statistics, such as average execution time across sessions.
 
 ## Implementation Details
-- **Verbose Logging:**
-  - Introduce the `--verbose` flag to trigger enhanced output. When enabled, console log outputs will be prefixed with ISO-formatted timestamps, session IDs, and additional context derived from runtime diagnostics.
-  - Ensure that the enhanced logging does not affect the normal operation of other features and is only activated upon request.
+- **Execution Timing Measurement:**
+  - At the very beginning of the `main` function in `src/lib/main.js`, record the start time (using `Date.now()`).
+  - After processing the command and before recording the log entry, compute the elapsed execution time (`execTime = Date.now() - startTime`).
+  - Attach this `execTime` value as a new property to the memory log entry alongside existing properties (such as `sessionId`, `args`, and `timestamp`).
 
-- **Version Reporting & Self-Introspection:**
-  - Add the `--version` flag to output the current version of the agent as obtained from the `package.json` file. This flag overrides other processing to quickly deliver version information and exit.
-  - In addition, incorporate self-metrics by exposing internal counters (like call and error counts) and other internal states, making them available via a detailed diagnostics report.
+- **Diagnostic Enhancements:**
+  - Update the output for flags like `--detailed-diagnostics` and `--memory-detailed-stats` to include performance metrics. For instance, compute the average `execTime` across all memory log entries and include it in the JSON diagnostics output.
+  - Ensure that when statistics are reported (e.g. total count, earliest, latest entries) the new performance metrics are summarized appropriately.
 
-- **CLI Integration:**
-  - Update the argument parsing in `src/lib/main.js` to handle both `--verbose` and `--version` flags.
-  - Ensure that verbose mode complements the existing diagnostic output (such as `--diagnostics` and `--detailed-diagnostics`), providing additional context when needed.
-
-- **Documentation Updates:**
-  - Update README.md to instruct users on how to use the new unified DIAGNOSTICS feature. Examples:
-    ```bash
-    node src/lib/main.js --verbose
-    node src/lib/main.js --version
-    ```
-  - Document that the detailed diagnostics output is designed to support both end-user debugging and internal performance monitoring.
+- **Documentation & CLI Integration:**
+  - Update CLI usage instructions in README.md to mention that each command now logs its execution time.
+  - Provide examples showing that the memory log now contains an `execTime` field and that diagnostic commands will list average execution duration.
 
 ## Testing
-- **Unit Tests:**
-  - Extend tests in `tests/unit/main.test.js` to cover scenarios where `--verbose` and `--version` are active.
-  - Use spy techniques on `console.log` to verify that enhanced log outputs include the expected diagnostic details when verbose mode is activated.
-  - Confirm that when `--version` is used, the output strictly reflects the version from `package.json` and bypasses other processing.
+- **Unit Tests Enhancements:**
+  - Update tests in `tests/unit/main.test.js` to verify that each memory log entry includes an `execTime` property that is a positive number.
+  - Extend tests for diagnostic flags (such as `--memory-detailed-stats`) to check that the output JSON contains a field for average execution time and that it calculates correctly over multiple entries.
+  - Validate that performance metrics are recorded even when commands are executed in rapid succession, ensuring that the timing measurement is robust.
 
 ## Long-Term Direction
-Merging verbose diagnostics with self-improvement capabilities not only simplifies the maintenance of the agent’s monitoring tools but also lays the groundwork for future enhancements. Future iterations might include adjustable logging levels (e.g., INFO, DEBUG, ERROR), integration with external logging services, and more nuanced self-assessment metrics. This aligns with our mission of creating a self-aware, autonomous system that is easy to debug and continually optimizes its own performance.
+By integrating execution performance metrics into DIAGNOSTICS, the agent not only logs what commands were executed but also provides quantitative data on how long each operation took. This paves the way for future self-improvement strategies where the agent could automatically adjust its behavior based on observed performance (e.g., optimizing frequently slow operations or alerting for unusually high execution times). This enhancement further aligns the system with the mission of creating a self-aware, autonomous, and continuously optimizing agentic toolset.
