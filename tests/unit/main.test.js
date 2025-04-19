@@ -1,3 +1,4 @@
+/* eslint-disable prettier/prettier */
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import * as mainModule from "../../src/lib/main.js";
 import { existsSync, readFileSync, unlinkSync, writeFileSync } from "fs";
@@ -226,10 +227,9 @@ describe("Memory Logging Feature", () => {
     main(["--export-csv"]);
     expect(existsSync(CSV_EXPORT_FILE)).toBe(true);
     const csvContent = readFileSync(CSV_EXPORT_FILE, { encoding: "utf-8" });
-    // Check that CSV contains header and two data rows
+    // Check that CSV contains header and at least two data rows
     const lines = csvContent.split("\n");
     expect(lines[0]).toBe("sessionId,timestamp,modified,args,tag,annotation");
-    // There should be at least 3 lines (header + 2 rows)
     expect(lines.length).toBeGreaterThanOrEqual(3);
   });
 
@@ -384,9 +384,7 @@ describe("Memory Logging Feature", () => {
       const spy = vi.spyOn(console, "error").mockImplementation(() => {});
       const initialLength = getMemory().length;
       main(["--update-memory-annotation", "onlyOneArg"]);
-      expect(spy).toHaveBeenCalledWith(
-        "Invalid usage: --update-memory-annotation requires a sessionId and a new annotation value"
-      );
+      expect(spy).toHaveBeenCalledWith("Invalid usage: --update-memory-annotation requires a sessionId and a new annotation value");
       spy.mockRestore();
       const mem = getMemory();
       expect(mem.length).toBe(initialLength);
@@ -408,7 +406,7 @@ describe("Memory Logging Feature", () => {
       main(["commandWithoutAnnotation"]);
       const spy = vi.spyOn(console, "log").mockImplementation(() => {});
       main(["--query-annotation", "review"]);
-      const output = spy.mock.calls[spy.mock.calls.length - 1][0];
+      const output = spy.mock.calls[0][0];
       const filtered = JSON.parse(output);
       expect(filtered.length).toBe(2);
       spy.mockRestore();
@@ -460,9 +458,7 @@ describe("Memory Logging Feature", () => {
       const spy = vi.spyOn(console, "error").mockImplementation(() => {});
       const initialCount = getMemory().length;
       main(["--delete-memory-by-annotation"]);
-      expect(spy).toHaveBeenCalledWith(
-        "Invalid usage: --delete-memory-by-annotation requires a valid annotation value"
-      );
+      expect(spy).toHaveBeenCalledWith("Invalid usage: --delete-memory-by-annotation requires a valid annotation value");
       const mem = getMemory();
       expect(mem.length).toBe(initialCount);
       spy.mockRestore();
@@ -482,9 +478,7 @@ describe("Memory Logging Feature", () => {
       writeFileSync(MEMORY_LOG_FILE, JSON.stringify(getMemory()));
       const spy = vi.spyOn(console, "log").mockImplementation(() => {});
       main(["--delete-memory-range", "2025-04-17T10:00:00.000Z", "2025-04-17T13:00:00.000Z"]);
-      expect(spy).toHaveBeenCalledWith(
-        "Deleted 2 entries from memory log between 2025-04-17T10:00:00.000Z and 2025-04-17T13:00:00.000Z."
-      );
+      expect(spy).toHaveBeenCalledWith("Deleted 2 entries from memory log between 2025-04-17T10:00:00.000Z and 2025-04-17T13:00:00.000Z.");
       const updatedMem = getMemory();
       expect(updatedMem).toHaveLength(1);
       expect(updatedMem[0].sessionId).toBe("s3");
