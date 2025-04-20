@@ -104,3 +104,19 @@ describe("Help-Seeking Mode", () => {
     spy.mockRestore();
   });
 });
+
+describe("Self-Improvement Mode", () => {
+  test("should log self-improvement message when '--self-improve' flag is provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--self-improve"]);
+    // Expected logs:
+    // 1: Run with: ["--self-improve"]
+    // 2: Execution time: ... ms
+    // 3: Self-improvement analysis: execution metrics are optimal
+    expect(spy).toHaveBeenCalledTimes(3);
+    expect(spy.mock.calls[0][0]).toBe('Run with: ["--self-improve"]');
+    expect(spy.mock.calls[1][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
+    expect(spy.mock.calls[2][0]).toBe("Self-improvement analysis: execution metrics are optimal");
+    spy.mockRestore();
+  });
+});

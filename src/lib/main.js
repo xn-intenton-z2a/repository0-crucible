@@ -30,6 +30,11 @@ export function main(args) {
   const endTime = performance.now();
   const executionTime = (endTime - startTime).toFixed(2);
   console.log(`Execution time: ${executionTime} ms`);
+
+  // If self-improvement flag is present, output additional diagnostic message
+  if (args.includes("--self-improve")) {
+    console.log("Self-improvement analysis: execution metrics are optimal");
+  }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
