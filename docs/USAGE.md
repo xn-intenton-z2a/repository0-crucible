@@ -14,9 +14,7 @@ For example, to display help:
 
 The CLI logs the arguments provided in a JSON formatted string and then logs the execution time of the command in milliseconds.
 
-## Examples
-
-- **Default Invocation (No Arguments):**
+### Default Invocation (No Arguments):
 
   node src/lib/main.js
 
@@ -24,7 +22,7 @@ The CLI logs the arguments provided in a JSON formatted string and then logs the
   Run with: []
   Execution time: X ms
 
-- **Invocation with a Help Argument:**
+### Invocation with a Help Argument:
 
   node src/lib/main.js --help
 
@@ -32,12 +30,24 @@ The CLI logs the arguments provided in a JSON formatted string and then logs the
   Run with: ["--help"]
   Execution time: X ms
 
-- **Invocation with Multiple Arguments:**
+### Invocation with Multiple Arguments:
 
   node src/lib/main.js param1 param2
 
   Output:
   Run with: ["param1","param2"]
+  Execution time: X ms
+
+### Invocation with Replication Flag:
+
+  node src/lib/main.js --replicate
+
+  Output:
+  Run with: ["--replicate"]
+  Replicating tasks...
+  Replicating task 1
+  Replicating task 2
+  Replicating task 3
   Execution time: X ms
 
 ## Testing
@@ -46,4 +56,4 @@ Run the tests using:
 
   npm test
 
-This will execute the unit tests for the CLI to ensure it behaves as expected and logs both the run arguments and the execution time.
+This will execute the unit tests for the CLI to ensure it behaves as expected and logs the run arguments, replication messages (if applicable), and execution time.
