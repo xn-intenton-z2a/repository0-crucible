@@ -1,5 +1,5 @@
-import { describe, test, expect, vi } from "vitest";
-import { main } from "@src/lib/main.js";
+import { describe, test, expect, vi, beforeEach } from "vitest";
+import { main, getMemoryLog, resetMemoryLog } from "@src/lib/main.js";
 
 // Helper function to validate execution time log
 function expectExecutionTimeLog(log) {
@@ -13,6 +13,10 @@ describe("Main Module Import", () => {
 });
 
 describe("CLI Functionality", () => {
+  beforeEach(() => {
+    resetMemoryLog();
+  });
+
   test("should log expected output for '--help' argument", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--help"]);
@@ -42,6 +46,10 @@ describe("CLI Functionality", () => {
 });
 
 describe("Simulated CLI Execution via process.argv", () => {
+  beforeEach(() => {
+    resetMemoryLog();
+  });
+
   test("should log expected output when no additional CLI args are provided", () => {
     const originalArgv = process.argv;
     process.argv = ["node", "src/lib/main.js"];
@@ -68,6 +76,10 @@ describe("Simulated CLI Execution via process.argv", () => {
 });
 
 describe("Replication Mode", () => {
+  beforeEach(() => {
+    resetMemoryLog();
+  });
+
   test("should log replication messages when '--replicate' flag is present", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--replicate", "param1"]);
@@ -90,6 +102,10 @@ describe("Replication Mode", () => {
 });
 
 describe("Help-Seeking Mode", () => {
+  beforeEach(() => {
+    resetMemoryLog();
+  });
+
   test("should log help-seeking message when '--help-seeking' flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--help-seeking"]);
@@ -106,6 +122,10 @@ describe("Help-Seeking Mode", () => {
 });
 
 describe("Self-Improvement Mode", () => {
+  beforeEach(() => {
+    resetMemoryLog();
+  });
+
   test("should log self-improvement message when '--self-improve' flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--self-improve"]);
@@ -122,6 +142,10 @@ describe("Self-Improvement Mode", () => {
 });
 
 describe("Planning Mode", () => {
+  beforeEach(() => {
+    resetMemoryLog();
+  });
+
   test("should log planning messages when '--plan' flag is present", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--plan"]);
@@ -131,7 +155,6 @@ describe("Planning Mode", () => {
     // 3: Planned Task 1: Review current configurations
     // 4: Planned Task 2: Prioritize upcoming feature enhancements
     // 5: Execution time: ... ms
-
     expect(spy).toHaveBeenCalledTimes(5);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--plan"]');
     expect(spy.mock.calls[1][0]).toBe('Analyzing input for planning...');
@@ -139,5 +162,35 @@ describe("Planning Mode", () => {
     expect(spy.mock.calls[3][0]).toBe('Planned Task 2: Prioritize upcoming feature enhancements');
     expectExecutionTimeLog(spy.mock.calls[4][0]);
     spy.mockRestore();
+  });
+});
+
+describe("Memory Log Feature", () => {
+  beforeEach(() => {
+    resetMemoryLog();
+  });
+
+  test("should have an initially empty memory log", () => {
+    const log = getMemoryLog();
+    expect(log).toEqual([]);
+  });
+
+  test("should append an entry to the memory log after CLI invocation", () => {
+    const args = ["--test-memory"];
+    main(args);
+    const log = getMemoryLog();
+    expect(log.length).toBe(1);
+    expect(log[0]).toHaveProperty('args', args);
+    // Check that timestamp is a valid ISO string
+    expect(new Date(log[0].timestamp).toISOString()).toBe(log[0].timestamp);
+  });
+
+  test("should accumulate entries on subsequent invocations", () => {
+    main(["first"]);
+    main(["second"]);
+    const log = getMemoryLog();
+    expect(log.length).toBe(2);
+    expect(log[0]).toHaveProperty('args', ["first"]);
+    expect(log[1]).toHaveProperty('args', ["second"]);
   });
 });

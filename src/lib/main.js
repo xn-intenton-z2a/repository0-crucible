@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 // src/lib/main.js
 // This file is the entrypoint for the CLI application.
-// Refactored to extract flag-handling and logging functionality for improved readability and maintainability.
+// Refactored to extract flag-handling, logging, and in-memory logging functionality for improved readability and maintainability.
 
 import { fileURLToPath } from "url";
 import { performance } from "perf_hooks";
+
+// Global in-memory log to track each CLI invocation
+const memoryLog = [];
 
 // Helper function to log the CLI arguments in a consistent JSON format
 function logCLIArgs(args) {
@@ -50,6 +53,9 @@ function planTasks() {
 
 // Main entry point for the CLI application
 export function main(args) {
+  // Record this invocation in the in-memory log with arguments and a timestamp
+  memoryLog.push({ args, timestamp: new Date().toISOString() });
+
   const startTime = performance.now();
 
   // Log the provided CLI arguments
@@ -78,6 +84,16 @@ export function main(args) {
   if (args.includes("--self-improve")) {
     handleSelfImprove();
   }
+}
+
+// Returns a copy of the current in-memory log
+export function getMemoryLog() {
+  return [...memoryLog];
+}
+
+// Resets the in-memory log. Useful for testing.
+export function resetMemoryLog() {
+  memoryLog.length = 0;
 }
 
 // If this module is executed directly, process CLI arguments
