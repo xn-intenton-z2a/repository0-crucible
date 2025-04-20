@@ -2,9 +2,14 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
+import { performance } from "perf_hooks";
 
 export function main(args) {
+  const startTime = performance.now();
   console.log(`Run with: ${JSON.stringify(args)}`);
+  const endTime = performance.now();
+  const executionTime = (endTime - startTime).toFixed(2);
+  console.log(`Execution time: ${executionTime} ms`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
