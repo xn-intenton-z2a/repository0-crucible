@@ -59,10 +59,21 @@ The CLI logs the arguments provided in a JSON formatted string and then logs the
   Help-Seeking Mode Enabled: querying assistance...
   Execution time: X ms
 
+### Invocation with Self-Improvement Flag:
+
+  node src/lib/main.js --self-improve
+
+  Output:
+  Run with: ["--self-improve"]
+  Execution time: X ms
+  Self-improvement analysis: execution metrics are optimal
+
+The self-improve flag provides additional diagnostic output aimed at self-assessing performance metrics.
+
 ## Testing
 
 Run the tests using:
 
   npm test
 
-This will execute the unit tests for the CLI to ensure it behaves as expected and logs the run arguments, replication messages (if applicable), help-seeking message (if applicable), and execution time.
+This will execute the unit tests for the CLI to ensure it behaves as expected and logs the run arguments, replication messages (if applicable), help-seeking message (if applicable), and execution time, along with self-improvement diagnostics when the flag is used.
