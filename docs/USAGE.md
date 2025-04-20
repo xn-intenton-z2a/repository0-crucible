@@ -50,7 +50,14 @@ The CLI logs the arguments provided in a JSON formatted string and then logs the
   Replicating task 3
   Execution time: X ms
 
-Note: The replication logic has been refactored into a dedicated helper function for better maintainability and consistent logging.
+### Invocation with Help-Seeking Flag:
+
+  node src/lib/main.js --help-seeking
+
+  Output:
+  Run with: ["--help-seeking"]
+  Help-Seeking Mode Enabled: querying assistance...
+  Execution time: X ms
 
 ## Testing
 
@@ -58,4 +65,4 @@ Run the tests using:
 
   npm test
 
-This will execute the unit tests for the CLI to ensure it behaves as expected and logs the run arguments, replication messages (if applicable), and execution time.
+This will execute the unit tests for the CLI to ensure it behaves as expected and logs the run arguments, replication messages (if applicable), help-seeking message (if applicable), and execution time.

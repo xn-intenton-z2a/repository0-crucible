@@ -17,6 +17,11 @@ export function main(args) {
   // Log the CLI arguments in JSON format
   console.log(`Run with: ${JSON.stringify(args)}`);
 
+  // If help-seeking flag is present, output help-seeking message
+  if (args.includes("--help-seeking")) {
+    console.log("Help-Seeking Mode Enabled: querying assistance...");
+  }
+
   // If replication flag is present, execute replication logic
   if (args.includes("--replicate")) {
     replicateTasks();
