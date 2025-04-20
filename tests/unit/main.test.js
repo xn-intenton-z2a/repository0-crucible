@@ -116,7 +116,28 @@ describe("Self-Improvement Mode", () => {
     expect(spy).toHaveBeenCalledTimes(3);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--self-improve"]');
     expect(spy.mock.calls[1][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
-    expect(spy.mock.calls[2][0]).toBe("Self-improvement analysis: execution metrics are optimal");
+    expect(spy.mock.calls[2][0]).toBe('Self-improvement analysis: execution metrics are optimal');
+    spy.mockRestore();
+  });
+});
+
+describe("Planning Mode", () => {
+  test("should log planning messages when '--plan' flag is present", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--plan"]);
+    // Expected logs:
+    // 1: Run with: ["--plan"]
+    // 2: Analyzing input for planning...
+    // 3: Planned Task 1: Review current configurations
+    // 4: Planned Task 2: Prioritize upcoming feature enhancements
+    // 5: Execution time: ... ms
+
+    expect(spy).toHaveBeenCalledTimes(5);
+    expect(spy.mock.calls[0][0]).toBe('Run with: ["--plan"]');
+    expect(spy.mock.calls[1][0]).toBe('Analyzing input for planning...');
+    expect(spy.mock.calls[2][0]).toBe('Planned Task 1: Review current configurations');
+    expect(spy.mock.calls[3][0]).toBe('Planned Task 2: Prioritize upcoming feature enhancements');
+    expectExecutionTimeLog(spy.mock.calls[4][0]);
     spy.mockRestore();
   });
 });
