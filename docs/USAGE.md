@@ -14,6 +14,19 @@ For example, to display help:
 
 The CLI logs the arguments provided in a JSON formatted string and then logs the execution time of the command in milliseconds.
 
+### Memory Feature
+
+The CLI now retains an in-memory log of all invocations. Each time the CLI is invoked, the provided arguments along with a timestamp are recorded. You can access this log programmatically using the `getMemoryLog()` function. For example:
+
+```js
+// Invoke the CLI tool
+node src/lib/main.js --example
+
+// In your code, get the memory log:
+import { getMemoryLog } from 'repository0-crucible';
+console.log(getMemoryLog());
+```
+
 ### Default Invocation (No Arguments):
 
   node src/lib/main.js
@@ -81,14 +94,10 @@ The CLI logs the arguments provided in a JSON formatted string and then logs the
 
 Planning Mode helps the agent break down its tasks into planned steps that can be reviewed before execution.
 
-## Implementation Details
-
-The CLI's main logic has been refactored for improved readability and maintainability. The flag-handling logic has been extracted into separate helper functions for help-seeking, replication, planning, and self-improvement along with the logging functionality. This separation of concerns ensures that the code is self-documenting and easier to maintain.
-
 ## Testing
 
 Run the tests using:
 
   npm test
 
-This will execute the unit tests for the CLI to ensure it behaves as expected, including logging of CLI arguments, replication messages, help-seeking messages, self-improvement diagnostics, and planning messages.
+This will execute the unit tests for the CLI to ensure it behaves as expected, including logging of CLI arguments, replication messages, help-seeking messages, self-improvement diagnostics, planning messages, and tracking invocations with the in-memory log.
