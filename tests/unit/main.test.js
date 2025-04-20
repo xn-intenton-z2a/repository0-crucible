@@ -66,3 +66,26 @@ describe("Simulated CLI Execution via process.argv", () => {
     process.argv = originalArgv;
   });
 });
+
+describe("Replication Mode", () => {
+  test("should log replication messages when '--replicate' flag is present", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--replicate", "param1"]);
+    // Expected logs:
+    // 1: Run with: ["--replicate","param1"]
+    // 2: Replicating tasks...
+    // 3: Replicating task 1
+    // 4: Replicating task 2
+    // 5: Replicating task 3
+    // 6: Execution time: ... ms
+    expect(spy).toHaveBeenCalledTimes(6);
+    expect(spy.mock.calls[0][0]).toBe('Run with: ["--replicate","param1"]');
+    expect(spy.mock.calls[1][0]).toBe('Replicating tasks...');
+    expect(spy.mock.calls[2][0]).toBe('Replicating task 1');
+    expect(spy.mock.calls[3][0]).toBe('Replicating task 2');
+    expect(spy.mock.calls[4][0]).toBe('Replicating task 3');
+    const lastLog = spy.mock.calls[5][0];
+    expect(lastLog).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
+    spy.mockRestore();
+  });
+});
