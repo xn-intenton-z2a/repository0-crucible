@@ -68,9 +68,22 @@ The CLI logs the arguments provided in a JSON formatted string and then logs the
   Execution time: X ms
   Self-improvement analysis: execution metrics are optimal
 
+### Invocation with Planning Flag:
+
+  node src/lib/main.js --plan
+
+  Output:
+  Run with: ["--plan"]
+  Analyzing input for planning...
+  Planned Task 1: Review current configurations
+  Planned Task 2: Prioritize upcoming feature enhancements
+  Execution time: X ms
+
+Planning Mode helps the agent break down its tasks into planned steps that can be reviewed before execution.
+
 ## Implementation Details
 
-The CLI's main logic has been refactored for improved readability and maintainability. The flag-handling logic has been extracted into separate helper functions (for help-seeking, replication, and self-improvement) and the logging functionality has been isolated. This separation of concerns ensures that the code is self-documenting and easier to maintain.
+The CLI's main logic has been refactored for improved readability and maintainability. The flag-handling logic has been extracted into separate helper functions for help-seeking, replication, planning, and self-improvement along with the logging functionality. This separation of concerns ensures that the code is self-documenting and easier to maintain.
 
 ## Testing
 
@@ -78,4 +91,4 @@ Run the tests using:
 
   npm test
 
-This will execute the unit tests for the CLI to ensure it behaves as expected, including logging of CLI arguments, replication messages, help-seeking messages, and self-improvement diagnostics.
+This will execute the unit tests for the CLI to ensure it behaves as expected, including logging of CLI arguments, replication messages, help-seeking messages, self-improvement diagnostics, and planning messages.
