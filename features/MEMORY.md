@@ -1,37 +1,15 @@
 # MEMORY
 
 ## Overview
-The MEMORY feature manages persistent in-memory logging for command invocations and now is extended with new functionality to manage log rotation. In addition to logging session details, tags, annotations, export/import operations (supporting JSON and CSV formats), query and update operations, diagnostics, and statistical insights, the MEMORY feature now includes a **Memory Rotation** capability. This new rotation functionality allows users to archive the current memory log into a backup file with a timestamped filename and then clear the active memory log. This is especially useful for maintenance workflows where historical logs need to be preserved while keeping the active memory log manageable.
+Memory is the agent’s capability to retain and utilize information from past events or interactions. By equipping the CLI/Lambda agent with a form of memory, it can remember previous commands, results, or context across its operations. This trait enhances consistency and enables learning over time – for example, recalling what changes were made earlier or what issues were previously encountered. In practical terms, implementing memory means the agent won’t always start from scratch; it can accumulate a knowledge base (even if simple) to inform its future decisions within a single run or even across runs.
 
 ## Implementation Details
-- **Memory Logging and Persistence:**
-  - Continues to log each command invocation with properties such as `sessionId`, `args`, `timestamp`, along with optional `tag` and `annotation` values.
-  - The log is automatically loaded from a persisted file on startup (either from `memory.log` or compressed via `memory.log.gz`).
-
-- **Existing Operations:**
-  - Export and import functionality, including JSON and CSV exports.
-  - Querying and updating memory entries by various parameters like tag, annotation, or date range.
-  - Diagnostics such as `--diagnostics`, `--detailed-diagnostics`, `--memory-stats`, and `--frequency-stats` for monitoring performance and log content.
-
-- **New: Memory Log Rotation**
-  - **Flag:** `--rotate-memory`
-  - When this flag is provided, the agent will: 
-    - Export the current memory log to a backup file with a filename of the form `memory_backup_<timestamp>.json`, where `<timestamp>` is the ISO timestamp of rotation.
-    - Clear the in-memory log after successful backup, thus starting a fresh log session.
-  - This operation supports optional compression if the `--compress-memory` flag is concurrently provided (resulting in a file like `memory_backup_<timestamp>.json.gz`).
-
-- **Error Handling:**
-  - Validation ensures that rotation only occurs when a memory log exists. Errors during backup (e.g., file write issues) are logged to the console.
-  - Post-rotation, the log size is reset to zero, while the persisted backup remains for archival purposes.
-
-- **Testing and Documentation Enhancements:**
-  - **Source File Changes:** The main CLI function has been updated to recognize the `--rotate-memory` flag, trigger the backup export, and then clear the in-memory log.
-  - **Test File Updates:** New tests have been added in `tests/unit/main.test.js` to verify that when `--rotate-memory` is used, a backup file is created with the correct timestamp format and that the in-memory log is cleared thereafter.
-  - **README Updates:** Documentation now includes instructions on using the new memory rotation feature. Example usage has been added:
-    ```bash
-    node src/lib/main.js --rotate-memory
-    ```
-    This command archives the current memory log to a backup file (e.g., `memory_backup_2025-04-17T12:34:56.789Z.json`) and then clears the active log.
+- **In-Memory Log:** Introduce a global memory structure (e.g. `globalThis.memoryLog = []`) in `main.js` that records key details of each processed command. After each successful command execution in `agenticHandler`, append an entry containing information like the command name, a timestamp, and a brief result summary. This provides a running log of the agent’s activity that functions as its short-term memory.
+- **Context Utilization:** Modify the command processing so that before executing a new command, the agent can optionally consult `memoryLog`. For instance, if a command is similar to a recent one, the agent could warn or adjust (initially, this might simply be noted for future use). This ensures the memory isn’t just stored but is available for use in decision-making (even if the initial step is just to make the data accessible).
+- **Testing the Memory:** Add unit tests in `main.test.js` to verify memory behavior. For example, after running a sequence of two or three commands via `agenticHandler` (perhaps by simulating a batch of commands), check that `globalThis.memoryLog` contains the corresponding number of entries and that each entry has the expected command name. Another test could execute two identical commands in a row and (in a future scenario) ensure the agent recognizes the repetition via the memory log – but for now, simply confirm the log is accumulating records correctly.
+- **README Update:** Document the new memory feature in the README.md. Explain that the agent keeps an internal log of actions during execution, and describe how a developer can access or reset this memory (e.g., noting that `memoryLog` resets each new run unless persisted). While this initial memory is ephemeral (lasting only per process), clarify its purpose and lay the groundwork for more persistent memory in the future.
+- **No New Dependencies:** This memory mechanism can be implemented with plain JavaScript objects/arrays. There’s no need for an external database or file at this stage, keeping the implementation simple and within the current project’s scope (just updating `main.js` and tests accordingly).
 
 ## Long-Term Direction
-The Memory feature’s extension with log rotation is a stepping stone toward more advanced log management capabilities. Future enhancements might include automated scheduling of rotations, integration with external logging systems, and more granular retention policies. Collectively, these capabilities enable a robust and scalable memory system that supports long-term self-improvement and operational continuity for the agent.
+In the long run, the memory trait can evolve from a basic log into a sophisticated memory module. Future enhancements might include persistent memory across runs (for example, saving `memoryLog` to a file or cloud storage at the end of execution and loading it at the start of the next run). With anticipated larger context windows (e.g., models handling 100k+ lines of input), the agent could even summarize and feed relevant memory back into the prompt for context-aware reasoning. As the codebase grows, one could imagine a forked memory SDK or integration with a vector database to allow semantic search of past interactions. The goal is for the agent to develop **long-term memory** – remembering important details from weeks or months of activity – thereby becoming more effective and personalized over time.
+
