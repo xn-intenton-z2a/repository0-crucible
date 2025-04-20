@@ -1,186 +1,155 @@
 # PRETTIER
 
 ## Crawl Summary
-Prettier is an opinionated formatter that resets code styling by parsing the AST and reprinting code while enforcing a consistent style across supported languages. It supports JavaScript (and its experimental features), JSX, Angular, Vue, Flow, TypeScript, CSS variants, HTML, Ember/Handlebars, JSON, GraphQL, Markdown (including GFM and MDX v1) and YAML. It includes CLI options such as caching (--cache, --cache-location) and formatting flags (e.g., --write) and has recently introduced new options like objectWrap and experimentalOperatorPosition. Integrated with numerous editors, it minimizes code style debates and is suited for both legacy code style cleanup and new project consistency.
+Prettier is an opinionated code formatter that reprints source code by parsing the code into an AST and then printing it according to a consistent style. It supports languages such as JavaScript, JSX, Angular, Vue, Flow, and TypeScript, among others. Critical technical points include its handling of long lines by wrapping code, new configuration options (objectWrap, experimentalOperatorPosition, TS config file), and its integration with various editors and toolchains. The release notes highlight changes across versions (3.5, 3.4, 3.1, 3.0, etc.) and detail improvements such as performance enhancements and CLI optimizations.
 
 ## Normalised Extract
 ## Table of Contents
-1. SUPPORTED_LANGUAGES
-2. FORMATTING_BEHAVIOR
-3. RELEASE_OPTIONS
-4. CLI_INTEGRATION
-5. BEST_PRACTICES
-6. TROUBLESHOOTING
+1. Overview
+2. Code Formatting Example
+3. Configuration Options
+4. Release Notes
+5. Technical Implementation
 
-### 1. SUPPORTED_LANGUAGES
-- JavaScript (with experimental features)
-- JSX
-- Angular
-- Vue
-- Flow
-- TypeScript
-- CSS, Less, SCSS
-- HTML
-- Ember/Handlebars
-- JSON
-- GraphQL
-- Markdown (GFM, MDX v1)
-- YAML
+### 1. Overview
+- Prettier reformats code by ignoring original styling and reprinting based on maximum line length.
+- Supports multiple languages including JavaScript, TypeScript, CSS, HTML, and Markdown.
 
-### 2. FORMATTING_BEHAVIOR
-- Ignores original styling except where practical (e.g., preserving empty lines and multi-line objects).
-- Reprints code from scratch using its AST with line length considerations.
+### 2. Code Formatting Example
+- **Before Formatting:**
+  foo(arg1, arg2, arg3, arg4);
+- **Non-Wrapped Long Call:**
+  foo(reallyLongArg(), omgSoManyParameters(), IShouldRefactorThis(), isThereSeriouslyAnotherOne());
+- **After Formatting (Wrapped):**
+  foo(
+    reallyLongArg(),
+    omgSoManyParameters(),
+    IShouldRefactorThis(),
+    isThereSeriouslyAnotherOne(),
+  );
 
-**Example:**
-Before formatting: `foo(arg1, arg2, arg3, arg4);`
-After formatting:
-```
-foo(
-  reallyLongArg(),
-  omgSoManyParameters(),
-  IShouldRefactorThis(),
-  isThereSeriouslyAnotherOne()
-);
-```
+### 3. Configuration Options
+- **trailingComma:** "all" (default). Ensures commas are placed after the last element in multi-line structures.
+- **printWidth:** Defines maximum characters per line before wrapping occurs.
+- **tabWidth:** Number (e.g., 2 or 4) for spaces in indentation.
+- **useTabs:** Boolean to toggle between using tabs or spaces.
+- **objectWrap:** (New) Controls object wrapping behavior.
+- **experimentalOperatorPosition:** (New) Adjusts operator positioning in formatted output.
+- **TS Config File Support:** Enables Prettier to use custom TypeScript configuration files.
 
-### 3. RELEASE_OPTIONS
-- **objectWrap Option:** Controls how objects are wrapped. New in v3.5.
-- **experimentalOperatorPosition Option:** Determines the position of operators; marked experimental.
-- **TypeScript Config File Support:** Allows use of a TS configuration file to guide formatting.
+### 4. Release Notes
+- **3.5:** Added new options for objectWrap and experimentalOperatorPosition; TS configuration file support introduced.
+- **3.4 & 3.3:** Numerous bug fixes and enhancements.
+- **3.1:** Introduced experimental ternary formatting with `--experimental-ternaries` flag.
+- **3.0:** Transitioned to ECMAScript Modules; altered markdown spacing and plugin interfaces.
+- **2.8:** Improved cache handling with `--cache-location` and support for TypeScript 4.9 satisfies operator.
 
-### 4. CLI_INTEGRATION
-- Runs via the command line with support for options:
-  - `--cache` to enable caching,
-  - `--cache-location` to specify the cache directory,
-  - `--write` to output formatted code to files.
-
-### 5. BEST_PRACTICES
-- Use Prettier to handle all formatting needs while relying on linters for code-quality rules.
-- Integrate Prettier as a pre-commit hook and within editor plugins to auto-format code on save.
-- Run Prettier on the entire codebase to ensure consistent style especially after large merges or style debates.
-
-### 6. TROUBLESHOOTING
-- Verify correct parser (e.g., `babel` or `typescript`) is set in the configuration.
-- Ensure editor plugins point to the proper version of Prettier installed in the project.
-- Check CLI options if changes are not reflected (e.g., using `--write` properly).
-- Run Prettier with verbose logging if the behavior is unexpected.
+### 5. Technical Implementation
+- **Parsing:** Removes original styling (except practical cases, e.g., empty lines) and rebuilds code through AST.
+- **CLI Integration:** Use Prettier as a command line tool and integrate with editor plugins for on-save formatting. Example command: `prettier --write "src/**/*.js"`.
+- **Usage in Code:** Often integrated into pre-commit hooks or Continuous Integration to enforce style consistency.
 
 
 ## Supplementary Details
-## Supplementary Technical Specifications
+### Detailed Supplementary Specifications
 
-### Prettier Options and Configuration
-- **objectWrap Option:** 
-  - *Usage:* `--object-wrap [option]`
-  - *Supports:* Controlling wrap style for object literals.
-  - *Default:* Inherited from previous version behavior unless explicitly set.
+1. **Configuration Options and Defaults**:
+   - trailingComma: Default: "all". Inserts a trailing comma in multi-line constructs if set to "all".
+   - printWidth: Default value is typically 80, but configurable to any integer.
+   - tabWidth: Default is 2. Common alternatives: 4.
+   - useTabs: Default is false. If set true, indentation is done with tabs.
+   - objectWrap: New option in version 3.5. Accepts values that determine object property wrapping behavior.
+   - experimentalOperatorPosition: New option in version 3.5. Boolean flag for enabling experimental formatting of operators.
+   - TS Config File Support: Allows a TypeScript config file to dictate parsing behavior for TypeScript projects.
 
-- **experimentalOperatorPosition Option:** 
-  - *Usage:* `--experimental-operator-position`
-  - *Effect:* Adjusts the placement of operators in multi-line expressions.
-  - *Note:* This option is experimental and feedback is encouraged.
+2. **Implementation Steps**:
+   - Parse source code to generate AST, ignoring original whitespace and formatting details (with exceptions for empty lines, multi-line objects).
+   - Reprint source code according to formatting rules defined by configuration options.
+   - Optionally wrap code segments when they exceed the defined printWidth.
+   - Integrate with build tools by using CLI commands or editor plugins for automated formatting.
 
-- **TypeScript Configuration File Support:** 
-  - *Usage:* Prettier will detect and use `tsconfig.json` if available.
-  - *Effect:* Allows alignment of formatting rules with the TypeScript configuration settings.
-
-### CLI Details
-- **Cache Options:**
-  - `--cache`: Enables caching mechanism to speed up repeated formatting operations.
-  - `--cache-location [path]`: Specifies an alternate directory for the cache.
-  - *Behavior:* Cache is only used if `--write` flag is active.
-
-### Integration Steps
-1. Install Prettier as a dev dependency: `npm install --save-dev prettier`
-2. Create a configuration file (`.prettierrc`) with desired options (e.g., `{"trailingComma": "all", "tabWidth": 2}`).
-3. Add a script in `package.json` to format files: `"format": "prettier --write '**/*.{js,jsx,ts,tsx,css,scss,md}'"`.
-4. Configure editor integration (e.g., VSCode plugin settings) to use the project version of Prettier.
-
-### Release Notes Integration
-- New features are introduced in versions 3.0 to 3.5 with enhancements such as ECMAScript Module migration, new Flow features, and experimental formatting changes to ternaries.
-- Use the provided migration guides in the release notes to update plugins and configuration when moving to a new version.
+3. **CLI Example**:
+   - Check formatting: `prettier --check "src/**/*.js"`
+   - Write changes: `prettier --write "src/**/*.js"`
+   - Custom cache location: `prettier --cache --cache-location .cache/prettier`
 
 
 ## Reference Details
-## Prettier API and Detailed Implementation Reference
+### Complete API Specifications and Code Examples
 
-### API Method Signature
+#### Prettier API Method Signature
 
-Prettier exposes a formatting function for programmatic use:
+For JavaScript usage, Prettier exports a format function:
 
-```
-/**
- * Formats the given source code string based on the provided options.
- * 
- * @param {string} source - The source code to format.
- * @param {Object} options - The configuration options for formatting.
- * @param {string} options.parser - The parser to use (e.g., 'babel', 'typescript').
- * @param {'none'|'es5'|'all'} options.trailingComma - Controls trailing comma usage.
- * @param {number} [options.tabWidth=2] - Number of spaces per indentation level.
- * @param {boolean} [options.useTabs=false] - Indentation with tabs instead of spaces.
- * @returns {string} - The formatted code.
- * @throws {Error} - Throws error if source code cannot be parsed.
- */
-function format(source, options) {}
-```
+    /**
+     * Formats the given source code string using the specified options.
+     * @param {string} source - The source code to format.
+     * @param {Prettier.Options} options - Formatting options including parser, trailingComma, printWidth, etc.
+     * @returns {string} - The formatted code.
+     */
+    function format(source: string, options: Prettier.Options): string;
 
-### Full Code Example (Node.js Usage)
+#### Prettier.Options Interface
 
-```javascript
-// Import the Prettier module
-const prettier = require('prettier');
+    interface Options {
+      parser: string;                 // e.g., 'babel', 'flow', 'typescript', etc.
+      trailingComma?: 'none' | 'es5' | 'all'; // Default is 'all'.
+      printWidth?: number;            // e.g., 80, 100
+      tabWidth?: number;              // Number of spaces, e.g., 2 or 4
+      useTabs?: boolean;              // false by default
+      objectWrap?: 'preserve' | 'force' | 'auto'; // New in 3.5
+      experimentalOperatorPosition?: boolean;     // New experimental flag
+      // Additional options may include: semi, singleQuote, bracketSpacing, etc.
+    }
 
-// Sample unformatted JavaScript code
-const unformattedCode = "function hello(name){console.log('Hello, '+ name);}";
+#### Full Code Example
 
-// Format the code with specific options
-const formattedCode = prettier.format(unformattedCode, {
-  parser: 'babel',
-  trailingComma: 'all',
-  tabWidth: 2,
-  useTabs: false
-});
+    // Importing Prettier in a Node.js project
+    const prettier = require('prettier');
 
-console.log(formattedCode);
-```
+    // Source code to be formatted
+    const code = "foo(reallyLongArg(), omgSoManyParameters(), IShouldRefactorThis(), isThereSeriouslyAnotherOne());";
 
-### CLI Usage Example
+    // Formatting options
+    const options = {
+      parser: 'babel',
+      trailingComma: 'all',
+      printWidth: 80,
+      tabWidth: 2,
+      useTabs: false,
+      objectWrap: 'auto',
+      experimentalOperatorPosition: true
+    };
 
-Run Prettier from the terminal to format all JavaScript files:
+    // Format the code
+    const formatted = prettier.format(code, options);
 
-```
-npx prettier --write '**/*.js'
-```
+    console.log(formatted);
 
-### Configuration File Example (.prettierrc)
+#### Best Practices
 
-```json
-{
-  "semi": true,
-  "singleQuote": true,
-  "trailingComma": "all",
-  "printWidth": 80,
-  "tabWidth": 2,
-  "objectWrap": "collapse",
-  "experimentalOperatorPosition": true
-}
-```
+- Integrate Prettier into your editor (VS Code, Sublime, Vim) for on-save formatting to maintain consistent style.
+- Use Prettier in combination with linters (ESLint, TSLint) to separate formatting from code quality issues.
+- For large codebases, run Prettier as a pre-commit hook to avoid formatting debates during code reviews.
 
-### Best Practices
-- **Integration:** Configure your editor (VSCode, Sublime, Vim, etc.) to use the local Prettier installation.
-- **Pre-commit Hooks:** Use tools like Husky to add Prettier to your Git pre-commit process.
-- **Troubleshooting:** 
-  - If formatted output does not match expectations, run with increased logging (e.g., `DEBUG=prettier:* npx prettier --write <file>`).
-  - Verify that the correct parser is selected if syntax errors occur.
+#### Troubleshooting Procedures
 
-### Troubleshooting Procedures
-1. **Command:** `npx prettier --check 'src/**/*.{js,jsx,ts,tsx}'`
-   - **Expected Output:** Lists files that do not conform to the style.
-2. **Command:** `npx prettier --write 'src/**/*.{js,jsx,ts,tsx}'`
-   - **Expected Output:** Files are reformatted in place.
-3. **If errors occur:** Check the installed version of Prettier and ensure that configuration files (e.g., .prettierrc) are correctly formatted.
-4. **Editor Plugin Issues:** Confirm that the plugin is using the project's Prettier version and that no conflicting settings are in place.
+1. **Check Formatting:**
+   Run: `prettier --check "src/**/*.js"`
+   - Expected output: Lists files that are not formatted or a success message if all files are formatted.
 
+2. **Apply Formatting:**
+   Run: `prettier --write "src/**/*.js"`
+   - Expected output: Files are overwritten with formatted code.
+
+3. **Cache Issues:**
+   If encountering caching problems, use: `prettier --cache --cache-location .cache/prettier`
+   and verify that the cache directory is writable.
+
+4. **Configuration Debugging:**
+   Run Prettier with increased logging (if available) or manually inspect the options object passed into the API.
+
+These detailed API method signatures, option definitions, and full usage examples provide developers with the exact implementation guidelines required to integrate and troubleshoot Prettier in their projects.
 
 ## Original Source
 Prettier Documentation
@@ -190,76 +159,66 @@ https://prettier.io/docs/en/index.html
 
 # Prettier Documentation Digest
 
-**Retrieved Date:** 2023-10-04
+**Retrieved Date:** 2023-10-06
+**Data Size:** 3018811 bytes
 
 ## Overview
-Prettier is an opinionated code formatter that reprints source code by parsing its AST and formatting based on a fixed set of rules. It supports many languages including JavaScript (and experimental features), JSX, Angular, Vue, Flow, TypeScript, CSS, Less, SCSS, HTML, Ember/Handlebars, JSON, GraphQL, Markdown (GFM and MDX v1), and YAML.
+Prettier is an opinionated code formatter that reprints your code based on a set of rules that enforce consistency. It supports numerous languages including JavaScript (with experimental features), JSX, Angular, Vue, Flow, TypeScript, CSS variants, HTML, Ember/Handlebars, JSON, GraphQL, Markdown (GFM and MDX v1), and YAML.
 
-## Supported Languages
-- JavaScript (including experimental features)
-- JSX
-- Angular
-- Vue
-- Flow
-- TypeScript
-- CSS, Less, SCSS
-- HTML
-- Ember/Handlebars
-- JSON
-- GraphQL
-- Markdown (GFM, MDX v1)
-- YAML
+## Code Formatting Example
 
-## Formatting Behavior
-- Removes original styling while preserving some practical elements such as empty lines and multi-line objects.
-- Reprints code taking into account the maximum line length. 
+**Original Code:**
 
-### Example
-*Before:*  
-`foo(arg1, arg2, arg3, arg4);`
+    foo(arg1, arg2, arg3, arg4);
 
-*After (when over length limit):*
-```
-foo(
-  reallyLongArg(),
-  omgSoManyParameters(),
-  IShouldRefactorThis(),
-  isThereSeriouslyAnotherOne()
-);
-```
+**When Line Length Exceeds Limit:**
 
-## Release Features and Options
-- **objectWrap Option:** New in version 3.5 to control wrapping of objects.
-- **experimentalOperatorPosition Option:** Experimental flag for operator positioning.
-- **TypeScript Config File Support:** Enables user provided TS config to influence formatting.
+    foo(reallyLongArg(), omgSoManyParameters(), IShouldRefactorThis(), isThereSeriouslyAnotherOne());
 
-## CLI and Integration
-- Prettier comes with a CLI that supports options like `--cache`, `--cache-location`, and `--write` for formatting files.
-- Integrated with most editors through plugins (e.g., VSCode, Sublime, Vim, Emacs) and supports running as part of pre-commit hooks.
+**Formatted Output:**
 
-## Best Practices
-- Use Prettier for formatting and linters (e.g., ESLint) for code-quality rules.
-- Incorporate in continuous integration workflows to ensure code consistency.
-- Use editor integrations to auto-format on save.
+    foo(
+      reallyLongArg(),
+      omgSoManyParameters(),
+      IShouldRefactorThis(),
+      isThereSeriouslyAnotherOne(),
+    );
 
-## Troubleshooting
-- Ensure that the correct parser is specified in non-standard language cases (e.g., using `babel` for JavaScript or `typescript` for TS).
-- Check that editor plugins are configured to use the project version of Prettier.
-- For CLI issues, run Prettier with increased verbosity or check cache configurations.
+## Key Configuration Options
 
-## Attribution and Data Size
-- **Data Size from Crawled Content:** 1045001 bytes
-- **Links Found:** 2592
-- **Source URL:** https://prettier.io/docs/en/index.html
+- **trailingComma:** Default is "all". Adjusts comma usage in multi-line constructs.
+- **printWidth:** Maximum line length used to decide when to wrap code.
+- **tabWidth:** Number of spaces per indentation level.
+- **useTabs:** Boolean flag to use tabs instead of spaces.
+- **objectWrap option (New in 3.5):** Controls the wrapping behavior for objects.
+- **experimentalOperatorPosition option (New in 3.5):** Enables experimental formatting for operator positions.
+- **TS configuration file support:** Allows using a TypeScript configuration file for custom formatting rules.
+
+## Release Notes & Versioning
+
+- **Prettier 3.5:** Adds support for objectWrap, experimentalOperatorPosition, and TS config file support. (Feb 9, 2025)
+- **Prettier 3.4 & 3.3:** Various bug fixes and feature enhancements.
+- **Prettier 3.1:** Introduced the `--experimental-ternaries` flag with a novel formatting style for nested ternaries.
+- **Prettier 3.0:** Migrated to ECMAScript Modules with significant changes such as altered markdown formatting rules and a plugin interface overhaul.
+- **Prettier 2.8:** Improved cache options and added support for TypeScript 4.9's satisfies operator.
+
+## Technical Implementation
+
+- **Parsing and Reprinting:** Prettier parses code by removing original styling (preserving empty lines and multi-line objects) and reprints based on its AST, respecting the maximum line length.
+- **Integration:** Works seamlessly with many editors through CLI, plugins, and IDE integrations.
+- **Usage Pattern:** It is typically run as part of a pre-commit hook or on file save to enforce uniform code style across projects.
+
+## Attribution
+Extracted from https://prettier.io/docs/en/index.html with a data size of 3018811 bytes and 3980 links found in the crawl.
 
 
 ## Attribution
 - Source: Prettier Documentation
 - URL: https://prettier.io/docs/en/index.html
-- License: MIT License
-- Crawl Date: 2025-04-20T19:20:47.055Z
-- Data Size: 1045001 bytes
-- Links Found: 2592
+- License: Unknown
+- Crawl Date: 2025-04-20T21:38:44.902Z
+- Data Size: 3018811 bytes
+- Links Found: 3980
 
 ## Retrieved
 2025-04-20
