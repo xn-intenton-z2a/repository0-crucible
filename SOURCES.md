@@ -47,3 +47,28 @@ Prettier is an opinionated code formatter that enforces a consistent style acros
 ## https://platform.openai.com/docs/api-reference
 The OpenAI API documentation provides comprehensive guidance on accessing and integrating OpenAI's language models and other AI tools. It includes reference material, examples, and best practices for incorporating AI capabilities into applications. The content is regularly updated and is highly authoritative in the AI community.
 ## Apache-2.0
+
+# GitHub Actions Documentation
+## https://docs.github.com/en/actions
+This documentation provides detailed guides on GitHub Actions, covering workflow creation, continuous integration and deployment strategies, and best practices for automating development processes. It is regularly updated and is highly authoritative in the DevOps community.
+## N/A
+
+# AWS Lambda Documentation
+## https://docs.aws.amazon.com/lambda/
+AWS Lambda offers comprehensive documentation for deploying and managing serverless functions. It covers setup, configuration, runtime management, and scaling considerations, making it essential for projects leveraging serverless architectures for replication and autonomous operations.
+## N/A
+
+# Chalk Documentation
+## https://chalk.js.org/
+Chalk is a popular library for styling terminal string output with colors and text styles, enhancing the CLI experience. Its documentation provides usage examples, API references, and best practices for creating dynamic and readable command line interfaces.
+## MIT License
+
+# OpenAI Cookbook
+## https://github.com/openai/openai-cookbook
+The OpenAI Cookbook is a community-driven resource that offers practical examples and recipes for using OpenAI's APIs. It provides insights into building self-improving systems and integrating advanced AI functionalities into various applications.
+## MIT License
+
+# Auto-GPT Documentation
+## https://github.com/Significant-Gravitas/Auto-GPT
+Auto-GPT is an experimental open-source project that demonstrates autonomous AI capabilities. Its documentation and community resources offer insights into building self-directed agents and serve as an inspiration for developing self-improving, agentic systems.
+## MIT License
