@@ -68,7 +68,9 @@ The CLI logs the arguments provided in a JSON formatted string and then logs the
   Execution time: X ms
   Self-improvement analysis: execution metrics are optimal
 
-The self-improve flag provides additional diagnostic output aimed at self-assessing performance metrics.
+## Implementation Details
+
+The CLI's main logic has been refactored for improved readability and maintainability. The flag-handling logic has been extracted into separate helper functions (for help-seeking, replication, and self-improvement) and the logging functionality has been isolated. This separation of concerns ensures that the code is self-documenting and easier to maintain.
 
 ## Testing
 
@@ -76,4 +78,4 @@ Run the tests using:
 
   npm test
 
-This will execute the unit tests for the CLI to ensure it behaves as expected and logs the run arguments, replication messages (if applicable), help-seeking message (if applicable), and execution time, along with self-improvement diagnostics when the flag is used.
+This will execute the unit tests for the CLI to ensure it behaves as expected, including logging of CLI arguments, replication messages, help-seeking messages, and self-improvement diagnostics.
