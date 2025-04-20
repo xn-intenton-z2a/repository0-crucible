@@ -31,6 +31,8 @@
     "openai": "^4.94.0",
     "dotenv": "^16.5.0",
     "ejs": "^3.1.10",
+    "js-yaml": "^4.1.0",
+    "minimatch": "^9.0.5",
     "zod": "^3.24.2"
   },
   "devDependencies": {
@@ -64,5 +66,10 @@
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
-  "eslintIgnore": ["archive/**", "build/", "coverage/", "dist/", "exports/", "node_modules/", "eslint.config.js"]
+  "eslintIgnore": ["archive/**", "build/", "coverage/", "dist/", "exports/", "node_modules/", "eslint.config.js"],
+  "eslintConfig": {
+    "rules": {
+      "sonarjs/cognitive-complexity": "off"
+    }
+  }
 }
