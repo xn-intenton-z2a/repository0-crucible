@@ -88,3 +88,19 @@ describe("Replication Mode", () => {
     spy.mockRestore();
   });
 });
+
+describe("Help-Seeking Mode", () => {
+  test("should log help-seeking message when '--help-seeking' flag is provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--help-seeking"]);
+    // Expected logs:
+    // 1: Run with: ["--help-seeking"]
+    // 2: Help-Seeking Mode Enabled: querying assistance...
+    // 3: Execution time: ... ms
+    expect(spy).toHaveBeenCalledTimes(3);
+    expect(spy.mock.calls[0][0]).toBe('Run with: ["--help-seeking"]');
+    expect(spy.mock.calls[1][0]).toBe('Help-Seeking Mode Enabled: querying assistance...');
+    expectExecutionTimeLog(spy.mock.calls[2][0]);
+    spy.mockRestore();
+  });
+});
