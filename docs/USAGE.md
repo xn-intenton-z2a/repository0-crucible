@@ -50,6 +50,8 @@ The CLI logs the arguments provided in a JSON formatted string and then logs the
   Replicating task 3
   Execution time: X ms
 
+Note: The replication logic has been refactored into a dedicated helper function for better maintainability and consistent logging.
+
 ## Testing
 
 Run the tests using:

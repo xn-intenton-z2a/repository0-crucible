@@ -84,8 +84,7 @@ describe("Replication Mode", () => {
     expect(spy.mock.calls[2][0]).toBe('Replicating task 1');
     expect(spy.mock.calls[3][0]).toBe('Replicating task 2');
     expect(spy.mock.calls[4][0]).toBe('Replicating task 3');
-    const lastLog = spy.mock.calls[5][0];
-    expect(lastLog).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
+    expect(spy.mock.calls[5][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
     spy.mockRestore();
   });
 });
