@@ -1,27 +1,43 @@
 # Enhanced Styling
 
 ## Overview
-This feature refines and extends the existing STYLING capability by leveraging Chalk's advanced method chaining and configuration options. The agent’s CLI output will now use not only basic colorization but also dynamic style enhancements (such as bold, underline, hex and RGB color support) that adapt based on the environment (e.g. TTY detection) and message context (e.g. errors, info, warnings).
+This feature refines the CLI output by integrating the Chalk library to provide dynamic, color-coded, and styled log messages. By wrapping all console outputs in the CLI agent with distinct color schemes based on the message type (e.g. help-seeking, replication, self-improvement, planning, and reset messages), the output becomes more user-friendly and informative. This enhancement improves readability and assists developers in quickly identifying the state and intent of the logs.
 
 ## Implementation Details
-- **Source File Update:**
-  - In `src/lib/main.js`, import the Chalk library using ES Module syntax: `import chalk from 'chalk';`.
-  - Update the logging logic to wrap standard output messages with enhanced styling. For example, if the command line arguments include `--error`, output a message styled with `chalk.bold.red`; for informational messages, use `chalk.green`, and for warnings, employ a combination like `chalk.hex('#FFA500')` (orange).
-  - Integrate TTY detection by checking `process.stdout.isTTY` to conditionally apply color styling.
 
-- **Test File Update:**
-  - In `tests/unit/main.test.js`, augment tests to simulate CLI invocations with flags (e.g. `--error`, `--info`) and verify that the output includes ANSI escape sequences (indicative of Chalk styling).
-  - Add expectations to confirm that styled messages, such as those produced with `chalk.bold`, are correctly rendered in the console log output.
+### Source File Update (src/lib/main.js)
+- **Import Chalk:**
+  - Add `import chalk from 'chalk';` at the top of the file.
 
-- **README Update:**
-  - Update `README.md` to document the enhanced styling feature. Include an explanation of how the CLI now provides richer visual feedback using advanced Chalk features, along with examples of the styled outputs. Provide sample command invocations and describe the automatic fallback in non-TTY environments.
+- **Wrap Console Logs:**
+  - Update `logCLIArgs(args)` to output calls using `chalk.blue` for the JSON string of the arguments.
+  - In `logExecutionTime()`, wrap the execution time message with `chalk.gray`.
+  - In `handleHelpSeeking()`, log the help-seeking activation message with `chalk.yellow.bold`.
+  - In `replicateTasks()`, output each replication task message using `chalk.cyan`.
+  - In `handleSelfImprove()`, output diagnostic metrics prefixed with `chalk.magenta` to highlight self-improvement details.
+  - In `planTasks()`, use `chalk.green` to log planning mode messages.
+  - In `handleDecompose()`, style the goal decomposition headers with `chalk.blueBright`.
+  - When persisting the memory log (both to console and file), use `chalk.green` for success confirmation messages.
 
-- **Dependencies File Update:**
-  - Modify `package.json` to add Chalk as a dependency (e.g. "chalk": "^5.0.0"). This ensures that the latest features of Chalk are available for use by the enhanced styling commands.
+### Test File Update (tests/unit/main.test.js)
+- **Non-functional Changes:**
+  - The tests continue to validate that the expected log messages are output. Since the tests use regular expressions to match patterns, update the expected string patterns to account for ANSI escape sequences if necessary, or verify that the output includes the base text (e.g., "Run with:").
 
-## Testing and Compatibility
-- Verify via unit tests that ANSI escape codes appear in the output when styling is enabled.
-- Ensure that in non-TTY environments (or when a FORCE_COLOR environment variable is not set), the agent automatically disables styling to maintain compatibility.
+### README Update (README.md)
+- **Usage Documentation:**
+  - Add a note under a new section or in the Features section describing that the CLI now uses enhanced colored output via Chalk to improve readability.
+  - Include a sample command output snippet showing colored logs.
 
-## Long-Term Considerations
-This enhancement lays the groundwork for future styling improvements, such as dynamic theming and context-sensitive message formatting, making the CLI not only more informative but also visually intuitive.
+### Dependencies File Update (package.json)
+- Add the Chalk library to dependencies:
+  ```json
+  "chalk": "^5.0.0"
+  ```
+
+## Testing & Compatibility
+- Run `npm test` to verify that the styled outputs are present and that ANSI escape sequences are included in the log outputs.
+- Validate that in non-TTY environments (or when the environment variable `FORCE_COLOR=0` is set), Chalk disables styling appropriately.
+
+## Future Considerations
+- Consider adding configuration options (via CLI flags or environment variables) to toggle styling on or off.
+- Future iterations may support theming options that allow users to customize color schemes further.
