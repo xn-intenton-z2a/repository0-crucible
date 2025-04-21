@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="commander_js" href="#commander_js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>COMMANDER_JS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Installation via npm, quick-start examples, usage of global and local Command instances, and a rich set of option definitions (.option) including boolean, value, negatable, variadic and custom-processed options. Detailed command creation with .command(), argument handling with .argument(), action handlers (sync and async), automated help customization, parsing configurations (enablePositionalOptions, passThroughOptions, storeOptionsAsProperties), error overriding with exitOverride(), and life cycle hooks for preAction and postAction are provided with complete code examples and expected command outputs.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github"><strong class="md-github">Table of Contents:</strong></p>
+<ol class="md-github">
+<li class="md-github">Installation</li>
+<li class="md-github">Quick Start</li>
+<li class="md-github">Declaring Program Variable</li>
+<li class="md-github">Options
+<ul class="md-github">
+<li class="md-github">Defining Options</li>
+<li class="md-github">Option Types (boolean, value, negatable, variadic, optional)</li>
+<li class="md-github">Custom Option Processing</li>
+</ul>
+</li>
+<li class="md-github">Commands
+<ul class="md-github">
+<li class="md-github">Command Creation</li>
+<li class="md-github">Command Arguments</li>
+</ul>
+</li>
+<li class="md-github">Action Handlers
+<ul class="md-github">
+<li class="md-github">Synchronous &amp; Asynchronous</li>
+</ul>
+</li>
+<li class="md-github">Help and Usage Customization</li>
+<li class="md-github">Parsing, Legacy Options &amp; Error Handling</li>
+<li class="md-github">Life Cycle Hooks &amp; Custom Events</li>
+<li class="md-github">Troubleshooting</li>
+</ol>
+<p class="md-github"><strong class="md-github">1. Installation</strong></p>
+<ul class="md-github">
+<li class="md-github">Command: <code class="md-github">npm install commander</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">2. Quick Start</strong></p>
+<ul class="md-github">
+<li class="md-github">Import using CommonJS or ECMAScript Modules:<pre class="md-github"><code class="md-github language-js">const { program } = require('commander'); // CommonJS
+// or
+import { Command } from 'commander';
+const program = new Command();
+</code></pre>
+</li>
+</ul>
+<p class="md-github"><strong class="md-github">3. Declaring Program Variable</strong></p>
+<ul class="md-github">
+<li class="md-github">Use the global object <code class="md-github">program</code> or create new instances with <code class="md-github">new Command()</code> depending on program complexity.</li>
+</ul>
+<p class="md-github"><strong class="md-github">4. Options</strong></p>
+<ul class="md-github">
+<li class="md-github">Defining Options with <code class="md-github">.option(flags, description, [default], [fn])</code>:<pre class="md-github"><code class="md-github language-js">program
+  .option('-d, --debug', 'enable debugging')
+  .option('-p, --port &lt;number&gt;', 'specify port');
+</code></pre>
+</li>
+<li class="md-github">Custom processing example:<pre class="md-github"><code class="md-github language-js">function myParseInt(value, dummyPrevious) {
+  const parsed = parseInt(value, 10);
+  if (isNaN(parsed)) throw new Error('Not a number.');
+  return parsed;
+}
+program.option('-i, --integer &lt;number&gt;', 'integer option', myParseInt);
+</code></pre>
+</li>
+<li class="md-github">Variadic option usage:<pre class="md-github"><code class="md-github language-js">program.option('-n, --number &lt;numbers...&gt;', 'list of numbers');
+</code></pre>
+</li>
+</ul>
+<p class="md-github"><strong class="md-github">5. Commands</strong></p>
+<ul class="md-github">
+<li class="md-github">Creating a command with arguments and action:<pre class="md-github"><code class="md-github language-js">program.command('clone &lt;source&gt; [destination]')
+  .description('clone a repository')
+  .action((source, destination) =&gt; {
+    console.log('Cloning from', source, 'to', destination);
+  });
+</code></pre>
+</li>
+</ul>
+<p class="md-github"><strong class="md-github">6. Action Handlers</strong></p>
+<ul class="md-github">
+<li class="md-github">Synchronous:<pre class="md-github"><code class="md-github language-js">program.command('serve &lt;script&gt;')
+  .option('-p, --port &lt;number&gt;', 'port', 80)
+  .action(function() {
+    console.log(`Serving ${this.args[0]} on port ${this.opts().port}`);
+  });
+</code></pre>
+</li>
+<li class="md-github">Asynchronous:<pre class="md-github"><code class="md-github language-js">async function run() { /* async code */ }
+program.command('run').action(run);
+program.parseAsync(process.argv);
+</code></pre>
+</li>
+</ul>
+<p class="md-github"><strong class="md-github">7. Help and Usage Customization</strong></p>
+<ul class="md-github">
+<li class="md-github">Custom help text:<pre class="md-github"><code class="md-github language-js">program.addHelpText('after', '\nExample: $ custom-help --help');
+</code></pre>
+</li>
+<li class="md-github">Overriding default help option:<pre class="md-github"><code class="md-github language-js">program.helpOption('-e, --HELP', 'extended help');
+</code></pre>
+</li>
+</ul>
+<p class="md-github"><strong class="md-github">8. Parsing and Error Handling</strong></p>
+<ul class="md-github">
+<li class="md-github">Basic parse call:<pre class="md-github"><code class="md-github language-js">program.parse(process.argv);
+</code></pre>
+</li>
+<li class="md-github">Using <code class="md-github">.exitOverride()</code> to handle errors:<pre class="md-github"><code class="md-github language-js">program.exitOverride();
+try { program.parse(process.argv); } catch (err) { console.error(err.message); }
+</code></pre>
+</li>
+</ul>
+<p class="md-github"><strong class="md-github">9. Life Cycle Hooks &amp; Custom Events</strong></p>
+<ul class="md-github">
+<li class="md-github">Pre-action hook example:<pre class="md-github"><code class="md-github language-js">program.hook('preAction', (cmd, actionCmd) =&gt; {
+  if (cmd.opts().trace) console.log(`Running ${actionCmd.name()}`);
+});
+</code></pre>
+</li>
+<li class="md-github">Event listener for options:<pre class="md-github"><code class="md-github language-js">program.on('option:verbose', function() {
+  process.env.VERBOSE = this.opts().verbose;
+});
+</code></pre>
+</li>
+</ul>
+<p class="md-github"><strong class="md-github">10. Troubleshooting</strong></p>
+<ul class="md-github">
+<li class="md-github">Unknown option error:<pre class="md-github"><code class="md-github language-sh">$ node split.js -s / --fits a/b/c
+error: unknown option '--fits'
+(Did you mean --first?)
+</code></pre>
+</li>
+<li class="md-github">Debug subcommands with VSCode by setting &quot;autoAttachChildProcesses&quot;: true in launch.json.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github"><strong class="md-github">Supplementary Technical Specifications:</strong></p>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Option Method Signature:</strong>
+<code class="md-github">.option(flags: string, description: string, defaultValue?: any, fn?: (value: string, previous: any) =&gt; any): this</code></p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Command Method Signature:</strong>
+<code class="md-github">.command(name: string, description?: string, options?: { executableFile?: string, isDefault?: boolean, hidden?: boolean }): Command</code></p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Argument Method Signature:</strong>
+<code class="md-github">.argument(name: string, description?: string, defaultValue?: any): this</code></p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Parsing Methods:</strong></p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">.parse(argv?: string[], parseOptions?: { from: 'node' | 'electron' | 'user' }): this</code></li>
+<li class="md-github"><code class="md-github">.parseAsync(argv?: string[]): Promise&lt;this&gt;</code></li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Error Handling:</strong></p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">.exitOverride(callback?: (err: CommanderError) =&gt; void): this</code></li>
+<li class="md-github"><code class="md-github">.error(message: string, options?: { exitCode?: number, code?: string }): never</code></li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Life Cycle Hooks:</strong></p>
+<ul class="md-github">
+<li class="md-github">Hook events: 'preAction', 'postAction', 'preSubcommand'</li>
+<li class="md-github">Example: <code class="md-github">.hook('preAction', (command, actionCommand) =&gt; { ... });</code></li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Configuration Options:</strong></p>
+<ul class="md-github">
+<li class="md-github">Positional Options: <code class="md-github">.enablePositionalOptions()</code></li>
+<li class="md-github">Pass-through Options: <code class="md-github">.passThroughOptions()</code></li>
+<li class="md-github">Legacy property storage: <code class="md-github">.storeOptionsAsProperties()</code></li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Best Practices:</strong></p>
+<ul class="md-github">
+<li class="md-github">Create local Command instances for larger applications to avoid clashes.</li>
+<li class="md-github">Always define required options with <code class="md-github">.requiredOption()</code> when mandatory.</li>
+<li class="md-github">Use custom option processing for type coercion and validation.</li>
+<li class="md-github">Override exit behavior for integrating Commander with custom error-handling frameworks.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Implementation Steps:</strong></p>
+<ol class="md-github">
+<li class="md-github">Import Commander module and instantiate <code class="md-github">program</code>.</li>
+<li class="md-github">Chain method calls to add options, commands, arguments.</li>
+<li class="md-github">Add custom processing functions where needed.</li>
+<li class="md-github">Hook into life cycle events if debugging or logging is required.</li>
+<li class="md-github">Call <code class="md-github">.parse(process.argv)</code> or <code class="md-github">.parseAsync(process.argv)</code> to start parsing.</li>
+</ol>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github"><strong class="md-github">Complete API Specifications and Developer Reference:</strong></p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Program and Command Creation</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Command (Class):</strong>
+<ul class="md-github">
+<li class="md-github">Constructor: <code class="md-github">new Command(name?: string)</code></li>
+<li class="md-github">Methods:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">.name(name: string): this</code></li>
+<li class="md-github"><code class="md-github">.description(desc: string): this</code></li>
+<li class="md-github"><code class="md-github">.version(version: string, flags?: string, description?: string): this</code></li>
+<li class="md-github"><code class="md-github">.argument(name: string, description?: string, defaultValue?: any): this</code></li>
+<li class="md-github"><code class="md-github">.arguments(argString: string): this</code></li>
+<li class="md-github"><code class="md-github">.option(flags: string, description: string, defaultValue?: any, fn?: (value: string, previous: any) =&gt; any): this</code></li>
+<li class="md-github"><code class="md-github">.requiredOption(flags: string, description: string, defaultValue?: any, fn?: (value: string, previous: any) =&gt; any): this</code></li>
+<li class="md-github"><code class="md-github">.addOption(option: Option): this</code></li>
+<li class="md-github"><code class="md-github">.command(name: string, description?: string, options?: { executableFile?: string, isDefault?: boolean, hidden?: boolean }): Command</code></li>
+<li class="md-github"><code class="md-github">.addCommand(cmd: Command): this</code></li>
+<li class="md-github"><code class="md-github">.parse(argv?: string[], parseOptions?: { from: 'node' | 'electron' | 'user' }): this</code></li>
+<li class="md-github"><code class="md-github">.parseAsync(argv?: string[]): Promise&lt;this&gt;</code></li>
+<li class="md-github"><code class="md-github">.exitOverride(callback?: (err: CommanderError) =&gt; void): this</code></li>
+<li class="md-github"><code class="md-github">.error(message: string, options?: { exitCode?: number, code?: string }): never</code></li>
+<li class="md-github"><code class="md-github">.hook(name: 'preAction'|'postAction'|'preSubcommand', listener: (thisCommand: Command, actionCommand: Command) =&gt; void | Promise&lt;void&gt;): this</code></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Option Processing and Custom Functions</strong></p>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Custom Option Parser Example:</strong></p>
+<pre class="md-github"><code class="md-github language-js">function myParseInt(value, dummyPrevious) {
+  const parsed = parseInt(value, 10);
+  if (isNaN(parsed)) throw new Error('Not a number.');
+  return parsed;
+}
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Usage in Option:</strong></p>
+<pre class="md-github"><code class="md-github language-js">program.option('-i, --integer &lt;number&gt;', 'an integer argument', myParseInt);
+</code></pre>
+</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Code Examples (Full Code)</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">String Utility Example:</strong><pre class="md-github"><code class="md-github language-js">const { Command } = require('commander');
+const program = new Command();
+
+program.name('string-util')
+  .description('CLI to some JavaScript string utilities')
+  .version('0.8.0');
+
+program.command('split')
+  .description('Split a string into substrings and display as an array')
+  .argument('&lt;string&gt;', 'string to split')
+  .option('--first', 'display just the first substring')
+  .option('-s, --separator &lt;char&gt;', 'separator character', ',')
+  .action((str, options) =&gt; {
+    const limit = options.first ? 1 : undefined;
+    console.log(str.split(options.separator, limit));
+  });
+
+program.parse();
+</code></pre>
+</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Troubleshooting Procedures</strong></p>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Unknown Option Error:</strong></p>
+<ul class="md-github">
+<li class="md-github">Command:<pre class="md-github"><code class="md-github language-sh">$ node split.js -s / --fits a/b/c
+</code></pre>
+</li>
+<li class="md-github">Expected Output:<pre class="md-github"><code class="md-github">error: unknown option '--fits'
+(Did you mean --first?)
+</code></pre>
+</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Exit Override Example:</strong></p>
+<pre class="md-github"><code class="md-github language-js">program.exitOverride();
+try {
+  program.parse(process.argv);
+} catch (err) {
+  console.error('Custom error handling:', err.message);
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Configuration Options with Effects:</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Default Option Values:</strong><pre class="md-github"><code class="md-github language-js">program.option('-c, --cheese &lt;type&gt;', 'add cheese', 'blue');
+// When not provided, program.opts().cheese returns 'blue'
+</code></pre>
+</li>
+<li class="md-github"><strong class="md-github">Negatable Options:</strong><pre class="md-github"><code class="md-github language-js">program.option('--no-sauce', 'removes sauce');
+// When used, opts().sauce returns false
+</code></pre>
+</li>
+<li class="md-github"><strong class="md-github">Variadic Options:</strong><pre class="md-github"><code class="md-github language-js">program.option('-n, --number &lt;numbers...&gt;', 'list of numbers');
+// Provides an array of values
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<p class="md-github">This detailed API reference provides the exact method signatures, full code samples with inline comments, configuration parameters with default values, and step-by-step troubleshooting commands for developers using Commander.js to build robust node.js command-line interfaces.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Commander.js Documentation
+https://github.com/tj/commander.js</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-commander_js" href="#digest-of-commander_js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of COMMANDER_JS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="commanderjs-documentation" href="#commanderjs-documentation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Commander.js Documentation</h1>
+<p class="md-github"><strong class="md-github">Retrieved Date:</strong> 2023-10-30</p>
+<h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
+<ul class="md-github">
+<li class="md-github">Install via npm:<pre class="md-github"><code class="md-github language-sh">npm install commander
+</code></pre>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="quick-start" href="#quick-start"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Quick Start</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Import using CommonJS:</p>
+<pre class="md-github"><code class="md-github language-js">const { program } = require('commander');
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Import using ECMAScript Module:</p>
+<pre class="md-github"><code class="md-github language-js">import { Command } from 'commander';
+const program = new Command();
+</code></pre>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="declaring-program-variable" href="#declaring-program-variable"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Declaring Program Variable</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Global object usage:</p>
+<pre class="md-github"><code class="md-github language-js">const { program } = require('commander');
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Local Command instance:</p>
+<pre class="md-github"><code class="md-github language-js">const { Command } = require('commander');
+const program = new Command();
+</code></pre>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="options" href="#options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Options</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="defining-options" href="#defining-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Defining Options</h3>
+<ul class="md-github">
+<li class="md-github">Using <code class="md-github">.option()</code> method:<pre class="md-github"><code class="md-github language-js">program
+  .option('-p, --port &lt;number&gt;', 'server port number')
+  .option('--trace', 'add extra debugging output')
+  .option('--ws, --workspace &lt;name&gt;', 'use a custom workspace');
+</code></pre>
+</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="option-types-and-argument-parsing" href="#option-types-and-argument-parsing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Option Types and Argument Parsing</h3>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Boolean and value options:</p>
+<pre class="md-github"><code class="md-github language-js">program
+  .option('-d, --debug', 'output extra debugging')
+  .option('-s, --small', 'small pizza size')
+  .option('-p, --pizza-type &lt;type&gt;', 'flavour of pizza');
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Optional option with a default value:</p>
+<pre class="md-github"><code class="md-github language-js">program
+  .option('-c, --cheese &lt;type&gt;', 'add the specified type of cheese', 'blue');
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Negatable options:</p>
+<pre class="md-github"><code class="md-github language-js">program
+  .option('--no-sauce', 'Remove sauce')
+  .option('--cheese &lt;flavour&gt;', 'cheese flavour', 'mozzarella')
+  .option('--no-cheese', 'plain with no cheese');
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Boolean or value option:</p>
+<pre class="md-github"><code class="md-github language-js">program
+  .option('-c, --cheese [type]', 'Add cheese with optional type');
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Variadic options:</p>
+<pre class="md-github"><code class="md-github language-js">program
+  .option('-n, --number &lt;numbers...&gt;', 'specify numbers')
+  .option('-l, --letter [letters...]', 'specify letters');
+</code></pre>
+</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="advanced-option-handling" href="#advanced-option-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Advanced Option Handling</h3>
+<ul class="md-github">
+<li class="md-github">Custom processing with a callback function:<pre class="md-github"><code class="md-github language-js">function myParseInt(value, dummyPrevious) {
+  const parsedValue = parseInt(value, 10);
+  if (isNaN(parsedValue)) {
+    throw new Error('Not a number.');
+  }
+  return parsedValue;
+}
+
+function increaseVerbosity(dummyValue, previous) {
+  return previous + 1;
+}
+
+program
+  .option('-i, --integer &lt;number&gt;', 'integer argument', myParseInt)
+  .option('-v, --verbose', 'increase verbosity', increaseVerbosity, 0);
+</code></pre>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="commands" href="#commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Commands</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="creating-commands" href="#creating-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Creating Commands</h3>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Defining a subcommand with an action handler:</p>
+<pre class="md-github"><code class="md-github language-js">program.command('clone &lt;source&gt; [destination]')
+  .description('clone a repository into a newly created directory')
+  .action((source, destination) =&gt; {
+    console.log('clone command called with:', source, destination);
+  });
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Stand-alone executable subcommands:</p>
+<pre class="md-github"><code class="md-github language-js">program
+  .command('install [package-names...]', 'install one or more packages')
+  .command('search [query]', 'search with optional query');
+</code></pre>
+</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="command-arguments" href="#command-arguments"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Command Arguments</h3>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Using <code class="md-github">.argument()</code>:</p>
+<pre class="md-github"><code class="md-github language-js">program
+  .argument('&lt;username&gt;', 'user to login')
+  .argument('[password]', 'password for user, if required', 'no password given')
+  .action((username, password) =&gt; {
+    console.log('username:', username);
+    console.log('password:', password);
+  });
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Variadic arguments:</p>
+<pre class="md-github"><code class="md-github language-js">program
+  .command('rmdir')
+  .argument('&lt;dirs...&gt;')
+  .action((dirs) =&gt; {
+    dirs.forEach(dir =&gt; console.log('rmdir:', dir));
+  });
+</code></pre>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="action-handlers" href="#action-handlers"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Action Handlers</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Synchronous action handler:</p>
+<pre class="md-github"><code class="md-github language-js">program
+  .command('serve')
+  .argument('&lt;script&gt;')
+  .option('-p, --port &lt;number&gt;', 'port number', 80)
+  .action(function() {
+    console.error('Run script', this.args[0], 'on port', this.opts().port);
+  });
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Asynchronous action handler:</p>
+<pre class="md-github"><code class="md-github language-js">async function run() {
+  // Async code here...
+}
+
+program
+  .command('run')
+  .action(run);
+
+program.parseAsync(process.argv);
+</code></pre>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="automated-help" href="#automated-help"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Automated Help</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Customising help text:</p>
+<pre class="md-github"><code class="md-github language-js">program.addHelpText('after', '\nExample call:\n  $ custom-help --help\n');
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Overriding help options:</p>
+<pre class="md-github"><code class="md-github language-js">program.helpOption('-e, --HELP', 'read more information');
+</code></pre>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="parsing-and-options-handling" href="#parsing-and-options-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parsing and Options Handling</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Basic parsing:</p>
+<pre class="md-github"><code class="md-github language-js">program.parse(process.argv);
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Positional options and pass-through of unknown options:</p>
+<pre class="md-github"><code class="md-github language-js">program.enablePositionalOptions();
+program.passThroughOptions();
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Legacy option properties:</p>
+<pre class="md-github"><code class="md-github language-js">program.storeOptionsAsProperties()
+  .option('-d, --debug')
+  .action((cmdOpts) =&gt; {
+    if (cmdOpts.debug) console.error('Debug mode enabled');
+  });
+</code></pre>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="exit-and-error-handling" href="#exit-and-error-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Exit and Error Handling</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Override exit behavior:</p>
+<pre class="md-github"><code class="md-github language-js">program.exitOverride();
+try {
+  program.parse(process.argv);
+} catch (err) {
+  // Custom error handling logic
+  console.error('Error:', err.message);
+}
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Display error with specific exit code:</p>
+<pre class="md-github"><code class="md-github language-js">program.error('Custom processing has failed', { exitCode: 2, code: 'my.custom.error' });
+</code></pre>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="troubleshooting-and-debugging" href="#troubleshooting-and-debugging"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting and Debugging</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Example error message on unknown option:</p>
+<pre class="md-github"><code class="md-github language-sh">$ node split.js -s / --fits a/b/c
+error: unknown option '--fits'
+(Did you mean --first?)
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Debugging subcommands with VSCode:
+Set &quot;autoAttachChildProcesses&quot;: true in launch.json</p>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="additional-features" href="#additional-features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Additional Features</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">Custom event listeners:</p>
+<pre class="md-github"><code class="md-github language-js">program.on('option:verbose', function () {
+  process.env.VERBOSE = this.opts().verbose;
+});
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Life cycle hooks:</p>
+<pre class="md-github"><code class="md-github language-js">program.hook('preAction', (thisCommand, actionCommand) =&gt; {
+  if (thisCommand.opts().trace) {
+    console.log(`About to call action handler for subcommand: ${actionCommand.name()}`);
+    console.log('arguments:', actionCommand.args);
+    console.log('options:', actionCommand.opts());
+  }
+});
+</code></pre>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Commander.js Documentation</li>
+<li class="md-github">URL: https://github.com/tj/commander.js</li>
+<li class="md-github">License: License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-04-21T03:54:29.175Z</li>
+<li class="md-github">Data Size: 683343 bytes</li>
+<li class="md-github">Links Found: 4921</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-21</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-21T04:26:09.761Z</p>
+  </footer>
+</body>
+</html>
