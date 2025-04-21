@@ -15,7 +15,8 @@ This document explains how to use the CLI tool provided by `repository0-crucible
 - Self-Improvement: The `--self-improve` flag triggers enhanced diagnostic logs that provide detailed performance metrics, including:
   - Total number of CLI invocations.
   - Average execution time computed from all invocations recorded in the memory log.
-  - A self-improvement analysis message. (Test: Run `node src/lib/main.js --self-improve` and check that the output contains phrases like "Total invocations:" and "Average execution time:" along with the analysis message.)
+  - Maximum execution time observed across all CLI invocations.
+  - A self-improvement analysis message. (Test: Run `node src/lib/main.js --self-improve` and check that the output contains phrases like "Total invocations:", "Average execution time:", "Maximum execution time:" along with the analysis message.)
 - Replication: The `--replicate` flag initiates a series of replication tasks, simulating parallel processing by logging multiple replication steps. (Test: Run `node src/lib/main.js --replicate` and verify that replication steps are logged in order.)
 - Help-Seeking: The `--help-seeking` flag triggers a mode where the application outputs a message indicating that it is seeking help. (Test: Run `node src/lib/main.js --help-seeking` and check that the help-seeking message is logged.)
 
@@ -98,6 +99,7 @@ console.log(getMemoryLog());
   Execution time: X ms
   Total invocations: Y
   Average execution time: Z ms
+  Maximum execution time: W ms
   Self-improvement analysis: execution metrics are optimal
 
 ### Invocation with Planning Flag:
