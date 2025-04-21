@@ -37,6 +37,7 @@ function expectMedianExecutionTimeLog(log) {
   expect(log).toMatch(/^Median execution time: \d+(\.\d+)? ms$/);
 }
 
+
 describe("Main Module Import", () => {
   test("should be defined", () => {
     expect(main).toBeDefined();
@@ -168,7 +169,6 @@ describe("Self-Improvement Mode", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--self-improve"]);
     // Expected logs:
-    // Now there will be 11 logs: 
     // 0: Run with
     // 1: Execution time
     // 2: Self-Improvement Diagnostics:
@@ -211,6 +211,17 @@ describe("Self-Improvement Mode", () => {
     expectMinimumExecutionTimeLog(spy.mock.calls[8][0]);
     expectStandardDeviationLog(spy.mock.calls[9][0]);
     expectMedianExecutionTimeLog(spy.mock.calls[10][0]);
+    spy.mockRestore();
+  });
+
+  test("should log extended diagnostics when '--self-improve --verbose' flags are provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--self-improve", "--verbose"]);
+    const logs = spy.mock.calls.map(call => call[0]);
+    const hasDetailedHeader = logs.some(log => log === "Detailed Memory Log:");
+    expect(hasDetailedHeader).toBe(true);
+    const invocationLogs = logs.filter(log => log.startsWith("Invocation "));
+    expect(invocationLogs.length).toBeGreaterThan(0);
     spy.mockRestore();
   });
 });
