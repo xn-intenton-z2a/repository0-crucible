@@ -6,7 +6,7 @@
 // Features include:
 //  - Help-Seeking Mode: Activates a mode for querying assistance.
 //  - Replication Mode: Executes task replication either with default count or a provided count.
-//  - Self-Improvement Mode: Outputs diagnostic metrics computed from the in-memory log, including average, max, min, standard deviation, median execution times and, when verbose, detailed per-invocation metrics. All self-improvement diagnostics are prefixed for consistent formatting.
+  //  - Self-Improvement Mode: Outputs diagnostic metrics computed from the in-memory log, including average, max, min, standard deviation, median execution times and, when verbose, detailed per-invocation metrics. All self-improvement diagnostics are prefixed for consistent formatting.
 //  - Planning Mode: Analyzes input for planning tasks.
 //  - Goal Decomposition: Provides a breakdown of a goal into numbered sub-tasks.
 //  - Reset Log: Clears the in-memory log and the persisted log file for a fresh state.
@@ -85,7 +85,7 @@ function handleReplication(args) {
 // Handles the self-improve flag by logging self-improvement diagnostics with detailed metrics
 // Purpose: Compute and display diagnostic metrics such as total invocations, average, max, min, standard deviation, and median execution times.
 // Preconditions: Requires entries in the in-memory log with execution time metrics.
-function handleSelfImprove() {
+function handleSelfImprove(args) {
   let totalTime = 0;
   let count = 0;
   let maxTime = 0;
@@ -131,19 +131,31 @@ function handleSelfImprove() {
   }
   const medianFormatted = count > 0 ? median.toFixed(2) : "0.00";
 
-  const firstTimestamp = memoryLog.length > 0 ? memoryLog[0].timestamp : "N/A";
-  const latestTimestamp = memoryLog.length > 0 ? memoryLog[memoryLog.length - 1].timestamp : "N/A";
-
-  // Log detailed diagnostic metrics for self-improvement with uniform prefix
-  console.log("[Self-Improve] Self-Improvement Diagnostics:");
-  console.log(`[Self-Improve] Total invocations: ${memoryLog.length}`);
-  console.log(`[Self-Improve] First invocation: ${firstTimestamp}`);
-  console.log(`[Self-Improve] Latest invocation: ${latestTimestamp}`);
-  console.log(`[Self-Improve] Average execution time: ${averageTime} ms`);
-  console.log(`[Self-Improve] Maximum execution time: ${maxTime.toFixed(2)} ms`);
-  console.log(`[Self-Improve] Minimum execution time: ${minTimeFormatted} ms`);
-  console.log(`[Self-Improve] Standard deviation execution time: ${stdDeviation} ms`);
-  console.log(`[Self-Improve] Median execution time: ${medianFormatted} ms`);
+  // If --diag-json flag is present, output diagnostics as a single JSON object
+  if (args.includes("--diag-json")) {
+    const diagnostics = {
+      totalInvocations: memoryLog.length,
+      firstInvocation: memoryLog.length > 0 ? memoryLog[0].timestamp : "N/A",
+      latestInvocation: memoryLog.length > 0 ? memoryLog[memoryLog.length - 1].timestamp : "N/A",
+      averageExecutionTime: parseFloat(averageTime),
+      maximumExecutionTime: parseFloat(maxTime.toFixed(2)),
+      minimumExecutionTime: minTime === Infinity ? "N/A" : parseFloat(minTimeFormatted),
+      standardDeviation: parseFloat(stdDeviation),
+      medianExecutionTime: parseFloat(medianFormatted)
+    };
+    console.log(JSON.stringify(diagnostics));
+  } else {
+    // Log detailed diagnostic metrics for self-improvement with uniform prefix
+    console.log("[Self-Improve] Self-Improvement Diagnostics:");
+    console.log(`[Self-Improve] Total invocations: ${memoryLog.length}`);
+    console.log(`[Self-Improve] First invocation: ${memoryLog.length > 0 ? memoryLog[0].timestamp : "N/A"}`);
+    console.log(`[Self-Improve] Latest invocation: ${memoryLog.length > 0 ? memoryLog[memoryLog.length - 1].timestamp : "N/A"}`);
+    console.log(`[Self-Improve] Average execution time: ${averageTime} ms`);
+    console.log(`[Self-Improve] Maximum execution time: ${parseFloat(maxTime.toFixed(2))} ms`);
+    console.log(`[Self-Improve] Minimum execution time: ${minTimeFormatted} ms`);
+    console.log(`[Self-Improve] Standard deviation execution time: ${stdDeviation} ms`);
+    console.log(`[Self-Improve] Median execution time: ${medianFormatted} ms`);
+  }
 }
 
 // Handles verbose output for self-improvement diagnostics
@@ -262,8 +274,8 @@ export function main(args) {
 
   // Process self-improvement mode after other operations
   if (args.includes("--self-improve")) {
-    handleSelfImprove();
-    if (args.includes("--verbose")) {
+    handleSelfImprove(args);
+    if (!args.includes("--diag-json") && args.includes("--verbose")) {
       handleSelfImproveVerbose();
     }
   }
