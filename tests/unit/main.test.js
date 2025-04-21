@@ -32,6 +32,11 @@ function expectStandardDeviationLog(log) {
   expect(log).toMatch(/^Standard deviation execution time: \d+(\.\d+)? ms$/);
 }
 
+// Helper function to validate median execution time log
+function expectMedianExecutionTimeLog(log) {
+  expect(log).toMatch(/^Median execution time: \d+(\.\d+)? ms$/);
+}
+
 describe("Main Module Import", () => {
   test("should be defined", () => {
     expect(main).toBeDefined();
@@ -78,7 +83,7 @@ describe("Simulated CLI Execution via process.argv", () => {
 
   test("should log expected output when no additional CLI args are provided", () => {
     const originalArgv = process.argv;
-    process.argv = ["node", "src/lib/main.js"];
+    process.argv = ["node", "src/lib/main.js"]; 
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(process.argv.slice(2));
     expect(spy).toHaveBeenCalledTimes(2);
@@ -109,7 +114,7 @@ describe("Replication Mode", () => {
   test("should log replication messages when '--replicate' flag is present without a valid count parameter", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--replicate", "param1"]);
-    // Expected logs for default replication (3 tasks) with count in message:
+    // Expected logs for default replication (3 tasks)
     expect(spy).toHaveBeenCalledTimes(6);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--replicate","param1"]');
     expect(spy.mock.calls[1][0]).toBe('Replicating tasks (count: 3)...');
@@ -163,7 +168,19 @@ describe("Self-Improvement Mode", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--self-improve"]);
     // Expected logs:
-    expect(spy).toHaveBeenCalledTimes(10);
+    // Now there will be 11 logs: 
+    // 0: Run with
+    // 1: Execution time
+    // 2: Self-Improvement Diagnostics:
+    // 3: Total invocations
+    // 4: First invocation
+    // 5: Latest invocation
+    // 6: Average execution time
+    // 7: Maximum execution time
+    // 8: Minimum execution time
+    // 9: Standard deviation execution time
+    // 10: Median execution time
+    expect(spy).toHaveBeenCalledTimes(11);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--self-improve"]');
     expect(spy.mock.calls[1][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
     expect(spy.mock.calls[2][0]).toBe('Self-Improvement Diagnostics:');
@@ -174,6 +191,7 @@ describe("Self-Improvement Mode", () => {
     expectMaximumExecutionTimeLog(spy.mock.calls[7][0]);
     expectMinimumExecutionTimeLog(spy.mock.calls[8][0]);
     expectStandardDeviationLog(spy.mock.calls[9][0]);
+    expectMedianExecutionTimeLog(spy.mock.calls[10][0]);
     spy.mockRestore();
   });
 
@@ -192,6 +210,7 @@ describe("Self-Improvement Mode", () => {
     expectMaximumExecutionTimeLog(spy.mock.calls[7][0]);
     expectMinimumExecutionTimeLog(spy.mock.calls[8][0]);
     expectStandardDeviationLog(spy.mock.calls[9][0]);
+    expectMedianExecutionTimeLog(spy.mock.calls[10][0]);
     spy.mockRestore();
   });
 });
