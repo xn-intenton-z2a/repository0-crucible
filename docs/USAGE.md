@@ -2,6 +2,15 @@
 
 This document explains how to use the CLI tool provided by `repository0-crucible`.
 
+## Features
+
+- Memory Log: Records every CLI invocation in an in-memory log. When the `--persist-log` flag is used, the complete memory log is output as a JSON string. (Test: Run `node src/lib/main.js --persist-log` and verify the JSON log output.)
+- Planning Mode: When the `--plan` flag is used, the tool analyzes the input and plans tasks, such as reviewing current configurations and prioritizing upcoming enhancements. (Test: Run `node src/lib/main.js --plan` and verify planning messages are logged.)
+- Goal Decomposition: When the `--decompose` flag is provided, the application logs either a default goal or a user-specified goal along with a breakdown into objectives, milestones, and responsibilities. (Test: Run `node src/lib/main.js --decompose` or `node src/lib/main.js --decompose "Plan new product launch"`.)
+- Self-Improvement: The `--self-improve` flag triggers diagnostic logs that evaluate execution metrics, providing a basic self-improvement analysis. (Test: Run `node src/lib/main.js --self-improve` and check for a self-improvement diagnostic message.)
+- Replication: The `--replicate` flag initiates a series of replication tasks, simulating parallel processing by logging multiple replication steps. (Test: Run `node src/lib/main.js --replicate` and verify that replication steps are logged in order.)
+- Help-Seeking: The `--help-seeking` flag triggers a mode where the application outputs a message indicating that it is seeking help. (Test: Run `node src/lib/main.js --help-seeking` and check that the help-seeking message is logged.)
+
 ## Running the CLI
 
 You can run the CLI by executing:
@@ -139,4 +148,4 @@ Run the tests using:
 
   npm test
 
-This will execute the unit tests for the CLI to ensure it behaves as expected, including logging of CLI arguments, replication messages, help-seeking messages, self-improvement diagnostics, planning messages, goal decomposition output, and tracking invocations with the in-memory log.
+This will execute the unit tests for the CLI to ensure it behaves as expected across various features.
