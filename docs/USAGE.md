@@ -37,8 +37,12 @@ The CLI tool supports multiple features which can be invoked via different comma
     - Average execution time
     - Maximum and minimum execution times
     - Standard deviation of execution times
-    - **Median execution time**: The median represents the middle value of the execution times when sorted, providing insight into the typical performance unaffected by outliers.
-  - **Example**: `node src/lib/main.js --self-improve`
+    - **Median execution time**
+  - When combined with the `--verbose` flag, extended diagnostics are provided. These include:
+    - Detailed per-invocation logs showing the arguments, precise timestamp, and execution duration for each CLI invocation.
+  - **Examples**:
+    - Basic diagnostics: `node src/lib/main.js --self-improve`
+    - Extended diagnostics with verbose output: `node src/lib/main.js --self-improve --verbose`
 
 - **Memory Logging and Reset (`--test-memory`, `--reset-log`)**:
   - Every CLI invocation is recorded in an in-memory log.
@@ -118,13 +122,22 @@ Below are some command-line examples demonstrating the usage of these features:
     - Execution time logged
 
 - **Self-Improvement Mode**:
-  ```bash
-  node src/lib/main.js --self-improve
-  ```
-  Output:
-  - Run with: ["--self-improve"]
-  - Execution time logged
-  - Detailed diagnostics including total invocations, first and latest timestamps, average, maximum, minimum, standard deviation, and median execution times
+  - Basic Diagnostics:
+    ```bash
+    node src/lib/main.js --self-improve
+    ```
+    Output:
+    - Run with: ["--self-improve"]
+    - Execution time logged
+    - Detailed diagnostics including total invocations, first and latest timestamps, average, maximum, minimum, standard deviation, and median execution times
+
+  - Extended Diagnostics (Verbose Mode):
+    ```bash
+    node src/lib/main.js --self-improve --verbose
+    ```
+    Output:
+    - All basic diagnostics as above
+    - Plus detailed per-invocation logs, e.g., "Detailed Memory Log:" followed by individual entries with args, timestamp, and execution time
 
 - **Persistent Logging**:
   - To output log as JSON:
@@ -146,12 +159,12 @@ Below are some command-line examples demonstrating the usage of these features:
 
 ## Incremental Changes Plan
 
-The CLI enhancements detailed above align closely with our mission of building a self-improving, agentic system. In particular:
+The CLI enhancements detailed above align with our mission of building a self-improving, agentic system. In particular:
 
-- **Self-Improvement Mode**: In addition to previously tracked metrics (average, maximum, minimum, and standard deviation), the median execution time metric has been added. This helps diagnose performance distributions by identifying the middle execution time value, which can be especially useful when the data set contains outliers.
+- **Self-Improvement Mode with Verbose Diagnostics**: Extends the basic diagnostic metrics by adding detailed per-invocation insights when the `--verbose` flag is provided. This includes exact execution times, detailed timestamps, and a complete rundown of each recorded invocation.
 
 - **Replication and Persistent Logging**: These features support scalability and traceability of automation.
 
-- **Planning, Goal Decomposition, and Memory Features**: These provide structure and continuity for comprehensive task automation.
+- **Planning, Goal Decomposition, and Memory Features**: Provide structure and continuity for comprehensive task automation.
 
 Contributions that further develop these features or integrate them with broader workflows are highly encouraged.

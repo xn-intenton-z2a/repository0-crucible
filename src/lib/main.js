@@ -6,7 +6,7 @@
 // Features include:
 //  - Help-Seeking Mode: Activates a mode for querying assistance.
 //  - Replication Mode: Executes task replication either with default count or a provided count.
-//  - Self-Improvement Mode: Outputs diagnostic metrics computed from the in-memory log, including average, max, min, standard deviation, and median execution times.
+//  - Self-Improvement Mode: Outputs diagnostic metrics computed from the in-memory log, including average, max, min, standard deviation, median execution times and, when verbose, detailed per-invocation metrics.
 //  - Planning Mode: Analyzes input for planning tasks.
 //  - Goal Decomposition: Provides a breakdown of a goal into numbered sub-tasks.
 //  - Reset Log: Clears the in-memory log for a fresh state.
@@ -126,6 +126,16 @@ function handleSelfImprove() {
   console.log(`Median execution time: ${medianFormatted} ms`);
 }
 
+// Handles verbose output for self-improvement diagnostics
+// Purpose: When --verbose flag is provided, output extended details per memory log entry.
+function handleSelfImproveVerbose() {
+  console.log("Detailed Memory Log:");
+  memoryLog.forEach((entry, index) => {
+    const execTimeStr = entry.execTime !== undefined ? entry.execTime.toFixed(2) + " ms" : "N/A";
+    console.log(`Invocation ${index + 1}: args: ${JSON.stringify(entry.args)}, timestamp: ${entry.timestamp}, execution time: ${execTimeStr}`);
+  });
+}
+
 // Handles the planning flag by logging planning messages
 // Purpose: Analyze the provided input and offer a structured plan for upcoming tasks.
 function planTasks() {
@@ -213,6 +223,9 @@ export function main(args) {
   // Process self-improvement mode after other operations
   if (args.includes("--self-improve")) {
     handleSelfImprove();
+    if (args.includes("--verbose")) {
+      handleSelfImproveVerbose();
+    }
   }
 }
 
