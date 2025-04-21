@@ -1,0 +1,455 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="npm_docs" href="#npm_docs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>NPM_DOCS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">This document extracts the detailed technical information from the npm documentation including architecture (website, CLI, registry), precise account creation steps, CLI commands such as 'npm login', 'npm whoami', publishing commands with OTP support, detailed 2FA setup both from website and CLI, and troubleshooting commands. It includes explicit code examples, configuration parameters, recovery steps, and error resolution commands for issues like broken installations, permission errors, and SSL issues.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="table-of-contents" href="#table-of-contents"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Table of Contents</h1>
+<ol class="md-github">
+<li class="md-github">Architecture Overview</li>
+<li class="md-github">Account Setup and CLI Login</li>
+<li class="md-github">CLI Commands for Package Management</li>
+<li class="md-github">Two-Factor Authentication (2FA) Setup</li>
+<li class="md-github">Troubleshooting and Debugging Procedures</li>
+<li class="md-github">User Profile Management via CLI</li>
+</ol>
+<hr class="md-github">
+<h2 class="md-github"><a class="md-github__anchor" name="1-architecture-overview" href="#1-architecture-overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Architecture Overview</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Website:</strong> For package discovery, profile and organization management.</li>
+<li class="md-github"><strong class="md-github">Command Line Interface (CLI):</strong> Main tool for interacting with npm; supports login, publishing, and configuration.</li>
+<li class="md-github"><strong class="md-github">Registry:</strong> The public database of JavaScript packages and metadata.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="2-account-setup-and-cli-login" href="#2-account-setup-and-cli-login"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Account Setup and CLI Login</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Account Creation:</strong> Use the signup page, input username (lowercase, hyphen allowed), email, and secure password ( &gt;10 characters, no embedded username, verified via breach databases).</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">CLI Login Command:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm login
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Verification Command:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm whoami
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Error Consideration:</strong> Misspelling username creates a new account; contact npm Support if needed.</p>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="3-cli-commands-for-package-management" href="#3-cli-commands-for-package-management"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. CLI Commands for Package Management</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Publishing with OTP:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm publish [&lt;tarball&gt;|&lt;folder&gt;] [--tag &lt;tag&gt;] --otp=123456
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Unpublishing Package:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm unpublish [&lt;@scope&gt;/]&lt;pkg&gt;[@&lt;version&gt;] --otp=123456
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Managing Owners and Tags:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm owner add &lt;user&gt; --otp=123456
+npm dist-tags add &lt;pkg&gt;@&lt;version&gt; [&lt;tag&gt;] --otp=123456
+npm access edit [&lt;package&gt;] --otp=123456
+</code></pre>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="4-two-factor-authentication-2fa-setup" href="#4-two-factor-authentication-2fa-setup"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Two-Factor Authentication (2FA) Setup</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Enabling via Website:</strong></p>
+<ul class="md-github">
+<li class="md-github">Navigate to Account → Two-Factor Authentication → Enable 2FA</li>
+<li class="md-github">Choose method (Security Key or TOTP)</li>
+<li class="md-github">Save and securely store recovery codes</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Enabling via CLI:</strong></p>
+<pre class="md-github"><code class="md-github language-bash"># For auth and writes
+npm profile enable-2fa auth-and-writes
+
+# For auth only
+npm profile enable-2fa auth-only
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Sending OTP with Commands:</strong> Append <code class="md-github">--otp=123456</code> where required.</p>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="5-troubleshooting-and-debugging-procedures" href="#5-troubleshooting-and-debugging-procedures"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. Troubleshooting and Debugging Procedures</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Generating Logs:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm install --timing
+npm publish --timing
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Debug Log Location:</strong> In the <code class="md-github">.npm</code> directory (determine via <code class="md-github">npm config get cache</code>).</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Common Errors &amp; Fixes:</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Broken Installation:</strong> Reinstall npm/Node.</li>
+<li class="md-github"><strong class="md-github">Cache Issues:</strong> Run <code class="md-github">npm cache clean</code>.</li>
+<li class="md-github"><strong class="md-github">Permission Errors (ENOENT):</strong> Ensure directory exists and proper permissions are set.</li>
+<li class="md-github"><strong class="md-github">SSL/Proxy Errors:</strong> Verify proxy and SSL configurations.</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="6-user-profile-management-via-cli" href="#6-user-profile-management-via-cli"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6. User Profile Management via CLI</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Viewing Profile:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm profile get
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Updating Profile Properties:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm profile set &lt;prop&gt; &lt;value&gt;
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Password Update:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm profile set password
+</code></pre>
+<p class="md-github">Ensure password meets security criteria (length, uniqueness, breach check).</p>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-technical-specifications" href="#supplementary-technical-specifications"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Technical Specifications</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="account--authentication" href="#account--authentication"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Account &amp; Authentication</h3>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Username:</strong> Must be lower case; allowed characters: [a-z0-9-].</li>
+<li class="md-github"><strong class="md-github">Password Requirements:</strong> &gt;10 characters, not including username string, must pass breach verification.</li>
+<li class="md-github"><strong class="md-github">2FA Methods:</strong> Security keys (using WebAuthn) and TOTP (using apps like Authy/Google Authenticator).</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="cli-command-options-and-flags" href="#cli-command-options-and-flags"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Command Options and Flags</h3>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">npm login</code>: Prompts for username, password, email; supports security-key and TOTP flows.</li>
+<li class="md-github"><code class="md-github">npm whoami</code>: Displays currently logged in username.</li>
+<li class="md-github"><code class="md-github">npm profile enable-2fa [auth-and-writes|auth-only]</code>: Enables 2FA schemes; requires current password and OTP input.</li>
+<li class="md-github"><code class="md-github">npm profile disable-2fa</code>: Disables two-factor authentication after proper prompts.</li>
+<li class="md-github">Publishing commands must include <code class="md-github">--otp=&lt;OTP&gt;</code> when 2FA is enabled.</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="configuration-defaults" href="#configuration-defaults"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration Defaults</h3>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">OTP Length:</strong> Typically 6 digits.</li>
+<li class="md-github"><strong class="md-github">Cache Directory:</strong> Retrieved via <code class="md-github">npm config get cache</code>; location dependent on OS (e.g., C:\Users&lt;user&gt;\AppData\Roaming\npm on Windows).</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="implementation-steps" href="#implementation-steps"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Implementation Steps</h3>
+<ol class="md-github">
+<li class="md-github">Create or log in to an account via CLI or Website.</li>
+<li class="md-github">Enable 2FA for enhanced security using provided commands.</li>
+<li class="md-github">Use OTP parameters in secure operations such as publish, access, owner add/rm commands.</li>
+<li class="md-github">For troubleshooting, generate logs with <code class="md-github">--timing</code> flag and inspect the npm-debug.log file.</li>
+</ol>
+<h3 class="md-github"><a class="md-github__anchor" name="best-practices" href="#best-practices"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Best Practices</h3>
+<ul class="md-github">
+<li class="md-github">Always use unique, robust passwords managed by a password manager.</li>
+<li class="md-github">Immediately enable 2FA after account creation.</li>
+<li class="md-github">Regularly update npm using <code class="md-github">npm install npm@latest -g</code> to mitigate bugs and security issues.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<h2 class="md-github"><a class="md-github__anchor" name="complete-api-and-cli-specifications" href="#complete-api-and-cli-specifications"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Complete API and CLI Specifications</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="npm-cli-commands" href="#npm-cli-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>npm CLI Commands</h3>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">npm login</strong></p>
+<p class="md-github"><strong class="md-github">Usage:</strong> <code class="md-github">npm login [--auth-type=web]</code></p>
+<p class="md-github"><strong class="md-github">Parameters:</strong></p>
+<ul class="md-github">
+<li class="md-github">No explicit parameters; interactively prompts for:
+<ul class="md-github">
+<li class="md-github">Username: string</li>
+<li class="md-github">Password: string (checked against password guidelines)</li>
+<li class="md-github">Email: string</li>
+</ul>
+</li>
+<li class="md-github">Optional flag: <code class="md-github">--auth-type=web</code> triggers browser based security-key login flow.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Return:</strong> Success message with current user’s username (as verified by <code class="md-github">npm whoami</code>).</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">npm whoami</strong></p>
+<p class="md-github"><strong class="md-github">Usage:</strong> <code class="md-github">npm whoami</code></p>
+<p class="md-github"><strong class="md-github">Return:</strong> Logged in username as string.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">npm publish</strong></p>
+<p class="md-github"><strong class="md-github">Usage:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm publish [&lt;tarball&gt;|&lt;folder&gt;] [--tag &lt;tag&gt;] --otp=&lt;one-time-code&gt;
+</code></pre>
+<p class="md-github"><strong class="md-github">Parameters:</strong></p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">&lt;tarball&gt;|&lt;folder&gt;</code>: Package source to publish.</li>
+<li class="md-github"><code class="md-github">--tag &lt;tag&gt;</code>: Optional tag assignment.</li>
+<li class="md-github"><code class="md-github">--otp=&lt;one-time-code&gt;</code>: 6-digit OTP (string or number) required if 2FA is enabled.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Return:</strong> Published package details; errors if OTP invalid or package issues found.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">npm unpublish</strong></p>
+<p class="md-github"><strong class="md-github">Usage:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm unpublish [&lt;@scope&gt;/]&lt;pkg&gt;[@&lt;version&gt;] --otp=&lt;one-time-code&gt;
+</code></pre>
+<p class="md-github"><strong class="md-github">Parameters:</strong></p>
+<ul class="md-github">
+<li class="md-github">Package name with optional scope and version.</li>
+<li class="md-github"><code class="md-github">--otp</code> flag as above.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">npm owner add / rm</strong></p>
+<p class="md-github"><strong class="md-github">Usage:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm owner add &lt;user&gt; --otp=&lt;one-time-code&gt;
+npm owner rm &lt;user&gt; --otp=&lt;one-time-code&gt;
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">npm profile enable-2fa</strong></p>
+<p class="md-github"><strong class="md-github">Usage:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm profile enable-2fa auth-and-writes
+npm profile enable-2fa auth-only
+</code></pre>
+<p class="md-github"><strong class="md-github">Parameters:</strong></p>
+<ul class="md-github">
+<li class="md-github">Mode: 'auth-and-writes' or 'auth-only'.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Return:</strong> Confirmation of 2FA activation.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">npm profile disable-2fa</strong></p>
+<p class="md-github"><strong class="md-github">Usage:</strong> <code class="md-github">npm profile disable-2fa</code></p>
+<p class="md-github"><strong class="md-github">Parameters:</strong> Interactive prompt requests password and OTP.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">npm profile get / set</strong></p>
+<p class="md-github"><strong class="md-github">Usage:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm profile get
+npm profile set &lt;property&gt; &lt;value&gt;
+</code></pre>
+<p class="md-github"><strong class="md-github">Properties Include:</strong> email, fullname, homepage, freenode, password.
+For password set, system enforces security criteria (length, uniqueness, etc.).</p>
+</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="code-example-publishing-with-2fa" href="#code-example-publishing-with-2fa"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Code Example: Publishing with 2FA</h3>
+<pre class="md-github"><code class="md-github language-bash"># Log in to npm
+npm login
+
+# Publish a package with OTP authentication
+npm publish ./my-package --tag beta --otp=123456
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="troubleshooting-commands" href="#troubleshooting-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting Commands</h3>
+<pre class="md-github"><code class="md-github language-bash"># Generate timing logs during install
+npm install --timing
+
+# Locate cache directory for logs
+npm config get cache
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="best-practices-1" href="#best-practices-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Best Practices</h3>
+<ul class="md-github">
+<li class="md-github">Always include the <code class="md-github">--otp</code> flag when executing commands that modify published packages if 2FA is enabled.</li>
+<li class="md-github">Use a Node version manager (e.g., nvm) to manage multiple Node and npm versions.</li>
+<li class="md-github">Regularly update npm using:</li>
+</ul>
+<pre class="md-github"><code class="md-github language-bash">npm install npm@latest -g
+</code></pre>
+<ul class="md-github">
+<li class="md-github">In case of permission errors on Windows, verify that the directory <code class="md-github">C:\Users\&lt;user&gt;\AppData\Roaming\npm</code> exists and has the correct permissions.</li>
+</ul>
+<p class="md-github">This detailed specification provides a complete reference for developers to implement and troubleshoot npm CLI operations without recourse to external documentation.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">npm Documentation
+https://docs.npmjs.com/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-npm_docs" href="#digest-of-npm_docs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of NPM_DOCS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="npm-documentation-digest" href="#npm-documentation-digest"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>NPM Documentation Digest</h1>
+<p class="md-github"><strong class="md-github">Retrieved:</strong> 2023-10-24</p>
+<p class="md-github"><strong class="md-github">Data Size:</strong> 563158 bytes
+<strong class="md-github">Links Found:</strong> 21420</p>
+<hr class="md-github">
+<h1 class="md-github"><a class="md-github__anchor" name="overview" href="#overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h1>
+<p class="md-github">NPM comprises three primary components:</p>
+<ol class="md-github">
+<li class="md-github"><strong class="md-github">Website:</strong> Discover packages, manage profiles, and handle organizations.</li>
+<li class="md-github"><strong class="md-github">Command Line Interface (CLI):</strong> Primary tool for package installation, publishing, and account management.</li>
+<li class="md-github"><strong class="md-github">Registry:</strong> A comprehensive public database of JavaScript packages with corresponding meta-information.</li>
+</ol>
+<h1 class="md-github"><a class="md-github__anchor" name="account-setup-and-login" href="#account-setup-and-login"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Account Setup and Login</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="creating-an-account" href="#creating-an-account"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Creating an Account</h2>
+<ul class="md-github">
+<li class="md-github">Navigate to: <a href="http://www.npmjs.com/~yourusername" class="md-github">npm Signup</a></li>
+<li class="md-github">Fill in:
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Username:</strong> Lowercase; may include hyphens/numerals.</li>
+<li class="md-github"><strong class="md-github">Email Address:</strong> Publicly visible in package metadata.</li>
+<li class="md-github"><strong class="md-github">Password:</strong> Must be &gt;10 characters, not contain the username, and be checked against common breaches (Have I Been Pwned).</li>
+</ul>
+</li>
+<li class="md-github">Accept the End User License Agreement and Privacy Policy.</li>
+<li class="md-github">Click <strong class="md-github">Create An Account</strong> and verify via email.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="testing-account-via-cli" href="#testing-account-via-cli"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Testing Account via CLI</h2>
+<ul class="md-github">
+<li class="md-github">Command: <code class="md-github">npm login</code></li>
+<li class="md-github">On prompt enter username, password, and email.</li>
+<li class="md-github">For 2FA enabled accounts, enter OTP when prompted.</li>
+<li class="md-github">Validate login with: <code class="md-github">npm whoami</code></li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="cli-commands-and-authentication" href="#cli-commands-and-authentication"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Commands and Authentication</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="standard-login-flow" href="#standard-login-flow"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Standard Login Flow</h2>
+<pre class="md-github"><code class="md-github language-bash">npm login
+</code></pre>
+<p class="md-github">If using security keys or TOTP:</p>
+<pre class="md-github"><code class="md-github language-bash"># For security-key based login
+npm login --auth-type=web
+</code></pre>
+<p class="md-github">After login, additional steps include copying generated tokens and entering OTP if needed.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="publishing-and-managing-packages" href="#publishing-and-managing-packages"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Publishing and Managing Packages</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github">To publish a package:</p>
+<pre class="md-github"><code class="md-github language-bash">npm publish [&lt;tarball&gt;|&lt;folder&gt;] [--tag &lt;tag&gt;] --otp=123456
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">To unpublish a package:</p>
+<pre class="md-github"><code class="md-github language-bash">npm unpublish [&lt;@scope&gt;/]&lt;pkg&gt;[@&lt;version&gt;] --otp=123456
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Other commands include adding owners, managing dist-tags, and editing access:</p>
+<pre class="md-github"><code class="md-github language-bash">npm owner add &lt;user&gt; --otp=123456
+npm dist-tags add &lt;pkg&gt;@&lt;version&gt; [&lt;tag&gt;] --otp=123456
+npm access edit [&lt;package&gt;] --otp=123456
+</code></pre>
+</li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="two-factor-authentication-2fa-details" href="#two-factor-authentication-2fa-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Two-Factor Authentication (2FA) Details</h1>
+<p class="md-github">2FA is recommended to enhance security. It can be implemented via a security-key (using WebAuthn) or TOTP (via apps like Authy or Google Authenticator).</p>
+<h2 class="md-github"><a class="md-github__anchor" name="enabling-2fa-from-the-website" href="#enabling-2fa-from-the-website"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Enabling 2FA from the Website</h2>
+<ol class="md-github">
+<li class="md-github">Sign in to your account.</li>
+<li class="md-github">Navigate to <strong class="md-github">Account</strong> &gt; <strong class="md-github">Two-Factor Authentication</strong> &gt; <strong class="md-github">Enable 2FA</strong>.</li>
+<li class="md-github">Enter your current password and choose a method:
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Security Key:</strong> Provide a name and follow browser steps.</li>
+<li class="md-github"><strong class="md-github">TOTP:</strong> Scan the QR code, then enter the generated code.</li>
+</ul>
+</li>
+<li class="md-github">Save recovery codes securely.</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="enabling-2fa-via-cli" href="#enabling-2fa-via-cli"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Enabling 2FA via CLI</h2>
+<pre class="md-github"><code class="md-github language-bash"># For both authorization and writes:
+npm profile enable-2fa auth-and-writes
+
+# For authorization only:
+npm profile enable-2fa auth-only
+</code></pre>
+<p class="md-github">When using CLI commands that require OTP after enabling 2FA, append <code class="md-github">--otp=&lt;code&gt;</code>.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="disabling-2fa" href="#disabling-2fa"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Disabling 2FA</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="via-website" href="#via-website"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Via Website:</h3>
+<ol class="md-github">
+<li class="md-github">Sign in and navigate to <strong class="md-github">Account</strong> &gt; <strong class="md-github">Modify 2FA</strong>.</li>
+<li class="md-github">Choose to disable (with confirmation prompt).</li>
+</ol>
+<h3 class="md-github"><a class="md-github__anchor" name="via-cli" href="#via-cli"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Via CLI:</h3>
+<pre class="md-github"><code class="md-github language-bash">npm profile disable-2fa
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="troubleshooting-and-debugging" href="#troubleshooting-and-debugging"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting and Debugging</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="generating-debug-logs" href="#generating-debug-logs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Generating Debug Logs</h2>
+<p class="md-github">For issues during package installation or publishing:</p>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">For install:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm install --timing
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">For publish:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm publish --timing
+</code></pre>
+</li>
+</ul>
+<p class="md-github">The log file (<code class="md-github">npm-debug.log</code>) is generated in the <code class="md-github">.npm</code> directory. Identify its location via:</p>
+<pre class="md-github"><code class="md-github language-bash">npm config get cache
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="common-errors-and-remedies" href="#common-errors-and-remedies"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Common Errors and Remedies</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Broken npm installation:</strong> Reinstall npm (Linux/Mac) or Node via official installer (Windows).</li>
+<li class="md-github"><strong class="md-github">Random errors:</strong> Run <code class="md-github">npm cache clean</code> and retry.</li>
+<li class="md-github"><strong class="md-github">Permissions errors:</strong> See resolution for ENOENT errors (e.g., ensure <code class="md-github">C:\Users\&lt;user&gt;\AppData\Roaming\npm</code> exists and is writable).</li>
+<li class="md-github"><strong class="md-github">SSL and Proxy Errors:</strong> Ensure proper proxy configurations and use HTTPS.</li>
+<li class="md-github"><strong class="md-github">Invalid JSON / ENOTEMPTY errors:</strong> Check shrinkwrapped dependency files and ensure correct syntax.</li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="additional-cli-account-management" href="#additional-cli-account-management"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Additional CLI Account Management</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="profile-settings-cli" href="#profile-settings-cli"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Profile Settings (CLI)</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">View settings:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm profile get
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Update settings:</strong></p>
+<pre class="md-github"><code class="md-github language-bash">npm profile set &lt;prop&gt; &lt;value&gt;
+</code></pre>
+</li>
+</ul>
+<p class="md-github">Properties include email, fullname, homepage, freenode, password. For updating password:</p>
+<pre class="md-github"><code class="md-github language-bash">npm profile set password
+</code></pre>
+<p class="md-github">Follow prompts for current and new password ensuring:</p>
+<ul class="md-github">
+<li class="md-github">Length &gt; 10 characters</li>
+<li class="md-github">Does not include username</li>
+<li class="md-github">Not compromised as per Have I Been Pwned.</li>
+</ul>
+<hr class="md-github">
+<p class="md-github"><strong class="md-github">Attribution:</strong> Content retrieved from npm Documentation (Entry 3).</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: npm Documentation</li>
+<li class="md-github">URL: https://docs.npmjs.com/</li>
+<li class="md-github">License: License: Public Domain / npm terms</li>
+<li class="md-github">Crawl Date: 2025-04-20T23:46:33.929Z</li>
+<li class="md-github">Data Size: 563158 bytes</li>
+<li class="md-github">Links Found: 21420</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-20</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-21T00:39:31.145Z</p>
+  </footer>
+</body>
+</html>
