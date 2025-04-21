@@ -37,9 +37,10 @@ The CLI tool supports multiple features which can be invoked via different comma
     - Average execution time
     - Maximum and minimum execution times
     - Standard deviation of execution times
-    - **Median execution time**
+    - Median execution time
   - When combined with the `--verbose` flag, extended diagnostics are provided. These include:
     - Detailed per-invocation logs showing the arguments, precise timestamp, and execution duration for each CLI invocation.
+  - **Enhanced Output:** All self-improvement diagnostic log lines are prefixed with `[Self-Improve]` for consistency. When using verbose mode, detailed logs are prefixed with `[Self-Improve] Detailed:`.
   - **Examples**:
     - Basic diagnostics: `node src/lib/main.js --self-improve`
     - Extended diagnostics with verbose output: `node src/lib/main.js --self-improve --verbose`
@@ -128,8 +129,7 @@ Below are some command-line examples demonstrating the usage of these features:
     ```
     Output:
     - Run with: ["--self-improve"]
-    - Execution time logged
-    - Detailed diagnostics including total invocations, first and latest timestamps, average, maximum, minimum, standard deviation, and median execution times
+    - [Self-Improve] Self-Improvement Diagnostics: (followed by all metrics with prefix)
 
   - Extended Diagnostics (Verbose Mode):
     ```bash
@@ -137,7 +137,7 @@ Below are some command-line examples demonstrating the usage of these features:
     ```
     Output:
     - All basic diagnostics as above
-    - Plus detailed per-invocation logs, e.g., "Detailed Memory Log:" followed by individual entries with args, timestamp, and execution time
+    - Plus detailed per-invocation logs prefixed with `[Self-Improve] Detailed:`
 
 - **Persistent Logging**:
   - To output log as JSON:
@@ -156,15 +156,3 @@ Below are some command-line examples demonstrating the usage of these features:
   ```
   Output:
   - Memory log has been reset.
-
-## Incremental Changes Plan
-
-The CLI enhancements detailed above align with our mission of building a self-improving, agentic system. In particular:
-
-- **Self-Improvement Mode with Verbose Diagnostics**: Extends the basic diagnostic metrics by adding detailed per-invocation insights when the `--verbose` flag is provided. This includes exact execution times, detailed timestamps, and a complete rundown of each recorded invocation.
-
-- **Replication and Persistent Logging**: These features support scalability and traceability of automation.
-
-- **Planning, Goal Decomposition, and Memory Features**: Provide structure and continuity for comprehensive task automation.
-
-Contributions that further develop these features or integrate them with broader workflows are highly encouraged.

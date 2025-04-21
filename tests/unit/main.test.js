@@ -9,32 +9,32 @@ function expectExecutionTimeLog(log) {
 
 // Helper function to validate maximum execution time log
 function expectMaximumExecutionTimeLog(log) {
-  expect(log).toMatch(/^Maximum execution time: \d+(\.\d+)? ms$/);
+  expect(log).toMatch(/^\[Self-Improve\] Maximum execution time: \d+(\.\d+)? ms$/);
 }
 
 // Helper function to validate minimum execution time log
 function expectMinimumExecutionTimeLog(log) {
-  expect(log).toMatch(/^Minimum execution time: \d+(\.\d+)? ms$/);
+  expect(log).toMatch(/^\[Self-Improve\] Minimum execution time: \d+(\.\d+)? ms$/);
 }
 
 // Helper function to validate first invocation timestamp log
 function expectFirstInvocationLog(log) {
-  expect(log).toMatch(/^First invocation: .+/);
+  expect(log).toMatch(/^\[Self-Improve\] First invocation: .+/);
 }
 
 // Helper function to validate latest invocation timestamp log
 function expectLatestInvocationLog(log) {
-  expect(log).toMatch(/^Latest invocation: .+/);
+  expect(log).toMatch(/^\[Self-Improve\] Latest invocation: .+/);
 }
 
 // Helper function to validate standard deviation log
 function expectStandardDeviationLog(log) {
-  expect(log).toMatch(/^Standard deviation execution time: \d+(\.\d+)? ms$/);
+  expect(log).toMatch(/^\[Self-Improve\] Standard deviation execution time: \d+(\.\d+)? ms$/);
 }
 
 // Helper function to validate median execution time log
 function expectMedianExecutionTimeLog(log) {
-  expect(log).toMatch(/^Median execution time: \d+(\.\d+)? ms$/);
+  expect(log).toMatch(/^\[Self-Improve\] Median execution time: \d+(\.\d+)? ms$/);
 }
 
 
@@ -171,23 +171,23 @@ describe("Self-Improvement Mode", () => {
     // Expected logs:
     // 0: Run with
     // 1: Execution time
-    // 2: Self-Improvement Diagnostics:
-    // 3: Total invocations
-    // 4: First invocation
-    // 5: Latest invocation
-    // 6: Average execution time
-    // 7: Maximum execution time
-    // 8: Minimum execution time
-    // 9: Standard deviation execution time
-    // 10: Median execution time
+    // 2: [Self-Improve] Self-Improvement Diagnostics:
+    // 3: [Self-Improve] Total invocations
+    // 4: [Self-Improve] First invocation
+    // 5: [Self-Improve] Latest invocation
+    // 6: [Self-Improve] Average execution time
+    // 7: [Self-Improve] Maximum execution time
+    // 8: [Self-Improve] Minimum execution time
+    // 9: [Self-Improve] Standard deviation execution time
+    // 10: [Self-Improve] Median execution time
     expect(spy).toHaveBeenCalledTimes(11);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--self-improve"]');
     expect(spy.mock.calls[1][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
-    expect(spy.mock.calls[2][0]).toBe('Self-Improvement Diagnostics:');
-    expect(spy.mock.calls[3][0]).toMatch(/^Total invocations: \d+$/);
-    expectFirstInvocationLog(spy.mock.calls[4][0]);
-    expectLatestInvocationLog(spy.mock.calls[5][0]);
-    expect(spy.mock.calls[6][0]).toMatch(/^Average execution time: \d+(\.\d+)? ms$/);
+    expect(spy.mock.calls[2][0]).toBe('[Self-Improve] Self-Improvement Diagnostics:');
+    expect(spy.mock.calls[3][0]).toMatch(/^\[Self-Improve\] Total invocations: \d+$/);
+    expectFirstInvocationLog(spy.mock.calls[4][0].replace(/^\[Self-Improve\] /, ''));
+    expectLatestInvocationLog(spy.mock.calls[5][0].replace(/^\[Self-Improve\] /, ''));
+    expect(spy.mock.calls[6][0]).toMatch(/^\[Self-Improve\] Average execution time: \d+(\.\d+)? ms$/);
     expectMaximumExecutionTimeLog(spy.mock.calls[7][0]);
     expectMinimumExecutionTimeLog(spy.mock.calls[8][0]);
     expectStandardDeviationLog(spy.mock.calls[9][0]);
@@ -201,12 +201,12 @@ describe("Self-Improvement Mode", () => {
     main(["--self-improve"]);
     const log = getMemoryLog();
     expect(log.length).toBe(2);
-    expect(spy.mock.calls[2][0]).toBe('Self-Improvement Diagnostics:');
-    expect(spy.mock.calls[3][0]).toBe(`Total invocations: ${log.length}`);
-    expect(spy.mock.calls[4][0]).toBe(`First invocation: ${log[0].timestamp}`);
-    expect(spy.mock.calls[5][0]).toBe(`Latest invocation: ${log[1].timestamp}`);
+    expect(spy.mock.calls[2][0]).toBe('[Self-Improve] Self-Improvement Diagnostics:');
+    expect(spy.mock.calls[3][0]).toBe(`[Self-Improve] Total invocations: ${log.length}`);
+    expect(spy.mock.calls[4][0]).toBe(`[Self-Improve] First invocation: ${log[0].timestamp}`);
+    expect(spy.mock.calls[5][0]).toBe(`[Self-Improve] Latest invocation: ${log[1].timestamp}`);
     const avgMessage = spy.mock.calls[6][0];
-    expect(avgMessage).toMatch(/^Average execution time: \d+(\.\d+)? ms$/);
+    expect(avgMessage).toMatch(/^\[Self-Improve\] Average execution time: \d+(\.\d+)? ms$/);
     expectMaximumExecutionTimeLog(spy.mock.calls[7][0]);
     expectMinimumExecutionTimeLog(spy.mock.calls[8][0]);
     expectStandardDeviationLog(spy.mock.calls[9][0]);
@@ -218,9 +218,9 @@ describe("Self-Improvement Mode", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--self-improve", "--verbose"]);
     const logs = spy.mock.calls.map(call => call[0]);
-    const hasDetailedHeader = logs.some(log => log === "Detailed Memory Log:");
+    const hasDetailedHeader = logs.some(log => log === "[Self-Improve] Detailed: Detailed Memory Log:");
     expect(hasDetailedHeader).toBe(true);
-    const invocationLogs = logs.filter(log => log.startsWith("Invocation "));
+    const invocationLogs = logs.filter(log => log.startsWith("[Self-Improve] Detailed: Invocation"));
     expect(invocationLogs.length).toBeGreaterThan(0);
     spy.mockRestore();
   });

@@ -6,7 +6,7 @@
 // Features include:
 //  - Help-Seeking Mode: Activates a mode for querying assistance.
 //  - Replication Mode: Executes task replication either with default count or a provided count.
-//  - Self-Improvement Mode: Outputs diagnostic metrics computed from the in-memory log, including average, max, min, standard deviation, median execution times and, when verbose, detailed per-invocation metrics.
+//  - Self-Improvement Mode: Outputs diagnostic metrics computed from the in-memory log, including average, max, min, standard deviation, median execution times and, when verbose, detailed per-invocation metrics. All self-improvement diagnostics are prefixed for consistent formatting.
 //  - Planning Mode: Analyzes input for planning tasks.
 //  - Goal Decomposition: Provides a breakdown of a goal into numbered sub-tasks.
 //  - Reset Log: Clears the in-memory log for a fresh state.
@@ -24,7 +24,7 @@ function logCLIArgs(args) {
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 
-// Helper function to log the execution time in milliseconds
+// Helper function to log the execution time in milliseconds with fixed format
 function logExecutionTime(startTime, endTime) {
   const executionTime = (endTime - startTime).toFixed(2);
   console.log(`Execution time: ${executionTime} ms`);
@@ -114,25 +114,25 @@ function handleSelfImprove() {
   const firstTimestamp = memoryLog.length > 0 ? memoryLog[0].timestamp : "N/A";
   const latestTimestamp = memoryLog.length > 0 ? memoryLog[memoryLog.length - 1].timestamp : "N/A";
 
-  // Log detailed diagnostic metrics for self-improvement
-  console.log("Self-Improvement Diagnostics:");
-  console.log(`Total invocations: ${memoryLog.length}`);
-  console.log(`First invocation: ${firstTimestamp}`);
-  console.log(`Latest invocation: ${latestTimestamp}`);
-  console.log(`Average execution time: ${averageTime} ms`);
-  console.log(`Maximum execution time: ${maxTime.toFixed(2)} ms`);
-  console.log(`Minimum execution time: ${minTimeFormatted} ms`);
-  console.log(`Standard deviation execution time: ${stdDeviation} ms`);
-  console.log(`Median execution time: ${medianFormatted} ms`);
+  // Log detailed diagnostic metrics for self-improvement with uniform prefix
+  console.log("[Self-Improve] Self-Improvement Diagnostics:");
+  console.log(`[Self-Improve] Total invocations: ${memoryLog.length}`);
+  console.log(`[Self-Improve] First invocation: ${firstTimestamp}`);
+  console.log(`[Self-Improve] Latest invocation: ${latestTimestamp}`);
+  console.log(`[Self-Improve] Average execution time: ${averageTime} ms`);
+  console.log(`[Self-Improve] Maximum execution time: ${maxTime.toFixed(2)} ms`);
+  console.log(`[Self-Improve] Minimum execution time: ${minTimeFormatted} ms`);
+  console.log(`[Self-Improve] Standard deviation execution time: ${stdDeviation} ms`);
+  console.log(`[Self-Improve] Median execution time: ${medianFormatted} ms`);
 }
 
 // Handles verbose output for self-improvement diagnostics
 // Purpose: When --verbose flag is provided, output extended details per memory log entry.
 function handleSelfImproveVerbose() {
-  console.log("Detailed Memory Log:");
+  console.log("[Self-Improve] Detailed: Detailed Memory Log:");
   memoryLog.forEach((entry, index) => {
     const execTimeStr = entry.execTime !== undefined ? entry.execTime.toFixed(2) + " ms" : "N/A";
-    console.log(`Invocation ${index + 1}: args: ${JSON.stringify(entry.args)}, timestamp: ${entry.timestamp}, execution time: ${execTimeStr}`);
+    console.log(`[Self-Improve] Detailed: Invocation ${index + 1}: args: ${JSON.stringify(entry.args)}, timestamp: ${entry.timestamp}, execution time: ${execTimeStr}`);
   });
 }
 
