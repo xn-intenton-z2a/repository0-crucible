@@ -159,8 +159,10 @@ export function main(args) {
   // Capture end time and log the execution duration
   const endTime = performance.now();
   const execTime = logExecutionTime(startTime, endTime);
-  // Update the last log entry with execution time
-  memoryLog[memoryLog.length - 1].execTime = execTime;
+  // Update the last log entry with execution time only if it exists
+  if (memoryLog.length > 0) {
+    memoryLog[memoryLog.length - 1].execTime = execTime;
+  }
 
   // If '--persist-log' flag is provided, output the complete in-memory log as a JSON string
   if (args.includes("--persist-log")) {
