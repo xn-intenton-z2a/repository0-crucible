@@ -62,3 +62,18 @@ This resource details the usage of npm-check-updates, a tool for automatically c
 ## https://nodejs.org/api/esm.html
 The official documentation for ECMAScript Modules in Node.js covers the usage, benefits, and limitations of ES Modules. This is particularly relevant for repositories that follow the ESM standard, as it provides guidance on module resolution and syntax.
 ## License: MIT License
+
+# Commander.js Documentation
+## https://github.com/tj/commander.js
+The official documentation for Commander.js offers in-depth guidance on building CLI applications in Node.js. It provides examples on flag parsing, command routing, and help output formatting, serving as an excellent reference for designing flexible command-line interfaces.
+## License: MIT License
+
+# Node.js File System Documentation
+## https://nodejs.org/api/fs.html
+This documentation covers Node's built-in file system module which is critical for file operations such as log persistence and configuration loading. It is directly applicable to features that require reading and writing data to disk.
+## License: MIT License
+
+# GitHub CLI Documentation
+## https://cli.github.com/manual
+The GitHub CLI documentation provides comprehensive instructions on using GitHub's command-line interface to manage repositories, issues, and workflows. It serves as a benchmark for building robust CLI tools with rich user assistance and integration features.
+## License: Publicly Available
