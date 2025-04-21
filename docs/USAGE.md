@@ -14,9 +14,12 @@ This document explains how to use the CLI tool provided by `repository0-crucible
   - If a goal is provided (for example, `--decompose "Plan new product launch"`), the header will include the provided goal, e.g.: "Goal Decomposition Report: Plan new product launch", followed by the same list of sub-tasks.
 - Self-Improvement: The `--self-improve` flag triggers enhanced diagnostic logs that provide detailed performance metrics, including:
   - Total number of CLI invocations.
+  - First invocation: The timestamp of the first CLI call (in ISO format).
+  - Latest invocation: The timestamp of the most recent CLI call (in ISO format).
   - Average execution time computed from all invocations recorded in the memory log.
   - Maximum execution time observed across all CLI invocations.
-  - A self-improvement analysis message. (Test: Run `node src/lib/main.js --self-improve` and check that the output contains phrases like "Total invocations:", "Average execution time:", "Maximum execution time:" along with the analysis message.)
+  - A self-improvement analysis message.
+  (Test: Run `node src/lib/main.js --self-improve` and check that the output contains phrases like "Total invocations:", "First invocation:", "Latest invocation:", "Average execution time:", "Maximum execution time:" along with the analysis message.)
 - Replication: The `--replicate` flag initiates a series of replication tasks, simulating parallel processing by logging multiple replication steps. (Test: Run `node src/lib/main.js --replicate` and verify that replication steps are logged in order.)
 - Help-Seeking: The `--help-seeking` flag triggers a mode where the application outputs a message indicating that it is seeking help. (Test: Run `node src/lib/main.js --help-seeking` and check that the help-seeking message is logged.)
 - Persist File: The new `--persist-file` flag persists the in-memory log to a file named `memory_log.json` in the current working directory. After the execution, the file will be created with valid JSON representing the log entries. (Test: Run `node src/lib/main.js --persist-file` and verify that the file exists and contains the expected log data.)
@@ -93,12 +96,16 @@ console.log(getMemoryLog());
 
 ### Invocation with Self-Improvement Flag:
 
+When you run with the `--self-improve` flag, the CLI outputs extended diagnostics. Example output:
+
   node src/lib/main.js --self-improve
 
   Output:
   Run with: ["--self-improve"]
   Execution time: X ms
   Total invocations: Y
+  First invocation: 2025-04-21T00:00:00.000Z
+  Latest invocation: 2025-04-21T00:00:05.000Z
   Average execution time: Z ms
   Maximum execution time: W ms
   Self-improvement analysis: execution metrics are optimal
