@@ -98,7 +98,12 @@ export function main(args) {
   const endTime = performance.now();
   logExecutionTime(startTime, endTime);
 
-  // Check for self-improve flag and process it after logging execution time
+  // If '--persist-log' flag is provided, output the complete in-memory log as a JSON string
+  if (args.includes("--persist-log")) {
+    console.log(JSON.stringify(memoryLog));
+  }
+
+  // Check for self-improve flag and process it after logging execution time (and persist log if any)
   if (args.includes("--self-improve")) {
     handleSelfImprove();
   }

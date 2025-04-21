@@ -120,6 +120,19 @@ Example without a provided goal:
   3. Assign responsibilities
   Execution time: X ms
 
+### Invocation with Persist Log Flag
+
+By adding the `--persist-log` flag, the CLI will output an additional line immediately after the execution time log. This line contains a JSON string representing the complete in-memory log of all CLI invocations. This is useful for persistent reporting and diagnostics.
+
+Example:
+
+  node src/lib/main.js --persist-log
+
+  Output:
+  Run with: ["--persist-log"]
+  Execution time: X ms
+  [ { "args": ["--persist-log"], "timestamp": "2025-04-21T00:00:00.000Z" }, ... ]
+
 ## Testing
 
 Run the tests using:
