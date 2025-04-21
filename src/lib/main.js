@@ -5,6 +5,7 @@
 
 import { fileURLToPath } from "url";
 import { performance } from "perf_hooks";
+import fs from "fs";
 
 // Global in-memory log to track each CLI invocation
 const memoryLog = [];
@@ -129,6 +130,16 @@ export function main(args) {
   // If '--persist-log' flag is provided, output the complete in-memory log as a JSON string
   if (args.includes("--persist-log")) {
     console.log(JSON.stringify(memoryLog));
+  }
+
+  // If '--persist-file' flag is provided, write the memory log to 'memory_log.json'
+  if (args.includes("--persist-file")) {
+    try {
+      fs.writeFileSync("memory_log.json", JSON.stringify(memoryLog, null, 2));
+      console.log("Memory log persisted to memory_log.json");
+    } catch (err) {
+      console.error("Failed to persist memory log:", err);
+    }
   }
 
   // Check for self-improve flag and process it after logging execution time (and persist log if any)

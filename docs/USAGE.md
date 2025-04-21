@@ -19,6 +19,7 @@ This document explains how to use the CLI tool provided by `repository0-crucible
   - A self-improvement analysis message. (Test: Run `node src/lib/main.js --self-improve` and check that the output contains phrases like "Total invocations:", "Average execution time:", "Maximum execution time:" along with the analysis message.)
 - Replication: The `--replicate` flag initiates a series of replication tasks, simulating parallel processing by logging multiple replication steps. (Test: Run `node src/lib/main.js --replicate` and verify that replication steps are logged in order.)
 - Help-Seeking: The `--help-seeking` flag triggers a mode where the application outputs a message indicating that it is seeking help. (Test: Run `node src/lib/main.js --help-seeking` and check that the help-seeking message is logged.)
+- Persist File: The new `--persist-file` flag persists the in-memory log to a file named `memory_log.json` in the current working directory. After the execution, the file will be created with valid JSON representing the log entries. (Test: Run `node src/lib/main.js --persist-file` and verify that the file exists and contains the expected log data.)
 
 ## Running the CLI
 
@@ -153,6 +154,19 @@ Example:
   Run with: ["--persist-log"]
   Execution time: X ms
   [ { "args": ["--persist-log"], "timestamp": "2025-04-21T00:00:00.000Z", "execTime": ... }, ... ]
+
+### Invocation with Persist File Flag
+
+By adding the `--persist-file` flag, the CLI will write the complete in-memory log to a file named `memory_log.json` in the current working directory. This file will contain a properly formatted JSON array of log entries.
+
+Example:
+
+  node src/lib/main.js --persist-file
+
+  Output:
+  Run with: ["--persist-file"]
+  Execution time: X ms
+  Memory log persisted to memory_log.json
 
 ## Testing
 
