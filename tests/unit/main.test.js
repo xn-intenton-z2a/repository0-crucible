@@ -165,6 +165,50 @@ describe("Planning Mode", () => {
   });
 });
 
+describe("Goal Decomposition Feature", () => {
+  beforeEach(() => {
+    resetMemoryLog();
+  });
+
+  test("should log default goal and sub-tasks when no goal provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--decompose"]);
+    // Expected logs:
+    // 1: Run with: ["--decompose"]
+    // 2: Decomposing goal: [default goal]
+    // 3: 1. Define objectives
+    // 4: 2. Identify key milestones
+    // 5: 3. Assign responsibilities
+    // 6: Execution time: ... ms
+    expect(spy.mock.calls[0][0]).toBe('Run with: ["--decompose"]');
+    expect(spy.mock.calls[1][0]).toBe('Decomposing goal: [default goal]');
+    expect(spy.mock.calls[2][0]).toBe('1. Define objectives');
+    expect(spy.mock.calls[3][0]).toBe('2. Identify key milestones');
+    expect(spy.mock.calls[4][0]).toBe('3. Assign responsibilities');
+    expect(spy.mock.calls[5][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
+    spy.mockRestore();
+  });
+
+  test("should log provided goal and sub-tasks when goal provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--decompose", "Plan new product launch"]);
+    // Expected logs:
+    // 1: Run with: ["--decompose","Plan new product launch"]
+    // 2: Decomposing goal: Plan new product launch
+    // 3: 1. Define objectives
+    // 4: 2. Identify key milestones
+    // 5: 3. Assign responsibilities
+    // 6: Execution time: ... ms
+    expect(spy.mock.calls[0][0]).toBe('Run with: ["--decompose","Plan new product launch"]');
+    expect(spy.mock.calls[1][0]).toBe('Decomposing goal: Plan new product launch');
+    expect(spy.mock.calls[2][0]).toBe('1. Define objectives');
+    expect(spy.mock.calls[3][0]).toBe('2. Identify key milestones');
+    expect(spy.mock.calls[4][0]).toBe('3. Assign responsibilities');
+    expect(spy.mock.calls[5][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
+    spy.mockRestore();
+  });
+});
+
 describe("Memory Log Feature", () => {
   beforeEach(() => {
     resetMemoryLog();

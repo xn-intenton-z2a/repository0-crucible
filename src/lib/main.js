@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // src/lib/main.js
 // This file is the entrypoint for the CLI application.
-// Refactored to extract flag-handling, logging, and in-memory logging functionality for improved readability and maintainability.
+// Refactored to extract flag-handling, logging, in-memory logging functionality, and goal decomposition feature for improved readability and maintainability.
 
 import { fileURLToPath } from "url";
 import { performance } from "perf_hooks";
@@ -51,6 +51,19 @@ function planTasks() {
   console.log("Planned Task 2: Prioritize upcoming feature enhancements");
 }
 
+// Handles the decompose flag to perform goal decomposition
+function handleDecompose(args) {
+  const decomposeIndex = args.indexOf("--decompose");
+  let goal = "[default goal]";
+  if (args.length > decomposeIndex + 1 && !args[decomposeIndex + 1].startsWith("--") && args[decomposeIndex + 1] !== "") {
+    goal = args[decomposeIndex + 1];
+  }
+  console.log(`Decomposing goal: ${goal}`);
+  console.log("1. Define objectives");
+  console.log("2. Identify key milestones");
+  console.log("3. Assign responsibilities");
+}
+
 // Main entry point for the CLI application
 export function main(args) {
   // Record this invocation in the in-memory log with arguments and a timestamp
@@ -74,6 +87,11 @@ export function main(args) {
   // Check for planning flag and process it
   if (args.includes("--plan")) {
     planTasks();
+  }
+
+  // Check for decompose flag and process it
+  if (args.includes("--decompose")) {
+    handleDecompose(args);
   }
 
   // Capture end time and log the execution duration
