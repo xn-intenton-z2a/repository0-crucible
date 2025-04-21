@@ -18,6 +18,15 @@ The CLI tool supports multiple features which can be invoked via different comma
     - With default replication: `node src/lib/main.js --replicate param1`
     - With specified count: `node src/lib/main.js --replicate 5`
 
+- **Asynchronous Replication Mode (`--replicate-async`)**:
+  - Enhances the replication mode by running replication tasks concurrently.
+  - Must be used in combination with the `--replicate` flag.
+  - This mode may improve performance for large replication counts as tasks are executed in parallel.
+  - **Example**:
+    ```bash
+    node src/lib/main.js --replicate 5 --replicate-async
+    ```
+
 - **Planning Mode (`--plan`)**:
   - Logs planning messages that outline tasks to be performed (e.g., review configurations and prioritize enhancements).
   - **Example**: `node src/lib/main.js --plan`
@@ -101,6 +110,16 @@ Below are some command-line examples demonstrating the usage of these features:
   - Run with: ["--replicate", "5"]
   - Replicating tasks (count: 5)...
   - Logs for 5 replication tasks
+  - Execution time logged
+
+- **Asynchronous Replication Mode**:
+  ```bash
+  node src/lib/main.js --replicate 5 --replicate-async
+  ```
+  Output:
+  - Run with: ["--replicate", "5", "--replicate-async"]
+  - Replicating tasks (count: 5)...
+  - Logs for 5 replication tasks (order may vary due to concurrent execution)
   - Execution time logged
 
 - **Planning Mode**:
