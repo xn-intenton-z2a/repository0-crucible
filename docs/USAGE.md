@@ -40,10 +40,20 @@ The CLI tool supports multiple features which can be invoked via different comma
     - Median execution time
   - When combined with the `--verbose` flag, extended diagnostics are provided. These include:
     - Detailed per-invocation logs showing the arguments, precise timestamp, and execution duration for each CLI invocation.
-  - **Enhanced Output:** All self-improvement diagnostic log lines are prefixed with `[Self-Improve]` for consistency. When using verbose mode, detailed logs are prefixed with `[Self-Improve] Detailed:`.
+  - **Enhanced Output:** All self-improvement diagnostic log lines are prefixed with `[Self-Improve]` for consistency.
+  - **JSON Diagnostic Output:** If the `--diag-json` flag is used in conjunction with `--self-improve`, the CLI outputs the diagnostic metrics as a single JSON object instead of multiple text lines. The JSON object has the following keys:
+    - `totalInvocations`
+    - `firstInvocation`
+    - `latestInvocation`
+    - `averageExecutionTime`
+    - `maximumExecutionTime`
+    - `minimumExecutionTime`
+    - `standardDeviation`
+    - `medianExecutionTime`
   - **Examples**:
     - Basic diagnostics: `node src/lib/main.js --self-improve`
     - Extended diagnostics with verbose output: `node src/lib/main.js --self-improve --verbose`
+    - JSON formatted diagnostics: `node src/lib/main.js --self-improve --diag-json`
 
 - **Memory Logging and Reset (`--test-memory`, `--reset-log`)**:
   - Every CLI invocation is recorded in an in-memory log.
@@ -131,15 +141,21 @@ Below are some command-line examples demonstrating the usage of these features:
     ```
     Output:
     - Run with: ["--self-improve"]
-    - [Self-Improve] Self-Improvement Diagnostics: (followed by all metrics with prefix)
+    - Diagnostic metrics logged in human-readable format
 
   - Extended Diagnostics (Verbose Mode):
     ```bash
     node src/lib/main.js --self-improve --verbose
     ```
     Output:
-    - All basic diagnostics as above
-    - Plus detailed per-invocation logs prefixed with [Self-Improve] Detailed:
+    - Basic diagnostic metrics followed by detailed per-invocation logs prefixed with [Self-Improve] Detailed:
+
+  - JSON Formatted Diagnostics:
+    ```bash
+    node src/lib/main.js --self-improve --diag-json
+    ```
+    Output:
+    - A single JSON string containing the diagnostic metrics with keys: totalInvocations, firstInvocation, latestInvocation, averageExecutionTime, maximumExecutionTime, minimumExecutionTime, standardDeviation, and medianExecutionTime.
 
 - **Persistent Logging**:
   - To output log as JSON:

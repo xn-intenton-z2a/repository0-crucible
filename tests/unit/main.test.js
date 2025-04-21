@@ -223,6 +223,31 @@ describe("Self-Improvement Mode", () => {
     expect(invocationLogs.length).toBeGreaterThan(0);
     spy.mockRestore();
   });
+
+  test("should output JSON diagnostics when '--self-improve' and '--diag-json' flags are provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--self-improve", "--diag-json"]);
+    // Find the JSON output among the logs
+    const jsonLogCall = spy.mock.calls.find(call => {
+      try {
+        JSON.parse(call[0]);
+        return true;
+      } catch (err) {
+        return false;
+      }
+    });
+    expect(jsonLogCall).toBeDefined();
+    const diagnostics = JSON.parse(jsonLogCall[0]);
+    expect(diagnostics).toHaveProperty("totalInvocations");
+    expect(diagnostics).toHaveProperty("firstInvocation");
+    expect(diagnostics).toHaveProperty("latestInvocation");
+    expect(diagnostics).toHaveProperty("averageExecutionTime");
+    expect(diagnostics).toHaveProperty("maximumExecutionTime");
+    expect(diagnostics).toHaveProperty("minimumExecutionTime");
+    expect(diagnostics).toHaveProperty("standardDeviation");
+    expect(diagnostics).toHaveProperty("medianExecutionTime");
+    spy.mockRestore();
+  });
 });
 
 describe("Planning Mode", () => {
@@ -350,13 +375,11 @@ describe("Persistent Log Feature", () => {
     ];
     fs.writeFileSync("memory_log.json", JSON.stringify(persistedLog, null, 2));
     // Reset persistent flag to force reload
-    // Call main which should load the persisted log before adding new entry
     main(["--dummy"]);
     const log = getMemoryLog();
     expect(log.length).toBeGreaterThan(1);
     // The first entry should be the persisted one
     expect(log[0]).toEqual(persistedLog[0]);
-    // Clean up
     if (fs.existsSync("memory_log.json")) {
       fs.unlinkSync("memory_log.json");
     }
@@ -374,7 +397,6 @@ describe("Persistent Log Feature", () => {
     expect(fs.existsSync("memory_log.json")).toBe(false);
   });
 });
-
 
 describe("Reset Log Feature", () => {
   beforeEach(() => {
