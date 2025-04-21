@@ -12,6 +12,11 @@ function expectMaximumExecutionTimeLog(log) {
   expect(log).toMatch(/^Maximum execution time: \d+(\.\d+)? ms$/);
 }
 
+// Helper function to validate minimum execution time log
+function expectMinimumExecutionTimeLog(log) {
+  expect(log).toMatch(/^Minimum execution time: \d+(\.\d+)? ms$/);
+}
+
 // Helper function to validate first invocation timestamp log
 function expectFirstInvocationLog(log) {
   expect(log).toMatch(/^First invocation: .+/);
@@ -173,8 +178,9 @@ describe("Self-Improvement Mode", () => {
     // 5: Latest invocation: <timestamp>
     // 6: Average execution time: <some value> ms
     // 7: Maximum execution time: <some value> ms
-    // 8: Self-improvement analysis: execution metrics are optimal
-    expect(spy).toHaveBeenCalledTimes(8);
+    // 8: Minimum execution time: <some value> ms
+    // 9: Self-improvement analysis: execution metrics are optimal
+    expect(spy).toHaveBeenCalledTimes(9);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--self-improve"]');
     expect(spy.mock.calls[1][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
     expect(spy.mock.calls[2][0]).toBe('Total invocations: 1');
@@ -182,7 +188,8 @@ describe("Self-Improvement Mode", () => {
     expectLatestInvocationLog(spy.mock.calls[4][0]);
     expect(spy.mock.calls[5][0]).toMatch(/^Average execution time: \d+(\.\d+)? ms$/);
     expectMaximumExecutionTimeLog(spy.mock.calls[6][0]);
-    expect(spy.mock.calls[7][0]).toBe('Self-improvement analysis: execution metrics are optimal');
+    expectMinimumExecutionTimeLog(spy.mock.calls[7][0]);
+    expect(spy.mock.calls[8][0]).toBe('Self-improvement analysis: execution metrics are optimal');
     spy.mockRestore();
   });
 
@@ -202,7 +209,8 @@ describe("Self-Improvement Mode", () => {
     const avgMessage = spy.mock.calls[5][0];
     expect(avgMessage).toMatch(/^Average execution time: \d+(\.\d+)? ms$/);
     expectMaximumExecutionTimeLog(spy.mock.calls[6][0]);
-    expect(spy.mock.calls[7][0]).toBe('Self-improvement analysis: execution metrics are optimal');
+    expectMinimumExecutionTimeLog(spy.mock.calls[7][0]);
+    expect(spy.mock.calls[8][0]).toBe('Self-improvement analysis: execution metrics are optimal');
     spy.mockRestore();
   });
 });

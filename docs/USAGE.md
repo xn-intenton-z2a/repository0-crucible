@@ -6,26 +6,27 @@ This document explains how to use the CLI tool provided by `repository0-crucible
 
 - Memory Log: Records every CLI invocation in an in-memory log. When the `--persist-log` flag is used, the complete memory log is output as a JSON string. (Test: Run `node src/lib/main.js --persist-log` and verify the JSON log output.)
 - Planning Mode: When the `--plan` flag is used, the tool analyzes the input and plans tasks, such as reviewing current configurations and prioritizing upcoming enhancements. (Test: Run `node src/lib/main.js --plan` and verify planning messages are logged.)
-- Goal Decomposition: When the `--decompose` flag is provided, the application outputs a formatted goal decomposition report. 
+- Goal Decomposition: When the `--decompose` flag is provided, the application outputs a formatted goal decomposition report.
   - If no explicit goal is provided, it displays a header: "Goal Decomposition Report:" followed by a list of sub-tasks:
     1. Define objectives
     2. Identify key milestones
     3. Assign responsibilities
   - If a goal is provided (for example, `--decompose "Plan new product launch"`), the header will include the provided goal, e.g.: "Goal Decomposition Report: Plan new product launch", followed by the same list of sub-tasks.
-- Self-Improvement: The `--self-improve` flag triggers enhanced diagnostic logs that provide detailed performance metrics, including:
+- Self-Improvement: The `--self-improve` flag triggers extended diagnostics which now include the following metrics:
   - Total number of CLI invocations.
   - First invocation: The timestamp of the first CLI call (in ISO format).
   - Latest invocation: The timestamp of the most recent CLI call (in ISO format).
   - Average execution time computed from all invocations recorded in the memory log.
   - Maximum execution time observed across all CLI invocations.
+  - Minimum execution time observed across all CLI invocations.
   - A self-improvement analysis message.
-  (Test: Run `node src/lib/main.js --self-improve` and check that the output contains phrases like "Total invocations:", "First invocation:", "Latest invocation:", "Average execution time:", "Maximum execution time:" along with the analysis message.)
-- Replication: The `--replicate` flag initiates a series of replication tasks. It now supports an optional numeric parameter immediately after the flag to define how many tasks to replicate. 
+  (Test: Run `node src/lib/main.js --self-improve` and check that the output contains phrases like "Total invocations:", "First invocation:", "Latest invocation:", "Average execution time:", "Maximum execution time:", and "Minimum execution time:" along with the analysis message.)
+- Replication: The `--replicate` flag initiates a series of replication tasks. It now supports an optional numeric parameter immediately after the flag to define how many tasks to replicate.
   - If a valid positive integer is provided (e.g., `--replicate 5`), it will log that number of replication tasks.
   - If the parameter is missing or invalid, it defaults to 3 tasks for backward compatibility.
   (Test: Run `node src/lib/main.js --replicate` and `node src/lib/main.js --replicate 5` to verify the number of reported replication tasks.)
 - Help-Seeking: The `--help-seeking` flag triggers a mode where the application outputs a message indicating that it is seeking help. (Test: Run `node src/lib/main.js --help-seeking` and check that the help-seeking message is logged.)
-- Persist File: The new `--persist-file` flag persists the in-memory log to a file named `memory_log.json` in the current working directory. After the execution, the file will be created with valid JSON representing the log entries. (Test: Run `node src/lib/main.js --persist-file` and verify that the file exists and contains the expected log data.)
+- Persist File: By using the `--persist-file` flag, the CLI will write the in-memory log to a file named `memory_log.json` in the current working directory. (Test: Run `node src/lib/main.js --persist-file` and verify that the file exists and contains the expected log data.)
 
 ## Running the CLI
 
@@ -115,7 +116,7 @@ console.log(getMemoryLog());
 
 ### Invocation with Self-Improvement Flag:
 
-When you run with the `--self-improve` flag, the CLI outputs extended diagnostics. Example output:
+When you run with the `--self-improve` flag, the CLI outputs extended diagnostics including a new metric for minimum execution time. Example output:
 
   node src/lib/main.js --self-improve
 
@@ -127,6 +128,7 @@ When you run with the `--self-improve` flag, the CLI outputs extended diagnostic
   Latest invocation: 2025-04-21T00:00:05.000Z
   Average execution time: Z ms
   Maximum execution time: W ms
+  Minimum execution time: V ms
   Self-improvement analysis: execution metrics are optimal
 
 ### Invocation with Planning Flag:
