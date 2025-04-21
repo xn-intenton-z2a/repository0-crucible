@@ -6,11 +6,11 @@ This document explains how to use the CLI tool provided by `repository0-crucible
 
 The CLI tool supports multiple features which can be invoked via different command line flags. Below is a summary of each feature along with its functionality and usage examples:
 
-- **Help-Seeking Mode (`--help-seeking`)**: 
-  - Logs a message indicating that help is being sought. 
+- **Help-Seeking Mode (`--help-seeking`)**:
+  - Logs a message indicating that help is being sought.
   - **Example**: `node src/lib/main.js --help-seeking`
 
-- **Replication Mode (`--replicate [count]`)**: 
+- **Replication Mode (`--replicate [count]`)**:
   - Executes task replication by logging messages for each replication task.
   - Defaults to replicating 3 tasks if an invalid or no count is provided.
   - If a valid positive integer is supplied, it replicates that many tasks.
@@ -18,34 +18,35 @@ The CLI tool supports multiple features which can be invoked via different comma
     - With default replication: `node src/lib/main.js --replicate param1`
     - With specified count: `node src/lib/main.js --replicate 5`
 
-- **Planning Mode (`--plan`)**: 
+- **Planning Mode (`--plan`)**:
   - Logs planning messages that outline tasks to be performed (e.g., review configurations and prioritize enhancements).
   - **Example**: `node src/lib/main.js --plan`
 
-- **Goal Decomposition (`--decompose [goal]`)**: 
-  - Outputs a goal decomposition report. 
+- **Goal Decomposition (`--decompose [goal]`)**:
+  - Outputs a goal decomposition report.
   - If a goal string is provided, the header includes the goal; otherwise, a default header is used.
   - Followed by a numbered list of sub-tasks (Define objectives, Identify key milestones, Assign responsibilities).
   - **Examples**:
     - Without a goal: `node src/lib/main.js --decompose`
     - With a goal: `node src/lib/main.js --decompose "Launch New Product"`
 
-- **Self-Improvement Mode (`--self-improve`)**: 
-  - Computes and logs diagnostic metrics from the in-memory log including: 
+- **Self-Improvement Mode (`--self-improve`)**:
+  - Computes and logs diagnostic metrics from the in-memory log including:
     - Total number of CLI invocations
     - First and latest invocation timestamps
     - Average execution time
     - Maximum and minimum execution times
     - Standard deviation of execution times
+    - **Median execution time**: The median represents the middle value of the execution times when sorted, providing insight into the typical performance unaffected by outliers.
   - **Example**: `node src/lib/main.js --self-improve`
 
-- **Memory Logging and Reset (`--test-memory`, `--reset-log`)**: 
+- **Memory Logging and Reset (`--test-memory`, `--reset-log`)**:
   - Every CLI invocation is recorded in an in-memory log.
   - `--test-memory` is used to add a test entry (mainly for testing purposes).
   - `--reset-log` clears the current in-memory log and outputs a confirmation message.
   - **Example**: `node src/lib/main.js --reset-log`
 
-- **Persistent Logging (`--persist-log` and `--persist-file`)**: 
+- **Persistent Logging (`--persist-log` and `--persist-file`)**:
   - `--persist-log` outputs the complete in-memory log as a JSON string to the console.
   - `--persist-file` writes the memory log to a file named `memory_log.json`.
   - **Examples**:
@@ -102,7 +103,7 @@ Below are some command-line examples demonstrating the usage of these features:
     ```
     Output:
     - Run with: ["--decompose"]
-    - Goal Decomposition Report: 
+    - Goal Decomposition Report:
     - Sub-tasks listed
     - Execution time logged
 
@@ -123,7 +124,7 @@ Below are some command-line examples demonstrating the usage of these features:
   Output:
   - Run with: ["--self-improve"]
   - Execution time logged
-  - Detailed diagnostics including total invocations, first and latest timestamps, average, maximum, minimum execution times, and standard deviation
+  - Detailed diagnostics including total invocations, first and latest timestamps, average, maximum, minimum, standard deviation, and median execution times
 
 - **Persistent Logging**:
   - To output log as JSON:
@@ -147,8 +148,10 @@ Below are some command-line examples demonstrating the usage of these features:
 
 The CLI enhancements detailed above align closely with our mission of building a self-improving, agentic system. In particular:
 
-- **Planning, Goal Decomposition, and Self-Improvement**: These features provide the foundation for a system that can analyze its performance, identify tasks, and refine its processes. As documented in MISSION.md, these capabilities are essential for evolving into an autonomous development workflow.
+- **Self-Improvement Mode**: In addition to previously tracked metrics (average, maximum, minimum, and standard deviation), the median execution time metric has been added. This helps diagnose performance distributions by identifying the middle execution time value, which can be especially useful when the data set contains outliers.
 
-- **Replication and Persistent Logging**: By supporting replication and persistent storage of execution logs, the CLI paves the way for scalable and traceable automation. This ensures that as the system grows, it retains the context necessary for intelligent decision-making.
+- **Replication and Persistent Logging**: These features support scalability and traceability of automation.
+
+- **Planning, Goal Decomposition, and Memory Features**: These provide structure and continuity for comprehensive task automation.
 
 Contributions that further develop these features or integrate them with broader workflows are highly encouraged.

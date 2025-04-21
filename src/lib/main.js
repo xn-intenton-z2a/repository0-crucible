@@ -6,7 +6,7 @@
 // Features include:
 //  - Help-Seeking Mode: Activates a mode for querying assistance.
 //  - Replication Mode: Executes task replication either with default count or a provided count.
-//  - Self-Improvement Mode: Outputs diagnostic metrics computed from the in-memory log.
+//  - Self-Improvement Mode: Outputs diagnostic metrics computed from the in-memory log, including average, max, min, standard deviation, and median execution times.
 //  - Planning Mode: Analyzes input for planning tasks.
 //  - Goal Decomposition: Provides a breakdown of a goal into numbered sub-tasks.
 //  - Reset Log: Clears the in-memory log for a fresh state.
@@ -63,18 +63,20 @@ function handleReplication(args) {
 }
 
 // Handles the self-improve flag by logging self-improvement diagnostics with detailed metrics
-// Purpose: Compute and display diagnostic metrics such as total invocations, average, max, min, and standard deviation of execution times.
+// Purpose: Compute and display diagnostic metrics such as total invocations, average, max, min, standard deviation, and median execution times.
 // Preconditions: Requires entries in the in-memory log with execution time metrics.
 function handleSelfImprove() {
   let totalTime = 0;
   let count = 0;
   let maxTime = 0;
   let minTime = Infinity;
+  let times = [];
   // Iterate through the memory log to compute timing metrics
   for (const entry of memoryLog) {
     if (entry.execTime !== undefined) {
       totalTime += entry.execTime;
       count++;
+      times.push(entry.execTime);
       if (entry.execTime > maxTime) {
         maxTime = entry.execTime;
       }
@@ -86,8 +88,6 @@ function handleSelfImprove() {
   const averageNum = count > 0 ? totalTime / count : 0;
   const averageTime = count > 0 ? averageNum.toFixed(2) : "0.00";
   const minTimeFormatted = count > 0 ? minTime.toFixed(2) : "N/A";
-  const firstTimestamp = memoryLog.length > 0 ? memoryLog[0].timestamp : "N/A";
-  const latestTimestamp = memoryLog.length > 0 ? memoryLog[memoryLog.length - 1].timestamp : "N/A";
 
   // Calculate standard deviation of execution times
   let sumSquaredDiff = 0;
@@ -99,6 +99,21 @@ function handleSelfImprove() {
   const variance = count > 0 ? sumSquaredDiff / count : 0;
   const stdDeviation = Math.sqrt(variance).toFixed(2);
 
+  // Calculate median execution time
+  let median = 0;
+  if (times.length > 0) {
+    times.sort((a, b) => a - b);
+    if (times.length % 2 === 1) {
+      median = times[Math.floor(times.length / 2)];
+    } else {
+      median = (times[times.length / 2 - 1] + times[times.length / 2]) / 2;
+    }
+  }
+  const medianFormatted = count > 0 ? median.toFixed(2) : "0.00";
+
+  const firstTimestamp = memoryLog.length > 0 ? memoryLog[0].timestamp : "N/A";
+  const latestTimestamp = memoryLog.length > 0 ? memoryLog[memoryLog.length - 1].timestamp : "N/A";
+
   // Log detailed diagnostic metrics for self-improvement
   console.log("Self-Improvement Diagnostics:");
   console.log(`Total invocations: ${memoryLog.length}`);
@@ -108,6 +123,7 @@ function handleSelfImprove() {
   console.log(`Maximum execution time: ${maxTime.toFixed(2)} ms`);
   console.log(`Minimum execution time: ${minTimeFormatted} ms`);
   console.log(`Standard deviation execution time: ${stdDeviation} ms`);
+  console.log(`Median execution time: ${medianFormatted} ms`);
 }
 
 // Handles the planning flag by logging planning messages
