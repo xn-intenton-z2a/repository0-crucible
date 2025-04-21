@@ -12,6 +12,7 @@
 //  - Goal Decomposition: Provides a breakdown of a goal into numbered sub-tasks.
 //  - Reset Log: Clears the in-memory log and the persisted log file for a fresh state.
 //  - Persist Log & Persist File: Exports the log in JSON format or writes it to a file respectively.
+//  - Version Details: When the --version-details flag is provided, outputs a JSON formatted object containing Node.js version, process.versions object, and appVersion from package.json, then exits immediately.
 
 import { fileURLToPath } from "url";
 import { performance } from "perf_hooks";
@@ -225,6 +226,25 @@ export function getMemoryLog() {
 
 // Main entry point for the CLI application
 export async function main(args) {
+  // Check if --version-details flag is present and handle it immediately
+  if (args.includes("--version-details")) {
+    let pkgVersion = "unknown";
+    try {
+      const packageData = fs.readFileSync("package.json", { encoding: "utf8" });
+      const pkg = JSON.parse(packageData);
+      pkgVersion = pkg.version || "unknown";
+    } catch (err) {
+      // Error reading package.json, default to unknown
+    }
+    const details = {
+      nodeVersion: process.version,
+      versions: process.versions,
+      appVersion: pkgVersion
+    };
+    console.log(JSON.stringify(details));
+    process.exit(0);
+  }
+
   // Load persisted memory log once per session if available
   loadPersistentLog();
 

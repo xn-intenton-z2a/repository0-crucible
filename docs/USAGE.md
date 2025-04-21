@@ -21,7 +21,6 @@ The CLI tool supports multiple features which can be invoked via different comma
 - **Asynchronous Replication Mode (`--replicate-async`)**:
   - Enhances the replication mode by running replication tasks concurrently.
   - Must be used in combination with the `--replicate` flag.
-  - This mode may improve performance for large replication counts as tasks are executed in parallel.
   - **Example**:
     ```bash
     node src/lib/main.js --replicate 5 --replicate-async
@@ -78,6 +77,26 @@ The CLI tool supports multiple features which can be invoked via different comma
     - Persist to console: `node src/lib/main.js --persist-log`
     - Persist to file: `node src/lib/main.js --persist-file`
     - Subsequent runs will automatically load the persisted entries.
+
+- **Version Details (`--version-details`)**:
+  - **New Feature:** Immediately outputs a JSON-formatted object containing detailed environment information.
+  - The output includes:
+    - `nodeVersion`: The Node.js version (same as `process.version`).
+    - `versions`: The complete `process.versions` object.
+    - `appVersion`: The application version as defined in `package.json`.
+  - When this flag is provided, the CLI bypasses all other functionalities and exits immediately after printing the JSON.
+  - **Example**:
+    ```bash
+    node src/lib/main.js --version-details
+    ```
+  - **Expected Output Example**:
+    ```json
+    {
+      "nodeVersion": "v20.x.x",
+      "versions": { /* process.versions object */ },
+      "appVersion": "1.2.0-0"
+    }
+    ```
 
 ## Usage Examples
 
@@ -195,3 +214,16 @@ Below are some command-line examples demonstrating the usage of these features:
   Output:
   - Memory log has been reset.
   - The persisted log file (`memory_log.json`) is also deleted.
+
+- **Version Details Flag**:
+  - This new flag outputs detailed environment information immediately.
+  - **Usage**:
+    ```bash
+    node src/lib/main.js --version-details
+    ```
+  - **Output:** A JSON string containing:
+    - `nodeVersion`: The current Node.js version (e.g., "v20.x.x").
+    - `versions`: The full process.versions object.
+    - `appVersion`: The application version from package.json.
+  - **Note:** When this flag is used, all other functionalities are bypassed and the program exits immediately after outputting the JSON.
+

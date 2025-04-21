@@ -426,3 +426,22 @@ describe("Reset Log Feature", () => {
     spy.mockRestore();
   });
 });
+
+describe("Version Details Flag", () => {
+  test("should output version details and exit immediately when '--version-details' flag is provided", async () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+    await main(["--version-details"]);
+    expect(logSpy).toHaveBeenCalled();
+    const output = logSpy.mock.calls[0][0];
+    let details;
+    expect(() => { details = JSON.parse(output); }).not.toThrow();
+    expect(details).toHaveProperty("nodeVersion", process.version);
+    expect(details).toHaveProperty("versions");
+    expect(details).toHaveProperty("appVersion");
+    expect(typeof details.appVersion).toBe("string");
+    expect(exitSpy).toHaveBeenCalledWith(0);
+    logSpy.mockRestore();
+    exitSpy.mockRestore();
+  });
+});
