@@ -89,14 +89,15 @@ The CLI tool supports multiple features which can be invoked via different comma
     ```bash
     node src/lib/main.js --version-details
     ```
-  - **Expected Output Example**:
-    ```json
-    {
-      "nodeVersion": "v20.x.x",
-      "versions": { /* process.versions object */ },
-      "appVersion": "1.2.0-0"
-    }
-    ```
+
+- **Filter Log (`--filter-log <query>` or `--filter-log=<query>`)**:
+  - **New Feature:** Filters the memory log entries based on a query string provided by the user.
+  - The CLI will search the in-memory (and persisted) log for entries where any element of the `args` array contains the given query substring (case-insensitive).
+  - The filtered log entries are output to the console in JSON format. If no entries match, an empty JSON array is returned.
+  - Once filtering is performed, the program exits immediately, skipping further operations.
+  - **Examples**:
+    - Space-separated query: `node src/lib/main.js --filter-log test`
+    - Assignment style: `node src/lib/main.js --filter-log=myQuery`
 
 ## Usage Examples
 
@@ -204,8 +205,9 @@ Below are some command-line examples demonstrating the usage of these features:
     ```bash
     node src/lib/main.js --persist-file
     ```
-    Output for file persistence includes confirmation: "Memory log persisted to memory_log.json"
-    - Subsequent CLI runs will load the entries from this file automatically.
+    Output:
+    - Confirmation: "Memory log persisted to memory_log.json"
+    - Subsequent runs load the persisted entries automatically.
 
 - **Reset Log**:
   ```bash
@@ -213,17 +215,33 @@ Below are some command-line examples demonstrating the usage of these features:
   ```
   Output:
   - Memory log has been reset.
-  - The persisted log file (`memory_log.json`) is also deleted.
+  - The persisted log file (`memory_log.json`) is deleted.
 
 - **Version Details Flag**:
-  - This new flag outputs detailed environment information immediately.
+  - Outputs detailed environment information and exits immediately.
   - **Usage**:
     ```bash
     node src/lib/main.js --version-details
     ```
-  - **Output:** A JSON string containing:
-    - `nodeVersion`: The current Node.js version (e.g., "v20.x.x").
-    - `versions`: The full process.versions object.
-    - `appVersion`: The application version from package.json.
-  - **Note:** When this flag is used, all other functionalities are bypassed and the program exits immediately after outputting the JSON.
+  - **Expected Output Example**:
+    ```json
+    {
+      "nodeVersion": "v20.x.x",
+      "versions": { /* process.versions object */ },
+      "appVersion": "1.2.0-0"
+    }
+    ```
+
+- **Filter Log Feature**:
+  - Filters the memory log based on a query and outputs the filtered entries in JSON format, then exits immediately.
+  - **Examples**:
+    - Space-separated query:
+      ```bash
+      node src/lib/main.js --filter-log test
+      ```
+    - Assignment style:
+      ```bash
+      node src/lib/main.js --filter-log=myQuery
+      ```
+  - If no matching entries are found, the output will be an empty JSON array: `[]`.
 

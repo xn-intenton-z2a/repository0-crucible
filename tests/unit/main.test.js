@@ -445,3 +445,45 @@ describe("Version Details Flag", () => {
     exitSpy.mockRestore();
   });
 });
+
+describe("Filter Log Feature", () => {
+  beforeEach(() => {
+    resetMemoryLog();
+    if (fs.existsSync("memory_log.json")) {
+      fs.unlinkSync("memory_log.json");
+    }
+  });
+
+  test("should output filtered log entries when matching query is provided with space-separated argument", async () => {
+    // Populate memory log with known entries
+    await main(["--test-memory"]); // this entry will include '--test-memory'
+    await main(["sampleEntry"]); // entry not matching
+
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+    await main(["--filter-log", "test"]);
+    // Parse output from console.log
+    const output = spy.mock.calls[0][0];
+    const filtered = JSON.parse(output);
+    // Should include the entry with '--test-memory'
+    expect(filtered.some(entry => entry.args.includes("--test-memory"))).toBe(true);
+    // Should not include 'sampleEntry'
+    expect(filtered.some(entry => entry.args.includes("sampleEntry"))).toBe(false);
+    spy.mockRestore();
+    exitSpy.mockRestore();
+  });
+
+  test("should output empty array when no log entries match the query", async () => {
+    await main(["--test-memory"]);
+    await main(["anotherEntry"]);
+
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const exitSpy = vi.spyOn(process, "exit").mockImplementation(() => {});
+    await main(["--filter-log", "nomatch"]);
+    const output = spy.mock.calls[0][0];
+    const filtered = JSON.parse(output);
+    expect(filtered).toEqual([]);
+    spy.mockRestore();
+    exitSpy.mockRestore();
+  });
+});
