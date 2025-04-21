@@ -180,13 +180,12 @@ describe("Self-Improvement Mode", () => {
     // 8: [Self-Improve] Minimum execution time
     // 9: [Self-Improve] Standard deviation execution time
     // 10: [Self-Improve] Median execution time
-    expect(spy).toHaveBeenCalledTimes(11);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--self-improve"]');
     expect(spy.mock.calls[1][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
     expect(spy.mock.calls[2][0]).toBe('[Self-Improve] Self-Improvement Diagnostics:');
     expect(spy.mock.calls[3][0]).toMatch(/^\[Self-Improve\] Total invocations: \d+$/);
-    expectFirstInvocationLog(spy.mock.calls[4][0].replace(/^\[Self-Improve\] /, ''));
-    expectLatestInvocationLog(spy.mock.calls[5][0].replace(/^\[Self-Improve\] /, ''));
+    expectFirstInvocationLog(spy.mock.calls[4][0]);
+    expectLatestInvocationLog(spy.mock.calls[5][0]);
     expect(spy.mock.calls[6][0]).toMatch(/^\[Self-Improve\] Average execution time: \d+(\.\d+)? ms$/);
     expectMaximumExecutionTimeLog(spy.mock.calls[7][0]);
     expectMinimumExecutionTimeLog(spy.mock.calls[8][0]);

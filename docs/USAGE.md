@@ -137,7 +137,7 @@ Below are some command-line examples demonstrating the usage of these features:
     ```
     Output:
     - All basic diagnostics as above
-    - Plus detailed per-invocation logs prefixed with `[Self-Improve] Detailed:`
+    - Plus detailed per-invocation logs prefixed with [Self-Improve] Detailed:
 
 - **Persistent Logging**:
   - To output log as JSON:
