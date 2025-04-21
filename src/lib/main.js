@@ -130,6 +130,12 @@ export function main(args) {
   // Log the provided CLI arguments
   logCLIArgs(args);
 
+  // Handle reset log flag if present
+  if (args.includes("--reset-log")) {
+    resetMemoryLog();
+    console.log("Memory log has been reset.");
+  }
+
   // Check for help-seeking flag and process it
   if (args.includes("--help-seeking")) {
     handleHelpSeeking();

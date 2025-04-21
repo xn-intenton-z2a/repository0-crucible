@@ -377,3 +377,21 @@ describe("Persistent File Flag", () => {
     fs.unlinkSync("memory_log.json");
   });
 });
+
+describe("Reset Log Feature", () => {
+  beforeEach(() => {
+    resetMemoryLog();
+  });
+
+  test("should clear the memory log and output reset message when '--reset-log' flag is provided", () => {
+    // First, add an entry
+    main(["--test-memory"]);
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--reset-log"]);
+    const log = getMemoryLog();
+    expect(log).toEqual([]);
+    const resetMessageFound = spy.mock.calls.some(call => call[0] === "Memory log has been reset.");
+    expect(resetMessageFound).toBe(true);
+    spy.mockRestore();
+  });
+});
