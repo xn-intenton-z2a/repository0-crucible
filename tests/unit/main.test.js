@@ -126,17 +126,43 @@ describe("Self-Improvement Mode", () => {
     resetMemoryLog();
   });
 
-  test("should log self-improvement message when '--self-improve' flag is provided", () => {
+  test("should log self-improvement diagnostics when '--self-improve' flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--self-improve"]);
     // Expected logs:
     // 1: Run with: ["--self-improve"]
     // 2: Execution time: ... ms
-    // 3: Self-improvement analysis: execution metrics are optimal
-    expect(spy).toHaveBeenCalledTimes(3);
+    // 3: Total invocations: 1
+    // 4: Average execution time: <some value> ms
+    // 5: Self-improvement analysis: execution metrics are optimal
+    expect(spy).toHaveBeenCalledTimes(5);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--self-improve"]');
     expect(spy.mock.calls[1][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
-    expect(spy.mock.calls[2][0]).toBe('Self-improvement analysis: execution metrics are optimal');
+    expect(spy.mock.calls[2][0]).toBe('Total invocations: 1');
+    expect(spy.mock.calls[3][0]).toMatch(/^Average execution time: \d+(\.\d+)? ms$/);
+    expect(spy.mock.calls[4][0]).toBe('Self-improvement analysis: execution metrics are optimal');
+    spy.mockRestore();
+  });
+
+  test("should compute correct diagnostics with accumulated invocations", () => {
+    // First, invoke CLI with a dummy flag to accumulate an entry
+    main(["--dummy"]);
+    // Now, invoke with self-improve
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--self-improve"]);
+    // Now memoryLog should have 2 entries
+    const log = getMemoryLog();
+    expect(log.length).toBe(2);
+    // The diagnostics should reflect 2 invocations
+    // The expected calls in this invocation:
+    // 1: Run with: ["--self-improve"]
+    // 2: Execution time ...
+    // 3: Total invocations: 2
+    // 4: Average execution time: ... ms (average of two runs)
+    // 5: Self-improvement analysis...
+    expect(spy.mock.calls[2][0]).toBe('Total invocations: 2');
+    const avgMessage = spy.mock.calls[3][0];
+    expect(avgMessage).toMatch(/^Average execution time: \d+(\.\d+)? ms$/);
     spy.mockRestore();
   });
 });

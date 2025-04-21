@@ -18,6 +18,7 @@ function logCLIArgs(args) {
 function logExecutionTime(startTime, endTime) {
   const executionTime = (endTime - startTime).toFixed(2);
   console.log(`Execution time: ${executionTime} ms`);
+  return parseFloat(executionTime);
 }
 
 // Business logic for replicating tasks
@@ -39,8 +40,22 @@ function handleReplication() {
   replicateTasks();
 }
 
-// Handles the self-improve flag by logging self-improvement diagnostics
+// Handles the self-improve flag by logging self-improvement diagnostics with detailed metrics
 function handleSelfImprove() {
+  // Compute diagnostics from the memory log
+  const totalInvocations = memoryLog.length;
+  let totalTime = 0;
+  let count = 0;
+  for (const entry of memoryLog) {
+    if (entry.execTime !== undefined) {
+      totalTime += entry.execTime;
+      count++;
+    }
+  }
+  const averageTime = count > 0 ? (totalTime / count).toFixed(2) : "0.00";
+
+  console.log(`Total invocations: ${totalInvocations}`);
+  console.log(`Average execution time: ${averageTime} ms`);
   console.log("Self-improvement analysis: execution metrics are optimal");
 }
 
@@ -66,10 +81,10 @@ function handleDecompose(args) {
 
 // Main entry point for the CLI application
 export function main(args) {
+  const startTime = performance.now();
+
   // Record this invocation in the in-memory log with arguments and a timestamp
   memoryLog.push({ args, timestamp: new Date().toISOString() });
-
-  const startTime = performance.now();
 
   // Log the provided CLI arguments
   logCLIArgs(args);
@@ -96,7 +111,9 @@ export function main(args) {
 
   // Capture end time and log the execution duration
   const endTime = performance.now();
-  logExecutionTime(startTime, endTime);
+  const execTime = logExecutionTime(startTime, endTime);
+  // Update the last log entry with execution time
+  memoryLog[memoryLog.length - 1].execTime = execTime;
 
   // If '--persist-log' flag is provided, output the complete in-memory log as a JSON string
   if (args.includes("--persist-log")) {
