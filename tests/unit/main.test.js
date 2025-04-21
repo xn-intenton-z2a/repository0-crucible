@@ -48,27 +48,27 @@ describe("CLI Functionality", () => {
     resetMemoryLog();
   });
 
-  test("should log expected output for '--help' argument", () => {
+  test("should log expected output for '--help' argument", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--help"]);
+    await main(["--help"]);
     expect(spy).toHaveBeenCalledTimes(2);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--help"]');
     expectExecutionTimeLog(spy.mock.calls[1][0]);
     spy.mockRestore();
   });
 
-  test("should log expected output for multiple arguments", () => {
+  test("should log expected output for multiple arguments", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["param1", "param2"]);
+    await main(["param1", "param2"]);
     expect(spy).toHaveBeenCalledTimes(2);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["param1","param2"]');
     expectExecutionTimeLog(spy.mock.calls[1][0]);
     spy.mockRestore();
   });
 
-  test("should log expected output for an empty string argument", () => {
+  test("should log expected output for an empty string argument", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main([""]);
+    await main([""]);
     expect(spy).toHaveBeenCalledTimes(2);
     expect(spy.mock.calls[0][0]).toBe('Run with: [""]');
     expectExecutionTimeLog(spy.mock.calls[1][0]);
@@ -81,11 +81,11 @@ describe("Simulated CLI Execution via process.argv", () => {
     resetMemoryLog();
   });
 
-  test("should log expected output when no additional CLI args are provided", () => {
+  test("should log expected output when no additional CLI args are provided", async () => {
     const originalArgv = process.argv;
     process.argv = ["node", "src/lib/main.js"]; 
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(process.argv.slice(2));
+    await main(process.argv.slice(2));
     expect(spy).toHaveBeenCalledTimes(2);
     expect(spy.mock.calls[0][0]).toBe('Run with: []');
     expectExecutionTimeLog(spy.mock.calls[1][0]);
@@ -93,11 +93,11 @@ describe("Simulated CLI Execution via process.argv", () => {
     process.argv = originalArgv;
   });
 
-  test("should log expected output for multiple diverse CLI args", () => {
+  test("should log expected output for multiple diverse CLI args", async () => {
     const originalArgv = process.argv;
     process.argv = ["node", "src/lib/main.js", "--flag", "", "unexpected"];
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(process.argv.slice(2));
+    await main(process.argv.slice(2));
     expect(spy).toHaveBeenCalledTimes(2);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--flag","","unexpected"]');
     expectExecutionTimeLog(spy.mock.calls[1][0]);
@@ -111,9 +111,9 @@ describe("Replication Mode", () => {
     resetMemoryLog();
   });
 
-  test("should log replication messages when '--replicate' flag is present without a valid count parameter", () => {
+  test("should log replication messages when '--replicate' flag is present without a valid count parameter", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--replicate", "param1"]);
+    await main(["--replicate", "param1"]);
     // Expected logs for default replication (3 tasks)
     expect(spy).toHaveBeenCalledTimes(6);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--replicate","param1"]');
@@ -121,13 +121,13 @@ describe("Replication Mode", () => {
     expect(spy.mock.calls[2][0]).toBe('Replicating task 1');
     expect(spy.mock.calls[3][0]).toBe('Replicating task 2');
     expect(spy.mock.calls[4][0]).toBe('Replicating task 3');
-    expect(spy.mock.calls[5][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
+    expectExecutionTimeLog(spy.mock.calls[5][0]);
     spy.mockRestore();
   });
 
-  test("should log replication messages with provided task count when valid number is given", () => {
+  test("should log replication messages with provided task count when valid number is given", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--replicate", "5"]);
+    await main(["--replicate", "5"]);
     // Expected logs for replication with 5 tasks
     expect(spy).toHaveBeenCalledTimes(8);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--replicate","5"]');
@@ -137,15 +137,15 @@ describe("Replication Mode", () => {
     expect(spy.mock.calls[4][0]).toBe('Replicating task 3');
     expect(spy.mock.calls[5][0]).toBe('Replicating task 4');
     expect(spy.mock.calls[6][0]).toBe('Replicating task 5');
-    expect(spy.mock.calls[7][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
+    expectExecutionTimeLog(spy.mock.calls[7][0]);
     spy.mockRestore();
   });
 
   test("should log replication messages concurrently when '--replicate' and '--replicate-async' flags are provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--replicate", "5", "--replicate-async"]);
-    // Filter out the logs for replication tasks
-    const taskLogs = spy.mock.calls.filter(call => typeof call[0] === 'string' && call[0].startsWith('Replicating task'));
+    // Filter out the logs for replication tasks using a regex to avoid including the header
+    const taskLogs = spy.mock.calls.filter(call => typeof call[0] === 'string' && /^Replicating task \d+$/.test(call[0]));
     expect(taskLogs.length).toBe(5);
     const tasks = new Set(taskLogs.map(call => call[0]));
     for (let i = 1; i <= 5; i++) {
@@ -160,9 +160,9 @@ describe("Help-Seeking Mode", () => {
     resetMemoryLog();
   });
 
-  test("should log help-seeking message when '--help-seeking' flag is provided", () => {
+  test("should log help-seeking message when '--help-seeking' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--help-seeking"]);
+    await main(["--help-seeking"]);
     // Expected logs:
     expect(spy).toHaveBeenCalledTimes(3);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--help-seeking"]');
@@ -177,9 +177,9 @@ describe("Self-Improvement Mode", () => {
     resetMemoryLog();
   });
 
-  test("should log self-improvement diagnostics when '--self-improve' flag is provided", () => {
+  test("should log self-improvement diagnostics when '--self-improve' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--self-improve"]);
+    await main(["--self-improve"]);
     // Expected logs:
     // 0: Run with
     // 1: Execution time
@@ -206,10 +206,10 @@ describe("Self-Improvement Mode", () => {
     spy.mockRestore();
   });
 
-  test("should compute correct diagnostics with accumulated invocations", () => {
-    main(["--dummy"]);
+  test("should compute correct diagnostics with accumulated invocations", async () => {
+    await main(["--dummy"]);
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--self-improve"]);
+    await main(["--self-improve"]);
     const log = getMemoryLog();
     expect(log.length).toBe(2);
     expect(spy.mock.calls[2][0]).toBe('[Self-Improve] Self-Improvement Diagnostics:');
@@ -225,9 +225,9 @@ describe("Self-Improvement Mode", () => {
     spy.mockRestore();
   });
 
-  test("should log extended diagnostics when '--self-improve --verbose' flags are provided", () => {
+  test("should log extended diagnostics when '--self-improve --verbose' flags are provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--self-improve", "--verbose"]);
+    await main(["--self-improve", "--verbose"]);
     const logs = spy.mock.calls.map(call => call[0]);
     const hasDetailedHeader = logs.some(log => log === "[Self-Improve] Detailed: Detailed Memory Log:");
     expect(hasDetailedHeader).toBe(true);
@@ -236,9 +236,9 @@ describe("Self-Improvement Mode", () => {
     spy.mockRestore();
   });
 
-  test("should output JSON diagnostics when '--self-improve' and '--diag-json' flags are provided", () => {
+  test("should output JSON diagnostics when '--self-improve' and '--diag-json' flags are provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--self-improve", "--diag-json"]);
+    await main(["--self-improve", "--diag-json"]);
     // Find the JSON output among the logs
     const jsonLogCall = spy.mock.calls.find(call => {
       try {
@@ -267,9 +267,9 @@ describe("Planning Mode", () => {
     resetMemoryLog();
   });
 
-  test("should log planning messages when '--plan' flag is present", () => {
+  test("should log planning messages when '--plan' flag is present", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--plan"]);
+    await main(["--plan"]);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--plan"]');
     expect(spy.mock.calls[1][0]).toBe('Planning Mode Engaged: Analyzing input for planning...');
     expect(spy.mock.calls[2][0]).toBe('Planned Task 1: Review current configurations');
@@ -284,9 +284,9 @@ describe("Goal Decomposition Feature", () => {
     resetMemoryLog();
   });
 
-  test("should log default goal and sub-tasks when no goal provided", () => {
+  test("should log default goal and sub-tasks when no goal provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--decompose"]);
+    await main(["--decompose"]);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--decompose"]');
     expect(spy.mock.calls[1][0]).toBe('Goal Decomposition Report:');
     expect(spy.mock.calls[2][0]).toBe('1. Define objectives');
@@ -296,9 +296,9 @@ describe("Goal Decomposition Feature", () => {
     spy.mockRestore();
   });
 
-  test("should log provided goal and sub-tasks when goal provided", () => {
+  test("should log provided goal and sub-tasks when goal provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--decompose", "Plan new product launch"]);
+    await main(["--decompose", "Plan new product launch"]);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--decompose","Plan new product launch"]');
     expect(spy.mock.calls[1][0]).toBe('Goal Decomposition Report: Plan new product launch');
     expect(spy.mock.calls[2][0]).toBe('1. Define objectives');
@@ -319,18 +319,18 @@ describe("Memory Log Feature", () => {
     expect(log).toEqual([]);
   });
 
-  test("should append an entry to the memory log after CLI invocation", () => {
+  test("should append an entry to the memory log after CLI invocation", async () => {
     const args = ["--test-memory"];
-    main(args);
+    await main(args);
     const log = getMemoryLog();
     expect(log.length).toBe(1);
     expect(log[0]).toHaveProperty('args', args);
     expect(new Date(log[0].timestamp).toISOString()).toBe(log[0].timestamp);
   });
 
-  test("should accumulate entries on subsequent invocations", () => {
-    main(["first"]);
-    main(["second"]);
+  test("should accumulate entries on subsequent invocations", async () => {
+    await main(["first"]);
+    await main(["second"]);
     const log = getMemoryLog();
     expect(log.length).toBe(2);
     expect(log[0]).toHaveProperty('args', ["first"]);
@@ -346,9 +346,9 @@ describe("Persistent Log Feature", () => {
     }
   });
 
-  test("should output a valid JSON memory log when '--persist-log' flag is provided", () => {
+  test("should output a valid JSON memory log when '--persist-log' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--persist-log"]);
+    await main(["--persist-log"]);
     expect(spy).toHaveBeenCalledTimes(3);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--persist-log"]');
     expect(spy.mock.calls[1][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
@@ -363,9 +363,9 @@ describe("Persistent Log Feature", () => {
     spy.mockRestore();
   });
 
-  test("should create and persist memory log to 'memory_log.json' when '--persist-file' flag is provided", () => {
+  test("should create and persist memory log to 'memory_log.json' when '--persist-file' flag is provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--persist-file"]);
+    await main(["--persist-file"]);
     expect(fs.existsSync("memory_log.json")).toBe(true);
     const fileContent = fs.readFileSync("memory_log.json", { encoding: 'utf8' });
     let parsed;
@@ -380,14 +380,14 @@ describe("Persistent Log Feature", () => {
     fs.unlinkSync("memory_log.json");
   });
 
-  test("should load persisted memory log from file on startup", () => {
+  test("should load persisted memory log from file on startup", async () => {
     // Prepare a temporary memory_log.json with known entries
     const persistedLog = [
       { args: ["--persisted"], timestamp: new Date().toISOString(), execTime: 1.23 }
     ];
     fs.writeFileSync("memory_log.json", JSON.stringify(persistedLog, null, 2));
     // Reset persistent flag to force reload
-    main(["--dummy"]);
+    await main(["--dummy"]);
     const log = getMemoryLog();
     expect(log.length).toBeGreaterThan(1);
     // The first entry should be the persisted one
@@ -397,13 +397,13 @@ describe("Persistent Log Feature", () => {
     }
   });
 
-  test("should clear persisted memory log when '--reset-log' flag is provided", () => {
+  test("should clear persisted memory log when '--reset-log' flag is provided", async () => {
     // Prepare a temporary memory_log.json with known entries
     const persistedLog = [
       { args: ["--to-be-reset"], timestamp: new Date().toISOString(), execTime: 2.34 }
     ];
     fs.writeFileSync("memory_log.json", JSON.stringify(persistedLog, null, 2));
-    main(["--reset-log"]);
+    await main(["--reset-log"]);
     const log = getMemoryLog();
     expect(log).toEqual([]);
     expect(fs.existsSync("memory_log.json")).toBe(false);
@@ -415,10 +415,10 @@ describe("Reset Log Feature", () => {
     resetMemoryLog();
   });
 
-  test("should clear the memory log and output reset message when '--reset-log' flag is provided", () => {
-    main(["--test-memory"]);
+  test("should clear the memory log and output reset message when '--reset-log' flag is provided", async () => {
+    await main(["--test-memory"]);
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--reset-log"]);
+    await main(["--reset-log"]);
     const log = getMemoryLog();
     expect(log).toEqual([]);
     const resetMessageFound = spy.mock.calls.some(call => call[0] === "Memory log has been reset.");
