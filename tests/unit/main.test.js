@@ -1,5 +1,6 @@
 import { describe, test, expect, vi, beforeEach } from "vitest";
 import { main, getMemoryLog, resetMemoryLog } from "@src/lib/main.js";
+import fs from "fs";
 
 // Helper function to validate execution time log
 function expectExecutionTimeLog(log) {
@@ -292,5 +293,36 @@ describe("Persistent Log Feature", () => {
       expect(parsed[0]).toHaveProperty('timestamp');
     }
     spy.mockRestore();
+  });
+});
+
+describe("Persistent File Flag", () => {
+  beforeEach(() => {
+    resetMemoryLog();
+    // Cleanup before test
+    if (fs.existsSync("memory_log.json")) {
+      fs.unlinkSync("memory_log.json");
+    }
+  });
+
+  test("should create and persist memory log to 'memory_log.json' when '--persist-file' flag is provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--persist-file"]);
+    // Check that the file exists
+    expect(fs.existsSync("memory_log.json")).toBe(true);
+    // Read and parse the file
+    const fileContent = fs.readFileSync("memory_log.json", { encoding: 'utf8' });
+    let parsed;
+    expect(() => { parsed = JSON.parse(fileContent); }).not.toThrow();
+    expect(Array.isArray(parsed)).toBe(true);
+    if (parsed.length > 0) {
+      expect(parsed[0]).toHaveProperty('args');
+      expect(parsed[0]).toHaveProperty('timestamp');
+    }
+    // Check that log also includes a confirmation message
+    expect(spy).toHaveBeenCalledWith("Memory log persisted to memory_log.json");
+    spy.mockRestore();
+    // Cleanup
+    fs.unlinkSync("memory_log.json");
   });
 });
