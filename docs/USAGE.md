@@ -48,15 +48,17 @@ The CLI tool supports multiple features which can be invoked via different comma
 - **Memory Logging and Reset (`--test-memory`, `--reset-log`)**:
   - Every CLI invocation is recorded in an in-memory log.
   - `--test-memory` is used to add a test entry (mainly for testing purposes).
-  - `--reset-log` clears the current in-memory log and outputs a confirmation message.
+  - `--reset-log` clears the current in-memory log **and deletes the persisted log file (`memory_log.json`)** to ensure a fresh state.
   - **Example**: `node src/lib/main.js --reset-log`
 
 - **Persistent Logging (`--persist-log` and `--persist-file`)**:
   - `--persist-log` outputs the complete in-memory log as a JSON string to the console.
   - `--persist-file` writes the memory log to a file named `memory_log.json`.
+  - **Persistence on Startup:** When the CLI tool starts, it automatically checks for an existing `memory_log.json` file. If found, it loads these entries into the in-memory log before processing the current invocation. This ensures continuity of diagnostic data across sessions.
   - **Examples**:
     - Persist to console: `node src/lib/main.js --persist-log`
     - Persist to file: `node src/lib/main.js --persist-file`
+    - Subsequent runs will automatically load the persisted entries.
 
 ## Usage Examples
 
@@ -149,6 +151,7 @@ Below are some command-line examples demonstrating the usage of these features:
     node src/lib/main.js --persist-file
     ```
     Output for file persistence includes confirmation: "Memory log persisted to memory_log.json"
+    - Subsequent CLI runs will load the entries from this file automatically.
 
 - **Reset Log**:
   ```bash
@@ -156,3 +159,4 @@ Below are some command-line examples demonstrating the usage of these features:
   ```
   Output:
   - Memory log has been reset.
+  - The persisted log file (`memory_log.json`) is also deleted.

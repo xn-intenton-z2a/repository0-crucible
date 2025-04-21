@@ -304,6 +304,9 @@ describe("Memory Log Feature", () => {
 describe("Persistent Log Feature", () => {
   beforeEach(() => {
     resetMemoryLog();
+    if (fs.existsSync("memory_log.json")) {
+      fs.unlinkSync("memory_log.json");
+    }
   });
 
   test("should output a valid JSON memory log when '--persist-log' flag is provided", () => {
@@ -322,15 +325,6 @@ describe("Persistent Log Feature", () => {
     }
     spy.mockRestore();
   });
-});
-
-describe("Persistent File Flag", () => {
-  beforeEach(() => {
-    resetMemoryLog();
-    if (fs.existsSync("memory_log.json")) {
-      fs.unlinkSync("memory_log.json");
-    }
-  });
 
   test("should create and persist memory log to 'memory_log.json' when '--persist-file' flag is provided", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
@@ -348,7 +342,39 @@ describe("Persistent File Flag", () => {
     spy.mockRestore();
     fs.unlinkSync("memory_log.json");
   });
+
+  test("should load persisted memory log from file on startup", () => {
+    // Prepare a temporary memory_log.json with known entries
+    const persistedLog = [
+      { args: ["--persisted"], timestamp: new Date().toISOString(), execTime: 1.23 }
+    ];
+    fs.writeFileSync("memory_log.json", JSON.stringify(persistedLog, null, 2));
+    // Reset persistent flag to force reload
+    // Call main which should load the persisted log before adding new entry
+    main(["--dummy"]);
+    const log = getMemoryLog();
+    expect(log.length).toBeGreaterThan(1);
+    // The first entry should be the persisted one
+    expect(log[0]).toEqual(persistedLog[0]);
+    // Clean up
+    if (fs.existsSync("memory_log.json")) {
+      fs.unlinkSync("memory_log.json");
+    }
+  });
+
+  test("should clear persisted memory log when '--reset-log' flag is provided", () => {
+    // Prepare a temporary memory_log.json with known entries
+    const persistedLog = [
+      { args: ["--to-be-reset"], timestamp: new Date().toISOString(), execTime: 2.34 }
+    ];
+    fs.writeFileSync("memory_log.json", JSON.stringify(persistedLog, null, 2));
+    main(["--reset-log"]);
+    const log = getMemoryLog();
+    expect(log).toEqual([]);
+    expect(fs.existsSync("memory_log.json")).toBe(false);
+  });
 });
+
 
 describe("Reset Log Feature", () => {
   beforeEach(() => {

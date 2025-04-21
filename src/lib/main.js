@@ -9,7 +9,7 @@
 //  - Self-Improvement Mode: Outputs diagnostic metrics computed from the in-memory log, including average, max, min, standard deviation, median execution times and, when verbose, detailed per-invocation metrics. All self-improvement diagnostics are prefixed for consistent formatting.
 //  - Planning Mode: Analyzes input for planning tasks.
 //  - Goal Decomposition: Provides a breakdown of a goal into numbered sub-tasks.
-//  - Reset Log: Clears the in-memory log for a fresh state.
+//  - Reset Log: Clears the in-memory log and the persisted log file for a fresh state.
 //  - Persist Log & Persist File: Exports the log in JSON format or writes it to a file respectively.
 
 import { fileURLToPath } from "url";
@@ -18,6 +18,26 @@ import fs from "fs";
 
 // Global in-memory log to track each CLI invocation
 const memoryLog = [];
+
+// Flag to ensure persistent log is loaded only once per session
+let persistentLogLoaded = false;
+
+// Load persisted memory log from 'memory_log.json' at startup if it exists
+function loadPersistentLog() {
+  if (!persistentLogLoaded && fs.existsSync('memory_log.json')) {
+    try {
+      const data = fs.readFileSync('memory_log.json', { encoding: 'utf8' });
+      const parsed = JSON.parse(data);
+      if (Array.isArray(parsed)) {
+        // Merge persisted entries into the in-memory log
+        memoryLog.push(...parsed);
+      }
+    } catch (err) {
+      console.error('Failed to load persistent memory log:', err);
+    }
+    persistentLogLoaded = true;
+  }
+}
 
 // Helper function to log the CLI arguments in a consistent JSON format
 function logCLIArgs(args) {
@@ -165,8 +185,28 @@ function handleDecompose(args) {
   console.log("3. Assign responsibilities");
 }
 
+// Resets the in-memory log and clears persisted log file if it exists.
+export function resetMemoryLog() {
+  memoryLog.length = 0;
+  if (fs.existsSync('memory_log.json')) {
+    try {
+      fs.unlinkSync('memory_log.json');
+    } catch (err) {
+      console.error('Failed to delete persistent memory log file:', err);
+    }
+  }
+}
+
+// Returns a copy of the current in-memory log
+export function getMemoryLog() {
+  return [...memoryLog];
+}
+
 // Main entry point for the CLI application
 export function main(args) {
+  // Load persisted memory log once per session if available
+  loadPersistentLog();
+
   const startTime = performance.now();
 
   // Record this invocation in the in-memory log with provided arguments and the current timestamp
@@ -175,7 +215,7 @@ export function main(args) {
   // Log the provided CLI arguments
   logCLIArgs(args);
 
-  // Handle the reset log flag: clears the in-memory log and confirms reset.
+  // Handle the reset log flag: clears the in-memory log and persistent file, then confirms reset.
   if (args.includes("--reset-log")) {
     resetMemoryLog();
     console.log("Memory log has been reset.");
@@ -227,16 +267,6 @@ export function main(args) {
       handleSelfImproveVerbose();
     }
   }
-}
-
-// Returns a copy of the current in-memory log
-export function getMemoryLog() {
-  return [...memoryLog];
-}
-
-// Resets the in-memory log. Useful for testing and initializing a fresh CLI state.
-export function resetMemoryLog() {
-  memoryLog.length = 0;
 }
 
 // If this module is executed directly, process CLI arguments from process.argv
