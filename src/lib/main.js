@@ -55,6 +55,7 @@ function handleSelfImprove() {
   let totalTime = 0;
   let count = 0;
   let maxTime = 0;
+  let minTime = Infinity;
   for (const entry of memoryLog) {
     if (entry.execTime !== undefined) {
       totalTime += entry.execTime;
@@ -62,9 +63,13 @@ function handleSelfImprove() {
       if (entry.execTime > maxTime) {
         maxTime = entry.execTime;
       }
+      if (entry.execTime < minTime) {
+        minTime = entry.execTime;
+      }
     }
   }
   const averageTime = count > 0 ? (totalTime / count).toFixed(2) : "0.00";
+  const minTimeFormatted = count > 0 ? minTime.toFixed(2) : "N/A";
   const firstTimestamp = totalInvocations > 0 ? memoryLog[0].timestamp : "N/A";
   const latestTimestamp = totalInvocations > 0 ? memoryLog[totalInvocations - 1].timestamp : "N/A";
 
@@ -73,6 +78,7 @@ function handleSelfImprove() {
   console.log(`Latest invocation: ${latestTimestamp}`);
   console.log(`Average execution time: ${averageTime} ms`);
   console.log(`Maximum execution time: ${maxTime.toFixed(2)} ms`);
+  console.log(`Minimum execution time: ${minTimeFormatted} ms`);
   console.log("Self-improvement analysis: execution metrics are optimal");
 }
 
