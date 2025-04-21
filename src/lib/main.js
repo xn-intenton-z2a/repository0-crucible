@@ -46,16 +46,21 @@ function handleSelfImprove() {
   const totalInvocations = memoryLog.length;
   let totalTime = 0;
   let count = 0;
+  let maxTime = 0;
   for (const entry of memoryLog) {
     if (entry.execTime !== undefined) {
       totalTime += entry.execTime;
       count++;
+      if (entry.execTime > maxTime) {
+        maxTime = entry.execTime;
+      }
     }
   }
   const averageTime = count > 0 ? (totalTime / count).toFixed(2) : "0.00";
 
   console.log(`Total invocations: ${totalInvocations}`);
   console.log(`Average execution time: ${averageTime} ms`);
+  console.log(`Maximum execution time: ${maxTime.toFixed(2)} ms`);
   console.log("Self-improvement analysis: execution metrics are optimal");
 }
 
