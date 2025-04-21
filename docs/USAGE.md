@@ -92,7 +92,33 @@ console.log(getMemoryLog());
   Planned Task 2: Prioritize upcoming feature enhancements
   Execution time: X ms
 
-Planning Mode helps the agent break down its tasks into planned steps that can be reviewed before execution.
+### Invocation with Goal Decomposition Flag:
+
+You can break down a high-level goal into sub-tasks using the decompose flag. If a goal is provided immediately after the flag, it will be used; otherwise, a default goal is assumed.
+
+Example with a provided goal:
+
+  node src/lib/main.js --decompose "Plan new product launch"
+
+  Output:
+  Run with: ["--decompose","Plan new product launch"]
+  Decomposing goal: Plan new product launch
+  1. Define objectives
+  2. Identify key milestones
+  3. Assign responsibilities
+  Execution time: X ms
+
+Example without a provided goal:
+
+  node src/lib/main.js --decompose
+
+  Output:
+  Run with: ["--decompose"]
+  Decomposing goal: [default goal]
+  1. Define objectives
+  2. Identify key milestones
+  3. Assign responsibilities
+  Execution time: X ms
 
 ## Testing
 
@@ -100,4 +126,4 @@ Run the tests using:
 
   npm test
 
-This will execute the unit tests for the CLI to ensure it behaves as expected, including logging of CLI arguments, replication messages, help-seeking messages, self-improvement diagnostics, planning messages, and tracking invocations with the in-memory log.
+This will execute the unit tests for the CLI to ensure it behaves as expected, including logging of CLI arguments, replication messages, help-seeking messages, self-improvement diagnostics, planning messages, goal decomposition output, and tracking invocations with the in-memory log.
