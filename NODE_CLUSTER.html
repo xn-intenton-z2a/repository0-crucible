@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="node_cluster" href="#node_cluster"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>NODE_CLUSTER</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">The Node.js Cluster module provides a robust API for forking processes, managing worker lifecycles, and distributing incoming connections. Key technical points include detailed worker methods (disconnect, kill, send, isConnected, isDead), worker properties (id, exitedAfterDisconnect, process), and cluster-wide methods (fork, disconnect, setupMaster/Primary), complete with event handlers for 'disconnect', 'exit', 'listening', 'message', and 'online'. The round-robin and direct handle distribution mechanisms are explained, along with exact method signatures and code examples demonstrating message passing and graceful shutdown procedures.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<h2 class="md-github"><a class="md-github__anchor" name="table-of-contents" href="#table-of-contents"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Table of Contents</h2>
+<ol class="md-github">
+<li class="md-github">Worker Object</li>
+<li class="md-github">Worker Methods</li>
+<li class="md-github">Worker Events</li>
+<li class="md-github">Cluster Methods &amp; Properties</li>
+<li class="md-github">Code Examples</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="1-worker-object" href="#1-worker-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Worker Object</h2>
+<ul class="md-github">
+<li class="md-github">worker.id: <integer> - Unique identifier, used as key in cluster.workers.</li>
+<li class="md-github">worker.process: <ChildProcess> - The child process returned by child_process.fork().</li>
+<li class="md-github">worker.exitedAfterDisconnect: <boolean> - True if worker exited via disconnect.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="2-worker-methods" href="#2-worker-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Worker Methods</h2>
+<ul class="md-github">
+<li class="md-github">worker.disconnect(): Returns a reference to the worker. Closes all server connections and disconnects IPC.</li>
+<li class="md-github">worker.isConnected(): Returns boolean indicating IPC connectivity.</li>
+<li class="md-github">worker.isDead(): Returns boolean if the worker process has terminated.</li>
+<li class="md-github">worker.kill(signal?: string): Kills the worker, default signal 'SIGTERM'.</li>
+<li class="md-github">worker.send(message: Object, sendHandle?: any, options?: { keepOpen?: boolean }, callback?: Function): Sends IPC message, returns boolean.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="3-worker-events" href="#3-worker-events"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. Worker Events</h2>
+<ul class="md-github">
+<li class="md-github">'disconnect': Emitted when a worker disconnects from the IPC channel.</li>
+<li class="md-github">'error': Emitted on process errors, follows child_process.fork() error events.</li>
+<li class="md-github">'exit': Provides exit code and signal. Use to restart workers if necessary.</li>
+<li class="md-github">'listening': Emitted with an address object { address, port, addressType } when a worker starts listening.</li>
+<li class="md-github">'message': Emitted when the worker receives a message via IPC.</li>
+<li class="md-github">'online': Emitted when a worker is online.</li>
+<li class="md-github">'fork': Emitted when a new worker is forked.</li>
+<li class="md-github">'setup': Emitted on calling setupMaster/Primary with the settings object.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="4-cluster-methods--properties" href="#4-cluster-methods--properties"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Cluster Methods &amp; Properties</h2>
+<ul class="md-github">
+<li class="md-github">cluster.fork(env?: Object): Spawns a new worker process with optional environment settings.</li>
+<li class="md-github">cluster.disconnect(callback?: Function): Disconnects all workers gracefully.</li>
+<li class="md-github">cluster.setupMaster(settings?: Object): Configures default options (exec, args, cwd, silent, stdio, uid, gid, inspectPort, windowsHide).</li>
+<li class="md-github">cluster.isPrimary / cluster.isWorker: Booleans determining process type.</li>
+<li class="md-github">cluster.schedulingPolicy: Can be set to cluster.SCHED_RR or cluster.SCHED_NONE.</li>
+<li class="md-github">cluster.settings: Contains the settings used during fork.</li>
+<li class="md-github">cluster.worker: Provides a reference to the current worker (only in worker processes).</li>
+<li class="md-github">cluster.workers: A hash storing active workers by their id.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="5-code-examples" href="#5-code-examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. Code Examples</h2>
+<p class="md-github">Include examples for basic setup, message passing, and graceful shutdown using disconnect and kill. The examples include all necessary parameters and method usages as demonstrated in the detailed digest section.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="exact-parameter-values-and-configuration-options" href="#exact-parameter-values-and-configuration-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Exact Parameter Values and Configuration Options</h3>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">worker.kill(signal?: string)</strong>: Default signal is 'SIGTERM'.</li>
+<li class="md-github"><strong class="md-github">worker.send(message, sendHandle, options, callback)</strong>:
+<ul class="md-github">
+<li class="md-github">options: { keepOpen: boolean } where default is false.</li>
+</ul>
+</li>
+<li class="md-github"><strong class="md-github">cluster.setupMaster(settings)</strong> supports:
+<ul class="md-github">
+<li class="md-github">exec: String (default: process.argv[1])</li>
+<li class="md-github">args: Array of strings (default: process.argv.slice(2))</li>
+<li class="md-github">cwd: String (inherits from parent process if not provided)</li>
+<li class="md-github">silent: Boolean (default: false)</li>
+<li class="md-github">stdio: Array (must include 'ipc' entry)</li>
+<li class="md-github">uid, gid: Numbers for permissions</li>
+<li class="md-github">inspectPort: Number | Function (worker inspector port)</li>
+<li class="md-github">windowsHide: Boolean (default: false)</li>
+</ul>
+</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="implementation-steps" href="#implementation-steps"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Implementation Steps</h3>
+<ol class="md-github">
+<li class="md-github">Check if process is primary using <code class="md-github">cluster.isPrimary</code>.</li>
+<li class="md-github">Fork workers using <code class="md-github">cluster.fork()</code> in a loop based on CPU count.</li>
+<li class="md-github">Attach event handlers for 'exit', 'message', and 'listening' on worker instances.</li>
+<li class="md-github">In workers, create server objects and optionally call <code class="md-github">process.send()</code> to communicate to the primary process.</li>
+<li class="md-github">For shutdown: In primary, trigger <code class="md-github">worker.disconnect()</code> and setup a timeout to call <code class="md-github">worker.kill()</code> if disconnect does not complete.</li>
+</ol>
+<h3 class="md-github"><a class="md-github__anchor" name="configuration-effects" href="#configuration-effects"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration Effects</h3>
+<ul class="md-github">
+<li class="md-github">Setting schedulingPolicy to SCHED_RR enforces round-robin distribution on supported OS.</li>
+<li class="md-github">Modifying cluster.settings via setupMaster affects the behavior of subsequently forked workers only.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<h2 class="md-github"><a class="md-github__anchor" name="complete-api-specifications" href="#complete-api-specifications"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Complete API Specifications</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="worker-methods" href="#worker-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Worker Methods</h3>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">worker.disconnect()</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">worker.disconnect(): cluster.Worker</code></li>
+<li class="md-github"><strong class="md-github">Behavior:</strong> Closes listening servers, waits for their 'close' events, then disconnects IPC. Sets property <code class="md-github">exitedAfterDisconnect = true</code> upon exit.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">worker.isConnected()</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">worker.isConnected(): boolean</code></li>
+<li class="md-github"><strong class="md-github">Return:</strong> True if IPC channel is active.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">worker.isDead()</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">worker.isDead(): boolean</code></li>
+<li class="md-github"><strong class="md-github">Return:</strong> True if process has terminated.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">worker.kill([signal])</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">worker.kill(signal?: string): void</code></li>
+<li class="md-github"><strong class="md-github">Default:</strong> signal = 'SIGTERM'</li>
+<li class="md-github"><strong class="md-github">Behavior:</strong> Kills worker process without waiting for graceful disconnect; equivalent to <code class="md-github">worker.process.kill(signal)</code>.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">worker.send(message, [sendHandle, options, callback])</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">worker.send(message: Object, sendHandle?: any, options?: { keepOpen?: boolean }, callback?: Function): boolean</code></li>
+<li class="md-github"><strong class="md-github">Details:</strong> Options: <code class="md-github">{ keepOpen: false }</code> by default. Sends message via IPC channel.</li>
+</ul>
+</li>
+</ol>
+<h3 class="md-github"><a class="md-github__anchor" name="cluster-methods" href="#cluster-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Cluster Methods</h3>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">cluster.fork([env])</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">cluster.fork(env?: Object): cluster.Worker</code></li>
+<li class="md-github"><strong class="md-github">Parameters:</strong> <code class="md-github">env</code> Optional object containing environment variables to merge with process.env for worker creation.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">cluster.disconnect([callback])</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">cluster.disconnect(callback?: Function): void</code></li>
+<li class="md-github"><strong class="md-github">Behavior:</strong> Calls <code class="md-github">.disconnect()</code> for each worker and once all workers are disconnected, executes callback.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">cluster.setupMaster([settings])</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">cluster.setupMaster(settings?: {     exec?: string,     args?: string[],     cwd?: string,     silent?: boolean,     stdio?: any[],     uid?: number,     gid?: number,     inspectPort?: number | (() =&gt; number),     windowsHide?: boolean }): void</code></li>
+<li class="md-github"><strong class="md-github">Default Values:</strong>
+exec: process.argv[1]
+args: process.argv.slice(2)
+silent: false
+stdio: Inherit parent's stdio with ipc inserted
+windowsHide: false</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Key Properties:</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">cluster.isPrimary:</strong> boolean (true if primary)</li>
+<li class="md-github"><strong class="md-github">cluster.isWorker:</strong> boolean (true if worker)</li>
+<li class="md-github"><strong class="md-github">cluster.schedulingPolicy:</strong> Can be set via environment variable NODE_CLUSTER_SCHED_POLICY with values 'rr' or 'none'.</li>
+<li class="md-github"><strong class="md-github">cluster.settings:</strong> Object containing current settings (execArgv, exec, args, cwd, serialization, silent, stdio, uid, gid, inspectPort, windowsHide).</li>
+<li class="md-github"><strong class="md-github">cluster.worker:</strong> Reference to the current worker (only in worker context).</li>
+<li class="md-github"><strong class="md-github">cluster.workers:</strong> Hash of worker objects keyed by worker.id.</li>
+</ul>
+</li>
+</ol>
+<h3 class="md-github"><a class="md-github__anchor" name="full-code-example-with-comments" href="#full-code-example-with-comments"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Full Code Example with Comments</h3>
+<pre class="md-github"><code class="md-github language-javascript">// Primary process code
+import cluster from 'node:cluster';
+import http from 'node:http';
+import { availableParallelism } from 'node:os';
+import process from 'node:process';
+
+const numCPUs = availableParallelism();
+
+if (cluster.isPrimary) {
+  console.log(`Primary ${process.pid} is running`);
+
+  for (let i = 0; i &lt; numCPUs; i++) {
+    const worker = cluster.fork();
+    // Listen for messages from worker
+    worker.on('message', (msg) =&gt; {
+      if (msg.cmd === 'notifyRequest') {
+        console.log('Request notification received from worker');
+      }
+    });
+
+    // Restart worker on exit
+    worker.on('exit', (code, signal) =&gt; {
+      console.log(`Worker ${worker.process.pid} exited with code ${code} and signal ${signal}`);
+      // Optionally fork a new worker
+      cluster.fork();
+    });
+  }
+
+} else {
+  // Worker process: Create HTTP server
+  http.createServer((req, res) =&gt; {
+    res.writeHead(200);
+    res.end('hello world\n');
+    // Notify primary process
+    process.send({ cmd: 'notifyRequest' });
+  }).listen(8000);
+  console.log(`Worker ${process.pid} started`);
+}
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="troubleshooting-procedures" href="#troubleshooting-procedures"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting Procedures</h3>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Worker Not Responding:</strong></p>
+<ul class="md-github">
+<li class="md-github">Command: <code class="md-github">ps aux | grep node</code> to check worker process status.</li>
+<li class="md-github">If worker is hung, use <code class="md-github">worker.kill('SIGTERM')</code> from the primary or manually kill via process ID.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Port Binding Errors:</strong></p>
+<ul class="md-github">
+<li class="md-github">Ensure no other process is using port 8000. Use <code class="md-github">lsof -i :8000</code> to verify.</li>
+<li class="md-github">Restart the cluster after freeing the port.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">IPC Communication Failures:</strong></p>
+<ul class="md-github">
+<li class="md-github">Check for broken pipes using logging in the 'disconnect' event.</li>
+<li class="md-github">Validate that messages are structured as expected (e.g., contain a <code class="md-github">cmd</code> attribute).</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Unbalanced Connection Distribution:</strong></p>
+<ul class="md-github">
+<li class="md-github">Verify the scheduling policy via <code class="md-github">cluster.schedulingPolicy</code>. For round-robin, ensure it is set to <code class="md-github">cluster.SCHED_RR</code>.</li>
+<li class="md-github">On Windows, note that named pipes are not supported for worker connections.</li>
+</ul>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Node.js Cluster Documentation
+https://nodejs.org/api/cluster.html</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-node_cluster" href="#digest-of-node_cluster"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of NODE_CLUSTER</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="nodejs-cluster-documentation" href="#nodejs-cluster-documentation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Node.js Cluster Documentation</h1>
+<p class="md-github"><strong class="md-github">Retrieved Date:</strong> 2023-10-26</p>
+<hr class="md-github">
+<h2 class="md-github"><a class="md-github__anchor" name="overview" href="#overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
+<p class="md-github">The Node.js Cluster module allows creation of child processes that share the same server port, enabling workload distribution among multiple processes. It employs child_process.fork() and IPC for communication between the primary and worker processes.</p>
+<hr class="md-github">
+<h2 class="md-github"><a class="md-github__anchor" name="how-it-works" href="#how-it-works"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>How It Works</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Forking:</strong> Primary process spawns workers using <code class="md-github">cluster.fork()</code>.</li>
+<li class="md-github"><strong class="md-github">Connection Handling:</strong> There are two strategies:
+<ol class="md-github">
+<li class="md-github"><strong class="md-github">Round-robin:</strong> Primary process listens and distributes incoming connections in a round-robin fashion.</li>
+<li class="md-github"><strong class="md-github">Direct Handling:</strong> Primary creates the socket and passes it to workers, but may lead to unbalanced loads.</li>
+</ol>
+</li>
+<li class="md-github"><strong class="md-github">Graceful Shutdown:</strong> Workers can disconnect using <code class="md-github">worker.disconnect()</code>, set <code class="md-github">exitedAfterDisconnect</code>, and then gracefully exit once existing connections are closed.</li>
+<li class="md-github"><strong class="md-github">Process Resilience:</strong> If workers die, the primary can spawn new workers.</li>
+</ul>
+<hr class="md-github">
+<h2 class="md-github"><a class="md-github__anchor" name="table-of-contents-1" href="#table-of-contents-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Table of Contents</h2>
+<ol class="md-github">
+<li class="md-github"><a href="#worker-object" class="md-github">Worker Object</a></li>
+<li class="md-github"><a href="#worker-methods" class="md-github">Worker Methods</a></li>
+<li class="md-github"><a href="#worker-events" class="md-github">Worker Events</a></li>
+<li class="md-github"><a href="#cluster-methods--properties" class="md-github">Cluster Methods &amp; Properties</a></li>
+<li class="md-github"><a href="#code-examples" class="md-github">Code Examples</a></li>
+</ol>
+<hr class="md-github">
+<h2 class="md-github"><a class="md-github__anchor" name="worker-object" href="#worker-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Worker Object</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">worker.id</strong>: <integer> - Unique identifier for each worker. Indexed in <code class="md-github">cluster.workers</code>.</li>
+<li class="md-github"><strong class="md-github">worker.process</strong>: <ChildProcess> - The child process instance returned by <code class="md-github">child_process.fork()</code>.</li>
+<li class="md-github"><strong class="md-github">worker.exitedAfterDisconnect</strong>: <boolean> - Indicates if the worker exited due to a voluntary disconnect.</li>
+</ul>
+<hr class="md-github">
+<h2 class="md-github"><a class="md-github__anchor" name="worker-methods-1" href="#worker-methods-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Worker Methods</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">worker.disconnect()</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">worker.disconnect(): cluster.Worker</code></li>
+<li class="md-github"><strong class="md-github">Description:</strong> Closes servers, waits for 'close' events, disconnects IPC, and sets <code class="md-github">exitedAfterDisconnect</code>.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">worker.isConnected()</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">worker.isConnected(): boolean</code></li>
+<li class="md-github"><strong class="md-github">Description:</strong> Returns <code class="md-github">true</code> if the worker’s IPC channel is connected; otherwise, <code class="md-github">false</code>.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">worker.isDead()</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">worker.isDead(): boolean</code></li>
+<li class="md-github"><strong class="md-github">Description:</strong> Returns <code class="md-github">true</code> if the worker’s process has terminated.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">worker.kill([signal])</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">worker.kill(signal?: string): void</code></li>
+<li class="md-github"><strong class="md-github">Default:</strong> signal is <code class="md-github">'SIGTERM'</code></li>
+<li class="md-github"><strong class="md-github">Description:</strong> Kills the worker by disconnecting and then sending the specified signal. Also aliased as <code class="md-github">worker.destroy()</code>.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">worker.send(message, [sendHandle, options, callback])</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">worker.send(message: Object, sendHandle?: any, options?: { keepOpen?: boolean }, callback?: Function): boolean</code></li>
+<li class="md-github"><strong class="md-github">Description:</strong> Sends a message via IPC. Options include <code class="md-github">keepOpen</code> for net.Socket handling (default <code class="md-github">false</code>).</li>
+</ul>
+</li>
+</ul>
+<hr class="md-github">
+<h2 class="md-github"><a class="md-github__anchor" name="worker-events" href="#worker-events"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Worker Events</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">'disconnect'</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Emitted When:</strong> Worker’s IPC channel disconnects. Can be used to detect cleanup or long-lived connections.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">'error'</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Emitted When:</strong> Child process errors occur. Similar to <code class="md-github">child_process.fork()</code> errors.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">'exit'</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Emitted When:</strong> Worker process exits. Provides exit <code class="md-github">code</code> and <code class="md-github">signal</code>.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">'listening'</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Emitted When:</strong> Worker is listening on a server socket. Provides an <code class="md-github">address</code> object <code class="md-github">{ address, port, addressType }</code>.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">'message'</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Emitted When:</strong> A message is received from either primary or worker via IPC.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">'online'</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Emitted When:</strong> Worker signals that it is up and running (only emitted in the primary process).</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">'fork'</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Emitted When:</strong> A worker is forked. Useful for initialization logic.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">'setup'</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Emitted When:</strong> <code class="md-github">cluster.setupPrimary()</code> is called; provides the settings object.</li>
+</ul>
+</li>
+</ul>
+<hr class="md-github">
+<h2 class="md-github"><a class="md-github__anchor" name="cluster-methods--properties" href="#cluster-methods--properties"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Cluster Methods &amp; Properties</h2>
+<ul class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">cluster.fork([env])</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">cluster.fork(env?: Object): cluster.Worker</code></li>
+<li class="md-github"><strong class="md-github">Description:</strong> Spawns a new worker process. Accepts environment key/value pairs.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">cluster.disconnect([callback])</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">cluster.disconnect(callback?: Function): void</code></li>
+<li class="md-github"><strong class="md-github">Description:</strong> Disconnects all workers. Executes callback once done.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">cluster.setupMaster([settings])</strong> / <strong class="md-github">cluster.setupPrimary([settings])</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">cluster.setupMaster(settings?: Object): void</code></li>
+<li class="md-github"><strong class="md-github">Description:</strong> Configures worker spawning defaults such as <code class="md-github">exec</code>, <code class="md-github">args</code>, <code class="md-github">cwd</code>, <code class="md-github">silent</code>, <code class="md-github">stdio</code>, <code class="md-github">uid</code>, <code class="md-github">gid</code>, <code class="md-github">inspectPort</code>, <code class="md-github">windowsHide</code>.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">cluster.isPrimary</strong> / <strong class="md-github">cluster.isWorker</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Type:</strong> <code class="md-github">&lt;boolean&gt;</code></li>
+<li class="md-github"><strong class="md-github">Description:</strong> Determines if the process is the primary (master) or a worker.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">cluster.schedulingPolicy</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Values:</strong> <code class="md-github">cluster.SCHED_RR</code> (default on most OS except Windows) or <code class="md-github">cluster.SCHED_NONE</code>.</li>
+<li class="md-github"><strong class="md-github">Description:</strong> Sets connection distribution policy.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">cluster.settings</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Type:</strong> <code class="md-github">&lt;Object&gt;</code></li>
+<li class="md-github"><strong class="md-github">Description:</strong> Contains current settings including <code class="md-github">execArgv</code>, <code class="md-github">exec</code>, <code class="md-github">args</code>, <code class="md-github">cwd</code>, <code class="md-github">serialization</code>, <code class="md-github">silent</code>, <code class="md-github">stdio</code>, <code class="md-github">uid</code>, <code class="md-github">gid</code>, <code class="md-github">inspectPort</code>, and <code class="md-github">windowsHide</code>.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">cluster.worker</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Reference to the current worker object (only in worker processes).</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">cluster.workers</strong></p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> A hash of active worker objects, keyed by the worker id.</li>
+</ul>
+</li>
+</ul>
+<hr class="md-github">
+<h2 class="md-github"><a class="md-github__anchor" name="code-examples" href="#code-examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Code Examples</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="example-1-basic-cluster-setup" href="#example-1-basic-cluster-setup"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example 1: Basic Cluster Setup</h3>
+<pre class="md-github"><code class="md-github language-javascript">import cluster from 'node:cluster';
+import http from 'node:http';
+import { availableParallelism } from 'node:os';
+import process from 'node:process';
+
+const numCPUs = availableParallelism();
+
+if (cluster.isPrimary) {
+  console.log(`Primary ${process.pid} is running`);
+
+  // Fork workers
+  for (let i = 0; i &lt; numCPUs; i++) {
+    cluster.fork();
+  }
+
+  cluster.on('exit', (worker, code, signal) =&gt; {
+    console.log(`Worker ${worker.process.pid} died, code: ${code} signal: ${signal}`);
+  });
+
+} else {
+  // Workers share any TCP connection
+  http.createServer((req, res) =&gt; {
+    res.writeHead(200);
+    res.end('hello world\n');
+  }).listen(8000);
+
+  console.log(`Worker ${process.pid} started`);
+}
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="example-2-message-passing-between-primary-and-worker" href="#example-2-message-passing-between-primary-and-worker"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example 2: Message Passing between Primary and Worker</h3>
+<pre class="md-github"><code class="md-github language-javascript">import cluster from 'node:cluster';
+import http from 'node:http';
+import { availableParallelism } from 'node:os';
+import process from 'node:process';
+
+if (cluster.isPrimary) {
+  let numReqs = 0;
+
+  setInterval(() =&gt; {
+    console.log(`Total HTTP requests: ${numReqs}`);
+  }, 1000);
+
+  function messageHandler(msg) {
+    if (msg.cmd &amp;&amp; msg.cmd === 'notifyRequest') {
+      numReqs += 1;
+    }
+  }
+
+  const numCPUs = availableParallelism();
+  for (let i = 0; i &lt; numCPUs; i++) {
+    const worker = cluster.fork();
+    worker.on('message', messageHandler);
+  }
+
+} else {
+  http.createServer((req, res) =&gt; {
+    res.writeHead(200);
+    res.end('hello world\n');
+
+    // Notify primary process
+    process.send({ cmd: 'notifyRequest' });
+  }).listen(8000);
+}
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="example-3-graceful-shutdown-with-disconnect" href="#example-3-graceful-shutdown-with-disconnect"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example 3: Graceful Shutdown with Disconnect</h3>
+<pre class="md-github"><code class="md-github language-javascript">if (cluster.isPrimary) {
+  const worker = cluster.fork();
+  let timeout;
+
+  worker.on('listening', (address) =&gt; {
+    // Initiate shutdown
+    worker.send('shutdown');
+    worker.disconnect();
+    timeout = setTimeout(() =&gt; {
+      worker.kill('SIGTERM');
+    }, 2000);
+  });
+
+  worker.on('disconnect', () =&gt; {
+    clearTimeout(timeout);
+  });
+
+} else if (cluster.isWorker) {
+  const net = require('node:net');
+  const server = net.createServer((socket) =&gt; {
+    // handle long-lived connection
+  });
+
+  server.listen(8000);
+
+  process.on('message', (msg) =&gt; {
+    if (msg === 'shutdown') {
+      // perform graceful shutdown steps
+    }
+  });
+}
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Node.js Cluster Documentation</li>
+<li class="md-github">URL: https://nodejs.org/api/cluster.html</li>
+<li class="md-github">License: Unknown</li>
+<li class="md-github">Crawl Date: 2025-04-21T06:51:40.899Z</li>
+<li class="md-github">Data Size: 3584142 bytes</li>
+<li class="md-github">Links Found: 3039</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-21</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-21T07:24:50.526Z</p>
+  </footer>
+</body>
+</html>
