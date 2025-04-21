@@ -41,7 +41,7 @@ function handleReplication() {
   replicateTasks();
 }
 
-// Handles the self-improve flag by logging self-improvement diagnostics with detailed metrics
+// Handles the self-improve flag by logging self-improvement diagnostics with detailed metrics including first and latest invocation timestamps
 function handleSelfImprove() {
   // Compute diagnostics from the memory log
   const totalInvocations = memoryLog.length;
@@ -58,8 +58,12 @@ function handleSelfImprove() {
     }
   }
   const averageTime = count > 0 ? (totalTime / count).toFixed(2) : "0.00";
+  const firstTimestamp = totalInvocations > 0 ? memoryLog[0].timestamp : "N/A";
+  const latestTimestamp = totalInvocations > 0 ? memoryLog[totalInvocations - 1].timestamp : "N/A";
 
   console.log(`Total invocations: ${totalInvocations}`);
+  console.log(`First invocation: ${firstTimestamp}`);
+  console.log(`Latest invocation: ${latestTimestamp}`);
   console.log(`Average execution time: ${averageTime} ms`);
   console.log(`Maximum execution time: ${maxTime.toFixed(2)} ms`);
   console.log("Self-improvement analysis: execution metrics are optimal");
