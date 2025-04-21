@@ -37,7 +37,6 @@ function expectMedianExecutionTimeLog(log) {
   expect(log).toMatch(/^\[Self-Improve\] Median execution time: \d+(\.\d+)? ms$/);
 }
 
-
 describe("Main Module Import", () => {
   test("should be defined", () => {
     expect(main).toBeDefined();
@@ -139,6 +138,19 @@ describe("Replication Mode", () => {
     expect(spy.mock.calls[5][0]).toBe('Replicating task 4');
     expect(spy.mock.calls[6][0]).toBe('Replicating task 5');
     expect(spy.mock.calls[7][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
+    spy.mockRestore();
+  });
+
+  test("should log replication messages concurrently when '--replicate' and '--replicate-async' flags are provided", async () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    await main(["--replicate", "5", "--replicate-async"]);
+    // Filter out the logs for replication tasks
+    const taskLogs = spy.mock.calls.filter(call => typeof call[0] === 'string' && call[0].startsWith('Replicating task'));
+    expect(taskLogs.length).toBe(5);
+    const tasks = new Set(taskLogs.map(call => call[0]));
+    for (let i = 1; i <= 5; i++) {
+      expect(tasks.has(`Replicating task ${i}`)).toBe(true);
+    }
     spy.mockRestore();
   });
 });

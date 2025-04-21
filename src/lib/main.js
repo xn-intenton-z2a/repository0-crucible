@@ -6,7 +6,8 @@
 // Features include:
 //  - Help-Seeking Mode: Activates a mode for querying assistance.
 //  - Replication Mode: Executes task replication either with default count or a provided count.
-  //  - Self-Improvement Mode: Outputs diagnostic metrics computed from the in-memory log, including average, max, min, standard deviation, median execution times and, when verbose, detailed per-invocation metrics. All self-improvement diagnostics are prefixed for consistent formatting.
+//  - Asynchronous Replication Mode: When used with the --replicate-async flag, replication tasks are executed concurrently.
+//  - Self-Improvement Mode: Outputs diagnostic metrics computed from the in-memory log, including average, max, min, standard deviation, median execution times and, when verbose, detailed per-invocation metrics. All self-improvement diagnostics are prefixed for consistent formatting.
 //  - Planning Mode: Analyzes input for planning tasks.
 //  - Goal Decomposition: Provides a breakdown of a goal into numbered sub-tasks.
 //  - Reset Log: Clears the in-memory log and the persisted log file for a fresh state.
@@ -53,24 +54,8 @@ function logExecutionTime(startTime, endTime) {
 
 // Business logic for replicating tasks with an optional task count parameter
 // Purpose: Execute a series of replication tasks using a provided count or default to 3 if none valid is provided.
-function replicateTasks(count = 3) {
-  console.log(`Replicating tasks (count: ${count})...`);
-  for (let i = 1; i <= count; i++) {
-    console.log(`Replicating task ${i}`);
-  }
-}
-
-// Handles the help-seeking flag by logging the appropriate message
-// Purpose: Activate help-seeking mode which signals the tool is ready to query assistance.
-function handleHelpSeeking() {
-  // Detailed log to indicate help-seeking mode; clarifies user intent.
-  console.log("Help-Seeking Mode Enabled: querying assistance...");
-}
-
-// Handles the replication flag by executing replication tasks with an optional count
-// Purpose: Replicate tasks using either a valid provided count or a default of 3.
-// Preconditions: A positive integer count must follow the flag, otherwise, default is used.
-function handleReplication(args) {
+// Enhanced: When the --replicate-async flag is provided, the replication tasks are executed concurrently.
+async function handleReplication(args) {
   const replicateIndex = args.indexOf("--replicate");
   let count = 3;
   if (replicateIndex !== -1 && args.length > replicateIndex + 1) {
@@ -79,7 +64,31 @@ function handleReplication(args) {
       count = potentialCount;
     }
   }
-  replicateTasks(count);
+  const isAsync = args.includes("--replicate-async");
+  console.log(`Replicating tasks (count: ${count})...`);
+  if (isAsync) {
+    const tasks = [];
+    for (let i = 1; i <= count; i++) {
+      tasks.push(new Promise((resolve) => {
+        setTimeout(() => {
+          console.log(`Replicating task ${i}`);
+          resolve();
+        }, 0);
+      }));
+    }
+    await Promise.all(tasks);
+  } else {
+    for (let i = 1; i <= count; i++) {
+      console.log(`Replicating task ${i}`);
+    }
+  }
+}
+
+// Handles the help-seeking flag by logging the appropriate message
+// Purpose: Activate help-seeking mode which signals the tool is ready to query assistance.
+function handleHelpSeeking() {
+  // Detailed log to indicate help-seeking mode; clarifies user intent.
+  console.log("Help-Seeking Mode Enabled: querying assistance...");
 }
 
 // Handles the self-improve flag by logging self-improvement diagnostics with detailed metrics
@@ -215,7 +224,7 @@ export function getMemoryLog() {
 }
 
 // Main entry point for the CLI application
-export function main(args) {
+export async function main(args) {
   // Load persisted memory log once per session if available
   loadPersistentLog();
 
@@ -239,7 +248,7 @@ export function main(args) {
   }
 
   if (args.includes("--replicate")) {
-    handleReplication(args);
+    await handleReplication(args);
   }
 
   if (args.includes("--plan")) {
@@ -283,6 +292,5 @@ export function main(args) {
 
 // If this module is executed directly, process CLI arguments from process.argv
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const args = process.argv.slice(2);
-  main(args);
+  main(process.argv.slice(2)).catch(err => console.error(err));
 }
