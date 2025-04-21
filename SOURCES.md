@@ -37,3 +37,28 @@ The official ESLint documentation offers extensive guidance on linting JavaScrip
 ## https://nodejs.org/api/http.html
 This documentation covers Node.js' built-in HTTP module, which is relevant for features that implement server functionalities and replication. It provides detailed information on setting up HTTP servers, handling requests, and managing responses in a lightweight, efficient manner.
 ## License: MIT License
+
+# GitHub Actions Documentation
+## https://docs.github.com/en/actions
+The official documentation for GitHub Actions explains how to set up, configure, and troubleshoot workflows and CI/CD pipelines on GitHub. This resource is particularly useful for repositories leveraging automated workflows and continuous integration practices.
+## License: Publicly Available
+
+# Node.js Performance Hooks Documentation
+## https://nodejs.org/api/perf_hooks.html
+This documentation details Node.js performance measurement APIs, including performance.now() and other hooks that allow developers to track and optimize the performance of their applications. It is relevant for features measuring execution time and performance metrics in the CLI tool.
+## License: MIT License
+
+# Prettier Documentation
+## https://prettier.io/docs/en/index.html
+The official Prettier documentation provides comprehensive details on code formatting and configuration options. It is essential for maintaining a consistent coding style across the repository and integrates with automated formatting tools.
+## License: MIT License
+
+# npm-check-updates Documentation
+## https://www.npmjs.com/package/npm-check-updates
+This resource details the usage of npm-check-updates, a tool for automatically checking and updating dependencies in the package.json file. It is useful for keeping the repository up-to-date with the latest package versions and ensuring compatibility.
+## License: MIT License
+
+# Node.js ES Modules Documentation
+## https://nodejs.org/api/esm.html
+The official documentation for ECMAScript Modules in Node.js covers the usage, benefits, and limitations of ES Modules. This is particularly relevant for repositories that follow the ESM standard, as it provides guidance on module resolution and syntax.
+## License: MIT License
