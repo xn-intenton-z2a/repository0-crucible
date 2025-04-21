@@ -20,7 +20,6 @@ This document explains how to use the CLI tool provided by `repository0-crucible
   - Maximum execution time observed across all CLI invocations.
   - Minimum execution time observed across all CLI invocations.
   - Standard deviation of execution times, providing a measure of performance consistency.
-  - A self-improvement analysis message.
   (Test: Run `node src/lib/main.js --self-improve` and check that the output contains phrases like "Total invocations:", "First invocation:", "Latest invocation:", "Average execution time:", "Maximum execution time:", "Minimum execution time:", "Standard deviation execution time:", along with the analysis message.)
 - Replication: The `--replicate` flag initiates a series of replication tasks. It now supports an optional numeric parameter immediately after the flag to define how many tasks to replicate.
   - If a valid positive integer is provided (e.g., `--replicate 5`), it will log that number of replication tasks.
@@ -30,6 +29,18 @@ This document explains how to use the CLI tool provided by `repository0-crucible
 - Persist File: By using the `--persist-file` flag, the CLI will write the in-memory log to a file named `memory_log.json` in the current working directory. (Test: Run `node src/lib/main.js --persist-file` and verify that the file exists and contains the expected log data.)
 - Reset Log: The new `--reset-log` flag clears the current in-memory log. This can be useful for troubleshooting or resetting the CLI state between sessions.
   (Test: Run `node src/lib/main.js --reset-log` and verify that the CLI outputs "Memory log has been reset." and that subsequent calls to retrieve the memory log return an empty array.)
+
+## Enhanced Inline Documentation and Logging
+
+The CLI source code (`src/lib/main.js`) now includes improved inline documentation for each flag handler. Each function is clearly commented to explain its purpose, expected behavior, and any pre/post conditions. In addition, logging messages have been refined to provide more context:
+
+- **Help-Seeking Mode:** Logs a clear message that the application is in help-seeking mode.
+- **Replication Mode:** Displays the number of replication tasks, either default (3) or as provided by the user.
+- **Self-Improvement Mode:** Produces diagnostic output that reports total invocations, first and latest timestamps, average, maximum, minimum execution times, and the standard deviation.
+- **Goal Decomposition:** Clearly prints the provided goal (if any) along with a numbered list of sub-tasks.
+- **Reset Log:** Confirms that the in-memory log has been cleared.
+
+These enhancements ensure that both developers and users can easily understand the operations being performed and benefit from detailed diagnostic outputs.
 
 ## Running the CLI
 
@@ -43,169 +54,123 @@ For example, to display help:
 
 The CLI logs the arguments provided in a JSON formatted string and then logs the execution time of the command in milliseconds.
 
-### Memory Feature
+### Example Commands
 
-The CLI now retains an in-memory log of all invocations. Each time the CLI is invoked, the provided arguments along with a timestamp and the execution time are recorded. You can access this log programmatically using the `getMemoryLog()` function. For example:
+- **Default Demo Output:**
+  ```bash
+  npm run start
+  ```
 
-```js
-// Invoke the CLI tool
-node src/lib/main.js --example
-
-// In your code, get the memory log:
-import { getMemoryLog } from 'repository0-crucible';
-console.log(getMemoryLog());
-```
-
-### Default Invocation (No Arguments):
-
-  node src/lib/main.js
-
-  Output:
-  Run with: []
-  Execution time: X ms
-
-### Invocation with a Help Argument:
-
+- **Invocation with a Help Argument:**
+  ```bash
   node src/lib/main.js --help
+  ```
 
-  Output:
-  Run with: ["--help"]
-  Execution time: X ms
-
-### Invocation with Multiple Arguments:
-
+- **Invocation with Multiple Arguments:**
+  ```bash
   node src/lib/main.js param1 param2
+  ```
 
-  Output:
-  Run with: ["param1","param2"]
-  Execution time: X ms
+- **Invocation with Replication Flag:**
+  - Without specifying a task count (defaults to 3 tasks):
+    ```bash
+    node src/lib/main.js --replicate
+    ```
+    Output:
+    Run with: ["--replicate"]
+    Replicating tasks (count: 3)...
+    Replicating task 1
+    Replicating task 2
+    Replicating task 3
+    Execution time: X ms
+  
+  - With a specified task count (e.g., 5 tasks):
+    ```bash
+    node src/lib/main.js --replicate 5
+    ```
+    Output:
+    Run with: ["--replicate","5"]
+    Replicating tasks (count: 5)...
+    Replicating task 1
+    Replicating task 2
+    Replicating task 3
+    Replicating task 4
+    Replicating task 5
+    Execution time: X ms
 
-### Invocation with Replication Flag:
-
-- Without specifying a task count (defaults to 3 tasks):
-
-  node src/lib/main.js --replicate
-
-  Output:
-  Run with: ["--replicate"]
-  Replicating tasks...
-  Replicating task 1
-  Replicating task 2
-  Replicating task 3
-  Execution time: X ms
-
-- With a specified task count (e.g., 5 tasks):
-
-  node src/lib/main.js --replicate 5
-
-  Output:
-  Run with: ["--replicate","5"]
-  Replicating tasks...
-  Replicating task 1
-  Replicating task 2
-  Replicating task 3
-  Replicating task 4
-  Replicating task 5
-  Execution time: X ms
-
-### Invocation with Help-Seeking Flag:
-
+- **Invocation with Help-Seeking Flag:**
+  ```bash
   node src/lib/main.js --help-seeking
-
+  ```
   Output:
   Run with: ["--help-seeking"]
   Help-Seeking Mode Enabled: querying assistance...
   Execution time: X ms
 
-### Invocation with Self-Improvement Flag:
-
-When you run with the `--self-improve` flag, the CLI outputs extended diagnostics including a new metric for standard deviation of execution times. Example output:
-
+- **Invocation with Self-Improvement Flag:**
+  ```bash
   node src/lib/main.js --self-improve
+  ```
+  Output includes detailed diagnostics:
+  Self-Improvement Diagnostics:
+  Total invocations: ...
+  First invocation: ...
+  Latest invocation: ...
+  Average execution time: ... ms
+  Maximum execution time: ... ms
+  Minimum execution time: ... ms
+  Standard deviation execution time: ... ms
 
-  Output:
-  Run with: ["--self-improve"]
-  Execution time: X ms
-  Total invocations: Y
-  First invocation: 2025-04-21T00:00:00.000Z
-  Latest invocation: 2025-04-21T00:00:05.000Z
-  Average execution time: Z ms
-  Maximum execution time: W ms
-  Minimum execution time: V ms
-  Standard deviation execution time: S ms
-  Self-improvement analysis: execution metrics are optimal
-
-### Invocation with Planning Flag:
-
+- **Invocation with Planning Flag:**
+  ```bash
   node src/lib/main.js --plan
-
+  ```
   Output:
   Run with: ["--plan"]
-  Analyzing input for planning...
+  Planning Mode Engaged: Analyzing input for planning...
   Planned Task 1: Review current configurations
   Planned Task 2: Prioritize upcoming feature enhancements
   Execution time: X ms
 
-### Invocation with Goal Decomposition Flag:
+- **Invocation with Goal Decomposition Flag:**
+  - Without an explicit goal:
+    ```bash
+    node src/lib/main.js --decompose
+    ```
+    Output:
+    Run with: ["--decompose"]
+    Goal Decomposition Report:
+    1. Define objectives
+    2. Identify key milestones
+    3. Assign responsibilities
+    Execution time: X ms
+  
+  - With an explicit goal:
+    ```bash
+    node src/lib/main.js --decompose "Plan new product launch"
+    ```
+    Output:
+    Run with: ["--decompose","Plan new product launch"]
+    Goal Decomposition Report: Plan new product launch
+    1. Define objectives
+    2. Identify key milestones
+    3. Assign responsibilities
+    Execution time: X ms
 
-- Without an explicit goal:
-
-  node src/lib/main.js --decompose
-
-  Output:
-  Run with: ["--decompose"]
-  Goal Decomposition Report:
-  1. Define objectives
-  2. Identify key milestones
-  3. Assign responsibilities
-  Execution time: X ms
-
-- With an explicit goal:
-
-  node src/lib/main.js --decompose "Plan new product launch"
-
-  Output:
-  Run with: ["--decompose","Plan new product launch"]
-  Goal Decomposition Report: Plan new product launch
-  1. Define objectives
-  2. Identify key milestones
-  3. Assign responsibilities
-  Execution time: X ms
-
-### Invocation with Persist Log Flag
-
-By adding the `--persist-log` flag, the CLI will output an additional line immediately after the execution time log. This line contains a JSON string representing the complete in-memory log of all CLI invocations. This is useful for persistent reporting and diagnostics.
-
-Example:
-
-  node src/lib/main.js --persist-log
-
-  Output:
-  Run with: ["--persist-log"]
-  Execution time: X ms
-  [ { "args": ["--persist-log"], "timestamp": "2025-04-21T00:00:00.000Z", "execTime": ... }, ... ]
-
-### Invocation with Persist File Flag
-
-By adding the `--persist-file` flag, the CLI will write the complete in-memory log to a file named `memory_log.json` in the current working directory. This file will contain a properly formatted JSON array of log entries.
-
-Example:
-
+- **Invocation with Persist File Flag:**
+  ```bash
   node src/lib/main.js --persist-file
-
+  ```
   Output:
   Run with: ["--persist-file"]
   Execution time: X ms
   Memory log persisted to memory_log.json
 
-### Invocation with Reset Log Flag
-
-To clear the in-memory log, run:
-
+- **Invocation with Reset Log Flag:**
+  ```bash
   node src/lib/main.js --reset-log
-
-This will reset the CLI session's memory log to an empty state, which is useful for troubleshooting or starting afresh. The CLI will output:
-
+  ```
+  Output:
   Memory log has been reset.
 
 ## Testing

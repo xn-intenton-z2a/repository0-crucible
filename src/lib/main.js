@@ -1,7 +1,16 @@
 #!/usr/bin/env node
 // src/lib/main.js
 // This file is the entrypoint for the CLI application.
-// Refactored to extract flag-handling, logging, in-memory logging functionality, and goal decomposition feature for improved readability and maintainability.
+// It handles various CLI flags and logs execution details to aid debugging and usage transparency.
+//
+// Features include:
+//  - Help-Seeking Mode: Activates a mode for querying assistance.
+//  - Replication Mode: Executes task replication either with default count or a provided count.
+//  - Self-Improvement Mode: Outputs diagnostic metrics computed from the in-memory log.
+//  - Planning Mode: Analyzes input for planning tasks.
+//  - Goal Decomposition: Provides a breakdown of a goal into numbered sub-tasks.
+//  - Reset Log: Clears the in-memory log for a fresh state.
+//  - Persist Log & Persist File: Exports the log in JSON format or writes it to a file respectively.
 
 import { fileURLToPath } from "url";
 import { performance } from "perf_hooks";
@@ -23,19 +32,24 @@ function logExecutionTime(startTime, endTime) {
 }
 
 // Business logic for replicating tasks with an optional task count parameter
+// Purpose: Execute a series of replication tasks using a provided count or default to 3 if none valid is provided.
 function replicateTasks(count = 3) {
-  console.log("Replicating tasks...");
+  console.log(`Replicating tasks (count: ${count})...`);
   for (let i = 1; i <= count; i++) {
     console.log(`Replicating task ${i}`);
   }
 }
 
 // Handles the help-seeking flag by logging the appropriate message
+// Purpose: Activate help-seeking mode which signals the tool is ready to query assistance.
 function handleHelpSeeking() {
+  // Detailed log to indicate help-seeking mode; clarifies user intent.
   console.log("Help-Seeking Mode Enabled: querying assistance...");
 }
 
 // Handles the replication flag by executing replication tasks with an optional count
+// Purpose: Replicate tasks using either a valid provided count or a default of 3.
+// Preconditions: A positive integer count must follow the flag, otherwise, default is used.
 function handleReplication(args) {
   const replicateIndex = args.indexOf("--replicate");
   let count = 3;
@@ -48,14 +62,15 @@ function handleReplication(args) {
   replicateTasks(count);
 }
 
-// Handles the self-improve flag by logging self-improvement diagnostics with detailed metrics including first and latest invocation timestamps
+// Handles the self-improve flag by logging self-improvement diagnostics with detailed metrics
+// Purpose: Compute and display diagnostic metrics such as total invocations, average, max, min, and standard deviation of execution times.
+// Preconditions: Requires entries in the in-memory log with execution time metrics.
 function handleSelfImprove() {
-  // Compute diagnostics from the memory log
-  const totalInvocations = memoryLog.length;
   let totalTime = 0;
   let count = 0;
   let maxTime = 0;
   let minTime = Infinity;
+  // Iterate through the memory log to compute timing metrics
   for (const entry of memoryLog) {
     if (entry.execTime !== undefined) {
       totalTime += entry.execTime;
@@ -71,10 +86,10 @@ function handleSelfImprove() {
   const averageNum = count > 0 ? totalTime / count : 0;
   const averageTime = count > 0 ? averageNum.toFixed(2) : "0.00";
   const minTimeFormatted = count > 0 ? minTime.toFixed(2) : "N/A";
-  const firstTimestamp = totalInvocations > 0 ? memoryLog[0].timestamp : "N/A";
-  const latestTimestamp = totalInvocations > 0 ? memoryLog[totalInvocations - 1].timestamp : "N/A";
+  const firstTimestamp = memoryLog.length > 0 ? memoryLog[0].timestamp : "N/A";
+  const latestTimestamp = memoryLog.length > 0 ? memoryLog[memoryLog.length - 1].timestamp : "N/A";
 
-  // Calculate standard deviation
+  // Calculate standard deviation of execution times
   let sumSquaredDiff = 0;
   for (const entry of memoryLog) {
     if (entry.execTime !== undefined) {
@@ -84,37 +99,41 @@ function handleSelfImprove() {
   const variance = count > 0 ? sumSquaredDiff / count : 0;
   const stdDeviation = Math.sqrt(variance).toFixed(2);
 
-  console.log(`Total invocations: ${totalInvocations}`);
+  // Log detailed diagnostic metrics for self-improvement
+  console.log("Self-Improvement Diagnostics:");
+  console.log(`Total invocations: ${memoryLog.length}`);
   console.log(`First invocation: ${firstTimestamp}`);
   console.log(`Latest invocation: ${latestTimestamp}`);
   console.log(`Average execution time: ${averageTime} ms`);
   console.log(`Maximum execution time: ${maxTime.toFixed(2)} ms`);
   console.log(`Minimum execution time: ${minTimeFormatted} ms`);
   console.log(`Standard deviation execution time: ${stdDeviation} ms`);
-  console.log("Self-improvement analysis: execution metrics are optimal");
 }
 
 // Handles the planning flag by logging planning messages
+// Purpose: Analyze the provided input and offer a structured plan for upcoming tasks.
 function planTasks() {
-  console.log("Analyzing input for planning...");
+  console.log("Planning Mode Engaged: Analyzing input for planning...");
   console.log("Planned Task 1: Review current configurations");
   console.log("Planned Task 2: Prioritize upcoming feature enhancements");
 }
 
 // Handles the decompose flag to perform goal decomposition with improved formatting
+// Purpose: Display a goal decomposition report. If a goal is provided, include it in the header along with a numbered list of sub-tasks.
+// Preconditions: The flag may be followed by a goal string; if absent, a default report is displayed.
 function handleDecompose(args) {
   const decomposeIndex = args.indexOf("--decompose");
   let goal = "";
   if (args.length > decomposeIndex + 1 && !args[decomposeIndex + 1].startsWith("--") && args[decomposeIndex + 1] !== "") {
     goal = args[decomposeIndex + 1];
   }
-  // Output header with improved formatting
+  // Log header for goal decomposition with provided goal if available
   if (goal) {
     console.log(`Goal Decomposition Report: ${goal}`);
   } else {
     console.log("Goal Decomposition Report:");
   }
-  // Consistently formatted sub-tasks
+  // Clearly numbered sub-tasks for goal breakdown
   console.log("1. Define objectives");
   console.log("2. Identify key milestones");
   console.log("3. Assign responsibilities");
@@ -124,42 +143,38 @@ function handleDecompose(args) {
 export function main(args) {
   const startTime = performance.now();
 
-  // Record this invocation in the in-memory log with arguments and a timestamp
+  // Record this invocation in the in-memory log with provided arguments and the current timestamp
   memoryLog.push({ args, timestamp: new Date().toISOString() });
 
   // Log the provided CLI arguments
   logCLIArgs(args);
 
-  // Handle reset log flag if present
+  // Handle the reset log flag: clears the in-memory log and confirms reset.
   if (args.includes("--reset-log")) {
     resetMemoryLog();
     console.log("Memory log has been reset.");
   }
 
-  // Check for help-seeking flag and process it
+  // Process flags in order of precedence
   if (args.includes("--help-seeking")) {
     handleHelpSeeking();
   }
 
-  // Check for replication flag and process it
   if (args.includes("--replicate")) {
     handleReplication(args);
   }
 
-  // Check for planning flag and process it
   if (args.includes("--plan")) {
     planTasks();
   }
 
-  // Check for decompose flag and process it
   if (args.includes("--decompose")) {
     handleDecompose(args);
   }
 
-  // Capture end time and log the execution duration
+  // Capture end time and log execution duration
   const endTime = performance.now();
   const execTime = logExecutionTime(startTime, endTime);
-  // Update the last log entry with execution time only if it exists
   if (memoryLog.length > 0) {
     memoryLog[memoryLog.length - 1].execTime = execTime;
   }
@@ -179,7 +194,7 @@ export function main(args) {
     }
   }
 
-  // Check for self-improve flag and process it after logging execution time (and persist log if any)
+  // Process self-improvement mode after other operations
   if (args.includes("--self-improve")) {
     handleSelfImprove();
   }
@@ -190,12 +205,12 @@ export function getMemoryLog() {
   return [...memoryLog];
 }
 
-// Resets the in-memory log. Useful for testing.
+// Resets the in-memory log. Useful for testing and initializing a fresh CLI state.
 export function resetMemoryLog() {
   memoryLog.length = 0;
 }
 
-// If this module is executed directly, process CLI arguments
+// If this module is executed directly, process CLI arguments from process.argv
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
   main(args);
