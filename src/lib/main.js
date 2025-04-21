@@ -68,10 +68,21 @@ function handleSelfImprove() {
       }
     }
   }
-  const averageTime = count > 0 ? (totalTime / count).toFixed(2) : "0.00";
+  const averageNum = count > 0 ? totalTime / count : 0;
+  const averageTime = count > 0 ? averageNum.toFixed(2) : "0.00";
   const minTimeFormatted = count > 0 ? minTime.toFixed(2) : "N/A";
   const firstTimestamp = totalInvocations > 0 ? memoryLog[0].timestamp : "N/A";
   const latestTimestamp = totalInvocations > 0 ? memoryLog[totalInvocations - 1].timestamp : "N/A";
+
+  // Calculate standard deviation
+  let sumSquaredDiff = 0;
+  for (const entry of memoryLog) {
+    if (entry.execTime !== undefined) {
+      sumSquaredDiff += Math.pow(entry.execTime - averageNum, 2);
+    }
+  }
+  const variance = count > 0 ? sumSquaredDiff / count : 0;
+  const stdDeviation = Math.sqrt(variance).toFixed(2);
 
   console.log(`Total invocations: ${totalInvocations}`);
   console.log(`First invocation: ${firstTimestamp}`);
@@ -79,6 +90,7 @@ function handleSelfImprove() {
   console.log(`Average execution time: ${averageTime} ms`);
   console.log(`Maximum execution time: ${maxTime.toFixed(2)} ms`);
   console.log(`Minimum execution time: ${minTimeFormatted} ms`);
+  console.log(`Standard deviation execution time: ${stdDeviation} ms`);
   console.log("Self-improvement analysis: execution metrics are optimal");
 }
 
