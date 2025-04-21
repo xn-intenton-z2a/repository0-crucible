@@ -13,6 +13,7 @@
 //  - Reset Log: Clears the in-memory log and the persisted log file for a fresh state.
 //  - Persist Log & Persist File: Exports the log in JSON format or writes it to a file respectively.
 //  - Version Details: When the --version-details flag is provided, outputs a JSON formatted object containing Node.js version, process.versions object, and appVersion from package.json, then exits immediately.
+//  - Filter Log: When the --filter-log flag is provided with a query, filters the memory log entries whose args contain the query (case-insensitive) and outputs the result as JSON, then exits immediately.
 
 import { fileURLToPath } from "url";
 import { performance } from "perf_hooks";
@@ -242,6 +243,28 @@ export async function main(args) {
       appVersion: pkgVersion
     };
     console.log(JSON.stringify(details));
+    process.exit(0);
+  }
+
+  // Check if --filter-log flag is provided to filter the memory log and exit immediately
+  let filterQuery = null;
+  for (let i = 0; i < args.length; i++) {
+    if (args[i].startsWith("--filter-log")) {
+      if (args[i].includes("=")) {
+        filterQuery = args[i].split('=')[1] || "";
+      } else if (i + 1 < args.length) {
+        filterQuery = args[i + 1];
+        i++;
+      }
+      break;
+    }
+  }
+  if (filterQuery !== null) {
+    loadPersistentLog();
+    const filtered = memoryLog.filter(entry => {
+      return entry.args && entry.args.some(arg => arg.toLowerCase().includes(filterQuery.toLowerCase()));
+    });
+    console.log(JSON.stringify(filtered));
     process.exit(0);
   }
 
