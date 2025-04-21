@@ -1,234 +1,303 @@
 # NODE_PROCESS
 
 ## Crawl Summary
-The crawled content provides comprehensive details of the Node.js process API. It includes explicit specifications for process events (beforeExit, exit, disconnect, message, multipleResolves, rejectionHandled, workerMessage, uncaughtException, uncaughtExceptionMonitor, unhandledRejection, and warning), methods (abort, allowedNodeEnvironmentFlags, chdir, cwd, cpuUsage, debugPort, dlopen, emitWarning, etc.), properties (arch, argv, argv0, config, connected) and signal handling. Full code examples are provided for each event and method along with their signatures, parameters, types, and usage patterns.
+The Node.js Process documentation details numerous events (beforeExit, exit, disconnect, message, multipleResolves, rejectionHandled, workerMessage, uncaughtException, uncaughtExceptionMonitor, unhandledRejection, warning, worker, and signal events) and methods/properties (abort, allowedNodeEnvironmentFlags, arch, argv, argv0, channel, chdir, config, connected, constrainedMemory, availableMemory, cpuUsage, cwd, debugPort, disconnect, dlopen, emitWarning, exit, and many others). Each event and method includes explicit signatures, version information, parameter types, return types, and concrete code examples.
 
 ## Normalised Extract
 ## Table of Contents
 1. Process Events
-   - beforeExit: `process.on('beforeExit', (code: number) => void)`
-   - exit: `process.on('exit', (code: number) => void)`
-   - disconnect: `process.on('disconnect', () => void)`
-   - message: `process.on('message', (message, sendHandle) => void)`
-   - multipleResolves: `process.on('multipleResolves', (type: string, promise: Promise, reason: any) => void)`
-   - rejectionHandled: `process.on('rejectionHandled', (promise: Promise) => void)`
-   - workerMessage: `process.on('workerMessage', (value: any, source: number) => void)`
-   - uncaughtException: `process.on('uncaughtException', (err: Error, origin: string) => void)`
-   - uncaughtExceptionMonitor: `process.on('uncaughtExceptionMonitor', (err: Error, origin: string) => void)`
-   - unhandledRejection: `process.on('unhandledRejection', (reason: any, promise: Promise) => void)`
-   - warning: `process.on('warning', (warning: Error) => void)`
-   - worker: `process.on('worker', (worker: Worker) => void)`
-   - Signal events: Attach listeners for SIGINT, SIGTERM, etc.
-
+   - beforeExit (Code: `process.on('beforeExit', (code: number) => void)`)
+   - exit (Code: `process.on('exit', (code: number) => void)`)
+   - disconnect
+   - message (Code: `process.on('message', (message, sendHandle) => void)`)
+   - multipleResolves (Code: `process.on('multipleResolves', (type, promise, reason) => void)`)
+   - rejectionHandled (Code: `process.on('rejectionHandled', (promise) => void)`)
+   - workerMessage (Code: `process.on('workerMessage', (value, source) => void)`)
+   - uncaughtException (Code: `process.on('uncaughtException', (err, origin) => void)`)
+   - uncaughtExceptionMonitor (Code: `process.on('uncaughtExceptionMonitor', (err, origin) => void)`)
+   - unhandledRejection (Code: `process.on('unhandledRejection', (reason, promise) => void)`)
+   - warning (Code: `process.on('warning', (warning) => void)`)
+   - Signal events (e.g., SIGINT, SIGTERM handled via `process.on(signal, handler)`)
 2. Process Methods and Properties
    - abort(): `process.abort()`
-   - allowedNodeEnvironmentFlags: Read-only Set, iterated via `forEach`
-   - arch: Returns a string value e.g. 'x64'
-   - argv & argv0: Arrays of command-line arguments
-   - channel: Provides methods `ref()` and `unref()` if IPC is in effect
-   - chdir(directory: string): Changes the working directory
-   - config: Frozen object representation of compile options
-   - connected: Boolean indicating IPC connection state
-   - constrainedMemory() and availableMemory(): Return number values (bytes)
-   - cpuUsage([previousValue]): Returns `{ user: number, system: number }`
-   - cwd(): Returns current working directory
-   - debugPort: Number value for debugger port
-   - disconnect(): Closes the IPC channel
-   - dlopen(module, filename, [flags]): Loads shared objects
-   - emitWarning(): Various signatures to emit warnings
+   - allowedNodeEnvironmentFlags: Read-only Set with custom flag detection
+   - arch: `process.arch` returns string (e.g., 'x64')
+   - argv & argv0: Command-line arguments arrays
+   - channel: IPC channel object with methods `.ref()` and `.unref()`
+   - chdir(directory): `process.chdir(directory)`
+   - config: Frozen object with build configuration
+   - connected: Boolean for IPC connection
+   - constrainedMemory(): Returns number (bytes)
+   - availableMemory(): Returns number (bytes)
+   - cpuUsage([previousValue]): Returns { user: number, system: number }
+   - cwd(): `process.cwd()` returns current working directory
+   - debugPort: Debugger port number
+   - disconnect(): Closes IPC channel
+   - dlopen(module, filename, [flags]): Loads shared objects (e.g., C++ addons)
+   - emitWarning(): Emits warnings with options { type, code, ctor, detail }
+   - Additional properties and methods: env, execArgv, exit, finalization, getegid, geteuid, getgid, getgroups, getuid, hrtime, kill, memoryUsage, nextTick, umask, uptime, version, and versions.
 
-### Detailed Information for Each Topic
+### Detailed Code Examples
 
-**Process Events:**
-- beforeExit: Triggered when the event loop is empty. Use to schedule async work. 
-- exit: Receives exit code; must execute only synchronous code.
-- disconnect: Fired when IPC channel is closed.
-- message: Handles messages via IPC. The serialized message can be Object, string, number, etc.
-- multipleResolves: Monitors multiple resolutions of a promise. Useful to detect coding errors.
-- rejectionHandled: Fired when an unhandled promise later gets a rejection handler.
-- uncaughtException & uncaughtExceptionMonitor: Provides mechanisms to catch errors not caught by try/catch.
-- unhandledRejection: Catches rejected promises with no handler.
-- warning: Emitted for process warnings; can be custom or system warnings.
+#### Process Event Example
+```js
+const process = require('node:process');
+process.on('beforeExit', (code) => {
+  console.log('Process beforeExit event with code:', code);
+});
+process.on('exit', (code) => {
+  console.log('Process exit event with code:', code);
+});
+console.log('This message is displayed first.');
+```
 
-**Process Methods and Properties:**
-- abort(): Immediately terminates the process and generates a core dump.
-- allowedNodeEnvironmentFlags: Validates NODE_OPTIONS flags. Iteration yields flags with proper formatting.
-- arch: Returns CPU architecture string.
-- argv: Array where argv[0] is the node executable, argv[1] is the script name, etc.
-- argv0: Original value of argv[0].
-- channel.ref() and channel.unref(): Modify the behavior of IPC channel towards keeping the event loop alive.
-- chdir(directory): Changes working directory, throwing an exception if directory does not exist.
-- config: Includes detailed build configurations. Example structure provided.
-- cpuUsage(): Provides current CPU usage in microseconds.
-- dlopen(): Loads C++ Addons; requires module object, filename, and flag (default RTLD_LAZY unless overridden).
-- emitWarning(): Supports multiple argument signatures for emitting warnings.
+#### dlopen Example
+```js
+const { dlopen } = require('node:process');
+const { constants } = require('node:os');
+const { join } = require('node:path');
+const mod = { exports: {} };
+dlopen(mod, join(__dirname, 'local.node'), constants.dlopen.RTLD_NOW);
+mod.exports.foo();
+```
 
-This extract provides specific, immediately applicable, technical details complete with example code and exact parameter information.
+#### emitWarning Example
+```js
+process.emitWarning('Something happened!', {
+  type: 'CustomWarning',
+  code: 'WARN001',
+  detail: 'This is some additional information'
+});
+```
 
+## Detailed Topic Information
+- **Process Events:** Include callback parameters and version details.
+- **Process Methods:** Each method shows required parameters, return type, default values, and error conditions (e.g., `chdir()` throws if directory does not exist).
+- **Configuration:** The `process.config` object displays build-time configurations in JSON format.
+
+This extract provides directly usable code and configuration information for developers integrating Node.js process control in their applications.
 
 ## Supplementary Details
-### Supplementary Technical Specifications
+### Technical Specifications and Implementation Details
 
-1. **Method Signatures and Parameters:**
-   - process.on(event: string, listener: Function): Adds an event listener for the specified event.
-   - process.abort(): void
-   - process.allowedNodeEnvironmentFlags: Set<string> (read-only)
-   - process.arch: string
-   - process.argv: string[]
-   - process.argv0: string
-   - process.chdir(directory: string): void
-   - process.cpuUsage(previousValue?: { user: number, system: number }): { user: number, system: number }
-   - process.dlopen(module: Object, filename: string, flags?: number): void
-   - process.emitWarning(warning: string|Error, options?: { type?: string, code?: string, detail?: string, ctor?: Function }): void
+1. **Parameter Details and Defaults**:
+   - `process.chdir(directory: string)`: Throws an Error if `directory` does not exist.
+   - `process.cpuUsage(previousValue?: { user: number, system: number })`: Returns an object with microsecond counts for user and system CPU times.
+   - `process.dlopen(module: Object, filename: string, flags?: number)`: Defaults to `os.constants.dlopen.RTLD_LAZY` if flags are not provided.
+   - `process.emitWarning(warning, options)`: Options include `type` (default 'Warning'), `code`, `ctor`, and `detail`.
 
-2. **Configuration Options and Defaults:**
-   - dlopen flags: Defaults to os.constants.dlopen.RTLD_LAZY if not provided.
-   - Warning options: Default type is 'Warning'; if a code is not given, no unique identifier is added.
+2. **Implementation Steps for IPC and Events**:
+   - For processes started with IPC, use `process.channel.ref()` to prevent accidental process exit and `process.channel.unref()` to allow exit.
+   - Add event listeners immediately upon process start to capture early events (e.g., uncaughtException, unhandledRejection).
 
-3. **Implementation Steps:**
-   - Attach event listeners as demonstrated in the examples.
-   - Use synchronous cleanup within 'exit' and 'uncaughtException' handlers.
-   - Validate inputs (e.g. for process.chdir) before invocation.
-   - Use process.cpuUsage with a previous reading to measure delta times.
+3. **Troubleshooting Procedures**:
+   - If maximum listener warnings occur, call `emitter.setMaxListeners(n)` to adjust limits.
+   - Use `process.memoryUsage()` and `process.cpuUsage()` to diagnose performance issues.
+   - For detailed warning stack traces, run Node.js with the `--trace-warnings` flag.
 
-4. **Best Practices:**
-   - Use process.on('unhandledRejection') to monitor for asynchronous errors.
-   - Use process.emitWarning() with detailed messages and codes for clear diagnostics.
-   - Avoid asynchronous operations in 'exit' event handlers.
-   - For IPC channels, correctly manage refs via process.channel.ref() and process.channel.unref().
+4. **Configuration Options and Effects**:
+   - Use command-line options such as `--no-warnings`, `--throw-deprecation`, and `--trace-deprecation` to modify process behavior regarding warnings and deprecations.
 
-5. **Troubleshooting Procedures:**
-   - For unexpected exits, check synchronous execution in 'exit' listeners.
-   - For memory issues, verify constrainedMemory() and availableMemory() outputs.
-   - Use --trace-warnings or --throw-deprecation flags for detailed runtime diagnostics.
-   - Monitor unhandled rejection maps to catch asynchronous errors.
+5. **Code Example Best Practices:**
+   - Always perform synchronous cleanup in `uncaughtException` handlers to avoid undefined states.
+   - Validate incoming messages in IPC by checking types and using JSON serialization as required.
+   - Ensure proper flag formatting when utilizing `process.allowedNodeEnvironmentFlags` for environment security.
 
 
 ## Reference Details
-### Complete API Specifications and Code Examples
+### Complete API Specifications and Code Samples
 
-1. **Event Listener API:**
-   - Syntax: `process.on(event: string, listener: Function): process`
-   - Example:
-     ```javascript
-     process.on('exit', (code: number): void => {
-       console.log(`About to exit with code: ${code}`);
-     });
+#### Event Listeners
+
+- **beforeExit:**
+  ```js
+  process.on('beforeExit', (code: number) => {
+    // code: exit code before process shutdown
+    console.log('Process beforeExit event with code:', code);
+  });
+  ```
+
+- **exit:**
+  ```js
+  process.on('exit', (code: number) => {
+    // Synchronous cleanup only
+    console.log(`About to exit with code: ${code}`);
+  });
+  ```
+
+- **disconnect:**
+  ```js
+  process.on('disconnect', () => {
+    // IPC channel closed
+  });
+  ```
+
+- **message:**
+  ```js
+  process.on('message', (message: Object | boolean | number | string | null, sendHandle?: Object) => {
+    // Handle IPC message
+  });
+  ```
+
+- **multipleResolves:**
+  ```js
+  process.on('multipleResolves', (type: string, promise: Promise<any>, reason: any) => {
+    console.error(type, promise, reason);
+  });
+  ```
+
+- **rejectionHandled:**
+  ```js
+  process.on('rejectionHandled', (promise: Promise<any>) => {
+    // Promise rejection now handled
+  });
+  ```
+
+- **workerMessage:**
+  ```js
+  process.on('workerMessage', (value: any, source: number) => {
+    console.log('Worker message received:', value, 'from', source);
+  });
+  ```
+
+- **uncaughtException:**
+  ```js
+  process.on('uncaughtException', (err: Error, origin: string) => {
+    // Log error and perform synchronous cleanup
+    console.error(`Caught exception: ${err}\nException origin: ${origin}`);
+  });
+  ```
+
+- **uncaughtExceptionMonitor:**
+  ```js
+  process.on('uncaughtExceptionMonitor', (err: Error, origin: string) => {
+    // Monitor exceptions without overriding default behavior
+    MyMonitoringTool.logSync(err, origin);
+  });
+  ```
+
+- **unhandledRejection:**
+  ```js
+  process.on('unhandledRejection', (reason: any, promise: Promise<any>) => {
+    console.error('Unhandled Rejection at:', promise, 'reason:', reason);
+  });
+  ```
+
+- **warning:**
+  ```js
+  process.on('warning', (warning: Error) => {
+    console.warn(warning.name);
+    console.warn(warning.message);
+    console.warn(warning.stack);
+  });
+  ```
+
+- **Signal Events Example:**
+  ```js
+  process.on('SIGINT', () => {
+    console.log('Received SIGINT. Press Control-D to exit.');
+  });
+  process.on('SIGTERM', () => {
+    console.log('Received SIGTERM.');
+  });
+  ```
+
+#### Methods and Properties
+
+- **abort():**
+  ```js
+  process.abort(); // Immediately aborts the process and generates a core file
+  ```
+
+- **allowedNodeEnvironmentFlags:** (Read-only Set)
+  ```js
+  const { allowedNodeEnvironmentFlags } = require('node:process');
+  allowedNodeEnvironmentFlags.forEach((flag) => {
+    console.log(flag);
+  });
+  ```
+
+- **arch:**
+  ```js
+  console.log(`Processor architecture: ${process.arch}`);
+  ```
+
+- **argv & argv0:**
+  ```js
+  process.argv.forEach((val, index) => {
+    console.log(`${index}: ${val}`);
+  });
+  console.log('Original argv0:', process.argv0);
+  ```
+
+- **chdir(directory):**
+  ```js
+  try {
+    process.chdir('/tmp');
+    console.log(`New directory: ${process.cwd()}`);
+  } catch (err) {
+    console.error(`chdir error: ${err}`);
+  }
+  ```
+
+- **config:**
+  ```js
+  console.log(process.config);
+  // Example output:
+  /*
+  {
+    target_defaults: { ... },
+    variables: {
+      host_arch: 'x64',
+      napi_build_version: 5,
+      node_install_npm: 'true',
+      ...
+    }
+  }
+  */
+  ```
+
+- **cpuUsage():**
+  ```js
+  const startUsage = process.cpuUsage();
+  // perform some operations
+  console.log(process.cpuUsage(startUsage));
+  ```
+
+- **dlopen(module, filename, [flags]):** Refer to the example above.
+
+- **emitWarning():**
+  ```js
+  process.emitWarning('Something happened!', 'CustomWarning', 'WARN001');
+  ```
+  or with options:
+  ```js
+  process.emitWarning('Something happened!', {
+    type: 'CustomWarning',
+    code: 'WARN001',
+    detail: 'This is some additional information'
+  });
+  ```
+
+#### Troubleshooting Commands
+
+1. **Max Listeners Warning:**
+   - Command: Increase listeners limit: `emitter.setMaxListeners(20)`
+   - Expected: Warning message is suppressed when adding multiple listeners.
+
+2. **Memory & CPU Usage Diagnostics:**
+   - Commands: 
+     ```js
+     console.log(process.memoryUsage());
+     console.log(process.cpuUsage());
      ```
+   - Expected: Output object with memory usage in bytes and CPU usage in microseconds.
 
-2. **process.abort()**
-   - Signature: `process.abort(): void`
-   - Usage: Immediately terminates the Node.js process and produces a core dump.
+3. **Warning Trace:**
+   - Launch Node.js with: `node --trace-warnings yourApp.js`
+   - Expected: Full stack trace for any warnings emitted.
 
-3. **process.allowedNodeEnvironmentFlags**
-   - Type: Read-only Set<string>
-   - Usage Example:
-     ```javascript
-     import { allowedNodeEnvironmentFlags } from 'node:process';
-     allowedNodeEnvironmentFlags.forEach((flag: string) => {
-       console.log(flag);
-     });
-     ```
-   - Note: Iteration returns flags in standardized format (e.g. '--inspect-brk').
-
-4. **process.arch**
-   - Type: string
-   - Possible Values: 'arm', 'arm64', 'ia32', 'loong64', 'mips', 'mipsel', 'ppc', 'ppc64', 'riscv64', 's390', 's390x', 'x64'
-   - Example:
-     ```javascript
-     import { arch } from 'node:process';
-     console.log(`Architecture: ${arch}`);
-     ```
-
-5. **process.argv & process.argv0**
-   - process.argv: Array of strings
-   - process.argv0: string (read-only original argv[0])
-   - Example:
-     ```javascript
-     import { argv, argv0 } from 'node:process';
-     argv.forEach((val, index) => {
-       console.log(`${index}: ${val}`);
-     });
-     console.log('Original argv0:', argv0);
-     ```
-
-6. **IPC Channel Methods (process.channel)**
-   - Methods:
-     - `process.channel.ref(): void`
-     - `process.channel.unref(): void`
-   - Usage: Ensure the IPC channel keeps or releases the event loop as needed.
-
-7. **process.chdir(directory)**
-   - Signature: `process.chdir(directory: string): void`
-   - Throws an exception if the directory does not exist.
-   - Example:
-     ```javascript
-     import { chdir, cwd } from 'node:process';
-     console.log(`Current: ${cwd()}`);
-     try {
-       chdir('/tmp');
-       console.log(`Changed to: ${cwd()}`);
-     } catch (err) {
-       console.error(`Error: ${err}`);
-     }
-     ```
-
-8. **process.config**
-   - Type: Object (Frozen)
-   - Contains build configuration (see sample output in section 2).
-
-9. **process.cpuUsage()**
-   - Signature: `process.cpuUsage(previousValue?: { user: number, system: number }): { user: number, system: number }`
-   - Use: To measure CPU consumption; pass a previous reading to get a diff.
-   - Example:
-     ```javascript
-     import { cpuUsage } from 'node:process';
-     const start = cpuUsage();
-     // ... perform tasks
-     console.log(cpuUsage(start));
-     ```
-
-10. **process.dlopen(module, filename, [flags])**
-    - Signature: `process.dlopen(module: Object, filename: string, flags?: number): void`
-    - Flags: Default is os.constants.dlopen.RTLD_LAZY. Can be set to os.constants.dlopen.RTLD_NOW for immediate symbol resolution.
-    - Example:
-      ```javascript
-      import { dlopen } from 'node:process';
-      import { constants } from 'node:os';
-      import { fileURLToPath } from 'node:url';
-      const module = { exports: {} };
-      dlopen(module, fileURLToPath(new URL('local.node', import.meta.url)), constants.dlopen.RTLD_NOW);
-      module.exports.foo();
-      ```
-
-11. **process.emitWarning()**
-    - Signatures:
-      1. `process.emitWarning(warning: string|Error, { type?: string, code?: string, detail?: string, ctor?: Function }): void`
-      2. `process.emitWarning(warning: string|Error, type?: string, code?: string, ctor?: Function): void`
-    - Example using options:
-      ```javascript
-      import process from 'node:process';
-      process.emitWarning('Something happened!', {
-        code: 'MY_WARNING',
-        detail: 'Additional detail about the warning'
-      });
-      ```
-    - Example using separate arguments:
-      ```javascript
-      import process from 'node:process';
-      process.emitWarning('Something happened!', 'CustomWarning', 'WARN001');
-      ```
-
-**Troubleshooting:**
-- Use command-line flags:
-  - `--no-warnings` to suppress warnings output while still emitting events.
-  - `--trace-warnings` to get a full stack trace for warnings.
-  - `--throw-deprecation` to convert deprecation warnings into exceptions.
-- Examine the outputs from `process.cpuUsage()`, `process.constrainedMemory()`, and `process.availableMemory()` for resource monitoring.
-- Ensure that in 'exit' listeners, only synchronous code executes.
-
-This detailed reference serves as a complete guide for developers to implement, configure, and troubleshoot usage of the Node.js Process API without needing additional external references.
-
+This complete API specification provides developers with all necessary details to implement and troubleshoot Node.js process functionalities directly in their code.
 
 ## Original Source
 Node.js Process Documentation
@@ -236,466 +305,197 @@ https://nodejs.org/api/process.html
 
 ## Digest of NODE_PROCESS
 
-# Node.js Process Documentation
+# Process Documentation
 
-**Retrieved on:** 2023-10-27
+**Retrieved:** 2023-10-19
 
-This document contains the full technical details extracted directly from the Node.js Process API documentation. It includes complete API specifications, method signatures with parameters and return types, full code examples, configuration options with exact values and effects, and detailed troubleshooting procedures.
+## Overview
+This document presents the complete technical details of the Node.js Process API as defined in the official documentation (Node.js v23.11.0). It includes the exact event specifications, method signatures, configuration details, and code examples.
 
-# Table of Contents
+## Process Events
 
-1. Process Overview
-2. Process Events
-   - beforeExit
-   - exit
-   - disconnect
-   - message
-   - multipleResolves
-   - rejectionHandled
-   - workerMessage
-   - uncaughtException
-   - uncaughtExceptionMonitor
-   - unhandledRejection
-   - warning
-   - worker
-   - Signal Events
-3. Process Methods and Properties
-   - process.abort()
-   - process.allowedNodeEnvironmentFlags
-   - process.arch
-   - process.argv & process.argv0
-   - process.channel and its methods (ref, unref)
-   - process.chdir(directory)
-   - process.config
-   - process.connected
-   - process.constrainedMemory()
-   - process.availableMemory()
-   - process.cpuUsage([previousValue])
-   - process.cwd()
-   - process.debugPort
-   - process.disconnect()
-   - process.dlopen(module, filename[, flags])
-   - process.emitWarning()
-4. Detailed Code Examples
-
-# 1. Process Overview
-
-The Node.js `process` object provides information about the current Node.js process. It is an instance of an EventEmitter and exposes a variety of properties and methods that allow detailed control over the process lifecycle, including event handling for process events and access to low-level process information.
-
-# 2. Process Events
-
-## beforeExit
-
-- **Description:** Emitted when Node.js empties its event loop and has no additional work scheduled. Listeners can schedule asynchronous work.
+### beforeExit (Added in: v0.11.12)
 - **Signature:** `process.on('beforeExit', (code: number) => void)`
-
-**Code Example:**
-
-```javascript
-import process from 'node:process';
-
+- **Description:** Emitted when Node.js empties its event loop and no work is scheduled. Listener receives the exit code as an argument.
+- **Example:**
+```js
+const process = require('node:process');
 process.on('beforeExit', (code) => {
   console.log('Process beforeExit event with code:', code);
 });
-
-process.on('exit', (code) => {
-  console.log('Process exit event with code:', code);
-});
-
-console.log('This message is displayed first.');
 ```
 
-## exit
-
-- **Description:** Emitted when the process is about to exit, either when `process.exit()` is called or when no more work is scheduled. Listeners receive the exit code.
+### exit (Added in: v0.1.7)
 - **Signature:** `process.on('exit', (code: number) => void)`
-
-**Code Example:**
-
-```javascript
-import process from 'node:process';
-
+- **Description:** Emitted when the process is about to exit. Listener receives the exit code. Only synchronous operations are allowed.
+- **Example:**
+```js
 process.on('exit', (code) => {
   console.log(`About to exit with code: ${code}`);
 });
 ```
 
-## disconnect
-
-- **Description:** Emitted when the IPC channel is closed (applicable when spawned with an IPC channel).
+### disconnect (Added in: v0.7.7)
 - **Signature:** `process.on('disconnect', () => void)`
+- **Description:** Emitted when the IPC channel is closed (for spawned processes with IPC).
 
-## message
+### message (Added in: v0.5.10)
+- **Signature:** `process.on('message', (message: Object | boolean | number | string | null, sendHandle?: Object) => void)`
+- **Description:** Emitted when a message is received from a parent process via IPC.
 
-- **Description:** Emitted for incoming messages on an IPC channel.
-- **Signature:** `process.on('message', (message: Object|string|number|boolean|null, sendHandle?: Object) => void)`
-
-## multipleResolves
-
-- **Description:** Emitted when a Promise has been resolved or rejected more than once.
+### multipleResolves (Added in: v10.12.0, Deprecated since v17.6.0)
 - **Signature:** `process.on('multipleResolves', (type: string, promise: Promise<any>, reason: any) => void)`
+- **Description:** Emitted when a promise is resolved or rejected more than once.
 
-**Code Example:**
-
-```javascript
-import process from 'node:process';
-
-process.on('multipleResolves', (type, promise, reason) => {
-  console.error(type, promise, reason);
-  setImmediate(() => process.exit(1));
-});
-
-async function main() {
-  try {
-    return await new Promise((resolve, reject) => {
-      resolve('First call');
-      resolve('Swallowed resolve');
-      reject(new Error('Swallowed reject'));
-    });
-  } catch {
-    throw new Error('Failed');
-  }
-}
-
-main().then(console.log);
-```
-
-## rejectionHandled
-
-- **Description:** Emitted when a previously unhandled rejection gets a handler.
+### rejectionHandled (Added in: v1.4.1)
 - **Signature:** `process.on('rejectionHandled', (promise: Promise<any>) => void)`
+- **Description:** Emitted when a previously unhandled rejection gets a handler.
 
-**Code Example:**
-
-```javascript
-import process from 'node:process';
-
-const unhandledRejections = new Map();
-process.on('unhandledRejection', (reason, promise) => {
-  unhandledRejections.set(promise, reason);
-});
-process.on('rejectionHandled', (promise) => {
-  unhandledRejections.delete(promise);
-});
-```
-
-## workerMessage
-
-- **Description:** Emitted on receiving a message from another worker thread via `postMessageToThread()`.
+### workerMessage (Added in: v22.5.0)
 - **Signature:** `process.on('workerMessage', (value: any, source: number) => void)`
+- **Description:** Emitted for incoming messages sent via `postMessageToThread()`.
 
-## uncaughtException
-
-- **Description:** Emitted when an exception is thrown but not caught, allowing a custom handler to override the default behavior.
+### uncaughtException (Added in: v0.1.18)
 - **Signature:** `process.on('uncaughtException', (err: Error, origin: string) => void)`
+- **Description:** Emitted when an exception bubbles back to the event loop. Overrides default behavior if a listener is added.
 
-**Code Example:**
-
-```javascript
-import process from 'node:process';
-import fs from 'node:fs';
-
-process.on('uncaughtException', (err, origin) => {
-  fs.writeSync(process.stderr.fd, `Caught exception: ${err}\nException origin: ${origin}\n`);
-});
-
-// This will cause an uncaught exception
-nonexistentFunc();
-```
-
-## uncaughtExceptionMonitor
-
-- **Description:** Emitted before an `uncaughtException` event, useful for monitoring without altering default behavior.
+### uncaughtExceptionMonitor (Added in: v13.7.0)
 - **Signature:** `process.on('uncaughtExceptionMonitor', (err: Error, origin: string) => void)`
+- **Description:** Monitors uncaught exceptions without changing the default process exit behavior.
 
-**Code Example:**
-
-```javascript
-import process from 'node:process';
-
-process.on('uncaughtExceptionMonitor', (err, origin) => {
-  MyMonitoringTool.logSync(err, origin);
-});
-
-nonexistentFunc();
-```
-
-## unhandledRejection
-
-- **Description:** Emitted when a promise is rejected without a `.catch()` handler.
+### unhandledRejection (Added in: v1.4.1)
 - **Signature:** `process.on('unhandledRejection', (reason: any, promise: Promise<any>) => void)`
+- **Description:** Emitted when a promise rejection is not handled within a turn of the event loop.
 
-**Code Example:**
-
-```javascript
-import process from 'node:process';
-
-process.on('unhandledRejection', (reason, promise) => {
-  console.log('Unhandled Rejection at:', promise, 'reason:', reason);
-});
-
-somePromise.then((res) => {
-  return reportToUser(JSON.parse(res));
-});
-```
-
-## warning
-
-- **Description:** Emitted for process warnings including custom warnings emitted via `process.emitWarning()`.
+### warning (Added in: v6.0.0)
 - **Signature:** `process.on('warning', (warning: Error) => void)`
+- **Description:** Emitted when Node.js emits a process warning. Contains properties such as `name`, `message`, `stack`, and `code`.
 
-**Code Example:**
+### Signal Events
+- **Description:** Events such as `'SIGINT'`, `'SIGTERM'`, etc. are emitted when the process receives respective POSIX signals. The callback receives the signal string (e.g., 'SIGINT').
 
-```javascript
-import process from 'node:process';
+## Process Methods and Properties
 
-process.on('warning', (warning) => {
-  console.warn(warning.name);
-  console.warn(warning.message);
-  console.warn(warning.stack);
-});
-```
-
-## worker
-
-- **Description:** Emitted after a new Worker thread is created.
-- **Signature:** `process.on('worker', (worker: Worker) => void)`
-
-## Signal Events
-
-Signals such as SIGINT, SIGTERM, etc. are handled by attaching listeners. For example:
-
-```javascript
-import process from 'node:process';
-
-function handle(signal) {
-  console.log(`Received ${signal}`);
-}
-
-process.on('SIGINT', handle);
-process.on('SIGTERM', handle);
-```
-
-# 3. Process Methods and Properties
-
-## process.abort()
-
-- **Description:** Causes the process to exit immediately and generate a core dump.
+### abort()
 - **Signature:** `process.abort(): void`
+- **Description:** Immediately exits the process and generates a core file.
 
-## process.allowedNodeEnvironmentFlags
+### allowedNodeEnvironmentFlags
+- **Type:** Read-only `Set<string>`
+- **Description:** Contains flags allowed in the `NODE_OPTIONS` environment variable. Overrides default `Set.prototype.has` to recognize various flag formats.
 
-- **Description:** A read-only Set of flags that are allowable in the NODE_OPTIONS environment variable.
-- **Usage Example:**
+### arch
+- **Type:** `string`
+- **Description:** CPU architecture for which Node.js was compiled. Possible values: `'arm'`, `'arm64'`, `'ia32'`, `'x64'`, etc.
 
-```javascript
-import { allowedNodeEnvironmentFlags } from 'node:process';
+### argv & argv0
+- **Type:** `string[]` and `string`
+- **Description:** Command-line arguments. `argv[0]` is the Node.js executable, and `argv0` is a read-only copy of the original argv[0].
 
-allowedNodeEnvironmentFlags.forEach((flag) => {
-  console.log(flag);
-});
-```
+### channel
+- **Type:** `Object | undefined`
+- **Description:** IPC channel reference if the process has been spawned with one.
+- **Methods:** `process.channel.ref()` to keep the event loop running, `process.channel.unref()` to allow exit.
 
-## process.arch
-
-- **Description:** The operating system CPU architecture for which Node.js is compiled.
-- **Type:** `string` (Possible values: 'arm', 'arm64', 'ia32', 'loong64', 'mips', 'mipsel', 'ppc', 'ppc64', 'riscv64', 's390', 's390x', 'x64')
-
-## process.argv & process.argv0
-
-- **process.argv**: An array of command-line arguments. The first element is the Node executable path, the second is the script path, followed by additional arguments.
-- **process.argv0**: A read-only copy of the original argv[0].
-
-**Example:**
-
-```javascript
-import { argv, argv0 } from 'node:process';
-
-argv.forEach((val, index) => {
-  console.log(`${index}: ${val}`);
-});
-
-console.log('Original argv0:', argv0);
-```
-
-## process.channel
-
-- **Description:** If spawned with an IPC channel, `process.channel` holds the reference. It provides methods:
-  - `process.channel.ref()`: Makes the IPC channel keep the event loop active.
-  - `process.channel.unref()`: Allows the process to exit even if the channel is open.
-
-## process.chdir(directory)
-
-- **Description:** Changes the current working directory.
+### chdir(directory)
 - **Signature:** `process.chdir(directory: string): void`
+- **Description:** Changes the current working directory. Throws an exception on failure.
 
-**Example:**
+### config
+- **Type:** `Object` (frozen)
+- **Description:** Contains the configuration options used to compile the Node.js executable (same as config.gypi).
 
-```javascript
-import { chdir, cwd } from 'node:process';
-console.log(`Starting directory: ${cwd()}`);
-try {
-  chdir('/tmp');
-  console.log(`New directory: ${cwd()}`);
-} catch (err) {
-  console.error(`chdir: ${err}`);
-}
-```
+### connected
+- **Type:** `boolean`
+- **Description:** Indicates if the IPC channel is connected.
 
-## process.config
+### constrainedMemory()
+- **Signature:** `process.constrainedMemory(): number`
+- **Description:** Returns the memory available under OS constraints in bytes (Experimental).
 
-- **Description:** Read-only frozen object containing the configuration options used to compile Node.js.
-- **Example Output:**
+### availableMemory()
+- **Signature:** `process.availableMemory(): number`
+- **Description:** Returns the free memory available to the process in bytes (Experimental).
 
-```json
-{
-  "target_defaults": {
-    "cflags": [],
-    "default_configuration": "Release",
-    "defines": [],
-    "include_dirs": [],
-    "libraries": []
-  },
-  "variables": {
-    "host_arch": "x64",
-    "napi_build_version": 5,
-    "node_install_npm": "true",
-    "node_prefix": "",
-    "node_shared_cares": "false",
-    "node_shared_http_parser": "false",
-    "node_shared_libuv": "false",
-    "node_shared_zlib": "false",
-    "node_use_openssl": "true",
-    "node_shared_openssl": "false",
-    "target_arch": "x64",
-    "v8_use_snapshot": 1
-  }
-}
-```
+### cpuUsage([previousValue])
+- **Signature:** `process.cpuUsage(previousValue?: {user: number, system: number}): {user: number, system: number}`
+- **Description:** Returns CPU usage in microseconds. Passing a previous value returns the difference.
 
-## process.connected
-
-- **Description:** Indicates if the IPC channel is connected. Type: `boolean`.
-
-## process.constrainedMemory() & process.availableMemory()
-
-- **Description:** Experimental methods to retrieve available memory in bytes.
-- **Signature:**
-  - `process.constrainedMemory(): number`
-  - `process.availableMemory(): number`
-
-## process.cpuUsage([previousValue])
-
-- **Description:** Returns an object with CPU usage in microseconds. If `previousValue` is supplied, returns the diff.
-- **Signature:** `process.cpuUsage(previousValue?: { user: number, system: number }): { user: number, system: number }`
-
-**Example:**
-
-```javascript
-import { cpuUsage } from 'node:process';
-
-const startUsage = cpuUsage();
-// Perform CPU intensive task
-while (Date.now() % 2 === 0) {}
-
-console.log(cpuUsage(startUsage));
-```
-
-## process.cwd()
-
-- **Description:** Returns the current working directory.
+### cwd()
 - **Signature:** `process.cwd(): string`
+- **Description:** Returns the current working directory.
 
-## process.debugPort
+### debugPort
+- **Type:** `number`
+- **Description:** The port used by the Node.js debugger.
 
-- **Description:** The port used by the Node.js debugger (type: number).
+### disconnect()
+- **Signature:** `process.disconnect(): void`
+- **Description:** Closes the IPC channel if present.
 
-## process.disconnect()
-
-- **Description:** Disconnects the IPC channel (if applicable).
-
-## process.dlopen(module, filename[, flags])
-
-- **Description:** Dynamically loads shared objects (used by require() for C++ Addons).
+### dlopen(module, filename[, flags])
 - **Signature:** `process.dlopen(module: Object, filename: string, flags?: number): void`
-- **Flags:** Default is `os.constants.dlopen.RTLD_LAZY` unless specified otherwise.
-
-**Example:**
-
-```javascript
-import { dlopen } from 'node:process';
-import { constants } from 'node:os';
-import { fileURLToPath } from 'node:url';
-
-const module = { exports: {} };
-// Load addon with RTLD_NOW flag
-dlopen(module, fileURLToPath(new URL('local.node', import.meta.url)), constants.dlopen.RTLD_NOW);
-module.exports.foo();
+- **Default Flags:** `os.constants.dlopen.RTLD_LAZY`
+- **Description:** Dynamically loads shared objects (primarily used for C++ addons).
+- **Example:**
+```js
+const { dlopen } = require('node:process');
+const { constants } = require('node:os');
+const { join } = require('node:path');
+const mod = { exports: {} };
+dlopen(mod, join(__dirname, 'local.node'), constants.dlopen.RTLD_NOW);
+mod.exports.foo();
 ```
 
-## process.emitWarning()
-
-- **Description:** Emits a process warning. Can be used with various signatures.
-- **Signature 1:** `process.emitWarning(warning: string | Error, options?: { type?: string, code?: string, detail?: string, ctor?: Function }): void`
-- **Signature 2:** `process.emitWarning(warning: string | Error, type?: string, code?: string, ctor?: Function): void`
-
-**Example 1 (using options object):**
-
-```javascript
-import process from 'node:process';
-
+### emitWarning()
+- **Signature:** 
+  - `process.emitWarning(warning: string | Error, options?: { type?: string, code?: string, ctor?: Function, detail?: string }): void`
+  - Overloaded: `process.emitWarning(warning: string | Error, type?: string, code?: string, ctor?: Function): void`
+- **Description:** Emits a custom warning. Default type is 'Warning'.
+- **Example:**
+```js
 process.emitWarning('Something happened!', {
-  code: 'MY_WARNING',
+  type: 'CustomWarning',
+  code: 'WARN001',
   detail: 'This is some additional information'
 });
 ```
 
-**Example 2 (using separate arguments):**
+### Other Methods and Properties
+A number of additional methods and properties are available including but not limited to:
+- `process.env`, `process.execArgv`, `process.execPath`, `process.exit([code])`, `process.finalization.register()` and related methods, `process.getegid()`, `process.geteuid()`, `process.getgid()`, `process.getgroups()`, `process.getuid()`, `process.hrtime()`, `process.hrtime.bigint()`, `process.kill(pid, [signal])`, `process.memoryUsage()`, `process.nextTick()`, `process.umask()`, `process.uptime()`, `process.version`, and `process.versions`.
 
-```javascript
-import process from 'node:process';
+## Best Practices and Troubleshooting
 
-process.emitWarning('Something happened!', 'CustomWarning', 'WARN001');
-```
+- **Uncaught Exception Handling:**
+  Use `process.on('uncaughtException', ...)` strictly for synchronous cleanup. Never resume normal operation as the application may be unstable.
 
-# 4. Detailed Code Examples & Best Practices
+- **Event Loop Caution:**
+  Ensure that exit event listeners perform only synchronous operations, as queued asynchronous tasks will be abandoned.
 
-- Always use synchronous operations in 'exit' event handlers as asynchronous operations are abandoned.
-- For uncaught exceptions, perform only synchronous cleanup. Do not attempt to continue normal execution.
-- When using `process.emitWarning()`, provide specific codes and detail to help with troubleshooting.
-- Use `process.cpuUsage()` with a previous value to measure CPU consumption differences.
-- Validate directory existence before using `process.chdir()` to avoid exceptions.
+- **Warning Management:**
+  To control warning outputs, use command-line flags such as `--no-warnings`, `--trace-warnings`, `--throw-deprecation`, and `--trace-deprecation`.
 
-# Troubleshooting Procedures
+- **IPC Channel Usage:**
+  When using child processes with IPC (via `child_process.fork()`), manage connection with `process.channel.ref()` and `process.channel.unref()`, and disconnect using `process.disconnect()` when appropriate.
 
-1. **Unexpected Process Exit:**
-   - Check for synchronous calls in 'exit' event handlers.
-   - Verify that no asynchronous operations are scheduled in 'exit'.
+- **Resource Monitoring:**
+  Monitor system performance using `process.cpuUsage()` and `process.memoryUsage()`.
 
-2. **Unhandled Promise Rejections:**
-   - Attach a global handler using `process.on('unhandledRejection', ...)` to log and monitor.
+## Attribution
 
-3. **Memory Issues:**
-   - Use `process.constrainedMemory()` and `process.availableMemory()` to determine available resources.
-
-4. **Debugging IPC Issues:**
-   - Ensure `process.channel` exists and use `ref()` or `unref()` appropriately.
-   - Confirm that disconnection events are handled using `process.on('disconnect', ...).`
-
-# Attribution & Data Size
-
-- **Data Size:** 4361016 bytes
-- **Links Found:** 3274
-- **Source:** https://nodejs.org/api/process.html
-
+- **Source URL:** https://nodejs.org/api/process.html
+- **Data Size:** 3825043 bytes
+- **Links Found:** 2972
+- **No errors reported.**
 
 ## Attribution
 - Source: Node.js Process Documentation
 - URL: https://nodejs.org/api/process.html
 - License: License: MIT License
-- Crawl Date: 2025-04-21T02:21:28.688Z
-- Data Size: 4361016 bytes
-- Links Found: 3274
+- Crawl Date: 2025-04-21T03:07:20.173Z
+- Data Size: 3825043 bytes
+- Links Found: 2972
 
 ## Retrieved
 2025-04-21
