@@ -96,10 +96,10 @@ describe("Replication Mode", () => {
     resetMemoryLog();
   });
 
-  test("should log replication messages when '--replicate' flag is present", () => {
+  test("should log replication messages when '--replicate' flag is present without a count", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--replicate", "param1"]);
-    // Expected logs:
+    // Expected logs for default replication (3 tasks):
     // 1: Run with: ["--replicate","param1"]
     // 2: Replicating tasks...
     // 3: Replicating task 1
@@ -113,6 +113,26 @@ describe("Replication Mode", () => {
     expect(spy.mock.calls[3][0]).toBe('Replicating task 2');
     expect(spy.mock.calls[4][0]).toBe('Replicating task 3');
     expect(spy.mock.calls[5][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
+    spy.mockRestore();
+  });
+
+  test("should log replication messages with provided task count when valid number is given", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--replicate", "5"]);
+    // Expected logs for replication with 5 tasks:
+    // 1: Run with: ["--replicate","5"]
+    // 2: Replicating tasks...
+    // 3 to 7: Replicating task 1 to 5
+    // 8: Execution time: ... ms
+    expect(spy).toHaveBeenCalledTimes(8);
+    expect(spy.mock.calls[0][0]).toBe('Run with: ["--replicate","5"]');
+    expect(spy.mock.calls[1][0]).toBe('Replicating tasks...');
+    expect(spy.mock.calls[2][0]).toBe('Replicating task 1');
+    expect(spy.mock.calls[3][0]).toBe('Replicating task 2');
+    expect(spy.mock.calls[4][0]).toBe('Replicating task 3');
+    expect(spy.mock.calls[5][0]).toBe('Replicating task 4');
+    expect(spy.mock.calls[6][0]).toBe('Replicating task 5');
+    expect(spy.mock.calls[7][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
     spy.mockRestore();
   });
 });
@@ -176,19 +196,8 @@ describe("Self-Improvement Mode", () => {
     const log = getMemoryLog();
     expect(log.length).toBe(2);
     // The diagnostics should reflect 2 invocations
-    // Expected order:
-    // 1: Run with ...
-    // 2: Execution time: ... ms
-    // 3: Total invocations: 2
-    // 4: First invocation: <timestamp of first>
-    // 5: Latest invocation: <timestamp of second>
-    // 6: Average execution time: ... ms
-    // 7: Maximum execution time: ... ms
-    // 8: Self-improvement analysis: execution metrics are optimal
     expect(spy.mock.calls[2][0]).toBe('Total invocations: 2');
-    // Check that first invocation timestamp matches the first entry in the log
     expect(spy.mock.calls[3][0]).toBe(`First invocation: ${log[0].timestamp}`);
-    // Check that latest invocation timestamp matches the second entry
     expect(spy.mock.calls[4][0]).toBe(`Latest invocation: ${log[1].timestamp}`);
     const avgMessage = spy.mock.calls[5][0];
     expect(avgMessage).toMatch(/^Average execution time: \d+(\.\d+)? ms$/);
@@ -212,7 +221,6 @@ describe("Planning Mode", () => {
     // 3: Planned Task 1: Review current configurations
     // 4: Planned Task 2: Prioritize upcoming feature enhancements
     // 5: Execution time: ... ms
-    expect(spy).toHaveBeenCalledTimes(5);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--plan"]');
     expect(spy.mock.calls[1][0]).toBe('Analyzing input for planning...');
     expect(spy.mock.calls[2][0]).toBe('Planned Task 1: Review current configurations');

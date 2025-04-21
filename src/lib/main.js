@@ -22,11 +22,10 @@ function logExecutionTime(startTime, endTime) {
   return parseFloat(executionTime);
 }
 
-// Business logic for replicating tasks
-function replicateTasks() {
-  // Output replication process messages
+// Business logic for replicating tasks with an optional task count parameter
+function replicateTasks(count = 3) {
   console.log("Replicating tasks...");
-  for (let i = 1; i <= 3; i++) {
+  for (let i = 1; i <= count; i++) {
     console.log(`Replicating task ${i}`);
   }
 }
@@ -36,9 +35,17 @@ function handleHelpSeeking() {
   console.log("Help-Seeking Mode Enabled: querying assistance...");
 }
 
-// Handles the replication flag by executing replication tasks
-function handleReplication() {
-  replicateTasks();
+// Handles the replication flag by executing replication tasks with an optional count
+function handleReplication(args) {
+  const replicateIndex = args.indexOf("--replicate");
+  let count = 3;
+  if (replicateIndex !== -1 && args.length > replicateIndex + 1) {
+    const potentialCount = parseInt(args[replicateIndex + 1], 10);
+    if (!isNaN(potentialCount) && potentialCount > 0) {
+      count = potentialCount;
+    }
+  }
+  replicateTasks(count);
 }
 
 // Handles the self-improve flag by logging self-improvement diagnostics with detailed metrics including first and latest invocation timestamps
@@ -112,7 +119,7 @@ export function main(args) {
 
   // Check for replication flag and process it
   if (args.includes("--replicate")) {
-    handleReplication();
+    handleReplication(args);
   }
 
   // Check for planning flag and process it
