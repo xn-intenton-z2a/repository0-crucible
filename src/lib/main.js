@@ -66,14 +66,20 @@ function planTasks() {
   console.log("Planned Task 2: Prioritize upcoming feature enhancements");
 }
 
-// Handles the decompose flag to perform goal decomposition
+// Handles the decompose flag to perform goal decomposition with improved formatting
 function handleDecompose(args) {
   const decomposeIndex = args.indexOf("--decompose");
-  let goal = "[default goal]";
+  let goal = "";
   if (args.length > decomposeIndex + 1 && !args[decomposeIndex + 1].startsWith("--") && args[decomposeIndex + 1] !== "") {
     goal = args[decomposeIndex + 1];
   }
-  console.log(`Decomposing goal: ${goal}`);
+  // Output header with improved formatting
+  if (goal) {
+    console.log(`Goal Decomposition Report: ${goal}`);
+  } else {
+    console.log("Goal Decomposition Report:");
+  }
+  // Consistently formatted sub-tasks
   console.log("1. Define objectives");
   console.log("2. Identify key milestones");
   console.log("3. Assign responsibilities");

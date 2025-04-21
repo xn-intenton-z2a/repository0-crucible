@@ -6,8 +6,13 @@ This document explains how to use the CLI tool provided by `repository0-crucible
 
 - Memory Log: Records every CLI invocation in an in-memory log. When the `--persist-log` flag is used, the complete memory log is output as a JSON string. (Test: Run `node src/lib/main.js --persist-log` and verify the JSON log output.)
 - Planning Mode: When the `--plan` flag is used, the tool analyzes the input and plans tasks, such as reviewing current configurations and prioritizing upcoming enhancements. (Test: Run `node src/lib/main.js --plan` and verify planning messages are logged.)
-- Goal Decomposition: When the `--decompose` flag is provided, the application logs either a default goal or a user-specified goal along with a breakdown into objectives, milestones, and responsibilities. (Test: Run `node src/lib/main.js --decompose` or `node src/lib/main.js --decompose "Plan new product launch"`.)
-- Self-Improvement: The `--self-improve` flag now triggers enhanced diagnostic logs that provide detailed performance metrics, including:
+- Goal Decomposition: When the `--decompose` flag is provided, the application outputs a formatted goal decomposition report. 
+  - If no explicit goal is provided, it displays a header: "Goal Decomposition Report:" followed by a list of sub-tasks:
+    1. Define objectives
+    2. Identify key milestones
+    3. Assign responsibilities
+  - If a goal is provided (for example, `--decompose "Plan new product launch"`), the header will include the provided goal, e.g.: "Goal Decomposition Report: Plan new product launch", followed by the same list of sub-tasks.
+- Self-Improvement: The `--self-improve` flag triggers enhanced diagnostic logs that provide detailed performance metrics, including:
   - Total number of CLI invocations.
   - Average execution time computed from all invocations recorded in the memory log.
   - A self-improvement analysis message. (Test: Run `node src/lib/main.js --self-improve` and check that the output contains phrases like "Total invocations:" and "Average execution time:" along with the analysis message.)
@@ -108,27 +113,27 @@ console.log(getMemoryLog());
 
 ### Invocation with Goal Decomposition Flag:
 
-You can break down a high-level goal into sub-tasks using the decompose flag. If a goal is provided immediately after the flag, it will be used; otherwise, a default goal is assumed.
+You can break down a high-level goal into sub-tasks using the decompose flag. 
 
-Example with a provided goal:
-
-  node src/lib/main.js --decompose "Plan new product launch"
-
-  Output:
-  Run with: ["--decompose","Plan new product launch"]
-  Decomposing goal: Plan new product launch
-  1. Define objectives
-  2. Identify key milestones
-  3. Assign responsibilities
-  Execution time: X ms
-
-Example without a provided goal:
+- Without an explicit goal:
 
   node src/lib/main.js --decompose
 
   Output:
   Run with: ["--decompose"]
-  Decomposing goal: [default goal]
+  Goal Decomposition Report:
+  1. Define objectives
+  2. Identify key milestones
+  3. Assign responsibilities
+  Execution time: X ms
+
+- With an explicit goal:
+
+  node src/lib/main.js --decompose "Plan new product launch"
+
+  Output:
+  Run with: ["--decompose","Plan new product launch"]
+  Goal Decomposition Report: Plan new product launch
   1. Define objectives
   2. Identify key milestones
   3. Assign responsibilities

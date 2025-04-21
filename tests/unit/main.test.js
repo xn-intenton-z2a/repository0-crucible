@@ -154,12 +154,6 @@ describe("Self-Improvement Mode", () => {
     const log = getMemoryLog();
     expect(log.length).toBe(2);
     // The diagnostics should reflect 2 invocations
-    // The expected calls in this invocation:
-    // 1: Run with: ["--self-improve"]
-    // 2: Execution time ...
-    // 3: Total invocations: 2
-    // 4: Average execution time: ... ms (average of two runs)
-    // 5: Self-improvement analysis...
     expect(spy.mock.calls[2][0]).toBe('Total invocations: 2');
     const avgMessage = spy.mock.calls[3][0];
     expect(avgMessage).toMatch(/^Average execution time: \d+(\.\d+)? ms$/);
@@ -201,13 +195,13 @@ describe("Goal Decomposition Feature", () => {
     main(["--decompose"]);
     // Expected logs:
     // 1: Run with: ["--decompose"]
-    // 2: Decomposing goal: [default goal]
+    // 2: Goal Decomposition Report:
     // 3: 1. Define objectives
     // 4: 2. Identify key milestones
     // 5: 3. Assign responsibilities
     // 6: Execution time: ... ms
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--decompose"]');
-    expect(spy.mock.calls[1][0]).toBe('Decomposing goal: [default goal]');
+    expect(spy.mock.calls[1][0]).toBe('Goal Decomposition Report:');
     expect(spy.mock.calls[2][0]).toBe('1. Define objectives');
     expect(spy.mock.calls[3][0]).toBe('2. Identify key milestones');
     expect(spy.mock.calls[4][0]).toBe('3. Assign responsibilities');
@@ -220,13 +214,13 @@ describe("Goal Decomposition Feature", () => {
     main(["--decompose", "Plan new product launch"]);
     // Expected logs:
     // 1: Run with: ["--decompose", "Plan new product launch"]
-    // 2: Decomposing goal: Plan new product launch
+    // 2: Goal Decomposition Report: Plan new product launch
     // 3: 1. Define objectives
     // 4: 2. Identify key milestones
     // 5: 3. Assign responsibilities
     // 6: Execution time: ... ms
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--decompose","Plan new product launch"]');
-    expect(spy.mock.calls[1][0]).toBe('Decomposing goal: Plan new product launch');
+    expect(spy.mock.calls[1][0]).toBe('Goal Decomposition Report: Plan new product launch');
     expect(spy.mock.calls[2][0]).toBe('1. Define objectives');
     expect(spy.mock.calls[3][0]).toBe('2. Identify key milestones');
     expect(spy.mock.calls[4][0]).toBe('3. Assign responsibilities');
