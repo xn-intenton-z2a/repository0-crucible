@@ -108,7 +108,6 @@ function handleSelfImprove() {
   console.log(`Maximum execution time: ${maxTime.toFixed(2)} ms`);
   console.log(`Minimum execution time: ${minTimeFormatted} ms`);
   console.log(`Standard deviation execution time: ${stdDeviation} ms`);
-  console.log("Self-improvement analysis: execution metrics are optimal");
 }
 
 // Handles the planning flag by logging planning messages

@@ -20,7 +20,6 @@ This document explains how to use the CLI tool provided by `repository0-crucible
   - Maximum execution time observed across all CLI invocations.
   - Minimum execution time observed across all CLI invocations.
   - Standard deviation of execution times, providing a measure of performance consistency.
-  - A self-improvement analysis message.
   (Test: Run `node src/lib/main.js --self-improve` and check that the output contains phrases like "Total invocations:", "First invocation:", "Latest invocation:", "Average execution time:", "Maximum execution time:", "Minimum execution time:", "Standard deviation execution time:", along with the analysis message.)
 - Replication: The `--replicate` flag initiates a series of replication tasks. It now supports an optional numeric parameter immediately after the flag to define how many tasks to replicate.
   - If a valid positive integer is provided (e.g., `--replicate 5`), it will log that number of replication tasks.
@@ -121,7 +120,6 @@ The CLI logs the arguments provided in a JSON formatted string and then logs the
   Maximum execution time: ... ms
   Minimum execution time: ... ms
   Standard deviation execution time: ... ms
-  Self-improvement analysis: execution metrics are optimal
 
 - **Invocation with Planning Flag:**
   ```bash
