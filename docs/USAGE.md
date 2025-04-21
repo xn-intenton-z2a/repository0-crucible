@@ -20,7 +20,10 @@ This document explains how to use the CLI tool provided by `repository0-crucible
   - Maximum execution time observed across all CLI invocations.
   - A self-improvement analysis message.
   (Test: Run `node src/lib/main.js --self-improve` and check that the output contains phrases like "Total invocations:", "First invocation:", "Latest invocation:", "Average execution time:", "Maximum execution time:" along with the analysis message.)
-- Replication: The `--replicate` flag initiates a series of replication tasks, simulating parallel processing by logging multiple replication steps. (Test: Run `node src/lib/main.js --replicate` and verify that replication steps are logged in order.)
+- Replication: The `--replicate` flag initiates a series of replication tasks. It now supports an optional numeric parameter immediately after the flag to define how many tasks to replicate. 
+  - If a valid positive integer is provided (e.g., `--replicate 5`), it will log that number of replication tasks.
+  - If the parameter is missing or invalid, it defaults to 3 tasks for backward compatibility.
+  (Test: Run `node src/lib/main.js --replicate` and `node src/lib/main.js --replicate 5` to verify the number of reported replication tasks.)
 - Help-Seeking: The `--help-seeking` flag triggers a mode where the application outputs a message indicating that it is seeking help. (Test: Run `node src/lib/main.js --help-seeking` and check that the help-seeking message is logged.)
 - Persist File: The new `--persist-file` flag persists the in-memory log to a file named `memory_log.json` in the current working directory. After the execution, the file will be created with valid JSON representing the log entries. (Test: Run `node src/lib/main.js --persist-file` and verify that the file exists and contains the expected log data.)
 
@@ -75,6 +78,8 @@ console.log(getMemoryLog());
 
 ### Invocation with Replication Flag:
 
+- Without specifying a task count (defaults to 3 tasks):
+
   node src/lib/main.js --replicate
 
   Output:
@@ -83,6 +88,20 @@ console.log(getMemoryLog());
   Replicating task 1
   Replicating task 2
   Replicating task 3
+  Execution time: X ms
+
+- With a specified task count (e.g., 5 tasks):
+
+  node src/lib/main.js --replicate 5
+
+  Output:
+  Run with: ["--replicate","5"]
+  Replicating tasks...
+  Replicating task 1
+  Replicating task 2
+  Replicating task 3
+  Replicating task 4
+  Replicating task 5
   Execution time: X ms
 
 ### Invocation with Help-Seeking Flag:
@@ -122,8 +141,6 @@ When you run with the `--self-improve` flag, the CLI outputs extended diagnostic
   Execution time: X ms
 
 ### Invocation with Goal Decomposition Flag:
-
-You can break down a high-level goal into sub-tasks using the decompose flag. 
 
 - Without an explicit goal:
 
