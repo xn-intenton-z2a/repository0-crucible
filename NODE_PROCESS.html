@@ -1,0 +1,751 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="node_process" href="#node_process"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>NODE_PROCESS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">The crawled content provides comprehensive details of the Node.js process API. It includes explicit specifications for process events (beforeExit, exit, disconnect, message, multipleResolves, rejectionHandled, workerMessage, uncaughtException, uncaughtExceptionMonitor, unhandledRejection, and warning), methods (abort, allowedNodeEnvironmentFlags, chdir, cwd, cpuUsage, debugPort, dlopen, emitWarning, etc.), properties (arch, argv, argv0, config, connected) and signal handling. Full code examples are provided for each event and method along with their signatures, parameters, types, and usage patterns.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<h2 class="md-github"><a class="md-github__anchor" name="table-of-contents" href="#table-of-contents"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Table of Contents</h2>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Process Events</p>
+<ul class="md-github">
+<li class="md-github">beforeExit: <code class="md-github">process.on('beforeExit', (code: number) =&gt; void)</code></li>
+<li class="md-github">exit: <code class="md-github">process.on('exit', (code: number) =&gt; void)</code></li>
+<li class="md-github">disconnect: <code class="md-github">process.on('disconnect', () =&gt; void)</code></li>
+<li class="md-github">message: <code class="md-github">process.on('message', (message, sendHandle) =&gt; void)</code></li>
+<li class="md-github">multipleResolves: <code class="md-github">process.on('multipleResolves', (type: string, promise: Promise, reason: any) =&gt; void)</code></li>
+<li class="md-github">rejectionHandled: <code class="md-github">process.on('rejectionHandled', (promise: Promise) =&gt; void)</code></li>
+<li class="md-github">workerMessage: <code class="md-github">process.on('workerMessage', (value: any, source: number) =&gt; void)</code></li>
+<li class="md-github">uncaughtException: <code class="md-github">process.on('uncaughtException', (err: Error, origin: string) =&gt; void)</code></li>
+<li class="md-github">uncaughtExceptionMonitor: <code class="md-github">process.on('uncaughtExceptionMonitor', (err: Error, origin: string) =&gt; void)</code></li>
+<li class="md-github">unhandledRejection: <code class="md-github">process.on('unhandledRejection', (reason: any, promise: Promise) =&gt; void)</code></li>
+<li class="md-github">warning: <code class="md-github">process.on('warning', (warning: Error) =&gt; void)</code></li>
+<li class="md-github">worker: <code class="md-github">process.on('worker', (worker: Worker) =&gt; void)</code></li>
+<li class="md-github">Signal events: Attach listeners for SIGINT, SIGTERM, etc.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Process Methods and Properties</p>
+<ul class="md-github">
+<li class="md-github">abort(): <code class="md-github">process.abort()</code></li>
+<li class="md-github">allowedNodeEnvironmentFlags: Read-only Set, iterated via <code class="md-github">forEach</code></li>
+<li class="md-github">arch: Returns a string value e.g. 'x64'</li>
+<li class="md-github">argv &amp; argv0: Arrays of command-line arguments</li>
+<li class="md-github">channel: Provides methods <code class="md-github">ref()</code> and <code class="md-github">unref()</code> if IPC is in effect</li>
+<li class="md-github">chdir(directory: string): Changes the working directory</li>
+<li class="md-github">config: Frozen object representation of compile options</li>
+<li class="md-github">connected: Boolean indicating IPC connection state</li>
+<li class="md-github">constrainedMemory() and availableMemory(): Return number values (bytes)</li>
+<li class="md-github">cpuUsage([previousValue]): Returns <code class="md-github">{ user: number, system: number }</code></li>
+<li class="md-github">cwd(): Returns current working directory</li>
+<li class="md-github">debugPort: Number value for debugger port</li>
+<li class="md-github">disconnect(): Closes the IPC channel</li>
+<li class="md-github">dlopen(module, filename, [flags]): Loads shared objects</li>
+<li class="md-github">emitWarning(): Various signatures to emit warnings</li>
+</ul>
+</li>
+</ol>
+<h3 class="md-github"><a class="md-github__anchor" name="detailed-information-for-each-topic" href="#detailed-information-for-each-topic"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Detailed Information for Each Topic</h3>
+<p class="md-github"><strong class="md-github">Process Events:</strong></p>
+<ul class="md-github">
+<li class="md-github">beforeExit: Triggered when the event loop is empty. Use to schedule async work.</li>
+<li class="md-github">exit: Receives exit code; must execute only synchronous code.</li>
+<li class="md-github">disconnect: Fired when IPC channel is closed.</li>
+<li class="md-github">message: Handles messages via IPC. The serialized message can be Object, string, number, etc.</li>
+<li class="md-github">multipleResolves: Monitors multiple resolutions of a promise. Useful to detect coding errors.</li>
+<li class="md-github">rejectionHandled: Fired when an unhandled promise later gets a rejection handler.</li>
+<li class="md-github">uncaughtException &amp; uncaughtExceptionMonitor: Provides mechanisms to catch errors not caught by try/catch.</li>
+<li class="md-github">unhandledRejection: Catches rejected promises with no handler.</li>
+<li class="md-github">warning: Emitted for process warnings; can be custom or system warnings.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Process Methods and Properties:</strong></p>
+<ul class="md-github">
+<li class="md-github">abort(): Immediately terminates the process and generates a core dump.</li>
+<li class="md-github">allowedNodeEnvironmentFlags: Validates NODE_OPTIONS flags. Iteration yields flags with proper formatting.</li>
+<li class="md-github">arch: Returns CPU architecture string.</li>
+<li class="md-github">argv: Array where argv[0] is the node executable, argv[1] is the script name, etc.</li>
+<li class="md-github">argv0: Original value of argv[0].</li>
+<li class="md-github">channel.ref() and channel.unref(): Modify the behavior of IPC channel towards keeping the event loop alive.</li>
+<li class="md-github">chdir(directory): Changes working directory, throwing an exception if directory does not exist.</li>
+<li class="md-github">config: Includes detailed build configurations. Example structure provided.</li>
+<li class="md-github">cpuUsage(): Provides current CPU usage in microseconds.</li>
+<li class="md-github">dlopen(): Loads C++ Addons; requires module object, filename, and flag (default RTLD_LAZY unless overridden).</li>
+<li class="md-github">emitWarning(): Supports multiple argument signatures for emitting warnings.</li>
+</ul>
+<p class="md-github">This extract provides specific, immediately applicable, technical details complete with example code and exact parameter information.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="supplementary-technical-specifications" href="#supplementary-technical-specifications"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Technical Specifications</h3>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Method Signatures and Parameters:</strong></p>
+<ul class="md-github">
+<li class="md-github">process.on(event: string, listener: Function): Adds an event listener for the specified event.</li>
+<li class="md-github">process.abort(): void</li>
+<li class="md-github">process.allowedNodeEnvironmentFlags: Set<string> (read-only)</li>
+<li class="md-github">process.arch: string</li>
+<li class="md-github">process.argv: string[]</li>
+<li class="md-github">process.argv0: string</li>
+<li class="md-github">process.chdir(directory: string): void</li>
+<li class="md-github">process.cpuUsage(previousValue?: { user: number, system: number }): { user: number, system: number }</li>
+<li class="md-github">process.dlopen(module: Object, filename: string, flags?: number): void</li>
+<li class="md-github">process.emitWarning(warning: string|Error, options?: { type?: string, code?: string, detail?: string, ctor?: Function }): void</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Configuration Options and Defaults:</strong></p>
+<ul class="md-github">
+<li class="md-github">dlopen flags: Defaults to os.constants.dlopen.RTLD_LAZY if not provided.</li>
+<li class="md-github">Warning options: Default type is 'Warning'; if a code is not given, no unique identifier is added.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Implementation Steps:</strong></p>
+<ul class="md-github">
+<li class="md-github">Attach event listeners as demonstrated in the examples.</li>
+<li class="md-github">Use synchronous cleanup within 'exit' and 'uncaughtException' handlers.</li>
+<li class="md-github">Validate inputs (e.g. for process.chdir) before invocation.</li>
+<li class="md-github">Use process.cpuUsage with a previous reading to measure delta times.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Best Practices:</strong></p>
+<ul class="md-github">
+<li class="md-github">Use process.on('unhandledRejection') to monitor for asynchronous errors.</li>
+<li class="md-github">Use process.emitWarning() with detailed messages and codes for clear diagnostics.</li>
+<li class="md-github">Avoid asynchronous operations in 'exit' event handlers.</li>
+<li class="md-github">For IPC channels, correctly manage refs via process.channel.ref() and process.channel.unref().</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Troubleshooting Procedures:</strong></p>
+<ul class="md-github">
+<li class="md-github">For unexpected exits, check synchronous execution in 'exit' listeners.</li>
+<li class="md-github">For memory issues, verify constrainedMemory() and availableMemory() outputs.</li>
+<li class="md-github">Use --trace-warnings or --throw-deprecation flags for detailed runtime diagnostics.</li>
+<li class="md-github">Monitor unhandled rejection maps to catch asynchronous errors.</li>
+</ul>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="complete-api-specifications-and-code-examples" href="#complete-api-specifications-and-code-examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Complete API Specifications and Code Examples</h3>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Event Listener API:</strong></p>
+<ul class="md-github">
+<li class="md-github">Syntax: <code class="md-github">process.on(event: string, listener: Function): process</code></li>
+<li class="md-github">Example:<pre class="md-github"><code class="md-github language-javascript">process.on('exit', (code: number): void =&gt; {
+  console.log(`About to exit with code: ${code}`);
+});
+</code></pre>
+</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">process.abort()</strong></p>
+<ul class="md-github">
+<li class="md-github">Signature: <code class="md-github">process.abort(): void</code></li>
+<li class="md-github">Usage: Immediately terminates the Node.js process and produces a core dump.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">process.allowedNodeEnvironmentFlags</strong></p>
+<ul class="md-github">
+<li class="md-github">Type: Read-only Set<string></li>
+<li class="md-github">Usage Example:<pre class="md-github"><code class="md-github language-javascript">import { allowedNodeEnvironmentFlags } from 'node:process';
+allowedNodeEnvironmentFlags.forEach((flag: string) =&gt; {
+  console.log(flag);
+});
+</code></pre>
+</li>
+<li class="md-github">Note: Iteration returns flags in standardized format (e.g. '--inspect-brk').</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">process.arch</strong></p>
+<ul class="md-github">
+<li class="md-github">Type: string</li>
+<li class="md-github">Possible Values: 'arm', 'arm64', 'ia32', 'loong64', 'mips', 'mipsel', 'ppc', 'ppc64', 'riscv64', 's390', 's390x', 'x64'</li>
+<li class="md-github">Example:<pre class="md-github"><code class="md-github language-javascript">import { arch } from 'node:process';
+console.log(`Architecture: ${arch}`);
+</code></pre>
+</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">process.argv &amp; process.argv0</strong></p>
+<ul class="md-github">
+<li class="md-github">process.argv: Array of strings</li>
+<li class="md-github">process.argv0: string (read-only original argv[0])</li>
+<li class="md-github">Example:<pre class="md-github"><code class="md-github language-javascript">import { argv, argv0 } from 'node:process';
+argv.forEach((val, index) =&gt; {
+  console.log(`${index}: ${val}`);
+});
+console.log('Original argv0:', argv0);
+</code></pre>
+</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">IPC Channel Methods (process.channel)</strong></p>
+<ul class="md-github">
+<li class="md-github">Methods:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">process.channel.ref(): void</code></li>
+<li class="md-github"><code class="md-github">process.channel.unref(): void</code></li>
+</ul>
+</li>
+<li class="md-github">Usage: Ensure the IPC channel keeps or releases the event loop as needed.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">process.chdir(directory)</strong></p>
+<ul class="md-github">
+<li class="md-github">Signature: <code class="md-github">process.chdir(directory: string): void</code></li>
+<li class="md-github">Throws an exception if the directory does not exist.</li>
+<li class="md-github">Example:<pre class="md-github"><code class="md-github language-javascript">import { chdir, cwd } from 'node:process';
+console.log(`Current: ${cwd()}`);
+try {
+  chdir('/tmp');
+  console.log(`Changed to: ${cwd()}`);
+} catch (err) {
+  console.error(`Error: ${err}`);
+}
+</code></pre>
+</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">process.config</strong></p>
+<ul class="md-github">
+<li class="md-github">Type: Object (Frozen)</li>
+<li class="md-github">Contains build configuration (see sample output in section 2).</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">process.cpuUsage()</strong></p>
+<ul class="md-github">
+<li class="md-github">Signature: <code class="md-github">process.cpuUsage(previousValue?: { user: number, system: number }): { user: number, system: number }</code></li>
+<li class="md-github">Use: To measure CPU consumption; pass a previous reading to get a diff.</li>
+<li class="md-github">Example:<pre class="md-github"><code class="md-github language-javascript">import { cpuUsage } from 'node:process';
+const start = cpuUsage();
+// ... perform tasks
+console.log(cpuUsage(start));
+</code></pre>
+</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">process.dlopen(module, filename, [flags])</strong></p>
+<ul class="md-github">
+<li class="md-github">Signature: <code class="md-github">process.dlopen(module: Object, filename: string, flags?: number): void</code></li>
+<li class="md-github">Flags: Default is os.constants.dlopen.RTLD_LAZY. Can be set to os.constants.dlopen.RTLD_NOW for immediate symbol resolution.</li>
+<li class="md-github">Example:<pre class="md-github"><code class="md-github language-javascript">import { dlopen } from 'node:process';
+import { constants } from 'node:os';
+import { fileURLToPath } from 'node:url';
+const module = { exports: {} };
+dlopen(module, fileURLToPath(new URL('local.node', import.meta.url)), constants.dlopen.RTLD_NOW);
+module.exports.foo();
+</code></pre>
+</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">process.emitWarning()</strong></p>
+<ul class="md-github">
+<li class="md-github">Signatures:
+<ol class="md-github">
+<li class="md-github"><code class="md-github">process.emitWarning(warning: string|Error, { type?: string, code?: string, detail?: string, ctor?: Function }): void</code></li>
+<li class="md-github"><code class="md-github">process.emitWarning(warning: string|Error, type?: string, code?: string, ctor?: Function): void</code></li>
+</ol>
+</li>
+<li class="md-github">Example using options:<pre class="md-github"><code class="md-github language-javascript">import process from 'node:process';
+process.emitWarning('Something happened!', {
+  code: 'MY_WARNING',
+  detail: 'Additional detail about the warning'
+});
+</code></pre>
+</li>
+<li class="md-github">Example using separate arguments:<pre class="md-github"><code class="md-github language-javascript">import process from 'node:process';
+process.emitWarning('Something happened!', 'CustomWarning', 'WARN001');
+</code></pre>
+</li>
+</ul>
+</li>
+</ol>
+<p class="md-github"><strong class="md-github">Troubleshooting:</strong></p>
+<ul class="md-github">
+<li class="md-github">Use command-line flags:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">--no-warnings</code> to suppress warnings output while still emitting events.</li>
+<li class="md-github"><code class="md-github">--trace-warnings</code> to get a full stack trace for warnings.</li>
+<li class="md-github"><code class="md-github">--throw-deprecation</code> to convert deprecation warnings into exceptions.</li>
+</ul>
+</li>
+<li class="md-github">Examine the outputs from <code class="md-github">process.cpuUsage()</code>, <code class="md-github">process.constrainedMemory()</code>, and <code class="md-github">process.availableMemory()</code> for resource monitoring.</li>
+<li class="md-github">Ensure that in 'exit' listeners, only synchronous code executes.</li>
+</ul>
+<p class="md-github">This detailed reference serves as a complete guide for developers to implement, configure, and troubleshoot usage of the Node.js Process API without needing additional external references.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Node.js Process Documentation
+https://nodejs.org/api/process.html</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-node_process" href="#digest-of-node_process"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of NODE_PROCESS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="nodejs-process-documentation" href="#nodejs-process-documentation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Node.js Process Documentation</h1>
+<p class="md-github"><strong class="md-github">Retrieved on:</strong> 2023-10-27</p>
+<p class="md-github">This document contains the full technical details extracted directly from the Node.js Process API documentation. It includes complete API specifications, method signatures with parameters and return types, full code examples, configuration options with exact values and effects, and detailed troubleshooting procedures.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="table-of-contents-1" href="#table-of-contents-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Table of Contents</h1>
+<ol class="md-github">
+<li class="md-github">Process Overview</li>
+<li class="md-github">Process Events
+<ul class="md-github">
+<li class="md-github">beforeExit</li>
+<li class="md-github">exit</li>
+<li class="md-github">disconnect</li>
+<li class="md-github">message</li>
+<li class="md-github">multipleResolves</li>
+<li class="md-github">rejectionHandled</li>
+<li class="md-github">workerMessage</li>
+<li class="md-github">uncaughtException</li>
+<li class="md-github">uncaughtExceptionMonitor</li>
+<li class="md-github">unhandledRejection</li>
+<li class="md-github">warning</li>
+<li class="md-github">worker</li>
+<li class="md-github">Signal Events</li>
+</ul>
+</li>
+<li class="md-github">Process Methods and Properties
+<ul class="md-github">
+<li class="md-github">process.abort()</li>
+<li class="md-github">process.allowedNodeEnvironmentFlags</li>
+<li class="md-github">process.arch</li>
+<li class="md-github">process.argv &amp; process.argv0</li>
+<li class="md-github">process.channel and its methods (ref, unref)</li>
+<li class="md-github">process.chdir(directory)</li>
+<li class="md-github">process.config</li>
+<li class="md-github">process.connected</li>
+<li class="md-github">process.constrainedMemory()</li>
+<li class="md-github">process.availableMemory()</li>
+<li class="md-github">process.cpuUsage([previousValue])</li>
+<li class="md-github">process.cwd()</li>
+<li class="md-github">process.debugPort</li>
+<li class="md-github">process.disconnect()</li>
+<li class="md-github">process.dlopen(module, filename[, flags])</li>
+<li class="md-github">process.emitWarning()</li>
+</ul>
+</li>
+<li class="md-github">Detailed Code Examples</li>
+</ol>
+<h1 class="md-github"><a class="md-github__anchor" name="1-process-overview" href="#1-process-overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Process Overview</h1>
+<p class="md-github">The Node.js <code class="md-github">process</code> object provides information about the current Node.js process. It is an instance of an EventEmitter and exposes a variety of properties and methods that allow detailed control over the process lifecycle, including event handling for process events and access to low-level process information.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="2-process-events" href="#2-process-events"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Process Events</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="beforeexit" href="#beforeexit"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>beforeExit</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Emitted when Node.js empties its event loop and has no additional work scheduled. Listeners can schedule asynchronous work.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.on('beforeExit', (code: number) =&gt; void)</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">Code Example:</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">import process from 'node:process';
+
+process.on('beforeExit', (code) =&gt; {
+  console.log('Process beforeExit event with code:', code);
+});
+
+process.on('exit', (code) =&gt; {
+  console.log('Process exit event with code:', code);
+});
+
+console.log('This message is displayed first.');
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="exit" href="#exit"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>exit</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Emitted when the process is about to exit, either when <code class="md-github">process.exit()</code> is called or when no more work is scheduled. Listeners receive the exit code.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.on('exit', (code: number) =&gt; void)</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">Code Example:</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">import process from 'node:process';
+
+process.on('exit', (code) =&gt; {
+  console.log(`About to exit with code: ${code}`);
+});
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="disconnect" href="#disconnect"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>disconnect</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Emitted when the IPC channel is closed (applicable when spawned with an IPC channel).</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.on('disconnect', () =&gt; void)</code></li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="message" href="#message"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>message</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Emitted for incoming messages on an IPC channel.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.on('message', (message: Object|string|number|boolean|null, sendHandle?: Object) =&gt; void)</code></li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="multipleresolves" href="#multipleresolves"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>multipleResolves</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Emitted when a Promise has been resolved or rejected more than once.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.on('multipleResolves', (type: string, promise: Promise&lt;any&gt;, reason: any) =&gt; void)</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">Code Example:</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">import process from 'node:process';
+
+process.on('multipleResolves', (type, promise, reason) =&gt; {
+  console.error(type, promise, reason);
+  setImmediate(() =&gt; process.exit(1));
+});
+
+async function main() {
+  try {
+    return await new Promise((resolve, reject) =&gt; {
+      resolve('First call');
+      resolve('Swallowed resolve');
+      reject(new Error('Swallowed reject'));
+    });
+  } catch {
+    throw new Error('Failed');
+  }
+}
+
+main().then(console.log);
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="rejectionhandled" href="#rejectionhandled"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>rejectionHandled</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Emitted when a previously unhandled rejection gets a handler.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.on('rejectionHandled', (promise: Promise&lt;any&gt;) =&gt; void)</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">Code Example:</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">import process from 'node:process';
+
+const unhandledRejections = new Map();
+process.on('unhandledRejection', (reason, promise) =&gt; {
+  unhandledRejections.set(promise, reason);
+});
+process.on('rejectionHandled', (promise) =&gt; {
+  unhandledRejections.delete(promise);
+});
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="workermessage" href="#workermessage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>workerMessage</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Emitted on receiving a message from another worker thread via <code class="md-github">postMessageToThread()</code>.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.on('workerMessage', (value: any, source: number) =&gt; void)</code></li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="uncaughtexception" href="#uncaughtexception"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>uncaughtException</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Emitted when an exception is thrown but not caught, allowing a custom handler to override the default behavior.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.on('uncaughtException', (err: Error, origin: string) =&gt; void)</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">Code Example:</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">import process from 'node:process';
+import fs from 'node:fs';
+
+process.on('uncaughtException', (err, origin) =&gt; {
+  fs.writeSync(process.stderr.fd, `Caught exception: ${err}\nException origin: ${origin}\n`);
+});
+
+// This will cause an uncaught exception
+nonexistentFunc();
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="uncaughtexceptionmonitor" href="#uncaughtexceptionmonitor"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>uncaughtExceptionMonitor</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Emitted before an <code class="md-github">uncaughtException</code> event, useful for monitoring without altering default behavior.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.on('uncaughtExceptionMonitor', (err: Error, origin: string) =&gt; void)</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">Code Example:</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">import process from 'node:process';
+
+process.on('uncaughtExceptionMonitor', (err, origin) =&gt; {
+  MyMonitoringTool.logSync(err, origin);
+});
+
+nonexistentFunc();
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="unhandledrejection" href="#unhandledrejection"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>unhandledRejection</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Emitted when a promise is rejected without a <code class="md-github">.catch()</code> handler.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.on('unhandledRejection', (reason: any, promise: Promise&lt;any&gt;) =&gt; void)</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">Code Example:</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">import process from 'node:process';
+
+process.on('unhandledRejection', (reason, promise) =&gt; {
+  console.log('Unhandled Rejection at:', promise, 'reason:', reason);
+});
+
+somePromise.then((res) =&gt; {
+  return reportToUser(JSON.parse(res));
+});
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="warning" href="#warning"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>warning</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Emitted for process warnings including custom warnings emitted via <code class="md-github">process.emitWarning()</code>.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.on('warning', (warning: Error) =&gt; void)</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">Code Example:</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">import process from 'node:process';
+
+process.on('warning', (warning) =&gt; {
+  console.warn(warning.name);
+  console.warn(warning.message);
+  console.warn(warning.stack);
+});
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="worker" href="#worker"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>worker</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Emitted after a new Worker thread is created.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.on('worker', (worker: Worker) =&gt; void)</code></li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="signal-events" href="#signal-events"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Signal Events</h2>
+<p class="md-github">Signals such as SIGINT, SIGTERM, etc. are handled by attaching listeners. For example:</p>
+<pre class="md-github"><code class="md-github language-javascript">import process from 'node:process';
+
+function handle(signal) {
+  console.log(`Received ${signal}`);
+}
+
+process.on('SIGINT', handle);
+process.on('SIGTERM', handle);
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="3-process-methods-and-properties" href="#3-process-methods-and-properties"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. Process Methods and Properties</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="processabort" href="#processabort"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.abort()</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Causes the process to exit immediately and generate a core dump.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.abort(): void</code></li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="processallowednodeenvironmentflags" href="#processallowednodeenvironmentflags"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.allowedNodeEnvironmentFlags</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> A read-only Set of flags that are allowable in the NODE_OPTIONS environment variable.</li>
+<li class="md-github"><strong class="md-github">Usage Example:</strong></li>
+</ul>
+<pre class="md-github"><code class="md-github language-javascript">import { allowedNodeEnvironmentFlags } from 'node:process';
+
+allowedNodeEnvironmentFlags.forEach((flag) =&gt; {
+  console.log(flag);
+});
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="processarch" href="#processarch"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.arch</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> The operating system CPU architecture for which Node.js is compiled.</li>
+<li class="md-github"><strong class="md-github">Type:</strong> <code class="md-github">string</code> (Possible values: 'arm', 'arm64', 'ia32', 'loong64', 'mips', 'mipsel', 'ppc', 'ppc64', 'riscv64', 's390', 's390x', 'x64')</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="processargv--processargv0" href="#processargv--processargv0"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.argv &amp; process.argv0</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">process.argv</strong>: An array of command-line arguments. The first element is the Node executable path, the second is the script path, followed by additional arguments.</li>
+<li class="md-github"><strong class="md-github">process.argv0</strong>: A read-only copy of the original argv[0].</li>
+</ul>
+<p class="md-github"><strong class="md-github">Example:</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">import { argv, argv0 } from 'node:process';
+
+argv.forEach((val, index) =&gt; {
+  console.log(`${index}: ${val}`);
+});
+
+console.log('Original argv0:', argv0);
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="processchannel" href="#processchannel"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.channel</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> If spawned with an IPC channel, <code class="md-github">process.channel</code> holds the reference. It provides methods:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">process.channel.ref()</code>: Makes the IPC channel keep the event loop active.</li>
+<li class="md-github"><code class="md-github">process.channel.unref()</code>: Allows the process to exit even if the channel is open.</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="processchdirdirectory" href="#processchdirdirectory"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.chdir(directory)</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Changes the current working directory.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.chdir(directory: string): void</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">Example:</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">import { chdir, cwd } from 'node:process';
+console.log(`Starting directory: ${cwd()}`);
+try {
+  chdir('/tmp');
+  console.log(`New directory: ${cwd()}`);
+} catch (err) {
+  console.error(`chdir: ${err}`);
+}
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="processconfig" href="#processconfig"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.config</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Read-only frozen object containing the configuration options used to compile Node.js.</li>
+<li class="md-github"><strong class="md-github">Example Output:</strong></li>
+</ul>
+<pre class="md-github"><code class="md-github language-json">{
+  &quot;target_defaults&quot;: {
+    &quot;cflags&quot;: [],
+    &quot;default_configuration&quot;: &quot;Release&quot;,
+    &quot;defines&quot;: [],
+    &quot;include_dirs&quot;: [],
+    &quot;libraries&quot;: []
+  },
+  &quot;variables&quot;: {
+    &quot;host_arch&quot;: &quot;x64&quot;,
+    &quot;napi_build_version&quot;: 5,
+    &quot;node_install_npm&quot;: &quot;true&quot;,
+    &quot;node_prefix&quot;: &quot;&quot;,
+    &quot;node_shared_cares&quot;: &quot;false&quot;,
+    &quot;node_shared_http_parser&quot;: &quot;false&quot;,
+    &quot;node_shared_libuv&quot;: &quot;false&quot;,
+    &quot;node_shared_zlib&quot;: &quot;false&quot;,
+    &quot;node_use_openssl&quot;: &quot;true&quot;,
+    &quot;node_shared_openssl&quot;: &quot;false&quot;,
+    &quot;target_arch&quot;: &quot;x64&quot;,
+    &quot;v8_use_snapshot&quot;: 1
+  }
+}
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="processconnected" href="#processconnected"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.connected</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Indicates if the IPC channel is connected. Type: <code class="md-github">boolean</code>.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="processconstrainedmemory--processavailablememory" href="#processconstrainedmemory--processavailablememory"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.constrainedMemory() &amp; process.availableMemory()</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Experimental methods to retrieve available memory in bytes.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">process.constrainedMemory(): number</code></li>
+<li class="md-github"><code class="md-github">process.availableMemory(): number</code></li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="processcpuusagepreviousvalue" href="#processcpuusagepreviousvalue"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.cpuUsage([previousValue])</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Returns an object with CPU usage in microseconds. If <code class="md-github">previousValue</code> is supplied, returns the diff.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.cpuUsage(previousValue?: { user: number, system: number }): { user: number, system: number }</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">Example:</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">import { cpuUsage } from 'node:process';
+
+const startUsage = cpuUsage();
+// Perform CPU intensive task
+while (Date.now() % 2 === 0) {}
+
+console.log(cpuUsage(startUsage));
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="processcwd" href="#processcwd"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.cwd()</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Returns the current working directory.</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.cwd(): string</code></li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="processdebugport" href="#processdebugport"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.debugPort</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> The port used by the Node.js debugger (type: number).</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="processdisconnect" href="#processdisconnect"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.disconnect()</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Disconnects the IPC channel (if applicable).</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="processdlopenmodule-filename-flags" href="#processdlopenmodule-filename-flags"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.dlopen(module, filename[, flags])</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Dynamically loads shared objects (used by require() for C++ Addons).</li>
+<li class="md-github"><strong class="md-github">Signature:</strong> <code class="md-github">process.dlopen(module: Object, filename: string, flags?: number): void</code></li>
+<li class="md-github"><strong class="md-github">Flags:</strong> Default is <code class="md-github">os.constants.dlopen.RTLD_LAZY</code> unless specified otherwise.</li>
+</ul>
+<p class="md-github"><strong class="md-github">Example:</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">import { dlopen } from 'node:process';
+import { constants } from 'node:os';
+import { fileURLToPath } from 'node:url';
+
+const module = { exports: {} };
+// Load addon with RTLD_NOW flag
+dlopen(module, fileURLToPath(new URL('local.node', import.meta.url)), constants.dlopen.RTLD_NOW);
+module.exports.foo();
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="processemitwarning" href="#processemitwarning"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>process.emitWarning()</h2>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Description:</strong> Emits a process warning. Can be used with various signatures.</li>
+<li class="md-github"><strong class="md-github">Signature 1:</strong> <code class="md-github">process.emitWarning(warning: string | Error, options?: { type?: string, code?: string, detail?: string, ctor?: Function }): void</code></li>
+<li class="md-github"><strong class="md-github">Signature 2:</strong> <code class="md-github">process.emitWarning(warning: string | Error, type?: string, code?: string, ctor?: Function): void</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">Example 1 (using options object):</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">import process from 'node:process';
+
+process.emitWarning('Something happened!', {
+  code: 'MY_WARNING',
+  detail: 'This is some additional information'
+});
+</code></pre>
+<p class="md-github"><strong class="md-github">Example 2 (using separate arguments):</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">import process from 'node:process';
+
+process.emitWarning('Something happened!', 'CustomWarning', 'WARN001');
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="4-detailed-code-examples--best-practices" href="#4-detailed-code-examples--best-practices"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Detailed Code Examples &amp; Best Practices</h1>
+<ul class="md-github">
+<li class="md-github">Always use synchronous operations in 'exit' event handlers as asynchronous operations are abandoned.</li>
+<li class="md-github">For uncaught exceptions, perform only synchronous cleanup. Do not attempt to continue normal execution.</li>
+<li class="md-github">When using <code class="md-github">process.emitWarning()</code>, provide specific codes and detail to help with troubleshooting.</li>
+<li class="md-github">Use <code class="md-github">process.cpuUsage()</code> with a previous value to measure CPU consumption differences.</li>
+<li class="md-github">Validate directory existence before using <code class="md-github">process.chdir()</code> to avoid exceptions.</li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="troubleshooting-procedures" href="#troubleshooting-procedures"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting Procedures</h1>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Unexpected Process Exit:</strong></p>
+<ul class="md-github">
+<li class="md-github">Check for synchronous calls in 'exit' event handlers.</li>
+<li class="md-github">Verify that no asynchronous operations are scheduled in 'exit'.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Unhandled Promise Rejections:</strong></p>
+<ul class="md-github">
+<li class="md-github">Attach a global handler using <code class="md-github">process.on('unhandledRejection', ...)</code> to log and monitor.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Memory Issues:</strong></p>
+<ul class="md-github">
+<li class="md-github">Use <code class="md-github">process.constrainedMemory()</code> and <code class="md-github">process.availableMemory()</code> to determine available resources.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Debugging IPC Issues:</strong></p>
+<ul class="md-github">
+<li class="md-github">Ensure <code class="md-github">process.channel</code> exists and use <code class="md-github">ref()</code> or <code class="md-github">unref()</code> appropriately.</li>
+<li class="md-github">Confirm that disconnection events are handled using <code class="md-github">process.on('disconnect', ...).</code></li>
+</ul>
+</li>
+</ol>
+<h1 class="md-github"><a class="md-github__anchor" name="attribution--data-size" href="#attribution--data-size"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution &amp; Data Size</h1>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Data Size:</strong> 4361016 bytes</li>
+<li class="md-github"><strong class="md-github">Links Found:</strong> 3274</li>
+<li class="md-github"><strong class="md-github">Source:</strong> https://nodejs.org/api/process.html</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Node.js Process Documentation</li>
+<li class="md-github">URL: https://nodejs.org/api/process.html</li>
+<li class="md-github">License: License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-04-21T02:21:28.688Z</li>
+<li class="md-github">Data Size: 4361016 bytes</li>
+<li class="md-github">Links Found: 3274</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-21</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-21T02:48:58.164Z</p>
+  </footer>
+</body>
+</html>
