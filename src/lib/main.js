@@ -130,6 +130,12 @@ export function main(args) {
   // Log the provided CLI arguments
   logCLIArgs(args);
 
+  // Handle reset log flag if present
+  if (args.includes("--reset-log")) {
+    resetMemoryLog();
+    console.log("Memory log has been reset.");
+  }
+
   // Check for help-seeking flag and process it
   if (args.includes("--help-seeking")) {
     handleHelpSeeking();
@@ -153,8 +159,10 @@ export function main(args) {
   // Capture end time and log the execution duration
   const endTime = performance.now();
   const execTime = logExecutionTime(startTime, endTime);
-  // Update the last log entry with execution time
-  memoryLog[memoryLog.length - 1].execTime = execTime;
+  // Update the last log entry with execution time only if it exists
+  if (memoryLog.length > 0) {
+    memoryLog[memoryLog.length - 1].execTime = execTime;
+  }
 
   // If '--persist-log' flag is provided, output the complete in-memory log as a JSON string
   if (args.includes("--persist-log")) {

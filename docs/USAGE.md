@@ -28,6 +28,8 @@ This document explains how to use the CLI tool provided by `repository0-crucible
   (Test: Run `node src/lib/main.js --replicate` and `node src/lib/main.js --replicate 5` to verify the number of reported replication tasks.)
 - Help-Seeking: The `--help-seeking` flag triggers a mode where the application outputs a message indicating that it is seeking help. (Test: Run `node src/lib/main.js --help-seeking` and check that the help-seeking message is logged.)
 - Persist File: By using the `--persist-file` flag, the CLI will write the in-memory log to a file named `memory_log.json` in the current working directory. (Test: Run `node src/lib/main.js --persist-file` and verify that the file exists and contains the expected log data.)
+- Reset Log: The new `--reset-log` flag clears the current in-memory log. This can be useful for troubleshooting or resetting the CLI state between sessions.
+  (Test: Run `node src/lib/main.js --reset-log` and verify that the CLI outputs "Memory log has been reset." and that subsequent calls to retrieve the memory log return an empty array.)
 
 ## Running the CLI
 
@@ -195,6 +197,16 @@ Example:
   Run with: ["--persist-file"]
   Execution time: X ms
   Memory log persisted to memory_log.json
+
+### Invocation with Reset Log Flag
+
+To clear the in-memory log, run:
+
+  node src/lib/main.js --reset-log
+
+This will reset the CLI session's memory log to an empty state, which is useful for troubleshooting or starting afresh. The CLI will output:
+
+  Memory log has been reset.
 
 ## Testing
 
