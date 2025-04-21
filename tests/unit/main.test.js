@@ -193,7 +193,7 @@ describe("Goal Decomposition Feature", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     main(["--decompose", "Plan new product launch"]);
     // Expected logs:
-    // 1: Run with: ["--decompose","Plan new product launch"]
+    // 1: Run with: ["--decompose", "Plan new product launch"]
     // 2: Decomposing goal: Plan new product launch
     // 3: 1. Define objectives
     // 4: 2. Identify key milestones
@@ -236,5 +236,32 @@ describe("Memory Log Feature", () => {
     expect(log.length).toBe(2);
     expect(log[0]).toHaveProperty('args', ["first"]);
     expect(log[1]).toHaveProperty('args', ["second"]);
+  });
+});
+
+describe("Persistent Log Feature", () => {
+  beforeEach(() => {
+    resetMemoryLog();
+  });
+
+  test("should output a valid JSON memory log when '--persist-log' flag is provided", () => {
+    const spy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--persist-log"]);
+    // Expected logs:
+    // 1: Run with: ["--persist-log"]
+    // 2: Execution time: ... ms
+    // 3: JSON string of the memory log
+    expect(spy).toHaveBeenCalledTimes(3);
+    expect(spy.mock.calls[0][0]).toBe('Run with: ["--persist-log"]');
+    expect(spy.mock.calls[1][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
+    const jsonOutput = spy.mock.calls[2][0];
+    let parsed;
+    expect(() => { parsed = JSON.parse(jsonOutput); }).not.toThrow();
+    expect(Array.isArray(parsed)).toBe(true);
+    if (parsed.length > 0) {
+      expect(parsed[0]).toHaveProperty('args');
+      expect(parsed[0]).toHaveProperty('timestamp');
+    }
+    spy.mockRestore();
   });
 });
