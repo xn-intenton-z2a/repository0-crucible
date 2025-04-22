@@ -11,7 +11,7 @@ You can run the CLI using Node.js. The basic command format is:
 - --help: Display detailed help information including usage instructions.
 - --version: Display the current version from package.json.
 - --diagnostics: Display runtime diagnostics information.
-- --capital-cities: Output a JSON formatted list of capital cities.
+- --capital-cities: Output an OWL compliant JSON representation of capital cities, with keys "type" and "cities".
 - --crawl: Simulate crawling public data sources for JSON data. (Simulated behavior)
 - --query-owl: Simulate querying an OWL ontology and return a sample JSON response.
 
@@ -24,7 +24,8 @@ This CLI tool provides the following core functionalities:
 - Simulating data crawling from public sources (--crawl).
 - Simulating an OWL ontology query and returning a sample JSON response (--query-owl).
 - Displaying runtime diagnostics to check system status (--diagnostics).
-- Outputting a JSON formatted list of capital cities (--capital-cities).
+- Outputting an OWL compliant JSON representation of capital cities (--capital-cities) 
+  which includes a "type" key with the value "CapitalCitiesOWL" and a "cities" key with an array of city names.
 
 ### Example Commands
 
@@ -53,7 +54,7 @@ This CLI tool provides the following core functionalities:
   node src/lib/main.js --diagnostics
   ```
 
-- Output a list of capital cities in JSON format:
+- Output OWL compliant capital cities information:
   ```bash
   node src/lib/main.js --capital-cities
   ```

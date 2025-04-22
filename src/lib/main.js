@@ -8,13 +8,21 @@ async function crawlData() {
   // Simulated crawl: in a real implementation, data would be fetched and processed here.
 }
 
+function displayCapitalCities() {
+  const owlCompliance = {
+    type: "CapitalCitiesOWL",
+    cities: ["Washington, D.C.", "London", "Tokyo"]
+  };
+  console.log(JSON.stringify(owlCompliance));
+}
+
 export async function main(args) {
   // If the '--query-owl' flag is present, immediately output a sample OWL query JSON response
   if (args.includes("--query-owl")) {
     console.log(
       JSON.stringify({
         result: "Sample OWL query response",
-        data: [],
+        data: []
       })
     );
     return;
@@ -44,7 +52,7 @@ Options:
   --help             Display detailed help information.
   --version          Display current version information.
   --diagnostics      Display runtime diagnostics information.
-  --capital-cities   Output a JSON list of capital cities.
+  --capital-cities   Output an OWL compliant JSON representation of capital cities.
   --crawl            Simulate crawling public data sources for JSON data.
   --query-owl        Simulate querying an OWL ontology and return sample JSON data.
 
@@ -69,11 +77,7 @@ Example:
 
   // Check if the '--capital-cities' flag is present
   if (args.includes("--capital-cities")) {
-    console.log(
-      JSON.stringify({
-        capitals: ["Washington, D.C.", "London", "Tokyo"],
-      })
-    );
+    displayCapitalCities();
     return;
   }
 
