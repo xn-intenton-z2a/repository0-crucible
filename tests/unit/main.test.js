@@ -29,4 +29,12 @@ describe("Main Output", () => {
     expect(consoleSpy).toHaveBeenCalledWith("Feature demo enabled");
     consoleSpy.mockRestore();
   });
+
+  test("should output both messages when flag '--demo-verbose' is provided", () => {
+    const consoleSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--demo-verbose"]);
+    expect(consoleSpy).toHaveBeenNthCalledWith(1, "Feature demo enabled");
+    expect(consoleSpy).toHaveBeenNthCalledWith(2, "Verbose mode is active");
+    consoleSpy.mockRestore();
+  });
 });

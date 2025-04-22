@@ -23,6 +23,19 @@ When either of these flags is provided, the CLI will output the message:
 
   Feature demo enabled
 
+### Feature Flag: demo verbose
+
+In addition to the default demo mode, you can enable verbose mode by passing the following flag:
+
+  --demo-verbose
+
+When this flag is provided, the CLI will output two messages:
+
+  1. Feature demo enabled
+  2. Verbose mode is active
+
+This mode is useful for additional logging details during execution.
+
 ### Default Behavior
 
 If no feature flag is provided, the CLI will output the arguments passed, e.g.,
@@ -42,3 +55,11 @@ If no feature flag is provided, the CLI will output the arguments passed, e.g.,
   or
 
   node src/lib/main.js --enable-demo
+
+- Enabling the demo feature with verbose mode:
+
+  node src/lib/main.js --demo-verbose
+
+## Additional Information
+
+Refer to other documentation for more detailed usage and integration guidelines.
