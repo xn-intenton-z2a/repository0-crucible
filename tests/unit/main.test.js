@@ -66,8 +66,6 @@ describe("Query OWL Flag", () => {
     };
     await main(["--query-owl"]);
     console.log = originalLog;
-
-    // Assert that the output is valid JSON and contains the expected response
     let parsed;
     try {
       parsed = JSON.parse(captured);
@@ -94,7 +92,7 @@ describe("Diagnostics Flag", () => {
 });
 
 describe("Capital Cities Flag", () => {
-  test("should output JSON formatted list of capital cities", async () => {
+  test("should output OWL compliant JSON representation of capital cities", async () => {
     const originalLog = console.log;
     let captured = "";
     console.log = (msg) => {
@@ -109,7 +107,9 @@ describe("Capital Cities Flag", () => {
     } catch (e) {
       throw new Error("Output is not valid JSON");
     }
-    expect(parsed).toHaveProperty("capitals");
-    expect(Array.isArray(parsed.capitals)).toBe(true);
+    expect(parsed).toHaveProperty("type", "CapitalCitiesOWL");
+    expect(parsed).toHaveProperty("cities");
+    expect(Array.isArray(parsed.cities)).toBe(true);
+    expect(parsed.cities.length).toBeGreaterThan(0);
   });
 });
