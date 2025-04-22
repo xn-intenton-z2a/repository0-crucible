@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="sparql_query" href="#sparql_query"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SPARQL_QUERY</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">SPARQL 1.1 Query Language W3C Recommendation (21 March 2013) including exact syntax specifications for IRIs, literals, query variables, blank nodes, and triple pattern constructs. Contains detailed sections on query forms (SELECT, CONSTRUCT, ASK, DESCRIBE), RDF term grammar, use of BASE and PREFIX for IRI resolution, full filter usage with regex and arithmetic operators, and complete code examples with data and result sets.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">DOCUMENT STRUCTURE
+<ul class="md-github">
+<li class="md-github">Namespace declarations, data descriptions in Turtle, and RDF term definitions.</li>
+</ul>
+</li>
+<li class="md-github">QUERY FORMS
+<ul class="md-github">
+<li class="md-github">SELECT: Example: SELECT ?title WHERE { <a href="http://example.org/book/book1" class="md-github">http://example.org/book/book1</a> dc:title ?title } returns 'SPARQL Tutorial'.</li>
+<li class="md-github">CONSTRUCT: Format with graph building; template triples become output RDF graph.</li>
+<li class="md-github">ASK and DESCRIBE: Defined with precise expected behavior.</li>
+</ul>
+</li>
+<li class="md-github">RDF TERM SYNTAX
+<ul class="md-github">
+<li class="md-github">IRIs: Use IRIREF definitions, prefixed names (PREFIX book: <a href="http://example.org/book/" class="md-github">http://example.org/book/</a>, book:book1 resolves accordingly), and relative IRIs using BASE.</li>
+<li class="md-github">Literals: Syntax allows double or single quotes, optional language tags (&quot;chat&quot;@fr) and datatype IRI using ^^ (&quot;1&quot;^^xsd:integer).</li>
+<li class="md-github">Variables: Noted with ? or $, e.g., ?var.</li>
+<li class="md-github">Blank Nodes: Represented as _:[label] or abbreviated with [].</li>
+</ul>
+</li>
+<li class="md-github">TRIPLE PATTERN SYNTAX
+<ul class="md-github">
+<li class="md-github">Single triple: Subject, Predicate, Object pattern (e.g., <a href="http://example.org/book/book1" class="md-github">http://example.org/book/book1</a> dc:title ?title).</li>
+<li class="md-github">Predicate-Object lists using semicolon;</li>
+<li class="md-github">Object Lists using comma for shared subject and predicate.</li>
+</ul>
+</li>
+<li class="md-github">EXPRESSIONS AND FILTERS
+<ul class="md-github">
+<li class="md-github">Filters using regex: e.g., FILTER regex(?title, '^SPARQL') and numeric comparisons: FILTER (?price &lt; 30.5).</li>
+</ul>
+</li>
+<li class="md-github">EXTRACTION OF VALUES
+<ul class="md-github">
+<li class="md-github">Use of BIND and assignment expressions: BIND(CONCAT(?G, ' ', ?S) AS ?name).</li>
+</ul>
+</li>
+<li class="md-github">ADVANCED GRAMMAR DETAILS
+<ul class="md-github">
+<li class="md-github">Includes full grammar for IRIs, blank nodes and handling escapes in SPARQL local names.</li>
+</ul>
+</li>
+<li class="md-github">CODE EXAMPLES
+<ul class="md-github">
+<li class="md-github">Detailed query examples with associated data and expected results provided inline with comments.
+Each entry includes exact syntax, configuration using BASE and PREFIX, and concrete examples directly applicable by developers.</li>
+</ul>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Technical Specifications:</p>
+<ul class="md-github">
+<li class="md-github">Namespace and BASE declaration:
+BASE <a href="http://example.org/book/" class="md-github">http://example.org/book/</a>
+PREFIX dc: <a href="http://purl.org/dc/elements/1.1/" class="md-github">http://purl.org/dc/elements/1.1/</a>
+PREFIX book: <a href="http://example.org/book/" class="md-github">http://example.org/book/</a></li>
+<li class="md-github">IRIs: Must be enclosed in &lt;&gt; or defined via PREFIX. Example: <a href="http://example.org/book/book1" class="md-github">http://example.org/book/book1</a> or book:book1.</li>
+<li class="md-github">Literals: Exact forms include &quot;text&quot;; language tags appended with @ (e.g., &quot;chat&quot;@fr); typed literals with ^^ (e.g., &quot;42&quot;^^xsd:integer).</li>
+<li class="md-github">Query Variables: Identified with ? or $.</li>
+<li class="md-github">Triple Patterns: Written as subject predicate object. Abbreviations include use of ';' for multiple predicates for the same subject, and ',' for multiple objects for the same predicate.</li>
+<li class="md-github">Query examples:
+Data: @prefix dc: <a href="http://purl.org/dc/elements/1.1/" class="md-github">http://purl.org/dc/elements/1.1/</a> .
+<a href="http://example.org/book/book1" class="md-github">http://example.org/book/book1</a> dc:title &quot;SPARQL Tutorial&quot; .
+Query: SELECT ?title WHERE { <a href="http://example.org/book/book1" class="md-github">http://example.org/book/book1</a> dc:title ?title }.</li>
+<li class="md-github">Filter expressions: Use regex with optional flags (e.g., i for case-insensitivity), numeric comparisons, and string functions such as CONCAT, str, and language tag matches.</li>
+<li class="md-github">Blank Nodes: Represented as _:<label> or []. Unique labels are auto-generated if omitted.</li>
+<li class="md-github">Detailed troubleshooting:
+<ul class="md-github">
+<li class="md-github">Validate query syntax using SPARQL grammar rules.</li>
+<li class="md-github">Ensure BASE and PREFIX declarations are correctly specified to resolve relative IRIs.</li>
+<li class="md-github">Confirm literal datatypes (xsd:integer, xsd:decimal, xsd:double) are used as per data expectations.</li>
+<li class="md-github">Use of FILTER conditions must match exact literal forms; mismatches in language tags or datatypes will result in no solution.</li>
+</ul>
+</li>
+<li class="md-github">Configuration options:
+<ul class="md-github">
+<li class="md-github">BASE URI: Default from retrieval URI if not provided explicitly.</li>
+<li class="md-github">PREFIX mappings: Must be unique and correctly resolved.</li>
+<li class="md-github">SPARQL Query processors should implement full grammar as per section 19 of the specification.</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API and SDK-like Specifications for SPARQL Query Language:</p>
+<p class="md-github">// Query method signature example:
+// Function: executeSPARQLQuery
+// Parameters:
+//   query: string - The SPARQL query to be executed.
+//   dataset: RDFGraph - The RDF dataset against which the query is run.
+// Returns: QueryResult - An object containing variable bindings, RDF graph for CONSTRUCT queries, or boolean for ASK queries.
+// Throws: SyntaxError if query is malformed, QueryExecutionError if dataset does not match grammar.</p>
+<p class="md-github">function executeSPARQLQuery(query: string, dataset: RDFGraph): QueryResult</p>
+<p class="md-github">// Example usage:
+// Data setup in Turtle:
+// @prefix dc: <a href="http://purl.org/dc/elements/1.1/" class="md-github">http://purl.org/dc/elements/1.1/</a> .
+// <a href="http://example.org/book/book1" class="md-github">http://example.org/book/book1</a> dc:title &quot;SPARQL Tutorial&quot; .</p>
+<p class="md-github">// Query example:
+// SELECT ?title WHERE { <a href="http://example.org/book/book1" class="md-github">http://example.org/book/book1</a> dc:title ?title }
+// Expected result: { title: &quot;SPARQL Tutorial&quot; }</p>
+<p class="md-github">// Full configuration options for SPARQL processor:
+// - BASE: Set using BASE <URI> (default from retrieval context if absent).
+// - PREFIX declarations: Map prefix labels to IRIs (e.g., PREFIX book: <a href="http://example.org/book/" class="md-github">http://example.org/book/</a>).
+// - Query modes: SELECT (returns table of bindings), CONSTRUCT (returns RDF graph), ASK (returns boolean), DESCRIBE (returns resource descriptions).</p>
+<p class="md-github">// Troubleshooting procedure:
+// 1. Run query with debug mode enabled to output intermediate parsed AST.
+// 2. Validate namespace resolution: Confirm all PREFIX mappings resolve to a valid IRI.
+// 3. Check FILTER expressions: Run regex separately ensuring pattern and flags are accurate.
+// 4. For blank node discrepancies, compare query results with expected auto-generated labels.
+// 5. Command to test query using CLI tool:
+//    $ sparql-client --query 'SELECT ?title WHERE { <a href="http://example.org/book/book1" class="md-github">http://example.org/book/book1</a> dc:title ?title }' --data dataset.ttl
+// Expected output: A JSON with key &quot;title&quot; and value &quot;SPARQL Tutorial&quot;.</p>
+<p class="md-github">// Best practices:
+// - Always include explicit BASE and PREFIX declarations to avoid ambiguity.
+// - Use typed literals explicitly for numeric comparisons: e.g., 42 is equivalent to &quot;42&quot;^^xsd:integer.
+// - When using BIND and expressions, ensure correct concatenation and string function usage without extraneous whitespace.
+// - Validate the SPARQL grammar using available validators before deployment.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">SPARQL 1.1, W3C Rec 21-Mar-2013, BASE <a href="http://example.org/book/" class="md-github">http://example.org/book/</a>, PREFIX dc: <a href="http://purl.org/dc/elements/1.1/" class="md-github">http://purl.org/dc/elements/1.1/</a>, IRIs: <a href="http://example.org/book/book1" class="md-github">http://example.org/book/book1</a> resolves via PREFIX, Literals: &quot;text&quot;, &quot;chat&quot;@fr, &quot;42&quot;^^xsd:integer; Variables: ? and $; Blank Nodes: _:<label> or []; Triple Patterns: subject predicate object, use of ';' and ',' for grouping; Query forms: SELECT, CONSTRUCT, ASK, DESCRIBE; FILTER functions: regex(?title, '^SPARQL', 'i'), numeric filters (?price &lt; 30.5); Expression assignment: BIND(CONCAT(?G, ' ', ?S) AS ?name); API signature: executeSPARQLQuery(query: string, dataset: RDFGraph): QueryResult; Troubleshooting: Use CLI tools, debug AST, validate namespace mappings.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">DOCUMENT STRUCTURE
+<ul class="md-github">
+<li class="md-github">Namespace declarations, data descriptions in Turtle, and RDF term definitions.</li>
+</ul>
+</li>
+<li class="md-github">QUERY FORMS
+<ul class="md-github">
+<li class="md-github">SELECT: Example: SELECT ?title WHERE { <a href="http://example.org/book/book1" class="md-github">http://example.org/book/book1</a> dc:title ?title } returns 'SPARQL Tutorial'.</li>
+<li class="md-github">CONSTRUCT: Format with graph building; template triples become output RDF graph.</li>
+<li class="md-github">ASK and DESCRIBE: Defined with precise expected behavior.</li>
+</ul>
+</li>
+<li class="md-github">RDF TERM SYNTAX
+<ul class="md-github">
+<li class="md-github">IRIs: Use IRIREF definitions, prefixed names (PREFIX book: <a href="http://example.org/book/" class="md-github">http://example.org/book/</a>, book:book1 resolves accordingly), and relative IRIs using BASE.</li>
+<li class="md-github">Literals: Syntax allows double or single quotes, optional language tags ('chat'@fr) and datatype IRI using ^^ ('1'^^xsd:integer).</li>
+<li class="md-github">Variables: Noted with ? or $, e.g., ?var.</li>
+<li class="md-github">Blank Nodes: Represented as _:[label] or abbreviated with [].</li>
+</ul>
+</li>
+<li class="md-github">TRIPLE PATTERN SYNTAX
+<ul class="md-github">
+<li class="md-github">Single triple: Subject, Predicate, Object pattern (e.g., <a href="http://example.org/book/book1" class="md-github">http://example.org/book/book1</a> dc:title ?title).</li>
+<li class="md-github">Predicate-Object lists using semicolon;</li>
+<li class="md-github">Object Lists using comma for shared subject and predicate.</li>
+</ul>
+</li>
+<li class="md-github">EXPRESSIONS AND FILTERS
+<ul class="md-github">
+<li class="md-github">Filters using regex: e.g., FILTER regex(?title, '^SPARQL') and numeric comparisons: FILTER (?price &lt; 30.5).</li>
+</ul>
+</li>
+<li class="md-github">EXTRACTION OF VALUES
+<ul class="md-github">
+<li class="md-github">Use of BIND and assignment expressions: BIND(CONCAT(?G, ' ', ?S) AS ?name).</li>
+</ul>
+</li>
+<li class="md-github">ADVANCED GRAMMAR DETAILS
+<ul class="md-github">
+<li class="md-github">Includes full grammar for IRIs, blank nodes and handling escapes in SPARQL local names.</li>
+</ul>
+</li>
+<li class="md-github">CODE EXAMPLES
+<ul class="md-github">
+<li class="md-github">Detailed query examples with associated data and expected results provided inline with comments.
+Each entry includes exact syntax, configuration using BASE and PREFIX, and concrete examples directly applicable by developers.</li>
+</ul>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">SPARQL 1.1 Query Language
+https://www.w3.org/TR/sparql11-query/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-sparql_query" href="#digest-of-sparql_query"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of SPARQL_QUERY</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="sparql-11-query-language-specification" href="#sparql-11-query-language-specification"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SPARQL 1.1 Query Language Specification</h1>
+<p class="md-github">Retrieved on: 2023-11-24</p>
+<h2 class="md-github"><a class="md-github__anchor" name="overview" href="#overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
+<p class="md-github">This document contains the precise technical details of the SPARQL 1.1 Query Language as defined by the W3C Recommendation (21 March 2013). It includes the grammar, query forms, RDF term syntax, triple pattern constructs, query examples with both data and results, and the full table of contents with section-level specifications.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="key-sections" href="#key-sections"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Key Sections</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="1-document-structure-and-conventions" href="#1-document-structure-and-conventions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Document Structure and Conventions</h3>
+<ul class="md-github">
+<li class="md-github">Document Outline: Sections 1 to 22 and Appendices</li>
+<li class="md-github">Namespace declarations and data descriptions in Turtle format</li>
+<li class="md-github">Definitions for RDF Terms, Simple Literals, blank nodes, IRIs, and query variables</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="2-query-forms-and-basic-graph-patterns" href="#2-query-forms-and-basic-graph-patterns"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Query Forms and Basic Graph Patterns</h3>
+<ul class="md-github">
+<li class="md-github">SELECT query: returns variable bindings (e.g., SELECT ?title WHERE { <a href="http://example.org/book/book1" class="md-github">http://example.org/book/book1</a> dc:title ?title }).</li>
+<li class="md-github">CONSTRUCT query: returns an RDF graph built from a template.</li>
+<li class="md-github">ASK and DESCRIBE query forms are documented with their precise semantics.</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="3-rdf-term-syntax" href="#3-rdf-term-syntax"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. RDF Term Syntax</h3>
+<ul class="md-github">
+<li class="md-github">IRIs: Syntax defined by IRIREF with examples of absolute, relative, and prefixed names. Example:
+BASE <a href="http://example.org/book/" class="md-github">http://example.org/book/</a>
+PREFIX book: <a href="http://example.org/book/" class="md-github">http://example.org/book/</a>
+Example: book:book1 translates to http://example.org/book/book1</li>
+<li class="md-github">Literals: Detailed syntax for string literals with language tags and datatype specifiers. Examples:
+&quot;chat&quot; vs. &quot;chat&quot;@fr
+&quot;1&quot;^^xsd:integer vs. 1</li>
+<li class="md-github">Query Variables: Denoted with '?' or '$' (e.g., ?abc, $abc are identical).</li>
+<li class="md-github">Blank Nodes: Syntax using [] and explicit labels (e.g., _:[label]).</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="4-triple-pattern-syntax" href="#4-triple-pattern-syntax"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Triple Pattern Syntax</h3>
+<ul class="md-github">
+<li class="md-github">Single triple pattern: <a href="http://example.org/book/book1" class="md-github">http://example.org/book/book1</a> dc:title ?title</li>
+<li class="md-github">Predicate-Object Lists using ';'.</li>
+<li class="md-github">Object Lists using ','.</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="5-sparql-expressions-and-filters" href="#5-sparql-expressions-and-filters"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. SPARQL Expressions and Filters</h3>
+<ul class="md-github">
+<li class="md-github">FILTER expressions apply functions like regex, arithmetic constraints, and logical conditions.</li>
+<li class="md-github">Examples include matching literals with language tags and numeric types:
+SELECT ?v WHERE { ?v ?p &quot;cat&quot;@en }
+SELECT ?v WHERE { ?v ?p 42 }</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="6-advanced-patterns-and-aggregations" href="#6-advanced-patterns-and-aggregations"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6. Advanced Patterns and Aggregations</h3>
+<ul class="md-github">
+<li class="md-github">Optional patterns (using OPTIONAL keyword) and negation constructs (FILTER NOT EXISTS, MINUS).</li>
+<li class="md-github">Assignment using BIND and direct expression in SELECT clauses (e.g., CONCAT(?G, &quot; &quot;, ?S) AS ?name).</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="7-sparql-grammar-specifications" href="#7-sparql-grammar-specifications"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7. SPARQL Grammar Specifications</h3>
+<ul class="md-github">
+<li class="md-github">Complete grammar rules provided for RDF terms, IRIs, literals, triple patterns, and blank nodes.</li>
+<li class="md-github">Detailed explanations of prefixed names, relative IRIs, and how SPARQL resolves them using the BASE keyword.</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="8-code-examples" href="#8-code-examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>8. Code Examples</h3>
+<ul class="md-github">
+<li class="md-github">Data example in Turtle and matching query examples with expected result sets.</li>
+<li class="md-github">Full sample on creating RDF graphs using CONSTRUCT queries with serialization in RDF/XML.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution-and-data-size" href="#attribution-and-data-size"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution and Data Size</h2>
+<ul class="md-github">
+<li class="md-github">Crawled data size: 98912517 bytes</li>
+<li class="md-github">Total links processed: 107140</li>
+<li class="md-github">No errors encountered during crawl.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: SPARQL 1.1 Query Language</li>
+<li class="md-github">URL: https://www.w3.org/TR/sparql11-query/</li>
+<li class="md-github">License: License: W3C Document Notice</li>
+<li class="md-github">Crawl Date: 2025-04-22T04:48:48.716Z</li>
+<li class="md-github">Data Size: 98912517 bytes</li>
+<li class="md-github">Links Found: 107140</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-22</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-22T05:25:04.730Z</p>
+  </footer>
+</body>
+</html>
