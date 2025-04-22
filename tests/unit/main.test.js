@@ -1,6 +1,7 @@
 import { describe, test, expect } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main } from "@src/lib/main.js";
+import pkg from "../../package.json" assert { type: "json" };
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -9,8 +10,20 @@ describe("Main Module Import", () => {
 });
 
 describe("Main Output", () => {
-  test("should terminate without error", () => {
-    process.argv = ["node", "src/lib/main.js"];
-    main();
+  test("should terminate without error", async () => {
+    // Simulate a call without any special flags
+    // We pass an empty array of arguments
+    await main([]);
+  });
+});
+
+describe("Version Flag", () => {
+  test("should output the version from package.json", async () => {
+    const originalLog = console.log;
+    let captured = "";
+    console.log = (msg) => { captured += msg; };
+    await main(["--version"]);
+    console.log = originalLog;
+    expect(captured).toContain(pkg.version);
   });
 });

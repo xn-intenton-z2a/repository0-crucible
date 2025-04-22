@@ -3,11 +3,27 @@
 
 import { fileURLToPath } from "url";
 
-export function main(args) {
+export async function main(args) {
+  // Check if the '--version' flag is present
+  if (args.includes("--version")) {
+    try {
+      // Dynamically import package.json with JSON assertion
+      const pkgModule = await import("../../package.json", { assert: { type: "json" } });
+      const pkg = pkgModule.default || pkgModule;
+      console.log(pkg.version);
+      return;
+    } catch (err) {
+      console.error("Error reading version:", err);
+      process.exit(1);
+    }
+  }
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  main(args);
+  main(args).catch(err => {
+    console.error(err);
+    process.exit(1);
+  });
 }
