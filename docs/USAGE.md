@@ -12,6 +12,7 @@ You can run the CLI using Node.js. The basic command format is:
 --version          Display the current version from package.json.
 --diagnostics      Display diagnostics information.
 --capital-cities   Display capital cities data.
+--crawl            Simulate crawling public data sources for JSON data.
 
 ### Example Commands
 
@@ -23,6 +24,11 @@ You can run the CLI using Node.js. The basic command format is:
 - Display version:
   ```bash
   node src/lib/main.js --version
+  ```
+
+- Simulate data crawling:
+  ```bash
+  node src/lib/main.js --crawl
   ```
 
 - Default demo output:
