@@ -1,7 +1,7 @@
 import { describe, test, expect } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main } from "@src/lib/main.js";
-import pkg from "../../../package.json" assert { type: "json" };
+import pkg from "../../package.json" assert { type: "json" };
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
