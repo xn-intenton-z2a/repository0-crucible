@@ -3,6 +3,11 @@
 
 import { fileURLToPath } from "url";
 
+async function crawlData() {
+  console.log("Crawling data from public data sources...");
+  // Simulated crawl: in a real implementation, data would be fetched and processed here.
+}
+
 export async function main(args) {
   // Check if the '--version' flag is present
   if (args.includes("--version")) {
@@ -29,11 +34,18 @@ Options:
   --version          Display current version information.
   --diagnostics      Display diagnostics information.
   --capital-cities   Display capital cities data.
+  --crawl            Simulate crawling public data sources for JSON data.
 
 Example:
   node src/lib/main.js --help
 `;
     console.log(helpMessage.trim());
+    return;
+  }
+
+  // Check if the '--crawl' flag is present
+  if (args.includes("--crawl")) {
+    await crawlData();
     return;
   }
 

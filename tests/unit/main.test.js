@@ -39,3 +39,14 @@ describe("Help Flag", () => {
     expect(captured).toContain("CLI Help");
   });
 });
+
+describe("Crawl Flag", () => {
+  test("should simulate crawling public data sources", async () => {
+    const originalLog = console.log;
+    let captured = "";
+    console.log = (msg) => { captured += msg; };
+    await main(["--crawl"]);
+    console.log = originalLog;
+    expect(captured).toContain("Crawling data from public data sources...");
+  });
+});
