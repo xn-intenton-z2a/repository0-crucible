@@ -24,270 +24,219 @@
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="eslint_doc" href="#eslint_doc"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ESLINT_DOC</h1>
 <h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
-<p class="md-github">The crawled ESLint documentation details are organized into several key areas: project usage, extension via custom rules and plugins, Node.js API integration, contribution and maintainer guidelines, as well as CLI configuration. Key technical details include JSON configuration formats, CLI command options (e.g., --fix, --format), Node.js API usage with the ESLint class (methods such as lintFiles, loadFormatter, outputFixes), and exact code samples for both custom rule creation and Node.js integration.</p>
+<p class="md-github">ESLint documentation provides detailed technical guidelines including CLI commands, configuration file structure, and integration methods. Key technical points include core rule configuration, automatic fix commands (<code class="md-github">eslint --fix</code>), custom rule plugin development with specified folder and export structures, Node.js API usage with method <code class="md-github">ESLint.lintFiles()</code>, and a clearly outlined table of topics covering project usage, extension, integration, contribution, and maintenance.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
 <h2 class="md-github"><a class="md-github__anchor" name="table-of-contents" href="#table-of-contents"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Table of Contents</h2>
 <ol class="md-github">
-<li class="md-github">Use ESLint in Your Project
+<li class="md-github">
+<p class="md-github">Use ESLint in Your Project</p>
 <ul class="md-github">
-<li class="md-github">Configuration file examples (.eslintrc.json) with exact syntax</li>
-<li class="md-github">CLI command options: <code class="md-github">--fix</code>, <code class="md-github">--format</code>, <code class="md-github">--config</code></li>
+<li class="md-github">Core Rules</li>
+<li class="md-github">CLI Command Options</li>
+<li class="md-github">Formatter Integration</li>
+<li class="md-github">Migration Guidelines</li>
 </ul>
 </li>
-<li class="md-github">Extend ESLint
+<li class="md-github">
+<p class="md-github">Extend ESLint</p>
 <ul class="md-github">
-<li class="md-github">Custom rule module example with full meta, create function, and context.report usage</li>
+<li class="md-github">Custom Rule Development</li>
+<li class="md-github">Plugin and Formatter Creation</li>
+<li class="md-github">Export Signature: <code class="md-github">module.exports = { create: function(context) { ... } }</code></li>
 </ul>
 </li>
-<li class="md-github">Integrate ESLint
+<li class="md-github">
+<p class="md-github">Integrate ESLint</p>
 <ul class="md-github">
-<li class="md-github">Node.js API: Creating an instance of ESLint, linting files, auto-fixing, and formatting output</li>
-<li class="md-github">Exact code example provided</li>
+<li class="md-github">Node.js API: <code class="md-github">ESLint.lintFiles(files: string[]): Promise&lt;LintResult[]&gt;</code></li>
+<li class="md-github">SDK Example with asynchronous method calls</li>
 </ul>
 </li>
-<li class="md-github">Contribute to ESLint
+<li class="md-github">
+<p class="md-github">Contribute to ESLint</p>
 <ul class="md-github">
-<li class="md-github">Development environment setup including cloning, npm install, and testing procedures</li>
+<li class="md-github">Repository Structure (directory layout, test suites)</li>
+<li class="md-github">Environment Setup Commands: <code class="md-github">git clone</code>, <code class="md-github">npm install</code>, <code class="md-github">npm test</code></li>
 </ul>
 </li>
-<li class="md-github">Maintain ESLint
+<li class="md-github">
+<p class="md-github">Maintain ESLint</p>
 <ul class="md-github">
-<li class="md-github">Guidelines for release processes and versioning</li>
+<li class="md-github">Versioning, Release Note Procedures</li>
+<li class="md-github">Bug Fix and Patch Management</li>
 </ul>
 </li>
-<li class="md-github">CLI and Configuration
+<li class="md-github">
+<p class="md-github">CLI and Configuration (Detailed)</p>
 <ul class="md-github">
-<li class="md-github">Details for command line usage and configuration file formats</li>
-</ul>
-</li>
-<li class="md-github">Node.js API Integration
-<ul class="md-github">
-<li class="md-github">Detailed ESLint class API including method signatures and expected return types</li>
+<li class="md-github">Exact CLI options: <code class="md-github">--init</code>, <code class="md-github">--fix</code>, <code class="md-github">--config &lt;path&gt;</code>, <code class="md-github">--format &lt;name&gt;</code></li>
+<li class="md-github">Configuration file content with JSON structure and key-value pairs (e.g., <code class="md-github">env</code>, <code class="md-github">extends</code>, <code class="md-github">rules</code>)</li>
 </ul>
 </li>
 </ol>
-<h3 class="md-github"><a class="md-github__anchor" name="detailed-technical-information" href="#detailed-technical-information"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Detailed Technical Information</h3>
-<ul class="md-github">
-<li class="md-github">JSON configuration example:
-{
-&quot;env&quot;: { &quot;browser&quot;: true, &quot;node&quot;: true },
-&quot;extends&quot;: &quot;eslint:recommended&quot;,
-&quot;rules&quot;: { &quot;no-unused-vars&quot;: &quot;error&quot;, &quot;semi&quot;: [&quot;error&quot;, &quot;always&quot;] }
-}</li>
-<li class="md-github">Custom Rule Example:<pre class="md-github"><code class="md-github language-js">module.exports = {
-  meta: {
-    type: &quot;problem&quot;,
-    docs: {
-       description: &quot;disallow use of foo&quot;,
-       category: &quot;Best Practices&quot;,
-       recommended: true
-    },
-    schema: []
-  },
-  create: function(context) {
-    return {
-       Identifier(node) {
-         if (node.name === 'foo') {
-           context.report({ node, message: &quot;Usage of 'foo' is not allowed.&quot; });
-         }
-       }
-    };
-  }
-};
-</code></pre>
-</li>
-<li class="md-github">Node.js API Integration Code:<pre class="md-github"><code class="md-github language-js">const { ESLint } = require('eslint');
+<p class="md-github"><strong class="md-github">Detailed Implementation for Node.js API Integration Example:</strong></p>
+<pre class="md-github"><code class="md-github language-javascript">const { ESLint } = require('eslint');
 
 (async function main() {
-    const eslint = new ESLint({ fix: true, overrideConfigFile: '.eslintrc.json' });
-    const results = await eslint.lintFiles(['src/**/*.js']);
-    await ESLint.outputFixes(results);
-    const formatter = await eslint.loadFormatter('stylish');
-    console.log(formatter.format(results));
-})().catch((error) =&gt; {
-    process.exitCode = 1;
-    console.error(error);
-});
+  // Instantiate ESLint with options
+  const eslint = new ESLint({
+    overrideConfigFile: '.eslintrc.json',
+    fix: true
+  });
+
+  // Lint matching files
+  const results = await eslint.lintFiles(['src/**/*.js']);
+
+  // Load a formatter
+  const formatter = await eslint.loadFormatter('stylish');
+  const resultText = formatter.format(results);
+  console.log(resultText);
+})();
 </code></pre>
-</li>
-<li class="md-github">CLI Usage:
-<code class="md-github">eslint --fix --format stylish src/**/*.js</code></li>
-</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
-<h3 class="md-github"><a class="md-github__anchor" name="eslint-configuration-options" href="#eslint-configuration-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ESLint Configuration Options</h3>
+<h3 class="md-github"><a class="md-github__anchor" name="cli-usage" href="#cli-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Usage</h3>
 <ul class="md-github">
-<li class="md-github">Environments (<code class="md-github">env</code>): e.g., { &quot;browser&quot;: true, &quot;node&quot;: true }</li>
-<li class="md-github">Extends: &quot;eslint:recommended&quot;</li>
-<li class="md-github">Parser Options: e.g., { &quot;ecmaVersion&quot;: 2020, &quot;sourceType&quot;: &quot;module&quot; }</li>
-<li class="md-github">Rules Definitions: e.g.,<pre class="md-github"><code class="md-github language-json">{
-  &quot;no-unused-vars&quot;: &quot;error&quot;,
-  &quot;semi&quot;: [&quot;error&quot;, &quot;always&quot;]
-}
-</code></pre>
-</li>
+<li class="md-github">Execute <code class="md-github">eslint --fix file.js</code> to auto-correct errors.</li>
+<li class="md-github">Use <code class="md-github">eslint --init</code> to generate a configuration.</li>
+<li class="md-github">Specify custom config files with <code class="md-github">eslint --config ./.eslintrc.json</code>.</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="custom-rule-implementation-steps" href="#custom-rule-implementation-steps"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Custom Rule Implementation Steps</h3>
-<ol class="md-github">
-<li class="md-github">Create a JavaScript module exporting an object with <code class="md-github">meta</code> and <code class="md-github">create</code>.</li>
-<li class="md-github">Define <code class="md-github">meta</code> with <code class="md-github">docs</code>, <code class="md-github">schema</code>, and rule type.</li>
-<li class="md-github">Implement <code class="md-github">create(context)</code> returning visitor methods (e.g., for Identifier nodes).</li>
-<li class="md-github">Use <code class="md-github">context.report()</code> to report violations.</li>
-</ol>
-<h3 class="md-github"><a class="md-github__anchor" name="nodejs-api-for-eslint" href="#nodejs-api-for-eslint"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Node.js API for ESLint</h3>
+<h3 class="md-github"><a class="md-github__anchor" name="configuration-file-details-eslintrcjson" href="#configuration-file-details-eslintrcjson"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration File Details (.eslintrc.json)</h3>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Constructor Options:</strong>
+<li class="md-github">env: { &quot;browser&quot;: true, &quot;node&quot;: true } defines runtime environments.</li>
+<li class="md-github">extends: &quot;eslint:recommended&quot; includes recommended rules.</li>
+<li class="md-github">rules: specify rule severity and parameters (e.g., &quot;semi&quot;: [&quot;error&quot;, &quot;always&quot;]).</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="nodejs-api-details" href="#nodejs-api-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Node.js API Details</h3>
 <ul class="md-github">
-<li class="md-github"><code class="md-github">overrideConfigFile</code>: string (path to ESLint config file, e.g., '.eslintrc.json')</li>
-<li class="md-github"><code class="md-github">fix</code>: boolean (default false, set true to auto-fix issues)</li>
+<li class="md-github">Class: ESLint</li>
+<li class="md-github">Method Signature: lintFiles(files: string[]): Promise&lt;LintResult[]&gt;</li>
+<li class="md-github">Example options: { fix: true, overrideConfigFile: 'path/to/config' }.</li>
 </ul>
-</li>
+<h3 class="md-github"><a class="md-github__anchor" name="development-and-contribution" href="#development-and-contribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Development and Contribution</h3>
+<ul class="md-github">
+<li class="md-github">Clone repository: <code class="md-github">git clone https://github.com/eslint/eslint.git</code></li>
+<li class="md-github">Dependency installation: <code class="md-github">npm install</code></li>
+<li class="md-github">Run tests: <code class="md-github">npm test</code></li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="troubleshooting-procedures" href="#troubleshooting-procedures"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting Procedures</h3>
-<ol class="md-github">
-<li class="md-github">Run <code class="md-github">eslint --debug file.js</code> to output detailed debugging logs.</li>
-<li class="md-github">Validate configuration file with a JSON linter.</li>
-<li class="md-github">For Node.js API errors, wrap asynchronous calls in try-catch and inspect error messages.</li>
-<li class="md-github">Check ESLint version compatibility using <code class="md-github">eslint -v</code>.</li>
-</ol>
 <h3 class="md-github"><a class="md-github__anchor" name="best-practices" href="#best-practices"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Best Practices</h3>
 <ul class="md-github">
-<li class="md-github">Always back up configuration before making changes.</li>
-<li class="md-github">Use version control to track configuration changes.</li>
-<li class="md-github">Incrementally apply fixes using the <code class="md-github">--fix</code> option and review changes before commit.</li>
+<li class="md-github">Always use the latest recommended configuration to catch potential syntax issues.</li>
+<li class="md-github">Integrate ESLint in CI pipelines for continuous monitoring.</li>
+<li class="md-github">Customize rules per project needs using configuration overrides.</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="troubleshooting-procedures" href="#troubleshooting-procedures"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting Procedures</h3>
+<ul class="md-github">
+<li class="md-github">To debug configuration issues, run: <code class="md-github">eslint --print-config file.js</code> and verify output.</li>
+<li class="md-github">Use verbose output: <code class="md-github">eslint -v</code> for version details and diagnostics.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
-<h2 class="md-github"><a class="md-github__anchor" name="full-api-specifications-and-code-examples" href="#full-api-specifications-and-code-examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Full API Specifications and Code Examples</h2>
-<h3 class="md-github"><a class="md-github__anchor" name="eslint-nodejs-api" href="#eslint-nodejs-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ESLint Node.js API</h3>
-<p class="md-github"><strong class="md-github">Class:</strong> ESLint</p>
-<p class="md-github"><strong class="md-github">Constructor:</strong></p>
-<pre class="md-github"><code class="md-github language-js">new ESLint(options: {
-  overrideConfigFile?: string,  // Path to config file
-  fix?: boolean,                // Apply fixes automatically
-  useEslintrc?: boolean,        // Whether to use .eslintrc.* files
-  baseConfig?: Object,          // Base configuration overrides
-  cwd?: string                  // Current working directory for configuration resolution
-}): ESLint
-</code></pre>
-<p class="md-github"><strong class="md-github">Methods:</strong></p>
-<ol class="md-github">
+<h3 class="md-github"><a class="md-github__anchor" name="complete-api-and-sdk-specifications" href="#complete-api-and-sdk-specifications"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Complete API and SDK Specifications</h3>
+<h4 class="md-github"><a class="md-github__anchor" name="nodejs-api-eslint-class" href="#nodejs-api-eslint-class"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Node.js API (ESLint Class)</h4>
+<ul class="md-github">
 <li class="md-github">
-<p class="md-github">lintFiles(patterns: string | string[]): Promise&lt;LintResult[]&gt;</p>
+<p class="md-github"><strong class="md-github">Class</strong>: ESLint</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Constructor Options</strong> (object):</p>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Parameters:</strong>
-<ul class="md-github">
-<li class="md-github">patterns: glob string or an array of glob strings</li>
+<li class="md-github">fix: boolean (default: false) – Automatically fix problems when set to true.</li>
+<li class="md-github">overrideConfigFile: string – Path to a custom ESLint configuration file.</li>
+<li class="md-github">extensions: string[] – Array of file extensions to lint (default includes .js, .jsx).</li>
 </ul>
 </li>
-<li class="md-github"><strong class="md-github">Returns:</strong> Promise resolving to an array of LintResult objects</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Methods</strong>:</p>
+</li>
+</ul>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">lintFiles(files: string[]): Promise&lt;LintResult[]&gt;</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">Parameters</strong>:
+<ul class="md-github">
+<li class="md-github">files (string[]): Array of file paths or glob patterns to lint.</li>
+</ul>
+</li>
+<li class="md-github"><strong class="md-github">Returns</strong>: Promise resolving to an array of LintResult objects.</li>
+<li class="md-github"><strong class="md-github">Exceptions</strong>: Throws error if file parsing fails.</li>
 </ul>
 </li>
 <li class="md-github">
 <p class="md-github">loadFormatter(format: string): Promise<Formatter></p>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Parameters:</strong>
+<li class="md-github"><strong class="md-github">Parameters</strong>:
 <ul class="md-github">
-<li class="md-github">format: string (e.g., 'stylish', 'json')</li>
+<li class="md-github">format (string): Formatter identifier (e.g., 'stylish').</li>
 </ul>
 </li>
-<li class="md-github"><strong class="md-github">Returns:</strong> Promise resolving to a Formatter object with a method <code class="md-github">format(results: LintResult[]): string</code></li>
-</ul>
-</li>
-<li class="md-github">
-<p class="md-github">outputFixes(results: LintResult[]): Promise<void></p>
-<ul class="md-github">
-<li class="md-github"><strong class="md-github">Purpose:</strong> Write output files with fixes applied</li>
+<li class="md-github"><strong class="md-github">Returns</strong>: Promise resolving to a Formatter object with a method <code class="md-github">format(results: LintResult[]): string</code>.</li>
 </ul>
 </li>
 </ol>
-<p class="md-github"><strong class="md-github">LintResult Object Structure:</strong></p>
-<pre class="md-github"><code class="md-github language-js">{
-  filePath: string,
-  messages: Array&lt;{
-     ruleId: string | null,
-     severity: number,       // 1 for warning, 2 for error
-     message: string,
-     line: number,
-     column: number,
-     nodeType?: string,
-     source?: string
-  }&gt;,
-  errorCount: number,
-  warningCount: number,
-  fixableErrorCount: number,
-  fixableWarningCount: number,
-  usedDeprecatedRules: Array&lt;{ ruleId: string, replacedBy: string[] }&gt;
-}
-</code></pre>
-<h3 class="md-github"><a class="md-github__anchor" name="full-code-example-for-using-eslint-programmatically" href="#full-code-example-for-using-eslint-programmatically"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Full Code Example for Using ESLint Programmatically</h3>
-<pre class="md-github"><code class="md-github language-js">// Import the ESLint class from the eslint package
+<h4 class="md-github"><a class="md-github__anchor" name="sample-code-example-with-full-comments" href="#sample-code-example-with-full-comments"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sample Code Example with Full Comments</h4>
+<pre class="md-github"><code class="md-github language-javascript">// Import ESLint from the ESLint package
 const { ESLint } = require('eslint');
 
 (async function main() {
   try {
-    // Create an instance with configuration options
+    // Initialize ESLint with custom configuration and auto-fix enabled
     const eslint = new ESLint({
-      overrideConfigFile: '.eslintrc.json',
       fix: true,
-      useEslintrc: true
+      overrideConfigFile: '.eslintrc.json'
     });
 
-    // Run the linter on files matching the provided glob pattern
+    // Lint all JavaScript files under 'src' directory
     const results = await eslint.lintFiles(['src/**/*.js']);
 
-    // Automatically apply fixes to files
-    await ESLint.outputFixes(results);
-
-    // Load a formatter to format lint results
+    // Load the 'stylish' formatter to format the lint results
     const formatter = await eslint.loadFormatter('stylish');
     const resultText = formatter.format(results);
+
+    // Output the formatted lint results
     console.log(resultText);
   } catch (error) {
-    // Troubleshooting: Log error details and exit with failure code
-    console.error('Error while linting:', error);
-    process.exitCode = 1;
+    // Output error details if linting fails
+    console.error('Error occurred during linting:', error);
   }
 })();
 </code></pre>
-<h3 class="md-github"><a class="md-github__anchor" name="cli-best-practices" href="#cli-best-practices"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Best Practices</h3>
+<h4 class="md-github"><a class="md-github__anchor" name="configuration-options-cli-and-json-file" href="#configuration-options-cli-and-json-file"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration Options (CLI and JSON file)</h4>
 <ul class="md-github">
-<li class="md-github">Run with <code class="md-github">eslint --fix</code> to auto-correct fixable issues.</li>
-<li class="md-github">Use <code class="md-github">eslint --init</code> to generate a basic configuration file interactively.</li>
-<li class="md-github">Debug using <code class="md-github">eslint --debug file.js</code> and inspect detailed logs.</li>
+<li class="md-github"><strong class="md-github">--init</strong>: Launches an interactive process to generate a configuration file.</li>
+<li class="md-github"><strong class="md-github">--fix</strong>: Enables auto-fixing of issues. Only fixes when safe to do so.</li>
+<li class="md-github"><strong class="md-github">--config</strong>: Specifies the config file path for ESLint.</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="configuration-file-example-eslintrcjson" href="#configuration-file-example-eslintrcjson"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration File Example (.eslintrc.json)</h3>
-<pre class="md-github"><code class="md-github language-json">{
-  &quot;env&quot;: {
-    &quot;browser&quot;: true,
-    &quot;node&quot;: true,
-    &quot;es6&quot;: true
-  },
-  &quot;extends&quot;: &quot;eslint:recommended&quot;,
-  &quot;parserOptions&quot;: {
-    &quot;ecmaVersion&quot;: 2020,
-    &quot;sourceType&quot;: &quot;module&quot;
-  },
-  &quot;rules&quot;: {
-    &quot;no-unused-vars&quot;: &quot;error&quot;,
-    &quot;semi&quot;: [&quot;error&quot;, &quot;always&quot;],
-    &quot;quotes&quot;: [&quot;error&quot;, &quot;double&quot;]
-  }
-}
-</code></pre>
-<h3 class="md-github"><a class="md-github__anchor" name="troubleshooting-commands" href="#troubleshooting-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting Commands</h3>
+<h4 class="md-github"><a class="md-github__anchor" name="troubleshooting-steps" href="#troubleshooting-steps"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting Steps</h4>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Run configuration print:
+Command: <code class="md-github">eslint --print-config file.js</code>
+Expected Output: Complete effective configuration in JSON format.</p>
+</li>
+<li class="md-github">
+<p class="md-github">Verbose Mode:
+Command: <code class="md-github">eslint file.js -v</code>
+Expected Output: Detailed diagnostic logs including version and rule debugging info.</p>
+</li>
+<li class="md-github">
+<p class="md-github">Check ESLint version:
+Command: <code class="md-github">eslint -v</code>
+Expected Output: Current ESLint version (e.g., v9.25.1).</p>
+</li>
+</ol>
+<h4 class="md-github"><a class="md-github__anchor" name="best-practices-1" href="#best-practices-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Best Practices</h4>
 <ul class="md-github">
-<li class="md-github">Check ESLint version: <code class="md-github">eslint -v</code></li>
-<li class="md-github">Validate config file: <code class="md-github">eslint --print-config file.js</code></li>
-<li class="md-github">Run ESLint in debug mode: <code class="md-github">eslint --debug file.js</code></li>
+<li class="md-github">Regularly update ESLint to incorporate new rules and fixes.</li>
+<li class="md-github">Use configuration overrides for project-specific rule adjustments.</li>
+<li class="md-github">Include linting in your CI workflow to prevent code quality regressions.</li>
+<li class="md-github">Document custom rule development with inline comments and consistent export patterns.</li>
 </ul>
-<p class="md-github">This specification provides developers with the concrete technical details needed to integrate, extend, and troubleshoot ESLint in various environments.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
-<p class="md-github">ESLint Documentation
+<p class="md-github">Code Quality Tools Documentation
 https://eslint.org/docs/latest/</p>
 <h2 class="md-github"><a class="md-github__anchor" name="digest-of-eslint_doc" href="#digest-of-eslint_doc"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of ESLINT_DOC</h2>
-<h1 class="md-github"><a class="md-github__anchor" name="eslint-documentation" href="#eslint-documentation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ESLINT Documentation</h1>
-<p class="md-github"><strong class="md-github">Retrieved Date:</strong> 2025-04-04</p>
-<h2 class="md-github"><a class="md-github__anchor" name="overview" href="#overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
-<p class="md-github">This document contains the complete technical details from the ESLint documentation found at https://eslint.org/docs/latest/.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="eslint-doc" href="#eslint-doc"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ESLINT DOC</h1>
+<p class="md-github"><strong class="md-github">Date Retrieved:</strong> 2025-04-21</p>
 <h2 class="md-github"><a class="md-github__anchor" name="table-of-contents-1" href="#table-of-contents-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Table of Contents</h2>
 <ol class="md-github">
 <li class="md-github">Use ESLint in Your Project</li>
@@ -296,196 +245,100 @@ https://eslint.org/docs/latest/</p>
 <li class="md-github">Contribute to ESLint</li>
 <li class="md-github">Maintain ESLint</li>
 <li class="md-github">CLI and Configuration</li>
-<li class="md-github">Node.js API Integration</li>
 </ol>
 <h2 class="md-github"><a class="md-github__anchor" name="1-use-eslint-in-your-project" href="#1-use-eslint-in-your-project"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Use ESLint in Your Project</h2>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Core Rules:</strong> A set of built-in rules to enforce JavaScript coding standards.</li>
-<li class="md-github"><strong class="md-github">Configuration Specification:</strong>
-<ul class="md-github">
-<li class="md-github">File: <code class="md-github">.eslintrc.json</code>, <code class="md-github">.eslintrc.js</code>, or YAML formats</li>
-<li class="md-github">Options include <code class="md-github">env</code>, <code class="md-github">extends</code>, <code class="md-github">rules</code>, <code class="md-github">parserOptions</code>.</li>
-<li class="md-github">Example:<pre class="md-github"><code class="md-github language-json">{
-  &quot;env&quot;: { &quot;browser&quot;: true, &quot;node&quot;: true },
-  &quot;extends&quot;: &quot;eslint:recommended&quot;,
-  &quot;rules&quot;: {
-     &quot;no-unused-vars&quot;: &quot;error&quot;,
-     &quot;semi&quot;: [&quot;error&quot;, &quot;always&quot;]
-  }
-}
-</code></pre>
-</li>
-</ul>
-</li>
-<li class="md-github"><strong class="md-github">Command Line Options:</strong>
-<ul class="md-github">
-<li class="md-github">Run ESLint using: <code class="md-github">eslint [options] file.js</code></li>
-<li class="md-github">Options include <code class="md-github">--fix</code>, <code class="md-github">--format</code>, <code class="md-github">--config</code>.</li>
-</ul>
-</li>
+<li class="md-github"><strong class="md-github">Core Rules &amp; Configuration</strong>: Detailed documentation covers ESLint's built-in rules, configuration file (e.g., .eslintrc.json) settings, and ways to set up the environment for JavaScript/JSX projects.</li>
+<li class="md-github"><strong class="md-github">Command Line Options</strong>: Commands such as <code class="md-github">eslint --fix &lt;file&gt;</code> are provided to automatically correct issues. Other options include <code class="md-github">--init</code> for generating configuration, <code class="md-github">--config &lt;filepath&gt;</code>, and <code class="md-github">--format &lt;name&gt;</code>.</li>
+<li class="md-github"><strong class="md-github">Formatters and Integrations</strong>: Guides include details on available formatters (like stylish, json) and integrating ESLint into IDEs and CI pipelines.</li>
+<li class="md-github"><strong class="md-github">Migration Guides</strong>: Step-by-step instructions are provided to migrate from earlier ESLint versions.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="2-extend-eslint" href="#2-extend-eslint"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Extend ESLint</h2>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Custom Rules:</strong> Create custom rule modules following ESLint's guidelines.
-<ul class="md-github">
-<li class="md-github">Rule signature:<pre class="md-github"><code class="md-github language-js">module.exports = {
-  meta: {
-    type: &quot;problem&quot;,
-    docs: {
-      description: &quot;disallow use of foo&quot;,
-      category: &quot;Best Practices&quot;,
-      recommended: true
-    },
-    schema: []
-  },
-  create: function(context) {
-    return {
-      Identifier(node) {
-        if (node.name === 'foo') {
-          context.report({ node, message: &quot;Usage of 'foo' is not allowed.&quot; });
-        }
-      }
-    };
-  }
-};
-</code></pre>
-</li>
-</ul>
-</li>
-<li class="md-github"><strong class="md-github">Plugins and Configurations:</strong>
-<ul class="md-github">
-<li class="md-github">Package your rules in a plugin and update configuration with the plugin name.</li>
-</ul>
-</li>
+<li class="md-github"><strong class="md-github">Custom Rules and Plugins</strong>: Instructions to develop custom rules with exact configuration and plugin development patterns. Includes file structure guidelines and expected export signatures for rule definitions.</li>
+<li class="md-github"><strong class="md-github">Configuration Extensions</strong>: How to extend base configurations using <code class="md-github">extends</code> property, e.g., <code class="md-github">&quot;eslint:recommended&quot;</code>.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="3-integrate-eslint" href="#3-integrate-eslint"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. Integrate ESLint</h2>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Node.js API:</strong>
-<ul class="md-github">
-<li class="md-github">ESLint provides a programmatic API.</li>
-<li class="md-github">Example using ESLint Class:<pre class="md-github"><code class="md-github language-js">const { ESLint } = require('eslint');
-
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Node.js API</strong>: Provides integration instructions with the Node.js API, including method signatures and usage examples.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">SDK Example</strong>:</p>
+<pre class="md-github"><code class="md-github language-javascript">const { ESLint } = require('eslint');
 (async function main() {
-  // Create an instance with the desired options
   const eslint = new ESLint({
     overrideConfigFile: '.eslintrc.json',
     fix: true
   });
-
-  // Lint files
   const results = await eslint.lintFiles(['src/**/*.js']);
-
-  // Apply fixes if available
-  await ESLint.outputFixes(results);
-
-  // Format and output results
   const formatter = await eslint.loadFormatter('stylish');
   const resultText = formatter.format(results);
   console.log(resultText);
-})().catch((error) =&gt; {
-  process.exitCode = 1;
-  console.error(error);
-});
+})().catch((error) =&gt; console.error(error));
 </code></pre>
-</li>
-</ul>
-</li>
-<li class="md-github"><strong class="md-github">API Options:</strong>
-<ul class="md-github">
-<li class="md-github">Constructor options include:
-<ul class="md-github">
-<li class="md-github"><code class="md-github">overrideConfigFile</code>: string – path to the configuration file</li>
-<li class="md-github"><code class="md-github">fix</code>: boolean – whether to automatically apply fixes</li>
-<li class="md-github">Additional options as per ESLint’s API</li>
-</ul>
-</li>
-</ul>
 </li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="4-contribute-to-eslint" href="#4-contribute-to-eslint"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Contribute to ESLint</h2>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Development Setup:</strong>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Project Structure</strong>: Details development repository layout, coding guidelines, and testing strategies.</p>
+</li>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Development Environment Setup</strong>: Full instructions on cloning the repository, installing dependencies, and running tests. Commands include:</p>
 <ul class="md-github">
-<li class="md-github">Clone the repository and install dependencies with <code class="md-github">npm install</code></li>
-<li class="md-github">Run tests using <code class="md-github">npm test</code></li>
-<li class="md-github">Follow guidelines for commit messages and pull request reviews.</li>
+<li class="md-github"><code class="md-github">git clone https://github.com/eslint/eslint.git</code></li>
+<li class="md-github"><code class="md-github">npm install</code></li>
+<li class="md-github"><code class="md-github">npm test</code></li>
 </ul>
 </li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="5-maintain-eslint" href="#5-maintain-eslint"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. Maintain ESLint</h2>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Versioning and Releases:</strong>
-<ul class="md-github">
-<li class="md-github">Follow semantic versioning.</li>
-<li class="md-github">Release notes provide details about feature additions and bug fixes.</li>
-</ul>
-</li>
+<li class="md-github"><strong class="md-github">Maintenance Procedures</strong>: Guidelines on bug tracking, release note generation, and version support policies.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="6-cli-and-configuration" href="#6-cli-and-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6. CLI and Configuration</h2>
 <ul class="md-github">
-<li class="md-github"><strong class="md-github">Command Line Invocation:</strong>
+<li class="md-github">
+<p class="md-github"><strong class="md-github">CLI Options and Flags</strong>:</p>
 <ul class="md-github">
-<li class="md-github">Primary CLI command: <code class="md-github">eslint [options] [file|dir|glob]*</code></li>
-<li class="md-github">Options include:
-<ul class="md-github">
-<li class="md-github"><code class="md-github">--fix</code>: Automatically fix problems</li>
-<li class="md-github"><code class="md-github">--format &lt;name&gt;</code>: Specify the output format</li>
-<li class="md-github"><code class="md-github">--config &lt;file&gt;</code>: Use specific configuration file</li>
+<li class="md-github"><code class="md-github">--init</code>: Generate a sample configuration file.</li>
+<li class="md-github"><code class="md-github">--fix</code>: Automatically fix problems.</li>
+<li class="md-github"><code class="md-github">--config &lt;path&gt;</code>: Specify custom configuration file.</li>
+<li class="md-github"><code class="md-github">--format &lt;format&gt;</code>: Specify output format (e.g., stylish, json).</li>
 </ul>
 </li>
-</ul>
-</li>
-<li class="md-github"><strong class="md-github">Configuration Files:</strong>
-<ul class="md-github">
-<li class="md-github"><code class="md-github">.eslintrc.js</code>: JavaScript configuration file</li>
-<li class="md-github"><code class="md-github">.eslintrc.json</code>: JSON configuration file</li>
-<li class="md-github">Options include setting environments, globals, parser options, and rule severity.</li>
-</ul>
-</li>
-</ul>
-<h2 class="md-github"><a class="md-github__anchor" name="7-nodejs-api-integration" href="#7-nodejs-api-integration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7. Node.js API Integration</h2>
-<ul class="md-github">
-<li class="md-github"><strong class="md-github">ESLint Class API:</strong>
-<ul class="md-github">
-<li class="md-github"><strong class="md-github">Constructor:</strong>
-ESLint(options: Object) =&gt; ESLint instance</li>
-<li class="md-github"><strong class="md-github">Methods:</strong>
-<ul class="md-github">
-<li class="md-github"><code class="md-github">lintFiles(patterns: string | string[]): Promise&lt;LintResult[]&gt;</code></li>
-<li class="md-github"><code class="md-github">loadFormatter(format: string): Promise&lt;Formatter&gt;</code></li>
-<li class="md-github"><code class="md-github">outputFixes(results: LintResult[]): Promise&lt;void&gt;</code></li>
-</ul>
-</li>
-<li class="md-github"><strong class="md-github">LintResult Structure:</strong><pre class="md-github"><code class="md-github language-js">{
-  filePath: string,
-  messages: Array&lt;{ ruleId: string, severity: number, message: string, line: number, column: number }&gt;,
-  errorCount: number,
-  warningCount: number,
-  fixableErrorCount: number,
-  fixableWarningCount: number
+<li class="md-github">
+<p class="md-github"><strong class="md-github">Configuration File Example (.eslintrc.json):</strong></p>
+<pre class="md-github"><code class="md-github language-json">{
+  &quot;env&quot;: {
+    &quot;browser&quot;: true,
+    &quot;node&quot;: true
+  },
+  &quot;extends&quot;: &quot;eslint:recommended&quot;,
+  &quot;rules&quot;: {
+    &quot;semi&quot;: [&quot;error&quot;, &quot;always&quot;],
+    &quot;quotes&quot;: [&quot;error&quot;, &quot;double&quot;]
+  }
 }
 </code></pre>
 </li>
 </ul>
-</li>
-</ul>
-<p class="md-github"><strong class="md-github">Attribution:</strong> Content crawled from ESLint official documentation.
-<strong class="md-github">Data Size:</strong> 2555917 bytes</p>
 <h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
 <ul class="md-github">
-<li class="md-github">Source: ESLint Documentation</li>
+<li class="md-github">Source: Code Quality Tools Documentation</li>
 <li class="md-github">URL: https://eslint.org/docs/latest/</li>
-<li class="md-github">License: MIT License</li>
-<li class="md-github">Crawl Date: 2025-04-17T17:25:36.582Z</li>
-<li class="md-github">Data Size: 2555917 bytes</li>
-<li class="md-github">Links Found: 5593</li>
+<li class="md-github">License: License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-04-22T00:52:51.787Z</li>
+<li class="md-github">Data Size: 2706981 bytes</li>
+<li class="md-github">Links Found: 5926</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
-<p class="md-github">2025-04-17</p>
+<p class="md-github">2025-04-22</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-21T11:22:44.399Z</p>
+    <p>Generated on 2025-04-22T01:55:04.299Z</p>
   </footer>
 </body>
 </html>
