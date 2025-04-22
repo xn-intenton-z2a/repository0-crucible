@@ -47,3 +47,13 @@ Auto-GPT is an example of an autonomous AI agent designed to perform self-improv
 ## https://docs.gitlab.com/ee/ci/
 This documentation offers a comprehensive guide to GitLab's CI/CD pipeline configuration and management. As a competitor to GitHub Actions, it provides alternative insights into the setup of automated workflows, best practices, and troubleshooting strategies. Its detailed approach to pipeline configuration serves as a useful resource for understanding diverse methods of continuous integration and deployment in modern software development.
 ## License: Not specified
+
+# GitHub Actions Workflow Syntax
+## https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
+This documentation delves into the specifics of GitHub Actions workflow syntax, offering detailed explanations on the configuration, triggers, and job definitions that control automated workflows. This source is especially relevant given the repository's new --workflow command feature, providing users with an authoritative reference to optimize and troubleshoot their workflow configurations. It is maintained by GitHub with regular updates reflecting new features and best practices.
+## License: Not specified
+
+# Jenkins Pipeline Documentation
+## https://www.jenkins.io/doc/book/pipeline/
+This source provides extensive guidance on creating and managing Jenkins Pipelines for CI/CD automation. Although Jenkins is a competitor in the continuous integration space, its pipeline documentation offers valuable insights into workflow orchestration, scripting, and best practices that can inform and complement the design of modern, automated CI/CD systems. The documentation is regularly updated by the Jenkins community.
+## License: Not specified
