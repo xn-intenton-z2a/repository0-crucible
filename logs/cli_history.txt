@@ -1,8 +1,0 @@
-load /tmp/cli-e2e-jZFG0Z/interactiveOntology.json
-add-class Biology
-remove-class InitialClass
-add-property creator John_Doe
-update-property version 2.0
-remove-property initialProp
-show
-exit
