@@ -1,1 +1,12 @@
-[{"sessionId":"2025-04-20T00:41:44.716Z-e8i38a6sg49","args":["customExportTest"],"timestamp":"2025-04-20T00:41:44.716Z"},{"sessionId":"2025-04-20T00:41:44.716Z-vpknyo39om","args":["--export-memory","custom_export.json"],"timestamp":"2025-04-20T00:41:44.716Z"}]
+[
+  {
+    "sessionId": "2025-04-20T00:41:44.716Z-e8i38a6sg49",
+    "args": ["customExportTest"],
+    "timestamp": "2025-04-20T00:41:44.716Z"
+  },
+  {
+    "sessionId": "2025-04-20T00:41:44.716Z-vpknyo39om",
+    "args": ["--export-memory", "custom_export.json"],
+    "timestamp": "2025-04-20T00:41:44.716Z"
+  }
+]

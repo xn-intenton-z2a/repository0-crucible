@@ -27,16 +27,16 @@ let persistentLogLoaded = false;
 
 // Load persisted memory log from 'memory_log.json' at startup if it exists
 function loadPersistentLog() {
-  if (!persistentLogLoaded && fs.existsSync('memory_log.json')) {
+  if (!persistentLogLoaded && fs.existsSync("memory_log.json")) {
     try {
-      const data = fs.readFileSync('memory_log.json', { encoding: 'utf8' });
+      const data = fs.readFileSync("memory_log.json", { encoding: "utf8" });
       const parsed = JSON.parse(data);
       if (Array.isArray(parsed)) {
         // Merge persisted entries into the in-memory log
         memoryLog.push(...parsed);
       }
     } catch (err) {
-      console.error('Failed to load persistent memory log:', err);
+      console.error("Failed to load persistent memory log:", err);
     }
     persistentLogLoaded = true;
   }
@@ -71,12 +71,14 @@ async function handleReplication(args) {
   if (isAsync) {
     const tasks = [];
     for (let i = 1; i <= count; i++) {
-      tasks.push(new Promise((resolve) => {
-        setTimeout(() => {
-          console.log(`Replicating task ${i}`);
-          resolve();
-        }, 0);
-      }));
+      tasks.push(
+        new Promise((resolve) => {
+          setTimeout(() => {
+            console.log(`Replicating task ${i}`);
+            resolve();
+          }, 0);
+        }),
+      );
     }
     await Promise.all(tasks);
   } else {
@@ -101,7 +103,7 @@ function handleSelfImprove(args) {
   let count = 0;
   let maxTime = 0;
   let minTime = Infinity;
-  let times = [];
+  const times = [];
   // Iterate through the memory log to compute timing metrics
   for (const entry of memoryLog) {
     if (entry.execTime !== undefined) {
@@ -152,7 +154,7 @@ function handleSelfImprove(args) {
       maximumExecutionTime: parseFloat(maxTime.toFixed(2)),
       minimumExecutionTime: minTime === Infinity ? "N/A" : parseFloat(minTimeFormatted),
       standardDeviation: parseFloat(stdDeviation),
-      medianExecutionTime: parseFloat(medianFormatted)
+      medianExecutionTime: parseFloat(medianFormatted),
     };
     console.log(JSON.stringify(diagnostics));
   } else {
@@ -160,7 +162,9 @@ function handleSelfImprove(args) {
     console.log("[Self-Improve] Self-Improvement Diagnostics:");
     console.log(`[Self-Improve] Total invocations: ${memoryLog.length}`);
     console.log(`[Self-Improve] First invocation: ${memoryLog.length > 0 ? memoryLog[0].timestamp : "N/A"}`);
-    console.log(`[Self-Improve] Latest invocation: ${memoryLog.length > 0 ? memoryLog[memoryLog.length - 1].timestamp : "N/A"}`);
+    console.log(
+      `[Self-Improve] Latest invocation: ${memoryLog.length > 0 ? memoryLog[memoryLog.length - 1].timestamp : "N/A"}`,
+    );
     console.log(`[Self-Improve] Average execution time: ${averageTime} ms`);
     console.log(`[Self-Improve] Maximum execution time: ${parseFloat(maxTime.toFixed(2))} ms`);
     console.log(`[Self-Improve] Minimum execution time: ${minTimeFormatted} ms`);
@@ -175,7 +179,9 @@ function handleSelfImproveVerbose() {
   console.log("[Self-Improve] Detailed: Detailed Memory Log:");
   memoryLog.forEach((entry, index) => {
     const execTimeStr = entry.execTime !== undefined ? entry.execTime.toFixed(2) + " ms" : "N/A";
-    console.log(`[Self-Improve] Detailed: Invocation ${index + 1}: args: ${JSON.stringify(entry.args)}, timestamp: ${entry.timestamp}, execution time: ${execTimeStr}`);
+    console.log(
+      `[Self-Improve] Detailed: Invocation ${index + 1}: args: ${JSON.stringify(entry.args)}, timestamp: ${entry.timestamp}, execution time: ${execTimeStr}`,
+    );
   });
 }
 
@@ -193,7 +199,11 @@ function planTasks() {
 function handleDecompose(args) {
   const decomposeIndex = args.indexOf("--decompose");
   let goal = "";
-  if (args.length > decomposeIndex + 1 && !args[decomposeIndex + 1].startsWith("--") && args[decomposeIndex + 1] !== "") {
+  if (
+    args.length > decomposeIndex + 1 &&
+    !args[decomposeIndex + 1].startsWith("--") &&
+    args[decomposeIndex + 1] !== ""
+  ) {
     goal = args[decomposeIndex + 1];
   }
   // Log header for goal decomposition with provided goal if available
@@ -211,11 +221,11 @@ function handleDecompose(args) {
 // Resets the in-memory log and clears persisted log file if it exists.
 export function resetMemoryLog() {
   memoryLog.length = 0;
-  if (fs.existsSync('memory_log.json')) {
+  if (fs.existsSync("memory_log.json")) {
     try {
-      fs.unlinkSync('memory_log.json');
+      fs.unlinkSync("memory_log.json");
     } catch (err) {
-      console.error('Failed to delete persistent memory log file:', err);
+      console.error("Failed to delete persistent memory log file:", err);
     }
   }
 }
@@ -240,7 +250,7 @@ export async function main(args) {
     const details = {
       nodeVersion: process.version,
       versions: process.versions,
-      appVersion: pkgVersion
+      appVersion: pkgVersion,
     };
     console.log(JSON.stringify(details));
     process.exit(0);
@@ -251,7 +261,7 @@ export async function main(args) {
   for (let i = 0; i < args.length; i++) {
     if (args[i].startsWith("--filter-log")) {
       if (args[i].includes("=")) {
-        filterQuery = args[i].split('=')[1] || "";
+        filterQuery = args[i].split("=")[1] || "";
       } else if (i + 1 < args.length) {
         filterQuery = args[i + 1];
         i++;
@@ -261,8 +271,8 @@ export async function main(args) {
   }
   if (filterQuery !== null) {
     loadPersistentLog();
-    const filtered = memoryLog.filter(entry => {
-      return entry.args && entry.args.some(arg => arg.toLowerCase().includes(filterQuery.toLowerCase()));
+    const filtered = memoryLog.filter((entry) => {
+      return entry.args && entry.args.some((arg) => arg.toLowerCase().includes(filterQuery.toLowerCase()));
     });
     console.log(JSON.stringify(filtered));
     process.exit(0);
@@ -335,5 +345,5 @@ export async function main(args) {
 
 // If this module is executed directly, process CLI arguments from process.argv
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  main(process.argv.slice(2)).catch(err => console.error(err));
+  main(process.argv.slice(2)).catch((err) => console.error(err));
 }

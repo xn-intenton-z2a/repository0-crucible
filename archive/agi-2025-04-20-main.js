@@ -1,6 +1,5 @@
 #!/usr/bin/env node
 /* eslint-disable sonarjs/cognitive-complexity */
-/* eslint-disable prettier/prettier */
 
 // src/lib/main.js
 
@@ -187,7 +186,9 @@ export function main(args = []) {
       return;
     }
     const originalLength = memoryLog.length;
-    memoryLog = memoryLog.filter((entry) => !(entry.annotation && entry.annotation.toLowerCase() === annotationValueToDelete.toLowerCase()));
+    memoryLog = memoryLog.filter(
+      (entry) => !(entry.annotation && entry.annotation.toLowerCase() === annotationValueToDelete.toLowerCase()),
+    );
     const removedCount = originalLength - memoryLog.length;
     if (fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")) {
       persistMemoryLog(memoryLog, args.includes("--compress-memory"));
@@ -231,7 +232,7 @@ export function main(args = []) {
       memoryLimit: maxMemoryEntries,
       memoryLogCount: memoryLog.length,
       memoryFilePersisted: fs.existsSync("memory.log") || fs.existsSync("memory.log.gz"),
-      memorySessionIds: memoryLog.map((entry) => entry.sessionId)
+      memorySessionIds: memoryLog.map((entry) => entry.sessionId),
     };
     console.log(JSON.stringify(detailedDiag));
     return;
@@ -242,7 +243,7 @@ export function main(args = []) {
     const diagnostics = {
       memoryLimit: maxMemoryEntries,
       memoryLogCount: memoryLog.length,
-      memoryFilePersisted: fs.existsSync("memory.log") || fs.existsSync("memory.log.gz")
+      memoryFilePersisted: fs.existsSync("memory.log") || fs.existsSync("memory.log.gz"),
     };
     console.log(JSON.stringify(diagnostics));
     return;
@@ -253,7 +254,7 @@ export function main(args = []) {
     const stats = {
       count: memoryLog.length,
       oldest: memoryLog.length > 0 ? memoryLog[0].sessionId : null,
-      newest: memoryLog.length > 0 ? memoryLog[memoryLog.length - 1].sessionId : null
+      newest: memoryLog.length > 0 ? memoryLog[memoryLog.length - 1].sessionId : null,
     };
     console.log(JSON.stringify(stats));
     return;
@@ -306,7 +307,9 @@ export function main(args = []) {
       return;
     }
     const annotationQuery = args[index + 1].toLowerCase();
-    const filtered = memoryLog.filter((entry) => entry.annotation && entry.annotation.toLowerCase().includes(annotationQuery));
+    const filtered = memoryLog.filter(
+      (entry) => entry.annotation && entry.annotation.toLowerCase().includes(annotationQuery),
+    );
     console.log(JSON.stringify(filtered));
     return;
   }
@@ -315,7 +318,9 @@ export function main(args = []) {
   if (args.includes("--query-memory-range")) {
     const index = args.indexOf("--query-memory-range");
     if (args.length <= index + 2 || args[index + 1].startsWith("--") || args[index + 2].startsWith("--")) {
-      console.error("Invalid usage: --query-memory-range requires two arguments: start date and end date in ISO format");
+      console.error(
+        "Invalid usage: --query-memory-range requires two arguments: start date and end date in ISO format",
+      );
       return;
     }
     const startDateStr = args[index + 1];
@@ -438,7 +443,7 @@ export function main(args = []) {
       earliest,
       latest,
       averageIntervalSeconds,
-      mostFrequentArgument
+      mostFrequentArgument,
     };
     console.log(JSON.stringify(detailedStats));
     return;

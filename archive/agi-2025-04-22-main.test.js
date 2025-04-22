@@ -83,11 +83,11 @@ describe("Simulated CLI Execution via process.argv", () => {
 
   test("should log expected output when no additional CLI args are provided", async () => {
     const originalArgv = process.argv;
-    process.argv = ["node", "src/lib/main.js"]; 
+    process.argv = ["node", "src/lib/main.js"];
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(process.argv.slice(2));
     expect(spy).toHaveBeenCalledTimes(2);
-    expect(spy.mock.calls[0][0]).toBe('Run with: []');
+    expect(spy.mock.calls[0][0]).toBe("Run with: []");
     expectExecutionTimeLog(spy.mock.calls[1][0]);
     spy.mockRestore();
     process.argv = originalArgv;
@@ -117,10 +117,10 @@ describe("Replication Mode", () => {
     // Expected logs for default replication (3 tasks)
     expect(spy).toHaveBeenCalledTimes(6);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--replicate","param1"]');
-    expect(spy.mock.calls[1][0]).toBe('Replicating tasks (count: 3)...');
-    expect(spy.mock.calls[2][0]).toBe('Replicating task 1');
-    expect(spy.mock.calls[3][0]).toBe('Replicating task 2');
-    expect(spy.mock.calls[4][0]).toBe('Replicating task 3');
+    expect(spy.mock.calls[1][0]).toBe("Replicating tasks (count: 3)...");
+    expect(spy.mock.calls[2][0]).toBe("Replicating task 1");
+    expect(spy.mock.calls[3][0]).toBe("Replicating task 2");
+    expect(spy.mock.calls[4][0]).toBe("Replicating task 3");
     expectExecutionTimeLog(spy.mock.calls[5][0]);
     spy.mockRestore();
   });
@@ -131,12 +131,12 @@ describe("Replication Mode", () => {
     // Expected logs for replication with 5 tasks
     expect(spy).toHaveBeenCalledTimes(8);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--replicate","5"]');
-    expect(spy.mock.calls[1][0]).toBe('Replicating tasks (count: 5)...');
-    expect(spy.mock.calls[2][0]).toBe('Replicating task 1');
-    expect(spy.mock.calls[3][0]).toBe('Replicating task 2');
-    expect(spy.mock.calls[4][0]).toBe('Replicating task 3');
-    expect(spy.mock.calls[5][0]).toBe('Replicating task 4');
-    expect(spy.mock.calls[6][0]).toBe('Replicating task 5');
+    expect(spy.mock.calls[1][0]).toBe("Replicating tasks (count: 5)...");
+    expect(spy.mock.calls[2][0]).toBe("Replicating task 1");
+    expect(spy.mock.calls[3][0]).toBe("Replicating task 2");
+    expect(spy.mock.calls[4][0]).toBe("Replicating task 3");
+    expect(spy.mock.calls[5][0]).toBe("Replicating task 4");
+    expect(spy.mock.calls[6][0]).toBe("Replicating task 5");
     expectExecutionTimeLog(spy.mock.calls[7][0]);
     spy.mockRestore();
   });
@@ -145,9 +145,11 @@ describe("Replication Mode", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--replicate", "5", "--replicate-async"]);
     // Filter out the logs for replication tasks using a regex to avoid including the header
-    const taskLogs = spy.mock.calls.filter(call => typeof call[0] === 'string' && /^Replicating task \d+$/.test(call[0]));
+    const taskLogs = spy.mock.calls.filter(
+      (call) => typeof call[0] === "string" && /^Replicating task \d+$/.test(call[0]),
+    );
     expect(taskLogs.length).toBe(5);
-    const tasks = new Set(taskLogs.map(call => call[0]));
+    const tasks = new Set(taskLogs.map((call) => call[0]));
     for (let i = 1; i <= 5; i++) {
       expect(tasks.has(`Replicating task ${i}`)).toBe(true);
     }
@@ -166,7 +168,7 @@ describe("Help-Seeking Mode", () => {
     // Expected logs:
     expect(spy).toHaveBeenCalledTimes(3);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--help-seeking"]');
-    expect(spy.mock.calls[1][0]).toBe('Help-Seeking Mode Enabled: querying assistance...');
+    expect(spy.mock.calls[1][0]).toBe("Help-Seeking Mode Enabled: querying assistance...");
     expectExecutionTimeLog(spy.mock.calls[2][0]);
     spy.mockRestore();
   });
@@ -194,7 +196,7 @@ describe("Self-Improvement Mode", () => {
     // 10: [Self-Improve] Median execution time
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--self-improve"]');
     expect(spy.mock.calls[1][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
-    expect(spy.mock.calls[2][0]).toBe('[Self-Improve] Self-Improvement Diagnostics:');
+    expect(spy.mock.calls[2][0]).toBe("[Self-Improve] Self-Improvement Diagnostics:");
     expect(spy.mock.calls[3][0]).toMatch(/^\[Self-Improve\] Total invocations: \d+$/);
     expectFirstInvocationLog(spy.mock.calls[4][0]);
     expectLatestInvocationLog(spy.mock.calls[5][0]);
@@ -212,7 +214,7 @@ describe("Self-Improvement Mode", () => {
     await main(["--self-improve"]);
     const log = getMemoryLog();
     expect(log.length).toBe(2);
-    expect(spy.mock.calls[2][0]).toBe('[Self-Improve] Self-Improvement Diagnostics:');
+    expect(spy.mock.calls[2][0]).toBe("[Self-Improve] Self-Improvement Diagnostics:");
     expect(spy.mock.calls[3][0]).toBe(`[Self-Improve] Total invocations: ${log.length}`);
     expect(spy.mock.calls[4][0]).toBe(`[Self-Improve] First invocation: ${log[0].timestamp}`);
     expect(spy.mock.calls[5][0]).toBe(`[Self-Improve] Latest invocation: ${log[1].timestamp}`);
@@ -228,10 +230,10 @@ describe("Self-Improvement Mode", () => {
   test("should log extended diagnostics when '--self-improve --verbose' flags are provided", async () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--self-improve", "--verbose"]);
-    const logs = spy.mock.calls.map(call => call[0]);
-    const hasDetailedHeader = logs.some(log => log === "[Self-Improve] Detailed: Detailed Memory Log:");
+    const logs = spy.mock.calls.map((call) => call[0]);
+    const hasDetailedHeader = logs.some((log) => log === "[Self-Improve] Detailed: Detailed Memory Log:");
     expect(hasDetailedHeader).toBe(true);
-    const invocationLogs = logs.filter(log => log.startsWith("[Self-Improve] Detailed: Invocation"));
+    const invocationLogs = logs.filter((log) => log.startsWith("[Self-Improve] Detailed: Invocation"));
     expect(invocationLogs.length).toBeGreaterThan(0);
     spy.mockRestore();
   });
@@ -240,7 +242,7 @@ describe("Self-Improvement Mode", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--self-improve", "--diag-json"]);
     // Find the JSON output among the logs
-    const jsonLogCall = spy.mock.calls.find(call => {
+    const jsonLogCall = spy.mock.calls.find((call) => {
       try {
         JSON.parse(call[0]);
         return true;
@@ -271,9 +273,9 @@ describe("Planning Mode", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--plan"]);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--plan"]');
-    expect(spy.mock.calls[1][0]).toBe('Planning Mode Engaged: Analyzing input for planning...');
-    expect(spy.mock.calls[2][0]).toBe('Planned Task 1: Review current configurations');
-    expect(spy.mock.calls[3][0]).toBe('Planned Task 2: Prioritize upcoming feature enhancements');
+    expect(spy.mock.calls[1][0]).toBe("Planning Mode Engaged: Analyzing input for planning...");
+    expect(spy.mock.calls[2][0]).toBe("Planned Task 1: Review current configurations");
+    expect(spy.mock.calls[3][0]).toBe("Planned Task 2: Prioritize upcoming feature enhancements");
     expectExecutionTimeLog(spy.mock.calls[4][0]);
     spy.mockRestore();
   });
@@ -288,10 +290,10 @@ describe("Goal Decomposition Feature", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--decompose"]);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--decompose"]');
-    expect(spy.mock.calls[1][0]).toBe('Goal Decomposition Report:');
-    expect(spy.mock.calls[2][0]).toBe('1. Define objectives');
-    expect(spy.mock.calls[3][0]).toBe('2. Identify key milestones');
-    expect(spy.mock.calls[4][0]).toBe('3. Assign responsibilities');
+    expect(spy.mock.calls[1][0]).toBe("Goal Decomposition Report:");
+    expect(spy.mock.calls[2][0]).toBe("1. Define objectives");
+    expect(spy.mock.calls[3][0]).toBe("2. Identify key milestones");
+    expect(spy.mock.calls[4][0]).toBe("3. Assign responsibilities");
     expect(spy.mock.calls[5][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
     spy.mockRestore();
   });
@@ -300,10 +302,10 @@ describe("Goal Decomposition Feature", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--decompose", "Plan new product launch"]);
     expect(spy.mock.calls[0][0]).toBe('Run with: ["--decompose","Plan new product launch"]');
-    expect(spy.mock.calls[1][0]).toBe('Goal Decomposition Report: Plan new product launch');
-    expect(spy.mock.calls[2][0]).toBe('1. Define objectives');
-    expect(spy.mock.calls[3][0]).toBe('2. Identify key milestones');
-    expect(spy.mock.calls[4][0]).toBe('3. Assign responsibilities');
+    expect(spy.mock.calls[1][0]).toBe("Goal Decomposition Report: Plan new product launch");
+    expect(spy.mock.calls[2][0]).toBe("1. Define objectives");
+    expect(spy.mock.calls[3][0]).toBe("2. Identify key milestones");
+    expect(spy.mock.calls[4][0]).toBe("3. Assign responsibilities");
     expect(spy.mock.calls[5][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
     spy.mockRestore();
   });
@@ -324,7 +326,7 @@ describe("Memory Log Feature", () => {
     await main(args);
     const log = getMemoryLog();
     expect(log.length).toBe(1);
-    expect(log[0]).toHaveProperty('args', args);
+    expect(log[0]).toHaveProperty("args", args);
     expect(new Date(log[0].timestamp).toISOString()).toBe(log[0].timestamp);
   });
 
@@ -333,8 +335,8 @@ describe("Memory Log Feature", () => {
     await main(["second"]);
     const log = getMemoryLog();
     expect(log.length).toBe(2);
-    expect(log[0]).toHaveProperty('args', ["first"]);
-    expect(log[1]).toHaveProperty('args', ["second"]);
+    expect(log[0]).toHaveProperty("args", ["first"]);
+    expect(log[1]).toHaveProperty("args", ["second"]);
   });
 });
 
@@ -354,11 +356,13 @@ describe("Persistent Log Feature", () => {
     expect(spy.mock.calls[1][0]).toMatch(/^Execution time: \d+(\.\d+)? ms$/);
     const jsonOutput = spy.mock.calls[2][0];
     let parsed;
-    expect(() => { parsed = JSON.parse(jsonOutput); }).not.toThrow();
+    expect(() => {
+      parsed = JSON.parse(jsonOutput);
+    }).not.toThrow();
     expect(Array.isArray(parsed)).toBe(true);
     if (parsed.length > 0) {
-      expect(parsed[0]).toHaveProperty('args');
-      expect(parsed[0]).toHaveProperty('timestamp');
+      expect(parsed[0]).toHaveProperty("args");
+      expect(parsed[0]).toHaveProperty("timestamp");
     }
     spy.mockRestore();
   });
@@ -367,13 +371,15 @@ describe("Persistent Log Feature", () => {
     const spy = vi.spyOn(console, "log").mockImplementation(() => {});
     await main(["--persist-file"]);
     expect(fs.existsSync("memory_log.json")).toBe(true);
-    const fileContent = fs.readFileSync("memory_log.json", { encoding: 'utf8' });
+    const fileContent = fs.readFileSync("memory_log.json", { encoding: "utf8" });
     let parsed;
-    expect(() => { parsed = JSON.parse(fileContent); }).not.toThrow();
+    expect(() => {
+      parsed = JSON.parse(fileContent);
+    }).not.toThrow();
     expect(Array.isArray(parsed)).toBe(true);
     if (parsed.length > 0) {
-      expect(parsed[0]).toHaveProperty('args');
-      expect(parsed[0]).toHaveProperty('timestamp');
+      expect(parsed[0]).toHaveProperty("args");
+      expect(parsed[0]).toHaveProperty("timestamp");
     }
     expect(spy).toHaveBeenCalledWith("Memory log persisted to memory_log.json");
     spy.mockRestore();
@@ -382,9 +388,7 @@ describe("Persistent Log Feature", () => {
 
   test("should load persisted memory log from file on startup", async () => {
     // Prepare a temporary memory_log.json with known entries
-    const persistedLog = [
-      { args: ["--persisted"], timestamp: new Date().toISOString(), execTime: 1.23 }
-    ];
+    const persistedLog = [{ args: ["--persisted"], timestamp: new Date().toISOString(), execTime: 1.23 }];
     fs.writeFileSync("memory_log.json", JSON.stringify(persistedLog, null, 2));
     // Reset persistent flag to force reload
     await main(["--dummy"]);
@@ -399,9 +403,7 @@ describe("Persistent Log Feature", () => {
 
   test("should clear persisted memory log when '--reset-log' flag is provided", async () => {
     // Prepare a temporary memory_log.json with known entries
-    const persistedLog = [
-      { args: ["--to-be-reset"], timestamp: new Date().toISOString(), execTime: 2.34 }
-    ];
+    const persistedLog = [{ args: ["--to-be-reset"], timestamp: new Date().toISOString(), execTime: 2.34 }];
     fs.writeFileSync("memory_log.json", JSON.stringify(persistedLog, null, 2));
     await main(["--reset-log"]);
     const log = getMemoryLog();
@@ -421,7 +423,7 @@ describe("Reset Log Feature", () => {
     await main(["--reset-log"]);
     const log = getMemoryLog();
     expect(log).toEqual([]);
-    const resetMessageFound = spy.mock.calls.some(call => call[0] === "Memory log has been reset.");
+    const resetMessageFound = spy.mock.calls.some((call) => call[0] === "Memory log has been reset.");
     expect(resetMessageFound).toBe(true);
     spy.mockRestore();
   });
@@ -435,7 +437,9 @@ describe("Version Details Flag", () => {
     expect(logSpy).toHaveBeenCalled();
     const output = logSpy.mock.calls[0][0];
     let details;
-    expect(() => { details = JSON.parse(output); }).not.toThrow();
+    expect(() => {
+      details = JSON.parse(output);
+    }).not.toThrow();
     expect(details).toHaveProperty("nodeVersion", process.version);
     expect(details).toHaveProperty("versions");
     expect(details).toHaveProperty("appVersion");
@@ -466,9 +470,9 @@ describe("Filter Log Feature", () => {
     const output = spy.mock.calls[0][0];
     const filtered = JSON.parse(output);
     // Should include the entry with '--test-memory'
-    expect(filtered.some(entry => entry.args.includes("--test-memory"))).toBe(true);
+    expect(filtered.some((entry) => entry.args.includes("--test-memory"))).toBe(true);
     // Should not include 'sampleEntry'
-    expect(filtered.some(entry => entry.args.includes("sampleEntry"))).toBe(false);
+    expect(filtered.some((entry) => entry.args.includes("sampleEntry"))).toBe(false);
     spy.mockRestore();
     exitSpy.mockRestore();
   });
