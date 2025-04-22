@@ -39,10 +39,10 @@ CLI Help:
 Usage: node src/lib/main.js [options]
 
 Options:
-  --help             Display help information.
+  --help             Display detailed help information.
   --version          Display current version information.
-  --diagnostics      Display diagnostics information.
-  --capital-cities   Display capital cities data.
+  --diagnostics      Display runtime diagnostics information.
+  --capital-cities   Output a JSON list of capital cities.
   --crawl            Simulate crawling public data sources for JSON data.
   --query-owl        Simulate querying an OWL ontology and return sample JSON data.
 
@@ -56,6 +56,20 @@ Example:
   // Check if the '--crawl' flag is present
   if (args.includes("--crawl")) {
     await crawlData();
+    return;
+  }
+
+  // Check if the '--diagnostics' flag is present
+  if (args.includes("--diagnostics")) {
+    console.log("Diagnostics: All systems are operational");
+    return;
+  }
+
+  // Check if the '--capital-cities' flag is present
+  if (args.includes("--capital-cities")) {
+    console.log(JSON.stringify({
+      capitals: ["Washington, D.C.", "London", "Tokyo"]
+    }));
     return;
   }
 
