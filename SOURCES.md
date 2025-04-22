@@ -22,3 +22,18 @@ This source offers detailed documentation for the OpenAI API, including guidance
 ## https://vitest.dev
 This documentation provides an in-depth look into Vitest, a modern testing framework for Node.js projects. It includes usage guides, configuration options, and best practices for ensuring robust test coverage in JavaScript applications. Vitest's growing community and frequent updates make it an essential resource for developers aiming to maintain high-quality tests in automated workflows.
 ## License: Not specified
+
+# Node.js Documentation
+## https://nodejs.org/en/docs/
+The Node.js documentation is the primary resource for learning about the Node.js runtime environment, its ECMAScript module support, and best practices for building scalable applications. This is particularly relevant for projects ensuring compatibility with Node 20 and leveraging modern JavaScript capabilities.
+## License: Creative Commons Attribution-ShareAlike
+
+# ESLint Documentation
+## https://eslint.org/docs/latest/
+ESLint is a vital tool for maintaining code quality in JavaScript projects. Its comprehensive documentation offers guidance on configuring linting rules, integrating with code editors, and adopting best practices for code consistency. It is an essential resource for developers focused on reducing bugs and enforcing coding standards.
+## License: MIT License
+
+# Prettier Documentation
+## https://prettier.io/docs/en/index.html
+Prettier is an opinionated code formatter that enforces a consistent style across your codebase. This documentation provides detailed instructions on installation, configuration, and usage guidelines, making it a key resource for maintaining a uniform coding standard across projects.
+## License: MIT License
