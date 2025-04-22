@@ -47,3 +47,13 @@ This source provides a comprehensive overview of CI/CD pipeline configurations. 
 ## https://nodejs.org/api/report.html
 This documentation covers Node.js Diagnostic Reporting, which provides detailed insights and troubleshooting capabilities for runtime issues. It supports the diagnostics feature of the repository by offering guidelines on generating and interpreting diagnostic reports, thereby enhancing the debuggability and self-awareness of the system.
 ## License: Not specified
+
+# GitHub CLI Documentation
+## https://cli.github.com/manual
+GitHub CLI provides comprehensive documentation for the GitHub Command Line Interface. This guide explains how to install, configure, and use GitHub CLI to interact with Git repositories. It covers authentication, managing pull requests, issues, and repository workflows from the command line. The documentation is maintained by GitHub and is updated regularly. Last updated information is available via the GitHub CLI release notes.
+## License: Not specified
+
+# Autonomic Computing Overview
+## https://www.ibm.com/cloud/learn/autonomic-computing
+This source offers an in-depth look into autonomic computing, an approach to self-managing computing systems that parallels the self-improvement features being developed in this repository. It covers key concepts such as self-configuration, self-healing, self-optimization, and self-protection, making it a valuable resource for understanding the theoretical foundations of self-improving automation. The information is provided by IBM and is regularly reviewed, reflecting a mature understanding of adaptive systems.
+## License: Not specified
