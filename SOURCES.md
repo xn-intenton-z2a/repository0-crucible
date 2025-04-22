@@ -37,3 +37,13 @@ ESLint is a vital tool for maintaining code quality in JavaScript projects. Its 
 ## https://prettier.io/docs/en/index.html
 Prettier is an opinionated code formatter that enforces a consistent style across your codebase. This documentation provides detailed instructions on installation, configuration, and usage guidelines, making it a key resource for maintaining a uniform coding standard across projects.
 ## License: MIT License
+
+# Auto-GPT Documentation
+## https://github.com/Significant-Gravitas/Auto-GPT
+Auto-GPT is an example of an autonomous AI agent designed to perform self-improving and autonomous tasks, demonstrating key aspects of agentic automation such as planning, goal decomposition, and help-seeking. While it is not a direct competitor, its documentation and development approach provide valuable insights into building self-sustaining automation systems. The content is maintained by a vibrant open source community with frequent updates reflecting rapid advancements in autonomous systems.
+## License: MIT License
+
+# GitLab CI/CD Documentation
+## https://docs.gitlab.com/ee/ci/
+This documentation offers a comprehensive guide to GitLab's CI/CD pipeline configuration and management. As a competitor to GitHub Actions, it provides alternative insights into the setup of automated workflows, best practices, and troubleshooting strategies. Its detailed approach to pipeline configuration serves as a useful resource for understanding diverse methods of continuous integration and deployment in modern software development.
+## License: Not specified
