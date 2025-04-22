@@ -17,6 +17,26 @@ export async function main(args) {
       process.exit(1);
     }
   }
+
+  // Check if the '--help' flag is present
+  if (args.includes("--help")) {
+    const helpMessage = `
+CLI Help:
+Usage: node src/lib/main.js [options]
+
+Options:
+  --help             Display help information.
+  --version          Display current version information.
+  --diagnostics      Display diagnostics information.
+  --capital-cities   Display capital cities data.
+
+Example:
+  node src/lib/main.js --help
+`;
+    console.log(helpMessage.trim());
+    return;
+  }
+
   console.log(`Run with: ${JSON.stringify(args)}`);
 }
 

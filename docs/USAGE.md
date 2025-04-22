@@ -8,8 +8,10 @@ You can run the CLI using Node.js. The basic command format is:
 
 ### Options
 
---help         Display help information.
---version      Display the current version from package.json.
+--help             Display help information including available commands and example usage.
+--version          Display the current version from package.json.
+--diagnostics      Display diagnostics information.
+--capital-cities   Display capital cities data.
 
 ### Example Commands
 

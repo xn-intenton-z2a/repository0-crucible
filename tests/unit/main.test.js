@@ -12,7 +12,6 @@ describe("Main Module Import", () => {
 describe("Main Output", () => {
   test("should terminate without error", async () => {
     // Simulate a call without any special flags
-    // We pass an empty array of arguments
     await main([]);
   });
 });
@@ -25,5 +24,18 @@ describe("Version Flag", () => {
     await main(["--version"]);
     console.log = originalLog;
     expect(captured).toContain(pkg.version);
+  });
+});
+
+describe("Help Flag", () => {
+  test("should display help information", async () => {
+    const originalLog = console.log;
+    let captured = "";
+    console.log = (msg) => { captured += msg; };
+    await main(["--help"]);
+    console.log = originalLog;
+    expect(captured).toContain("Usage:");
+    expect(captured).toContain("--help");
+    expect(captured).toContain("CLI Help");
   });
 });
