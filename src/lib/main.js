@@ -15,7 +15,7 @@ export async function main(args) {
       JSON.stringify({
         result: "Sample OWL query response",
         data: [],
-      }),
+      })
     );
     return;
   }
@@ -72,7 +72,7 @@ Example:
     console.log(
       JSON.stringify({
         capitals: ["Washington, D.C.", "London", "Tokyo"],
-      }),
+      })
     );
     return;
   }
