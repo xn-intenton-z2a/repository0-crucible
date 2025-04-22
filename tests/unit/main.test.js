@@ -3,6 +3,7 @@ import * as mainModule from "@src/lib/main.js";
 import { main } from "@src/lib/main.js";
 import pkg from "../../package.json" assert { type: "json" };
 
+
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
@@ -48,5 +49,26 @@ describe("Crawl Flag", () => {
     await main(["--crawl"]);
     console.log = originalLog;
     expect(captured).toContain("Crawling data from public data sources...");
+  });
+});
+
+describe("Query OWL Flag", () => {
+  test("should output sample OWL query JSON response", async () => {
+    const originalLog = console.log;
+    let captured = "";
+    console.log = (msg) => { captured += msg; };
+    await main(["--query-owl"]);
+    console.log = originalLog;
+
+    // Assert that the output is valid JSON and contains the expected response
+    let parsed;
+    try {
+      parsed = JSON.parse(captured);
+    } catch (e) {
+      throw new Error('Output is not valid JSON');
+    }
+    expect(parsed).toHaveProperty('result', 'Sample OWL query response');
+    expect(parsed).toHaveProperty('data');
+    expect(Array.isArray(parsed.data)).toBe(true);
   });
 });

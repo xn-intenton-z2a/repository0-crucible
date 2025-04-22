@@ -9,6 +9,15 @@ async function crawlData() {
 }
 
 export async function main(args) {
+  // If the '--query-owl' flag is present, immediately output a sample OWL query JSON response
+  if (args.includes("--query-owl")) {
+    console.log(JSON.stringify({
+      result: "Sample OWL query response",
+      data: []
+    }));
+    return;
+  }
+
   // Check if the '--version' flag is present
   if (args.includes("--version")) {
     try {
@@ -35,6 +44,7 @@ Options:
   --diagnostics      Display diagnostics information.
   --capital-cities   Display capital cities data.
   --crawl            Simulate crawling public data sources for JSON data.
+  --query-owl        Simulate querying an OWL ontology and return sample JSON data.
 
 Example:
   node src/lib/main.js --help

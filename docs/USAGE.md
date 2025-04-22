@@ -13,6 +13,7 @@ You can run the CLI using Node.js. The basic command format is:
 --diagnostics      Display diagnostics information.
 --capital-cities   Display capital cities data.
 --crawl            Simulate crawling public data sources for JSON data.
+--query-owl        Simulate querying an OWL ontology and return a sample JSON response.
 
 ### Example Commands
 
@@ -30,6 +31,16 @@ You can run the CLI using Node.js. The basic command format is:
   ```bash
   node src/lib/main.js --crawl
   ```
+
+- Simulate querying an OWL ontology:
+  ```bash
+  node src/lib/main.js --query-owl
+  ```
+  This will output a JSON response simulating the result of an OWL query, for example:
+  {
+    "result": "Sample OWL query response",
+    "data": []
+  }
 
 - Default demo output:
   ```bash
