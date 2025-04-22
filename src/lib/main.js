@@ -10,8 +10,12 @@ async function crawlData() {
 
 function displayCapitalCities() {
   const owlCompliance = {
-    type: "CapitalCitiesOWL",
-    cities: ["Washington, D.C.", "London", "Tokyo"]
+    owl: "ontology",
+    type: "capital-cities",
+    data: [
+      { country: "Country A", capital: "Capital A" },
+      { country: "Country B", capital: "Capital B" }
+    ]
   };
   console.log(JSON.stringify(owlCompliance));
 }

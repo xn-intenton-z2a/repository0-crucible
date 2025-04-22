@@ -107,9 +107,14 @@ describe("Capital Cities Flag", () => {
     } catch (e) {
       throw new Error("Output is not valid JSON");
     }
-    expect(parsed).toHaveProperty("type", "CapitalCitiesOWL");
-    expect(parsed).toHaveProperty("cities");
-    expect(Array.isArray(parsed.cities)).toBe(true);
-    expect(parsed.cities.length).toBeGreaterThan(0);
+    expect(parsed).toHaveProperty("owl", "ontology");
+    expect(parsed).toHaveProperty("type", "capital-cities");
+    expect(parsed).toHaveProperty("data");
+    expect(Array.isArray(parsed.data)).toBe(true);
+    expect(parsed.data.length).toBeGreaterThan(1);
+    parsed.data.forEach(element => {
+      expect(element).toHaveProperty("country");
+      expect(element).toHaveProperty("capital");
+    });
   });
 });
