@@ -11,10 +11,12 @@ async function crawlData() {
 export async function main(args) {
   // If the '--query-owl' flag is present, immediately output a sample OWL query JSON response
   if (args.includes("--query-owl")) {
-    console.log(JSON.stringify({
-      result: "Sample OWL query response",
-      data: []
-    }));
+    console.log(
+      JSON.stringify({
+        result: "Sample OWL query response",
+        data: [],
+      }),
+    );
     return;
   }
 
@@ -67,9 +69,11 @@ Example:
 
   // Check if the '--capital-cities' flag is present
   if (args.includes("--capital-cities")) {
-    console.log(JSON.stringify({
-      capitals: ["Washington, D.C.", "London", "Tokyo"]
-    }));
+    console.log(
+      JSON.stringify({
+        capitals: ["Washington, D.C.", "London", "Tokyo"],
+      }),
+    );
     return;
   }
 
@@ -78,7 +82,7 @@ Example:
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   const args = process.argv.slice(2);
-  main(args).catch(err => {
+  main(args).catch((err) => {
     console.error(err);
     process.exit(1);
   });
