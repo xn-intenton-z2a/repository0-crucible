@@ -3,7 +3,6 @@ import * as mainModule from "@src/lib/main.js";
 import { main } from "@src/lib/main.js";
 import pkg from "../../package.json" assert { type: "json" };
 
-
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(mainModule).not.toBeNull();
@@ -70,5 +69,35 @@ describe("Query OWL Flag", () => {
     expect(parsed).toHaveProperty('result', 'Sample OWL query response');
     expect(parsed).toHaveProperty('data');
     expect(Array.isArray(parsed.data)).toBe(true);
+  });
+});
+
+describe("Diagnostics Flag", () => {
+  test("should output diagnostics information", async () => {
+    const originalLog = console.log;
+    let captured = "";
+    console.log = (msg) => { captured += msg; };
+    await main(["--diagnostics"]);
+    console.log = originalLog;
+    expect(captured).toContain("Diagnostics: All systems are operational");
+  });
+});
+
+describe("Capital Cities Flag", () => {
+  test("should output JSON formatted list of capital cities", async () => {
+    const originalLog = console.log;
+    let captured = "";
+    console.log = (msg) => { captured += msg; };
+    await main(["--capital-cities"]);
+    console.log = originalLog;
+    
+    let parsed;
+    try {
+      parsed = JSON.parse(captured);
+    } catch (e) {
+      throw new Error("Output is not valid JSON");
+    }
+    expect(parsed).toHaveProperty("capitals");
+    expect(Array.isArray(parsed.capitals)).toBe(true);
   });
 });
