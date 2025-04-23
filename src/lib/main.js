@@ -43,6 +43,26 @@ async function handleVersion() {
   }
 }
 
+// Helper function to handle the '--version-details' flag.
+async function handleVersionDetails() {
+  try {
+    const pkgModule = await import("../../package.json", { assert: { type: "json" } });
+    const pkg = pkgModule.default || pkgModule;
+    const output = {
+      version: pkg.version,
+      name: pkg.name,
+      description: pkg.description
+    };
+    if (pkg.repository) {
+      output.repository = pkg.repository;
+    }
+    console.log(JSON.stringify(output));
+  } catch (err) {
+    console.error("Error reading version details:", err);
+    process.exit(1);
+  }
+}
+
 // Helper function to handle the '--help' flag.
 function handleHelp() {
   const helpMessage = `
@@ -52,6 +72,7 @@ Usage: node src/lib/main.js [options]
 Options:
   --help             Display detailed help information.
   --version          Display current version information.
+  --version-details  Display detailed version metadata as JSON.
   --diagnostics      Display runtime diagnostics information.
   --capital-cities   Output an OWL compliant JSON representation of capital cities.
   --crawl            Simulate crawling public data sources for JSON data.
@@ -91,6 +112,7 @@ export async function main(args) {
   // Mapping of CLI flags to their respective handler functions.
   const flagHandlers = [
     { flag: "--query-owl", handler: handleQueryOwl },
+    { flag: "--version-details", handler: handleVersionDetails },
     { flag: "--version", handler: handleVersion },
     { flag: "--help", handler: handleHelp },
     { flag: "--crawl", handler: handleCrawl },

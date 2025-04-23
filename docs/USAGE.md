@@ -9,7 +9,12 @@ You can run the CLI using Node.js. The basic command format is:
 ### Available Options
 
 - --help: Display detailed help information including usage instructions.
-- --version: Display the current version from package.json.
+- --version: Display the current version from package.json as a simple string output.
+- --version-details: Display detailed version metadata as a JSON object. This includes:
+  - version
+  - name
+  - description
+  - repository (if available)
 - --diagnostics: Display runtime diagnostics information.
 - --capital-cities: Output an OWL compliant JSON representation of capital cities.
   - The output includes:
@@ -21,7 +26,7 @@ You can run the CLI using Node.js. The basic command format is:
 
 ### Implementation Details
 
-Each CLI flag is now handled by a dedicated helper function to improve code readability and maintainability. The internal refactoring does not change the observable behavior of the CLI tool.
+Each CLI flag is handled by a dedicated helper function to improve code readability and maintainability. The internal refactoring does not change the observable behavior of the CLI tool. The new --version-details flag outputs a JSON object with detailed metadata from package.json, while --version continues to output just the version string.
 
 ### Example Commands
 
@@ -30,9 +35,14 @@ Each CLI flag is now handled by a dedicated helper function to improve code read
   node src/lib/main.js --help
   ```
 
-- Display current version:
+- Display current version (simple):
   ```bash
   node src/lib/main.js --version
+  ```
+
+- Display detailed version information:
+  ```bash
+  node src/lib/main.js --version-details
   ```
 
 - Simulate data crawling:
@@ -50,29 +60,9 @@ Each CLI flag is now handled by a dedicated helper function to improve code read
   node src/lib/main.js --diagnostics
   ```
 
-- Output OWL compliant capital cities information (enhanced feature):
+- Output OWL compliant capital cities information:
   ```bash
   node src/lib/main.js --capital-cities
-  ```
-
-  The output JSON will be similar to:
-  ```json
-  {
-    "owl": "ontology",
-    "type": "capital-cities",
-    "data": [
-      { "country": "United States", "capital": "Washington D.C." },
-      { "country": "Canada", "capital": "Ottawa" },
-      { "country": "United Kingdom", "capital": "London" },
-      { "country": "France", "capital": "Paris" },
-      { "country": "Germany", "capital": "Berlin" },
-      { "country": "Australia", "capital": "Canberra" },
-      { "country": "India", "capital": "New Delhi" },
-      { "country": "Japan", "capital": "Tokyo" },
-      { "country": "Brazil", "capital": "Brasília" },
-      { "country": "South Africa", "capital": "Pretoria" }
-    ]
-  }
   ```
 
 - Default behavior (no flags):

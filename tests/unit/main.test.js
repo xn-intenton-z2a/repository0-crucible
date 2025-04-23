@@ -29,6 +29,28 @@ describe("Version Flag", () => {
   });
 });
 
+describe("Version Details Flag", () => {
+  test("should output detailed version metadata as JSON", async () => {
+    const originalLog = console.log;
+    let captured = "";
+    console.log = (msg) => {
+      captured += msg;
+    };
+    await main(["--version-details"]);
+    console.log = originalLog;
+    let parsed;
+    try {
+      parsed = JSON.parse(captured);
+    } catch (e) {
+      throw new Error("Output is not valid JSON");
+    }
+    expect(parsed).toHaveProperty("version", pkg.version);
+    expect(parsed).toHaveProperty("name", pkg.name);
+    expect(parsed).toHaveProperty("description", pkg.description);
+    // repository is optional
+  });
+});
+
 describe("Help Flag", () => {
   test("should display help information", async () => {
     const originalLog = console.log;
