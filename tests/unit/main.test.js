@@ -92,7 +92,7 @@ describe("Diagnostics Flag", () => {
 });
 
 describe("Capital Cities Flag", () => {
-  test("should output OWL compliant JSON representation of capital cities", async () => {
+  test("should output OWL compliant JSON representation of capital cities with at least 10 entries", async () => {
     const originalLog = console.log;
     let captured = "";
     console.log = (msg) => {
@@ -111,10 +111,14 @@ describe("Capital Cities Flag", () => {
     expect(parsed).toHaveProperty("type", "capital-cities");
     expect(parsed).toHaveProperty("data");
     expect(Array.isArray(parsed.data)).toBe(true);
-    expect(parsed.data.length).toBeGreaterThan(1);
+    expect(parsed.data.length).toBeGreaterThanOrEqual(10);
     parsed.data.forEach(element => {
       expect(element).toHaveProperty("country");
+      expect(typeof element.country).toBe("string");
+      expect(element.country).not.toEqual("");
       expect(element).toHaveProperty("capital");
+      expect(typeof element.capital).toBe("string");
+      expect(element.capital).not.toEqual("");
     });
   });
 });
