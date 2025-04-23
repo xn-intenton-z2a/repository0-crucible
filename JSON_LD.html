@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="json_ld" href="#json_ld"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSON_LD</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">JSON-LD 1.1 defines a JSON-based serialization for Linked Data. Key technical details include processing modes (default 1.1), context based mappings for term disambiguation, usage of base IRI for resolving relative URLs, and support for multiple document forms (expanded, compacted, flattened, framed). The specification includes sections for advanced context usage, indexing techniques (property, language, and node identifier indexing), embedding in HTML, and a set of normative grammar definitions including all syntax tokens and keywords.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">INTRODUCTION
+<ul class="md-github">
+<li class="md-github">Purpose, scope and design goals</li>
+</ul>
+</li>
+<li class="md-github">DATA MODEL
+<ul class="md-github">
+<li class="md-github">Graph-based structure: nodes (with @id, properties) and value objects (with @value, @type)</li>
+<li class="md-github">Blank node conventions: identifiers start with _:</li>
+</ul>
+</li>
+<li class="md-github">CONTEXT DEFINITIONS
+<ul class="md-github">
+<li class="md-github">@context mapping: term to IRI, @language for default language, @vocab for vocabulary, and @base for base IRI resolution</li>
+</ul>
+</li>
+<li class="md-github">COMPACT AND EXPANDED FORMS
+<ul class="md-github">
+<li class="md-github">Expanded: full IRIs; Compact: uses shortened IRIs via context mappings</li>
+<li class="md-github">Arrays representation: lists vs sets differentiation using @list and @set keys</li>
+</ul>
+</li>
+<li class="md-github">ADVANCED PROCESSING
+<ul class="md-github">
+<li class="md-github">Processing mode: parameter @version with numeric value 1.1 triggers JSON-LD 1.1 features</li>
+<li class="md-github">Scoped contexts and protected term definitions</li>
+</ul>
+</li>
+<li class="md-github">EMBEDDING AND LINKING
+<ul class="md-github">
+<li class="md-github">Embedding JSON-LD in HTML: inheriting base IRI from HTML base element, restrictions on JSON-LD script content</li>
+</ul>
+</li>
+<li class="md-github">SYNTAX TOKENS AND KEYWORDS
+<ul class="md-github">
+<li class="md-github">Detailed normative keywords: @id, @context, @value, @type, @graph, and others; case-sensitivity strictly enforced</li>
+</ul>
+</li>
+<li class="md-github">JSON-LD API
+<ul class="md-github">
+<li class="md-github">Method signatures for common operations: compact, expand, frame, and flatten with explicit parameter types and return types</li>
+</ul>
+</li>
+</ol>
+<p class="md-github">Detailed Technical Information:
+INTRODUCTION: JSON-LD 1.1 is designed to express linked data using JSON. It provides a smooth upgrade from JSON by adding context-based IRI expansion.
+DATA MODEL: Represents a directed graph, where nodes are objects with properties. Blank nodes are identified with _:. Literal values include strings, numbers, booleans. Node objects distinguish between resources and literal values.
+CONTEXT DEFINITIONS: Use a JSON object under the @context key. Define default language via @language (e.g., &quot;en&quot;), default vocabulary via @vocab (e.g., &quot;http://schema.org/&quot;) and base IRI with @base.
+COMPACT AND EXPANDED FORMS: Expanded form uses full IRIs; compact form uses abbreviated IRIs with context mappings. Elements such as lists are represented using arrays with @list, and sets using @set.
+ADVANCED PROCESSING: The @version key must be set to 1.1 in the context for enabling new features. Advanced indexing techniques (language, property, node ID indexing) are available.
+EMBEDDING AND LINKING: HTML embedding requires JSON-LD script elements to adhere to restrictions; base IRI is inherited from HTML's base tag if present.
+SYNTAX TOKENS: All keywords (e.g. @id, @context, @value) are literal, case-sensitive strings. Their precise usage is governed by normative sections.
+JSON-LD API: Provides operations such as compact(input, context, options), expand(input, options), frame(input, frame, options). Each method accepts a JSON object and returns a Promise resolving to a processed JSON object.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Technical Specifications:</p>
+<ul class="md-github">
+<li class="md-github">Context Configuration: Provide a JSON map to @context. Example parameters include:
+@base: 'http://example.com/', @vocab: 'http://schema.org/', @language: 'en'.</li>
+<li class="md-github">Processing Mode: Set @version to 1.1 (numeric) in context to enforce JSON-LD 1.1 processing. Legacy documents with version 1.0 are rejected if numeric value provided.</li>
+<li class="md-github">Node Objects: Must contain unique keys; blank nodes use identifiers starting with '_:'.</li>
+<li class="md-github">Arrays and Lists: Use @list to represent ordering; use @set for unordered collection. Single values can be normalized as arrays using explicit configuration.</li>
+<li class="md-github">API Method Signatures (as defined in JSON-LD 1.1 API):
+compact(input: Object, context: Object, options?: Object) -&gt; Promise<Object>
+expand(input: Object, options?: Object) -&gt; Promise<Object>
+frame(input: Object, frame: Object, options?: Object) -&gt; Promise<Object>
+flatten(input: Object, options?: Object) -&gt; Promise<Object></li>
+<li class="md-github">Implementation Steps:
+<ol class="md-github">
+<li class="md-github">Parse input JSON document.</li>
+<li class="md-github">Apply @context for IRI expansion and term mapping.</li>
+<li class="md-github">Process nodes and values according to the data model (distinguishing node objects and value objects).</li>
+<li class="md-github">Apply ordering and index mapping if using @list, @set, or language maps.</li>
+<li class="md-github">Serialize output in chosen form (compacted, expanded, flattened or framed).</li>
+</ol>
+</li>
+<li class="md-github">Configuration Options:
+options.base: String, default empty, used to resolve relative IRIs.
+options.documentLoader: Function to fetch remote contexts; default uses built-in fetch.
+options.processMode: String, default 'json-ld-1.1', can be set to 'json-ld-1.0' to disable advanced features.</li>
+<li class="md-github">Best Practices:
+<ul class="md-github">
+<li class="md-github">Always define a context to avoid ambiguity.</li>
+<li class="md-github">Use explicit @version = 1.1 to enable new features.</li>
+<li class="md-github">Validate returned JSON-LD using dedicated validators (e.g., jsonld-cli --validate).</li>
+<li class="md-github">Test API operations with controlled examples: input objects with explicit @id and embedded contexts.</li>
+</ul>
+</li>
+<li class="md-github">Troubleshooting Procedures:
+<ul class="md-github">
+<li class="md-github">If processor returns errors on @version, verify context contains numeric value 1.1.</li>
+<li class="md-github">For IRI resolution failures, check that options.base is correctly specified and that @base is provided in the context.</li>
+<li class="md-github">In case of unexpected structure, run expand() method and examine intermediate node objects.</li>
+<li class="md-github">Use verbose mode (if available) in the JSON-LD API to output step-by-step processing details.</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specifications and Code Examples:</p>
+<p class="md-github">Method: compact(input: Object, context: Object, options?: Object) -&gt; Promise<Object>
+Parameters:</p>
+<ul class="md-github">
+<li class="md-github">input: JSON object representing the expanded JSON-LD document.</li>
+<li class="md-github">context: JSON object specifying term mappings, including keys such as @base, @vocab, @language, and @version (must be numeric 1.1).</li>
+<li class="md-github">options (optional): Object with additional configuration like processMode ('json-ld-1.1' or 'json-ld-1.0'), base IRI override, and custom documentLoader function.
+Return: Promise resolving to a compacted JSON object that maps IRIs to terms based on provided context.</li>
+</ul>
+<p class="md-github">Method: expand(input: Object, options?: Object) -&gt; Promise<Object>
+Parameters:</p>
+<ul class="md-github">
+<li class="md-github">input: JSON document in compacted or framed form.</li>
+<li class="md-github">options (optional): Options including processMode and documentLoader.
+Return: Promise resolving to an expanded JSON object with full IRIs.</li>
+</ul>
+<p class="md-github">Method: frame(input: Object, frame: Object, options?: Object) -&gt; Promise<Object>
+Parameters:</p>
+<ul class="md-github">
+<li class="md-github">input: JSON-LD document.</li>
+<li class="md-github">frame: JSON object describing the desired frame structure. Frame objects may include directives for matching node objects and embedding linked nodes.</li>
+<li class="md-github">options (optional): Similar configuration options as above.
+Return: Promise resolving to a framed JSON object.</li>
+</ul>
+<p class="md-github">Example Usage (Comments indicate steps):
+// Import JSON-LD API library
+// const jsonld = require('jsonld');</p>
+<p class="md-github">// Define an input JSON-LD document
+// let inputDoc = { &quot;@context&quot;: { &quot;name&quot;: &quot;http://schema.org/name&quot;, &quot;homepage&quot;: { &quot;@id&quot;: &quot;http://schema.org/url&quot;, &quot;@type&quot;: &quot;@id&quot; } }, &quot;@id&quot;: &quot;http://example.com/person/123&quot;, &quot;name&quot;: &quot;John Doe&quot;, &quot;homepage&quot;: &quot;http://johndoe.com&quot; };</p>
+<p class="md-github">// Define context for compaction
+// let context = { &quot;@context&quot;: { &quot;name&quot;: &quot;http://schema.org/name&quot;, &quot;homepage&quot;: { &quot;@id&quot;: &quot;http://schema.org/url&quot;, &quot;@type&quot;: &quot;@id&quot; } } };</p>
+<p class="md-github">// Compact the document
+// jsonld.compact(inputDoc, context).then(compacted =&gt; {
+//    console.log('Compacted JSON-LD:', compacted);
+// }).catch(error =&gt; {
+//    console.error('Error during compaction:', error);
+// });</p>
+<p class="md-github">Troubleshooting:</p>
+<ul class="md-github">
+<li class="md-github">Command: jsonld-cli --validate file.jsonld
+Expected Output: Validation passes with detailed mapping of keywords and resolved IRIs.</li>
+<li class="md-github">If errors occur, verify that @version is set to 1.1 in the context and that all IRIs are absolute or correctly resolvable with provided @base.</li>
+</ul>
+<p class="md-github">Configuration Options in SDK:</p>
+<ul class="md-github">
+<li class="md-github">options.base (default: &quot;&quot;): string; used to resolve relative IRIs.</li>
+<li class="md-github">options.documentLoader (default: built-in fetch): function(url: string): Promise<Object>;</li>
+<li class="md-github">options.processMode (default: &quot;json-ld-1.1&quot;): string; switching to &quot;json-ld-1.0&quot; disables JSON-LD 1.1 features.</li>
+</ul>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Always include a complete @context to disambiguate terms.</li>
+<li class="md-github">Validate output using both expand and compact to ensure reversibility.</li>
+<li class="md-github">Use verbose logging in development mode to trace processing steps.</li>
+</ul>
+<p class="md-github">Detailed Instructional Material:</p>
+<ol class="md-github">
+<li class="md-github">Set up environment with Node.js and install JSON-LD API library via npm.</li>
+<li class="md-github">Write unit tests using frameworks such as Mocha or Vitest to validate changes in compacted and expanded forms.</li>
+<li class="md-github">Use documented API methods with error handling blocks to catch exceptions and log detailed error messages with stack traces.</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">JSON-LD 1.1: JSON serialization for Linked Data; key concepts: @context, @id, @value, @type; data model: directed graph with nodes, blank nodes (_:), and literals; forms: expanded (full IRIs), compacted (context mapping), flattened, framed; API: compact(input:Object, context:Object, options?:Object)-&gt;Promise<Object>, expand(input:Object, options?:Object)-&gt;Promise<Object>, frame(input:Object, frame:Object, options?:Object)-&gt;Promise&lt;Object); configuration: options.base (string), documentLoader (function), processMode ('json-ld-1.1' default); troubleshooting: validate with jsonld-cli --validate file.jsonld; best practices: explicit @context, numeric @version=1.1, use verbose logging, unit tests; complete syntax tokens and keyword definitions provided in normative sections.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">INTRODUCTION
+<ul class="md-github">
+<li class="md-github">Purpose, scope and design goals</li>
+</ul>
+</li>
+<li class="md-github">DATA MODEL
+<ul class="md-github">
+<li class="md-github">Graph-based structure: nodes (with @id, properties) and value objects (with @value, @type)</li>
+<li class="md-github">Blank node conventions: identifiers start with _:</li>
+</ul>
+</li>
+<li class="md-github">CONTEXT DEFINITIONS
+<ul class="md-github">
+<li class="md-github">@context mapping: term to IRI, @language for default language, @vocab for vocabulary, and @base for base IRI resolution</li>
+</ul>
+</li>
+<li class="md-github">COMPACT AND EXPANDED FORMS
+<ul class="md-github">
+<li class="md-github">Expanded: full IRIs; Compact: uses shortened IRIs via context mappings</li>
+<li class="md-github">Arrays representation: lists vs sets differentiation using @list and @set keys</li>
+</ul>
+</li>
+<li class="md-github">ADVANCED PROCESSING
+<ul class="md-github">
+<li class="md-github">Processing mode: parameter @version with numeric value 1.1 triggers JSON-LD 1.1 features</li>
+<li class="md-github">Scoped contexts and protected term definitions</li>
+</ul>
+</li>
+<li class="md-github">EMBEDDING AND LINKING
+<ul class="md-github">
+<li class="md-github">Embedding JSON-LD in HTML: inheriting base IRI from HTML base element, restrictions on JSON-LD script content</li>
+</ul>
+</li>
+<li class="md-github">SYNTAX TOKENS AND KEYWORDS
+<ul class="md-github">
+<li class="md-github">Detailed normative keywords: @id, @context, @value, @type, @graph, and others; case-sensitivity strictly enforced</li>
+</ul>
+</li>
+<li class="md-github">JSON-LD API
+<ul class="md-github">
+<li class="md-github">Method signatures for common operations: compact, expand, frame, and flatten with explicit parameter types and return types</li>
+</ul>
+</li>
+</ol>
+<p class="md-github">Detailed Technical Information:
+INTRODUCTION: JSON-LD 1.1 is designed to express linked data using JSON. It provides a smooth upgrade from JSON by adding context-based IRI expansion.
+DATA MODEL: Represents a directed graph, where nodes are objects with properties. Blank nodes are identified with _:. Literal values include strings, numbers, booleans. Node objects distinguish between resources and literal values.
+CONTEXT DEFINITIONS: Use a JSON object under the @context key. Define default language via @language (e.g., 'en'), default vocabulary via @vocab (e.g., 'http://schema.org/') and base IRI with @base.
+COMPACT AND EXPANDED FORMS: Expanded form uses full IRIs; compact form uses abbreviated IRIs with context mappings. Elements such as lists are represented using arrays with @list, and sets using @set.
+ADVANCED PROCESSING: The @version key must be set to 1.1 in the context for enabling new features. Advanced indexing techniques (language, property, node ID indexing) are available.
+EMBEDDING AND LINKING: HTML embedding requires JSON-LD script elements to adhere to restrictions; base IRI is inherited from HTML's base tag if present.
+SYNTAX TOKENS: All keywords (e.g. @id, @context, @value) are literal, case-sensitive strings. Their precise usage is governed by normative sections.
+JSON-LD API: Provides operations such as compact(input, context, options), expand(input, options), frame(input, frame, options). Each method accepts a JSON object and returns a Promise resolving to a processed JSON object.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">JSON-LD 1.1 Documentation
+https://www.w3.org/TR/json-ld11/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-json_ld" href="#digest-of-json_ld"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of JSON_LD</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="json-ld-11-specification" href="#json-ld-11-specification"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSON-LD 1.1 SPECIFICATION</h1>
+<p class="md-github">Retrieved on: 2023-10-04</p>
+<h2 class="md-github"><a class="md-github__anchor" name="overview" href="#overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
+<p class="md-github">JSON-LD 1.1 is a JSON-based serialization format for Linked Data. It extends JSON by introducing terms such as @context, @id, @value, and @type for representing semantic graphs.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="key-components" href="#key-components"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Key Components</h2>
+<ul class="md-github">
+<li class="md-github">JSON-LD Processing Mode: Values include 1.0 for legacy and 1.1 for extended features.</li>
+<li class="md-github">Base IRI: Mechanism for resolving relative IRIs using document base or context provided values.</li>
+<li class="md-github">Compact IRI: Syntax prefix:suffix forms allowing abbreviation of IRIs.</li>
+<li class="md-github">Context Definitions: Mapping terms to IRIs including configuration for default language (@language) and default vocabulary (@vocab).</li>
+<li class="md-github">Node and Value Objects: Differentiation between structures that represent nodes (with properties) versus values (with literal @value and type).</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="detailed-sections" href="#detailed-sections"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Detailed Sections</h2>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Introduction</p>
+<ul class="md-github">
+<li class="md-github">Overview and goals of JSON-LD in linking existing JSON systems with Linked Data semantics.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Data Model</p>
+<ul class="md-github">
+<li class="md-github">Graph-based model: Nodes, edges, blank nodes. Technical details include unique blank node identifiers (starting with _:), node objects, and value objects.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Advanced Concepts</p>
+<ul class="md-github">
+<li class="md-github">Expanded contexts, scoped contexts, and control over property nesting via @context and protected term definitions.</li>
+<li class="md-github">Descriptions on value ordering (lists, sets) and use of @set with @type.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Forms of Documents</p>
+<ul class="md-github">
+<li class="md-github">Expanded Form: Detailed representation with full IRIs.</li>
+<li class="md-github">Compacted Form: Utilizes context to shorten IRIs, represent lists as arrays, and normalize singular values.</li>
+<li class="md-github">Flattened and Framed Forms: Methods to restructure JSON-LD data according to user requirements.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Embedding and Interpreting</p>
+<ul class="md-github">
+<li class="md-github">Embedding JSON-LD in HTML and inheriting base IRI from <base> element.</li>
+<li class="md-github">Use of Link Relationships to modify behavior (interpreter mode).</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Grammar and Keywords</p>
+<ul class="md-github">
+<li class="md-github">Full enumeration of syntax tokens and keywords (e.g., @id, @context, @value, @list, @set, @graph).</li>
+<li class="md-github">Case-sensitivity enforcement and normative definitions according to RFC and W3C standards.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">API and Processing</p>
+<ul class="md-github">
+<li class="md-github">Specifications for processing algorithms including context processing, expansion, compaction and frame processing.</li>
+<li class="md-github">Integration with JSON-LD 1.1 API providing method signatures for operations like compact, expand and frame.</li>
+</ul>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<p class="md-github">Data Size: 14472503 bytes; 102705 links found; Crawled without error.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution-1" href="#attribution-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: JSON-LD 1.1 Documentation</li>
+<li class="md-github">URL: https://www.w3.org/TR/json-ld11/</li>
+<li class="md-github">License: License: W3C Document Notice</li>
+<li class="md-github">Crawl Date: 2025-04-23T04:48:41.112Z</li>
+<li class="md-github">Data Size: 14472503 bytes</li>
+<li class="md-github">Links Found: 102705</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-23</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-23T05:25:03.235Z</p>
+  </footer>
+</body>
+</html>
