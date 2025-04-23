@@ -100,7 +100,6 @@ describe("Capital Cities Flag", () => {
     };
     await main(["--capital-cities"]);
     console.log = originalLog;
-
     let parsed;
     try {
       parsed = JSON.parse(captured);
