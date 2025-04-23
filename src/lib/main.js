@@ -13,8 +13,16 @@ function displayCapitalCities() {
     owl: "ontology",
     type: "capital-cities",
     data: [
-      { country: "Country A", capital: "Capital A" },
-      { country: "Country B", capital: "Capital B" }
+      { country: "United States", capital: "Washington D.C." },
+      { country: "Canada", capital: "Ottawa" },
+      { country: "United Kingdom", capital: "London" },
+      { country: "France", capital: "Paris" },
+      { country: "Germany", capital: "Berlin" },
+      { country: "Australia", capital: "Canberra" },
+      { country: "India", capital: "New Delhi" },
+      { country: "Japan", capital: "Tokyo" },
+      { country: "Brazil", capital: "Brasília" },
+      { country: "South Africa", capital: "Pretoria" }
     ]
   };
   console.log(JSON.stringify(owlCompliance));
