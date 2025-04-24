@@ -10,22 +10,29 @@ async function crawlData() {
 }
 
 // Function to display OWL compliant JSON representation of capital cities.
-function displayCapitalCities() {
+// Accepts an optional filter for country name.
+function displayCapitalCities(countryFilter = null) {
+  const capitals = [
+    { country: "United States", capital: "Washington D.C." },
+    { country: "Canada", capital: "Ottawa" },
+    { country: "United Kingdom", capital: "London" },
+    { country: "France", capital: "Paris" },
+    { country: "Germany", capital: "Berlin" },
+    { country: "Australia", capital: "Canberra" },
+    { country: "India", capital: "New Delhi" },
+    { country: "Japan", capital: "Tokyo" },
+    { country: "Brazil", capital: "Brasília" },
+    { country: "South Africa", capital: "Pretoria" }
+  ];
+  
+  let filteredCapitals = capitals;
+  if (countryFilter) {
+    filteredCapitals = capitals.filter(entry => entry.country.toLowerCase() === countryFilter.toLowerCase());
+  }
   const owlCompliance = {
     owl: "ontology",
     type: "capital-cities",
-    data: [
-      { country: "United States", capital: "Washington D.C." },
-      { country: "Canada", capital: "Ottawa" },
-      { country: "United Kingdom", capital: "London" },
-      { country: "France", capital: "Paris" },
-      { country: "Germany", capital: "Berlin" },
-      { country: "Australia", capital: "Canberra" },
-      { country: "India", capital: "New Delhi" },
-      { country: "Japan", capital: "Tokyo" },
-      { country: "Brazil", capital: "Brasília" },
-      { country: "South Africa", capital: "Pretoria" }
-    ]
+    data: filteredCapitals
   };
   console.log(JSON.stringify(owlCompliance));
 }
@@ -75,6 +82,7 @@ Options:
   --version-details  Display detailed version metadata as JSON.
   --diagnostics      Display runtime diagnostics information.
   --capital-cities   Output an OWL compliant JSON representation of capital cities.
+                     Optionally, use --country=CountryName to filter by country.
   --crawl            Simulate crawling public data sources for JSON data.
   --query-owl        Simulate querying an OWL ontology and return sample JSON data.
 
@@ -95,13 +103,19 @@ function handleDiagnostics() {
 }
 
 // Helper function to handle the '--capital-cities' flag.
-function handleCapitalCities() {
-  displayCapitalCities();
+// It checks for an optional '--country=CountryName' in the args.
+function handleCapitalCities(args) {
+  let countryFilter = null;
+  args.forEach(arg => {
+    if (arg.startsWith("--country=")) {
+      countryFilter = arg.split("=")[1].trim();
+    }
+  });
+  displayCapitalCities(countryFilter);
 }
 
 // Helper function to handle the '--query-owl' flag.
 function handleQueryOwl() {
-  // Outputs a sample OWL query JSON response.
   console.log(JSON.stringify({
     result: "Sample OWL query response",
     data: []
@@ -111,13 +125,13 @@ function handleQueryOwl() {
 export async function main(args) {
   // Mapping of CLI flags to their respective handler functions.
   const flagHandlers = [
-    { flag: "--query-owl", handler: handleQueryOwl },
-    { flag: "--version-details", handler: handleVersionDetails },
-    { flag: "--version", handler: handleVersion },
-    { flag: "--help", handler: handleHelp },
-    { flag: "--crawl", handler: handleCrawl },
-    { flag: "--diagnostics", handler: handleDiagnostics },
-    { flag: "--capital-cities", handler: handleCapitalCities }
+    { flag: "--query-owl", handler: () => handleQueryOwl() },
+    { flag: "--version-details", handler: () => handleVersionDetails() },
+    { flag: "--version", handler: () => handleVersion() },
+    { flag: "--help", handler: () => handleHelp() },
+    { flag: "--crawl", handler: () => handleCrawl() },
+    { flag: "--diagnostics", handler: () => handleDiagnostics() },
+    { flag: "--capital-cities", handler: () => handleCapitalCities(args) }
   ];
 
   // Iterate over flag handlers and execute the one matching the argument.
