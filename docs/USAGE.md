@@ -17,16 +17,16 @@ You can run the CLI using Node.js. The basic command format is:
   - repository (if available)
 - --diagnostics: Display runtime diagnostics information.
 - --capital-cities: Output an OWL compliant JSON representation of capital cities.
-  - The output includes:
-    - owl: "ontology"
-    - type: "capital-cities"
-    - data: An array of objects where each object has non-empty 'country' and 'capital' keys. The list now includes at least 10 entries from diverse countries.
+  - By default, the output includes at least 10 capital city entries from diverse countries.
+  - Optionally, you can filter the output by a specific country using the --country parameter. For example:
+    - node src/lib/main.js --capital-cities --country=Canada
+    - If a valid country is provided, only the matching entry will be returned. If no match is found, the data array will be empty.
 - --crawl: Simulate crawling public data sources for JSON data. (Simulated behavior)
 - --query-owl: Simulate querying an OWL ontology and return a sample JSON response.
 
 ### Implementation Details
 
-Each CLI flag is handled by a dedicated helper function to improve code readability and maintainability. The internal refactoring does not change the observable behavior of the CLI tool. The new --version-details flag outputs a JSON object with detailed metadata from package.json, while --version continues to output just the version string.
+Each CLI flag is handled by a dedicated helper function to improve code readability and maintainability. The new --capital-cities flag now supports an optional filter parameter --country=CountryName to allow filtering the output by a specific country. When the filter is not provided, the complete list of capital cities is output.
 
 ### Example Commands
 
@@ -60,9 +60,14 @@ Each CLI flag is handled by a dedicated helper function to improve code readabil
   node src/lib/main.js --diagnostics
   ```
 
-- Output OWL compliant capital cities information:
+- Output full OWL compliant capital cities information (at least 10 entries):
   ```bash
   node src/lib/main.js --capital-cities
+  ```
+
+- Output capital cities information filtered by country (e.g., only Canada):
+  ```bash
+  node src/lib/main.js --capital-cities --country=Canada
   ```
 
 - Default behavior (no flags):
