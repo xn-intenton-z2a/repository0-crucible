@@ -49,11 +49,18 @@ describe("Version Details Flag", () => {
 });
 
 describe("Help Flag", () => {
-  test("should display help information", async () => {
+  test("should display enhanced help information", async () => {
     const captured = await captureOutput(() => main(["--help"]));
     expect(captured).toContain("Usage:");
-    expect(captured).toContain("--help");
-    expect(captured).toContain("CLI Help");
+    expect(captured).toContain("--help             Display detailed help information.");
+    expect(captured).toContain("--version");
+    expect(captured).toContain("--version-details");
+    expect(captured).toContain("--diagnostics");
+    expect(captured).toContain("--crawl");
+    expect(captured).toContain("--capital-cities");
+    expect(captured).toContain("--query-owl");
+    // Check for usage examples
+    expect(captured).toContain("node src/lib/main.js --capital-cities --country=Canada");
   });
 });
 

@@ -79,15 +79,17 @@ Usage: node src/lib/main.js [options]
 Options:
   --help             Display detailed help information.
   --version          Display current version information.
-  --version-details  Display detailed version metadata as JSON.
+  --version-details  Display detailed version metadata as JSON (includes name and description).
   --diagnostics      Display runtime diagnostics information.
-  --capital-cities   Output an OWL compliant JSON representation of capital cities.
-                     Optionally, use --country=CountryName to filter by country.
   --crawl            Simulate crawling public data sources for JSON data.
+  --capital-cities   Output an OWL compliant JSON representation of capital cities.
+                     Optional: use --country=CountryName to filter by a specific country.
   --query-owl        Simulate querying an OWL ontology and return sample JSON data.
 
-Example:
+Examples:
   node src/lib/main.js --help
+  node src/lib/main.js --version-details
+  node src/lib/main.js --capital-cities --country=Canada
 `;
   console.log(helpMessage.trim());
 }
