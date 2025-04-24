@@ -8,13 +8,41 @@ You can run the CLI using Node.js. The basic command format is:
 
 ## Available Options and Features
 
-- --help: Displays a detailed help message (see CLI_HELP.md for additional details).
+- --help: Displays detailed help information with descriptions for each available command and usage examples.
 - --version: Outputs the current version of the tool, matching the version in package.json.
-- --version-details: Outputs detailed version metadata as a JSON object, including version, name, description, and repository information if available (see VERSION_DETAILS.md).
-- --diagnostics: Displays runtime diagnostics information about the current environment (refer to DIAGNOSTICS.md).
-- --capital-cities: Outputs an OWL compliant JSON object containing a list of capital cities. By default, it includes at least 10 entries. It supports an optional filter via --country=CountryName to display a specific country's capital (see CAPITAL_CITIES.md).
-- --crawl: Simulates crawling public data sources and outputs a confirmation message (refer to DATA_CRAWL.md).
-- --query-owl: Outputs a sample JSON response simulating a SPARQL query against an OWL ontology (refer to SPARQL_QUERY.md).
+- --version-details: Outputs detailed version metadata as a JSON object, including version, name, description, and repository information if available.
+- --diagnostics: Displays runtime diagnostics information about the current environment.
+- --capital-cities: Outputs an OWL compliant JSON object containing a list of capital cities. By default, it includes at least 10 entries. It supports an optional filter via --country=CountryName to display a specific country's capital.
+- --crawl: Simulates crawling public data sources and outputs a confirmation message.
+- --query-owl: Outputs a sample JSON response simulating a SPARQL query against an OWL ontology.
+
+## CLI Help
+
+The CLI help output provides detailed descriptions for each flag along with usage examples. When you run:
+
+  node src/lib/main.js --help
+
+You will see a help message similar to:
+
+  CLI Help:
+  Usage: node src/lib/main.js [options]
+
+  Options:
+    --help             Display detailed help information.
+    --version          Display current version information.
+    --version-details  Display detailed version metadata as JSON (includes name and description).
+    --diagnostics      Display runtime diagnostics information.
+    --crawl            Simulate crawling public data sources for JSON data.
+    --capital-cities   Output an OWL compliant JSON representation of capital cities.
+                       Optional: use --country=CountryName to filter by a specific country.
+    --query-owl        Simulate querying an OWL ontology and return sample JSON data.
+
+  Examples:
+    node src/lib/main.js --help
+    node src/lib/main.js --version-details
+    node src/lib/main.js --capital-cities --country=Canada
+
+This detailed help guides the user in understanding the available commands and how to use them effectively.
 
 ## Usage Examples
 
@@ -53,9 +81,3 @@ You can run the CLI using Node.js. The basic command format is:
 - Default behavior when no recognized flag is provided:
   
   node src/lib/main.js
-
-## Connection to Project Mission and Contributing Guidelines
-
-This CLI tool is an integral part of the project’s mission as outlined in MISSION.md. The tool facilitates the transformation of public data into OWL ontologies and provides robust mechanisms for querying these ontologies.
-
-Contributions to improve CLI functionality, documentation, or any other aspect of the project should adhere to the guidelines detailed in CONTRIBUTING.md. This ensures consistency, quality, and alignment with the overall project goals.
