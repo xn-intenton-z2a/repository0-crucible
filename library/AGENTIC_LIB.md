@@ -1,184 +1,167 @@
 # AGENTIC_LIB
 
 ## Crawl Summary
-Component Breakdown: Re-usable Workflows (in .github/workflows/, GPL-3), Example Workflows (in examples/, MIT), Evolving main.js (in src/lib/main.js). Key function agenticHandler processes JSON payload with either command or commands array, increments global callCount, returns executionTimeMS. CLI supports flags: --agentic, --dry-run, --version, --verbose, --diagnostics, --status, --digest, --simulate-error, --simulate-delay, --simulate-load, --apply-fix, --cli-utils. AWS integrations include createSQSEventFromDigest and digestLambdaHandler. Detailed logging via logInfo and logError. Licensing under GPL-3 and MIT with required attribution.
+Agentic-lib provides reusable GitHub Actions workflows and a JavaScript module implementing an agenticHandler function. The handler accepts single commands or a batch (using a commands array), increments a global count (globalThis.callCount), and returns executionTimeMS. It supports input validation (trimming, rejecting 'NaN' inputs) and optional command alias substitution via COMMAND_ALIASES. CLI commands include --agentic, --dry-run, --version, --verbose, --diagnostics, --status, --digest, --simulate-error, --simulate-delay <ms>, --simulate-load <ms>, --apply-fix, and --cli-utils. AWS integrations use createSQSEventFromDigest and digestLambdaHandler to simulate and process SQS events with fallback messageId generation. Detailed logging is available through logInfo and logError.
 
 ## Normalised Extract
 Table of Contents:
-1. Component Breakdown
-   - Re-usable Workflows: Location: .github/workflows/, stable, GPL-3, used in CI/CD pipeline.
-   - Example Workflows: Location: examples/, demonstrative, MIT licensing.
-   - Evolving main.js: Location: src/lib/main.js, implements agentic workflows in JavaScript, tracks agentic command invocations via globalThis.callCount.
-2. Agentic Library Functions
-   - agenticHandler:
-     * Parameters: JSON payload { command: string } or { commands: string[] }
-     * Returns: Object with individual results containing executionTimeMS.
-     * Behavior: Validates input (trims whitespace, rejects non-actionable 'NaN' values), increments invocation counter per valid command.
-     * Batch Processing: Optional throttling if environment variable MAX_BATCH_COMMANDS is set; rejects batch if command count exceeds limit.
-3. CLI Configuration
-   - Flags and usage:
-     * --agentic: Processes agentic commands. Example: node src/lib/main.js --agentic '{"command": "doSomething"}' or '{"commands": ["cmd1", "cmd2"]}'.
-     * --dry-run: Simulates command execution without action.
-     * --version: Shows version info with timestamp from package.json.
-     * --verbose: Enables detailed logging.
-     * --diagnostics: Provides configuration, Node.js version, environment variables.
-     * --status: Provides health summary including callCount and uptime.
-     * Additional flags: --digest, --simulate-error, --simulate-delay <ms>, --simulate-load <ms>, --apply-fix, --cli-utils.
-4. AWS Integrations
-   - SQS Integration:
-     * createSQSEventFromDigest: Formats digest into mock SQS event.
-     * digestLambdaHandler: Processes SQS events, handles JSON parsing errors, uses fallback for missing messageId.
-5. Logging
-   - Functions: logInfo and logError for detailed logs when verbose mode is on.
-6. Licensing
-   - GPL-3 for core workflows with attribution, MIT for examples.
-Exact details:
-- Environment variable COMMAND_ALIASES accepts JSON mapping { "ls": "list", "rm": "remove" } to substitute commands.
-- Execution timing: Each processed command returns executionTimeMS (in milliseconds).
-- CLI dry-run flag and simulation flags for error, delay, and load conditions are implemented.
-- Internal counter: globalThis.callCount increments per successful command execution.
-
+1. REUSABLE_WORKFLOWS
+   - Location: .github/workflows/
+   - Licensing: GPL-3 with attribution requirement
+   - Stability: Suitable for CI/CD integration
+2. AGENTIC_HANDLER
+   - Function: agenticHandler(payload)
+   - Accepts either {command: string} or {commands: string[]} payload
+   - Increments globalThis.callCount on success
+   - Returns executionTimeMS in milliseconds for each command
+   - Batch throttling: Environment variable MAX_BATCH_COMMANDS rejects batch if limit exceeded
+3. INPUT_VALIDATION_AND_ALIASES
+   - Trims whitespace and rejects inputs equivalent to 'NaN' with error message "Input non-actionable: equivalent to NaN"
+   - Supports command alias substitution via environment variable COMMAND_ALIASES (e.g., { ls: list, rm: remove })
+4. CLI_COMMANDS
+   - --agentic: Invoke agenticHandler with JSON payload
+   - --dry-run: Simulate command execution
+   - --version: Output version info from package.json with timestamp
+   - --verbose: Enable detailed logging
+   - --diagnostics: Output full diagnostic report (configuration, Node.js version, environment variables)
+   - --status: Output runtime health summary (callCount, uptime, configuration)
+   - --digest: Trigger sample digest processing
+   - --simulate-error: Simulate an error and exit non-zero
+   - --simulate-delay <ms>: Delay execution by specified milliseconds
+   - --simulate-load <ms>: Execute CPU‑intensive loop for specified milliseconds
+   - --apply-fix: Apply automated fixes and log success message
+   - --cli-utils: Display complete summary of CLI commands
+5. AWS_INTEGRATIONS
+   - createSQSEventFromDigest: Constructs mock SQS event from digest
+   - digestLambdaHandler: Processes incoming SQS events, handles JSON parse errors, assigns fallback messageId
+6. LOGGING
+   - Functions logInfo and logError provide detailed operational logs when verbose mode is enabled
 
 ## Supplementary Details
-Evolving main.js Implementation:
-- Function: agenticHandler(payload)
-    if payload.command exists then process single command
-    else if payload.commands exists then iterate commands sequentially
-    For each command:
-      * Trim whitespace
-      * Check if command equals 'NaN' (case insensitive) then reject with error
-      * Validate and process command
-      * Increment globalThis.callCount
-      * Measure processing time and return executionTimeMS
-- Batch throttling: if process.env.MAX_BATCH_COMMANDS is set and payload.commands length exceeds value, then return error message.
+AgenticHandler Implementation:
+- Input: JSON payload { "command": string } or { "commands": string[] }
+- Process: Validate command by trimming whitespace; if command == 'NaN' (any case) or empty, log error and return message "Input non-actionable: equivalent to NaN"
+- On valid command:
+  1. Process each command sequentially
+  2. Increment globalThis.callCount
+  3. Measure processing time and include as executionTimeMS in result
+- Batch processing can be controlled by setting environment variable MAX_BATCH_COMMANDS. If number of commands exceeds this limit, reject payload with error message.
+- Command Aliases: When environment variable COMMAND_ALIASES is set (value as JSON mapping), substitute any matching alias from payload before processing
 
-CLI Implementation:
-- Supported flags:
-   --agentic, --dry-run, --version, --verbose, --diagnostics, --status, --digest, --simulate-error, --simulate-delay <ms>, --simulate-load <ms>, --apply-fix, --cli-utils.
-- Version command uses package.json version and outputs JSON with timestamp.
-- Diagnostics collects process.env, Node.js version, current configuration.
+CLI Flags and Expected Behaviors:
+- --agentic: Execute agenticHandler with provided JSON payload
+- --dry-run: Do not perform any actions, only simulate
+- --version: Parse package.json, output version and current timestamp
+- --verbose: Activate detailed logging via logInfo and logError
+- --diagnostics: Collect and output current configuration, Node.js version, and select environment variables
+- --status: Return JSON summary including globalThis.callCount, uptime, and Node.js version
+- --simulate-error: Immediately log simulated error and exit with non-zero status
+- --simulate-delay <ms>: Invoke delay loop for specified milliseconds before command processing
+- --simulate-load <ms>: Execute a CPU intensive loop for specified milliseconds
+- --apply-fix: Log "Applied fix successfully" and exit immediately after
+- --cli-utils: Generate a comprehensive summary of CLI commands and their descriptions
 
-AWS Integration Implementation:
-- createSQSEventFromDigest(digest): Formats digest into SQS event structure with properties similar to AWS SQS message format.
-- digestLambdaHandler(event): Processes event. Uses try { JSON.parse(message.body) } catch error { log error, accumulate failed records }.
+Best Practices:
+- Validate input strictly (avoid unauthorized commands, trim whitespace, check for 'NaN')
+- Use dry-run mode before production deployment
+- Enable verbose logging during debugging
+- Use proper environment variable configuration for batch limits (MAX_BATCH_COMMANDS) and command aliases (COMMAND_ALIASES)
 
-Logging Functions:
-- logInfo(message): Outputs info log along with current configuration if verbose flag is set.
-- logError(error): Outputs error message and error stack if verbose mode is active.
-
-Environment Variables:
-- MAX_BATCH_COMMANDS: (Numeric) Maximum allowed commands in batch.
-- COMMAND_ALIASES: (JSON string) Mapping of aliases to actual commands.
-
-Error Handling:
-- Commands with non-actionable value ('NaN', empty strings) are strictly rejected with error message: "Input is non-actionable because it is equivalent to 'NaN'".
-
-Attribution Requirement:
-- Every derived work must include: "This work is derived from https://github.com/xn-intenton-z2a/agentic-lib".
-
+Troubleshooting Procedures:
+1. If batch commands fail, check the value of MAX_BATCH_COMMANDS and ensure the payload does not exceed the limit.
+2. For command alias issues, verify the JSON format of COMMAND_ALIASES and that keys match input commands exactly.
+3. Use --verbose mode to inspect detailed logs via logError, check configuration details printed by --diagnostics.
+4. Confirm that Node.js version is compatible by inspecting output from --diagnostics flag.
+5. For SQS integration failures, review error logs in digestLambdaHandler and ensure fallback messageId is generated when missing.
 
 ## Reference Details
 API Specifications:
+- Function: agenticHandler(payload: any) -> { callCount: number, results: Array<{ command: string, executionTimeMS: number }> }
+  * Acceptable Payloads:
+    - { "command": "doSomething" }
+    - { "commands": ["cmd1", "cmd2"] }
+  * Behavior:
+    - Validates input: trims whitespace, rejects if command equals 'NaN' or empty.
+    - Increments globalThis.callCount for each command.
+    - Returns an object with each command's executionTimeMS in milliseconds.
 
-Function: agenticHandler(payload: { command?: string, commands?: string[] }) -> { results: Array<{ executionTimeMS: number, command: string, status: string }> }
-- Parameters:
-    command: string (optional) - Single command to process.
-    commands: string[] (optional) - Array of commands for batch processing.
-- Return Type: Object with property 'results' containing an array. Each result has executionTimeMS (number), command (string), and status (string, e.g., 'success').
-- Exceptions: Throws error if payload is missing or if non-actionable input is detected (e.g., trimmed value equals 'NaN').
+CLI Method Signatures & Examples:
+- Single command invocation:
+  node src/lib/main.js --agentic '{"command": "doSomething"}'
+- Batch processing:
+  node src/lib/main.js --agentic '{"commands": ["cmd1", "cmd2"]}'
+- Dry run:
+  node src/lib/main.js --dry-run
+- Additional flags:
+  --version -> returns { "version": "x.y.z", "timestamp": "<ISO date>" }
+  --diagnostics -> returns { "nodeVersion": "vXX.X.X", "config": { ... }, "env": { ... } }
+  --status -> returns { "callCount": <number>, "uptime": <ms>, "nodeVersion": "..." }
+  --simulate-error -> logs error and exits with non-zero code
+  --simulate-delay <ms> -> delays execution for given milliseconds
+  --simulate-load <ms> -> executes CPU-intensive loop for given milliseconds
+  --apply-fix -> logs "Applied fix successfully" and exits
+  --cli-utils -> outputs complete list of available CLI commands and descriptions
 
-CLI Usage Examples:
-1. Single command: node src/lib/main.js --agentic '{"command": "doSomething"}'
-2. Batch processing: node src/lib/main.js --agentic '{"commands": ["cmd1", "cmd2"]}'
-3. Dry run: node src/lib/main.js --dry-run
-4. Version: node src/lib/main.js --version
-5. Diagnostics: node src/lib/main.js --diagnostics
-6. Simulate delay: node src/lib/main.js --simulate-delay 500
+AWS Integrations:
+- Function: createSQSEventFromDigest(digest: string) -> constructs an AWS SQS formatted event object with typical keys including MessageId (fallback generated if missing) and body as digest
+- Function: digestLambdaHandler(event: object) -> processes incoming SQS events, handles JSON parsing errors, accumulates and logs failed records
 
-SDK Method Signatures (in JavaScript):
+Configuration Options:
+- MAX_BATCH_COMMANDS: (number) limits maximum commands in a batch (default: no limit)
+- COMMAND_ALIASES: (string) JSON formatted mapping for command substitution (e.g., '{"ls": "list", "rm": "remove"}')
 
-function agenticHandler(payload: { command?: string, commands?: string[] }): { results: Array<{ executionTimeMS: number, command: string, status: string }> } {
-  // Validate payload
-  // If payload.command exists, process single command
-  // Else if payload.commands exists, iterate and validate each command
-  // Trim commands and check for non-actionable 'NaN'
-  // Increment globalThis.callCount for each valid command
-  // For each command, measure startTime and compute executionTimeMS
-  // Return aggregated result array
-}
+Concrete Best Practices & Implementation Code Patterns:
+- Always validate commands for non-actionable inputs by trimming and comparing to 'NaN'.
+- Leverage --dry-run mode to test CLI commands before live deployment.
+- Configure environment variables (MAX_BATCH_COMMANDS, COMMAND_ALIASES) correctly to control batch size and command aliasing.
+- Use --verbose and --diagnostics flags to retrieve detailed logs and environment configurations during troubleshooting.
 
-Environment Variables:
-- MAX_BATCH_COMMANDS: numeric value determining maximum commands allowed; if exceeded, command batch is rejected.
-- COMMAND_ALIASES: JSON mapping for alias substitution (e.g., {"ls": "list", "rm": "remove"}).
-
-Troubleshooting Procedures:
-1. If command batch is rejected, verify that the number of commands does not exceed process.env.MAX_BATCH_COMMANDS.
-2. For JSON parsing errors in AWS Lambda integration, check proper formatting of SQS message body and use try-catch blocks in digestLambdaHandler.
-3. For non-actionable inputs, ensure commands are trimmed and not equal to variations of 'NaN'.
-4. Use --verbose flag to see detailed logging via logInfo and logError.
-
-Best Practices Implementation:
-- Always validate input payload with strict trimming.
-- Use environment variables for dynamic configuration (e.g., MAX_BATCH_COMMANDS, COMMAND_ALIASES).
-- Add error logging and diagnostic reporting (--diagnostics, --status) for production troubleshooting.
-- Include attribution string in all derived projects.
-
-Complete Code Example:
-
-// Example usage of agenticHandler
-const payload = { commands: ['build', 'test', 'deploy'] };
-try {
-  const result = agenticHandler(payload);
-  console.log('Execution Results:', result);
-} catch (error) {
-  console.error('Error:', error);
-}
-
-// CLI invocation example
-// node src/lib/main.js --agentic '{"command": "doSomething"}'
-
-// AWS integration example
-// const sqsEvent = createSQSEventFromDigest(digest);
-// digestLambdaHandler(sqsEvent);
+Detailed Troubleshooting Commands:
+1. Check batch limit: Ensure MAX_BATCH_COMMANDS is set properly. For example, in Unix:
+   export MAX_BATCH_COMMANDS=10
+2. Validate alias configuration: echo $COMMAND_ALIASES should return a valid JSON string.
+3. Test diagnostic report: node src/lib/main.js --diagnostics
+4. Inspect status: node src/lib/main.js --status
+5. Run in dry-run mode: node src/lib/main.js --dry-run
+6. For simulated error: node src/lib/main.js --simulate-error (expect a logged error and exit code != 0)
 
 
 ## Information Dense Extract
-AGENTIC_LIB: Workflows in .github/workflows/ (GPL-3), Examples in examples/ (MIT), main.js in src/lib/main.js implements agenticHandler with payload {command?:string, commands?:string[]} that validates inputs (trims, rejects 'NaN'), increments globalThis.callCount, returns array of {executionTimeMS:number, command:string, status:string}. CLI flags: --agentic, --dry-run, --version, --verbose, --diagnostics, --status, --digest, --simulate-error, --simulate-delay <ms>, --simulate-load <ms>, --apply-fix, --cli-utils. AWS: createSQSEventFromDigest formats digest to SQS event; digestLambdaHandler processes event with fallback for missing messageId. Environment variables: MAX_BATCH_COMMANDS (limit number of commands), COMMAND_ALIASES (JSON mapping for alias substitution). API: agenticHandler(payload) returns {results:[{executionTimeMS, command, status}]}. Code example provided. Troubleshooting: Check batch limits, JSON parsing, and input trimming. Attribution: Must include derived attribution string.
+AGENTIC_LIB; .github/workflows (GPL-3); main.js implements agenticHandler(payload) accepting {"command": string} or {"commands": [string]}; increments globalThis.callCount; returns executionTimeMS; input trimmed, rejects 'NaN'; env vars: MAX_BATCH_COMMANDS (number), COMMAND_ALIASES (JSON mapping); CLI flags: --agentic, --dry-run, --version, --verbose, --diagnostics, --status, --digest, --simulate-error, --simulate-delay <ms>, --simulate-load <ms>, --apply-fix, --cli-utils; AWS functions: createSQSEventFromDigest(digest:string) -> SQS event, digestLambdaHandler(event) with fallback messageId; API: agenticHandler(payload: any) -> { callCount:number, results:[{command:string, executionTimeMS:number}] }; troubleshooting via --verbose, --diagnostics; best practices include input validation and environment configuration.
 
 ## Sanitised Extract
 Table of Contents:
-1. Component Breakdown
-   - Re-usable Workflows: Location: .github/workflows/, stable, GPL-3, used in CI/CD pipeline.
-   - Example Workflows: Location: examples/, demonstrative, MIT licensing.
-   - Evolving main.js: Location: src/lib/main.js, implements agentic workflows in JavaScript, tracks agentic command invocations via globalThis.callCount.
-2. Agentic Library Functions
-   - agenticHandler:
-     * Parameters: JSON payload { command: string } or { commands: string[] }
-     * Returns: Object with individual results containing executionTimeMS.
-     * Behavior: Validates input (trims whitespace, rejects non-actionable 'NaN' values), increments invocation counter per valid command.
-     * Batch Processing: Optional throttling if environment variable MAX_BATCH_COMMANDS is set; rejects batch if command count exceeds limit.
-3. CLI Configuration
-   - Flags and usage:
-     * --agentic: Processes agentic commands. Example: node src/lib/main.js --agentic '{'command': 'doSomething'}' or '{'commands': ['cmd1', 'cmd2']}'.
-     * --dry-run: Simulates command execution without action.
-     * --version: Shows version info with timestamp from package.json.
-     * --verbose: Enables detailed logging.
-     * --diagnostics: Provides configuration, Node.js version, environment variables.
-     * --status: Provides health summary including callCount and uptime.
-     * Additional flags: --digest, --simulate-error, --simulate-delay <ms>, --simulate-load <ms>, --apply-fix, --cli-utils.
-4. AWS Integrations
-   - SQS Integration:
-     * createSQSEventFromDigest: Formats digest into mock SQS event.
-     * digestLambdaHandler: Processes SQS events, handles JSON parsing errors, uses fallback for missing messageId.
-5. Logging
-   - Functions: logInfo and logError for detailed logs when verbose mode is on.
-6. Licensing
-   - GPL-3 for core workflows with attribution, MIT for examples.
-Exact details:
-- Environment variable COMMAND_ALIASES accepts JSON mapping { 'ls': 'list', 'rm': 'remove' } to substitute commands.
-- Execution timing: Each processed command returns executionTimeMS (in milliseconds).
-- CLI dry-run flag and simulation flags for error, delay, and load conditions are implemented.
-- Internal counter: globalThis.callCount increments per successful command execution.
+1. REUSABLE_WORKFLOWS
+   - Location: .github/workflows/
+   - Licensing: GPL-3 with attribution requirement
+   - Stability: Suitable for CI/CD integration
+2. AGENTIC_HANDLER
+   - Function: agenticHandler(payload)
+   - Accepts either {command: string} or {commands: string[]} payload
+   - Increments globalThis.callCount on success
+   - Returns executionTimeMS in milliseconds for each command
+   - Batch throttling: Environment variable MAX_BATCH_COMMANDS rejects batch if limit exceeded
+3. INPUT_VALIDATION_AND_ALIASES
+   - Trims whitespace and rejects inputs equivalent to 'NaN' with error message 'Input non-actionable: equivalent to NaN'
+   - Supports command alias substitution via environment variable COMMAND_ALIASES (e.g., { ls: list, rm: remove })
+4. CLI_COMMANDS
+   - --agentic: Invoke agenticHandler with JSON payload
+   - --dry-run: Simulate command execution
+   - --version: Output version info from package.json with timestamp
+   - --verbose: Enable detailed logging
+   - --diagnostics: Output full diagnostic report (configuration, Node.js version, environment variables)
+   - --status: Output runtime health summary (callCount, uptime, configuration)
+   - --digest: Trigger sample digest processing
+   - --simulate-error: Simulate an error and exit non-zero
+   - --simulate-delay <ms>: Delay execution by specified milliseconds
+   - --simulate-load <ms>: Execute CPUintensive loop for specified milliseconds
+   - --apply-fix: Apply automated fixes and log success message
+   - --cli-utils: Display complete summary of CLI commands
+5. AWS_INTEGRATIONS
+   - createSQSEventFromDigest: Constructs mock SQS event from digest
+   - digestLambdaHandler: Processes incoming SQS events, handles JSON parse errors, assigns fallback messageId
+6. LOGGING
+   - Functions logInfo and logError provide detailed operational logs when verbose mode is enabled
 
 ## Original Source
 Agentic Library Documentation
@@ -186,95 +169,71 @@ https://github.com/xn-intenton-z2a/agentic-lib
 
 ## Digest of AGENTIC_LIB
 
-# AGENTIC_LIB DOCUMENTATION
+# AGENTIC_LIB
 
-Retrieved on: 2023-11-28
+Retrieved on: 2025-04-25
 
-## Component Breakdown
+## Overview
+The agentic-lib is a collection of reusable GitHub Actions workflows and a JavaScript module (main.js) that provide autonomous workflow invocation. The system uses GitHub’s workflow_call event so workflows can be composed like an SDK to continuously review, fix, update, and evolve code.
 
-1. Re‑usable Workflows (Core Functionality)
-   - Location: .github/workflows/
-   - Purpose: Automated testing, publishing, and issue management using GitHub Actions.
-   - Licensing: GPL-3 with attribution requirement.
+## Re‑usable Workflows
+- Location: .github/workflows/
+- Licensing: GPL-3 with attribution requirement (any derived work must include: "This work is derived from https://github.com/xn-intenton-z2a/agentic-lib")
+- Stability: Well‑tested and integrated in CI/CD pipelines
 
-2. Example Workflows (Demonstrative Content)
-   - Location: examples/
-   - Purpose: Practical examples for learning and reference.
-   - Licensing: MIT License.
+## The Evolving main.js
+- Implements core workflows as a JavaScript module.
+- Tracks successful commands via global counter (globalThis.callCount).
 
-3. The Evolving main.js
-   - Location: src/lib/main.js
-   - Purpose: JavaScript re‑implementation of re‑usable workflows with programmatic access.
-   - Key Features:
-     a. Internal invocation counter (globalThis.callCount)
-     b. Batch processing support using agenticHandler
-     c. Optional batch throttling via environment variable MAX_BATCH_COMMANDS
-     d. Execution timing: returns executionTimeMS for each command
-     e. Command alias substitution using COMMAND_ALIASES
+## Batch Processing in agenticHandler
+- Accepts payloads of the form:
+  - Single command: { "command": "doSomething" }
+  - Batch commands: { "commands": ["cmd1", "cmd2"] }
+- For each valid command:
+  - Increments globalThis.callCount
+  - Returns execution time (executionTimeMS in milliseconds)
+- Optional batch throttling through environment variable MAX_BATCH_COMMANDS (rejects payload if limit exceeded)
 
-## Agentic Library Functions
+## Input Validation and Command Aliases
+- Commands are trimmed. Inputs equivalent to 'NaN' (in any case variation) or empty strings are rejected with an error message "Input non-actionable: equivalent to NaN".
+- Supports command alias substitution via environment variable COMMAND_ALIASES, e.g., { "ls": "list", "rm": "remove" }.
 
-- Function: agenticHandler
-  - Accepts: JSON payload with either a single property "command" (string) or a property "commands" (array of strings).
-  - Behavior: Validates commands, processes each sequentially, increments invocation counter, returns aggregated results with individual executionTimeMS.
-  - Error Handling: Logs and rejects non-actionable inputs (e.g. 'NaN', empty strings) after trimming whitespace.
-
-Usage examples:
-  Single command:
-    node src/lib/main.js --agentic '{"command": "doSomething"}'
-  Batch processing:
-    node src/lib/main.js --agentic '{"commands": ["cmd1", "cmd2"]}'
-
-Additional CLI flag for dry-run:
-  node src/lib/main.js --dry-run
-
-## CLI Commands
-
-Supported CLI flags with their functionality:
-  --help            : Display usage instructions and available flags.
-  --agentic         : Process a single or batch agentic command.
-  --version         : Display version info from package.json with timestamp.
-  --verbose         : Enable detailed logging for debugging.
-  --diagnostics     : Output in‑depth diagnostic report (configuration, Node.js version, environment variables).
-  --status          : Output runtime health summary in JSON (configuration, callCount, uptime, selected env vars).
-  --digest          : Initiate processing of a sample digest event. 
-  --simulate-error  : Simulate an error scenario; logs error and exits non-zero.
-  --simulate-delay  : Delay execution by a specified number of milliseconds (usage: --simulate-delay <ms>).
-  --simulate-load   : Execute a CPU-intensive loop for a specified duration in milliseconds.
-  --apply-fix       : Apply automated fixes (logs "Applied fix successfully" and exits immediately).
-  --cli-utils       : Display a comprehensive summary of all CLI commands available with brief descriptions.
+## CLI Commands and Flags
+- --agentic: Processes a command payload. E.g.: 
+  node src/lib/main.js --agentic '{"command": "doSomething"}'
+  or batch: node src/lib/main.js --agentic '{"commands": ["cmd1", "cmd2"]}'
+- --dry-run: Simulates command execution without performing actions.
+- --version: Displays version info from package.json along with a timestamp.
+- --verbose: Activates detailed logging for debugging.
+- --diagnostics: Outputs a full diagnostic report (configuration, Node.js version, environment variables).
+- --status: Outputs a JSON runtime health summary (callCount, uptime, etc.).
+- --digest: Processes a sample digest event.
+- --simulate-error: Simulates an error; logs error and exits non-zero.
+- --simulate-delay <ms>: Delays execution to simulate latency.
+- --simulate-load <ms>: Executes a CPU‑intensive loop for specified milliseconds.
+- --apply-fix: Applies automated fixes and logs "Applied fix successfully", then exits.
+- --cli-utils: Displays a summary of all available CLI commands and descriptions.
 
 ## AWS Integrations
+- SQS Event Simulation:
+  - createSQSEventFromDigest: Constructs a mock AWS SQS event from a digest.
+  - digestLambdaHandler: Processes incoming SQS events with error handling and assigns a fallback messageId if omitted.
 
-- SQS Integration:
-  a. createSQSEventFromDigest
-     - Constructs a mock AWS SQS event from a given digest, formatting payload similar to a typical SQS message.
-  b. digestLambdaHandler
-     - Processes incoming SQS events handling JSON parsing errors, accumulates failed records and generates a fallback messageId if omitted.
+## Logging
+- Logging functions logInfo and logError provide operation details including configuration and error stacks when verbose mode is active.
 
-## Logging Mechanism
-
-- Functions: logInfo and logError
-  - Provide detailed logging including configurations and error stacks when verbose mode is enabled.
-
-## Licensing and Attribution
-
-- Core workflows are under GPL-3 with attribution requirement. Example workflows are under MIT License.
-- Attribution must include text: "This work is derived from https://github.com/xn-intenton-z2a/agentic-lib".
-
-## Attribution and Data Size
-
-- Crawled data size: 657965 bytes
-- Links Found: 5126
+## Attribution and Licensing
+- Mixed Licensing: Core workflows under GNU General Public License (GPL-3) and example workflows under the MIT License.
+- Attribution required as specified in the repository notices.
 
 
 ## Attribution
 - Source: Agentic Library Documentation
 - URL: https://github.com/xn-intenton-z2a/agentic-lib
 - License: License: Varies by file, typically open source (check repository for details)
-- Crawl Date: 2025-04-25T03:56:40.449Z
-- Data Size: 657965 bytes
-- Links Found: 5126
+- Crawl Date: 2025-04-25T04:48:50.729Z
+- Data Size: 651806 bytes
+- Links Found: 5047
 
 ## Retrieved
 2025-04-25
