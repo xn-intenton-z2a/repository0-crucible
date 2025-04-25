@@ -5,61 +5,59 @@ This document details the command line interface (CLI) for the tool and outlines
 ## Supported Flags
 
 - `--help`: Show help message and exit.
-- `--version`: Show version information.
-- `--agentic <data>`: Execute agentic commands with provided JSON data.
+- `--version`: Show version information along with a timestamp.
+- `--agentic <data>`: Execute agentic commands with provided JSON data. Supports both a single command (e.g., `{ "command": "doSomething" }`) and batch commands (e.g., `{ "commands": ["cmd1", "cmd2"] }`).
 - `--dry-run`: Simulate command execution without making changes.
-- `--diagnostics`: Display diagnostic information.
-- `--capital-cities`: Display a list of capital cities from the ontology.
+- `--diagnostics`: Display diagnostic information including Node.js version and relevant environment variables.
+- `--capital-cities`: Display a list of capital cities from the ontology. (Handled in main CLI logic)
 
-## Modular CLI Command Processing
+## CLI_PARSER Feature
 
-The CLI command processing has been refactored for enhanced modularity, maintainability, and testability. The argument parsing and command routing logic now reside in a dedicated module: `src/orderParser.js`.
+The CLI parsing logic has been extracted into a dedicated function in `src/orderParser.js`. This function processes the command line arguments, validates input, and returns a structured object containing the parsed flags and any errors.
 
-This module exposes two primary functions:
+### How It Works
 
-- `parseArgs(args)`: Analyzes the input arguments, validates supported flags, checks for required flag values (e.g., for `--agentic`), and returns a structured object. If an unknown flag or a missing value is encountered, it returns an error object.
+- The parser iterates through the provided arguments, trimming whitespace and validating each flag.
+- For flags that require a value (e.g., `--agentic`), the parser checks for the presence of a subsequent argument and attempts to parse it as JSON.
+- If the JSON parsing fails or the structure is invalid (it must include a `command` string or a `commands` array), an appropriate error is added.
+- The `--version` flag includes a timestamp indicating when the version was requested.
 
-- `processCommand(args)`: Routes the CLI command based on the parsed arguments. It handles the display of help messages, version info, simulation of agentic processing, and other flag-based behaviors.
+### Examples
 
-Internally, the main CLI entry point (e.g., `src/lib/main.js`) invokes `processCommand`, ensuring that the CLI processing is neatly separated from other application logic.
-
-## Examples
-
-### Display Help
+**Display Help**
 
 ```bash
 node src/lib/main.js --help
 ```
 
-### Show Version
+**Show Version with Timestamp**
 
 ```bash
 node src/lib/main.js --version
 ```
 
-### Execute an Agentic Command
-
-Provide a JSON payload with the command:
+**Execute an Agentic Command (Single Command)**
 
 ```bash
 node src/lib/main.js --agentic '{"command": "doSomething"}'
 ```
 
-### Simulate a Dry Run with Agentic Command
+**Execute Agentic Commands (Batch Commands)**
 
 ```bash
-node src/lib/main.js --agentic '{"command": "doSomething"}' --dry-run
+node src/lib/main.js --agentic '{"commands": ["cmd1", "cmd2"]}'
 ```
 
-### Process Diagnostic Flags
+**Simulate Execution**
 
 ```bash
-node src/lib/main.js --diagnostics --capital-cities
+node src/lib/main.js --dry-run
 ```
 
-## Error Handling
+**Display Diagnostics**
 
-- If an unknown flag is provided, the CLI will output an error message and display the help instructions.
-- If a flag that requires a value (e.g., `--agentic`) is missing one, an error message is shown along with the help text.
+```bash
+node src/lib/main.js --diagnostics
+```
 
-This modular approach not only simplifies the main execution flow but also facilitates easier unit testing and future enhancements.
+The parser ensures that all required flags are provided with valid input and returns clear error messages if any issues are detected.
