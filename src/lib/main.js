@@ -99,9 +99,16 @@ async function handleCrawl() {
   await crawlData();
 }
 
-// Helper function to handle the '--diagnostics' flag.
+// Enhanced helper function to handle the '--diagnostics' flag.
 function handleDiagnostics() {
   console.log("Diagnostics: All systems are operational");
+  const diagnostics = {
+    version: process.version,
+    platform: process.platform,
+    uptime: process.uptime(),
+    memoryUsage: process.memoryUsage()
+  };
+  console.log(JSON.stringify(diagnostics));
 }
 
 // Helper function to handle the '--capital-cities' flag.
