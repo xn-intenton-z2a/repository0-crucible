@@ -350,7 +350,7 @@ IMPORTANT: Any derived work must include the following attribution:
     
               
         Issues
-          0
+          1
 
 
     
@@ -582,7 +582,7 @@ Additional navigation options
 
   
   
-      mainBranchesTagsGo to fileCodeFolders and filesNameNameLast commit messageLast commit dateLatest commit History1,592 Commits.github.github  .mvn/wrapper.mvn/wrapper  archivearchive  awsaws  docsdocs  examplesexamples  exportsexports  featuresfeatures  librarylibrary  publicpublic  scriptsscripts  seedsseeds  srcsrc  tests/unittests/unit  .dockerignore.dockerignore  .gitignore.gitignore  .prettierignore.prettierignore  .prettierrc.prettierrc  AGENT-APPLY-FIX.mdAGENT-APPLY-FIX.md  AGENT-FEATURE-ISSUE.mdAGENT-FEATURE-ISSUE.md  AGENT-ISSUE-RESOLUTION.mdAGENT-ISSUE-RESOLUTION.md  AGENT-MAINTAIN-FEATURES.mdAGENT-MAINTAIN-FEATURES.md  AGENT-MAINTAIN-LIBRARY.mdAGENT-MAINTAIN-LIBRARY.md  AGENT-MAINTAIN-SOURCES.mdAGENT-MAINTAIN-SOURCES.md  AGENT-MAINTENANCE-ISSUE.mdAGENT-MAINTENANCE-ISSUE.md  AGENT-READY-ISSUE.mdAGENT-READY-ISSUE.md  AGENT-REVIEW-ISSUE.mdAGENT-REVIEW-ISSUE.md  AGENT-UPDATE-README.mdAGENT-UPDATE-README.md  CONTRIBUTING.mdCONTRIBUTING.md  DEBUGGING.mdDEBUGGING.md  DockerfileDockerfile  LICENSELICENSE  LICENSE-MITLICENSE-MIT  LOCALSTACK.mdLOCALSTACK.md  MISSION.mdMISSION.md  NOTICENOTICE  README.mdREADME.md  SOURCES-WISHLIST.mdSOURCES-WISHLIST.md  SOURCES.mdSOURCES.md  WORKFLOWS-README.mdWORKFLOWS-README.md  agentic-lib.imlagentic-lib.iml  cdk.jsoncdk.json  compose.ymlcompose.yml  eslint.config.jseslint.config.js  jsconfig.jsonjsconfig.json  mvnwmvnw  mvnw.cmdmvnw.cmd  package-lock.jsonpackage-lock.json  package.jsonpackage.json  pom.xmlpom.xml  vitest.config.jsvitest.config.js  View all filesRepository files navigationREADMEGPL-3.0 licenseMIT licenseintentïon agentic-lib
+      mainBranchesTagsGo to fileCodeFolders and filesNameNameLast commit messageLast commit dateLatest commit History1,595 Commits.github.github  .mvn/wrapper.mvn/wrapper  archivearchive  awsaws  docsdocs  examplesexamples  exportsexports  featuresfeatures  librarylibrary  publicpublic  scriptsscripts  seedsseeds  srcsrc  tests/unittests/unit  .dockerignore.dockerignore  .gitignore.gitignore  .prettierignore.prettierignore  .prettierrc.prettierrc  AGENT-APPLY-FIX.mdAGENT-APPLY-FIX.md  AGENT-FEATURE-ISSUE.mdAGENT-FEATURE-ISSUE.md  AGENT-ISSUE-RESOLUTION.mdAGENT-ISSUE-RESOLUTION.md  AGENT-MAINTAIN-FEATURES.mdAGENT-MAINTAIN-FEATURES.md  AGENT-MAINTAIN-LIBRARY.mdAGENT-MAINTAIN-LIBRARY.md  AGENT-MAINTAIN-SOURCES.mdAGENT-MAINTAIN-SOURCES.md  AGENT-MAINTENANCE-ISSUE.mdAGENT-MAINTENANCE-ISSUE.md  AGENT-READY-ISSUE.mdAGENT-READY-ISSUE.md  AGENT-REVIEW-ISSUE.mdAGENT-REVIEW-ISSUE.md  AGENT-UPDATE-README.mdAGENT-UPDATE-README.md  CONTRIBUTING.mdCONTRIBUTING.md  DEBUGGING.mdDEBUGGING.md  DockerfileDockerfile  LICENSELICENSE  LICENSE-MITLICENSE-MIT  LOCALSTACK.mdLOCALSTACK.md  MISSION.mdMISSION.md  NOTICENOTICE  README.mdREADME.md  SOURCES-WISHLIST.mdSOURCES-WISHLIST.md  SOURCES.mdSOURCES.md  WORKFLOWS-README.mdWORKFLOWS-README.md  agentic-lib.imlagentic-lib.iml  cdk.jsoncdk.json  compose.ymlcompose.yml  eslint.config.jseslint.config.js  jsconfig.jsonjsconfig.json  mvnwmvnw  mvnw.cmdmvnw.cmd  package-lock.jsonpackage-lock.json  package.jsonpackage.json  pom.xmlpom.xml  vitest.config.jsvitest.config.js  View all filesRepository files navigationREADMEGPL-3.0 licenseMIT licenseintentïon agentic-lib
 You probably want to start with the workflow documentation here: WORKFLOWS-README.md
 The intentïon agentic-lib is a collection of reusable GitHub Actions workflows that enable your
 repository to operate in an “agentic” manner. In our system, autonomous workflows communicate through branches and
@@ -1391,7 +1391,7 @@ IMPORTANT: Any derived work must include the following attribution:
     
               
         Issues
-          0
+          1
 
 
     
@@ -1623,7 +1623,7 @@ Additional navigation options
 
   
   
-      mainBranchesTagsGo to fileCodeFolders and filesNameNameLast commit messageLast commit dateLatest commit History1,592 Commits.github.github  .mvn/wrapper.mvn/wrapper  archivearchive  awsaws  docsdocs  examplesexamples  exportsexports  featuresfeatures  librarylibrary  publicpublic  scriptsscripts  seedsseeds  srcsrc  tests/unittests/unit  .dockerignore.dockerignore  .gitignore.gitignore  .prettierignore.prettierignore  .prettierrc.prettierrc  AGENT-APPLY-FIX.mdAGENT-APPLY-FIX.md  AGENT-FEATURE-ISSUE.mdAGENT-FEATURE-ISSUE.md  AGENT-ISSUE-RESOLUTION.mdAGENT-ISSUE-RESOLUTION.md  AGENT-MAINTAIN-FEATURES.mdAGENT-MAINTAIN-FEATURES.md  AGENT-MAINTAIN-LIBRARY.mdAGENT-MAINTAIN-LIBRARY.md  AGENT-MAINTAIN-SOURCES.mdAGENT-MAINTAIN-SOURCES.md  AGENT-MAINTENANCE-ISSUE.mdAGENT-MAINTENANCE-ISSUE.md  AGENT-READY-ISSUE.mdAGENT-READY-ISSUE.md  AGENT-REVIEW-ISSUE.mdAGENT-REVIEW-ISSUE.md  AGENT-UPDATE-README.mdAGENT-UPDATE-README.md  CONTRIBUTING.mdCONTRIBUTING.md  DEBUGGING.mdDEBUGGING.md  DockerfileDockerfile  LICENSELICENSE  LICENSE-MITLICENSE-MIT  LOCALSTACK.mdLOCALSTACK.md  MISSION.mdMISSION.md  NOTICENOTICE  README.mdREADME.md  SOURCES-WISHLIST.mdSOURCES-WISHLIST.md  SOURCES.mdSOURCES.md  WORKFLOWS-README.mdWORKFLOWS-README.md  agentic-lib.imlagentic-lib.iml  cdk.jsoncdk.json  compose.ymlcompose.yml  eslint.config.jseslint.config.js  jsconfig.jsonjsconfig.json  mvnwmvnw  mvnw.cmdmvnw.cmd  package-lock.jsonpackage-lock.json  package.jsonpackage.json  pom.xmlpom.xml  vitest.config.jsvitest.config.js  View all filesRepository files navigationREADMEGPL-3.0 licenseMIT licenseintentïon agentic-lib
+      mainBranchesTagsGo to fileCodeFolders and filesNameNameLast commit messageLast commit dateLatest commit History1,595 Commits.github.github  .mvn/wrapper.mvn/wrapper  archivearchive  awsaws  docsdocs  examplesexamples  exportsexports  featuresfeatures  librarylibrary  publicpublic  scriptsscripts  seedsseeds  srcsrc  tests/unittests/unit  .dockerignore.dockerignore  .gitignore.gitignore  .prettierignore.prettierignore  .prettierrc.prettierrc  AGENT-APPLY-FIX.mdAGENT-APPLY-FIX.md  AGENT-FEATURE-ISSUE.mdAGENT-FEATURE-ISSUE.md  AGENT-ISSUE-RESOLUTION.mdAGENT-ISSUE-RESOLUTION.md  AGENT-MAINTAIN-FEATURES.mdAGENT-MAINTAIN-FEATURES.md  AGENT-MAINTAIN-LIBRARY.mdAGENT-MAINTAIN-LIBRARY.md  AGENT-MAINTAIN-SOURCES.mdAGENT-MAINTAIN-SOURCES.md  AGENT-MAINTENANCE-ISSUE.mdAGENT-MAINTENANCE-ISSUE.md  AGENT-READY-ISSUE.mdAGENT-READY-ISSUE.md  AGENT-REVIEW-ISSUE.mdAGENT-REVIEW-ISSUE.md  AGENT-UPDATE-README.mdAGENT-UPDATE-README.md  CONTRIBUTING.mdCONTRIBUTING.md  DEBUGGING.mdDEBUGGING.md  DockerfileDockerfile  LICENSELICENSE  LICENSE-MITLICENSE-MIT  LOCALSTACK.mdLOCALSTACK.md  MISSION.mdMISSION.md  NOTICENOTICE  README.mdREADME.md  SOURCES-WISHLIST.mdSOURCES-WISHLIST.md  SOURCES.mdSOURCES.md  WORKFLOWS-README.mdWORKFLOWS-README.md  agentic-lib.imlagentic-lib.iml  cdk.jsoncdk.json  compose.ymlcompose.yml  eslint.config.jseslint.config.js  jsconfig.jsonjsconfig.json  mvnwmvnw  mvnw.cmdmvnw.cmd  package-lock.jsonpackage-lock.json  package.jsonpackage.json  pom.xmlpom.xml  vitest.config.jsvitest.config.js  View all filesRepository files navigationREADMEGPL-3.0 licenseMIT licenseintentïon agentic-lib
 You probably want to start with the workflow documentation here: WORKFLOWS-README.md
 The intentïon agentic-lib is a collection of reusable GitHub Actions workflows that enable your
 repository to operate in an “agentic” manner. In our system, autonomous workflows communicate through branches and
@@ -5384,7 +5384,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
   
     
   
-    Read more about ZibaSec's customer story
+    Read more about ADEO's customer story
     
       
         
@@ -5395,8 +5395,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     ZibaSec
-    ZibaSec achieves great feats with a small team to protect federal organizations from phishing attacks.
+     ADEO
+    ADEO works more efficiently across teams and time zones with a global innersource program.
     
       Read story 
 
@@ -5406,7 +5406,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Zendesk's customer story
+    Read more about Aevi's customer story
     
       
         
@@ -5417,8 +5417,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Zendesk
-    Zendesk and GitHub: Building best-in-class tools for a decade—and counting.
+     Aevi
+    Aevi delivers developer happiness with GitHub Enterprise.
     
       Read story 
 
@@ -5428,7 +5428,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Zalando's customer story
+    Read more about Brother Industries's customer story
     
       
         
@@ -5439,8 +5439,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Zalando
-    Zalando uses GitHub to facilitate collaboration and prioritize open source contributions.
+     Brother Industries
+    Brother Industries stays ahead of their customer’s needs through cross-functional collaboration.
     
       Read story 
 
@@ -5450,7 +5450,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about XING's customer story
+    Read more about Capillary Technologies's customer story
     
       
         
@@ -5461,8 +5461,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     XING
-    XING integrates open and closed source code to build collaborative workflows everyone can use—from project planning to QA.
+     Capillary Technologies
+    With GitHub at the heart of its developer workflows, Capillary Technologies deploys fast. 
     
       Read story 
 
@@ -5472,7 +5472,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about White Label: International Retailer's customer story
+    Read more about Decathlon's customer story
     
       
         
@@ -5483,8 +5483,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     White Label: International Retailer
-    The world’s third largest retailer partners with GitHub to drive innovation through open source best practices.
+     Decathlon
+    The world’s largest sporting goods retail brand embraces open source to stay modern.
     
       Read story 
 
@@ -5494,7 +5494,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Wayfair's customer story
+    Read more about Delivery Hero's customer story
     
       
         
@@ -5505,8 +5505,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Wayfair
-    By balancing cloud and on-premises management, Wayfair creates a customer experience that edges out the competition.
+     Delivery Hero
+    Delivery Hero built a central home for community, communication, and code on GitHub Enterprise.
     
       Read story 
 
@@ -6183,7 +6183,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
   
     
   
-    Read more about Trustpilot's customer story
+    Read more about Netdata's customer story
     
       
         
@@ -6194,52 +6194,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Trustpilot
-    Global review platform Trustpilot uses GitHub Team to build a better product, faster, with 300 releases per week.
-    
-      Read story 
-
-    
-  
-
-
-    
-  
-    Read more about Tray.io's customer story
-    
-      
-        
-  
-  
-  
-  
-
-      
-    
-     Tray.io
-    GitHub Team helps the general automation platform build, package, and deploy code faster than ever.
-    
-      Read story 
-
-    
-  
-
-
-    
-  
-    Read more about Sketch's customer story
-    
-      
-        
-  
-  
-  
-  
-
-      
-    
-     Sketch
-    Sketch streamlines their workflows to provide teams with a comprehensive digital design editor.
+     Netdata
+    Netdata accelerates their developer workflow with built-in security and open source.
     
       Read story 
 
@@ -6271,7 +6227,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Netdata's customer story
+    Read more about Front's customer story
     
       
         
@@ -6282,8 +6238,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Netdata
-    Netdata accelerates their developer workflow with built-in security and open source.
+     Front
+    Front takes the work out of their workflows with GitHub Team.
     
       Read story 
 
@@ -6306,6 +6262,50 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
     
      Modsy
     Modsy leverages GitHub Team to make interior design easy and accessible for all.
+    
+      Read story 
+
+    
+  
+
+
+    
+  
+    Read more about Sketch's customer story
+    
+      
+        
+  
+  
+  
+  
+
+      
+    
+     Sketch
+    Sketch streamlines their workflows to provide teams with a comprehensive digital design editor.
+    
+      Read story 
+
+    
+  
+
+
+    
+  
+    Read more about Tray.io's customer story
+    
+      
+        
+  
+  
+  
+  
+
+      
+    
+     Tray.io
+    GitHub Team helps the general automation platform build, package, and deploy code faster than ever.
     
       Read story 
 
@@ -7753,25 +7753,9 @@ The ReadME Project
     
         
       
-        Linux
+        Emacs
       
-      Linux is an open source kernel.
-    
-  
-
-
-        
-  
-    
-
-
-
-    
-        
-      
-        Sketch
-      
-      Sketch is a vector graphics editor for Apple's macOS, used primarily for user interface and icon design.
+      Emacs is an extensible, customizable, free text editor and computing environment.
     
   
 
@@ -7788,6 +7772,22 @@ The ReadME Project
         Maven
       
       Maven is a build automation tool used primarily for Java projects.
+    
+  
+
+
+        
+  
+    
+
+
+
+    
+        
+      
+        GraphQL
+      
+      GraphQL is a query language for APIs and a runtime for fulfilling those queries with your existing data.
     
   
 
@@ -8369,27 +8369,42 @@ The ReadME Project
       
           
             
+  mysql
+
+          
+          
+            
   config
 
           
           
             
-  gplv3
+  java
 
           
           
             
-  spoof
+  spring
 
           
           
             
-  parody
+  vue
 
           
           
             
-  gpl3
+  springboot
+
+          
+          
+            
+  ssm
+
+          
+          
+            
+  uniapp
 
           
           
@@ -8399,22 +8414,7 @@ The ReadME Project
           
           
             
-  softmicro
-
-          
-          
-            
-  drapes
-
-          
-          
-            
-  drapes-project
-
-          
-          
-            
-  drapes-development\n\n\n\nStar
+  kodehode-backend\n\n\n\nStar
 
 
   
@@ -8439,9 +8439,9 @@ The ReadME Project
 
 
       
-        4,121
+        4,864
       
-        482
+        538
       
         Built by
 
@@ -8454,95 +8454,6 @@ The ReadME Project
       
         
         1,105 stars today
-  
-
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        RVC-Boss /
-
-      GPT-SoVITS  
-
-    
-      1 min voice data can also be used to train a good TTS model! (few shot voice cloning)
-    
-
-  
-      
-  
-  Python
-
-
-
-      
-        45,210
-      
-        5,006
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        128 stars today
-  
-
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        cloudcommunity /
-
-      Free-Certifications  
-
-    
-      A curated list of free courses with certifications. Also available at https://free-certifications.com/
-    
-
-  
-
-      
-        31,365
-      
-        2,246
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        894 stars today
   
 
   
@@ -8572,9 +8483,9 @@ The ReadME Project
 
 
       
-        5,004
+        5,074
       
-        340
+        342
       
         Built by
 
@@ -8587,6 +8498,145 @@ The ReadME Project
       
         
         410 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        jujumilk3 /
+
+      leaked-system-prompts  
+
+    
+      Collection of leaked system prompts
+    
+
+  
+
+      
+        3,191
+      
+        412
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        55 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        cloudcommunity /
+
+      Free-Certifications  
+
+    
+      A curated list of free courses with certifications. Also available at https://free-certifications.com/
+    
+
+  
+
+      
+        31,564
+      
+        2,260
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        894 stars today
+  
+
+  
+        
+    
+    
+      Sponsor
+    
+  
+
+
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        bregman-arie /
+
+      devops-exercises  
+
+    
+      Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, Terraform, OpenStack, SQL, NoSQL, Azure, GCP, DNS, Elastic, Network, Virtualization. DevOps Interview Questions
+    
+
+  
+      
+  
+  Python
+
+
+
+      
+        74,428
+      
+        16,606
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        257 stars today
   
 
   
@@ -8619,9 +8669,9 @@ The ReadME Project
 
 
       
-        79,577
+        79,696
       
-        41,209
+        41,236
       
         Built by
 
@@ -8650,20 +8700,25 @@ The ReadME Project
     
 
       
-        jujumilk3 /
+        go-playground /
 
-      leaked-system-prompts  
+      validator  
 
     
-      Collection of leaked system prompts
+      💯Go Struct and Field validation, including Cross Field, Cross Struct, Map, Slice and Array diving
     
 
   
+      
+  
+  Go
+
+
 
       
-        2,989
+        18,121
       
-        399
+        1,365
       
         Built by
 
@@ -8675,7 +8730,250 @@ The ReadME Project
 
       
         
-        55 stars today
+        18 stars today
+  
+
+  
+        
+    
+    
+      Sponsor
+    
+  
+
+
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        fastrepl /
+
+      hyprnote  
+
+    
+      AI Notepad for back-to-back meetings. Local-first & Extensible.
+    
+
+  
+      
+  
+  TypeScript
+
+
+
+      
+        780
+      
+        47
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        133 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        getzep /
+
+      graphiti  
+
+    
+      Build Real-Time Knowledge Graphs for AI Agents
+    
+
+  
+      
+  
+  Python
+
+
+
+      
+        4,730
+      
+        365
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        514 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        aquasecurity /
+
+      trivy  
+
+    
+      Find vulnerabilities, misconfigurations, secrets, SBOM in containers, Kubernetes, code repositories, clouds and more
+    
+
+  
+      
+  
+  Go
+
+
+
+      
+        25,614
+      
+        2,508
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        12 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        drawdb-io /
+
+      drawdb  
+
+    
+      Free, simple, and intuitive online database diagram editor and SQL generator.
+    
+
+  
+      
+  
+  JavaScript
+
+
+
+      
+        28,141
+      
+        1,985
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        350 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        joho /
+
+      godotenv  
+
+    
+      A Go port of Ruby's dotenv library (Loads environment variables from .env files)
+    
+
+  
+      
+  
+  Go
+
+
+
+      
+        9,109
+      
+        426
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        4 stars today
   
 
   
@@ -8716,9 +9014,9 @@ The ReadME Project
 
 
       
-        29,084
+        29,186
       
-        1,622
+        1,628
       
         Built by
 
@@ -8747,25 +9045,25 @@ The ReadME Project
     
 
       
-        facebookresearch /
+        tracel-ai /
 
-      dinov2  
+      burn  
 
     
-      PyTorch code and models for the DINOv2 self-supervised learning method.
+      Burn is a next generation Deep Learning Framework that doesn't compromise on flexibility, efficiency and portability.
     
 
   
       
   
-  Jupyter Notebook
+  Rust
 
 
 
       
-        10,422
+        10,397
       
-        940
+        540
       
         Built by
 
@@ -8777,7 +9075,7 @@ The ReadME Project
 
       
         
-        8 stars today
+        53 stars today
   
 
   
@@ -8794,25 +9092,25 @@ The ReadME Project
     
 
       
-        tensorflow /
+        BerriAI /
 
-      tensorflow  
+      litellm  
 
     
-      An Open Source Machine Learning Framework for Everyone
+      Python SDK, Proxy Server (LLM Gateway) to call 100+ LLM APIs in OpenAI format - [Bedrock, Azure, OpenAI, VertexAI, Cohere, Anthropic, Sagemaker, HuggingFace, Replicate, Groq]
     
 
   
       
   
-  C++
+  Python
 
 
 
       
-        189,602
+        21,339
       
-        74,651
+        2,711
       
         Built by
 
@@ -8824,7 +9122,101 @@ The ReadME Project
 
       
         
-        43 stars today\n\nExplore
+        86 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        Stirling-Tools /
+
+      Stirling-PDF  
+
+    
+      #1 Locally hosted web application that allows you to perform various operations on PDF files
+    
+
+  
+      
+  
+  Java
+
+
+
+      
+        56,512
+      
+        4,732
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        100 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        FortAwesome /
+
+      Font-Awesome  
+
+    
+      The iconic SVG, font, and CSS toolkit
+    
+
+  
+      
+  
+  JavaScript
+
+
+
+      
+        74,981
+      
+        12,201
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        8 stars today\n\nExplore
 
       Topics
 
@@ -10914,9 +11306,9 @@ The ReadME Project
 
 
       
-        4,121
+        4,864
       
-        482
+        538
       
         Built by
 
@@ -10929,99 +11321,6 @@ The ReadME Project
       
         
         1,105 stars today
-  
-
-
-          
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        RVC-Boss /
-
-      GPT-SoVITS  
-
-    
-      1 min voice data can also be used to train a good TTS model! (few shot voice cloning)
-    
-
-  
-      
-  
-  Python
-
-
-
-      
-        45,210
-      
-        5,006
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        128 stars today
-  
-
-
-          
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        cloudcommunity /
-
-      Free-Certifications  
-
-    
-      A curated list of free courses with certifications. Also available at https://free-certifications.com/
-    
-
-  
-
-      
-        31,365
-      
-        2,246
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        894 stars today
   
 
 
@@ -11053,9 +11352,9 @@ The ReadME Project
 
 
       
-        5,004
+        5,074
       
-        340
+        342
       
         Built by
 
@@ -11068,6 +11367,151 @@ The ReadME Project
       
         
         410 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        jujumilk3 /
+
+      leaked-system-prompts  
+
+    
+      Collection of leaked system prompts
+    
+
+  
+
+      
+        3,191
+      
+        412
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        55 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        cloudcommunity /
+
+      Free-Certifications  
+
+    
+      A curated list of free courses with certifications. Also available at https://free-certifications.com/
+    
+
+  
+
+      
+        31,564
+      
+        2,260
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        894 stars today
+  
+
+
+          
+  
+        
+    
+    
+      Sponsor
+    
+  
+
+
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        bregman-arie /
+
+      devops-exercises  
+
+    
+      Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, Terraform, OpenStack, SQL, NoSQL, Azure, GCP, DNS, Elastic, Network, Virtualization. DevOps Interview Questions
+    
+
+  
+      
+  
+  Python
+
+
+
+      
+        74,428
+      
+        16,606
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        257 stars today
   
 
 
@@ -11102,9 +11546,9 @@ The ReadME Project
 
 
       
-        79,577
+        79,696
       
-        41,209
+        41,236
       
         Built by
 
@@ -11135,20 +11579,25 @@ The ReadME Project
     
 
       
-        jujumilk3 /
+        go-playground /
 
-      leaked-system-prompts  
+      validator  
 
     
-      Collection of leaked system prompts
+      💯Go Struct and Field validation, including Cross Field, Cross Struct, Map, Slice and Array diving
     
 
   
+      
+  
+  Go
+
+
 
       
-        2,989
+        18,121
       
-        399
+        1,365
       
         Built by
 
@@ -11160,7 +11609,260 @@ The ReadME Project
 
       
         
-        55 stars today
+        18 stars today
+  
+
+
+          
+  
+        
+    
+    
+      Sponsor
+    
+  
+
+
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        fastrepl /
+
+      hyprnote  
+
+    
+      AI Notepad for back-to-back meetings. Local-first & Extensible.
+    
+
+  
+      
+  
+  TypeScript
+
+
+
+      
+        780
+      
+        47
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        133 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        getzep /
+
+      graphiti  
+
+    
+      Build Real-Time Knowledge Graphs for AI Agents
+    
+
+  
+      
+  
+  Python
+
+
+
+      
+        4,730
+      
+        365
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        514 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        aquasecurity /
+
+      trivy  
+
+    
+      Find vulnerabilities, misconfigurations, secrets, SBOM in containers, Kubernetes, code repositories, clouds and more
+    
+
+  
+      
+  
+  Go
+
+
+
+      
+        25,614
+      
+        2,508
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        12 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        drawdb-io /
+
+      drawdb  
+
+    
+      Free, simple, and intuitive online database diagram editor and SQL generator.
+    
+
+  
+      
+  
+  JavaScript
+
+
+
+      
+        28,141
+      
+        1,985
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        350 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        joho /
+
+      godotenv  
+
+    
+      A Go port of Ruby's dotenv library (Loads environment variables from .env files)
+    
+
+  
+      
+  
+  Go
+
+
+
+      
+        9,109
+      
+        426
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        4 stars today
   
 
 
@@ -11203,9 +11905,9 @@ The ReadME Project
 
 
       
-        29,084
+        29,186
       
-        1,622
+        1,628
       
         Built by
 
@@ -11236,25 +11938,25 @@ The ReadME Project
     
 
       
-        facebookresearch /
+        tracel-ai /
 
-      dinov2  
+      burn  
 
     
-      PyTorch code and models for the DINOv2 self-supervised learning method.
+      Burn is a next generation Deep Learning Framework that doesn't compromise on flexibility, efficiency and portability.
     
 
   
       
   
-  Jupyter Notebook
+  Rust
 
 
 
       
-        10,422
+        10,397
       
-        940
+        540
       
         Built by
 
@@ -11266,7 +11968,7 @@ The ReadME Project
 
       
         
-        8 stars today
+        53 stars today
   
 
 
@@ -11285,25 +11987,25 @@ The ReadME Project
     
 
       
-        tensorflow /
+        BerriAI /
 
-      tensorflow  
+      litellm  
 
     
-      An Open Source Machine Learning Framework for Everyone
+      Python SDK, Proxy Server (LLM Gateway) to call 100+ LLM APIs in OpenAI format - [Bedrock, Azure, OpenAI, VertexAI, Cohere, Anthropic, Sagemaker, HuggingFace, Replicate, Groq]
     
 
   
       
   
-  C++
+  Python
 
 
 
       
-        189,602
+        21,339
       
-        74,651
+        2,711
       
         Built by
 
@@ -11315,7 +12017,105 @@ The ReadME Project
 
       
         
-        43 stars today\n\n\n\n#
+        86 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        Stirling-Tools /
+
+      Stirling-PDF  
+
+    
+      #1 Locally hosted web application that allows you to perform various operations on PDF files
+    
+
+  
+      
+  
+  Java
+
+
+
+      
+        56,512
+      
+        4,732
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        100 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        FortAwesome /
+
+      Font-Awesome  
+
+    
+      The iconic SVG, font, and CSS toolkit
+    
+
+  
+      
+  
+  JavaScript
+
+
+
+      
+        74,981
+      
+        12,201
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        8 stars today\n\n\n\n#
     
 
     
@@ -11518,6 +12318,14 @@ The ReadME Project
         
   
       
+    Learn to Code
+    Resources to help people learn to code
+  
+
+
+        
+  
+      
     Made in Brazil
     Open source projects built in or receiving significant contributions from Brazil :brazil:
   
@@ -11526,16 +12334,8 @@ The ReadME Project
         
   
       
-    Learn to Code
-    Resources to help people learn to code
-  
-
-
-        
-  
-      #
-    Game Engines
-    Frameworks for building games across multiple platforms.
+    Pixel Art Tools
+    Creating pixel art for fun or animated sprites for a game? The digital artist in you will love these apps and tools!
   
 
 
@@ -23315,17 +24115,17 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
   
     
       
-        repository0-plot-code-lib
+        repository0
         
-          Public
+          Public template
 
 
           
-            Be a go-to plot library with a CLI, be the jq of formulae visualisations.
+            A self-evolving test repository for the intentïon agentic-lib suite of GitHub Workflows.
 
       
           
-  xn-intenton-z2a/repository0-plot-code-lib’s past year of commit activity
+  xn-intenton-z2a/repository0’s past year of commit activity
 
     
 
@@ -23336,8 +24136,7 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
 
 
         
-          0
-
+          2
         
           MIT
 
@@ -23399,47 +24198,6 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
   
     
       
-        repository0
-        
-          Public template
-
-
-          
-            A self-evolving test repository for the intentïon agentic-lib suite of GitHub Workflows.
-
-      
-          
-  xn-intenton-z2a/repository0’s past year of commit activity
-
-    
-
-        
-  
-  JavaScript
-
-
-
-        
-          2
-        
-          MIT
-
-        
-          0
-
-      
-        3
-
-      
-        0
-      
-          Updated Apr 25, 2025
-
-
-                  
-  
-    
-      
         agentic-lib
         
           Public
@@ -23468,7 +24226,49 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
           0
 
       
+        1
+
+      
         0
+      
+          Updated Apr 25, 2025
+
+
+                  
+  
+    
+      
+        repository0-plot-code-lib
+        
+          Public
+
+
+          
+            Be a go-to plot library with a CLI, be the jq of formulae visualisations.
+
+      
+          
+  xn-intenton-z2a/repository0-plot-code-lib’s past year of commit activity
+
+    
+
+        
+  
+  JavaScript
+
+
+
+        
+          0
+
+        
+          MIT
+
+        
+          0
+
+      
+        5
 
       
         0
@@ -23718,7 +24518,7 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
     
               
         Issues
-          0
+          1
 
 
     
@@ -24133,7 +24933,7 @@ The hypothetical commands `show w' and `show c' should show the appropriateparts
     
               
         Issues
-          0
+          1
 
 
     
@@ -24431,7 +25231,7 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS ORIMPLIE
     
               
         Issues
-          0
+          1
 
 
     
@@ -24734,7 +25534,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -25056,7 +25856,7 @@ Insights: xn-intenton-z2a/agentic-lib
     
               
         Issues
-          0
+          1
 
 
     
@@ -25350,7 +26150,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -26221,7 +27021,7 @@ Toggle v4.1.0's commit message
     
               
         Issues
-          0
+          1
 
 
     
@@ -26474,7 +27274,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -26788,7 +27588,7 @@ Additional navigation options
 
     
       
-      0 Open
+      1 Open
     
 
     
@@ -26808,7 +27608,7 @@ Additional navigation options
 
     
       
-      0 Open
+      1 Open
     
 
     
@@ -27055,27 +27855,90 @@ Additional navigation options
 
 
 
+      Issues list
+      
+        
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Implement and Refine the WORKFLOW_CHAIN Feature
+
+
+        
+              
+
+                automated
+
+              
+
+                feature
+
+        
+      
+        
+          #1099
+            opened Apr 25, 2025 by
+            github-actions
+            bot
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+      
+    
+
       
   
-    
-  
-    There aren’t any open issues.
-    You could search all of GitHub or try an advanced search.
 
 
-
+        
+      
   
 
   
+      
   
 
   
+      
   
 
   
   
   ProTip!
-  Mix and match filters to narrow down what you’re looking for.\n\n\n\nxn-intenton-z2a
+  Updated in the last three days: updated:>2025-04-22.\n\n\n\nxn-intenton-z2a
     
     /
     
@@ -27144,7 +28007,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -27740,7 +28603,7 @@ Additional navigation options
   
   
   ProTip!
-  no:milestone will show everything without a milestone.\n\n\n\nxn-intenton-z2a
+  Adding no:label will show everything without a label.\n\n\n\nxn-intenton-z2a
     
     /
     
@@ -27809,7 +28672,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -28660,7 +29523,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -29285,7 +30148,7 @@ Additional navigation options
 
   
     
-      2,148 workflow runs
+      2,152 workflow runs
     
   
 
@@ -29293,7 +30156,7 @@ Additional navigation options
   
     
         
-          2,148 workflow runs
+          2,152 workflow runs
         
     
     
@@ -29633,6 +30496,343 @@ Additional navigation options
 
 
     
+  
+    
+      
+          
+
+    
+      
+    
+
+
+          
+            agent feature to issue
+          
+        
+
+      
+        agent-feature-to-issue
+        #36:
+
+        
+
+            completed
+            by
+              Antony-at-Polycode
+              
+        
+      
+
+      
+        
+  
+  April 25, 2025 11:31
+
+
+          
+    
+    In progress
+  
+
+      
+    
+
+    
+    
+
+    
+      
+        
+          
+  
+  April 25, 2025 11:31
+
+
+            
+    
+    In progress
+  
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            agent library to feature
+          
+        
+
+      
+        agent-library-to-feature
+        #29:
+
+        
+
+            completed
+            by
+              Antony-at-Polycode
+              
+        
+      
+
+      
+        
+  
+  April 25, 2025 11:29
+
+
+            
+      
+      
+        1m 54s
+      
+    
+
+      
+    
+
+    
+    
+
+    
+      
+        
+          
+  
+  April 25, 2025 11:29
+
+
+              
+      
+      
+        1m 54s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            agent source to library
+          
+        
+
+      
+        agent-source-to-library
+        #54:
+
+        
+
+            completed
+            by
+              Antony-at-Polycode
+              
+        
+      
+
+      
+        
+  
+  April 25, 2025 11:27
+
+
+            
+      
+      
+        2m 15s
+      
+    
+
+      
+    
+
+    
+    
+
+    
+      
+        
+          
+  
+  April 25, 2025 11:27
+
+
+              
+      
+      
+        2m 15s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            agent mission to source
+          
+        
+
+      
+        agent-mission-to-source
+        #22:
+
+        
+            Manually run
+
+            
+            by
+              Antony-at-Polycode
+              
+        
+      
+
+      
+        
+  
+  April 25, 2025 11:25
+
+
+            
+      
+      
+        1m 57s
+      
+    
+
+          main
+      
+    
+
+    
+        main
+    
+
+    
+      
+        
+          
+  
+  April 25, 2025 11:25
+
+
+              
+      
+      
+        1m 57s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
   
     
       
@@ -31440,349 +32640,14 @@ Default paths for source and test files are now set to directories instead of sp
   
 
 
-  
-    
-      
-          
-
-    
 
 
-          
-            agent issue to code [main]
-          
-        
 
-      
-        agent-issue-to-code
-        #81:
-
-        
-            Scheduled
-
-        
-      
-
-      
-        
-  
-  April 25, 2025 01:17
-
-
-            
-      
-      
-        2m 3s
-      
-    
-
-          main
-      
-    
-
-    
-        main
-    
-
-    
-      
-        
-          
-  
-  April 25, 2025 01:17
-
-
-              
-      
-      
-        2m 3s
-      
-    
-
-        
-
-        
-            
-                    
-
-              
-
-
-                  
-                    
-                      View workflow file
-                    
-                  
-
-
-              
-            
-        
-      
-    
-  
 
 
   
     
-      
-          
-
-    
-
-
-          
-            ci test [main] []
-          
-        
-
-      
-        ci-test
-        #200:
-
-        
-
-            completed
-            by
-              Antony-at-Polycode
-              
-        
-      
-
-      
-        
-  
-  April 25, 2025 01:06
-
-
-            
-      
-      
-        1m 22s
-      
-    
-
-      
-    
-
-    
-    
-
-    
-      
-        
-          
-  
-  April 25, 2025 01:06
-
-
-              
-      
-      
-        1m 22s
-      
-    
-
-        
-
-        
-            
-                    
-
-              
-
-
-                  
-                    
-                      View workflow file
-                    
-                  
-
-
-              
-            
-        
-      
-    
-  
-
-
-  
-    
-      
-          
-
-    
-
-
-          
-            agent code to close issue
-          
-        
-
-      
-        agent-code-to-close-issue
-        #86:
-
-        
-
-            completed
-            by
-              Antony-at-Polycode
-              
-        
-      
-
-      
-        
-  
-  April 25, 2025 01:06
-
-
-            
-      
-      
-        53s
-      
-    
-
-      
-    
-
-    
-    
-
-    
-      
-        
-          
-  
-  April 25, 2025 01:06
-
-
-              
-      
-      
-        53s
-      
-    
-
-        
-
-        
-            
-                    
-
-              
-
-
-                  
-                    
-                      View workflow file
-                    
-                  
-
-
-              
-            
-        
-      
-    
-  
-
-
-  
-    
-      
-          
-
-    
-
-
-          
-            ci-automerge [main]
-          
-        
-
-      
-        ci-automerge
-        #95:
-
-        
-
-            completed
-            by
-              Antony-at-Polycode
-              
-        
-      
-
-      
-        
-  
-  April 25, 2025 01:05
-
-
-            
-      
-      
-        1m 0s
-      
-    
-
-      
-    
-
-    
-    
-
-    
-      
-        
-          
-  
-  April 25, 2025 01:05
-
-
-              
-      
-      
-        1m 0s
-      
-    
-
-        
-
-        
-            
-                    
-
-              
-
-
-                  
-                    
-                      View workflow file
-                    
-                  
-
-
-              
-            
-        
-      
-    
-  
-
-
-
-
-
-
-
-  
-    
-      Previous 1 2 3 4 5 … 85 86 Next\n\n\n\nxn-intenton-z2a
+      Previous 1 2 3 4 5 … 86 87 Next\n\n\n\nxn-intenton-z2a
     
     /
     
@@ -31851,7 +32716,7 @@ Default paths for source and test files are now set to directories instead of sp
     
               
         Issues
-          0
+          1
 
 
     
@@ -32253,7 +33118,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -32563,7 +33428,7 @@ Security: xn-intenton-z2a/agentic-lib
     
               
         Issues
-          0
+          1
 
 
     
@@ -32798,7 +33663,7 @@ Insights: xn-intenton-z2a/agentic-lib
   
       
   
-  April 17, 2025 – April 24, 2025
+  April 18, 2025 – April 25, 2025
   
         
               Period:
@@ -32849,9 +33714,10 @@ Insights: xn-intenton-z2a/agentic-lib
         
           
                 
+                
           
           
-            37
+            38
             Active issues
           
         
@@ -32887,9 +33753,11 @@ Insights: xn-intenton-z2a/agentic-lib
           
               
                 
-                0
+                  
+                  1
+                
+                New issue
               
-              New issues
           
         
       
@@ -33730,7 +34598,26 @@ Insights: xn-intenton-z2a/agentic-lib
         
           Enhance ${featureName} Feature with Debug Mode and Robustness Improvements
           
-            #1034 closed Apr 20, 2025\n\n\n\nxn-intenton-z2a
+            #1034 closed Apr 20, 2025
+          
+        
+      
+    
+
+    
+      
+        
+        1 Issue
+        opened by 1 person
+      
+    
+    
+      
+        
+        
+          Implement and Refine the WORKFLOW_CHAIN Feature
+          
+            #1099 opened Apr 25, 2025\n\n\n\nxn-intenton-z2a
     
     /
     
@@ -33799,7 +34686,7 @@ Insights: xn-intenton-z2a/agentic-lib
     
               
         Issues
-          0
+          1
 
 
     
@@ -34024,7 +34911,7 @@ Additional navigation options
 
   
   
-    CommitsBranch selector mainUser selectorAll usersDatepickerAll timeCommit HistoryCommits on Apr 25, 20254.3.2-0actions-usercommittededfb128Copy full SHA for edfb1284.3.2-0actions-usercommittedf9610dbCopy full SHA for f9610db4.3.1actions-usercommitted026f55eCopy full SHA for 026f55eMaintain PERF_STATSactions-usercommitted5451c9aCopy full SHA for 5451c9aUpdate WORKFLOWS-README to refine workflow setup for agentic-lib and repository0Antony-at-Polycodecommittedd0afcbbCopy full SHA for d0afcbbMaintain GITHUB_COPILOTactions-usercommitted4da9a01Copy full SHA for 4da9a01Maintain SOURCES.mdactions-usercommittedddf4c8aCopy full SHA for ddf4c8aRefactor agent-fix-code.yml to use outputs for file paths and scriptsAntony-at-Polycodecommitted1a95e55Copy full SHA for 1a95e554.3.1-0actions-usercommitted118598eCopy full SHA for 118598e4.3.1-0actions-usercommitted5f0a668Copy full SHA for 5f0a6684.3.0actions-usercommitted4db36d0Copy full SHA for 4db36d0Add workflows and update configurations for agentic-libShow description for 505baa2Antony-at-Polycodecommitted505baa2Copy full SHA for 505baa2Updated documentation in README and USAGE to include details on command aliases and environment variables for batch throttling. (#1097)Show description for c07228a github-actions[bot]andactions-userauthoredc07228aCopy full SHA for c07228aSimplify workflow by removing redundant condition.Show description for 6a62a44Antony-at-Polycodecommitted6a62a44Copy full SHA for 6a62a44Add workflows for README updates and process automationShow description for 2c2b41fAntony-at-Polycodecommitted2c2b41fCopy full SHA for 2c2b41fUpdate WORKFLOWS-README with new workflows and featuresShow description for 7cbfec7Antony-at-Polycodecommitted7cbfec7Copy full SHA for 7cbfec7Update workflow defaults and add support for multiple docs pathsShow description for c0e1673Antony-at-Polycodecommittedc0e1673Copy full SHA for c0e1673Implement VERBOSE_STATS CLI flag to log detailed runtime statistics. (fixes #1094) (#1096)Show description for af80ba4 github-actions[bot]andactions-userauthoredaf80ba4Copy full SHA for af80ba4Implemented --simulate-load flag that simulates a heavy processing load via a synchronous busy-wait loop. (fixes #1093) (#1095)Show description for 224e545 github-actions[bot]andactions-userauthored224e545Copy full SHA for 224e5454.2.1-0actions-usercommitteddd6ba84Copy full SHA for dd6ba844.2.1-0actions-usercommitted423d589Copy full SHA for 423d5894.2.0actions-usercommitteda9c47aeCopy full SHA for a9c47aeMaintain JMETER_MANUALactions-usercommittedc87c429Copy full SHA for c87c429Maintain SOURCES.mdactions-usercommitteda97ce6fCopy full SHA for a97ce6fAdd docsPath environment variable to the workflow scriptShow description for b6335a3Antony-at-Polycodecommittedb6335a3Copy full SHA for b6335a3Maintain VERBOSE_STATSactions-usercommitted470536cCopy full SHA for 470536cMaintain ZOD_SCHEMAactions-usercommittedc28609aCopy full SHA for c28609aCommits on Apr 24, 2025Refactor workflows to remove redundant inputs.Show description for d34cde5Antony-at-Polycodecommittedd34cde5Copy full SHA for d34cde5Refactor workflows to remove redundant inputs.Show description for 2fa38c8Antony-at-Polycodecommitted2fa38c8Copy full SHA for 2fa38c8Fixed CLI utils output for diagnostics flag to match expected description. (fixes #1072) (#1092)Show description for 8638b74 3 peopleauthored8638b74Copy full SHA for 8638b74Add logging for parsed responses in workflowsShow description for 53910fcAntony-at-Polycodecommitted53910fcCopy full SHA for 53910fc    Loosen schema validation by setting strict to falseShow description for 18cf8caAntony-at-Polycodecommitted18cf8caCopy full SHA for 18cf8caRefactor workflows to unify srcPath and testsPath handlingShow description for 1250ce5Antony-at-Polycodecommitted1250ce5Copy full SHA for 1250ce5Modify workflow schema to allow string-type additional propertiesShow description for 9b765afAntony-at-Polycodecommitted9b765afCopy full SHA for 9b765af**Fix schema definition in workflow JSON parsing**Show description for 1240313Antony-at-Polycodecommitted1240313Copy full SHA for 1240313PaginationPreviousNext\n\n\n\nxn-intenton-z2a
+    CommitsBranch selector mainUser selectorAll usersDatepickerAll timeCommit HistoryCommits on Apr 25, 2025Maintain WORKFLOW_CHAINactions-usercommittedd65ff25Copy full SHA for d65ff25Maintain NODEJSactions-usercommittedc69915cCopy full SHA for c69915cMaintain SOURCES.mdactions-usercommitted2ada52cCopy full SHA for 2ada52c4.3.2-0actions-usercommittededfb128Copy full SHA for edfb1284.3.2-0actions-usercommittedf9610dbCopy full SHA for f9610db4.3.1actions-usercommitted026f55eCopy full SHA for 026f55eMaintain PERF_STATSactions-usercommitted5451c9aCopy full SHA for 5451c9aUpdate WORKFLOWS-README to refine workflow setup for agentic-lib and repository0Antony-at-Polycodecommittedd0afcbbCopy full SHA for d0afcbbMaintain GITHUB_COPILOTactions-usercommitted4da9a01Copy full SHA for 4da9a01Maintain SOURCES.mdactions-usercommittedddf4c8aCopy full SHA for ddf4c8aRefactor agent-fix-code.yml to use outputs for file paths and scriptsAntony-at-Polycodecommitted1a95e55Copy full SHA for 1a95e554.3.1-0actions-usercommitted118598eCopy full SHA for 118598e4.3.1-0actions-usercommitted5f0a668Copy full SHA for 5f0a6684.3.0actions-usercommitted4db36d0Copy full SHA for 4db36d0Add workflows and update configurations for agentic-libShow description for 505baa2Antony-at-Polycodecommitted505baa2Copy full SHA for 505baa2Updated documentation in README and USAGE to include details on command aliases and environment variables for batch throttling. (#1097)Show description for c07228a github-actions[bot]andactions-userauthoredc07228aCopy full SHA for c07228aSimplify workflow by removing redundant condition.Show description for 6a62a44Antony-at-Polycodecommitted6a62a44Copy full SHA for 6a62a44Add workflows for README updates and process automationShow description for 2c2b41fAntony-at-Polycodecommitted2c2b41fCopy full SHA for 2c2b41fUpdate WORKFLOWS-README with new workflows and featuresShow description for 7cbfec7Antony-at-Polycodecommitted7cbfec7Copy full SHA for 7cbfec7Update workflow defaults and add support for multiple docs pathsShow description for c0e1673Antony-at-Polycodecommittedc0e1673Copy full SHA for c0e1673Implement VERBOSE_STATS CLI flag to log detailed runtime statistics. (fixes #1094) (#1096)Show description for af80ba4 github-actions[bot]andactions-userauthoredaf80ba4Copy full SHA for af80ba4Implemented --simulate-load flag that simulates a heavy processing load via a synchronous busy-wait loop. (fixes #1093) (#1095)Show description for 224e545 github-actions[bot]andactions-userauthored224e545Copy full SHA for 224e5454.2.1-0actions-usercommitteddd6ba84Copy full SHA for dd6ba844.2.1-0actions-usercommitted423d589Copy full SHA for 423d5894.2.0actions-usercommitteda9c47aeCopy full SHA for a9c47aeMaintain JMETER_MANUALactions-usercommittedc87c429Copy full SHA for c87c429Maintain SOURCES.mdactions-usercommitteda97ce6fCopy full SHA for a97ce6fAdd docsPath environment variable to the workflow scriptShow description for b6335a3Antony-at-Polycodecommittedb6335a3Copy full SHA for b6335a3Maintain VERBOSE_STATSactions-usercommitted470536cCopy full SHA for 470536cMaintain ZOD_SCHEMAactions-usercommittedc28609aCopy full SHA for c28609aCommits on Apr 24, 2025Refactor workflows to remove redundant inputs.Show description for d34cde5Antony-at-Polycodecommittedd34cde5Copy full SHA for d34cde5Refactor workflows to remove redundant inputs.Show description for 2fa38c8Antony-at-Polycodecommitted2fa38c8Copy full SHA for 2fa38c8Fixed CLI utils output for diagnostics flag to match expected description. (fixes #1072) (#1092)Show description for 8638b74 3 peopleauthored8638b74Copy full SHA for 8638b74Add logging for parsed responses in workflowsShow description for 53910fcAntony-at-Polycodecommitted53910fcCopy full SHA for 53910fc    Loosen schema validation by setting strict to falseShow description for 18cf8caAntony-at-Polycodecommitted18cf8caCopy full SHA for 18cf8caPaginationPreviousNext\n\n\n\nxn-intenton-z2a
     
     /
     
@@ -34093,7 +34980,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -34387,7 +35274,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -34681,7 +35568,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -34975,7 +35862,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -35269,7 +36156,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -35563,7 +36450,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -35857,7 +36744,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -36151,7 +37038,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -36445,7 +37332,7 @@ Additional navigation options
     
               
         Issues
-          0
+          1
 
 
     
@@ -36670,4 +37557,592 @@ Additional navigation options
 
   
   
-     Files mainBreadcrumbsagentic-lib/library/Copy pathDirectory actionsMore optionsDirectory actionsMore optionsLatest commit HistoryHistory mainBreadcrumbsagentic-lib/library/TopFolders and filesNameNameLast commit messageLast commit dateparent directory..GITHUB_COPILOT.mdGITHUB_COPILOT.md  GITHUB_COPILOT_RAW_CRAWL.txtGITHUB_COPILOT_RAW_CRAWL.txt  GITHUB_PAGES.mdGITHUB_PAGES.md  GITHUB_PAGES_RAW_CRAWL.txtGITHUB_PAGES_RAW_CRAWL.txt  JMETER_MANUAL.mdJMETER_MANUAL.md  JMETER_MANUAL_RAW_CRAWL.txtJMETER_MANUAL_RAW_CRAWL.txt  OPENAI_API.mdOPENAI_API.md  OPENAI_API_RAW_CRAWL.txtOPENAI_API_RAW_CRAWL.txt  OWL2_OVERVIEW.mdOWL2_OVERVIEW.md  OWL2_OVERVIEW_RAW_CRAWL.txtOWL2_OVERVIEW_RAW_CRAWL.txt  ZOD_SCHEMA.mdZOD_SCHEMA.md  ZOD_SCHEMA_RAW_CRAWL.txtZOD_SCHEMA_RAW_CRAWL.txt  View all files\n\n\n\n
+     Files mainBreadcrumbsagentic-lib/library/Copy pathDirectory actionsMore optionsDirectory actionsMore optionsLatest commit HistoryHistory mainBreadcrumbsagentic-lib/library/TopFolders and filesNameNameLast commit messageLast commit dateparent directory..GITHUB_COPILOT.mdGITHUB_COPILOT.md  GITHUB_COPILOT_RAW_CRAWL.txtGITHUB_COPILOT_RAW_CRAWL.txt  GITHUB_PAGES.mdGITHUB_PAGES.md  GITHUB_PAGES_RAW_CRAWL.txtGITHUB_PAGES_RAW_CRAWL.txt  JMETER_MANUAL.mdJMETER_MANUAL.md  JMETER_MANUAL_RAW_CRAWL.txtJMETER_MANUAL_RAW_CRAWL.txt  NODEJS.mdNODEJS.md  NODEJS_RAW_CRAWL.txtNODEJS_RAW_CRAWL.txt  OPENAI_API.mdOPENAI_API.md  OPENAI_API_RAW_CRAWL.txtOPENAI_API_RAW_CRAWL.txt  OWL2_OVERVIEW.mdOWL2_OVERVIEW.md  OWL2_OVERVIEW_RAW_CRAWL.txtOWL2_OVERVIEW_RAW_CRAWL.txt  ZOD_SCHEMA.mdZOD_SCHEMA.md  ZOD_SCHEMA_RAW_CRAWL.txtZOD_SCHEMA_RAW_CRAWL.txt  View all files\n\n\n\nxn-intenton-z2a
+    
+    /
+    
+      agentic-lib
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+        
+          
+        
+
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    0
+
+  
+
+  
+        
+            
+          Star
+          0
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          1
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          0
+
+
+    
+
+      
+  
+    
+              
+        Discussions
+          
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Discussions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+    
+
+
+
+
+
+
+
+
+
+  
+  
+     Files mainBreadcrumbsagentic-lib/public/Copy pathDirectory actionsMore optionsDirectory actionsMore optionsLatest commit HistoryHistory mainBreadcrumbsagentic-lib/public/TopFolders and filesNameNameLast commit messageLast commit dateparent directory..agentic-lib-stats.jsonagentic-lib-stats.json  all.htmlall.html  stats.htmlstats.html  View all files\n\n\n\nxn-intenton-z2a
+    
+    /
+    
+      agentic-lib
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+        
+          
+        
+
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    0
+
+  
+
+  
+        
+            
+          Star
+          0
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          1
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          0
+
+
+    
+
+      
+  
+    
+              
+        Discussions
+          
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Discussions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+    
+
+
+
+
+
+
+
+
+
+  
+  
+     Files mainBreadcrumbsagentic-lib/scripts/Copy pathDirectory actionsMore optionsDirectory actionsMore optionsLatest commit HistoryHistory mainBreadcrumbsagentic-lib/scripts/TopFolders and filesNameNameLast commit messageLast commit dateparent directory..accept-for-every-repository.shaccept-for-every-repository.sh  accept-release.shaccept-release.sh  activate-schedule.shactivate-schedule.sh  archive.sharchive.sh  aws-assume-agentic-lib-deployment-role.shaws-assume-agentic-lib-deployment-role.sh  aws-unset-iam-session.shaws-unset-iam-session.sh  clean.shclean.sh  deactivate-schedule.shdeactivate-schedule.sh  diff-workflows.shdiff-workflows.sh  export-source.shexport-source.sh  generate-library-index.jsgenerate-library-index.js  generate-npmrc.shgenerate-npmrc.sh  generate-settings-xml.shgenerate-settings-xml.sh  initialise.shinitialise.sh  md-to-html.jsmd-to-html.js  release-to-everywhere.shrelease-to-everywhere.sh  release-to-repository0-crucible.shrelease-to-repository0-crucible.sh  release-to-repository0-plot-code-lib.shrelease-to-repository0-plot-code-lib.sh  release-to-repository0.shrelease-to-repository0.sh  release-to-s3-sqs-bridge.shrelease-to-s3-sqs-bridge.sh  release-version-to-repository.shrelease-version-to-repository.sh  truncate-git-history.shtruncate-git-history.sh  update.shupdate.sh  View all files\n\n\n\n
