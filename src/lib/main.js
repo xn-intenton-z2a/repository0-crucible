@@ -4,14 +4,7 @@
 import { fileURLToPath } from "url";
 
 // Supported flags
-const supportedFlags = [
-  "--help",
-  "--version",
-  "--agentic",
-  "--dry-run",
-  "--diagnostics",
-  "--capital-cities"
-];
+const supportedFlags = ["--help", "--version", "--agentic", "--dry-run", "--diagnostics", "--capital-cities"];
 
 export function main(args) {
   // If args not provided, default to process.argv.slice(2)
@@ -63,7 +56,7 @@ export function main(args) {
 
   // Process valid flags (this is a placeholder for actual functionality)
   // For demonstration, if --dry-run or --diagnostics or --capital-cities is provided, just log the recognized flags
-  const activeFlags = args.filter(arg => supportedFlags.includes(arg));
+  const activeFlags = args.filter((arg) => supportedFlags.includes(arg));
   if (activeFlags.length > 0) {
     console.log(`Processing flags: ${JSON.stringify(activeFlags)}`);
     return;
