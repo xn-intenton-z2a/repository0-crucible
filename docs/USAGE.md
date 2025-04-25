@@ -1,43 +1,27 @@
 # CLI Usage Documentation
 
-This document details the command line interface (CLI) for the tool and outlines the various flags available, including the new alias substitution feature.
+This document details the command line interface (CLI) for the tool and outlines the various flags available.
 
 ## Supported Flags
 
-The CLI tool supports the following flags:
-
 - `--help`: Show help message and exit.
 - `--version`: Show version information.
-- `--agentic <data>`: Execute agentic commands using provided JSON data. When the JSON contains a key like `commands`, it supports batch processing of commands.
+- `--agentic <data>`: Execute agentic commands with provided JSON data.
 - `--dry-run`: Simulate command execution without making changes.
 - `--diagnostics`: Display diagnostic information.
 - `--capital-cities`: Display a list of capital cities from the ontology.
-- `--verbose`: Enable detailed logging.
-- `--status`: Show runtime health summary.
-- `--digest`: Trigger sample digest processing.
-- `--simulate-error`: Simulate an error and exit with a non-zero code.
-- `--simulate-delay <ms>`: Delay execution by specified milliseconds.
-- `--simulate-load <ms>`: Execute a CPU intensive loop for specified milliseconds.
-- `--apply-fix`: Apply automated fixes.
-- `--cli-utils`: Display a complete summary of CLI commands.
 
-## Alias Substitution and Robust Flag Parsing
+## Modular CLI Command Processing
 
-The CLI now supports alias substitution and enhanced flag parsing via the `COMMAND_ALIASES` environment variable. This variable should be set to a valid JSON string mapping alias names to their canonical flag names. For example:
+The CLI command processing has been refactored for enhanced modularity, maintainability, and testability. The argument parsing and command routing logic now reside in a dedicated module: `src/orderParser.js`.
 
-```bash
-export COMMAND_ALIASES='{ "ls": "help", "rm": "version" }'
-```
+This module exposes two primary functions:
 
-When an alias is used (e.g., `--ls`), the tool substitutes it with its canonical form (`--help` in the above example) before processing.
+- `parseArgs(args)`: Analyzes the input arguments, validates supported flags, checks for required flag values (e.g., for `--agentic`), and returns a structured object. If an unknown flag or a missing value is encountered, it returns an error object.
 
-Additionally, extra whitespace around arguments is trimmed, and the parser checks for:
+- `processCommand(args)`: Routes the CLI command based on the parsed arguments. It handles the display of help messages, version info, simulation of agentic processing, and other flag-based behaviors.
 
-- Unknown or unrecognized flags (after alias substitution).
-- Missing required flag values (e.g., when `--agentic` is provided without a subsequent argument).
-- Malformed inputs, such as inputs that are exactly "NaN".
-
-Appropriate error messages and the help message will be displayed for any invalid input.
+Internally, the main CLI entry point (e.g., `src/lib/main.js`) invokes `processCommand`, ensuring that the CLI processing is neatly separated from other application logic.
 
 ## Examples
 
@@ -55,36 +39,27 @@ node src/lib/main.js --version
 
 ### Execute an Agentic Command
 
-Provide a JSON payload with the command or batch of commands:
+Provide a JSON payload with the command:
 
 ```bash
 node src/lib/main.js --agentic '{"command": "doSomething"}'
 ```
 
-### Using Aliases
-
-With the alias feature enabled, you can use abbreviated commands. For example, if you set the following:
+### Simulate a Dry Run with Agentic Command
 
 ```bash
-export COMMAND_ALIASES='{ "ls": "help" }'
+node src/lib/main.js --agentic '{"command": "doSomething"}' --dry-run
 ```
 
-Then running:
+### Process Diagnostic Flags
 
 ```bash
-node src/lib/main.js --ls
+node src/lib/main.js --diagnostics --capital-cities
 ```
 
-will be interpreted as:
+## Error Handling
 
-```bash
-node src/lib/main.js --help
-```
+- If an unknown flag is provided, the CLI will output an error message and display the help instructions.
+- If a flag that requires a value (e.g., `--agentic`) is missing one, an error message is shown along with the help text.
 
-### Simulate a Dry Run
-
-```bash
-node src/lib/main.js --dry-run
-```
-
-This modular approach, now including the alias substitution via the new orderParser module, promotes reusability and simplifies testing of the CLI argument parsing logic.
+This modular approach not only simplifies the main execution flow but also facilitates easier unit testing and future enhancements.
