@@ -22,17 +22,17 @@ function displayCapitalCities(countryFilter = null) {
     { country: "India", capital: "New Delhi" },
     { country: "Japan", capital: "Tokyo" },
     { country: "Brazil", capital: "Brasília" },
-    { country: "South Africa", capital: "Pretoria" }
+    { country: "South Africa", capital: "Pretoria" },
   ];
-  
+
   let filteredCapitals = capitals;
   if (countryFilter) {
-    filteredCapitals = capitals.filter(entry => entry.country.toLowerCase() === countryFilter.toLowerCase());
+    filteredCapitals = capitals.filter((entry) => entry.country.toLowerCase() === countryFilter.toLowerCase());
   }
   const owlCompliance = {
     owl: "ontology",
     type: "capital-cities",
-    data: filteredCapitals
+    data: filteredCapitals,
   };
   console.log(JSON.stringify(owlCompliance));
 }
@@ -58,7 +58,7 @@ async function handleVersionDetails() {
     const output = {
       version: pkg.version,
       name: pkg.name,
-      description: pkg.description
+      description: pkg.description,
     };
     if (pkg.repository) {
       output.repository = pkg.repository;
@@ -106,7 +106,7 @@ function handleDiagnostics() {
     version: process.version,
     platform: process.platform,
     uptime: process.uptime(),
-    memoryUsage: process.memoryUsage()
+    memoryUsage: process.memoryUsage(),
   };
   console.log(JSON.stringify(diagnostics));
 }
@@ -115,7 +115,7 @@ function handleDiagnostics() {
 // It checks for an optional '--country=CountryName' in the args.
 function handleCapitalCities(args) {
   let countryFilter = null;
-  args.forEach(arg => {
+  args.forEach((arg) => {
     if (arg.startsWith("--country=")) {
       countryFilter = arg.split("=")[1].trim();
     }
@@ -125,10 +125,12 @@ function handleCapitalCities(args) {
 
 // Helper function to handle the '--query-owl' flag.
 function handleQueryOwl() {
-  console.log(JSON.stringify({
-    result: "Sample OWL query response",
-    data: []
-  }));
+  console.log(
+    JSON.stringify({
+      result: "Sample OWL query response",
+      data: [],
+    }),
+  );
 }
 
 export async function main(args) {
@@ -140,7 +142,7 @@ export async function main(args) {
     { flag: "--help", handler: () => handleHelp() },
     { flag: "--crawl", handler: () => handleCrawl() },
     { flag: "--diagnostics", handler: () => handleDiagnostics() },
-    { flag: "--capital-cities", handler: () => handleCapitalCities(args) }
+    { flag: "--capital-cities", handler: () => handleCapitalCities(args) },
   ];
 
   // Iterate over flag handlers and execute the one matching the argument.

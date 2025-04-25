@@ -7,7 +7,9 @@ import pkg from "../../package.json" assert { type: "json" };
 function captureOutput(callback) {
   const originalLog = console.log;
   let captured = "";
-  console.log = (msg) => { captured += msg; };
+  console.log = (msg) => {
+    captured += msg;
+  };
   return callback().then(() => {
     console.log = originalLog;
     return captured;
