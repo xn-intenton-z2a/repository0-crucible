@@ -25,6 +25,7 @@ describe("Main Module Import", () => {
   });
 });
 
+
 describe("Main Output", () => {
   test("should terminate without error when no arguments", () => {
     const { logs } = captureOutput(() => main([]));
@@ -33,7 +34,7 @@ describe("Main Output", () => {
 
   test("should display help message when --help is used", () => {
     const { logs } = captureOutput(() => main(["--help"]));
-    expect(logs[0]).toMatch(/Usage: node src\/lib\/main.js \[options\]/);
+    expect(logs[0]).toMatch(/Usage: node src\\/lib\\/main.js \[options\]/);
   });
 
   test("should display version info when --version is used", () => {
@@ -44,13 +45,13 @@ describe("Main Output", () => {
   test("should error on unknown flag", () => {
     const { logs, errors } = captureOutput(() => main(["--invalid"]));
     expect(errors[0]).toMatch(/Error: Unknown flag '--invalid'/);
-    expect(logs[0]).toMatch(/Usage: node src\/lib\/main.js \[options\]/);
+    expect(logs[0]).toMatch(/Usage: node src\\/lib\\/main.js \[options\]/);
   });
 
   test("should error when --agentic is provided without a value", () => {
     const { logs, errors } = captureOutput(() => main(["--agentic"]));
     expect(errors[0]).toMatch(/Error: Missing value for flag '--agentic'/);
-    expect(logs[0]).toMatch(/Usage: node src\/lib\/main.js \[options\]/);
+    expect(logs[0]).toMatch(/Usage: node src\\/lib\\/main.js \[options\]/);
   });
 
   test("should process valid flags (e.g., --dry-run)", () => {
@@ -74,17 +75,42 @@ describe("Agentic Flag Processing", () => {
   test("should error with invalid JSON structure (missing command property)", () => {
     const { logs, errors } = captureOutput(() => main(["--agentic", '{}']));
     expect(errors[0]).toMatch(/Error: Invalid JSON structure for --agentic flag/);
-    expect(logs[0]).toMatch(/Usage: node src\/lib\/main.js \[options\]/);
+    expect(logs[0]).toMatch(/Usage: node src\\/lib\\/main.js \[options\]/);
   });
 
-  test("should error with invalid JSON format", () => {
+  test("should error with invalid JSON format for agentic flag", () => {
     const { logs, errors } = captureOutput(() => main(["--agentic", '{invalid json']));
     expect(errors[0]).toMatch(/Error: Invalid JSON provided for --agentic flag/);
-    expect(logs[0]).toMatch(/Usage: node src\/lib\/main.js \[options\]/);
+    expect(logs[0]).toMatch(/Usage: node src\\/lib\\/main.js \[options\]/);
   });
 
   test("should simulate agentic command in dry-run mode", () => {
     const { logs } = captureOutput(() => main(["--agentic", '{"command": "doSomething"}', "--dry-run"]));
     expect(logs[0]).toBe("Dry run: Agentic command executed: doSomething");
+  });
+});
+
+describe("Alias Flag Processing", () => {
+  test("should set alias with valid JSON", () => {
+    const { logs } = captureOutput(() => main(["--alias", '{"alias": "myCommand"}']));
+    expect(logs[0]).toBe("Alias set to: myCommand");
+  });
+
+  test("should error with invalid JSON structure for alias flag", () => {
+    const { logs, errors } = captureOutput(() => main(["--alias", '{"notAlias": "cmd"}']));
+    expect(errors[0]).toMatch(/Error: Invalid JSON structure for --alias flag/);
+    expect(logs[0]).toMatch(/Usage: node src\\/lib\\/main.js \[options\]/);
+  });
+
+  test("should error when --alias is provided without a value", () => {
+    const { logs, errors } = captureOutput(() => main(["--alias"]));
+    expect(errors[0]).toMatch(/Error: Missing value for flag '--alias'/);
+    expect(logs[0]).toMatch(/Usage: node src\\/lib\\/main.js \[options\]/);
+  });
+
+  test("should error with invalid JSON format for alias flag", () => {
+    const { logs, errors } = captureOutput(() => main(["--alias", '{invalid json']));
+    expect(errors[0]).toMatch(/Error: Invalid JSON provided for --alias flag/);
+    expect(logs[0]).toMatch(/Usage: node src\\/lib\\/main.js \[options\]/);
   });
 });
