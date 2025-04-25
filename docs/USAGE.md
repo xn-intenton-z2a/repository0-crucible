@@ -5,25 +5,14 @@ This document details the command line interface (CLI) for the tool and outlines
 ## Supported Flags
 
 - `--help`: Show help message and exit.
-- `--version`: Show version information along with a timestamp.
+- `--version`: Show version information.
 - `--agentic <data>`: Execute agentic commands with provided JSON data.
-  - For a single command, provide a JSON string with the property `"command"` as a string.
-    
-    Example:
-    
-    ```bash
-    node src/lib/main.js --agentic '{"command": "doSomething"}'
-    ```
+  - The JSON string must contain either:
+    - A `command` property with a string value
+    - Or a `commands` property with an array of strings
+  - If the JSON structure does not match the above requirements, an error will be displayed along with the help message.
+  - When used with the `--dry-run` flag, the command execution is simulated without side effects.
   
-  - For batch commands, provide a JSON string with the property `"commands"` as an array of strings.
-    
-    Example:
-    
-    ```bash
-    node src/lib/main.js --agentic '{"commands": ["cmd1", "cmd2"]}'
-    ```
-  
-  - When used with the `--dry-run` flag, execution is simulated without performing the actual operations.
 - `--dry-run`: Simulate command execution without making changes.
 - `--diagnostics`: Display diagnostic information including Node.js version and relevant environment variables.
 - `--capital-cities`: Display a list of capital cities from the ontology.
@@ -36,7 +25,7 @@ This document details the command line interface (CLI) for the tool and outlines
 node src/lib/main.js --help
 ```
 
-**Show Version with Timestamp**
+**Show Version**
 
 ```bash
 node src/lib/main.js --version
@@ -54,7 +43,7 @@ node src/lib/main.js --agentic '{"command": "doSomething"}'
 node src/lib/main.js --agentic '{"commands": ["cmd1", "cmd2"]}'
 ```
 
-**Simulate Execution**
+**Simulate Execution with Dry Run**
 
 ```bash
 node src/lib/main.js --agentic '{"command": "doSomething"}' --dry-run
