@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="agentic_lib" href="#agentic_lib"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>AGENTIC_LIB</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Component Breakdown: Re-usable Workflows (in .github/workflows/, GPL-3), Example Workflows (in examples/, MIT), Evolving main.js (in src/lib/main.js). Key function agenticHandler processes JSON payload with either command or commands array, increments global callCount, returns executionTimeMS. CLI supports flags: --agentic, --dry-run, --version, --verbose, --diagnostics, --status, --digest, --simulate-error, --simulate-delay, --simulate-load, --apply-fix, --cli-utils. AWS integrations include createSQSEventFromDigest and digestLambdaHandler. Detailed logging via logInfo and logError. Licensing under GPL-3 and MIT with required attribution.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">Component Breakdown
+<ul class="md-github">
+<li class="md-github">Re-usable Workflows: Location: .github/workflows/, stable, GPL-3, used in CI/CD pipeline.</li>
+<li class="md-github">Example Workflows: Location: examples/, demonstrative, MIT licensing.</li>
+<li class="md-github">Evolving main.js: Location: src/lib/main.js, implements agentic workflows in JavaScript, tracks agentic command invocations via globalThis.callCount.</li>
+</ul>
+</li>
+<li class="md-github">Agentic Library Functions
+<ul class="md-github">
+<li class="md-github">agenticHandler:
+<ul class="md-github">
+<li class="md-github">Parameters: JSON payload { command: string } or { commands: string[] }</li>
+<li class="md-github">Returns: Object with individual results containing executionTimeMS.</li>
+<li class="md-github">Behavior: Validates input (trims whitespace, rejects non-actionable 'NaN' values), increments invocation counter per valid command.</li>
+<li class="md-github">Batch Processing: Optional throttling if environment variable MAX_BATCH_COMMANDS is set; rejects batch if command count exceeds limit.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="md-github">CLI Configuration
+<ul class="md-github">
+<li class="md-github">Flags and usage:
+<ul class="md-github">
+<li class="md-github">--agentic: Processes agentic commands. Example: node src/lib/main.js --agentic '{&quot;command&quot;: &quot;doSomething&quot;}' or '{&quot;commands&quot;: [&quot;cmd1&quot;, &quot;cmd2&quot;]}'.</li>
+<li class="md-github">--dry-run: Simulates command execution without action.</li>
+<li class="md-github">--version: Shows version info with timestamp from package.json.</li>
+<li class="md-github">--verbose: Enables detailed logging.</li>
+<li class="md-github">--diagnostics: Provides configuration, Node.js version, environment variables.</li>
+<li class="md-github">--status: Provides health summary including callCount and uptime.</li>
+<li class="md-github">Additional flags: --digest, --simulate-error, --simulate-delay <ms>, --simulate-load <ms>, --apply-fix, --cli-utils.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="md-github">AWS Integrations
+<ul class="md-github">
+<li class="md-github">SQS Integration:
+<ul class="md-github">
+<li class="md-github">createSQSEventFromDigest: Formats digest into mock SQS event.</li>
+<li class="md-github">digestLambdaHandler: Processes SQS events, handles JSON parsing errors, uses fallback for missing messageId.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="md-github">Logging
+<ul class="md-github">
+<li class="md-github">Functions: logInfo and logError for detailed logs when verbose mode is on.</li>
+</ul>
+</li>
+<li class="md-github">Licensing
+<ul class="md-github">
+<li class="md-github">GPL-3 for core workflows with attribution, MIT for examples.
+Exact details:</li>
+</ul>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Environment variable COMMAND_ALIASES accepts JSON mapping { &quot;ls&quot;: &quot;list&quot;, &quot;rm&quot;: &quot;remove&quot; } to substitute commands.</li>
+<li class="md-github">Execution timing: Each processed command returns executionTimeMS (in milliseconds).</li>
+<li class="md-github">CLI dry-run flag and simulation flags for error, delay, and load conditions are implemented.</li>
+<li class="md-github">Internal counter: globalThis.callCount increments per successful command execution.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Evolving main.js Implementation:</p>
+<ul class="md-github">
+<li class="md-github">Function: agenticHandler(payload)
+if payload.command exists then process single command
+else if payload.commands exists then iterate commands sequentially
+For each command:
+* Trim whitespace
+* Check if command equals 'NaN' (case insensitive) then reject with error
+* Validate and process command
+* Increment globalThis.callCount
+* Measure processing time and return executionTimeMS</li>
+<li class="md-github">Batch throttling: if process.env.MAX_BATCH_COMMANDS is set and payload.commands length exceeds value, then return error message.</li>
+</ul>
+<p class="md-github">CLI Implementation:</p>
+<ul class="md-github">
+<li class="md-github">Supported flags:
+--agentic, --dry-run, --version, --verbose, --diagnostics, --status, --digest, --simulate-error, --simulate-delay <ms>, --simulate-load <ms>, --apply-fix, --cli-utils.</li>
+<li class="md-github">Version command uses package.json version and outputs JSON with timestamp.</li>
+<li class="md-github">Diagnostics collects process.env, Node.js version, current configuration.</li>
+</ul>
+<p class="md-github">AWS Integration Implementation:</p>
+<ul class="md-github">
+<li class="md-github">createSQSEventFromDigest(digest): Formats digest into SQS event structure with properties similar to AWS SQS message format.</li>
+<li class="md-github">digestLambdaHandler(event): Processes event. Uses try { JSON.parse(message.body) } catch error { log error, accumulate failed records }.</li>
+</ul>
+<p class="md-github">Logging Functions:</p>
+<ul class="md-github">
+<li class="md-github">logInfo(message): Outputs info log along with current configuration if verbose flag is set.</li>
+<li class="md-github">logError(error): Outputs error message and error stack if verbose mode is active.</li>
+</ul>
+<p class="md-github">Environment Variables:</p>
+<ul class="md-github">
+<li class="md-github">MAX_BATCH_COMMANDS: (Numeric) Maximum allowed commands in batch.</li>
+<li class="md-github">COMMAND_ALIASES: (JSON string) Mapping of aliases to actual commands.</li>
+</ul>
+<p class="md-github">Error Handling:</p>
+<ul class="md-github">
+<li class="md-github">Commands with non-actionable value ('NaN', empty strings) are strictly rejected with error message: &quot;Input is non-actionable because it is equivalent to 'NaN'&quot;.</li>
+</ul>
+<p class="md-github">Attribution Requirement:</p>
+<ul class="md-github">
+<li class="md-github">Every derived work must include: &quot;This work is derived from https://github.com/xn-intenton-z2a/agentic-lib&quot;.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specifications:</p>
+<p class="md-github">Function: agenticHandler(payload: { command?: string, commands?: string[] }) -&gt; { results: Array&lt;{ executionTimeMS: number, command: string, status: string }&gt; }</p>
+<ul class="md-github">
+<li class="md-github">Parameters:
+command: string (optional) - Single command to process.
+commands: string[] (optional) - Array of commands for batch processing.</li>
+<li class="md-github">Return Type: Object with property 'results' containing an array. Each result has executionTimeMS (number), command (string), and status (string, e.g., 'success').</li>
+<li class="md-github">Exceptions: Throws error if payload is missing or if non-actionable input is detected (e.g., trimmed value equals 'NaN').</li>
+</ul>
+<p class="md-github">CLI Usage Examples:</p>
+<ol class="md-github">
+<li class="md-github">Single command: node src/lib/main.js --agentic '{&quot;command&quot;: &quot;doSomething&quot;}'</li>
+<li class="md-github">Batch processing: node src/lib/main.js --agentic '{&quot;commands&quot;: [&quot;cmd1&quot;, &quot;cmd2&quot;]}'</li>
+<li class="md-github">Dry run: node src/lib/main.js --dry-run</li>
+<li class="md-github">Version: node src/lib/main.js --version</li>
+<li class="md-github">Diagnostics: node src/lib/main.js --diagnostics</li>
+<li class="md-github">Simulate delay: node src/lib/main.js --simulate-delay 500</li>
+</ol>
+<p class="md-github">SDK Method Signatures (in JavaScript):</p>
+<p class="md-github">function agenticHandler(payload: { command?: string, commands?: string[] }): { results: Array&lt;{ executionTimeMS: number, command: string, status: string }&gt; } {
+// Validate payload
+// If payload.command exists, process single command
+// Else if payload.commands exists, iterate and validate each command
+// Trim commands and check for non-actionable 'NaN'
+// Increment globalThis.callCount for each valid command
+// For each command, measure startTime and compute executionTimeMS
+// Return aggregated result array
+}</p>
+<p class="md-github">Environment Variables:</p>
+<ul class="md-github">
+<li class="md-github">MAX_BATCH_COMMANDS: numeric value determining maximum commands allowed; if exceeded, command batch is rejected.</li>
+<li class="md-github">COMMAND_ALIASES: JSON mapping for alias substitution (e.g., {&quot;ls&quot;: &quot;list&quot;, &quot;rm&quot;: &quot;remove&quot;}).</li>
+</ul>
+<p class="md-github">Troubleshooting Procedures:</p>
+<ol class="md-github">
+<li class="md-github">If command batch is rejected, verify that the number of commands does not exceed process.env.MAX_BATCH_COMMANDS.</li>
+<li class="md-github">For JSON parsing errors in AWS Lambda integration, check proper formatting of SQS message body and use try-catch blocks in digestLambdaHandler.</li>
+<li class="md-github">For non-actionable inputs, ensure commands are trimmed and not equal to variations of 'NaN'.</li>
+<li class="md-github">Use --verbose flag to see detailed logging via logInfo and logError.</li>
+</ol>
+<p class="md-github">Best Practices Implementation:</p>
+<ul class="md-github">
+<li class="md-github">Always validate input payload with strict trimming.</li>
+<li class="md-github">Use environment variables for dynamic configuration (e.g., MAX_BATCH_COMMANDS, COMMAND_ALIASES).</li>
+<li class="md-github">Add error logging and diagnostic reporting (--diagnostics, --status) for production troubleshooting.</li>
+<li class="md-github">Include attribution string in all derived projects.</li>
+</ul>
+<p class="md-github">Complete Code Example:</p>
+<p class="md-github">// Example usage of agenticHandler
+const payload = { commands: ['build', 'test', 'deploy'] };
+try {
+const result = agenticHandler(payload);
+console.log('Execution Results:', result);
+} catch (error) {
+console.error('Error:', error);
+}</p>
+<p class="md-github">// CLI invocation example
+// node src/lib/main.js --agentic '{&quot;command&quot;: &quot;doSomething&quot;}'</p>
+<p class="md-github">// AWS integration example
+// const sqsEvent = createSQSEventFromDigest(digest);
+// digestLambdaHandler(sqsEvent);</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">AGENTIC_LIB: Workflows in .github/workflows/ (GPL-3), Examples in examples/ (MIT), main.js in src/lib/main.js implements agenticHandler with payload {command?:string, commands?:string[]} that validates inputs (trims, rejects 'NaN'), increments globalThis.callCount, returns array of {executionTimeMS:number, command:string, status:string}. CLI flags: --agentic, --dry-run, --version, --verbose, --diagnostics, --status, --digest, --simulate-error, --simulate-delay <ms>, --simulate-load <ms>, --apply-fix, --cli-utils. AWS: createSQSEventFromDigest formats digest to SQS event; digestLambdaHandler processes event with fallback for missing messageId. Environment variables: MAX_BATCH_COMMANDS (limit number of commands), COMMAND_ALIASES (JSON mapping for alias substitution). API: agenticHandler(payload) returns {results:[{executionTimeMS, command, status}]}. Code example provided. Troubleshooting: Check batch limits, JSON parsing, and input trimming. Attribution: Must include derived attribution string.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">Component Breakdown
+<ul class="md-github">
+<li class="md-github">Re-usable Workflows: Location: .github/workflows/, stable, GPL-3, used in CI/CD pipeline.</li>
+<li class="md-github">Example Workflows: Location: examples/, demonstrative, MIT licensing.</li>
+<li class="md-github">Evolving main.js: Location: src/lib/main.js, implements agentic workflows in JavaScript, tracks agentic command invocations via globalThis.callCount.</li>
+</ul>
+</li>
+<li class="md-github">Agentic Library Functions
+<ul class="md-github">
+<li class="md-github">agenticHandler:
+<ul class="md-github">
+<li class="md-github">Parameters: JSON payload { command: string } or { commands: string[] }</li>
+<li class="md-github">Returns: Object with individual results containing executionTimeMS.</li>
+<li class="md-github">Behavior: Validates input (trims whitespace, rejects non-actionable 'NaN' values), increments invocation counter per valid command.</li>
+<li class="md-github">Batch Processing: Optional throttling if environment variable MAX_BATCH_COMMANDS is set; rejects batch if command count exceeds limit.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="md-github">CLI Configuration
+<ul class="md-github">
+<li class="md-github">Flags and usage:
+<ul class="md-github">
+<li class="md-github">--agentic: Processes agentic commands. Example: node src/lib/main.js --agentic '{'command': 'doSomething'}' or '{'commands': ['cmd1', 'cmd2']}'.</li>
+<li class="md-github">--dry-run: Simulates command execution without action.</li>
+<li class="md-github">--version: Shows version info with timestamp from package.json.</li>
+<li class="md-github">--verbose: Enables detailed logging.</li>
+<li class="md-github">--diagnostics: Provides configuration, Node.js version, environment variables.</li>
+<li class="md-github">--status: Provides health summary including callCount and uptime.</li>
+<li class="md-github">Additional flags: --digest, --simulate-error, --simulate-delay <ms>, --simulate-load <ms>, --apply-fix, --cli-utils.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="md-github">AWS Integrations
+<ul class="md-github">
+<li class="md-github">SQS Integration:
+<ul class="md-github">
+<li class="md-github">createSQSEventFromDigest: Formats digest into mock SQS event.</li>
+<li class="md-github">digestLambdaHandler: Processes SQS events, handles JSON parsing errors, uses fallback for missing messageId.</li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="md-github">Logging
+<ul class="md-github">
+<li class="md-github">Functions: logInfo and logError for detailed logs when verbose mode is on.</li>
+</ul>
+</li>
+<li class="md-github">Licensing
+<ul class="md-github">
+<li class="md-github">GPL-3 for core workflows with attribution, MIT for examples.
+Exact details:</li>
+</ul>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Environment variable COMMAND_ALIASES accepts JSON mapping { 'ls': 'list', 'rm': 'remove' } to substitute commands.</li>
+<li class="md-github">Execution timing: Each processed command returns executionTimeMS (in milliseconds).</li>
+<li class="md-github">CLI dry-run flag and simulation flags for error, delay, and load conditions are implemented.</li>
+<li class="md-github">Internal counter: globalThis.callCount increments per successful command execution.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Agentic Library Documentation
+https://github.com/xn-intenton-z2a/agentic-lib</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-agentic_lib" href="#digest-of-agentic_lib"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of AGENTIC_LIB</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="agentic_lib-documentation" href="#agentic_lib-documentation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>AGENTIC_LIB DOCUMENTATION</h1>
+<p class="md-github">Retrieved on: 2023-11-28</p>
+<h2 class="md-github"><a class="md-github__anchor" name="component-breakdown" href="#component-breakdown"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Component Breakdown</h2>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Re‑usable Workflows (Core Functionality)</p>
+<ul class="md-github">
+<li class="md-github">Location: .github/workflows/</li>
+<li class="md-github">Purpose: Automated testing, publishing, and issue management using GitHub Actions.</li>
+<li class="md-github">Licensing: GPL-3 with attribution requirement.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Example Workflows (Demonstrative Content)</p>
+<ul class="md-github">
+<li class="md-github">Location: examples/</li>
+<li class="md-github">Purpose: Practical examples for learning and reference.</li>
+<li class="md-github">Licensing: MIT License.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">The Evolving main.js</p>
+<ul class="md-github">
+<li class="md-github">Location: src/lib/main.js</li>
+<li class="md-github">Purpose: JavaScript re‑implementation of re‑usable workflows with programmatic access.</li>
+<li class="md-github">Key Features:
+a. Internal invocation counter (globalThis.callCount)
+b. Batch processing support using agenticHandler
+c. Optional batch throttling via environment variable MAX_BATCH_COMMANDS
+d. Execution timing: returns executionTimeMS for each command
+e. Command alias substitution using COMMAND_ALIASES</li>
+</ul>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="agentic-library-functions" href="#agentic-library-functions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Agentic Library Functions</h2>
+<ul class="md-github">
+<li class="md-github">Function: agenticHandler
+<ul class="md-github">
+<li class="md-github">Accepts: JSON payload with either a single property &quot;command&quot; (string) or a property &quot;commands&quot; (array of strings).</li>
+<li class="md-github">Behavior: Validates commands, processes each sequentially, increments invocation counter, returns aggregated results with individual executionTimeMS.</li>
+<li class="md-github">Error Handling: Logs and rejects non-actionable inputs (e.g. 'NaN', empty strings) after trimming whitespace.</li>
+</ul>
+</li>
+</ul>
+<p class="md-github">Usage examples:
+Single command:
+node src/lib/main.js --agentic '{&quot;command&quot;: &quot;doSomething&quot;}'
+Batch processing:
+node src/lib/main.js --agentic '{&quot;commands&quot;: [&quot;cmd1&quot;, &quot;cmd2&quot;]}'</p>
+<p class="md-github">Additional CLI flag for dry-run:
+node src/lib/main.js --dry-run</p>
+<h2 class="md-github"><a class="md-github__anchor" name="cli-commands" href="#cli-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Commands</h2>
+<p class="md-github">Supported CLI flags with their functionality:
+--help            : Display usage instructions and available flags.
+--agentic         : Process a single or batch agentic command.
+--version         : Display version info from package.json with timestamp.
+--verbose         : Enable detailed logging for debugging.
+--diagnostics     : Output in‑depth diagnostic report (configuration, Node.js version, environment variables).
+--status          : Output runtime health summary in JSON (configuration, callCount, uptime, selected env vars).
+--digest          : Initiate processing of a sample digest event.
+--simulate-error  : Simulate an error scenario; logs error and exits non-zero.
+--simulate-delay  : Delay execution by a specified number of milliseconds (usage: --simulate-delay <ms>).
+--simulate-load   : Execute a CPU-intensive loop for a specified duration in milliseconds.
+--apply-fix       : Apply automated fixes (logs &quot;Applied fix successfully&quot; and exits immediately).
+--cli-utils       : Display a comprehensive summary of all CLI commands available with brief descriptions.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="aws-integrations" href="#aws-integrations"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>AWS Integrations</h2>
+<ul class="md-github">
+<li class="md-github">SQS Integration:
+a. createSQSEventFromDigest
+<ul class="md-github">
+<li class="md-github">Constructs a mock AWS SQS event from a given digest, formatting payload similar to a typical SQS message.
+b. digestLambdaHandler</li>
+<li class="md-github">Processes incoming SQS events handling JSON parsing errors, accumulates failed records and generates a fallback messageId if omitted.</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="logging-mechanism" href="#logging-mechanism"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Logging Mechanism</h2>
+<ul class="md-github">
+<li class="md-github">Functions: logInfo and logError
+<ul class="md-github">
+<li class="md-github">Provide detailed logging including configurations and error stacks when verbose mode is enabled.</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="licensing-and-attribution" href="#licensing-and-attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Licensing and Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Core workflows are under GPL-3 with attribution requirement. Example workflows are under MIT License.</li>
+<li class="md-github">Attribution must include text: &quot;This work is derived from https://github.com/xn-intenton-z2a/agentic-lib&quot;.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution-and-data-size" href="#attribution-and-data-size"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution and Data Size</h2>
+<ul class="md-github">
+<li class="md-github">Crawled data size: 657965 bytes</li>
+<li class="md-github">Links Found: 5126</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Agentic Library Documentation</li>
+<li class="md-github">URL: https://github.com/xn-intenton-z2a/agentic-lib</li>
+<li class="md-github">License: License: Varies by file, typically open source (check repository for details)</li>
+<li class="md-github">Crawl Date: 2025-04-25T03:56:40.449Z</li>
+<li class="md-github">Data Size: 657965 bytes</li>
+<li class="md-github">Links Found: 5126</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-25</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-25T04:25:51.334Z</p>
+  </footer>
+</body>
+</html>
