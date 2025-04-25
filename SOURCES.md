@@ -32,3 +32,8 @@ MDN offers one of the most comprehensive and user-friendly guides on ECMAScript 
 ## https://github.com/openai/openai-node
 This documentation provides details on using OpenAI's Node.js client library. It includes setup instructions, API usage, and examples that help developers interact with OpenAI's models programmatically. The resource is updated in line with library changes, ensuring developers have accurate integration references.
 ## License: MIT
+
+# W3C OWL 2 Overview
+## https://www.w3.org/TR/owl2-overview/
+This document offers an overview of the OWL 2 Web Ontology Language as standardized by the W3C. It details key features, structural components, and semantic characteristics of OWL 2, serving as a foundational resource for developers and researchers working with ontologies and semantic web technologies. Although initially released in 2009, it remains authoritative in the field.
+## License: W3C Document License
