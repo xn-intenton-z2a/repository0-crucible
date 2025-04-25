@@ -8,22 +8,45 @@ The CLI tool supports the following flags. The help message is generated dynamic
 
 - `--help`: Show help message and exit.
 - `--version`: Show version information.
-- `--agentic <value>`: Execute agentic commands using provided JSON data.
+- `--agentic <value>`: Execute agentic commands using provided JSON data. When the JSON contains a key like `commands`, it supports batch processing of commands.
 - `--dry-run`: Simulate command execution without making changes.
 - `--diagnostics`: Display diagnostic information.
 - `--capital-cities`: Display a list of capital cities from the ontology.
 
+## Extended CLI Argument Parsing
+
+The CLI parser has been enhanced to provide robust argument parsing with the following capabilities:
+
+- **Alias Support:** You can define command aliases via the `COMMAND_ALIASES` environment variable. This variable should contain a JSON string mapping short commands to their full flag equivalents.
+
+  **Example:**
+
+  ```bash
+  export COMMAND_ALIASES='{"-h": "--help", "-v": "--version"}'
+  node src/lib/main.js -h
+  ```
+
+  In this example, `-h` is automatically mapped to `--help`.
+
+- **Batch Processing:** When the `--agentic` flag is used with a JSON payload that includes an array (using the key `commands`), the parser supports processing multiple commands in a single invocation.
+
+  **Example:**
+
+  ```bash
+  node src/lib/main.js --agentic '{"commands": ["cmd1", "cmd2"]}'
+  ```
+
+- **Error Handling:** The parser validates all flags. If an unknown flag is provided, or if a flag that requires a value (like `--agentic`) is missing one, a clear error message is returned along with the processed arguments.
+
 ## Usage
 
-When invoking the CLI tool, arguments are parsed and validated. If an unknown flag is provided or a flag expecting a value is missing one, an error is shown along with the help message.
+To invoke the CLI tool, you would run commands like the following:
 
 ### Display Help
 
 ```bash
 node src/lib/main.js --help
 ```
-
-This command will output the dynamically generated help message listing all available flags and their descriptions.
 
 ### Show Version
 
@@ -33,10 +56,16 @@ node src/lib/main.js --version
 
 ### Execute an Agentic Command
 
-Provide a JSON payload with the command:
+Provide a JSON payload with the command or batch of commands:
 
 ```bash
 node src/lib/main.js --agentic '{"command": "doSomething"}'
+```
+
+Or for batch processing:
+
+```bash
+node src/lib/main.js --agentic '{"commands": ["cmd1", "cmd2"]}'
 ```
 
 ### Simulate a Dry Run
@@ -45,24 +74,24 @@ node src/lib/main.js --agentic '{"command": "doSomething"}'
 node src/lib/main.js --dry-run
 ```
 
-### Display Diagnostics
+### Using Command Aliases
+
+Set the `COMMAND_ALIASES` environment variable to map your preferred shorthand to the full command flag:
 
 ```bash
-node src/lib/main.js --diagnostics
+export COMMAND_ALIASES='{"-h": "--help", "-v": "--version"}'
+node src/lib/main.js -h
 ```
 
-### Display Capital Cities
-
-```bash
-node src/lib/main.js --capital-cities
-```
+In this case, passing `-h` will be interpreted as `--help` by the CLI parser.
 
 ## Parser Design Overview
 
-The CLI parser functionality has been refactored into a dedicated module (`src/orderParser.js`) to improve maintainability, clarity, and test coverage. Key aspects include:
+The CLI parser functionality has been refactored into a dedicated module (`src/orderParser.js`) to improve maintainability and test coverage. Key aspects include:
 
-- A centralized flag definition list that contains each flag, its description, and whether it expects a value.
-- Dynamic generation of the help message to reflect all available flags and their usage.
-- Rigorous validation of CLI arguments with clear error messages for unknown flags or missing flag values.
+- A centralized flag definition list that includes each supported flag and its expected behavior.
+- Dynamic alias mapping based on the `COMMAND_ALIASES` environment variable.
+- Batch processing capability for commands provided as an array in JSON.
+- Rigorous validation of CLI arguments with clear error messages.
 
-Contributors are encouraged to review the parser module for further enhancements or additional flag support.
+Contributors are encouraged to review `src/orderParser.js` for further enhancements or additional flag support.
