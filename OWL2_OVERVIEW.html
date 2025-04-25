@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="owl2_overview" href="#owl2_overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OWL2_OVERVIEW</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">OWL 2 Overview: Defines ontology structure (classes, properties, individuals) per OWL 2 Structural Specification. Syntax options include RDF/XML (mandatory), OWL/XML, Functional, Manchester, and Turtle. Semantics are provided via Direct Semantics (SROIQ compatible) and RDF-Based Semantics (RDF mapping). Profiles (EL, QL, RL) offer tailored sublanguages for performance and reasoning trade-offs. Documentation roadmap details core specifications and change log history with explicit version dates and editorial notes.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">Introduction
+<ul class="md-github">
+<li class="md-github">OWL 2 provides classes, properties, individuals, and data values in Semantic Web ontologies.</li>
+</ul>
+</li>
+<li class="md-github">Ontologies
+<ul class="md-github">
+<li class="md-github">Defined using UML in the OWL 2 Structural Specification; can be represented as RDF graphs using the Mapping to RDF Graphs document.</li>
+</ul>
+</li>
+<li class="md-github">Syntaxes
+<ul class="md-github">
+<li class="md-github">RDF/XML: URI: http://www.w3.org/TR/2012/REC-owl2-overview-20121211/, Mandatory interchange format.</li>
+<li class="md-github">OWL/XML: XML Serialization; optional for XML processing.</li>
+<li class="md-github">Functional Syntax: Follows Structural Specification for clear formal structure.</li>
+<li class="md-github">Manchester Syntax: Human readable; used in several editors.</li>
+<li class="md-github">Turtle: Optional alternative for RDF triple representation.</li>
+</ul>
+</li>
+<li class="md-github">Semantics
+<ul class="md-github">
+<li class="md-github">Direct Semantics: Uses SROIQ; requires syntactic conditions (e.g. transitive constraints in number restrictions) for OWL 2 DL.</li>
+<li class="md-github">RDF-Based Semantics: Maps OWL 2 ontologies to RDF graphs; compatible with RDF Semantics; enables OWL 2 Full interpretation.</li>
+<li class="md-github">Correspondence theorem ensures inferences remain valid across both semantics.</li>
+</ul>
+</li>
+<li class="md-github">Profiles
+<ul class="md-github">
+<li class="md-github">EL: Optimized for polynomial time reasoning in large ontologies.</li>
+<li class="md-github">QL: Enables efficient conjunctive queries via relational databases (AC0, LogSpace).</li>
+<li class="md-github">RL: Rule-based reasoning directly on RDF triples with sound (and in many cases complete) query responses.</li>
+</ul>
+</li>
+<li class="md-github">Relationship to OWL 1
+<ul class="md-github">
+<li class="md-github">Structural similarities with OWL 1 ensuring full backward compatibility.</li>
+<li class="md-github">Introduces new syntactic sugar (e.g. disjoint union), richer datatypes, and qualified cardinality restrictions.</li>
+</ul>
+</li>
+<li class="md-github">Documentation Roadmap
+<ul class="md-github">
+<li class="md-github">Lists eleven documents including core specifications (Structural Specification, Mapping to RDF Graphs, Direct Semantics, RDF-Based Semantics, Conformance) and user guides (Overview, Primer, Quick Reference Guide).</li>
+</ul>
+</li>
+<li class="md-github">Change Log
+<ul class="md-github">
+<li class="md-github">Sections for Changes Since Recommendation, Proposed Recommendation, and Last Call with precise dates (e.g., Recommendation 27 October 2009, update on 5 April 2012).</li>
+</ul>
+</li>
+<li class="md-github">Acknowledgements
+<ul class="md-github">
+<li class="md-github">Detailed list of working group attendees and key contributors with institutional affiliations and roles.
+This extract provides explicit technical details and references for direct implementation in ontology development and Semantic Web tools.</li>
+</ul>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Technical Specifications:</p>
+<ul class="md-github">
+<li class="md-github">OWL 2 Structural Specification: Defines ontology structure via UML diagrams and a functional-style syntax for compact representation. Includes conditions for OWL 2 DL (e.g., no transitive properties in number restrictions).</li>
+<li class="md-github">Syntax Configurations:
+<ul class="md-github">
+<li class="md-github">RDF/XML: Mandatory; endpoint URL: http://www.w3.org/TR/2012/REC-owl2-overview-20121211/.</li>
+<li class="md-github">OWL/XML: Optional; used for XML-based processing.</li>
+<li class="md-github">Functional Syntax: Optional; mirrors structural specification for clarity.</li>
+<li class="md-github">Manchester Syntax: Optional; human-readable with editor support.</li>
+<li class="md-github">Turtle: Optional; lightweight form for RDF triple serialization.</li>
+</ul>
+</li>
+<li class="md-github">Semantics Details:
+<ul class="md-github">
+<li class="md-github">Direct Semantics: Maps ontology elements to SROIQ; method enforces syntactic conditions for validity.</li>
+<li class="md-github">RDF-Based Semantics: Applies mapping rules to convert ontology into RDF graphs; supports OWL 2 Full and adheres to extended RDF semantic conditions.</li>
+</ul>
+</li>
+<li class="md-github">Profiles Implementation:
+<ul class="md-github">
+<li class="md-github">EL, QL, RL are defined as subsets of the structural elements with explicit restrictions; profile selection is based on performance needs and reasoning capabilities.</li>
+</ul>
+</li>
+<li class="md-github">Implementation Steps:
+<ol class="md-github">
+<li class="md-github">Choose a concrete syntax (e.g. RDF/XML) based on tool support.</li>
+<li class="md-github">Validate ontology against Structural Specification conditions for OWL 2 DL if using Direct Semantics.</li>
+<li class="md-github">For rule-based reasoning, apply OWL 2 RL profile with specified mapping to RDF triples.</li>
+<li class="md-github">Verify semantic consistency using both Direct and RDF-Based Semantics via correspondence theorem.</li>
+</ol>
+</li>
+<li class="md-github">Configuration Options:
+<ul class="md-github">
+<li class="md-github">Syntax selection: { format: 'RDF/XML' | 'OWL/XML' | 'Functional' | 'Manchester' | 'Turtle' }.</li>
+<li class="md-github">Semantics mode: { mode: 'Direct' (for DL) | 'RDF-Based' (for full ontologies) }.</li>
+</ul>
+</li>
+<li class="md-github">Best Practices:
+<ul class="md-github">
+<li class="md-github">Use RDF/XML as the common interchange format.</li>
+<li class="md-github">Validate ontology consistency with both semantic interpretations.</li>
+<li class="md-github">Employ Manchester Syntax for manual editing and review.</li>
+<li class="md-github">Select the appropriate profile (EL, QL, RL) based on application domain and performance requirements.</li>
+</ul>
+</li>
+<li class="md-github">Troubleshooting Procedures:
+<ul class="md-github">
+<li class="md-github">Command for validating RDF/XML: use OWL API validator with command line: &quot;owlapi-validator --input ontology.owl --format RDF/XML&quot;; expected output: valid if no syntax errors.</li>
+<li class="md-github">For semantic errors in OWL 2 DL: check conditions outlined in Section 3 of the Structural Specification; use detailed logs to identify clause violations (e.g. transitivity in number restrictions).</li>
+<li class="md-github">Use correspondence theorem checks to compare inference results between Direct and RDF-Based Semantics.</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specifications and Implementation Patterns:</p>
+<ul class="md-github">
+<li class="md-github">No explicit SDK methods in the document; however, the following patterns apply:</li>
+</ul>
+<p class="md-github">Pattern for Ontology Creation:
+Method: createOntology(String ontologyIRI) -&gt; Ontology
+Parameters: ontologyIRI: String (e.g. 'http://example.org/myOntology')
+Return Type: Ontology object with methods for adding classes, properties, individuals.</p>
+<p class="md-github">Pattern for Adding Classes:
+Method: addClass(Ontology ontology, String classIRI) -&gt; void
+Parameters: ontology: Ontology object
+classIRI: String
+Example Implementation:
+// Create an ontology
+Ontology ontology = createOntology('http://example.org/myOntology');
+// Add a class
+addClass(ontology, 'http://example.org/myOntology#Person');</p>
+<p class="md-github">Configuration Options in OWL Tools (e.g., OWL API configuration):
+Property: syntaxFormat, Values: 'RDF/XML' (default), 'OWL/XML', 'Functional', 'Manchester', 'Turtle'
+Property: semanticsMode, Values: 'Direct', 'RDF-Based'
+Effect: Determines the parsing, validation, and reasoning strategy.</p>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Always validate ontology against the OWL 2 Structural Specification conditions before reasoning.</li>
+<li class="md-github">Use RDF/XML format for exchange between systems.</li>
+<li class="md-github">For manual editing, convert to Manchester Syntax for readability.</li>
+<li class="md-github">When using rule-based reasoning (OWL 2 RL), ensure the rule engine applies the complete set of inference rules as defined in the Profiles document.</li>
+</ul>
+<p class="md-github">Troubleshooting Steps:</p>
+<ol class="md-github">
+<li class="md-github">Validate file using command: owlapi-validator --input ontology.owl --format RDF/XML</li>
+<li class="md-github">If errors occur, check the log for specific clause references (e.g., Section 3 of Structural Specification) and adjust transitive properties in cardinality restrictions.</li>
+<li class="md-github">Compare inference results between Direct and RDF-Based Semantics by running: owl-inference-checker --ontology ontology.owl --mode Direct</li>
+<li class="md-github">If discrepancies are found, consult the correspondence theorem details in the RDF-Based Semantics document.</li>
+</ol>
+<p class="md-github">Return Types and Exceptions:</p>
+<ul class="md-github">
+<li class="md-github">createOntology: returns Ontology; throws OntologyCreationException if invalid IRI.</li>
+<li class="md-github">addClass: returns void; throws InvalidOntologyException if ontology fails structural checks.</li>
+</ul>
+<p class="md-github">These detailed specifications and patterns are directly extracted from the OWL 2 Overview documentation and provide a concrete implementation blueprint for developers using OWL 2 in Semantic Web environments.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">OWL2: Ontology language with defined UML structure; Syntax: RDF/XML (mandatory), OWL/XML, Functional, Manchester, Turtle; Semantics: Direct (SROIQ compatible, strict conditions) and RDF-Based (RDF graph mapping, full ontology support); Profiles: EL (polynomial reasoning), QL (AC0 query performance), RL (rule-based reasoning, sound/complete on ground queries); Documentation: includes Structural Specification, Mapping to RDF Graphs, Direct and RDF-Based Semantics, Conformance, Profiles; API patterns: createOntology(String IRI) -&gt; Ontology; addClass(Ontology, String) -&gt; void; Config options: syntaxFormat ('RDF/XML' default), semanticsMode ('Direct' or 'RDF-Based'); Troubleshooting: owlapi-validator, owl-inference-checker; Exceptions: OntologyCreationException, InvalidOntologyException; Reference URIs provided; change log details with dates; full technical details per W3C TR/owl2-overview.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">Introduction
+<ul class="md-github">
+<li class="md-github">OWL 2 provides classes, properties, individuals, and data values in Semantic Web ontologies.</li>
+</ul>
+</li>
+<li class="md-github">Ontologies
+<ul class="md-github">
+<li class="md-github">Defined using UML in the OWL 2 Structural Specification; can be represented as RDF graphs using the Mapping to RDF Graphs document.</li>
+</ul>
+</li>
+<li class="md-github">Syntaxes
+<ul class="md-github">
+<li class="md-github">RDF/XML: URI: http://www.w3.org/TR/2012/REC-owl2-overview-20121211/, Mandatory interchange format.</li>
+<li class="md-github">OWL/XML: XML Serialization; optional for XML processing.</li>
+<li class="md-github">Functional Syntax: Follows Structural Specification for clear formal structure.</li>
+<li class="md-github">Manchester Syntax: Human readable; used in several editors.</li>
+<li class="md-github">Turtle: Optional alternative for RDF triple representation.</li>
+</ul>
+</li>
+<li class="md-github">Semantics
+<ul class="md-github">
+<li class="md-github">Direct Semantics: Uses SROIQ; requires syntactic conditions (e.g. transitive constraints in number restrictions) for OWL 2 DL.</li>
+<li class="md-github">RDF-Based Semantics: Maps OWL 2 ontologies to RDF graphs; compatible with RDF Semantics; enables OWL 2 Full interpretation.</li>
+<li class="md-github">Correspondence theorem ensures inferences remain valid across both semantics.</li>
+</ul>
+</li>
+<li class="md-github">Profiles
+<ul class="md-github">
+<li class="md-github">EL: Optimized for polynomial time reasoning in large ontologies.</li>
+<li class="md-github">QL: Enables efficient conjunctive queries via relational databases (AC0, LogSpace).</li>
+<li class="md-github">RL: Rule-based reasoning directly on RDF triples with sound (and in many cases complete) query responses.</li>
+</ul>
+</li>
+<li class="md-github">Relationship to OWL 1
+<ul class="md-github">
+<li class="md-github">Structural similarities with OWL 1 ensuring full backward compatibility.</li>
+<li class="md-github">Introduces new syntactic sugar (e.g. disjoint union), richer datatypes, and qualified cardinality restrictions.</li>
+</ul>
+</li>
+<li class="md-github">Documentation Roadmap
+<ul class="md-github">
+<li class="md-github">Lists eleven documents including core specifications (Structural Specification, Mapping to RDF Graphs, Direct Semantics, RDF-Based Semantics, Conformance) and user guides (Overview, Primer, Quick Reference Guide).</li>
+</ul>
+</li>
+<li class="md-github">Change Log
+<ul class="md-github">
+<li class="md-github">Sections for Changes Since Recommendation, Proposed Recommendation, and Last Call with precise dates (e.g., Recommendation 27 October 2009, update on 5 April 2012).</li>
+</ul>
+</li>
+<li class="md-github">Acknowledgements
+<ul class="md-github">
+<li class="md-github">Detailed list of working group attendees and key contributors with institutional affiliations and roles.
+This extract provides explicit technical details and references for direct implementation in ontology development and Semantic Web tools.</li>
+</ul>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">W3C Semantic Web &amp; Linked Data Standards
+https://www.w3.org/TR/owl2-overview/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-owl2_overview" href="#digest-of-owl2_overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of OWL2_OVERVIEW</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="owl2_overview-1" href="#owl2_overview-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OWL2_OVERVIEW</h1>
+<p class="md-github">Retrieved Date: 2023-10-11
+Data Size: 19558034 bytes
+Links Found: 40922</p>
+<h2 class="md-github"><a class="md-github__anchor" name="overview" href="#overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
+<p class="md-github">This document is the W3C Recommendation for the OWL 2 Web Ontology Language (Second Edition) published on 11 December 2012. It details the formal structure, syntaxes, semantics, profiles, and change history of OWL 2 for Semantic Web applications.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="table-of-contents" href="#table-of-contents"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Table of Contents</h2>
+<ol class="md-github">
+<li class="md-github">Introduction</li>
+<li class="md-github">Ontologies</li>
+<li class="md-github">Syntaxes</li>
+<li class="md-github">Semantics</li>
+<li class="md-github">Profiles</li>
+<li class="md-github">Relationship to OWL 1</li>
+<li class="md-github">Documentation Roadmap</li>
+<li class="md-github">Change Log</li>
+<li class="md-github">Acknowledgements</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="1-introduction" href="#1-introduction"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Introduction</h2>
+<p class="md-github">OWL 2 is an ontology language for the Semantic Web with formally defined meaning. It provides constructs for classes, properties, individuals, and data types. The language is designed to be used in RDF documents with explicit mappings to RDF graphs.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="2-ontologies" href="#2-ontologies"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Ontologies</h2>
+<ul class="md-github">
+<li class="md-github">Defined in the OWL 2 Structural Specification.</li>
+<li class="md-github">Conceptual structure is represented by UML diagrams.</li>
+<li class="md-github">Two views: abstract structure and RDF graph representation (Mapping to RDF Graphs document).</li>
+<li class="md-github">Functional-style syntax option matches the structural specification exactly.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="3-syntaxes" href="#3-syntaxes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. Syntaxes</h2>
+<p class="md-github">Supported syntaxes include:</p>
+<p class="md-github">Name: RDF/XML
+Specification: Mapping to RDF Graphs, RDF/XML
+Status: Mandatory
+Purpose: Interchange format; must be supported by all conformant tools.</p>
+<p class="md-github">Name: OWL/XML
+Specification: XML Serialization
+Status: Optional
+Purpose: Easier processing with XML tools.</p>
+<p class="md-github">Name: Functional Syntax
+Specification: Structural Specification
+Status: Optional
+Purpose: Clearly shows the formal structure of ontologies.</p>
+<p class="md-github">Name: Manchester Syntax
+Specification: Manchester Syntax
+Status: Optional
+Purpose: Human readable; commonly used in ontology editors.</p>
+<p class="md-github">Name: Turtle
+Specification: Mapping to RDF Graphs, Turtle
+Status: Optional, Not from OWL-WG
+Purpose: Read/write RDF triples in a concise form.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="4-semantics" href="#4-semantics"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Semantics</h2>
+<p class="md-github">Two semantic approaches are provided:</p>
+<p class="md-github">Direct Semantics:</p>
+<ul class="md-github">
+<li class="md-github">Assigns meaning directly to ontology structures.</li>
+<li class="md-github">Compatible with SROIQ description logic.</li>
+<li class="md-github">OWL 2 DL ontologies satisfy syntactic conditions (e.g., restrictions on transitive properties in number restrictions).</li>
+</ul>
+<p class="md-github">RDF-Based Semantics:</p>
+<ul class="md-github">
+<li class="md-github">Assigns meaning by mapping OWL 2 ontologies to RDF graphs.</li>
+<li class="md-github">Fully compatible with RDF Semantics.</li>
+<li class="md-github">Allows interpretation of any OWL 2 ontology without restrictions (OWL 2 Full).</li>
+</ul>
+<p class="md-github">A correspondence theorem links Direct and RDF-Based Semantics ensuring consistency between inference results.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="5-profiles" href="#5-profiles"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. Profiles</h2>
+<p class="md-github">OWL 2 defines three sub-languages:</p>
+<p class="md-github">OWL 2 EL:</p>
+<ul class="md-github">
+<li class="md-github">Enables polynomial time reasoning for large ontologies.</li>
+</ul>
+<p class="md-github">OWL 2 QL:</p>
+<ul class="md-github">
+<li class="md-github">Enables conjunctive query answering in LogSpace/AC0 via relational database technology.</li>
+</ul>
+<p class="md-github">OWL 2 RL:</p>
+<ul class="md-github">
+<li class="md-github">Supports rule-based reasoning directly on RDF triples; guarantees soundness and often completeness for ground atomic queries (Theorem PR1).</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="6-relationship-to-owl-1" href="#6-relationship-to-owl-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6. Relationship to OWL 1</h2>
+<ul class="md-github">
+<li class="md-github">Overall structure similar to OWL 1 with largely equivalent building blocks.</li>
+<li class="md-github">Backwards compatibility: All OWL 1 ontologies are valid OWL 2 ontologies with identical practical inferences.</li>
+<li class="md-github">New features include richer datatype support, qualified cardinality restrictions, and additional property characteristics (asymmetry, reflexivity, disjointness, etc.).</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="7-documentation-roadmap" href="#7-documentation-roadmap"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7. Documentation Roadmap</h2>
+<p class="md-github">Core specifications include:</p>
+<ol class="md-github">
+<li class="md-github">Document Overview - introductory guide.</li>
+<li class="md-github">Structural Specification and Functional-Style Syntax - defines constructs and global restrictions.</li>
+<li class="md-github">Mapping to RDF Graphs - defines the RDF serialization for OWL 2.</li>
+<li class="md-github">Direct Semantics - model theoretic semantics for OWL 2.</li>
+<li class="md-github">RDF-Based Semantics - extension of RDF semantics for OWL 2.</li>
+<li class="md-github">Conformance - requirements for compliance and testing.</li>
+<li class="md-github">Profiles - detailed restrictions for OWL 2 EL, QL, RL.</li>
+<li class="md-github">Supplementary user documents such as the OWL 2 Primer, New Features and Rationale, and Quick Reference Guide.</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="8-change-log" href="#8-change-log"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>8. Change Log</h2>
+<p class="md-github">Detailed log with three sections:</p>
+<ul class="md-github">
+<li class="md-github">Changes Since Recommendation</li>
+<li class="md-github">Changes Since Proposed Recommendation</li>
+<li class="md-github">Changes Since Last Call
+Includes specific dates (e.g., Recommendation of 27 October 2009, changes following XSD 1.1 adoption on 5 April 2012) and minor editorial adjustments.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="9-acknowledgements" href="#9-acknowledgements"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>9. Acknowledgements</h2>
+<p class="md-github">Lists the members of the OWL Working Group, key reviewers (e.g., Ivan Herman, Ian Horrocks, Peter F. Patel-Schneider) and provides recognition to past contributors including OWL1.1 submissions and OWLED workshop participants.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<p class="md-github">Content extracted from W3C TR/owl2-overview. Attribution to W3C OWL Working Group, with copyrights © 2012 W3C®.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution-1" href="#attribution-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: W3C Semantic Web &amp; Linked Data Standards</li>
+<li class="md-github">URL: https://www.w3.org/TR/owl2-overview/</li>
+<li class="md-github">License: License: W3C Document Notice</li>
+<li class="md-github">Crawl Date: 2025-04-25T00:38:39.950Z</li>
+<li class="md-github">Data Size: 19558034 bytes</li>
+<li class="md-github">Links Found: 40922</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-25</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-25T01:55:09.586Z</p>
+  </footer>
+</body>
+</html>
