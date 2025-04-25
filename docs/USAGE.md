@@ -11,7 +11,12 @@ You can run the CLI using Node.js. The basic command format is:
 - --help: Displays detailed help information with descriptions for each available command and usage examples.
 - --version: Outputs the current version of the tool, matching the version in package.json.
 - --version-details: Outputs detailed version metadata as a JSON object, including version, name, description, and repository information if available.
-- --diagnostics: Displays runtime diagnostics information about the current environment.
+- --diagnostics: Displays runtime diagnostics information. The enhanced diagnostics output includes:
+  - Node.js version (process.version)
+  - Platform (process.platform)
+  - Process uptime (process.uptime())
+  - Memory usage (process.memoryUsage())
+  This information is output as a JSON string following the initial status message "Diagnostics: All systems are operational".
 - --capital-cities: Outputs an OWL compliant JSON object containing a list of capital cities. By default, it includes at least 10 entries. It supports an optional filter via --country=CountryName to display a specific country's capital.
 - --crawl: Simulates crawling public data sources and outputs a confirmation message.
 - --query-owl: Outputs a sample JSON response simulating a SPARQL query against an OWL ontology.
@@ -42,8 +47,6 @@ You will see a help message similar to:
     node src/lib/main.js --version-details
     node src/lib/main.js --capital-cities --country=Canada
 
-This detailed help guides the user in understanding the available commands and how to use them effectively.
-
 ## Usage Examples
 
 - Display help information:
@@ -66,9 +69,11 @@ This detailed help guides the user in understanding the available commands and h
   
   node src/lib/main.js --query-owl
 
-- Display runtime diagnostics information:
+- Display runtime diagnostics information (enhanced):
   
   node src/lib/main.js --diagnostics
+  
+  This will display a status message followed by a JSON string containing detailed runtime diagnostic information such as Node.js version, platform, uptime, and memory usage.
 
 - Output full OWL compliant capital cities information:
   
