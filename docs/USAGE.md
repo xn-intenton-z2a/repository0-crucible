@@ -1,6 +1,6 @@
 # CLI Usage Documentation
 
-This document details the command line interface (CLI) for the tool and outlines the various flags available.
+This document details the command line interface (CLI) for the tool and outlines the various flags available, including the new alias substitution feature.
 
 ## Supported Flags
 
@@ -8,22 +8,36 @@ The CLI tool supports the following flags:
 
 - `--help`: Show help message and exit.
 - `--version`: Show version information.
-- `--agentic <value>`: Execute agentic commands using provided JSON data. When the JSON contains a key like `commands`, it supports batch processing of commands.
+- `--agentic <data>`: Execute agentic commands using provided JSON data. When the JSON contains a key like `commands`, it supports batch processing of commands.
 - `--dry-run`: Simulate command execution without making changes.
 - `--diagnostics`: Display diagnostic information.
 - `--capital-cities`: Display a list of capital cities from the ontology.
+- `--verbose`: Enable detailed logging.
+- `--status`: Show runtime health summary.
+- `--digest`: Trigger sample digest processing.
+- `--simulate-error`: Simulate an error and exit with a non-zero code.
+- `--simulate-delay <ms>`: Delay execution by specified milliseconds.
+- `--simulate-load <ms>`: Execute a CPU intensive loop for specified milliseconds.
+- `--apply-fix`: Apply automated fixes.
+- `--cli-utils`: Display a complete summary of CLI commands.
 
-## Extended CLI Argument Parsing
+## Alias Substitution and Robust Flag Parsing
 
-With the recent refactor, the CLI argument parsing has been moved into a dedicated module:
+The CLI now supports alias substitution and enhanced flag parsing via the `COMMAND_ALIASES` environment variable. This variable should be set to a valid JSON string mapping alias names to their canonical flag names. For example:
 
-### Order Parser Module
+```bash
+export COMMAND_ALIASES='{ "ls": "help", "rm": "version" }'
+```
 
-The module located at `src/orderParser.js` exports a `parseArgs` function that handles argument validation and processing. Its features include:
+When an alias is used (e.g., `--ls`), the tool substitutes it with its canonical form (`--help` in the above example) before processing.
 
-- **Help and Version Handling:** Returns appropriate help or version information when `--help` or `--version` are provided.
-- **Flag Validation:** Checks for unknown flags and verifies that flags requiring a value (e.g., `--agentic`) are provided with one.
-- **Processed Flags Output:** Returns a structured object containing the active flags and a message for further processing or display.
+Additionally, extra whitespace around arguments is trimmed, and the parser checks for:
+
+- Unknown or unrecognized flags (after alias substitution).
+- Missing required flag values (e.g., when `--agentic` is provided without a subsequent argument).
+- Malformed inputs, such as inputs that are exactly "NaN".
+
+Appropriate error messages and the help message will be displayed for any invalid input.
 
 ## Examples
 
@@ -47,10 +61,24 @@ Provide a JSON payload with the command or batch of commands:
 node src/lib/main.js --agentic '{"command": "doSomething"}'
 ```
 
-Or for batch processing:
+### Using Aliases
+
+With the alias feature enabled, you can use abbreviated commands. For example, if you set the following:
 
 ```bash
-node src/lib/main.js --agentic '{"commands": ["cmd1", "cmd2"]}'
+export COMMAND_ALIASES='{ "ls": "help" }'
+```
+
+Then running:
+
+```bash
+node src/lib/main.js --ls
+```
+
+will be interpreted as:
+
+```bash
+node src/lib/main.js --help
 ```
 
 ### Simulate a Dry Run
@@ -59,23 +87,4 @@ node src/lib/main.js --agentic '{"commands": ["cmd1", "cmd2"]}'
 node src/lib/main.js --dry-run
 ```
 
-### Using the Order Parser Module in Custom Scripts
-
-You can also import and use the `parseArgs` function directly in your Node.js scripts for custom CLI implementations:
-
-```javascript
-import { parseArgs } from "@src/orderParser.js";
-
-const args = process.argv.slice(2);
-const result = parseArgs(args);
-
-if (result.error) {
-  console.error(result.error);
-  console.log(result.message);
-  process.exit(1);
-}
-
-console.log(result.message);
-```
-
-This modular approach promotes reusability and simplifies testing of the CLI argument parsing logic.
+This modular approach, now including the alias substitution via the new orderParser module, promotes reusability and simplifies testing of the CLI argument parsing logic.
