@@ -4,7 +4,7 @@
 import { fileURLToPath } from "url";
 
 // Supported flags
-const supportedFlags = ["--help", "--version", "--agentic", "--dry-run", "--diagnostics", "--capital-cities"];
+const supportedFlags = ["--help", "--version", "--agentic", "--dry-run", "--diagnostics", "--capital-cities", "--alias"];
 
 // Initialize global counter for agentic calls
 globalThis.callCount = globalThis.callCount || 0;
@@ -45,14 +45,34 @@ export function main(args) {
         return;
       }
       // For flags that require a value, check existence
-      if (arg === "--agentic") {
+      if (arg === "--agentic" || arg === "--alias") {
         // Check if next argument exists and is not a flag
         if (i + 1 >= args.length || args[i + 1].startsWith("--")) {
-          console.error("Error: Missing value for flag '--agentic'.\n");
+          console.error(`Error: Missing value for flag '${arg}'.\n`);
           console.log(helpMessage());
           return;
         }
       }
+    }
+  }
+
+  // Process the --alias flag if present
+  if (args.includes("--alias")) {
+    const index = args.indexOf("--alias");
+    const payloadStr = args[index + 1];
+    try {
+      const payload = JSON.parse(payloadStr);
+      if (payload.hasOwnProperty('alias') && typeof payload.alias === 'string') {
+        console.log(`Alias set to: ${payload.alias}`);
+      } else {
+        console.error("Error: Invalid JSON structure for --alias flag. Must contain an 'alias' string.\n");
+        console.log(helpMessage());
+      }
+      return;
+    } catch (e) {
+      console.error("Error: Invalid JSON provided for --alias flag.\n");
+      console.log(helpMessage());
+      return;
     }
   }
 
@@ -92,7 +112,7 @@ export function main(args) {
 }
 
 function helpMessage() {
-  return `Usage: node src/lib/main.js [options]\n\nOptions:\n  --help             Show this help message and exit.\n  --version          Show version information.\n  --agentic <data>   Execute agentic commands with provided JSON data.\n                     The JSON must contain either a 'command' (string) or 'commands' (array of strings).\n  --dry-run          Simulate command execution without making changes.\n  --diagnostics      Display diagnostic information.\n  --capital-cities   Display a list of capital cities from the ontology.\n\nExamples:\n  node src/lib/main.js --help\n  node src/lib/main.js --version\n  node src/lib/main.js --agentic '{"command": "doSomething"}'\n  node src/lib/main.js --agentic '{"commands": ["cmd1", "cmd2"]}'\n  node src/lib/main.js --agentic '{"command": "doSomething"}' --dry-run\n  node src/lib/main.js --dry-run\n`;
+  return `Usage: node src/lib/main.js [options]\n\nOptions:\n  --help             Show this help message and exit.\n  --version          Show version information.\n  --agentic <data>   Execute agentic commands with provided JSON data.\n                     The JSON must contain either a 'command' (string) or 'commands' (array of strings).\n  --alias <data>     Set an alias using provided JSON data.\n                     The JSON must contain an 'alias' property with a string value.\n  --dry-run          Simulate command execution without making changes.\n  --diagnostics      Display diagnostic information.\n  --capital-cities   Display a list of capital cities from the ontology.\n\nExamples:\n  node src/lib/main.js --help\n  node src/lib/main.js --version\n  node src/lib/main.js --agentic '{"command": "doSomething"}'\n  node src/lib/main.js --agentic '{"commands": ["cmd1", "cmd2"]}'\n  node src/lib/main.js --agentic '{"command": "doSomething"}' --dry-run\n  node src/lib/main.js --alias '{"alias": "myCommand"}'\n  node src/lib/main.js --dry-run\n`;
 }
 
 function agenticHandler(payload, isDryRun) {
