@@ -18,6 +18,7 @@ function captureOutput(fn) {
   return { logs, errors };
 }
 
+
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(main).not.toBeNull();
@@ -55,5 +56,35 @@ describe("Main Output", () => {
   test("should process valid flags (e.g., --dry-run)", () => {
     const { logs } = captureOutput(() => main(["--dry-run"]));
     expect(logs[0]).toMatch(/Processing flags: \["--dry-run"\]/);
+  });
+});
+
+describe("Agentic Flag Processing", () => {
+  test("should process single agentic command", () => {
+    const { logs } = captureOutput(() => main(["--agentic", '{"command": "doSomething"}']));
+    expect(logs[0]).toBe("Agentic command executed: doSomething");
+  });
+
+  test("should process batch agentic commands", () => {
+    const { logs } = captureOutput(() => main(["--agentic", '{"commands": ["cmd1", "cmd2"]}']));
+    expect(logs[0]).toBe("Agentic command executed: cmd1");
+    expect(logs[1]).toBe("Agentic command executed: cmd2");
+  });
+
+  test("should error with invalid JSON structure (missing command property)", () => {
+    const { logs, errors } = captureOutput(() => main(["--agentic", '{}']));
+    expect(errors[0]).toMatch(/Error: Invalid JSON structure for --agentic flag/);
+    expect(logs[0]).toMatch(/Usage: node src\/lib\/main.js \[options\]/);
+  });
+
+  test("should error with invalid JSON format", () => {
+    const { logs, errors } = captureOutput(() => main(["--agentic", '{invalid json']));
+    expect(errors[0]).toMatch(/Error: Invalid JSON provided for --agentic flag/);
+    expect(logs[0]).toMatch(/Usage: node src\/lib\/main.js \[options\]/);
+  });
+
+  test("should simulate agentic command in dry-run mode", () => {
+    const { logs } = captureOutput(() => main(["--agentic", '{"command": "doSomething"}', "--dry-run"]));
+    expect(logs[0]).toBe("Dry run: Agentic command executed: doSomething");
   });
 });

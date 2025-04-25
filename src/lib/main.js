@@ -6,6 +6,9 @@ import { fileURLToPath } from "url";
 // Supported flags
 const supportedFlags = ["--help", "--version", "--agentic", "--dry-run", "--diagnostics", "--capital-cities"];
 
+// Initialize global counter for agentic calls
+globalThis.callCount = globalThis.callCount || 0;
+
 export function main(args) {
   // If args not provided, default to process.argv.slice(2)
   if (!args) {
@@ -26,7 +29,6 @@ export function main(args) {
 
   // If --version is provided, show version and exit
   if (args.includes("--version")) {
-    // Version can be dynamically imported if needed, here hardcoded from package.json version
     console.log("Version: 1.2.0-0");
     return;
   }
@@ -36,7 +38,7 @@ export function main(args) {
     const arg = args[i];
     // Only check for flags that start with '--'
     if (arg.startsWith("--")) {
-      // If the flag is not recognized and is not a value for a flag (like the value after --agentic), throw error
+      // If the flag is not recognized and is not a value for a flag, throw error
       if (!supportedFlags.includes(arg)) {
         console.error(`Error: Unknown flag '${arg}'.\n`);
         console.log(helpMessage());
@@ -54,8 +56,31 @@ export function main(args) {
     }
   }
 
-  // Process valid flags (this is a placeholder for actual functionality)
-  // For demonstration, if --dry-run or --diagnostics or --capital-cities is provided, just log the recognized flags
+  // Process the --agentic flag if present
+  if (args.includes("--agentic")) {
+    const index = args.indexOf("--agentic");
+    const payloadStr = args[index + 1];
+    try {
+      const payload = JSON.parse(payloadStr);
+      // Validate payload structure: should have either a 'command' (string) or 'commands' (array of strings)
+      const validCommand = payload.hasOwnProperty('command') && typeof payload.command === 'string';
+      const validCommands = payload.hasOwnProperty('commands') && Array.isArray(payload.commands) && payload.commands.every(cmd => typeof cmd === 'string');
+      if (!(validCommand || validCommands)) {
+        console.error("Error: Invalid JSON structure for --agentic flag. Must contain a 'command' string or 'commands' array.\n");
+        console.log(helpMessage());
+        return;
+      }
+      const isDryRun = args.includes("--dry-run");
+      agenticHandler(payload, isDryRun);
+      return;
+    } catch (e) {
+      console.error("Error: Invalid JSON provided for --agentic flag.\n");
+      console.log(helpMessage());
+      return;
+    }
+  }
+
+  // Process other valid flags (e.g., --dry-run, --diagnostics, --capital-cities)
   const activeFlags = args.filter((arg) => supportedFlags.includes(arg));
   if (activeFlags.length > 0) {
     console.log(`Processing flags: ${JSON.stringify(activeFlags)}`);
@@ -67,7 +92,27 @@ export function main(args) {
 }
 
 function helpMessage() {
-  return `Usage: node src/lib/main.js [options]\n\nOptions:\n  --help             Show this help message and exit.\n  --version          Show version information.\n  --agentic <data>   Execute agentic commands with provided JSON data.\n  --dry-run          Simulate command execution without making changes.\n  --diagnostics      Display diagnostic information.\n  --capital-cities   Display a list of capital cities from the ontology.\n\nExamples:\n  node src/lib/main.js --help\n  node src/lib/main.js --version\n  node src/lib/main.js --agentic '{"command": "doSomething"}'\n  node src/lib/main.js --dry-run\n`;
+  return `Usage: node src/lib/main.js [options]\n\nOptions:\n  --help             Show this help message and exit.\n  --version          Show version information.\n  --agentic <data>   Execute agentic commands with provided JSON data.\n                     The JSON must contain either a 'command' (string) or 'commands' (array of strings).\n  --dry-run          Simulate command execution without making changes.\n  --diagnostics      Display diagnostic information.\n  --capital-cities   Display a list of capital cities from the ontology.\n\nExamples:\n  node src/lib/main.js --help\n  node src/lib/main.js --version\n  node src/lib/main.js --agentic '{"command": "doSomething"}'\n  node src/lib/main.js --agentic '{"commands": ["cmd1", "cmd2"]}'\n  node src/lib/main.js --agentic '{"command": "doSomething"}' --dry-run\n  node src/lib/main.js --dry-run\n`;
+}
+
+function agenticHandler(payload, isDryRun) {
+  // Increment global counter
+  globalThis.callCount++;
+  if (payload.command) {
+    let message = `Agentic command executed: ${payload.command}`;
+    if (isDryRun) {
+      message = `Dry run: ${message}`;
+    }
+    console.log(message);
+  } else if (payload.commands) {
+    payload.commands.forEach(command => {
+      let message = `Agentic command executed: ${command}`;
+      if (isDryRun) {
+        message = `Dry run: ${message}`;
+      }
+      console.log(message);
+    });
+  }
 }
 
 // If the script is run directly, pass command line arguments
