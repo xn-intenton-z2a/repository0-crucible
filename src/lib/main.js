@@ -11,8 +11,35 @@ export const PUBLIC_DATA_SOURCES = [
   { name: "DBpedia SPARQL", url: "https://dbpedia.org/sparql" }
 ];
 
-export function main(args) {
+export async function main(args) {
   const cliArgs = args !== undefined ? args : process.argv.slice(2);
+
+  // Capital Cities option
+  if (cliArgs.includes("--capital-cities")) {
+    const endpoint = PUBLIC_DATA_SOURCES[0].url;
+    const sparqlQuery = `SELECT ?country ?capital WHERE {
+      ?country a <http://dbpedia.org/ontology/Country> .
+      ?country <http://dbpedia.org/ontology/capital> ?capital .
+    } LIMIT 50`;
+    const url = `${endpoint}?query=${encodeURIComponent(sparqlQuery)}&format=json`;
+    try {
+      const response = await fetch(url);
+      const data = await response.json();
+      const bindings = data.results?.bindings || [];
+      const graph = bindings.map((b) => ({
+        "@id": b.country.value,
+        capital: b.capital.value
+      }));
+      const doc = {
+        "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
+        "@graph": graph
+      };
+      console.log(JSON.stringify(doc, null, 2));
+    } catch (err) {
+      console.error(`Error fetching capital cities: ${err.message}`);
+    }
+    return;
+  }
 
   // Diagnostics option
   if (cliArgs.includes("--diagnostics")) {
@@ -32,7 +59,8 @@ export function main(args) {
         "--build-intermediate",
         "--build-enhanced",
         "--refresh",
-        "--merge-persist"
+        "--merge-persist",
+        "--capital-cities"
       ]
     };
     console.log(JSON.stringify(diagnostics, null, 2));
@@ -52,7 +80,8 @@ export function main(args) {
       "  --build-enhanced      Generate enhanced ontology artifacts",
       "  --refresh             Refresh source data",
       "  --merge-persist       Merge and persist data to storage",
-      "  --list-sources        List public (and custom) data sources"
+      "  --list-sources        List public (and custom) data sources",
+      "  --capital-cities      Query DBpedia for capital cities and output JSON-LD"
     ].join("\n");
     console.log(helpText);
     return;
@@ -74,7 +103,8 @@ export function main(args) {
           "  --build-enhanced      Generate enhanced ontology artifacts",
           "  --refresh             Refresh source data",
           "  --merge-persist       Merge and persist data to storage",
-          "  --list-sources        List public (and custom) data sources"
+          "  --list-sources        List public (and custom) data sources",
+          "  --capital-cities      Query DBpedia for capital cities and output JSON-LD"
         ].join("\n");
         res.writeHead(200, { "Content-Type": "text/plain" });
         return res.end(helpText);
@@ -123,12 +153,41 @@ export function main(args) {
             "--build-intermediate",
             "--build-enhanced",
             "--refresh",
-            "--merge-persist"
+            "--merge-persist",
+            "--capital-cities"
           ]
         };
         const body = JSON.stringify(diagnostics, null, 2);
         res.writeHead(200, { "Content-Type": "application/json" });
         return res.end(body);
+      } else if (req.method === "GET" && req.url === "/capital-cities") {
+        const endpoint = PUBLIC_DATA_SOURCES[0].url;
+        const sparqlQuery = `SELECT ?country ?capital WHERE {
+          ?country a <http://dbpedia.org/ontology/Country> .
+          ?country <http://dbpedia.org/ontology/capital> ?capital .
+        } LIMIT 50`;
+        const url = `${endpoint}?query=${encodeURIComponent(sparqlQuery)}&format=json`;
+        fetch(url)
+          .then((resp) => resp.json())
+          .then((data) => {
+            const bindings = data.results?.bindings || [];
+            const graph = bindings.map((b) => ({
+              "@id": b.country.value,
+              capital: b.capital.value
+            }));
+            const doc = {
+              "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
+              "@graph": graph
+            };
+            const body = JSON.stringify(doc, null, 2);
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(body);
+          })
+          .catch((err) => {
+            res.writeHead(500, { "Content-Type": "text/plain" });
+            res.end(`Error fetching capital cities: ${err.message}`);
+          });
+        return;
       } else {
         res.writeHead(404, { "Content-Type": "text/plain" });
         return res.end("Not Found");

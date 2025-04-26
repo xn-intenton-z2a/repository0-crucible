@@ -72,6 +72,7 @@ Usage: node src/lib/main.js [options]
   --refresh             Refresh source data
   --merge-persist       Merge and persist data to storage
   --list-sources        List public (and custom) data sources
+  --capital-cities      Query DBpedia for capital cities and output JSON-LD
 ```
 
 ## Diagnostics
@@ -106,14 +107,15 @@ Sample output:
     "--build-intermediate",
     "--build-enhanced",
     "--refresh",
-    "--merge-persist"
+    "--merge-persist",
+    "--capital-cities"
   ]
 }
 ```
 
 ## Serve
 
-Start a local HTTP server to expose endpoints for help, sources, and diagnostics:
+Start a local HTTP server to expose endpoints for help, sources, diagnostics, and capital cities:
 
 ```bash
 node src/lib/main.js --serve
@@ -131,4 +133,25 @@ You can then request:
 curl http://localhost:3000/help
 curl http://localhost:3000/sources
 curl http://localhost:3000/diagnostics
+curl http://localhost:3000/capital-cities
+```
+
+Example response for capital cities:
+
+```json
+{
+  "@context": {
+    "@vocab": "http://www.w3.org/2002/07/owl#"
+  },
+  "@graph": [
+    {
+      "@id": "http://example.org/c1",
+      "capital": "http://example.org/cap1"
+    },
+    {
+      "@id": "http://example.org/c2",
+      "capital": "http://example.org/cap2"
+    }
+  ]
+}
 ```

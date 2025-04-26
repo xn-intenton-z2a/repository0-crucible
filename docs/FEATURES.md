@@ -7,5 +7,7 @@
   - **GET `/help`**: Returns the CLI help text as plain text.
   - **GET `/sources`**: Returns the list of public (and custom) data sources as pretty-printed JSON.
   - **GET `/diagnostics`**: Returns diagnostic information (version, node version, platform, architecture, working directory, public data sources, and commands) as pretty-printed JSON.
+  - **GET `/capital-cities`**: Queries DBpedia SPARQL for countries and capitals and returns a simple OWL-compatible JSON-LD document (`@context` + `@graph`).
   - Any other path responds with `404 Not Found`.
+- **Capital Cities (`--capital-cities`)**: Queries DBpedia SPARQL for countries and capitals and outputs a simple OWL-compatible JSON-LD document (`@context` + `@graph`).
 - **Default Behavior**: Running the CLI without the `--list-sources` flag logs the provided arguments.
