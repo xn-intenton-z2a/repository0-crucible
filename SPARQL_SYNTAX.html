@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="sparql_syntax" href="#sparql_syntax"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SPARQL_SYNTAX</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Defines SPARQL 1.1 grammar for IRI syntax (IRIREF and PrefixedName), prefix mapping, BASE resolution (RFC3986 sec 5.1.1), literal forms (STRING_LITERAL, LANGTAG, datatype via ^^, numeric shortcuts for xsd:integer, decimal, double, boolean), query variable markers ('?' or '$'), blank node label forms and abbreviated '[]', 'predicateObjectList' and 'objectList' constructs for triple patterns.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 IRI Syntax
+2 Prefixed Names
+3 Relative IRIs
+4 Literals
+5 Variables
+6 Blank Nodes
+7 Triple Patterns</p>
+<p class="md-github">1 IRI Syntax
+grammar production iri: IRIREF|PrefixedName
+IRIREF: '&lt;' IRI-reference '&gt;'
+prohibits '&lt;','&gt;','&quot;',' ',&quot;{&quot;,&quot;}&quot;,'|','\','^','`'
+2 Prefixed Names
+PREFIX PNAME_NS IRIREF
+PNAME_NS: PN_PREFIX|':'
+PN_PREFIX: PN_CHARS_BASE((PN_CHARS|'.')*PN_CHARS)? ':'
+PN_LOCAL: (PN_CHARS_U|[0-9])((PN_CHARS|'.')<em class="md-github">PN_CHARS)?
+mapping: IRI associated with prefix + local part
+3 Relative IRIs
+BASE IRIREF
+resolve per RFC3986 sec5.1.1 only basic algorithm, no normalization
+4 Literals
+STRING_LITERAL(&quot;...&quot;|'...') with optional LANGTAG('@...') or '^^'iri
+numeric shortcuts: INTEGER-&gt;[lexical]^^xsd:integer, DECIMAL-&gt;[lexical]^^xsd:decimal, DOUBLE-&gt;[lexical]^^xsd:double
+BooleanLiteral: true,false-&gt;[lexical]^^xsd:boolean
+5 Variables
+('?'| '$')VarName
+VarName: (PN_CHARS_U|[0-9])((PN_CHARS|'.')<em class="md-github">PN_CHARS)?
+6 Blank Nodes
+'_:'VarName ; abbreviated [] or [predicateObjectList]
+each [] allocates a fresh blank node
+7 Triple Patterns
+subject predicateObjectList
+predicateObjectList: verb objectList (';' verb objectList)</em>
+objectList: object (',' object)</em>
+subject/verb/object: Var|iri|literal|BlankNode</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">BASE and PREFIX directives
+BASE IRIREF: defines Base IRI for resolving relative IRIs using RFC3986 section 5.1.1 basic algorithm only
+PREFIX PNAME_NS IRIREF: binds PNAME_NS to IRIREF; PNAME_NS may be ':' for empty prefix
+IRI resolution
+PrefixedName = resolve prefix binding + local part
+Relative IRI = resolve against Base IRI, no syntax-based or scheme-based normalization
+Literal shortcuts
+INTEGER: digits only -&gt; xsd:integer
+DECIMAL: digits with '.' -&gt; xsd:decimal
+DOUBLE: exponent form -&gt; xsd:double
+Boolean: true,false -&gt; xsd:boolean
+Blank node allocation
+Each '[]' or '[ ... ]' in a basic graph pattern is replaced by a new blank node label
+Triple pattern grouping
+Semicolon ';' groups multiple verb-object lists under one subject
+Comma ',' groups multiple objects under one predicate</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Grammar productions excerpt:
+PrefixDecl: 'PREFIX' PNAME_NS IRIREF
+BaseDecl: 'BASE' IRIREF
+Query: Prologue SelectQuery | Prologue ConstructQuery | ...
+Prologue: BaseDecl? PrefixDecl*
+PrefixedName: PNAME_LN | PNAME_NS
+PNAME_LN: PN_PREFIX PN_LOCAL
+IRIREF: '&lt;' IRI-reference '&gt;'
+StringLiteral1: '&quot;' ([^&quot;\])* '&quot;'
+LangTag: '@' [a-zA-Z]+ ('-' [a-zA-Z0-9]+)*
+NumericLiteral: INTEGER | DECIMAL | DOUBLE
+BooleanLiteral: 'true' | 'false'
+Var: ('?'| '$') VarName
+BlankNode: '_:' VarName
+Examples:
+PREFIX ex: <a href="http://example.org/" class="md-github">http://example.org/</a>
+BASE <a href="http://example.org/data/" class="md-github">http://example.org/data/</a>
+SELECT ?s WHERE { ex:book ex:title ?title }
+Best practices:
+always declare PREFIX for common namespaces
+use PREFIX rather than long IRIREF
+use numeric shortcuts for readability
+avoid relative IRIs unless BASE declared
+Troubleshooting:
+Malformed IRIREF: parser error at unexpected '&gt;' or missing '&lt;'
+Unbound prefix: 'Unresolved prefix: abc'
+Example command: curl -G http://endpoint/sparql --data-urlencode 'query=SELECT ?s WHERE {?s ?p ?o}' -H 'Accept: application/sparql-results+json'
+Expected output: JSON with head.vars [&quot;s&quot;] and results.bindings</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">iri ::= '&lt;' IRI-reference '&gt;' | PN_PREFIX PN_LOCAL ; PNAME_NS ::= PN_PREFIX | ':' ; PREFIX PNAME_NS IRIREF ; BASE IRIREF ; literal ::= STRING_LITERAL (LANGTAG | '^^' iri)? | INTEGER | DECIMAL | DOUBLE | BooleanLiteral ; INTEGER ::= [0-9]+ ; DECIMAL ::= [0-9]<em class="md-github">'.'[0-9]+ ; DOUBLE ::= ( [0-9]+('.'[0-9]</em>)? | '.'[0-9]+ ) [eE][+-]?[0-9]+ ; BooleanLiteral ::= 'true' | 'false' ; Var ::= ('?'| '$') VarName ; BlankNode ::= '_:' VarName | '[]' | '[ predicateObjectList ]' ; triplesSameSubject ::= subject predicateObjectList ; predicateObjectList ::= verb objectList (';' verb objectList)* ; objectList ::= object (',' object)* ; subject|verb|object ::= Var | iri | literal | BlankNode</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 IRI Syntax
+2 Prefixed Names
+3 Relative IRIs
+4 Literals
+5 Variables
+6 Blank Nodes
+7 Triple Patterns</p>
+<p class="md-github">1 IRI Syntax
+grammar production iri: IRIREF|PrefixedName
+IRIREF: '&lt;' IRI-reference '&gt;'
+prohibits '&lt;','&gt;',''',' ','{','}','|','''','^','''
+2 Prefixed Names
+PREFIX PNAME_NS IRIREF
+PNAME_NS: PN_PREFIX|':'
+PN_PREFIX: PN_CHARS_BASE((PN_CHARS|'.')*PN_CHARS)? ':'
+PN_LOCAL: (PN_CHARS_U|[0-9])((PN_CHARS|'.')<em class="md-github">PN_CHARS)?
+mapping: IRI associated with prefix + local part
+3 Relative IRIs
+BASE IRIREF
+resolve per RFC3986 sec5.1.1 only basic algorithm, no normalization
+4 Literals
+STRING_LITERAL('...'|'...') with optional LANGTAG('@...') or '^^'iri
+numeric shortcuts: INTEGER-&gt;[lexical]^^xsd:integer, DECIMAL-&gt;[lexical]^^xsd:decimal, DOUBLE-&gt;[lexical]^^xsd:double
+BooleanLiteral: true,false-&gt;[lexical]^^xsd:boolean
+5 Variables
+('?'| '$')VarName
+VarName: (PN_CHARS_U|[0-9])((PN_CHARS|'.')<em class="md-github">PN_CHARS)?
+6 Blank Nodes
+'_:'VarName ; abbreviated [] or [predicateObjectList]
+each [] allocates a fresh blank node
+7 Triple Patterns
+subject predicateObjectList
+predicateObjectList: verb objectList (';' verb objectList)</em>
+objectList: object (',' object)</em>
+subject/verb/object: Var|iri|literal|BlankNode</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">W3C RDF 1.1 and SPARQL 1.1 Specifications
+https://www.w3.org/TR/sparql11-query/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-sparql_syntax" href="#digest-of-sparql_syntax"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of SPARQL_SYNTAX</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="sparql-syntax" href="#sparql-syntax"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SPARQL Syntax</h1>
+<p class="md-github">This document defines SPARQL 1.1 query language syntax for RDF terms and triple patterns.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="iri-syntax" href="#iri-syntax"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>IRI Syntax</h1>
+<p class="md-github">grammar production: iri
+matches IRIREF or PrefixedName
+IRIREF: '&lt;' IRI-reference '&gt;' (no '&lt;','&gt;','&quot;',' ',&quot;{&quot;,&quot;}&quot;,&quot;|&quot;,&quot;\&quot;,&quot;^&quot;,&quot;`&quot;)
+PrefixedName: PN_PREFIX PN_LOCAL
+PN_PREFIX: PN_CHARS_BASE ((PN_CHARS|'.')* PN_CHARS)? ':'
+PN_LOCAL: (PN_CHARS_U|[0-9]) ((PN_CHARS|'.')* PN_CHARS)?
+PN_CHARS_BASE: [A-Z]|[a-z]|... (U+00C0–U+00D6, U+00D8–U+00F6, U+00F8–U+02FF, U+0370–U+037D, U+037F–U+1FFF, U+200C–U+200D, U+2070–U+218F, U+2C00–U+2FEF, U+3001–U+D7FF, U+F900–U+FDCF, U+FDF0–U+FFFD)</p>
+<h1 class="md-github"><a class="md-github__anchor" name="prefixed-names" href="#prefixed-names"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Prefixed Names</h1>
+<p class="md-github">PREFIX declaration: 'PREFIX' PNAME_NS IRIREF
+PNAME_NS: PN_PREFIX|':'
+maps prefix label and local part to IRI by concatenation
+local part and prefix may be empty
+SPARQL local names allow digits at start and backslash escapes (e.g. ns:id=123)</p>
+<h1 class="md-github"><a class="md-github__anchor" name="relative-iris" href="#relative-iris"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Relative IRIs</h1>
+<p class="md-github">BASE declaration: 'BASE' IRIREF
+Resolution algorithm: RFC3986 section 5.1.1 (no normalization).
+If BASE absent, default Base IRI from retrieval or default URI.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="literal-syntax" href="#literal-syntax"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Literal Syntax</h1>
+<p class="md-github">literal
+: STRING_LITERAL (LANGTAG|('^^' iri))?
+| INTEGER
+| DECIMAL
+| DOUBLE
+| BooleanLiteral
+STRING_LITERAL: '&quot;' [^&quot;\]* '&quot;' | &quot;'&quot; [^'\]* &quot;'&quot; | triple-quoted forms
+LANGTAG: '@' [a-zA-Z]+ ('-' [a-zA-Z0-9]+)*
+INTEGER: [0-9]+  -&gt; '&quot;lexical&quot;^^xsd:integer'
+DECIMAL: [0-9]* '.' [0-9]+ -&gt; '&quot;lexical&quot;^^xsd:decimal'
+DOUBLE: ( [0-9]+ ('.'[0-9]*)? [eE][+-]?[0-9]+ ) | ('.'[0-9]+ [eE][+-]?[0-9]+ ) -&gt; '&quot;lexical&quot;^^xsd:double'
+BooleanLiteral: 'true'|'false' -&gt; '&quot;lexical&quot;^^xsd:boolean'</p>
+<h1 class="md-github"><a class="md-github__anchor" name="query-variables" href="#query-variables"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Query Variables</h1>
+<p class="md-github">Variable: ('?'| '$') VarName
+VarName: (PN_CHARS_U|[0-9]) ((PN_CHARS|'.')* PN_CHARS)?</p>
+<h1 class="md-github"><a class="md-github__anchor" name="blank-nodes" href="#blank-nodes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Blank Nodes</h1>
+<p class="md-github">BlankNode: '_:' (PN_CHARS_U|[0-9]) ((PN_CHARS|'.')* PN_CHARS)?
+Abbreviated: '[]' or '[ predicateObjectList ]'
+Each '[]' allocates a unique blank node label
+'[ :p  &quot;v&quot; ] :q &quot;w&quot;' =&gt; _:bNN :p &quot;v&quot; . _:bNN :q &quot;w&quot; .</p>
+<h1 class="md-github"><a class="md-github__anchor" name="triple-patterns" href="#triple-patterns"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Triple Patterns</h1>
+<p class="md-github">TriplesTemplate: triplesSameSubject ('.' triplesSameSubject)*
+triplesSameSubject: subject predicateObjectList
+predicateObjectList: verb objectList (';' verb objectList)*
+objectList: object (',' object)*
+subject: Var| iri| BlankNode| 'triplesNode'
+verb: Var| iri
+object: Var| iri| literal| BlankNode| 'triplesNode'</p>
+<h1 class="md-github"><a class="md-github__anchor" name="predicate-object-lists" href="#predicate-object-lists"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Predicate-Object Lists</h1>
+<p class="md-github">?x foaf:name ?name ; foaf:mbox ?mbox .
+expands to two triple patterns with same subject</p>
+<h1 class="md-github"><a class="md-github__anchor" name="object-lists" href="#object-lists"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Object Lists</h1>
+<p class="md-github">?x foaf:nick &quot;Alice&quot;,&quot;Alice_&quot; .
+expands to two triple patterns with same subject/predicate</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: W3C RDF 1.1 and SPARQL 1.1 Specifications</li>
+<li class="md-github">URL: https://www.w3.org/TR/sparql11-query/</li>
+<li class="md-github">License: W3C Document License 1.0</li>
+<li class="md-github">Crawl Date: 2025-04-26T06:50:38.617Z</li>
+<li class="md-github">Data Size: 95260895 bytes</li>
+<li class="md-github">Links Found: 103514</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-26</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-26T07:23:35.645Z</p>
+  </footer>
+</body>
+</html>
