@@ -170,6 +170,26 @@ describe("HTTP Server", () => {
     await once(server, "close");
   });
 
+  test("GET /help returns help text", () => {
+    return new Promise((resolve) => {
+      http.get(`http://localhost:${port}/help`, (res) => {
+        expect(res.statusCode).toBe(200);
+        expect(res.headers["content-type"]).toMatch(/text\/plain/);
+        let data = "";
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
+        res.on("end", () => {
+          expect(data).toContain(
+            "owl-builder: create and manage OWL ontologies from public data sources"
+          );
+          expect(data).toContain("Usage: node src/lib/main.js [options]");
+          resolve();
+        });
+      });
+    });
+  });
+
   test("GET /sources returns default sources", () => {
     return new Promise((resolve) => {
       http.get(

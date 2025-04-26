@@ -60,9 +60,25 @@ export function main(args) {
 
   // Serve option
   if (cliArgs.includes("--serve")) {
-    const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
+    const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
     const server = http.createServer((req, res) => {
-      if (req.method === "GET" && req.url === "/sources") {
+      if (req.method === "GET" && req.url === "/help") {
+        const helpText = [
+          "owl-builder: create and manage OWL ontologies from public data sources",
+          "Usage: node src/lib/main.js [options]",
+          "",
+          "  --help                Display this help message",
+          "  --diagnostics         Show diagnostic information",
+          "  --serve               Start the local HTTP server",
+          "  --build-intermediate  Generate intermediate ontology artifacts",
+          "  --build-enhanced      Generate enhanced ontology artifacts",
+          "  --refresh             Refresh source data",
+          "  --merge-persist       Merge and persist data to storage",
+          "  --list-sources        List public (and custom) data sources"
+        ].join("\n");
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        return res.end(helpText);
+      } else if (req.method === "GET" && req.url === "/sources") {
         const configPath = path.join(process.cwd(), "data-sources.json");
         let customSources = [];
         if (fs.existsSync(configPath)) {
