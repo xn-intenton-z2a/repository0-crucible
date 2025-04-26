@@ -1,39 +1,43 @@
-# W3C RDF 1.1 Concepts
+# W3C RDF and SPARQL Specifications
 ## https://www.w3.org/TR/rdf11-concepts/
-RDF 1.1 Concepts and Abstract Syntax is the foundational specification defining the RDF data model: triples, resources, literals, blank nodes, and graphs. It details serialization formats (RDF/XML, Turtle), parsing algorithms, and the abstract data model necessary for consistent construction and validation of RDF datasets. This source directly supports core implementation by specifying low-level data structures and API expectations for reading and writing RDF. Last updated 25 February 2014; as a W3C Recommendation it is the authoritative reference for any RDF-centric tooling.
+## https://www.w3.org/TR/sparql11-query/
+Combines the RDF 1.1 Concepts and SPARQL 1.1 Query Language specifications. Defines the foundational RDF data model (triples, graphs, serializations like Turtle and RDF/XML) along with parsing/serialization algorithms, and the SPARQL query language syntax and semantics (SELECT, CONSTRUCT, ASK, DESCRIBE, aggregates, property paths). This source addresses core implementation needs by specifying low-level data structures, parsing/serialization requirements, and query execution semantics, essential for both building and querying OWL ontologies. Last updated 25 February 2014 (RDF Concepts) and 21 March 2013 (SPARQL); as W3C Recommendations they are the authoritative references.
 ## W3C Document License 1.0
 
-# W3C OWL 2 Web Ontology Language Primer
+# W3C OWL 2 Specifications
 ## https://www.w3.org/TR/owl2-primer/
-The OWL 2 Primer offers a practical introduction to modeling complex domains with OWL 2, including class expressions, property restrictions, and reasoning examples. It provides concrete OWL/XML and Turtle examples for ontology construction, mapping JSON-derived data into formal ontology elements. This primer addresses core needs such as designing taxonomies, defining equivalence or disjointness, and leveraging reasoners. Published as a W3C Recommendation on 11 December 2012, it remains the go-to guide for OWL ontology implementation.
+## https://www.w3.org/TR/owl2-syntax/
+Includes the OWL 2 Web Ontology Language Primer and the Structural Specification. The primer provides practical modeling examples with OWL/XML and Turtle, covering class expressions, property restrictions, and reasoning patterns. The structural spec details concrete syntaxes (Functional, Manchester, Turtle), grammar, and mapping to RDF triples. Together they guide ontology design, syntax validation, and ensure generated JSON-LD adheres to OWL semantics. Published 11 December 2012; as W3C Recommendations they are the definitive OWL 2 references.
 ## W3C Document License 1.0
 
 # JSON-LD 1.1
 ## https://www.w3.org/TR/json-ld11/
-The JSON-LD 1.1 specification defines how to serialize RDF graphs in JSON, enabling a seamless bridge between JSON data and RDF/OWL ontologies. It describes contexts, framing, compaction/expansion algorithms, and best practices for embedding linked data. Implementers gain actionable details on transforming JSON sources into RDF triples and back, addressing JSON-centric workflows in JavaScript. Last updated 16 July 2020; as a W3C Recommendation, it is the definitive guide for JSON-LD processing.
+The JSON-LD 1.1 specification defines serialization of RDF graphs in JSON, covering contexts, framing, compaction/expansion algorithms, and best practices for embedding linked data. Provides actionable guidance for transforming JSON sources into RDF triples and vice versa, including pseudocode for compaction and expansion. Last updated 16 July 2020; as a W3C Recommendation it is the definitive guide for JSON-LD processing.
 ## W3C Document License 1.0
 
-# RDF/JS Data Model Specification
-## https://rdf.js.org/data-model-spec/
-The RDF/JS Data Model specification defines a standard JavaScript API for creating, inspecting, and comparing RDF terms (NamedNode, Literal, BlankNode, Quad). It outlines interfaces, factory methods, and type signatures crucial for interoperable RDF libraries in Node.js and the browser. This ensures consistent in-memory representations of RDF for downstream OWL conversion. Published online under public domain dedication; maintained by the RDF/JS community.
-## Public Domain
-
-# SPARQL 1.1 Query Language
-## https://www.w3.org/TR/sparql11-query/
-SPARQL 1.1 Query Language specifies syntax and semantics for querying RDF graphs, including SELECT, CONSTRUCT, ASK, and DESCRIBE forms, along with advanced features like subqueries, aggregates, and property paths. It is essential for extracting patterns from ontologies and for testing transformed OWL models. Last updated 21 March 2013; as a W3C Recommendation, it is the de facto standard for RDF data interrogation.
-## W3C Document License 1.0
-
-# rdflib.js JavaScript Library
-## https://github.com/linkeddata/rdflib.js#readme
-rdflib.js implements the RDF/JS interfaces and provides utilities for parsing, serializing, and storing RDF graphs in JavaScript. The README includes installation steps, code snippets for loading Turtle/JSON-LD, SPARQL querying in‐memory, and linking to remote endpoints. This source is vital for rapid prototyping of OWL workflows and aligns directly with the project’s module architecture. Last updated monthly; project is MIT-licensed.
+# jsonld.js JavaScript Library
+## https://github.com/digitalbazaar/jsonld.js#readme
+The `jsonld` npm package implements the JSON-LD API in JavaScript, offering methods like expand, compact, flatten, frame, and toRDF. The README includes code snippets for converting between JSON-LD and RDF datasets, streaming large graphs, and handling context definitions. This source is crucial for the transform-to-OWL and query features, facilitating reliable JSON-LD manipulation. Last updated June 2024; MIT License.
 ## MIT License
+
+# Node.js Global Fetch API
+## https://nodejs.org/api/globals.html#fetch
+Official Node.js documentation for the built-in global `fetch` API introduced in Node.js v18+. Covers Request and Response objects, streaming bodies, error handling, and AbortController integration. Essential for implementing robust data retrieval in the `--fetch` feature, including timeouts and incremental consumption. Last updated for Node.js v20; maintained by the Node.js Foundation.
+## Node.js Foundation License
 
 # REST Countries API Developer Documentation
 ## https://restcountries.com/
-The REST Countries API offers a simple RESTful interface to retrieve detailed country data in JSON, including names, capitals, populations, and geographic information. Endpoints such as `/v3.1/all` and field filtering enable efficient data fetch for OWL population modules. The documentation describes URL conventions, parameters, pagination, and response schemas, providing actionable guidance for implementing the `--fetch` feature. Publicly accessible and maintained; data is in the public domain.
+The REST Countries API offers a RESTful interface to retrieve comprehensive country data in JSON (names, codes, capitals, populations, geospatial data). Endpoints and query parameters for filtering, pagination, and field selection are documented with example responses. This source directly supports populating OWL ontologies with real-world geographic data and guides the implementation of the `--fetch` feature. Publicly accessible; data is in the public domain.
 ## Public Domain
 
-# Comunica SPARQL Query Engine Documentation
+# JavaScript RDF Library Ecosystem
+## https://rdf.js.org/data-model-spec/
+## https://github.com/linkeddata/rdflib.js#readme
 ## https://comunica.dev/docs/query/
-Comunica is a modular JavaScript framework for executing SPARQL queries over heterogeneous sources (files, endpoints, streams). The documentation covers install, source configuration, query execution API, and examples of federated queries. It provides practical insights into building robust SPARQL clients in Node.js and browsers, complementing rdflib.js for advanced query scenarios. Regularly updated; project is MIT-licensed.
+A consolidated view of the RDF/JS Data Model Specification and two key libraries: `rdflib.js` for parsing, serializing, and storing RDF graphs in browsers and Node.js, and the Comunica framework for executing SPARQL queries over heterogeneous sources. This ecosystem provides the interfaces, factory methods, storage backends, and federated query execution APIs needed to build a full-stack OWL tooling pipeline. Public domain (spec) and MIT (libraries).
+## Mixed (Public Domain & MIT)
+
+# Zod Schema Validation Library
+## https://github.com/colinhacks/zod#readme
+`zod` is a TypeScript-first schema definition and validation library. The README demonstrates how to define schemas, perform strict parsing, and handle validation errors. Useful for validating input JSON before transformation into OWL, enforcing property types and required fields, and providing user-friendly error messages. Last updated May 2024; MIT License.
 ## MIT License
