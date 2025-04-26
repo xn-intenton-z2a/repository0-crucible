@@ -237,7 +237,9 @@ export async function main(args) {
           });
         return;
       } else if (req.method === "GET" && req.url === "/refresh") {
-        refreshSources()
+        // Use dynamic import so that tests can mock the exported refreshSources
+        import(import.meta.url)
+          .then((mod) => mod.refreshSources())
           .then(({ count, files }) => {
             const payload = { refreshed: count, files };
             res.writeHead(200, { "Content-Type": "application/json" });
