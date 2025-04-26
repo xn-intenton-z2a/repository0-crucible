@@ -2,6 +2,7 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
+import pkg from "../../package.json" assert { type: "json" };
 
 export const PUBLIC_DATA_SOURCES = [
   { name: "DBpedia SPARQL", url: "https://dbpedia.org/sparql" }
@@ -9,6 +10,31 @@ export const PUBLIC_DATA_SOURCES = [
 
 export function main(args) {
   const cliArgs = args !== undefined ? args : process.argv.slice(2);
+
+  // Diagnostics option
+  if (cliArgs.includes("--diagnostics")) {
+    const diagnostics = {
+      version: pkg.version,
+      nodeVersion: process.version,
+      platform: process.platform,
+      arch: process.arch,
+      cwd: process.cwd(),
+      publicDataSources: PUBLIC_DATA_SOURCES,
+      commands: [
+        "--help",
+        "-h",
+        "--list-sources",
+        "--diagnostics",
+        "--serve",
+        "--build-intermediate",
+        "--build-enhanced",
+        "--refresh",
+        "--merge-persist"
+      ]
+    };
+    console.log(JSON.stringify(diagnostics, null, 2));
+    return;
+  }
 
   // Help option
   if (cliArgs.includes("--help") || cliArgs.includes("-h")) {

@@ -41,3 +41,40 @@ Usage: node src/lib/main.js [options]
   --refresh             Refresh source data
   --merge-persist       Merge and persist data to storage
 ```
+
+## Diagnostics
+
+Use the `--diagnostics` flag to display environment and configuration diagnostics:
+
+```bash
+node src/lib/main.js --diagnostics
+```
+
+Sample output:
+
+```json
+{
+  "version": "1.2.0-0",
+  "nodeVersion": "v20.0.0",
+  "platform": "linux",
+  "arch": "x64",
+  "cwd": "/path/to/your/project",
+  "publicDataSources": [
+    {
+      "name": "DBpedia SPARQL",
+      "url": "https://dbpedia.org/sparql"
+    }
+  ],
+  "commands": [
+    "--help",
+    "-h",
+    "--list-sources",
+    "--diagnostics",
+    "--serve",
+    "--build-intermediate",
+    "--build-enhanced",
+    "--refresh",
+    "--merge-persist"
+  ]
+}
+```
