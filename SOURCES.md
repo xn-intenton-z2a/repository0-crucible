@@ -30,34 +30,34 @@ Specifies SPARQL 1.1 query forms (SELECT, ASK, CONSTRUCT, DESCRIBE), aggregation
 ## License
 W3C Document License (CC-BY 4.0)
 
-# rdflib.js: Linked Data Library for JavaScript
+# RDFJS Data Model Specification
 
-## https://linkeddata.github.io/rdflib.js/
-A modular JavaScript library for parsing, storing, querying, and serializing RDF in both browser and Node.js environments. Documentation covers core components (Store, Fetcher, UpdateManager), support for Turtle, RDF/XML, N3, JSON-LD, and integration patterns. Provides practical examples for building in-memory graph applications and federated HTTP queries. Vital for integrating semantic technologies into JavaScript-based OWL builder workflows. (Latest version 2.2.2.)
-
-## License
-MIT
-
-# Comunica SPARQL Query Engine
-
-## https://comunica.dev/docs/query/overview/
-Comunica is a modular, pluggable SPARQL query engine for JavaScript and TypeScript, supporting federated queries over HTTP, Linked Data Fragments, and in-memory RDFJS sources. Documentation includes architecture overviews, installation instructions, examples for programmatic API use, streaming results, and custom data source integration. Critical for high-performance, distributed query execution in CLI tools and web services. (Reviewed April 2024.)
+## https://rdf.js.org/data-model-spec/
+The RDFJS Data Model Specification defines the interfaces for core RDF entities such as Term, NamedNode, Literal, BlankNode, Variable, DefaultGraph, Quad, Dataset, and Graph. It outlines methods and properties required for RDFJS-compliant libraries, ensuring interoperability between different JavaScript RDF tooling (e.g., rdflib.js, Comunica). Fundamental for implementing in-memory graph manipulations, serialization, and streaming data across RDFJS ecosystems. (Last updated 2017; authoritative as the de facto community specification for JavaScript RDF interfaces.)
 
 ## License
-MIT
+CC0 1.0 Universal
 
-# Apache Jena Fuseki HTTP API
+# SHACL 1.1 - Shapes Constraint Language
 
-## https://jena.apache.org/documentation/fuseki2/http-api.html
-Details REST endpoints for dataset management, SPARQL query and update operations, named graph administration, authentication, and performance tuning. Includes request/response examples in JSON and XML, HTTP status codes, and configuration options for robust triple store integration in data ingestion pipelines. (Last updated March 2021.)
-
-## License
-Apache License 2.0
-
-# Wikidata Query Service User Manual
-
-## https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/queries
-The official guide to Wikidata’s SPARQL endpoint, explaining query best practices, result formats (JSON, CSV, XML), constraints, rate limits, and performance considerations. Provides numerous real-world query examples, federated patterns, and tips for retrieving and transforming large-scale, multilingual ontology data. Invaluable for sourcing rich entity graphs and testing OWL builder query capabilities against a live knowledge base. (Last updated 2024; content available under CC0.)
+## https://www.w3.org/TR/shacl/
+The SHACL specification provides a language for validating RDF graphs against a set of conditions called shapes. It details shape definitions, constraint components, validation result structures, and recommendations for extensibility. Vital for enforcing schema-level constraints and quality checks on both input data and generated OWL ontologies. (Last updated 17 July 2017; authoritative as a W3C Recommendation.)
 
 ## License
-Creative Commons Zero (CC0 1.0)
+W3C Document License (CC-BY 4.0)
+
+# DBpedia SPARQL Endpoint Documentation
+
+## https://wiki.dbpedia.org/online-access
+This page outlines how to access DBpedia's SPARQL endpoint, including endpoint URL configurations, query parameters (`query`, `default-graph-uri`, `timeout`, `format`), supported result formats (JSON, XML, CSV), CORS policies, rate limits, and best practices for efficient querying. It provides concrete examples and troubleshooting tips, directly supporting the implementation of the `--capital-cities` feature and other SPARQL-based workflows. (Last reviewed 2023; authoritative as the official DBpedia community documentation.)
+
+## License
+Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
+
+# Eclipse RDF4J HTTP Server REST API
+
+## https://rdf4j.org/documentation/programming/rdf4j-server-rest-api/
+The RDF4J HTTP Server REST API documentation covers HTTP endpoints for repository management, SPARQL query and update operations, transaction handling, data import/export (RDF/XML, Turtle, JSON-LD), and security configurations. It includes request/response examples in JSON and XML, HTTP status codes, and performance tuning guidance. Essential for integrating RDF4J triple stores into ingestion pipelines and providing an alternative to Apache Jena Fuseki. (Last reviewed 2023; authoritative as the official Eclipse Foundation documentation.)
+
+## License
+Eclipse Public License 2.0
