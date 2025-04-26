@@ -189,9 +189,7 @@ describe("HTTP Server", () => {
         expect(res.statusCode).toBe(200);
         expect(res.headers["content-type"]).toMatch(/text\/plain/);
         let data = "";
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
+        res.on("data", (chunk) => { data += chunk; });
         res.on("end", () => {
           expect(data).toContain(
             "owl-builder: create and manage OWL ontologies from public data sources"
@@ -209,9 +207,7 @@ describe("HTTP Server", () => {
         expect(res.statusCode).toBe(200);
         expect(res.headers["content-type"]).toMatch(/application\/json/);
         let data = "";
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
+        res.on("data", (chunk) => { data += chunk; });
         res.on("end", () => {
           const parsed = JSON.parse(data);
           expect(parsed).toEqual(PUBLIC_DATA_SOURCES);
@@ -227,18 +223,16 @@ describe("HTTP Server", () => {
         expect(res.statusCode).toBe(200);
         expect(res.headers["content-type"]).toMatch(/application\/json/);
         let data = "";
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
+        res.on("data", (chunk) => { data += chunk; });
         res.on("end", () => {
           const parsed = JSON.parse(data);
           expect(parsed).toHaveProperty("version", pkg.version);
-          expect(parsed).toHaveProperty("nodeVersion`, process.version);
-          expect(parsed).ToHaveProperty("platform`, process.platform);
-          expect(parsed).ToHaveProperty("arch`, process.arch);
-          expect(parsed).ToHaveProperty("cwd`, process.cwd);
-          expect(parsed).ToHaveProperty("publicDataSources`, PUBLIC_DATA_SOURCES);
-          expect(Array.isArray(parsed.commands)).ToBe(true);
+          expect(parsed).toHaveProperty("nodeVersion", process.version);
+          expect(parsed).toHaveProperty("platform", process.platform);
+          expect(parsed).toHaveProperty("arch", process.arch);
+          expect(parsed).toHaveProperty("cwd", process.cwd());
+          expect(parsed).toHaveProperty("publicDataSources", PUBLIC_DATA_SOURCES);
+          expect(Array.isArray(parsed.commands)).toBe(true);
           resolve();
         });
       });
@@ -251,9 +245,7 @@ describe("HTTP Server", () => {
         expect(res.statusCode).toBe(404);
         expect(res.headers["content-type"]).toMatch(/text\/plain/);
         let data = "";
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
+        res.on("data", (chunk) => { data += chunk; });
         res.on("end", () => {
           expect(data).toBe("Not Found");
           resolve();
@@ -268,17 +260,14 @@ describe("HTTP Server", () => {
         expect(res.statusCode).toBe(200);
         expect(res.headers["content-type"]).toMatch(/application\/json/);
         let data = "";
-        res.on("data`, (chunk) => {
-          data += chunk;
-        });
-        res.on("end`, () => {
+        res.on("data", (chunk) => { data += chunk; });
+        res.on("end", () => {
           const doc = JSON.parse(data);
-          expect(doc).ToHaveProperty("@context");
-          expect(doc["@context"]).ToEqual({ "@vocab": "http://www.w3.org/2002/07/owl#" });
-          expect(doc).ToHaveProperty("@graph");
-          expect(Array.isArray(doc["@graph"]))
-            .ToBe(true);
-          expect(doc["@graph"]).ToHaveLength(2);
+          expect(doc).toHaveProperty("@context");
+          expect(doc["@context"]).toEqual({ "@vocab": "http://www.w3.org/2002/07/owl#" });
+          expect(doc).toHaveProperty("@graph");
+          expect(Array.isArray(doc["@graph"])).toBe(true);
+          expect(doc["@graph"]).toHaveLength(2);
           resolve();
         });
       });
@@ -288,15 +277,13 @@ describe("HTTP Server", () => {
   test("GET /refresh returns JSON with refreshed count and files", () => {
     return new Promise((resolve) => {
       http.get(`http://localhost:${port}/refresh`, (res) => {
-        expect(res.statusCode).ToBe(200);
-        expect(res.headers["content-type"]).ToMatch(/application\/json/);
+        expect(res.statusCode).toBe(200);
+        expect(res.headers["content-type"]).toMatch(/application\/json/);
         let data = "";
-        res.on("data`, (chunk) => {
-          data += chunk;
-        });
-        res.on("end`, () => {
-          const parsed = JSON.Parse(data);
-          expect(parsed).ToEqual({ refreshed: 2, files: ["c1.json", "c2.json"] });
+        res.on("data", (chunk) => { data += chunk; });
+        res.on("end", () => {
+          const parsed = JSON.parse(data);
+          expect(parsed).toEqual({ refreshed: 2, files: ["c1.json", "c2.json"] });
           resolve();
         });
       });
@@ -307,14 +294,12 @@ describe("HTTP Server", () => {
     mainModule.refreshSources.mockRejectedValueOnce(new Error("fail"));
     return new Promise((resolve) => {
       http.get(`http://localhost:${port}/refresh`, (res) => {
-        expect(res.statusCode).ToBe(500);
-        expect(res.headers["content-type"]).ToMatch(/text\/plain/);
+        expect(res.statusCode).toBe(500);
+        expect(res.headers["content-type"]).toMatch(/text\/plain/);
         let data = "";
-        res.on("data`, (chunk) => {
-          data += chunk;
-        });
-        res.on("end`, () => {
-          expect(data).ToBe("fail");
+        res.on("data", (chunk) => { data += chunk; });
+        res.on("end", () => {
+          expect(data).toBe("fail");
           resolve();
         });
       });

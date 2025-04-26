@@ -1,3 +1,22 @@
 {
-  "foo": "bar"
+  "results": {
+    "bindings": [
+      {
+        "country": {
+          "value": "http://example.org/c1"
+        },
+        "capital": {
+          "value": "http://example.org/cap1"
+        }
+      },
+      {
+        "country": {
+          "value": "http://example.org/c2"
+        },
+        "capital": {
+          "value": "http://example.org/cap2"
+        }
+      }
+    ]
+  }
 }
