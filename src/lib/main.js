@@ -2,6 +2,8 @@
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
+import fs from "fs";
+import path from "path";
 import pkg from "../../package.json" assert { type: "json" };
 
 export const PUBLIC_DATA_SOURCES = [
@@ -48,15 +50,42 @@ export function main(args) {
       "  --build-intermediate  Generate intermediate ontology artifacts",
       "  --build-enhanced      Generate enhanced ontology artifacts",
       "  --refresh             Refresh source data",
-      "  --merge-persist       Merge and persist data to storage"
+      "  --merge-persist       Merge and persist data to storage",
+      "  --list-sources        List public (and custom) data sources"
     ].join("\n");
     console.log(helpText);
     return;
   }
 
-  // List public data sources
+  // List public data sources, merging with optional user config
   if (cliArgs.includes("--list-sources")) {
-    console.log(JSON.stringify(PUBLIC_DATA_SOURCES, null, 2));
+    const configPath = path.join(process.cwd(), "data-sources.json");
+    let customSources = [];
+    if (fs.existsSync(configPath)) {
+      try {
+        const raw = fs.readFileSync(configPath, "utf8");
+        const parsed = JSON.parse(raw);
+        if (
+          Array.isArray(parsed) &&
+          parsed.every(
+            (item) =>
+              item &&
+              typeof item.name === "string" &&
+              typeof item.url === "string"
+          )
+        ) {
+          customSources = parsed;
+        } else {
+          console.error(
+            `Invalid data-sources.json: Expected an array of { name: string, url: string }`
+          );
+        }
+      } catch (err) {
+        console.error(`Invalid data-sources.json: ${err.message}`);
+      }
+    }
+    const combined = PUBLIC_DATA_SOURCES.concat(customSources);
+    console.log(JSON.stringify(combined, null, 2));
     return;
   }
 
