@@ -10,4 +10,5 @@
   - **GET `/capital-cities`**: Queries DBpedia SPARQL for countries and capitals and returns a simple OWL-compatible JSON-LD document (`@context` + `@graph`).
   - Any other path responds with `404 Not Found`.
 - **Capital Cities (`--capital-cities`)**: Queries DBpedia SPARQL for countries and capitals and outputs a simple OWL-compatible JSON-LD document (`@context` + `@graph`).
+- **Programmatic API (`listSources(configPath?)`)**: Returns a Promise resolving to the list of public data sources merged with an optional custom `data-sources.json`. It accepts an optional `configPath` (defaulting to `data-sources.json` in the current working directory). On invalid or missing config, logs an error and returns only the default sources.
 - **Default Behavior**: Running the CLI without the `--list-sources` flag logs the provided arguments.

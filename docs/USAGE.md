@@ -155,3 +155,22 @@ Example response for capital cities:
   ]
 }
 ```
+
+## Programmatic API
+
+You can use the `listSources` function in your code to retrieve the configured data sources:
+
+```js
+import { listSources } from '@xn-intenton-z2a/repository0-crucible';
+
+(async () => {
+  const sources = await listSources();
+  console.log(sources);
+})();
+```
+
+Optionally, specify a custom config path:
+
+```js
+const sources = await listSources('/path/to/data-sources.json');
+```
