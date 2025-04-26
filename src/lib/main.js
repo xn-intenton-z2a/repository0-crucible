@@ -11,6 +11,41 @@ export const PUBLIC_DATA_SOURCES = [
   { name: "DBpedia SPARQL", url: "https://dbpedia.org/sparql" }
 ];
 
+/**
+ * Retrieve list of data sources, merging default and custom sources.
+ * @param {string} configPath - Path to custom data-sources.json file.
+ * @returns {Promise<Array<{ name: string, url: string }>>}
+ */
+export async function listSources(
+  configPath = path.join(process.cwd(), "data-sources.json")
+) {
+  let customSources = [];
+  if (fs.existsSync(configPath)) {
+    try {
+      const raw = fs.readFileSync(configPath, "utf8");
+      const parsed = JSON.parse(raw);
+      if (
+        Array.isArray(parsed) &&
+        parsed.every(
+          (item) =>
+            item &&
+            typeof item.name === "string" &&
+            typeof item.url === "string"
+        )
+      ) {
+        customSources = parsed;
+      } else {
+        console.error(
+          `Invalid data-sources.json: Expected an array of { name: string, url: string }`
+        );
+      }
+    } catch (err) {
+      console.error(`Invalid data-sources.json: ${err.message}`);
+    }
+  }
+  return PUBLIC_DATA_SOURCES.concat(customSources);
+}
+
 export async function main(args) {
   const cliArgs = args !== undefined ? args : process.argv.slice(2);
 
@@ -109,33 +144,12 @@ export async function main(args) {
         res.writeHead(200, { "Content-Type": "text/plain" });
         return res.end(helpText);
       } else if (req.method === "GET" && req.url === "/sources") {
-        const configPath = path.join(process.cwd(), "data-sources.json");
-        let customSources = [];
-        if (fs.existsSync(configPath)) {
-          try {
-            const raw = fs.readFileSync(configPath, "utf8");
-            const parsed = JSON.parse(raw);
-            if (
-              Array.isArray(parsed) &&
-              parsed.every(
-                (item) =>
-                  item && typeof item.name === "string" && typeof item.url === "string"
-              )
-            ) {
-              customSources = parsed;
-            } else {
-              console.error(
-                `Invalid data-sources.json: Expected an array of { name: string, url: string }`
-              );
-            }
-          } catch (err) {
-            console.error(`Invalid data-sources.json: ${err.message}`);
-          }
-        }
-        const combined = PUBLIC_DATA_SOURCES.concat(customSources);
-        const body = JSON.stringify(combined, null, 2);
-        res.writeHead(200, { "Content-Type": "application/json" });
-        return res.end(body);
+        listSources().then((combined) => {
+          const body = JSON.stringify(combined, null, 2);
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(body);
+        });
+        return;
       } else if (req.method === "GET" && req.url === "/diagnostics") {
         const diagnostics = {
           version: pkg.version,
@@ -201,30 +215,7 @@ export async function main(args) {
 
   // List public data sources, merging with optional user config
   if (cliArgs.includes("--list-sources")) {
-    const configPath = path.join(process.cwd(), "data-sources.json");
-    let customSources = [];
-    if (fs.existsSync(configPath)) {
-      try {
-        const raw = fs.readFileSync(configPath, "utf8");
-        const parsed = JSON.parse(raw);
-        if (
-          Array.isArray(parsed) &&
-          parsed.every(
-            (item) =>
-              item && typeof item.name === "string" && typeof item.url === "string"
-          )
-        ) {
-          customSources = parsed;
-        } else {
-          console.error(
-            `Invalid data-sources.json: Expected an array of { name: string, url: string }`
-          );
-        }
-      } catch (err) {
-        console.error(`Invalid data-sources.json: ${err.message}`);
-      }
-    }
-    const combined = PUBLIC_DATA_SOURCES.concat(customSources);
+    const combined = await listSources();
     console.log(JSON.stringify(combined, null, 2));
     return;
   }
