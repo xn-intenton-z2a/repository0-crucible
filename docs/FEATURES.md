@@ -9,6 +9,7 @@
   - **GET `/diagnostics`**: Returns diagnostic information (version, node version, platform, architecture, working directory, public data sources, and commands) as pretty-printed JSON.
   - **GET `/capital-cities`**: Queries DBpedia SPARQL for countries and capitals and returns a simple OWL-compatible JSON-LD document (`@context` + `@graph`).
   - Any other path responds with `404 Not Found`.
+- **Refresh (`--refresh`)**: Merges default and custom data sources, fetches JSON from each source, persists each to `data/<slugified-source-name>.json`, logs `written <filename>` for each successful write, and outputs a summary `Refreshed X sources into data/`.
 - **Capital Cities (`--capital-cities`)**: Queries DBpedia SPARQL for countries and capitals and outputs a simple OWL-compatible JSON-LD document (`@context` + `@graph`).
 - **Programmatic API (`listSources(configPath?)`)**: Returns a Promise resolving to the list of public data sources merged with an optional custom `data-sources.json`. It accepts an optional `configPath` (defaulting to `data-sources.json` in the current working directory). On invalid or missing config, logs an error and returns only the default sources.
-- **Default Behavior**: Running the CLI without the `--list-sources` flag logs the provided arguments.
+- **Default Behavior**: Running the CLI without the `--list-sources` or `--refresh` flag logs the provided arguments.

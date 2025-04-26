@@ -54,7 +54,9 @@ export async function main(args) {
       ?country a <http://dbpedia.org/ontology/Country> .
       ?country <http://dbpedia.org/ontology/capital> ?capital .
     } LIMIT 50`;
-    const url = `${endpoint}?query=${encodeURIComponent(sparqlQuery)}&format=json`;
+    const url = `${endpoint}?query=${encodeURIComponent(
+      sparqlQuery
+    )}&format=json`;
     try {
       const response = await fetch(url);
       const data = await response.json();
@@ -111,7 +113,7 @@ export async function main(args) {
       "  --serve               Start the local HTTP server",
       "  --build-intermediate  Generate intermediate ontology artifacts",
       "  --build-enhanced      Generate enhanced ontology artifacts",
-      "  --refresh             Refresh source data",
+      "  --refresh             Fetch and persist all data sources",
       "  --merge-persist       Merge and persist data to storage",
       "  --list-sources        List public (and custom) data sources",
       "  --capital-cities      Query DBpedia for capital cities and output JSON-LD"
@@ -134,7 +136,7 @@ export async function main(args) {
           "  --serve               Start the local HTTP server",
           "  --build-intermediate  Generate intermediate ontology artifacts",
           "  --build-enhanced      Generate enhanced ontology artifacts",
-          "  --refresh             Refresh source data",
+          "  --refresh             Fetch and persist all data sources",
           "  --merge-persist       Merge and persist data to storage",
           "  --list-sources        List public (and custom) data sources",
           "  --capital-cities      Query DBpedia for capital cities and output JSON-LD"
@@ -214,6 +216,34 @@ export async function main(args) {
   if (cliArgs.includes("--list-sources")) {
     const combined = listSources();
     console.log(JSON.stringify(combined, null, 2));
+    return;
+  }
+
+  // Refresh option
+  if (cliArgs.includes("--refresh")) {
+    const sources = listSources();
+    const dataDir = path.join(process.cwd(), "data");
+    if (!fs.existsSync(dataDir)) {
+      fs.mkdirSync(dataDir, { recursive: true });
+    }
+    let count = 0;
+    for (const source of sources) {
+      const slug = source.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/(^-+|-+$)/g, "");
+      const filePath = path.join(dataDir, `${slug}.json`);
+      try {
+        const response = await fetch(source.url);
+        const json = await response.json();
+        fs.writeFileSync(filePath, JSON.stringify(json, null, 2), "utf8");
+        console.log(`written ${slug}.json`);
+        count++;
+      } catch (err) {
+        console.error(`Error refreshing ${source.name}: ${err.message}`);
+      }
+    }
+    console.log(`Refreshed ${count} sources into data/`);
     return;
   }
 
