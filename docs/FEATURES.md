@@ -8,8 +8,10 @@
   - **GET `/sources`**: Returns the list of public (and custom) data sources as pretty-printed JSON.
   - **GET `/diagnostics`**: Returns diagnostic information (version, node version, platform, architecture, working directory, public data sources, and commands) as pretty-printed JSON.
   - **GET `/capital-cities`**: Queries DBpedia SPARQL for countries and capitals and returns a simple OWL-compatible JSON-LD document (`@context` + `@graph`).
+  - **GET `/refresh`**: Triggers fetching and persisting data from all configured public and custom sources, and returns a JSON payload `{ refreshed: <count>, files: [<filename>, ...] }`. On error, responds with status 500 and plain-text error message.
   - Any other path responds with `404 Not Found`.
 - **Refresh (`--refresh`)**: Merges default and custom data sources, fetches JSON from each source, persists each to `data/<slugified-source-name>.json`, logs `written <filename>` for each successful write, and outputs a summary `Refreshed X sources into data/`.
 - **Capital Cities (`--capital-cities`)**: Queries DBpedia SPARQL for countries and capitals and outputs a simple OWL-compatible JSON-LD document (`@context` + `@graph`).
 - **Programmatic API (`listSources(configPath?)`)**: Returns a Promise resolving to the list of public data sources merged with an optional custom `data-sources.json`. It accepts an optional `configPath` (defaulting to `data-sources.json` in the current working directory). On invalid or missing config, logs an error and returns only the default sources.
+- **Programmatic API (`refreshSources(configPath?)`)**: Async function to fetch and persist data from all configured sources into `data/`, returning an object `{ count: number, files: string[] }`. Errors from individual sources are logged and do not interrupt processing.
 - **Default Behavior**: Running the CLI without the `--list-sources` or `--refresh` flag logs the provided arguments.

@@ -44,6 +44,41 @@ export function listSources(
   return PUBLIC_DATA_SOURCES.concat(customSources);
 }
 
+/**
+ * Fetches and persists data from configured sources into data/ and returns summary.
+ * @param {string} [configPath]
+ * @returns {Promise<{count: number, files: string[]}>}
+ */
+export async function refreshSources(
+  configPath = path.join(process.cwd(), "data-sources.json")
+) {
+  const sources = await listSources(configPath);
+  const dataDir = path.join(process.cwd(), "data");
+  if (!fs.existsSync(dataDir)) {
+    fs.mkdirSync(dataDir, { recursive: true });
+  }
+  const files = [];
+  let count = 0;
+  for (const source of sources) {
+    const slug = source.name
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/(^-+|-+$)/g, "");
+    const fileName = `${slug}.json`;
+    const filePath = path.join(dataDir, fileName);
+    try {
+      const response = await fetch(source.url);
+      const json = await response.json();
+      fs.writeFileSync(filePath, JSON.stringify(json, null, 2), "utf8");
+      files.push(fileName);
+      count++;
+    } catch (err) {
+      console.error(`Error refreshing ${source.name}: ${err.message}`);
+    }
+  }
+  return { count, files };
+}
+
 export async function main(args) {
   const cliArgs = args !== undefined ? args : process.argv.slice(2);
 
@@ -201,6 +236,18 @@ export async function main(args) {
             res.end(`Error fetching capital cities: ${err.message}`);
           });
         return;
+      } else if (req.method === "GET" && req.url === "/refresh") {
+        refreshSources()
+          .then(({ count, files }) => {
+            const payload = { refreshed: count, files };
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(payload, null, 2));
+          })
+          .catch((err) => {
+            res.writeHead(500, { "Content-Type": "text/plain" });
+            res.end(err.message);
+          });
+        return;
       } else {
         res.writeHead(404, { "Content-Type": "text/plain" });
         return res.end("Not Found");
@@ -221,31 +268,11 @@ export async function main(args) {
 
   // Refresh option
   if (cliArgs.includes("--refresh")) {
-    // dynamically import to pick up mocked listSources in tests
-    const mod = await import(import.meta.url);
-    const sources = mod.listSources();
-    const dataDir = path.join(process.cwd(), "data");
-    if (!fs.existsSync(dataDir)) {
-      fs.mkdirSync(dataDir, { recursive: true });
+    const result = await refreshSources();
+    for (const file of result.files) {
+      console.log(`written ${file}`);
     }
-    let count = 0;
-    for (const source of sources) {
-      const slug = source.name
-        .toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-")
-        .replace(/(^-+|-+$)/g, "");
-      const filePath = path.join(dataDir, `${slug}.json`);
-      try {
-        const response = await fetch(source.url);
-        const json = await response.json();
-        fs.writeFileSync(filePath, JSON.stringify(json, null, 2), "utf8");
-        console.log(`written ${slug}.json`);
-        count++;
-      } catch (err) {
-        console.error(`Error refreshing ${source.name}: ${err.message}`);
-      }
-    }
-    console.log(`Refreshed ${count} sources into data/`);
+    console.log(`Refreshed ${result.count} sources into data/`);
     return;
   }
 

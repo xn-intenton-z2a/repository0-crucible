@@ -83,76 +83,30 @@ Use the `--diagnostics` flag to display environment and configuration diagnostic
 node src/lib/main.js --diagnostics
 ```
 
-Sample output:
-
-```json
-{
-  "version": "1.2.0-0",
-  "nodeVersion": "v20.0.0",
-  "platform": "linux",
-  "arch": "x64",
-  "cwd": "/path/to/your/project",
-  "publicDataSources": [
-    {
-      "name": "DBpedia SPARQL",
-      "url": "https://dbpedia.org/sparql"
-    }
-  ],
-  "commands": [
-    "--help",
-    "-h",
-    "--list-sources",
-    "--diagnostics",
-    "--serve",
-    "--build-intermediate",
-    "--build-enhanced",
-    "--refresh",
-    "--merge-persist",
-    "--capital-cities"
-  ]
-}
-```
-
 ## Serve
 
-Start a local HTTP server to expose endpoints for help, sources, diagnostics, and capital cities:
+Start a local HTTP server to expose endpoints for help, sources, diagnostics, capital cities, and refresh:
 
 ```bash
 node src/lib/main.js --serve
 ```
 
-Example output:
-
-```text
-Server running at http://localhost:3000/
-```
-
-You can then request:
+Example usage:
 
 ```bash
 curl http://localhost:3000/help
 curl http://localhost:3000/sources
 curl http://localhost:3000/diagnostics
 curl http://localhost:3000/capital-cities
+curl http://localhost:3000/refresh
 ```
 
-Example response for capital cities:
+Example response for refresh:
 
 ```json
 {
-  "@context": {
-    "@vocab": "http://www.w3.org/2002/07/owl#"
-  },
-  "@graph": [
-    {
-      "@id": "http://example.org/c1",
-      "capital": "http://example.org/cap1"
-    },
-    {
-      "@id": "http://example.org/c2",
-      "capital": "http://example.org/cap2"
-    }
-  ]
+  "refreshed": 2,
+  "files": ["dbpedia-sparql.json", "custom-api.json"]
 }
 ```
 
@@ -189,4 +143,17 @@ Optionally, specify a custom config path:
 
 ```js
 const sources = await listSources('/path/to/data-sources.json');
+```
+
+### Refresh Sources
+
+Use the `refreshSources` function to trigger fetching and persisting data from all configured sources:
+
+```js
+import { refreshSources } from '@xn-intenton-z2a/repository0-crucible';
+
+(async () => {
+  const result = await refreshSources();
+  console.log(`Refreshed ${result.count} sources: ${result.files.join(', ')}`);
+})();
 ```
