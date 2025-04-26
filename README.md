@@ -27,6 +27,7 @@ npm install @xn-intenton-z2a/repository0-crucible
 
 * **CLI Argument Logging**: Prints an array of provided arguments to the console.
 * **Programmatic API**: Exposes a `main(args: string[])` function for embedding the tool in other scripts.
+* **Capital Cities Ontology Generation**: Use `--capital-cities` to emit a JSON-LD OWL ontology of countries and their capitals.
 
 ## Usage
 
@@ -48,11 +49,10 @@ node src/lib/main.js hello world
 # => Run with: ["hello","world"]
 ```
 
-Call via npm script:
+Generate and view the capital cities ontology:
 
 ```bash
-npm run start -- foo bar
-# => Run with: ["foo","bar"]
+node src/lib/main.js --capital-cities
 ```
 
 Invoke programmatically in code:
@@ -67,11 +67,3 @@ main(['one', 'two']);  // Logs: Run with: ["one","two"]
 * Enhance CLI with real-world commands (e.g., `--help`, `--diagnostics`, `--serve`).
 * Implement core features as outlined in [MISSION.md](./MISSION.md).
 * Expand API and add tests for new functionality.
-
-## Contributing
-
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
-
-## License
-
-Released under the MIT License (see [LICENSE](./LICENSE)).
