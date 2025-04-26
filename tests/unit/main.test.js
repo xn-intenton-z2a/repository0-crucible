@@ -13,6 +13,30 @@ describe("Main Output", () => {
     process.argv = ["node", "src/lib/main.js"];
     main();
   });
+
+  test("should display help message with --help", () => {
+    process.argv = ["node", "src/lib/main.js", "--help"];
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    expect(() => main()).not.toThrow();
+    expect(logSpy).toHaveBeenCalled();
+    const output = logSpy.mock.calls[0][0];
+    expect(output).toContain("owl-builder: create and manage OWL ontologies from public data sources");
+    expect(output).toContain("Usage: node src/lib/main.js [options]");
+    expect(output).toContain("--help                Display this help message");
+    logSpy.mockRestore();
+  });
+
+  test("should display help message with -h", () => {
+    process.argv = ["node", "src/lib/main.js", "-h"];
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    expect(() => main()).not.toThrow();
+    expect(logSpy).toHaveBeenCalled();
+    const output = logSpy.mock.calls[0][0];
+    expect(output).toContain("owl-builder: create and manage OWL ontologies from public data sources");
+    expect(output).toContain("Usage: node src/lib/main.js [options]");
+    expect(output).toContain("--help                Display this help message");
+    logSpy.mockRestore();
+  });
 });
 
 describe("List Sources", () => {
