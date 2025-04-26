@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="http_agent" href="#http_agent"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>HTTP_AGENT</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Agent manages connection pooling for HTTP clients. Constructor options: keepAlive:boolean(default false), keepAliveMsecs:number(default1000), maxSockets:number(default∞), maxTotalSockets:number(default∞), maxFreeSockets:number(default256), scheduling:'fifo'|'lifo'(default'lifo'), timeout:number(ms). Methods: createConnection(options,callback)-&gt;Duplex, keepSocketAlive(socket)-&gt;boolean, reuseSocket(socket,request)-&gt;void, destroy()-&gt;void. Properties: freeSockets, sockets, requests, maxSockets, maxFreeSockets, maxTotalSockets, scheduling.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Constructor Options</p>
+</li>
+<li class="md-github">
+<p class="md-github">Connection Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Socket Lifecycle Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Pool State Properties</p>
+</li>
+<li class="md-github">
+<p class="md-github">Constructor Options
+keepAlive:boolean      Keep sockets when idle    Default false
+keepAliveMsecs:number  Delay for TCP keep-alive   Default 1000
+maxSockets:number      Max concurrent per host    Default Infinity
+maxTotalSockets:number Max concurrent total       Default Infinity
+maxFreeSockets:number  Max pooled per host        Default 256
+scheduling:string      'fifo'|'lifo' scheduling  Default 'lifo'
+timeout:number         Socket timeout ms          Default none</p>
+</li>
+<li class="md-github">
+<p class="md-github">Connection Methods
+createConnection(options:object, callback?:(err,stream)-&gt;void):stream.Duplex
+Proxies to net.createConnection</p>
+</li>
+<li class="md-github">
+<p class="md-github">Socket Lifecycle Methods
+keepSocketAlive(socket:stream.Duplex): boolean
+Enables TCP Keep-Alive and unrefs socket
+reuseSocket(socket:stream.Duplex, request:http.ClientRequest): void
+Refs socket before reusing</p>
+</li>
+</ol>
+<p class="md-github">destroy(): void
+Destroys all managed sockets</p>
+<ol start="4" class="md-github">
+<li class="md-github">Pool State Properties
+freeSockets: { [name:string]: stream.Duplex[] }
+sockets:     { [name:string]: stream.Duplex[] }
+requests:    { [name:string]: http.ClientRequest[] }
+maxSockets:       number
+maxFreeSockets:   number
+maxTotalSockets:  number
+scheduling:       'fifo'|'lifo'</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Connection pooling logic: reuse per host:port:localAddress[:family]. When queue empty and keepAlive true, sockets remain in freeSockets. When pool &gt; maxFreeSockets, extra sockets are closed. Idle sockets unref to prevent event loop retention. KeepAlive option enables HTTP Connection: keep-alive header by default. Use agent.destroy() when agent no longer required to free OS resources. For single-use requests, pass { agent: false } to http.get or http.request to bypass pooling.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Signatures:
+new Agent(options?:{
+keepAlive?: boolean;
+keepAliveMsecs?: number;
+maxSockets?: number;
+maxTotalSockets?: number;
+maxFreeSockets?: number;
+scheduling?: 'fifo'|'lifo';
+timeout?: number;
+}): Agent</p>
+<p class="md-github">agent.createConnection(options: object, callback?: (err: Error, socket: Duplex) =&gt; void): Duplex
+agent.keepSocketAlive(socket: Duplex): boolean
+agent.reuseSocket(socket: Duplex, request: ClientRequest): void
+agent.destroy(): void</p>
+<p class="md-github">Code Examples:
+// Persistent agent
+import { Agent, request } from 'node:http';
+const agent = new Agent({ keepAlive: true, keepAliveMsecs: 2000, maxSockets: 10 });
+request({ hostname: 'example.com', port: 80, path: '/', agent }, res =&gt; { /* consume */ });</p>
+<p class="md-github">// One-off agent
+import http from 'node:http';
+http.get({ hostname:'localhost', port:80, agent:false }, res =&gt; { /* no pooling */ });</p>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Always destroy agents with keepAlive when done: agent.destroy()</li>
+<li class="md-github">Monitor agent.requests[name].length to throttle burst traffic</li>
+<li class="md-github">Use scheduling 'lifo' on low QPS to avoid stale sockets</li>
+<li class="md-github">Use scheduling 'fifo' on high QPS to maximize throughput</li>
+</ul>
+<p class="md-github">Troubleshooting:
+$ lsof -iTCP -sTCP:ESTABLISHED | grep node
+Inspect excessive sockets. If freeSockets growing beyond expected, ensure agent.destroy called.</p>
+<p class="md-github">In case of server-closed idle socket ECONNRESET:
+request.on('error', err =&gt; {
+if (req.reusedSocket &amp;&amp; err.code==='ECONNRESET') retryRequest();
+});</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">Agent({keepAlive?:boolean=false,keepAliveMsecs?:number=1000,maxSockets?:number=∞,maxTotalSockets?:number=∞,maxFreeSockets?:number=256,scheduling?:'fifo'|'lifo'= 'lifo',timeout?:number}) methods: createConnection(options,callback)-&gt;Duplex; keepSocketAlive(socket)-&gt;boolean; reuseSocket(socket,req)-&gt;void; destroy()-&gt;void properties: freeSockets, sockets, requests, maxSockets, maxFreeSockets, maxTotalSockets, scheduling.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Constructor Options</p>
+</li>
+<li class="md-github">
+<p class="md-github">Connection Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Socket Lifecycle Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Pool State Properties</p>
+</li>
+<li class="md-github">
+<p class="md-github">Constructor Options
+keepAlive:boolean      Keep sockets when idle    Default false
+keepAliveMsecs:number  Delay for TCP keep-alive   Default 1000
+maxSockets:number      Max concurrent per host    Default Infinity
+maxTotalSockets:number Max concurrent total       Default Infinity
+maxFreeSockets:number  Max pooled per host        Default 256
+scheduling:string      'fifo'|'lifo' scheduling  Default 'lifo'
+timeout:number         Socket timeout ms          Default none</p>
+</li>
+<li class="md-github">
+<p class="md-github">Connection Methods
+createConnection(options:object, callback?:(err,stream)-&gt;void):stream.Duplex
+Proxies to net.createConnection</p>
+</li>
+<li class="md-github">
+<p class="md-github">Socket Lifecycle Methods
+keepSocketAlive(socket:stream.Duplex): boolean
+Enables TCP Keep-Alive and unrefs socket
+reuseSocket(socket:stream.Duplex, request:http.ClientRequest): void
+Refs socket before reusing</p>
+</li>
+</ol>
+<p class="md-github">destroy(): void
+Destroys all managed sockets</p>
+<ol start="4" class="md-github">
+<li class="md-github">Pool State Properties
+freeSockets: { [name:string]: stream.Duplex[] }
+sockets:     { [name:string]: stream.Duplex[] }
+requests:    { [name:string]: http.ClientRequest[] }
+maxSockets:       number
+maxFreeSockets:   number
+maxTotalSockets:  number
+scheduling:       'fifo'|'lifo'</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Node.js Core API Reference
+https://nodejs.org/api/http.html</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-http_agent" href="#digest-of-http_agent"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of HTTP_AGENT</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="httpagent" href="#httpagent"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>http.Agent</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="stability-2---stable" href="#stability-2---stable"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Stability: 2 - Stable</h2>
+<p class="md-github">An Agent manages connection persistence and reuse for HTTP clients.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="new-agentoptions" href="#new-agentoptions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>new Agent([options])</h3>
+<p class="md-github"><strong class="md-github">Signature</strong></p>
+<pre class="md-github"><code class="md-github language-js">new Agent(options?: {
+  keepAlive?: boolean;
+  keepAliveMsecs?: number;
+  maxSockets?: number;
+  maxTotalSockets?: number;
+  maxFreeSockets?: number;
+  scheduling?: 'fifo' | 'lifo';
+  timeout?: number;
+});
+</code></pre>
+<p class="md-github"><strong class="md-github">Options</strong></p>
+<ul class="md-github">
+<li class="md-github">keepAlive <boolean> : default false</li>
+<li class="md-github">keepAliveMsecs <number> : default 1000</li>
+<li class="md-github">maxSockets <number> : default Infinity</li>
+<li class="md-github">maxTotalSockets <number> : default Infinity</li>
+<li class="md-github">maxFreeSockets <number> : default 256</li>
+<li class="md-github">scheduling <string> : 'fifo' | 'lifo'; default 'lifo'</li>
+<li class="md-github">timeout <number> : socket timeout in milliseconds</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="agentcreateconnectionoptions-callback" href="#agentcreateconnectionoptions-callback"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>agent.createConnection(options[, callback])</h3>
+<p class="md-github"><strong class="md-github">Signature</strong></p>
+<pre class="md-github"><code class="md-github language-js">agent.createConnection(options: object, callback?: (err: Error, socket: stream.Duplex) =&gt; void): stream.Duplex
+</code></pre>
+<p class="md-github">Produces a &lt;net.Socket&gt; (stream.Duplex). By default proxies to net.createConnection().</p>
+<h3 class="md-github"><a class="md-github__anchor" name="agentkeepsocketalivesocket" href="#agentkeepsocketalivesocket"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>agent.keepSocketAlive(socket)</h3>
+<p class="md-github"><strong class="md-github">Signature</strong></p>
+<pre class="md-github"><code class="md-github language-js">agent.keepSocketAlive(socket: stream.Duplex): boolean
+</code></pre>
+<p class="md-github">Default behavior:</p>
+<pre class="md-github"><code class="md-github language-js">socket.setKeepAlive(true, this.keepAliveMsecs);
+socket.unref();
+return true;
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="agentreusesocketsocket-request" href="#agentreusesocketsocket-request"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>agent.reuseSocket(socket, request)</h3>
+<p class="md-github"><strong class="md-github">Signature</strong></p>
+<pre class="md-github"><code class="md-github language-js">agent.reuseSocket(socket: stream.Duplex, request: http.ClientRequest): void
+</code></pre>
+<p class="md-github">Default behavior: <code class="md-github">socket.ref();</code></p>
+<h3 class="md-github"><a class="md-github__anchor" name="agentdestroy" href="#agentdestroy"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>agent.destroy()</h3>
+<p class="md-github"><strong class="md-github">Signature</strong></p>
+<pre class="md-github"><code class="md-github language-js">agent.destroy(): void
+</code></pre>
+<p class="md-github">Destroys all sockets currently managed by the agent.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="properties" href="#properties"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Properties</h3>
+<ul class="md-github">
+<li class="md-github">freeSockets: Record&lt;string, stream.Duplex[]&gt;</li>
+<li class="md-github">sockets: Record&lt;string, stream.Duplex[]&gt;</li>
+<li class="md-github">requests: Record&lt;string, http.ClientRequest[]&gt;</li>
+<li class="md-github">maxSockets: number</li>
+<li class="md-github">maxFreeSockets: number</li>
+<li class="md-github">maxTotalSockets: number</li>
+<li class="md-github">scheduling: string</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Node.js Core API Reference</li>
+<li class="md-github">URL: https://nodejs.org/api/http.html</li>
+<li class="md-github">License: CC BY-SA 3.0</li>
+<li class="md-github">Crawl Date: 2025-04-26T15:47:52.093Z</li>
+<li class="md-github">Data Size: 3539064 bytes</li>
+<li class="md-github">Links Found: 1285</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-26</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-26T16:21:40.141Z</p>
+  </footer>
+</body>
+</html>
