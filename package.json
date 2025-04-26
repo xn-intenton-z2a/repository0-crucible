@@ -22,7 +22,8 @@
     "build-intermediate": "node src/lib/main.js --build-intermediate",
     "build-enhanced": "node src/lib/main.js --build-enhanced",
     "refresh": "node src/lib/main.js --refresh",
-    "merge-persist": "node src/lib/main.js --merge-persist"
+    "merge-persist": "node src/lib/main.js --merge-persist",
+    "capital-cities": "node src/lib/main.js --capital-cities"
   },
   "keywords": [],
   "author": "",

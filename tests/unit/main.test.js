@@ -157,9 +157,18 @@ describe("Custom Data Sources Config", () => {
 describe("HTTP Server", () => {
   let server;
   let port;
+  const httpMockData = {
+    results: {
+      bindings: [
+        { country: { value: "http://example.org/c1" }, capital: { value: "http://example.org/cap1" } },
+        { country: { value: "http://example.org/c2" }, capital: { value: "http://example.org/cap2" } }
+      ]
+    }
+  };
 
   beforeAll(async () => {
-    server = main(["--serve"]);
+    vi.spyOn(global, "fetch").mockResolvedValue({ json: async () => httpMockData });
+    server = await main(["--serve"]);
     await once(server, "listening");
     const address = server.address();
     port = typeof address === "object" ? address.port : address;
@@ -168,6 +177,7 @@ describe("HTTP Server", () => {
   afterAll(async () => {
     server.close();
     await once(server, "close");
+    global.fetch.mockRestore();
   });
 
   test("GET /help returns help text", () => {
@@ -192,69 +202,109 @@ describe("HTTP Server", () => {
 
   test("GET /sources returns default sources", () => {
     return new Promise((resolve) => {
-      http.get(
-        `http://localhost:${port}/sources`,
-        (res) => {
-          expect(res.statusCode).toBe(200);
-          expect(res.headers["content-type"]).toMatch(/application\/json/);
-          let data = "";
-          res.on("data", (chunk) => {
-            data += chunk;
-          });
-          res.on("end", () => {
-            const parsed = JSON.parse(data);
-            expect(parsed).toEqual(PUBLIC_DATA_SOURCES);
-            resolve();
-          });
-        }
-      );
+      http.get(`http://localhost:${port}/sources`, (res) => {
+        expect(res.statusCode).toBe(200);
+        expect(res.headers["content-type"]).toMatch(/application\/json/);
+        let data = "";
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
+        res.on("end", () => {
+          const parsed = JSON.parse(data);
+          expect(parsed).toEqual(PUBLIC_DATA_SOURCES);
+          resolve();
+        });
+      });
     });
   });
 
   test("GET /diagnostics returns diagnostics JSON", () => {
     return new Promise((resolve) => {
-      http.get(
-        `http://localhost:${port}/diagnostics`,
-        (res) => {
-          expect(res.statusCode).toBe(200);
-          expect(res.headers["content-type"]).toMatch(/application\/json/);
-          let data = "";
-          res.on("data", (chunk) => {
-            data += chunk;
-          });
-          res.on("end", () => {
-            const parsed = JSON.parse(data);
-            expect(parsed).toHaveProperty("version", pkg.version);
-            expect(parsed).toHaveProperty("nodeVersion", process.version);
-            expect(parsed).toHaveProperty("platform", process.platform);
-            expect(parsed).toHaveProperty("arch", process.arch);
-            expect(parsed).toHaveProperty("cwd", process.cwd());
-            expect(parsed).toHaveProperty("publicDataSources", PUBLIC_DATA_SOURCES);
-            expect(Array.isArray(parsed.commands)).toBe(true);
-            resolve();
-          });
-        }
-      );
+      http.get(`http://localhost:${port}/diagnostics`, (res) => {
+        expect(res.statusCode).toBe(200);
+        expect(res.headers["content-type"]).toMatch(/application\/json/);
+        let data = "";
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
+        res.on("end", () => {
+          const parsed = JSON.parse(data);
+          expect(parsed).toHaveProperty("version", pkg.version);
+          expect(parsed).toHaveProperty("nodeVersion", process.version);
+          expect(parsed).toHaveProperty("platform", process.platform);
+          expect(parsed).toHaveProperty("arch", process.arch);
+          expect(parsed).toHaveProperty("cwd", process.cwd());
+          expect(parsed).toHaveProperty("publicDataSources", PUBLIC_DATA_SOURCES);
+          expect(Array.isArray(parsed.commands)).toBe(true);
+          resolve();
+        });
+      });
     });
   });
 
   test("GET /invalid returns 404 Not Found", () => {
     return new Promise((resolve) => {
-      http.get(
-        `http://localhost:${port}/invalid`,
-        (res) => {
-          expect(res.statusCode).toBe(404);
-          expect(res.headers["content-type"]).toMatch(/text\/plain/);
-          let data = "";
-          res.on("data", (chunk) => {
-            data += chunk;
-          });
-          res.on("end", () => {
-            expect(data).toBe("Not Found");
-            resolve();
-          });
-        }
-      );
+      http.get(`http://localhost:${port}/invalid`, (res) => {
+        expect(res.statusCode).toBe(404);
+        expect(res.headers["content-type"]).toMatch(/text\/plain/);
+        let data = "";
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
+        res.on("end", () => {
+          expect(data).toBe("Not Found");
+          resolve();
+        });
+      });
     });
+  });
+
+  test("GET /capital-cities returns JSON-LD document", () => {
+    return new Promise((resolve) => {
+      http.get(`http://localhost:${port}/capital-cities`, (res) => {
+        expect(res.statusCode).toBe(200);
+        expect(res.headers["content-type"]).toMatch(/application\/json/);
+        let data = "";
+        res.on("data", (chunk) => {
+          data += chunk;
+        });
+        res.on("end", () => {
+          const doc = JSON.parse(data);
+          expect(doc).toHaveProperty("@context");
+          expect(doc["@context"]).toEqual({ "@vocab": "http://www.w3.org/2002/07/owl#" });
+          expect(doc).toHaveProperty("@graph");
+          expect(Array.isArray(doc["@graph"])).toBe(true);
+          expect(doc["@graph"]).toHaveLength(2);
+          resolve();
+        });
+      });
+    });
+  });
+});
+
+// CLI unit test for capital-cities
+describe("Capital Cities CLI", () => {
+  test("should output JSON-LD document of capital cities", async () => {
+    const mockData = {
+      results: {
+        bindings: [
+          { country: { value: "http://example.org/c1" }, capital: { value: "http://example.org/cap1" } },
+          { country: { value: "http://example.org/c2" }, capital: { value: "http://example.org/cap2" } }
+        ]
+      }
+    };
+    vi.spyOn(global, "fetch").mockResolvedValue({ json: async () => mockData });
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    await main(["--capital-cities"]);
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    const output = logSpy.mock.calls[0][0];
+    const doc = JSON.parse(output);
+    expect(doc).toHaveProperty("@context");
+    expect(doc["@context"]).toEqual({ "@vocab": "http://www.w3.org/2002/07/owl#" });
+    expect(doc).toHaveProperty("@graph");
+    expect(Array.isArray(doc["@graph"])).toBe(true);
+    expect(doc["@graph"]).toHaveLength(2);
+    expect(doc["@graph"][0]).toEqual({ "@id": "http://example.org/c1", capital: "http://example.org/cap1" });
+    logSpy.mockRestore();
   });
 });
