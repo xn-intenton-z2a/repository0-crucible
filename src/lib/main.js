@@ -4,6 +4,7 @@
 import { fileURLToPath } from "url";
 import fs from "fs";
 import path from "path";
+import http from "http";
 import pkg from "../../package.json" assert { type: "json" };
 
 export const PUBLIC_DATA_SOURCES = [
@@ -57,6 +58,72 @@ export function main(args) {
     return;
   }
 
+  // Serve option
+  if (cliArgs.includes("--serve")) {
+    const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 8080;
+    const server = http.createServer((req, res) => {
+      if (req.method === "GET" && req.url === "/sources") {
+        const configPath = path.join(process.cwd(), "data-sources.json");
+        let customSources = [];
+        if (fs.existsSync(configPath)) {
+          try {
+            const raw = fs.readFileSync(configPath, "utf8");
+            const parsed = JSON.parse(raw);
+            if (
+              Array.isArray(parsed) &&
+              parsed.every(
+                (item) =>
+                  item && typeof item.name === "string" && typeof item.url === "string"
+              )
+            ) {
+              customSources = parsed;
+            } else {
+              console.error(
+                `Invalid data-sources.json: Expected an array of { name: string, url: string }`
+              );
+            }
+          } catch (err) {
+            console.error(`Invalid data-sources.json: ${err.message}`);
+          }
+        }
+        const combined = PUBLIC_DATA_SOURCES.concat(customSources);
+        const body = JSON.stringify(combined, null, 2);
+        res.writeHead(200, { "Content-Type": "application/json" });
+        return res.end(body);
+      } else if (req.method === "GET" && req.url === "/diagnostics") {
+        const diagnostics = {
+          version: pkg.version,
+          nodeVersion: process.version,
+          platform: process.platform,
+          arch: process.arch,
+          cwd: process.cwd(),
+          publicDataSources: PUBLIC_DATA_SOURCES,
+          commands: [
+            "--help",
+            "-h",
+            "--list-sources",
+            "--diagnostics",
+            "--serve",
+            "--build-intermediate",
+            "--build-enhanced",
+            "--refresh",
+            "--merge-persist"
+          ]
+        };
+        const body = JSON.stringify(diagnostics, null, 2);
+        res.writeHead(200, { "Content-Type": "application/json" });
+        return res.end(body);
+      } else {
+        res.writeHead(404, { "Content-Type": "text/plain" });
+        return res.end("Not Found");
+      }
+    });
+    server.listen(port, () => {
+      console.log(`Server running at http://localhost:${port}/`);
+    });
+    return server;
+  }
+
   // List public data sources, merging with optional user config
   if (cliArgs.includes("--list-sources")) {
     const configPath = path.join(process.cwd(), "data-sources.json");
@@ -69,9 +136,7 @@ export function main(args) {
           Array.isArray(parsed) &&
           parsed.every(
             (item) =>
-              item &&
-              typeof item.name === "string" &&
-              typeof item.url === "string"
+              item && typeof item.name === "string" && typeof item.url === "string"
           )
         ) {
           customSources = parsed;

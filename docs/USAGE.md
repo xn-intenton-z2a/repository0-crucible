@@ -110,3 +110,24 @@ Sample output:
   ]
 }
 ```
+
+## Serve
+
+Start a local HTTP server to expose endpoints for sources and diagnostics:
+
+```bash
+node src/lib/main.js --serve
+```
+
+Example output:
+
+```text
+Server running at http://localhost:8080/
+```
+
+You can then request:
+
+```bash
+curl http://localhost:8080/sources
+curl http://localhost:8080/diagnostics
+```

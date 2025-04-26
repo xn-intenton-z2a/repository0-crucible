@@ -1,8 +1,10 @@
-import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import { describe, test, expect, vi, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main, PUBLIC_DATA_SOURCES } from "@src/lib/main.js";
 import pkg from "../../package.json" assert { type: "json" };
 import fs from "fs";
+import http from "http";
+import { once } from "events";
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -141,12 +143,98 @@ describe("Custom Data Sources Config", () => {
     expect(parsed).toEqual(PUBLIC_DATA_SOURCES);
   });
 
-  test("default behavior remains when no config file", () => {
+  test("default behavior remains on no config file", () => {
     vi.spyOn(fs, "existsSync").mockReturnValue(false);
     main(["--list-sources"]);
     expect(logSpy).toHaveBeenCalledWith(
       JSON.stringify(PUBLIC_DATA_SOURCES, null, 2)
     );
     expect(errorSpy).not.toHaveBeenCalled();
+  });
+});
+
+// Tests for HTTP Server
+describe("HTTP Server", () => {
+  let server;
+  let port;
+
+  beforeAll(async () => {
+    server = main(["--serve"]);
+    await once(server, "listening");
+    const address = server.address();
+    port = typeof address === "object" ? address.port : address;
+  });
+
+  afterAll(async () => {
+    server.close();
+    await once(server, "close");
+  });
+
+  test("GET /sources returns default sources", () => {
+    return new Promise((resolve) => {
+      http.get(
+        `http://localhost:${port}/sources`,
+        (res) => {
+          expect(res.statusCode).toBe(200);
+          expect(res.headers["content-type"]).toMatch(/application\/json/);
+          let data = "";
+          res.on("data", (chunk) => {
+            data += chunk;
+          });
+          res.on("end", () => {
+            const parsed = JSON.parse(data);
+            expect(parsed).toEqual(PUBLIC_DATA_SOURCES);
+            resolve();
+          });
+        }
+      );
+    });
+  });
+
+  test("GET /diagnostics returns diagnostics JSON", () => {
+    return new Promise((resolve) => {
+      http.get(
+        `http://localhost:${port}/diagnostics`,
+        (res) => {
+          expect(res.statusCode).toBe(200);
+          expect(res.headers["content-type"]).toMatch(/application\/json/);
+          let data = "";
+          res.on("data", (chunk) => {
+            data += chunk;
+          });
+          res.on("end", () => {
+            const parsed = JSON.parse(data);
+            expect(parsed).toHaveProperty("version", pkg.version);
+            expect(parsed).toHaveProperty("nodeVersion", process.version);
+            expect(parsed).toHaveProperty("platform", process.platform);
+            expect(parsed).toHaveProperty("arch", process.arch);
+            expect(parsed).toHaveProperty("cwd", process.cwd());
+            expect(parsed).toHaveProperty("publicDataSources", PUBLIC_DATA_SOURCES);
+            expect(Array.isArray(parsed.commands)).toBe(true);
+            resolve();
+          });
+        }
+      );
+    });
+  });
+
+  test("GET /invalid returns 404 Not Found", () => {
+    return new Promise((resolve) => {
+      http.get(
+        `http://localhost:${port}/invalid`,
+        (res) => {
+          expect(res.statusCode).toBe(404);
+          expect(res.headers["content-type"]).toMatch(/text\/plain/);
+          let data = "";
+          res.on("data", (chunk) => {
+            data += chunk;
+          });
+          res.on("end", () => {
+            expect(data).toBe("Not Found");
+            resolve();
+          });
+        }
+      );
+    });
   });
 });
