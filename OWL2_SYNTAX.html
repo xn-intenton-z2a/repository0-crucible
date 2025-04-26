@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="owl2_syntax" href="#owl2_syntax"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OWL2_SYNTAX</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Defines greedy regex-based lexical analysis algorithm with delimiter-aware token emission; BNF notation for functional-style syntax; terminal symbols: nonNegativeInteger, quotedString, languageTag, nodeID; IRI full and abbreviated forms with prefix expansion; structural equivalence rules for unordered associations and duplicate elimination; grammar delimiters and parse error conditions.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<p class="md-github">1 Lexical Analysis
+2 BNF Grammar Notation
+3 Data Type Tokens
+4 IRI Syntax and Abbreviation
+5 Structural Equivalence Rules
+6 Duplicate Handling
+7 Delimiters and Token Boundaries
+8 Parsing Edge Cases</p>
+<p class="md-github">1 Lexical Analysis
+algorithm GreedyTokenize(input):
+for each terminalSymbol T define regex R_T
+p ← 0
+while p &lt; input.length:
+match ← longest R_T at p
+if no match reject
+if T ≠ whitespace and T ≠ comment emit token T
+p ← p + match.length
+if match.text.lastChar ∉ delimiters and input[p] ∉ delimiters:
+wsMatch ← match whitespace or comment at p
+if no wsMatch reject
+p ← p + wsMatch.length
+return tokenStream</p>
+<p class="md-github">2 BNF Grammar Notation
+nonterminal    : boldface name
+terminal       : 'literal' or italic English description
+zeroOrMore     : { symbol }
+zeroOrOne      : [ symbol ]
+alternative    : symbol | symbol</p>
+<p class="md-github">3 Data Type Tokens
+nonNegativeInteger ::= digit+
+quotedString       ::= '&quot;' ( (anyChar except '&quot;' or '') | '&quot;' | '\')* '&quot;'
+languageTag        ::= '@' langtag (per BCP47)
+nodeID             ::= BLANK_NODE_LABEL (SPARQL)</p>
+<p class="md-github">4 IRI Syntax and Abbreviation
+fullIRI    ::= '&lt;' IRIstring '&gt;'
+IRIstring  ::= RFC3987
+prefixDecl ::= PN ':' IRIstring
+abbreviatedIRI ::= PN ':' localName
+expand(pn:rc): return prefixDecl[pn] + rc</p>
+<p class="md-github">5 Structural Equivalence Rules
+unorderedAssociations: ignore element order
+orderedAssociations: compare element by index
+classInstances: same UML class and each association structurally equivalent</p>
+<p class="md-github">6 Duplicate Handling
+when parsing lists (e.g., ClassExpressionList), remove duplicates by structural equivalence</p>
+<p class="md-github">7 Delimiters and Token Boundaries
+delimiters = { whitespace, '#', '&quot;', '&lt;', '&gt;', ':', '@', '^', '(', ')', '[', ']', '{', '}', '.', ',' }
+ensure tokens end or begin with delimiter to separate</p>
+<p class="md-github">8 Parsing Edge Cases
+'SubClassOf:ABC' → token: IRI(SubClassOf:ABC)
+'pref: ABC' → error: 'ABC' not a valid token after prefix
+&quot;10abc&quot; → error: nonNegativeInteger '10' followed by 'a' without delimiter
+&quot;10&quot;^^xsd:integer and &quot;10&quot; ^^ xsd:integer → both parsed as [STRING, '^^', IRI(xsd:integer)]
+'&quot;abc&quot;@en' and '&quot;abc&quot; @en' → [STRING, LANGTAG(@en)]</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Lexical Regex Definitions:
+nonNegativeInteger: /^[0-9]+$/
+quotedString: /^&quot;(\&quot;|\\|[^&quot;])<em class="md-github">&quot;$/
+languageTag: /^@[A-Za-z0-9]+(-[A-Za-z0-9]+)</em>$/
+nodeID: /^_:[A-Za-z][A-Za-z0-9]*$/
+identifier delimiters: whitespace or any of # &quot; &lt; &gt; : @ ^ ( ) [ ] { } . ,</p>
+<p class="md-github">Prefix Declaration Syntax:
+PrefixDecl ::= 'Prefix' PN ':' IRIReference
+sample: Prefix :a <a href="http://example.org/" class="md-github">http://example.org/</a></p>
+<p class="md-github">IRI Expansion:
+function expandIRI(pn:rc, prefixMap):
+if pn in prefixMap return prefixMap[pn] + rc else error</p>
+<p class="md-github">Duplicate Elimination Pattern:
+function removeDuplicates(list):
+output ← []
+for item in list:
+if no existing item' in output with structuralEq(item, item'):
+output.push(item)
+return output</p>
+<p class="md-github">Flattening Unions:
+function flattenUnion(expressions):
+set out
+for e in expressions:
+if e is UnionList add each sub to out else add e to out
+return out as list</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">BNF Grammar (excerpt):
+ClassExpressionList ::= ClassExpression { ClassExpression }
+Ontology ::= OntologyID [ Declaration* ] [ Import* ] Axiom*
+Declaration ::= 'Declaration' '(' Entity ')'
+Entity ::= Class | ObjectProperty | DataProperty | NamedIndividual | AnnotationProperty</p>
+<p class="md-github">Terminal regex table:
+Token                Regex
+NONNEG_INT           /^[0-9]+$/
+QUOTED_STRING        /^&quot;(\&quot;|\\|[^&quot;])<em class="md-github">&quot;$/
+LANGTAG              /^@[A-Za-z0-9]+(-[A-Za-z0-9]+)</em>$/
+BLANK_NODE_LABEL     /^<em class="md-github">:[A-Za-z][A-Za-z0-9]<em class="md-github">$/
+IRI_REF              /^&lt;[^&gt;]</em>&gt;$/
+PN_PREFIX            /^[A-Za-z][A-Za-z0-9</em>-]*:$/
+PN_LOCAL             /^[A-Za-z0-9_-]+$/</p>
+<p class="md-github">Lexical Analyzer Implementation (pseudo-code):
+see normalisedExtract section 'Lexical Analysis'</p>
+<p class="md-github">Functional-style Syntax Parsing Pattern:</p>
+<ol class="md-github">
+<li class="md-github">Tokenize input using Lexical Analyzer</li>
+<li class="md-github">Build AST via recursive descent following BNF rules:
+parseClassExpression:
+if nextToken == 'ObjectIntersectionOf':
+consume 'ObjectIntersectionOf'
+consume '('
+list ← []
+do list.push(parseClassExpression()) while nextToken != ')'
+consume ')'
+return IntersectionNode(list)
+... similarly for other constructs</li>
+</ol>
+<p class="md-github">Prefix Map Configuration Options:
+prefixMap: dictionary of { string → string }
+default: {}
+effect: enables abbreviatedIRI resolution</p>
+<p class="md-github">Best Practice: always declare prefixes with trailing slash or hash to avoid URI merging.</p>
+<p class="md-github">Troubleshooting Procedures:
+Command: parseOwl2 -i ontology.owl2 -o ast.json
+Expected: exit code 0, ast.json contains 'Ontology' node
+Error: 'Unexpected token at line X': check for missing delimiters or unescaped quotes
+Fix: ensure whitespace around '^^' or '@', escape '&quot;' within strings</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">Lexical: greedy regex match per terminal, delimiter-aware token boundaries; emit only non-whitespace/comment. Terminals: nonNegativeInteger:[0-9]+ quotedString:&quot;(&quot;|\|[^&quot;])<em class="md-github">&quot;&quot; languageTag:@[A-Za-z0-9]+(-[A-Za-z0-9]+)</em> nodeID:<em class="md-github">:[A-Za-z][A-Za-z0-9]* IRI_REF:&lt;[^&gt;]*&gt; PN_PREFIX:[A-Za-z][A-Za-z0-9</em>-]*: PN_LOCAL:[A-Za-z0-9_-]+. BNF: nonterminal bold, terminal in quotes, repetition { }, optional [ ], alternatives |. IRI: fullIRI=<IRIstring>; abbreviated=pn:localName; expand via prefixMap. StructuralEquiv: unordered associations ignore order; ordered compare index; flatten duplicate elements. FlattenUnion: merge nested unions. DuplicateElim: remove structurally equal items. PrefixDecl syntax: Prefix PN: <IRI>. AST: recursive descent per BNF. Errors: missing delimiter, unescaped '&quot;', invalid token adjacency. Troubleshoot: check tokenization, ensure whitespace or distinct delimiters, validate prefix declarations.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<p class="md-github">1 Lexical Analysis
+2 BNF Grammar Notation
+3 Data Type Tokens
+4 IRI Syntax and Abbreviation
+5 Structural Equivalence Rules
+6 Duplicate Handling
+7 Delimiters and Token Boundaries
+8 Parsing Edge Cases</p>
+<p class="md-github">1 Lexical Analysis
+algorithm GreedyTokenize(input):
+for each terminalSymbol T define regex R_T
+p  0
+while p &lt; input.length:
+match  longest R_T at p
+if no match reject
+if T  whitespace and T  comment emit token T
+p  p + match.length
+if match.text.lastChar  delimiters and input[p]  delimiters:
+wsMatch  match whitespace or comment at p
+if no wsMatch reject
+p  p + wsMatch.length
+return tokenStream</p>
+<p class="md-github">2 BNF Grammar Notation
+nonterminal    : boldface name
+terminal       : 'literal' or italic English description
+zeroOrMore     : { symbol }
+zeroOrOne      : [ symbol ]
+alternative    : symbol | symbol</p>
+<p class="md-github">3 Data Type Tokens
+nonNegativeInteger ::= digit+
+quotedString       ::= ''' ( (anyChar except ''' or ''') | '''' | '''')* '''
+languageTag        ::= '@' langtag (per BCP47)
+nodeID             ::= BLANK_NODE_LABEL (SPARQL)</p>
+<p class="md-github">4 IRI Syntax and Abbreviation
+fullIRI    ::= '&lt;' IRIstring '&gt;'
+IRIstring  ::= RFC3987
+prefixDecl ::= PN ':' IRIstring
+abbreviatedIRI ::= PN ':' localName
+expand(pn:rc): return prefixDecl[pn] + rc</p>
+<p class="md-github">5 Structural Equivalence Rules
+unorderedAssociations: ignore element order
+orderedAssociations: compare element by index
+classInstances: same UML class and each association structurally equivalent</p>
+<p class="md-github">6 Duplicate Handling
+when parsing lists (e.g., ClassExpressionList), remove duplicates by structural equivalence</p>
+<p class="md-github">7 Delimiters and Token Boundaries
+delimiters = { whitespace, '#', ''', '&lt;', '&gt;', ':', '@', '^', '(', ')', '[', ']', '{', '}', '.', ',' }
+ensure tokens end or begin with delimiter to separate</p>
+<p class="md-github">8 Parsing Edge Cases
+'SubClassOf:ABC'  token: IRI(SubClassOf:ABC)
+'pref: ABC'  error: 'ABC' not a valid token after prefix
+'10abc'  error: nonNegativeInteger '10' followed by 'a' without delimiter
+'10'^^xsd:integer and '10' ^^ xsd:integer  both parsed as [STRING, '^^', IRI(xsd:integer)]
+''abc'@en' and ''abc' @en'  [STRING, LANGTAG(@en)]</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">W3C OWL 2 Specifications
+https://www.w3.org/TR/owl2-syntax/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-owl2_syntax" href="#digest-of-owl2_syntax"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of OWL2_SYNTAX</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="owl-2-syntax-technical-reference-retrieved-2024-06-11" href="#owl-2-syntax-technical-reference-retrieved-2024-06-11"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OWL 2 Syntax Technical Reference (Retrieved 2024-06-11)</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="lexical-analysis-algorithm" href="#lexical-analysis-algorithm"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Lexical Analysis Algorithm</h2>
+<ol class="md-github">
+<li class="md-github">Create a regular expression for each terminal symbol (including whitespace and comments).</li>
+<li class="md-github">Initialize pointer p to the start of input.</li>
+<li class="md-github">Repeatedly match all regexes greedily at p. If no match, reject input.</li>
+<li class="md-github">If match is not whitespace or comment, emit corresponding token.</li>
+<li class="md-github">Advance p past the match. If the matched token does not end with a delimiter and next char is not a delimiter, match whitespace or comment; if none, reject.</li>
+<li class="md-github">Repeat until end of input.</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="functional-style-syntax-grammar-bnf" href="#functional-style-syntax-grammar-bnf"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Functional-Style Syntax Grammar (BNF)</h2>
+<p class="md-github">Example fragment:</p>
+<pre class="md-github"><code class="md-github">ClassExpression     ::=    ObjectIntersectionOf '(' ClassExpressionList ')'
+                         | ObjectUnionOf '(' ClassExpressionList ')'
+ClassExpressionList ::=    ClassExpression { ClassExpression }
+</code></pre>
+<p class="md-github">Delimited by whitespace, comments (#... to end of line), and XML-style delimiters.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="data-type-definitions" href="#data-type-definitions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data Type Definitions</h2>
+<ul class="md-github">
+<li class="md-github">nonNegativeInteger : digits 0-9, at least one</li>
+<li class="md-github">quotedString       : '&quot;' (any chars except unpaired '&quot;' or '') '&quot;', supports &quot; and \</li>
+<li class="md-github">languageTag        : '@' + BCP47 langtag</li>
+<li class="md-github">nodeID             : SPARQL BLANK_NODE_LABEL</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="iri-representation" href="#iri-representation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>IRI Representation</h2>
+<ul class="md-github">
+<li class="md-github">fullIRI    : '&lt;' RFC3987 IRI '&gt;'</li>
+<li class="md-github">prefixName : PN ':' rc    (rc = remainder of IRI string)</li>
+<li class="md-github">Abbreviation: pn:rc expands to full IRI PI + rc</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="structural-equivalence-and-normalization" href="#structural-equivalence-and-normalization"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Structural Equivalence and Normalization</h2>
+<ul class="md-github">
+<li class="md-github">Unordered associations: element order irrelevant</li>
+<li class="md-github">Duplicate elements in lists: flatten and remove duplicates</li>
+<li class="md-github">Example flattening: ObjectUnionOf(a:Person a:Animal a:Animal) → ObjectUnionOf(a:Person a:Animal)</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="duplicate-elimination" href="#duplicate-elimination"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Duplicate Elimination</h2>
+<p class="md-github">Exchange syntaxes may contain duplicates; discard duplicates on conversion to structural model.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="delimiters-and-token-boundaries" href="#delimiters-and-token-boundaries"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Delimiters and Token Boundaries</h2>
+<p class="md-github">Delimiters: '#', '&quot;', '&lt;', '&gt;', whitespace, ':', '@', '^', '(', ')', '[', ']', '{', '}', '.', ','</p>
+<h2 class="md-github"><a class="md-github__anchor" name="parsing-edge-cases" href="#parsing-edge-cases"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parsing Edge Cases</h2>
+<ul class="md-github">
+<li class="md-github">'SubClassOf:ABC' → single prefixed IRI</li>
+<li class="md-github">'pref: ABC' → error, no delimiter after pref:</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: W3C OWL 2 Specifications</li>
+<li class="md-github">URL: https://www.w3.org/TR/owl2-syntax/</li>
+<li class="md-github">License: W3C Document License 1.0</li>
+<li class="md-github">Crawl Date: 2025-04-26T02:16:58.170Z</li>
+<li class="md-github">Data Size: 29611499 bytes</li>
+<li class="md-github">Links Found: 23738</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-26</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-26T02:42:48.958Z</p>
+  </footer>
+</body>
+</html>
