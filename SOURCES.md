@@ -22,26 +22,10 @@ Covers JSON-LD framing, compaction, expansion, and context processing to map JSO
 ## License
 W3C Document License (CC-BY 4.0)
 
-# SPARQL 1.1 Query Language
+# SPARQL 1.1 Overview
 
-## https://www.w3.org/TR/sparql11-query/
-Specifies SPARQL 1.1 query forms (SELECT, ASK, CONSTRUCT, DESCRIBE), aggregation, subqueries, property paths, federation, and update operations. Defines grammar, evaluation semantics, optimization considerations, and result formats. Indispensable for executing complex graph queries and mutating RDF datasets or OWL ontologies. (Last updated 21 March 2013; authoritative as a W3C Recommendation.)
-
-## License
-W3C Document License (CC-BY 4.0)
-
-# RDFJS Data Model Specification
-
-## https://rdf.js.org/data-model-spec/
-Defines JavaScript interfaces for core RDF entities—Term, NamedNode, Literal, BlankNode, DefaultGraph, Quad, Dataset, Graph—specifying methods and properties required for RDFJS-compliant libraries. Ensures interoperability across popular JS RDF tooling (e.g., rdflib.js, Comunica). Fundamental for in-memory graph manipulations, serialization, and streaming in node-based pipelines. (Last updated 2017; authoritative as the de facto community specification.)
-
-## License
-CC0 1.0 Universal
-
-# SPARQL 1.1 Protocol for RDF
-
-## https://www.w3.org/TR/rdf-sparql-protocol/
-Details the SPARQL Protocol for RDF over HTTP, including request methods (GET/POST), query and update operation endpoints, result format negotiation, error codes, and HTTP headers. Provides examples of parameterized requests, content-type negotiation, and best practices for client-server interactions. Essential for implementing robust fetch-based SPARQL clients and middleware. (Last updated 21 March 2013; authoritative as a W3C Recommendation.)
+## https://www.w3.org/TR/sparql11-overview/
+Provides a comprehensive introduction to SPARQL 1.1, covering the query language, update operations, federation, and the HTTP protocol for querying RDF data. Includes specifications for SELECT, ASK, CONSTRUCT, DESCRIBE forms, aggregation, subqueries, parameterized queries, HTTP GET/POST usage, content negotiation, error handling, and best practices. Essential for implementing both SPARQL clients and servers, and for constructing robust queries within OWL builder pipelines. (Last updated 21 March 2013; authoritative as a W3C Recommendation.)
 
 ## License
 W3C Document License (CC-BY 4.0)
@@ -49,7 +33,7 @@ W3C Document License (CC-BY 4.0)
 # Apache Jena Fuseki Documentation
 
 ## https://jena.apache.org/documentation/fuseki2/
-Official guide to configuring and using Apache Jena Fuseki—a SPARQL server with RESTful endpoints over TDB2. Covers server setup, dataset management, SPARQL query and update endpoints, transaction handling, CORS, security, metrics, and performance tuning. Provides concrete examples (curl, HTTP requests) for integrating Fuseki into data ingestion and OWL-building pipelines. (Last reviewed with Fuseki 4.7.0; authoritative as the official project documentation.)
+Official guide to configuring and using Apache Jena Fuseki—a SPARQL server with RESTful endpoints over TDB2. Covers server setup, dataset management, SPARQL query and update endpoints, transaction handling, CORS, security, metrics, and performance tuning. Provides concrete curl examples and HTTP request patterns for integrating Fuseki into data ingestion and OWL-building pipelines. (Last reviewed with Fuseki 4.7.0; authoritative as the official project documentation.)
 
 ## License
 Apache License 2.0
@@ -58,6 +42,22 @@ Apache License 2.0
 
 ## https://wiki.dbpedia.org/online-access
 Outlines access to DBpedia’s public SPARQL endpoint (`https://dbpedia.org/sparql`), including query URL syntax, HTTP parameters (`query`, `default-graph-uri`, `timeout`, `format`), supported result formats (JSON, XML, CSV), CORS policies, rate limits, and efficient querying practices. Provides troubleshooting tips and examples directly supporting the `--capital-cities` feature. (Last reviewed 2023; authoritative as official DBpedia community documentation.)
+
+## License
+Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
+
+# W3C Shapes Constraint Language (SHACL)
+
+## https://www.w3.org/TR/shacl/
+Describes the SHACL language for validating RDF graphs against a set of conditions (shapes). Defines shapes graphs, node shapes, property shapes, constraints, targets, and validation results. Includes SHACL Core and SHACL-SPARQL extension for custom constraints. Vital for validating and ensuring the integrity of generated OWL ontologies before publishing or downstream processing. (Last updated 20 July 2017; authoritative as a W3C Recommendation.)
+
+## License
+W3C Document License (CC-BY 4.0)
+
+# Wikidata Query Service Documentation
+
+## https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Wikidata_Query_Help
+Provides detailed guidance for using the Wikidata SPARQL endpoint, including service URL (`https://query.wikidata.org/sparql`), HTTP parameters, supported query features (property paths, time-enabled queries, qualifiers), result formats, rate limits, and tips for efficient querying of large datasets. Demonstrates real-world query examples and best practices for federated queries. Serves as a competitor data source and pattern reference for `--capital-cities` and future enrichments. (Last updated 2024; maintained as official community documentation under wiki license.)
 
 ## License
 Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
