@@ -1,6 +1,7 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main, PUBLIC_DATA_SOURCES } from "@src/lib/main.js";
+import pkg from "../../package.json" assert { type: "json" };
 
 describe("Main Module Import", () => {
   test("should be non-null", () => {
@@ -55,5 +56,26 @@ describe("List Sources", () => {
     expect(logSpy).toHaveBeenCalledTimes(1);
     const expected = JSON.stringify(PUBLIC_DATA_SOURCES, null, 2);
     expect(logSpy).toHaveBeenCalledWith(expected);
+  });
+});
+
+describe("Diagnostics Flag", () => {
+  test("should output diagnostics JSON", () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    main(["--diagnostics"]);
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    const output = logSpy.mock.calls[0][0];
+    const parsed = JSON.parse(output);
+    expect(parsed).toHaveProperty("version", pkg.version);
+    expect(parsed).toHaveProperty("nodeVersion", process.version);
+    expect(parsed).toHaveProperty("platform", process.platform);
+    expect(parsed).toHaveProperty("arch", process.arch);
+    expect(parsed).toHaveProperty("cwd", process.cwd());
+    expect(parsed).toHaveProperty("publicDataSources", PUBLIC_DATA_SOURCES);
+    expect(parsed).toHaveProperty("commands");
+    expect(Array.isArray(parsed.commands)).toBe(true);
+    expect(parsed.commands).toContain("--help");
+    expect(parsed.commands).toContain("--diagnostics");
+    logSpy.mockRestore();
   });
 });
