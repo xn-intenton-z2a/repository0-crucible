@@ -23,7 +23,7 @@
   </header>
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="repository0-crucible" href="#repository0-crucible"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>repository0-crucible</h1>
-<p class="md-github"><code class="md-github">repository0-crucible</code> is a demo repository that showcases the GitHub workflows imported from intentïon <a href="https://github.com/xn-intenton-z2a/agentic-lib" class="md-github">agentic‑lib</a>. Its primary purpose is to demonstrate these automated CI/CD workflows.</p>
+<p class="md-github"><code class="md-github">repository0-crucible</code> is a demo repository that showcases the GitHub workflows imported from intentïon <a href="nhttps://github.com/xn-intenton-z2a/agentic-lib" class="md-github">agentic-lib</a>. Its primary purpose is to demonstrate these automated CI/CD workflows.</p>
 <p class="md-github">To create a self-evolving agentic coding system of your own based on this one see the <a href="./TEMPLATE-README.md" class="md-github">TEMPLATE-README.md</a> for more details.</p>
 <p class="md-github">This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in <a href="./seeds" class="md-github">./seeds</a>.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="repository-template" href="#repository-template"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Repository Template</h2>
@@ -36,7 +36,7 @@
 <p class="md-github">A Running Experiment: An example implementation that demonstrates one way to use the template.</p>
 </li>
 <li class="md-github">
-<p class="md-github">Example GitHub Workflows from <a href="https://github.com/xn-intenton-z2a/agentic-lib" class="md-github">agentic‑lib</a> which hand off to reusable workflows.</p>
+<p class="md-github">Example GitHub Workflows from <a href="https://github.com/xn-intenton-z2a/agentic-lib" class="md-github">agentic-lib</a> which hand off to reusable workflows.</p>
 </li>
 <li class="md-github">
 <p class="md-github">See <a href="./TEMPLATE-README.md" class="md-github">TEMPLATE-README.md</a> for more details.</p>
@@ -47,10 +47,48 @@
 <pre class="md-github"><code class="md-github language-bash">npm install repository0-crucible
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
-<p class="md-github">TODO: Add features here.</p>
+<ul class="md-github">
+<li class="md-github"><strong class="md-github">List Sources (<code class="md-github">--list-sources</code>)</strong>: Outputs the list of configured public data sources in JSON format. If a <code class="md-github">data-sources.json</code> file is present with a valid array of <code class="md-github">{ name, url }</code>, it will be merged with the default sources. Invalid or missing configs will fall back to defaults with a warning for invalid configs.</li>
+<li class="md-github"><strong class="md-github">Help (<code class="md-github">--help</code>, <code class="md-github">-h</code>)</strong>: Display the help message with usage instructions.</li>
+<li class="md-github"><strong class="md-github">Diagnostics (<code class="md-github">--diagnostics</code>)</strong>: Outputs diagnostic information (version, node version, platform, architecture, working directory, public data sources, and commands) as pretty-printed JSON.</li>
+<li class="md-github"><strong class="md-github">Default Behavior</strong>: Running the CLI without any flags logs the provided arguments.</li>
+</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="usage" href="#usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
 <p class="md-github">To run the CLI tool and see help instructions:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="listing-available-data-sources" href="#listing-available-data-sources"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Listing Available Data Sources</h3>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --list-sources
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="diagnostics" href="#diagnostics"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Diagnostics</h3>
+<p class="md-github">Use the <code class="md-github">--diagnostics</code> flag to display environment and configuration diagnostics:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --diagnostics
+</code></pre>
+<p class="md-github">Sample output:</p>
+<pre class="md-github"><code class="md-github language-json">{
+  &quot;version&quot;: &quot;1.2.0-0&quot;,
+  &quot;nodeVersion&quot;: &quot;v20.0.0&quot;,
+  &quot;platform&quot;: &quot;linux&quot;,
+  &quot;arch&quot;: &quot;x64&quot;,
+  &quot;cwd&quot;: &quot;/path/to/your/project&quot;,
+  &quot;publicDataSources&quot;: [
+    {
+      &quot;name&quot;: &quot;DBpedia SPARQL&quot;,
+      &quot;url&quot;: &quot;https://dbpedia.org/sparql&quot;
+    }
+  ],
+  &quot;commands&quot;: [
+    &quot;--help&quot;,
+    &quot;-h&quot;,
+    &quot;--list-sources&quot;,
+    &quot;--diagnostics&quot;,
+    &quot;--serve&quot;,
+    &quot;--build-intermediate&quot;,
+    &quot;--build-enhanced&quot;,
+    &quot;--refresh&quot;,
+    &quot;--merge-persist&quot;
+  ]
+}
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="example-commands" href="#example-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example Commands</h3>
 <ul class="md-github">
@@ -58,16 +96,10 @@
 </code></pre>
 </li>
 </ul>
-<h2 class="md-github"><a class="md-github__anchor" name="incremental-changes-plan" href="#incremental-changes-plan"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Incremental Changes Plan</h2>
-<p class="md-github">TODO: Add forthcoming changes here.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
-<p class="md-github">We welcome contributions! Please review our <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines on how to contribute effectively.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
-<p class="md-github">Released under the MIT License (see <a href="./LICENSE" class="md-github">LICENSE</a>).</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-26T19:19:57.913Z</p>
+    <p>Generated on 2025-04-26T20:21:28.016Z</p>
   </footer>
 </body>
 </html>
