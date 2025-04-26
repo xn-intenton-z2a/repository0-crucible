@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="rdflib_stores" href="#rdflib_stores"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RDFLIB_STORES</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Supported store backends: in-memory (Memory, SimpleMemory), persistent (BerkeleyDB via bsddb3), remote SPARQL (SPARQLStore read-only, SPARQLUpdateStore read/write) with plugin names and instantiation patterns.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Memory Stores
+2 Persistent On-Disk Stores
+3 Remote SPARQL Endpoints</p>
+<p class="md-github">1 Memory Stores
+Classes: rdflib.plugins.stores.memory.Memory, rdflib.plugins.stores.memory.SimpleMemory
+Usage: Graph(store='Memory', identifier=None)</p>
+<p class="md-github">2 Persistent On-Disk Stores
+Class: rdflib.plugins.stores.berkeleydb.BerkeleyDB
+Methods:
+<strong class="md-github">init</strong>(store='BerkeleyDB', identifier=None)
+open(path: str, create: bool=False) -&gt; None
+commit() -&gt; None
+rollback() -&gt; None
+close() -&gt; None
+Example:
+g = Graph(store='BerkeleyDB')
+g.open('/db/path', create=True)
+g.add((s, p, o))
+g.commit()</p>
+<p class="md-github">3 Remote SPARQL Endpoints
+Classes:
+rdflib.plugins.stores.sparqlstore.SPARQLStore(queryEndpoint: str)
+rdflib.plugins.stores.sparqlstore.SPARQLUpdateStore(queryEndpoint: str, updateEndpoint: str)
+Methods:
+<strong class="md-github">init</strong>(queryEndpoint: str, updateEndpoint: Optional[str])
+triples((s, p, o)) -&gt; generator of triples
+query(sparqlQuery: str) -&gt; Result
+update(sparqlUpdate: str) -&gt; None
+Example (read-only):
+store = SPARQLStore('http://dbpedia.org/sparql')
+g = ConjunctiveGraph(store=store)
+for s, p, o in g.triples((None, RDF.type, FOAF.Person)):
+print(s)
+Example (read/write):
+store = SPARQLUpdateStore('http://example.org/query','http://example.org/update')
+g = ConjunctiveGraph(store=store)
+g.update(&quot;INSERT DATA { <a href="http://ex" class="md-github">http://ex</a> <a href="http://p" class="md-github">http://p</a> <a href="http://o" class="md-github">http://o</a> }&quot;)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Graph constructor parameters:
+store: plugin name (string) or Store instance
+identifier: URIRef or None
+namespace_manager: NamespaceManager or default
+Persistent store details:
+BerkeleyDB: requires Python bsddb3, database path to open, create flag defaults to False
+commit flushes buffer, rollback discards uncommitted triples
+Remote store details:
+SPARQLStore: only queryEndpoint, default headers and timeout 60s
+SPARQLUpdateStore: queryEndpoint and updateEndpoint required
+Both support HTTP methods GET for queries, POST for updates</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Class rdflib.Graph
+Signature: <strong class="md-github">init</strong>(self, store: Union[str, Store]='default', identifier: Optional[Union[URIRef,str]]=None, namespace_manager: Optional[NamespaceManager]=None)
+Parameters:
+store: plugin name or Store instance; 'Memory' default
+identifier: graph URI
+namespace_manager: manages prefix-URI mappings
+Methods:
+open(self, path: str, create: bool=False) -&gt; None
+commit(self) -&gt; None
+rollback(self) -&gt; None
+close(self) -&gt; None
+add(self, triple: Tuple[Node, Node, Node]) -&gt; None
+remove(self, triple: Tuple[Node, Node, Node]) -&gt; None
+triples(self, pattern: Tuple[Optional[Node],Optional[Node],Optional[Node]]) -&gt; Iterator[Tuple[Node,Node,Node]]
+query(self, sparql: str, initNs: Optional[Dict[str,Namespace]]=None, initBindings: Optional[Dict[str,Node]]=None, timeout: Optional[int]=None) -&gt; Result
+update(self, sparqlUpdate: str, initNs: Optional[Dict[str,Namespace]]=None, initBindings: Optional[Dict[str,Node]]=None, timeout: Optional[int]=None) -&gt; None</p>
+<p class="md-github">Class rdflib.ConjunctiveGraph (inherits Graph)
+Same signature; supports multiple named graphs via identifier parameter</p>
+<p class="md-github">SPARQLStore
+<strong class="md-github">init</strong>(self, endpoint: str, context_aware: bool=False, returnFormat: str='json')
+query(self, sparql: str) -&gt; Result
+triples(self, triple_pattern) -&gt; generator</p>
+<p class="md-github">SPARQLUpdateStore
+<strong class="md-github">init</strong>(self, queryEndpoint: str, updateEndpoint: str, returnFormat: str='json')
+query(self, sparql: str) -&gt; Result
+update(self, sparql: str) -&gt; None</p>
+<p class="md-github">Concrete Code Examples:
+from rdflib import Graph, ConjunctiveGraph, URIRef, Namespace
+from rdflib.plugins.stores.sparqlstore import SPARQLStore, SPARQLUpdateStore</p>
+<h1 class="md-github"><a class="md-github__anchor" name="in-memory-graph" href="#in-memory-graph"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>In-memory graph</h1>
+<p class="md-github">g_mem = Graph()
+g_mem.add((URIRef('http://ex/s'), URIRef('http://ex/p'), URIRef('http://ex/o')))</p>
+<h1 class="md-github"><a class="md-github__anchor" name="berkeleydb-persistent" href="#berkeleydb-persistent"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BerkeleyDB persistent</h1>
+<p class="md-github">g_db = Graph(store='BerkeleyDB')
+g_db.open('/tmp/rdfdb', create=True)
+g_db.add((s,p,o))
+g_db.commit()</p>
+<h1 class="md-github"><a class="md-github__anchor" name="remote-read-only" href="#remote-read-only"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Remote read-only</h1>
+<p class="md-github">store_ro = SPARQLStore('http://dbpedia.org/sparql')
+g_ro = ConjunctiveGraph(store=store_ro)
+results = g_ro.query('SELECT ?s WHERE { ?s a <a href="http://xmlns.com/foaf/0.1/Person" class="md-github">http://xmlns.com/foaf/0.1/Person</a> }')</p>
+<h1 class="md-github"><a class="md-github__anchor" name="remote-readwrite" href="#remote-readwrite"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Remote read/write</h1>
+<p class="md-github">store_rw = SPARQLUpdateStore('http://ex/query','http://ex/update')
+g_rw = ConjunctiveGraph(store=store_rw)
+g_rw.update('INSERT DATA { <a href="http://ex/s" class="md-github">http://ex/s</a> <a href="http://ex/p" class="md-github">http://ex/p</a> <a href="http://ex/o" class="md-github">http://ex/o</a> }')</p>
+<p class="md-github">Troubleshooting:
+Error: NoSuchPluginException: store
+Install plugin package or register custom store via register('store','module.Class')
+HTTP timeouts
+Set endpoint timeout: graph.query(..., timeout=120)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">MemoryStores: plugin=Memory, class=rdflib.plugins.stores.memory.Memory; instantiate Graph(store='Memory')
+SimpleMemory: plugin=SimpleMemory
+BerkeleyDB: plugin=BerkeleyDB, class=rdflib.plugins.stores.berkeleydb.BerkeleyDB; open(path:str,create:bool), commit(), rollback(), close()
+SPARQLStore: rdflib.plugins.stores.sparqlstore.SPARQLStore(endpoint:str,context_aware:bool=False,returnFormat:'json'); methods query(str)-&gt;Result, triples(pattern)-&gt;generator
+SPARQLUpdateStore: rdflib.plugins.stores.sparqlstore.SPARQLUpdateStore(queryEndpoint:str,updateEndpoint:str,returnFormat:'json'); methods query(str)-&gt;Result, update(str)-&gt;None
+Graph &amp; ConjunctiveGraph signature: <strong class="md-github">init</strong>(store:str|Store='default',identifier:URIRef|str=None,namespace_manager:NamespaceManager=None)
+Common methods: add(triple), remove(triple), triples(pattern), query(str,initNs:Dict,initBindings:Dict,timeout:int)-&gt;Result, update(str)-&gt;None
+Errors: NoSuchPluginException if plugin missing; register via plugin.register('store',module.Class)
+Endpoints: HTTP GET for SELECT, POST for UPDATE; default timeout=60s; override via query(...,timeout=N)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Memory Stores
+2 Persistent On-Disk Stores
+3 Remote SPARQL Endpoints</p>
+<p class="md-github">1 Memory Stores
+Classes: rdflib.plugins.stores.memory.Memory, rdflib.plugins.stores.memory.SimpleMemory
+Usage: Graph(store='Memory', identifier=None)</p>
+<p class="md-github">2 Persistent On-Disk Stores
+Class: rdflib.plugins.stores.berkeleydb.BerkeleyDB
+Methods:
+<strong class="md-github">init</strong>(store='BerkeleyDB', identifier=None)
+open(path: str, create: bool=False) -&gt; None
+commit() -&gt; None
+rollback() -&gt; None
+close() -&gt; None
+Example:
+g = Graph(store='BerkeleyDB')
+g.open('/db/path', create=True)
+g.add((s, p, o))
+g.commit()</p>
+<p class="md-github">3 Remote SPARQL Endpoints
+Classes:
+rdflib.plugins.stores.sparqlstore.SPARQLStore(queryEndpoint: str)
+rdflib.plugins.stores.sparqlstore.SPARQLUpdateStore(queryEndpoint: str, updateEndpoint: str)
+Methods:
+<strong class="md-github">init</strong>(queryEndpoint: str, updateEndpoint: Optional[str])
+triples((s, p, o)) -&gt; generator of triples
+query(sparqlQuery: str) -&gt; Result
+update(sparqlUpdate: str) -&gt; None
+Example (read-only):
+store = SPARQLStore('http://dbpedia.org/sparql')
+g = ConjunctiveGraph(store=store)
+for s, p, o in g.triples((None, RDF.type, FOAF.Person)):
+print(s)
+Example (read/write):
+store = SPARQLUpdateStore('http://example.org/query','http://example.org/update')
+g = ConjunctiveGraph(store=store)
+g.update('INSERT DATA { <a href="http://ex" class="md-github">http://ex</a> <a href="http://p" class="md-github">http://p</a> <a href="http://o" class="md-github">http://o</a> }')</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Python RDFLib
+https://rdflib.readthedocs.io/en/stable/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-rdflib_stores" href="#digest-of-rdflib_stores"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of RDFLIB_STORES</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="store-implementations" href="#store-implementations"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Store Implementations</h1>
+<p class="md-github">Retrieved: 2024-06-05
+Data Size: 102887319 bytes</p>
+<h2 class="md-github"><a class="md-github__anchor" name="memory-stores" href="#memory-stores"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Memory Stores</h2>
+<ul class="md-github">
+<li class="md-github">rdflib.plugins.stores.memory.Memory</li>
+<li class="md-github">rdflib.plugins.stores.memory.SimpleMemory</li>
+</ul>
+<p class="md-github">Instantiate an in-memory graph:
+source: from rdflib import Graph<br>
+Graph(store='Memory', identifier=None)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="persistent-on-disk-stores" href="#persistent-on-disk-stores"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Persistent On-Disk Stores</h2>
+<ul class="md-github">
+<li class="md-github">rdflib.plugins.stores.berkeleydb.BerkeleyDB</li>
+</ul>
+<p class="md-github">Open or create a BerkeleyDB store:
+source: from rdflib import Graph<br>
+g = Graph(store='BerkeleyDB', identifier=None)<br>
+g.open('/path/to/db', create=True)
+# commit writes buffered triples to disk
+g.commit()</p>
+<h2 class="md-github"><a class="md-github__anchor" name="remote-sparql-endpoints" href="#remote-sparql-endpoints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Remote SPARQL Endpoints</h2>
+<ul class="md-github">
+<li class="md-github">rdflib.plugins.stores.sparqlstore.SPARQLStore (read-only)</li>
+<li class="md-github">rdflib.plugins.stores.sparqlstore.SPARQLUpdateStore (read/write)</li>
+</ul>
+<p class="md-github">Connect to a remote SPARQL endpoint:
+source: from rdflib.plugins.stores.sparqlstore import SPARQLStore<br>
+from rdflib import ConjunctiveGraph<br>
+store = SPARQLStore('http://example.org/sparql')<br>
+g = ConjunctiveGraph(store=store)</p>
+<p class="md-github">Connect to a SPARQL endpoint with update support:
+source: from rdflib.plugins.stores.sparqlstore import SPARQLUpdateStore<br>
+from rdflib import ConjunctiveGraph<br>
+store = SPARQLUpdateStore(queryEndpoint='http://example.org/query', updateEndpoint='http://example.org/update')<br>
+g = ConjunctiveGraph(store=store)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Python RDFLib</li>
+<li class="md-github">URL: https://rdflib.readthedocs.io/en/stable/</li>
+<li class="md-github">License: BSD License</li>
+<li class="md-github">Crawl Date: 2025-04-26T03:06:18.287Z</li>
+<li class="md-github">Data Size: 102887319 bytes</li>
+<li class="md-github">Links Found: 266475</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-26</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-26T03:27:53.414Z</p>
+  </footer>
+</body>
+</html>
