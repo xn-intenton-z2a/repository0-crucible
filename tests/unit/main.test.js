@@ -3,6 +3,7 @@ import * as mainModule from "@src/lib/main.js";
 import { main, PUBLIC_DATA_SOURCES } from "@src/lib/main.js";
 import pkg from "../../package.json" assert { type: "json" };
 import fs from "fs";
+import path from "path";
 import http from "http";
 import { once } from "events";
 
@@ -306,5 +307,56 @@ describe("Capital Cities CLI", () => {
     expect(doc["@graph"]).toHaveLength(2);
     expect(doc["@graph"][0]).toEqual({ "@id": "http://example.org/c1", capital: "http://example.org/cap1" });
     logSpy.mockRestore();
+  });
+});
+
+// Refresh Flag tests
+import path from "path";
+describe("Refresh Flag", () => {
+  let existsSpy, mkdirSpy, writeSpy, logSpy, errorSpy, fetchSpy;
+  const mockSources = [
+    { name: "DBpedia SPARQL", url: "http://example.org/db" },
+    { name: "Custom API", url: "http://example.org/api" }
+  ];
+
+  beforeEach(() => {
+    existsSpy = vi.spyOn(fs, "existsSync");
+    mkdirSpy = vi.spyOn(fs, "mkdirSync");
+    writeSpy = vi.spyOn(fs, "writeFileSync");
+    logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    vi.spyOn(mainModule, "listSources").mockReturnValue(mockSources);
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  test("successfully fetches and writes all sources", async () => {
+    existsSpy.mockReturnValue(false);
+    fetchSpy = vi.spyOn(global, "fetch")
+      .mockResolvedValueOnce({ json: async () => ({ foo: "bar" }) })
+      .mockResolvedValueOnce({ json: async () => ({ baz: "qux" }) });
+    await main(["--refresh"]);
+    const dataDir = path.join(process.cwd(), "data");
+    expect(existsSpy).toHaveBeenCalledWith(dataDir);
+    expect(mkdirSpy).toHaveBeenCalledWith(dataDir, { recursive: true });
+    expect(fetchSpy).toHaveBeenCalledTimes(2);
+    expect(writeSpy).toHaveBeenCalledTimes(2);
+    expect(logSpy).toHaveBeenCalledWith("written dbpedia-sparql.json");
+    expect(logSpy).toHaveBeenCalledWith("written custom-api.json");
+    expect(logSpy).toHaveBeenCalledWith("Refreshed 2 sources into data/");
+  });
+
+  test("continues on fetch error and only counts successful writes", async () => {
+    existsSpy.mockReturnValue(true);
+    fetchSpy = vi.spyOn(global, "fetch")
+      .mockRejectedValueOnce(new Error("network"))
+      .mockResolvedValueOnce({ json: async () => ({ baz: "qux" }) });
+    await main(["--refresh"]);
+    expect(errorSpy).toHaveBeenCalledWith("Error refreshing DBpedia SPARQL: network");
+    expect(writeSpy).toHaveBeenCalledTimes(1);
+    expect(logSpy).toHaveBeenCalledWith("written custom-api.json");
+    expect(logSpy).toHaveBeenCalledWith("Refreshed 1 sources into data/");
   });
 });

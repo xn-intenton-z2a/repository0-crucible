@@ -69,7 +69,7 @@ Usage: node src/lib/main.js [options]
   --serve               Start the local HTTP server
   --build-intermediate  Generate intermediate ontology artifacts
   --build-enhanced      Generate enhanced ontology artifacts
-  --refresh             Refresh source data
+  --refresh             Fetch and persist all data sources
   --merge-persist       Merge and persist data to storage
   --list-sources        List public (and custom) data sources
   --capital-cities      Query DBpedia for capital cities and output JSON-LD
@@ -154,6 +154,22 @@ Example response for capital cities:
     }
   ]
 }
+```
+
+## Refresh
+
+Use the `--refresh` flag to fetch and persist data from all configured public and custom sources into the `data/` directory:
+
+```bash
+node src/lib/main.js --refresh
+```
+
+Sample output:
+
+```
+written dbpedia-sparql.json
+written custom-api.json
+Refreshed 2 sources into data/
 ```
 
 ## Programmatic API
