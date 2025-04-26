@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="jsonld_context" href="#jsonld_context"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSONLD_CONTEXT</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Context keys directives: @version numeric 1.1 switch; @vocab IRI mapping; @base IRI resolution; compact IRIs prefix:suffix; alias keywords via custom term mappings; scoped contexts under property or type; embedded contexts propagate left-to-right override; remote imports via @import; term protection via @protected boolean.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:
+1 Processing Mode (@version)
+2 Default Vocabulary (@vocab)
+3 Base IRI (@base)
+4 Compact IRIs
+5 Keyword Aliasing
+6 Scoped Contexts
+7 Context Propagation
+8 Remote Imports (@import)
+9 Term Protection (@protected)</p>
+<p class="md-github">1 Processing Mode (@version)
+Value type: numeric
+Allowed value: 1.1
+Implementation: validate numeric type; if not 1.1 error; set processingMode=json-ld-1.1</p>
+<p class="md-github">2 Default Vocabulary (@vocab)
+Value type: IRI string or null
+Effect: apply IRI as default namespace for unprefixed terms
+Example: &quot;@vocab&quot;: &quot;https://schema.org/&quot;</p>
+<p class="md-github">3 Base IRI (@base)
+Value type: IRI string or null
+Effect: resolve relative IRI references
+Example: &quot;@base&quot;: &quot;https://api.example.com/v1/&quot;</p>
+<p class="md-github">4 Compact IRIs
+Pattern: prefix:suffix
+Validation: prefix must exist in context; suffix must match NCName or valid fragment</p>
+<p class="md-github">5 Keyword Aliasing
+Mapping syntax: &quot;alias&quot;: {&quot;@id&quot;: &quot;@keyword&quot;}
+Example: &quot;id&quot;: {&quot;@id&quot;:&quot;@id&quot;}</p>
+<p class="md-github">6 Scoped Contexts
+Definition inside term mapping: &quot;term&quot;: {&quot;@context&quot;: {...}}
+Property scope: apply when term used as property
+Type scope: apply when term used in @type value</p>
+<p class="md-github">7 Context Propagation
+Algorithm: outer @context applied first; nested @context entries override previous; apply merge order sequentially</p>
+<p class="md-github">8 Remote Imports (@import)
+Syntax: &quot;@import&quot;: &quot;context-iri&quot;
+Operation: issue HTTP GET to IRI, parse JSON-LD context, merge as inline at position</p>
+<p class="md-github">9 Term Protection (@protected)
+Syntax: &quot;termName&quot;: {&quot;@id&quot;:&quot;http://example.com/term&quot;,&quot;@protected&quot;:true}
+Behavior: subsequent contexts cannot override protected term mapping</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Parameter definitions:</p>
+<ul class="md-github">
+<li class="md-github">@version: numeric must equal 1.1; context-local only; error if missing or different</li>
+<li class="md-github">@vocab: string IRI or null; one per context; default unset</li>
+<li class="md-github">@base: string IRI or null; default to document location if missing</li>
+<li class="md-github">@language: string BCP47 code or null; default language for string values</li>
+<li class="md-github">@direction: &quot;ltr&quot;, &quot;rtl&quot;, or null; default direction for string values</li>
+<li class="md-github">@import: IRI string; fetch and merge remote context synchronously</li>
+<li class="md-github">@protected: boolean; default false; prevents term redefinition</li>
+</ul>
+<p class="md-github">Implementation steps:</p>
+<ol class="md-github">
+<li class="md-github">Read @version, validate type and value</li>
+<li class="md-github">Read @import entries in order, fetch and merge each remote context</li>
+<li class="md-github">For each term definition in @context:
+a. Process @protected flag
+b. Map term to IRI via @id or derived via @vocab/@base
+c. Create compact IRI prefix mapping for term</li>
+<li class="md-github">Apply nested @context entries at runtime when encountering scoped contexts in data</li>
+<li class="md-github">Merge contexts left-to-right; enforce @protected semantics</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Context Definition Grammar (JSON-LD 1.1 Appendix 9.15):
+<ContextDefinition> ::= '&quot;@context&quot;' ':' (<IRI> | <ContextMap> | <ContextArray>)
+<ContextMap> ::= '{' (<TermDefinition> (',' <TermDefinition>)* (',' '@import': <IRI>)*)? '}'
+<TermDefinition> ::= <Term> ':' (<TermDefinitionValue> | null)
+<TermDefinitionValue> ::= <IRI> | <KeywordAliasMap> | <ExpandedTermDefinition>
+<KeywordAliasMap> ::= '{' '@id': <Keyword> '}'
+<ExpandedTermDefinition> ::= '{' '@id': <IRI> (',' '@type': <IRI> )? (',' '@language': <LangCode>)? (',' '@direction': &quot;ltr&quot;|&quot;rtl&quot;|null)? (',' '@context': <ContextDefinition>)? (',' '@protected': true|false)? '}'
+Complete term definition parameters:</p>
+<ul class="md-github">
+<li class="md-github">@id: IRI string • required unless value is null</li>
+<li class="md-github">@type: IRI string • optional</li>
+<li class="md-github">@language: BCP47 language tag or null • optional</li>
+<li class="md-github">@direction: ltr, rtl, or null • optional</li>
+<li class="md-github">@context: ContextDefinition • optional</li>
+<li class="md-github">@container: &quot;@list&quot;,&quot;@set&quot;,&quot;@index&quot;,&quot;@id&quot;,&quot;@type&quot;,&quot;@language&quot;,&quot;@graph&quot; or array thereof • optional</li>
+<li class="md-github">@protected: boolean • optional</li>
+</ul>
+<p class="md-github">Concrete Example:
+{
+&quot;@context&quot;: {
+&quot;@version&quot;: 1.1,
+&quot;schema&quot;: &quot;https://schema.org/&quot;,
+&quot;name&quot;: {&quot;@id&quot;: &quot;schema:name&quot;,&quot;@protected&quot;:true},
+&quot;ex&quot;: {&quot;@id&quot;: &quot;http://example.com/&quot;,&quot;@context&quot;: {&quot;sub&quot;:&quot;http://example.com/sub/&quot;}},
+&quot;@import&quot;: &quot;https://example.com/remoteContext.jsonld&quot;
+}
+}</p>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Always set @version:1.1 in top-level context</li>
+<li class="md-github">Use absolute IRIs for @base and @vocab</li>
+<li class="md-github">Group common term definitions in a single context file and import remotely</li>
+<li class="md-github">Protect core terms with @protected:true to avoid accidental overrides</li>
+</ul>
+<p class="md-github">Troubleshooting:</p>
+<ul class="md-github">
+<li class="md-github">Error: &quot;Invalid IRI in @base&quot;. Command: curl -I <baseIRI> returns HTTP 404. Fix: correct IRI to existing resource.</li>
+<li class="md-github">Error: &quot;Term redefinition prohibited&quot; when merging contexts. Locate earlier context mapping with @protected:true and remove conflicting mapping.</li>
+<li class="md-github">Error: &quot;Unsupported processing mode&quot;. Occurs when JSON-LD 1.0 processor encounters @version numeric. Use a JSON-LD 1.1 compliant processor.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">@version:1.1 numeric;@vocab:IRI|null;@base:IRI|null;@language:BCP47|null;@direction:ltr|rtl|null;@import:IRI;@protected:boolean;TermDefinition:@id:IRI;@type:IRI;@language:BCP47;@direction:ltr|rtl|null;@context:ContextDefinition;@container:[&quot;@list&quot;|&quot;@set&quot;|&quot;@index&quot;|&quot;@id&quot;|&quot;@type&quot;|&quot;@language&quot;|&quot;@graph&quot;];Merge order:left-to-right;Protected terms:cannot override;Scoped contexts under termDefinition.@context;Compact IRI syntax:prefix:suffix must match context mapping;Error conditions:invalid type or value at @version, invalid IRI formats, redefinition of protected term.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:
+1 Processing Mode (@version)
+2 Default Vocabulary (@vocab)
+3 Base IRI (@base)
+4 Compact IRIs
+5 Keyword Aliasing
+6 Scoped Contexts
+7 Context Propagation
+8 Remote Imports (@import)
+9 Term Protection (@protected)</p>
+<p class="md-github">1 Processing Mode (@version)
+Value type: numeric
+Allowed value: 1.1
+Implementation: validate numeric type; if not 1.1 error; set processingMode=json-ld-1.1</p>
+<p class="md-github">2 Default Vocabulary (@vocab)
+Value type: IRI string or null
+Effect: apply IRI as default namespace for unprefixed terms
+Example: '@vocab': 'https://schema.org/'</p>
+<p class="md-github">3 Base IRI (@base)
+Value type: IRI string or null
+Effect: resolve relative IRI references
+Example: '@base': 'https://api.example.com/v1/'</p>
+<p class="md-github">4 Compact IRIs
+Pattern: prefix:suffix
+Validation: prefix must exist in context; suffix must match NCName or valid fragment</p>
+<p class="md-github">5 Keyword Aliasing
+Mapping syntax: 'alias': {'@id': '@keyword'}
+Example: 'id': {'@id':'@id'}</p>
+<p class="md-github">6 Scoped Contexts
+Definition inside term mapping: 'term': {'@context': {...}}
+Property scope: apply when term used as property
+Type scope: apply when term used in @type value</p>
+<p class="md-github">7 Context Propagation
+Algorithm: outer @context applied first; nested @context entries override previous; apply merge order sequentially</p>
+<p class="md-github">8 Remote Imports (@import)
+Syntax: '@import': 'context-iri'
+Operation: issue HTTP GET to IRI, parse JSON-LD context, merge as inline at position</p>
+<p class="md-github">9 Term Protection (@protected)
+Syntax: 'termName': {'@id':'http://example.com/term','@protected':true}
+Behavior: subsequent contexts cannot override protected term mapping</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">JSON-LD 1.1 Specification
+https://www.w3.org/TR/json-ld11/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-jsonld_context" href="#digest-of-jsonld_context"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of JSONLD_CONTEXT</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="advanced-context-usage" href="#advanced-context-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Advanced Context Usage</h1>
+<p class="md-github">This section defines context mapping features for JSON-LD 1.1, specifying exact usage, allowed types, defaults, and processing effects.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="version" href="#version"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>@version</h2>
+<ul class="md-github">
+<li class="md-github">Type: numeric</li>
+<li class="md-github">Allowed value: 1.1</li>
+<li class="md-github">Effect: Switch processing mode to JSON-LD 1.1. JSON-LD 1.0 processors must error on non-numeric or non-1.1 values.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="vocab" href="#vocab"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>@vocab</h2>
+<ul class="md-github">
+<li class="md-github">Type: IRI or null</li>
+<li class="md-github">Default: unset</li>
+<li class="md-github">Effect: Sets default vocabulary IRI against which terms without prefix are expanded.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="base" href="#base"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>@base</h2>
+<ul class="md-github">
+<li class="md-github">Type: IRI or null</li>
+<li class="md-github">Default: document location</li>
+<li class="md-github">Effect: Resolves relative IRI references in terms and values.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="compact-iris" href="#compact-iris"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Compact IRIs</h2>
+<ul class="md-github">
+<li class="md-github">Syntax: prefix:suffix</li>
+<li class="md-github">prefix must match term mapping in context</li>
+<li class="md-github">Suffix must be a valid IRI fragment</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="keyword-aliasing-context-entries-mapping-to-keyword" href="#keyword-aliasing-context-entries-mapping-to-keyword"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Keyword Aliasing (@context entries mapping to @keyword)</h2>
+<ul class="md-github">
+<li class="md-github">Map any JSON-LD keyword to a custom term</li>
+<li class="md-github">Value: keyword name or null to disable keyword</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="scoped-contexts" href="#scoped-contexts"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Scoped Contexts</h2>
+<ul class="md-github">
+<li class="md-github">@context entry in expanded term definition under @context</li>
+<li class="md-github">Property-scoped: appears under a property term definition</li>
+<li class="md-github">Type-scoped: appears under a type term definition</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="context-propagation" href="#context-propagation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Context Propagation</h2>
+<ul class="md-github">
+<li class="md-github">Embedded contexts in nested values propagate to descendant nodes</li>
+<li class="md-github">Order: outermost contexts applied first, inner contexts override</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="import" href="#import"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>@import</h2>
+<ul class="md-github">
+<li class="md-github">Type: IRI</li>
+<li class="md-github">Effect: Load remote context from IRI and merge inline</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="protected" href="#protected"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>@protected</h2>
+<ul class="md-github">
+<li class="md-github">Type: boolean</li>
+<li class="md-github">Default: false</li>
+<li class="md-github">Effect: Prevent term redefinition in subsequent contexts</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: JSON-LD 1.1 Specification</li>
+<li class="md-github">URL: https://www.w3.org/TR/json-ld11/</li>
+<li class="md-github">License: CC0 1.0 Universal</li>
+<li class="md-github">Crawl Date: 2025-04-26T14:48:22.334Z</li>
+<li class="md-github">Data Size: 19593741 bytes</li>
+<li class="md-github">Links Found: 138212</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-26</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-26T15:20:56.958Z</p>
+  </footer>
+</body>
+</html>
