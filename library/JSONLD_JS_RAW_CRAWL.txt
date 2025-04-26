@@ -1196,80 +1196,50 @@ Digital Bazaar: support@digitalbazaar.com
 
 
     
-  
-    
       
-        
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
       
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-
-
-
 
 
   
@@ -2497,80 +2467,50 @@ Digital Bazaar: support@digitalbazaar.com
 
 
     
-  
-    
       
-        
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
       
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-
-
-
 
 
   
@@ -5904,6 +5844,28 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
   
     
   
+    Read more about HOVER's customer story
+    
+      
+        
+  
+  
+  
+  
+
+      
+    
+     HOVER
+    HOVER keeps developers in the flow with GitHub’s integrated development platform.
+    
+      Read story 
+
+    
+  
+
+
+    
+  
     Read more about ZibaSec's customer story
     
       
@@ -5926,7 +5888,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Zendesk's customer story
+    Read more about Deutsche Vermögensberatung's customer story
     
       
         
@@ -5937,8 +5899,9 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Zendesk
-    Zendesk and GitHub: Building best-in-class tools for a decade—and counting.
+     Deutsche Vermögensberatung
+    DVAG puts customers first by optimizing developer efficiency on GitHub Enterprise.
+
     
       Read story 
 
@@ -5948,7 +5911,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Zalando's customer story
+    Read more about 3M's customer story
     
       
         
@@ -5959,8 +5922,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Zalando
-    Zalando uses GitHub to facilitate collaboration and prioritize open source contributions.
+     3M
+    3M transforms its software toolchain to bring cutting-edge science to customers, faster.
     
       Read story 
 
@@ -5970,7 +5933,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about XING's customer story
+    Read more about Opn's customer story
     
       
         
@@ -5981,8 +5944,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     XING
-    XING integrates open and closed source code to build collaborative workflows everyone can use—from project planning to QA.
+     Opn
+    Opn keeps payments secure and automates workflows with GitHub.
     
       Read story 
 
@@ -5992,7 +5955,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about White Label: International Retailer's customer story
+    Read more about Caregility's customer story
     
       
         
@@ -6003,30 +5966,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     White Label: International Retailer
-    The world’s third largest retailer partners with GitHub to drive innovation through open source best practices.
-    
-      Read story 
-
-    
-  
-
-
-    
-  
-    Read more about Wayfair's customer story
-    
-      
-        
-  
-  
-  
-  
-
-      
-    
-     Wayfair
-    By balancing cloud and on-premises management, Wayfair creates a customer experience that edges out the competition.
+     Caregility
+    GitHub Advanced Security helps Caregility safeguard its platform for patients and clinicians.
     
       Read story 
 
@@ -6703,7 +6644,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
   
     
   
-    Read more about Netdata's customer story
+    Read more about Trustpilot's customer story
     
       
         
@@ -6714,8 +6655,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Netdata
-    Netdata accelerates their developer workflow with built-in security and open source.
+     Trustpilot
+    Global review platform Trustpilot uses GitHub Team to build a better product, faster, with 300 releases per week.
     
       Read story 
 
@@ -6725,7 +6666,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Peak Money's customer story
+    Read more about Tray.io's customer story
     
       
         
@@ -6736,52 +6677,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Peak Money
-    Peak Money collaborates across tools, teams, and time zones with GitHub Team.
-    
-      Read story 
-
-    
-  
-
-
-    
-  
-    Read more about Front's customer story
-    
-      
-        
-  
-  
-  
-  
-
-      
-    
-     Front
-    Front takes the work out of their workflows with GitHub Team.
-    
-      Read story 
-
-    
-  
-
-
-    
-  
-    Read more about Modsy's customer story
-    
-      
-        
-  
-  
-  
-  
-
-      
-    
-     Modsy
-    Modsy leverages GitHub Team to make interior design easy and accessible for all.
+     Tray.io
+    GitHub Team helps the general automation platform build, package, and deploy code faster than ever.
     
       Read story 
 
@@ -6813,7 +6710,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Tray.io's customer story
+    Read more about Peak Money's customer story
     
       
         
@@ -6824,8 +6721,52 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Tray.io
-    GitHub Team helps the general automation platform build, package, and deploy code faster than ever.
+     Peak Money
+    Peak Money collaborates across tools, teams, and time zones with GitHub Team.
+    
+      Read story 
+
+    
+  
+
+
+    
+  
+    Read more about Netdata's customer story
+    
+      
+        
+  
+  
+  
+  
+
+      
+    
+     Netdata
+    Netdata accelerates their developer workflow with built-in security and open source.
+    
+      Read story 
+
+    
+  
+
+
+    
+  
+    Read more about Modsy's customer story
+    
+      
+        
+  
+  
+  
+  
+
+      
+    
+     Modsy
+    Modsy leverages GitHub Team to make interior design easy and accessible for all.
     
       Read story 
 
@@ -8273,9 +8214,9 @@ The ReadME Project
     
         
       
-        Swift
+        Sketch
       
-      Swift is a modern programming language focused on safety, performance, and expressivity.
+      Sketch is a vector graphics editor for Apple's macOS, used primarily for user interface and icon design.
     
   
 
@@ -8289,9 +8230,9 @@ The ReadME Project
     
         
       
-        PHP
+        GitHub API
       
-      PHP is a popular general-purpose scripting language that works particularly well for server-side web development.
+      The GitHub API allows you to build applications that integrate with GitHub.
     
   
 
@@ -8305,9 +8246,9 @@ The ReadME Project
     
         
       
-        Arduino
+        Angular
       
-      Arduino is an open source platform for building electronic devices.
+      Angular is an open source web application platform.
     
   
 
@@ -8899,6 +8840,11 @@ The ReadME Project
           
           
             
+  css
+
+          
+          
+            
   config
 
           
@@ -8909,7 +8855,7 @@ The ReadME Project
           
           
             
-  html
+  django
 
           
           
@@ -8919,12 +8865,7 @@ The ReadME Project
           
           
             
-  reactjs
-
-          
-          
-            
-  tailwindcss
+  freecodecamp-project
 
           
           
@@ -8934,7 +8875,7 @@ The ReadME Project
           
           
             
-  react-router-v7\n\n\n\nStar
+  llm\n\n\n\nStar
 
 
   
@@ -8959,9 +8900,9 @@ The ReadME Project
 
 
       
-        5,837
+        5,950
       
-        651
+        663
       
         Built by
 
@@ -9003,7 +8944,7 @@ The ReadME Project
 
 
       
-        5,217
+        5,224
       
         347
       
@@ -9045,9 +8986,9 @@ The ReadME Project
   
 
       
-        3,609
+        3,653
       
-        440
+        442
       
         Built by
 
@@ -9087,7 +9028,7 @@ The ReadME Project
   
 
       
-        31,854
+        31,890
       
         2,272
       
@@ -9142,9 +9083,9 @@ The ReadME Project
 
 
       
-        74,642
+        74,660
       
-        16,653
+        16,656
       
         Built by
 
@@ -9189,9 +9130,9 @@ The ReadME Project
 
 
       
-        79,914
+        79,935
       
-        41,304
+        41,309
       
         Built by
 
@@ -9236,7 +9177,7 @@ The ReadME Project
 
 
       
-        18,175
+        18,182
       
         1,365
       
@@ -9291,9 +9232,9 @@ The ReadME Project
 
 
       
-        1,028
+        1,050
       
-        52
+        53
       
         Built by
 
@@ -9338,9 +9279,9 @@ The ReadME Project
 
 
       
-        5,131
+        5,181
       
-        386
+        388
       
         Built by
 
@@ -9385,7 +9326,7 @@ The ReadME Project
 
 
       
-        25,726
+        25,744
       
         2,510
       
@@ -9432,9 +9373,9 @@ The ReadME Project
 
 
       
-        28,259
+        28,274
       
-        1,990
+        1,991
       
         Built by
 
@@ -9479,7 +9420,7 @@ The ReadME Project
 
 
       
-        9,158
+        9,165
       
         426
       
@@ -9534,7 +9475,7 @@ The ReadME Project
 
 
       
-        29,349
+        29,376
       
         1,637
       
@@ -9581,7 +9522,7 @@ The ReadME Project
 
 
       
-        10,537
+        10,547
       
         540
       
@@ -9628,9 +9569,9 @@ The ReadME Project
 
 
       
-        21,438
+        21,459
       
-        2,718
+        2,720
       
         Built by
 
@@ -9675,9 +9616,9 @@ The ReadME Project
 
 
       
-        56,661
+        56,681
       
-        4,747
+        4,748
       
         Built by
 
@@ -9722,9 +9663,9 @@ The ReadME Project
 
 
       
-        75,098
+        75,114
       
-        12,205
+        12,206
       
         Built by
 
@@ -11826,9 +11767,9 @@ The ReadME Project
 
 
       
-        5,837
+        5,950
       
-        651
+        663
       
         Built by
 
@@ -11872,7 +11813,7 @@ The ReadME Project
 
 
       
-        5,217
+        5,224
       
         347
       
@@ -11916,9 +11857,9 @@ The ReadME Project
   
 
       
-        3,609
+        3,653
       
-        440
+        442
       
         Built by
 
@@ -11960,7 +11901,7 @@ The ReadME Project
   
 
       
-        31,854
+        31,890
       
         2,272
       
@@ -12017,9 +11958,9 @@ The ReadME Project
 
 
       
-        74,642
+        74,660
       
-        16,653
+        16,656
       
         Built by
 
@@ -12066,9 +12007,9 @@ The ReadME Project
 
 
       
-        79,914
+        79,935
       
-        41,304
+        41,309
       
         Built by
 
@@ -12115,7 +12056,7 @@ The ReadME Project
 
 
       
-        18,175
+        18,182
       
         1,365
       
@@ -12172,9 +12113,9 @@ The ReadME Project
 
 
       
-        1,028
+        1,050
       
-        52
+        53
       
         Built by
 
@@ -12221,9 +12162,9 @@ The ReadME Project
 
 
       
-        5,131
+        5,181
       
-        386
+        388
       
         Built by
 
@@ -12270,7 +12211,7 @@ The ReadME Project
 
 
       
-        25,726
+        25,744
       
         2,510
       
@@ -12319,9 +12260,9 @@ The ReadME Project
 
 
       
-        28,259
+        28,274
       
-        1,990
+        1,991
       
         Built by
 
@@ -12368,7 +12309,7 @@ The ReadME Project
 
 
       
-        9,158
+        9,165
       
         426
       
@@ -12425,7 +12366,7 @@ The ReadME Project
 
 
       
-        29,349
+        29,376
       
         1,637
       
@@ -12474,7 +12415,7 @@ The ReadME Project
 
 
       
-        10,537
+        10,547
       
         540
       
@@ -12523,9 +12464,9 @@ The ReadME Project
 
 
       
-        21,438
+        21,459
       
-        2,718
+        2,720
       
         Built by
 
@@ -12572,9 +12513,9 @@ The ReadME Project
 
 
       
-        56,661
+        56,681
       
-        4,747
+        4,748
       
         Built by
 
@@ -12621,9 +12562,9 @@ The ReadME Project
 
 
       
-        75,098
+        75,114
       
-        12,205
+        12,206
       
         Built by
 
@@ -12837,17 +12778,17 @@ The ReadME Project
     
         
   
-      
-    Made in Brazil
-    Open source projects built in or receiving significant contributions from Brazil :brazil:
+      #
+    Game Engines
+    Frameworks for building games across multiple platforms.
   
 
 
         
   
-      #
-    Game Engines
-    Frameworks for building games across multiple platforms.
+      
+    Learn to Code
+    Resources to help people learn to code
   
 
 
@@ -15792,6 +15733,7 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
       
         With Premium, get a 30-minute SLA on Urgent tickets and 24/7 web and phone support via callback request. With Premium Plus, get everything in Premium, assigned Customer Reliability Engineer and more. Learn more about Premium Support
       
+    
 
 
 
@@ -24787,7 +24729,6 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
 
       
           
-  
   digitalbazaar/bedrock-vc-verifier’s past year of commit activity
 
     
@@ -24867,6 +24808,7 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
 
       
           
+  
   digitalbazaar/bedrock-tokenization’s past year of commit activity
 
     
@@ -25024,7 +24966,6 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
 
       
           
-  
   digitalbazaar/bedrock-vc-delivery’s past year of commit activity
 
     
@@ -25106,7 +25047,6 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
 
       
           
-  
   digitalbazaar/bedrock-tokenizer’s past year of commit activity
 
     
@@ -26423,80 +26363,50 @@ Digital Bazaar: support@digitalbazaar.com
 
 
     
-  
-    
       
-        
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
       
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-
-
-
 
 
   
@@ -32598,7 +32508,7 @@ Additional navigation options
   
   
   ProTip!
-  no:milestone will show everything without a milestone.\n\n\n\ndigitalbazaar
+  What’s not been updated in a month: updated:<2025-03-26.\n\n\n\ndigitalbazaar
     
     /
     
@@ -34978,7 +34888,7 @@ Additional navigation options
   
   
   ProTip!
-  Filter pull requests by the default branch with base:main.\n\n\n\ndigitalbazaar
+  Type g p on any issue or pull request to go back to the pull request listing page.\n\n\n\ndigitalbazaar
     
     /
     
@@ -38685,7 +38595,7 @@ Insights: digitalbazaar/jsonld.js
   
       
   
-  April 18, 2025 – April 25, 2025
+  April 19, 2025 – April 26, 2025
   
         
               Period:
@@ -43370,1581 +43280,4 @@ module.
 0.3.26 - 2015-09-01
 Before 0.3.26
 
-See git history for changes.\n\n\n\njsonld.js
-
-
-
-Introduction
-This library is an implementation of the JSON-LD specification in
-JavaScript.
-JSON, as specified in RFC7159, is a simple language for representing
-objects on the Web. Linked Data is a way of describing content across
-different documents or Web sites. Web resources are described using
-IRIs, and typically are dereferencable entities that may be used to find
-more information, creating a "Web of Knowledge". JSON-LD is intended
-to be a simple publishing method for expressing not only Linked Data in
-JSON, but for adding semantics to existing JSON.
-JSON-LD is designed as a light-weight syntax that can be used to express
-Linked Data. It is primarily intended to be a way to express Linked Data
-in JavaScript and other Web-based programming environments. It is also
-useful when building interoperable Web Services and when storing Linked
-Data in JSON-based document storage engines. It is practical and
-designed to be as simple as possible, utilizing the large number of JSON
-parsers and existing code that is in use today. It is designed to be
-able to express key-value pairs, RDF data, RDFa data,
-Microformats data, and Microdata. That is, it supports every
-major Web-based structured data model in use today.
-The syntax does not require many applications to change their JSON, but
-easily add meaning by adding context in a way that is either in-band or
-out-of-band. The syntax is designed to not disturb already deployed
-systems running on JSON, but provide a smooth migration path from JSON
-to JSON with added semantics. Finally, the format is intended to be fast
-to parse, fast to generate, stream-based and document-based processing
-compatible, and require a very small memory footprint in order to operate.
-Conformance
-This library aims to conform with the following:
-
-JSON-LD 1.0,
-W3C Recommendation,
-2014-01-16, and any errata
-JSON-LD 1.0 Processing Algorithms and API,
-W3C Recommendation,
-2014-01-16, and any errata
-JSON-LD 1.0 Framing,
-Unofficial Draft,
-2012-08-30
-JSON-LD 1.1,
-Draft Community Group Report,
-2018-06-07 or newer
-JSON-LD 1.1 Processing Algorithms and API,
-Draft Community Group Report,
-2018-06-07 or newer
-JSON-LD 1.1 Framing,
-Draft Community Group Report,
-2018-06-07 or newer
-Community Group test suite
-
-The JSON-LD Working Group is now developing JSON-LD 1.1. Library
-updates to conform with newer specifications will happen as features stabilize
-and development time and resources permit.
-
-JSON-LD 1.1,
-W3C Working Draft,
-2018-12-14 or newer
-JSON-LD 1.1 Processing Algorithms and API,
-W3C Working Draft,
-2018-12-14 or newer
-JSON-LD 1.1 Framing,
-W3C Working Draft,
-2018-12-14 or newer
-Working Group test suite
-
-The test runner is often updated to note or skip newer tests that are not
-yet supported.
-Installation
-Node.js + npm
-npm install jsonld
-
-const jsonld = require('jsonld');
-Browser (bundler) + npm
-npm install jsonld
-
-Use your favorite bundling technology (webpack, Rollup, etc) to
-directly bundle your code that loads jsonld. Note that you will need support
-for ES2017+ code.
-Browser Bundles
-The built npm package includes bundled code suitable for use in browsers. Two
-versions are provided:
-
-./dist/jsonld.min.js: A version built for wide compatibility with modern
-and older browsers.  Includes many polyfills and code transformations and is
-larger and less efficient.
-./dist/jsonld.esm.min.js: A version built for features available in
-browsers that support ES Modules. Fewer polyfills and transformations are
-required making the code smaller and more efficient.
-
-The two bundles can be used at the same to to allow modern browsers to use
-newer code. Lookup using script tags with type="module" and nomodule.
-Also see the webpack.config.js if you would like to make a custom bundle for
-specific targets.
-Browser (AMD) + npm
-npm install jsonld
-
-Use your favorite technology to load node_modules/dist/jsonld.min.js.
-CDNJS CDN
-To use CDNJS include this script tag:
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsonld/1.0.0/jsonld.min.js"></script>
-Check https://cdnjs.com/libraries/jsonld for the latest available version.
-jsDeliver CDN
-To use jsDeliver include this script tag:
-<script src="https://cdn.jsdelivr.net/npm/jsonld@1.0.0/dist/jsonld.min.js"></script>
-See https://www.jsdelivr.com/package/npm/jsonld for the latest available version.
-unpkg CDN
-To use unpkg include this script tag:
-<script src="https://unpkg.com/jsonld@1.0.0/dist/jsonld.min.js"></script>
-See https://unpkg.com/jsonld/ for the latest available version.
-JSPM
-jspm install npm:jsonld
-
-import * as jsonld from 'jsonld';
-// or
-import {promises} from 'jsonld';
-// or
-import {JsonLdProcessor} from 'jsonld';
-Node.js native canonize bindings
-For specialized use cases there is an optional rdf-canonize-native package
-available which provides a native implementation for canonize(). It is used
-by installing the package and setting the useNative option of canonize() to
-true. Before using this mode it is highly recommended to run benchmarks
-since the JavaScript implementation is often faster and the bindings add
-toolchain complexity.
-npm install jsonld
-npm install rdf-canonize-native
-
-Examples
-Example data and context used throughout examples below:
-const doc = {
-  "http://schema.org/name": "Manu Sporny",
-  "http://schema.org/url": {"@id": "http://manu.sporny.org/"},
-  "http://schema.org/image": {"@id": "http://manu.sporny.org/images/manu.png"}
-};
-const context = {
-  "name": "http://schema.org/name",
-  "homepage": {"@id": "http://schema.org/url", "@type": "@id"},
-  "image": {"@id": "http://schema.org/image", "@type": "@id"}
-};
-compact
-// compact a document according to a particular context
-const compacted = await jsonld.compact(doc, context);
-console.log(JSON.stringify(compacted, null, 2));
-/* Output:
-{
-  "@context": {...},
-  "name": "Manu Sporny",
-  "homepage": "http://manu.sporny.org/",
-  "image": "http://manu.sporny.org/images/manu.png"
-}
-*/
-
-// compact using URLs
-const compacted = await jsonld.compact(
-  'http://example.org/doc', 'http://example.org/context', ...);
-expand
-// expand a document, removing its context
-const expanded = await jsonld.expand(compacted);
-/* Output:
-{
-  "http://schema.org/name": [{"@value": "Manu Sporny"}],
-  "http://schema.org/url": [{"@id": "http://manu.sporny.org/"}],
-  "http://schema.org/image": [{"@id": "http://manu.sporny.org/images/manu.png"}]
-}
-*/
-
-// expand using URLs
-const expanded = await jsonld.expand('http://example.org/doc', ...);
-flatten
-// flatten a document
-const flattened = await jsonld.flatten(doc);
-// output has all deep-level trees flattened to the top-level
-frame
-// frame a document
-const framed = await jsonld.frame(doc, frame);
-// output transformed into a particular tree structure per the given frame
-canonize (normalize)
-// canonize (normalize) a document using the RDF Dataset Canonicalization Algorithm
-// (URDNA2015):
-const canonized = await jsonld.canonize(doc, {
-  algorithm: 'URDNA2015',
-  format: 'application/n-quads'
-});
-// canonized is a string that is a canonical representation of the document
-// that can be used for hashing, comparison, etc.
-toRDF (N-Quads)
-// serialize a document to N-Quads (RDF)
-const nquads = await jsonld.toRDF(doc, {format: 'application/n-quads'});
-// nquads is a string of N-Quads
-fromRDF (N-Quads)
-// deserialize N-Quads (RDF) to JSON-LD
-const doc = await jsonld.fromRDF(nquads, {format: 'application/n-quads'});
-// doc is JSON-LD
-Custom RDF Parser
-// register a custom synchronous RDF parser
-jsonld.registerRDFParser(contentType, input => {
-  // parse input to a jsonld.js RDF dataset object... and return it
-  return dataset;
-});
-
-// register a custom promise-based RDF parser
-jsonld.registerRDFParser(contentType, async input => {
-  // parse input into a jsonld.js RDF dataset object...
-  return new Promise(...);
-});
-Custom Document Loader
-// how to override the default document loader with a custom one -- for
-// example, one that uses pre-loaded contexts:
-
-// define a mapping of context URL => context doc
-const CONTEXTS = {
-  "http://example.com": {
-    "@context": ...
-  }, ...
-};
-
-// grab the built-in Node.js doc loader
-const nodeDocumentLoader = jsonld.documentLoaders.node();
-// or grab the XHR one: jsonld.documentLoaders.xhr()
-
-// change the default document loader
-const customLoader = async (url, options) => {
-  if(url in CONTEXTS) {
-    return {
-      contextUrl: null, // this is for a context via a link header
-      document: CONTEXTS[url], // this is the actual document that was loaded
-      documentUrl: url // this is the actual context URL after redirects
-    };
-  }
-  // call the default documentLoader
-  return nodeDocumentLoader(url);
-};
-jsonld.documentLoader = customLoader;
-
-// alternatively, pass the custom loader for just a specific call:
-const compacted = await jsonld.compact(
-  doc, context, {documentLoader: customLoader});
-Node.js Document Loader User-Agent
-It is recommended to set a default user-agent header for Node.js
-applications. The default for the default Node.js document loader is
-jsonld.js.
-Safe Mode
-A common use case is to avoid JSON-LD constructs that will result in lossy
-behavior. The JSON-LD specifications have notes about when data is dropped.
-This can be especially important when calling [canonize][] in order to
-digitally sign data. A special "safe mode" is available that will detect these
-situations and cause processing to fail.
-Note: This mode is designed to be the common way that digital signing and
-similar applications use this library.
-The safe options flag set to true enables this behavior:
-// expand a document in safe mode
-const expanded = await jsonld.expand(data, {safe: true});
-Tests
-This library includes a sample testing utility which may be used to verify
-that changes to the processor maintain the correct output.
-The main test suites are included in external repositories. Check out each of
-the following:
-https://github.com/w3c/json-ld-api
-https://github.com/w3c/json-ld-framing
-https://github.com/json-ld/json-ld.org
-https://github.com/w3c/rdf-canon
-
-They should be sibling directories of the jsonld.js directory or in a
-test-suites dir. To clone shallow copies into the test-suites dir you can
-use the following:
-npm run fetch-test-suites
-
-Node.js tests can be run with a simple command:
-npm test
-
-If you installed the test suites elsewhere, or wish to run other tests, use
-the TESTS environment var:
-TESTS="/tmp/org/test-suites /tmp/norm/tests" npm test
-
-This feature can be used to run the older json-ld.org test suite:
-TESTS=/tmp/json-ld.org/test-suite npm test
-
-Browser testing can be done with Karma:
-npm run test-karma
-npm run test-karma -- --browsers Firefox,Chrome
-
-Code coverage of node tests can be generated in coverage/:
-npm run coverage
-
-To display a full coverage report on the console from coverage data:
-npm run coverage-report
-
-The Mocha output reporter can be changed to min, dot, list, nyan, etc:
-REPORTER=dot npm test
-
-Remote context tests are also available:
-# run the context server in the background or another terminal
-node tests/remote-context-server.js
-
-TESTS=`pwd`/tests npm test
-
-To generate EARL reports:
-# generate the EARL report for Node.js
-EARL=earl-node.jsonld npm test
-
-# generate the EARL report for the browser
-EARL=earl-firefox.jsonld npm run test-karma -- --browser Firefox
-
-To generate an EARL report with the json-ld-api and json-ld-framing tests
-as used on the official JSON-LD Processor Conformance page
-TESTS="`pwd`/../json-ld-api/tests `pwd`/../json-ld-framing/tests" EARL="jsonld-js-earl.jsonld" npm test
-
-The EARL .jsonld output can be converted to .ttl using the rdf tool:
-rdf serialize jsonld-js-earl.jsonld --output-format turtle -o jsonld-js-earl.ttl
-
-Optionally follow the report
-instructions to
-generate the HTML report for inspection. Maintainers can
-submit updated results as needed.
-Benchmarks
-Benchmarks can be created from any manifest that the test system supports.
-Use a command line with a test suite and a benchmark flag:
-TESTS=/tmp/benchmark-manifest.jsonld BENCHMARK=1 npm test
-
-EARL reports with benchmark data can be generated with an optional environment
-details:
-TESTS=`pwd`/../json-ld.org/benchmarks/b001-manifiest.jsonld BENCHMARK=1 EARL=earl-test.jsonld TEST_ENV=1 npm test
-
-See tests/test.js for more TEST_ENV and BENCHMARK control and options.
-These reports can be compared with the benchmarks/compare/ tool and at the
-JSON-LD Benchmarks site.
-Related Modules
-
-jsonld-cli: A command line interface tool called jsonld that exposes
-most of the basic jsonld.js API.
-jsonld-request: A module that can read data from stdin, URLs, and files
-and in various formats and return JSON-LD.
-
-Source
-The source code for the JavaScript implementation of the JSON-LD API
-is available at:
-https://github.com/digitalbazaar/jsonld.js
-Commercial Support
-Commercial support for this library is available upon request from
-Digital Bazaar: support@digitalbazaar.com\n\ndigitalbazaar
-    
-    /
-    
-      jsonld.js
-    
-
-    Public
-  
-
-
-        
-
-        
-            
-    
-      
-
-  
-                Notifications
-    You must be signed in to change notification settings
-
-  
-
-  
-              Fork
-    200
-
-  
-
-  
-        
-            
-          Star
-          1.7k
-
-  
-
-
-
-        
-      
-
-        
-
-
-
-          
-
-  
-      
-  
-    
-              
-        Code
-          
-
-
-    
-
-      
-  
-    
-              
-        Issues
-          125
-
-
-    
-
-      
-  
-    
-              
-        Pull requests
-          28
-
-
-    
-
-      
-  
-    
-              
-        Actions
-          
-
-
-    
-
-      
-  
-    
-              
-        Projects
-          0
-
-
-    
-
-      
-  
-    
-              
-        Wiki
-          
-
-
-    
-
-      
-  
-    
-              
-        Security
-          
-
-    
-
-      
-  
-    
-              
-        Insights
-          
-
-
-    
-
-
-          
-  
-      
-Additional navigation options
-
-
-
-  
-    
-                
-  
-    
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Code
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Issues
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Pull requests
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Actions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Projects
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Wiki
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Security
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Insights
-      
-
-  
-
-    
-
-
-
-
-      
-  
-
-
-
-  
-
-  
-
-
-
-
-    
-    
-
-
-
-    
-      
-    
-
-
-
-
-
-
-
-
-
-  
-  
-     Files mainBreadcrumbsjsonld.js/README.mdCopy path Blame  Blame        Latest commit HistoryHistory525 lines (393 loc) · 16.6 KB mainBreadcrumbsjsonld.js/README.mdTopFile metadata and controlsPreviewCodeBlame525 lines (393 loc) · 16.6 KBRawjsonld.js
-
-
-
-Introduction
-This library is an implementation of the JSON-LD specification in
-JavaScript.
-JSON, as specified in RFC7159, is a simple language for representing
-objects on the Web. Linked Data is a way of describing content across
-different documents or Web sites. Web resources are described using
-IRIs, and typically are dereferencable entities that may be used to find
-more information, creating a "Web of Knowledge". JSON-LD is intended
-to be a simple publishing method for expressing not only Linked Data in
-JSON, but for adding semantics to existing JSON.
-JSON-LD is designed as a light-weight syntax that can be used to express
-Linked Data. It is primarily intended to be a way to express Linked Data
-in JavaScript and other Web-based programming environments. It is also
-useful when building interoperable Web Services and when storing Linked
-Data in JSON-based document storage engines. It is practical and
-designed to be as simple as possible, utilizing the large number of JSON
-parsers and existing code that is in use today. It is designed to be
-able to express key-value pairs, RDF data, RDFa data,
-Microformats data, and Microdata. That is, it supports every
-major Web-based structured data model in use today.
-The syntax does not require many applications to change their JSON, but
-easily add meaning by adding context in a way that is either in-band or
-out-of-band. The syntax is designed to not disturb already deployed
-systems running on JSON, but provide a smooth migration path from JSON
-to JSON with added semantics. Finally, the format is intended to be fast
-to parse, fast to generate, stream-based and document-based processing
-compatible, and require a very small memory footprint in order to operate.
-Conformance
-This library aims to conform with the following:
-
-JSON-LD 1.0,
-W3C Recommendation,
-2014-01-16, and any errata
-JSON-LD 1.0 Processing Algorithms and API,
-W3C Recommendation,
-2014-01-16, and any errata
-JSON-LD 1.0 Framing,
-Unofficial Draft,
-2012-08-30
-JSON-LD 1.1,
-Draft Community Group Report,
-2018-06-07 or newer
-JSON-LD 1.1 Processing Algorithms and API,
-Draft Community Group Report,
-2018-06-07 or newer
-JSON-LD 1.1 Framing,
-Draft Community Group Report,
-2018-06-07 or newer
-Community Group test suite
-
-The JSON-LD Working Group is now developing JSON-LD 1.1. Library
-updates to conform with newer specifications will happen as features stabilize
-and development time and resources permit.
-
-JSON-LD 1.1,
-W3C Working Draft,
-2018-12-14 or newer
-JSON-LD 1.1 Processing Algorithms and API,
-W3C Working Draft,
-2018-12-14 or newer
-JSON-LD 1.1 Framing,
-W3C Working Draft,
-2018-12-14 or newer
-Working Group test suite
-
-The test runner is often updated to note or skip newer tests that are not
-yet supported.
-Installation
-Node.js + npm
-npm install jsonld
-
-const jsonld = require('jsonld');
-Browser (bundler) + npm
-npm install jsonld
-
-Use your favorite bundling technology (webpack, Rollup, etc) to
-directly bundle your code that loads jsonld. Note that you will need support
-for ES2017+ code.
-Browser Bundles
-The built npm package includes bundled code suitable for use in browsers. Two
-versions are provided:
-
-./dist/jsonld.min.js: A version built for wide compatibility with modern
-and older browsers.  Includes many polyfills and code transformations and is
-larger and less efficient.
-./dist/jsonld.esm.min.js: A version built for features available in
-browsers that support ES Modules. Fewer polyfills and transformations are
-required making the code smaller and more efficient.
-
-The two bundles can be used at the same to to allow modern browsers to use
-newer code. Lookup using script tags with type="module" and nomodule.
-Also see the webpack.config.js if you would like to make a custom bundle for
-specific targets.
-Browser (AMD) + npm
-npm install jsonld
-
-Use your favorite technology to load node_modules/dist/jsonld.min.js.
-CDNJS CDN
-To use CDNJS include this script tag:
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jsonld/1.0.0/jsonld.min.js"></script>
-Check https://cdnjs.com/libraries/jsonld for the latest available version.
-jsDeliver CDN
-To use jsDeliver include this script tag:
-<script src="https://cdn.jsdelivr.net/npm/jsonld@1.0.0/dist/jsonld.min.js"></script>
-See https://www.jsdelivr.com/package/npm/jsonld for the latest available version.
-unpkg CDN
-To use unpkg include this script tag:
-<script src="https://unpkg.com/jsonld@1.0.0/dist/jsonld.min.js"></script>
-See https://unpkg.com/jsonld/ for the latest available version.
-JSPM
-jspm install npm:jsonld
-
-import * as jsonld from 'jsonld';
-// or
-import {promises} from 'jsonld';
-// or
-import {JsonLdProcessor} from 'jsonld';
-Node.js native canonize bindings
-For specialized use cases there is an optional rdf-canonize-native package
-available which provides a native implementation for canonize(). It is used
-by installing the package and setting the useNative option of canonize() to
-true. Before using this mode it is highly recommended to run benchmarks
-since the JavaScript implementation is often faster and the bindings add
-toolchain complexity.
-npm install jsonld
-npm install rdf-canonize-native
-
-Examples
-Example data and context used throughout examples below:
-const doc = {
-  "http://schema.org/name": "Manu Sporny",
-  "http://schema.org/url": {"@id": "http://manu.sporny.org/"},
-  "http://schema.org/image": {"@id": "http://manu.sporny.org/images/manu.png"}
-};
-const context = {
-  "name": "http://schema.org/name",
-  "homepage": {"@id": "http://schema.org/url", "@type": "@id"},
-  "image": {"@id": "http://schema.org/image", "@type": "@id"}
-};
-compact
-// compact a document according to a particular context
-const compacted = await jsonld.compact(doc, context);
-console.log(JSON.stringify(compacted, null, 2));
-/* Output:
-{
-  "@context": {...},
-  "name": "Manu Sporny",
-  "homepage": "http://manu.sporny.org/",
-  "image": "http://manu.sporny.org/images/manu.png"
-}
-*/
-
-// compact using URLs
-const compacted = await jsonld.compact(
-  'http://example.org/doc', 'http://example.org/context', ...);
-expand
-// expand a document, removing its context
-const expanded = await jsonld.expand(compacted);
-/* Output:
-{
-  "http://schema.org/name": [{"@value": "Manu Sporny"}],
-  "http://schema.org/url": [{"@id": "http://manu.sporny.org/"}],
-  "http://schema.org/image": [{"@id": "http://manu.sporny.org/images/manu.png"}]
-}
-*/
-
-// expand using URLs
-const expanded = await jsonld.expand('http://example.org/doc', ...);
-flatten
-// flatten a document
-const flattened = await jsonld.flatten(doc);
-// output has all deep-level trees flattened to the top-level
-frame
-// frame a document
-const framed = await jsonld.frame(doc, frame);
-// output transformed into a particular tree structure per the given frame
-canonize (normalize)
-// canonize (normalize) a document using the RDF Dataset Canonicalization Algorithm
-// (URDNA2015):
-const canonized = await jsonld.canonize(doc, {
-  algorithm: 'URDNA2015',
-  format: 'application/n-quads'
-});
-// canonized is a string that is a canonical representation of the document
-// that can be used for hashing, comparison, etc.
-toRDF (N-Quads)
-// serialize a document to N-Quads (RDF)
-const nquads = await jsonld.toRDF(doc, {format: 'application/n-quads'});
-// nquads is a string of N-Quads
-fromRDF (N-Quads)
-// deserialize N-Quads (RDF) to JSON-LD
-const doc = await jsonld.fromRDF(nquads, {format: 'application/n-quads'});
-// doc is JSON-LD
-Custom RDF Parser
-// register a custom synchronous RDF parser
-jsonld.registerRDFParser(contentType, input => {
-  // parse input to a jsonld.js RDF dataset object... and return it
-  return dataset;
-});
-
-// register a custom promise-based RDF parser
-jsonld.registerRDFParser(contentType, async input => {
-  // parse input into a jsonld.js RDF dataset object...
-  return new Promise(...);
-});
-Custom Document Loader
-// how to override the default document loader with a custom one -- for
-// example, one that uses pre-loaded contexts:
-
-// define a mapping of context URL => context doc
-const CONTEXTS = {
-  "http://example.com": {
-    "@context": ...
-  }, ...
-};
-
-// grab the built-in Node.js doc loader
-const nodeDocumentLoader = jsonld.documentLoaders.node();
-// or grab the XHR one: jsonld.documentLoaders.xhr()
-
-// change the default document loader
-const customLoader = async (url, options) => {
-  if(url in CONTEXTS) {
-    return {
-      contextUrl: null, // this is for a context via a link header
-      document: CONTEXTS[url], // this is the actual document that was loaded
-      documentUrl: url // this is the actual context URL after redirects
-    };
-  }
-  // call the default documentLoader
-  return nodeDocumentLoader(url);
-};
-jsonld.documentLoader = customLoader;
-
-// alternatively, pass the custom loader for just a specific call:
-const compacted = await jsonld.compact(
-  doc, context, {documentLoader: customLoader});
-Node.js Document Loader User-Agent
-It is recommended to set a default user-agent header for Node.js
-applications. The default for the default Node.js document loader is
-jsonld.js.
-Safe Mode
-A common use case is to avoid JSON-LD constructs that will result in lossy
-behavior. The JSON-LD specifications have notes about when data is dropped.
-This can be especially important when calling [canonize][] in order to
-digitally sign data. A special "safe mode" is available that will detect these
-situations and cause processing to fail.
-Note: This mode is designed to be the common way that digital signing and
-similar applications use this library.
-The safe options flag set to true enables this behavior:
-// expand a document in safe mode
-const expanded = await jsonld.expand(data, {safe: true});
-Tests
-This library includes a sample testing utility which may be used to verify
-that changes to the processor maintain the correct output.
-The main test suites are included in external repositories. Check out each of
-the following:
-https://github.com/w3c/json-ld-api
-https://github.com/w3c/json-ld-framing
-https://github.com/json-ld/json-ld.org
-https://github.com/w3c/rdf-canon
-
-They should be sibling directories of the jsonld.js directory or in a
-test-suites dir. To clone shallow copies into the test-suites dir you can
-use the following:
-npm run fetch-test-suites
-
-Node.js tests can be run with a simple command:
-npm test
-
-If you installed the test suites elsewhere, or wish to run other tests, use
-the TESTS environment var:
-TESTS="/tmp/org/test-suites /tmp/norm/tests" npm test
-
-This feature can be used to run the older json-ld.org test suite:
-TESTS=/tmp/json-ld.org/test-suite npm test
-
-Browser testing can be done with Karma:
-npm run test-karma
-npm run test-karma -- --browsers Firefox,Chrome
-
-Code coverage of node tests can be generated in coverage/:
-npm run coverage
-
-To display a full coverage report on the console from coverage data:
-npm run coverage-report
-
-The Mocha output reporter can be changed to min, dot, list, nyan, etc:
-REPORTER=dot npm test
-
-Remote context tests are also available:
-# run the context server in the background or another terminal
-node tests/remote-context-server.js
-
-TESTS=`pwd`/tests npm test
-
-To generate EARL reports:
-# generate the EARL report for Node.js
-EARL=earl-node.jsonld npm test
-
-# generate the EARL report for the browser
-EARL=earl-firefox.jsonld npm run test-karma -- --browser Firefox
-
-To generate an EARL report with the json-ld-api and json-ld-framing tests
-as used on the official JSON-LD Processor Conformance page
-TESTS="`pwd`/../json-ld-api/tests `pwd`/../json-ld-framing/tests" EARL="jsonld-js-earl.jsonld" npm test
-
-The EARL .jsonld output can be converted to .ttl using the rdf tool:
-rdf serialize jsonld-js-earl.jsonld --output-format turtle -o jsonld-js-earl.ttl
-
-Optionally follow the report
-instructions to
-generate the HTML report for inspection. Maintainers can
-submit updated results as needed.
-Benchmarks
-Benchmarks can be created from any manifest that the test system supports.
-Use a command line with a test suite and a benchmark flag:
-TESTS=/tmp/benchmark-manifest.jsonld BENCHMARK=1 npm test
-
-EARL reports with benchmark data can be generated with an optional environment
-details:
-TESTS=`pwd`/../json-ld.org/benchmarks/b001-manifiest.jsonld BENCHMARK=1 EARL=earl-test.jsonld TEST_ENV=1 npm test
-
-See tests/test.js for more TEST_ENV and BENCHMARK control and options.
-These reports can be compared with the benchmarks/compare/ tool and at the
-JSON-LD Benchmarks site.
-Related Modules
-
-jsonld-cli: A command line interface tool called jsonld that exposes
-most of the basic jsonld.js API.
-jsonld-request: A module that can read data from stdin, URLs, and files
-and in various formats and return JSON-LD.
-
-Source
-The source code for the JavaScript implementation of the JSON-LD API
-is available at:
-https://github.com/digitalbazaar/jsonld.js
-Commercial Support
-Commercial support for this library is available upon request from
-Digital Bazaar: support@digitalbazaar.com\n\n\n\ndigitalbazaar
-    
-    /
-    
-      jsonld.js
-    
-
-    Public
-  
-
-
-        
-
-        
-            
-    
-      
-
-  
-                Notifications
-    You must be signed in to change notification settings
-
-  
-
-  
-              Fork
-    200
-
-  
-
-  
-        
-            
-          Star
-          1.7k
-
-  
-
-
-
-        
-      
-
-        
-
-
-
-          
-
-  
-      
-  
-    
-              
-        Code
-          
-
-
-    
-
-      
-  
-    
-              
-        Issues
-          125
-
-
-    
-
-      
-  
-    
-              
-        Pull requests
-          28
-
-
-    
-
-      
-  
-    
-              
-        Actions
-          
-
-
-    
-
-      
-  
-    
-              
-        Projects
-          0
-
-
-    
-
-      
-  
-    
-              
-        Wiki
-          
-
-
-    
-
-      
-  
-    
-              
-        Security
-          
-
-    
-
-      
-  
-    
-              
-        Insights
-          
-
-
-    
-
-
-          
-  
-      
-Additional navigation options
-
-
-
-  
-    
-                
-  
-    
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Code
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Issues
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Pull requests
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Actions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Projects
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Wiki
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Security
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Insights
-      
-
-  
-
-    
-
-
-
-
-      
-  
-
-
-
-  
-
-  
-
-
-
-
-    
-    
-
-
-
-    
-      
-    
-
-
-
-
-
-
-
-
-
-  
-  
-     Files mainBreadcrumbsjsonld.js/karma.conf.jsCopy path Blame  Blame        Latest commit HistoryHistory227 lines (206 loc) · 6.42 KB mainBreadcrumbsjsonld.js/karma.conf.jsTopFile metadata and controlsCodeBlame227 lines (206 loc) · 6.42 KBRaw123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126127128129130131132133134135136137138139140141142143144145146147148149150151152153154155156157158159160161162163164165166167168169170171172173174175176177178179180181182183184185186187188189190191192193194195196197198199200201202203204205206207208209210211212213214215216217218219220221222223224225226227/** * Karma configuration for jsonld.js. * * See ./test/test.js for env options. * * @author Dave Longley * @author David I. Lehn * * Copyright (c) 2011-2023 Digital Bazaar, Inc. All rights reserved. */const os = require('os');const webpack = require('webpack');
-module.exports = function(config) {  // bundler to test: webpack, browserify  const bundler = process.env.BUNDLER || 'webpack';
-  const frameworks = ['mocha', 'server-side'];  // main bundle preprocessors  const preprocessors = ['babel'];
-  if(bundler === 'browserify') {    frameworks.push(bundler);    preprocessors.push(bundler);  } else if(bundler === 'webpack') {    preprocessors.push(bundler);    preprocessors.push('sourcemap');  } else {    throw Error('Unknown bundler');  }
-  config.set({    // base path that will be used to resolve all patterns (eg. files, exclude)    basePath: '',
-    // frameworks to use    // available frameworks: https://npmjs.org/browse/keyword/karma-adapter    frameworks,
-    // list of files / patterns to load in the browser    files: [      {        pattern: 'tests/test-karma.js',        watched: false, served: true, included: true      }    ],
-    // list of files to exclude    exclude: [],
-    // preprocess matching files before serving them to the browser    // available preprocessors:    // https://npmjs.org/browse/keyword/karma-preprocessor    preprocessors: {      //'tests/*.js': ['webpack', 'babel'] //preprocessors      'tests/*.js': preprocessors    },
-    webpack: {      mode: 'development',      devtool: 'inline-source-map',      plugins: [        new webpack.DefinePlugin({          'process.env.BAIL': JSON.stringify(process.env.BAIL),          'process.env.BENCHMARK': JSON.stringify(process.env.BENCHMARK),          'process.env.EARL': JSON.stringify(process.env.EARL),          'process.env.TESTS': JSON.stringify(process.env.TESTS),          'process.env.TEST_ENV': JSON.stringify(process.env.TEST_ENV),          'process.env.TEST_ROOT_DIR': JSON.stringify(__dirname),          'process.env.VERBOSE_SKIP': JSON.stringify(process.env.VERBOSE_SKIP),          // for 'auto' test env          'process.env._TEST_ENV_ARCH': JSON.stringify(process.arch),          'process.env._TEST_ENV_CPU': JSON.stringify(os.cpus()[0].model),          'process.env._TEST_ENV_CPU_COUNT': JSON.stringify(os.cpus().length),          'process.env._TEST_ENV_PLATFORM': JSON.stringify(process.platform),          'process.env._TEST_VERSION':            JSON.stringify(require('./package.json').version)        })      ],      module: {        rules: [          {            test: /\.js$/,            include: [{              // exclude node_modules by default              exclude: /(node_modules)/            }, {              // include specific packages              include: [                /(node_modules\/canonicalize)/,                /(node_modules\/lru-cache)/,                /(node_modules\/rdf-canonize)/,                /(node_modules\/yallist)/              ]            }],            use: {              loader: 'babel-loader',              options: {                presets: [                  [                    '@babel/preset-env',                    {                      useBuiltIns: 'usage',                      corejs: '3.9',                      bugfixes: true,                      //debug: true,                      targets: {                        // test with slightly looser browserslist defaults                        browsers: 'defaults, > 0.25%'                      }                    }                  ]                ],                plugins: [                  [                    '@babel/plugin-proposal-object-rest-spread',                    {useBuiltIns: true}                  ],                  '@babel/plugin-transform-modules-commonjs',                  '@babel/plugin-transform-runtime'                ]              }            }          }        ],        noParse: [          // avoid munging internal benchmark script magic          /benchmark/        ]      },      node: {        Buffer: false,        process: false,        crypto: false,        setImmediate: false      }    },
-    browserify: {      debug: false,      transform: [        //'uglifyify',        [          'envify', {            BAIL: process.env.BAIL,            BENCHMARK: process.env.BENCHMARK,            EARL: process.env.EARL,            TESTS: process.env.TESTS,            TEST_ENV: process.env.TEST_ENV,            TEST_ROOT_DIR: __dirname,            VERBOSE_SKIP: process.env.VERBOSE_SKIP,            // for 'auto' test env            _TEST_ENV_ARCH: process.arch,            _TEST_ENV_CPU: os.cpus()[0].model,            _TEST_ENV_CPU_COUNT: os.cpus().length,            _TEST_ENV_PLATFORM: process.platform,            _TEST_VERSION: require('./package.json').version          }        ]      ],      plugin: [        [          require('esmify')        ]      ]    },
-    // test results reporter to use    // possible values: 'dots', 'progress'    // available reporters: https://npmjs.org/browse/keyword/karma-reporter    //reporters: ['progress'],    reporters: ['mocha'],
-    // web server port    port: 9876,
-    // enable / disable colors in the output (reporters and logs)    colors: true,
-    // level of logging    // possible values: config.LOG_DISABLE || config.LOG_ERROR ||    // config.LOG_WARN || config.LOG_INFO || config.LOG_DEBUG    logLevel: config.LOG_INFO,
-    // enable / disable watching file and executing tests whenever any file    // changes    autoWatch: false,
-    // start these browsers    // available browser launchers:    // https://npmjs.org/browse/keyword/karma-launcher    //browsers: ['ChromeHeadless', 'Chrome', 'Firefox', 'Safari'],    browsers: ['ChromeHeadless'],
-    customLaunchers: {      IE9: {        base: 'IE',        'x-ua-compatible': 'IE=EmulateIE9'      },      IE8: {        base: 'IE',        'x-ua-compatible': 'IE=EmulateIE8'      }    },
-    // Continuous Integration mode    // if true, Karma captures browsers, runs the tests and exits    singleRun: true,
-    // Concurrency level    // how many browser should be started simultaneous    concurrency: Infinity,
-    // Mocha    client: {      mocha: {        // increase from default 2s        timeout: 10000,        reporter: 'html',        delay: true      }    },
-    // Proxied paths    proxies: {}  });};\n\n\n\ndigitalbazaar
-    
-    /
-    
-      jsonld.js
-    
-
-    Public
-  
-
-
-        
-
-        
-            
-    
-      
-
-  
-                Notifications
-    You must be signed in to change notification settings
-
-  
-
-  
-              Fork
-    200
-
-  
-
-  
-        
-            
-          Star
-          1.7k
-
-  
-
-
-
-        
-      
-
-        
-
-
-
-          
-
-  
-      
-  
-    
-              
-        Code
-          
-
-
-    
-
-      
-  
-    
-              
-        Issues
-          125
-
-
-    
-
-      
-  
-    
-              
-        Pull requests
-          28
-
-
-    
-
-      
-  
-    
-              
-        Actions
-          
-
-
-    
-
-      
-  
-    
-              
-        Projects
-          0
-
-
-    
-
-      
-  
-    
-              
-        Wiki
-          
-
-
-    
-
-      
-  
-    
-              
-        Security
-          
-
-    
-
-      
-  
-    
-              
-        Insights
-          
-
-
-    
-
-
-          
-  
-      
-Additional navigation options
-
-
-
-  
-    
-                
-  
-    
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Code
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Issues
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Pull requests
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Actions
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Projects
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Wiki
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Security
-      
-
-  
-
-        
-    
-    
-    
-        
-          
-        
-      
-        
-          Insights
-      
-
-  
-
-    
-
-
-
-
-      
-  
-
-
-
-  
-
-  
-
-
-
-
-    
-    
-
-
-
-    
-      
-    
-
-
-
-
-
-
-
-
-
-  
-  
-     Files mainBreadcrumbsjsonld.js/package.jsonCopy path Blame  Blame        Latest commit HistoryHistory126 lines (126 loc) · 4.24 KB mainBreadcrumbsjsonld.js/package.jsonTopFile metadata and controlsCodeBlame126 lines (126 loc) · 4.24 KBRaw123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108109110111112113114115116117118119120121122123124125126{  "name": "jsonld",  "version": "8.3.4-0",  "description": "A JSON-LD Processor and API implementation in JavaScript.",  "homepage": "https://github.com/digitalbazaar/jsonld.js",  "author": {    "name": "Digital Bazaar, Inc.",    "email": "support@digitalbazaar.com",    "url": "https://digitalbazaar.com/"  },  "contributors": [    "Dave Longley <dlongley@digitalbazaar.com>",    "David I. Lehn <dlehn@digitalbazaar.com>"  ],  "repository": {    "type": "git",    "url": "https://github.com/digitalbazaar/jsonld.js"  },  "bugs": {    "url": "https://github.com/digitalbazaar/jsonld.js/issues",    "email": "support@digitalbazaar.com"  },  "license": "BSD-3-Clause",  "main": "lib/index.js",  "files": [    "dist/*.js",    "dist/*.js.map",    "lib/*.js",    "lib/**/*.js"  ],  "dependencies": {    "@digitalbazaar/http-client": "^3.4.1",    "canonicalize": "^1.0.1",    "lru-cache": "^6.0.0",    "rdf-canonize": "^3.4.0"  },  "devDependencies": {    "@babel/core": "^7.21.8",    "@babel/plugin-proposal-object-rest-spread": "^7.20.7",    "@babel/plugin-transform-modules-commonjs": "^7.21.5",    "@babel/plugin-transform-runtime": "^7.21.4",    "@babel/preset-env": "^7.21.5",    "@babel/runtime": "^7.21.5",    "babel-loader": "^8.2.2",    "benchmark": "^2.1.4",    "browserify": "^17.0.0",    "chai": "^4.3.7",    "core-js": "^3.30.2",    "cors": "^2.8.5",    "cross-env": "^7.0.3",    "envify": "^4.1.0",    "eslint": "^8.41.0",    "eslint-config-digitalbazaar": "^3.0.0",    "esmify": "^2.1.1",    "express": "^4.18.2",    "fs-extra": "^9.1.0",    "join-path-js": "0.0.0",    "karma": "^5.2.3",    "karma-babel-preprocessor": "^8.0.2",    "karma-browserify": "^8.1.0",    "karma-chrome-launcher": "^3.2.0",    "karma-edge-launcher": "^0.4.2",    "karma-firefox-launcher": "^2.1.2",    "karma-ie-launcher": "^1.0.0",    "karma-mocha": "^2.0.1",    "karma-mocha-reporter": "^2.2.5",    "karma-safari-launcher": "^1.0.0",    "karma-server-side": "^1.8.0",    "karma-sourcemap-loader": "^0.3.7",    "karma-tap-reporter": "0.0.6",    "karma-webpack": "^4.0.2",    "klona": "^2.0.6",    "mocha": "^8.3.2",    "mocha-lcov-reporter": "^1.3.0",    "nyc": "^15.1.0",    "watchify": "^3.11.1",    "webpack": "^4.46.0",    "webpack-cli": "^4.5.0",    "webpack-merge": "^5.8.0"  },  "engines": {    "node": ">=14"  },  "keywords": [    "JSON",    "JSON-LD",    "Linked Data",    "RDF",    "Semantic Web",    "jsonld"  ],  "scripts": {    "prepack": "npm run build",    "build": "npm run build-webpack",    "build-webpack": "webpack",    "fetch-test-suites": "npm run fetch-json-ld-wg-test-suite && npm run fetch-json-ld-org-test-suite && npm run fetch-rdf-canon-test-suite",    "fetch-json-ld-wg-test-suite": "npm run fetch-json-ld-api-test-suite && npm run fetch-json-ld-framing-test-suite",    "fetch-json-ld-api-test-suite": "if [ ! -e test-suites/json-wg-api ]; then git clone --depth 1 https://github.com/w3c/json-ld-api.git test-suites/json-ld-api; fi",    "fetch-json-ld-framing-test-suite": "if [ ! -e test-suites/json-wg-framing ]; then git clone --depth 1 https://github.com/w3c/json-ld-framing.git test-suites/json-ld-framing; fi",    "fetch-json-ld-org-test-suite": "if [ ! -e test-suites/json-ld.org ]; then git clone --depth 1 https://github.com/json-ld/json-ld.org.git test-suites/json-ld.org; fi",    "fetch-rdf-canon-test-suite": "if [ ! -e test-suites/rdf-canon ]; then git clone --depth 1 https://github.com/w3c/rdf-canon.git test-suites/rdf-canon; fi",    "test": "npm run test-node",    "test-node": "cross-env NODE_ENV=test mocha --delay -t 30000 -A -R ${REPORTER:-spec} tests/test-node.js",    "test-karma": "cross-env NODE_ENV=test karma start",    "coverage": "cross-env NODE_ENV=test nyc --reporter=lcov --reporter=text-summary npm test",    "coverage-ci": "cross-env NODE_ENV=test nyc --reporter=lcovonly npm run test",    "coverage-report": "nyc report",    "lint": "eslint ."  },  "nyc": {    "exclude": [      "lib/documentLoaders/xhr.js",      "tests"    ]  },  "browser": {    "./lib/index.js": "./lib/jsonld.js",    "./lib/platform.js": "./lib/platform-browser.js",    "crypto": false,    "http": false,    "jsonld-request": false,    "request": false,    "url": false,    "util": false  }}\n\n\n\n
+See git history for changes.\n\n\n\n
