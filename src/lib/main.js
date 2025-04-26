@@ -14,9 +14,9 @@ export const PUBLIC_DATA_SOURCES = [
 /**
  * Retrieve list of data sources, merging default and custom sources.
  * @param {string} configPath - Path to custom data-sources.json file.
- * @returns {Promise<Array<{ name: string, url: string }>>}
+ * @returns {Array<{ name: string, url: string }>}
  */
-export async function listSources(
+export function listSources(
   configPath = path.join(process.cwd(), "data-sources.json")
 ) {
   let customSources = [];
@@ -28,9 +28,7 @@ export async function listSources(
         Array.isArray(parsed) &&
         parsed.every(
           (item) =>
-            item &&
-            typeof item.name === "string" &&
-            typeof item.url === "string"
+            item && typeof item.name === "string" && typeof item.url === "string"
         )
       ) {
         customSources = parsed;
@@ -144,11 +142,10 @@ export async function main(args) {
         res.writeHead(200, { "Content-Type": "text/plain" });
         return res.end(helpText);
       } else if (req.method === "GET" && req.url === "/sources") {
-        listSources().then((combined) => {
-          const body = JSON.stringify(combined, null, 2);
-          res.writeHead(200, { "Content-Type": "application/json" });
-          res.end(body);
-        });
+        const combined = listSources();
+        const body = JSON.stringify(combined, null, 2);
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(body);
         return;
       } else if (req.method === "GET" && req.url === "/diagnostics") {
         const diagnostics = {
@@ -215,7 +212,7 @@ export async function main(args) {
 
   // List public data sources, merging with optional user config
   if (cliArgs.includes("--list-sources")) {
-    const combined = await listSources();
+    const combined = listSources();
     console.log(JSON.stringify(combined, null, 2));
     return;
   }
