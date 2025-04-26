@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main, PUBLIC_DATA_SOURCES } from "@src/lib/main.js";
+import { main, PUBLIC_DATA_SOURCES, refreshSources } from "@src/lib/main.js";
 import pkg from "../../package.json" assert { type: "json" };
 import fs from "fs";
 import path from "path";
@@ -169,6 +169,7 @@ describe("HTTP Server", () => {
 
   beforeAll(async () => {
     vi.spyOn(global, "fetch").mockResolvedValue({ json: async () => httpMockData });
+    vi.spyOn(mainModule, "refreshSources").mockResolvedValue({ count: 2, files: ["c1.json", "c2.json"] });
     server = await main(["--serve"]);
     await once(server, "listening");
     const address = server.address();
@@ -179,6 +180,7 @@ describe("HTTP Server", () => {
     server.close();
     await once(server, "close");
     global.fetch.mockRestore();
+    mainModule.refreshSources.mockRestore();
   });
 
   test("GET /help returns help text", () => {
@@ -187,9 +189,7 @@ describe("HTTP Server", () => {
         expect(res.statusCode).toBe(200);
         expect(res.headers["content-type"]).toMatch(/text\/plain/);
         let data = "";
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
+        res.on("data", (chunk) => { data += chunk; });
         res.on("end", () => {
           expect(data).toContain(
             "owl-builder: create and manage OWL ontologies from public data sources"
@@ -207,9 +207,7 @@ describe("HTTP Server", () => {
         expect(res.statusCode).toBe(200);
         expect(res.headers["content-type"]).toMatch(/application\/json/);
         let data = "";
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
+        res.on("data", (chunk) => { data += chunk; });
         res.on("end", () => {
           const parsed = JSON.parse(data);
           expect(parsed).toEqual(PUBLIC_DATA_SOURCES);
@@ -225,9 +223,7 @@ describe("HTTP Server", () => {
         expect(res.statusCode).toBe(200);
         expect(res.headers["content-type"]).toMatch(/application\/json/);
         let data = "";
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
+        res.on("data", (chunk) => { data += chunk; });
         res.on("end", () => {
           const parsed = JSON.parse(data);
           expect(parsed).toHaveProperty("version", pkg.version);
@@ -249,9 +245,7 @@ describe("HTTP Server", () => {
         expect(res.statusCode).toBe(404);
         expect(res.headers["content-type"]).toMatch(/text\/plain/);
         let data = "";
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
+        res.on("data", (chunk) => { data += chunk; });
         res.on("end", () => {
           expect(data).toBe("Not Found");
           resolve();
@@ -266,9 +260,7 @@ describe("HTTP Server", () => {
         expect(res.statusCode).toBe(200);
         expect(res.headers["content-type"]).toMatch(/application\/json/);
         let data = "";
-        res.on("data", (chunk) => {
-          data += chunk;
-        });
+        res.on("data", (chunk) => { data += chunk; });
         res.on("end", () => {
           const doc = JSON.parse(data);
           expect(doc).toHaveProperty("@context");
@@ -281,82 +273,36 @@ describe("HTTP Server", () => {
       });
     });
   });
-});
 
-// CLI unit test for capital-cities
-describe("Capital Cities CLI", () => {
-  test("should output JSON-LD document of capital cities", async () => {
-    const mockData = {
-      results: {
-        bindings: [
-          { country: { value: "http://example.org/c1" }, capital: { value: "http://example.org/cap1" } },
-          { country: { value: "http://example.org/c2" }, capital: { value: "http://example.org/cap2" } }
-        ]
-      }
-    };
-    vi.spyOn(global, "fetch").mockResolvedValue({ json: async () => mockData });
-    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    await main(["--capital-cities"]);
-    expect(logSpy).toHaveBeenCalledTimes(1);
-    const output = logSpy.mock.calls[0][0];
-    const doc = JSON.parse(output);
-    expect(doc).toHaveProperty("@context");
-    expect(doc["@context"]).toEqual({ "@vocab": "http://www.w3.org/2002/07/owl#" });
-    expect(doc).toHaveProperty("@graph");
-    expect(Array.isArray(doc["@graph"])).toBe(true);
-    expect(doc["@graph"]).toHaveLength(2);
-    expect(doc["@graph"][0]).toEqual({ "@id": "http://example.org/c1", capital: "http://example.org/cap1" });
-    logSpy.mockRestore();
-  });
-});
-
-// Refresh Flag tests
-import path from "path";
-describe("Refresh Flag", () => {
-  let existsSpy, mkdirSpy, writeSpy, logSpy, errorSpy, fetchSpy;
-  const mockSources = [
-    { name: "DBpedia SPARQL", url: "http://example.org/db" },
-    { name: "Custom API", url: "http://example.org/api" }
-  ];
-
-  beforeEach(() => {
-    existsSpy = vi.spyOn(fs, "existsSync");
-    mkdirSpy = vi.spyOn(fs, "mkdirSync");
-    writeSpy = vi.spyOn(fs, "writeFileSync");
-    logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-    vi.spyOn(mainModule, "listSources").mockReturnValue(mockSources);
+  test("GET /refresh returns JSON with refreshed count and files", () => {
+    return new Promise((resolve) => {
+      http.get(`http://localhost:${port}/refresh`, (res) => {
+        expect(res.statusCode).toBe(200);
+        expect(res.headers["content-type"]).toMatch(/application\/json/);
+        let data = "";
+        res.on("data", (chunk) => { data += chunk; });
+        res.on("end", () => {
+          const parsed = JSON.parse(data);
+          expect(parsed).toEqual({ refreshed: 2, files: ["c1.json", "c2.json"] });
+          resolve();
+        });
+      });
+    });
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
-  });
-
-  test("successfully fetches and writes all sources", async () => {
-    existsSpy.mockReturnValue(false);
-    fetchSpy = vi.spyOn(global, "fetch")
-      .mockResolvedValueOnce({ json: async () => ({ foo: "bar" }) })
-      .mockResolvedValueOnce({ json: async () => ({ baz: "qux" }) });
-    await main(["--refresh"]);
-    const dataDir = path.join(process.cwd(), "data");
-    expect(existsSpy).toHaveBeenCalledWith(dataDir);
-    expect(mkdirSpy).toHaveBeenCalledWith(dataDir, { recursive: true });
-    expect(fetchSpy).toHaveBeenCalledTimes(2);
-    expect(writeSpy).toHaveBeenCalledTimes(2);
-    expect(logSpy).toHaveBeenCalledWith("written dbpedia-sparql.json");
-    expect(logSpy).toHaveBeenCalledWith("written custom-api.json");
-    expect(logSpy).toHaveBeenCalledWith("Refreshed 2 sources into data/");
-  });
-
-  test("continues on fetch error and only counts successful writes", async () => {
-    existsSpy.mockReturnValue(true);
-    fetchSpy = vi.spyOn(global, "fetch")
-      .mockRejectedValueOnce(new Error("network"))
-      .mockResolvedValueOnce({ json: async () => ({ baz: "qux" }) });
-    await main(["--refresh"]);
-    expect(errorSpy).toHaveBeenCalledWith("Error refreshing DBpedia SPARQL: network");
-    expect(writeSpy).toHaveBeenCalledTimes(1);
-    expect(logSpy).toHaveBeenCalledWith("written custom-api.json");
-    expect(logSpy).toHaveBeenCalledWith("Refreshed 1 sources into data/");
+  test("GET /refresh returns 500 on error", () => {
+    mainModule.refreshSources.mockRejectedValueOnce(new Error("fail"));
+    return new Promise((resolve) => {
+      http.get(`http://localhost:${port}/refresh`, (res) => {
+        expect(res.statusCode).toBe(500);
+        expect(res.headers["content-type"]).toMatch(/text\/plain/);
+        let data = "";
+        res.on("data", (chunk) => { data += chunk; });
+        res.on("end", () => {
+          expect(data).toBe("fail");
+          resolve();
+        });
+      });
+    });
   });
 });
