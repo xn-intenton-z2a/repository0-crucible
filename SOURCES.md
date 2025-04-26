@@ -1,47 +1,53 @@
 # JSON-LD 1.1 Specification
 ## https://www.w3.org/TR/json-ld11/
-The official W3C Recommendation for JSON-LD 1.1 defines the core RDF-based data model, context definitions, term mapping, data coercion rules, and processing algorithms, including expand, compact, flatten, frame, and toRDF operations. It details error-handling behaviors, framing, normalization, and canonicalization strategies—critical for implementing robust `--refresh`, `--merge-persist`, and `--query` workflows and ensuring lossless round-trip conversions between JSON and RDF.
-Last Updated: 16 January 2020. Highly authoritative as the formal W3C Recommendation.
+The official W3C Recommendation for JSON-LD 1.1 defines the core RDF-based data model, context definitions, term mapping, data coercion rules, and processing algorithms—expand, compact, flatten, frame, and toRDF. It details error handling, framing, normalization, and canonicalization strategies, crucial for implementing `--refresh`, `--merge-persist`, and `--query` features. Last Updated: 16 January 2020. Highly authoritative as the formal W3C Recommendation.
 ## CC0 1.0 Universal
 
 # OWL 2 Web Ontology Language Overview
 ## https://www.w3.org/TR/owl2-overview/
-This W3C Recommendation provides a concise introduction to OWL 2, covering its three profiles (EL, QL, RL), core constructs (Classes, ObjectProperty, DatatypeProperty), and syntax mappings (RDF/XML, Functional, Manchester). It guides the design of standard @context definitions for OWL ontologies and the interpretation of axioms when transforming JSON inputs into OWL in the `--refresh` workflow.
-Last Updated: 11 December 2012. Authoritative W3C Standard.
+A concise introduction to OWL 2 covering its profiles (EL, QL, RL), core constructs (Classes, ObjectProperty, DatatypeProperty), and syntax mappings (RDF/XML, Functional, Manchester). Guides design of @context definitions and interpretation of axioms when transforming JSON inputs into OWL in the `--refresh` workflow. Last Updated: 11 December 2012. Authoritative W3C Recommendation.
 ## CC0 1.0 Universal
 
 # SPARQL 1.1 Query Language
 ## https://www.w3.org/TR/sparql11-query/
-Defines the full syntax and semantics for SELECT, ASK, CONSTRUCT, and DESCRIBE queries over RDF datasets. Covers graph patterns, property paths, filters, aggregates, solution modifiers, and algebraic operators—foundational for implementing the `--query` feature using jsonld.toRDF, N3.Store, and SPARQL.js to parse and execute queries in-process.
-Last Updated: 21 March 2013. Highly authoritative W3C Recommendation.
+Defines syntax and semantics for SELECT, ASK, CONSTRUCT, and DESCRIBE queries over RDF. Covers graph patterns, property paths, filters, aggregates, solution modifiers, and algebraic operators. Foundational for implementing the `--query` feature with SPARQL.js and N3.Store. Last Updated: 21 March 2013. Highly authoritative W3C Recommendation.
 ## CC0 1.0 Universal
 
-# RDF 1.1 Concepts and Abstract Syntax
+# RDF 1.1 Family Specifications
 ## https://www.w3.org/TR/rdf11-concepts/
-Describes the abstract syntax and data model of RDF 1.1, including terms (IRIs, literals, blank nodes), triples, graphs, and graph merging. Clarifies the mapping from JSON-LD to RDF triples used by jsonld.toRDF and in-memory stores like N3.Store, ensuring correct interpretation of graphs, blank nodes, and datatypes when flattening and deduplicating ontologies.
-Last Updated: 25 February 2014. Highly authoritative W3C Recommendation.
+Describes the abstract syntax and data model of RDF 1.1, including IRIs, literals, blank nodes, triples, and graphs. Clarifies mapping from JSON-LD to RDF triples essential for graph merging and normalization.
+
+## https://www.w3.org/TR/n-quads/
+Specifies the N-Quads plain text serialization for RDF datasets, including ordering, line-based parsing rules, and canonical ordering—critical for implementing jsonld.toRDF outputs and consistent serialization in `--export-format nquads`.
+
+## https://www.w3.org/TR/turtle/
+Outlines the Turtle syntax for RDF graphs, including prefixes, short-hand properties, and collections. Enables serialization of N-Quads into user-friendly Turtle in the `--export-format turtle` workflow.
+
 ## W3C Document License
 
 # JavaScript RDF & SPARQL Libraries
 ## https://www.npmjs.com/package/n3
-N3.js is a high-performance, standards-compliant JavaScript library for parsing and serializing RDF in N-Triples, N-Quads, Turtle, and TriG formats, featuring an in-memory N3.Store for efficient triple storage and streaming parsers/writers. Combined with the SPARQL.js package for parsing SPARQL 1.1 into ASTs, these libraries power in-process SPARQL execution and RDF handling in the `--refresh`, `--merge-persist`, and `--query` workflows.
-Last Published: current. MIT License.
+N3.js provides parsing and serializing of RDF in N-Triples, N-Quads, Turtle, and TriG, alongside an in-memory N3.Store and streaming parsers/writers. Powers efficient RDF handling in `--refresh`, `--export-format`, and `--query` workflows. Last Published: current.
+## MIT
+
+## https://www.npmjs.com/package/sparqljs
+SPARQL.js parses SPARQL 1.1 queries into abstract syntax trees, facilitating in-process query execution and validation of SELECT and ASK operations. Last Published: current.
 ## MIT
 
 # jsonld.js JavaScript Library
 ## https://www.npmjs.com/package/jsonld
-Digital Bazaar’s jsonld.js offers a complete JavaScript implementation of the JSON-LD API (expand, compact, flatten, frame, toRDF). It integrates seamlessly with Node.js, supports in-memory normalization, graph merging, and XSD datatype coercion—essential for the `--refresh` transformation pipeline and deduplication in `--merge-persist`.
-Last Published: 2024. MIT License.
+Digital Bazaar’s jsonld.js offers a complete JSON-LD API implementation for expand, compact, flatten, frame, and toRDF. Integrates with Node.js, supports datatypes and normalization—core to `--refresh` and `--merge-persist`. Last Published: 2024.
 ## MIT
 
-# Node.js Core API Reference
+# Node.js HTTP and File System API Reference
 ## https://nodejs.org/api/http.html
-Comprehensive documentation for the built-in Node.js HTTP and fs/promises modules. Details creating RESTful servers, routing, request/response handling, stream support, and asynchronous file operations—foundational for implementing the `--serve` API endpoints, file I/O in `--refresh` and `--merge-persist`, and handling streaming query results.
-Current for Node.js v20.x. Authoritative OpenJS Foundation documentation.
+Comprehensive docs for the built-in HTTP module, including server creation, routing, streams, and request/response handling. Underpins the `--serve` REST API endpoints and streaming results.
+
+## https://nodejs.org/api/fs.html#fs_fs_promises_api
+Details the fs/promises API for asynchronous file operations, essential for reading and writing ontology files in `--refresh`, `--merge-persist`, and `--export-format` flows.
 ## CC BY-SA 3.0
 
 # REST Countries API
 ## https://restcountries.com/#api-endpoints-v3-all
-Public JSON API delivering detailed country data (names, ISO codes, capitals, regions, populations). The `/v3.1/all` endpoint returns comprehensive arrays ideal for the `--capital-cities` alias and for feeding dynamic data into the `--refresh` workflow. Includes parameters, response schemas, and practical usage examples.
-Last Reviewed: 2024. Data licensed under CC0.
+Public JSON API delivering country data (names, ISO codes, capitals, regions, populations). The `/v3.1/all` endpoint returns arrays ideal for `--capital-cities`. Includes parameters, response schemas, and examples. Last Reviewed: 2024.
 ## CC0 1.0 Universal
