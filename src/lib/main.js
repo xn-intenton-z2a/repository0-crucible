@@ -221,7 +221,9 @@ export async function main(args) {
 
   // Refresh option
   if (cliArgs.includes("--refresh")) {
-    const sources = listSources();
+    // dynamically import to pick up mocked listSources in tests
+    const mod = await import(import.meta.url);
+    const sources = mod.listSources();
     const dataDir = path.join(process.cwd(), "data");
     if (!fs.existsSync(dataDir)) {
       fs.mkdirSync(dataDir, { recursive: true });
