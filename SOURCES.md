@@ -15,7 +15,7 @@ The JSON-LD 1.1 specification defines how to serialize RDF graphs in JSON, enabl
 
 # RDF/JS Data Model Specification
 ## https://rdf.js.org/data-model-spec/
-The RDF/JS Data Model spec defines a standard JavaScript API for creating, inspecting, and comparing RDF terms (NamedNode, Literal, BlankNode, Quad). It outlines interfaces, factory methods, and type signatures crucial for interoperable RDF libraries in Node.js and the browser. This ensures consistent in-memory representations of RDF for downstream OWL conversion. Published online under public domain dedication; maintained by the RDF/JS community.
+The RDF/JS Data Model specification defines a standard JavaScript API for creating, inspecting, and comparing RDF terms (NamedNode, Literal, BlankNode, Quad). It outlines interfaces, factory methods, and type signatures crucial for interoperable RDF libraries in Node.js and the browser. This ensures consistent in-memory representations of RDF for downstream OWL conversion. Published online under public domain dedication; maintained by the RDF/JS community.
 ## Public Domain
 
 # SPARQL 1.1 Query Language
@@ -23,17 +23,17 @@ The RDF/JS Data Model spec defines a standard JavaScript API for creating, inspe
 SPARQL 1.1 Query Language specifies syntax and semantics for querying RDF graphs, including SELECT, CONSTRUCT, ASK, and DESCRIBE forms, along with advanced features like subqueries, aggregates, and property paths. It is essential for extracting patterns from ontologies and for testing transformed OWL models. Last updated 21 March 2013; as a W3C Recommendation, it is the de facto standard for RDF data interrogation.
 ## W3C Document License 1.0
 
-# DBpedia SPARQL Endpoint Documentation
-## https://wiki.dbpedia.org/services-resources/sparql-endpoint
-This guide details accessing DBpedia’s public SPARQL endpoint, including endpoint URLs, query parameters, rate limits, and example queries. DBpedia’s ontology-aligned data serves as a real-world reference for ontology completeness and alignment tests. The documentation provides tips on pagination, HTTP headers, and result serialization formats (JSON, XML), enabling robust crawler implementations. Licensed under CC BY-SA 3.0.
-## CC BY-SA 3.0
-
 # rdflib.js JavaScript Library
 ## https://github.com/linkeddata/rdflib.js#readme
 rdflib.js implements the RDF/JS interfaces and provides utilities for parsing, serializing, and storing RDF graphs in JavaScript. The README includes installation steps, code snippets for loading Turtle/JSON-LD, SPARQL querying in‐memory, and linking to remote endpoints. This source is vital for rapid prototyping of OWL workflows and aligns directly with the project’s module architecture. Last updated monthly; project is MIT-licensed.
 ## MIT License
 
-# World Bank API Developer Guide
-## https://datahelpdesk.worldbank.org/knowledgebase/articles/889386-developer-information-overview
-The World Bank Open Data API guide explains RESTful endpoints for retrieving economic, social, and environmental indicators in JSON. It covers URL conventions, pagination, filtering, and bulk downloads—key for populating ontologies with global statistics. Examples demonstrate HTTP request formats and response structures, enabling straightforward integration into crawling modules. Data is in the public domain.
+# REST Countries API Developer Documentation
+## https://restcountries.com/
+The REST Countries API offers a simple RESTful interface to retrieve detailed country data in JSON, including names, capitals, populations, and geographic information. Endpoints such as `/v3.1/all` and field filtering enable efficient data fetch for OWL population modules. The documentation describes URL conventions, parameters, pagination, and response schemas, providing actionable guidance for implementing the `--fetch` feature. Publicly accessible and maintained; data is in the public domain.
 ## Public Domain
+
+# Comunica SPARQL Query Engine Documentation
+## https://comunica.dev/docs/query/
+Comunica is a modular JavaScript framework for executing SPARQL queries over heterogeneous sources (files, endpoints, streams). The documentation covers install, source configuration, query execution API, and examples of federated queries. It provides practical insights into building robust SPARQL clients in Node.js and browsers, complementing rdflib.js for advanced query scenarios. Regularly updated; project is MIT-licensed.
+## MIT License
