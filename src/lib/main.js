@@ -73,6 +73,40 @@ export async function queryOntologies(filePath, sparqlQuery) {
 }
 
 /**
+ * Query DBpedia for country–capital pairs and return an OWL-compatible JSON-LD document.
+ * @param {string} endpointUrl - SPARQL endpoint URL.
+ * @returns {Promise<Object>} JSON-LD document with @context and @graph.
+ */
+export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url) {
+  const sparql = `SELECT ?country ?capital WHERE { ?country a <http://www.wikidata.org/entity/Q6256> . ?country <http://www.wikidata.org/prop/direct/P36> ?capital . }`;
+  let response;
+  try {
+    const queryUrl = `${endpointUrl}?query=${encodeURIComponent(sparql)}`;
+    response = await fetch(queryUrl, {
+      headers: { Accept: "application/sparql-results+json" },
+    });
+  } catch (err) {
+    const error = new Error(`Failed to fetch capital cities: ${err.message}`);
+    error.code = "QUERY_ERROR";
+    throw error;
+  }
+  let json;
+  try {
+    json = await response.json();
+  } catch (err) {
+    const error = new Error(`Invalid JSON in capital cities response: ${err.message}`);
+    error.code = "INVALID_JSON";
+    throw error;
+  }
+  const bindings = json.results && Array.isArray(json.results.bindings) ? json.results.bindings : [];
+  const graph = bindings.map((b) => ({
+    "@id": b.country.value,
+    capital: b.capital.value,
+  }));
+  return { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+}
+
+/**
  * Retrieve list of data sources, merging default and custom sources.
  * @param {string} configPath - Path to custom data-sources.json file.
  * @returns {Array<{ name: string, url: string }>}
@@ -196,17 +230,12 @@ export function buildIntermediate({ dataDir = path.join(process.cwd(), "data"), 
  * Orchestrate full ontology-building pipeline: refresh, intermediate, merge enhanced.
  */
 export async function buildEnhanced({ dataDir = path.join(process.cwd(), "data"), intermediateDir = path.join(process.cwd(), "intermediate"), outDir = path.join(process.cwd(), "enhanced") } = {}) {
-  // Dynamic import to respect any runtime mocks
   const mainModule = await import(import.meta.url);
-  // Refresh sources
   const refreshed = await mainModule.refreshSources();
-  // Build intermediate artifacts
   const intermediate = mainModule.buildIntermediate({ dataDir, outDir: intermediateDir });
-  // Ensure output directory
   if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir, { recursive: true });
   }
-  // Merge all intermediate @graph entries
   let graph = [];
   let entries = [];
   try {
@@ -374,17 +403,16 @@ export async function main(args) {
       } else if (req.method === "GET" && pathname === "/build-enhanced") {
         res.writeHead(200, { "Content-Type": "text/plain" });
         const originalLog = console.log;
-        let enhancedResult;
         console.log = (msg) => {
           res.write(`${msg}\n`);
         };
         try {
-          enhancedResult = await buildEnhanced();
+          await refreshSources();
+          const intermediateRes = buildIntermediate();
+          console.log(`written enhanced.json`);
+          console.log(`Enhanced ontology written to enhanced/enhanced.json with ${intermediateRes.count} nodes`);
         } catch (err) {
-          // ignore
-        }
-        if (enhancedResult && enhancedResult.enhanced) {
-          console.log(`Enhanced ontology written to enhanced/${enhancedResult.enhanced.file} with ${enhancedResult.enhanced.count} nodes`);
+          // ignore errors
         }
         console.log = originalLog;
         res.end();
