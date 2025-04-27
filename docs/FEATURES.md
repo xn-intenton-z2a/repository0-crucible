@@ -14,23 +14,7 @@
   - **dataFiles**: Sorted list of JSON filenames present in `data/` (or an empty array if none).
   - **intermediateFilesCount**: Number of JSON files in the project `intermediate/` directory (or `0` if directory is missing).
   - **intermediateFiles**: Sorted list of JSON filenames present in `intermediate/` (or an empty array if none).
-
-Example output:
-```json
-{
-  "version": "1.2.0-0",
-  "nodeVersion": "v20.0.0",
-  "platform": "linux",
-  "arch": "x64",
-  "cwd": "/path/to/project",
-  "uptimeSeconds": 123.45,
-  "memoryUsage": { /* ... */ },
-  "publicDataSources": [ /* ... */ ],
-  "commands": [ /* ... */ ],
-  "healthChecks": [ /* ... */ ],
-  "dataFilesCount": 2,
-  "dataFiles": ["a.json","b.json"],
-  "intermediateFilesCount": 1,
-  "intermediateFiles": ["x.json"]
-}
-```
+- **Build Intermediate (`--build-intermediate`)**: Reads JSON files from `data/`, transforms each into OWL JSON-LD intermediate artifacts in `intermediate/`, logs each write, and prints a summary line.
+- **Default Behavior**: Running the CLI without any flags logs the provided arguments.
+- **Capital Cities (`--capital-cities`)**: Queries DBpedia for country-capital pairs and outputs an OWL-compatible JSON-LD document with `@context` and `@graph`.
+- **SPARQL Query (`--query`, `-q`)**: Execute SPARQL SELECT or ASK queries on JSON-LD OWL artifacts and output results in SPARQL JSON format.
