@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="query_framework" href="#query_framework"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>QUERY_FRAMEWORK</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">QueryEngine API: newEngine(initContext?) returns QueryEngine. QueryEngine methods: query, queryBindings, queryQuads, queryVoid. Context keys and defaults: sources[], fetch=node-fetch, lenient=false, baseIRI=&quot;&quot;, httpTimeout=300000, batchSize=100. Supports SELECT, ASK, CONSTRUCT, DESCRIBE.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1  Instantiating the Query Engine
+2  Executing SPARQL Queries
+3  Streaming and Handling Results
+4  Context Configuration
+5  RDF/JS Data Model Integration</p>
+<p class="md-github">1  Instantiating the Query Engine
+Method signature
+newEngine(initContext?: IActorQueryOperationOutputInit): QueryEngine
+initContext keys
+sources: (string|RdfSource)[] default []
+fetch: typeof fetch default node-fetch</p>
+<p class="md-github">2  Executing SPARQL Queries
+Method signature
+engine.query(query: string|Algebra.Operation, context?: IActionContextInit): Promise<IQueryResult>
+query types
+SELECT, ASK, CONSTRUCT, DESCRIBE, UPDATE</p>
+<p class="md-github">3  Streaming and Handling Results
+SELECT/CONSTRUCT returns IBindingsStream or IQuadStream
+IBindingsStream: NodeJS.ReadableStream emitting Bindings objects
+IQuadStream: Quad stream implementing RDF/JS Stream<Quad>
+ASK returns Promise<boolean> via queryBoolean
+UPDATE uses queryVoid</p>
+<p class="md-github">4  Context Configuration
+context keys and types
+sources: array of endpoint URLs, file paths, or in-memory sources
+baseIRI: string used for relative IRIs
+lenient: boolean to ignore parse errors
+httpTimeout: number in ms
+batchSize: number of triples per fragment</p>
+<p class="md-github">5  RDF/JS Data Model Integration
+Requires compatible DataFactory implementing RDF/JS spec
+import { DataFactory } from 'rdf-data-factory'
+DataFactory.termToString for debugging</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Context parameters
+sources: any URI, file path, or InMemoryQuadSource implementing RDF/JS Source
+fetch: any function matching fetch(url, init) returning Promise<Response>
+lenient: toggles error recovery in SPARQL parser
+baseIRI: default '' resolves relative IRIs
+httpTimeout: default 300000ms stops slow HTTP
+batchSize: default 100 triples per page from fragment sources
+Implementation steps
+1  Install dependencies: npm install @comunica/actor-init-sparql rdf-data-factory
+2  Import newEngine and DataFactory
+3  Instantiate engine with custom context
+4  Call engine.query or specialized methods
+5  Handle streams and end events</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specifications</p>
+<p class="md-github">newEngine
+Signature
+function newEngine(initContext?: IActorQueryOperationOutputInit): QueryEngine
+Parameters
+initContext
+sources: (string|RdfSource)[] default []
+fetch: (input: string, init?: RequestInit) =&gt; Promise<Response> default node-fetch
+baseIRI: string default ''
+lenient: boolean default false
+httpTimeout: number default 300000
+batchSize: number default 100
+Returns
+QueryEngine instance</p>
+<p class="md-github">QueryEngine.query
+Signature
+query(query: string|Algebra.Operation, context?: IActionContextInit): Promise<IQueryResult>
+Parameters
+query: SPARQL string or parsed Algebra Operation
+context: overrides initial context keys
+Returns
+IQueryResult: { type: 'bindings'|'quads'|'boolean'|'void', bindings? IBindingsStream, quadStream? IQuadStream, boolean? boolean }</p>
+<p class="md-github">QueryEngine.queryBindings
+Signature
+queryBindings(query: string|Algebra.Operation, context?: IActionContextInit): Promise<IBindingsStream>
+Returns
+NodeJS.ReadableStream emitting Bindings</p>
+<p class="md-github">QueryEngine.queryQuads
+Signature
+queryQuads(query: string|Algebra.Operation, context?: IActionContextInit): Promise<IQuadStream>
+Returns
+Stream<Quad></p>
+<p class="md-github">QueryEngine.queryBoolean
+Signature
+queryBoolean(query: string|Algebra.Operation, context?: IActionContextInit): Promise<boolean></p>
+<p class="md-github">QueryEngine.queryVoid
+Signature
+queryVoid(query: string|Algebra.Operation, context?: IActionContextInit): Promise<void></p>
+<p class="md-github">Concrete example with full comments</p>
+<p class="md-github">import { newEngine } from '@comunica/actor-init-sparql'
+import { DataFactory } from 'rdf-data-factory'</p>
+<p class="md-github">(async () =&gt; {
+const engine = newEngine({
+sources: ['https://dbpedia.org/sparql'],
+fetch: fetch,
+baseIRI: 'http://example.org/',
+lenient: true,
+httpTimeout: 60000,
+batchSize: 200,
+})
+const stream = await engine.queryBindings(
+'SELECT ?s WHERE { ?s a <a href="http://xmlns.com/foaf/0.1/Person" class="md-github">http://xmlns.com/foaf/0.1/Person</a> }'
+)
+stream.on('data', binding =&gt; {
+console.log(binding.get('?s').value)
+})
+stream.on('end', () =&gt; console.log('Completed'))
+})()</p>
+<p class="md-github">Best Practices</p>
+<ul class="md-github">
+<li class="md-github">Provide explicit sources array for reproducibility</li>
+<li class="md-github">Use queryBindings for large SELECT result sets to control backpressure</li>
+<li class="md-github">Set httpTimeout to guard against unresponsive SPARQL endpoints</li>
+<li class="md-github">Enable lenient mode only when parsing legacy or malformed data</li>
+</ul>
+<p class="md-github">Troubleshooting
+Enable detailed logging: set environment variable DEBUG=comunica* and run node script
+Expected log prefix: comunica:bus comunica:mediator comunica:actor-init-sparql
+If fetch errors occur, wrap engine.query in try/catch and inspect error.type and error.message</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">newEngine(initContext?)→QueryEngine; context keys: sources[], fetch, baseIRI, lenient, httpTimeout(300000), batchSize(100); QueryEngine.query(query,context)→IQueryResult[type:bindings|quads|boolean|void]; QueryEngine.queryBindings→BindingsStream; QueryEngine.queryQuads→QuadStream; QueryEngine.queryBoolean→boolean; QueryEngine.queryVoid→void; IBindingsStream: NodeJS.ReadableStream emitting Bindings; IQuadStream: RDF/JS Stream<Quad>; default fetch=node-fetch; supports SELECT ASK CONSTRUCT DESCRIBE UPDATE; best practices: explicit sources, backpressure control, timeout guard; debug with DEBUG=comunica*</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1  Instantiating the Query Engine
+2  Executing SPARQL Queries
+3  Streaming and Handling Results
+4  Context Configuration
+5  RDF/JS Data Model Integration</p>
+<p class="md-github">1  Instantiating the Query Engine
+Method signature
+newEngine(initContext?: IActorQueryOperationOutputInit): QueryEngine
+initContext keys
+sources: (string|RdfSource)[] default []
+fetch: typeof fetch default node-fetch</p>
+<p class="md-github">2  Executing SPARQL Queries
+Method signature
+engine.query(query: string|Algebra.Operation, context?: IActionContextInit): Promise<IQueryResult>
+query types
+SELECT, ASK, CONSTRUCT, DESCRIBE, UPDATE</p>
+<p class="md-github">3  Streaming and Handling Results
+SELECT/CONSTRUCT returns IBindingsStream or IQuadStream
+IBindingsStream: NodeJS.ReadableStream emitting Bindings objects
+IQuadStream: Quad stream implementing RDF/JS Stream<Quad>
+ASK returns Promise<boolean> via queryBoolean
+UPDATE uses queryVoid</p>
+<p class="md-github">4  Context Configuration
+context keys and types
+sources: array of endpoint URLs, file paths, or in-memory sources
+baseIRI: string used for relative IRIs
+lenient: boolean to ignore parse errors
+httpTimeout: number in ms
+batchSize: number of triples per fragment</p>
+<p class="md-github">5  RDF/JS Data Model Integration
+Requires compatible DataFactory implementing RDF/JS spec
+import { DataFactory } from 'rdf-data-factory'
+DataFactory.termToString for debugging</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">RDF/JS Data Model &amp; Streams with rdf-ext and Comunica SPARQL Framework
+https://comunica.dev/docs/query/framework</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-query_framework" href="#digest-of-query_framework"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of QUERY_FRAMEWORK</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="comunica-sparql-query-framework" href="#comunica-sparql-query-framework"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Comunica SPARQL Query Framework</h1>
+<h1 class="md-github"><a class="md-github__anchor" name="api-overview" href="#api-overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Overview</h1>
+<p class="md-github">The main entry point is the QueryEngine implementation returned by the actor-init-sparql package. The engine supports SPARQL query types: SELECT, ASK, CONSTRUCT, DESCRIBE, UPDATE.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="core-method-signatures" href="#core-method-signatures"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Core Method Signatures</h1>
+<pre class="md-github"><code class="md-github language-typescript">import { newEngine } from '@comunica/actor-init-sparql';
+
+// Instantiate a new engine
+export function newEngine(initContext?: IActorQueryOperationOutputInit): QueryEngine;
+
+// Execute a generic SPARQL query
+interface QueryEngine {
+  query(query: string | Algebra.Operation, context?: IActionContextInit): Promise&lt;IQueryResult&gt;;
+  queryBindings(query: string | Algebra.Operation, context?: IActionContextInit): Promise&lt;IBindingsStream&gt;;
+  queryQuads(query: string | Algebra.Operation, context?: IActionContextInit): Promise&lt;IQuadStream&gt;;
+  queryVoid(query: string | Algebra.Operation, context?: IActionContextInit): Promise&lt;void&gt;;
+}
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="configuration-context-keys" href="#configuration-context-keys"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration Context Keys</h1>
+<ul class="md-github">
+<li class="md-github">sources: (string|RdfSource)[] — endpoints, file paths, or in-memory sources (default: []).</li>
+<li class="md-github">fetch: typeof fetch — HTTP fetch implementation (default: node-fetch).</li>
+<li class="md-github">lenient: boolean — ignore non-fatal parsing errors (default: false).</li>
+<li class="md-github">baseIRI: string — base IRI for query parsing (default: '')</li>
+<li class="md-github">httpTimeout: number — timeout for HTTP requests in ms (default: 300000).</li>
+<li class="md-github">batchSize: number — number of triples fetched per fragment (default: 100).</li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="example-usage" href="#example-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example Usage</h1>
+<pre class="md-github"><code class="md-github language-js">import { newEngine } from '@comunica/actor-init-sparql';
+
+async function run() {
+  const engine = newEngine();
+  const result = await engine.query(
+    'SELECT ?s ?p ?o WHERE { ?s ?p ?o }',
+    { sources: ['https://dbpedia.org/sparql'] }
+  );
+  const stream = await result.bindings();
+  stream.on('data', binding =&gt; console.log(binding.get('?s').value));
+}
+run();
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: RDF/JS Data Model &amp; Streams with rdf-ext and Comunica SPARQL Framework</li>
+<li class="md-github">URL: https://comunica.dev/docs/query/framework</li>
+<li class="md-github">License: License</li>
+<li class="md-github">Crawl Date: 2025-04-27T16:50:38.868Z</li>
+<li class="md-github">Data Size: 0 bytes</li>
+<li class="md-github">Links Found: 0</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-27</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-27T17:20:58.518Z</p>
+  </footer>
+</body>
+</html>
