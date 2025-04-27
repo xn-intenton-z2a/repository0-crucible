@@ -29,7 +29,7 @@ You can define additional data sources by creating a `data-sources.json` file in
 ]
 ```
 
-When running with `--list-sources`, the output will include both default and custom sources:
+When running with `--lista-sources`, the output will include both default and custom sources:
 
 ```bash
 node src/lib/main.js --list-sources
@@ -92,8 +92,19 @@ Example output:
   "platform": "linux",
   "arch": "x64",
   "cwd": "/path/to/project",
+  "uptimeSeconds": 123.456,
+  "memoryUsage": {
+    "rss": 200000000,
+    "heapTotal": 100000000,
+    "heapUsed": 50000000,
+    "external": 1000000,
+    "arrayBuffers": 1000000
+  },
   "publicDataSources": [
-    { "name": "DBpedia SPARQL", "url": "https://dbpedia.org/sparql" }
+    {
+      "name": "DBpedia SPARQL",
+      "url": "https://dbpedia.org/sparql"
+    }
   ],
   "commands": ["--help","-h","--list-sources","--diagnostics","--serve","--build-intermediate","--build-enhanced","--refresh","--merge-persist","--capital-cities"],
   "healthChecks": [
