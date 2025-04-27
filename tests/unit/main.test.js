@@ -147,3 +147,23 @@ describe("Diagnostics Flag", () => {
     logSpy.mockRestore();
   });
 });
+
+// New tests for capital-cities CLI flag
+describe('--capital-cities CLI flag', () => {
+  test('outputs correct JSON-LD document', async () => {
+    const mockBinding = { country: { value: 'http://example.org/C' }, capital: { value: 'http://example.org/K' } };
+    const mockResponse = { results: { bindings: [mockBinding] } };
+    const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({ status: 200, json: () => Promise.resolve(mockResponse) });
+    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    await main(['--capital-cities']);
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    const output = logSpy.mock.calls[0][0];
+    const parsed = JSON.parse(output);
+    expect(parsed).toEqual({
+      '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' },
+      '@graph': [{ '@id': 'http://example.org/C', capital: 'http://example.org/K' }]
+    });
+    fetchSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+});
