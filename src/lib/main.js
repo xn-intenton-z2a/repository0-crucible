@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // src/lib/main.js
 
-import { fileURLToPath } from "url";
+import { fileURLToPath, URL } from "url";
 import fs from "fs";
 import path from "path";
 import http from "http";
@@ -234,38 +234,6 @@ export async function buildEnhanced({ dataDir = path.join(process.cwd(), "data")
 }
 
 /**
- * Fetch country-capital pairs via SPARQL and return OWL JSON-LD document.
- * @param {string} endpointUrl - SPARQL endpoint URL.
- * @returns {Promise<Object>} OWL JSON-LD doc with @context and @graph.
- */
-export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url) {
-  const query = `SELECT ?country ?capital WHERE { ?country <http://dbpedia.org/ontology/capital> ?capital }`;
-  const url = `${endpointUrl}?query=${encodeURIComponent(query)}`;
-  let response;
-  try {
-    response = await fetch(url, { headers: { Accept: "application/sparql-results+json" } });
-  } catch (err) {
-    const error = new Error(`Failed to fetch capital cities: ${err.message}`);
-    error.code = "QUERY_ERROR";
-    throw error;
-  }
-  let data;
-  try {
-    data = await response.json();
-  } catch (err) {
-    const error = new Error(`Invalid JSON: ${err.message}`);
-    error.code = "INVALID_JSON";
-    throw error;
-  }
-  const bindings = data.results && Array.isArray(data.results.bindings) ? data.results.bindings : [];
-  const graph = bindings.map((b) => ({
-    "@id": b.country.value,
-    capital: b.capital.value
-  }));
-  return { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
-}
-
-/**
  * Display help text.
  */
 function getHelpText() {
@@ -406,14 +374,17 @@ export async function main(args) {
       } else if (req.method === "GET" && pathname === "/build-enhanced") {
         res.writeHead(200, { "Content-Type": "text/plain" });
         const originalLog = console.log;
+        let enhancedResult;
         console.log = (msg) => {
           res.write(`${msg}\n`);
         };
         try {
-          // await full pipeline
-          await buildEnhanced();
+          enhancedResult = await buildEnhanced();
         } catch (err) {
-          // ignore errors
+          // ignore
+        }
+        if (enhancedResult && enhancedResult.enhanced) {
+          console.log(`Enhanced ontology written to enhanced/${enhancedResult.enhanced.file} with ${enhancedResult.enhanced.count} nodes`);
         }
         console.log = originalLog;
         res.end();
