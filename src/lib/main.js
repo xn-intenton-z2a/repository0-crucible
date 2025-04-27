@@ -13,18 +13,18 @@ export const PUBLIC_DATA_SOURCES = [{ name: "DBpedia SPARQL", url: "https://dbpe
 export function getHelpText() {
   return `owl-builder: create and manage OWL ontologies from public data sources
 Usage: node src/lib/main.js [options]
---help                Display this help message
--h                    Display this help message
---list-sources        List public data sources
---add-source <name> <url>    Add a custom data source
---remove-source <identifier> Remove a custom data source
---diagnostics         Display diagnostics
---capital-cities      Fetch capital cities
---query <file> "<SPARQL query>"   Execute SPARQL query on a JSON-LD OWL artifact
---serve               Start HTTP server
---refresh             Refresh sources
---build-intermediate  Build intermediate artifacts
---build-enhanced      Build enhanced ontology
+--help                                Display this help message
+-h                                    Display this help message
+--list-sources                        List public data sources
+--add-source <name> <url>            Add a custom data source
+--remove-source <identifier>         Remove a custom data source
+--diagnostics                        Display diagnostics
+--capital-cities                     Fetch capital cities
+--query <file> "<SPARQL query>"      Execute SPARQL query on a JSON-LD OWL artifact
+--serve                               Start HTTP server
+--refresh                             Refresh sources
+--build-intermediate                  Build intermediate artifacts
+--build-enhanced [dataDir] [intermediateDir] [outDir]    Build enhanced ontology, optionally specifying custom input/output directories (default: data → intermediate → enhanced)
 `;
 }
 
@@ -251,7 +251,7 @@ export async function sparqlQuery(filePath, queryString) {
 
 export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url) {
   const sparql =
-    "SELECT ?country ?capital WHERE { ?country a <http://www.wikidata.org/entity/Q6256> . ?ountry <http://www.wikidata.org/prop/direct/P36> ?capital . }";
+    "SELECT ?country ?capital WHERE { ?country a <http://www.wikidata.org/entity/Q6256> . ?country <http://www.wikidata.org/prop/direct/P36> ?capital . }";
   let response;
   try {
     const urlStr = endpointUrl + "?query=" + encodeURIComponent(sparql);
@@ -447,7 +447,7 @@ export async function main(args) {
         console.log = msg => res.write(`${msg}\n`);
         try {
           const result = await buildEnhanced();
-          console.log(`Enhanced ontology written to enhanced/enhanced.json with ${result.intermediate.count} nodes`);
+          console.log(`Enhanced ontology written to enhanced/enhanced.json with ${result.enhanced.count} nodes`);
         } catch (err) {
           console.log(err.message);
         }
@@ -499,10 +499,19 @@ export async function main(args) {
     }
     return;
   }
-  if (cliArgs.includes("--build-enhanced") || cliArgs.includes("-be")) {
+  const beIndex = cliArgs.findIndex(arg => arg === "--build-enhanced" || arg === "-be");
+  if (beIndex !== -1) {
+    const beArgs = cliArgs.slice(beIndex + 1).filter(arg => !arg.startsWith("- ")).slice(0, 3);
+    let dataDir;
+    let intermediateDir;
+    let outDir;
+    if (beArgs.length >= 1) dataDir = beArgs[0];
+    if (beArgs.length >= 2) intermediateDir = beArgs[1];
+    if (beArgs.length >= 3) outDir = beArgs[2];
     try {
-      const result = await buildEnhanced();
-      console.log(`Enhanced ontology written to enhanced/enhanced.json with ${result.enhanced.count} nodes`);
+      const result = await buildEnhanced({ dataDir, intermediateDir, outDir });
+      const dir = outDir || "enhanced";
+      console.log(`Enhanced ontology written to ${dir}/enhanced.json with ${result.enhanced.count} nodes`);
     } catch (err) {
       console.error(err.message);
     }
