@@ -70,14 +70,24 @@ import { sparqlQuery } from 'owl-builder';
 })();
 ```
 
-### Example Output
+### HTTP Query Endpoint
+
+When running the HTTP server (`--serve`), you can query the server directly over HTTP:
+
+```bash
+curl "http://localhost:3000/query?file=artifact.json&sparql=SELECT%20%3Fs%20WHERE%20%7B%20%3Fs%20a%20%3Chttp://www.w3.org/2002/07/owl%23Class%3E%20%7D%20LIMIT%201"
+```
+
+Response (application/json):
 
 ```json
 {
   "head": { "vars": ["s"] },
   "results": {
     "bindings": [
-      { "s": { "type": "uri", "value": "http://example.org/SomeClass" } }
+      {
+        "s": { "type": "uri", "value": "http://example.org/SomeClass" }
+      }
     ]
   }
 }
@@ -164,14 +174,4 @@ Example output:
     { "@id": "http://example.org/C", "capital": "http://example.org/K" }
   ]
 }
-```
-
-### Programmatic
-
-```js
-import { getCapitalCities } from 'owl-builder';
-(async () => {
-  const doc = await getCapitalCities();
-  console.log(JSON.stringify(doc, null, 2));
-})();
 ```

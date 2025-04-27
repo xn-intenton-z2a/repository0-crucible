@@ -303,7 +303,7 @@ export async function main(args) {
       return;
     }
     try {
-      const results = await sparqlQuery(filePath, queryString);
+      const results = await SELF.sparqlQuery(filePath, queryString);
       console.log(JSON.stringify(results, null, 2));
     } catch (err) {
       console.error(err.message);
@@ -365,7 +365,7 @@ export async function main(args) {
           res.end("Missing required query parameters: file and sparql");
         } else {
           try {
-            const result = await sparqlQuery(fileParam, sparqlParam);
+            const result = await SELF.sparqlQuery(fileParam, sparqlParam);
             res.writeHead(200, { "Content-Type": "application/json" });
             res.end(JSON.stringify(result, null, 2));
           } catch (err) {
