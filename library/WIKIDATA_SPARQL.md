@@ -1,159 +1,203 @@
 # WIKIDATA_SPARQL
 
 ## Crawl Summary
-Endpoint: https://query.wikidata.org/sparql; HTTP GET/POST with parameters 'query' (required), 'format', 'timeout', 'default-graph-uri'. Supported formats: JSON, XML, CSV, TSV. Default timeout 300000 ms, max 900000 ms. Rate limits: 60 qpm anonymous, 500 qpm registered. Errors: 400 (syntax), 413 (URI too long), 408 (timeout), 500 (server error).
+Endpoint URL https://query.wikidata.org/sparql GET/POST; query (string, required); format (string, MIME type, default application/sparql-results+json); Accept header overrides format; timeout (ms, optional, max 300000); soft timeout 30000 ms; hard timeout 300000 ms; output formats JSON, XML, CSV, TSV, RDF/XML, Turtle; GET URL length limit 2048; rate limit 600 req/min; no auth
 
 ## Normalised Extract
 Table of Contents
+
 1 Endpoint Configuration
-2 HTTP Request Parameters
-3 Supported Result Formats
-4 Rate Limits and Timeouts
-5 Error Handling
+2 HTTP Parameters and Values
+3 Supported Output Formats
+4 Timeouts and Query Limits
+5 Rate Limiting
 6 Usage Examples
-7 Troubleshooting
 
 1 Endpoint Configuration
-SPARQL endpoint URL: https://query.wikidata.org/sparql
-Backup endpoint: https://query.wikidata.org/bigdata/namespace/wdq/sparql
-Supports GET and POST requests.
+Base URL: https://query.wikidata.org/sparql
+Supports HTTP GET and POST requests
+GET URL length capped at 2048 characters
 
-2 HTTP Request Parameters
-Parameter         Type     Required Description
-query             string   yes      SPARQL query string; URL-encode for GET
-format            string   no       Mime type: application/sparql-results+json|application/sparql-results+xml|text/csv|text/tab-separated-values
-timeout           integer  no       Execution timeout in ms; default 300000; max 900000 for registered users
-default-graph-uri string   no       URI of default graph
-user-agent        string   no       Sets User-Agent header
+2 HTTP Parameters and Values
+query: required; SPARQL query string; UTF-8; max 2048 chars in GET
+format: optional; MIME type; default application/sparql-results+json
+timeout: optional; integer; client-side timeout in ms; max 300000
+Accept: HTTP header; MIME type; overrides format parameter
 
-3 Supported Result Formats
-application/sparql-results+json (default)
+3 Supported Output Formats
+application/sparql-results+json
 application/sparql-results+xml
 text/csv
 text/tab-separated-values
+application/rdf+xml
+text/turtle
+application/json
+application/xml
 
-4 Rate Limits and Timeouts
-Anonymous: 60 queries/min, timeout max 300000 ms
-Registered: 500 queries/min, timeout max 900000 ms
-Timeout returns HTTP 408
+4 Timeouts and Query Limits
+Soft timeout: 30000 ms; returns HTTP 500 with soft timeout message
+Hard timeout: 300000 ms; terminates query execution
+Result set size limited by server memory
 
-5 Error Handling
-400 Bad Request – missing query or syntax error
-413 Request Entity Too Large – GET query too long (>10000 chars)
-408 Request Timeout – execution exceeded timeout
-500 Internal Server Error – server-side
+5 Rate Limiting
+600 requests per minute per IP
+HTTP 429 returned on limit exceed
+No API key or authentication needed
 
 6 Usage Examples
-curl -G --data-urlencode "query=SELECT ?s WHERE {?s ?p ?o} LIMIT 10" -H "Accept: application/sparql-results+json" https://query.wikidata.org/sparql
-fetch('https://query.wikidata.org/sparql?query='+encodeURIComponent('SELECT ?s WHERE {?s ?p ?o} LIMIT 5'),{headers:{Accept:'application/sparql-results+json'}})
+GET example:
+  GET /sparql?query=...
+  Accept: application/sparql-results+json
+POST example:
+  POST /sparql
+  Content-Type: application/x-www-form-urlencoded
+  body: query=...
 
-7 Troubleshooting
-Use --compressed in curl for gzip
-Increase timeout with &timeout=60000
-Validate query syntax against SPARQL 1.1 spec
 
 ## Supplementary Details
-Default timeout: 300000 ms; Registered max timeout: 900000 ms. Anonymous rate limit: 60 QPM; Registered: 500 QPM. Max GET URI length: 10000 characters. Compression: gzip supported; set Accept-Encoding: gzip. Default graph URI: none. User-Agent header optional. Queries exceeding limits return HTTP 429.
+Parameter Defaults and Behavior
+
+query: must be URL-encoded when using GET
+format: omitted uses application/sparql-results+json
+Accept header priority over format parameter
+timeout: client-side; server-side soft and hard limits fixed
+Error Codes
+
+HTTP 400 Bad Request: malformed query
+HTTP 414 URI Too Long: switch to POST
+HTTP 429 Too Many Requests: rate limit exceeded
+HTTP 500 Internal Server Error: timeout or server error
+
+Implementation Steps
+
+1 Construct SPARQL query string
+2 Choose HTTP method: GET if query length <2048, else POST
+3 Set headers: Content-Type and Accept
+4 Send request to https://query.wikidata.org/sparql
+5 Handle response: parse according to MIME type
+
 
 ## Reference Details
-HTTP Method: GET or POST
-Endpoint: https://query.wikidata.org/sparql
+API Endpoint Specification
+
+GET /sparql
 Parameters:
-  query (required) string URL-encoded (GET) or raw (POST)
-  format (optional) string values: application/sparql-results+json | application/sparql-results+xml | text/csv | text/tab-separated-values
-  timeout (optional) integer ms; default 300000; max 900000 (registered)
-  default-graph-uri (optional) string URI
-  user-agent (optional) string
+  query (string, required): UTF-8 SPARQL query; URL-encoded when appended to URL
+  format (string, optional): MIME type; see Supported Output Formats
+  timeout (integer, optional): client-side timeout in ms; ignored by server
 Headers:
-  Accept: defines response format
-  Accept-Encoding: gzip, deflate
-Responses:
-  200 OK with content-type matching format
-  400 Missing/invalid query
-  413 GET URI too long
-  408 Timeout
-  429 Too Many Requests
-  500 Internal Server Error
+  Accept (string, optional): response MIME type; overrides format
 
-Code Examples:
-1) cURL
-curl -G --data-urlencode "query=SELECT ?item WHERE {?item wdt:P31 wd:Q5} LIMIT 5" \
-     -H "Accept: application/sparql-results+json" \
-     -H "Accept-Encoding: gzip" \
-     https://query.wikidata.org/sparql
+POST /sparql
+Content-Type: application/x-www-form-urlencoded
+Body parameters:
+  query (string, required)
+  format (string, optional)
+  timeout (integer, optional)
+Headers:
+  Accept (string, optional)
 
-2) Python requests
-import requests
-params = {'query': 'SELECT ?s WHERE {?s ?p ?o} LIMIT 10', 'format': 'application/sparql-results+json'}
-headers = {'Accept-Encoding': 'gzip'}
-r = requests.get('https://query.wikidata.org/sparql', params=params, headers=headers, timeout=10)
-r.raise_for_status()
-results = r.json()
+Response Codes and Behavior
 
-Best Practices:
-- Use POST for queries >10000 chars
-- Cache results client-side to reduce load
-- Use compressed responses
-- Respect rate limits; implement backoff on 429
+200 OK: successful response body in requested MIME type
+400 Bad Request: syntax error in SPARQL query
+414 URI Too Long: GET name-value length exceeded; use POST
+429 Too Many Requests: rate limit exceeded; Retry-After header indicates wait time
+500 Internal Server Error: soft timeout or server error
 
-Troubleshooting:
-Command: curl -v -G --data-urlencode "query=SELECT * WHERE {?s ?p ?o} LIMIT 1" https://query.wikidata.org/sparql
-Expected: HTTP/1.1 200 OK
-If 408: increase timeout or simplify query
-If 413: switch to POST
-If 429: wait or reduce request rate
+SDK Method Signature Examples (JavaScript)
+
+function executeSparqlQuery(queryString, options) {
+  const url = 'https://query.wikidata.org/sparql';
+  const headers = { 'Accept': options.format || 'application/sparql-results+json' };
+  if (queryString.length < 2000) {
+    const params = new URLSearchParams({ query: queryString });
+    return fetch(`${url}?${params.toString()}`, { method: 'GET', headers, signal: options.signal })
+      .then(res => res.json());
+  } else {
+    const bodyParams = new URLSearchParams({ query: queryString });
+    return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', ...headers }, body: bodyParams, signal: options.signal })
+      .then(res => {
+        if (options.format && options.format.includes('json')) return res.json();
+        if (options.format && options.format.includes('csv')) return res.text().then(t => parseCsv(t));
+        return res.text();
+      });
+}
+
+Options Structure:
+  format: string; acceptable MIME types
+  signal: AbortSignal; optional for timeout handling
+
+Best Practices
+
+• Use POST for queries exceeding 2048 characters
+• Set Accept header to explicitly request desired format
+• Implement retry with exponential backoff on HTTP 429
+• Parse error responses: inspect HTTP status, body contains SPARQL error message
+
+Troubleshooting Procedures
+
+1 HTTP 414 or truncated response
+  - Switch to POST
+2 HTTP 429
+  - Read Retry-After header; wait and retry
+3 HTTP 500 with timeout message
+  - Simplify query; add LIMIT; optimize FILTER clauses
+
+
 
 ## Information Dense Extract
-endpoint:GET/POST https://query.wikidata.org/sparql parameters:query(required),format(json|xml|csv|tsv),timeout(ms default300000 max900000),default-graph-uri,user-agent headers:Accept,Accept-Encoding:gzip rate-limits:anon60qpm reg500qpm,anon300s timeout reg900s http-errors:400,408,413,429,500 code-patterns:curl GET --data-urlencode query,POST for >10k chars,gzip,backoff on429;best-practices:cache,compress,respect-limits;troubleshoot:408{increase timeout},413{use POST},429{reduce rate},500{retry}
+Endpoint https://query.wikidata.org/sparql GET/POST; query required; format MIME optional default application/sparql-results+json; Accept header overrides; GET URL max2048; timeout client-side max300000; server soft timeout30000 hard300000; output formats JSON XML CSV TSV RDF/XML Turtle; rate limit600RPM HTTP429 Retry-After; errors400 bad query 414 URI too long 429 rate limit 500 timeout; GET vs POST detection by query length; JS SDK method executeSparqlQuery(queryString,options) selects GET/POST, sets headers, handles JSON/CSV/text; options.format,options.signal; best practices POST for long queries Accept header explicit retry/backoff; troubleshooting switch to POST on414 wait and retry on429 optimize query on500
 
 ## Sanitised Extract
 Table of Contents
+
 1 Endpoint Configuration
-2 HTTP Request Parameters
-3 Supported Result Formats
-4 Rate Limits and Timeouts
-5 Error Handling
+2 HTTP Parameters and Values
+3 Supported Output Formats
+4 Timeouts and Query Limits
+5 Rate Limiting
 6 Usage Examples
-7 Troubleshooting
 
 1 Endpoint Configuration
-SPARQL endpoint URL: https://query.wikidata.org/sparql
-Backup endpoint: https://query.wikidata.org/bigdata/namespace/wdq/sparql
-Supports GET and POST requests.
+Base URL: https://query.wikidata.org/sparql
+Supports HTTP GET and POST requests
+GET URL length capped at 2048 characters
 
-2 HTTP Request Parameters
-Parameter         Type     Required Description
-query             string   yes      SPARQL query string; URL-encode for GET
-format            string   no       Mime type: application/sparql-results+json|application/sparql-results+xml|text/csv|text/tab-separated-values
-timeout           integer  no       Execution timeout in ms; default 300000; max 900000 for registered users
-default-graph-uri string   no       URI of default graph
-user-agent        string   no       Sets User-Agent header
+2 HTTP Parameters and Values
+query: required; SPARQL query string; UTF-8; max 2048 chars in GET
+format: optional; MIME type; default application/sparql-results+json
+timeout: optional; integer; client-side timeout in ms; max 300000
+Accept: HTTP header; MIME type; overrides format parameter
 
-3 Supported Result Formats
-application/sparql-results+json (default)
+3 Supported Output Formats
+application/sparql-results+json
 application/sparql-results+xml
 text/csv
 text/tab-separated-values
+application/rdf+xml
+text/turtle
+application/json
+application/xml
 
-4 Rate Limits and Timeouts
-Anonymous: 60 queries/min, timeout max 300000 ms
-Registered: 500 queries/min, timeout max 900000 ms
-Timeout returns HTTP 408
+4 Timeouts and Query Limits
+Soft timeout: 30000 ms; returns HTTP 500 with soft timeout message
+Hard timeout: 300000 ms; terminates query execution
+Result set size limited by server memory
 
-5 Error Handling
-400 Bad Request  missing query or syntax error
-413 Request Entity Too Large  GET query too long (>10000 chars)
-408 Request Timeout  execution exceeded timeout
-500 Internal Server Error  server-side
+5 Rate Limiting
+600 requests per minute per IP
+HTTP 429 returned on limit exceed
+No API key or authentication needed
 
 6 Usage Examples
-curl -G --data-urlencode 'query=SELECT ?s WHERE {?s ?p ?o} LIMIT 10' -H 'Accept: application/sparql-results+json' https://query.wikidata.org/sparql
-fetch('https://query.wikidata.org/sparql?query='+encodeURIComponent('SELECT ?s WHERE {?s ?p ?o} LIMIT 5'),{headers:{Accept:'application/sparql-results+json'}})
-
-7 Troubleshooting
-Use --compressed in curl for gzip
-Increase timeout with &timeout=60000
-Validate query syntax against SPARQL 1.1 spec
+GET example:
+  GET /sparql?query=...
+  Accept: application/sparql-results+json
+POST example:
+  POST /sparql
+  Content-Type: application/x-www-form-urlencoded
+  body: query=...
 
 ## Original Source
 SPARQL 1.1 Specifications & Public Endpoints
@@ -161,68 +205,60 @@ https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Wikidata_Query_Servi
 
 ## Digest of WIKIDATA_SPARQL
 
-# Wikidata SPARQL Query Service User Help
-Date Retrieved: 2024-06-12
-Source: https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Wikidata_Query_Service_User_Help
+# Endpoint
 
-# Endpoint URLs
+Base URL: https://query.wikidata.org/sparql
+Supports HTTP GET and POST. GET URL length limit 2048 characters.
 
-The SPARQL endpoint is available at https://query.wikidata.org/sparql for HTTP GET and POST requests. A backup endpoint is available at https://query.wikidata.org/bigdata/namespace/wdq/sparql.
+# HTTP Parameters
 
-# HTTP Request Parameters
+query (required): SPARQL query string; UTF-8 encoded
+format (optional): MIME type for response; default application/sparql-results+json
+timeout (optional): client-side timeout in milliseconds; max 300000
+Accept header: overrides format parameter
 
-- query (required): SPARQL query string. Must be URL-encoded for GET.
-- format (optional): Mime type for results. Supported values:
-  - application/sparql-results+json
-  - application/sparql-results+xml
-  - text/csv
-  - text/tab-separated-values
-- timeout (optional): Integer milliseconds. Default 300000 (5 min). Max 900000 (15 min) for registered users.
-- default-graph-uri (optional): URI of default graph.
-- user-agent (optional): Sets the User-Agent header.
+# Supported Output Formats
 
-# Result Formats
+application/sparql-results+json
+application/sparql-results+xml
+text/csv
+text/tab-separated-values
+application/rdf+xml
+text/turtle
+application/json
+application/xml
 
-Responses are returned with the specified format. JSON responses conform to W3C SPARQL Results JSON Format.
+# Timeouts and Query Limits
 
-# Rate Limits and Timeouts
+Soft timeout: 30000 ms
+Hard timeout: 300000 ms
+Maximum result set size constrained by memory limits
 
-- Anonymous users: max 300s timeout, 60 queries per minute.
-- Registered users: max 900s, 500 queries per minute.
-- Query execution aborted on timeout with HTTP 408.
+# Rate Limiting
 
-# Error Handling
+600 requests per minute per IP
+No authentication required
 
-- 400 Bad Request: syntax error or missing query parameter.
-- 413 Request Entity Too Large: query string exceeds 10000 characters for GET.
-- 500 Internal Server Error: server-side error, retry recommended.
+# Usage Examples
 
-# Examples
-
+curl example (GET):
 curl -G \
-  --data-urlencode "query=SELECT ?item WHERE {?item wdt:P31 wd:Q146.} LIMIT 50" \
   -H "Accept: application/sparql-results+json" \
+  --data-urlencode 'query=SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q146 . SERVICE wikibase:label { bd:serviceParam wikibase:language "en". } } LIMIT 10' \
   https://query.wikidata.org/sparql
 
-fetch('https://query.wikidata.org/sparql?query=' + encodeURIComponent('SELECT ?item WHERE {?item wdt:P31 wd:Q146.} LIMIT 10'), { headers: { Accept: 'application/sparql-results+json' } })
-
-# Troubleshooting
-
-- Use --compressed with curl to enable gzip compression.
-- Append &timeout=60000 to increase timeout to 60s.
-- Check syntax with https://www.w3.org/TR/sparql11-query.
-
-# Data Size
-
-Data Size: 0 bytes
-Links Found: 0
-Error: None
+curl example (POST):
+curl -X POST \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -H "Accept: text/csv" \
+  --data-urlencode 'query=SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 5' \
+  https://query.wikidata.org/sparql
 
 ## Attribution
 - Source: SPARQL 1.1 Specifications & Public Endpoints
 - URL: https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Wikidata_Query_Service_User_Help
 - License: License
-- Crawl Date: 2025-04-27T15:48:49.385Z
+- Crawl Date: 2025-04-27T23:48:32.899Z
 - Data Size: 0 bytes
 - Links Found: 0
 
