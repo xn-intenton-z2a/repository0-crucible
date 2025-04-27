@@ -196,10 +196,12 @@ export function buildIntermediate({ dataDir = path.join(process.cwd(), "data"), 
  * Orchestrate full ontology-building pipeline: refresh, intermediate, merge enhanced.
  */
 export async function buildEnhanced({ dataDir = path.join(process.cwd(), "data"), intermediateDir = path.join(process.cwd(), "intermediate"), outDir = path.join(process.cwd(), "enhanced") } = {}) {
+  // Dynamic import to respect any runtime mocks
+  const mainModule = await import(import.meta.url);
   // Refresh sources
-  const refreshed = await refreshSources();
+  const refreshed = await mainModule.refreshSources();
   // Build intermediate artifacts
-  const intermediate = buildIntermediate({ dataDir, outDir: intermediateDir });
+  const intermediate = mainModule.buildIntermediate({ dataDir, outDir: intermediateDir });
   // Ensure output directory
   if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir, { recursive: true });
@@ -229,6 +231,38 @@ export async function buildEnhanced({ dataDir = path.join(process.cwd(), "data")
   console.log(`written ${enhancedFileName}`);
   const enhanced = { file: enhancedFileName, count: graph.length };
   return { refreshed, intermediate, enhanced };
+}
+
+/**
+ * Fetch country-capital pairs via SPARQL and return OWL JSON-LD document.
+ * @param {string} endpointUrl - SPARQL endpoint URL.
+ * @returns {Promise<Object>} OWL JSON-LD doc with @context and @graph.
+ */
+export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url) {
+  const query = `SELECT ?country ?capital WHERE { ?country <http://dbpedia.org/ontology/capital> ?capital }`;
+  const url = `${endpointUrl}?query=${encodeURIComponent(query)}`;
+  let response;
+  try {
+    response = await fetch(url, { headers: { Accept: "application/sparql-results+json" } });
+  } catch (err) {
+    const error = new Error(`Failed to fetch capital cities: ${err.message}`);
+    error.code = "QUERY_ERROR";
+    throw error;
+  }
+  let data;
+  try {
+    data = await response.json();
+  } catch (err) {
+    const error = new Error(`Invalid JSON: ${err.message}`);
+    error.code = "INVALID_JSON";
+    throw error;
+  }
+  const bindings = data.results && Array.isArray(data.results.bindings) ? data.results.bindings : [];
+  const graph = bindings.map((b) => ({
+    "@id": b.country.value,
+    capital: b.capital.value
+  }));
+  return { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
 }
 
 /**
@@ -332,7 +366,7 @@ export async function main(args) {
   }
 
   if (cliArgs.includes("--serve")) {
-    const port = parseInt(process.env.PORT) || 3000;
+    const port = process.env.PORT !== undefined ? parseInt(process.env.PORT, 10) : 3000;
     const server = http.createServer(async (req, res) => {
       const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
       const pathname = parsedUrl.pathname;
