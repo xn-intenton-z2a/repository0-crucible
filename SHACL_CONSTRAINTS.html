@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="shacl_constraints" href="#shacl_constraints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SHACL_CONSTRAINTS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Value Type Constraints: sh:class, sh:datatype, sh:nodeKind with ranges and semantics; Cardinality: sh:minCount (default 0), sh:maxCount (unbounded); Value Range: sh:minExclusive, sh:minInclusive, sh:maxExclusive, sh:maxInclusive over numeric/date literals; String-based: sh:minLength, sh:maxLength, sh:pattern (regex), sh:languageIn (list), sh:uniqueLang (boolean); Property Pair: sh:equals, sh:disjoint, sh:lessThan, sh:lessThanOrEquals comparing two paths; Logical: sh:not (single shape), sh:and/or/xone (list of shapes); Shape-based: sh:node (nested node shape), sh:property (nested property shape), qualified shapes with counts; Other: sh:closed (boolean, enforces closed shapes), sh:ignoredProperties (list), sh:hasValue, sh:in (list)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Value Type Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">Cardinality Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">Value Range Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">String-based Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">Property Pair Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">Logical Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">Shape-based Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">Other Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">Value Type Constraint Components</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:class: IRI of RDF Class. Applies on each value node. FocusNode conforms if for each value v, triple (v rdf:type Class) exists or inferred via rdfs:subClassOf.</li>
+<li class="md-github">sh:datatype: IRI of XSD datatype. Each value must be literal with this datatype.</li>
+<li class="md-github">sh:nodeKind: IRI. Allowed values: sh:IRI, sh:Literal, sh:BlankNode, sh:BlankNodeOrIRI, sh:BlankNodeOrLiteral, sh:IRIOrLiteral. Each value node tested against chosen kind.</li>
+</ul>
+<ol start="2" class="md-github">
+<li class="md-github">Cardinality Constraint Components</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:minCount: integer &gt;=0. Count of values for path must be &gt;= minCount.</li>
+<li class="md-github">sh:maxCount: integer &gt;=0. Count of values for path must be &lt;= maxCount.</li>
+</ul>
+<ol start="3" class="md-github">
+<li class="md-github">Value Range Constraint Components</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:minExclusive: literal comparable. All values &gt; minExclusive.</li>
+<li class="md-github">sh:minInclusive: literal comparable. All values &gt;= minInclusive.</li>
+<li class="md-github">sh:maxExclusive: literal comparable. All values &lt; maxExclusive.</li>
+<li class="md-github">sh:maxInclusive: literal comparable. All values &lt;= maxInclusive.</li>
+</ul>
+<ol start="4" class="md-github">
+<li class="md-github">String-based Constraint Components</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:minLength: integer &gt;=0. String length &gt;= minLength.</li>
+<li class="md-github">sh:maxLength: integer &gt;=0. String length &lt;= maxLength.</li>
+<li class="md-github">sh:pattern: string regex. Literal lexical form matches pattern (full match).</li>
+<li class="md-github">sh:languageIn: list of language tags. Literal language tag in list.</li>
+<li class="md-github">sh:uniqueLang: boolean. If true, no duplicate language tags across values.</li>
+</ul>
+<ol start="5" class="md-github">
+<li class="md-github">Property Pair Constraint Components</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:equals: path. Value set of path1 equals set of values of path2.</li>
+<li class="md-github">sh:disjoint: path. Intersection of values empty.</li>
+<li class="md-github">sh:lessThan: path. Max(value1) &lt; Min(value2).</li>
+<li class="md-github">sh:lessThanOrEquals: path. Max(value1) &lt;= Min(value2).</li>
+</ul>
+<ol start="6" class="md-github">
+<li class="md-github">Logical Constraint Components</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:not: single Shape. FocusNode must not conform to shape.</li>
+<li class="md-github">sh:and: list of Shapes. FocusNode must conform to all shapes.</li>
+<li class="md-github">sh:or: list of Shapes. FocusNode must conform to at least one.</li>
+<li class="md-github">sh:xone: list of Shapes. Exactly one shape must conform.</li>
+</ul>
+<ol start="7" class="md-github">
+<li class="md-github">Shape-based Constraint Components</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:node: NodeShape. Each value node validated against NodeShape.</li>
+<li class="md-github">sh:property: PropertyShape. Each value node validated against nested PropertyShape.</li>
+<li class="md-github">sh:qualifiedValueShape: Shape + integer qMin+qMax. Count of values conforming to shape controlled by qMin,qMax.</li>
+</ul>
+<ol start="8" class="md-github">
+<li class="md-github">Other Constraint Components</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:closed: boolean. If true, every property of focus node must be declared by shapes or ignoredProperties.</li>
+<li class="md-github">sh:ignoredProperties: list of predicates. Excluded from closed constraint.</li>
+<li class="md-github">sh:hasValue: resource or literal. Path must include this exact value.</li>
+<li class="md-github">sh:in: list of resources/literals. Path values subset of list.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Implementation Steps to Apply Constraint Components:</p>
+<ol class="md-github">
+<li class="md-github">Include SHACL namespace prefix: PREFIX sh: <a href="http://www.w3.org/ns/shacl#" class="md-github">http://www.w3.org/ns/shacl#</a></li>
+<li class="md-github">Define a shapes graph as RDF dataset in Turtle or JSON-LD.</li>
+<li class="md-github">For each focus class or node, create a sh:NodeShape with sh:targetClass or sh:targetNode.</li>
+<li class="md-github">Within NodeShape, add one or more sh:property triples pointing to a blank node of type sh:PropertyShape.</li>
+<li class="md-github">On each PropertyShape, add one or more constraint parameter triples: sh:datatype , sh:minCount , etc.</li>
+<li class="md-github">Optionally set common parameters on NodeShape: sh:severity (sh:Violation, sh:Warning, sh:Info), sh:message (xsd:string).</li>
+<li class="md-github">Execute SHACL validation engine (e.g., TopBraid SHACL API or JavaScript SHACL library) pointing to data graph and shapes graph.</li>
+<li class="md-github">Inspect validation report: triples of type sh:ValidationReport and sh:ValidationResult.</li>
+</ol>
+<p class="md-github">Configuration Options:</p>
+<ul class="md-github">
+<li class="md-github">sh:severity: Allowed values: sh:Violation, sh:Warning, sh:Info. Default: sh:Violation.</li>
+<li class="md-github">sh:deactivated: boolean. When true, shape ignored during validation. Default: false.</li>
+</ul>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Group related constraints in one PropertyShape to reduce traversal.</li>
+<li class="md-github">Use sh:closed with sh:ignoredProperties to enforce schema completeness.</li>
+<li class="md-github">Set sh:message with placeholders: Literal with '''{{path}}''' to include path IRI in error.</li>
+</ul>
+<p class="md-github">Detailed Troubleshooting:
+Command to detect ill-formed shapes: Run SPARQL query against shapes graph:</p>
+<p class="md-github">SELECT ?shape ?p ?o WHERE {
+{ ?shape a sh:PropertyShape ; sh:minCount ?m . FILTER(?m &lt; 0) }
+UNION
+{ ?shape a sh:PropertyShape ; sh:maxCount ?M . FILTER(?M &lt; 0) }
+}
+Expected Output: No rows. Rows indicate invalid negative cardinality.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Example Turtle Shape Definition:</p>
+<p class="md-github">@prefix ex: <a href="http://example.com/ns#" class="md-github">http://example.com/ns#</a> .
+@prefix sh: <a href="http://www.w3.org/ns/shacl#" class="md-github">http://www.w3.org/ns/shacl#</a> .
+@prefix xsd: <a href="http://www.w3.org/2001/XMLSchema#" class="md-github">http://www.w3.org/2001/XMLSchema#</a> .</p>
+<p class="md-github">ex:PersonShape
+a sh:NodeShape ;
+sh:targetClass ex:Person ;
+sh:severity sh:Violation ;
+sh:message &quot;Property violation on path {path}: {value}&quot; ;
+sh:closed true ;
+sh:ignoredProperties ( rdf:type ) ;
+sh:property [
+sh:path ex:ssn ;
+sh:datatype xsd:string ;
+sh:pattern &quot;^[0-9]{3}-[0-9]{2}-[0-9]{4}$&quot; ;
+sh:maxCount 1 ;
+] , [
+sh:path ex:worksFor ;
+sh:node ex:CompanyShape ;
+sh:minCount 1 ;
+] .</p>
+<p class="md-github">ex:CompanyShape
+a sh:NodeShape ;
+sh:property [
+sh:path rdf:type ;
+sh:equals ex:Company ;
+sh:minCount 1 ;
+] .</p>
+<p class="md-github">Validation Invocation (JavaScript using &quot;@zazuko/shacl-js&quot;):</p>
+<p class="md-github">import { SHACLValidator } from '@zazuko/shacl-js';
+import rdf from 'rdf-ext';</p>
+<p class="md-github">const dataGraph = rdf.dataset().import(rdf.parsers['text/turtle'].parse(dataTurtle));
+const shapesGraph = rdf.dataset().import(rdf.parsers['text/turtle'].parse(shapesTurtle));</p>
+<p class="md-github">const validator = new SHACLValidator(shapesGraph, { factory: rdf });
+const report = await validator.validate(dataGraph);
+if (!report.conforms) {
+report.results.forEach(result =&gt; {
+console.error(<code class="md-github">Severity: ${result.severity.value}</code>);
+console.error(<code class="md-github">FocusNode: ${result.focusNode.value}</code>);
+console.error(<code class="md-github">Path: ${result.path.value}</code>);
+console.error(<code class="md-github">Message: ${result.message.value}</code>);
+});
+}</p>
+<p class="md-github">Return Types:</p>
+<ul class="md-github">
+<li class="md-github">ValidationReport: { conforms: boolean, results: ValidationResult[] }</li>
+<li class="md-github">ValidationResult: { focusNode: NamedNode, path: NamedNode, value: Term, sourceShape: NamedNode, message: Literal, severity: NamedNode }</li>
+</ul>
+<p class="md-github">Step-by-step Pattern:</p>
+<ol class="md-github">
+<li class="md-github">Load graphs.</li>
+<li class="md-github">Initialize validator with shapesGraph.</li>
+<li class="md-github">Call validate(dataGraph).</li>
+<li class="md-github">Check report.conforms.</li>
+<li class="md-github">Iterate report.results for details.</li>
+</ol>
+<p class="md-github">Common Configuration Options for '@zazuko/shacl-js':</p>
+<ul class="md-github">
+<li class="md-github">factory: RDFJS DataFactory instance.</li>
+<li class="md-github">maxErrors: integer to stop after N errors. Default: Infinity.</li>
+<li class="md-github">debug: boolean to log internal SPARQL queries. Default: false.</li>
+</ul>
+<p class="md-github">Best Practice Code Patterns:</p>
+<ul class="md-github">
+<li class="md-github">Reuse SHACLValidator instance for multiple data graphs when shapesGraph unchanged.</li>
+<li class="md-github">Pre-compile SPARQL queries by setting debug=true and caching query objects.</li>
+</ul>
+<p class="md-github">Troubleshooting Commands:</p>
+<ul class="md-github">
+<li class="md-github">Use Docker SHACL CLI:
+docker run --rm -v $(pwd):/data eclipse/shacl-cli validate -sh /data/shapes.ttl -data /data/data.ttl
+Expected: report.ttl generated with sh:conforms value.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">sh:class IRI, sh:datatype IRI, sh:nodeKind {IRI,Literal,BlankNode,BlankNodeOrIRI,BlankNodeOrLiteral,IRIOrLiteral}; sh:minCount integer&gt;=0 default 0, sh:maxCount integer&gt;=0 unbounded; sh:minExclusive,minInclusive,maxExclusive,maxInclusive literals numeric/date; sh:minLength,maxLength integer&gt;=0; sh:pattern regex; sh:languageIn list(langTags); sh:uniqueLang boolean; sh:equals,disjoint,lessThan,lessThanOrEquals path comparisons; sh:not shape, sh:and|or|xone list(shapes); sh:node NodeShape nested, sh:property PropertyShape nested, sh:qualifiedValueShape Shape+int qualifiers; sh:closed boolean, sh:ignoredProperties list(predicates), sh:hasValue resource, sh:in list(values).</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Value Type Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">Cardinality Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">Value Range Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">String-based Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">Property Pair Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">Logical Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">Shape-based Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">Other Constraint Components</p>
+</li>
+<li class="md-github">
+<p class="md-github">Value Type Constraint Components</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:class: IRI of RDF Class. Applies on each value node. FocusNode conforms if for each value v, triple (v rdf:type Class) exists or inferred via rdfs:subClassOf.</li>
+<li class="md-github">sh:datatype: IRI of XSD datatype. Each value must be literal with this datatype.</li>
+<li class="md-github">sh:nodeKind: IRI. Allowed values: sh:IRI, sh:Literal, sh:BlankNode, sh:BlankNodeOrIRI, sh:BlankNodeOrLiteral, sh:IRIOrLiteral. Each value node tested against chosen kind.</li>
+</ul>
+<ol start="2" class="md-github">
+<li class="md-github">Cardinality Constraint Components</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:minCount: integer &gt;=0. Count of values for path must be &gt;= minCount.</li>
+<li class="md-github">sh:maxCount: integer &gt;=0. Count of values for path must be &lt;= maxCount.</li>
+</ul>
+<ol start="3" class="md-github">
+<li class="md-github">Value Range Constraint Components</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:minExclusive: literal comparable. All values &gt; minExclusive.</li>
+<li class="md-github">sh:minInclusive: literal comparable. All values &gt;= minInclusive.</li>
+<li class="md-github">sh:maxExclusive: literal comparable. All values &lt; maxExclusive.</li>
+<li class="md-github">sh:maxInclusive: literal comparable. All values &lt;= maxInclusive.</li>
+</ul>
+<ol start="4" class="md-github">
+<li class="md-github">String-based Constraint Components</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:minLength: integer &gt;=0. String length &gt;= minLength.</li>
+<li class="md-github">sh:maxLength: integer &gt;=0. String length &lt;= maxLength.</li>
+<li class="md-github">sh:pattern: string regex. Literal lexical form matches pattern (full match).</li>
+<li class="md-github">sh:languageIn: list of language tags. Literal language tag in list.</li>
+<li class="md-github">sh:uniqueLang: boolean. If true, no duplicate language tags across values.</li>
+</ul>
+<ol start="5" class="md-github">
+<li class="md-github">Property Pair Constraint Components</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:equals: path. Value set of path1 equals set of values of path2.</li>
+<li class="md-github">sh:disjoint: path. Intersection of values empty.</li>
+<li class="md-github">sh:lessThan: path. Max(value1) &lt; Min(value2).</li>
+<li class="md-github">sh:lessThanOrEquals: path. Max(value1) &lt;= Min(value2).</li>
+</ul>
+<ol start="6" class="md-github">
+<li class="md-github">Logical Constraint Components</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:not: single Shape. FocusNode must not conform to shape.</li>
+<li class="md-github">sh:and: list of Shapes. FocusNode must conform to all shapes.</li>
+<li class="md-github">sh:or: list of Shapes. FocusNode must conform to at least one.</li>
+<li class="md-github">sh:xone: list of Shapes. Exactly one shape must conform.</li>
+</ul>
+<ol start="7" class="md-github">
+<li class="md-github">Shape-based Constraint Components</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:node: NodeShape. Each value node validated against NodeShape.</li>
+<li class="md-github">sh:property: PropertyShape. Each value node validated against nested PropertyShape.</li>
+<li class="md-github">sh:qualifiedValueShape: Shape + integer qMin+qMax. Count of values conforming to shape controlled by qMin,qMax.</li>
+</ul>
+<ol start="8" class="md-github">
+<li class="md-github">Other Constraint Components</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">sh:closed: boolean. If true, every property of focus node must be declared by shapes or ignoredProperties.</li>
+<li class="md-github">sh:ignoredProperties: list of predicates. Excluded from closed constraint.</li>
+<li class="md-github">sh:hasValue: resource or literal. Path must include this exact value.</li>
+<li class="md-github">sh:in: list of resources/literals. Path values subset of list.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">W3C Shapes Constraint Language (SHACL)
+https://www.w3.org/TR/shacl/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-shacl_constraints" href="#digest-of-shacl_constraints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of SHACL_CONSTRAINTS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="shacl-core-constraint-components" href="#shacl-core-constraint-components"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SHACL Core Constraint Components</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="value-type-constraint-components" href="#value-type-constraint-components"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Value Type Constraint Components</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="shclass" href="#shclass"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:class</h3>
+<ul class="md-github">
+<li class="md-github">Predicate: http://www.w3.org/ns/shacl#class</li>
+<li class="md-github">Range: rdfs:Resource (IRI)</li>
+<li class="md-github">Cardinality: 0..1 per PropertyShape</li>
+<li class="md-github">Semantics: each value of the path must be an instance of the given RDF class</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="shdatatype" href="#shdatatype"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:datatype</h3>
+<ul class="md-github">
+<li class="md-github">Predicate: http://www.w3.org/ns/shacl#datatype</li>
+<li class="md-github">Range: rdfs:Datatype (IRI)</li>
+<li class="md-github">Cardinality: 0..1 per PropertyShape</li>
+<li class="md-github">Semantics: each value of the path must be a literal of the given datatype</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="shnodekind" href="#shnodekind"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:nodeKind</h3>
+<ul class="md-github">
+<li class="md-github">Predicate: http://www.w3.org/ns/shacl#nodeKind</li>
+<li class="md-github">Range: IRI with allowed values {sh:IRI, sh:Literal, sh:BlankNode, sh:BlankNodeOrIRI, sh:BlankNodeOrLiteral, sh:IRIOrLiteral}</li>
+<li class="md-github">Cardinality: 0..1 per PropertyShape</li>
+<li class="md-github">Semantics: restricts the kind of node (IRI, literal, blank node) allowed as values</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="cardinality-constraint-components" href="#cardinality-constraint-components"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Cardinality Constraint Components</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="shmincount" href="#shmincount"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:minCount</h3>
+<ul class="md-github">
+<li class="md-github">Predicate: http://www.w3.org/ns/shacl#minCount</li>
+<li class="md-github">Range: xsd:integer</li>
+<li class="md-github">Cardinality: 0..1 per PropertyShape</li>
+<li class="md-github">Default: 0</li>
+<li class="md-github">Semantics: minimum number of values for the property path</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="shmaxcount" href="#shmaxcount"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:maxCount</h3>
+<ul class="md-github">
+<li class="md-github">Predicate: http://www.w3.org/ns/shacl#maxCount</li>
+<li class="md-github">Range: xsd:integer</li>
+<li class="md-github">Cardinality: 0..1 per PropertyShape</li>
+<li class="md-github">Default: unbounded</li>
+<li class="md-github">Semantics: maximum number of values for the property path</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="value-range-constraint-components" href="#value-range-constraint-components"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Value Range Constraint Components</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="shminexclusive-shmininclusive-shmaxexclusive-shmaxinclusive" href="#shminexclusive-shmininclusive-shmaxexclusive-shmaxinclusive"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:minExclusive, sh:minInclusive, sh:maxExclusive, sh:maxInclusive</h3>
+<ul class="md-github">
+<li class="md-github">Predicates: http://www.w3.org/ns/shacl#minExclusive, etc.</li>
+<li class="md-github">Range: xsd:literal comparables (numbers, dates)</li>
+<li class="md-github">Cardinality: 0..1 each per PropertyShape</li>
+<li class="md-github">Semantics: enforces numeric/date bounds on literal values</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="string-based-constraint-components" href="#string-based-constraint-components"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>String-based Constraint Components</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="shminlength-shmaxlength" href="#shminlength-shmaxlength"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:minLength, sh:maxLength</h3>
+<ul class="md-github">
+<li class="md-github">Range: xsd:integer</li>
+<li class="md-github">Semantics: minimum/maximum string length</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="shpattern" href="#shpattern"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:pattern</h3>
+<ul class="md-github">
+<li class="md-github">Range: xsd:string (regular expression)</li>
+<li class="md-github">Semantics: JavaScript-style regex for literal values</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="shlanguagein" href="#shlanguagein"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:languageIn</h3>
+<ul class="md-github">
+<li class="md-github">Range: rdf:List of language tags</li>
+<li class="md-github">Semantics: restrict literal language tags</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="shuniquelang" href="#shuniquelang"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:uniqueLang</h3>
+<ul class="md-github">
+<li class="md-github">Range: xsd:boolean</li>
+<li class="md-github">Semantics: enforces uniqueness of language-tagged string values</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="property-pair-constraint-components" href="#property-pair-constraint-components"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Property Pair Constraint Components</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="shequals-shdisjoint-shlessthan-shlessthanorequals" href="#shequals-shdisjoint-shlessthan-shlessthanorequals"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:equals, sh:disjoint, sh:lessThan, sh:lessThanOrEquals</h3>
+<ul class="md-github">
+<li class="md-github">Range: rdf:Resource (IRI or Literal)</li>
+<li class="md-github">Cardinality: 0..1 each per PropertyShape</li>
+<li class="md-github">Semantics: compares values of two paths on same focus node</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="logical-constraint-components" href="#logical-constraint-components"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Logical Constraint Components</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="shnot-shand-shor-shxone" href="#shnot-shand-shor-shxone"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:not, sh:and, sh:or, sh:xone</h3>
+<ul class="md-github">
+<li class="md-github">Range: sh:Shape or rdf:List of sh:Shape</li>
+<li class="md-github">Semantics: combines shapes with logical operators</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="shape-based-constraint-components" href="#shape-based-constraint-components"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Shape-based Constraint Components</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="shnode" href="#shnode"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:node</h3>
+<ul class="md-github">
+<li class="md-github">Range: sh:NodeShape</li>
+<li class="md-github">Semantics: nested validation; each value must conform to given node shape</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="shproperty" href="#shproperty"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:property</h3>
+<ul class="md-github">
+<li class="md-github">Range: sh:PropertyShape</li>
+<li class="md-github">Cardinality: multiple</li>
+<li class="md-github">Semantics: nested property shapes applied to values</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="shqualifiedvalueshape-shqualifiedmincount-shqualifiedmaxcount" href="#shqualifiedvalueshape-shqualifiedmincount-shqualifiedmaxcount"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:qualifiedValueShape, sh:qualifiedMinCount, sh:qualifiedMaxCount</h3>
+<ul class="md-github">
+<li class="md-github">Range: sh:Shape and xsd:integer</li>
+<li class="md-github">Semantics: qualified (sh:node, sh:property) with count constraints</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="other-constraint-components" href="#other-constraint-components"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Other Constraint Components</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="shclosed-shignoredproperties" href="#shclosed-shignoredproperties"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:closed, sh:ignoredProperties</h3>
+<ul class="md-github">
+<li class="md-github">sh:closed: xsd:boolean, enforces no extra properties except those in shapes or ignored list</li>
+<li class="md-github">sh:ignoredProperties: rdf:List of predicates to be ignored when closed</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="shhasvalue" href="#shhasvalue"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:hasValue</h3>
+<ul class="md-github">
+<li class="md-github">Range: rdf:Resource (IRI or Literal)</li>
+<li class="md-github">Semantics: requires that a specific value appears for the path</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="shin" href="#shin"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>sh:in</h3>
+<ul class="md-github">
+<li class="md-github">Range: rdf:List of rdf:Resource</li>
+<li class="md-github">Semantics: allows values only from a given list</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: W3C Shapes Constraint Language (SHACL)</li>
+<li class="md-github">URL: https://www.w3.org/TR/shacl/</li>
+<li class="md-github">License: License</li>
+<li class="md-github">Crawl Date: 2025-04-27T01:08:27.598Z</li>
+<li class="md-github">Data Size: 26167390 bytes</li>
+<li class="md-github">Links Found: 206960</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-27</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-27T01:51:14.835Z</p>
+  </footer>
+</body>
+</html>
