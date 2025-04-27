@@ -122,6 +122,9 @@ export function buildIntermediate({ dataDir = "data", outDir = "intermediate" } 
   const cwd = process.cwd();
   const dataPath = path.isAbsolute(dataDir) ? dataDir : path.join(cwd, dataDir);
   const intermediatePath = path.isAbsolute(outDir) ? outDir : path.join(cwd, outDir);
+  // Clean intermediate directory to avoid stale artifacts
+  fs.rmSync(intermediatePath, { recursive: true, force: true });
+  fs.mkdirSync(intermediatePath, { recursive: true });
   if (!fs.existsSync(dataPath)) {
     console.error(`Error: ${dataDir}/ directory not found`);
     return { count: 0, files: [] };
@@ -483,9 +486,9 @@ export async function main(args) {
     const biArgs = cliArgs.slice(biIndex + 1);
     let dataDir;
     let outDir;
-    if (biArgs.length >= 1 && !biArgs[0].startsWith("-")) {
+    if (biArgs.length >= 1 && !biArgs[0].startswith("-")) {
       dataDir = biArgs[0];
-      if (biArgs.length >= 2 && !biArgs[1].startsWith("-")) {
+      if (biArgs.length >= 2 && !biArgs[1].startswith("-")) {
         outDir = biArgs[1];
       }
     }

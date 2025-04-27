@@ -5,6 +5,7 @@ import { buildIntermediate } from "../../src/lib/main.js";
 
 describe("buildIntermediate function", () => {
   let existsSpy;
+  let rmSpy;
   let mkdirSpy;
   let readdirSpy;
   let readFileSpy;
@@ -16,6 +17,7 @@ describe("buildIntermediate function", () => {
 
   beforeEach(() => {
     existsSpy = vi.spyOn(fs, "existsSync");
+    rmSpy = vi.spyOn(fs, "rmSync").mockImplementation(() => {});
     mkdirSpy = vi.spyOn(fs, "mkdirSync").mockImplementation(() => {});
     readdirSpy = vi.spyOn(fs, "readdirSync");
     readFileSpy = vi.spyOn(fs, "readFileSync");
@@ -31,6 +33,7 @@ describe("buildIntermediate function", () => {
   test("logs error when data dir missing and does not throw", () => {
     existsSpy.mockReturnValue(false);
     expect(() => buildIntermediate()).not.toThrow();
+    expect(rmSpy).toHaveBeenCalledWith(intermediateDir, { recursive: true, force: true });
     expect(errorSpy).toHaveBeenCalledWith("Error: data/ directory not found");
     expect(logSpy).not.toHaveBeenCalled();
   });
@@ -39,6 +42,7 @@ describe("buildIntermediate function", () => {
     existsSpy.mockImplementation((p) => p === dataDir);
     readdirSpy.mockReturnValue([]);
     buildIntermediate();
+    expect(rmSpy).toHaveBeenCalledWith(intermediateDir, { recursive: true, force: true });
     expect(mkdirSpy).toHaveBeenCalledWith(intermediateDir, { recursive: true });
     expect(logSpy).toHaveBeenCalledWith("Generated 0 intermediate artifacts into intermediate/");
   });
@@ -51,6 +55,7 @@ describe("buildIntermediate function", () => {
     readFileSpy.mockReturnValue(JSON.stringify({ results: { bindings: [binding] } }));
 
     buildIntermediate();
+    expect(rmSpy).toHaveBeenCalledWith(intermediateDir, { recursive: true, force: true });
     expect(writeFileSpy).toHaveBeenCalledWith(
       path.join(intermediateDir, "sample-intermediate.json"),
       JSON.stringify(

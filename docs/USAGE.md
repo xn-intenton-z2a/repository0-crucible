@@ -153,6 +153,8 @@ node src/lib/main.js --diagnostics
 
 ## Build Intermediate
 
+**Note:** Before generation, any existing `intermediate/` directory is removed to avoid stale artifacts.
+
 ### CLI Usage
 
 Use the `--build-intermediate` flag with optional path arguments to specify input and output directories:
