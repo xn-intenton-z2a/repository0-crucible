@@ -25,13 +25,9 @@ describe("Main Output", () => {
     expect(() => main()).not.toThrow();
     expect(logSpy).toHaveBeenCalled();
     const output = logSpy.mock.calls[0][0];
-    expect(output).toContain(
-      "owl-builder: create and manage OWL ontologies from public data sources"
-    );
+    expect(output).toContain("owl-builder: create and manage OWL ontologies from public data sources");
     expect(output).toContain("Usage: node src/lib/main.js [options]");
-    expect(output).toContain(
-      "--help                Display this help message"
-    );
+    expect(output).toContain("--help                Display this help message");
     logSpy.mockRestore();
   });
 
@@ -41,13 +37,9 @@ describe("Main Output", () => {
     expect(() => main()).not.toThrow();
     expect(logSpy).toHaveBeenCalled();
     const output = logSpy.mock.calls[0][0];
-    expect(output).toContain(
-      "owl-builder: create and manage OWL ontologies from public data sources"
-    );
+    expect(output).toContain("owl-builder: create and manage OWL ontologies from public data sources");
     expect(output).toContain("Usage: node src/lib/main.js [options]");
-    expect(output).toContain(
-      "--help                Display this help message"
-    );
+    expect(output).toContain("--help                Display this help message");
     logSpy.mockRestore();
   });
 });
@@ -99,7 +91,7 @@ describe("Diagnostics Flag", () => {
       name: PUBLIC_DATA_SOURCES[0].name,
       url: PUBLIC_DATA_SOURCES[0].url,
       statusCode: 200,
-      reachable: true
+      reachable: true,
     });
     expect(typeof hc.latencyMs).toBe("number");
     // Check system metrics
@@ -111,7 +103,7 @@ describe("Diagnostics Flag", () => {
       heapTotal: expect.any(Number),
       heapUsed: expect.any(Number),
       external: expect.any(Number),
-      arrayBuffers: expect.any(Number)
+      arrayBuffers: expect.any(Number),
     });
     fetchSpy.mockRestore();
     logSpy.mockRestore();
@@ -130,7 +122,7 @@ describe("Diagnostics Flag", () => {
       url: PUBLIC_DATA_SOURCES[0].url,
       statusCode: null,
       latencyMs: null,
-      reachable: false
+      reachable: false,
     });
     // Check system metrics present
     expect(parsed).toHaveProperty("uptimeSeconds");
@@ -141,7 +133,7 @@ describe("Diagnostics Flag", () => {
       heapTotal: expect.any(Number),
       heapUsed: expect.any(Number),
       external: expect.any(Number),
-      arrayBuffers: expect.any(Number)
+      arrayBuffers: expect.any(Number),
     });
     fetchSpy.mockRestore();
     logSpy.mockRestore();
@@ -149,19 +141,21 @@ describe("Diagnostics Flag", () => {
 });
 
 // New tests for capital-cities CLI flag
-describe('--capital-cities CLI flag', () => {
-  test('outputs correct JSON-LD document', async () => {
-    const mockBinding = { country: { value: 'http://example.org/C' }, capital: { value: 'http://example.org/K' } };
+describe("--capital-cities CLI flag", () => {
+  test("outputs correct JSON-LD document", async () => {
+    const mockBinding = { country: { value: "http://example.org/C" }, capital: { value: "http://example.org/K" } };
     const mockResponse = { results: { bindings: [mockBinding] } };
-    const fetchSpy = vi.spyOn(global, 'fetch').mockResolvedValue({ status: 200, json: () => Promise.resolve(mockResponse) });
-    const logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
-    await main(['--capital-cities']);
+    const fetchSpy = vi
+      .spyOn(global, "fetch")
+      .mockResolvedValue({ status: 200, json: () => Promise.resolve(mockResponse) });
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    await main(["--capital-cities"]);
     expect(logSpy).toHaveBeenCalledTimes(1);
     const output = logSpy.mock.calls[0][0];
     const parsed = JSON.parse(output);
     expect(parsed).toEqual({
-      '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' },
-      '@graph': [{ '@id': 'http://example.org/C', capital: 'http://example.org/K' }]
+      "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
+      "@graph": [{ "@id": "http://example.org/C", "capital": "http://example.org/K" }],
     });
     fetchSpy.mockRestore();
     logSpy.mockRestore();

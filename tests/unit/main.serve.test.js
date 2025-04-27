@@ -10,7 +10,7 @@ describe("HTTP Server (--serve) Integration Tests", () => {
   const mockBinding = {
     country: { value: "http://example.org/C" },
     capital: { value: "http://example.org/K" },
-  };  
+  };
 
   beforeAll(async () => {
     // Force an ephemeral port
@@ -90,7 +90,7 @@ describe("HTTP Server (--serve) Integration Tests", () => {
     expect(Array.isArray(data["@graph"])).toBe(true);
     expect(data["@graph"][0]).toEqual({
       "@id": mockBinding.country.value,
-      capital: mockBinding.capital.value,
+      "capital": mockBinding.capital.value,
     });
   });
 

@@ -4,7 +4,13 @@ import path from "path";
 import { buildIntermediate } from "../../src/lib/main.js";
 
 describe("buildIntermediate function", () => {
-  let existsSpy, mkdirSpy, readdirSpy, readFileSpy, writeFileSpy, logSpy, errorSpy;
+  let existsSpy;
+  let mkdirSpy;
+  let readdirSpy;
+  let readFileSpy;
+  let writeFileSpy;
+  let logSpy;
+  let errorSpy;
   const dataDir = path.join(process.cwd(), "data");
   const intermediateDir = path.join(process.cwd(), "intermediate");
 
@@ -47,11 +53,15 @@ describe("buildIntermediate function", () => {
     buildIntermediate();
     expect(writeFileSpy).toHaveBeenCalledWith(
       path.join(intermediateDir, "sample-intermediate.json"),
-      JSON.stringify({
-        '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' },
-        '@graph': [{ '@id': 'id1', b: 'val2' }]
-      }, null, 2),
-      'utf8'
+      JSON.stringify(
+        {
+          "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
+          "@graph": [{ "@id": "id1", "b": "val2" }],
+        },
+        null,
+        2,
+      ),
+      "utf8",
     );
     expect(logSpy).toHaveBeenCalledWith("written sample-intermediate.json");
     expect(logSpy).toHaveBeenCalledWith("Generated 1 intermediate artifacts into intermediate/");

@@ -7,18 +7,14 @@ import path from "path";
 import http from "http";
 import pkg from "../../package.json" assert { type: "json" };
 
-export const PUBLIC_DATA_SOURCES = [
-  { name: "DBpedia SPARQL", url: "https://dbpedia.org/sparql" }
-];
+export const PUBLIC_DATA_SOURCES = [{ name: "DBpedia SPARQL", url: "https://dbpedia.org/sparql" }];
 
 /**
  * Retrieve list of data sources, merging default and custom sources.
  * @param {string} configPath - Path to custom data-sources.json file.
  * @returns {Array<{ name: string, url: string }>}
  */
-export function listSources(
-  configPath = path.join(process.cwd(), "data-sources.json")
-) {
+export function listSources(configPath = path.join(process.cwd(), "data-sources.json")) {
   let customSources = [];
   if (fs.existsSync(configPath)) {
     try {
@@ -26,16 +22,11 @@ export function listSources(
       const parsed = JSON.parse(raw);
       if (
         Array.isArray(parsed) &&
-        parsed.every(
-          (item) =>
-            item && typeof item.name === "string" && typeof item.url === "string"
-        )
+        parsed.every((item) => item && typeof item.name === "string" && typeof item.url === "string")
       ) {
         customSources = parsed;
       } else {
-        console.error(
-          `Invalid data-sources.json: Expected an array of { name: string, url: string }`
-        );
+        console.error(`Invalid data-sources.json: Expected an array of { name: string, url: string }`);
       }
     } catch (err) {
       console.error(`Invalid data-sources.json: ${err.message}`);
@@ -49,9 +40,7 @@ export function listSources(
  * @param {string} [configPath]
  * @returns {Promise<{count: number, files: string[]}>}
  */
-export async function refreshSources(
-  configPath = path.join(process.cwd(), "data-sources.json")
-) {
+export async function refreshSources(configPath = path.join(process.cwd(), "data-sources.json")) {
   const sources = await listSources(configPath);
   const dataDir = path.join(process.cwd(), "data");
   if (!fs.existsSync(dataDir)) {
@@ -139,34 +128,26 @@ export function buildIntermediate() {
       const raw = fs.readFileSync(path.join(dataDir, file), "utf8");
       const parsed = JSON.parse(raw);
       let graphEntries = [];
-      if (
-        parsed &&
-        parsed.results &&
-        Array.isArray(parsed.results.bindings)
-      ) {
+      if (parsed && parsed.results && Array.isArray(parsed.results.bindings)) {
         graphEntries = parsed.results.bindings.map((b) => {
           const entry = {};
           const keys = Object.keys(b);
           if (keys.length > 0) {
-            entry['@id'] = b[keys[0]].value;
+            entry["@id"] = b[keys[0]].value;
             for (const k of keys.slice(1)) {
               entry[k] = b[k].value;
             }
           }
           return entry;
         });
-      } else if (Array.isArray(parsed) || typeof parsed === 'object') {
-        graphEntries = Array.isArray(parsed) ? parsed : parsed['@graph'] ? parsed['@graph'] : Object.values(parsed);
+      } else if (Array.isArray(parsed) || typeof parsed === "object") {
+        graphEntries = Array.isArray(parsed) ? parsed : parsed["@graph"] ? parsed["@graph"] : Object.values(parsed);
       }
       const doc = {
-        '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' },
-        '@graph': graphEntries
+        "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
+        "@graph": graphEntries,
       };
-      fs.writeFileSync(
-        path.join(intermediateDir, outName),
-        JSON.stringify(doc, null, 2),
-        'utf8'
-      );
+      fs.writeFileSync(path.join(intermediateDir, outName), JSON.stringify(doc, null, 2), "utf8");
       console.log(`written ${outName}`);
       count++;
     } catch (err) {
@@ -192,20 +173,18 @@ export async function main(args) {
       ?country a <http://dbpedia.org/ontology/Country> .
       ?country <http://dbpedia.org/ontology/capital> ?capital .
     } LIMIT 50`;
-    const url = `${endpoint}?query=${encodeURIComponent(
-      sparqlQuery
-    )}&format=json`;
+    const url = `${endpoint}?query=${encodeURIComponent(sparqlQuery)}&format=json`;
     try {
       const response = await fetch(url);
       const data = await response.json();
       const bindings = data.results?.bindings || [];
       const graph = bindings.map((b) => ({
         "@id": b.country.value,
-        capital: b.capital.value
+        "capital": b.capital.value,
       }));
       const doc = {
         "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
-        "@graph": graph
+        "@graph": graph,
       };
       console.log(JSON.stringify(doc, null, 2));
     } catch (err) {
@@ -233,8 +212,8 @@ export async function main(args) {
         "--build-enhanced",
         "--refresh",
         "--merge-persist",
-        "--capital-cities"
-      ]
+        "--capital-cities",
+      ],
     };
     // Perform live health checks
     const sources = listSources();
@@ -260,7 +239,7 @@ export async function main(args) {
       "  --refresh             Fetch and persist all data sources",
       "  --merge-persist       Merge and persist data to storage",
       "  --list-sources        List public (and custom) data sources",
-      "  --capital-cities      Query DBpedia for capital cities and output JSON-LD"
+      "  --capital-cities      Query DBpedia for capital cities and output JSON-LD",
     ].join("\n");
     console.log(helpText);
     return;
@@ -283,7 +262,7 @@ export async function main(args) {
           "  --refresh             Fetch and persist all data sources",
           "  --merge-persist       Merge and persist data to storage",
           "  --list-sources        List public (and custom) data sources",
-          "  --capital-cities      Query DBpedia for capital cities and output JSON-LD"
+          "  --capital-cities      Query DBpedia for capital cities and output JSON-LD",
         ].join("\n");
         res.writeHead(200, { "Content-Type": "text/plain" });
         return res.end(helpText);
@@ -312,8 +291,8 @@ export async function main(args) {
               "--build-enhanced",
               "--refresh",
               "--merge-persist",
-              "--capital-cities"
-            ]
+              "--capital-cities",
+            ],
           };
           const sources = listSources();
           diagnostics.healthChecks = await performHealthChecks(sources);
@@ -337,11 +316,11 @@ export async function main(args) {
             const bindings = data.results?.bindings || [];
             const graph = bindings.map((b) => ({
               "@id": b.country.value,
-              capital: b.capital.value
+              "capital": b.capital.value,
             }));
             const doc = {
               "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
-              "@graph": graph
+              "@graph": graph,
             };
             const body = JSON.stringify(doc, null, 2);
             res.writeHead(200, { "Content-Type": "application/json" });
@@ -378,9 +357,7 @@ export async function main(args) {
         fs.mkdirSync(intermediateDir, { recursive: true });
         let filesList = [];
         try {
-          filesList = fs.existsSync(dataDir)
-            ? fs.readdirSync(dataDir).filter((f) => f.endsWith(".json"))
-            : [];
+          filesList = fs.existsSync(dataDir) ? fs.readdirSync(dataDir).filter((f) => f.endsWith(".json")) : [];
         } catch (err) {
           console.error(`Error reading data directory: ${err.message}`);
           filesList = [];
@@ -393,38 +370,30 @@ export async function main(args) {
             const raw = fs.readFileSync(path.join(dataDir, file), "utf8");
             const parsed = JSON.parse(raw);
             let graphEntries = [];
-            if (
-              parsed &&
-              parsed.results &&
-              Array.isArray(parsed.results.bindings)
-            ) {
+            if (parsed && parsed.results && Array.isArray(parsed.results.bindings)) {
               graphEntries = parsed.results.bindings.map((b) => {
                 const entry = {};
                 const keys = Object.keys(b);
                 if (keys.length > 0) {
-                  entry['@id'] = b[keys[0]].value;
+                  entry["@id"] = b[keys[0]].value;
                   for (const k of keys.slice(1)) {
                     entry[k] = b[k].value;
                   }
                 }
                 return entry;
               });
-            } else if (Array.isArray(parsed) || typeof parsed === 'object') {
+            } else if (Array.isArray(parsed) || typeof parsed === "object") {
               graphEntries = Array.isArray(parsed)
                 ? parsed
-                : parsed['@graph']
-                ? parsed['@graph']
-                : Object.values(parsed);
+                : parsed["@graph"]
+                  ? parsed["@graph"]
+                  : Object.values(parsed);
             }
             const doc = {
-              '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' },
-              '@graph': graphEntries
+              "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
+              "@graph": graphEntries,
             };
-            fs.writeFileSync(
-              path.join(intermediateDir, outName),
-              JSON.stringify(doc, null, 2),
-              'utf8'
-            );
+            fs.writeFileSync(path.join(intermediateDir, outName), JSON.stringify(doc, null, 2), "utf8");
             res.write(`written ${outName}\n`);
             count++;
           } catch (err) {
