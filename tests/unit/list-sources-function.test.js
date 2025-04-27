@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, afterEach } from "vitest";
 import fs from "fs";
-import { listSources, PUBLIC_DATA_SOURCES } from "@src/lib/main.js";
+import { listSources, PUBLIC_DATA_SOURCES } from "../../src/lib/main.js";
 
 describe("listSources function", () => {
   afterEach(() => {

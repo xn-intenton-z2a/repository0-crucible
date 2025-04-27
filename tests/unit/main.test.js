@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
-import * as mainModule from "@src/lib/main.js";
-import { main, PUBLIC_DATA_SOURCES, refreshSources, listSources } from "@src/lib/main.js";
+import * as mainModule from "../../src/lib/main.js";
+import { main, PUBLIC_DATA_SOURCES, refreshSources, listSources } from "../../src/lib/main.js";
 import pkg from "../../package.json" assert { type: "json" };
 import fs from "fs";
 import path from "path";
@@ -259,4 +259,10 @@ describe("HTTP Server", () => {
           expect(doc["@context"]).toEqual({ "@vocab": "http://www.w3.org/2002/07/owl#" });
           expect(doc).toHaveProperty("@graph");
           expect(Array.isArray(doc["@graph"]))
-```<EOF truncated due to length```
+            .toBe(true);
+          resolve();
+        });
+      });
+    });
+  });
+});
