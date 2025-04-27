@@ -1,216 +1,180 @@
 # JSONLD_API
 
 ## Crawl Summary
-JSON-LD JavaScript API WebIDL interfaces and default configuration
-
-JsonLdProcessor methods with signatures:
- expand(input, options)→Promise<Object>
- compact(input, context, options)→Promise<Object>
- flatten(input, context, options)→Promise<Object>
- frame(input, frame, options)→Promise<Object>
- toRDF(input, options)→Promise<Any>
- fromRDF(dataset, options)→Promise<Object>
- normalize(input, options)→Promise<String>
- merge(input, options)→Promise<Object>
-
-JsonLdOptions parameters:
- processingMode: "json-ld-1.1" (default) or "json-ld-1.0"
- base: IRI (default: document URL)
- expandContext: JSON-LD context map
- documentLoader: Function(URL)→Promise<{documentUrl,document}>
- profiles: Array<IRI>
- produceGeneralizedRdf: boolean
- useNative: boolean
+JsonLdProcessor interface with methods expand, compact, flatten, frame, toRDF, fromRDF defined in WebIDL with input, context/frame, options arguments and Promise return; RdfDataset and Quad interfaces; JsonLdOptions dictionary listing base, expandContext, documentLoader, processingMode, produceGeneralizedRdf, skipExpansion, ordered, embed, explicit, omitGraph; DocumentLoader signature and RemoteDocument dictionary; JsonLdError codes and structure.
 
 ## Normalised Extract
-Table of Contents
+Table of Contents:
 1. JsonLdProcessor Interface
-2. JsonLdOptions Parameters
-3. Default Document Loader
-4. merge() Utility
-5. Profiles Option
+2. JsonLdOptions Type
+3. DocumentLoader and RemoteDocument
+4. Error Handling
 
 1. JsonLdProcessor Interface
-Methods and signatures:
- expand(JSONLDInput input, JsonLdOptions options) returns Promise<Object>
- compact(JSONLDInput input, JSONLDContext context, JsonLdOptions options) returns Promise<Object>
- flatten(JSONLDInput input, JSONLDContext context, JsonLdOptions options) returns Promise<Object>
- frame(JSONLDInput input, FrameDocument frame, JsonLdOptions options) returns Promise<Object>
- merge(JSONLDInput input, JsonLdOptions options) returns Promise<Object>
- toRDF(JSONLDInput input, JsonLdOptions options) returns Promise<Dataset or Quads>
- fromRDF(RDFDataset dataset, JsonLdOptions options) returns Promise<Object>
- normalize(JSONLDInput input, JsonLdOptions options) returns Promise<String>
+  expand(input:object, options:JsonLdOptions):Promise<object>
+    - Removes context; expands IRIs; outputs expanded form array or object
+    - options.base: base IRI for relative resolution
+    - options.expandContext: local context to merge
+  compact(input:object, context:object, options:JsonLdOptions):Promise<object>
+    - Applies provided context; compacts IRIs to terms or compact IRIs
+    - options.processingMode: "json-ld-1.0" | "json-ld-1.1"
+  flatten(input:object, context:object|null, options:JsonLdOptions):Promise<object>
+    - Collects all node properties in single node object; assigns blank node identifiers
+  frame(input:object, frame:object, options:JsonLdOptions):Promise<object>
+    - Matches nodes against frame; embeds according to embed, explicit, omitGraph flags
+  toRDF(input:object, options:JsonLdOptions):Promise<RdfDataset>
+    - Serializes JSON-LD to RDF Dataset; options.produceGeneralizedRdf toggles generalized triples
+  fromRDF(dataset:RdfDataset, options:JsonLdOptions):Promise<object>
+    - Converts RDF dataset to JSON-LD; options.base and processingMode apply
 
-2. JsonLdOptions Parameters
-processingMode: "json-ld-1.1" | "json-ld-1.0"
-base: absolute IRI string or null
-expandContext: context map or null
-documentLoader: function(url:String)→Promise<{documentUrl:String,document:Object}>
-profiles: array of IRI strings
-produceGeneralizedRdf: boolean
-useNative: boolean
+2. JsonLdOptions Type
+  base: string (default: document URL)
+  expandContext: object (additional context to apply before expansion)
+  documentLoader: (url:string)=>Promise<RemoteDocument> (default: built-in fetch)
+  processingMode: "json-ld-1.0" | "json-ld-1.1" (default: "json-ld-1.1")
+  produceGeneralizedRdf: boolean (default: false)
+  skipExpansion: boolean (default: false)
+  ordered: boolean (default: false)
+  embed: boolean (default: true for frame)
+  explicit: boolean (default: false for frame)
+  omitGraph: boolean (default: false for frame)
 
-3. Default Document Loader
-Signature:
- function defaultDocumentLoader(url:String)→Promise<{documentUrl:String,document:Object}>
-Behavior:
- - Uses fetch API
- - Rejects on HTTP status ≥400
- - Parses JSON body
- - Returns object with documentUrl and document body
+3. DocumentLoader and RemoteDocument
+  DocumentLoader(url) => Promise<RemoteDocument>
+  RemoteDocument:
+    documentUrl: final URL after redirects
+    document: parsed JSON-LD or RDF dataset
+    contextUrl: URL of linked context if `Link` header present
+    context: preloaded context object
 
-4. merge() Utility
-Signature:
- merge(JSONLDInput input, JsonLdOptions options)→Promise<Object>
-Behavior:
- - Concatenates multiple JSON-LD inputs into a single expanded document
-
-5. profiles Option
-Allows selection of profiles for compacting; overrides base context
+4. Error Handling
+  All API calls reject with JsonLdError:
+    name: "JsonLdError"
+    code: one of LoadingDocumentFailed, InvalidRemoteDocument, InvalidContext, ExpansionError, CompactError, FrameError, ToRdfError, FromRdfError
+    message: human-readable detail
+    cause: underlying Error object or URI
 
 
 ## Supplementary Details
-JsonLdOptions defaults
- processingMode="json-ld-1.1"
- base: document URL
- expandContext: null
- documentLoader: defaultDocumentLoader
- profiles: []
- produceGeneralizedRdf=false
- useNative=false
+- Default DocumentLoader uses HTTP GET with Accept: application/ld+json, application/json, text/turtle
+- To override context caching, supply custom documentLoader intercepting contextUrl
+- To enable 1.0 compatibility, set processingMode to "json-ld-1.0"; errors thrown if context uses 1.1-only keywords
+- For large graphs, set ordered=true on toRDF to sort triples lexicographically by subject, predicate, object, graph
+- Frame embed/explicit/omitGraph behavior:
+  embed:false => only nodes matching at top-level
+  explicit:true => output only specified properties; others omitted
+  omitGraph:true => omit @graph wrapper in result
 
-Example usage:
-const options={processingMode:"json-ld-1.1",base:"https://example.com/",documentLoader:customLoader};
-jsonld.expand(input,options).then(expanded=>console.log(expanded));
-
-Custom document loader example:
-function customLoader(url){
-  if(url.startsWith("https://mycdn.com/"))return fetch(url).then(r=>r.json()).then(doc=>({documentUrl:url,document:doc}));
-  throw new Error("Unsupported URL");
-}
-
-Profiles usage:
-jsonld.compact(input,context,{profiles:["https://www.w3.org/ns/did/v1"]});
-
-produceGeneralizedRdf:
-jsonld.toRDF(input,{produceGeneralizedRdf:true}).then(dataset=>{/* dataset may include generalized triples */});
 
 ## Reference Details
-WebIDL fragments:
+// SDK method signatures and examples
 
-interface JsonLdProcessor {
-  Promise<Object> expand(JSONLDInput input, JsonLdOptions options);
-  Promise<Object> compact(JSONLDInput input, JSONLDContext context, JsonLdOptions options);
-  Promise<Object> flatten(JSONLDInput input, JSONLDContext context, JsonLdOptions options);
-  Promise<Object> frame(JSONLDInput input, FrameDocument frame, JsonLdOptions options);
-  Promise<Object> merge(JSONLDInput input, JsonLdOptions options);
-  Promise<JsonLdRDF> toRDF(JSONLDInput input, JsonLdOptions options);
-  Promise<Object> fromRDF(RDFDataset dataset, JsonLdOptions options);
-  Promise<String> normalize(JSONLDInput input, JsonLdOptions options);
-};
+import { JsonLdProcessor, JsonLdOptions } from 'jsonld';
+const processor = new JsonLdProcessor();
 
-dictionary JsonLdOptions {
-  DOMString processingMode = "json-ld-1.1";
-  DOMString base = null;
-  Any expandContext = null;
-  JsonLdDocumentLoader documentLoader = defaultDocumentLoader;
-  sequence<DOMString> profiles = [];
-  boolean produceGeneralizedRdf = false;
-  boolean useNative = false;
-};
+// Expand example
+enum Mode { V1_0 = 'json-ld-1.0', V1_1 = 'json-ld-1.1' }
+async function expandExample(input:any) {
+  const opts: JsonLdOptions = {
+    base: 'http://example.com/',
+    documentLoader: (url) => fetchDocument(url),
+    processingMode: Mode.V1_1
+  };
+  return await processor.expand(input, opts);
+}
 
-dictionary JsonLdDocumentLoaderResult {
-  DOMString documentUrl;
-  Any document;
-};
+// Compact example
+async function compactExample(input:any, ctx:any) {
+  const opts: JsonLdOptions = { skipExpansion: false };
+  return await processor.compact(input, ctx, opts);
+}
 
-typedef (JsonLdDocumentLoaderResult or Promise<JsonLdDocumentLoaderResult>) JsonLdDocumentLoader(DOMString url);
+// Flatten example
+async function flattenExample(input:any, ctx:any|null) {
+  const opts: JsonLdOptions = {};
+  return await processor.flatten(input, ctx, opts);
+}
 
-dictionary RDFDataset { /* conforms to RDF/JS spec: DatasetCore<Quad> */ };
+// Frame example
+async function frameExample(input:any, frame:any) {
+  const opts: JsonLdOptions = { embed: true, explicit: false, omitGraph: false };
+  return await processor.frame(input, frame, opts);
+}
 
-dictionary JsonLdRDF { type: "application/n-quads" or "application/n-quads; charset=utf-8"; value: String; }
+// RDF conversion example
+toRdfExample(processor, input) {
+  const opts: JsonLdOptions = { produceGeneralizedRdf: true, ordered: true };
+  return processor.toRDF(input, opts);
+}
 
-Example code:
-import jsonld from 'jsonld';
+// Error handling
+try {
+  await processor.expand(input, {});
+} catch(e) {
+  if (e.code === 'LoadingDocumentFailed') {
+    console.error('Failed to load', e.cause);
+  }
+}
 
-const input={"@context":{"name":"http://xmlns.com/foaf/0.1/name"},"name":"Alice"};
-const options={ processingMode:"json-ld-1.1", base:"https://example.com/" };
-jsonld.compact(input, input['@context'], options).then(compacted=> {
-  console.log(compacted);
-}).catch(err=> console.error(err));
-
-Best practices:
-- Always set processingMode to match desired JSON-LD version
-- Provide a custom documentLoader for authenticated or local contexts
-- Use profiles to apply standard vocabularies during compaction
-- Use toRDF with produceGeneralizedRdf when working with blank node generalized triples
-
-Troubleshooting:
-Command: curl -I https://example.com/context.json
-Expected: HTTP/1.1 200 OK
-If 404 or network error, ensure context URL is accessible or use local file loader.
-
-Error patterns:
-Error: HTTP Error: 404 → context URL typo or missing file
-Error: JSON-LD only supports JSON content → ensure correct MIME type
+// Troubleshooting
+// Command-line test using Node REPL
+// > node -e "require('jsonld').expand({"@id":"_:b0"}).then(console.log).catch(console.error)"
+// Expected output: [{"@id":"_:b0"}]
 
 
 ## Information Dense Extract
-JsonLdProcessor methods: expand(input,options)→Promise<Object>; compact(input,context,options)→Promise<Object>; flatten(input,context,options); frame(input,frame,options); merge(input,options); toRDF(input,options)→Promise<RDFDataset or N-Quads>; fromRDF(dataset,options)→Promise<Object>; normalize(input,options)→Promise<String>.
-
-JsonLdOptions: processingMode (json-ld-1.1|json-ld-1.0), base (IRI|null), expandContext (Object|null), documentLoader(Function URL→Promise<{documentUrl,document}>), profiles(Array<IRI>), produceGeneralizedRdf(boolean), useNative(boolean).
-
-defaultDocumentLoader uses fetch, rejects status>=400, returns {documentUrl,url,document:parsedJSON}.
-
-Examples: jsonld.expand(input,{processingMode:"json-ld-1.1",base:"IRI",documentLoader:loader}); jsonld.compact(input,context,options); jsonld.toRDF(input,{produceGeneralizedRdf:true}).then(dataset=>...);
-
-Best practices: set processingMode, custom loader for auth, use profiles for standard vocabs, produceGeneralizedRdf for generalized RDF; troubleshoot via curl -I contextURL; common errors HTTP 404, JSON parse errors.
+JsonLdProcessor methods: expand(input,opts):Promise<object>; compact(input,ctx,opts):Promise<object>; flatten(input,ctx,opts):Promise<object>; frame(input,frame,opts):Promise<object>; toRDF(input,opts):Promise<RdfDataset>; fromRDF(dataset,opts):Promise<object>. JsonLdOptions: base:string; expandContext:object; documentLoader:(url)=>Promise<RemoteDocument>; processingMode:'json-ld-1.0'|'json-ld-1.1'; produceGeneralizedRdf:boolean; skipExpansion:boolean; ordered:boolean; embed:boolean; explicit:boolean; omitGraph:boolean. DocumentLoader: (url)=>Promise<{documentUrl,document,contextUrl,context}>. Errors: JsonLdError{name,code:LoadingDocumentFailed|InvalidContext|ExpansionError|CompactError|FrameError|ToRdfError|FromRdfError,message,cause}.
 
 ## Sanitised Extract
-Table of Contents
+Table of Contents:
 1. JsonLdProcessor Interface
-2. JsonLdOptions Parameters
-3. Default Document Loader
-4. merge() Utility
-5. Profiles Option
+2. JsonLdOptions Type
+3. DocumentLoader and RemoteDocument
+4. Error Handling
 
 1. JsonLdProcessor Interface
-Methods and signatures:
- expand(JSONLDInput input, JsonLdOptions options) returns Promise<Object>
- compact(JSONLDInput input, JSONLDContext context, JsonLdOptions options) returns Promise<Object>
- flatten(JSONLDInput input, JSONLDContext context, JsonLdOptions options) returns Promise<Object>
- frame(JSONLDInput input, FrameDocument frame, JsonLdOptions options) returns Promise<Object>
- merge(JSONLDInput input, JsonLdOptions options) returns Promise<Object>
- toRDF(JSONLDInput input, JsonLdOptions options) returns Promise<Dataset or Quads>
- fromRDF(RDFDataset dataset, JsonLdOptions options) returns Promise<Object>
- normalize(JSONLDInput input, JsonLdOptions options) returns Promise<String>
+  expand(input:object, options:JsonLdOptions):Promise<object>
+    - Removes context; expands IRIs; outputs expanded form array or object
+    - options.base: base IRI for relative resolution
+    - options.expandContext: local context to merge
+  compact(input:object, context:object, options:JsonLdOptions):Promise<object>
+    - Applies provided context; compacts IRIs to terms or compact IRIs
+    - options.processingMode: 'json-ld-1.0' | 'json-ld-1.1'
+  flatten(input:object, context:object|null, options:JsonLdOptions):Promise<object>
+    - Collects all node properties in single node object; assigns blank node identifiers
+  frame(input:object, frame:object, options:JsonLdOptions):Promise<object>
+    - Matches nodes against frame; embeds according to embed, explicit, omitGraph flags
+  toRDF(input:object, options:JsonLdOptions):Promise<RdfDataset>
+    - Serializes JSON-LD to RDF Dataset; options.produceGeneralizedRdf toggles generalized triples
+  fromRDF(dataset:RdfDataset, options:JsonLdOptions):Promise<object>
+    - Converts RDF dataset to JSON-LD; options.base and processingMode apply
 
-2. JsonLdOptions Parameters
-processingMode: 'json-ld-1.1' | 'json-ld-1.0'
-base: absolute IRI string or null
-expandContext: context map or null
-documentLoader: function(url:String)Promise<{documentUrl:String,document:Object}>
-profiles: array of IRI strings
-produceGeneralizedRdf: boolean
-useNative: boolean
+2. JsonLdOptions Type
+  base: string (default: document URL)
+  expandContext: object (additional context to apply before expansion)
+  documentLoader: (url:string)=>Promise<RemoteDocument> (default: built-in fetch)
+  processingMode: 'json-ld-1.0' | 'json-ld-1.1' (default: 'json-ld-1.1')
+  produceGeneralizedRdf: boolean (default: false)
+  skipExpansion: boolean (default: false)
+  ordered: boolean (default: false)
+  embed: boolean (default: true for frame)
+  explicit: boolean (default: false for frame)
+  omitGraph: boolean (default: false for frame)
 
-3. Default Document Loader
-Signature:
- function defaultDocumentLoader(url:String)Promise<{documentUrl:String,document:Object}>
-Behavior:
- - Uses fetch API
- - Rejects on HTTP status 400
- - Parses JSON body
- - Returns object with documentUrl and document body
+3. DocumentLoader and RemoteDocument
+  DocumentLoader(url) => Promise<RemoteDocument>
+  RemoteDocument:
+    documentUrl: final URL after redirects
+    document: parsed JSON-LD or RDF dataset
+    contextUrl: URL of linked context if 'Link' header present
+    context: preloaded context object
 
-4. merge() Utility
-Signature:
- merge(JSONLDInput input, JsonLdOptions options)Promise<Object>
-Behavior:
- - Concatenates multiple JSON-LD inputs into a single expanded document
-
-5. profiles Option
-Allows selection of profiles for compacting; overrides base context
+4. Error Handling
+  All API calls reject with JsonLdError:
+    name: 'JsonLdError'
+    code: one of LoadingDocumentFailed, InvalidRemoteDocument, InvalidContext, ExpansionError, CompactError, FrameError, ToRdfError, FromRdfError
+    message: human-readable detail
+    cause: underlying Error object or URI
 
 ## Original Source
 JSON-LD 1.1 Specification and API
@@ -218,69 +182,94 @@ https://www.w3.org/TR/json-ld11-api/
 
 ## Digest of JSONLD_API
 
-# JsonLdProcessor Interface
+# JSON-LD 1.1 Processing Algorithms and API - Extract
+Date Retrieved: 2023-10-10
+Source: W3C Recommendation 16 July 2020 (JSON-LD 1.1 API)
+Data Size: 34300293 bytes, Links: 160551, Error: None
 
-WebIDL declaration:
+## 9. The Application Programming Interface
+
+### 9.1 JsonLdProcessor Interface
+```webidl
 interface JsonLdProcessor {
-  Promise<Object> expand(JSONLDInput input, JsonLdOptions options);
-  Promise<Object> compact(JSONLDInput input, JSONLDContext context, JsonLdOptions options);
-  Promise<Object> flatten(JSONLDInput input, JSONLDContext context, JsonLdOptions options);
-  Promise<Object> frame(JSONLDInput input, FrameDocument frame, JsonLdOptions options);
-  Promise<Object> merge(JSONLDInput input, JsonLdOptions options);
-  Promise<Any> toRDF(JSONLDInput input, JsonLdOptions options);
-  Promise<Object> fromRDF(RDFDataset dataset, JsonLdOptions options);
-  Promise<String> normalize(JSONLDInput input, JsonLdOptions options);
+  Promise<object> expand(
+    object input,
+    JsonLdOptions options = {});
+  Promise<object> compact(
+    object input,
+    object context,
+    JsonLdOptions options = {});
+  Promise<object> flatten(
+    object input,
+    object context = null,
+    JsonLdOptions options = {});
+  Promise<object> frame(
+    object input,
+    object frame,
+    JsonLdOptions options = {});
+  Promise<RdfDataset> toRDF(
+    object input,
+    JsonLdOptions options = {});
+  Promise<object> fromRDF(
+    RdfDataset dataset,
+    JsonLdOptions options = {});
 };
+```
 
-# JsonLdOptions Dictionary
+### 9.2 RDF Dataset Interfaces
+```webidl
+dictionary RdfDataset {
+  any RDF:Quad[];
+};
+```
+Quad structure: { subject: Term, predicate: Term, object: Term, graph: Term }
+Term: IRI | BlankNode | Literal {value, datatype, language}
 
-WebIDL declaration:
+### 9.3 JsonLdOptions Type
+```webidl
 dictionary JsonLdOptions {
-  DOMString processingMode = "json-ld-1.1";
-  DOMString base = null;
-  DOMString expandContext = null;
-  JsonLdDocumentLoader documentLoader = defaultDocumentLoader;
-  Array<String> profiles = [];
-  boolean produceGeneralizedRdf = false;
-  boolean useNative = false;
-  Any additional custom loader options;
+  DOMString base;
+  object expandContext;
+  DocumentLoader documentLoader;
+  DOMString processingMode;      // "json-ld-1.0" or "json-ld-1.1"
+  boolean produceGeneralizedRdf;
+  boolean skipExpansion;
+  boolean ordered;
+  boolean embed;
+  boolean explicit;
+  boolean omitGraph;
 };
+```
 
-# Default Document Loader
+### 9.4 Remote Document and Context Retrieval
+```webidl
+callback DocumentLoader = Promise<RemoteDocument> (
+  DOMString url
+);
+dictionary RemoteDocument {
+  DOMString documentUrl;
+  any document;
+  DOMString contextUrl;
+  object context;
+};
+```
 
-function defaultDocumentLoader(url) {
-  return fetch(url).then(response => {
-    return response.status >= 400
-      ? Promise.reject(new Error(`HTTP Error: ${response.status}`))
-      : response.json().then(body => ({ documentUrl: url, document: body }));
-  });
-}
+### 9.6 Error Handling
+Errors throw `JsonLdError` instances with properties:
+- `name`: "JsonLdError"
+- `code`: "LoadingDocumentFailed", "InvalidContext", "ExpansionError", "CompactError", …
+- `message`: detailed description
+- `cause`: underlying error or URI
 
-# Configuration Options and Defaults
 
-- processingMode: "json-ld-1.1" or "json-ld-1.0"
-- base: Base IRI for relative resolution (default: document location)
-- expandContext: Local context to use during expansion
-- documentLoader: Function(url) returning Promise<{documentUrl, document}>
-- profiles: Array of profile URIs for compact API
-- produceGeneralizedRdf: Include generalized triples (default: false)
-- useNative: Use native RDF dataset (default: false)
-
-# Retrieval metadata
-
-Source: JSON-LD 1.1 Processing Algorithms and API
-Retrieved: 2024-06-25
-Data Size: 32556606 bytes
-Links Found: 153009
-Error: None
 
 ## Attribution
 - Source: JSON-LD 1.1 Specification and API
 - URL: https://www.w3.org/TR/json-ld11-api/
 - License: License
-- Crawl Date: 2025-04-27T06:50:34.119Z
-- Data Size: 32556606 bytes
-- Links Found: 153009
+- Crawl Date: 2025-04-27T07:48:08.468Z
+- Data Size: 34300293 bytes
+- Links Found: 160551
 
 ## Retrieved
 2025-04-27
