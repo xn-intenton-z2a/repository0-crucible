@@ -147,9 +147,3 @@ describe("Diagnostics Flag", () => {
     logSpy.mockRestore();
   });
 });
-
-// New tests for custom data-sources.json support
-// ... existing custom data-sources tests ...
-
-// Tests for HTTP Server
-... existing HTTP server tests follow unchanged except adding assertions ...
