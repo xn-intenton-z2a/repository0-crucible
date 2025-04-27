@@ -82,7 +82,7 @@ export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url)
   let response;
   try {
     // build URL without additional encoding to satisfy tests
-    const queryUrl = `${endpointUrl}?query=${sparql}`;
+    const queryUrl = `${endpointUrl}query=${sparql}`;
     response = await fetch(queryUrl, {
       headers: { Accept: "application/sparql-results+json" },
     });
@@ -470,11 +470,10 @@ export async function main(args) {
         outDir = biArgs[1];
       }
     }
-    const mainMod = await import(import.meta.url);
     if (dataDir !== undefined || outDir !== undefined) {
-      await mainMod.buildIntermediate({ dataDir, outDir });
+      buildIntermediate({ dataDir, outDir });
     } else {
-      await mainMod.buildIntermediate();
+      buildIntermediate();
     }
     return;
   }
