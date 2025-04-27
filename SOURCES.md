@@ -1,18 +1,9 @@
-# W3C OWL 2 Web Ontology Language Document Overview
-
-## https://www.w3.org/TR/owl2-overview/
-
-The OWL 2 Overview is the definitive W3C Recommendation describing OWL 2 ontology constructs—classes, properties, individuals, datatypes, and axioms—along with RDF-based serializations (RDF/XML, Turtle). It provides formal semantics, conformance criteria, and code examples for authoring and validating OWL 2 ontologies. Essential for ensuring compliance with the latest standards and guiding precise vocabulary mappings when generating JSON-LD from ontology models. (Last updated 27 October 2009; authoritative as a W3C Recommendation.)
-
-## License
-
-W3C Document License (CC-BY 4.0)
-
-# W3C RDF 1.1 Concepts and Abstract Syntax
+# W3C RDF 1.1 Concepts and OWL 2 Web Ontology Language
 
 ## https://www.w3.org/TR/rdf11-concepts/
+## https://www.w3.org/TR/owl2-overview/
 
-This W3C Recommendation defines the RDF 1.1 data model—IRIs, literals, blank nodes, triples, and graphs—along with abstract syntaxes for Turtle, RDF/XML, and JSON-LD. It details parsing rules, serialization guidelines, and formal semantics that underpin all RDF-based tooling. Crucial for constructing, validating, and traversing RDF graphs before any OWL transformations or JSON-LD production. (Last updated 25 February 2014; authoritative as a W3C Recommendation.)
+This combined W3C Recommendation provides both the RDF 1.1 data model (IRIs, literals, blank nodes, triples, and graphs), abstract syntaxes (Turtle, RDF/XML, JSON-LD), formal semantics, and conformance criteria, together with the OWL 2 Web Ontology Language constructs—classes, properties, individuals, datatypes, and axioms. It includes code examples for parsing, serialization, ontology authoring, and validation, offering a one-stop reference for building, transforming, and validating RDF graphs and OWL ontologies before JSON-LD emission. (Last updated: RDF 25 February 2014; OWL 2 Overview 27 October 2009; authoritative as W3C Recommendations.)
 
 ## License
 
@@ -23,7 +14,7 @@ W3C Document License (CC-BY 4.0)
 ## https://www.w3.org/TR/json-ld11/
 ## https://www.w3.org/TR/json-ld11-api/
 
-These paired W3C Recommendations specify JSON-LD 1.1 framing, compaction, expansion, context processing algorithms, and the JavaScript API for programmatic JSON-LD operations (compaction, expansion, framing, normalization, RDF conversion). They cover error handling, extension points, embedding strategies, and algorithmic pseudocode for library authors. Essential for ingesting external data and emitting compliant JSON-LD within OWL builder workflows. (Spec last updated 16 May 2020; API last updated 29 May 2020; authoritative as W3C Recommendations.)
+These paired W3C Recommendations define JSON-LD 1.1: framing, compaction, expansion, context processing, normalization, and RDF conversion algorithms, along with the JavaScript API for programmatic JSON-LD operations. Detailed pseudocode, error-handling strategies, extension points, and embedding guidelines equip library authors to ingest external data and emit fully compliant JSON-LD within OWL builder workflows. (Last updated: Spec 16 May 2020; API 29 May 2020; authoritative as W3C Recommendations.)
 
 ## License
 
@@ -37,14 +28,14 @@ W3C Document License (CC-BY 4.0)
 ## https://www.w3.org/TR/sparql11-http-rdf-update/
 ## https://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/
 
-This comprehensive W3C SPARQL 1.1 suite includes:
-- Query Language: SELECT, ASK, CONSTRUCT, DESCRIBE, federation, aggregation, and subqueries.
-- Protocol: HTTP GET/POST formats, content negotiation, error codes, and URL parameter conventions.
-- Update: INSERT, DELETE, graph targeting, transactions, and error semantics.
-- Graph Store HTTP: RESTful operations for creating, reading, updating, and deleting RDF graphs.
-- Results JSON: Defines the JSON encoding for SELECT and ASK query results.
+This comprehensive suite covers:
+- The SPARQL 1.1 Query Language (SELECT, ASK, CONSTRUCT, DESCRIBE, federation, aggregation).
+- Protocol: HTTP GET/POST, content negotiation, URL parameters, and error codes.
+- Update: INSERT, DELETE, transactions, and graph targeting.
+- Graph Store HTTP: RESTful CRUD on RDF graphs.
+- JSON Results: JSON encoding for SELECT and ASK results.
 
-It also illustrates HTTP parameter tuning, rate-limit handling, efficient result parsing, and examples against public endpoints like DBpedia and Wikidata. Critical for building robust SPARQL clients, servers, and federated query pipelines within CLI and HTTP server features. (Last updated 21 March 2013; authoritative as W3C Recommendations.)
+Examples illustrate parameter tuning, rate-limit handling, and parsing against endpoints like DBpedia. Critical for building robust SPARQL clients, servers, and federated pipelines. (Last updated 21 March 2013; authoritative as W3C Recommendations.)
 
 ## License
 
@@ -57,24 +48,25 @@ W3C Document License (CC-BY 4.0)
 ## https://nodejs.org/api/url.html
 ## https://nodejs.org/api/globals.html#fetch
 
-Official Node.js v20 documentation for core modules used in `owl-builder`:
-- HTTP: http.createServer, routing strategies, headers, and status codes for RESTful and SPARQL endpoints.
-- FS: File and directory operations (existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync) essential for CLI commands and data persistence.
-- URL: WHATWG URL API and URLSearchParams for constructing SPARQL query URLs.
-- Fetch: Global fetch API for HTTP requests, JSON parsing, and error handling.
+Official Node.js v20 documentation for core modules used by owl-builder:
+- HTTP: Server creation, routing, headers, status codes for RESTful, SPARQL, and query endpoints.
+- FS: Directory and file operations (existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync) for CLI commands and data persistence.
+- URL: WHATWG URL and URLSearchParams for constructing and parsing request URLs.
+- Fetch: Global fetch API for HTTP requests, JSON parsing, timeouts, and error handling.
 
-Delivers actionable patterns for data retrieval, health checks, and integration with SPARQL endpoints. (Current as of Node.js v20.x; authoritative as official Node.js documentation.)
+Provides patterns for health checks, streaming responses, and integration with SPARQL endpoints. (Current as of Node.js v20.x; authoritative as official Node.js documentation.)
 
 ## License
 
 OpenJS Foundation and contributors (MIT License)
 
-# RDF/JS Data Model and Stream Specifications
+# RDF/JS Data Model and Streams with rdf-ext Implementation
 
 ## https://rdf.js.org/data-model-spec/
 ## https://rdf.js.org/streams/spec/
+## https://rdf-ext.github.io/
 
-The RDF/JS Community Specifications define standard JavaScript interfaces for representing and processing RDF data. The Data Model spec details factories for creating IRIs, literals, blank nodes, triples/quads, and datasets, ensuring interoperability across RDF/JS libraries. The Streams spec outlines a minimal streaming interface for processing RDF triples and quads via Node.js Streams or async iterators. Essential for integrating libraries like rdf-ext and Comunica to build memory-efficient, streaming-enabled SPARQL clients and data pipelines. (Last updated January 2022; authoritative as RDF/JS Community Specifications.)
+The RDF/JS Community Specifications define language-agnostic interfaces for RDF factories (IRIs, literals, blank nodes, triples/quads, datasets) and a minimal streaming abstraction for processing RDF streams. The rdf-ext implementation extends these specs with concrete factories, parsers, serializers, and in-memory datasets. Together, they enable interoperable, memory-efficient RDF graph construction and streaming, and seamless integration with Comunica for SPARQL queries in Node.js. (Spec last updated January 2022; rdf-ext docs last updated 2024; authoritative as community standards and official implementation.)
 
 ## License
 
@@ -84,18 +76,28 @@ MIT License
 
 ## https://comunica.dev/docs/query/framework
 
-The Comunica SPARQL Query Framework documentation provides detailed guidance on building modular and extensible SPARQL query engines in JavaScript. It covers actor pipelines, HTTP endpoint connectors, federation strategies, query optimization, result streaming, and custom extension points. Demonstrates how to compose connectors for local and remote data sources, handle large result sets efficiently, and integrate with SPARQL endpoints. Essential for extending the CLI with advanced query capabilities and federated SPARQL processing. (Last updated 2024; authoritative as official Comunica documentation.)
+The Comunica documentation describes building modular SPARQL query engines in JavaScript: actor pipelines, HTTP connectors, federation strategies, query optimization, and custom extension points. It illustrates how to compose sources (local & remote), handle large result streams, and integrate with cache and metadata. Essential for extending CLI and HTTP server features with advanced, federated SPARQL capabilities. (Last updated 2024; authoritative as official Comunica documentation.)
 
 ## License
 
 MIT License
 
-# DBpedia SPARQL Endpoint Documentation
+# rdflib.js RDF Library
 
-## https://wiki.dbpedia.org/develop/datasets/sparql-endpoint
+## https://github.com/linkeddata/rdflib.js#readme
 
-DBpedia’s official SPARQL endpoint documentation details how to construct and send SPARQL queries to `https://dbpedia.org/sparql`. It covers query parameters (`query`, `format`), HTTP headers (Accept negotiation for JSON, XML), CORS considerations, rate limits, and error handling. Includes examples demonstrating HTTP GET and POST requests, parameter encoding, and best practices for performance tuning and pagination. Critical for ensuring reliable integration with DBpedia when generating OWL JSON-LD via the `capital-cities` and future CLI commands. (Last updated 2023; authoritative as DBpedia project documentation.)
+rdflib.js is a comprehensive JavaScript library for RDF graph management and data retrieval. It supports parsing/serializing RDF in Turtle, N3, and JSON-LD, a robust store abstraction, Fetcher for remote graph fetching, and an UpdateManager for SPARQL Update operations. Provides client-side querying, graph merging, and caching strategies for OWL JSON-LD workloads. (Last updated 2024; authoritative as official GitHub repository.)
 
 ## License
 
-Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
+MIT License
+
+# Vitest Testing Framework
+
+## https://vitest.dev/
+
+Vitest is a blazing-fast unit testing framework for modern JavaScript, built on V8. It offers an intuitive API for test suites, hooks (`beforeEach`, `afterEach`), spies, mocks, and snapshot testing. Seamless ESM support and built-in coverage via V8 make it ideal for writing and maintaining the owl-builder test suite. (Current as of 2024; authoritative as official Vitest documentation.)
+
+## License
+
+MIT License
