@@ -82,7 +82,7 @@ export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url)
   let response;
   try {
     // adjust URL construction to satisfy tests
-    const queryUrl = `${endpointUrl}query=${encodeURIComponent(sparql)}`;
+    const queryUrl = `${endpointUrl}?query=${encodeURIComponent(sparql)}`;
     response = await fetch(queryUrl, {
       headers: { Accept: "application/sparql-results+json" },
     });
@@ -278,7 +278,7 @@ function getHelpText() {
     "  --diagnostics             Show diagnostic information",
     "  --serve                   Start HTTP server",
     "  --refresh                 Refresh data from sources",
-    "  --build-intermediate      Build intermediate JSON-LD artifacts",
+    "  --build-intermediate      Build intermediate JSON-LD artifacts (optional: [<inputDir>] [<outputDir>])",
     "  --build-enhanced          Build enhanced ontology pipeline",
     "  --capital-cities          Query DBpedia for capital cities",
     "  --query <file> <sparql>   Execute SPARQL query on JSON-LD file",
@@ -459,8 +459,22 @@ export async function main(args) {
     return;
   }
 
-  if (cliArgs.includes("--build-intermediate")) {
-    buildIntermediate();
+  const biIndex = cliArgs.indexOf("--build-intermediate");
+  if (biIndex !== -1) {
+    let dataDir;
+    let outDir;
+    const biArgs = cliArgs.slice(biIndex + 1);
+    if (biArgs.length >= 1 && !biArgs[0].startsWith("-")) {
+      dataDir = biArgs[0];
+      if (biArgs.length >= 2 && !biArgs[1].startsWith("-")) {
+        outDir = biArgs[1];
+      }
+    }
+    if (dataDir !== undefined || outDir !== undefined) {
+      buildIntermediate({ dataDir, outDir });
+    } else {
+      buildIntermediate();
+    }
     return;
   }
 
