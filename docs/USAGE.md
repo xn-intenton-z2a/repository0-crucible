@@ -183,3 +183,54 @@ Example output:
 written sample-intermediate.json
 Generated 1 intermediate artifacts into intermediate/
 ```
+
+## Build Enhanced
+
+Use the `--build-enhanced` flag with up to three path arguments to specify the data, intermediate, and output directories:
+
+- **Default Invocation** (no args):
+  ```bash
+  node src/lib/main.js --build-enhanced
+  ```
+  Reads from `./data`, writes intermediate to `./intermediate`, and writes enhanced ontology to `./enhanced/enhanced.json`.
+
+- **Custom Data Directory** (one arg):
+  ```bash
+  node src/lib/main.js --build-enhanced custom-data
+  ```
+  Uses `./custom-data` as data directory.
+
+- **Custom Data and Intermediate Directories** (two args):
+  ```bash
+  node src/lib/main.js --build-enhanced custom-data custom-intermediate
+  ```
+  Uses `./custom-data` and writes intermediate to `./custom-intermediate`.
+
+- **Custom Data, Intermediate, and Output Directories** (three args):
+  ```bash
+  node src/lib/main.js --build-enhanced custom-data custom-intermediate custom-output
+  ```
+  Writes final enhanced ontology to `./custom-output/enhanced.json`.
+
+Example output:
+
+```text
+written ds.json
+written sample-intermediate.json
+written enhanced.json
+Enhanced ontology written to enhanced/enhanced.json with <count> nodes
+```
+
+**HTTP Endpoint**
+
+Trigger build-enhanced over HTTP GET:
+
+```bash
+curl http://localhost:3000/build-enhanced
+```
+
+The server streams log lines for each step (each `written ...`) and ends with:
+
+```text
+Enhanced ontology written to enhanced/enhanced.json with <count> nodes
+```
