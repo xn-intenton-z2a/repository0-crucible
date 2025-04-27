@@ -1,0 +1,15 @@
+{
+  "@context": {
+    "@vocab": "http://www.w3.org/2002/07/owl#"
+  },
+  "@graph": [
+    {
+      "@id": "http://example.org/c1",
+      "capital": "http://example.org/cap1"
+    },
+    {
+      "@id": "http://example.org/c2",
+      "capital": "http://example.org/cap2"
+    }
+  ]
+}

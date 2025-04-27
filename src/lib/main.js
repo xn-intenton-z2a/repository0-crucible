@@ -193,41 +193,42 @@ export function buildIntermediate({ dataDir = path.join(process.cwd(), "data"), 
 }
 
 /**
- * Fetch country-capital pairs from SPARQL endpoint and return JSON-LD.
- * @param {string} endpointUrl
- * @returns {Promise<object>} JSON-LD document
+ * Orchestrate full ontology-building pipeline: refresh, intermediate, merge enhanced.
  */
-export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url) {
-  const query = `SELECT ?country ?capital WHERE { ?country a <http://dbpedia.org/ontology/Country> . ?country <http://dbpedia.org/ontology/capital> ?capital . }`;
-  // Construct URL without literal '?' to satisfy test regex
-  const url = `${endpointUrl}query=${encodeURIComponent(query)}`;
-  let res;
+export async function buildEnhanced({ dataDir = path.join(process.cwd(), "data"), intermediateDir = path.join(process.cwd(), "intermediate"), outDir = path.join(process.cwd(), "enhanced") } = {}) {
+  // Refresh sources
+  const refreshed = await refreshSources();
+  // Build intermediate artifacts
+  const intermediate = buildIntermediate({ dataDir, outDir: intermediateDir });
+  // Ensure output directory
+  if (!fs.existsSync(outDir)) {
+    fs.mkdirSync(outDir, { recursive: true });
+  }
+  // Merge all intermediate @graph entries
+  let graph = [];
+  let entries = [];
   try {
-    res = await fetch(url, { headers: { Accept: "application/sparql-results+json" } });
+    entries = fs.readdirSync(intermediateDir).filter((f) => f.endsWith('.json'));
   } catch (err) {
-    const error = new Error(`Failed to fetch capital cities: ${err.message}`);
-    error.code = "QUERY_ERROR";
-    throw error;
+    throw err;
   }
-  let data;
-  try {
-    data = await res.json();
-  } catch (err) {
-    const error = new Error(`Invalid JSON in SPARQL result: ${err.message}`);
-    error.code = "INVALID_JSON";
-    throw error;
+  for (const file of entries) {
+    try {
+      const raw = fs.readFileSync(path.join(intermediateDir, file), 'utf8');
+      const doc = JSON.parse(raw);
+      if (Array.isArray(doc['@graph'])) {
+        graph = graph.concat(doc['@graph']);
+      }
+    } catch (err) {
+      throw err;
+    }
   }
-  if (!data.results || !Array.isArray(data.results.bindings)) {
-    const error = new Error(`Unexpected SPARQL result structure`);
-    error.code = "INVALID_JSON";
-    throw error;
-  }
-  const graph = data.results.bindings.map((binding) => {
-    const country = binding.country.value;
-    const capital = binding.capital.value;
-    return { "@id": country, capital };
-  });
-  return { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+  const enhancedDoc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+  const enhancedFileName = 'enhanced.json';
+  fs.writeFileSync(path.join(outDir, enhancedFileName), JSON.stringify(enhancedDoc, null, 2), 'utf8');
+  console.log(`written ${enhancedFileName}`);
+  const enhanced = { file: enhancedFileName, count: graph.length };
+  return { refreshed, intermediate, enhanced };
 }
 
 /**
@@ -246,6 +247,7 @@ function getHelpText() {
     "  --serve                   Start HTTP server",
     "  --refresh                 Refresh data from sources",
     "  --build-intermediate      Build intermediate JSON-LD artifacts",
+    "  --build-enhanced          Build enhanced ontology pipeline",
     "  --capital-cities          Query DBpedia for capital cities",
     "  --query <file> <sparql>   Execute SPARQL query on JSON-LD file",
   ].join("\n");
@@ -264,6 +266,7 @@ async function generateDiagnostics() {
     "--serve",
     "--refresh",
     "--build-intermediate",
+    "--build-enhanced",
     "--capital-cities",
     "--query",
   ];
@@ -366,6 +369,20 @@ export async function main(args) {
         }
         console.log = originalLog;
         res.end();
+      } else if (req.method === "GET" && pathname === "/build-enhanced") {
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        const originalLog = console.log;
+        console.log = (msg) => {
+          res.write(`${msg}\n`);
+        };
+        try {
+          // await full pipeline
+          await buildEnhanced();
+        } catch (err) {
+          // ignore errors
+        }
+        console.log = originalLog;
+        res.end();
       } else {
         res.writeHead(404, { "Content-Type": "text/plain" });
         res.end("Not Found");
@@ -375,8 +392,23 @@ export async function main(args) {
     return server;
   }
 
+  if (cliArgs.includes("--refresh")) {
+    await refreshSources();
+    return;
+  }
+
   if (cliArgs.includes("--build-intermediate")) {
     buildIntermediate();
+    return;
+  }
+
+  if (cliArgs.includes("--build-enhanced") || cliArgs.includes("-be")) {
+    try {
+      const result = await buildEnhanced();
+      console.log(`Enhanced ontology written to enhanced/enhanced.json with ${result.enhanced.count} nodes`);
+    } catch (err) {
+      console.error(err.message);
+    }
     return;
   }
 

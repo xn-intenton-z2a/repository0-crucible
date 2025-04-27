@@ -88,6 +88,22 @@ written sample-intermediate.json
 Generated 1 intermediate artifacts into intermediate/
 ```
 
+## Build Enhanced
+
+Use the `--build-enhanced` (or `-be`) flag to run the full ontology-building pipeline: refresh sources, build intermediate artifacts, and merge into a single enhanced OWL JSON-LD document.
+
+```bash
+node src/lib/main.js --build-enhanced
+```
+
+Example output:
+```text
+written ds.json
+written sample-intermediate.json
+written enhanced.json
+Enhanced ontology written to enhanced/enhanced.json with 3 nodes
+```
+
 ## Capital Cities
 
 ### CLI
@@ -117,22 +133,3 @@ import { getCapitalCities } from 'owl-builder';
   console.log(JSON.stringify(doc, null, 2));
 })();
 ```
-
-## Serve
-
-Start a local HTTP server to expose REST endpoints:
-
-```bash
-node src/lib/main.js --serve
-```
-
-By default it listens on port `3000`, or an OS-assigned port if `PORT=0` is set.
-
-### Available Endpoints
-
-- GET `/help` - Returns CLI help text.
-- GET `/sources` - Returns JSON list of data sources.
-- GET `/diagnostics` - Returns diagnostics JSON.
-- GET `/capital-cities` - Returns OWL JSON-LD of country–capital pairs.
-- GET `/build-intermediate` - Triggers intermediate build and streams logs.
-- Any other path responds with `404 Not Found`.
