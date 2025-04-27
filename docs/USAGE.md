@@ -57,12 +57,6 @@ Use the `--query` flag to execute a SPARQL query on an OWL JSON-LD artifact:
 node src/lib/main.js --query <filePath> "<SPARQL query>"
 ```
 
-Example:
-
-```bash
-node src/lib/main.js --query data/sample.jsonld "SELECT ?s WHERE { ?s ?p ?o } LIMIT 1"
-```
-
 ## Help
 
 Use the `--help` or `-h` flag to display usage instructions and available options:
@@ -94,12 +88,34 @@ written sample-intermediate.json
 Generated 1 intermediate artifacts into intermediate/
 ```
 
-**Programmatic Usage**
+## Capital Cities
+
+### CLI
+
+Use the `--capital-cities` flag to fetch country–capital pairs from DBpedia and output an OWL JSON-LD document:
+
+```bash
+node src/lib/main.js --capital-cities
+```
+
+Example output:
+```json
+{
+  "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
+  "@graph": [
+    { "@id": "http://example.org/C", "capital": "http://example.org/K" }
+  ]
+}
+```
+
+### Programmatic
 
 ```js
-import { buildIntermediate } from 'owl-builder';
-const { count, files } = buildIntermediate();
-console.log(`Generated ${count} intermediate artifacts into intermediate/`, files);
+import { getCapitalCities } from 'owl-builder';
+(async () => {
+  const doc = await getCapitalCities();
+  console.log(JSON.stringify(doc, null, 2));
+})();
 ```
 
 ## Serve
@@ -114,14 +130,9 @@ By default it listens on port `3000`, or an OS-assigned port if `PORT=0` is set.
 
 ### Available Endpoints
 
-1. GET `/help`
-   - Status: `200 OK`
-   - Headers: `Content-Type: text/plain`
-   - Body snippet:
-     ```text
-     owl-builder: create and manage OWL ontologies from public data sources
-     Usage: node src/lib/main.js [options]
-     ...
-     ```
-
-... (rest unchanged) ...
+- GET `/help` - Returns CLI help text.
+- GET `/sources` - Returns JSON list of data sources.
+- GET `/diagnostics` - Returns diagnostics JSON.
+- GET `/capital-cities` - Returns OWL JSON-LD of country–capital pairs.
+- GET `/build-intermediate` - Triggers intermediate build and streams logs.
+- Any other path responds with `404 Not Found`.

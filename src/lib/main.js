@@ -100,8 +100,6 @@ export function listSources(configPath = path.join(process.cwd(), "data-sources.
 
 /**
  * Fetches and persists data from configured sources into data/ and returns summary.
- * @param {string} [configPath]
- * @returns {Promise<{count: number, files: string[]}>}
  */
 export async function refreshSources(configPath = path.join(process.cwd(), "data-sources.json")) {
   const sources = listSources(configPath);
@@ -135,10 +133,6 @@ export async function refreshSources(configPath = path.join(process.cwd(), "data
 
 /**
  * Build intermediate JSON-LD artifacts from dataDir into outDir.
- * @param {Object} [options]
- * @param {string} [options.dataDir]
- * @param {string} [options.outDir]
- * @returns {{count: number, files: string[]}} summary of generated artifacts.
  */
 export function buildIntermediate({ dataDir = path.join(process.cwd(), "data"), outDir = path.join(process.cwd(), "intermediate") } = {}) {
   if (!fs.existsSync(dataDir)) {
@@ -196,6 +190,43 @@ export function buildIntermediate({ dataDir = path.join(process.cwd(), "data"), 
   const dirName = path.basename(outDir);
   console.log(`Generated ${count} intermediate artifacts into ${dirName}/`);
   return { count, files };
+}
+
+/**
+ * Fetch country-capital pairs from SPARQL endpoint and return JSON-LD.
+ * @param {string} endpointUrl
+ * @returns {Promise<object>} JSON-LD document
+ */
+export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url) {
+  const query = `SELECT ?country ?capital WHERE { ?country a <http://dbpedia.org/ontology/Country> . ?country <http://dbpedia.org/ontology/capital> ?capital . }`;
+  const url = `${endpointUrl}?query=${encodeURIComponent(query)}`;
+  let res;
+  try {
+    res = await fetch(url, { headers: { Accept: "application/sparql-results+json" } });
+  } catch (err) {
+    const error = new Error(`Failed to fetch capital cities: ${err.message}`);
+    error.code = "QUERY_ERROR";
+    throw error;
+  }
+  let data;
+  try {
+    data = await res.json();
+  } catch (err) {
+    const error = new Error(`Invalid JSON in SPARQL result: ${err.message}`);
+    error.code = "INVALID_JSON";
+    throw error;
+  }
+  if (!data.results || !Array.isArray(data.results.bindings)) {
+    const error = new Error(`Unexpected SPARQL result structure`);
+    error.code = "INVALID_JSON";
+    throw error;
+  }
+  const graph = data.results.bindings.map((binding) => {
+    const country = binding.country.value;
+    const capital = binding.capital.value;
+    return { "@id": country, capital };
+  });
+  return { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
 }
 
 /**
@@ -287,22 +318,13 @@ export async function main(args) {
 
   if (cliArgs.includes("--capital-cities")) {
     try {
-      const response = await fetch(PUBLIC_DATA_SOURCES[0].url);
-      const json = await response.json();
-      const graph = json.results.bindings.map((binding) => {
-        const keys = Object.keys(binding);
-        const entry = { "@id": binding[keys[0]].value };
-        for (const k of keys.slice(1)) {
-          entry[k] = binding[k].value;
-        }
-        return entry;
-      });
-      const doc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
-      console.log(JSON.stringify(doc));
+      const doc = await getCapitalCities();
+      console.log(JSON.stringify(doc, null, 2));
+      process.exit(0);
     } catch (err) {
-      console.error(`Error fetching capital cities: ${err.message}`);
+      console.error(err.message);
+      process.exit(1);
     }
-    return;
   }
 
   if (cliArgs.includes("--serve")) {
@@ -323,19 +345,9 @@ export async function main(args) {
         res.end(JSON.stringify(info, null, 2));
       } else if (req.method === "GET" && pathname === "/capital-cities") {
         try {
-          const response = await fetch(PUBLIC_DATA_SOURCES[0].url);
-          const json = await response.json();
-          const graph = json.results.bindings.map((binding) => {
-            const keys = Object.keys(binding);
-            const entry = { "@id": binding[keys[0]].value };
-            for (const k of keys.slice(1)) {
-              entry[k] = binding[k].value;
-            }
-            return entry;
-          });
-          const doc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+          const doc = await getCapitalCities();
           res.writeHead(200, { "Content-Type": "application/json" });
-          res.end(JSON.stringify(doc));
+          res.end(JSON.stringify(doc, null, 2));
         } catch (err) {
           res.writeHead(500, { "Content-Type": "text/plain" });
           res.end(err.message);
