@@ -1,39 +1,41 @@
 # W3C RDF 1.1 Concepts and OWL 2 Web Ontology Language
 ## https://www.w3.org/TR/rdf11-concepts/
 ## https://www.w3.org/TR/owl2-overview/
-
-This combined W3C Recommendation provides both the RDF 1.1 data model (IRIs, literals, blank nodes, triples, and graphs), abstract syntaxes (Turtle, RDF/XML, JSON-LD), formal semantics, and conformance criteria, together with the OWL 2 Web Ontology Language constructs—classes, properties, individuals, datatypes, and axioms. It includes code examples for parsing, serialization, ontology authoring, and validation, offering a one-stop reference for building, transforming, and validating RDF graphs and OWL ontologies before JSON-LD emission. (Last updated: RDF 25 February 2014; OWL 2 Overview 27 October 2009; authoritative as W3C Recommendations.)
-
+This combined W3C Recommendation provides the RDF 1.1 data model (IRIs, literals, blank nodes, triples, and graphs), abstract syntaxes (Turtle, RDF/XML, JSON-LD), formal semantics, and conformance criteria, alongside OWL 2 constructs—classes, properties, individuals, datatypes, and axioms. It includes parsing and serialization examples, ontology authoring patterns, and validation guidelines critical for building, transforming, and validating RDF graphs and OWL ontologies within JSON-LD workflows. (Last updated: RDF Concepts 25 February 2014; OWL 2 Overview 27 October 2009; authoritative as W3C Recommendation.)
 ## License
 W3C Document License (CC-BY 4.0)
 
-# JSON-LD 1.1 Specification and API
+# OWL 2 Primer
+## https://www.w3.org/TR/owl2-primer/
+The OWL 2 Primer offers an accessible introduction to ontology design, covering core OWL 2 profiles (EL, QL, RL), class and property modeling patterns, and common ontology design best practices. It provides step-by-step examples for expressing simple and complex constraints, making it invaluable for developers new to OWL modeling and for guiding implementation of ontology construction features. (Last updated: 11 December 2012; authoritative as W3C Recommendation.)
+## License
+W3C Document License (CC-BY 4.0)
+
+# SHACL: Shapes Constraint Language
+## https://www.w3.org/TR/shacl/
+SHACL defines a rich vocabulary and validation algorithms for RDF graph constraints, including shape declarations, property and node constraints, and result reporting. This specification is essential for implementing data validation pipelines post-ontology construction, ensuring that generated OWL artifacts conform to required schemas and business rules. (Last updated: 21 October 2017; authoritative as W3C Recommendation.)
+## License
+W3C Document License (CC-BY 4.0)
+
+# JSON-LD 1.1 Specification & JavaScript Implementation (jsonld.js)
 ## https://www.w3.org/TR/json-ld11/
 ## https://www.w3.org/TR/json-ld11-api/
-
-These paired W3C Recommendations define JSON-LD 1.1: framing, compaction, expansion, context processing, normalization, and RDF conversion algorithms, along with the JavaScript API for programmatic JSON-LD operations. Detailed pseudocode, error-handling strategies, extension points, and embedding guidelines equip library authors to ingest external data and emit fully compliant JSON-LD within OWL builder workflows. (Last updated: Spec 16 May 2020; API 29 May 2020; authoritative as W3C Recommendations.)
-
+## https://github.com/digitalbazaar/jsonld.js#readme
+These paired W3C Recommendations define JSON-LD 1.1 framing, compaction, expansion, context processing, normalization, and RDF conversion algorithms, alongside the JavaScript API. The jsonld.js implementation delivers these capabilities with robust usage examples, custom document loader hooks, asynchronous streaming support, and detailed error-handling strategies. Together, they empower programmatic JSON-LD ingestion and emission within OWL builder workflows. (Last updated: Spec & API May 2020; jsonld.js 2024; authoritative as W3C Recommendation and official implementation.)
 ## License
-W3C Document License (CC-BY 4.0)
+W3C Document License (CC-BY 4.0) for specifications; MIT License for jsonld.js implementation
 
-# SPARQL 1.1 Suite: Query, Protocol, Update, Graph Store HTTP, and JSON Results
+# SPARQL 1.1 Specifications & Public Endpoints
 ## https://www.w3.org/TR/sparql11-overview/
 ## https://www.w3.org/TR/sparql11-protocol/
 ## https://www.w3.org/TR/sparql11-update/
 ## https://www.w3.org/TR/sparql11-http-rdf-update/
 ## https://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/
-
-This comprehensive suite covers:
-- The SPARQL 1.1 Query Language (SELECT, ASK, CONSTRUCT, DESCRIBE, federation, aggregation).
-- Protocol: HTTP GET/POST, content negotiation, URL parameters, and error codes.
-- Update: INSERT, DELETE, transactions, and graph targeting.
-- Graph Store HTTP: RESTful CRUD on RDF graphs.
-- JSON Results: JSON encoding for SELECT and ASK results.
-
-Examples illustrate parameter tuning, rate-limit handling, and parsing against endpoints like DBpedia. Critical for building robust SPARQL clients, servers, and federated pipelines. (Last updated 21 March 2013; authoritative as W3C Recommendations.)
-
+## https://wiki.dbpedia.org/services-resources/sparql-endpoint
+## https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Wikidata_Query_Service_User_Help
+This comprehensive collection includes the SPARQL 1.1 Query Language, Protocol, Update, Graph Store HTTP, and JSON Results specifications, alongside usage documentation for major public endpoints (DBpedia and Wikidata). It covers query forms, federation, HTTP conventions, rate limits, result serialization, and best practices—critical for building resilient SPARQL clients, servers, and federated pipelines. (Specs last updated March 2013; DBpedia 2024; Wikidata continually updated; authoritative as W3C Recommendations and official endpoint guides.)
 ## License
-W3C Document License (CC-BY 4.0)
+W3C Document License (CC-BY 4.0); DBpedia: Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0); Wikidata: Creative Commons CC0 or public domain
 
 # Node.js Core APIs: HTTP, File System, URL, Fetch, and ESM
 ## https://nodejs.org/api/http.html
@@ -41,16 +43,7 @@ W3C Document License (CC-BY 4.0)
 ## https://nodejs.org/api/url.html
 ## https://nodejs.org/api/globals.html#fetch
 ## https://nodejs.org/api/esm.html
-
-Official Node.js v20 documentation for core modules used by owl-builder:
-- HTTP: Server creation, routing, headers, and status codes for RESTful, SPARQL, and query endpoints.
-- FS: Directory and file operations (existsSync, mkdirSync, readdirSync, readFileSync, writeFileSync) for CLI commands and data persistence.
-- URL: WHATWG URL and URLSearchParams for constructing and parsing request URLs.
-- Fetch: Global fetch API for HTTP requests, JSON parsing, timeouts, and error handling.
-- ESM: ECMAScript Module loading, file extensions, and interop patterns.
-
-Provides patterns for health checks, streaming responses, and integration with SPARQL endpoints. (Current as of Node.js v20.x; authoritative as official Node.js documentation.)
-
+Official Node.js v20 documentation for core modules used by owl-builder: HTTP servers and routing for RESTful and SPARQL endpoints, file I/O for CLI commands and artifact persistence, URL parsing and construction, global fetch for HTTP requests with built-in timeouts and error handling, and ESM module loading patterns. Includes examples for streaming responses, health checks, and integration with SPARQL endpoints. (Current as of Node.js v20.x; authoritative as official Node.js documentation.)
 ## License
 OpenJS Foundation and contributors (MIT License)
 
@@ -58,32 +51,12 @@ OpenJS Foundation and contributors (MIT License)
 ## https://rdf.js.org/data-model-spec/
 ## https://rdf.js.org/streams/spec/
 ## https://rdf-ext.github.io/
-
-The RDF/JS Community Specifications define language-agnostic interfaces for RDF factories (IRIs, literals, blank nodes, triples/quads, datasets) and a minimal streaming abstraction for processing RDF streams. The rdf-ext implementation extends these specs with concrete factories, parsers, serializers, and in-memory datasets. Together, they enable interoperable, memory-efficient RDF graph construction and streaming, and seamless integration with Comunica for SPARQL queries in Node.js. (Spec last updated January 2022; rdf-ext docs last updated 2024; authoritative as community standards and official implementation.)
-
+The RDF/JS Community Specifications define language-agnostic interfaces for RDF factories and streaming abstractions. The rdf-ext implementation provides concrete factories, parsers, serializers, and in-memory datasets, enabling interoperable, memory-efficient RDF graph construction and streaming. This is foundational for seamless integration with Comunica and for building high-performance RDF workflows in Node.js. (Spec updated January 2022; rdf-ext docs updated 2024; authoritative as community standards and official implementation.)
 ## License
 MIT License
 
 # Comunica SPARQL Query Framework
 ## https://comunica.dev/docs/query/framework
-
-The Comunica documentation describes building modular SPARQL query engines in JavaScript: actor pipelines, HTTP connectors, federation strategies, query optimization, and custom extension points. It illustrates how to compose sources (local & remote), handle large result streams, and integrate with cache and metadata. Essential for extending CLI and HTTP server features with advanced, federated SPARQL capabilities. (Last updated 2024; authoritative as official Comunica documentation.)
-
+The Comunica documentation guides building modular SPARQL query engines in JavaScript, covering actor pipelines, HTTP connectors, federation strategies, query optimization, and custom extension points. It demonstrates composing multiple sources, handling large result streams, and integrating caching and metadata—essential for extending CLI and HTTP server features with advanced, federated SPARQL capabilities. (Last updated 2024; authoritative as official Comunica documentation.)
 ## License
 MIT License
-
-# JSON-LD JavaScript Implementation (jsonld.js)
-## https://github.com/digitalbazaar/jsonld.js#readme
-
-The jsonld.js repository provides a robust JavaScript implementation of the JSON-LD 1.1 API, including compaction, expansion, flattening, framing, normalization, and RDF conversion. It offers detailed usage examples, extension points for custom document loaders, asynchronous streaming interfaces, and error-handling strategies. Key for programmatic manipulation of JSON-LD documents during intermediate and enhanced ontology construction. (Last updated: 2024; authoritative as official GitHub README.)
-
-## License
-MIT License
-
-# DBpedia SPARQL Endpoint Documentation
-## https://wiki.dbpedia.org/services-resources/sparql-endpoint
-
-The DBpedia SPARQL Endpoint documentation details the usage of the public SPARQL HTTP service provided by DBpedia. It covers query parameters (query, default-graph-uri), HTTP methods (GET/POST), result formats (JSON, XML, CSV), rate limits, timeout settings, and best practices for efficient querying. Essential for integrating the --capital-cities feature and custom SPARQL queries against DBpedia. (Last updated: 2024; authoritative as official DBpedia wiki.)
-
-## License
-Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
