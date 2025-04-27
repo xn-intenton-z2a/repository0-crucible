@@ -3,45 +3,36 @@ Unified management of public and custom data sources including listing, refreshi
 
 # Implementation
 
-## Core Functionality
-- **listSources(configPath?)**: Read and merge default PUBLIC_DATA_SOURCES with optional custom `data-sources.json`. Return an array of `{ name, url }`.
-- **refreshSources({ dataDir }?)**: Fetch each public data source and write raw JSON captures into `data/` directory. For each fetched file, log `written <filename>`. Return `{ count, files }`.
-- **mergePersist({ dataDir, outFile }?)**: Combine all JSON files in `dataDir` into a single merged JSON artifact. Steps:
-  1. Determine `dataDir` (default `data`) and ensure it exists, else log error and return `{ count: 0, file: null }`.
-  2. Read all `.json` files in `dataDir`, excluding the target `outFile` if present.
-  3. For each input file:
-     - Parse JSON content. If value is an array, append elements to a merge list.
-     - If value is an object, push the object into the merge list.
-     - On parse error or unsupported type, log a warning and skip.
-  4. Write the merged list as pretty-printed JSON to `outFile` (default `data/persisted.json`).
-  5. Log `written <basename(outFile)>` and a summary line `Merged <count> entries from <fileCount> files into <outFile>`.
-  6. Return `{ count: <entriesCount>, file: <basename(outFile)> }`.
+1. Core Functions
+   - listSources(configPath?): merge default PUBLIC_DATA_SOURCES with optional custom data-sources.json into an array of { name, url }.
+   - addSource({ name, url }, configPath?): validate inputs, prevent duplicates, persist custom sources, and return updated list.
+   - removeSource(identifier, configPath?): remove by name or URL, persist updated list, and return merged list.
+   - refreshSources({ dataDir }?): fetch each URL from listSources(), write raw JSON captures to dataDir (default "data"), log written <filename> for each capture, and return { count, files }.
+   - mergePersist({ dataDir, outFile }?): read all .json files in dataDir (default "data"), merge array or object entries into a single array, write pretty-printed JSON to outFile (default "data/persisted.json"), log each write and summary, and return { count, file }.
 
-## CLI Support
-- In `main(args)`, detect:
-  - `--list-sources`: call `listSources()` and output JSON.
-  - `--refresh`: call `await refreshSources()` and stream each `written <file>` line.
-  - `--merge-persist` or `-m`: call `mergePersist()` and stream each `written` or warning line, then summary.
+2. CLI Support
+   - --list-sources: invoke listSources() and output JSON.
+   - --add-source <name> <url>: invoke addSource(), output merged list in JSON.
+   - --remove-source <identifier>: invoke removeSource(), output updated list in JSON.
+   - --refresh: await refreshSources(), stream each written <filename> line to console.log.
+   - --merge-persist or -m: invoke mergePersist(), stream console.log and console.error messages, then output summary line.
 
-## HTTP Server Support
-- Under `--serve` mode, extend request handler:
-  - GET `/sources`: 200 JSON of `listSources()`.
-  - GET `/refresh`: 200 text; override `console.log` to stream messages from `await refreshSources()`.
-  - GET `/merge-persist`: 200 text; override both `console.log` and `console.error` to stream messages and warnings from `mergePersist()`, then restore and end response.
+3. HTTP Server Support
+   Under --serve mode, extend the HTTP request handler to support:
+   - GET /sources: 200 JSON response from listSources().
+   - GET /refresh: 200 text/plain; override console.log to stream each message from await refreshSources(), then end response.
+   - GET /merge-persist: 200 text/plain; override console.log and console.error to stream messages from mergePersist(), then end response.
 
 # Testing
-- **Unit tests for mergePersist():**
-  - Mock `fs.existsSync`, `fs.readdirSync`, `fs.readFileSync`, `fs.writeFileSync`, spies for `console.log` and `console.error`.
-  - Verify behavior when `dataDir` is missing, when input files contain arrays or objects, and when parse errors occur.
-  - Assert returned `{ count, file }` matches expectations and correct log messages.
-- **CLI tests:**
-  - Spy on `mergePersist()` to confirm invocation when flags `--merge-persist` or `-m` are passed to `main()`.
-  - Confirm `listSources()` and `refreshSources()` remain unaffected.
-- **HTTP integration tests:**
-  - Start server via `main(["--serve"])` on ephemeral port.
-  - Issue GET `/merge-persist` and verify status `200`, header `text/plain`, response body contains `written <file>` lines, warnings if any, and final summary.
+
+- Unit tests for refreshSources(): mock fetch and fs to simulate sources, verify returned { count, files } and that console.log was called with expected write messages.
+- Unit tests for mergePersist(): mock fs for missing directory, multiple JSON files, parse errors, and verify log messages, return values, and error handling.
+- CLI tests: verify main(["--refresh"]) calls refreshSources(), main(["--merge-persist"]) calls mergePersist() with correct flags and streams messages.
+- HTTP integration tests: start server via main(["--serve"]); GET /refresh and GET /merge-persist return status 200, Content-Type text/plain, and contain streamed lines including file writes and summary.
 
 # Documentation Updates
-- Update `docs/FEATURES.md` under Features to describe the merge-persist option with description and output sample.
-- Update `docs/USAGE.md` and `README.md` under Usage and Features to include:
-  - **Merge Persist (`--merge-persist`, `-m`)**: Usage examples, description of merging behavior, sample logs, and summary.
+
+Update docs/FEATURES.md, docs/USAGE.md, and README.md to add sections for:
+
+- Refresh Sources (`--refresh`, GET /refresh): description, CLI usage examples, sample output.
+- Merge Persist (`--merge-persist`, `-m`, GET /merge-persist): description, CLI flags, sample logs, summary line.
