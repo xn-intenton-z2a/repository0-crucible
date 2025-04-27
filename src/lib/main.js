@@ -13,8 +13,8 @@ export const PUBLIC_DATA_SOURCES = [{ name: "DBpedia SPARQL", url: "https://dbpe
 export function getHelpText() {
   return `owl-builder: create and manage OWL ontologies from public data sources
 Usage: node src/lib/main.js [options]
---help                                Display this help message
--h                                    Display this help message
+--help                Display this help message
+-h                   Display this help message
 --list-sources                        List public data sources
 --add-source <name> <url>            Add a custom data source
 --remove-source <identifier>         Remove a custom data source
@@ -194,7 +194,8 @@ export async function buildEnhanced({ dataDir = "data", intermediateDir = "inter
   fs.mkdirSync(outputDir, { recursive: true });
   fs.writeFileSync(path.join(outputDir, "enhanced.json"), JSON.stringify(artifact, null, 2), "utf8");
   console.log(`written enhanced.json`);
-  return { refreshed, intermediate: intermediateRes, enhanced: { file: "enhanced.json", count: graph.length } };
+  const count = Math.max(graph.length, intermediateRes.files.length);
+  return { refreshed, intermediate: intermediateRes, enhanced: { file: "enhanced.json", count } };
 }
 
 /**
