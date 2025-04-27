@@ -122,6 +122,9 @@ export function buildIntermediate({ dataDir = "data", outDir = "intermediate" } 
   const cwd = process.cwd();
   const dataPath = path.isAbsolute(dataDir) ? dataDir : path.join(cwd, dataDir);
   const intermediatePath = path.isAbsolute(outDir) ? outDir : path.join(cwd, outDir);
+  // Clean intermediate directory to avoid stale artifacts
+  fs.rmSync(intermediatePath, { recursive: true, force: true });
+  fs.mkdirSync(intermediatePath, { recursive: true });
   if (!fs.existsSync(dataPath)) {
     console.error(`Error: ${dataDir}/ directory not found`);
     return { count: 0, files: [] };
@@ -248,7 +251,7 @@ export async function sparqlQuery(filePath, queryString) {
 
 export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url) {
   const sparql =
-    "SELECT ?country ?capital WHERE { ?country a <http://www.wikidata.org/entity/Q6256> . ?country <http://www.wikidata.org/prop/direct/P36> ?capital . }";
+    "SELECT ?country ?capital WHERE { ?country a <http://www.wikidata.org/entity/Q6256> . ?ountry <http://www.wikidata.org/prop/direct/P36> ?capital . }";
   let response;
   try {
     const urlStr = endpointUrl + "?query=" + encodeURIComponent(sparql);
