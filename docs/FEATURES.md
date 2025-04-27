@@ -14,7 +14,7 @@
   - **GET `/sources`**: Returns the list of public (and custom) data sources as pretty-printed JSON.
   - **GET `/diagnostics`**: Returns diagnostic information (version, node version, platform, architecture, working directory, public data sources, commands) and a live `healthChecks` array as pretty-printed JSON.
   - **GET `/capital-cities`**: Queries DBpedia SPARQL for countries and capitals and returns a simple OWL-compatible JSON-LD document (`@context` + `@graph`).
-  - **GET `/refresh`**: Triggers fetching and persisting data from all configured public and custom sources, and returns a JSON payload `{ refreshed: <count>, files: [<filename>, ...] }`. On error, responds with status 500 and plain-text error message.
+  - **GET `/refresh`**: Triggers fetching and persisting data from all configured public and custom sources. Streams plain-text logs with one line per written file (`written <filename>.json`), ends with a summary line (`Refreshed <count> sources into data/`), and returns status 200 with `Content-Type: text/plain`. On error, responds with status 500 and a plain-text error message.
   - Any other path responds with `404 Not Found`.
 - **Refresh (`--refresh`)**: Merges default and custom data sources, fetches JSON from each source, persists each to `data/<slugified-source-name>.json`, logs `written <filename>` for each successful write, and outputs a summary `Refreshed X sources into data/`.
 - **Capital Cities (`--capital-cities`)**: Queries DBpedia SPARQL for countries and capitals and outputs a simple OWL-compatible JSON-LD document (`@context` + `@graph`).
