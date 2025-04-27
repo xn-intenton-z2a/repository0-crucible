@@ -106,7 +106,12 @@ export async function buildEnhanced({ dataDir = "data", intermediateDir = "inter
   const intPath = path.isAbsolute(intermediateDir) ? intermediateDir : path.join(cwd, intermediateDir);
   let graph = [];
   for (const file of intermediateRes.files) {
-    const content = fs.readFileSync(path.join(intPath, file), "utf8");
+    let content;
+    try {
+      content = fs.readFileSync(path.join(intPath, file), "utf8");
+    } catch {
+      continue;
+    }
     let json;
     try {
       json = JSON.parse(content);
@@ -265,7 +270,7 @@ export async function main(args) {
         console.log = msg => res.write(`${msg}\n`);
         try {
           await SELF.buildIntermediate();
-        } catch {}
+        } catch {}        
         console.log = originalLog;
         res.end();
       } else if (req.method === "GET" && pathname === "/build-enhanced") {

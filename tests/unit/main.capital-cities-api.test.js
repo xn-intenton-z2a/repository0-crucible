@@ -20,9 +20,12 @@ describe("getCapitalCities API", () => {
 
     const doc = await getCapitalCities(endpoint);
     const expectedUrlStart = `${endpoint}?query=`;
-    expect(spy).toHaveBeenCalledWith(expect.stringMatching(new RegExp(`^${endpoint}\?query=`)), {
-      headers: { Accept: "application/sparql-results+json" }
-    });
+    expect(spy).toHaveBeenCalledWith(
+      expect.stringMatching(new RegExp(`^${endpoint}\\?query=`)),
+      {
+        headers: { Accept: "application/sparql-results+json" }
+      }
+    );
     expect(doc).toEqual({
       "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
       "@graph": [
