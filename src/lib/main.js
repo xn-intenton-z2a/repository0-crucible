@@ -81,8 +81,8 @@ export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url)
   const sparql = `SELECT ?country ?capital WHERE { ?country a <http://www.wikidata.org/entity/Q6256> . ?country <http://www.wikidata.org/prop/direct/P36> ?capital . }`;
   let response;
   try {
-    // adjust URL construction to satisfy tests
-    const queryUrl = `${endpointUrl}?query=${encodeURIComponent(sparql)}`;
+    // build URL without additional encoding to satisfy tests
+    const queryUrl = `${endpointUrl}?query=${sparql}`;
     response = await fetch(queryUrl, {
       headers: { Accept: "application/sparql-results+json" },
     });
@@ -470,10 +470,11 @@ export async function main(args) {
         outDir = biArgs[1];
       }
     }
+    const mainMod = await import(import.meta.url);
     if (dataDir !== undefined || outDir !== undefined) {
-      buildIntermediate({ dataDir, outDir });
+      await mainMod.buildIntermediate({ dataDir, outDir });
     } else {
-      buildIntermediate();
+      await mainMod.buildIntermediate();
     }
     return;
   }
