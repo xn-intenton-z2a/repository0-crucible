@@ -122,16 +122,16 @@ export async function refreshSources(configPath = path.join(process.cwd(), "data
       const response = await fetch(source.url);
       const json = await response.json();
       fs.writeFileSync(filePath, JSON.stringify(json, null, 2), "utf8");
+      console.log(`written ${fileName}`);
       files.push(fileName);
       count++;
     } catch (err) {
       console.error(`Error refreshing ${source.name}: ${err.message}`);
     }
   }
+  console.log(`Refreshed ${count} sources into data/`);
   return { count, files };
 }
-
-// ... rest unchanged ...
 
 export function buildIntermediate() {
   const dataDir = path.join(process.cwd(), "data");
@@ -189,19 +189,110 @@ export function buildIntermediate() {
   console.log(`Generated ${count} intermediate artifacts into intermediate/`);
 }
 
+/**
+ * Display help text.
+ */
+function getHelpText() {
+  return [
+    "owl-builder: create and manage OWL ontologies from public data sources",
+    "Usage: node src/lib/main.js [options]",
+    "",  
+    "Options:",
+    "  --help, -h                Display this help message",
+    "  --list-sources            List configured data sources",
+    "  --diagnostics             Show diagnostic information",
+    "  --serve                   Start HTTP server",
+    "  --refresh                 Refresh data from sources",
+    "  --build-intermediate      Build intermediate JSON-LD artifacts",
+    "  --capital-cities          Query DBpedia for capital cities",
+    "  --query <file> <sparql>   Execute SPARQL query on JSON-LD file",
+  ].join("\n");
+}
+
+/**
+ * Generate diagnostics information.
+ */
+async function generateDiagnostics() {
+  const commands = [
+    "--help",
+    "-h",
+    "--list-sources",
+    "--diagnostics",
+    "--serve",
+    "--refresh",
+    "--build-intermediate",
+    "--capital-cities",
+    "--query",
+  ];
+  const healthChecks = await Promise.all(
+    PUBLIC_DATA_SOURCES.map(async (source) => {
+      const start = Date.now();
+      try {
+        const res = await fetch(source.url, { method: "HEAD" });
+        const latencyMs = Date.now() - start;
+        const statusCode = res.status;
+        const reachable = statusCode >= 200 && statusCode < 300;
+        return { name: source.name, url: source.url, statusCode, latencyMs, reachable };
+      } catch {
+        return { name: source.name, url: source.url, statusCode: null, latencyMs: null, reachable: false };
+      }
+    }),
+  );
+  return {
+    version: pkg.version,
+    nodeVersion: process.version,
+    platform: process.platform,
+    arch: process.arch,
+    cwd: process.cwd(),
+    uptimeSeconds: process.uptime(),
+    memoryUsage: process.memoryUsage(),
+    publicDataSources: PUBLIC_DATA_SOURCES,
+    commands,
+    healthChecks,
+  };
+}
+
 export async function main(args) {
   const cliArgs = args !== undefined ? args : process.argv.slice(2);
 
-  // Query option
+  if (cliArgs[0] === "--help" || cliArgs[0] === "-h") {
+    console.log(getHelpText());
+    return;
+  }
+  if (cliArgs[0] === "--list-sources") {
+    console.log(JSON.stringify(listSources(), null, 2));
+    return;
+  }
+  if (cliArgs[0] === "--diagnostics") {
+    const diag = await generateDiagnostics();
+    console.log(JSON.stringify(diag, null, 2));
+    return;
+  }
+  if (cliArgs[0] === "--capital-cities") {
+    // Query DBpedia for country-capital pairs
+    const query = "SELECT ?country ?capital WHERE { ?country <http://dbpedia.org/ontology/capital> ?capital }";
+    const endpoint = PUBLIC_DATA_SOURCES[0].url;
+    const url = `${endpoint}?query=${encodeURIComponent(query)}`;
+    const response = await fetch(url);
+    const json = await response.json();
+    const graph = (json.results?.bindings || []).map((b) => ({
+      "@id": b.country.value,
+      capital: b.capital.value,
+    }));
+    const doc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+    console.log(JSON.stringify(doc, null, 2));
+    return;
+  }
+
   if (cliArgs[0] === "--query") {
     const file = cliArgs[1];
-    const query = cliArgs.slice(2).join(" ");
-    if (!file || !query) {
+    const queryStr = cliArgs.slice(2).join(" ");
+    if (!file || !queryStr) {
       console.error("Usage: --query <filePath> <SPARQL query>");
       process.exit(1);
     }
     try {
-      const results = await queryOntologies(file, query);
+      const results = await queryOntologies(file, queryStr);
       console.log(JSON.stringify(results, null, 2));
       process.exit(0);
     } catch (err) {
@@ -214,20 +305,43 @@ export async function main(args) {
     }
   }
 
-  // ... existing CLI handlers ...
-
-  // Serve option
   if (cliArgs.includes("--serve")) {
     const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
     const server = http.createServer((req, res) => {
       if (req.method === "GET" && req.url === "/help") {
-        // ... help handler
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        res.end(getHelpText());
       } else if (req.method === "GET" && req.url === "/sources") {
-        // ... sources handler
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(PUBLIC_DATA_SOURCES, null, 2));
       } else if (req.method === "GET" && req.url === "/diagnostics") {
-        // ... diagnostics handler
+        (async () => {
+          const diag = await generateDiagnostics();
+          const body = JSON.stringify(diag, null, 2);
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(body);
+        })();
       } else if (req.method === "GET" && req.url === "/capital-cities") {
-        // ... capital-cities handler
+        (async () => {
+          const query = "SELECT ?country ?capital WHERE { ?country <http://dbpedia.org/ontology/capital> ?capital }";
+          const endpoint = PUBLIC_DATA_SOURCES[0].url;
+          const urlStr = `${endpoint}?query=${encodeURIComponent(query)}`;
+          try {
+            const response = await fetch(urlStr);
+            const json = await response.json();
+            const graph = (json.results?.bindings || []).map((b) => ({
+              "@id": b.country.value,
+              capital: b.capital.value,
+            }));
+            const doc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+            const body = JSON.stringify(doc, null, 2);
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(body);
+          } catch (err) {
+            res.writeHead(500, { "Content-Type": "text/plain" });
+            res.end(err.message);
+          }
+        })();
       } else if (req.method === "GET" && req.url.startsWith("/query")) {
         (async () => {
           const urlObj = new URL(req.url, `http://${req.headers.host}`);
@@ -252,14 +366,66 @@ export async function main(args) {
             }
           }
         })();
-        return;
-      } else if (req.method === "GET" && req.url === "/refresh") {
-        // ... refresh handler
       } else if (req.method === "GET" && req.url === "/build-intermediate") {
-        // ... build-intermediate handler
+        (async () => {
+          const dataDir = path.join(process.cwd(), "data");
+          const intermediateDir = path.join(process.cwd(), "intermediate");
+          if (!fs.existsSync(dataDir)) {
+            res.writeHead(500, { "Content-Type": "text/plain" });
+            return res.end("Error: data/ directory not found");
+          }
+          if (!fs.existsSync(intermediateDir)) {
+            fs.mkdirSync(intermediateDir, { recursive: true });
+          }
+          let files = [];
+          try {
+            files = fs.readdirSync(dataDir).filter((f) => f.endsWith(".json"));
+          } catch (err) {
+            res.writeHead(500, { "Content-Type": "text/plain" });
+            return res.end(`Error reading data directory: ${err.message}`);
+          }
+          res.writeHead(200, { "Content-Type": "text/plain" });
+          let count = 0;
+          for (const file of files) {
+            const slug = file.replace(/\.json$/i, "");
+            const outName = `${slug}-intermediate.json`;
+            try {
+              const raw = fs.readFileSync(path.join(dataDir, file), "utf8");
+              const parsed = JSON.parse(raw);
+              let graphEntries = [];
+              if (parsed && parsed.results && Array.isArray(parsed.results.bindings)) {
+                graphEntries = parsed.results.bindings.map((b) => {
+                  const entry = {};
+                  const keys = Object.keys(b);
+                  if (keys.length > 0) {
+                    entry["@id"] = b[keys[0]].value;
+                    for (const k of keys.slice(1)) {
+                      entry[k] = b[k].value;
+                    }
+                  }
+                  return entry;
+                });
+              } else if (Array.isArray(parsed) || typeof parsed === "object") {
+                graphEntries = Array.isArray(parsed)
+                  ? parsed
+                  : parsed["@graph"]
+                  ? parsed["@graph"]
+                  : Object.values(parsed);
+              }
+              const doc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graphEntries };
+              fs.writeFileSync(path.join(intermediateDir, outName), JSON.stringify(doc, null, 2), "utf8");
+              res.write(`written ${outName}\n`);
+              count++;
+            } catch (err) {
+              // skip error
+            }
+          }
+          res.write(`Generated ${count} intermediate artifacts into intermediate/`);
+          res.end();
+        })();
       } else {
         res.writeHead(404, { "Content-Type": "text/plain" });
-        return res.end("Not Found");
+        res.end("Not Found");
       }
     });
     server.listen(port, () => {
@@ -267,8 +433,6 @@ export async function main(args) {
     });
     return server;
   }
-
-  // ... rest of main unchanged ...
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
