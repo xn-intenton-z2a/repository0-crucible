@@ -2,11 +2,17 @@
 
 - **List Sources (`--list-sources`)**: Outputs the list of configured public data sources in JSON format. If a `data-sources.json` file is present with a valid array of `{ name, url }`, it will be merged with the default sources. Invalid or missing configs will fall back to defaults with a warning for invalid configs.
 - **Help (`--help`, `-h`)**: Display the help message with usage instructions.
-- **Diagnostics (`--diagnostics`)**: Outputs diagnostic information (version, node version, platform, architecture, working directory, public data sources, and commands) as pretty-printed JSON.
+- **Diagnostics (`--diagnostics`)**: Outputs diagnostic information (version, node version, platform, architecture, working directory, public data sources, and commands) as pretty-printed JSON, and includes a `healthChecks` array with real-time availability and latency metrics for each data source:
+  - **healthChecks**: Array of objects with properties:
+    - `name` (string): Data source name.
+    - `url` (string): Data source URL.
+    - `statusCode` (number|null): HTTP status code from a HEAD request, or `null` if unreachable.
+    - `latencyMs` (number|null): Round-trip time in milliseconds, or `null` if unreachable.
+    - `reachable` (boolean): `true` if statusCode is between 200 and 299.
 - **Serve (`--serve`)**: Starts a local HTTP server on port `3000` (or `process.env.PORT`). Available endpoints:
   - **GET `/help`**: Returns the CLI help text as plain text.
   - **GET `/sources`**: Returns the list of public (and custom) data sources as pretty-printed JSON.
-  - **GET `/diagnostics`**: Returns diagnostic information (version, node version, platform, architecture, working directory, public data sources, and commands) as pretty-printed JSON.
+  - **GET `/diagnostics`**: Returns diagnostic information (version, node version, platform, architecture, working directory, public data sources, commands) and a live `healthChecks` array as pretty-printed JSON.
   - **GET `/capital-cities`**: Queries DBpedia SPARQL for countries and capitals and returns a simple OWL-compatible JSON-LD document (`@context` + `@graph`).
   - **GET `/refresh`**: Triggers fetching and persisting data from all configured public and custom sources, and returns a JSON payload `{ refreshed: <count>, files: [<filename>, ...] }`. On error, responds with status 500 and plain-text error message.
   - Any other path responds with `404 Not Found`.

@@ -77,10 +77,35 @@ Usage: node src/lib/main.js [options]
 
 ## Diagnostics
 
-Use the `--diagnostics` flag to display environment and configuration diagnostics:
+Use the `--diagnostics` flag to display environment and configuration diagnostics, including live health checks for each data source:
 
 ```bash
 node src/lib/main.js --diagnostics
+```
+
+Example output:
+
+```json
+{
+  "version": "1.2.0-0",
+  "nodeVersion": "v20.x.x",
+  "platform": "linux",
+  "arch": "x64",
+  "cwd": "/path/to/project",
+  "publicDataSources": [
+    { "name": "DBpedia SPARQL", "url": "https://dbpedia.org/sparql" }
+  ],
+  "commands": ["--help","-h","--list-sources","--diagnostics","--serve","--build-intermediate","--build-enhanced","--refresh","--merge-persist","--capital-cities"],
+  "healthChecks": [
+    {
+      "name": "DBpedia SPARQL",
+      "url": "https://dbpedia.org/sparql",
+      "statusCode": 200,
+      "latencyMs": 123,
+      "reachable": true
+    }
+  ]
+}
 ```
 
 ## Serve
@@ -99,15 +124,6 @@ curl http://localhost:3000/sources
 curl http://localhost:3000/diagnostics
 curl http://localhost:3000/capital-cities
 curl http://localhost:3000/refresh
-```
-
-Example response for refresh:
-
-```json
-{
-  "refreshed": 2,
-  "files": ["dbpedia-sparql.json", "custom-api.json"]
-}
 ```
 
 ## Refresh

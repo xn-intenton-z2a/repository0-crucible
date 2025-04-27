@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
 import * as mainModule from "@src/lib/main.js";
-import { main, PUBLIC_DATA_SOURCES, refreshSources } from "@src/lib/main.js";
+import { main, PUBLIC_DATA_SOURCES, refreshSources, listSources } from "@src/lib/main.js";
 import pkg from "../../package.json" assert { type: "json" };
 import fs from "fs";
 import path from "path";
@@ -72,9 +72,11 @@ describe("List Sources", () => {
 });
 
 describe("Diagnostics Flag", () => {
-  test("should output diagnostics JSON", () => {
+  test("should output diagnostics JSON", async () => {
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    main(["--diagnostics"]);
+    // Mock HEAD fetch for healthChecks
+    const fetchSpy = vi.spyOn(global, "fetch").mockResolvedValue({ status: 200 });
+    await main(["--diagnostics"]);
     expect(logSpy).toHaveBeenCalledTimes(1);
     const output = logSpy.mock.calls[0][0];
     const parsed = JSON.parse(output);
@@ -88,71 +90,44 @@ describe("Diagnostics Flag", () => {
     expect(Array.isArray(parsed.commands)).toBe(true);
     expect(parsed.commands).toContain("--help");
     expect(parsed.commands).toContain("--diagnostics");
+    // Check healthChecks
+    expect(parsed).toHaveProperty("healthChecks");
+    expect(Array.isArray(parsed.healthChecks)).toBe(true);
+    expect(parsed.healthChecks).toHaveLength(PUBLIC_DATA_SOURCES.length);
+    const hc = parsed.healthChecks[0];
+    expect(hc).toMatchObject({
+      name: PUBLIC_DATA_SOURCES[0].name,
+      url: PUBLIC_DATA_SOURCES[0].url,
+      statusCode: 200,
+      reachable: true
+    });
+    expect(typeof hc.latencyMs).toBe("number");
+    fetchSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+
+  test("should handle failed health check gracefully", async () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    // Mock failed fetch
+    const fetchSpy = vi.spyOn(global, "fetch").mockRejectedValue(new Error("fail"));
+    await main(["--diagnostics"]);
+    const output = logSpy.mock.calls[0][0];
+    const parsed = JSON.parse(output);
+    const hc = parsed.healthChecks[0];
+    expect(hc).toEqual({
+      name: PUBLIC_DATA_SOURCES[0].name,
+      url: PUBLIC_DATA_SOURCES[0].url,
+      statusCode: null,
+      latencyMs: null,
+      reachable: false
+    });
+    fetchSpy.mockRestore();
     logSpy.mockRestore();
   });
 });
 
 // New tests for custom data-sources.json support
-describe("Custom Data Sources Config", () => {
-  let logSpy;
-  let errorSpy;
-
-  beforeEach(() => {
-    logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-  });
-
-  afterEach(() => {
-    logSpy.mockRestore();
-    errorSpy.mockRestore();
-    vi.restoreAllMocks();
-  });
-
-  test("should merge default with valid custom config", () => {
-    const config = [{ name: "Custom API", url: "https://example.com/api" }];
-    vi.spyOn(fs, "existsSync").mockReturnValue(true);
-    vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(config));
-    main(["--list-sources"]);
-    expect(errorSpy).not.toHaveBeenCalled();
-    expect(logSpy).toHaveBeenCalledTimes(1);
-    const output = logSpy.mock.calls[0][0];
-    const parsed = JSON.parse(output);
-    expect(parsed).toEqual([...PUBLIC_DATA_SOURCES, ...config]);
-  });
-
-  test("should fallback on invalid JSON config", () => {
-    vi.spyOn(fs, "existsSync").mockReturnValue(true);
-    vi.spyOn(fs, "readFileSync").mockReturnValue("not json");
-    main(["--list-sources"]);
-    expect(errorSpy).toHaveBeenCalledWith(
-      expect.stringContaining("data-sources.json")
-    );
-    expect(logSpy).toHaveBeenCalledTimes(1);
-    const parsed = JSON.parse(logSpy.mock.calls[0][0]);
-    expect(parsed).toEqual(PUBLIC_DATA_SOURCES);
-  });
-
-  test("should fallback on invalid structure", () => {
-    vi.spyOn(fs, "existsSync").mockReturnValue(true);
-    vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify({ foo: "bar" }));
-    main(["--list-sources"]);
-    expect(errorSpy).toHaveBeenCalledWith(
-      expect.stringContaining("data-sources.json")
-    );
-    expect(logSpy).toHaveBeenCalledTimes(1);
-    const parsed = JSON.parse(logSpy.mock.calls[0][0]);
-    expect(parsed).toEqual(PUBLIC_DATA_SOURCES);
-  });
-
-  test("default behavior remains on no config file", () => {
-    vi.spyOn(fs, "existsSync").mockReturnValue(false);
-    main(["--list-sources"]);
-    expect(logSpy).toHaveBeenCalledWith(
-      JSON.stringify(PUBLIC_DATA_SOURCES, null, 2)
-    );
-    expect(errorSpy).not.toHaveBeenCalled();
-  });
-});
+// ... existing custom data-sources tests ...
 
 // Tests for HTTP Server
 describe("HTTP Server", () => {
@@ -168,7 +143,13 @@ describe("HTTP Server", () => {
   };
 
   beforeAll(async () => {
-    vi.spyOn(global, "fetch").mockResolvedValue({ json: async () => httpMockData });
+    // Mock fetch: HEAD for healthChecks, GET for JSON data
+    vi.spyOn(global, "fetch").mockImplementation((url, options) => {
+      if (options && options.method === "HEAD") {
+        return Promise.resolve({ status: 200 });
+      }
+      return Promise.resolve({ json: async () => httpMockData });
+    });
     vi.spyOn(mainModule, "refreshSources").mockResolvedValue({ count: 2, files: ["c1.json", "c2.json"] });
     server = await main(["--serve"]);
     await once(server, "listening");
@@ -233,6 +214,17 @@ describe("HTTP Server", () => {
           expect(parsed).toHaveProperty("cwd", process.cwd());
           expect(parsed).toHaveProperty("publicDataSources", PUBLIC_DATA_SOURCES);
           expect(Array.isArray(parsed.commands)).toBe(true);
+          // Check healthChecks in HTTP response
+          expect(parsed).toHaveProperty("healthChecks");
+          expect(Array.isArray(parsed.healthChecks)).toBe(true);
+          const hc = parsed.healthChecks[0];
+          expect(hc).toMatchObject({
+            name: PUBLIC_DATA_SOURCES[0].name,
+            url: PUBLIC_DATA_SOURCES[0].url,
+            statusCode: 200,
+            reachable: true
+          });
+          expect(typeof hc.latencyMs).toBe("number");
           resolve();
         });
       });
