@@ -1,32 +1,64 @@
 # Description
-Implement a CLI command build-enhanced that reads all intermediate OWL JSON-LD artifacts and merges them into a single enhanced ontology document. This feature supports the mission to produce a consolidated ontology suitable for querying and downstream processing.
+Implement a CLI command and HTTP endpoint to merge intermediate OWL JSON-LD artifacts into a single enhanced ontology document, and expose a programmatic API for the same.
 
 # Implementation
-Extend main to detect the --build-enhanced flag. When present perform the following steps:
+1. Programmatic API
+   - Export a function `buildEnhanced({ intermediateDir, outDir } = {})` in `src/lib/main.js`.
+   - If `intermediateDir` does not exist, log an error via `console.error("Error: intermediate/ directory not found")` and return `{ count: 0, files: [] }`.
+   - Read all files ending in `.json` in `intermediateDir`.
+   - For each file, parse JSON content; if it contains `"@graph"` array, collect its entries; if parsing fails, log a warning via `console.error` and skip.
+   - Construct a merged document:
+     - `@context`: { "@vocab": "http://www.w3.org/2002/07/owl#" }
+     - `@graph`: concatenation of all collected entries
+   - Ensure `ontologies/` directory exists under `outDir` (default project root) via `fs.mkdirSync(..., { recursive: true })`.
+   - Write merged document to `ontologies/enhanced-ontology.json` with two-space indentation via `fs.writeFileSync`.
+   - Log `console.log("written enhanced-ontology.json")` and return `{ count, files: ["enhanced-ontology.json"] }`.
 
-1. Locate the intermediate directory at project root named intermediate. If the directory does not exist, log an error via console.error and return without throwing.
-2. Read all files ending with .json in the intermediate directory. Log a warning for files that cannot be parsed.
-3. For each parsed document, extract its @graph array and collect all individual entries into a single merged array.
-4. Construct a consolidated document with:
-   - @context set to the OWL namespace ({ "@vocab": "http://www.w3.org/2002/07/owl#" })
-   - @graph set to the merged array of graph entries
-5. Ensure an ontologies directory exists at project root, creating it if necessary via fs.mkdirSync with recursive.
-6. Write the consolidated document to ontologies/enhanced-ontology.json with two-space indentation using fs.writeFileSync.
-7. Output console.log("written enhanced-ontology.json") then return.
+2. CLI Support
+   - In `main(args)`, detect `--build-enhanced` or `-be` flag.
+   - When present, call `buildEnhanced()` with default paths and exit without error.
+
+3. HTTP Endpoint
+   - Under `--serve` mode, add handling for `GET /build-enhanced`:
+     - Respond with status `200` and header `Content-Type: text/plain`.
+     - Override `console.log` temporarily so each log line emitted by `buildEnhanced()` is written to the response stream with a newline.
+     - After `buildEnhanced()` completes, restore `console.log` and end the response.
+   - On missing directory or errors, still stream error or warning lines and end with HTTP `200`.
 
 # CLI Usage
 To generate the enhanced ontology:
+
 node src/lib/main.js --build-enhanced
+node src/lib/main.js -be
+
+# HTTP Usage
+When running the server with `--serve`, send a GET request:
+
+GET /build-enhanced
+
+This streams lines:
+
+written <name>-intermediate.json
+...
+written enhanced-ontology.json
+
+# Programmatic API
+
+```js
+import { buildEnhanced } from 'owl-builder';
+const { count, files } = buildEnhanced({ intermediateDir: 'intermediate', outDir: process.cwd() });
+console.log(`Merged into enhanced-ontology.json`, files);
+```
 
 # Testing
-Add unit tests that:
-- Mock fs.existsSync, fs.mkdirSync, fs.readdirSync, fs.readFileSync, fs.writeFileSync to simulate intermediate directory with sample JSON-LD files.
-- Verify that writeFileSync is called with ontologies/enhanced-ontology.json and the expected merged document.
-- Spy on console.log and console.error to verify messages for missing directory, warnings for bad files, and success log.
-- Ensure main invoked with ["--build-enhanced"] returns without throwing.
-
-Add integration tests for the HTTP endpoint GET /build-enhanced under --serve mode:
-- Start server with --serve, GET /build-enhanced in a temp project with intermediate files, and verify response body contains lines: written <name>-intermediate entries and summary if applicable.
+- Unit tests for `buildEnhanced()`:
+  • Mock `fs.existsSync`, `fs.readdirSync`, `fs.readFileSync`, `fs.mkdirSync`, `fs.writeFileSync` and spies for `console.log` and `console.error`.
+  • Verify behavior when `intermediateDir` is missing, empty, contains valid JSON-LD with `@graph`, and when files fail to parse.
+- CLI tests in `tests/unit/main.build.enhanced.test.js`:
+  • Mock `buildEnhanced` and spy on `console.log` to verify invocation when using `--build-enhanced` and `-be` flags.
+  • Ensure `main()` returns without throwing.
+- HTTP integration tests in `tests/unit/main.serve.build.enhanced.test.js`:
+  • Start server on ephemeral port, create `intermediate/sample.json` artifacts, issue GET `/build-enhanced`, and verify status `200`, header `text/plain`, body contains lines for each file and `written enhanced-ontology.json`.
 
 # Documentation Updates
-Update docs/FEATURES.md and docs/USAGE.md to include the build-enhanced command, with example invocation and sample output. Update README.md under Features and Usage sections to reference build-enhanced.
+- Update `docs/FEATURES.md`, `docs/USAGE.md`, and `README.md` to include the `--build-enhanced` option under Features and Usage, with example invocations and sample output.
