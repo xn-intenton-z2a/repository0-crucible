@@ -426,7 +426,7 @@ export async function main(args) {
         res.writeHead(200, { "Content-Type": "text/plain" });
         const originalLog = console.log;
         console.log = (msg) => {
-          res.write(`$﻿{msg}\n`);
+          res.write(`${msg}\n`);
         };
         try {
           const mainMod = await import(import.meta.url);
