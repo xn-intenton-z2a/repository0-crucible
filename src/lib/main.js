@@ -23,7 +23,7 @@ Usage: node src/lib/main.js [options]
 `;
 }
 
-export async function listSources(configPath = "data-sources.json") {
+export function listSources(configPath = "data-sources.json") {
   if (!fs.existsSync(configPath)) {
     return PUBLIC_DATA_SOURCES;
   }
@@ -76,9 +76,12 @@ export function buildIntermediate({ dataDir = "data", outDir = "intermediate" } 
     }
     const bindings = json.results && Array.isArray(json.results.bindings) ? json.results.bindings : [];
     const graph = bindings.map(b => {
-      const obj = { "@id": b.country ? b.country.value : Object.values(b)[0].value };
+      // determine key for ID (prefer country, else first field)
+      const idKey = b.country ? 'country' : Object.keys(b)[0];
+      const idValue = b[idKey] && b[idKey].value;
+      const obj = { "@id": idValue };
       for (const [k, v] of Object.entries(b)) {
-        if (k !== "country") {
+        if (k !== idKey) {
           obj[k] = v.value;
         }
       }
@@ -97,11 +100,11 @@ export function buildIntermediate({ dataDir = "data", outDir = "intermediate" } 
 
 export async function buildEnhanced({ dataDir = "data", intermediateDir = "intermediate", outDir = "enhanced" } = {}) {
   const refreshed = await refreshSources({ dataDir });
-  const intermediate = await buildIntermediate({ dataDir, outDir: intermediateDir });
+  const intermediateRes = await buildIntermediate({ dataDir, outDir: intermediateDir });
   const cwd = process.cwd();
   const intPath = path.isAbsolute(intermediateDir) ? intermediateDir : path.join(cwd, intermediateDir);
   let graph = [];
-  for (const file of intermediate.files) {
+  for (const file of intermediateRes.files) {
     const content = fs.readFileSync(path.join(intPath, file), "utf8");
     let json;
     try {
@@ -117,7 +120,8 @@ export async function buildEnhanced({ dataDir = "data", intermediateDir = "inter
   const outputDir = path.isAbsolute(outDir) ? outDir : path.join(cwd, outDir);
   fs.mkdirSync(outputDir, { recursive: true });
   fs.writeFileSync(path.join(outputDir, "enhanced.json"), JSON.stringify(artifact, null, 2), "utf8");
-  return { refreshed, intermediate, enhanced: { file: "enhanced.json", count: graph.length } };
+  console.log(`written enhanced.json`);
+  return { refreshed, intermediate: intermediateRes, enhanced: { file: "enhanced.json", count: graph.length } };
 }
 
 export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url) {
@@ -125,8 +129,9 @@ export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url)
     "SELECT ?country ?capital WHERE { ?country a <http://www.wikidata.org/entity/Q6256> . ?country <http://www.wikidata.org/prop/direct/P36> ?capital . }";
   let response;
   try {
-    const queryUrl = `${endpointUrl}?query=${sparql}`;
-    response = await fetch(queryUrl, {
+    const urlObj = new URL(endpointUrl);
+    urlObj.searchParams.set("query", sparql);
+    response = await fetch(urlObj.toString(), {
       headers: { Accept: "application/sparql-results+json" },
     });
   } catch (err) {
