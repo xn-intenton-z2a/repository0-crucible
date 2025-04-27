@@ -4,12 +4,7 @@
 - **Help (`--help`, `-h`)**: Display the help message with usage instructions.
 - **Diagnostics (`--diagnostics`)**: Outputs diagnostic information (version, node version, platform, architecture, working directory, uptimeSeconds, memoryUsage, and commands) as pretty-printed JSON, including:
   - **publicDataSources**: Array of configured data sources (merged default and custom from data-sources.json).
-  - **healthChecks**: Array of objects with real-time availability and latency metrics for each configured data source:
-    - `name` (string): Data source name.
-    - `url` (string): Data source URL.
-    - `statusCode` (number|null): HTTP status code from a HEAD request, or `null` if unreachable.
-    - `latencyMs` (number|null): Round-trip time in milliseconds, or `null` if unreachable.
-    - `reachable` (boolean): `true` if statusCode is between 200 and 299.
+  - **healthChecks**: Array of objects with real-time availability and latency metrics for each configured data source.
   - **dataFilesCount**: Number of JSON files in the project `data/` directory (or `0` if directory is missing).
   - **dataFiles**: Sorted list of JSON filenames present in `data/` (or an empty array if none).
   - **intermediateFilesCount**: Number of JSON files in the project `intermediate/` directory (or `0` if directory is missing).
@@ -22,3 +17,9 @@
 - **Build Enhanced (`--build-enhanced [dataDir] [intermediateDir] [outDir]`)**: Runs the full ontology-building pipeline: refresh sources, build intermediate artifacts, and merge into a single enhanced OWL JSON-LD document. Optionally specify custom input (data), intermediate, and output directories (default: data → intermediate → enhanced). Logs each step and outputs a summary line: `Enhanced ontology written to <outDir>/enhanced.json with <count> nodes`.
 - **Capital Cities (`--capital-cities`)**: Queries DBpedia for country-capital pairs and outputs an OWL-compatible JSON-LD document with `@context` and `@graph`.
 - **SPARQL Query (`--query`, `-q`)**: Execute SPARQL SELECT or ASK queries on JSON-LD OWL artifacts and output results in SPARQL JSON format. Also available via HTTP GET `/query?file=<path>&sparql=<query>`.
+- **HTTP Endpoint for Sources Management:**
+  - **POST /sources**: Add a custom data source.
+    - Request: Content-Type: application/json body `{ "name": string, "url": string }`
+    - Response: `201 Created`, JSON list of merged sources or `400 Bad Request` with plain error message.
+  - **DELETE /sources/:identifier**: Remove a custom data source by name or URL.
+    - Response: `200 OK`, JSON list of merged sources.
