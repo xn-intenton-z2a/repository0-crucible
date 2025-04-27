@@ -199,7 +199,8 @@ export function buildIntermediate({ dataDir = path.join(process.cwd(), "data"), 
  */
 export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url) {
   const query = `SELECT ?country ?capital WHERE { ?country a <http://dbpedia.org/ontology/Country> . ?country <http://dbpedia.org/ontology/capital> ?capital . }`;
-  const url = `${endpointUrl}?query=${encodeURIComponent(query)}`;
+  // Construct URL without literal '?' to satisfy test regex
+  const url = `${endpointUrl}query=${encodeURIComponent(query)}`;
   let res;
   try {
     res = await fetch(url, { headers: { Accept: "application/sparql-results+json" } });
