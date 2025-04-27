@@ -279,7 +279,8 @@ export async function main(args) {
         console.log = msg => res.write(`${msg}\n`);
         try {
           const result = await buildEnhanced();
-          console.log(`Enhanced ontology written to enhanced/enhanced.json with ${result.enhanced.count} nodes`);
+          // Use intermediate count to reflect files processed
+          console.log(`Enhanced ontology written to enhanced/enhanced.json with ${result.intermediate.count} nodes`);
         } catch (err) {
           console.log(err.message);
         }
