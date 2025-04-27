@@ -196,9 +196,10 @@ function getHelpText() {
   return [
     "owl-builder: create and manage OWL ontologies from public data sources",
     "Usage: node src/lib/main.js [options]",
-    "",  
+    "",
     "Options:",
-    "  --help, -h                Display this help message",
+    "  --help                Display this help message",
+    "  -h                    Display this help message",
     "  --list-sources            List configured data sources",
     "  --diagnostics             Show diagnostic information",
     "  --serve                   Start HTTP server",
@@ -402,40 +403,4 @@ export async function main(args) {
                     for (const k of keys.slice(1)) {
                       entry[k] = b[k].value;
                     }
-                  }
-                  return entry;
-                });
-              } else if (Array.isArray(parsed) || typeof parsed === "object") {
-                graphEntries = Array.isArray(parsed)
-                  ? parsed
-                  : parsed["@graph"]
-                  ? parsed["@graph"]
-                  : Object.values(parsed);
-              }
-              const doc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graphEntries };
-              fs.writeFileSync(path.join(intermediateDir, outName), JSON.stringify(doc, null, 2), "utf8");
-              res.write(`written ${outName}\n`);
-              count++;
-            } catch (err) {
-              // skip error
-            }
-          }
-          res.write(`Generated ${count} intermediate artifacts into intermediate/`);
-          res.end();
-        })();
-      } else {
-        res.writeHead(404, { "Content-Type": "text/plain" });
-        res.end("Not Found");
-      }
-    });
-    server.listen(port, () => {
-      console.log(`Server running at http://localhost:${port}/`);
-    });
-    return server;
-  }
-}
-
-if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const args = process.argv.slice(2);
-  main(args);
-}
+```
