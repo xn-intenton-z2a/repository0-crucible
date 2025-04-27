@@ -79,6 +79,39 @@ export async function refreshSources(
   return { count, files };
 }
 
+/**
+ * Perform health checks on provided data sources.
+ * @param {Array<{name: string, url: string}>} sources
+ * @returns {Promise<Array<{name: string, url: string, statusCode: number|null, latencyMs: number|null, reachable: boolean}>>}
+ */
+async function performHealthChecks(sources) {
+  const results = [];
+  for (const source of sources) {
+    try {
+      const start = Date.now();
+      const response = await fetch(source.url, { method: "HEAD" });
+      const latencyMs = Date.now() - start;
+      const statusCode = response.status;
+      results.push({
+        name: source.name,
+        url: source.url,
+        statusCode,
+        latencyMs,
+        reachable: statusCode >= 200 && statusCode <= 299,
+      });
+    } catch (err) {
+      results.push({
+        name: source.name,
+        url: source.url,
+        statusCode: null,
+        latencyMs: null,
+        reachable: false,
+      });
+    }
+  }
+  return results;
+}
+
 export async function main(args) {
   const cliArgs = args !== undefined ? args : process.argv.slice(2);
 
@@ -133,6 +166,9 @@ export async function main(args) {
         "--capital-cities"
       ]
     };
+    // Perform live health checks
+    const sources = listSources();
+    diagnostics.healthChecks = await performHealthChecks(sources);
     console.log(JSON.stringify(diagnostics, null, 2));
     return;
   }
@@ -185,29 +221,34 @@ export async function main(args) {
         res.end(body);
         return;
       } else if (req.method === "GET" && req.url === "/diagnostics") {
-        const diagnostics = {
-          version: pkg.version,
-          nodeVersion: process.version,
-          platform: process.platform,
-          arch: process.arch,
-          cwd: process.cwd(),
-          publicDataSources: PUBLIC_DATA_SOURCES,
-          commands: [
-            "--help",
-            "-h",
-            "--list-sources",
-            "--diagnostics",
-            "--serve",
-            "--build-intermediate",
-            "--build-enhanced",
-            "--refresh",
-            "--merge-persist",
-            "--capital-cities"
-          ]
-        };
-        const body = JSON.stringify(diagnostics, null, 2);
-        res.writeHead(200, { "Content-Type": "application/json" });
-        return res.end(body);
+        (async () => {
+          const diagnostics = {
+            version: pkg.version,
+            nodeVersion: process.version,
+            platform: process.platform,
+            arch: process.arch,
+            cwd: process.cwd(),
+            publicDataSources: PUBLIC_DATA_SOURCES,
+            commands: [
+              "--help",
+              "-h",
+              "--list-sources",
+              "--diagnostics",
+              "--serve",
+              "--build-intermediate",
+              "--build-enhanced",
+              "--refresh",
+              "--merge-persist",
+              "--capital-cities"
+            ]
+          };
+          const sources = listSources();
+          diagnostics.healthChecks = await performHealthChecks(sources);
+          const body = JSON.stringify(diagnostics, null, 2);
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(body);
+        })();
+        return;
       } else if (req.method === "GET" && req.url === "/capital-cities") {
         const endpoint = PUBLIC_DATA_SOURCES[0].url;
         const sparqlQuery = `SELECT ?country ?capital WHERE {
