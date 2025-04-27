@@ -136,8 +136,8 @@ export async function refreshSources(configPath = path.join(process.cwd(), "data
 /**
  * Build intermediate JSON-LD artifacts from dataDir into outDir.
  * @param {Object} [options]
- * @param {string} [options.dataDir] - Path to data directory.
- * @param {string} [options.outDir] - Path to intermediate output directory.
+ * @param {string} [options.dataDir]
+ * @param {string} [options.outDir]
  * @returns {{count: number, files: string[]}} summary of generated artifacts.
  */
 export function buildIntermediate({ dataDir = path.join(process.cwd(), "data"), outDir = path.join(process.cwd(), "intermediate") } = {}) {
@@ -219,8 +219,6 @@ function getHelpText() {
   ].join("\n");
 }
 
-// ...rest of the file remains unchanged
-
 /**
  * Generate diagnostics information.
  */
@@ -264,16 +262,110 @@ async function generateDiagnostics() {
   };
 }
 
-// HTTP and CLI entrypoint main unchanged except using updated buildIntermediate
-
+/**
+ * HTTP and CLI entrypoint main
+ */
 export async function main(args) {
   const cliArgs = args !== undefined ? args : process.argv.slice(2);
-  // ... existing CLI handling ...
-  if (cliArgs.includes("--build-intermediate")) {
-    // Delegate to programmatic function
-    const summary = buildIntermediate();
-    // original CLI printed via logs in buildIntermediate
+
+  if (cliArgs.includes("--help") || cliArgs.includes("-h")) {
+    console.log(getHelpText());
     return;
   }
-  // ... the rest remains as before ...
+
+  if (cliArgs.includes("--list-sources")) {
+    const sources = listSources();
+    console.log(JSON.stringify(sources, null, 2));
+    return;
+  }
+
+  if (cliArgs.includes("--diagnostics")) {
+    const info = await generateDiagnostics();
+    console.log(JSON.stringify(info, null, 2));
+    return;
+  }
+
+  if (cliArgs.includes("--capital-cities")) {
+    try {
+      const response = await fetch(PUBLIC_DATA_SOURCES[0].url);
+      const json = await response.json();
+      const graph = json.results.bindings.map((binding) => {
+        const keys = Object.keys(binding);
+        const entry = { "@id": binding[keys[0]].value };
+        for (const k of keys.slice(1)) {
+          entry[k] = binding[k].value;
+        }
+        return entry;
+      });
+      const doc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+      console.log(JSON.stringify(doc));
+    } catch (err) {
+      console.error(`Error fetching capital cities: ${err.message}`);
+    }
+    return;
+  }
+
+  if (cliArgs.includes("--serve")) {
+    const port = parseInt(process.env.PORT) || 3000;
+    const server = http.createServer(async (req, res) => {
+      const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+      const pathname = parsedUrl.pathname;
+
+      if (req.method === "GET" && pathname === "/help") {
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        res.end(getHelpText());
+      } else if (req.method === "GET" && pathname === "/sources") {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(listSources(), null, 2));
+      } else if (req.method === "GET" && pathname === "/diagnostics") {
+        const info = await generateDiagnostics();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(info, null, 2));
+      } else if (req.method === "GET" && pathname === "/capital-cities") {
+        try {
+          const response = await fetch(PUBLIC_DATA_SOURCES[0].url);
+          const json = await response.json();
+          const graph = json.results.bindings.map((binding) => {
+            const keys = Object.keys(binding);
+            const entry = { "@id": binding[keys[0]].value };
+            for (const k of keys.slice(1)) {
+              entry[k] = binding[k].value;
+            }
+            return entry;
+          });
+          const doc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify(doc));
+        } catch (err) {
+          res.writeHead(500, { "Content-Type": "text/plain" });
+          res.end(err.message);
+        }
+      } else if (req.method === "GET" && pathname === "/build-intermediate") {
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        const originalLog = console.log;
+        console.log = (msg) => {
+          res.write(`${msg}\n`);
+        };
+        try {
+          buildIntermediate();
+        } catch (err) {
+          // ignore
+        }
+        console.log = originalLog;
+        res.end();
+      } else {
+        res.writeHead(404, { "Content-Type": "text/plain" });
+        res.end("Not Found");
+      }
+    });
+    server.listen(port);
+    return server;
+  }
+
+  if (cliArgs.includes("--build-intermediate")) {
+    buildIntermediate();
+    return;
+  }
+
+  // default: no operation
 }
