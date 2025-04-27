@@ -16,12 +16,15 @@
   - **GET `/sources`**: Returns the list of public (and custom) data sources as pretty-printed JSON.
   - **GET `/diagnostics`**: Returns diagnostic information and a live `healthChecks` array as pretty-printed JSON.
   - **GET `/capital-cities`**: Queries DBpedia SPARQL for country-capital pairs and outputs an OWL-compatible JSON-LD document with `@context` and `@graph`.
+  - **GET `/query?file=<path>&query=<sparql>`**: Executes a SPARQL query against the specified OWL JSON-LD file and returns SPARQL Results in JSON format.
   - **GET `/refresh`**: Triggers fetching and persisting data from all configured public and custom sources. Streams plain-text logs with one line per written file (`written <filename>.json`), ends with a summary line (`Refreshed <count> sources into data/`), and returns status 200 with `Content-Type: text/plain`. On error, responds with status 500 and a plain-text error message.
   - **GET `/build-intermediate`**: Reads JSON files from `data/`, transforms each into an OWL JSON-LD document, writes to `intermediate/`, and streams each `written <name>-intermediate.json` line followed by a summary `Generated X intermediate artifacts into intermediate/`.
   - Any other path responds with `404 Not Found`.
 - **Refresh (`--refresh`)**: Merges default and custom data sources, fetches JSON from each source, persists each to `data/<slugified-source-name>.json`, logs `written <filename>` for each successful write, and outputs a summary `Refreshed X sources into data/`.
 - **Build Intermediate (`--build-intermediate`)**: Reads JSON files from `data/`, transforms each into an OWL JSON-LD document (`@context` + `@graph`), writes to `intermediate/`, logs each write, and ends with a summary line.
 - **Capital Cities (`--capital-cities`)**: Queries DBpedia SPARQL for country-capital pairs and outputs an OWL-compatible JSON-LD document with `@context` and `@graph`.
+- **Query (`--query <filePath> <SPARQL query>`)**: Execute SPARQL queries against OWL JSON-LD artifacts and output SPARQL Results JSON format.
 - **Programmatic API (`listSources(configPath?)`)**: Returns a Promise resolving to the list of public data sources merged with an optional custom `data-sources.json`. It accepts an optional `configPath` (defaulting to `data-sources.json` in the current working directory). On invalid or missing config, logs an error and returns only the default sources.
 - **Programmatic API (`refreshSources(configPath?)`)**: Async function to fetch and persist data from all configured sources into `data/`, returning an object `{ count: number, files: string[] }`. Errors from individual sources are logged and do not interrupt processing.
+- **Programmatic API (`queryOntologies(filePath, sparqlQuery)`)**: Async function to execute a SPARQL query against an OWL JSON-LD artifact. Returns a Promise resolving to a SPARQL Results JSON object with `head.vars` and `results.bindings`.
 - **Default Behavior**: Running the CLI without the `--list-sources` or `--refresh` flag logs the provided arguments.
