@@ -1,4 +1,4 @@
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect, vi, afterEach } from "vitest";
 import { getCapitalCities, PUBLIC_DATA_SOURCES } from "../../src/lib/main.js";
 
 describe("getCapitalCities API", () => {
@@ -43,5 +43,4 @@ describe("getCapitalCities API", () => {
     });
     await expect(getCapitalCities()).rejects.toMatchObject({ code: "INVALID_JSON" });
   });
-
 });

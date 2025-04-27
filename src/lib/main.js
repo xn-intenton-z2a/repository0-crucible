@@ -320,11 +320,10 @@ export async function main(args) {
     try {
       const doc = await getCapitalCities();
       console.log(JSON.stringify(doc, null, 2));
-      process.exit(0);
     } catch (err) {
       console.error(err.message);
-      process.exit(1);
     }
+    return;
   }
 
   if (cliArgs.includes("--serve")) {
