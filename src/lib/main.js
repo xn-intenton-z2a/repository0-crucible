@@ -278,13 +278,15 @@ export async function main(args) {
           });
         return;
       } else if (req.method === "GET" && req.url === "/refresh") {
-        // Use dynamic import so that tests can mock the exported refreshSources
         import(import.meta.url)
           .then((mod) => mod.refreshSources())
           .then(({ count, files }) => {
-            const payload = { refreshed: count, files };
-            res.writeHead(200, { "Content-Type": "application/json" });
-            res.end(JSON.stringify(payload, null, 2));
+            res.writeHead(200, { "Content-Type": "text/plain" });
+            for (const file of files) {
+              res.write(`written ${file}\n`);
+            }
+            res.write(`Refreshed ${count} sources into data/\n`);
+            res.end();
           })
           .catch((err) => {
             res.writeHead(500, { "Content-Type": "text/plain" });

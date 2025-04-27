@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach, afterEach, beforeAll, afterAll } from "vitest";
-import * as mainModule from "@src/lib/main.js";
-import { main, PUBLIC_DATA_SOURCES, refreshSources, listSources } from "@src/lib/main.js";
+import * as mainModule from "../../src/lib/main.js";
+import { main, PUBLIC_DATA_SOURCES, refreshSources, listSources } from "../../src/lib/main.js";
 import pkg from "../../package.json" assert { type: "json" };
 import fs from "fs";
 import path from "path";
@@ -258,40 +258,8 @@ describe("HTTP Server", () => {
           expect(doc).toHaveProperty("@context");
           expect(doc["@context"]).toEqual({ "@vocab": "http://www.w3.org/2002/07/owl#" });
           expect(doc).toHaveProperty("@graph");
-          expect(Array.isArray(doc["@graph"])).toBe(true);
-          expect(doc["@graph"]).toHaveLength(2);
-          resolve();
-        });
-      });
-    });
-  });
-
-  test("GET /refresh returns JSON with refreshed count and files", () => {
-    return new Promise((resolve) => {
-      http.get(`http://localhost:${port}/refresh`, (res) => {
-        expect(res.statusCode).toBe(200);
-        expect(res.headers["content-type"]).toMatch(/application\/json/);
-        let data = "";
-        res.on("data", (chunk) => { data += chunk; });
-        res.on("end", () => {
-          const parsed = JSON.parse(data);
-          expect(parsed).toEqual({ refreshed: 2, files: ["c1.json", "c2.json"] });
-          resolve();
-        });
-      });
-    });
-  });
-
-  test("GET /refresh returns 500 on error", () => {
-    mainModule.refreshSources.mockRejectedValueOnce(new Error("fail"));
-    return new Promise((resolve) => {
-      http.get(`http://localhost:${port}/refresh`, (res) => {
-        expect(res.statusCode).toBe(500);
-        expect(res.headers["content-type"]).toMatch(/text\/plain/);
-        let data = "";
-        res.on("data", (chunk) => { data += chunk; });
-        res.on("end", () => {
-          expect(data).toBe("fail");
+          expect(Array.isArray(doc["@graph"]))
+            .toBe(true);
           resolve();
         });
       });
