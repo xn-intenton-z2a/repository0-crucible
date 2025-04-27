@@ -112,8 +112,78 @@ async function performHealthChecks(sources) {
   return results;
 }
 
+/**
+ * Reads JSON files from data/, transforms into OWL JSON-LD, writes to intermediate/, logs progress.
+ * @returns {{ count: number }}
+ */
+export function buildIntermediate() {
+  const dataDir = path.join(process.cwd(), "data");
+  const intermediateDir = path.join(process.cwd(), "intermediate");
+  if (!fs.existsSync(dataDir)) {
+    console.error("Error: data/ directory not found");
+    return;
+  }
+  fs.mkdirSync(intermediateDir, { recursive: true });
+  let files = [];
+  try {
+    files = fs.readdirSync(dataDir).filter((f) => f.endsWith(".json"));
+  } catch (err) {
+    console.error(`Error reading data directory: ${err.message}`);
+    files = [];
+  }
+  let count = 0;
+  for (const file of files) {
+    const slug = file.replace(/\.json$/i, "");
+    const outName = `${slug}-intermediate.json`;
+    try {
+      const raw = fs.readFileSync(path.join(dataDir, file), "utf8");
+      const parsed = JSON.parse(raw);
+      let graphEntries = [];
+      if (
+        parsed &&
+        parsed.results &&
+        Array.isArray(parsed.results.bindings)
+      ) {
+        graphEntries = parsed.results.bindings.map((b) => {
+          const entry = {};
+          const keys = Object.keys(b);
+          if (keys.length > 0) {
+            entry['@id'] = b[keys[0]].value;
+            for (const k of keys.slice(1)) {
+              entry[k] = b[k].value;
+            }
+          }
+          return entry;
+        });
+      } else if (Array.isArray(parsed) || typeof parsed === 'object') {
+        graphEntries = Array.isArray(parsed) ? parsed : parsed['@graph'] ? parsed['@graph'] : Object.values(parsed);
+      }
+      const doc = {
+        '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' },
+        '@graph': graphEntries
+      };
+      fs.writeFileSync(
+        path.join(intermediateDir, outName),
+        JSON.stringify(doc, null, 2),
+        'utf8'
+      );
+      console.log(`written ${outName}`);
+      count++;
+    } catch (err) {
+      console.error(`Error processing ${file}: ${err.message}`);
+    }
+  }
+  console.log(`Generated ${count} intermediate artifacts into intermediate/`);
+}
+
 export async function main(args) {
   const cliArgs = args !== undefined ? args : process.argv.slice(2);
+
+  // Build intermediate option
+  if (cliArgs.includes("--build-intermediate")) {
+    buildIntermediate();
+    return;
+  }
 
   // Capital Cities option
   if (cliArgs.includes("--capital-cities")) {
@@ -247,7 +317,6 @@ export async function main(args) {
           };
           const sources = listSources();
           diagnostics.healthChecks = await performHealthChecks(sources);
-          // Add system metrics
           diagnostics.uptimeSeconds = process.uptime();
           diagnostics.memoryUsage = process.memoryUsage();
           const body = JSON.stringify(diagnostics, null, 2);
@@ -299,6 +368,71 @@ export async function main(args) {
             res.end(err.message);
           });
         return;
+      } else if (req.method === "GET" && req.url === "/build-intermediate") {
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        const dataDir = path.join(process.cwd(), "data");
+        const intermediateDir = path.join(process.cwd(), "intermediate");
+        if (!fs.existsSync(dataDir)) {
+          console.error("Error: data/ directory not found");
+        }
+        fs.mkdirSync(intermediateDir, { recursive: true });
+        let filesList = [];
+        try {
+          filesList = fs.existsSync(dataDir)
+            ? fs.readdirSync(dataDir).filter((f) => f.endsWith(".json"))
+            : [];
+        } catch (err) {
+          console.error(`Error reading data directory: ${err.message}`);
+          filesList = [];
+        }
+        let count = 0;
+        for (const file of filesList) {
+          const slug = file.replace(/\.json$/i, "");
+          const outName = `${slug}-intermediate.json`;
+          try {
+            const raw = fs.readFileSync(path.join(dataDir, file), "utf8");
+            const parsed = JSON.parse(raw);
+            let graphEntries = [];
+            if (
+              parsed &&
+              parsed.results &&
+              Array.isArray(parsed.results.bindings)
+            ) {
+              graphEntries = parsed.results.bindings.map((b) => {
+                const entry = {};
+                const keys = Object.keys(b);
+                if (keys.length > 0) {
+                  entry['@id'] = b[keys[0]].value;
+                  for (const k of keys.slice(1)) {
+                    entry[k] = b[k].value;
+                  }
+                }
+                return entry;
+              });
+            } else if (Array.isArray(parsed) || typeof parsed === 'object') {
+              graphEntries = Array.isArray(parsed)
+                ? parsed
+                : parsed['@graph']
+                ? parsed['@graph']
+                : Object.values(parsed);
+            }
+            const doc = {
+              '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' },
+              '@graph': graphEntries
+            };
+            fs.writeFileSync(
+              path.join(intermediateDir, outName),
+              JSON.stringify(doc, null, 2),
+              'utf8'
+            );
+            res.write(`written ${outName}\n`);
+            count++;
+          } catch (err) {
+            console.error(`Error processing ${file}: ${err.message}`);
+          }
+        }
+        res.write(`Generated ${count} intermediate artifacts into intermediate/`);
+        return res.end();
       } else {
         res.writeHead(404, { "Content-Type": "text/plain" });
         return res.end("Not Found");
