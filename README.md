@@ -29,6 +29,7 @@ npm install repository0-crucible
 - **Help (`--help`, `-h`)**: Display the help message with usage instructions.
 - **Diagnostics (`--diagnostics`)**: Outputs diagnostic information (version, node version, platform, architecture, working directory, uptimeSeconds, memoryUsage, public data sources, and commands) as pretty-printed JSON, including a `healthChecks` array with real-time availability metrics.
 - **Default Behavior**: Running the CLI without any flags logs the provided arguments.
+- **Capital Cities (`--capital-cities`)**: Queries DBpedia for country-capital pairs and outputs an OWL-compatible JSON-LD document with `@context` and `@graph`.
 
 ## Usage
 
@@ -89,6 +90,25 @@ Sample output:
       "latencyMs": 120,
       "reachable": true
     }
+  ]
+}
+```
+
+## Capital Cities
+
+Use the `--capital-cities` flag to query DBpedia for country-capital pairs and output an OWL-compatible JSON-LD document:
+
+```bash
+node src/lib/main.js --capital-cities
+```
+
+Example output:
+
+```json
+{
+  "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
+  "@graph": [
+    { "@id": "http://example.org/C", "capital": "http://example.org/K" }
   ]
 }
 ```
