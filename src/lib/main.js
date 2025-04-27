@@ -330,6 +330,8 @@ export async function generateDiagnostics() {
     dataFiles,
     intermediateFilesCount: intermediateFiles.length,
     intermediateFiles,
+    dependencies: pkg.dependencies,
+    devDependencies: pkg.devDependencies,
   };
 }
 
@@ -389,7 +391,6 @@ export async function main(args) {
     }
     return;
   }
-  // SPARQL query support
   if (cliArgs.includes("--query") || cliArgs.includes("-q")) {
     const qiIndex = cliArgs.findIndex(arg => arg === "--query" || arg === "-q");
     const filePath = cliArgs[qiIndex + 1];
@@ -446,7 +447,6 @@ export async function main(args) {
         console.log = msg => res.write(`${msg}\n`);
         try {
           const result = await buildEnhanced();
-          // Use intermediate count to reflect files processed
           console.log(`Enhanced ontology written to enhanced/enhanced.json with ${result.intermediate.count} nodes`);
         } catch (err) {
           console.log(err.message);

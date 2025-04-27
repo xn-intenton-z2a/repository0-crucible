@@ -137,6 +137,12 @@ describe("Diagnostics Flag", () => {
     expect(parsed).toHaveProperty("intermediateFilesCount", 1);
     expect(parsed.intermediateFiles).toEqual(["x.json"]);
 
+    // new assertions for dependencies
+    expect(parsed).toHaveProperty("dependencies");
+    expect(parsed.dependencies).toEqual(pkg.dependencies);
+    expect(parsed).toHaveProperty("devDependencies");
+    expect(parsed.devDependencies).toEqual(pkg.devDependencies);
+
     fetchSpy.mockRestore();
     logSpy.mockRestore();
   });
@@ -166,6 +172,3 @@ describe("Diagnostics Flag", () => {
     logSpy.mockRestore();
   });
 });
-
-// New tests for capital-cities CLI flag
-// ... rest of file unchanged

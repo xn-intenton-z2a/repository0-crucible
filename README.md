@@ -4,8 +4,6 @@
 
 To create a self-evolving agentic coding system of your own based on this one see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
-This readme shall evolve into a JavaScript library based on of of the seed CONTRIBUTING files in [./seeds].
-
 ## Features
 
 - **List Sources (`--list-sources`)**: Outputs the list of configured public data sources in JSON format. If a `data-sources.json` file is present with a valid array of `{ name, url }`, it will be merged with the default sources. Invalid or missing configs will fall back to defaults with a warning for invalid configs.
@@ -17,6 +15,8 @@ This readme shall evolve into a JavaScript library based on of of the seed CONTR
   - `dataFiles`: list of JSON filenames in `data/` (sorted, or empty array)
   - `intermediateFilesCount`: number of JSON files in the `intermediate/` directory (or `0` if missing)
   - `intermediateFiles`: list of JSON filenames in `intermediate/` (sorted, or empty array)
+  - `dependencies`: object mapping runtime dependency names to their installed versions from `package.json`
+  - `devDependencies`: object mapping development dependency names to their installed versions from `package.json`
 - **Build Intermediate (`--build-intermediate`)**: Reads JSON files from `data/`, transforms each into OWL JSON-LD intermediate artifacts in `intermediate/`, logs each write, and prints a summary line.
 - **Default Behavior**: Running the CLI without any flags logs the provided arguments.
 - **Capital Cities (`--capital-cities`)**: Queries DBpedia for country-capital pairs and outputs an OWL-compatible JSON-LD document with `@context` and `@graph`.
