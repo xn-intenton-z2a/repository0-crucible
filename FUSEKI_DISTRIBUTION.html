@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="fuseki_distribution" href="#fuseki_distribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FUSEKI_DISTRIBUTION</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Binary archives: apache-jena-fuseki-5.3.0.tar.gz, .zip, SHA512 checksums, PGP signatures. Maven artifacts jena-fuseki-main/ui/war/core/docker coordinates, Java17+, Servlet6.0. Verification commands: gpg key import, sha512sum, gpg --verify.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1  Binary Distribution Files and Verification
+2  Maven Dependencies
+3  Java &amp; Servlet Requirements
+4  Docker Container Module
+5  Embedded Server Module</p>
+<p class="md-github">1  Binary Distribution Files and Verification
+Files:
+- apache-jena-fuseki-5.3.0.tar.gz   SHA512: 9f5e1f53a89...  Signature: apache-jena-fuseki-5.3.0.tar.gz.asc
+- apache-jena-fuseki-5.3.0.zip      SHA512: b4c8127d3ef...  Signature: apache-jena-fuseki-5.3.0.zip.asc
+- jena-fuseki-war-5.3.0.war         SHA512: 6d03f1e7c29...  Signature: jena-fuseki-war-5.3.0.war.asc
+Verification steps:
+1  gpg --keyserver keyserver.ubuntu.com --recv-keys 0x6C17F59FAC38FAB6
+2  sha512sum apache-jena-fuseki-5.3.0.tar.gz
+3  gpg --verify apache-jena-fuseki-5.3.0.tar.gz.asc apache-jena-fuseki-5.3.0.tar.gz</p>
+<p class="md-github">2  Maven Dependencies
+org.apache.jena:jena-fuseki-main:5.3.0
+org.apache.jena:jena-fuseki-ui:5.3.0
+org.apache.jena:jena-fuseki-war:5.3.0 (type: war)
+org.apache.jena:jena-fuseki-docker:5.3.0
+org.apache.jena:jena-fuseki-core:5.3.0</p>
+<p class="md-github">3  Java &amp; Servlet Requirements</p>
+<ul class="md-github">
+<li class="md-github">Java runtime &gt;= 17</li>
+<li class="md-github">Jakarta Servlet 6.0 compatible container (e.g., Tomcat 10.x)</li>
+</ul>
+<p class="md-github">4  Docker Container Module
+Dependency: org.apache.jena:jena-fuseki-docker:5.3.0
+Build command: mvn package -Pdocker</p>
+<p class="md-github">5  Embedded Server Module
+API dependency: org.apache.jena:jena-fuseki-core:5.3.0
+Example instantiation:
+FusekiServer server = FusekiServer.create()
+.port(3030)
+.add(&quot;/ds&quot;, dataset)
+.build();
+server.start();</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Binary installation:
+1  tar -xzf apache-jena-fuseki-5.3.0.tar.gz -C /opt/
+2  export FUSEKI_HOME=/opt/apache-jena-fuseki-5.3.0
+3  $FUSEKI_HOME/fuseki-server --port=3030 --config=$FUSEKI_HOME/configuration.ttl</p>
+<p class="md-github">WAR deployment:
+1  Copy jena-fuseki-war-5.3.0.war to $TOMCAT_HOME/webapps/fuseki.war
+2  Ensure Java17 is set: export JAVA_HOME=/usr/lib/jvm/java-17-openjdk
+3  Restart Tomcat</p>
+<p class="md-github">Docker deployment:
+1  mvn clean package -Pdocker -f jena-fuseki-docker/pom.xml
+2  docker run -d -p 3030:3030 apache/jena-fuseki:5.3.0</p>
+<p class="md-github">Embedded deployment in Java application:
+1  Include jena-fuseki-core and jena-fuseki-main dependencies
+2  Create Dataset ds = DatasetFactory.createTxnMem();
+3  FusekiServer server = FusekiServer.create().port(3030).add(&quot;/dataset&quot;, ds).build();
+4  server.start();</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Maven coordinates:
+<dependency>
+<groupId>org.apache.jena</groupId>
+<artifactId>jena-fuseki-main</artifactId>
+<version>5.3.0</version>
+</dependency></p>
+<p class="md-github">Embedded API:
+Class: org.apache.jena.fuseki.main.FusekiServer
+Methods:</p>
+<ul class="md-github">
+<li class="md-github">static FusekiServer.Builder create()</li>
+<li class="md-github">Builder port(int port)</li>
+<li class="md-github">Builder add(String endpointPath, Dataset dataset)</li>
+<li class="md-github">FusekiServer build()</li>
+<li class="md-github">void start()</li>
+<li class="md-github">void stop()</li>
+</ul>
+<p class="md-github">Configuration TTL keys:
+:service1 a fuseki:Service; fuseki:name &quot;ds&quot;; fuseki:datastore :tdbDataset;
+fuseki:serviceQuery &quot;query&quot;; fuseki:serviceUpdate &quot;update&quot;; fuseki:serviceReadGraphStore &quot;get&quot;;
+fuseki:serviceWriteGraphStore &quot;post&quot;.</p>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Run Fuseki under a dedicated user account</li>
+<li class="md-github">Limit thread pool: --jettyThreads=50</li>
+<li class="md-github">Enable Shiro security in configuration.ttl
+detailed troubleshooting:</li>
+<li class="md-github">Port in use: netstat -tulpn | grep 3030</li>
+<li class="md-github">Check $FUSEKI_HOME/logs/fuseki.log for stack traces</li>
+<li class="md-github">Enable DEBUG: --log=DEBUG</li>
+<li class="md-github">Java Heap tuning: export JVM_ARGS=&quot;-Xms2G -Xmx4G&quot;</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">Binary: apache-jena-fuseki-5.3.0.{tar.gz,zip}, jena-fuseki-war-5.3.0.war; SHA512 sums; PGP sig verify: gpg --verify + sha512sum. Maven: jena-fuseki-main/ui/war/core/docker:5.3.0. Java&gt;=17; Servlet6.0 (Tomcat10+). Install: tar -xzf; $FUSEKI_HOME/fuseki-server --port=3030 --config=configuration.ttl. WAR: drop in Tomcat/webapps; ensure JAVA_HOME points to Java17. Docker: mvn -Pdocker; docker run -d -p3030:3030 apache/jena-fuseki:5.3.0. Embedded API: FusekiServer.create().port(3030).add(&quot;/ds&quot;,Dataset).build().start(). Config TTL sample service block. JVM tuning: -Xms2G -Xmx4G; Jetty threads: --jettyThreads=50; enable Shiro for auth; logs in $FUSEKI_HOME/logs; debug with --log=DEBUG; troubleshoot port with netstat; check fuseki.log for errors.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1  Binary Distribution Files and Verification
+2  Maven Dependencies
+3  Java &amp; Servlet Requirements
+4  Docker Container Module
+5  Embedded Server Module</p>
+<p class="md-github">1  Binary Distribution Files and Verification
+Files:
+- apache-jena-fuseki-5.3.0.tar.gz   SHA512: 9f5e1f53a89...  Signature: apache-jena-fuseki-5.3.0.tar.gz.asc
+- apache-jena-fuseki-5.3.0.zip      SHA512: b4c8127d3ef...  Signature: apache-jena-fuseki-5.3.0.zip.asc
+- jena-fuseki-war-5.3.0.war         SHA512: 6d03f1e7c29...  Signature: jena-fuseki-war-5.3.0.war.asc
+Verification steps:
+1  gpg --keyserver keyserver.ubuntu.com --recv-keys 0x6C17F59FAC38FAB6
+2  sha512sum apache-jena-fuseki-5.3.0.tar.gz
+3  gpg --verify apache-jena-fuseki-5.3.0.tar.gz.asc apache-jena-fuseki-5.3.0.tar.gz</p>
+<p class="md-github">2  Maven Dependencies
+org.apache.jena:jena-fuseki-main:5.3.0
+org.apache.jena:jena-fuseki-ui:5.3.0
+org.apache.jena:jena-fuseki-war:5.3.0 (type: war)
+org.apache.jena:jena-fuseki-docker:5.3.0
+org.apache.jena:jena-fuseki-core:5.3.0</p>
+<p class="md-github">3  Java &amp; Servlet Requirements</p>
+<ul class="md-github">
+<li class="md-github">Java runtime &gt;= 17</li>
+<li class="md-github">Jakarta Servlet 6.0 compatible container (e.g., Tomcat 10.x)</li>
+</ul>
+<p class="md-github">4  Docker Container Module
+Dependency: org.apache.jena:jena-fuseki-docker:5.3.0
+Build command: mvn package -Pdocker</p>
+<p class="md-github">5  Embedded Server Module
+API dependency: org.apache.jena:jena-fuseki-core:5.3.0
+Example instantiation:
+FusekiServer server = FusekiServer.create()
+.port(3030)
+.add('/ds', dataset)
+.build();
+server.start();</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Apache Jena Fuseki Documentation
+https://jena.apache.org/documentation/fuseki2/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-fuseki_distribution" href="#digest-of-fuseki_distribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of FUSEKI_DISTRIBUTION</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="apache-jena-fuseki-distribution-and-deployment-retrieved-2024-06-xx" href="#apache-jena-fuseki-distribution-and-deployment-retrieved-2024-06-xx"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Apache Jena Fuseki Distribution and Deployment (Retrieved: 2024-06-XX)</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="binary-distributions" href="#binary-distributions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Binary Distributions</h2>
+<table class="md-github">
+<thead class="md-github">
+<tr class="md-github">
+<th class="md-github">Filename</th>
+<th class="md-github">SHA512</th>
+<th class="md-github">Signature (PGP)</th>
+</tr>
+</thead>
+<tbody class="md-github">
+<tr class="md-github">
+<td class="md-github">apache-jena-fuseki-5.3.0.tar.gz</td>
+<td class="md-github">9f5e1f53a89...<rest of SHA512 hash></td>
+<td class="md-github">apache-jena-fuseki-5.3.0.tar.gz.asc</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">apache-jena-fuseki-5.3.0.zip</td>
+<td class="md-github">b4c8127d3ef...<rest of SHA512 hash></td>
+<td class="md-github">apache-jena-fuseki-5.3.0.zip.asc</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">jena-fuseki-war-5.3.0.war</td>
+<td class="md-github">6d03f1e7c29...<rest of SHA512 hash></td>
+<td class="md-github">jena-fuseki-war-5.3.0.war.asc</td>
+</tr>
+</tbody>
+</table>
+<h2 class="md-github"><a class="md-github__anchor" name="maven-artifacts" href="#maven-artifacts"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Maven Artifacts</h2>
+<dependency>
+   <groupId>org.apache.jena</groupId>
+   <artifactId>jena-fuseki-main</artifactId>
+   <version>5.3.0</version>
+</dependency>
+<dependency>
+   <groupId>org.apache.jena</groupId>
+   <artifactId>jena-fuseki-ui</artifactId>
+   <version>5.3.0</version>
+</dependency>
+<dependency>
+   <groupId>org.apache.jena</groupId>
+   <artifactId>jena-fuseki-war</artifactId>
+   <version>5.3.0</version>
+   <type>war</type>
+</dependency>
+<h2 class="md-github"><a class="md-github__anchor" name="java-and-servlet-requirements" href="#java-and-servlet-requirements"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Java and Servlet Requirements</h2>
+<ul class="md-github">
+<li class="md-github">Java 17 or later</li>
+<li class="md-github">Jakarta Servlet API 6.0 (requires Servlet container such as Apache Tomcat 10.x)</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="docker-module" href="#docker-module"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Docker Module</h2>
+<p class="md-github">Maven coordinates for Docker container build:</p>
+<dependency>
+   <groupId>org.apache.jena</groupId>
+   <artifactId>jena-fuseki-docker</artifactId>
+   <version>5.3.0</version>
+</dependency>
+<h2 class="md-github"><a class="md-github__anchor" name="embedded-sparql-server-dependency" href="#embedded-sparql-server-dependency"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Embedded SPARQL Server Dependency</h2>
+<dependency>
+   <groupId>org.apache.jena</groupId>
+   <artifactId>jena-fuseki-core</artifactId>
+   <version>5.3.0</version>
+</dependency>
+<h2 class="md-github"><a class="md-github__anchor" name="pgp-verification" href="#pgp-verification"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PGP Verification</h2>
+<ol class="md-github">
+<li class="md-github">Import key:  gpg --recv-keys 0x6C17F59FAC38FAB6</li>
+<li class="md-github">Verify checksum: sha512sum apache-jena-fuseki-5.3.0.tar.gz</li>
+<li class="md-github">Verify signature: gpg --verify apache-jena-fuseki-5.3.0.tar.gz.asc</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Apache Jena Fuseki Documentation</li>
+<li class="md-github">URL: https://jena.apache.org/documentation/fuseki2/</li>
+<li class="md-github">License: License</li>
+<li class="md-github">Crawl Date: 2025-04-27T02:23:25.479Z</li>
+<li class="md-github">Data Size: 1539607 bytes</li>
+<li class="md-github">Links Found: 3533</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-27</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-27T02:47:17.559Z</p>
+  </footer>
+</body>
+</html>
