@@ -50,16 +50,6 @@ It also illustrates HTTP parameter tuning, rate-limit handling, efficient result
 
 W3C Document License (CC-BY 4.0)
 
-# W3C Shapes Constraint Language (SHACL)
-
-## https://www.w3.org/TR/shacl/
-
-SHACL defines a declarative language for validating RDF graphs against shapes (node and property constraints). The specification covers core constraint components, SPARQL‐based extensions for custom rules, target declarations, validation results structures, and performance considerations. Vital for verifying structural integrity and semantic consistency of generated OWL ontologies before publication. (Last updated 20 July 2017; authoritative as a W3C Recommendation.)
-
-## License
-
-W3C Document License (CC-BY 4.0)
-
 # Node.js Core APIs: HTTP, File System, URL, and Fetch
 
 ## https://nodejs.org/api/http.html
@@ -99,3 +89,13 @@ The Comunica SPARQL Query Framework documentation provides detailed guidance on 
 ## License
 
 MIT License
+
+# DBpedia SPARQL Endpoint Documentation
+
+## https://wiki.dbpedia.org/develop/datasets/sparql-endpoint
+
+DBpedia’s official SPARQL endpoint documentation details how to construct and send SPARQL queries to `https://dbpedia.org/sparql`. It covers query parameters (`query`, `format`), HTTP headers (Accept negotiation for JSON, XML), CORS considerations, rate limits, and error handling. Includes examples demonstrating HTTP GET and POST requests, parameter encoding, and best practices for performance tuning and pagination. Critical for ensuring reliable integration with DBpedia when generating OWL JSON-LD via the `capital-cities` and future CLI commands. (Last updated 2023; authoritative as DBpedia project documentation.)
+
+## License
+
+Creative Commons Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0)
