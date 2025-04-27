@@ -6,6 +6,7 @@ import { URL } from "url";
 import pkg from "../../package.json" assert { type: "json" };
 import { performance } from "perf_hooks";
 import { QueryEngine } from "@comunica/query-sparql";
+import * as mainModule from "./main.js";
 
 export const PUBLIC_DATA_SOURCES = [{ name: "DBpedia SPARQL", url: "https://dbpedia.org/sparql" }];
 
@@ -29,7 +30,7 @@ Usage: node src/lib/main.js [options]
 
 const CONFIG_FILE = "data-sources.json";
 
-export async function listSources(_configPath) {
+export function listSources(_configPath) {
   const configPath = CONFIG_FILE;
   if (!fs.existsSync(configPath)) {
     return PUBLIC_DATA_SOURCES;
@@ -95,22 +96,26 @@ export async function refreshSources() {
 }
 
 export function buildIntermediate({ dataDir = "data", intermediateDir = "intermediate" } = {}) {
+  const dataDirParam = dataDir;
+  const intermediateDirParam = intermediateDir;
+  const absDataDir = path.resolve(dataDirParam);
+  const absIntermediateDir = path.resolve(intermediateDirParam);
   // cleanup
   try {
-    fs.rmSync(intermediateDir, { recursive: true, force: true });
+    fs.rmSync(absIntermediateDir, { recursive: true, force: true });
   } catch {}
-  if (!fs.existsSync(dataDir)) {
-    console.error(`Error: ${dataDir}/ directory not found`);
+  if (!fs.existsSync(absDataDir)) {
+    console.error(`Error: ${dataDirParam}/ directory not found`);
     return { count: 0, files: [] };
   }
-  const rawFiles = fs.readdirSync(dataDir).filter(f => f.endsWith('.json'));
-  fs.mkdirSync(intermediateDir, { recursive: true });
+  const rawFiles = fs.readdirSync(absDataDir).filter(f => f.endsWith('.json'));
+  fs.mkdirSync(absIntermediateDir, { recursive: true });
   let count = 0;
   const files = [];
   for (const file of rawFiles) {
     let parsed;
     try {
-      parsed = JSON.parse(fs.readFileSync(path.join(dataDir, file), "utf8"));
+      parsed = JSON.parse(fs.readFileSync(path.join(absDataDir, file), "utf8"));
     } catch {
       continue;
     }
@@ -131,7 +136,7 @@ export function buildIntermediate({ dataDir = "data", intermediateDir = "interme
       graph.push(node);
     }
     const outName = file.replace(/\.json$/, '-intermediate.json');
-    const outPath = path.join(intermediateDir, outName);
+    const outPath = path.join(absIntermediateDir, outName);
     const outContent = {
       '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' },
       '@graph': graph
@@ -141,13 +146,13 @@ export function buildIntermediate({ dataDir = "data", intermediateDir = "interme
     files.push(outName);
     count++;
   }
-  console.log(`Generated ${count} intermediate artifacts into ${intermediateDir}/`);
+  console.log(`Generated ${count} intermediate artifacts into ${intermediateDirParam}/`);
   return { count, files };
 }
 
 export async function buildEnhanced({ dataDir = 'data', intermediateDir = 'intermediate', outDir = 'enhanced' } = {}) {
-  const refreshed = await refreshSources();
-  const intermediate = buildIntermediate({ dataDir, intermediateDir });
+  const refreshed = await mainModule.refreshSources();
+  const intermediate = mainModule.buildIntermediate({ dataDir, intermediateDir });
   // merge graphs
   const merged = [];
   for (const f of intermediate.files) {
@@ -164,6 +169,7 @@ export async function buildEnhanced({ dataDir = 'data', intermediateDir = 'inter
     '@graph': merged
   };
   fs.writeFileSync(path.join(outDir, 'enhanced.json'), JSON.stringify(enhancedContent, null, 2), 'utf8');
+  console.log('written enhanced.json');
   return {
     refreshed,
     intermediate,
@@ -339,7 +345,7 @@ export async function main(args) {
       }
       else if (req.method === "GET" && pathname === "/sources") {
         res.writeHead(200, { "Content-Type": "application/json" });
-        const sources = await listSources();
+        const sources = listSources();
         res.end(JSON.stringify(sources, null, 2));
       }
       else if (req.method === "GET" && pathname === "/diagnostics") {
@@ -388,7 +394,7 @@ export async function main(args) {
           res.end("Missing required query parameters: file and sparql");
         } else {
           try {
-            const result = await sparqlQuery(fileParam, sparqlParam);
+            const result = await mainModule.sparqlQuery(fileParam, sparqlParam);
             res.writeHead(200, { "Content-Type": "application/json" });
             res.end(JSON.stringify(result, null, 2));
           } catch (err) {
@@ -411,7 +417,7 @@ export async function main(args) {
     return;
   }
   if (cliArgs.includes("--list-sources")) {
-    const sources = await listSources();
+    const sources = listSources();
     console.log(JSON.stringify(sources, null, 2));
     return;
   }
@@ -454,28 +460,27 @@ export async function main(args) {
   }
   if (cliArgs.includes("--build-intermediate")) {
     const idx = cliArgs.indexOf("--build-intermediate");
-    const dataDir = cliArgs[idx+1];
-    const outDir = cliArgs[idx+2];
-    if (dataDir && outDir && !dataDir.startsWith("--")) {
-      buildIntermediate({ dataDir, intermediateDir: undefined });
-    } else if (dataDir && !dataDir.startsWith("--")) {
-      buildIntermediate({ dataDir });
+    const maybeData = cliArgs[idx + 1];
+    if (maybeData && !maybeData.startsWith("--")) {
+      const maybeOut = cliArgs[idx + 2];
+      const outDirParam = maybeOut && !maybeOut.startsWith("--") ? maybeOut : undefined;
+      mainModule.buildIntermediate({ dataDir: maybeData, outDir: outDirParam });
     } else {
-      buildIntermediate();
+      mainModule.buildIntermediate();
     }
     return;
   }
   if (cliArgs.includes("--build-enhanced")) {
     const idx = cliArgs.indexOf("--build-enhanced");
-    const dataDir = cliArgs[idx+1];
-    const interDir = cliArgs[idx+2];
-    const outDir = cliArgs[idx+3];
-    if (dataDir && interDir && outDir && !dataDir.startsWith("--")) {
-      await buildEnhanced({ dataDir, intermediateDir: interDir, outDir });
-    } else if (dataDir && interDir && !dataDir.startsWith("--")) {
-      await buildEnhanced({ dataDir, intermediateDir: interDir });
-    } else if (dataDir && !dataDir.startsWith("--")) {
-      await buildEnhanced({ dataDir });
+    const dataArg = cliArgs[idx+1];
+    const interArg = cliArgs[idx+2];
+    const outArg = cliArgs[idx+3];
+    if (dataArg && interArg && outArg && !dataArg.startsWith("--")) {
+      await buildEnhanced({ dataDir: dataArg, intermediateDir: interArg, outDir: outArg });
+    } else if (dataArg && interArg && !dataArg.startsWith("--")) {
+      await buildEnhanced({ dataDir: dataArg, intermediateDir: interArg });
+    } else if (dataArg && !dataArg.startsWith("--")) {
+      await buildEnhanced({ dataDir: dataArg });
     } else {
       await buildEnhanced();
     }
@@ -489,7 +494,7 @@ export async function main(args) {
       console.error('Missing required query parameters: file and sparql');
     } else {
       try {
-        const result = await sparqlQuery(fileParam, sparqlParam);
+        const result = await mainModule.sparqlQuery(fileParam, sparqlParam);
         console.log(JSON.stringify(result, null, 2));
       } catch (err) {
         console.error(err.message);
@@ -497,5 +502,4 @@ export async function main(args) {
     }
     return;
   }
-  // default: no-op
 }
