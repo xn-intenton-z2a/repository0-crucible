@@ -15,7 +15,7 @@ W3C Document License (CC-BY 4.0)
 ## https://www.w3.org/TR/json-ld11/
 ## https://www.w3.org/TR/json-ld11-api/
 ## https://github.com/digitalbazaar/jsonld.js#readme
-These paired W3C Recommendations define JSON-LD 1.1 framing, compaction, expansion, context processing, normalization, and RDF conversion algorithms, alongside the official JavaScript API. The jsonld.js implementation provides concrete document loader hooks, asynchronous streaming support, and detailed error-handling strategies, empowering seamless JSON-LD ingestion and emission within OWL builder workflows. (Last updated: Spec & API May 2020; jsonld.js 2024; authoritative as W3C Recommendation and official implementation.)
+These paired W3C Recommendations define JSON-LD 1.1 framing, compaction, expansion, context processing, normalization, and RDF conversion algorithms, alongside the official JavaScript API. The jsonld.js implementation provides concrete document loader hooks, asynchronous streaming support, and robust error-handling strategies, empowering seamless JSON-LD ingestion and emission within OWL builder workflows. (Last updated: Spec & API May 2020; jsonld.js 2024; authoritative as W3C Recommendation and official implementation.)
 ## License
 W3C Document License (CC-BY 4.0) for specifications; MIT License for jsonld.js
 
@@ -27,34 +27,37 @@ W3C Document License (CC-BY 4.0) for specifications; MIT License for jsonld.js
 ## https://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/
 ## https://wiki.dbpedia.org/services-resources/sparql-endpoint
 ## https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Wikidata_Query_Service_User_Help
-This comprehensive collection covers SPARQL 1.1 Query Language, Protocol, Update, Graph Store HTTP, and JSON Results specifications, plus usage guidance for public endpoints like DBpedia and Wikidata. It details query forms, federation, HTTP conventions, rate limits, result serialization, and best practices—vital for building resilient SPARQL clients, servers, and federated pipelines. (Specs last updated March 2013; DBpedia 2024; Wikidata continuously updated; authoritative as W3C Recommendations and official endpoint guides.)
+This comprehensive collection covers SPARQL 1.1 Query Language, Protocol, Update, Graph Store HTTP, and JSON Results specifications, plus usage guidance for public endpoints like DBpedia and Wikidata. It details query forms, federation strategies, HTTP conventions, rate limits, result serialization, and best practices—vital for building resilient SPARQL clients, servers, and federated pipelines. (Specs last updated March 2013; DBpedia 2024; Wikidata continuously updated; authoritative as W3C Recommendations and official endpoint guides.)
 ## License
 W3C Document License (CC-BY 4.0); DBpedia: CC BY-SA 3.0; Wikidata: CC0/Public Domain
 
-# Node.js Core Modules: HTTP, File System, URL, Path, Fetch, and ESM
+# Node.js Core Modules & Fetch API
 ## https://nodejs.org/api/http.html
 ## https://nodejs.org/api/fs.html
 ## https://nodejs.org/api/url.html
 ## https://nodejs.org/api/path.html
 ## https://nodejs.org/api/globals.html#fetch
 ## https://nodejs.org/api/esm.html
-Official Node.js v20 documentation for core modules used by owl-builder: HTTP servers and routing for RESTful and SPARQL endpoints, file I/O for CLI commands and artifact persistence, URL parsing and construction, path utilities for file and slug management, global fetch for HTTP requests with built-in timeouts and error handling, and ESM module loading patterns. Includes examples for streaming responses, health checks, integration with SPARQL endpoints, and filesystem operations. (Current as of Node.js v20.x; authoritative as official Node.js documentation.)
+## https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+Official Node.js v20 documentation for core modules—HTTP servers, file I/O, URL and path utilities, and ESM module loading—combined with the MDN Fetch API reference. This collection covers streaming responses, health-check patterns, file-system operations, global fetch usage (request/response, error handling, timeouts), and ESM import semantics. These are foundational for implementing robust CLI commands, HTTP endpoints, and SPARQL client interactions. (Current as of Node.js v20.x; MDN fetch docs updated continuously; authoritative as official Node.js and MDN documentation.)
 ## License
-OpenJS Foundation and contributors (MIT License)
+OpenJS Foundation and contributors (MIT License);
+MDN content (CC0/Public Domain)
 
-# RDF/JS Data Model and Streams with rdf-ext Implementation
+# RDF/JS Data Model & Streams with rdf-ext and Comunica SPARQL Framework
 ## https://rdf.js.org/data-model-spec/
 ## https://rdf.js.org/streams/spec/
 ## https://rdf-ext.github.io/
-The RDF/JS community specifications define language-agnostic interfaces for RDF factories and streaming abstractions. The rdf-ext implementation delivers concrete factories, parsers, serializers, and in-memory datasets, enabling interoperable, memory-efficient RDF graph construction and streaming pipelines. This foundation is critical for seamless integration with Comunica and high-performance RDF workflows in Node.js. (Spec updated January 2022; rdf-ext docs updated 2024; authoritative as community standards and official implementation.)
-## License
-MIT License
-
-# Comunica SPARQL Query Framework
 ## https://comunica.dev/docs/query/framework
-The Comunica documentation guides building modular SPARQL query engines in JavaScript, covering actor pipelines, HTTP connectors, federation strategies, query optimization, and custom extension points. It demonstrates composing multiple sources, handling large result streams, integrating caching and metadata—essential for extending CLI and HTTP server features with advanced, federated SPARQL capabilities. (Last updated 2024; authoritative as official Comunica documentation.)
+The RDF/JS community specifications define language-agnostic interfaces for RDF factories and streaming abstractions. The rdf-ext implementation delivers concrete factories, parsers, serializers, and in-memory datasets, enabling interoperable, memory-efficient RDF graph construction. Comunica builds on these standards to provide a modular SPARQL query engine in JavaScript, covering actor pipelines, HTTP connectors, federation strategies, and streaming result handling. Together, they form an end-to-end stack for building, querying, and federating RDF data in Node.js. (Specs updated January 2022; rdf-ext & Comunica docs updated 2024; authoritative as community standards and official implementations.)
 ## License
-MIT License
+RDF/JS specs (MIT); rdf-ext (MIT); Comunica (MIT)
+
+# Linked Data Fragments (LDF)
+## https://www.w3.org/TR/ldf/
+The Linked Data Fragments (LDF) W3C Recommendation defines a client-server architecture that breaks down SPARQL endpoints into lightweight HTTP-accessible fragments (e.g., triple pattern fragments, page navigation). This approach reduces server load by delegating query processing to clients while supporting pagination, caching, and progressive result fetching—crucial for scalable RDF access layers in high-traffic scenarios. (Last updated: 10 December 2016; authoritative as W3C Recommendation.)
+## License
+W3C Document License (CC-BY 4.0)
 
 # Vitest Testing Framework
 ## https://vitest.dev/
