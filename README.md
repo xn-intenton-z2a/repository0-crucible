@@ -12,44 +12,13 @@ This readme shall evolve into a JavaScript library based on of of the seed CONTR
 - **Help (`--help`, `-h`)**: Display the help message with usage instructions.
 - **Diagnostics (`--diagnostics`)**: Outputs diagnostic information (version, node version, platform, architecture, working directory, uptimeSeconds, memoryUsage, and commands) as pretty-printed JSON, including:
   - `publicDataSources`: array of configured data sources (default plus any custom from data-sources.json)
-  - `healthChecks`: array with real-time availability and latency metrics for each configured data source.
+  - `healthChecks`: array with real-time availability and latency metrics for each configured data source
+  - `dataFilesCount`: number of JSON files in the `data/` directory (or `0` if missing)
+  - `dataFiles`: list of JSON filenames in `data/` (sorted, or empty array)
+  - `intermediateFilesCount`: number of JSON files in the `intermediate/` directory (or `0` if missing)
+  - `intermediateFiles`: list of JSON filenames in `intermediate/` (sorted, or empty array)
 - **Build Intermediate (`--build-intermediate`)**: Reads JSON files from `data/`, transforms each into OWL JSON-LD intermediate artifacts in `intermediate/`, logs each write, and prints a summary line.
 - **Default Behavior**: Running the CLI without any flags logs the provided arguments.
 - **Capital Cities (`--capital-cities`)**: Queries DBpedia for country-capital pairs and outputs an OWL-compatible JSON-LD document with `@context` and `@graph`.
-
-## Installation
-
-Install via npm:
-
-```bash
-npm install repository0-crucible
-```
-
-## Usage
-
-To run the CLI tool and see help instructions:
-
-```bash
-node src/lib/main.js --help
-```
-
-### Build Intermediate CLI
-
-Generate intermediate OWL JSON-LD artifacts from existing data:
-
-```bash
-node src/lib/main.js --build-intermediate
-```
-
-### Programmatic Usage
-
-You can also use the library programmatically:
-
-```js
-import { buildIntermediate } from 'owl-builder';
-
-const { count, files } = buildIntermediate();
-console.log(`Generated ${count} intermediate artifacts:`, files);
-```
 
 ... (other sections unchanged) ...

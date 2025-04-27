@@ -10,19 +10,27 @@
     - `statusCode` (number|null): HTTP status code from a HEAD request, or `null` if unreachable.
     - `latencyMs` (number|null): Round-trip time in milliseconds, or `null` if unreachable.
     - `reachable` (boolean): `true` if statusCode is between 200 and 299.
-  - `uptimeSeconds` (number): The number of seconds the process has been running.
-  - `memoryUsage` (object): Memory usage statistics including properties `rss`, `heapTotal`, `heapUsed`, `external`, and `arrayBuffers`.
-- **Serve (`--serve`)**: Starts a local HTTP server on port `3000` (or `process.env.PORT`). Available endpoints:
-  - **GET `/help`**: Returns the CLI help text as plain text.
-  - **GET `/sources`**: Returns the list of public (and custom) data sources as pretty-printed JSON.
-  - **GET `/diagnostics`**: Returns diagnostic information and a live `healthChecks` array as pretty-printed JSON.
-  - **GET `/capital-cities`**: Returns country–capital pairs fetched via SPARQL from DBpedia as OWL JSON-LD with `@context` and `@graph`.
-  - **GET `/query?file=<path>&query=<sparql>`**: Executes a SPARQL query against an OWL JSON-LD file and returns SPARQL Results in JSON format.
-  - **GET `/refresh`**: Triggers fetching and persisting data from all configured public and custom sources. Streams plain-text logs with one line per written file (`written <filename>.json`), ends with a summary line (`Refreshed <count> sources into data/`), and returns status 200 with `Content-Type: text/plain`. On error, responds with status 500 and a plain-text error message.
-  - **GET `/build-intermediate`**: Reads JSON files from `data/`, transforms each into an OWL JSON-LD document, writes to `intermediate/`, and streams each `written <name>-intermediate.json` line followed by a summary `Generated X intermediate artifacts into intermediate/`.
-  - **GET `/build-enhanced`**: Runs the full pipeline: refresh data, build intermediate artifacts, and merge into a comprehensive OWL JSON-LD document. Streams each `written <filename>` line and ends with a summary `Enhanced ontology written to enhanced/enhanced.json with <nodeCount> nodes`.
-  - Any other path responds with `404 Not Found`.
-- **Refresh (`--refresh`)**: Merges default and custom data sources, fetches JSON from each source, persists each to `data/<slugified-source-name>.json`, logs `written <filename>` for each successful write, and outputs a summary `Refreshed X sources into data/`.
-- **Build Intermediate (`--build-intermediate`)**: Reads JSON files from `data/`, transforms each into an OWL JSON-LD document (`@context` + `@graph`), writes to `intermediate/`, logs each write, and ends with a summary line.
-- **Build Enhanced (`--build-enhanced`, `-be`)**: Runs the complete pipeline: refresh sources, build intermediate artifacts, and merge all intermediate `@graph` entries into `enhanced/enhanced.json`, logging each step and summary.
-- **Capital Cities (`--capital-cities`)**: Queries DBpedia SPARQL for country–capital pairs using the API `getCapitalCities(endpointUrl?)` and outputs an OWL-compatible JSON-LD document with `@context` and `@graph`.
+  - **dataFilesCount**: Number of JSON files in the project `data/` directory (or `0` if directory is missing).
+  - **dataFiles**: Sorted list of JSON filenames present in `data/` (or an empty array if none).
+  - **intermediateFilesCount**: Number of JSON files in the project `intermediate/` directory (or `0` if directory is missing).
+  - **intermediateFiles**: Sorted list of JSON filenames present in `intermediate/` (or an empty array if none).
+
+Example output:
+```json
+{
+  "version": "1.2.0-0",
+  "nodeVersion": "v20.0.0",
+  "platform": "linux",
+  "arch": "x64",
+  "cwd": "/path/to/project",
+  "uptimeSeconds": 123.45,
+  "memoryUsage": { /* ... */ },
+  "publicDataSources": [ /* ... */ ],
+  "commands": [ /* ... */ ],
+  "healthChecks": [ /* ... */ ],
+  "dataFilesCount": 2,
+  "dataFiles": ["a.json","b.json"],
+  "intermediateFilesCount": 1,
+  "intermediateFiles": ["x.json"]
+}
+```

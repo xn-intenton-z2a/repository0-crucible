@@ -316,6 +316,23 @@ async function generateDiagnostics() {
       }
     }),
   );
+
+  // Collect data and intermediate directory file metrics
+  const dataDir = path.join(process.cwd(), "data");
+  let dataFiles = [];
+  if (fs.existsSync(dataDir)) {
+    try {
+      dataFiles = fs.readdirSync(dataDir).filter((f) => f.endsWith('.json')).sort();
+    } catch {}
+  }
+  const intermediateDir = path.join(process.cwd(), "intermediate");
+  let intermediateFiles = [];
+  if (fs.existsSync(intermediateDir)) {
+    try {
+      intermediateFiles = fs.readdirSync(intermediateDir).filter((f) => f.endsWith('.json')).sort();
+    } catch {}
+  }
+
   return {
     version: pkg.version,
     nodeVersion: process.version,
@@ -327,6 +344,10 @@ async function generateDiagnostics() {
     publicDataSources: sources,
     commands,
     healthChecks,
+    dataFilesCount: dataFiles.length,
+    dataFiles,
+    intermediateFilesCount: intermediateFiles.length,
+    intermediateFiles,
   };
 }
 
