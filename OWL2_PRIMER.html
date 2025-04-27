@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="owl2_primer" href="#owl2_primer"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OWL2_PRIMER</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Functional-Style Syntax templates for core OWL constructs: ClassAssertion( Class Individual ), SubClassOf( SubClass SuperClass ), EquivalentClasses( ClassList ), DisjointClasses( ClassList ), ObjectPropertyAssertion( Property Subject Object ), NegativeObjectPropertyAssertion( Property Subject Object ), SubObjectPropertyOf( SubProperty SuperProperty ), ObjectPropertyDomain( Property Class ), ObjectPropertyRange( Property Class ), DataPropertyAssertion( Property Subject Literal^^xsdType ), NegativeDataPropertyAssertion( Property Subject Literal^^xsdType ), DataPropertyDomain( Property Class ), DataPropertyRange( Property xsdType ). All shown with matching Turtle serialization. Leveraging IRIs per RFC3987, datatypes from XML Schema. Naming conventions: unambiguous inflected or hasOf forms. Open-world semantics, no unique names assumption. Tools must support RDF/XML mapping, Manchester, Turtle, Functional-Style and OWL/XML syntaxes.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Class Assertions
+2 Subclass Axioms
+3 Equivalent Classes
+4 Disjoint Classes
+5 Object Property Assertions
+6 Negative Object Property Assertions
+7 Property Hierarchies
+8 Domain and Range Restrictions
+9 Data Property Assertions
+10 Negative Data Property Assertions
+11 Data Property Domain and Range</p>
+<p class="md-github">1 Class Assertions
+Functional-Style: ClassAssertion( :Class :Individual )
+Turtle: :Individual rdf type :Class .</p>
+<p class="md-github">2 Subclass Axioms
+Functional-Style: SubClassOf( :SubClass :SuperClass )
+Turtle: :SubClass rdfs subClassOf :SuperClass .</p>
+<p class="md-github">3 Equivalent Classes
+Functional-Style: EquivalentClasses( :Class1 :Class2 )
+Turtle: :Class1 owl equivalentClass :Class2 .</p>
+<p class="md-github">4 Disjoint Classes
+Functional-Style: DisjointClasses( :ClassA :ClassB )
+Turtle: [] rdf type owl AllDisjointClasses ; owl members ( :ClassA :ClassB ) .</p>
+<p class="md-github">5 Object Property Assertions
+Functional-Style: ObjectPropertyAssertion( :Property :Subject :Object )
+Turtle: :Subject :Property :Object .</p>
+<p class="md-github">6 Negative Object Property Assertions
+Functional-Style: NegativeObjectPropertyAssertion( :Property :Subject :Object )
+Turtle: [] rdf type owl NegativePropertyAssertion ; owl sourceIndividual :Subject ; owl assertionProperty :Property ; owl targetIndividual :Object .</p>
+<p class="md-github">7 Property Hierarchies
+Functional-Style: SubObjectPropertyOf( :SubProperty :SuperProperty )
+Turtle: :SubProperty rdfs subPropertyOf :SuperProperty .</p>
+<p class="md-github">8 Domain and Range Restrictions
+Functional-Style: ObjectPropertyDomain( :Property :DomainClass )
+ObjectPropertyRange( :Property :RangeClass )
+Turtle: :Property rdfs domain :DomainClass ; rdfs range :RangeClass .</p>
+<p class="md-github">9 Data Property Assertions
+Functional-Style: DataPropertyAssertion( :Property :Subject Literal^^xsdType )
+Turtle: :Subject :Property Literal .</p>
+<p class="md-github">10 Negative Data Property Assertions
+Functional-Style: NegativeDataPropertyAssertion( :Property :Subject Literal^^xsdType )
+Turtle: [] rdf type owl NegativePropertyAssertion ; owl sourceIndividual :Subject ; owl assertionProperty :Property ; owl targetValue Literal .</p>
+<p class="md-github">11 Data Property Domain and Range
+Functional-Style: DataPropertyDomain( :Property :DomainClass )
+DataPropertyRange( :Property xsdType )
+Turtle: :Property rdfs domain :DomainClass ; rdfs range xsdType .</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">IRI and datatype specifications</p>
+<ul class="md-github">
+<li class="md-github">IRIs per RFC3987, abbreviate with prefixes defined via PrefixDeclaration in Section 8.2</li>
+<li class="md-github">Datatypes: all XML Schema primitive and derived: xsd string, integer, nonNegativeInteger, boolean, dateTime, double etc.</li>
+</ul>
+<p class="md-github">Mandatory syntax support</p>
+<ul class="md-github">
+<li class="md-github">OWL 2 tools must support RDF/XML mapping [OWL 2 RDF Mapping]</li>
+<li class="md-github">Optional syntaxes: Functional-Style, Manchester, OWL/XML</li>
+</ul>
+<p class="md-github">Semantics and reasoning</p>
+<ul class="md-github">
+<li class="md-github">Open-world assumption: absence of assertion is not negative</li>
+<li class="md-github">No unique names assumption: sameAs and differentFrom must be declared explicitly</li>
+<li class="md-github">Reasoners compliant with Direct Semantics [OWL 2 Direct Semantics] and RDF-Based Semantics [OWL 2 RDF-Based Semantics]</li>
+</ul>
+<p class="md-github">Abbreviation and namespace</p>
+<ul class="md-github">
+<li class="md-github">Use PrefixDeclaration to bind IRI prefixes (ex: prefix : <a href="http://example.org/" class="md-github">http://example.org/</a> )</li>
+</ul>
+<p class="md-github">Best practices</p>
+<ul class="md-github">
+<li class="md-github">Name object properties with directional verbs (loves, hasChild) or hasOf pattern (parentOf)</li>
+<li class="md-github">Always declare disjointness for sibling classes to enable unsatisfiable class detection</li>
+<li class="md-github">Avoid domain/range as closed constraints; use only to infer type</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">OWL API Implementation Patterns (Java)</p>
+<p class="md-github">Manager and DataFactory</p>
+<pre class="md-github"><code class="md-github">OWLOntologyManager manager = OWLManager.createOWLOntologyManager();
+OWLDataFactory factory = manager.getOWLDataFactory();
+OWLOntology ontology = manager.createOntology(IRI.create(&quot;http://example.org/ontology&quot;));
+</code></pre>
+<p class="md-github">Add ClassAssertion</p>
+<pre class="md-github"><code class="md-github">OWLAxiom ax1 = factory.getOWLClassAssertionAxiom(
+  factory.getOWLClass(IRI.create(&quot;http://example.org#Person&quot;)),
+  factory.getOWLNamedIndividual(IRI.create(&quot;http://example.org#Mary&quot;))
+);
+manager.applyChange(new AddAxiom(ontology, ax1));
+</code></pre>
+<p class="md-github">Add Subclass axiom</p>
+<pre class="md-github"><code class="md-github">OWLAxiom ax2 = factory.getOWLSubClassOfAxiom(
+  factory.getOWLClass(IRI.create(&quot;http://example.org#Woman&quot;)),
+  factory.getOWLClass(IRI.create(&quot;http://example.org#Person&quot;))
+);
+manager.applyChange(new AddAxiom(ontology, ax2));
+</code></pre>
+<p class="md-github">Negative Data Property Assertion</p>
+<pre class="md-github"><code class="md-github">OWLAxiom ax3 = factory.getOWLNegativeDataPropertyAssertionAxiom(
+  factory.getOWLDataProperty(IRI.create(&quot;http://example.org#hasAge&quot;)),
+  factory.getOWLNamedIndividual(IRI.create(&quot;http://example.org#Jack&quot;)),
+  factory.getOWLLiteral(53, OWL2Datatype.XSD_INTEGER)
+);
+manager.applyChange(new AddAxiom(ontology, ax3));
+</code></pre>
+<p class="md-github">Reasoning and Troubleshooting</p>
+<ol class="md-github">
+<li class="md-github">Load ontology</li>
+<li class="md-github">Use HermiT via OWL API</li>
+</ol>
+<pre class="md-github"><code class="md-github">OWLReasonerFactory reasonerFactory = new org.semanticweb.HermiT.ReasonerFactory();
+OWLReasoner reasoner = reasonerFactory.createReasoner(ontology);
+reasoner.precomputeInferences(InferenceType.CLASS_HIERARCHY, InferenceType.CLASS_ASSERTIONS);
+</code></pre>
+<ol start="3" class="md-github">
+<li class="md-github">Detect unintended inferences</li>
+</ol>
+<pre class="md-github"><code class="md-github">NodeSet&lt;OWLClass&gt; types = reasoner.getTypes(
+  factory.getOWLNamedIndividual(IRI.create(&quot;http://example.org#Felix&quot;)),
+  true
+);
+System.out.println(types.getFlattened()); // Expected [http://example.org#Person]
+</code></pre>
+<p class="md-github">Command-line Reasoning with ROBOT</p>
+<pre class="md-github"><code class="md-github">robot reason --input example.owl --reasoner ELK --output classified.owl
+robot verify --input classified.owl
+</code></pre>
+<p class="md-github">Expected: no unsatisfiable classes; violations reported with line numbers.</p>
+<p class="md-github">Configuration Options</p>
+<ul class="md-github">
+<li class="md-github">choose reasoner: HermiT, ELK, FaCT++; set via reasonerFactory</li>
+<li class="md-github">ontology format: RDFXMLDocumentFormat, ManchesterSyntaxDocumentFormat, TTLDocumentFormat</li>
+<li class="md-github">prefix manager: DefaultPrefixManager(&quot;http://example.org#&quot;)</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">ClassAssertion( :C :i ) SubClassOf( :c :C ) EquivalentClasses( :A :B ) DisjointClasses( :A :B ) ObjectPropertyAssertion( :p :s :o ) NegativeObjectPropertyAssertion( :p :s :o ) SubObjectPropertyOf( :p :P ) ObjectPropertyDomain( :p :C ) ObjectPropertyRange( :p :C ) DataPropertyAssertion( :q :s &quot;lit&quot;^^xsd:t ) NegativeDataPropertyAssertion( :q :s &quot;lit&quot;^^xsd:t ) DataPropertyDomain( :q :C ) DataPropertyRange( :q xsd:t )</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Class Assertions
+2 Subclass Axioms
+3 Equivalent Classes
+4 Disjoint Classes
+5 Object Property Assertions
+6 Negative Object Property Assertions
+7 Property Hierarchies
+8 Domain and Range Restrictions
+9 Data Property Assertions
+10 Negative Data Property Assertions
+11 Data Property Domain and Range</p>
+<p class="md-github">1 Class Assertions
+Functional-Style: ClassAssertion( :Class :Individual )
+Turtle: :Individual rdf type :Class .</p>
+<p class="md-github">2 Subclass Axioms
+Functional-Style: SubClassOf( :SubClass :SuperClass )
+Turtle: :SubClass rdfs subClassOf :SuperClass .</p>
+<p class="md-github">3 Equivalent Classes
+Functional-Style: EquivalentClasses( :Class1 :Class2 )
+Turtle: :Class1 owl equivalentClass :Class2 .</p>
+<p class="md-github">4 Disjoint Classes
+Functional-Style: DisjointClasses( :ClassA :ClassB )
+Turtle: [] rdf type owl AllDisjointClasses ; owl members ( :ClassA :ClassB ) .</p>
+<p class="md-github">5 Object Property Assertions
+Functional-Style: ObjectPropertyAssertion( :Property :Subject :Object )
+Turtle: :Subject :Property :Object .</p>
+<p class="md-github">6 Negative Object Property Assertions
+Functional-Style: NegativeObjectPropertyAssertion( :Property :Subject :Object )
+Turtle: [] rdf type owl NegativePropertyAssertion ; owl sourceIndividual :Subject ; owl assertionProperty :Property ; owl targetIndividual :Object .</p>
+<p class="md-github">7 Property Hierarchies
+Functional-Style: SubObjectPropertyOf( :SubProperty :SuperProperty )
+Turtle: :SubProperty rdfs subPropertyOf :SuperProperty .</p>
+<p class="md-github">8 Domain and Range Restrictions
+Functional-Style: ObjectPropertyDomain( :Property :DomainClass )
+ObjectPropertyRange( :Property :RangeClass )
+Turtle: :Property rdfs domain :DomainClass ; rdfs range :RangeClass .</p>
+<p class="md-github">9 Data Property Assertions
+Functional-Style: DataPropertyAssertion( :Property :Subject Literal^^xsdType )
+Turtle: :Subject :Property Literal .</p>
+<p class="md-github">10 Negative Data Property Assertions
+Functional-Style: NegativeDataPropertyAssertion( :Property :Subject Literal^^xsdType )
+Turtle: [] rdf type owl NegativePropertyAssertion ; owl sourceIndividual :Subject ; owl assertionProperty :Property ; owl targetValue Literal .</p>
+<p class="md-github">11 Data Property Domain and Range
+Functional-Style: DataPropertyDomain( :Property :DomainClass )
+DataPropertyRange( :Property xsdType )
+Turtle: :Property rdfs domain :DomainClass ; rdfs range xsdType .</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">W3C OWL 2 Primer
+https://www.w3.org/TR/owl2-primer/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-owl2_primer" href="#digest-of-owl2_primer"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of OWL2_PRIMER</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="owl-2-primer-detailed-digest-retrieved-2024-06-10" href="#owl-2-primer-detailed-digest-retrieved-2024-06-10"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OWL 2 Primer Detailed Digest (Retrieved: 2024-06-10)</h1>
+<h1 class="md-github"><a class="md-github__anchor" name="class-assertions" href="#class-assertions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Class Assertions</h1>
+<p class="md-github">Functional-Style Syntax
+ClassAssertion( :Person :Mary )
+Turtle Syntax
+:Mary rdf type :Person .</p>
+<h1 class="md-github"><a class="md-github__anchor" name="subclass-axioms" href="#subclass-axioms"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Subclass Axioms</h1>
+<p class="md-github">Functional-Style Syntax
+SubClassOf( :Woman :Person )
+Turtle Syntax
+:Woman rdfs subClassOf :Person .</p>
+<h1 class="md-github"><a class="md-github__anchor" name="equivalent-classes" href="#equivalent-classes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Equivalent Classes</h1>
+<p class="md-github">Functional-Style Syntax
+EquivalentClasses( :Person :Human )
+Turtle Syntax
+:Person owl equivalentClass :Human .</p>
+<h1 class="md-github"><a class="md-github__anchor" name="disjoint-classes" href="#disjoint-classes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Disjoint Classes</h1>
+<p class="md-github">Functional-Style Syntax
+DisjointClasses( :Woman :Man )
+Turtle Syntax
+[] rdf type owl AllDisjointClasses ; owl members ( :Woman :Man ) .</p>
+<h1 class="md-github"><a class="md-github__anchor" name="object-property-assertions" href="#object-property-assertions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Object Property Assertions</h1>
+<p class="md-github">Functional-Style Syntax
+ObjectPropertyAssertion( :hasWife :John :Mary )
+Turtle Syntax
+:John :hasWife :Mary .</p>
+<h1 class="md-github"><a class="md-github__anchor" name="negative-object-property-assertions" href="#negative-object-property-assertions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Negative Object Property Assertions</h1>
+<p class="md-github">Functional-Style Syntax
+NegativeObjectPropertyAssertion( :hasWife :Bill :Mary )
+Turtle Syntax
+[] rdf type owl NegativePropertyAssertion ; owl sourceIndividual :Bill ; owl assertionProperty :hasWife ; owl targetIndividual :Mary .</p>
+<h1 class="md-github"><a class="md-github__anchor" name="property-hierarchies" href="#property-hierarchies"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Property Hierarchies</h1>
+<p class="md-github">Functional-Style Syntax
+SubObjectPropertyOf( :hasWife :hasSpouse )
+Turtle Syntax
+:hasWife rdfs subPropertyOf :hasSpouse .</p>
+<h1 class="md-github"><a class="md-github__anchor" name="domain-and-range-restrictions" href="#domain-and-range-restrictions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Domain and Range Restrictions</h1>
+<p class="md-github">Functional-Style Syntax
+ObjectPropertyDomain( :hasWife :Man )
+ObjectPropertyRange( :hasWife :Woman )
+Turtle Syntax
+:hasWife rdfs domain :Man ; rdfs range :Woman .</p>
+<h1 class="md-github"><a class="md-github__anchor" name="data-property-assertions" href="#data-property-assertions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data Property Assertions</h1>
+<p class="md-github">Functional-Style Syntax
+DataPropertyAssertion( :hasAge :John 51^^xsd integer )
+Turtle Syntax
+:John :hasAge 51 .</p>
+<h1 class="md-github"><a class="md-github__anchor" name="negative-data-property-assertions" href="#negative-data-property-assertions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Negative Data Property Assertions</h1>
+<p class="md-github">Functional-Style Syntax
+NegativeDataPropertyAssertion( :hasAge :Jack 53^^xsd integer )
+Turtle Syntax
+[] rdf type owl NegativePropertyAssertion ; owl sourceIndividual :Jack ; owl assertionProperty :hasAge ; owl targetValue 53 .</p>
+<h1 class="md-github"><a class="md-github__anchor" name="data-property-domain-and-range" href="#data-property-domain-and-range"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data Property Domain and Range</h1>
+<p class="md-github">Functional-Style Syntax
+DataPropertyDomain( :hasAge :Person )
+DataPropertyRange( :hasAge xsd nonNegativeInteger )
+Turtle Syntax
+:hasAge rdfs domain :Person ; rdfs range xsd nonNegativeInteger .</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: W3C OWL 2 Primer</li>
+<li class="md-github">URL: https://www.w3.org/TR/owl2-primer/</li>
+<li class="md-github">License: License</li>
+<li class="md-github">Crawl Date: 2025-04-27T03:54:12.137Z</li>
+<li class="md-github">Data Size: 18820085 bytes</li>
+<li class="md-github">Links Found: 21149</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-27</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-27T04:21:51.115Z</p>
+  </footer>
+</body>
+</html>
