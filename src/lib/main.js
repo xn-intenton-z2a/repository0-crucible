@@ -82,7 +82,7 @@ export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url)
   let response;
   try {
     // build URL without additional encoding to satisfy tests
-    const queryUrl = `${endpointUrl}query=${sparql}`;
+    const queryUrl = `${endpointUrl}?query=${encodeURIComponent(sparql)}`;
     response = await fetch(queryUrl, {
       headers: { Accept: "application/sparql-results+json" },
     });
@@ -231,8 +231,9 @@ export function buildIntermediate({ dataDir = path.join(process.cwd(), "data"), 
  * Orchestrate full ontology-building pipeline: refresh, intermediate, merge enhanced.
  */
 export async function buildEnhanced({ dataDir = path.join(process.cwd(), "data"), intermediateDir = path.join(process.cwd(), "intermediate"), outDir = path.join(process.cwd(), "enhanced") } = {}) {
-  const refreshed = await refreshSources();
-  const intermediate = buildIntermediate({ dataDir, outDir: intermediateDir });
+  const mod = await import(new URL("./main.js", import.meta.url).href);
+  const refreshed = await mod.refreshSources();
+  const intermediate = mod.buildIntermediate({ dataDir, outDir: intermediateDir });
   if (!fs.existsSync(outDir)) {
     fs.mkdirSync(outDir, { recursive: true });
   }
@@ -421,7 +422,8 @@ export async function main(args) {
           res.write(`${msg}\n`);
         };
         try {
-          buildIntermediate();
+          const mod = await import(new URL("./main.js", import.meta.url).href);
+          await mod.buildIntermediate();
         } catch (err) {
           // ignore
         }
@@ -434,7 +436,8 @@ export async function main(args) {
           res.write(`${msg}\n`);
         };
         try {
-          const result = await buildEnhanced();
+          const mod = await import(new URL("./main.js", import.meta.url).href);
+          const result = await mod.buildEnhanced();
           console.log(`Enhanced ontology written to enhanced/enhanced.json with ${result.enhanced.count} nodes`);
         } catch (err) {
           console.log(err.message);
@@ -457,6 +460,7 @@ export async function main(args) {
 
   const biIndex = cliArgs.indexOf("--build-intermediate");
   if (biIndex !== -1) {
+    const mod = await import(new URL("./main.js", import.meta.url).href);
     let dataDir;
     let outDir;
     const biArgs = cliArgs.slice(biIndex + 1);
@@ -467,9 +471,9 @@ export async function main(args) {
       }
     }
     if (dataDir !== undefined || outDir !== undefined) {
-      buildIntermediate({ dataDir, outDir });
+      await mod.buildIntermediate({ dataDir, outDir });
     } else {
-      buildIntermediate();
+      await mod.buildIntermediate();
     }
     return;
   }
