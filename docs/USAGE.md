@@ -49,6 +49,20 @@ node src/lib/main.js --list-sources
 
 Invalid configurations will log a warning and show only default sources.
 
+## SPARQL Query
+
+Use the `--query` flag to execute a SPARQL query on an OWL JSON-LD artifact:
+
+```bash
+node src/lib/main.js --query <filePath> "<SPARQL query>"
+```
+
+Example:
+
+```bash
+node src/lib/main.js --query data/sample.jsonld "SELECT ?s WHERE { ?s ?p ?o } LIMIT 1"
+```
+
 ## Help
 
 Use the `--help` or `-h` flag to display usage instructions and available options:
@@ -57,26 +71,9 @@ Use the `--help` or `-h` flag to display usage instructions and available option
 node src/lib/main.js --help
 ```
 
-Example output:
-
-```text
-owl-builder: create and manage OWL ontologies from public data sources
-Usage: node src/lib/main.js [options]
-
-  --help                Display this help message
-  --diagnostics         Show diagnostic information
-  --serve               Start the local HTTP server
-  --build-intermediate  Generate intermediate ontology artifacts
-  --build-enhanced      Generate enhanced ontology artifacts
-  --refresh             Fetch and persist all data sources
-  --merge-persist       Merge and persist data to storage
-  --list-sources        List public (and custom) data sources
-  --capital-cities      Query DBpedia for capital cities and output JSON-LD
-```
-
 ## Diagnostics
 
-Use the `--diagnostics` flag to display environment and configuration diagnostics, including live health checks for each data source:
+Use the `--diagnostics` flag to display environment and configuration diagnostics:
 
 ```bash
 node src/lib/main.js --diagnostics
@@ -145,17 +142,7 @@ By default it listens on port `3000`, or an OS-assigned port if `PORT=0` is set.
        "cwd": "/path/to/project",
        "publicDataSources": [...],
        "commands": [...],
-       "healthChecks": [
-         {
-           "name": "DBpedia SPARQL",
-           "url": "https://dbpedia.org/sparql",
-           "statusCode": 200,
-           "latencyMs": 123,
-           "reachable": true
-         }
-       ],
-       "uptimeSeconds": 12.34,
-       "memoryUsage": { ... }
+       "healthChecks": [ ... ]
      }
      ```
 
@@ -175,7 +162,15 @@ By default it listens on port `3000`, or an OS-assigned port if `PORT=0` is set.
      }
      ```
 
-5. GET `/refresh`
+5. GET `/query?file=<path>&query=<sparql>`
+   - Status: `200 OK`
+   - Headers: `Content-Type: application/json`
+   - Body: SPARQL Results JSON for the given file and query
+   - Missing parameters: returns `400 Bad Request` with plain-text error
+   - File not found: returns `404 Not Found`
+   - Query error: returns `500 Internal Server Error` with plain-text message
+
+6. GET `/refresh`
    - Status: `200 OK`
    - Headers: `Content-Type: text/plain`
    - Body snippet:
@@ -185,7 +180,7 @@ By default it listens on port `3000`, or an OS-assigned port if `PORT=0` is set.
      Refreshed 2 sources into data/
      ```
 
-6. GET `/build-intermediate`
+7. GET `/build-intermediate`
    - Status: `200 OK`
    - Headers: `Content-Type: text/plain`
    - Body snippet:

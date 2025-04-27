@@ -23,7 +23,8 @@
     "build-enhanced": "node src/lib/main.js --build-enhanced",
     "refresh": "node src/lib/main.js --refresh",
     "merge-persist": "node src/lib/main.js --merge-persist",
-    "capital-cities": "node src/lib/main.js --capital-cities"
+    "capital-cities": "node src/lib/main.js --capital-cities",
+    "query": "node src/lib/main.js --query"
   },
   "keywords": [],
   "author": "",
@@ -34,7 +35,9 @@
     "ejs": "^3.1.10",
     "js-yaml": "^4.1.0",
     "minimatch": "^9.0.5",
-    "zod": "^3.24.2"
+    "zod": "^3.24.2",
+    "jsonld": "^1.8.1",
+    "@comunica/query-sparql": "^2.2.2"
   },
   "devDependencies": {
     "eslint": "^9.24.0",
