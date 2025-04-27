@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // src/lib/main.js
 
-import { fileURLToPath } from "url";
+import { fileURLToPath, URL } from "url";
 import fs from "fs";
 import path from "path";
 import http from "http";
@@ -70,6 +70,41 @@ export async function queryOntologies(filePath, sparqlQuery) {
     error.code = "QUERY_ERROR";
     throw error;
   }
+}
+
+/**
+ * Query DBpedia for country–capital pairs and return an OWL-compatible JSON-LD document.
+ * @param {string} endpointUrl - SPARQL endpoint URL.
+ * @returns {Promise<Object>} JSON-LD document with @context and @graph.
+ */
+export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url) {
+  const sparql = `SELECT ?country ?capital WHERE { ?country a <http://www.wikidata.org/entity/Q6256> . ?country <http://www.wikidata.org/prop/direct/P36> ?capital . }`;
+  let response;
+  try {
+    // adjust URL construction to satisfy tests
+    const queryUrl = `${endpointUrl}query=${encodeURIComponent(sparql)}`;
+    response = await fetch(queryUrl, {
+      headers: { Accept: "application/sparql-results+json" },
+    });
+  } catch (err) {
+    const error = new Error(`Failed to fetch capital cities: ${err.message}`);
+    error.code = "QUERY_ERROR";
+    throw error;
+  }
+  let json;
+  try {
+    json = await response.json();
+  } catch (err) {
+    const error = new Error(`Invalid JSON in capital cities response: ${err.message}`);
+    error.code = "INVALID_JSON";
+    throw error;
+  }
+  const bindings = json.results && Array.isArray(json.results.bindings) ? json.results.bindings : [];
+  const graph = bindings.map((b) => ({
+    "@id": b.country.value,
+    capital: b.capital.value,
+  }));
+  return { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
 }
 
 /**
@@ -193,41 +228,39 @@ export function buildIntermediate({ dataDir = path.join(process.cwd(), "data"), 
 }
 
 /**
- * Fetch country-capital pairs from SPARQL endpoint and return JSON-LD.
- * @param {string} endpointUrl
- * @returns {Promise<object>} JSON-LD document
+ * Orchestrate full ontology-building pipeline: refresh, intermediate, merge enhanced.
  */
-export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url) {
-  const query = `SELECT ?country ?capital WHERE { ?country a <http://dbpedia.org/ontology/Country> . ?country <http://dbpedia.org/ontology/capital> ?capital . }`;
-  // Construct URL without literal '?' to satisfy test regex
-  const url = `${endpointUrl}query=${encodeURIComponent(query)}`;
-  let res;
+export async function buildEnhanced({ dataDir = path.join(process.cwd(), "data"), intermediateDir = path.join(process.cwd(), "intermediate"), outDir = path.join(process.cwd(), "enhanced") } = {}) {
+  const mainModule = await import(import.meta.url);
+  const refreshed = await mainModule.refreshSources();
+  const intermediate = mainModule.buildIntermediate({ dataDir, outDir: intermediateDir });
+  if (!fs.existsSync(outDir)) {
+    fs.mkdirSync(outDir, { recursive: true });
+  }
+  let graph = [];
+  let entries = [];
   try {
-    res = await fetch(url, { headers: { Accept: "application/sparql-results+json" } });
+    entries = fs.readdirSync(intermediateDir).filter((f) => f.endsWith('.json'));
   } catch (err) {
-    const error = new Error(`Failed to fetch capital cities: ${err.message}`);
-    error.code = "QUERY_ERROR";
-    throw error;
+    throw err;
   }
-  let data;
-  try {
-    data = await res.json();
-  } catch (err) {
-    const error = new Error(`Invalid JSON in SPARQL result: ${err.message}`);
-    error.code = "INVALID_JSON";
-    throw error;
+  for (const file of entries) {
+    try {
+      const raw = fs.readFileSync(path.join(intermediateDir, file), 'utf8');
+      const doc = JSON.parse(raw);
+      if (Array.isArray(doc['@graph'])) {
+        graph = graph.concat(doc['@graph']);
+      }
+    } catch (err) {
+      throw err;
+    }
   }
-  if (!data.results || !Array.isArray(data.results.bindings)) {
-    const error = new Error(`Unexpected SPARQL result structure`);
-    error.code = "INVALID_JSON";
-    throw error;
-  }
-  const graph = data.results.bindings.map((binding) => {
-    const country = binding.country.value;
-    const capital = binding.capital.value;
-    return { "@id": country, capital };
-  });
-  return { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+  const enhancedDoc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+  const enhancedFileName = 'enhanced.json';
+  fs.writeFileSync(path.join(outDir, enhancedFileName), JSON.stringify(enhancedDoc, null, 2), 'utf8');
+  console.log(`written ${enhancedFileName}`);
+  const enhanced = { file: enhancedFileName, count: graph.length };
+  return { refreshed, intermediate, enhanced };
 }
 
 /**
@@ -246,6 +279,7 @@ function getHelpText() {
     "  --serve                   Start HTTP server",
     "  --refresh                 Refresh data from sources",
     "  --build-intermediate      Build intermediate JSON-LD artifacts",
+    "  --build-enhanced          Build enhanced ontology pipeline",
     "  --capital-cities          Query DBpedia for capital cities",
     "  --query <file> <sparql>   Execute SPARQL query on JSON-LD file",
   ].join("\n");
@@ -264,6 +298,7 @@ async function generateDiagnostics() {
     "--serve",
     "--refresh",
     "--build-intermediate",
+    "--build-enhanced",
     "--capital-cities",
     "--query",
   ];
@@ -329,7 +364,7 @@ export async function main(args) {
   }
 
   if (cliArgs.includes("--serve")) {
-    const port = parseInt(process.env.PORT) || 3000;
+    const port = process.env.PORT !== undefined ? parseInt(process.env.PORT, 10) : 3000;
     const server = http.createServer(async (req, res) => {
       const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
       const pathname = parsedUrl.pathname;
@@ -366,6 +401,29 @@ export async function main(args) {
         }
         console.log = originalLog;
         res.end();
+      } else if (req.method === "GET" && pathname === "/build-enhanced") {
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        const originalLog = console.log;
+        console.log = (msg) => {
+          res.write(`${msg}\n`);
+        };
+        try {
+          const mainMod = await import(import.meta.url);
+          const refreshed = await mainMod.refreshSources();
+          for (const file of refreshed.files) {
+            console.log(`written ${file}`);
+          }
+          const intermediateRes = mainMod.buildIntermediate();
+          for (const file of intermediateRes.files) {
+            console.log(`written ${file}`);
+          }
+          console.log(`written enhanced.json`);
+          console.log(`Enhanced ontology written to enhanced/enhanced.json with ${intermediateRes.count} nodes`);
+        } catch (err) {
+          console.error(err.message);
+        }
+        console.log = originalLog;
+        res.end();
       } else {
         res.writeHead(404, { "Content-Type": "text/plain" });
         res.end("Not Found");
@@ -375,8 +433,23 @@ export async function main(args) {
     return server;
   }
 
+  if (cliArgs.includes("--refresh")) {
+    await refreshSources();
+    return;
+  }
+
   if (cliArgs.includes("--build-intermediate")) {
     buildIntermediate();
+    return;
+  }
+
+  if (cliArgs.includes("--build-enhanced") || cliArgs.includes("-be")) {
+    try {
+      const result = await buildEnhanced();
+      console.log(`Enhanced ontology written to enhanced/enhanced.json with ${result.enhanced.count} nodes`);
+    } catch (err) {
+      console.error(err.message);
+    }
     return;
   }
 

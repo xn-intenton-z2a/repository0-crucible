@@ -2,4 +2,4 @@
 export default undefined;
 
 // Expose the generic SPARQL query API and programmatic functions
-export { queryOntologies, listSources, refreshSources, buildIntermediate, main } from "./main.js";
+export { queryOntologies, listSources, refreshSources, buildIntermediate, buildEnhanced, getCapitalCities, main } from "./main.js";
