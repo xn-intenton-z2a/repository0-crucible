@@ -49,6 +49,48 @@ node src/lib/main.js --list-sources
 
 Invalid configurations will log a warning and show only default sources.
 
+## Add Source
+
+Use the `--add-source` flag to add a custom data source to the configuration file. Duplicate names or URLs are ignored.
+
+```bash
+node src/lib/main.js --add-source "Custom API" "https://example.com/api"
+```
+
+Output:
+
+```json
+[
+  {
+    "name": "DBpedia SPARQL",
+    "url": "https://dbpedia.org/sparql"
+  },
+  {
+    "name": "Custom API",
+    "url": "https://example.com/api"
+  }
+]
+```
+
+## Remove Source
+
+Use the `--remove-source` flag to remove a custom data source by its name or URL.
+
+```bash
+node src/lib/main.js --remove-source "Custom API"
+```
+
+Output:
+
+```json
+[
+  {
+    "name": "DBpedia SPARQL",
+    "url": "https://dbpedia.org/sparql"
+  }
+]
+```
+
 ## SPARQL Query
 
 Use the `--query` flag to execute a SPARQL query on a JSON-LD OWL artifact:
@@ -138,40 +180,4 @@ Example output:
 ```text
 written sample-intermediate.json
 Generated 1 intermediate artifacts into intermediate/
-```
-
-## Build Enhanced
-
-Use the `--build-enhanced` (or `-be`) flag to run the full ontology-building pipeline: refresh sources, build intermediate artifacts, and merge into a single enhanced OWL JSON-LD document.
-
-```bash
-node src/lib/main.js --build-enhanced
-```
-
-Example output:
-```text
-written ds.json
-written sample-intermediate.json
-written enhanced.json
-Enhanced ontology written to enhanced/enhanced.json with 3 nodes
-```
-
-## Capital Cities
-
-### CLI
-
-Use the `--capital-cities` flag to fetch country–capital pairs from DBpedia and output an OWL JSON-LD document:
-
-```bash
-node src/lib/main.js --capital-cities
-```
-
-Example output:
-```json
-{
-  "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
-  "@graph": [
-    { "@id": "http://example.org/C", "capital": "http://example.org/K" }
-  ]
-}
 ```

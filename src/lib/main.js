@@ -16,6 +16,8 @@ Usage: node src/lib/main.js [options]
 --help                Display this help message
 -h                    Display this help message
 --list-sources        List public data sources
+--add-source <name> <url>    Add a custom data source
+--remove-source <identifier> Remove a custom data source
 --diagnostics         Display diagnostics
 --capital-cities      Fetch capital cities
 --query <file> "<SPARQL query>"   Execute SPARQL query on a JSON-LD OWL artifact
@@ -49,6 +51,66 @@ export function listSources(configPath = "data-sources.json") {
     return PUBLIC_DATA_SOURCES;
   }
   return [...PUBLIC_DATA_SOURCES, ...parsed];
+}
+
+/**
+ * Add a new custom data source to data-sources.json, preventing duplicates.
+ */
+export function addSource({ name, url }, configPath = "data-sources.json") {
+  if (typeof name !== 'string' || !name.trim()) {
+    throw new Error('Invalid source name');
+  }
+  try {
+    new URL(url);
+  } catch {
+    throw new Error('Invalid source URL');
+  }
+  const filePath = configPath;
+  let custom = [];
+  if (fs.existsSync(filePath)) {
+    const raw = fs.readFileSync(filePath, 'utf8');
+    try {
+      custom = JSON.parse(raw);
+      if (!Array.isArray(custom) || !custom.every(s => s.name && s.url)) {
+        throw new Error();
+      }
+    } catch {
+      throw new Error(`Invalid ${filePath}: invalid structure`);
+    }
+  }
+  const merged = [...PUBLIC_DATA_SOURCES, ...custom];
+  if (merged.some(s => s.name === name || s.url === url)) {
+    return merged;
+  }
+  custom.push({ name, url });
+  fs.writeFileSync(filePath, JSON.stringify(custom, null, 2), 'utf8');
+  return [...PUBLIC_DATA_SOURCES, ...custom];
+}
+
+/**
+ * Remove a custom data source by name or URL in data-sources.json.
+ */
+export function removeSource(identifier, configPath = "data-sources.json") {
+  const filePath = configPath;
+  if (!fs.existsSync(filePath)) {
+    return PUBLIC_DATA_SOURCES;
+  }
+  let custom = [];
+  const raw = fs.readFileSync(filePath, 'utf8');
+  try {
+    custom = JSON.parse(raw);
+    if (!Array.isArray(custom) || !custom.every(s => s.name && s.url)) {
+      throw new Error();
+    }
+  } catch {
+    throw new Error(`Invalid ${filePath}: invalid structure`);
+  }
+  const filtered = custom.filter(s => !(s.name === identifier || s.url === identifier));
+  if (filtered.length === custom.length) {
+    return [...PUBLIC_DATA_SOURCES, ...custom];
+  }
+  fs.writeFileSync(filePath, JSON.stringify(filtered, null, 2), 'utf8');
+  return [...PUBLIC_DATA_SOURCES, ...filtered];
 }
 
 export async function refreshSources({ dataDir } = {}) {
@@ -279,6 +341,37 @@ export async function main(args) {
     console.log(JSON.stringify(sources, null, 2));
     return;
   }
+  if (cliArgs.includes("--add-source")) {
+    const idx = cliArgs.indexOf("--add-source");
+    const name = cliArgs[idx + 1];
+    const url = cliArgs[idx + 2];
+    if (!name || !url) {
+      console.error("Missing required parameters: name and url");
+      return;
+    }
+    try {
+      const result = addSource({ name, url });
+      console.log(JSON.stringify(result, null, 2));
+    } catch (err) {
+      console.error(err.message);
+    }
+    return;
+  }
+  if (cliArgs.includes("--remove-source")) {
+    const idx = cliArgs.indexOf("--remove-source");
+    const identifier = cliArgs[idx + 1];
+    if (!identifier) {
+      console.error("Missing required parameter: identifier");
+      return;
+    }
+    try {
+      const result = removeSource(identifier);
+      console.log(JSON.stringify(result, null, 2));
+    } catch (err) {
+      console.error(err.message);
+    }
+    return;
+  }
   if (cliArgs.includes("--diagnostics")) {
     const info = await generateDiagnostics();
     console.log(JSON.stringify(info, null, 2));
@@ -341,7 +434,7 @@ export async function main(args) {
         console.log = msg => res.write(`${msg}\n`);
         try {
           await SELF.buildIntermediate();
-        } catch {}
+        } catch {};
         console.log = originalLog;
         res.end();
       } else if (req.method === "GET" && pathname === "/build-enhanced") {

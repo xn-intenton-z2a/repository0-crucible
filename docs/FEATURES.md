@@ -15,6 +15,8 @@
   - **intermediateFilesCount**: Number of JSON files in the project `intermediate/` directory (or `0` if directory is missing).
   - **intermediateFiles**: Sorted list of JSON filenames present in `intermediate/` (or an empty array if none).
 - **Build Intermediate (`--build-intermediate`)**: Reads JSON files from `data/`, transforms each into OWL JSON-LD intermediate artifacts in `intermediate/`, logs each write, and prints a summary line.
-- **Default Behavior**: Running the CLI without any flags logs the provided arguments.
+- **Add Source (`--add-source <name> <url>`)**: Add a custom data source to the `data-sources.json` configuration, validating inputs and preventing duplicates. Outputs the merged list of sources in JSON.
+- **Remove Source (`--remove-source <identifier>`)**: Remove a custom data source by its name or URL from `data-sources.json`. Outputs the updated merged list of sources in JSON.
+- **Build Enhanced (`--build-enhanced`)**: Runs the full ontology-building pipeline: refresh sources, build intermediate artifacts, and merge into a single enhanced OWL JSON-LD document.
 - **Capital Cities (`--capital-cities`)**: Queries DBpedia for country-capital pairs and outputs an OWL-compatible JSON-LD document with `@context` and `@graph`.
 - **SPARQL Query (`--query`, `-q`)**: Execute SPARQL SELECT or ASK queries on JSON-LD OWL artifacts and output results in SPARQL JSON format. Also available via HTTP GET `/query?file=<path>&sparql=<query>`.
