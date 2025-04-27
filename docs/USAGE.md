@@ -43,8 +43,7 @@ node src/lib/main.js --list-sources
   },
   {
     "name": "Custom API",
-    "url": "https://example.com/api"
-  }
+    "url": "https://example.com/api" }
 ]
 ```
 
@@ -81,6 +80,21 @@ Use the `--diagnostics` flag to display environment and configuration diagnostic
 
 ```bash
 node src/lib/main.js --diagnostics
+```
+
+## Build Intermediate
+
+Use the `--build-intermediate` flag to read JSON files from `data/`, generate OWL JSON-LD intermediate artifacts, and write them to the `intermediate/` directory.
+
+```bash
+node src/lib/main.js --build-intermediate
+```
+
+Example output:
+
+```text
+written sample-intermediate.json
+Generated 1 intermediate artifacts into intermediate/
 ```
 
 ## Serve
@@ -177,26 +191,7 @@ By default it listens on port `3000`, or an OS-assigned port if `PORT=0` is set.
    - Body snippet:
      ```text
      written <name>-intermediate.json
-     Generated 1 intermediate artifacts into intermediate/
+     Generated X intermediate artifacts into intermediate/
      ```
 
 Any other path returns `404 Not Found`.
-
-## Capital Cities
-
-Use the `--capital-cities` flag to query DBpedia for country-capital pairs and output an OWL-compatible JSON-LD document:
-
-```bash
-node src/lib/main.js --capital-cities
-```
-
-Example output:
-
-```json
-{
-  "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
-  "@graph": [
-    { "@id": "http://example.org/C", "capital": "http://example.org/K" }
-  ]
-}
-```
