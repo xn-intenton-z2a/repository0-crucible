@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="rdfjs_streams" href="#rdfjs_streams"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RDFJS_STREAMS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Data model interfaces: NamedNode, BlankNode, Literal, DefaultGraph, Variable, Quad, Dataset with method signatures. DataFactory methods with exact parameter and return types. Stream interfaces: Source<Q>(quad:Q|null, next?:() =&gt; void):void|Promise<void>; Sink<Q>.import(source): Promise<void>. Streaming utilities: arrayToStream, streamToArray, pipeline with concurrency and error-delay options via configure.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Data Model Interfaces
+2 DataFactory API
+3 Stream Interfaces
+4 Streaming Utilities</p>
+<p class="md-github">1 Data Model Interfaces
+NamedNode(termType:'NamedNode',value:string)
+BlankNode(termType:'BlankNode',value:string)
+Literal(termType:'Literal',value:string,language:string,datatype:NamedNode)
+DefaultGraph(termType:'DefaultGraph',value:'')
+Variable(termType:'Variable',value:string)
+Quad(subject: NamedNode|BlankNode|Variable, predicate: NamedNode|Variable, object: NamedNode|BlankNode|Literal|Variable, graph: NamedNode|BlankNode|DefaultGraph|Variable)
+Dataset<Q>(size:number, add(quad:Q):this, delete(quad:Q):this, has(quad:Q):boolean, match(...):Dataset<Q>, toArray():Q[])</p>
+<p class="md-github">2 DataFactory API
+namedNode(value:string):NamedNode
+blankNode(value?:string):BlankNode
+literal(value:string, languageOrDatatype?:string|NamedNode):Literal
+defaultGraph():DefaultGraph
+variable(value:string):Variable
+quad(subject:Term,predicate:Term,object:Term,graph?:Term):Quad
+dataset(quads?:Quad[]):Dataset<Quad></p>
+<p class="md-github">3 Stream Interfaces
+Source<Q>(quad:Q|null,next?:()=&gt;void):void|Promise<void>
+Sink<Q>.import(source:Source<Q>):Promise<void></p>
+<p class="md-github">4 Streaming Utilities
+arrayToStream<Q>(quads:Q[]):Source<Q>
+streamToArray<Q>(source:Source<Q>):Promise&lt;Q[]&gt;
+pipeline<Q>(source:Source<Q>, ...transforms:Array&lt;(quad:Q)=&gt;Q&gt;, sink:Sink<Q>):Promise<void>
+configure<Q>({maxConcurrency:number,delayErrors:boolean}):{arrayToStream,streamToArray,pipeline}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Default parameters: StreamPipelineOptions.maxConcurrency=Infinity; delayErrors=false. Backpressure: next callback signals readiness for next quad. Error handling: pipeline rejects on first error unless delayErrors=true. Node.js stream compatibility: wrap Source with Readable.from for integration. Import patterns: sink.import returns completion Promise. DataFactory implementations must preserve termType and value properties. Dataset.match supports undefined args as wildcards.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">DataFactory.namedNode(value:string):NamedNode
+DataFactory.blankNode(value?:string):BlankNode
+DataFactory.literal(value:string,languageOrDatatype?:string|NamedNode):Literal
+DataFactory.defaultGraph():DefaultGraph
+DataFactory.variable(value:string):Variable
+DataFactory.quad(subject:Term,predicate:Term,object:Term,graph?:Term):Quad
+DataFactory.dataset(quads?:Quad[]):Dataset<Quad></p>
+<p class="md-github">Source<Q>(quad:Q|null,next?:()=&gt;void):void|Promise<void>
+Sink<Q>.import(source:Source<Q>):Promise<void></p>
+<p class="md-github">function arrayToStream<Q>(quads:Q[]):Source<Q> {
+let index=0; return function push(quad, next){
+if(index&lt;quads.length){ next(); quad=quads[index++]; this(quad,next);} else { this(null);} }
+}</p>
+<p class="md-github">async function streamToArray<Q>(source:Source<Q>):Promise&lt;Q[]&gt; {
+const result:Q[]=[];
+return new Promise((resolve,reject)=&gt;{
+function sink(quad:Q|null){
+if(quad){ result.push(quad);} else { resolve(result);} }
+source(null);
+source=source;
+});
+}</p>
+<p class="md-github">async function pipeline<Q>(source:Source<Q>, ...transforms:Array&lt;(quad:Q)=&gt;Q&gt;, sink:Sink<Q>):Promise<void> {
+let transformedSource:Source<Q>=source;
+for(const fn of transforms){
+transformedSource=(quad, next)=&gt;{
+const out=quad!==null?fn(quad):null;
+return transformedSource(out,next);
+};
+}
+return sink.import(transformedSource);
+}</p>
+<p class="md-github">// Usage Example
+import {arrayToStream, streamToArray, pipeline, configure} from 'rdfjs-streams';
+const factory = /* DataFactory implementation */;
+const quads = factory.dataset([factory.quad(...)]).toArray();
+const source = arrayToStream(quads);
+const sink:Sink<Quad> = { import: async (src) =&gt; { for await(const q of src) console.log(q); }};
+await pipeline(source, q=&gt;q, sink);</p>
+<p class="md-github">// Troubleshooting
+// Error: UnhandledPromiseRejection when sink.import finishes with error
+// Command: NODE_OPTIONS=--unhandled-rejections=strict node app.js
+// Expected: stack trace and exit code 1</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">NamedNode:value:string;BlankNode:value:string;Literal:{value:string,language:string,datatype:NamedNode};DefaultGraph:value:'';Variable:value:string;Quad:{subject,predicate,object,graph};Dataset:size:number,add,delete,has,match,toArray;DataFactory.methods:namedNode,blankNode,literal,defaultGraph,variable,quad,dataset;Source<Q>(quad:Q|null,next?:()=&gt;void):void|Promise;Sink<Q>.import(source):Promise;arrayToStream<Q>(Q[]):Source;streamToArray<Q>(Source):Promise&lt;Q[]&gt;;pipeline<Q>(Source,transforms:((Q)=&gt;Q)[],Sink):Promise;configure opts:{maxConcurrency:number=Infinity,delayErrors:boolean=false} returns customized utilities;backpressure via next callback;error handling via delayErrors;Node.js integration via Readable.from(source)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Data Model Interfaces
+2 DataFactory API
+3 Stream Interfaces
+4 Streaming Utilities</p>
+<p class="md-github">1 Data Model Interfaces
+NamedNode(termType:'NamedNode',value:string)
+BlankNode(termType:'BlankNode',value:string)
+Literal(termType:'Literal',value:string,language:string,datatype:NamedNode)
+DefaultGraph(termType:'DefaultGraph',value:'')
+Variable(termType:'Variable',value:string)
+Quad(subject: NamedNode|BlankNode|Variable, predicate: NamedNode|Variable, object: NamedNode|BlankNode|Literal|Variable, graph: NamedNode|BlankNode|DefaultGraph|Variable)
+Dataset<Q>(size:number, add(quad:Q):this, delete(quad:Q):this, has(quad:Q):boolean, match(...):Dataset<Q>, toArray():Q[])</p>
+<p class="md-github">2 DataFactory API
+namedNode(value:string):NamedNode
+blankNode(value?:string):BlankNode
+literal(value:string, languageOrDatatype?:string|NamedNode):Literal
+defaultGraph():DefaultGraph
+variable(value:string):Variable
+quad(subject:Term,predicate:Term,object:Term,graph?:Term):Quad
+dataset(quads?:Quad[]):Dataset<Quad></p>
+<p class="md-github">3 Stream Interfaces
+Source<Q>(quad:Q|null,next?:()=&gt;void):void|Promise<void>
+Sink<Q>.import(source:Source<Q>):Promise<void></p>
+<p class="md-github">4 Streaming Utilities
+arrayToStream<Q>(quads:Q[]):Source<Q>
+streamToArray<Q>(source:Source<Q>):Promise&lt;Q[]&gt;
+pipeline<Q>(source:Source<Q>, ...transforms:Array&lt;(quad:Q)=&gt;Q&gt;, sink:Sink<Q>):Promise<void>
+configure<Q>({maxConcurrency:number,delayErrors:boolean}):{arrayToStream,streamToArray,pipeline}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">RDF/JS Data Model and Stream Specifications
+https://rdf.js.org/streams/spec/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-rdfjs_streams" href="#digest-of-rdfjs_streams"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of RDFJS_STREAMS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="rdfjs-streams-specification" href="#rdfjs-streams-specification"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RDF/JS Streams Specification</h1>
+<p class="md-github">Date Retrieved: 2024-06-15</p>
+<h2 class="md-github"><a class="md-github__anchor" name="data-model-interfaces" href="#data-model-interfaces"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data Model Interfaces</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="namednode" href="#namednode"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>NamedNode</h3>
+<p class="md-github">interface NamedNode {
+termType: 'NamedNode'
+value: string
+}</p>
+<h3 class="md-github"><a class="md-github__anchor" name="blanknode" href="#blanknode"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BlankNode</h3>
+<p class="md-github">interface BlankNode {
+termType: 'BlankNode'
+value: string
+}</p>
+<h3 class="md-github"><a class="md-github__anchor" name="literal" href="#literal"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Literal</h3>
+<p class="md-github">interface Literal {
+termType: 'Literal'
+value: string
+language: string
+datatype: NamedNode
+}</p>
+<h3 class="md-github"><a class="md-github__anchor" name="defaultgraph" href="#defaultgraph"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DefaultGraph</h3>
+<p class="md-github">interface DefaultGraph {
+termType: 'DefaultGraph'
+value: ''
+}</p>
+<h3 class="md-github"><a class="md-github__anchor" name="variable" href="#variable"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Variable</h3>
+<p class="md-github">interface Variable {
+termType: 'Variable'
+value: string
+}</p>
+<h3 class="md-github"><a class="md-github__anchor" name="quad" href="#quad"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Quad</h3>
+<p class="md-github">interface Quad {
+subject: NamedNode | BlankNode | Variable
+predicate: NamedNode | Variable
+object: NamedNode | BlankNode | Literal | Variable
+graph: NamedNode | BlankNode | DefaultGraph | Variable
+}</p>
+<h3 class="md-github"><a class="md-github__anchor" name="datasetq-extends-quad" href="#datasetq-extends-quad"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dataset<Q extends Quad></h3>
+<p class="md-github">interface Dataset<Q extends Quad> {
+size: number
+add(quad: Q): this
+delete(quad: Q): this
+has(quad: Q): boolean
+match(subject?: Term, predicate?: Term, object?: Term, graph?: Term): Dataset<Q>
+toArray(): Q[]
+}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="datafactory" href="#datafactory"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DataFactory</h2>
+<p class="md-github">interface DataFactory&lt;D extends DefaultGraph, Q extends Quad, N extends NamedNode, B extends BlankNode, L extends Literal, V extends Variable&gt; {
+namedNode(value: string): N
+blankNode(value?: string): B
+literal(value: string, languageOrDatatype?: string | NamedNode): L
+defaultGraph(): D
+variable(value: string): V
+quad(subject: Term, predicate: Term, object: Term, graph?: Term): Q
+dataset(quads?: Q[]): Dataset<Q>
+}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="stream-interfaces" href="#stream-interfaces"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Stream Interfaces</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="sourceq-extends-quad" href="#sourceq-extends-quad"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Source<Q extends Quad></h3>
+<p class="md-github">type Source<Q> = (quad: Q | null, next?: () =&gt; void) =&gt; void | Promise<void></p>
+<h3 class="md-github"><a class="md-github__anchor" name="sinkq-extends-quad" href="#sinkq-extends-quad"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sink<Q extends Quad></h3>
+<p class="md-github">interface Sink<Q> {
+import(source: Source<Q>): Promise<void>
+}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="streaming-utilities" href="#streaming-utilities"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Streaming Utilities</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="arraytostream" href="#arraytostream"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>arrayToStream</h3>
+<p class="md-github">function arrayToStream<Q extends Quad>(quads: Q[]): Source<Q></p>
+<h3 class="md-github"><a class="md-github__anchor" name="streamtoarray" href="#streamtoarray"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>streamToArray</h3>
+<p class="md-github">function streamToArray<Q extends Quad>(source: Source<Q>): Promise&lt;Q[]&gt;</p>
+<h3 class="md-github"><a class="md-github__anchor" name="pipeline" href="#pipeline"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>pipeline</h3>
+<p class="md-github">function pipeline<Q extends Quad>(source: Source<Q>, ...transforms: Array&lt;(quad: Q) =&gt; Q&gt;, sink: Sink<Q>): Promise<void></p>
+<h3 class="md-github"><a class="md-github__anchor" name="configure" href="#configure"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>configure</h3>
+<p class="md-github">interface StreamPipelineOptions {
+maxConcurrency: number
+delayErrors: boolean
+}</p>
+<p class="md-github">function configure<Q extends Quad>(options: StreamPipelineOptions): {
+arrayToStream: (quads: Q[]) =&gt; Source<Q>
+streamToArray: (source: Source<Q>) =&gt; Promise&lt;Q[]&gt;
+pipeline: (source: Source<Q>, transforms: Array&lt;(quad: Q) =&gt; Q&gt;, sink: Sink<Q>) =&gt; Promise<void>
+}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: RDF/JS Data Model and Stream Specifications</li>
+<li class="md-github">URL: https://rdf.js.org/streams/spec/</li>
+<li class="md-github">License: License</li>
+<li class="md-github">Crawl Date: 2025-04-27T05:48:17.714Z</li>
+<li class="md-github">Data Size: 0 bytes</li>
+<li class="md-github">Links Found: 0</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-27</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-27T06:22:23.761Z</p>
+  </footer>
+</body>
+</html>
