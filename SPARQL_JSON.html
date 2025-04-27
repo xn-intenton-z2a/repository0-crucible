@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="sparql_json" href="#sparql_json"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SPARQL_JSON</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Top-level JSON object with members head and either results or boolean; head.vars is string array of projected variables; head.link is optional string array of URIs; results.bindings is array of solution objects mapping variable names to RDF term objects; RDF term objects include type (uri|literal|bnode), value string, optional xml:lang or datatype; boolean member is JSON true or false; examples for SELECT and ASK provided; media type application/sparql-results+json, extension .srj, encoding UTF-8.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:
+1 JSON Results Object
+2 Variable Binding Results
+3 Boolean Results
+4 Examples
+5 Media Type</p>
+<p class="md-github">1 JSON Results Object</p>
+<ul class="md-github">
+<li class="md-github">head.vars: array<string></li>
+<li class="md-github">head.link?: array<string></li>
+<li class="md-github">results.bindings: array<Binding></li>
+<li class="md-github">boolean: boolean</li>
+</ul>
+<p class="md-github">2 Variable Binding Results
+head.vars: projected variable names in query order
+head.link: optional metadata URI list
+results.bindings: list of solution objects
+Binding object:
+for each variable v bound: v: RDFTerm
+RDFTerm:
+type: uri | literal | bnode
+value: string
+if type literal:
+xml:lang?: string
+datatype?: string</p>
+<p class="md-github">3 Boolean Results
+head.link?: array<string>
+boolean: true | false</p>
+<p class="md-github">4 Examples
+SELECT:
+{ head: { vars: [book,title] }, results: { bindings: [ {book:{type:uri,value:I}, title:{type:literal,value:S}} ] } }
+ASK:
+{ head:{}, boolean:true }</p>
+<p class="md-github">5 Media Type
+application/sparql-results+json
+extension: .srj
+macintosh file type: TEXT</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Media Type Registration:
+Type name: application
+Subtype name: sparql-results+json
+Required parameters: None
+Optional parameters: None
+Encoding considerations: same as application/json (RFC4627)
+Security considerations: same as application/json; URIs per RFC3986; IRIs per RFC3987
+Interoperability: no known issues
+Recommended extension: .srj
+Macintosh file type: TEXT</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Field definitions:
+head (object)
+vars (string[]): projected variables, order corresponds to SELECT clause
+link (string[]) optional: metadata URIs
+results (object)
+bindings (Binding[]): solution list
+Binding (object)
+key: variable name, value: RDFTerm
+RDFTerm (object)
+type: &quot;uri&quot; | &quot;literal&quot; | &quot;bnode&quot;
+value: string
+xml:lang?: string (for literal)
+datatype?: string (for literal)
+boolean (boolean): ASK query result</p>
+<p class="md-github">Implementation patterns:</p>
+<ol class="md-github">
+<li class="md-github">Send HTTP GET or POST to SPARQL endpoint with header Accept: application/sparql-results+json</li>
+<li class="md-github">Parse response as JSON</li>
+<li class="md-github">Validate presence of head and either results or boolean</li>
+<li class="md-github">For SELECT: iterate results.bindings, extract term.value by type</li>
+<li class="md-github">For ASK: read boolean</li>
+</ol>
+<p class="md-github">Node.js example:
+const res=await fetch(endpoint+&quot;?query=&quot;+encodeURIComponent(q),{headers:{Accept:&quot;application/sparql-results+json&quot;}});
+const json=await res.json();
+if(json.results){ json.results.bindings.forEach(sol=&gt;{ varName=sol[var].value }); } else { ok=json.boolean; }</p>
+<p class="md-github">cURL example:
+curl -H &quot;Accept: application/sparql-results+json&quot; &quot;http://example.org/sparql?query=...&quot;</p>
+<p class="md-github">Troubleshooting:</p>
+<ul class="md-github">
+<li class="md-github">If response not JSON: verify Accept header and SPARQL service supports JSON output</li>
+<li class="md-github">If missing head.vars: ensure SELECT clause specifies variables explicitly or use SELECT *</li>
+<li class="md-github">Use jq to inspect: jq &quot;.head.vars, .results.bindings[] | keys&quot; output</li>
+</ul>
+<p class="md-github">Best practices:</p>
+<ul class="md-github">
+<li class="md-github">Always specify Accept header</li>
+<li class="md-github">Use explicit SELECT var list to guarantee head.vars order</li>
+<li class="md-github">Handle optional link for service metadata</li>
+<li class="md-github">For large result sets, stream parse to avoid memory blow-up</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">head.vars:string[] | head.link?:string[] | results.bindings:Binding[] | boolean:boolean; Binding=Record&lt;string,RDFTerm&gt;; RDFTerm={type:(&quot;uri&quot;|&quot;literal&quot;|&quot;bnode&quot;),value:string,xml:lang?:string,datatype?:string}; mediaType=application/sparql-results+json; ext=.srj; encoding=UTF-8</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:
+1 JSON Results Object
+2 Variable Binding Results
+3 Boolean Results
+4 Examples
+5 Media Type</p>
+<p class="md-github">1 JSON Results Object</p>
+<ul class="md-github">
+<li class="md-github">head.vars: array<string></li>
+<li class="md-github">head.link?: array<string></li>
+<li class="md-github">results.bindings: array<Binding></li>
+<li class="md-github">boolean: boolean</li>
+</ul>
+<p class="md-github">2 Variable Binding Results
+head.vars: projected variable names in query order
+head.link: optional metadata URI list
+results.bindings: list of solution objects
+Binding object:
+for each variable v bound: v: RDFTerm
+RDFTerm:
+type: uri | literal | bnode
+value: string
+if type literal:
+xml:lang?: string
+datatype?: string</p>
+<p class="md-github">3 Boolean Results
+head.link?: array<string>
+boolean: true | false</p>
+<p class="md-github">4 Examples
+SELECT:
+{ head: { vars: [book,title] }, results: { bindings: [ {book:{type:uri,value:I}, title:{type:literal,value:S}} ] } }
+ASK:
+{ head:{}, boolean:true }</p>
+<p class="md-github">5 Media Type
+application/sparql-results+json
+extension: .srj
+macintosh file type: TEXT</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">SPARQL 1.1 Suite: Query, Protocol, Update, Graph Store HTTP, and JSON Results
+https://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-sparql_json" href="#digest-of-sparql_json"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of SPARQL_JSON</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="sparql-11-query-results-json-format" href="#sparql-11-query-results-json-format"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SPARQL 1.1 Query Results JSON Format</h1>
+<p class="md-github"><strong class="md-github">Source</strong>: W3C Recommendation 21 March 2013 (retrieved 10 June 2024)
+<strong class="md-github">Data Size</strong>: 33621567 bytes, <strong class="md-github">Links Found</strong>: 61076</p>
+<h1 class="md-github"><a class="md-github__anchor" name="1-introduction" href="#1-introduction"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1 Introduction</h1>
+<p class="md-github">This document specifies the JSON serialization for SPARQL SELECT and ASK query results.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="2-json-results-object" href="#2-json-results-object"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2 JSON Results Object</h1>
+<p class="md-github">A SPARQL JSON results document is a top-level JSON object with exactly one of the following member sets:</p>
+<ol class="md-github">
+<li class="md-github">head + results</li>
+<li class="md-github">head + boolean</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="21-head" href="#21-head"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.1 head</h2>
+<ul class="md-github">
+<li class="md-github">vars: string[]  (projected variable names, in SELECT clause order)</li>
+<li class="md-github">link: string[] (optional metadata URIs)</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="22-results" href="#22-results"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.2 results</h2>
+<ul class="md-github">
+<li class="md-github">bindings: Binding[]</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="23-boolean" href="#23-boolean"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.3 boolean</h2>
+<ul class="md-github">
+<li class="md-github">boolean: true | false</li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="3-variable-binding-results" href="#3-variable-binding-results"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3 Variable Binding Results</h1>
+<p class="md-github">SELECT query solutions: array of variable bindings per solution.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="31-headvars" href="#31-headvars"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3.1 head.vars</h2>
+<p class="md-github">List of variable names (no leading ? or $), e.g.
+vars : [ &quot;book&quot;, &quot;title&quot; ]</p>
+<h2 class="md-github"><a class="md-github__anchor" name="32-headlink" href="#32-headlink"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3.2 head.link</h2>
+<p class="md-github">Optional array of URIs for metadata, e.g.
+link : [ &quot;http://example/dataset/metadata.ttl&quot; ]</p>
+<h2 class="md-github"><a class="md-github__anchor" name="33-resultsbindings" href="#33-resultsbindings"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3.3 results.bindings</h2>
+<p class="md-github">Array of solution objects; each solution: { varName: RDFTerm, … }</p>
+<h3 class="md-github"><a class="md-github__anchor" name="331-rdfterm-encoding" href="#331-rdfterm-encoding"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3.3.1 RDFTerm encoding</h3>
+<ul class="md-github">
+<li class="md-github">type: &quot;uri&quot; | &quot;literal&quot; | &quot;bnode&quot;</li>
+<li class="md-github">value: string</li>
+<li class="md-github">xml:lang: string (optional, for literal)</li>
+<li class="md-github">datatype: string (optional, for literal)</li>
+</ul>
+<p class="md-github">Examples:
+{ &quot;type&quot;: &quot;uri&quot;,     &quot;value&quot;: &quot;I&quot; }
+{ &quot;type&quot;: &quot;literal&quot;, &quot;value&quot;: &quot;S&quot; }
+{ &quot;type&quot;: &quot;literal&quot;, &quot;value&quot;: &quot;S&quot;, &quot;xml:lang&quot;: &quot;L&quot; }
+{ &quot;type&quot;: &quot;literal&quot;, &quot;value&quot;: &quot;S&quot;, &quot;datatype&quot;: &quot;D&quot; }
+{ &quot;type&quot;: &quot;bnode&quot;,   &quot;value&quot;: &quot;B&quot; }</p>
+<h1 class="md-github"><a class="md-github__anchor" name="4-boolean-results" href="#4-boolean-results"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4 Boolean Results</h1>
+<p class="md-github">ASK query form: head + boolean</p>
+<p class="md-github">head: {} or with link
+boolean: true | false</p>
+<h1 class="md-github"><a class="md-github__anchor" name="5-examples" href="#5-examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5 Examples</h1>
+<p class="md-github">SELECT result example:
+{
+&quot;head&quot;: { &quot;vars&quot;: [ &quot;book&quot;, &quot;title&quot; ] },
+&quot;results&quot;: {
+&quot;bindings&quot;: [
+{ &quot;book&quot;: { &quot;type&quot;: &quot;uri&quot;, &quot;value&quot;: &quot;http://example.org/book/book6&quot; },
+&quot;title&quot;:{ &quot;type&quot;:&quot;literal&quot;,&quot;value&quot;:&quot;Harry Potter and the Half-Blood Prince&quot; } }
+// … additional rows
+]
+}
+}</p>
+<p class="md-github">ASK result example:
+{
+&quot;head&quot;: {},
+&quot;boolean&quot;: true
+}</p>
+<h1 class="md-github"><a class="md-github__anchor" name="6-media-type-and-file-details" href="#6-media-type-and-file-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6 Media Type and File Details</h1>
+<ul class="md-github">
+<li class="md-github">Media Type: application/sparql-results+json</li>
+<li class="md-github">File extension: .srj</li>
+<li class="md-github">Macintosh file type code: TEXT</li>
+<li class="md-github">Encoding: UTF-8</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: SPARQL 1.1 Suite: Query, Protocol, Update, Graph Store HTTP, and JSON Results</li>
+<li class="md-github">URL: https://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/</li>
+<li class="md-github">License: License</li>
+<li class="md-github">Crawl Date: 2025-04-27T09:48:29.897Z</li>
+<li class="md-github">Data Size: 33621567 bytes</li>
+<li class="md-github">Links Found: 61076</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-27</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-27T10:21:36.503Z</p>
+  </footer>
+</body>
+</html>
