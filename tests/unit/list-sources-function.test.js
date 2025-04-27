@@ -26,9 +26,7 @@ describe("listSources function", () => {
     vi.spyOn(fs, "readFileSync").mockReturnValue("not json");
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     const result = await listSources("some/path.json");
-    expect(errorSpy).toHaveBeenCalledWith(
-      expect.stringContaining("Invalid data-sources.json")
-    );
+    expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining("Invalid data-sources.json"));
     expect(result).toEqual(PUBLIC_DATA_SOURCES);
   });
 
@@ -37,9 +35,7 @@ describe("listSources function", () => {
     vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify({ foo: "bar" }));
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
     const result = await listSources("some/path.json");
-    expect(errorSpy).toHaveBeenCalledWith(
-      expect.stringContaining("Invalid data-sources.json")
-    );
+    expect(errorSpy).toHaveBeenCalledWith(expect.stringContaining("Invalid data-sources.json"));
     expect(result).toEqual(PUBLIC_DATA_SOURCES);
   });
 });

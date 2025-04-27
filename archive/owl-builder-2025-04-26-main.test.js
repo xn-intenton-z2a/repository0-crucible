@@ -18,13 +18,11 @@ function captureOutput(fn) {
   return { logs, errors };
 }
 
-
 describe("Main Module Import", () => {
   test("should be non-null", () => {
     expect(main).not.toBeNull();
   });
 });
-
 
 describe("Main Output", () => {
   test("should terminate without error when no arguments", () => {
@@ -73,13 +71,13 @@ describe("Agentic Flag Processing", () => {
   });
 
   test("should error with invalid JSON structure (missing command property)", () => {
-    const { logs, errors } = captureOutput(() => main(["--agentic", '{}']));
+    const { logs, errors } = captureOutput(() => main(["--agentic", "{}"]));
     expect(errors[0]).toMatch(/Error: Invalid JSON structure for --agentic flag/);
     expect(logs[0]).toContain("Usage: node src/lib/main.js [options]");
   });
 
   test("should error with invalid JSON format for agentic flag", () => {
-    const { logs, errors } = captureOutput(() => main(["--agentic", '{invalid json']));
+    const { logs, errors } = captureOutput(() => main(["--agentic", "{invalid json"]));
     expect(errors[0]).toMatch(/Error: Invalid JSON provided for --agentic flag/);
     expect(logs[0]).toContain("Usage: node src/lib/main.js [options]");
   });
@@ -109,7 +107,7 @@ describe("Alias Flag Processing", () => {
   });
 
   test("should error with invalid JSON format for alias flag", () => {
-    const { logs, errors } = captureOutput(() => main(["--alias", '{invalid json']));
+    const { logs, errors } = captureOutput(() => main(["--alias", "{invalid json"]));
     expect(errors[0]).toMatch(/Error: Invalid JSON provided for --alias flag/);
     expect(logs[0]).toContain("Usage: node src/lib/main.js [options]");
   });

@@ -11,7 +11,7 @@ describe("HTTP Server Integration Test for GET /build-intermediate", () => {
   let port;
   let tmpDir;
   let originalCwd;
-  const mockData = { results: { bindings: [ { a: { value: "id1" }, b: { value: "val2" } } ] } };
+  const mockData = { results: { bindings: [{ a: { value: "id1" }, b: { value: "val2" } }] } };
 
   beforeAll(async () => {
     // setup temp cwd
@@ -20,11 +20,7 @@ describe("HTTP Server Integration Test for GET /build-intermediate", () => {
     process.chdir(tmpDir);
     // create data dir and file
     fs.mkdirSync(path.join(tmpDir, "data"));
-    fs.writeFileSync(
-      path.join(tmpDir, "data", "sample.json"),
-      JSON.stringify(mockData),
-      'utf8'
-    );
+    fs.writeFileSync(path.join(tmpDir, "data", "sample.json"), JSON.stringify(mockData), "utf8");
     // start server
     process.env.PORT = "0";
     server = await main(["--serve"]);
@@ -39,15 +35,12 @@ describe("HTTP Server Integration Test for GET /build-intermediate", () => {
 
   test("GET /build-intermediate returns expected lines", async () => {
     const res = await new Promise((resolve, reject) => {
-      const req = http.request(
-        { hostname: "127.0.0.1", port, path: "/build-intermediate", method: "GET" },
-        (res) => {
-          let body = "";
-          res.setEncoding("utf8");
-          res.on("data", (c) => (body += c));
-          res.on("end", () => resolve({ statusCode: res.statusCode, headers: res.headers, body }));
-        }
-      );
+      const req = http.request({ hostname: "127.0.0.1", port, path: "/build-intermediate", method: "GET" }, (res) => {
+        let body = "";
+        res.setEncoding("utf8");
+        res.on("data", (c) => (body += c));
+        res.on("end", () => resolve({ statusCode: res.statusCode, headers: res.headers, body }));
+      });
       req.on("error", reject);
       req.end();
     });

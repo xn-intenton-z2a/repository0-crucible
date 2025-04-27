@@ -4,7 +4,15 @@
 import { fileURLToPath } from "url";
 
 // Supported flags
-const supportedFlags = ["--help", "--version", "--agentic", "--dry-run", "--diagnostics", "--capital-cities", "--alias"];
+const supportedFlags = [
+  "--help",
+  "--version",
+  "--agentic",
+  "--dry-run",
+  "--diagnostics",
+  "--capital-cities",
+  "--alias",
+];
 
 // Initialize global counter for agentic calls
 globalThis.callCount = globalThis.callCount || 0;
@@ -62,7 +70,7 @@ export function main(args) {
     const payloadStr = args[index + 1];
     try {
       const payload = JSON.parse(payloadStr);
-      if (payload.hasOwnProperty('alias') && typeof payload.alias === 'string') {
+      if (payload.hasOwnProperty("alias") && typeof payload.alias === "string") {
         console.log(`Alias set to: ${payload.alias}`);
       } else {
         console.error("Error: Invalid JSON structure for --alias flag. Must contain an 'alias' string.\n");
@@ -83,10 +91,15 @@ export function main(args) {
     try {
       const payload = JSON.parse(payloadStr);
       // Validate payload structure: should have either a 'command' (string) or 'commands' (array of strings)
-      const validCommand = payload.hasOwnProperty('command') && typeof payload.command === 'string';
-      const validCommands = payload.hasOwnProperty('commands') && Array.isArray(payload.commands) && payload.commands.every(cmd => typeof cmd === 'string');
+      const validCommand = payload.hasOwnProperty("command") && typeof payload.command === "string";
+      const validCommands =
+        payload.hasOwnProperty("commands") &&
+        Array.isArray(payload.commands) &&
+        payload.commands.every((cmd) => typeof cmd === "string");
       if (!(validCommand || validCommands)) {
-        console.error("Error: Invalid JSON structure for --agentic flag. Must contain a 'command' string or 'commands' array.\n");
+        console.error(
+          "Error: Invalid JSON structure for --agentic flag. Must contain a 'command' string or 'commands' array.\n",
+        );
         console.log(helpMessage());
         return;
       }
@@ -125,7 +138,7 @@ function agenticHandler(payload, isDryRun) {
     }
     console.log(message);
   } else if (payload.commands) {
-    payload.commands.forEach(command => {
+    payload.commands.forEach((command) => {
       let message = `Agentic command executed: ${command}`;
       if (isDryRun) {
         message = `Dry run: ${message}`;
