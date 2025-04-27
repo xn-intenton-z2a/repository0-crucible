@@ -14,8 +14,9 @@
   - **dataFiles**: Sorted list of JSON filenames present in `data/` (or an empty array if none).
   - **intermediateFilesCount**: Number of JSON files in the project `intermediate/` directory (or `0` if directory is missing).
   - **intermediateFiles**: Sorted list of JSON filenames present in `intermediate/` (or an empty array if none).
+  - **dependencies**: Object mapping runtime dependency names to their installed versions from `package.json`.
+  - **devDependencies**: Object mapping development dependency names to their installed versions from `package.json`.
 - **Build Intermediate (`--build-intermediate`)**: Reads JSON files from `data/`, transforms each into OWL JSON-LD intermediate artifacts in `intermediate/`, logs each write, and prints a summary line.
-  - **Note:** Before generation, any existing `intermediate/` directory is removed to avoid stale artifacts.
 - **Add Source (`--add-source <name> <url>`)**: Add a custom data source to the `data-sources.json` configuration, validating inputs and preventing duplicates. Outputs the merged list of sources in JSON.
 - **Remove Source (`--remove-source <identifier>`)**: Remove a custom data source by its name or URL from `data-sources.json`. Outputs the updated merged list of sources in JSON.
 - **Build Enhanced (`--build-enhanced`)**: Runs the full ontology-building pipeline: refresh sources, build intermediate artifacts, and merge into a single enhanced OWL JSON-LD document.
