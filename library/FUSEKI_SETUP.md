@@ -1,245 +1,317 @@
 # FUSEKI_SETUP
 
 ## Crawl Summary
-GroupId org.apache.jena with artifactId jena-fuseki-main and jena-fuseki-ui. Binary distributions: apache-jena-fuseki-5.3.0.tar.gz, .zip, jena-fuseki-5.3.0.war with SHA512 and PGP signatures. Java 17+, Servlet 6.0 for WAR. Docker image from jena-fuseki-docker module. GitHub Fuseki2 under jena-fuseki2/. Snapshots at Apache repository.
+Artifact names with checksums and PGP, CLI options (--config, --port, --mem, --loc, --update, --timeout, --enable-ui), Docker image and run parameters (volumes, ports, health check), Maven coordinates for embedding, FusekiServer.Builder methods (add, port, enableCors, start, stop), QueryExecutionFactory methods for local and remote queries.
 
 ## Normalised Extract
 Table of Contents
-1 Maven Dependencies
-2 Binary Distributions
-3 WAR Deployment Requirements
-4 Docker Container Usage
-5 Source and Snapshots
+1 Standalone Server CLI
+2 Docker Deployment
+3 Embedded Java Server
+4 Java Client API
 
-1 Maven Dependencies
-   groupId: org.apache.jena
-   modules:
-     - jena-fuseki-main (core server)
-     - jena-fuseki-ui   (web UI)
-   version: X.Y.Z
+1 Standalone Server CLI
+  Fuseki installation: directory FUSEKI_HOME
+  Commands:
+    FUSEKI_HOME/fuseki-server --config=config.ttl --port=3030 --mem /ds
+  Options:
+    --config file path to TTL configuration
+    --port integer HTTP port default 3030
+    --mem datasetName creates in-memory dataset
+    --loc file system path for TDB storage
+    --update enable SPARQL Update operations
+    --timeout milliseconds query execution timeout
+    --enable-ui boolean enable web UI
+  Logging overridden via logging.properties in FUSEKI_HOME
 
-2 Binary Distributions
-   Files:
-     - apache-jena-fuseki-5.3.0.tar.gz (SHA512, PGP)
-     - apache-jena-fuseki-5.3.0.zip    (SHA512, PGP)
-   Checksums and Signatures:
-     - Each distribution includes .sha512 and .asc
+2 Docker Deployment
+  Image: apache/jena-fuseki:fuseki-version
+  Run:
+    docker run -d --name fuseki -p 3030:3030 \
+      -v /host/data:/fuseki/databases \
+      -v /host/config:/fuseki/config \
+      apache/jena-fuseki:version --config=config.ttl
+  Volumes:
+    /fuseki/databases persistent TDB2 datasets
+    /fuseki/config custom TTL configurations
+  Health check endpoint: GET http://host:3030/$/status returns JSON { status: "OK" }
 
-3 WAR Deployment Requirements
-   File: jena-fuseki-5.3.0.war
-   Requires:
-     - Java 17+
-     - Jakarta Servlet API 6.0 compliant container (Apache Tomcat 10+)
-   Deployment steps:
-     1 Copy WAR to webapps directory
-     2 Start container
-     3 Service available at http://<host>:<port>/fuseki
+3 Embedded Java Server
+  Maven artifacts:
+    org.apache.jena:jena-fuseki-main:version
+    org.apache.jena:jena-fuseki-ui:version
+  Code pattern:
+    Dataset ds = TDB2Factory.createDataset(path)
+    FusekiServer server = FusekiServer.create()
+       .add(datasetPath, ds, enableUpdate)
+       .port(httpPort)
+       .enableCors(corsFlag)
+       .build();
+    server.start();
+    server.stop();
 
-4 Docker Container Usage
-   Module: jena-fuseki-docker
-   Build:
-     docker build -t apache/jena-fuseki:5.3.0 .
-   Run:
-     docker run --name fuseki -p 3030:3030 apache/jena-fuseki:5.3.0 \
-       fuseki-server --port=3030 --mem=/dataset
-   Endpoints:
-     - GET  /dataset/query
-     - POST /dataset/update
-     - GET/POST /dataset/data
-
-5 Source and Snapshots
-   GitHub:
-     https://github.com/apache/jena/tree/main/jena-fuseki2
-   Maven Snapshots:
-     https://repository.apache.org/snapshots/org/apache/jena/jena-fuseki-main/X.Y.Z-SNAPSHOT/
+4 Java Client API
+  QueryExecutionFactory methods:
+    create(Query, Dataset, QuerySolution) binds initial values
+    create(Query, Dataset) execute local dataset
+    sparqlService(String serviceURL, Query) remote endpoint
+  Query patterns:
+    QueryFactory.create(sparqlString)
+  Execution:
+    execSelect(), execConstruct(), execAsk(), execDescribe()
 
 ## Supplementary Details
-Parameter values:
-- version: replace X.Y.Z with specific release (e.g., 5.3.0)
-- Java system property: -Djena.fuseki.log=detail for verbose logging
-- Default port: 3030
-- Memory dataset path: /dataset
+Default port 3030, default UI enabled true, default timeout 0 (no timeout). Configuration TTL syntax: dataset definitions using fuseki:Service, fuseki:Dataset, fuseki:name, fuseki:serviceQuery, fuseki:serviceUpdate, fuseki:serviceReadGraphStore, fuseki:datasetTDB. Example config.ttl snippet:
 
-Configuration file fuski.ttl options:
-- service class: FusekiService
-- dataset name: <name>
-- dataset type: TDB2 or Mem
-- security realm: shiro.ini path
+  @prefix fuseki: <http://jena.apache.org/fuseki#> .
+  @prefix tdb:    <http://jena.apache.org/2016/tdb#> .
 
-Implementation steps:
-1 Download binary
-2 Extract to FUSEKI_HOME
-3 Edit FUSEKI_HOME/config/fuseki.properties or fuseki.ttl
-4 Run FUSEKI_HOME/bin/fuseki-server --config=config/fuseki.ttl
-5 Access UI at http://localhost:3030
-
+  [] rdf:type fuseki:Server ;
+     fuseki:services (
+       [
+         rdf:type fuseki:Service ;
+         fuseki:name "ds" ;
+         fuseki:serviceQuery "query" ;
+         fuseki:serviceUpdate "update" ;
+         fuseki:serviceUpload "upload" ;
+         fuseki:dataset [
+           rdf:type tdb:DatasetTDB ;
+           tdb:location "/fuseki/databases/ds"
+         ]
+       ]
+     ) .
 
 ## Reference Details
-CLI Usage
-1. Standalone server
-   FUSEKI_HOME/bin/fuseki-server --port=3030 --mem=/myds --update
-   Options:
-     --port=<integer>     Default 3030
-     --mem=<name>         In-memory dataset
-     --tdb2=<directory>   TDB2-backed dataset
-     --config=<file>      Fuseki configuration TTL
-     --update             Enable SPARQL Update
-     --localhost          Bind only to localhost
+CLI Options:
+  --config <file>           Path to configuration TTL file
+  --port <int>              HTTP port, default 3030
+  --mem <name>              Create in-memory dataset with given name
+  --loc <path>              File system path for persistent storage
+  --update                  Enable SPARQL Update service
+  --timeout <ms>            Query timeout in milliseconds
+  --enable-ui <true|false>  Enable or disable Fuseki web interface
+  --verbose                 Enable detailed logging
 
-2. Docker commands
-   docker run --name fuseki -p 3030:3030 apache/jena-fuseki:5.3.0 fuseki-server \
-     --port=3030 --mem=/ds --update --localhost
+Docker Image:
+  Image name: apache/jena-fuseki:fuseki-<version>
+  Volumes:
+    /fuseki/databases persistent storage directory
+    /fuseki/config     configuration directory
+  Health endpoint: GET /$/status returns JSON {"status":"OK"}
 
-HTTP Endpoints
-- SPARQL Query
-   GET  /<dataset>/query  Content-Type: application/sparql-query  Result: SPARQL XML/Turtle/JSON
-   POST /<dataset>/query  Body: SPARQL query  Headers: Content-Type: application/sparql-query
-- SPARQL Update
-   POST /<dataset>/update Content-Type: application/sparql-update
-- Graph Store Protocol
-   GET    /<dataset>/data?default  Accept: application/n-triples
-   POST   /<dataset>/data?default  Content-Type: text/turtle
-   PUT    /<dataset>/data?default  Content-Type: text/turtle
-   DELETE /<dataset>/data?default
+Java API:
+  Class FusekiServer.Builder:
+    Builder add(String mountPoint, Dataset dataset, boolean enableUpdate)
+    Builder port(int port)
+    Builder enableCors(boolean flag)
+    FusekiServer build()
+  Class FusekiServer:
+    void start()
+    void stop()
+  Class QueryExecutionFactory:
+    static QueryExecution create(Query query, Dataset dataset)
+    static QueryExecution create(Query query, Dataset dataset, QuerySolution initialBinding)
+    static QueryExecution sparqlService(String serviceURI, Query query)
+  Class QueryFactory:
+    static Query create(String sparqlString)
 
-Maven Coordinates
-<dependency>
-  <groupId>org.apache.jena</groupId>
-  <artifactId>jena-fuseki-main</artifactId>
-  <version>5.3.0</version>
-</dependency>
-<dependency>
-  <groupId>org.apache.jena</groupId>
-  <artifactId>jena-fuseki-ui</artifactId>
-  <version>5.3.0</version>
-</dependency>
+Java best practices:
+  Use try-with-resources for QueryExecution
+  Pre-bind variables using QuerySolutionMap for safe SPARQL injection
 
-Best Practices
-- Run with explicit config TTL rather than defaults
-- Use TDB2 for production (tdb2=/path/to/db)
-- Secure endpoints via Apache Shiro:
-  shiro.ini with
-    [users]
-      admin=secret,admin
-    [roles]
-      admin=*
-
-Troubleshooting
-- Inspect logs at FUSEKI_HOME/logs/fuseki.log
-- Enable debug: -Dlog4j.configuration=file:log4j2-debug.xml
-- Check port conflicts: lsof -i:3030
-- Verify Java version: java -version
-
+Troubleshooting:
+  Check logs in FUSEKI_HOME/logs/fuseki.log
+  CLI: fuseki-server --config=invalid.ttl outputs parse error with line number
+  Docker: docker logs fuseki shows startup errors
+  Health check returns HTTP 200 on success, HTTP 503 on failure
 
 ## Information Dense Extract
-groupId:org.apache.jena;artifactIds:jena-fuseki-main,jena-fuseki-ui;version:5.3.0;java:17+;servlet:6.0;binary:apache-jena-fuseki-5.3.0.tar.gz/.zip;war:jena-fuseki-5.3.0.war;CLI:fuseki-server--port=3030--mem=/ds--update--localhost;Docker:apache/jena-fuseki:5.3.0 docker run -p3030:3030;Endpoints:GET/POST /<ds>/query,POST /<ds>/update,GET/POST/PUT/DELETE /<ds>/data;Shiro:shiro.ini admin=secret;Logs:FUSEKI_HOME/logs/fuseki.log;Snapshot:repo.apache.org/snapshots;GitHub:jena-fuseki2 branch main
+Fuseki 5.4.0 artifacts: tar.gz, zip, war; default port 3030; CLI options (--config, --port, --mem, --loc, --update, --timeout, --enable-ui); docker image apache/jena-fuseki:fuseki-5.4.0; Java embedding via FusekiServer.Builder.add, port, enableCors, start/stop; QueryExecutionFactory.create(Query,Dataset), sparqlService(serviceURI,Query); config.ttl uses fuseki:Service, fuseki:name, fuseki:datasetTDB with tdb:location; health endpoint GET /$/status; logs in FUSEKI_HOME/logs/fuseki.log
 
 ## Sanitised Extract
 Table of Contents
-1 Maven Dependencies
-2 Binary Distributions
-3 WAR Deployment Requirements
-4 Docker Container Usage
-5 Source and Snapshots
+1 Standalone Server CLI
+2 Docker Deployment
+3 Embedded Java Server
+4 Java Client API
 
-1 Maven Dependencies
-   groupId: org.apache.jena
-   modules:
-     - jena-fuseki-main (core server)
-     - jena-fuseki-ui   (web UI)
-   version: X.Y.Z
+1 Standalone Server CLI
+  Fuseki installation: directory FUSEKI_HOME
+  Commands:
+    FUSEKI_HOME/fuseki-server --config=config.ttl --port=3030 --mem /ds
+  Options:
+    --config file path to TTL configuration
+    --port integer HTTP port default 3030
+    --mem datasetName creates in-memory dataset
+    --loc file system path for TDB storage
+    --update enable SPARQL Update operations
+    --timeout milliseconds query execution timeout
+    --enable-ui boolean enable web UI
+  Logging overridden via logging.properties in FUSEKI_HOME
 
-2 Binary Distributions
-   Files:
-     - apache-jena-fuseki-5.3.0.tar.gz (SHA512, PGP)
-     - apache-jena-fuseki-5.3.0.zip    (SHA512, PGP)
-   Checksums and Signatures:
-     - Each distribution includes .sha512 and .asc
+2 Docker Deployment
+  Image: apache/jena-fuseki:fuseki-version
+  Run:
+    docker run -d --name fuseki -p 3030:3030 '
+      -v /host/data:/fuseki/databases '
+      -v /host/config:/fuseki/config '
+      apache/jena-fuseki:version --config=config.ttl
+  Volumes:
+    /fuseki/databases persistent TDB2 datasets
+    /fuseki/config custom TTL configurations
+  Health check endpoint: GET http://host:3030/$/status returns JSON { status: 'OK' }
 
-3 WAR Deployment Requirements
-   File: jena-fuseki-5.3.0.war
-   Requires:
-     - Java 17+
-     - Jakarta Servlet API 6.0 compliant container (Apache Tomcat 10+)
-   Deployment steps:
-     1 Copy WAR to webapps directory
-     2 Start container
-     3 Service available at http://<host>:<port>/fuseki
+3 Embedded Java Server
+  Maven artifacts:
+    org.apache.jena:jena-fuseki-main:version
+    org.apache.jena:jena-fuseki-ui:version
+  Code pattern:
+    Dataset ds = TDB2Factory.createDataset(path)
+    FusekiServer server = FusekiServer.create()
+       .add(datasetPath, ds, enableUpdate)
+       .port(httpPort)
+       .enableCors(corsFlag)
+       .build();
+    server.start();
+    server.stop();
 
-4 Docker Container Usage
-   Module: jena-fuseki-docker
-   Build:
-     docker build -t apache/jena-fuseki:5.3.0 .
-   Run:
-     docker run --name fuseki -p 3030:3030 apache/jena-fuseki:5.3.0 '
-       fuseki-server --port=3030 --mem=/dataset
-   Endpoints:
-     - GET  /dataset/query
-     - POST /dataset/update
-     - GET/POST /dataset/data
-
-5 Source and Snapshots
-   GitHub:
-     https://github.com/apache/jena/tree/main/jena-fuseki2
-   Maven Snapshots:
-     https://repository.apache.org/snapshots/org/apache/jena/jena-fuseki-main/X.Y.Z-SNAPSHOT/
+4 Java Client API
+  QueryExecutionFactory methods:
+    create(Query, Dataset, QuerySolution) binds initial values
+    create(Query, Dataset) execute local dataset
+    sparqlService(String serviceURL, Query) remote endpoint
+  Query patterns:
+    QueryFactory.create(sparqlString)
+  Execution:
+    execSelect(), execConstruct(), execAsk(), execDescribe()
 
 ## Original Source
-Apache Jena Fuseki Documentation
+Apache Jena Fuseki SPARQL Server
 https://jena.apache.org/documentation/fuseki2/
 
 ## Digest of FUSEKI_SETUP
 
-# Maven Dependencies
+# Fuseki Server Setup (retrieved 2024-06-12)
 
-Dependency coordinates for embedded and UI modules:
+## Download and Installation
 
-<dependency>
-   <groupId>org.apache.jena</groupId>
-   <artifactId>jena-fuseki-main</artifactId>
-   <version>X.Y.Z</version>
-</dependency>
+Download Fuseki distribution:
 
-<dependency>
-   <groupId>org.apache.jena</groupId>
-   <artifactId>jena-fuseki-ui</artifactId>
-   <version>X.Y.Z</version>
-</dependency>
+  Filename                     SHA512 checksum            PGP signature
+  apache-jena-fuseki-5.4.0.tar.gz   <hash>                 <sig>
+  apache-jena-fuseki-5.4.0.zip       <hash>                 <sig>
+  jena-fuseki-war-5.4.0.war          <hash>                 <sig>
 
-# Binary Distributions
+Verify artifacts:
 
-- apache-jena-fuseki-5.3.0.tar.gz  SHA512    PGP Signature
-- apache-jena-fuseki-5.3.0.zip     SHA512    PGP Signature
-- jena-fuseki-5.3.0.war           SHA512    PGP Signature
+  pgp --verify apache-jena-fuseki-5.4.0.tar.gz.asc apache-jena-fuseki-5.4.0.tar.gz
 
-Requirements:
-- Java 17 or later
-- For WAR: Jakarta Servlet API 6.0 (Jakarta EE 9) container (e.g., Tomcat 10.x+)
+## Standalone Server CLI Usage
 
-# Docker Container
+Default installation directory: FUSEKI_HOME
 
-Image artifact: jena-fuseki-docker
-Build and run:
+Commands:
 
-docker build -t apache/jena-fuseki:5.3.0 .
-docker run --name fuseki -p 3030:3030 apache/jena-fuseki:5.3.0 fuseki-server --port=3030 --mem=/dataset
+  $ FUSEKI_HOME/fuseki-server --config=config.ttl --port=3030 --mem /ds
+  Options:
+    --config=<file>         Fuseki configuration file (TTL format)
+    --port=<port>           HTTP port (default 3030)
+    --mem <datasetName>     In-memory dataset name
+    --loc=<directory>       Graph store location
+    --update                Enable SPARQL Update
+    --timeout=<ms>          Query timeout in milliseconds
+    --enable-ui             Enable web-based UI (default true)
 
-# Git and Snapshots
+Logging configuration can be overridden by logging.properties in FUSEKI_HOME.
 
-Official source tree (Fuseki2):
-https://github.com/apache/jena/tree/main/jena-fuseki2
+## Docker Container Deployment
 
-Snapshot repository:
-https://repository.apache.org/snapshots/org/apache/jena/jena-fuseki-main/X.Y.Z-SNAPSHOT/
+Docker image: apache/jena-fuseki:fuseki-5.4.0
+
+Run command:
+
+  $ docker run -d \
+    --name fuseki \
+    -p 3030:3030 \
+    -v /host/data:/fuseki/databases \
+    -v /host/config:/fuseki/config \
+    apache/jena-fuseki:fuseki-5.4.0 \
+    --config=config.ttl
+
+Mapped volumes:
+  /fuseki/databases    Persistent storage for TDB datasets
+  /fuseki/config       Custom configuration files
+
+Health check:
+
+  $ curl -f http://localhost:3030/$/status
+
+## Embedded SPARQL Server in Java
+
+Maven dependencies:
+
+  <dependency>
+    <groupId>org.apache.jena</groupId>
+    <artifactId>jena-fuseki-main</artifactId>
+    <version>5.4.0</version>
+  </dependency>
+  <dependency>
+    <groupId>org.apache.jena</groupId>
+    <artifactId>jena-fuseki-ui</artifactId>
+    <version>5.4.0</version>
+  </dependency>
+
+Java code example:
+
+  import org.apache.jena.fuseki.main.FusekiServer;
+  import org.apache.jena.tdb2.TDB2Factory;
+  import org.apache.jena.query.Dataset;
+
+  Dataset ds = TDB2Factory.createDataset("/data/tdb");
+  FusekiServer server = FusekiServer.create()
+       .add("/ds", ds, true)               // mount dataset at /ds with SPARQL Update
+       .port(3030)                          // HTTP port
+       .enableCors(true)                   // CORS support
+       .build();                            
+  server.start();
+
+Stop server:
+
+  server.stop();
+
+## Java Client Access
+
+In-memory query execution:
+
+  import org.apache.jena.query.QueryExecutionFactory;
+  import org.apache.jena.query.QueryExecution;
+  import org.apache.jena.query.Query;
+  import org.apache.jena.query.QueryFactory;
+  import org.apache.jena.query.ResultSet;
+
+  Query query = QueryFactory.create("SELECT ?s WHERE { ?s ?p ?o } LIMIT 10");
+  try (QueryExecution qExec =
+         QueryExecutionFactory.create(query, ds)) {
+    ResultSet rs = qExec.execSelect();
+    // iterate ResultSet
+  }
+
+Remote SPARQL service:
+
+  try (QueryExecution qExec =
+         QueryExecutionFactory.sparqlService(
+             "http://localhost:3030/ds/query", query)) {
+    ResultSet rs = qExec.execSelect();
+  }
 
 
 ## Attribution
-- Source: Apache Jena Fuseki Documentation
+- Source: Apache Jena Fuseki SPARQL Server
 - URL: https://jena.apache.org/documentation/fuseki2/
 - License: License
-- Crawl Date: 2025-04-26T22:47:58.108Z
-- Data Size: 1486340 bytes
-- Links Found: 3429
+- Crawl Date: 2025-04-27T22:48:36.249Z
+- Data Size: 918274 bytes
+- Links Found: 2482
 
 ## Retrieved
-2025-04-26
+2025-04-27
