@@ -29,7 +29,7 @@ You can define additional data sources by creating a `data-sources.json` file in
 ]
 ```
 
-When running with `--lista-sources`, the output will include both default and custom sources:
+When running with `--list-sources`, the output will include both default and custom sources:
 
 ```bash
 node src/lib/main.js --list-sources
@@ -83,45 +83,9 @@ Use the `--diagnostics` flag to display environment and configuration diagnostic
 node src/lib/main.js --diagnostics
 ```
 
-Example output:
-
-```json
-{
-  "version": "1.2.0-0",
-  "nodeVersion": "v20.x.x",
-  "platform": "linux",
-  "arch": "x64",
-  "cwd": "/path/to/project",
-  "uptimeSeconds": 123.456,
-  "memoryUsage": {
-    "rss": 200000000,
-    "heapTotal": 100000000,
-    "heapUsed": 50000000,
-    "external": 1000000,
-    "arrayBuffers": 1000000
-  },
-  "publicDataSources": [
-    {
-      "name": "DBpedia SPARQL",
-      "url": "https://dbpedia.org/sparql"
-    }
-  ],
-  "commands": ["--help","-h","--list-sources","--diagnostics","--serve","--build-intermediate","--build-enhanced","--refresh","--merge-persist","--capital-cities"],
-  "healthChecks": [
-    {
-      "name": "DBpedia SPARQL",
-      "url": "https://dbpedia.org/sparql",
-      "statusCode": 200,
-      "latencyMs": 123,
-      "reachable": true
-    }
-  ]
-}
-```
-
 ## Serve
 
-Start a local HTTP server to expose endpoints for help, sources, diagnostics, capital cities, and refresh:
+Start a local HTTP server to expose endpoints for help, sources, diagnostics, capital cities, refresh, and build intermediate:
 
 ```bash
 node src/lib/main.js --serve
@@ -135,14 +99,7 @@ curl http://localhost:3000/sources
 curl http://localhost:3000/diagnostics
 curl http://localhost:3000/capital-cities
 curl http://localhost:3000/refresh
-```
-
-Example output for `/refresh`:
-
-```bash
-$ curl http://localhost:3000/refresh
-written dbpedia-sparql.json
-Refreshed 1 sources into data/
+curl http://localhost:3000/build-intermediate
 ```
 
 ## Refresh
@@ -151,4 +108,19 @@ Use the `--refresh` flag to fetch and persist data from all configured public an
 
 ```bash
 node src/lib/main.js --refresh
+```
+
+## Build Intermediate
+
+Use the `--build-intermediate` flag to transform existing JSON data into OWL JSON-LD intermediate artifacts:
+
+```bash
+node src/lib/main.js --build-intermediate
+```
+
+Example output:
+
+```text
+written example-intermediate.json
+Generated 1 intermediate artifacts into intermediate/
 ```
