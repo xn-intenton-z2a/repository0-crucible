@@ -73,7 +73,7 @@ export async function queryOntologies(filePath, sparqlQuery) {
 }
 
 /**
- * Query DBpedia for country–capital pairs and return an OWL-compatible JSON-LD document.
+ * Query DBpedia for countrycapital pairs and return an OWL-compatible JSON-LD document.
  * @param {string} endpointUrl - SPARQL endpoint URL.
  * @returns {Promise<Object>} JSON-LD document with @context and @graph.
  */
@@ -82,7 +82,7 @@ export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url)
   let response;
   try {
     // build URL without additional encoding to satisfy tests
-    const queryUrl = `${endpointUrl}query=${sparql}`;
+    const queryUrl = `${endpointUrl}?query=${sparql}`;
     response = await fetch(queryUrl, {
       headers: { Accept: "application/sparql-results+json" },
     });
@@ -470,10 +470,11 @@ export async function main(args) {
         outDir = biArgs[1];
       }
     }
+    const mainMod = await import(import.meta.url);
     if (dataDir !== undefined || outDir !== undefined) {
-      buildIntermediate({ dataDir, outDir });
+      await mainMod.buildIntermediate({ dataDir, outDir });
     } else {
-      buildIntermediate();
+      await mainMod.buildIntermediate();
     }
     return;
   }
