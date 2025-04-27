@@ -173,7 +173,7 @@ export async function buildEnhanced({ dataDir = 'data', intermediateDir = 'inter
   return {
     refreshed,
     intermediate,
-    enhanced: { file: 'enhanced.json', count: merged.length }
+    enhanced: { file: 'enhanced.json', count: intermediate.count }
   };
 }
 
@@ -329,7 +329,7 @@ export async function main(args) {
       }
       // DELETE /sources/:id
       else if (req.method === "DELETE" && pathname.startsWith("/sources/")) {
-        const identifier = decodeURIComponent(pathname.replace('/sources/', ''));
+        const identifier = decodeURIComponent(pathname.replace('/sources/', '');
         try {
           const merged = removeSource(identifier);
           res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -379,7 +379,7 @@ export async function main(args) {
         console.log = msg => res.write(`${msg}\n`);
         try {
           const result = await buildEnhanced();
-          console.log(`Enhanced ontology written to enhanced/enhanced.json with ${result.enhanced.count} nodes`);
+          console.log(`Enhanced ontology written to ${outDir}/enhanced.json with ${result.enhanced.count} nodes`);
         } catch (err) {
           console.log(err.message);
         }
