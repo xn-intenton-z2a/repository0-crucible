@@ -75,11 +75,27 @@ node src/lib/main.js --diagnostics
 
 ## Build Intermediate
 
-Use the `--build-intermediate` flag to read JSON files from `data/`, generate OWL JSON-LD intermediate artifacts, and write them to the `intermediate/` directory.
+### CLI Usage
 
-```bash
-node src/lib/main.js --build-intermediate
-```
+Use the `--build-intermediate` flag with optional path arguments to specify input and output directories:
+
+- **Default Invocation** (no paths):
+  ```bash
+  node src/lib/main.js --build-intermediate
+  ```
+  Reads from `./data` and writes to `./intermediate`.
+
+- **Custom Input Directory** (one path):
+  ```bash
+  node src/lib/main.js --build-intermediate custom-data
+  ```
+  Reads from `./custom-data` and writes to `./intermediate`.
+
+- **Custom Input and Output Directories** (two paths):
+  ```bash
+  node src/lib/main.js --build-intermediate custom-data custom-out
+  ```
+  Reads from `./custom-data` and writes to `./custom-out`.
 
 Example output:
 
