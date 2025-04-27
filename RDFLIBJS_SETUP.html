@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="rdflibjs_setup" href="#rdflibjs_setup"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RDFLIBJS_SETUP</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Installation commands for browser and Node.js environments; build steps for dist; directory structure of dist, test, lib; Node.js XMLHTTPRequest dependency; core capabilities: serialization formats, Linked Data client, collaboration, local store API, SPARQL graph-match, OWL sameAs smushing, provenance metadata retention</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Installation</p>
+</li>
+<li class="md-github">
+<p class="md-github">Build for Browser</p>
+</li>
+<li class="md-github">
+<p class="md-github">Node.js Setup</p>
+</li>
+<li class="md-github">
+<p class="md-github">Directory Structure</p>
+</li>
+<li class="md-github">
+<p class="md-github">Dependency Requirements</p>
+</li>
+<li class="md-github">
+<p class="md-github">Core Capabilities</p>
+</li>
+<li class="md-github">
+<p class="md-github">Installation</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Browser via npm: npm install rdflib</li>
+<li class="md-github">Browser via script tag: clone repo, npm install, npm run build:browser</li>
+<li class="md-github">Node.js: npm install --save rdflib</li>
+</ul>
+<ol start="2" class="md-github">
+<li class="md-github">Build for Browser</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Command: npm run build:browser</li>
+<li class="md-github">Output: dist/ contains bundled rdflib.js and rdflib.min.js</li>
+</ul>
+<ol start="3" class="md-github">
+<li class="md-github">Node.js Setup</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Prerequisite: Node.js and npm installed</li>
+<li class="md-github">xmlhttprequest: use xhr2 or node-fetch polyfill</li>
+<li class="md-github">Install: npm install --save rdflib</li>
+</ul>
+<ol start="4" class="md-github">
+<li class="md-github">Directory Structure</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">dist/: Bundled output for browsers</li>
+<li class="md-github">test/: Contains Mocha/Chai tests</li>
+<li class="md-github">lib/: Transpiled ES5 modules for package distribution</li>
+</ul>
+<ol start="5" class="md-github">
+<li class="md-github">Dependency Requirements</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Requires XMLHTTPRequest global in Node.js
+• Use xhr2 package: npm install xhr2
+• Set global.XMLHttpRequest = require('xhr2')</li>
+</ul>
+<ol start="6" class="md-github">
+<li class="md-github">Core Capabilities</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Formats: RDF/XML, Turtle, N3, RDFa, JSON-LD</li>
+<li class="md-github">Linked Data client: WebDAV and SPARQL/Update transports</li>
+<li class="md-github">Collaboration: websocket &amp; HTTP PATCH support</li>
+<li class="md-github">Local store: graph-match API with .match() and optional patterns</li>
+<li class="md-github">OWL support: smushing sameAs, function/inverseFunction</li>
+<li class="md-github">Provenance: includes HTTP fetch metadata as RDF triples</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Installation Steps:
+• npm install rdflib              # for bundler
+• git clone https://github.com/linkeddata/rdflib.js.git
+cd rdflib.js
+npm install
+npm run build:browser          # produces dist/
+• npm install --save rdflib      # for Node.js</p>
+<p class="md-github">Browser Bundler Config:
+• webpack.config.js entry: require('rdflib')
+• import: import $rdf from 'rdflib';</p>
+<p class="md-github">Node.js Polyfill:
+• npm install xhr2
+• In entry file:
+const XHR = require('xhr2');
+global.XMLHttpRequest = XHR;
+const $rdf = require('rdflib');</p>
+<p class="md-github">Directory Usage:
+• dist/rdflib.js         # include via <script src>
+• dist/rdflib.min.js     # minified version
+• lib/                   # require('rdflib') resolves to lib/</p>
+<p class="md-github">Dependency:
+• XMLHTTPRequest
+- Default global in browsers
+- Polyfill required in Node.js</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Installation Commands:
+npm install rdflib
+npm install --save rdflib
+npm run build:browser</p>
+<p class="md-github">Directories:
+dist/      # bundled outputs
+├ rdflib.js
+└ rdflib.min.js
+lib/       # transpiled modules for npm
+test/      # test suites</p>
+<p class="md-github">Node.js Polyfill Example:
+const XHR = require('xhr2');
+global.XMLHttpRequest = XHR;
+const $rdf = require('rdflib');</p>
+<p class="md-github">Basic Usage Example:
+const $rdf = require('rdflib');
+const store = $rdf.graph();
+const fetcher = new $rdf.Fetcher(store, {fetch: fetch});
+fetcher.load('http://example.org/data.ttl')
+.then(response =&gt; {
+const statements = store.match(undefined, undefined, undefined);
+console.log(statements.length + ' triples loaded');
+})
+.catch(err =&gt; console.error('Fetch error', err));</p>
+<p class="md-github">Configuration Options:
+Fetcher(options):
+- fetch: custom fetch implementation (default: global.fetch or XMLHttpRequest)
+- timeout: milliseconds before abort
+- withCredentials: boolean for XHR credentials</p>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Polyfill XMLHttpRequest in Node.js before requiring rdflib</li>
+<li class="md-github">Use bundler to tree-shake unused modules</li>
+<li class="md-github">Handle CORS and SPARQL endpoints via UpdateManager</li>
+</ul>
+<p class="md-github">Troubleshooting:
+Issue: 'XMLHttpRequest is not defined'
+• Install xhr2
+• In code: global.XMLHttpRequest = require('xhr2')
+Issue: CORS error
+• Configure server to allow Access-Control-Allow-Origin
+• Use proxy or CORs in SPARQL endpoint</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">npm install rdflib; npm run build:browser; npm install --save rdflib; polyfill XMLHttpRequest in Node.js via xhr2; dist/ contains rdflib.js and rdflib.min.js; lib/ for ES5 modules; test/ for automated tests; formats: RDF/XML, Turtle, N3, RDFa, JSON-LD; transports: WebDAV, SPARQL/Update; API: $rdf.graph(), new $rdf.Fetcher(store,{fetch,timeout,withCredentials}); store.match(s,p,o,g); OWL smushing sameAs and functionProperty; provenance: HTTP metadata in RDF; troubleshoot: install xhr2, set global.XMLHttpRequest; configure CORS headers.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Installation</p>
+</li>
+<li class="md-github">
+<p class="md-github">Build for Browser</p>
+</li>
+<li class="md-github">
+<p class="md-github">Node.js Setup</p>
+</li>
+<li class="md-github">
+<p class="md-github">Directory Structure</p>
+</li>
+<li class="md-github">
+<p class="md-github">Dependency Requirements</p>
+</li>
+<li class="md-github">
+<p class="md-github">Core Capabilities</p>
+</li>
+<li class="md-github">
+<p class="md-github">Installation</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Browser via npm: npm install rdflib</li>
+<li class="md-github">Browser via script tag: clone repo, npm install, npm run build:browser</li>
+<li class="md-github">Node.js: npm install --save rdflib</li>
+</ul>
+<ol start="2" class="md-github">
+<li class="md-github">Build for Browser</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Command: npm run build:browser</li>
+<li class="md-github">Output: dist/ contains bundled rdflib.js and rdflib.min.js</li>
+</ul>
+<ol start="3" class="md-github">
+<li class="md-github">Node.js Setup</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Prerequisite: Node.js and npm installed</li>
+<li class="md-github">xmlhttprequest: use xhr2 or node-fetch polyfill</li>
+<li class="md-github">Install: npm install --save rdflib</li>
+</ul>
+<ol start="4" class="md-github">
+<li class="md-github">Directory Structure</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">dist/: Bundled output for browsers</li>
+<li class="md-github">test/: Contains Mocha/Chai tests</li>
+<li class="md-github">lib/: Transpiled ES5 modules for package distribution</li>
+</ul>
+<ol start="5" class="md-github">
+<li class="md-github">Dependency Requirements</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Requires XMLHTTPRequest global in Node.js
+Use xhr2 package: npm install xhr2
+Set global.XMLHttpRequest = require('xhr2')</li>
+</ul>
+<ol start="6" class="md-github">
+<li class="md-github">Core Capabilities</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Formats: RDF/XML, Turtle, N3, RDFa, JSON-LD</li>
+<li class="md-github">Linked Data client: WebDAV and SPARQL/Update transports</li>
+<li class="md-github">Collaboration: websocket &amp; HTTP PATCH support</li>
+<li class="md-github">Local store: graph-match API with .match() and optional patterns</li>
+<li class="md-github">OWL support: smushing sameAs, function/inverseFunction</li>
+<li class="md-github">Provenance: includes HTTP fetch metadata as RDF triples</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">rdflib.js RDF Library
+https://github.com/linkeddata/rdflib.js#readme</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-rdflibjs_setup" href="#digest-of-rdflibjs_setup"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of RDFLIBJS_SETUP</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
+<p class="md-github">Browser (with Webpack or similar bundler)</p>
+<p class="md-github">npm install rdflib</p>
+<p class="md-github">Browser (<script> tag)</p>
+<p class="md-github">git clone git@github.com:linkeddata/rdflib.js.git
+cd rdflib.js
+npm install
+npm run build:browser</p>
+<p class="md-github">Node.js</p>
+<p class="md-github">Ensure Node.js and npm installed
+npm install --save rdflib</p>
+<h1 class="md-github"><a class="md-github__anchor" name="subdirectories" href="#subdirectories"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Subdirectories</h1>
+<p class="md-github">dist
+Bundled libraries output by npm run build</p>
+<p class="md-github">test
+Automated test suites</p>
+<p class="md-github">lib
+Transpiled, non-bundled library published to npm</p>
+<h1 class="md-github"><a class="md-github__anchor" name="dependencies" href="#dependencies"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dependencies</h1>
+<p class="md-github">Node.js version must provide XMLHTTPRequest implementation (use xhr2 or node-fetch polyfill)</p>
+<h1 class="md-github"><a class="md-github__anchor" name="features-overview" href="#features-overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features Overview</h1>
+<p class="md-github">Reads RDF/XML, Turtle, N3; parses RDFa and JSON-LD
+Linked Data client over WebDAV or SPARQL/Update
+Real-time collaborative editing via WebSockets and HTTP PATCH
+Local in-memory store with graph-match SPARQL (basic), optional matches
+OWL inferencing: sameAs and function/inverseFunction smushing
+Provenance tracking: retains HTTP response metadata in RDF</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: rdflib.js RDF Library</li>
+<li class="md-github">URL: https://github.com/linkeddata/rdflib.js#readme</li>
+<li class="md-github">License: License</li>
+<li class="md-github">Crawl Date: 2025-04-27T08:49:21.346Z</li>
+<li class="md-github">Data Size: 614386 bytes</li>
+<li class="md-github">Links Found: 5414</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-27</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-27T09:21:16.386Z</p>
+  </footer>
+</body>
+</html>

@@ -25,12 +25,17 @@
     <h1 class="md-github"><a class="md-github__anchor" name="repository0-crucible" href="#repository0-crucible"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>repository0-crucible</h1>
 <p class="md-github"><code class="md-github">repository0-crucible</code> is a demo repository that showcases the GitHub workflows imported from intentïon <a href="nhttps://github.com/xn-intenton-z2a/agentic-lib" class="md-github">agentic-lib</a>. Its primary purpose is to demonstrate these automated CI/CD workflows.</p>
 <p class="md-github">To create a self-evolving agentic coding system of your own based on this one see the <a href="./TEMPLATE-README.md" class="md-github">TEMPLATE-README.md</a> for more details.</p>
-<p class="md-github">This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds].</p>
+<p class="md-github">This readme shall evolve into a JavaScript library based on of of the seed CONTRIBUTING files in [./seeds].</p>
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
 <li class="md-github"><strong class="md-github">List Sources (<code class="md-github">--list-sources</code>)</strong>: Outputs the list of configured public data sources in JSON format. If a <code class="md-github">data-sources.json</code> file is present with a valid array of <code class="md-github">{ name, url }</code>, it will be merged with the default sources. Invalid or missing configs will fall back to defaults with a warning for invalid configs.</li>
 <li class="md-github"><strong class="md-github">Help (<code class="md-github">--help</code>, <code class="md-github">-h</code>)</strong>: Display the help message with usage instructions.</li>
-<li class="md-github"><strong class="md-github">Diagnostics (<code class="md-github">--diagnostics</code>)</strong>: Outputs diagnostic information (version, node version, platform, architecture, working directory, uptimeSeconds, memoryUsage, public data sources, and commands) as pretty-printed JSON, including a <code class="md-github">healthChecks</code> array with real-time availability metrics.</li>
+<li class="md-github"><strong class="md-github">Diagnostics (<code class="md-github">--diagnostics</code>)</strong>: Outputs diagnostic information (version, node version, platform, architecture, working directory, uptimeSeconds, memoryUsage, and commands) as pretty-printed JSON, including:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">publicDataSources</code>: array of configured data sources (default plus any custom from data-sources.json)</li>
+<li class="md-github"><code class="md-github">healthChecks</code>: array with real-time availability and latency metrics for each configured data source.</li>
+</ul>
+</li>
 <li class="md-github"><strong class="md-github">Build Intermediate (<code class="md-github">--build-intermediate</code>)</strong>: Reads JSON files from <code class="md-github">data/</code>, transforms each into OWL JSON-LD intermediate artifacts in <code class="md-github">intermediate/</code>, logs each write, and prints a summary line.</li>
 <li class="md-github"><strong class="md-github">Default Behavior</strong>: Running the CLI without any flags logs the provided arguments.</li>
 <li class="md-github"><strong class="md-github">Capital Cities (<code class="md-github">--capital-cities</code>)</strong>: Queries DBpedia for country-capital pairs and outputs an OWL-compatible JSON-LD document with <code class="md-github">@context</code> and <code class="md-github">@graph</code>.</li>
@@ -58,7 +63,7 @@ console.log(`Generated ${count} intermediate artifacts:`, files);
 
   </section>
   <footer>
-    <p>Generated on 2025-04-27T08:21:55.841Z</p>
+    <p>Generated on 2025-04-27T09:21:17.293Z</p>
   </footer>
 </body>
 </html>
