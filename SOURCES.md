@@ -38,9 +38,11 @@ W3C Document License (CC-BY 4.0); DBpedia: CC BY-SA 3.0; Wikidata: CC0/Public Do
 ## https://nodejs.org/api/path.html
 ## https://nodejs.org/api/esm.html
 ## https://nodejs.org/api/globals.html#fetch
+## https://nodejs.org/api/perf_hooks.html
+## https://nodejs.org/api/events.html
 ## https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
 ## https://vitest.dev/
-A combined reference for Node.js v20 core modules and the MDN Fetch API, covering HTTP servers, file I/O, URL and path utilities, ESM module loading, and global fetch usage (including streaming responses, error handling, and timeouts). Includes Vitest v3, a Vite-native testing framework for ESM-first projects, detailing mocking, spies, snapshots, parallel execution, V8-based coverage, and lifecycle hooks. Essential for robust CLI commands, HTTP endpoints, and comprehensive test suites. (Current as of Node.js v20.x; MDN fetch and Vitest docs updated continuously; authoritative as official Node.js, MDN, and Vitest documentation.)
+A combined reference for Node.js v20 core modules including HTTP servers, file I/O, URL and path utilities, ESM module loading, global fetch usage (including streaming responses, error handling, and timeouts), performance measurement via perf_hooks, and event-driven patterns via the events module. Also includes Fetch API details from MDN and Vitest v3, a Vite-native testing framework for ESM-first projects, detailing mocking, spies, snapshots, parallel execution, V8-based coverage, and lifecycle hooks. Essential for robust CLI commands, HTTP endpoints, performance-aware operations, event handling, and comprehensive test suites. (Current as of Node.js v20.x; MDN fetch and Vitest docs updated continuously; authoritative as official Node.js, MDN, and Vitest documentation.)
 ## License
 OpenJS Foundation and contributors (MIT License); MDN content (CC0/Public Domain)
 
