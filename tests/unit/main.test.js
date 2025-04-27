@@ -77,7 +77,9 @@ describe("Diagnostics Flag", () => {
     expect(parsed).toHaveProperty("platform", process.platform);
     expect(parsed).toHaveProperty("arch", process.arch);
     expect(parsed).toHaveProperty("cwd", process.cwd());
-    expect(parsed).toHaveProperty("publicDataSources", PUBLIC_DATA_SOURCES);
+    // Check that publicDataSources includes default sources
+    expect(parsed).toHaveProperty("publicDataSources");
+    expect(parsed.publicDataSources).toEqual(PUBLIC_DATA_SOURCES);
     expect(parsed).toHaveProperty("commands");
     expect(Array.isArray(parsed.commands)).toBe(true);
     expect(parsed.commands).toContain("--help");
@@ -85,7 +87,7 @@ describe("Diagnostics Flag", () => {
     // Check healthChecks
     expect(parsed).toHaveProperty("healthChecks");
     expect(Array.isArray(parsed.healthChecks)).toBe(true);
-    expect(parsed.healthChecks).toHaveLength(PUBLIC_DATA_SOURCES.length);
+    expect(parsed.healthChecks).toHaveLength(parsed.publicDataSources.length);
     const hc = parsed.healthChecks[0];
     expect(hc).toMatchObject({
       name: PUBLIC_DATA_SOURCES[0].name,

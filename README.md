@@ -4,13 +4,15 @@
 
 To create a self-evolving agentic coding system of your own based on this one see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds].
+This readme shall evolve into a JavaScript library based on of of the seed CONTRIBUTING files in [./seeds].
 
 ## Features
 
 - **List Sources (`--list-sources`)**: Outputs the list of configured public data sources in JSON format. If a `data-sources.json` file is present with a valid array of `{ name, url }`, it will be merged with the default sources. Invalid or missing configs will fall back to defaults with a warning for invalid configs.
 - **Help (`--help`, `-h`)**: Display the help message with usage instructions.
-- **Diagnostics (`--diagnostics`)**: Outputs diagnostic information (version, node version, platform, architecture, working directory, uptimeSeconds, memoryUsage, public data sources, and commands) as pretty-printed JSON, including a `healthChecks` array with real-time availability metrics.
+- **Diagnostics (`--diagnostics`)**: Outputs diagnostic information (version, node version, platform, architecture, working directory, uptimeSeconds, memoryUsage, and commands) as pretty-printed JSON, including:
+  - `publicDataSources`: array of configured data sources (default plus any custom from data-sources.json)
+  - `healthChecks`: array with real-time availability and latency metrics for each configured data source.
 - **Build Intermediate (`--build-intermediate`)**: Reads JSON files from `data/`, transforms each into OWL JSON-LD intermediate artifacts in `intermediate/`, logs each write, and prints a summary line.
 - **Default Behavior**: Running the CLI without any flags logs the provided arguments.
 - **Capital Cities (`--capital-cities`)**: Queries DBpedia for country-capital pairs and outputs an OWL-compatible JSON-LD document with `@context` and `@graph`.

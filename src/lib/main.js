@@ -255,6 +255,7 @@ function getHelpText() {
  * Generate diagnostics information.
  */
 async function generateDiagnostics() {
+  const sources = listSources();
   const commands = [
     "--help",
     "-h",
@@ -267,7 +268,7 @@ async function generateDiagnostics() {
     "--query",
   ];
   const healthChecks = await Promise.all(
-    PUBLIC_DATA_SOURCES.map(async (source) => {
+    sources.map(async (source) => {
       const start = Date.now();
       try {
         const res = await fetch(source.url, { method: "HEAD" });
@@ -288,7 +289,7 @@ async function generateDiagnostics() {
     cwd: process.cwd(),
     uptimeSeconds: process.uptime(),
     memoryUsage: process.memoryUsage(),
-    publicDataSources: PUBLIC_DATA_SOURCES,
+    publicDataSources: sources,
     commands,
     healthChecks,
   };
