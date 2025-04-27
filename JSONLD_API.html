@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="jsonld_api" href="#jsonld_api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSONLD_API</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">JSON-LD JavaScript API WebIDL interfaces and default configuration</p>
+<p class="md-github">JsonLdProcessor methods with signatures:
+expand(input, options)→Promise<Object>
+compact(input, context, options)→Promise<Object>
+flatten(input, context, options)→Promise<Object>
+frame(input, frame, options)→Promise<Object>
+toRDF(input, options)→Promise<Any>
+fromRDF(dataset, options)→Promise<Object>
+normalize(input, options)→Promise<String>
+merge(input, options)→Promise<Object></p>
+<p class="md-github">JsonLdOptions parameters:
+processingMode: &quot;json-ld-1.1&quot; (default) or &quot;json-ld-1.0&quot;
+base: IRI (default: document URL)
+expandContext: JSON-LD context map
+documentLoader: Function(URL)→Promise&lt;{documentUrl,document}&gt;
+profiles: Array<IRI>
+produceGeneralizedRdf: boolean
+useNative: boolean</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">JsonLdProcessor Interface</p>
+</li>
+<li class="md-github">
+<p class="md-github">JsonLdOptions Parameters</p>
+</li>
+<li class="md-github">
+<p class="md-github">Default Document Loader</p>
+</li>
+<li class="md-github">
+<p class="md-github">merge() Utility</p>
+</li>
+<li class="md-github">
+<p class="md-github">Profiles Option</p>
+</li>
+<li class="md-github">
+<p class="md-github">JsonLdProcessor Interface
+Methods and signatures:
+expand(JSONLDInput input, JsonLdOptions options) returns Promise<Object>
+compact(JSONLDInput input, JSONLDContext context, JsonLdOptions options) returns Promise<Object>
+flatten(JSONLDInput input, JSONLDContext context, JsonLdOptions options) returns Promise<Object>
+frame(JSONLDInput input, FrameDocument frame, JsonLdOptions options) returns Promise<Object>
+merge(JSONLDInput input, JsonLdOptions options) returns Promise<Object>
+toRDF(JSONLDInput input, JsonLdOptions options) returns Promise<Dataset or Quads>
+fromRDF(RDFDataset dataset, JsonLdOptions options) returns Promise<Object>
+normalize(JSONLDInput input, JsonLdOptions options) returns Promise<String></p>
+</li>
+<li class="md-github">
+<p class="md-github">JsonLdOptions Parameters
+processingMode: &quot;json-ld-1.1&quot; | &quot;json-ld-1.0&quot;
+base: absolute IRI string or null
+expandContext: context map or null
+documentLoader: function(url:String)→Promise&lt;{documentUrl:String,document:Object}&gt;
+profiles: array of IRI strings
+produceGeneralizedRdf: boolean
+useNative: boolean</p>
+</li>
+<li class="md-github">
+<p class="md-github">Default Document Loader
+Signature:
+function defaultDocumentLoader(url:String)→Promise&lt;{documentUrl:String,document:Object}&gt;
+Behavior:</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Uses fetch API</li>
+<li class="md-github">Rejects on HTTP status ≥400</li>
+<li class="md-github">Parses JSON body</li>
+<li class="md-github">Returns object with documentUrl and document body</li>
+</ul>
+<ol start="4" class="md-github">
+<li class="md-github">merge() Utility
+Signature:
+merge(JSONLDInput input, JsonLdOptions options)→Promise<Object>
+Behavior:</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Concatenates multiple JSON-LD inputs into a single expanded document</li>
+</ul>
+<ol start="5" class="md-github">
+<li class="md-github">profiles Option
+Allows selection of profiles for compacting; overrides base context</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">JsonLdOptions defaults
+processingMode=&quot;json-ld-1.1&quot;
+base: document URL
+expandContext: null
+documentLoader: defaultDocumentLoader
+profiles: []
+produceGeneralizedRdf=false
+useNative=false</p>
+<p class="md-github">Example usage:
+const options={processingMode:&quot;json-ld-1.1&quot;,base:&quot;https://example.com/&quot;,documentLoader:customLoader};
+jsonld.expand(input,options).then(expanded=&gt;console.log(expanded));</p>
+<p class="md-github">Custom document loader example:
+function customLoader(url){
+if(url.startsWith(&quot;https://mycdn.com/&quot;))return fetch(url).then(r=&gt;r.json()).then(doc=&gt;({documentUrl:url,document:doc}));
+throw new Error(&quot;Unsupported URL&quot;);
+}</p>
+<p class="md-github">Profiles usage:
+jsonld.compact(input,context,{profiles:[&quot;https://www.w3.org/ns/did/v1&quot;]});</p>
+<p class="md-github">produceGeneralizedRdf:
+jsonld.toRDF(input,{produceGeneralizedRdf:true}).then(dataset=&gt;{/* dataset may include generalized triples */});</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">WebIDL fragments:</p>
+<p class="md-github">interface JsonLdProcessor {
+Promise<Object> expand(JSONLDInput input, JsonLdOptions options);
+Promise<Object> compact(JSONLDInput input, JSONLDContext context, JsonLdOptions options);
+Promise<Object> flatten(JSONLDInput input, JSONLDContext context, JsonLdOptions options);
+Promise<Object> frame(JSONLDInput input, FrameDocument frame, JsonLdOptions options);
+Promise<Object> merge(JSONLDInput input, JsonLdOptions options);
+Promise<JsonLdRDF> toRDF(JSONLDInput input, JsonLdOptions options);
+Promise<Object> fromRDF(RDFDataset dataset, JsonLdOptions options);
+Promise<String> normalize(JSONLDInput input, JsonLdOptions options);
+};</p>
+<p class="md-github">dictionary JsonLdOptions {
+DOMString processingMode = &quot;json-ld-1.1&quot;;
+DOMString base = null;
+Any expandContext = null;
+JsonLdDocumentLoader documentLoader = defaultDocumentLoader;
+sequence<DOMString> profiles = [];
+boolean produceGeneralizedRdf = false;
+boolean useNative = false;
+};</p>
+<p class="md-github">dictionary JsonLdDocumentLoaderResult {
+DOMString documentUrl;
+Any document;
+};</p>
+<p class="md-github">typedef (JsonLdDocumentLoaderResult or Promise<JsonLdDocumentLoaderResult>) JsonLdDocumentLoader(DOMString url);</p>
+<p class="md-github">dictionary RDFDataset { /* conforms to RDF/JS spec: DatasetCore<Quad> */ };</p>
+<p class="md-github">dictionary JsonLdRDF { type: &quot;application/n-quads&quot; or &quot;application/n-quads; charset=utf-8&quot;; value: String; }</p>
+<p class="md-github">Example code:
+import jsonld from 'jsonld';</p>
+<p class="md-github">const input={&quot;@context&quot;:{&quot;name&quot;:&quot;http://xmlns.com/foaf/0.1/name&quot;},&quot;name&quot;:&quot;Alice&quot;};
+const options={ processingMode:&quot;json-ld-1.1&quot;, base:&quot;https://example.com/&quot; };
+jsonld.compact(input, input['@context'], options).then(compacted=&gt; {
+console.log(compacted);
+}).catch(err=&gt; console.error(err));</p>
+<p class="md-github">Best practices:</p>
+<ul class="md-github">
+<li class="md-github">Always set processingMode to match desired JSON-LD version</li>
+<li class="md-github">Provide a custom documentLoader for authenticated or local contexts</li>
+<li class="md-github">Use profiles to apply standard vocabularies during compaction</li>
+<li class="md-github">Use toRDF with produceGeneralizedRdf when working with blank node generalized triples</li>
+</ul>
+<p class="md-github">Troubleshooting:
+Command: curl -I https://example.com/context.json
+Expected: HTTP/1.1 200 OK
+If 404 or network error, ensure context URL is accessible or use local file loader.</p>
+<p class="md-github">Error patterns:
+Error: HTTP Error: 404 → context URL typo or missing file
+Error: JSON-LD only supports JSON content → ensure correct MIME type</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">JsonLdProcessor methods: expand(input,options)→Promise<Object>; compact(input,context,options)→Promise<Object>; flatten(input,context,options); frame(input,frame,options); merge(input,options); toRDF(input,options)→Promise<RDFDataset or N-Quads>; fromRDF(dataset,options)→Promise<Object>; normalize(input,options)→Promise<String>.</p>
+<p class="md-github">JsonLdOptions: processingMode (json-ld-1.1|json-ld-1.0), base (IRI|null), expandContext (Object|null), documentLoader(Function URL→Promise&lt;{documentUrl,document}&gt;), profiles(Array<IRI>), produceGeneralizedRdf(boolean), useNative(boolean).</p>
+<p class="md-github">defaultDocumentLoader uses fetch, rejects status&gt;=400, returns {documentUrl,url,document:parsedJSON}.</p>
+<p class="md-github">Examples: jsonld.expand(input,{processingMode:&quot;json-ld-1.1&quot;,base:&quot;IRI&quot;,documentLoader:loader}); jsonld.compact(input,context,options); jsonld.toRDF(input,{produceGeneralizedRdf:true}).then(dataset=&gt;...);</p>
+<p class="md-github">Best practices: set processingMode, custom loader for auth, use profiles for standard vocabs, produceGeneralizedRdf for generalized RDF; troubleshoot via curl -I contextURL; common errors HTTP 404, JSON parse errors.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">JsonLdProcessor Interface</p>
+</li>
+<li class="md-github">
+<p class="md-github">JsonLdOptions Parameters</p>
+</li>
+<li class="md-github">
+<p class="md-github">Default Document Loader</p>
+</li>
+<li class="md-github">
+<p class="md-github">merge() Utility</p>
+</li>
+<li class="md-github">
+<p class="md-github">Profiles Option</p>
+</li>
+<li class="md-github">
+<p class="md-github">JsonLdProcessor Interface
+Methods and signatures:
+expand(JSONLDInput input, JsonLdOptions options) returns Promise<Object>
+compact(JSONLDInput input, JSONLDContext context, JsonLdOptions options) returns Promise<Object>
+flatten(JSONLDInput input, JSONLDContext context, JsonLdOptions options) returns Promise<Object>
+frame(JSONLDInput input, FrameDocument frame, JsonLdOptions options) returns Promise<Object>
+merge(JSONLDInput input, JsonLdOptions options) returns Promise<Object>
+toRDF(JSONLDInput input, JsonLdOptions options) returns Promise<Dataset or Quads>
+fromRDF(RDFDataset dataset, JsonLdOptions options) returns Promise<Object>
+normalize(JSONLDInput input, JsonLdOptions options) returns Promise<String></p>
+</li>
+<li class="md-github">
+<p class="md-github">JsonLdOptions Parameters
+processingMode: 'json-ld-1.1' | 'json-ld-1.0'
+base: absolute IRI string or null
+expandContext: context map or null
+documentLoader: function(url:String)Promise&lt;{documentUrl:String,document:Object}&gt;
+profiles: array of IRI strings
+produceGeneralizedRdf: boolean
+useNative: boolean</p>
+</li>
+<li class="md-github">
+<p class="md-github">Default Document Loader
+Signature:
+function defaultDocumentLoader(url:String)Promise&lt;{documentUrl:String,document:Object}&gt;
+Behavior:</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Uses fetch API</li>
+<li class="md-github">Rejects on HTTP status 400</li>
+<li class="md-github">Parses JSON body</li>
+<li class="md-github">Returns object with documentUrl and document body</li>
+</ul>
+<ol start="4" class="md-github">
+<li class="md-github">merge() Utility
+Signature:
+merge(JSONLDInput input, JsonLdOptions options)Promise<Object>
+Behavior:</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Concatenates multiple JSON-LD inputs into a single expanded document</li>
+</ul>
+<ol start="5" class="md-github">
+<li class="md-github">profiles Option
+Allows selection of profiles for compacting; overrides base context</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">JSON-LD 1.1 Specification and API
+https://www.w3.org/TR/json-ld11-api/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-jsonld_api" href="#digest-of-jsonld_api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of JSONLD_API</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="jsonldprocessor-interface" href="#jsonldprocessor-interface"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JsonLdProcessor Interface</h1>
+<p class="md-github">WebIDL declaration:
+interface JsonLdProcessor {
+Promise<Object> expand(JSONLDInput input, JsonLdOptions options);
+Promise<Object> compact(JSONLDInput input, JSONLDContext context, JsonLdOptions options);
+Promise<Object> flatten(JSONLDInput input, JSONLDContext context, JsonLdOptions options);
+Promise<Object> frame(JSONLDInput input, FrameDocument frame, JsonLdOptions options);
+Promise<Object> merge(JSONLDInput input, JsonLdOptions options);
+Promise<Any> toRDF(JSONLDInput input, JsonLdOptions options);
+Promise<Object> fromRDF(RDFDataset dataset, JsonLdOptions options);
+Promise<String> normalize(JSONLDInput input, JsonLdOptions options);
+};</p>
+<h1 class="md-github"><a class="md-github__anchor" name="jsonldoptions-dictionary" href="#jsonldoptions-dictionary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JsonLdOptions Dictionary</h1>
+<p class="md-github">WebIDL declaration:
+dictionary JsonLdOptions {
+DOMString processingMode = &quot;json-ld-1.1&quot;;
+DOMString base = null;
+DOMString expandContext = null;
+JsonLdDocumentLoader documentLoader = defaultDocumentLoader;
+Array<String> profiles = [];
+boolean produceGeneralizedRdf = false;
+boolean useNative = false;
+Any additional custom loader options;
+};</p>
+<h1 class="md-github"><a class="md-github__anchor" name="default-document-loader" href="#default-document-loader"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Default Document Loader</h1>
+<p class="md-github">function defaultDocumentLoader(url) {
+return fetch(url).then(response =&gt; {
+return response.status &gt;= 400
+? Promise.reject(new Error(<code class="md-github">HTTP Error: ${response.status}</code>))
+: response.json().then(body =&gt; ({ documentUrl: url, document: body }));
+});
+}</p>
+<h1 class="md-github"><a class="md-github__anchor" name="configuration-options-and-defaults" href="#configuration-options-and-defaults"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration Options and Defaults</h1>
+<ul class="md-github">
+<li class="md-github">processingMode: &quot;json-ld-1.1&quot; or &quot;json-ld-1.0&quot;</li>
+<li class="md-github">base: Base IRI for relative resolution (default: document location)</li>
+<li class="md-github">expandContext: Local context to use during expansion</li>
+<li class="md-github">documentLoader: Function(url) returning Promise&lt;{documentUrl, document}&gt;</li>
+<li class="md-github">profiles: Array of profile URIs for compact API</li>
+<li class="md-github">produceGeneralizedRdf: Include generalized triples (default: false)</li>
+<li class="md-github">useNative: Use native RDF dataset (default: false)</li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="retrieval-metadata" href="#retrieval-metadata"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieval metadata</h1>
+<p class="md-github">Source: JSON-LD 1.1 Processing Algorithms and API
+Retrieved: 2024-06-25
+Data Size: 32556606 bytes
+Links Found: 153009
+Error: None</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: JSON-LD 1.1 Specification and API</li>
+<li class="md-github">URL: https://www.w3.org/TR/json-ld11-api/</li>
+<li class="md-github">License: License</li>
+<li class="md-github">Crawl Date: 2025-04-27T06:50:34.119Z</li>
+<li class="md-github">Data Size: 32556606 bytes</li>
+<li class="md-github">Links Found: 153009</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-27</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-27T07:20:50.439Z</p>
+  </footer>
+</body>
+</html>
