@@ -182,25 +182,21 @@ By default it listens on port `3000`, or an OS-assigned port if `PORT=0` is set.
 
 Any other path returns `404 Not Found`.
 
-## Refresh
+## Capital Cities
 
-Use the `--refresh` flag to fetch and persist data from all configured public and custom sources into the `data/` directory:
-
-```bash
-node src/lib/main.js --refresh
-```
-
-## Build Intermediate
-
-Use the `--build-intermediate` flag to transform existing JSON data into OWL JSON-LD intermediate artifacts:
+Use the `--capital-cities` flag to query DBpedia for country-capital pairs and output an OWL-compatible JSON-LD document:
 
 ```bash
-node src/lib/main.js --build-intermediate
+node src/lib/main.js --capital-cities
 ```
 
 Example output:
 
-```text
-written example-intermediate.json
-Generated 1 intermediate artifacts into intermediate/
+```json
+{
+  "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
+  "@graph": [
+    { "@id": "http://example.org/C", "capital": "http://example.org/K" }
+  ]
+}
 ```
