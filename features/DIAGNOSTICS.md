@@ -1,30 +1,50 @@
 # Description
-Provide a CLI command to show diagnostic information about the runtime environment and configured data sources for debugging and monitoring.
+Extend diagnostics output to include comprehensive system and file metrics for improved monitoring and debugging. Diagnostics should provide environment details, health checks of data sources, and counts and listings of project JSON files.
 
 # Implementation
-Extend main to detect the --diagnostics or -d flag. When present gather the following information
-  nodeVersion from process.version
-  workingDirectory from process.cwd()
-  publicDataSourcesCount from PUBLIC_DATA_SOURCES length
-  publicDataSources array with objects containing name and url properties
-Convert this information into a JSON string formatted with two space indentation and output via console.log then return. Preserve existing behavior when this flag is not provided.
+1. In generateDiagnostics():
+   - Collect existing data (version, nodeVersion, platform, arch, cwd, uptimeSeconds, memoryUsage, publicDataSources, commands, healthChecks).
+   - Determine data directory at project root (data/) and intermediate directory (intermediate/).
+   - If directories exist, read their contents and collect:
+     - dataFilesCount: number of files ending in .json in data/
+     - dataFiles: sorted list of filenames in data/
+     - intermediateFilesCount: number of files ending in .json in intermediate/
+     - intermediateFiles: sorted list of filenames in intermediate/
+   - If directories do not exist, default counts to 0 and lists to empty arrays.
+   - Include these file metrics in the returned diagnostics object.
+2. In CLI handler for --diagnostics:
+   - Call generateDiagnostics() and output JSON.stringify(info, null, 2) to console.log.
+   - Ensure process returns without throwing.
+3. In HTTP server under /diagnostics:
+   - On GET /diagnostics, respond with status 200 and Content-Type application/json.
+   - End response with JSON.stringify(info, null, 2).
 
 # CLI Usage
-To display diagnostics
-  node src/lib/main.js --diagnostics
-  node src/lib/main.js -d
-Expected output example
-  {
-    nodeVersion: v20.x.x,
-    workingDirectory: /path/to/project,
-    publicDataSourcesCount: 1,
-    publicDataSources: [
-      { name: DBpedia SPARQL, url: https://dbpedia.org/sparql }
-    ]
-  }
+To display enhanced diagnostics:
+
+node src/lib/main.js --diagnostics
+
+Example output is a pretty-printed JSON document including version, nodeVersion, platform, arch, cwd, uptimeSeconds, memoryUsage, publicDataSources, commands, healthChecks, dataFilesCount, dataFiles, intermediateFilesCount, and intermediateFiles.
+
+# HTTP Usage
+When running with --serve, send:
+
+GET /diagnostics
+
+The server responds with a 200 JSON content containing the same diagnostics object.
 
 # Testing
-Add a unit test that spies on console.log when calling main(["--diagnostics"]) and verifies the output is valid JSON containing nodeVersion and publicDataSourcesCount. Ensure main returns without throwing an error.
+- Update unit tests for generateDiagnostics() to verify presence and correct types of:
+  • version, nodeVersion, platform, arch, cwd
+  • uptimeSeconds (number)
+  • memoryUsage object with numeric rss, heapTotal, heapUsed, external, arrayBuffers
+  • publicDataSources array matching PUBLIC_DATA_SOURCES
+  • commands array containing known CLI flags
+  • healthChecks array with objects per source including name, url, statusCode, latencyMs, reachable
+  • dataFilesCount and intermediateFilesCount numbers
+  • dataFiles and intermediateFiles sorted arrays
+- HTTP integration tests for GET /diagnostics to verify status 200, Content-Type application/json, and body contains file metric fields and health check entries.
 
 # Documentation Updates
-Update docs/FEATURES.md to describe the diagnostics option and its expected output. Update docs/USAGE.md and README.md under Features to include diagnostics command examples.
+- Update docs/FEATURES.md to describe new file metrics fields under Diagnostics.
+- Update docs/USAGE.md and README.md under Diagnostics to show example output including dataFilesCount, dataFiles, intermediateFilesCount, and intermediateFiles.
