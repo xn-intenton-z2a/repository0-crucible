@@ -85,22 +85,102 @@ node src/lib/main.js --diagnostics
 
 ## Serve
 
-Start a local HTTP server to expose endpoints for help, sources, diagnostics, capital cities, refresh, and build intermediate:
+Start a local HTTP server to expose REST endpoints:
 
 ```bash
 node src/lib/main.js --serve
 ```
 
-Example usage:
+By default it listens on port `3000`, or an OS-assigned port if `PORT=0` is set.
 
-```bash
-curl http://localhost:3000/help
-curl http://localhost:3000/sources
-curl http://localhost:3000/diagnostics
-curl http://localhost:3000/capital-cities
-curl http://localhost:3000/refresh
-curl http://localhost:3000/build-intermediate
-```
+### Available Endpoints
+
+1. GET `/help`
+   - Status: `200 OK`
+   - Headers: `Content-Type: text/plain`
+   - Body snippet:
+     ```text
+     owl-builder: create and manage OWL ontologies from public data sources
+     Usage: node src/lib/main.js [options]
+     ...
+     ```
+
+2. GET `/sources`
+   - Status: `200 OK`
+   - Headers: `Content-Type: application/json`
+   - Body example:
+     ```json
+     [
+       {
+         "name": "DBpedia SPARQL",
+         "url": "https://dbpedia.org/sparql"
+       }
+     ]
+     ```
+
+3. GET `/diagnostics`
+   - Status: `200 OK`
+   - Headers: `Content-Type: application/json`
+   - Body example:
+     ```json
+     {
+       "version": "1.2.0-0",
+       "nodeVersion": "v20.x.x",
+       "platform": "linux",
+       "arch": "x64",
+       "cwd": "/path/to/project",
+       "publicDataSources": [...],
+       "commands": [...],
+       "healthChecks": [
+         {
+           "name": "DBpedia SPARQL",
+           "url": "https://dbpedia.org/sparql",
+           "statusCode": 200,
+           "latencyMs": 123,
+           "reachable": true
+         }
+       ],
+       "uptimeSeconds": 12.34,
+       "memoryUsage": { ... }
+     }
+     ```
+
+4. GET `/capital-cities`
+   - Status: `200 OK`
+   - Headers: `Content-Type: application/json`
+   - Body example:
+     ```json
+     {
+       "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
+       "@graph": [
+         {
+           "@id": "http://example.org/C",
+           "capital": "http://example.org/K"
+         }
+       ]
+     }
+     ```
+
+5. GET `/refresh`
+   - Status: `200 OK`
+   - Headers: `Content-Type: text/plain`
+   - Body snippet:
+     ```text
+     written <source1>.json
+     written <source2>.json
+     Refreshed 2 sources into data/
+     ```
+
+6. GET `/build-intermediate`
+   - Status: `200 OK`
+   - Headers: `Content-Type: text/plain`
+   - Body snippet:
+     ```text
+     written <name>-intermediate.json
+     Generated 1 intermediate artifacts into intermediate/
+     ```
+
+Any other path returns `404 Not Found`.
 
 ## Refresh
 
