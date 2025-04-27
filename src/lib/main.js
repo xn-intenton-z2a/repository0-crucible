@@ -5,6 +5,7 @@ import http from "http";
 import { URL } from "url";
 import pkg from "../../package.json" assert { type: "json" };
 import { performance } from "perf_hooks";
+import * as SELF from "./main.js"; // dynamic reference to allow mocking in tests
 
 export const PUBLIC_DATA_SOURCES = [{ name: "DBpedia SPARQL", url: "https://dbpedia.org/sparql" }];
 
@@ -99,8 +100,8 @@ export function buildIntermediate({ dataDir = "data", outDir = "intermediate" } 
 }
 
 export async function buildEnhanced({ dataDir = "data", intermediateDir = "intermediate", outDir = "enhanced" } = {}) {
-  const refreshed = await refreshSources({ dataDir });
-  const intermediateRes = await buildIntermediate({ dataDir, outDir: intermediateDir });
+  const refreshed = await SELF.refreshSources({ dataDir });
+  const intermediateRes = await SELF.buildIntermediate({ dataDir, outDir: intermediateDir });
   const cwd = process.cwd();
   const intPath = path.isAbsolute(intermediateDir) ? intermediateDir : path.join(cwd, intermediateDir);
   let graph = [];
@@ -129,9 +130,8 @@ export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url)
     "SELECT ?country ?capital WHERE { ?country a <http://www.wikidata.org/entity/Q6256> . ?country <http://www.wikidata.org/prop/direct/P36> ?capital . }";
   let response;
   try {
-    const urlObj = new URL(endpointUrl);
-    urlObj.searchParams.set("query", sparql);
-    response = await fetch(urlObj.toString(), {
+    const urlStr = endpointUrl + "?query=" + encodeURIComponent(sparql);
+    response = await fetch(urlStr, {
       headers: { Accept: "application/sparql-results+json" },
     });
   } catch (err) {
@@ -183,9 +183,9 @@ export async function generateDiagnostics() {
     }
     healthChecks.push({ name: source.name, url: source.url, statusCode, latencyMs, reachable });
   }
-  const dataDir = path.join(cwd, "data");
-  const dataFiles = fs.existsSync(dataDir)
-    ? fs.readdirSync(dataDir).filter(f => f.endsWith(".json")).sort()
+  const dataDirPath = path.join(cwd, "data");
+  const dataFiles = fs.existsSync(dataDirPath)
+    ? fs.readdirSync(dataDirPath).filter(f => f.endsWith(".json")).sort()
     : [];
   const intDir = path.join(cwd, "intermediate");
   const intermediateFiles = fs.existsSync(intDir)
@@ -216,7 +216,7 @@ export async function main(args) {
     return;
   }
   if (cliArgs.includes("--list-sources")) {
-    const sources = await listSources();
+    const sources = listSources();
     console.log(JSON.stringify(sources, null, 2));
     return;
   }
@@ -264,7 +264,7 @@ export async function main(args) {
         const originalLog = console.log;
         console.log = msg => res.write(`${msg}\n`);
         try {
-          await buildIntermediate();
+          await SELF.buildIntermediate();
         } catch {}
         console.log = originalLog;
         res.end();
@@ -304,9 +304,9 @@ export async function main(args) {
       }
     }
     if (dataDir !== undefined || outDir !== undefined) {
-      buildIntermediate({ dataDir, outDir });
+      SELF.buildIntermediate({ dataDir, outDir });
     } else {
-      buildIntermediate();
+      SELF.buildIntermediate();
     }
     return;
   }
