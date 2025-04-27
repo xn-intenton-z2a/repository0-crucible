@@ -251,7 +251,7 @@ export async function sparqlQuery(filePath, queryString) {
 
 export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url) {
   const sparql =
-    "SELECT ?country ?capital WHERE { ?country a <http://www.wikidata.org/entity/Q6256> . ?country <http://www.wikidata.org/prop/direct/P36> ?capital . }";
+    "SELECT ?country ?capital WHERE { ?country a <http://www.wikidata.org/entity/Q6256> . ?ountry <http://www.wikidata.org/prop/direct/P36> ?capital . }";
   let response;
   try {
     const urlStr = endpointUrl + "?query=" + encodeURIComponent(sparql);
@@ -486,9 +486,9 @@ export async function main(args) {
     const biArgs = cliArgs.slice(biIndex + 1);
     let dataDir;
     let outDir;
-    if (biArgs.length >= 1 && !biArgs[0].startswith("-")) {
+    if (biArgs.length >= 1 && !biArgs[0].startsWith("-")) {
       dataDir = biArgs[0];
-      if (biArgs.length >= 2 && !biArgs[1].startswith("-")) {
+      if (biArgs.length >= 2 && !biArgs[1].startsWith("-")) {
         outDir = biArgs[1];
       }
     }
