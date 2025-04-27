@@ -134,25 +134,28 @@ export async function refreshSources(configPath = path.join(process.cwd(), "data
 }
 
 /**
- * Build intermediate JSON-LD artifacts from data/ into intermediate/.
+ * Build intermediate JSON-LD artifacts from dataDir into outDir.
+ * @param {Object} [options]
+ * @param {string} [options.dataDir]
+ * @param {string} [options.outDir]
+ * @returns {{count: number, files: string[]}} summary of generated artifacts.
  */
-export function buildIntermediate() {
-  const dataDir = path.join(process.cwd(), "data");
-  const intermediateDir = path.join(process.cwd(), "intermediate");
+export function buildIntermediate({ dataDir = path.join(process.cwd(), "data"), outDir = path.join(process.cwd(), "intermediate") } = {}) {
   if (!fs.existsSync(dataDir)) {
     console.error("Error: data/ directory not found");
-    return;
+    return { count: 0, files: [] };
   }
-  fs.mkdirSync(intermediateDir, { recursive: true });
-  let files = [];
+  fs.mkdirSync(outDir, { recursive: true });
+  let entries = [];
   try {
-    files = fs.readdirSync(dataDir).filter((f) => f.endsWith(".json"));
+    entries = fs.readdirSync(dataDir).filter((f) => f.endsWith(".json"));
   } catch (err) {
     console.error(`Error reading data directory: ${err.message}`);
-    files = [];
+    entries = [];
   }
+  const files = [];
   let count = 0;
-  for (const file of files) {
+  for (const file of entries) {
     const slug = file.replace(/\.json$/i, "");
     const outName = `${slug}-intermediate.json`;
     try {
@@ -182,14 +185,17 @@ export function buildIntermediate() {
         "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
         "@graph": graphEntries,
       };
-      fs.writeFileSync(path.join(intermediateDir, outName), JSON.stringify(doc, null, 2), "utf8");
+      fs.writeFileSync(path.join(outDir, outName), JSON.stringify(doc, null, 2), "utf8");
       console.log(`written ${outName}`);
+      files.push(outName);
       count++;
     } catch (err) {
       console.error(`Error processing ${file}: ${err.message}`);
     }
   }
-  console.log(`Generated ${count} intermediate artifacts into intermediate/`);
+  const dirName = path.basename(outDir);
+  console.log(`Generated ${count} intermediate artifacts into ${dirName}/`);
+  return { count, files };
 }
 
 /**
@@ -257,195 +263,109 @@ async function generateDiagnostics() {
 }
 
 /**
- * Main CLI entry.
+ * HTTP and CLI entrypoint main
  */
 export async function main(args) {
   const cliArgs = args !== undefined ? args : process.argv.slice(2);
 
-  if (cliArgs[0] === "--help" || cliArgs[0] === "-h") {
+  if (cliArgs.includes("--help") || cliArgs.includes("-h")) {
     console.log(getHelpText());
     return;
   }
-  if (cliArgs[0] === "--list-sources") {
-    console.log(JSON.stringify(listSources(), null, 2));
+
+  if (cliArgs.includes("--list-sources")) {
+    const sources = listSources();
+    console.log(JSON.stringify(sources, null, 2));
     return;
   }
-  if (cliArgs[0] === "--diagnostics") {
-    const diag = await generateDiagnostics();
-    console.log(JSON.stringify(diag, null, 2));
+
+  if (cliArgs.includes("--diagnostics")) {
+    const info = await generateDiagnostics();
+    console.log(JSON.stringify(info, null, 2));
     return;
   }
-  if (cliArgs[0] === "--capital-cities") {
-    const query = "SELECT ?country ?capital WHERE { ?country <http://dbpedia.org/ontology/capital> ?capital }";
-    const endpoint = PUBLIC_DATA_SOURCES[0].url;
-    const url = `${endpoint}?query=${encodeURIComponent(query)}`;
+
+  if (cliArgs.includes("--capital-cities")) {
     try {
-      const response = await fetch(url);
+      const response = await fetch(PUBLIC_DATA_SOURCES[0].url);
       const json = await response.json();
-      const graph = (json.results?.bindings || []).map((b) => ({
-        "@id": b.country.value,
-        capital: b.capital.value,
-      }));
+      const graph = json.results.bindings.map((binding) => {
+        const keys = Object.keys(binding);
+        const entry = { "@id": binding[keys[0]].value };
+        for (const k of keys.slice(1)) {
+          entry[k] = binding[k].value;
+        }
+        return entry;
+      });
       const doc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
-      console.log(JSON.stringify(doc, null, 2));
+      console.log(JSON.stringify(doc));
     } catch (err) {
       console.error(`Error fetching capital cities: ${err.message}`);
-      process.exit(2);
     }
     return;
   }
-  if (cliArgs[0] === "--query") {
-    const file = cliArgs[1];
-    const queryStr = cliArgs.slice(2).join(" ");
-    if (!file || !queryStr) {
-      console.error("Usage: --query <filePath> <SPARQL query>");
-      process.exit(1);
-    }
-    try {
-      const results = await queryOntologies(file, queryStr);
-      console.log(JSON.stringify(results, null, 2));
-      process.exit(0);
-    } catch (err) {
-      if (err.code === "FILE_NOT_FOUND" || err.code === "INVALID_JSON_LD") {
-        console.error(err.message);
-        process.exit(1);
-      }
-      console.error(err.message);
-      process.exit(2);
-    }
-    return;
-  }
+
   if (cliArgs.includes("--serve")) {
-    const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+    const port = parseInt(process.env.PORT) || 3000;
     const server = http.createServer(async (req, res) => {
-      try {
-        const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
-        const { pathname, searchParams } = parsedUrl;
-        if (req.method === "GET" && pathname === "/help") {
-          res.writeHead(200, { "Content-Type": "text/plain" });
-          return res.end(getHelpText());
-        }
-        if (req.method === "GET" && pathname === "/sources") {
-          res.writeHead(200, { "Content-Type": "application/json" });
-          return res.end(JSON.stringify(listSources(), null, 2));
-        }
-        if (req.method === "GET" && pathname === "/diagnostics") {
-          res.writeHead(200, { "Content-Type": "application/json" });
-          const diag = await generateDiagnostics();
-          return res.end(JSON.stringify(diag, null, 2));
-        }
-        if (req.method === "GET" && pathname === "/capital-cities") {
-          try {
-            const query = "SELECT ?country ?capital WHERE { ?country <http://dbpedia.org/ontology/capital> ?capital }";
-            const endpoint = PUBLIC_DATA_SOURCES[0].url;
-            const urlStr = `${endpoint}?query=${encodeURIComponent(query)}`;
-            const response = await fetch(urlStr);
-            const json = await response.json();
-            const graph = (json.results?.bindings || []).map((b) => ({
-              "@id": b.country.value,
-              capital: b.capital.value,
-            }));
-            const doc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
-            res.writeHead(200, { "Content-Type": "application/json" });
-            return res.end(JSON.stringify(doc, null, 2));
-          } catch (err) {
-            res.writeHead(500, { "Content-Type": "text/plain" });
-            return res.end(err.message);
-          }
-        }
-        if (req.method === "GET" && pathname === "/query") {
-          const fileParam = searchParams.get("file");
-          const queryParam = searchParams.get("query");
-          if (!fileParam || !queryParam) {
-            res.writeHead(400, { "Content-Type": "text/plain" });
-            return res.end("Missing 'file' or 'query' parameter");
-          }
-          try {
-            const results = await queryOntologies(fileParam, queryParam);
-            res.writeHead(200, { "Content-Type": "application/json" });
-            return res.end(JSON.stringify(results, null, 2));
-          } catch (err) {
-            if (err.code === "FILE_NOT_FOUND") {
-              res.writeHead(404, { "Content-Type": "text/plain" });
-              return res.end(err.message);
+      const parsedUrl = new URL(req.url, `http://${req.headers.host}`);
+      const pathname = parsedUrl.pathname;
+
+      if (req.method === "GET" && pathname === "/help") {
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        res.end(getHelpText());
+      } else if (req.method === "GET" && pathname === "/sources") {
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(listSources(), null, 2));
+      } else if (req.method === "GET" && pathname === "/diagnostics") {
+        const info = await generateDiagnostics();
+        res.writeHead(200, { "Content-Type": "application/json" });
+        res.end(JSON.stringify(info, null, 2));
+      } else if (req.method === "GET" && pathname === "/capital-cities") {
+        try {
+          const response = await fetch(PUBLIC_DATA_SOURCES[0].url);
+          const json = await response.json();
+          const graph = json.results.bindings.map((binding) => {
+            const keys = Object.keys(binding);
+            const entry = { "@id": binding[keys[0]].value };
+            for (const k of keys.slice(1)) {
+              entry[k] = binding[k].value;
             }
-            res.writeHead(500, { "Content-Type": "text/plain" });
-            return res.end(err.message);
-          }
+            return entry;
+          });
+          const doc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify(doc));
+        } catch (err) {
+          res.writeHead(500, { "Content-Type": "text/plain" });
+          res.end(err.message);
         }
-        if (req.method === "GET" && pathname === "/refresh") {
-          res.writeHead(200, { "Content-Type": "text/plain" });
-          try {
-            const { count, files } = await refreshSources();
-            files.forEach((fname) => res.write(`written ${fname}\n`));
-            res.write(`Refreshed ${count} sources into data/`);
-            return res.end();
-          } catch (err) {
-            res.writeHead(500, { "Content-Type": "text/plain" });
-            return res.end(err.message);
-          }
+      } else if (req.method === "GET" && pathname === "/build-intermediate") {
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        const originalLog = console.log;
+        console.log = (msg) => {
+          res.write(`${msg}\n`);
+        };
+        try {
+          buildIntermediate();
+        } catch (err) {
+          // ignore
         }
-        if (req.method === "GET" && pathname === "/build-intermediate") {
-          res.writeHead(200, { "Content-Type": "text/plain" });
-          const dataDir = path.join(process.cwd(), "data");
-          const intermediateDir = path.join(process.cwd(), "intermediate");
-          if (!fs.existsSync(dataDir)) {
-            return res.end("Error: data/ directory not found");
-          }
-          fs.mkdirSync(intermediateDir, { recursive: true });
-          let files = [];
-          try {
-            files = fs.readdirSync(dataDir).filter((f) => f.endsWith(".json"));
-          } catch (err) {
-            return res.end(`Error reading data directory: ${err.message}`);
-          }
-          let count = 0;
-          for (const file of files) {
-            const slug = file.replace(/\.json$/i, "");
-            const outName = `${slug}-intermediate.json`;
-            try {
-              const raw = fs.readFileSync(path.join(dataDir, file), "utf8");
-              const parsed = JSON.parse(raw);
-              let graphEntries = [];
-              if (parsed && parsed.results && Array.isArray(parsed.results.bindings)) {
-                graphEntries = parsed.results.bindings.map((b) => {
-                  const entry = {};
-                  const keys = Object.keys(b);
-                  if (keys.length > 0) {
-                    entry["@id"] = b[keys[0]].value;
-                    for (const k of keys.slice(1)) {
-                      entry[k] = b[k].value;
-                    }
-                  }
-                  return entry;
-                });
-              } else if (Array.isArray(parsed) || typeof parsed === "object") {
-                graphEntries = Array.isArray(parsed)
-                  ? parsed
-                  : parsed["@graph"]
-                  ? parsed["@graph"]
-                  : Object.values(parsed);
-              }
-              const doc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graphEntries };
-              fs.writeFileSync(path.join(intermediateDir, outName), JSON.stringify(doc, null, 2), "utf8");
-              res.write(`written ${outName}\n`);
-              count++;
-            } catch (err) {
-              res.write(`Error processing ${file}: ${err.message}\n`);
-            }
-          }
-          res.write(`Generated ${count} intermediate artifacts into intermediate/`);
-          return res.end();
-        }
-        // Not found
+        console.log = originalLog;
+        res.end();
+      } else {
         res.writeHead(404, { "Content-Type": "text/plain" });
-        return res.end("Not Found");
-      } catch (err) {
-        res.writeHead(500, { "Content-Type": "text/plain" });
-        return res.end(err.message);
+        res.end("Not Found");
       }
     });
     server.listen(port);
     return server;
   }
+
+  if (cliArgs.includes("--build-intermediate")) {
+    buildIntermediate();
+    return;
+  }
+
+  // default: no operation
 }
