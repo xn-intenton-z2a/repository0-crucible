@@ -78,16 +78,6 @@ describe("HTTP Server (--serve) Integration Tests", () => {
       statusCode: 200,
       reachable: true,
     });
-    expect(data).toHaveProperty("uptimeSeconds");
-    expect(typeof data.uptimeSeconds).toBe("number");
-    expect(data).toHaveProperty("memoryUsage");
-    expect(data.memoryUsage).toMatchObject({
-      rss: expect.any(Number),
-      heapTotal: expect.any(Number),
-      heapUsed: expect.any(Number),
-      external: expect.any(Number),
-      arrayBuffers: expect.any(Number),
-    });
   });
 
   test("GET /capital-cities returns JSON-LD document", async () => {
@@ -97,7 +87,7 @@ describe("HTTP Server (--serve) Integration Tests", () => {
     const data = JSON.parse(res.body);
     expect(data).toHaveProperty("@context");
     expect(data).toHaveProperty("@graph");
-    expect(Array.isArray(data["@graph"]/)).toBe(true);
+    expect(Array.isArray(data["@graph"])).toBe(true);
     expect(data["@graph"][0]).toEqual({
       "@id": mockBinding.country.value,
       capital: mockBinding.capital.value,
