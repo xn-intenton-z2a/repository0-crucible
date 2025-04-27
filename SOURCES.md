@@ -1,7 +1,9 @@
-# W3C RDF 1.1 Concepts and OWL 2 Web Ontology Language
+# W3C RDF 1.1 & OWL 2 Specifications
 ## https://www.w3.org/TR/rdf11-concepts/
 ## https://www.w3.org/TR/owl2-overview/
-This combined W3C Recommendation provides the RDF 1.1 data model and the OWL 2 Web Ontology Language overview. It specifies IRIs, literals, blank nodes, triples, graphs, key OWL constructs including classes, properties, and individuals, with abstract syntaxes (Turtle, RDF/XML, JSON-LD), formal semantics, conformance criteria, parsing and serialization examples, and ontology authoring patterns. This foundation is critical for constructing, transforming, and validating RDF graphs and ontologies in both CLI and HTTP workflows. (Last updated: RDF Concepts 25 February 2014; OWL 2 Overview 27 October 2009; authoritative as W3C Recommendation.)
+## https://www.w3.org/TR/owl2-rdf-based-semantics/
+## https://www.w3.org/TR/owl2-syntax/
+This combined set of W3C Recommendations defines the core RDF data model (IRIs, literals, blank nodes, triples, graphs) and the OWL 2 ontology language, including abstract syntaxes (Turtle, RDF/XML, JSON-LD), formal semantics (RDF-based entailment, interpretation structures), syntax for classes, properties, axioms, data ranges, and annotation patterns, plus conformance criteria and serialization guidelines. It provides the foundational specifications necessary to correctly construct, serialize, and reason over OWL ontologies in both CLI workflows and HTTP-based pipelines. (Last updated: RDF Concepts 25 February 2014; OWL 2 Overview 27 October 2009; OWL 2 Semantics 11 December 2012; OWL 2 Abstract Syntax 27 October 2009; authoritative as W3C Recommendations.)
 ## License
 W3C Document License (CC-BY 4.0)
 
@@ -15,9 +17,9 @@ W3C Document License (CC-BY 4.0)
 ## https://www.w3.org/TR/json-ld11/
 ## https://www.w3.org/TR/json-ld11-api/
 ## https://github.com/digitalbazaar/jsonld.js#readme
-The JSON-LD 1.1 specifications and API define framing, compaction, expansion, context processing, normalization (URDNA2015), and RDF conversion algorithms. The jsonld.js library provides custom document loader hooks, asynchronous streaming support, and comprehensive error handling. Together they enable seamless ingestion and emission of JSON-LD in OWL builder workflows, with practical code examples for context management and conversion to N-Quads. (Last updated: Spec & API May 2020; jsonld.js 2024; authoritative as W3C Recommendation and official implementation.)
+The JSON-LD 1.1 specs and associated JavaScript API define framing, compaction, expansion, context processing, normalization (URDNA2015), and conversion between JSON-LD and RDF. The jsonld.js library provides a complete implementation with support for custom document loaders, asynchronous streaming, and error handling, including examples for context management and conversion to N-Quads. These sources are essential for ingesting and emitting JSON-LD in OWL builder workflows. (Last updated: Specs & API May 2020; jsonld.js 2024; authoritative as W3C Recommendation and official implementation.)
 ## License
-W3C Document License (CC-BY 4.0) for specifications; MIT License for jsonld.js
+W3C Document License (CC-BY 4.0); MIT License for jsonld.js
 
 # SPARQL 1.1 Specifications & Public Endpoints
 ## https://www.w3.org/TR/sparql11-overview/
@@ -27,7 +29,7 @@ W3C Document License (CC-BY 4.0) for specifications; MIT License for jsonld.js
 ## https://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/
 ## https://wiki.dbpedia.org/services-resources/sparql-endpoint
 ## https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Wikidata_Query_Service_User_Help
-This collection covers the SPARQL 1.1 Query Language, Protocol, Update operations, Graph Store HTTP, and JSON Results formats, alongside guidance for public endpoints (DBpedia, Wikidata). It details query forms, federation strategies, HTTP conventions, rate limits, result serialization, and best practices for resilient SPARQL clients and federated pipelines in Node.js. (Specs last updated March 2013; DBpedia 2024; Wikidata continuously updated; authoritative as W3C Recommendations and official endpoint guides.)
+This collection of SPARQL 1.1 Recommendations details the query language, protocol, update operations, graph store HTTP interactions, and JSON results formats. Public endpoint guides for DBpedia and Wikidata provide examples on rate limits, federation strategies, HTTP conventions, and best practices for resilient SPARQL clients in Node.js. These sources support implementing features like `--capital-cities`, `--query`, and federated pipelines. (Last updated: Specs March 2013; DBpedia 2024; Wikidata continuously updated; authoritative as W3C Recommendations and official endpoint guides.)
 ## License
 W3C Document License (CC-BY 4.0); DBpedia: CC BY-SA 3.0; Wikidata: CC0/Public Domain
 
@@ -42,7 +44,7 @@ W3C Document License (CC-BY 4.0); DBpedia: CC BY-SA 3.0; Wikidata: CC0/Public Do
 ## https://nodejs.org/api/events.html
 ## https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
 ## https://vitest.dev/
-A combined reference for Node.js v20 core modules including HTTP servers, file I/O, URL and path utilities, ESM module loading, global fetch usage (including streaming responses, error handling, and timeouts), performance measurement via perf_hooks, and event-driven patterns via the events module. Also includes Fetch API details from MDN and Vitest v3, a Vite-native testing framework for ESM-first projects, detailing mocking, spies, snapshots, parallel execution, V8-based coverage, and lifecycle hooks. Essential for robust CLI commands, HTTP endpoints, performance-aware operations, event handling, and comprehensive test suites. (Current as of Node.js v20.x; MDN fetch and Vitest docs updated continuously; authoritative as official Node.js, MDN, and Vitest documentation.)
+A consolidated reference covering Node.js v20 core modules (HTTP server/client, file I/O, URL/path utilities, ESM modules, global fetch, performance hooks, event emitters), the standardized Fetch API for HTTP interactions, and Vitest v3 – a Vite-native testing framework. These sources provide actionable guidance for implementing CLI commands, HTTP endpoints, performance measurements, and comprehensive test suites. (Current as of Node.js v20.x; MDN and Vitest docs updated continuously; authoritative as official Node.js, MDN, and Vitest documentation.)
 ## License
 OpenJS Foundation and contributors (MIT License); MDN content (CC0/Public Domain)
 
@@ -51,19 +53,18 @@ OpenJS Foundation and contributors (MIT License); MDN content (CC0/Public Domain
 ## https://rdf.js.org/streams/spec/
 ## https://rdf-ext.github.io/
 ## https://comunica.dev/docs/query/framework
-These community specifications define language-agnostic RDF factory interfaces and streaming abstractions, while rdf-ext offers concrete factories, parsers, serializers, and in-memory datasets for efficient graph construction. Comunica builds on these to provide a modular SPARQL query engine in JavaScript, detailing actor pipelines, HTTP connectors, federation strategies, and streaming result handling. Together they form an end-to-end stack for building, querying, and federating RDF data in Node.js. (Specs updated January 2022; rdf-ext & Comunica docs updated 2024; authoritative as community standards and official implementations.)
+These community specifications define the RDF/JS data model interfaces and streaming abstractions, while rdf-ext provides concrete factories, parsers, serializers, and in-memory datasets. Comunica’s modular SPARQL engine builds on these principles, detailing actor pipelines, HTTP connectors, federated query strategies, and streaming result handling, delivering an end-to-end stack for RDF processing in Node.js. (Specs updated January 2022; rdf-ext & Comunica docs updated 2024; authoritative as community standards and official implementations.)
 ## License
 RDF/JS specs (MIT); rdf-ext (MIT); Comunica (MIT)
 
-# OWL 2 Semantics & Syntax
-## https://www.w3.org/TR/owl2-rdf-based-semantics/
-## https://www.w3.org/TR/owl2-syntax/
-This combined W3C Recommendation defines the formal semantics for OWL 2 ontologies encoded in RDF graphs (entailment rules, interpretation structures, and conformance criteria) along with the abstract syntax for class expressions, property axioms, data ranges, and annotation patterns. It is essential for correct reasoning over JSON-LD-generated RDF triples and guides serialization of ontology structures in both CLI and programmatic outputs. (Last updated: RDF-Based Semantics 11 December 2012; Abstract Syntax 27 October 2009; authoritative as W3C Recommendation.)
-## License
-W3C Document License (CC-BY 4.0)
-
 # Apache Jena Fuseki SPARQL Server
 ## https://jena.apache.org/documentation/fuseki2/
-The Apache Jena Fuseki documentation provides detailed guidance on deploying and configuring a SPARQL 1.1 server, including dataset setup, authentication and CORS, HTTP update support, performance tuning, and CLI tools (`tdb2` loader). This source is critical for users who need to host local or production SPARQL endpoints to support `refreshSources`, testing, and custom data pipelines within the owl-builder ecosystem. (Current as of Fuseki 4.x; authoritative as Apache project documentation.)
+Apache Jena Fuseki documentation covers deploying and configuring a SPARQL 1.1 server, including dataset management, authentication, CORS, HTTP updates, performance tuning, and command-line utilities (`tdb2` loader). Crucial for hosting local or production SPARQL endpoints to support source refresh, testing, and custom data pipelines within the OWL builder system. (Current as of Fuseki 4.x; authoritative as Apache project documentation.)
 ## License
 Apache License 2.0
+
+# SPARQL.js: JavaScript Query Builder & Parser
+## https://github.com/Callidon/sparqljs#readme
+SPARQL.js provides a robust JavaScript library for parsing SPARQL queries into an abstract syntax tree (AST) and serializing ASTs back to SPARQL strings. It supports all SPARQL 1.1 query and update forms, enabling programmatic construction and validation of queries in Node.js applications. This tool can be used to build and manipulate SPARQL queries dynamically in OWL builder workflows. (Last updated: 2023; authoritative as a widely used open-source library.)
+## License
+MIT License
