@@ -5,6 +5,7 @@ import http from "http";
 import { URL } from "url";
 import pkg from "../../package.json" assert { type: "json" };
 import { performance } from "perf_hooks";
+import { QueryEngine } from "@comunica/query-sparql";
 import * as SELF from "./main.js"; // dynamic reference to allow mocking in tests
 
 export const PUBLIC_DATA_SOURCES = [{ name: "DBpedia SPARQL", url: "https://dbpedia.org/sparql" }];
@@ -17,6 +18,7 @@ Usage: node src/lib/main.js [options]
 --list-sources        List public data sources
 --diagnostics         Display diagnostics
 --capital-cities      Fetch capital cities
+--query <file> "<SPARQL query>"   Execute SPARQL query on a JSON-LD OWL artifact
 --serve               Start HTTP server
 --refresh             Refresh sources
 --build-intermediate  Build intermediate artifacts
@@ -130,6 +132,58 @@ export async function buildEnhanced({ dataDir = "data", intermediateDir = "inter
   return { refreshed, intermediate: intermediateRes, enhanced: { file: "enhanced.json", count: graph.length } };
 }
 
+/**
+ * Execute a SPARQL query against a JSON-LD OWL artifact and return SPARQL JSON-results.
+ * Supports SELECT (bindings) and ASK (boolean) queries.
+ */
+export async function sparqlQuery(filePath, queryString) {
+  let content;
+  try {
+    content = fs.readFileSync(filePath, "utf8");
+  } catch (err) {
+    const error = new Error(`Failed to read file: ${err.message}`);
+    throw error;
+  }
+  let json;
+  try {
+    json = JSON.parse(content);
+  } catch (err) {
+    const error = new Error(`Invalid JSON in file: ${err.message}`);
+    throw error;
+  }
+  const engine = new QueryEngine();
+  const sources = [{ type: "string", value: content, mediaType: "application/ld+json" }];
+  const result = await engine.query(queryString, { sources });
+  if (result.type === "bindings") {
+    const bindingsStream = result.bindingsStream;
+    const variables = result.variables;
+    const head = { vars: variables };
+    if (result.link) head.link = result.link;
+    const bindings = [];
+    for await (const binding of bindingsStream) {
+      const sol = {};
+      for (const varName of variables) {
+        if (binding.has(varName)) {
+          const term = binding.get(varName);
+          const termObj = { type: term.termType.toLowerCase(), value: term.value };
+          if (term.language) termObj["xml:lang"] = term.language;
+          if (term.datatype && term.datatype.value) termObj["datatype"] = term.datatype.value;
+          sol[varName] = termObj;
+        }
+      }
+      bindings.push(sol);
+    }
+    return { head, results: { bindings } };
+  } else if (result.type === "boolean") {
+    const booleanResult = await result.booleanResult;
+    const head = {};
+    if (result.link) head.link = result.link;
+    return { head, boolean: booleanResult };
+  } else {
+    throw new Error(`Unsupported query type: ${result.type}`);
+  }
+}
+
 export async function getCapitalCities(endpointUrl = PUBLIC_DATA_SOURCES[0].url) {
   const sparql =
     "SELECT ?country ?capital WHERE { ?country a <http://www.wikidata.org/entity/Q6256> . ?country <http://www.wikidata.org/prop/direct/P36> ?capital . }";
@@ -239,6 +293,23 @@ export async function main(args) {
     }
     return;
   }
+  // SPARQL query support
+  if (cliArgs.includes("--query") || cliArgs.includes("-q")) {
+    const qiIndex = cliArgs.findIndex(arg => arg === "--query" || arg === "-q");
+    const filePath = cliArgs[qiIndex + 1];
+    const queryString = cliArgs[qiIndex + 2];
+    if (!filePath || !queryString) {
+      console.error("Missing required query parameters: file and sparql");
+      return;
+    }
+    try {
+      const results = await sparqlQuery(filePath, queryString);
+      console.log(JSON.stringify(results, null, 2));
+    } catch (err) {
+      console.error(err.message);
+    }
+    return;
+  }
   if (cliArgs.includes("--serve")) {
     const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
     const server = http.createServer(async (req, res) => {
@@ -270,7 +341,7 @@ export async function main(args) {
         console.log = msg => res.write(`${msg}\n`);
         try {
           await SELF.buildIntermediate();
-        } catch {}        
+        } catch {}
         console.log = originalLog;
         res.end();
       } else if (req.method === "GET" && pathname === "/build-enhanced") {
@@ -286,6 +357,22 @@ export async function main(args) {
         }
         console.log = originalLog;
         res.end();
+      } else if (req.method === "GET" && pathname === "/query") {
+        const fileParam = parsedUrl.searchParams.get("file");
+        const sparqlParam = parsedUrl.searchParams.get("sparql");
+        if (!fileParam || !sparqlParam) {
+          res.writeHead(400, { "Content-Type": "text/plain" });
+          res.end("Missing required query parameters: file and sparql");
+        } else {
+          try {
+            const result = await sparqlQuery(fileParam, sparqlParam);
+            res.writeHead(200, { "Content-Type": "application/json" });
+            res.end(JSON.stringify(result, null, 2));
+          } catch (err) {
+            res.writeHead(500, { "Content-Type": "text/plain" });
+            res.end(err.message);
+          }
+        }
       } else {
         res.writeHead(404, { "Content-Type": "text/plain" });
         res.end("Not Found");

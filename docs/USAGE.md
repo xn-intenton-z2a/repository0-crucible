@@ -51,10 +51,36 @@ Invalid configurations will log a warning and show only default sources.
 
 ## SPARQL Query
 
-Use the `--query` flag to execute a SPARQL query on an OWL JSON-LD artifact:
+Use the `--query` flag to execute a SPARQL query on a JSON-LD OWL artifact:
 
 ```bash
-node src/lib/main.js --query <filePath> "<SPARQL query>"
+node src/lib/main.js --query artifact.json "SELECT ?s WHERE { ?s a <http://www.w3.org/2002/07/owl#Class> } LIMIT 5"
+```
+
+### Programmatic
+
+```js
+import { sparqlQuery } from 'owl-builder';
+(async () => {
+  const results = await sparqlQuery(
+    'artifact.json',
+    'SELECT ?s WHERE { ?s a <http://www.w3.org/2002/07/owl#Class> } LIMIT 5'
+  );
+  console.log(JSON.stringify(results, null, 2));
+})();
+```
+
+### Example Output
+
+```json
+{
+  "head": { "vars": ["s"] },
+  "results": {
+    "bindings": [
+      { "s": { "type": "uri", "value": "http://example.org/SomeClass" } }
+    ]
+  }
+}
 ```
 
 ## Help
