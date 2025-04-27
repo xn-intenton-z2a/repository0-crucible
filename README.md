@@ -4,7 +4,7 @@
 
 To create a self-evolving agentic coding system of your own based on this one see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds].
 
 ## Repository Template
 
@@ -27,7 +27,7 @@ npm install repository0-crucible
 
 - **List Sources (`--list-sources`)**: Outputs the list of configured public data sources in JSON format. If a `data-sources.json` file is present with a valid array of `{ name, url }`, it will be merged with the default sources. Invalid or missing configs will fall back to defaults with a warning for invalid configs.
 - **Help (`--help`, `-h`)**: Display the help message with usage instructions.
-- **Diagnostics (`--diagnostics`)**: Outputs diagnostic information (version, node version, platform, architecture, working directory, public data sources, and commands) as pretty-printed JSON.
+- **Diagnostics (`--diagnostics`)**: Outputs diagnostic information (version, node version, platform, architecture, working directory, uptimeSeconds, memoryUsage, public data sources, and commands) as pretty-printed JSON, including a `healthChecks` array with real-time availability metrics.
 - **Default Behavior**: Running the CLI without any flags logs the provided arguments.
 
 ## Usage
@@ -38,13 +38,7 @@ To run the CLI tool and see help instructions:
 node src/lib/main.js --help
 ```
 
-### Listing Available Data Sources
-
-```bash
-node src/lib/main.js --list-sources
-```
-
-### Diagnostics
+## Diagnostics
 
 Use the `--diagnostics` flag to display environment and configuration diagnostics:
 
@@ -61,6 +55,14 @@ Sample output:
   "platform": "linux",
   "arch": "x64",
   "cwd": "/path/to/your/project",
+  "uptimeSeconds": 42.123,
+  "memoryUsage": {
+    "rss": 150000000,
+    "heapTotal": 80000000,
+    "heapUsed": 40000000,
+    "external": 5000000,
+    "arrayBuffers": 2000000
+  },
   "publicDataSources": [
     {
       "name": "DBpedia SPARQL",
@@ -76,14 +78,17 @@ Sample output:
     "--build-intermediate",
     "--build-enhanced",
     "--refresh",
-    "--merge-persist"
+    "--merge-persist",
+    "--capital-cities"
+  ],
+  "healthChecks": [
+    {
+      "name": "DBpedia SPARQL",
+      "url": "https://dbpedia.org/sparql",
+      "statusCode": 200,
+      "latencyMs": 120,
+      "reachable": true
+    }
   ]
 }
 ```
-
-### Example Commands
-
-- **Default Demo Output:**
-  ```bash
-  npm run start
-  ```

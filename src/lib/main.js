@@ -169,6 +169,9 @@ export async function main(args) {
     // Perform live health checks
     const sources = listSources();
     diagnostics.healthChecks = await performHealthChecks(sources);
+    // Add system metrics
+    diagnostics.uptimeSeconds = process.uptime();
+    diagnostics.memoryUsage = process.memoryUsage();
     console.log(JSON.stringify(diagnostics, null, 2));
     return;
   }
@@ -244,6 +247,9 @@ export async function main(args) {
           };
           const sources = listSources();
           diagnostics.healthChecks = await performHealthChecks(sources);
+          // Add system metrics
+          diagnostics.uptimeSeconds = process.uptime();
+          diagnostics.memoryUsage = process.memoryUsage();
           const body = JSON.stringify(diagnostics, null, 2);
           res.writeHead(200, { "Content-Type": "application/json" });
           res.end(body);
