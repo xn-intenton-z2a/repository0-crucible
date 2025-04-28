@@ -1,244 +1,222 @@
 # OWL2_SYNTAX
 
 ## Crawl Summary
-Implement OWL2 functional-style syntax parsing: token categories with regex, BNF grammar rules for ontology and axioms, greedy longest-match tokenization loop, IRI abbreviation expansion via prefix map.
+Defines lexical rules, BNF grammar, structural equivalence, IRI handling, and datatype lexical forms for OWL 2 functional-style syntax. Specifies greedy tokenization, handling of whitespace/comments, prefix expansion, datatype token patterns, functional constructs (ObjectUnionOf, ObjectComplementOf, ClassAssertion), and normalization steps (duplicate elimination, flattening).
 
 ## Normalised Extract
 Table of Contents:
-1. Lexical Analysis
-2. BNF Grammar
-3. Tokenization Algorithm
-4. IRI Abbreviation
+1 Lexical Tokens
+2 Parsing Algorithm
+3 Grammar Rules (BNF)
+4 Structural Equivalence
+5 IRI Handling
+6 Datatype Lexical Forms
+7 Functional-Syntax Constructs
 
-1. Lexical Analysis
-   Tokens and regex patterns:
-     WHITESPACE => [ \t\n\r]+ (skip)
-     COMMENT => '#'[^\n\r]* (skip)
-     QUOTED_STRING => '"' (\\\\ | \\\" | [^"\n\r])* '"'
-     LANGUAGE_TAG => '@'[A-Za-z0-9\-]+
-     DOUBLE_CARET => '\^\^'
-     IRI_REF => '<'[^>]*'>'
-     PNAME_LN => PN_PREFIX ':' PN_LOCAL
-     INTEGER => [0-9]+
-     SYMBOLS => one of ( ) , . [ ] { } : ^^
+1 Lexical Tokens
+• Regex-based tokens: quotedString, languageTag, integer, IRI, prefixName, nodeID
+• Delimiters: whitespace, comments ignored
 
-2. BNF Grammar
-   Ontology ::= 'Ontology(' [PrefixDeclaration*] Axiom* ')'
-   PrefixDeclaration ::= 'Prefix(' PNameLN IRI_REF ')'
-   Axiom ::= SubClassOf | EquivalentClasses | DisjointClasses | AnnotationAssertion | ...
-   SubClassOf ::= 'SubClassOf(' ClassExpression ClassExpression ')'
-   ClassExpression ::= NamedClass | ObjectIntersectionOf | ObjectUnionOf | ObjectComplementOf | ...
-   ObjectIntersectionOf ::= 'ObjectIntersectionOf(' ClassExpression+ ')'
+2 Parsing Algorithm
+Step 1: Regex match at pointer p
+Step 2: Emit non-ignored tokens
+Step 3: Enforce delimiter boundary or reject
+Repeat to end
 
-3. Tokenization Algorithm
-  Steps:
-    a. pointer p=0; tokenList empty
-    b. while p<length:
-       i. match all token regex at p, pick longest
-       ii. if no match: LexicalError(p)
-       iii. if token in {WHITESPACE, COMMENT}: discard
-            else add token to tokenList
-       iv. advance p
-       v. if next char not delimiter and no whitespace/comment: LexicalError(p)
+3 Grammar Rules (BNF)
+ClassExpression ::= Identifier | Function '(' arguments ')'
+Arguments ::= ClassExpression { ClassExpression }
+Syntax keywords: 'ObjectIntersectionOf', 'DataPropertyAssertion', etc.
 
-4. IRI Abbreviation
-  prefixMap: key=prefixName (with ':'), value=IRI string
-  PrefixDecl(pn:,<IRI>): prefixMap.put(pn:,IRI)
-  On token PNAME_LN 'pn:local':
-    if prefixMap.containsKey(pn:): fullIRI=prefixMap.get(pn:)+local
-    else throw PrefixUndefinedException(pn:)
+4 Structural Equivalence
+Implement set-list equivalence rules for UML class instances
 
+5 IRI Handling
+Full IRI: '<' IRI_string '>'
+Prefixed IRI: prefixName ':' localPart
+Prefix declarations: Prefix(prefixName prefixIRI)
+
+6 Datatype Lexical Forms
+nonNegativeInteger: [0-9]+
+quotedString: '"'( (\\"|\\\\|[^\\"])*)'"'
+languageTag: '@'[A-Za-z0-9-]+
+nodeID: '_:'[A-Za-z][A-Za-z0-9]*
+
+7 Functional-Syntax Constructs
+ObjectUnionOf(exprList), ObjectComplementOf(expr)
+ClassAssertion(Class Individual), DataPropertyAssertion(Property Individual Literal)
 
 ## Supplementary Details
-Configuration options:
-- allowComments: boolean (default true)  // enable skipping '#' comments
-- maxTokenLength: int (default 4096)    // throw if token length exceeds
-- caseSensitive: boolean (default true) // determine matching of keywords
+Implementation Patterns:
+• Configure prefixMap: Map<String,String> of prefixName→prefixIRI.
+• Precompile token regex patterns for performance.
+• Enforce flattening: dedupe nested unordered constructs at parse tree build.
+• Discard duplicates: use Set<> for unordered associations.
+• Strict delimiter enforcement: implement boundary check after each token.
 
-Implementation steps:
-1. Initialize Lexer with regex patterns and config.
-2. Invoke Lexer.tokenize(input) to produce List<Token>.
-3. Initialize Parser with token list.
-4. Call Parser.parseOntology() to obtain Ontology AST.
+Parameter Configurations:
+• allowComments: boolean (default true)
+• allowPrefixAbbrev: boolean (default true)
+• strictDuplicates: boolean (default true)
 
-AST node definitions:
-class Ontology { String ontologyIRI; List<PrefixDecl> prefixes; List<Axiom> axioms; }
-class PrefixDecl { String name; String IRI; }
-class SubClassOf { ClassExpression sub, sup; }
-interface ClassExpression {}
-class ObjectIntersectionOf implements ClassExpression { List<ClassExpression> operands; }
-
+Step-by-Step Parsing:
+1. Initialize parser with prefixMap and flags.
+2. Tokenize input stream into Token[]
+3. Validate token sequence per BNF
+4. Build AST: instantiate UML objects
+5. Apply structural normalization: eliminate duplicates, flatten
+6. Return OntologyDocument
 
 ## Reference Details
-// Java SDK: OWL2SyntaxParser.java
+API: OWL2SyntaxParser
 
-public class OWL2SyntaxParser {
-    /**
-     * Tokenize functional-style OWL2 syntax input.
-     * @param input raw string of ontology
-     * @return List<Token> sequence of tokens
-     * @throws LexicalException on unrecognized token
-     */
-    public static List<Token> tokenize(String input) throws LexicalException {
-        // Implementation: see tokenization algorithm
-    }
+Constructor(prefixMap: Map<String,String>, options: {allowComments:boolean, allowPrefixAbbrev:boolean, strictDuplicates:boolean})
 
-    /**
-     * Parse OWL2 functional-style syntax into AST.
-     * @param tokens list from tokenize()
-     * @return Ontology AST root
-     * @throws ParseException on grammar mismatch
-     */
-    public static Ontology parse(List<Token> tokens) throws ParseException {
-        // Implementation: recursive-descent parser per BNF
-    }
+Methods:
+• tokenize(input: string): Token[]
+  - input: full document string
+  - returns: array of tokens {type:string,value:string,position:number}
+• parse(tokens: Token[]): OntologyDocument
+  - tokens: output from tokenize
+  - returns: AST root instance of OntologyDocument
+• validate(doc: OntologyDocument): ValidationResult
+  - returns errors with line, column, message
 
-    /**
-     * Convenience: parse directly from string.
-     * @param input ontology text
-     * @return Ontology AST
-     * @throws LexicalException, ParseException
-     */
-    public static Ontology parseOntology(String input) throws LexicalException, ParseException {
-        List<Token> t=tokenize(input);
-        return parse(t);
-    }
-}
+Code Example (JavaScript):
+const parser = new OWL2SyntaxParser({"owl":"http://www.w3.org/2002/07/owl#"}, {allowComments:true});
+const tokens = parser.tokenize(fs.readFileSync('ontology.owl2', 'utf8'));
+const doc = parser.parse(tokens);
+const result = parser.validate(doc);
+if (result.errors.length) console.error(result.errors);
+else console.log('Parsed successfully');
 
-// Example usage
-public class Main {
-    public static void main(String[] args) throws Exception {
-        String owlText = new String(Files.readAllBytes(Paths.get("ontology.owl")), UTF_8);
-        Ontology ont = OWL2SyntaxParser.parseOntology(owlText);
-        System.out.println("Parsed " + ont.axioms.size() + " axioms");
-    }
-}
+Best Practices:
+• Predefine and share prefixMap across modules.
+• Use strictDuplicates to guarantee consistent AST structure.
+• Wrap parse and validate in try/catch for robust error handling.
 
-// Configuration example:
-ParserConfig config = new ParserConfig();
-config.allowComments = true;
-config.maxTokenLength = 8192;
-OWLLexer lexer = new OWLLexer(config);
-
-// Best practice: precompile regex patterns and reuse Lexer across files.
-// Troubleshooting:
-// Command: java -jar owl-parser.jar --test
-// Expected: ALL TESTS PASSED (Total: 128)
-// On LexicalException: check no invalid characters at indicated position
+Troubleshooting:
+Command:
+ node parse.js ontology.owl2
+Expected Errors:
+ Line 23, Col 5: Unexpected token 'pref:Name@ en'
+ Line 45, Col 10: Missing ')' after ObjectIntersectionOf
+Fix by ensuring language tags have no space after '@' and matching parentheses.
 
 
 ## Information Dense Extract
-Tokens=[WHITESPACE:'[ \t\n\r]'+ skip,COMMENT:'#'[^\n\r]* skip,QUOTED_STRING:'"'(\\\\|\\\"|[^"\n\r])*'"',LANG_TAG:'@[A-Za-z0-9\-]+',DOUBLE_CARET:'^^',IRI_REF:'<'[^>]*'>',PNAME_LN:PN_PREFIX ':' PN_LOCAL,INTEGER:'[0-9]+',SYMBOLS:'(',')',',','.','[',']','{','}',';'];
-Grammar: Ontology->'Ontology(' PrefixDecl* Axiom* ')'; PrefixDecl->'Prefix(' PNameLN IRI_REF ')'; SubClassOf->'SubClassOf(' ClassExpr ClassExpr ')'; ClassExpr->NamedClass | ObjectIntersectionOf | ObjectUnionOf | ObjectComplementOf; ObjectIntersectionOf->'ObjectIntersectionOf(' ClassExpr+ ')';
-Tokenization: pointer p, greedy longest regex, emit non-skip tokens, enforce delimiter rule.
-IRI expansion: prefixMap store from PrefixDecl; on PNAME_LN resolve or throw PrefixUndefined;
-Parser: recursive-descent following grammar; methods per production returning AST nodes;
-Config: allowComments=true, maxTokenLength=4096, caseSensitive=true;
-API: tokenize(String)->List<Token> throws LexicalException; parse(List<Token>)->Ontology throws ParseException; parseOntology(String)->Ontology throws both.
-Example: parse file, print count.
-Best practice: reuse precompiled Patterns; reuse Lexer/Parser per config;
-Troubleshoot: LexicalException position and offending substring; run unit tests: java -jar owl-parser.jar --test expects ALL TESTS PASSED.
+Tokens: quotedString, languageTag, nonNegativeInteger, IRI, prefixName, nodeID; delimiters whitespace/comments ignored. Tokenization: greedy longest-match regex; enforce delimiter boundaries. BNF grammar: ClassExpression ::= Function '(' args ')' | Identifier; reps { } optional [ ]. Structural equivalence: set vs list matches; UML class instance equality. IRI: full '<IRI>' or prefixName:localPart; expand prefixMap. Datatypes: integer=[0-9]+; quotedString="(\\\"|\\\\|[^\\"]*)"; languageTag=@[A-Za-z0-9-]+; nodeID=_:[A-Za-z][A-Za-z0-9]*. Constructs: ObjectUnionOf(list), ObjectComplementOf(expr), ClassAssertion(Class,Individual). API: OWL2SyntaxParser(prefixMap,options)->tokenize(input):Token[]->parse(tokens):OntologyDocument->validate(doc):ValidationResult. Options: allowComments,allowPrefixAbbrev,strictDuplicates. Code: see above. Troubleshooting errors: bad tokens, mismatched delimiters.
 
 ## Sanitised Extract
 Table of Contents:
-1. Lexical Analysis
-2. BNF Grammar
-3. Tokenization Algorithm
-4. IRI Abbreviation
+1 Lexical Tokens
+2 Parsing Algorithm
+3 Grammar Rules (BNF)
+4 Structural Equivalence
+5 IRI Handling
+6 Datatype Lexical Forms
+7 Functional-Syntax Constructs
 
-1. Lexical Analysis
-   Tokens and regex patterns:
-     WHITESPACE => [ 't'n'r]+ (skip)
-     COMMENT => '#'[^'n'r]* (skip)
-     QUOTED_STRING => ''' ('''' | '''' | [^''n'r])* '''
-     LANGUAGE_TAG => '@'[A-Za-z0-9'-]+
-     DOUBLE_CARET => ''^'^'
-     IRI_REF => '<'[^>]*'>'
-     PNAME_LN => PN_PREFIX ':' PN_LOCAL
-     INTEGER => [0-9]+
-     SYMBOLS => one of ( ) , . [ ] { } : ^^
+1 Lexical Tokens
+ Regex-based tokens: quotedString, languageTag, integer, IRI, prefixName, nodeID
+ Delimiters: whitespace, comments ignored
 
-2. BNF Grammar
-   Ontology ::= 'Ontology(' [PrefixDeclaration*] Axiom* ')'
-   PrefixDeclaration ::= 'Prefix(' PNameLN IRI_REF ')'
-   Axiom ::= SubClassOf | EquivalentClasses | DisjointClasses | AnnotationAssertion | ...
-   SubClassOf ::= 'SubClassOf(' ClassExpression ClassExpression ')'
-   ClassExpression ::= NamedClass | ObjectIntersectionOf | ObjectUnionOf | ObjectComplementOf | ...
-   ObjectIntersectionOf ::= 'ObjectIntersectionOf(' ClassExpression+ ')'
+2 Parsing Algorithm
+Step 1: Regex match at pointer p
+Step 2: Emit non-ignored tokens
+Step 3: Enforce delimiter boundary or reject
+Repeat to end
 
-3. Tokenization Algorithm
-  Steps:
-    a. pointer p=0; tokenList empty
-    b. while p<length:
-       i. match all token regex at p, pick longest
-       ii. if no match: LexicalError(p)
-       iii. if token in {WHITESPACE, COMMENT}: discard
-            else add token to tokenList
-       iv. advance p
-       v. if next char not delimiter and no whitespace/comment: LexicalError(p)
+3 Grammar Rules (BNF)
+ClassExpression ::= Identifier | Function '(' arguments ')'
+Arguments ::= ClassExpression { ClassExpression }
+Syntax keywords: 'ObjectIntersectionOf', 'DataPropertyAssertion', etc.
 
-4. IRI Abbreviation
-  prefixMap: key=prefixName (with ':'), value=IRI string
-  PrefixDecl(pn:,<IRI>): prefixMap.put(pn:,IRI)
-  On token PNAME_LN 'pn:local':
-    if prefixMap.containsKey(pn:): fullIRI=prefixMap.get(pn:)+local
-    else throw PrefixUndefinedException(pn:)
+4 Structural Equivalence
+Implement set-list equivalence rules for UML class instances
+
+5 IRI Handling
+Full IRI: '<' IRI_string '>'
+Prefixed IRI: prefixName ':' localPart
+Prefix declarations: Prefix(prefixName prefixIRI)
+
+6 Datatype Lexical Forms
+nonNegativeInteger: [0-9]+
+quotedString: '''( ('''|''''|[^'''])*)'''
+languageTag: '@'[A-Za-z0-9-]+
+nodeID: '_:'[A-Za-z][A-Za-z0-9]*
+
+7 Functional-Syntax Constructs
+ObjectUnionOf(exprList), ObjectComplementOf(expr)
+ClassAssertion(Class Individual), DataPropertyAssertion(Property Individual Literal)
 
 ## Original Source
-OWL 2 Abstract Syntax
+W3C RDF 1.1 & OWL 2 Specifications
 https://www.w3.org/TR/owl2-syntax/
 
 ## Digest of OWL2_SYNTAX
 
-# OWL2 Syntax Parser Technical Guide (Retrieved 2024-06-XX)
+# Lexical Analysis
+Terminals and tokenization for OWL 2 functional-style syntax.
 
-## Lexical Analysis
+## Token Types and Delimiters
+• Whitespace: U+20, U+9, U+A, U+D. Ignored.
+• Comment: sequences starting with U+23 (#) up to line break. Ignored.
+• Delimiters: parentheses '(', ')', comma ',', colon ':', arrow '->', equality '^'^ etc.
 
-Define token categories and recognition patterns:
+## Tokenization Procedure
+1. Build regex for each terminal symbol (quotedString, languageTag, integer, IRI, prefixName, nodeID).
+2. Initialize pointer p=0.
+3. At p, greedily match all regexes; longest match wins; reject if none.
+4. Emit token unless whitespace/comment; advance p.
+5. If token does not end on delimiter and next char is not delimiter, match whitespace/comment; else reject.
+6. Repeat until end of input.
 
-- Whitespace: [ \t\n\r]+ (skip)
-- Comment: '#'[^\n\r]* (skip)
-- QuotedString: '"' ( (\\\\ | \\\" | [^"
-] )* ) '"'
-- LanguageTag: '@'[A-Za-z0-9\-]+  
-- DoubleCaret: '\^\^'
-- IRIRef: '<' [^>]* '>'
-- PNameLN: PN_PREFIX ':' PN_LOCAL  
-- Integer: [0-9]+  
-- Symbols: '(', ')', ',', '.', '[' , ']' , '{' , '}', ':' , '^^'
+# Grammar and Parsing
+BNF Notation:
+• Syntax: terminal symbols in 'single quotes'.
+• Nonterminals: classExpression, assertion, declaration.
+• Repetition: { ... } zero or more; [ ... ] optional; A|B alternatives.
 
-## Grammar (Functional-Style Syntax)
+Example Rule:
+ClassExpression ::= 'ObjectIntersectionOf' '(' ClassExpression { ClassExpression } ')'
 
-1. Ontology ::= 'Ontology(' [PrefixDeclaration*] Axiom* ')'
-2. PrefixDeclaration ::= 'Prefix(' PNameLN IRIRef ')'
-3. Axiom ::= SubClassOf | EquivalentClasses | ...
-4. SubClassOf ::= 'SubClassOf(' ClassExpression ClassExpression ')'
-5. ClassExpression ::= NamedClass | 'ObjectIntersectionOf(' ClassExpression+ ')'
+# Structural Equivalence
+Defines equivalence of UML instances:
+• Atomic values: identical.
+• Unordered associations: sets equal up to element equivalence.
+• Ordered associations with repeats: lists equal by index.
+• UML instances: same class and all associations structurally equivalent.
 
-## Tokenization Algorithm
+# IRI Abbreviations and Prefixed Names
+• Full IRI: '<' IRI_string '>'. IRI_string per RFC3987.
+• Prefix IRI: prefixName ':' rc. prefixName declared via 'Prefix' declarations.
+• Expansion: prefixName:rc → fullIRI = prefixIRI + rc.
+• Implementations must expand all abbreviations during parse.
 
-1. Initialize pointer p=0.
-2. While p < input.length:
-   a. Attempt greedy match against all token regexes.
-   b. Select longest match; if none, throw LexicalException at position p.
-   c. If token is WHITESPACE or COMMENT, discard; else emit to token stream.
-   d. Advance p by match length; if next char not a delimiter, match whitespace/comment or throw.
+# Datatype Maps
+• nonNegativeInteger: sequence of digits 0–9.
+• quotedString: '"' chars with escapes \" or \\ '"'.
+• languageTag: '@' langtag per BCP47.
+• nodeID: BLANK_NODE_LABEL per SPARQL.
 
-## IRI Abbreviation Mechanism
+# Functional-Style Syntax Rules
+Objects:
+• ObjectUnionOf(ClassExpressions)
+• ObjectComplementOf(ClassExpression)
+• ClassAssertion(Class, Individual)
 
-- Maintain Map<String, String> prefixMap.
-- On 'Prefix(pn:, <IRI>)', store prefixMap.put("pn:", "IRI");
-- On PNameLN token 'pn:ln', expand as prefixMap.get("pn:") + "ln";
-- Error if prefix undefined.
+Flattening:
+ObjectUnionOf(a:Person a:Animal a:Animal) → ObjectUnionOf(a:Person a:Animal)
 
 
 ## Attribution
-- Source: OWL 2 Abstract Syntax
+- Source: W3C RDF 1.1 & OWL 2 Specifications
 - URL: https://www.w3.org/TR/owl2-syntax/
 - License: License
-- Crawl Date: 2025-04-27T14:47:58.376Z
-- Data Size: 22941997 bytes
-- Links Found: 20190
+- Crawl Date: 2025-04-28T02:23:41.658Z
+- Data Size: 22525153 bytes
+- Links Found: 19958
 
 ## Retrieved
-2025-04-27
+2025-04-28
