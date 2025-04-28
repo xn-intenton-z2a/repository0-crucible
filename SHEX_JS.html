@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="shex_js" href="#shex_js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SHEX_JS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Installation: npm install --save shex
+Validation CLI: validate -x <schema> -d <data> -s <shape> -n <node>
+Validation Lib: shex.Parser, shex.Validator.validate(store,node,shape)
+ShExLoader API: load(shexc:turtle) -&gt; {schema,data}
+Conversion CLI: shex-to-json, json-to-shex
+Materialize: materialize -t schema -j vars.json [-r rootIRI]
+Branches: lerna monorepo, shex-test branch alignment via package.json</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Installation
+2 CLI Validation
+3 Validation Library
+4 ShExLoader API
+5 Conversion CLI
+6 Materialize</p>
+<p class="md-github">1 Installation
+Install via npm:
+npm install --save shex</p>
+<p class="md-github">2 CLI Validation
+Command: validate -x <schema> -d <data> -s <shape> -n <node>
+Parameters:
+-x schema URL or file
+-j JSON schema file
+-d data source [IRI|path]
+-s shape IRI
+-n node IRI
+Output: JSON with type,node,shape,solution or null</p>
+<p class="md-github">3 Validation Library
+API:
+shex.Parser(shexc).parse(text) -&gt; schemaAST
+Validator(schemaAST).validate(store,node,shape) -&gt; resultJSON
+Dependencies: n3.Store(), n3.Parser({baseIRI,format:'text/turtle'})</p>
+<p class="md-github">4 ShExLoader API
+Signature: ShExLoader.load({shexc: [String]}, {turtle: [String]}) -&gt; Promise&lt;{schema:Array, data:Array}&gt;
+Use:
+RdfJsDb = ctor(loaded.data)
+ShExValidator(schema,dataDB,options).validateShapeMap([{node,shape}]) -&gt; result
+Options: results: 'api'|'tree'
+Constants: ShExValidator.Start</p>
+<p class="md-github">5 Conversion CLI
+shex-to-json &lt;schema.shex&gt; -&gt; stdout JSON
+json-to-shex &lt;schema.json&gt; -&gt; stdout ShExC</p>
+<p class="md-github">6 Materialize
+materialize -t &lt;target.schema&gt; [-j vars.json] [-r rootIRI]
+Vars file: map variable IRI to substitution value
+Default rootIRI: tag:eric@w3.org/2016/root</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Parameters and Defaults
+validate CLI:
+-x, --schema string (required)
+-j, --json-schema string
+-d, --data string (required)
+-s, --shape string (required)
+-n, --node string (required)
+Options:
+SLOW: timeout ms for slow tests
+BRANCH: git branch for HTTP tests</p>
+<p class="md-github">Loader init:
+fetch: function(url)-&gt;Promise<string>
+rdfjs: RdfJsParser module (must implement Parser and Store)</p>
+<p class="md-github">Validator options:
+results: 'api' returns JSON, 'tree' returns internal tree</p>
+<p class="md-github">Materialize options:
+-t target schema path or URL
+-j JSON vars file path
+-r RDF root IRI (default tag:eric@w3.org/2016/root)</p>
+<p class="md-github">Environment Variables:
+SLOW, BRANCH, TEST-cli</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specifications</p>
+<p class="md-github">Module shex.Parser
+Constructor: Parser(shexcIRI:String)
+Method parse(input:String):SchemaObj</p>
+<p class="md-github">Class shex.Validator
+Constructor(schema:SchemaObj)
+Method validate(store:QuadStore, node:String, shape:String):ValidationResult
+returns ValidationResult JSON</p>
+<p class="md-github">Module @shexjs/loader
+Function loader(options:{fetch:Function, rdfjs:Object}) -&gt; ShExLoader
+ShExLoader.load(shexc:{shexc:Array<String>}, data:{turtle:Array<String>}):Promise&lt;{schema:Array<SchemaObj>, data:Array<Quad>}&gt;</p>
+<p class="md-github">Class @shexjs/validator.ShExValidator
+Constructor(schema:Array<SchemaObj>, db:QuadStore, options:{results:String})
+Static Start:String
+Method validateShapeMap(shapeMap:Array&lt;{node:String,shape:String}&gt;):ShapeMapResult</p>
+<p class="md-github">CLI Commands</p>
+<p class="md-github">validate
+Usage: validate [options]
+Options:
+-x, --schema <schema>    ShExC URL or file
+-j, --json-schema <file> ShEx JSON schema file
+-d, --data <data>        RDF data URL or file
+-s, --shape <shape>      Shape IRI
+-n, --node <node>        Node IRI
+--help</p>
+<p class="md-github">shex-to-json
+Usage: shex-to-json <schema>
+Output: JSON schema to stdout</p>
+<p class="md-github">json-to-shex
+Usage: json-to-shex &lt;schema.json&gt;
+Output: ShExC to stdout</p>
+<p class="md-github">materialize
+Usage: materialize -t <target> [-j &lt;vars.json&gt;] [-r <rootIRI>]
+Options:
+-t, --target <schema>    Target ShExC schema
+-j, --vars &lt;vars.json&gt;   JSON vars file
+-r, --root <IRI>         RDF root IRI</p>
+<p class="md-github">Best Practices
+Use ShExLoader to reduce callback complexity
+Use Start constant for entry shape
+Set results:'api' for programmatic use
+Validate relative IRIs: CLI resolves -s,-n relative to sources</p>
+<p class="md-github">Troubleshooting
+SLOW tests hung: set SLOW=<ms> env var
+HTTP tests fail: set BRANCH=<branch>
+shex-test branch misalignment: ensure package.json shex-test field matches shexTest branch
+Lerna: run lerna bootstrap after changing dependencies</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">npm install --save shex; CLI: validate -x schema.shex -d data.ttl -s shapeIRI -n nodeIRI -&gt; JSON; shex.Parser(IRI).parse(text)-&gt;SchemaAST; new shex.Validator(SchemaAST).validate(store,node,shape)-&gt;ValidationResult; ShExLoader=require('@shexjs/loader')({fetch, rdfjs}); ShExLoader.load({shexc:[...]},{turtle:[...]}).then({schema,data})-&gt;RdfJsDb(data)-&gt;new ShExValidator(schema,db,{results:'api'}).validateShapeMap([{node,shape:ShExValidator.Start}])-&gt;ShapeMapResult; Conversion: shex-to-json|json-to-shex; materialize -t target.shex -j vars.json -r rootIRI; Default rootIRI=tag:eric@w3.org/2016/root; Env SLOW,BRANCH for tests; APIs: Parser.parse(String)-&gt;SchemaObj; Validator.validate(QuadStore,String,String)-&gt;ValidationResult; Loader.load(Object,Object)-&gt;Promise&lt;{schema:Array, data:Array}&gt;; ShExValidator.validateShapeMap(Array)-&gt;ShapeMapResult</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Installation
+2 CLI Validation
+3 Validation Library
+4 ShExLoader API
+5 Conversion CLI
+6 Materialize</p>
+<p class="md-github">1 Installation
+Install via npm:
+npm install --save shex</p>
+<p class="md-github">2 CLI Validation
+Command: validate -x <schema> -d <data> -s <shape> -n <node>
+Parameters:
+-x schema URL or file
+-j JSON schema file
+-d data source [IRI|path]
+-s shape IRI
+-n node IRI
+Output: JSON with type,node,shape,solution or null</p>
+<p class="md-github">3 Validation Library
+API:
+shex.Parser(shexc).parse(text) -&gt; schemaAST
+Validator(schemaAST).validate(store,node,shape) -&gt; resultJSON
+Dependencies: n3.Store(), n3.Parser({baseIRI,format:'text/turtle'})</p>
+<p class="md-github">4 ShExLoader API
+Signature: ShExLoader.load({shexc: [String]}, {turtle: [String]}) -&gt; Promise&lt;{schema:Array, data:Array}&gt;
+Use:
+RdfJsDb = ctor(loaded.data)
+ShExValidator(schema,dataDB,options).validateShapeMap([{node,shape}]) -&gt; result
+Options: results: 'api'|'tree'
+Constants: ShExValidator.Start</p>
+<p class="md-github">5 Conversion CLI
+shex-to-json &lt;schema.shex&gt; -&gt; stdout JSON
+json-to-shex &lt;schema.json&gt; -&gt; stdout ShExC</p>
+<p class="md-github">6 Materialize
+materialize -t &lt;target.schema&gt; [-j vars.json] [-r rootIRI]
+Vars file: map variable IRI to substitution value
+Default rootIRI: tag:eric@w3.org/2016/root</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">RDF Validation: SHACL &amp; ShEx
+https://github.com/shexSpec/shex.js#readme</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-shex_js" href="#digest-of-shex_js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of SHEX_JS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
+<p class="md-github">Install shex.js via npm:</p>
+<pre class="md-github"><code class="md-github language-bash">npm install --save shex
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="cli-validation" href="#cli-validation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Validation</h1>
+<p class="md-github">Use the validate executable to validate RDF data against a ShEx schema:</p>
+<pre class="md-github"><code class="md-github language-bash">./node_modules/shex/bin/validate \
+    -x http://shex.io/examples/Issue.shex \
+    -d http://shex.io/examples/Issue1.ttl \
+    -s http://shex.io/examples/IssueShape \
+    -n http://shex.io/examples/Issue1
+</code></pre>
+<p class="md-github">Options:</p>
+<p class="md-github">-x  --schema          ShExC schema URL or file path
+-j  --json-schema     ShEx JSON schema file
+-d  --data            RDF data URL, file, or format option
+-s  --shape           Target shape IRI
+-n  --node            Target node IRI</p>
+<p class="md-github">Outputs a JSON with fields: type, node, shape, solution or null on failure.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="validation-library" href="#validation-library"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Validation Library</h1>
+<pre class="md-github"><code class="md-github language-javascript">const shex = require('shex');
+const N3   = require('n3');
+
+// Load schema
+const schemaText = await fetch(shexc).then(r=&gt;r.text());
+const schema = shex.Parser(shexc).parse(schemaText);
+
+// Load data
+const dataText = await fetch(data).then(r=&gt;r.text());
+const store    = new N3.Store();
+n3.Parser({baseIRI: data, format: 'text/turtle'})
+  .parse(dataText, (err, quad)=&gt; { if(quad) store.addQuad(quad); });
+
+// Validate
+const result = new shex.Validator(schema)
+  .validate(store, node, shape);
+console.log(result);
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="shexloader-api" href="#shexloader-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ShExLoader API</h1>
+<pre class="md-github"><code class="md-github language-javascript">const ShExLoader = require('@shexjs/loader')({
+  fetch:    require('node-fetch'),
+  rdfjs:    require('n3')
+});
+const {ctor: RdfJsDb} = require('@shexjs/neighborhood-rdfjs');
+const {ShExValidator}= require('@shexjs/validator');
+
+ShExLoader.load({shexc: [shexc]}, {turtle: [data]})
+  .then(loaded =&gt; {
+    const db        = RdfJsDb(loaded.data);
+    const validator = new ShExValidator(loaded.schema, db, {results: 'api'});
+    const smap      = [{node, shape: ShExValidator.Start}];
+    const res       = validator.validateShapeMap(smap);
+    console.log(JSON.stringify(res, null, 2));
+});
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="conversion-cli" href="#conversion-cli"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Conversion CLI</h1>
+<ul class="md-github">
+<li class="md-github">Convert ShExC to JSON:</li>
+</ul>
+<pre class="md-github"><code class="md-github language-bash">./node_modules/shex/bin/shex-to-json http://shex.io/examples/Issue.shex &gt; Issue.json
+</code></pre>
+<ul class="md-github">
+<li class="md-github">Convert JSON to ShExC:</li>
+</ul>
+<pre class="md-github"><code class="md-github language-bash">./node_modules/shex/bin/json-to-shex Issue.json &gt; Issue.shex
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="materialize" href="#materialize"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Materialize</h1>
+<p class="md-github">Map validation output to a target schema:</p>
+<pre class="md-github"><code class="md-github language-bash">materialize -t target_schema.shex -j vars.json [-r rootIRI]
+</code></pre>
+<p class="md-github">Vars file example:</p>
+<pre class="md-github"><code class="md-github language-json">{
+  &quot;urn:local:Demographics:constSys&quot;: &quot;System&quot;
+}
+</code></pre>
+<p class="md-github">Default root IRI: tag:eric@w3.org/2016/root</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: RDF Validation: SHACL &amp; ShEx</li>
+<li class="md-github">URL: https://github.com/shexSpec/shex.js#readme</li>
+<li class="md-github">License: License if known</li>
+<li class="md-github">Crawl Date: 2025-04-28T14:52:22.643Z</li>
+<li class="md-github">Data Size: 651036 bytes</li>
+<li class="md-github">Links Found: 5063</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-28</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-28T15:21:58.144Z</p>
+  </footer>
+</body>
+</html>
