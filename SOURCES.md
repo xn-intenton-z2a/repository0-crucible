@@ -18,9 +18,10 @@ W3C Document License (CC-BY 4.0); MIT License
 # SPARQL 1.1 & HTTP Server Deployments
 ## https://www.w3.org/TR/sparql11-overview/
 ## https://www.w3.org/TR/sparql11-protocol/
+## https://www.w3.org/TR/sparql11-results-json/
 ## https://jena.apache.org/documentation/fuseki2/
 ## https://graphdb.ontotext.com/documentation/standard/
-Covers the SPARQL 1.1 query, update, and HTTP protocols, and demonstrates deployment guides for Apache Jena Fuseki and Ontotext GraphDB. Includes endpoint configuration, authentication, CORS, federation patterns, performance tuning, and resilient client best practices—vital for integrating SPARQL queries and updates in CLI, API, and server modes. (SPARQL specs Mar 2013; Fuseki 4.x; GraphDB 2023.)
+Covers the SPARQL 1.1 query, update, HTTP and Graph Store protocols, and demonstrates deployment guides for Apache Jena Fuseki and Ontotext GraphDB. Includes endpoint configuration, authentication, CORS, federation patterns, performance tuning, resilient client best practices, and the SPARQL JSON Result Format spec—vital for integrating SPARQL queries, updates, and result handling in CLI, API, and server modes. (SPARQL specs Mar 2013; Fuseki 4.x; GraphDB 2023.)
 ## License
 W3C Document License (CC-BY 4.0); Apache License 2.0; GraphDB Documentation License
 
@@ -53,17 +54,18 @@ Covers SHACL for declarative graph validation (shapes, constraints, conformance 
 ## License
 W3C Document License (CC-BY 4.0); CC0/Public Domain (ShEx spec); MIT License (shex.js)
 
-# Java-based RDF Frameworks & Stores
+# Java-based RDF & OWL Frameworks
 ## https://jena.apache.org/documentation/arq/
 ## https://jena.apache.org/documentation/tdb2/
 ## https://rdf4j.org/documentation/programmers-guide/
-A combined overview of Apache Jena (ARQ SPARQL engine, TDB2 storage, Fuseki HTTP server) and Eclipse RDF4J (Java APIs for repositories, Sail layers, inferencing, Spring integration). Provides deep insights into clustering, transaction management, custom functions, and performance tuning—serving as architectural inspiration for OWL-builder’s modular pipelines. (ARQ/TDB2 2023; RDF4J 4.x 2023.)
+## https://github.com/owlcs/owlapi#readme
+A comprehensive overview of Java libraries for RDF and OWL: Apache Jena (ARQ SPARQL engine, TDB2 storage, Fuseki HTTP server), Eclipse RDF4J (Java APIs for repositories, Sail layers, inferencing, Spring integration), and the OWL API (ontology creation, manipulation, serialization, and reasoner integration). Provides deep insights into clustering, transaction management, custom functions, and best practices for extensibility and performance tuning. (ARQ/TDB2 2023; RDF4J 4.x 2023; OWL API 5.x 2024.)
 ## License
 Apache License 2.0; Eclipse Public License 2.0
 
-# OWL API Java Library
-## https://github.com/owlcs/owlapi#readme
-## https://github.com/owlcs/owlapi/wiki
-The OWL API is a mature, high-performance Java library for creating, manipulating, and serializing OWL ontologies. It supports multiple syntaxes (RDF/XML, Turtle, OWL/XML), integration with reasoners (HermiT, Pellet), and advanced ontology transformations. A key reference for API design, extensibility patterns, and best practices in ontology lifecycle management. (Active community; last stable release 5.x; Apache 2.0.)
+# SKOS & DCAT Vocabularies
+## https://www.w3.org/TR/skos-reference/
+## https://www.w3.org/TR/vocab-dcat-2/
+Defines the SKOS model for concept schemes, hierarchical and associative concept relations, and labeling, as well as the Data Catalog Vocabulary (DCAT) for describing datasets, distributions, and catalogs. Essential for modeling and publishing metadata-driven datasets, driving discoverability, interoperability, and linked data best practices. (SKOS Aug 2009; DCAT Feb 2023.)
 ## License
-Apache License 2.0
+W3C Document License (CC-BY 4.0)
