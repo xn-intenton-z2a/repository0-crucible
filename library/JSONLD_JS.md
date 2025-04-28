@@ -1,298 +1,474 @@
 # JSONLD_JS
 
 ## Crawl Summary
-Installation commands: npm install jsonld; CommonJS and ES imports. Bundles: dist/jsonld.min.js (legacy/polyfills), dist/jsonld.esm.min.js (ESM). CDN script tags: cdnjs, jsDelivr, unpkg. Core API methods with signatures: compact, expand, flatten, frame, canonize, toRDF, fromRDF. Custom extensions: registerRDFParser, documentLoaders.node()/xhr(), override documentLoader. Safe mode option (safe:true). Configuration: default algorithm URDNA2015, format application/n-quads, default UA 'jsonld.js'. Testing: npm test, test-karma, coverage, env vars TESTS, REPORTER, EARL. Troubleshooting commands for EARL and RDF serialization.
+Implementation of JSON-LD spec in JS. Core async API methods: compact(input,context,options):Promise<object>, expand(input,options):Promise<object[]>, flatten(input,context?,options):Promise<object>, frame(input,frame,options):Promise<object>, canonize(input,{algorithm:'URDNA2015'|'URGNA2012',format:'application/n-quads'|'application/trig',useNative?:boolean}):Promise<string>, toRDF(input,{format:'application/n-quads'|'application/trig'}):Promise<string|object>, fromRDF(input,{format:'application/n-quads'|'application/trig',rdfParser?:Function}):Promise<object>. Customization: registerRDFParser(mime,parser), documentLoaders.node(), documentLoaders.xhr(), override jsonld.documentLoader. Safe mode via option safe:true. Bundles: dist/jsonld.min.js (polyfills), dist/jsonld.esm.min.js (ESM). Install via npm install jsonld. Testing commands: npm test, npm run test-karma, npm run coverage, use TESTS, BENCHMARK, EARL environment variables.
 
 ## Normalised Extract
 Table of Contents
 1 Installation
-2 Bundles and CDN
-3 Core API Methods
-4 Custom RDF Parsers
-5 Custom Document Loader
-6 Safe Mode
-7 Testing and Benchmarks
+2 Browser Bundles
+3 API Methods
+   3.1 compact
+   3.2 expand
+   3.3 flatten
+   3.4 frame
+   3.5 canonize
+   3.6 toRDF
+   3.7 fromRDF
+   3.8 registerRDFParser
+   3.9 documentLoader
+   3.10 Safe Mode
+4 Testing
+5 Troubleshooting
 
 1 Installation
-Install via npm: npm install jsonld
-CommonJS import: const jsonld = require('jsonld')
-ES Module import: import * as jsonld from 'jsonld'
+  npm install jsonld
+  const jsonld = require('jsonld');
 
-2 Bundles and CDN
-Bundler: webpack/Rollup (ES2017+)
-Legacy bundle: dist/jsonld.min.js (polyfills, transforms)
-ESM bundle: dist/jsonld.esm.min.js (minimal transforms)
-CDNJS: <script src="https://cdnjs.cloudflare.com/ajax/libs/jsonld/1.0.0/jsonld.min.js"></script>
-jsDelivr: <script src="https://cdn.jsdelivr.net/npm/jsonld@1.0.0/dist/jsonld.min.js"></script>
-unpkg: <script src="https://unpkg.com/jsonld@1.0.0/dist/jsonld.min.js"></script>
+2 Browser Bundles
+  dist/jsonld.min.js (polyfilled)  
+  dist/jsonld.esm.min.js (ESM only)  
+  script tags: type=module for esm, nomodule for min
 
-3 Core API Methods
-compact(input, context, options?) → Promise<Object>
-expand(input, options?) → Promise<Array<Object>>
-flatten(input, context?, options?) → Promise<Object>
-frame(input, frame, options?) → Promise<Object>
-canonize(input, {algorithm, format, useNative}?) → Promise<string>
-toRDF(input, {format}?) → Promise<string>
-fromRDF(input, {format}?) → Promise<Object>
+3 API Methods
+3.1 compact
+  Signature: jsonld.compact(input: object|string, context: object|string, options?: {documentLoader, expandContext, processingMode:'json-ld-1.1'|'json-ld-1.0', compactArrays:boolean, compactToRelative:boolean, base:string}):Promise<object>
+  Behavior: apply @context to shrink terms
 
-4 Custom RDF Parsers
-jsonld.registerRDFParser(contentType, parser)
-  parser(input: string) → RDF.Dataset or Promise<RDF.Dataset>
+3.2 expand
+  Signature: jsonld.expand(input: object|string, options?: {documentLoader, expandContext, processingMode}):Promise<Array<object>>
 
-5 Custom Document Loader
-const nodeLoader = jsonld.documentLoaders.node()
-const xhrLoader = jsonld.documentLoaders.xhr()
-jsonld.documentLoader = async (url, options) => {
-  if(url in CONTEXTS) return {contextUrl:null,document:CONTEXTS[url],documentUrl:url};
-  return nodeLoader(url,options);
-}
-Pass custom loader via options.documentLoader
+3.3 flatten
+  Signature: jsonld.flatten(input: object|string, context?: object|string, options?: object):Promise<object>
 
-6 Safe Mode
-Enable data loss detection: await jsonld.expand(data, {safe:true})
-Failures throw errors on lossy JSON-LD constructs
+3.4 frame
+  Signature: jsonld.frame(input: object|string, frame: object|string, options?: {documentLoader, pruneBlankNodeIdentifiers:boolean, embed:boolean, explicit:boolean, omitGraph:boolean, processingMode}):Promise<object>
 
-7 Testing and Benchmarks
-Run Node tests: npm test
-Browser tests: npm run test-karma -- --browsers Firefox,Chrome
-Generate coverage: npm run coverage && npm run coverage-report
-Specify test suites: TESTS="/path1 /path2" npm test
-Configure Mocha reporter: REPORTER=dot npm test
-Generate EARL report: EARL=report.jsonld npm test
-Convert EARL to Turtle: rdf serialize report.jsonld --output-format turtle -o report.ttl
-Benchmark flag: BENCHMARK=1 npm test
+3.5 canonize
+  Signature: jsonld.canonize(input: object|string, options: {algorithm:'URDNA2015'|'URGNA2012', format:'application/n-quads'|'application/trig', documentLoader?, processingMode?, useNative?:boolean}):Promise<string>
+
+3.6 toRDF
+  Signature: jsonld.toRDF(input: object|string, options: {format:'application/n-quads'|'application/trig', documentLoader?, processingMode?}):Promise<string|object>
+
+3.7 fromRDF
+  Signature: jsonld.fromRDF(input: string|object, options: {format:'application/n-quads'|'application/trig', rdfParser?:Function, documentLoader?, processingMode?}):Promise<object>
+
+3.8 registerRDFParser
+  Usage:
+    jsonld.registerRDFParser(mime: string, parser: sync input=>dataset):void
+    jsonld.registerRDFParser(mime: string, parser: async input=>Promise<dataset>):void
+
+3.9 documentLoader
+  Default Node loader: jsonld.documentLoaders.node() sets UA 'jsonld.js'
+  Default XHR loader: jsonld.documentLoaders.xhr()
+  Override by: jsonld.documentLoader = async (url,opts)=>{...}
+
+3.10 Safe Mode
+  Add safe:true to options of expand/compact/frame/canonize to fail on lossy operations
+
+4 Testing
+  npm test
+  TESTS="/path" npm test
+  npm run test-karma -- --browsers Firefox,Chrome
+  npm run coverage
+  REPORTER=dot npm test
+  npm run fetch-test-suites
+  BENCHMARK=1 npm test
+  EARL=earl.jsonld npm test
+
+5 Troubleshooting
+  Use custom documentLoader for missing contexts
+  Compare native vs JS canonize performance
+  Choose appropriate bundle for target environment
+
 
 ## Supplementary Details
-Default user-agent header: 'jsonld.js'
-Default expand/base: null
-Default compact options: {compactArrays:true,compactToRelative:true,graph:false,expandContext:null,base:null}
-Default frame options: {embed:true,explicit:false,omitGraph:false}
-Default canonize options: {algorithm:'URDNA2015',format:'application/n-quads',useNative:false}
-Default toRDF/fromRDF format: 'application/n-quads'
-Default document loader uses node-fetch with UA and redirects; xhr loader uses XMLHttpRequest with CORS
+Default Values and Options
+- processingMode defaults to 'json-ld-1.1'
+- documentLoader default: node() or xhr()
+- compactArrays default: true
+- compactToRelative default: true
+- pruneBlankNodeIdentifiers default: false
+- embed default: true
+- explicit default: false
+- omitGraph default: false
+- algorithm default for canonize: 'URDNA2015'
+- format default for canonize/toRDF/fromRDF: 'application/n-quads'
+
+Implementation Steps
+1. Install package
+2. Import jsonld
+3. Choose bundle or loader
+4. Call API methods with required parameters and optional options
+5. Handle returned Promise
+6. For custom parsing or loading, registerRDFParser or override documentLoader
+
+Example: compact with custom loader
+const CONTEXTS={"http://example.com":{"@context":{...}}};
+const nodeLoader=jsonld.documentLoaders.node();
+jsonld.documentLoader=async(url,opts)=>url in CONTEXTS?{document:CONTEXTS[url],documentUrl:url,contextUrl:null}:nodeLoader(url,opts);
+const result=await jsonld.compact(doc,context,{documentLoader:jsonld.documentLoader});
 
 ## Reference Details
-API: compact
-Signature: compact(input:Object|string, context:Object|string, options?:{
-  expandContext?:Object|string,
-  base?:string,
-  compactArrays?:boolean,
-  compactToRelative?:boolean,
-  graph?:boolean,
-  skipExpansion?:boolean,
-  documentLoader?:Function,
-  safe?:boolean
-}):Promise<Object>
-Returns: Promise resolved with compacted JSON-LD
-Example:
-const compacted = await jsonld.compact(
-  {"http://schema.org/name":"Manu Sporny"},
-  {name:"http://schema.org/name"},
-  {compactArrays:false}
-)
+APIs and SDK Method Signatures
 
-API: expand
-Signature: expand(input:Object|string, options?:{
-  base?:string,
-  expandContext?:Object|string,
-  documentLoader?:Function,
-  safe?:boolean
-}):Promise<Array<Object>>
+jsonld.compact(input, context, options?)
+  input: object | string (URL or JSON-LD document)
+  context: object | string (URL or JSON-LD context)
+  options:
+    documentLoader(url:string, options?): Promise<{document:any, documentUrl:string, contextUrl:string|null}>
+    expandContext: object | string
+    processingMode: 'json-ld-1.1' | 'json-ld-1.0'
+    compactArrays: boolean
+    compactToRelative: boolean
+    base: string
+  returns: Promise<object>
+  rejects: on invalid JSON-LD or context errors
 
-API: flatten
-Signature: flatten(input:Object|string, context?:Object|string, options?:{
-  base?:string,
-  documentLoader?:Function
-}):Promise<Object>
+jsonld.expand(input, options?)
+  input: object | string
+  options:
+    documentLoader
+    expandContext
+    processingMode
+  returns: Promise<Array<object>>
 
-API: frame
-Signature: frame(input:Object|string, frame:Object|string, options?:{
-  embed?:boolean,
-  explicit?:boolean,
-  omitGraph?:boolean,
-  documentLoader?:Function,
-  expandContext?:Object|string
-}):Promise<Object>
+jsonld.flatten(input, context?, options?)
+  input: object | string
+  context: object | string
+  options: same as expand
+  returns: Promise<object>
 
-API: canonize
-Signature: canonize(input:Object|string, options?:{
-  algorithm?:'URDNA2015',
-  format?:'application/n-quads',
-  documentLoader?:Function,
-  useNative?:boolean
-}):Promise<string>
+jsonld.frame(input, frame, options?)
+  frame: object | string
+  options:
+    documentLoader
+    pruneBlankNodeIdentifiers: boolean
+    embed: boolean
+    explicit: boolean
+    omitGraph: boolean
+    processingMode
+  returns: Promise<object>
 
-API: toRDF
-Signature: toRDF(input:Object|string, options?:{
-  format?:'application/n-quads',
-  documentLoader?:Function
-}):Promise<string>
+jsonld.canonize(input, options)
+  options:
+    algorithm: 'URDNA2015' | 'URGNA2012'
+    format: 'application/n-quads' | 'application/trig'
+    documentLoader
+    processingMode
+    useNative: boolean
+  returns: Promise<string>
 
-API: fromRDF
-Signature: fromRDF(input:string, options?:{
-  format?:'application/n-quads',
-  documentLoader?:Function
-}):Promise<Object>
+jsonld.toRDF(input, options)
+  options:
+    format: 'application/n-quads' | 'application/trig'
+    documentLoader
+    processingMode
+  returns: Promise<string | object> // object when dataset option used
 
-Best Practices:
-• Use safe mode for digital signing workflows
-• Cache contexts via custom documentLoader to reduce network latency
-• Prefer ESM bundle in modern browser environments
-• Specify TESTS env for running selective test suites
+jsonld.fromRDF(input, options)
+  options:
+    format: 'application/n-quads' | 'application/trig'
+    rdfParser: (input:any, contentType:string)=>Promise<any>
+    documentLoader
+    processingMode
+  returns: Promise<object>
 
-Troubleshooting:
-• If features unsupported, update test suites: npm run fetch-test-suites
-• Adjust TESTS path to include correct directory
-• Control Mocha reporter via REPORTER env
-• Generate and convert EARL reports as needed
+jsonld.registerRDFParser(contentType, parser)
+  contentType: string
+  parser: (input:string)=>any | Promise<any>
+  returns: void
+
+jsonld.documentLoaders.node()
+  returns: (url:string, options?:object)=>Promise<{document:any,documentUrl:string,contextUrl:string|null}>
+
+jsonld.documentLoaders.xhr()
+  returns browser loader
+
+Best Practices
+- Use safe mode for digital signing: await jsonld.expand(data,{safe:true});
+- Prefer esm bundle in modern browsers
+- Run JSON-LD API and framing test suites via npm run fetch-test-suites
+
+Troubleshooting Procedures
+- Missing @context errors: verify custom documentLoader returns context for known URLs
+- CPU-intensive canonize: benchmark can be faster in JS than native, set useNative accordingly
+
+Exact Commands
+  npm install jsonld
+  npm test
+  BENCHMARK=1 TESTS=path/to/manifest.jsonld npm test
+  npm run test-karma -- --browsers Chrome,Firefox
+  EARL=report.jsonld npm test
 
 ## Information Dense Extract
-npm install jsonld; require/import jsonld; Bundles: dist/jsonld.min.js, dist/jsonld.esm.min.js; CDN: cdnjs, jsdelivr, unpkg; API Signatures: compact(input,context,options)->Promise<Object>; expand(input,options)->Promise<Array<Object>>; flatten(input,context,options)->Promise<Object>; frame(input,frame,options)->Promise<Object>; canonize(input,{algorithm,format,useNative})->Promise<string>; toRDF(input,{format})->Promise<string>; fromRDF(input,{format})->Promise<Object>; Extensions: registerRDFParser(contentType,parser); documentLoaders.node()/xhr(); override documentLoader; Safe mode: {safe:true}; Defaults: user-agent 'jsonld.js', algorithm URDNA2015, format application/n-quads, compactArrays true; Testing: npm test, test-karma, coverage, TESTS/REPORTER/EARL/BENCHMARK env; Troubleshoot: fetch-test-suites, rdf serialize
+jsonld.compact(input:object|string,context:object|string,options?:{documentLoader,expandContext,processingMode:'json-ld-1.1'|'json-ld-1.0',compactArrays:boolean,compactToRelative:boolean,base:string}):Promise<object>
+jsonld.expand(input:object|string,options?:{documentLoader,expandContext,processingMode}):Promise<object[]>
+jsonld.flatten(input:object|string,context?:object|string,options?:object):Promise<object>
+jsonld.frame(input:object|string,frame:object|string,options?:{documentLoader,pruneBlankNodeIdentifiers:boolean,embed:boolean,explicit:boolean,omitGraph:boolean,processingMode}):Promise<object>
+jsonld.canonize(input:object|string,options:{algorithm:'URDNA2015'|'URGNA2012',format:'application/n-quads'|'application/trig',documentLoader?,processingMode?,useNative?:boolean}):Promise<string>
+jsonld.toRDF(input:object|string,options:{format:'application/n-quads'|'application/trig',documentLoader?,processingMode?}):Promise<string|object>
+jsonld.fromRDF(input:string|object,options:{format:'application/n-quads'|'application/trig',rdfParser?:Function,documentLoader?,processingMode?}):Promise<object>
+jsonld.registerRDFParser(contentType:string,parser:sync|async):void
+jsonld.documentLoader=nodeLoader|xhrLoader|customLoader
+Safe mode: safe:true
+Bundles: dist/jsonld.min.js (polyfilled), dist/jsonld.esm.min.js (ESM)
+Test: npm test, BENCHMARK=1 TESTS=... npm test, npm run test-karma, EARL=... npm test
 
 ## Sanitised Extract
 Table of Contents
 1 Installation
-2 Bundles and CDN
-3 Core API Methods
-4 Custom RDF Parsers
-5 Custom Document Loader
-6 Safe Mode
-7 Testing and Benchmarks
+2 Browser Bundles
+3 API Methods
+   3.1 compact
+   3.2 expand
+   3.3 flatten
+   3.4 frame
+   3.5 canonize
+   3.6 toRDF
+   3.7 fromRDF
+   3.8 registerRDFParser
+   3.9 documentLoader
+   3.10 Safe Mode
+4 Testing
+5 Troubleshooting
 
 1 Installation
-Install via npm: npm install jsonld
-CommonJS import: const jsonld = require('jsonld')
-ES Module import: import * as jsonld from 'jsonld'
+  npm install jsonld
+  const jsonld = require('jsonld');
 
-2 Bundles and CDN
-Bundler: webpack/Rollup (ES2017+)
-Legacy bundle: dist/jsonld.min.js (polyfills, transforms)
-ESM bundle: dist/jsonld.esm.min.js (minimal transforms)
-CDNJS: <script src='https://cdnjs.cloudflare.com/ajax/libs/jsonld/1.0.0/jsonld.min.js'></script>
-jsDelivr: <script src='https://cdn.jsdelivr.net/npm/jsonld@1.0.0/dist/jsonld.min.js'></script>
-unpkg: <script src='https://unpkg.com/jsonld@1.0.0/dist/jsonld.min.js'></script>
+2 Browser Bundles
+  dist/jsonld.min.js (polyfilled)  
+  dist/jsonld.esm.min.js (ESM only)  
+  script tags: type=module for esm, nomodule for min
 
-3 Core API Methods
-compact(input, context, options?)  Promise<Object>
-expand(input, options?)  Promise<Array<Object>>
-flatten(input, context?, options?)  Promise<Object>
-frame(input, frame, options?)  Promise<Object>
-canonize(input, {algorithm, format, useNative}?)  Promise<string>
-toRDF(input, {format}?)  Promise<string>
-fromRDF(input, {format}?)  Promise<Object>
+3 API Methods
+3.1 compact
+  Signature: jsonld.compact(input: object|string, context: object|string, options?: {documentLoader, expandContext, processingMode:'json-ld-1.1'|'json-ld-1.0', compactArrays:boolean, compactToRelative:boolean, base:string}):Promise<object>
+  Behavior: apply @context to shrink terms
 
-4 Custom RDF Parsers
-jsonld.registerRDFParser(contentType, parser)
-  parser(input: string)  RDF.Dataset or Promise<RDF.Dataset>
+3.2 expand
+  Signature: jsonld.expand(input: object|string, options?: {documentLoader, expandContext, processingMode}):Promise<Array<object>>
 
-5 Custom Document Loader
-const nodeLoader = jsonld.documentLoaders.node()
-const xhrLoader = jsonld.documentLoaders.xhr()
-jsonld.documentLoader = async (url, options) => {
-  if(url in CONTEXTS) return {contextUrl:null,document:CONTEXTS[url],documentUrl:url};
-  return nodeLoader(url,options);
-}
-Pass custom loader via options.documentLoader
+3.3 flatten
+  Signature: jsonld.flatten(input: object|string, context?: object|string, options?: object):Promise<object>
 
-6 Safe Mode
-Enable data loss detection: await jsonld.expand(data, {safe:true})
-Failures throw errors on lossy JSON-LD constructs
+3.4 frame
+  Signature: jsonld.frame(input: object|string, frame: object|string, options?: {documentLoader, pruneBlankNodeIdentifiers:boolean, embed:boolean, explicit:boolean, omitGraph:boolean, processingMode}):Promise<object>
 
-7 Testing and Benchmarks
-Run Node tests: npm test
-Browser tests: npm run test-karma -- --browsers Firefox,Chrome
-Generate coverage: npm run coverage && npm run coverage-report
-Specify test suites: TESTS='/path1 /path2' npm test
-Configure Mocha reporter: REPORTER=dot npm test
-Generate EARL report: EARL=report.jsonld npm test
-Convert EARL to Turtle: rdf serialize report.jsonld --output-format turtle -o report.ttl
-Benchmark flag: BENCHMARK=1 npm test
+3.5 canonize
+  Signature: jsonld.canonize(input: object|string, options: {algorithm:'URDNA2015'|'URGNA2012', format:'application/n-quads'|'application/trig', documentLoader?, processingMode?, useNative?:boolean}):Promise<string>
+
+3.6 toRDF
+  Signature: jsonld.toRDF(input: object|string, options: {format:'application/n-quads'|'application/trig', documentLoader?, processingMode?}):Promise<string|object>
+
+3.7 fromRDF
+  Signature: jsonld.fromRDF(input: string|object, options: {format:'application/n-quads'|'application/trig', rdfParser?:Function, documentLoader?, processingMode?}):Promise<object>
+
+3.8 registerRDFParser
+  Usage:
+    jsonld.registerRDFParser(mime: string, parser: sync input=>dataset):void
+    jsonld.registerRDFParser(mime: string, parser: async input=>Promise<dataset>):void
+
+3.9 documentLoader
+  Default Node loader: jsonld.documentLoaders.node() sets UA 'jsonld.js'
+  Default XHR loader: jsonld.documentLoaders.xhr()
+  Override by: jsonld.documentLoader = async (url,opts)=>{...}
+
+3.10 Safe Mode
+  Add safe:true to options of expand/compact/frame/canonize to fail on lossy operations
+
+4 Testing
+  npm test
+  TESTS='/path' npm test
+  npm run test-karma -- --browsers Firefox,Chrome
+  npm run coverage
+  REPORTER=dot npm test
+  npm run fetch-test-suites
+  BENCHMARK=1 npm test
+  EARL=earl.jsonld npm test
+
+5 Troubleshooting
+  Use custom documentLoader for missing contexts
+  Compare native vs JS canonize performance
+  Choose appropriate bundle for target environment
 
 ## Original Source
-JSON-LD 1.1 Specification & JavaScript Implementation (jsonld.js)
+JSON-LD 1.1 Specification & jsonld.js Implementation
 https://github.com/digitalbazaar/jsonld.js#readme
 
 ## Digest of JSONLD_JS
 
-# jsonld.js Technical Digest
-Retrieved: 2024-06-07
-Attribution: digitalbazaar/jsonld.js
-Data Size: 610986 bytes
-Links Found: 4762
+# JSON-LD.js API Implementation Documentation
 
-# Installation
+Date Retrieved: 2024-06-15
 
-Node.js (CommonJS)
+## Installation
+
+### Node.js + npm
 
   npm install jsonld
   const jsonld = require('jsonld');
 
-ES Module
+### Browser (bundler) + npm
 
   npm install jsonld
   import * as jsonld from 'jsonld';
+  // ES2017+ support required
 
-Browser Bundler
+### Browser Bundles
 
-  npm install jsonld
-  Use webpack/Rollup targeting ES2017+
+  ./dist/jsonld.min.js        // polyfilled, wide browser compatibility
+  ./dist/jsonld.esm.min.js    // ES Module browsers, lighter weight
 
-# Bundles
+Include via <script type="module" src=".../jsonld.esm.min.js"></script> and <script nomodule src=".../jsonld.min.js"></script>
 
-./dist/jsonld.min.js
-  Polyfills, code transforms, legacy browser support
+## Core API Methods and Signatures
 
-./dist/jsonld.esm.min.js
-  ES Modules, minimal polyfills, modern browser support
+### compact(input, context, options)
 
-# API Methods
+  Signature:
+    jsonld.compact(input: object|string, context: object|string, options?: {
+      documentLoader?: (url: string, options?: object) => Promise<{document: any, documentUrl: string, contextUrl: string|null}>,
+      expandContext?: object|string,
+      processingMode?: 'json-ld-1.1'|'json-ld-1.0',
+      compactArrays?: boolean,
+      compactToRelative?: boolean,
+      base?: string
+    }): Promise<object>
 
-compact(input: Object|string, context: Object|string, options?: Object): Promise<Object>
-expand(input: Object|string, options?: Object): Promise<Array<Object>>
-flatten(input: Object|string, context?: Object|string, options?: Object): Promise<Object>
-frame(input: Object|string, frame: Object|string, options?: Object): Promise<Object>
-canonize(input: Object|string, options?: {algorithm?: string, format?: string, useNative?: boolean}): Promise<string>
-toRDF(input: Object|string, options?: {format?: string}): Promise<string>
-fromRDF(input: string, options?: {format?: string}): Promise<Object>
-jsonld.registerRDFParser(contentType: string, parser: Function): void
-jsonld.documentLoaders.node(): Function
-jsonld.documentLoaders.xhr(): Function
-jsonld.documentLoader: Function override
+  Description:
+    Compacts an expanded JSON-LD document using a context.
 
-# Configuration Options
+### expand(input, options)
 
-Default user-agent (Node.js): jsonld.js
-canonize algorithm: URDNA2015 (default)
-canonize format: application/n-quads
-expand/base defaults: null
-compactArrays: true
-compactToRelative: true
-embed (frame): true
+  Signature:
+    jsonld.expand(input: object|string, options?: {
+      documentLoader?: Function,
+      expandContext?: object|string,
+      processingMode?: 'json-ld-1.1'|'json-ld-1.0'
+    }): Promise<Array<object>>
 
-# Safe Mode
+  Description:
+    Removes contexts, returns array of expanded nodes.
 
-Use safe mode to detect lossy operations:
+### flatten(input, context?, options?)
 
-  await jsonld.expand(data, {safe: true});
+  Signature:
+    jsonld.flatten(input: object|string, context?: object|string, options?: object): Promise<object>
 
-# Testing & Troubleshooting
+  Description:
+    Flattens a document by merging all graph elements into one.
 
-npm test
-npm run test-karma -- --browsers Firefox,Chrome
-npm run coverage && npm run coverage-report
-TESTS="/path/to/suites" npm test
-REPORTER=dot npm test
-EARL=earl.jsonld npm test
-rdf serialize earl.jsonld --output-format turtle -o earl.ttl
+### frame(input, frame, options?)
+
+  Signature:
+    jsonld.frame(input: object|string, frame: object|string, options?: {
+      documentLoader?: Function,
+      pruneBlankNodeIdentifiers?: boolean,
+      embed?: boolean,
+      explicit?: boolean,
+      omitGraph?: boolean,
+      processingMode?: 'json-ld-1.1'|'json-ld-1.0'
+    }): Promise<object>
+
+  Description:
+    Applies a frame to extract substructure matching the frame.
+
+### canonize(input, options)
+
+  Signature:
+    jsonld.canonize(input: object|string, options: {
+      algorithm: 'URDNA2015'|'URGNA2012',
+      format: 'application/n-quads'|'application/trig',
+      documentLoader?: Function,
+      processingMode?: 'json-ld-1.1'|'json-ld-1.0',
+      useNative?: boolean
+    }): Promise<string>
+
+  Description:
+    Returns canonical N-Quads string for hashing or comparison.
+
+### toRDF(input, options)
+
+  Signature:
+    jsonld.toRDF(input: object|string, options: {
+      format: 'application/n-quads'|'application/trig',
+      documentLoader?: Function,
+      processingMode?: 'json-ld-1.1'|'json-ld-1.0'
+    }): Promise<string|object>
+
+  Description:
+    Serializes JSON-LD to RDF dataset or N-Quads.
+
+### fromRDF(input, options)
+
+  Signature:
+    jsonld.fromRDF(input: string|object, options: {
+      format: 'application/n-quads'|'application/trig',
+      rdfParser?: (input: any, contentType: string) => Promise<any>,
+      documentLoader?: Function,
+      processingMode?: 'json-ld-1.1'|'json-ld-1.0'
+    }): Promise<object>
+
+  Description:
+    Parses RDF/N-Quads into JSON-LD.
+
+### registerRDFParser(contentType, parser)
+
+  Signature(s):
+    jsonld.registerRDFParser(contentType: string, parser: (input: string) => any): void
+    jsonld.registerRDFParser(contentType: string, parser: (input: string) => Promise<any>): void
+
+  Description:
+    Registers a custom synchronous or promise-based RDF parser for given MIME type.
+
+### documentLoaders
+
+  jsonld.documentLoaders.node(): default Node.js loader (uses fetch), sets User-Agent: jsonld.js
+  jsonld.documentLoaders.xhr(): default browser XHR loader
+
+  Override:
+    jsonld.documentLoader = async (url, options) => { if(url in CONTEXTS) return {document: CONTEXTS[url], documentUrl: url, contextUrl: null}; return nodeLoader(url, options); };
+
+### Safe Mode
+
+  Option `safe: true` in expand, compact, frame, canonize to throw on lossy constructs.
+
+## Testing and Tooling
+
+### Running Tests
+
+  npm test
+  TESTS="/path/to/suites1 /path/to/suites2" npm test
+  npm run test-karma -- --browsers Firefox,Chrome
+  npm run coverage
+  REPORTER=dot npm test
+
+### Fetch External Test Suites
+
+  npm run fetch-test-suites  // clones into test-suites dir
+
+### EARL Reports
+
+  EARL=earl-node.jsonld npm test
+  EARL=earl-firefox.jsonld npm run test-karma -- --browser Firefox
+
+## Troubleshooting
+
+- If missing context URLs, use custom documentLoader.
+- For native canonize failures, benchmark and decide useNative flag.
+- For performance, disable polyfills by using esm bundle.
+- Check TEST_ENV and BENCHMARK flags in test.js for environment control.
 
 
 ## Attribution
-- Source: JSON-LD 1.1 Specification & JavaScript Implementation (jsonld.js)
+- Source: JSON-LD 1.1 Specification & jsonld.js Implementation
 - URL: https://github.com/digitalbazaar/jsonld.js#readme
 - License: License
-- Crawl Date: 2025-04-27T11:49:07.705Z
-- Data Size: 610986 bytes
-- Links Found: 4762
+- Crawl Date: 2025-04-28T03:09:37.048Z
+- Data Size: 632028 bytes
+- Links Found: 4838
 
 ## Retrieved
-2025-04-27
+2025-04-28

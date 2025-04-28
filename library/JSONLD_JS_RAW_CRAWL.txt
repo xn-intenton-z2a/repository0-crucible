@@ -1196,80 +1196,50 @@ Digital Bazaar: support@digitalbazaar.com
 
 
     
-  
-    
       
-        
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
       
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-
-
-
 
 
   
@@ -2497,80 +2467,50 @@ Digital Bazaar: support@digitalbazaar.com
 
 
     
-  
-    
       
-        
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
       
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-
-
-
 
 
   
@@ -5904,7 +5844,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
   
     
   
-    Read more about x15ventures's customer story
+    Read more about Doctolib's customer story
     
       
         
@@ -5915,8 +5855,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     x15ventures
-    x15ventures innovates at startup speed with GitHub Enterprise.
+     Doctolib
+    Doctolib uses GitHub to drive digital transformation in healthcare.
 
     
       Read story 
@@ -5927,7 +5867,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Wealthsimple's customer story
+    Read more about Jibo, Inc.'s customer story
     
       
         
@@ -5938,8 +5878,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Wealthsimple
-    Wealthsimple mitigates developer toil with GitHub Actions.
+     Jibo, Inc.
+    Jibo, the social robot, is brought to life by developers all over the world. See how these builders connect with the core team on GitHub.
     
       Read story 
 
@@ -5949,7 +5889,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Via's customer story
+    Read more about LambdaTest's customer story
     
       
         
@@ -5960,8 +5900,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Via
-    Via empowers its developers to focus on code, rather than tools.
+     LambdaTest
+    LambdaTest streamlines CI/CD with GitHub Actions.
     
       Read story 
 
@@ -5971,7 +5911,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about The Hartford's customer story
+    Read more about Arduino's customer story
     
       
         
@@ -5982,8 +5922,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     The Hartford
-    Through collaboration and innersourcing, The Hartford uses GitHub to evolve into a customer-centric insurance company.
+     Arduino
+    Millions of makers leverage Arduino and GitHub’s open source community to create interactive, innovative projects.
     
       Read story 
 
@@ -5993,7 +5933,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Stripe's customer story
+    Read more about HOVER's customer story
     
       
         
@@ -6004,8 +5944,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Stripe
-    Stripe’s commitment to open source on GitHub creates a friendly and empowering experience for all developers.
+     HOVER
+    HOVER keeps developers in the flow with GitHub’s integrated development platform.
     
       Read story 
 
@@ -6015,7 +5955,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Societe Generale's customer story
+    Read more about ZibaSec's customer story
     
       
         
@@ -6026,8 +5966,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Societe Generale
-    Societe Generale’s open IT infrastructure brings more solutions and innovation to the table.
+     ZibaSec
+    ZibaSec achieves great feats with a small team to protect federal organizations from phishing attacks.
     
       Read story 
 
@@ -6704,7 +6644,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
   
     
   
-    Read more about Buffer's customer story
+    Read more about Trustpilot's customer story
     
       
         
@@ -6715,8 +6655,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Buffer
-    Buffer goes from siloed to synced for better production releases.
+     Trustpilot
+    Global review platform Trustpilot uses GitHub Team to build a better product, faster, with 300 releases per week.
     
       Read story 
 
@@ -6726,7 +6666,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Cesium's customer story
+    Read more about Tray.io's customer story
     
       
         
@@ -6737,8 +6677,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Cesium
-    Cesium leverages an open source community to support the development of 3D geospatial applications.
+     Tray.io
+    GitHub Team helps the general automation platform build, package, and deploy code faster than ever.
     
       Read story 
 
@@ -6748,7 +6688,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Front's customer story
+    Read more about Sketch's customer story
     
       
         
@@ -6759,8 +6699,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Front
-    Front takes the work out of their workflows with GitHub Team.
+     Sketch
+    Sketch streamlines their workflows to provide teams with a comprehensive digital design editor.
     
       Read story 
 
@@ -6770,7 +6710,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Knock's customer story
+    Read more about Peak Money's customer story
     
       
         
@@ -6781,30 +6721,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Knock
-    Knock pivots to new products, with the help of GitHub’s fast, flexible developer workflows.
-    
-      Read story 
-
-    
-  
-
-
-    
-  
-    Read more about Modsy's customer story
-    
-      
-        
-  
-  
-  
-  
-
-      
-    
-     Modsy
-    Modsy leverages GitHub Team to make interior design easy and accessible for all.
+     Peak Money
+    Peak Money collaborates across tools, teams, and time zones with GitHub Team.
     
       Read story 
 
@@ -6827,6 +6745,28 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
     
      Netdata
     Netdata accelerates their developer workflow with built-in security and open source.
+    
+      Read story 
+
+    
+  
+
+
+    
+  
+    Read more about Modsy's customer story
+    
+      
+        
+  
+  
+  
+  
+
+      
+    
+     Modsy
+    Modsy leverages GitHub Team to make interior design easy and accessible for all.
     
       Read story 
 
@@ -8274,9 +8214,9 @@ The ReadME Project
     
         
       
-        SQL
+        Objective-C
       
-      SQL is a standard language for storing, retrieving and manipulating data in databases.
+      Objective-C is general purpose, object-oriented programming language used for macOS and iOS operating systems.
     
   
 
@@ -8290,9 +8230,9 @@ The ReadME Project
     
         
       
-        Bitcoin
+        NativeScript
       
-      Bitcoin is a cryptocurrency developed by Satoshi Nakamoto.
+      NativeScript is a JavaScript-native mobile framework.
     
   
 
@@ -8306,9 +8246,9 @@ The ReadME Project
     
         
       
-        React Native
+        Pixel Art
       
-      React Native is a JavaScript mobile framework developed by Facebook.
+      Pixel art is a form of digital art where images are created and edited at the pixel level.
     
   
 
@@ -8890,37 +8830,7 @@ The ReadME Project
       
           
             
-  react
-
-          
-          
-            
-  nodejs
-
-          
-          
-            
-  javascript
-
-          
-          
-            
-  css
-
-          
-          
-            
   config
-
-          
-          
-            
-  python
-
-          
-          
-            
-  java
 
           
           
@@ -8930,12 +8840,42 @@ The ReadME Project
           
           
             
-  machine-learning
+  gplv3
 
           
           
             
-  github-config\n\n\n\nStar
+  spoof
+
+          
+          
+            
+  parody
+
+          
+          
+            
+  gpl3
+
+          
+          
+            
+  github-config
+
+          
+          
+            
+  softmicro
+
+          
+          
+            
+  softmicro-project
+
+          
+          
+            
+  softmicro-development\n\n\n\nStar
 
 
   
@@ -8960,9 +8900,9 @@ The ReadME Project
 
 
       
-        5,689
+        6,462
       
-        409
+        444
       
         Built by
 
@@ -8974,7 +8914,7 @@ The ReadME Project
 
       
         
-        514 stars today
+        461 stars today
   
 
   
@@ -9007,9 +8947,9 @@ The ReadME Project
 
 
       
-        80,227
+        80,458
       
-        41,400
+        41,474
       
         Built by
 
@@ -9021,7 +8961,7 @@ The ReadME Project
 
       
         
-        271 stars today
+        277 stars today
   
 
   
@@ -9054,9 +8994,9 @@ The ReadME Project
 
 
       
-        1,695
+        1,907
       
-        137
+        148
       
         Built by
 
@@ -9067,7 +9007,7 @@ The ReadME Project
 
       
         
-        499 stars today
+        329 stars today
   
 
   
@@ -9108,9 +9048,9 @@ The ReadME Project
 
 
       
-        74,972
+        75,164
       
-        16,710
+        16,725
       
         Built by
 
@@ -9122,7 +9062,7 @@ The ReadME Project
 
       
         
-        255 stars today
+        296 stars today
   
 
   
@@ -9155,9 +9095,9 @@ The ReadME Project
 
 
       
-        56,798
+        57,003
       
-        4,763
+        4,781
       
         Built by
 
@@ -9169,7 +9109,7 @@ The ReadME Project
 
       
         
-        168 stars today
+        100 stars today
   
 
   
@@ -9202,9 +9142,9 @@ The ReadME Project
 
 
       
-        10,609
+        10,754
       
-        543
+        545
       
         Built by
 
@@ -9216,7 +9156,7 @@ The ReadME Project
 
       
         
-        139 stars today
+        50 stars today
   
 
   
@@ -9244,9 +9184,9 @@ The ReadME Project
   
 
       
-        166,568
+        166,943
       
-        10,425
+        10,446
       
         Built by
 
@@ -9258,7 +9198,7 @@ The ReadME Project
 
       
         
-        1,399 stars today
+        1,321 stars today
   
 
   
@@ -9286,9 +9226,9 @@ The ReadME Project
   
 
       
-        7,486
+        7,836
       
-        684
+        709
       
         Built by
 
@@ -9297,7 +9237,7 @@ The ReadME Project
 
       
         
-        219 stars today
+        277 stars today
   
 
   
@@ -9330,9 +9270,9 @@ The ReadME Project
 
 
       
-        375,031
+        375,651
       
-        34,917
+        34,961
       
         Built by
 
@@ -9344,7 +9284,7 @@ The ReadME Project
 
       
         
-        240 stars today
+        354 stars today
   
 
   
@@ -9377,9 +9317,9 @@ The ReadME Project
 
 
       
-        2,730
+        2,915
       
-        296
+        309
       
         Built by
 
@@ -9391,7 +9331,7 @@ The ReadME Project
 
       
         
-        101 stars today
+        110 stars today
   
 
   
@@ -9424,9 +9364,9 @@ The ReadME Project
 
 
       
-        78,770
+        78,837
       
-        12,535
+        12,541
       
         Built by
 
@@ -9438,7 +9378,7 @@ The ReadME Project
 
       
         
-        77 stars today
+        68 stars today
   
 
   
@@ -9471,9 +9411,9 @@ The ReadME Project
 
 
       
-        35,487
+        35,601
       
-        1,099
+        1,100
       
         Built by
 
@@ -9485,7 +9425,7 @@ The ReadME Project
 
       
         
-        45 stars today
+        267 stars today
   
 
   
@@ -9518,9 +9458,9 @@ The ReadME Project
 
 
       
-        1,213
+        1,332
       
-        104
+        106
       
         Built by
 
@@ -9532,7 +9472,7 @@ The ReadME Project
 
       
         
-        115 stars today
+        118 stars today
   
 
   
@@ -9573,9 +9513,9 @@ The ReadME Project
 
 
       
-        29,615
+        29,735
       
-        1,648
+        1,650
       
         Built by
 
@@ -9587,7 +9527,7 @@ The ReadME Project
 
       
         
-        229 stars today
+        219 stars today
   
 
   
@@ -9628,9 +9568,9 @@ The ReadME Project
 
 
       
-        11,810
+        11,892
       
-        233
+        235
       
         Built by
 
@@ -9642,7 +9582,7 @@ The ReadME Project
 
       
         
-        37 stars today
+        46 stars today
   
 
   
@@ -9683,9 +9623,9 @@ The ReadME Project
 
 
       
-        19,187
+        19,382
       
-        823
+        825
       
         Built by
 
@@ -9693,11 +9633,10 @@ The ReadME Project
           
           
           
-          
 
       
         
-        72 stars today
+        92 stars today
   
 
   
@@ -9730,7 +9669,7 @@ The ReadME Project
 
 
       
-        97,833
+        97,893
       
         8,535
       
@@ -9744,7 +9683,7 @@ The ReadME Project
 
       
         
-        19 stars today
+        24 stars today
   
 
   
@@ -9777,9 +9716,9 @@ The ReadME Project
 
 
       
-        7,566
+        8,005
       
-        840
+        898
       
         Built by
 
@@ -9791,7 +9730,7 @@ The ReadME Project
 
       
         
-        1,304 stars today\n\nExplore
+        1,450 stars today\n\nExplore
 
       Topics
 
@@ -11881,9 +11820,9 @@ The ReadME Project
 
 
       
-        5,689
+        6,462
       
-        409
+        444
       
         Built by
 
@@ -11895,7 +11834,7 @@ The ReadME Project
 
       
         
-        514 stars today
+        461 stars today
   
 
 
@@ -11930,9 +11869,9 @@ The ReadME Project
 
 
       
-        80,227
+        80,458
       
-        41,400
+        41,474
       
         Built by
 
@@ -11944,7 +11883,7 @@ The ReadME Project
 
       
         
-        271 stars today
+        277 stars today
   
 
 
@@ -11979,9 +11918,9 @@ The ReadME Project
 
 
       
-        1,695
+        1,907
       
-        137
+        148
       
         Built by
 
@@ -11992,7 +11931,7 @@ The ReadME Project
 
       
         
-        499 stars today
+        329 stars today
   
 
 
@@ -12035,9 +11974,9 @@ The ReadME Project
 
 
       
-        74,972
+        75,164
       
-        16,710
+        16,725
       
         Built by
 
@@ -12049,7 +11988,7 @@ The ReadME Project
 
       
         
-        255 stars today
+        296 stars today
   
 
 
@@ -12084,9 +12023,9 @@ The ReadME Project
 
 
       
-        56,798
+        57,003
       
-        4,763
+        4,781
       
         Built by
 
@@ -12098,7 +12037,7 @@ The ReadME Project
 
       
         
-        168 stars today
+        100 stars today
   
 
 
@@ -12133,9 +12072,9 @@ The ReadME Project
 
 
       
-        10,609
+        10,754
       
-        543
+        545
       
         Built by
 
@@ -12147,7 +12086,7 @@ The ReadME Project
 
       
         
-        139 stars today
+        50 stars today
   
 
 
@@ -12177,9 +12116,9 @@ The ReadME Project
   
 
       
-        166,568
+        166,943
       
-        10,425
+        10,446
       
         Built by
 
@@ -12191,7 +12130,7 @@ The ReadME Project
 
       
         
-        1,399 stars today
+        1,321 stars today
   
 
 
@@ -12221,9 +12160,9 @@ The ReadME Project
   
 
       
-        7,486
+        7,836
       
-        684
+        709
       
         Built by
 
@@ -12232,7 +12171,7 @@ The ReadME Project
 
       
         
-        219 stars today
+        277 stars today
   
 
 
@@ -12267,9 +12206,9 @@ The ReadME Project
 
 
       
-        375,031
+        375,651
       
-        34,917
+        34,961
       
         Built by
 
@@ -12281,7 +12220,7 @@ The ReadME Project
 
       
         
-        240 stars today
+        354 stars today
   
 
 
@@ -12316,9 +12255,9 @@ The ReadME Project
 
 
       
-        2,730
+        2,915
       
-        296
+        309
       
         Built by
 
@@ -12330,7 +12269,7 @@ The ReadME Project
 
       
         
-        101 stars today
+        110 stars today
   
 
 
@@ -12365,9 +12304,9 @@ The ReadME Project
 
 
       
-        78,770
+        78,837
       
-        12,535
+        12,541
       
         Built by
 
@@ -12379,7 +12318,7 @@ The ReadME Project
 
       
         
-        77 stars today
+        68 stars today
   
 
 
@@ -12414,9 +12353,9 @@ The ReadME Project
 
 
       
-        35,487
+        35,601
       
-        1,099
+        1,100
       
         Built by
 
@@ -12428,7 +12367,7 @@ The ReadME Project
 
       
         
-        45 stars today
+        267 stars today
   
 
 
@@ -12463,9 +12402,9 @@ The ReadME Project
 
 
       
-        1,213
+        1,332
       
-        104
+        106
       
         Built by
 
@@ -12477,7 +12416,7 @@ The ReadME Project
 
       
         
-        115 stars today
+        118 stars today
   
 
 
@@ -12520,9 +12459,9 @@ The ReadME Project
 
 
       
-        29,615
+        29,735
       
-        1,648
+        1,650
       
         Built by
 
@@ -12534,7 +12473,7 @@ The ReadME Project
 
       
         
-        229 stars today
+        219 stars today
   
 
 
@@ -12577,9 +12516,9 @@ The ReadME Project
 
 
       
-        11,810
+        11,892
       
-        233
+        235
       
         Built by
 
@@ -12591,7 +12530,7 @@ The ReadME Project
 
       
         
-        37 stars today
+        46 stars today
   
 
 
@@ -12634,9 +12573,9 @@ The ReadME Project
 
 
       
-        19,187
+        19,382
       
-        823
+        825
       
         Built by
 
@@ -12644,11 +12583,10 @@ The ReadME Project
           
           
           
-          
 
       
         
-        72 stars today
+        92 stars today
   
 
 
@@ -12683,7 +12621,7 @@ The ReadME Project
 
 
       
-        97,833
+        97,893
       
         8,535
       
@@ -12697,7 +12635,7 @@ The ReadME Project
 
       
         
-        19 stars today
+        24 stars today
   
 
 
@@ -12732,9 +12670,9 @@ The ReadME Project
 
 
       
-        7,566
+        8,005
       
-        840
+        898
       
         Built by
 
@@ -12746,7 +12684,7 @@ The ReadME Project
 
       
         
-        1,304 stars today\n\n\n\n#
+        1,450 stars today\n\n\n\n#
     
 
     
@@ -12948,6 +12886,14 @@ The ReadME Project
     
         
   
+      #
+    Game Engines
+    Frameworks for building games across multiple platforms.
+  
+
+
+        
+  
       
     Learn to Code
     Resources to help people learn to code
@@ -12959,14 +12905,6 @@ The ReadME Project
       
     Made in Brazil
     Open source projects built in or receiving significant contributions from Brazil :brazil:
-  
-
-
-        
-  
-      #
-    Game Engines
-    Frameworks for building games across multiple platforms.
   
 
 
@@ -15021,7 +14959,6 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
       
         With GitHub Copilot, get suggestions for whole lines or entire functions—right inside your editor.
       
-    
 
 
     
@@ -15046,7 +14983,6 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
       
         With GitHub Codespaces, get an instant dev environment in the cloud, so you can code anywhere on any device.
       
-    
 
 
 
@@ -15424,7 +15360,6 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
       
         Ensure your secrets stay secure. Mitigate risk associated with exposed secrets in your repositories, while preventing new leaks before they happen with push protection.
       
-    
 
 
     
@@ -15449,7 +15384,6 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
       
         Find and fix vulnerabilities in your code before they reach production. Prioritize your Dependabot alerts with automated triage rules.
       
-    
 
 
 
@@ -24854,6 +24788,45 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
   
     
       
+        bedrock-vue-barcode-scanner
+        
+          Public
+
+
+          
+            A module with barcode scanner Vue components for use in bedrock apps
+
+      
+          
+  digitalbazaar/bedrock-vue-barcode-scanner’s past year of commit activity
+
+    
+
+        
+  
+  Vue
+
+
+
+        
+          1
+
+        
+          0
+
+      
+        1
+
+      
+        1
+      
+          Updated Apr 27, 2025
+
+
+                  
+  
+    
+      
         vc-commit-tracker
         
           Public
@@ -24927,46 +24900,6 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
 
       
         0
-      
-          Updated Apr 26, 2025
-
-
-                  
-  
-    
-      
-        bedrock-vue-barcode-scanner
-        
-          Public
-
-
-          
-            A module with barcode scanner Vue components for use in bedrock apps
-
-      
-          
-  
-  digitalbazaar/bedrock-vue-barcode-scanner’s past year of commit activity
-
-    
-
-        
-  
-  Vue
-
-
-
-        
-          1
-
-        
-          0
-
-      
-        1
-
-      
-        2
       
           Updated Apr 26, 2025
 
@@ -25104,7 +25037,6 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
 
       
           
-  
   digitalbazaar/bedrock-tokenization’s past year of commit activity
 
     
@@ -25143,7 +25075,6 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
 
       
           
-  
   digitalbazaar/cborld’s past year of commit activity
 
     
@@ -25184,7 +25115,6 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
 
       
           
-  
   digitalbazaar/bedrock-edv-storage’s past year of commit activity
 
     
@@ -25297,12 +25227,46 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
   
 
 
-  
     
-      Top languages
-      Loading…
-    
+      
+        Top languages
+          
+            
   
+  JavaScript
+
+
+          
+          
+            
+  
+  HTML
+
+
+          
+          
+            
+  
+  Vue
+
+
+          
+          
+            
+  
+  Shell
+
+
+          
+          
+            
+  
+  C++
+
+
+          
+      
+    
 
 
     
@@ -26522,80 +26486,50 @@ Digital Bazaar: support@digitalbazaar.com
 
 
     
-  
-    
       
-        
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
+          
+            
+          
       
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-    
-      
-        
-      
-    
-
-
-
 
 
   
@@ -32697,7 +32631,7 @@ Additional navigation options
   
   
   ProTip!
-  no:milestone will show everything without a milestone.\n\n\n\ndigitalbazaar
+  Type g i on any issue or pull request to go back to the issue listing page.\n\n\n\ndigitalbazaar
     
     /
     
@@ -35077,4 +35011,2312 @@ Additional navigation options
   
   
   ProTip!
-  Type g i on any issue or pull request to go back to the issue listing page.\n\n\n\n
+  Exclude everything labeled bug with -label:bug.\n\n\n\ndigitalbazaar
+    
+    /
+    
+      jsonld.js
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    200
+
+  
+
+  
+        
+            
+          Star
+          1.7k
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          125
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          28
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Wiki
+          
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Wiki
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+  Actions: digitalbazaar/jsonld.js
+  
+  
+    
+      
+                  
+
+  
+    Actions
+  
+
+  
+    
+      
+
+        
+  
+  
+    
+        
+          
+
+    
+    
+    
+      
+        
+                        All workflows
+
+      
+
+  
+
+
+          
+        
+          
+
+
+  
+      
+  
+    Workflows
+  
+
+    
+        
+
+    
+    
+    
+      
+        
+          
+  Dependabot Updates
+
+      
+
+  
+
+
+
+        
+
+    
+    
+    
+      
+        
+          
+  Node.js CI
+
+      
+
+  
+
+
+
+          
+
+    
+    
+    
+      
+        
+                        Show more workflows...
+
+      
+
+  
+
+
+
+
+
+
+          
+        
+          
+
+
+  
+      
+  
+    Management
+  
+
+    
+        
+
+    
+    
+    
+        
+          
+        
+      
+        
+                        Caches
+
+      
+
+  
+
+
+    
+
+
+
+  
+
+        
+          
+        
+
+        
+          
+        
+      
+    
+
+
+
+                
+      
+
+  
+  
+  
+    
+            
+          
+            
+              All workflows
+            
+          
+      
+      
+              All workflows
+      
+
+
+  
+      
+        
+          
+            Actions
+          
+          
+            
+          
+        
+      
+    
+      
+                
+        Loading...
+        
+      Loading
+
+      
+      
+        Sorry, something went wrong.
+      
+
+
+    
+
+
+      
+
+      
+
+                
+          
+  
+    
+    
+    
+      
+    
+
+    
+      
+        
+      
+      
+        
+        
+        will be ignored since log searching is not yet available
+      
+    
+
+
+        
+
+  
+            Showing runs from all workflows
+
+            
+  
+    
+    
+    
+      
+    
+
+    
+      
+        
+      
+      
+        
+        
+        will be ignored since log searching is not yet available
+      
+    
+
+
+
+
+      
+    
+
+
+
+
+  
+    
+      17 workflow runs
+    
+  
+
+
+  
+    
+        
+          17 workflow runs
+        
+    
+    
+      
+  
+      
+    Event
+  
+    
+      
+    
+
+
+    
+      
+  
+    
+      
+        Filter by Event
+      
+        
+    
+    
+      
+    
+  
+              
+              
+  
+      
+        
+      
+    
+      
+                  Sorry, something went wrong.
+
+            
+            
+                
+      
+        Filter
+    
+  
+      
+        
+          
+      Loading
+
+      
+    
+      
+
+      
+  
+  
+  
+
+    
+
+
+      
+        
+          
+          
+            
+                
+                  
+                    
+                      
+  
+                    
+                    
+                        
+                          
+                          Sorry, something went wrong.
+                        
+                    
+            
+            
+              No matching events.
+            
+        
+      
+  
+
+      
+  
+      
+    Status
+  
+    
+      
+    
+
+
+    
+      
+  
+    
+      
+        Filter by Status
+      
+        
+    
+    
+      
+    
+  
+              
+              
+  
+      
+        
+      
+    
+      
+                  Sorry, something went wrong.
+
+            
+            
+                
+      
+        Filter
+    
+  
+      
+        
+          
+      Loading
+
+      
+    
+      
+
+      
+  
+  
+  
+
+    
+
+
+      
+        
+          
+          
+            
+                
+                  
+                    
+                      
+  
+                    
+                    
+                        
+                          
+                          Sorry, something went wrong.
+                        
+                    
+            
+            
+              No matching statuses.
+            
+        
+      
+  
+
+      
+  
+      
+    Branch
+  
+    
+      
+    
+
+
+    
+      
+  
+    
+      
+        Filter by Branch
+      
+        
+    
+    
+      
+    
+  
+              
+              
+  
+      
+        
+      
+    
+      
+                  Sorry, something went wrong.
+
+            
+            
+                
+      
+        Filter
+    
+  
+      
+        
+          
+      Loading
+
+      
+    
+      
+
+      
+  
+  
+  
+
+    
+
+
+      
+        
+          
+          
+            
+                
+                  
+                    
+                      
+  
+                    
+                    
+                        
+                          
+                          Sorry, something went wrong.
+                        
+                    
+            
+            
+              No matching branches.
+            
+        
+      
+  
+
+      
+  
+      
+    Actor
+  
+    
+      
+    
+
+
+    
+      
+  
+    
+      
+        Filter by Actor
+      
+        
+    
+    
+      
+    
+  
+              
+              
+  
+      
+        
+      
+    
+      
+                  Sorry, something went wrong.
+
+            
+            
+                
+      
+        Filter
+    
+  
+      
+        
+          
+      Loading
+
+      
+    
+      
+
+      
+  
+  
+  
+
+    
+
+
+      
+        
+          
+          
+            
+                
+                  
+                    
+                      
+  
+                    
+                    
+                        
+                          
+                          Sorry, something went wrong.
+                        
+                    
+            
+            
+              No matching users.
+            
+        
+      
+  
+
+    
+  
+
+
+      
+
+
+    
+  
+    
+      
+          
+
+    
+
+
+          
+            npm_and_yarn in /. for karma - Update #936382287
+          
+        
+
+      
+        Dependabot Updates
+        #3:
+
+        
+
+            
+            by
+              dependabot
+              bot
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:19
+
+
+            
+      
+      
+        47s
+      
+    
+
+          main
+      
+    
+
+    
+        main
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:19
+
+
+              
+      
+      
+        47s
+      
+    
+
+        
+
+        
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Start 8.3.4-0.
+          
+        
+
+      
+        Node.js CI
+        #266:
+
+        
+            Commit 7165607
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:19
+
+
+            
+      
+      
+        3m 40s
+      
+    
+
+          main
+      
+    
+
+    
+        main
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:19
+
+
+              
+      
+      
+        3m 40s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            npm_and_yarn in /. for karma - Update #936382259
+          
+        
+
+      
+        Dependabot Updates
+        #2:
+
+        
+
+            
+            by
+              dependabot
+              bot
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:18
+
+
+            
+      
+      
+        42s
+      
+    
+
+          main
+      
+    
+
+    
+        main
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:18
+
+
+              
+      
+      
+        42s
+      
+    
+
+        
+
+        
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Release 8.3.3.
+          
+        
+
+      
+        Node.js CI
+        #265:
+
+        
+            Commit 76e853a
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:18
+
+
+            
+      
+      
+        1m 48s
+      
+    
+
+          v8.3.3
+      
+    
+
+    
+        v8.3.3
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:18
+
+
+              
+      
+      
+        1m 48s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Release 8.3.3.
+          
+        
+
+      
+        Node.js CI
+        #264:
+
+        
+            Commit 76e853a
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:18
+
+
+            
+      
+      
+        1m 45s
+      
+    
+
+          main
+      
+    
+
+    
+        main
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:18
+
+
+              
+      
+      
+        1m 45s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            npm_and_yarn in /. for karma - Update #936382161
+          
+        
+
+      
+        Dependabot Updates
+        #1:
+
+        
+
+            
+            by
+              dependabot
+              bot
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:14
+
+
+            
+      
+      
+        40s
+      
+    
+
+          main
+      
+    
+
+    
+        main
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:14
+
+
+              
+      
+      
+        40s
+      
+    
+
+        
+
+        
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Update actions.
+          
+        
+
+      
+        Node.js CI
+        #263:
+
+        
+            Commit 253cccf
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:14
+
+
+            
+      
+      
+        2m 8s
+      
+    
+
+          main
+      
+    
+
+    
+        main
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:14
+
+
+              
+      
+      
+        2m 8s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Update actions.
+          
+        
+
+      
+        Node.js CI
+        #262:
+
+        
+            Commit 62e527a
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:11
+
+
+            
+      
+      
+        1m 49s
+      
+    
+
+          add-url-to-error-messages
+      
+    
+
+    
+        add-url-to-error-messages
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:11
+
+
+              
+      
+      
+        1m 49s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+                  
+                    
+                      View #561
+                    
+                  
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Test on Node.js 22.x.
+          
+        
+
+      
+        Node.js CI
+        #261:
+
+        
+            Commit 461830b
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:05
+
+
+            
+      
+      
+        2m 2s
+      
+    
+
+          add-url-to-error-messages
+      
+    
+
+    
+        add-url-to-error-messages
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:05
+
+
+              
+      
+      
+        2m 2s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Ignore failing tests.
+          
+        
+
+      
+        Node.js CI
+        #260:
+
+        
+            Commit 351506f
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:04
+
+
+            
+      
+      
+        1m 0s
+      
+    
+
+          add-url-to-error-messages
+      
+    
+
+    
+        add-url-to-error-messages
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:04
+
+
+              
+      
+      
+        1m 0s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Put URL at end of messages.
+          
+        
+
+      
+        Node.js CI
+        #259:
+
+        
+            Commit 9da7768
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 20:50
+
+
+            
+      
+      
+        57s
+      
+    
+
+          add-url-to-error-messages
+      
+    
+
+    
+        add-url-to-error-messages
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 20:50
+
+
+              
+      
+      
+        57s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Update README to use default export and destructure on default export.
+          
+        
+
+      
+        Node.js CI
+        #258:
+
+        
+            Commit 422d823
+
+            pushed
+            by
+              aljones15
+              
+        
+      
+
+      
+        
+  
+  June 19, 2024 20:36
+
+
+            
+      
+      
+        1m 5s
+      
+    
+
+          update-es6-import-examples-readme
+      
+    
+
+    
+        update-es6-import-examples-readme
+    
+
+    
+      
+        
+          
+  
+  June 19, 2024 20:36
+
+
+              
+      
+      
+        1m 5s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+                  
+                    
+                      View #555
+                    
+                  
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Ignore test-suites/ directory.
+          
+        
+
+      
+        Node.js CI
+        #257:
+
+        
+            Commit 5367858
+
+            pushed
+            by
+              aljones15
+              
+        
+      
+
+      
+        
+  
+  June 19, 2024 20:26
+
+
+            
+      
+      
+        1m 43s
+      
+    
+
+          update-es6-import-examples-readme
+      
+    
+
+    
+        update-es6-import-examples-readme
+    
+
+    
+      
+        
+          
+  
+  June 19, 2024 20:26
+
+
+              
+      
+      
+        1m 43s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Use Symbol for default document loader key.
+          
+        
+
+      
+        Node.js CI
+        #256:
+
+        
+            Commit f02e3cf
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  May 31, 2024 20:23
+
+
+            
+      
+      
+        1m 1s
+      
+    
+
+          per-loader-context-cache
+      
+    
+
+    
+        per-loader-context-cache
+    
+
+    
+      
+        
+          
+  
+  May 31, 2024 20:23
+
+
+              
+      
+      
+        1m 1s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+                  
+                    
+                      View #552
+                    
+                  
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Use a per-documentLoader resolved context cache.
+          
+        
+
+      
+        Node.js CI
+        #255:
+
+        
+            Commit 0664018
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  May 31, 2024 19:48
+
+
+            
+      
+      
+        57s
+      
+    
+
+          per-loader-context-cache
+      
+    
+
+    
+        per-loader-context-cache
+    
+
+    
+      
+        
+          
+  
+  May 31, 2024 19:48
+
+
+              
+      
+      
+        57s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Use a per-documentLoader resolved context cache.
+          
+        
+
+      
+        Node.js CI
+        #254:
+
+        
+            Commit 67f38b9
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  May 31, 2024 04:28
+
+
+            
+      
+      
+        1m 3s
+      
+    
+
+          per-loader-context-cache
+      
+    
+
+    
+        per-loader-context-cache
+    
+
+    
+      
+        
+          
+  
+  May 31, 2024 04:28
+
+
+              
+      
+      
+        1m 3s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Ignore test-suites/ directory.
+          
+        
+
+      
+        Node.js CI
+        #253:
+
+        
+            Commit 5367858
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  May 31, 2024 04:24
+
+
+            
+      
+      
+        1m 2s
+      
+    
+
+          per-loader-context-cache
+      
+    
+
+    
+        per-loader-context-cache
+    
+
+    
+      
+        
+          
+  
+  May 31, 2024 04:24
+
+
+              
+      
+      
+        1m 2s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file\n\n\n\n
