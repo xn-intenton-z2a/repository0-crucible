@@ -36,7 +36,7 @@
     "js-yaml": "^4.1.0",
     "minimatch": "^9.0.5",
     "zod": "^3.24.3",
-    "jsonld": "^1.8.1",
+    "jsonld": "^8.3.3",
     "@comunica/query-sparql": "^2.2.2"
   },
   "devDependencies": {
