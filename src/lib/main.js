@@ -29,8 +29,7 @@ Usage: node src/lib/main.js [options]
 
 const CONFIG_FILE = "data-sources.json";
 
-export function listSources(_configPath) {
-  const configPath = CONFIG_FILE;
+export function listSources(configPath = CONFIG_FILE) {
   if (!fs.existsSync(configPath)) {
     return PUBLIC_DATA_SOURCES;
   }
@@ -159,9 +158,8 @@ export function buildIntermediate({ dataDir = "data", outDir, intermediateDir = 
 }
 
 export async function buildEnhanced({ dataDir = "data", intermediateDir = "intermediate", outDir = "enhanced" } = {}) {
-  const mod = await import(import.meta.url);
-  const refreshed = await mod.refreshSources();
-  const intermediate = mod.buildIntermediate({ dataDir, intermediateDir });
+  const refreshed = await refreshSources();
+  const intermediate = buildIntermediate({ dataDir, intermediateDir });
   let merged = [];
   const resolvedInter = path.resolve(intermediateDir);
   for (const file of intermediate.files) {
@@ -244,16 +242,14 @@ export async function sparqlQuery(filePath, queryString) {
 export async function main(args) {
   const argv = Array.isArray(args) ? args : process.argv.slice(2);
   if (!argv.length) return;
-  const mod = await import(import.meta.url);
   const cmd = argv[0];
   switch (cmd) {
     case '--help':
     case '-h':
-      console.log(mod.getHelpText());
+      console.log(getHelpText());
       break;
     case '--list-sources': {
-      const sources = mod.listSources();
-      console.log(JSON.stringify(sources, null, 2));
+      console.log(JSON.stringify(listSources(), null, 2));
       break;
     }
     case '--diagnostics': {
@@ -307,22 +303,22 @@ export async function main(args) {
     }
     case '--build-intermediate': {
       const [dataDirArg, outDirArg] = argv.slice(1);
-      if (dataDirArg && outDirArg) mod.buildIntermediate({ dataDir: dataDirArg, outDir: outDirArg });
-      else if (dataDirArg) mod.buildIntermediate({ dataDir: dataDirArg, outDir: undefined });
-      else mod.buildIntermediate();
+      if (dataDirArg && outDirArg) buildIntermediate({ dataDir: dataDirArg, outDir: outDirArg });
+      else if (dataDirArg) buildIntermediate({ dataDir: dataDirArg, outDir: undefined });
+      else buildIntermediate();
       break;
     }
     case '--build-enhanced': {
       const [d, i, o] = argv.slice(1);
-      if (d && i && o) await mod.buildEnhanced({ dataDir: d, intermediateDir: i, outDir: o });
-      else if (d && i) await mod.buildEnhanced({ dataDir: d, intermediateDir: i });
-      else if (d) await mod.buildEnhanced({ dataDir: d });
-      else await mod.buildEnhanced();
+      if (d && i && o) await buildEnhanced({ dataDir: d, intermediateDir: i, outDir: o });
+      else if (d && i) await buildEnhanced({ dataDir: d, intermediateDir: i });
+      else if (d) await buildEnhanced({ dataDir: d });
+      else await buildEnhanced();
       break;
     }
     case '--capital-cities': {
       try {
-        const doc = await mod.getCapitalCities();
+        const doc = await getCapitalCities();
         console.log(JSON.stringify(doc, null, 2));
       } catch (e) {
         console.error(`Failed to fetch capital cities: ${e.message}`);
@@ -333,13 +329,13 @@ export async function main(args) {
       const [file, sparql] = argv.slice(1);
       if (!file || !sparql) {
         console.error('Missing required query parameters: file and sparql');
-        break;
-      }
-      try {
-        const result = await mod.sparqlQuery(file, sparql);
-        console.log(JSON.stringify(result, null, 2));
-      } catch (e) {
-        console.error(e.message);
+      } else {
+        try {
+          const result = await sparqlQuery(file, sparql);
+          console.log(JSON.stringify(result, null, 2));
+        } catch (e) {
+          console.error(e.message);
+        }
       }
       break;
     }
@@ -347,13 +343,13 @@ export async function main(args) {
       const [name, url] = argv.slice(1);
       if (!name || !url) {
         console.error('Missing required parameters: name and url');
-        break;
-      }
-      try {
-        const merged = mod.addSource({ name, url });
-        console.log(JSON.stringify(merged, null, 2));
-      } catch (e) {
-        console.error(e.message);
+      } else {
+        try {
+          const merged = addSource({ name, url });
+          console.log(JSON.stringify(merged, null, 2));
+        } catch (e) {
+          console.error(e.message);
+        }
       }
       break;
     }
@@ -361,13 +357,13 @@ export async function main(args) {
       const [identifier] = argv.slice(1);
       if (!identifier) {
         console.error('Missing required parameters: identifier');
-        break;
-      }
-      try {
-        const merged = mod.removeSource(identifier);
-        console.log(JSON.stringify(merged, null, 2));
-      } catch (e) {
-        console.error(e.message);
+      } else {
+        try {
+          const merged = removeSource(identifier);
+          console.log(JSON.stringify(merged, null, 2));
+        } catch (e) {
+          console.error(e.message);
+        }
       }
       break;
     }
@@ -375,25 +371,24 @@ export async function main(args) {
       const [identifier, newName, newUrl] = argv.slice(1);
       if (!identifier || !newName || !newUrl) {
         console.error('Missing required parameters: identifier, newName, and newUrl');
-        break;
-      }
-      try {
-        const merged = mod.updateSource({ identifier, name: newName, url: newUrl }, CONFIG_FILE);
-        console.log(JSON.stringify(merged, null, 2));
-      } catch (e) {
-        console.error(e.message);
+      } else {
+        try {
+          const merged = updateSource({ identifier, name: newName, url: newUrl }, CONFIG_FILE);
+          console.log(JSON.stringify(merged, null, 2));
+        } catch (e) {
+          console.error(e.message);
+        }
       }
       break;
     }
     case '--serve': {
       const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
       const server = http.createServer(async (req, res) => {
-        const mod2 = await import(import.meta.url);
         const reqUrl = new URL(req.url, `http://${req.headers.host}`);
         const p = reqUrl.pathname;
         if (p === '/build-intermediate' && req.method === 'GET') {
           res.setHeader('Content-Type', 'text/plain');
-          const summary = mod2.buildIntermediate();
+          const summary = buildIntermediate();
           if (summary && summary.files) {
             for (const f of summary.files) res.write(`written ${f}\n`);
             res.write(`Generated ${summary.count} intermediate artifacts into intermediate/`);
@@ -401,17 +396,17 @@ export async function main(args) {
           res.end();
         } else if (p === '/build-enhanced' && req.method === 'GET') {
           res.setHeader('Content-Type', 'text/plain');
-          const refreshed = await mod2.refreshSources();
+          const refreshed = await refreshSources();
           for (const f of refreshed.files) res.write(`written ${f}\n`);
-          const inter = mod2.buildIntermediate();
+          const inter = buildIntermediate();
           for (const f of inter.files) res.write(`written ${f}\n`);
-          const { enhanced } = await mod2.buildEnhanced();
+          const { enhanced } = await buildEnhanced();
           res.write(`written enhanced.json\n`);
           res.write(`Enhanced ontology written to enhanced/enhanced.json with ${enhanced.count} nodes`);
           res.end();
         } else if (p === '/capital-cities' && req.method === 'GET') {
           try {
-            const doc = await mod2.getCapitalCities();
+            const doc = await getCapitalCities();
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(doc));
           } catch (e) {
@@ -421,14 +416,14 @@ export async function main(args) {
           }
         } else if (p === '/query' && req.method === 'GET') {
           const file = reqUrl.searchParams.get('file');
-          const sparql = reqUrl.searchParams.get('sparql') ? decodeURIComponent(reqUrl.searchParams.get('sparql')) : null;
-          if (!file || !sparql) {
+          const sparqlParam = reqUrl.searchParams.get('sparql') ? decodeURIComponent(reqUrl.searchParams.get('sparql')) : null;
+          if (!file || !sparqlParam) {
             res.statusCode = 400;
             res.setHeader('Content-Type', 'text/plain');
             res.end('Missing required query parameters: file and sparql');
           } else {
             try {
-              const result = await mod2.sparqlQuery(file, sparql);
+              const result = await sparqlQuery(file, sparqlParam);
               res.setHeader('Content-Type', 'application/json');
               res.end(JSON.stringify(result));
             } catch (e) {
