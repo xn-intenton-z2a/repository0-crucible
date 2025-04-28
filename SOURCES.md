@@ -3,7 +3,7 @@
 ## https://www.w3.org/TR/owl2-overview/
 ## https://www.w3.org/TR/owl2-rdf-based-semantics/
 ## https://www.w3.org/TR/owl2-syntax/
-This combined set of W3C Recommendations defines the RDF data model (IRIs, literals, blank nodes, triples, graphs) and the OWL 2 ontology language, detailing Turtle, RDF/XML, and JSON-LD serializations, concrete syntaxes, and formal semantics. It is the authoritative reference for constructing, serializing, and reasoning over OWL ontologies in both CLI and HTTP-based workflows. (Last updated: RDF Concepts 25 Feb 2014; OWL 2 Overview 27 Oct 2009; OWL 2 Semantics 11 Dec 2012.)
+This combined set of W3C Recommendations defines the RDF data model (IRIs, literals, blank nodes, triples, graphs) and the OWL 2 ontology language, detailing Turtle, RDF/XML, and JSON-LD serializations, concrete syntaxes, and formal semantics. It serves as the authoritative reference for constructing, serializing, and reasoning over OWL ontologies in both CLI and HTTP-based workflows. (Last updated: RDF Concepts 25 Feb 2014; OWL 2 Overview 27 Oct 2009; OWL 2 Semantics 11 Dec 2012.)
 ## License
 W3C Document License (CC-BY 4.0)
 
@@ -23,7 +23,7 @@ W3C Document License (CC-BY 4.0); MIT License
 ## https://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/
 ## https://jena.apache.org/documentation/fuseki2/
 ## https://graphdb.ontotext.com/documentation/standard/
-Aggregates SPARQL 1.1 Recommendations for querying, updating, HTTP protocol, and JSON result serializations, alongside deployment and tuning guides for Apache Jena Fuseki and Ontotext GraphDB. It covers performance optimization, authentication, federation, and best practices for resilient Node.js clients and public endpoints like DBpedia and Wikidata. (Last updated: SPARQL specs Mar 2013; Fuseki 4.x; GraphDB Standard 2023.)
+Aggregates SPARQL 1.1 Recommendations for querying, updating, HTTP protocol, and JSON result serializations, alongside deployment and tuning guides for Apache Jena Fuseki and Ontotext GraphDB. Covers performance optimization, authentication, federation, and best practices for resilient Node.js clients and public endpoints like DBpedia and Wikidata. (Last updated: SPARQL specs Mar 2013; Fuseki 4.x; GraphDB Standard 2023.)
 ## License
 W3C Document License (CC-BY 4.0); Apache License 2.0; GraphDB documentation license
 
@@ -63,13 +63,6 @@ Covers SHACL for declarative RDF graph validation with formal semantics and conf
 ## License
 W3C Document License (CC-BY 4.0); CC0/Public Domain (ShEx spec); MIT License (shex.js)
 
-# JSON Schema Specification & Zod Validation Library
-## https://json-schema.org/specification.html
-## https://github.com/colinhacks/zod#readme
-JSON Schema provides a declarative vocabulary to define and validate JSON structures, including JSON-LD contexts and RDF shapes. The Zod library offers runtime, TypeScript-first schema validation with composable and type-safe builders, enabling concise validators for configuration files, HTTP payloads, and transformed ontology artifacts. (Last updated: JSON Schema 2020-12 Dec 2020; Zod v3.24.3 Apr 2024.)
-## License
-CC0/Public Domain (JSON Schema); MIT License (Zod)
-
 # Apache Jena ARQ & TDB2 Documentation
 ## https://jena.apache.org/documentation/arq/
 ## https://jena.apache.org/documentation/tdb2/
@@ -77,3 +70,10 @@ CC0/Public Domain (JSON Schema); MIT License (Zod)
 ARQ is Jena’s SPARQL query engine offering advanced features like service federation, custom functions, and high-performance graph pattern matching. TDB2 is Jena’s transactional RDF storage backend optimized for large-scale datasets, and Fuseki2 provides a robust SPARQL-over-HTTP server with authentication, CORS, and scalability tuning. Together, they serve as a reference Java-based stack for deploying production RDF stores and SPARQL endpoints, informing performance tuning, clustering, and resilience strategies. (Last updated: ARQ 4.x 2023; TDB2 2023; Fuseki 4.x.)
 ## License
 Apache License 2.0
+
+# Eclipse RDF4J Programming Guide
+## https://rdf4j.org/documentation/programmers-guide/
+## https://rdf4j.org/documentation/release-notes/
+The Eclipse RDF4J Programmer’s Guide covers the core Java APIs for Model, Repository, and Sail layers, SPARQL query execution, transaction management, inferencing, and repository configuration. Includes practical code snippets, Spring integration examples, and tuning advice for high-throughput RDF processing. Authoritative for teams embedding RDF4J in JVM-based applications. (Last updated: RDF4J 4.x series, 2023.)
+## License
+Eclipse Public License 2.0
