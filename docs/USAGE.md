@@ -91,6 +91,29 @@ Output:
 ]
 ```
 
+## Update Source (CLI)
+
+Use the `--update-source` flag to update the name or URL of an existing custom data source.
+
+```bash
+node src/lib/main.js --update-source "OldName" "NewName" "https://new.url/api"
+```
+
+Output:
+
+```json
+[
+  {
+    "name": "DBpedia SPARQL",
+    "url": "https://dbpedia.org/sparql"
+  },
+  {
+    "name": "NewName",
+    "url": "https://new.url/api"
+  }
+]
+```
+
 ## Manage Sources (HTTP)
 
 ### Add Source
@@ -101,35 +124,4 @@ curl -X POST http://localhost:3000/sources \
   -d '{"name":"Custom API","url":"https://example.com/api"}'
 ```
 
-Response:
-
-```http
-HTTP/1.1 201 Created
-Content-Type: application/json
-
-[
-  { "name": "DBpedia SPARQL", "url": "https://dbpedia.org/sparql" },
-  { "name": "Custom API", "url": "https://example.com/api" }
-]
-```
-
-### Remove Source
-
-```bash
-curl -X DELETE http://localhost:3000/sources/Custom%20API
-```
-
-Response:
-
-```http
-HTTP/1.1 200 OK
-Content-Type: application/json
-
-[
-  { "name": "DBpedia SPARQL", "url": "https://dbpedia.org/sparql" }
-]
-```
-
-## SPARQL Query
-
-... (rest unchanged) ...`,
+... (rest unchanged) ...
