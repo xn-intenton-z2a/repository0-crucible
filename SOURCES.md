@@ -7,12 +7,6 @@ This combined set of W3C Recommendations defines the RDF data model (IRIs, liter
 ## License
 W3C Document License (CC-BY 4.0)
 
-# SHACL: Shapes Constraint Language
-## https://www.w3.org/TR/shacl/
-SHACL provides a declarative, graph-based language for validating RDF graphs against complex shape expressions, including path constraints, cardinalities, and custom severity levels. Its formal semantics and comprehensive conformance test suite ensure reliable data integrity checks after ontology transformations. (Last updated: 21 Oct 2017; authoritative as W3C Recommendation.)
-## License
-W3C Document License (CC-BY 4.0)
-
 # JSON-LD 1.1 Specification & jsonld.js Implementation
 ## https://www.w3.org/TR/json-ld11/
 ## https://www.w3.org/TR/json-ld11-api/
@@ -35,34 +29,23 @@ This source aggregates SPARQL 1.1 Recommendations for query, update, HTTP protoc
 ## License
 W3C Document License (CC-BY 4.0); Apache License 2.0; GraphDB documentation license
 
-# Node.js v20 Core Modules, Streams API, Fetch & URL Standards & Vitest v3
+# JavaScript RDF Ecosystem: Node.js v20, RDF/JS, Comunica, SPARQL.js, rdflib.js & Vitest v3
 ## https://nodejs.org/api/http.html
-## https://nodejs.org/api/fs.html
+## https://nodejs.org/api/stream.html
 ## https://nodejs.org/api/url.html
-## https://nodejs.org/api/path.html
 ## https://nodejs.org/api/esm.html
 ## https://nodejs.org/api/globals.html#fetch
-## https://nodejs.org/api/stream.html
-## https://nodejs.org/api/perf_hooks.html
-## https://nodejs.org/api/events.html
 ## https://fetch.spec.whatwg.org/
-## https://url.spec.whatwg.org/
-## https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-## https://vitest.dev/
-A unified reference for Node.js v20 core modules (HTTP server/client, filesystem, URL/path utilities, ESM loader, global fetch, streams, performance hooks, events), the WHATWG Fetch and URL standards for consistent behavior across platforms, the standard Fetch API on the web (MDN), and Vitest v3 testing patterns. These docs inform robust CLI and HTTP server implementations, performance measurement, stream-based data processing, and comprehensive test suites. (Current as of Node.js v20.x, WHATWG specs constantly maintained; MDN and Vitest docs updated continuously; authoritative as official Node.js, WHATWG, and Vitest documentation.)
-## License
-MIT License (Node.js & Vitest); WHATWG License (Fetch & URL); MDN content CC0/Public Domain
-
-# RDF/JS Data Model, rdf-ext, Comunica, SPARQL.js & rdflib.js
 ## https://rdf.js.org/data-model-spec/
 ## https://rdf.js.org/streams/spec/
 ## https://rdf-ext.github.io/
 ## https://comunica.dev/docs/query/framework
 ## https://github.com/Callidon/sparqljs#readme
 ## https://linkeddata.github.io/rdflib.js/
-These community-driven specifications and libraries define standard RDF/JS interfaces for nodes, quads, and streams, with rdf-ext providing data factories, parsers, and serializers, Comunica enabling modular, federated SPARQL querying, SPARQL.js offering a SPARQL-to-AST parser/serializer, and rdflib.js delivering a high-level graph store, fetcher, and RDF parsing/serializing toolkit. Together they power scalable, interoperable, and streaming-first RDF processing in JavaScript. (Specs Jan 2022; rdf-ext & Comunica 2024; SPARQL.js 2023; rdflib.js 2024; authoritative as active OSS and community specs.)
+## https://vitest.dev/
+A unified reference for Node.js v20 core modules (HTTP server/client, streams, URL/ESM loader, global fetch), the RDF/JS Data Model and Streams specifications, rdf-ext data factories, Comunica federated query framework, SPARQL.js parser/serializer, rdflib.js graph toolkit, and Vitest v3 testing patterns. These docs inform robust CLI and HTTP server implementations, streaming-first RDF processing, modular SPARQL query construction, graph management, and comprehensive test suites. (Current as of Node.js v20.x, RDF/JS Jan 2022, Comunica 2024, SPARQL.js 2023, rdflib.js 2024, Vitest continuously updated; authoritative as official Node.js docs and active community specs/implementations.)
 ## License
-MIT License; CC0/Public Domain (rdflib.js)
+MIT (Node.js, rdf-ext, Comunica, SPARQL.js, rdflib.js, Vitest); WHATWG License (Fetch); CC0/Public Domain (RDF/JS Streams)
 
 # Linked Data Platform (LDP) Specification
 ## https://www.w3.org/TR/ldp/
@@ -70,10 +53,22 @@ The LDP Recommendation defines RESTful HTTP interactions for managing RDF resour
 ## License
 W3C Document License (CC-BY 4.0)
 
-# ShEx 2.0 Shapes Expression Language & shex.js Implementation
+# RDF/Schema Validation: SHACL & ShEx
+## https://www.w3.org/TR/shacl/
 ## https://shex.io/shex-semantics/
-## https://shex.io/shex-documents/
 ## https://github.com/shexSpec/shex.js#readme
-ShEx (Shape Expressions) provides a concise, formal language for validating RDF graphs against shape schemas, offering constraint constructs for properties, datatypes, and cardinalities. The official specification details both compact and JSON serializations and validation algorithms, while shex.js delivers a JavaScript reference implementation with parsing, compilation, and execution support for streaming and error reporting. This complements SHACL by providing an alternative, developer-friendly validation toolkit. (Last updated: ShEx Semantics 2020; shex.js v4.x 2023; authoritative as official spec and reference implementation.)
+This combined source covers SHACL for declarative, graph-based RDF validation with a formal semantics and conformance suite, and ShEx for concise shape expressions including compact and JSON serializations. The shex.js library provides a JavaScript reference implementation with streaming validation and detailed error reporting. Together they enable rigorous ontology and data graph integrity checks. (Last updated: SHACL 21 Oct 2017; ShEx Semantics 2020; shex.js v4.x 2023; authoritative as W3C spec, ShEx community spec, and reference implementation.)
 ## License
-CC0/Public Domain (spec); MIT License (shex.js)
+W3C Document License (CC-BY 4.0); CC0/Public Domain (ShEx spec); MIT License (shex.js)
+
+# Apache Jena TDB2 Documentation
+## https://jena.apache.org/documentation/tdb2/
+The Jena TDB2 documentation provides a comprehensive guide to the high-performance native RDF triplestore within Apache Jena. It covers dataset creation, transaction APIs, bulk data loading, backup/restore strategies, and performance tuning for large-scale OWL ontologies. (Last updated: 2023; authoritative as official Apache Jena project docs.)
+## License
+Apache License 2.0
+
+# SPARQL-HTTP-Client Library
+## https://github.com/zazuko/sparql-http-client#readme
+The SPARQL-HTTP-Client library offers a lightweight, promise-based Node.js client for interacting with SPARQL endpoints. It supports configurable GET/POST queries, Accept header negotiation, authentication, pagination, and streaming of results, enabling robust programmatic SPARQL operations with minimal boilerplate. (Last updated: 2024; authoritative as active open-source project.)
+## License
+MIT License
