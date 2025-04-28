@@ -1,64 +1,36 @@
 # Description
-Implement a CLI command and HTTP endpoint to merge intermediate OWL JSON-LD artifacts into a single enhanced ontology document, and expose a programmatic API for the same.
-
-# Implementation
-1. Programmatic API
-   - Export a function `buildEnhanced({ intermediateDir, outDir } = {})` in `src/lib/main.js`.
-   - If `intermediateDir` does not exist, log an error via `console.error("Error: intermediate/ directory not found")` and return `{ count: 0, files: [] }`.
-   - Read all files ending in `.json` in `intermediateDir`.
-   - For each file, parse JSON content; if it contains `"@graph"` array, collect its entries; if parsing fails, log a warning via `console.error` and skip.
-   - Construct a merged document:
-     - `@context`: { "@vocab": "http://www.w3.org/2002/07/owl#" }
-     - `@graph`: concatenation of all collected entries
-   - Ensure `ontologies/` directory exists under `outDir` (default project root) via `fs.mkdirSync(..., { recursive: true })`.
-   - Write merged document to `ontologies/enhanced-ontology.json` with two-space indentation via `fs.writeFileSync`.
-   - Log `console.log("written enhanced-ontology.json")` and return `{ count, files: ["enhanced-ontology.json"] }`.
-
-2. CLI Support
-   - In `main(args)`, detect `--build-enhanced` or `-be` flag.
-   - When present, call `buildEnhanced()` with default paths and exit without error.
-
-3. HTTP Endpoint
-   - Under `--serve` mode, add handling for `GET /build-enhanced`:
-     - Respond with status `200` and header `Content-Type: text/plain`.
-     - Override `console.log` temporarily so each log line emitted by `buildEnhanced()` is written to the response stream with a newline.
-     - After `buildEnhanced()` completes, restore `console.log` and end the response.
-   - On missing directory or errors, still stream error or warning lines and end with HTTP `200`.
-
-# CLI Usage
-To generate the enhanced ontology:
-
-node src/lib/main.js --build-enhanced
-node src/lib/main.js -be
-
-# HTTP Usage
-When running the server with `--serve`, send a GET request:
-
-GET /build-enhanced
-
-This streams lines:
-
-written <name>-intermediate.json
-...
-written enhanced-ontology.json
+Consolidate enhanced ontology generation and timestamped persistence into a unified pipeline. Provide both building and persistent versioned snapshots of the enhanced ontology document for historical tracking and downstream reuse.
 
 # Programmatic API
+Export async function buildEnhanced({ dataDir = "data", intermediateDir = "intermediate", outDir = "enhanced" } = {}) that:
+1. Invokes refreshSources() to update local JSON captures.
+2. Calls buildIntermediate({ dataDir, outDir: intermediateDir }) to produce OWL JSON-LD intermediate artifacts.
+3. Reads all .json files in intermediateDir, parses each for an @graph array, and concatenates entries into a single enhanced document.
+4. Ensures outDir exists and writes enhanced.json with two-space indentation.
+5. Returns { refreshed, intermediate, enhanced: { file: "enhanced.json", count } } where count is total nodes in @graph.
 
-```js
-import { buildEnhanced } from 'owl-builder';
-const { count, files } = buildEnhanced({ intermediateDir: 'intermediate', outDir: process.cwd() });
-console.log(`Merged into enhanced-ontology.json`, files);
-```
+Export async function mergePersist({ dataDir, intermediateDir, persistenceDir = "ontologies" } = {}) that:
+1. Calls buildEnhanced({ dataDir, intermediateDir, outDir: persistenceDir }) to regenerate enhanced.json in a temp location.
+2. Reads persistenceDir/enhanced.json and parses its JSON content.
+3. Ensures persistenceDir exists using fs.mkdirSync({ recursive: true }).
+4. Derives a UTC timestamp in ISO basic format (YYYYMMDDThhmmssZ).
+5. Constructs snapshot filename enhanced-<timestamp>.json and writes the enhanced document with two-space indentation.
+6. Logs "persisted <snapshotFilename>" and returns { snapshotFile, count }.
+
+# CLI Support
+- Add flag --build-enhanced (alias -be) in main(args) to invoke buildEnhanced() with default or provided paths.
+- Add flag --merge-persist in main(args) to invoke mergePersist() and print its console.log output without throwing errors.
+
+# HTTP Endpoints
+Under --serve mode, handle:
+- GET /build-enhanced: respond 200 text/plain, temporarily override console.log to stream log lines from buildEnhanced() to the client, then restore console.log and end response.
+- GET /merge-persist: respond 200 text/plain, override console.log to stream each persisted message from mergePersist(), then restore console.log and end response.
 
 # Testing
-- Unit tests for `buildEnhanced()`:
-  • Mock `fs.existsSync`, `fs.readdirSync`, `fs.readFileSync`, `fs.mkdirSync`, `fs.writeFileSync` and spies for `console.log` and `console.error`.
-  • Verify behavior when `intermediateDir` is missing, empty, contains valid JSON-LD with `@graph`, and when files fail to parse.
-- CLI tests in `tests/unit/main.build.enhanced.test.js`:
-  • Mock `buildEnhanced` and spy on `console.log` to verify invocation when using `--build-enhanced` and `-be` flags.
-  • Ensure `main()` returns without throwing.
-- HTTP integration tests in `tests/unit/main.serve.build.enhanced.test.js`:
-  • Start server on ephemeral port, create `intermediate/sample.json` artifacts, issue GET `/build-enhanced`, and verify status `200`, header `text/plain`, body contains lines for each file and `written enhanced-ontology.json`.
+- Unit tests for buildEnhanced(): mock refreshSources and buildIntermediate, spy on fs and console methods, verify directory creation, file writes, return value, and log output.
+- Unit tests for mergePersist(): mock buildEnhanced to write a known enhanced.json, spy on fs.mkdirSync and fs.writeFileSync, spy on console.log for the persisted message and returned count.
+- CLI tests: spy on both buildEnhanced and mergePersist to ensure main(["--build-enhanced"]) and main(["--merge-persist"]) invoke appropriate functions with default and custom arguments.
+- HTTP integration tests: start server with --serve, issue GET /build-enhanced and GET /merge-persist, verify status codes, content types, streamed lines including snapshot messages, and correct snapshot file naming.
 
 # Documentation Updates
-- Update `docs/FEATURES.md`, `docs/USAGE.md`, and `README.md` to include the `--build-enhanced` option under Features and Usage, with example invocations and sample output.
+Update docs/FEATURES.md, docs/USAGE.md, and README.md to reflect the combined Build Enhanced and Merge Persist feature under Ontology Management. Include example CLI invocations and HTTP requests for both endpoints, sample outputs, and description of timestamped snapshot filenames.
