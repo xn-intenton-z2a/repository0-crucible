@@ -12,7 +12,7 @@ export const PUBLIC_DATA_SOURCES = [{ name: "DBpedia SPARQL", url: "https://dbpe
 export function getHelpText() {
   return `owl-builder: create and manage OWL ontologies from public data sources
 Usage: node src/lib/main.js [options]
---help                      Display this help message
+--help                Display this help message
 -h                          Display this help message
 --list-sources              List public data sources
 --add-source <name> <url>   Add a custom data source
