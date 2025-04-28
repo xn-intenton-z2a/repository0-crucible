@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="vitest_api" href="#vitest_api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>VITEST_API</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Extracted core API: TestFunction, TestOptions, all test methods (test, skip, only, concurrent, sequential, todo, fails, each, for), bench definitions, describe/suite functions, lifecycle hooks, TestContext hooks. Included precise method signatures, parameters, and defaults.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Type Aliases</p>
+</li>
+<li class="md-github">
+<p class="md-github">Test API</p>
+</li>
+<li class="md-github">
+<p class="md-github">Benchmark API</p>
+</li>
+<li class="md-github">
+<p class="md-github">Suite API</p>
+</li>
+<li class="md-github">
+<p class="md-github">Lifecycle Hooks</p>
+</li>
+<li class="md-github">
+<p class="md-github">TestContext Hooks</p>
+</li>
+<li class="md-github">
+<p class="md-github">Type Aliases
+Awaitable<T> = T | PromiseLike<T>
+TestFunction = () =&gt; Awaitable<void></p>
+</li>
+<li class="md-github">
+<p class="md-github">Test API
+test(name: string, fn: TestFunction, timeout?: number)
+test(name: string, options: TestOptions, fn: TestFunction)
+skip/skipIf/runIf/only variants as function overloads
+concurrent, sequential, todo, fails
+Parameterized: each(cases, namePattern, fn), for(cases, namePattern, fn)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Benchmark API
+bench(name: string, fn: () =&gt; void, options?: BenchOptions)
+bench.skip/only/todo
+BenchOptions: time (ms), iterations, warmupTime, warmupIterations, now, signal, throws, setup, teardown</p>
+</li>
+<li class="md-github">
+<p class="md-github">Suite API
+describe(name: string, fn: () =&gt; void)
+describe.skip/skipIf/runIf/only
+concurrent, sequential, shuffle, todo, each, for</p>
+</li>
+<li class="md-github">
+<p class="md-github">Lifecycle Hooks
+beforeEach(fn, timeout)
+afterEach(fn, timeout)
+beforeAll(fn, timeout)
+afterAll(fn, timeout)</p>
+</li>
+<li class="md-github">
+<p class="md-github">TestContext Hooks
+onTestFinished(callback)
+onTestFailed(callback)</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">TestOptions defaults: retry=0, repeats=0, timeout default=5000ms (global override via testTimeout config). BenchOptions defaults: time=500ms, iterations=10, warmupTime=100ms, warmupIterations=5. Concurrency: test.concurrent runs distinct promise-based tests in parallel, snapshots via context.expect. describe.concurrent runs nested suites/tests in parallel. Sequence: test.sequential within concurrent to enforce order. describe.shuffle uses sequence.shuffle or CLI --sequence.shuffle with seed. Hooks: beforeEach/afterEach optional teardown via returned function. onTestFinished hooks reverse order, skip on dynamic skip; onTestFailed only on failure.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">// Test Definitions
+import { test, expect } from 'vitest'
+// Basic
+test('sum', () =&gt; { expect(1+1).toBe(2) })
+// Timeout override
+test('heavy', { timeout: 10000 }, async () =&gt; { await doHeavy() })
+// Retry and repeats
+test('flaky', { retry: 2, repeats: 3 }, async () =&gt; { await unstableOp() })
+// Skipped
+test.skip('skip', () =&gt; {})
+test.skipIf(process.env.NODE_ENV!=='prod')('prod-only', () =&gt; {})
+// Only
+test.only('focus', () =&gt; {})
+// Concurrent
+test.concurrent('parallel1', async ({ expect }) =&gt; { expect(await api()).toBe(1) })
+// Sequential in concurrent
+test.sequential('seq1', async () =&gt; {})
+// Fails
+test.fails('should fail', async () =&gt; { await expect(Promise.reject('err')).rejects.toBe('err') })
+// TODO
+test.todo('implement me')
+// Parameterized
+test.each([ [1,2,3], [2,3,5] ])('add %i+%i', (a,b,expected) =&gt; { expect(a+b).toBe(expected) })
+// Benchmarks
+import { bench } from 'vitest'
+bench('sort 1000', { time:1000, iterations:20 }, () =&gt; { array.sort() })
+bench.skip('skipped bench', () =&gt; {})
+bench.only('only bench', () =&gt; {})
+bench.todo('bench me')
+// Suites
+import { describe } from 'vitest'
+describe('math', () =&gt; { test('sum', () =&gt; {}) })
+describe.skip('skip suite', () =&gt; { })
+// Hooks
+beforeAll(async () =&gt; { await initDb() })
+afterAll(async () =&gt; { await closeDb() })
+beforeEach(async () =&gt; { await resetData() })
+afterEach(async () =&gt; { await clearMocks() })
+// TestContext Hooks
+test('db', ({ onTestFinished, onTestFailed }) =&gt; { const c=db.connect(); onTestFinished(() =&gt; c.close()); onTestFailed(() =&gt; log(c.errors)); c.query() })</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">Awaitable<T>=T|PromiseLike<T>;TestFunction=()=&gt;Awaitable<void>;TestOptions={timeout?:number,retry?:number=0,repeats?:number=0};test(name:string,fn:TestFunction,timeout?:number)|test(name:string,options:TestOptions,fn:TestFunction);test.skip/runIf/skipIf/only/concurrent/sequential/todo/fails overloads;test.each<T>(cases:T[],pattern:string,fn:(...args:T)=&gt;void);test.for<T>(cases:T[],pattern:string,fn:(args:T)=&gt;void);BenchOptions={time?:number=500,iterations?:number=10,warmupTime?:100,warmupIterations?:5,now?:()=&gt;number,signal?:AbortSignal,throws?:boolean,setup?:Hook,teardown?:Hook};bench(name:string,fn:()=&gt;void,options?:BenchOptions);bench.skip/only/todo;describe(name:string,fn:()=&gt;void);describe.skip/skipIf/runIf/only/concurrent/sequential/shuffle/todo/each/for;beforeEach(fn,timeout?:number);afterEach(fn,timeout?:number);beforeAll(fn,timeout?:number);afterAll(fn,timeout?:number);onTestFinished(cb);onTestFailed(cb)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Type Aliases</p>
+</li>
+<li class="md-github">
+<p class="md-github">Test API</p>
+</li>
+<li class="md-github">
+<p class="md-github">Benchmark API</p>
+</li>
+<li class="md-github">
+<p class="md-github">Suite API</p>
+</li>
+<li class="md-github">
+<p class="md-github">Lifecycle Hooks</p>
+</li>
+<li class="md-github">
+<p class="md-github">TestContext Hooks</p>
+</li>
+<li class="md-github">
+<p class="md-github">Type Aliases
+Awaitable<T> = T | PromiseLike<T>
+TestFunction = () =&gt; Awaitable<void></p>
+</li>
+<li class="md-github">
+<p class="md-github">Test API
+test(name: string, fn: TestFunction, timeout?: number)
+test(name: string, options: TestOptions, fn: TestFunction)
+skip/skipIf/runIf/only variants as function overloads
+concurrent, sequential, todo, fails
+Parameterized: each(cases, namePattern, fn), for(cases, namePattern, fn)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Benchmark API
+bench(name: string, fn: () =&gt; void, options?: BenchOptions)
+bench.skip/only/todo
+BenchOptions: time (ms), iterations, warmupTime, warmupIterations, now, signal, throws, setup, teardown</p>
+</li>
+<li class="md-github">
+<p class="md-github">Suite API
+describe(name: string, fn: () =&gt; void)
+describe.skip/skipIf/runIf/only
+concurrent, sequential, shuffle, todo, each, for</p>
+</li>
+<li class="md-github">
+<p class="md-github">Lifecycle Hooks
+beforeEach(fn, timeout)
+afterEach(fn, timeout)
+beforeAll(fn, timeout)
+afterAll(fn, timeout)</p>
+</li>
+<li class="md-github">
+<p class="md-github">TestContext Hooks
+onTestFinished(callback)
+onTestFailed(callback)</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Vitest Testing Framework
+https://vitest.dev/api/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-vitest_api" href="#digest-of-vitest_api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of VITEST_API</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="vitest-api-reference" href="#vitest-api-reference"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Vitest API Reference</h1>
+<p class="md-github">Date Retrieved: 2023-11-27</p>
+<h2 class="md-github"><a class="md-github__anchor" name="type-aliases" href="#type-aliases"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Type Aliases</h2>
+<pre class="md-github"><code class="md-github language-ts">// Return value for async operations
+type Awaitable&lt;T&gt; = T | PromiseLike&lt;T&gt;
+
+// Test function signature
+//   - no args, returns Awaitable&lt;void&gt;
+//   - for done callback style use async function instead
+// Example:
+//   function testName(done: DoneCallback): void
+//   async function testName(): Promise&lt;void&gt;
+type TestFunction = () =&gt; Awaitable&lt;void&gt;
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="test-options-interface" href="#test-options-interface"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Test Options Interface</h2>
+<pre class="md-github"><code class="md-github language-ts">interface TestOptions {
+  timeout?: number            // fail if test exceeds this ms
+  retry?: number              // number of retry attempts, default 0
+  repeats?: number            // repeat execution cycles, default 0
+}
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="core-test-functions" href="#core-test-functions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Core Test Functions</h2>
+<pre class="md-github"><code class="md-github language-ts">// Primary test definition. Alias: it
+function test(name: string, fn: TestFunction, timeout?: number): void;
+function test(name: string, options: TestOptions, fn: TestFunction): void;
+
+// Skip tests
+test.skip(name: string, fn: TestFunction): void;
+test.skip(name: string, options: TestOptions, fn: TestFunction): void;
+// Conditional skip
+test.skipIf(condition: boolean): (name: string, fn: TestFunction) =&gt; void;
+test.skipIf(condition: boolean)(name: string, options: TestOptions, fn: TestFunction);
+// Run if condition
+test.runIf(condition: boolean): (name: string, fn: TestFunction) =&gt; void;
+
+// Only run marked tests
+test.only(name: string, fn: TestFunction, timeout?: number): void;
+
+// Parallel execution
+test.concurrent(name: string, fn: TestFunction, timeout?: number): void;
+
+// Sequential in concurrent suite
+test.sequential(name: string, fn: TestFunction, timeout?: number): void;
+
+// Stub placeholder tests
+test.todo(name: string): void;
+
+// Expect failure
+test.fails(name: string, fn: TestFunction): void;
+
+// Parameterized tests
+test.each&lt;T extends any[]&gt;(cases: T[], name: string, fn: (...args: T) =&gt; void): void;
+test.each&lt;T&gt;(cases: T[], namePattern: string, fn: (item: T) =&gt; void): void;
+
+// Table tests via template literal
+test.each&lt;T&gt;(table: TemplateStringArray, ...values: T[]): void;
+
+// Alternative for TestContext
+test.for&lt;T extends any[]&gt;(cases: T[], name: string, fn: (args: T) =&gt; void): void;
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="benchmarks" href="#benchmarks"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Benchmarks</h2>
+<pre class="md-github"><code class="md-github language-ts">// Define benchmarks
+function bench(name: string, fn: () =&gt; void, options?: BenchOptions): void;
+
+interface BenchOptions {
+  time?: number            // ms, default 500
+  iterations?: number      // default 10
+  warmupTime?: number      // ms, default 100
+  warmupIterations?: number// default 5
+  now?: () =&gt; number
+  signal?: AbortSignal
+  throws?: boolean
+  setup?: HookFunction
+  teardown?: HookFunction
+}
+
+// Skip, only, todo variants
+bench.skip(name: string, fn: () =&gt; void): void;
+bench.only(name: string, fn: () =&gt; void): void;
+bench.todo(name: string): void;
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="suites" href="#suites"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Suites</h2>
+<pre class="md-github"><code class="md-github language-ts">// Define suite
+function describe(name: string, fn: () =&gt; void): void;
+
+// Skip, only, todo
+describe.skip(name: string, fn: () =&gt; void): void;
+describe.skipIf(cond: boolean)(name: string, fn: () =&gt; void): void;
+describe.runIf(cond: boolean)(name: string, fn: () =&gt; void): void;
+describe.only(name: string, fn: () =&gt; void, options?: number|TestOptions): void;
+
+describe.concurrent(name: string, fn: () =&gt; void): void;
+describe.sequential(name: string, fn: () =&gt; void): void;
+describe.shuffle(name: string, fn: () =&gt; void): void;
+describe.todo(name: string): void;
+describe.each(cases, namePattern, fn): void;
+describe.for(cases, name, fn): void;
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="hooks" href="#hooks"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Hooks</h2>
+<pre class="md-github"><code class="md-github language-ts">// beforeEach, afterEach, beforeAll, afterAll
+function beforeEach(fn: () =&gt; Awaitable&lt;void&gt;, timeout?: number): void;
+function afterEach(fn: () =&gt; Awaitable&lt;void&gt;, timeout?: number): void;
+function beforeAll(fn: () =&gt; Awaitable&lt;void&gt;, timeout?: number): void;
+function afterAll(fn: () =&gt; Awaitable&lt;void&gt;, timeout?: number): void;
+
+// Test-scoped hooks (must be used inside test body)
+function onTestFinished(callback: () =&gt; void): void;
+function onTestFailed(callback: (ctx: ExtendedContext) =&gt; void): void;
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Vitest Testing Framework</li>
+<li class="md-github">URL: https://vitest.dev/api/</li>
+<li class="md-github">License: License if known</li>
+<li class="md-github">Crawl Date: 2025-04-28T22:48:47.991Z</li>
+<li class="md-github">Data Size: 37459126 bytes</li>
+<li class="md-github">Links Found: 25877</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-28</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-28T23:21:23.680Z</p>
+  </footer>
+</body>
+</html>
