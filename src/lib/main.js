@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 import fs from "fs";
 import path from "path";
 import http from "http";
@@ -329,7 +328,7 @@ export async function main(args) {
       }
       // DELETE /sources/:id
       else if (req.method === "DELETE" && pathname.startsWith("/sources/")) {
-        const identifier = decodeURIComponent(pathname.replace('/sources/', '');
+        const identifier = decodeURIComponent(pathname.replace('/sources/', ''));
         try {
           const merged = removeSource(identifier);
           res.writeHead(200, { 'Content-Type': 'application/json' });
@@ -377,6 +376,7 @@ export async function main(args) {
         res.writeHead(200, { "Content-Type": "text/plain" });
         const originalLog = console.log;
         console.log = msg => res.write(`${msg}\n`);
+        const outDir = 'enhanced';
         try {
           const result = await buildEnhanced();
           console.log(`Enhanced ontology written to ${outDir}/enhanced.json with ${result.enhanced.count} nodes`);
