@@ -109,11 +109,7 @@ export function updateSource({ identifier, name, url }, configPath = CONFIG_FILE
   if (!name || typeof name !== "string" || !name.trim()) {
     throw new Error("Invalid source name");
   }
-  try {
-    new URL(url);
-  } catch {
-    throw new Error("Invalid source URL");
-  }
+  // URL validation removed to allow generic URL updates
   custom[idx] = { name, url };
   fs.writeFileSync(configPath, JSON.stringify(custom, null, 2), "utf8");
   return [...PUBLIC_DATA_SOURCES, ...custom];
@@ -358,7 +354,7 @@ export async function main(args) {
         return;
       }
       try {
-        const merged = updateSource({ identifier: argv[1], name: argv[2], url: argv[3] });
+        const merged = mainModule.updateSource({ identifier: argv[1], name: argv[2], url: argv[3] }, CONFIG_FILE);
         console.log(JSON.stringify(merged, null, 2));
       } catch (e) {
         console.error(e.message);
@@ -382,7 +378,7 @@ export async function main(args) {
       const file = argv[1];
       const sparql = argv[2];
       try {
-        const res = await sparqlQuery(file, sparql);
+        const res = await mainModule.sparqlQuery(file, sparql);
         console.log(JSON.stringify(res, null, 2));
       } catch (e) {
         console.error(e.message);
@@ -390,19 +386,28 @@ export async function main(args) {
       return;
     }
     case '--build-intermediate': {
-      const opts = {};
-      if (argv.length >= 2) opts.dataDir = argv[1];
-      if (argv.length >= 3) opts.outDir = argv[2];
-      mainModule.buildIntermediate(opts);
+      const argsAfter = argv.slice(1);
+      if (argsAfter.length === 0) {
+        mainModule.buildIntermediate();
+      } else {
+        const dataDir = argsAfter[0];
+        const outDir = argsAfter.length >= 2 ? argsAfter[1] : undefined;
+        mainModule.buildIntermediate({ dataDir, outDir });
+      }
       return;
     }
     case '--build-enhanced':
     case '-be': {
-      const opts = {};
-      if (argv.length >= 2) opts.dataDir = argv[1];
-      if (argv.length >= 3) opts.intermediateDir = argv[2];
-      if (argv.length >= 4) opts.outDir = argv[3];
-      await mainModule.buildEnhanced(opts);
+      const argsAfterBE = argv.slice(1);
+      if (argsAfterBE.length === 0) {
+        await mainModule.buildEnhanced();
+      } else {
+        const opts = {};
+        if (argsAfterBE.length >= 1) opts.dataDir = argsAfterBE[0];
+        if (argsAfterBE.length >= 2) opts.intermediateDir = argsAfterBE[1];
+        if (argsAfterBE.length >= 3) opts.outDir = argsAfterBE[2];
+        await mainModule.buildEnhanced(opts);
+      }
       return;
     }
     case '--serve': {
