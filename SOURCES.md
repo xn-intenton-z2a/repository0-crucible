@@ -1,62 +1,66 @@
-# W3C RDF, OWL, SKOS & DCAT Vocabularies
+# W3C Core Semantic Web Vocabularies
 ## https://www.w3.org/TR/rdf11-concepts/
 ## https://www.w3.org/TR/owl2-overview/
 ## https://www.w3.org/TR/skos-reference/
 ## https://www.w3.org/TR/vocab-dcat-2/
-A consolidated reference of W3C Recommendations for the RDF 1.1 data model, OWL 2 ontology semantics, SKOS concept schemes, and DCAT dataset catalog descriptions. This unified source provides essential technical definitions for graph construction, ontology authoring, concept hierarchies, and metadata-driven dataset publishing, ensuring interoperability, discoverability, and scalable reasoning across semantic web applications. (Last updates: RDF 1.1 Concepts Feb 2014; OWL 2 Overview Dec 2012; SKOS Aug 2009; DCAT Feb 2023.)
-## W3C Document License (CC-BY 4.0)
+Provides a consolidated reference for foundational Semantic Web standards: RDF 1.1 Concepts, OWL 2 ontology semantics, SKOS concept schemes, and DCAT dataset catalog vocabulary. This source defines core data models, ontology constructs, concept hierarchies, and metadata catalog schemas essential for interoperable graph construction, ontology authoring, and dataset discovery. Updates: RDF 1.1 Feb 2014; OWL 2 Dec 2012; SKOS Aug 2009; DCAT Feb 2023.
+## License if known
+W3C Document License (CC-BY 4.0)
 
-# JSON-LD 1.1 Core & jsonld.js
+# JavaScript RDF & JSON-LD Ecosystem
 ## https://www.w3.org/TR/json-ld11/
 ## https://github.com/digitalbazaar/jsonld.js#readme
-Defines the JSON-LD 1.1 Core and API, including framing, compaction, expansion, and the URDNA2015 normalization algorithm. The jsonld.js library provides a production-ready Node.js implementation with pluggable document loaders, streaming support, and robust error handling. Essential for ingesting and outputting JSON-LD artifacts in OWL-builder’s pipelines. (JSON-LD 1.1 May 2020; jsonld.js v1.8.1 Apr 2024.)
-## W3C Document License (CC-BY 4.0); MIT License
+## https://rdf.js.org/specification/data-model/
+## https://comunica.dev/docs/query/framework/
+## https://github.com/RubenVerborgh/SPARQL.js#readme
+## https://github.com/linkeddata/rdflib.js#readme
+## https://github.com/rdfjs/N3.js#readme
+A unified reference combining the JSON-LD 1.1 Core and API spec with leading JavaScript libraries and standards for RDF processing: `jsonld.js` for JSON-LD operations, RDF/JS Data Model for abstract RDF interfaces, Comunica federated query engine, SPARQL.js parser, rdflib.js graph toolkit, and N3.js for Turtle/N-Quads parsing and serialization. Essential for constructing, streaming, and manipulating RDF graphs in Node.js applications. Last updated: JSON-LD May 2020; rdf.js Jan 2022; Comunica 2024; SPARQL.js 2023; rdflib.js 2024; N3.js 2024.
+## License if known
+W3C Document License (CC-BY 4.0); MIT; CC0/Public Domain
 
-# SPARQL 1.1 & HTTP Server Deployments
+# SPARQL 1.1 & Server Deployments
 ## https://www.w3.org/TR/sparql11-overview/
 ## https://www.w3.org/TR/sparql11-protocol/
 ## https://www.w3.org/TR/sparql11-results-json/
 ## https://jena.apache.org/documentation/fuseki2/
 ## https://graphdb.ontotext.com/documentation/standard/
-Covers the SPARQL 1.1 query, update, HTTP and Graph Store protocols, and demonstrates deployment guides for Apache Jena Fuseki and Ontotext GraphDB. Includes endpoint configuration, authentication, CORS, federation patterns, performance tuning, resilient client best practices, and the SPARQL JSON Result Format spec—vital for integrating SPARQL queries, updates, and result handling in CLI, API, and server modes. (SPARQL specs Mar 2013; Fuseki 4.x; GraphDB 2023.)
-## W3C Document License (CC-BY 4.0); Apache License 2.0; GraphDB Documentation License
-
-# JavaScript & RDF/JS Ecosystem
-## https://nodejs.org/api/fs.html
-## https://nodejs.org/api/http.html
-## https://fetch.spec.whatwg.org/
-## https://rdf.js.org/data-model-spec/
-## https://comunica.dev/docs/query/framework
-## https://github.com/RubenVerborgh/SPARQL.js#readme
-## https://linkeddata.github.io/rdflib.js/
-## https://github.com/rdfjs/N3.js#readme
-## https://github.com/antoniogarrote/sparqlalgebrajs#readme
-An integrated reference for Node.js core modules (fs, http, global fetch via WHATWG), the RDF/JS Data Model and Streams specs, plus key JS libraries: Comunica federated query engine, SPARQL.js parser, rdflib.js graph toolkit, N3.js parser/serializer for Turtle and N-Quads, and sparqlalgebrajs for transforming query syntax into algebra. Crucial for building streaming RDF workflows, programmatic SPARQL construction/optimization, and robust HTTP/CLI tooling. (Node.js v20; RDF/JS Jan 2022; Comunica 2024; SPARQL.js 2023; rdflib.js 2024; N3.js 2024.)
-## MIT License (Node.js, Comunica, SPARQL.js, rdflib.js, N3.js, sparqlalgebrajs); WHATWG License (Fetch); CC0/Public Domain (RDF/JS Streams)
+Details the SPARQL 1.1 Query, Update, Protocol, and JSON Results specs, alongside deployment guides for Apache Jena Fuseki and Ontotext GraphDB servers. Includes endpoint configuration, HTTP and Graph Store protocols, performance tuning, federation patterns, and SPARQL JSON result handling vital for building robust query and update pipelines in CLI, API, and server contexts. Specs Mar 2013; Fuseki 4.x; GraphDB 2023.
+## License if known
+W3C Document License (CC-BY 4.0); Apache 2.0; GraphDB Documentation License
 
 # Linked Data Platform & Hydra
 ## https://www.w3.org/TR/ldp/
 ## https://www.hydra-cg.com/spec/latest/core/
-Defines RESTful patterns for managing RDF resources via HTTP (LDP), including content negotiation, container semantics, and CRUD operations, alongside the Hydra Core Vocabulary for hypermedia-driven APIs. Indispensable for designing self-describing, discoverable OWL-builder HTTP endpoints. (LDP Jun 2015; Hydra Apr 2024.)
-## W3C Document License (CC-BY 4.0); CC0/Public Domain
+Defines RESTful CRUD patterns, container semantics, and content negotiation for Linked Data via the LDP standard, and the Hydra Core Vocabulary for hypermedia-driven APIs. Indispensable for designing self-describing HTTP endpoints that serve and manage RDF resources with discoverable links and operations. LDP Jun 2015; Hydra Apr 2024.
+## License if known
+W3C Document License (CC-BY 4.0); CC0/Public Domain
 
 # RDF Validation: SHACL & ShEx
 ## https://www.w3.org/TR/shacl/
 ## https://shex.io/shex-semantics/
 ## https://github.com/shexSpec/shex.js#readme
-Covers SHACL for declarative graph validation (shapes, constraints, conformance tests) and ShEx (compact syntax, JSON/Turtle serializations), with the shex.js library offering streaming validation and precise error reporting. Essential for enforcing ontology and data integrity in CI/CD pipelines. (SHACL Oct 2017; ShEx 2020; shex.js v4.x 2023.)
-## W3C Document License (CC-BY 4.0); CC0/Public Domain (ShEx spec); MIT License (shex.js)
+Covers SHACL for declarative RDF graph validation with shapes and SHACL Core & SPARQL constraint components, alongside ShEx’s grammar for concise validation schemas. The `shex.js` library provides streaming validation and detailed error reports, critical for enforcing data integrity in CI/CD pipelines. SHACL Oct 2017; ShEx 2020; shex.js v4.x 2023.
+## License if known
+W3C Document License (CC-BY 4.0); CC0/Public Domain; MIT
 
 # Java-based RDF & OWL Frameworks
 ## https://jena.apache.org/documentation/arq/
 ## https://jena.apache.org/documentation/tdb2/
 ## https://rdf4j.org/documentation/programmers-guide/
 ## https://github.com/owlcs/owlapi#readme
-A comprehensive overview of Java libraries for RDF and OWL: Apache Jena (ARQ SPARQL engine, TDB2 storage, Fuseki HTTP server), Eclipse RDF4J (Java APIs for repositories, Sail layers, inferencing, Spring integration), and the OWL API (ontology creation, manipulation, serialization, and reasoner integration). Provides deep insights into clustering, transaction management, custom functions, and best practices for extensibility and performance tuning. (ARQ/TDB2 2023; RDF4J 4.x 2023; OWL API 5.x 2024.)
-## Apache License 2.0; Eclipse Public License 2.0
+A deep dive into Java frameworks for RDF and OWL workloads: Apache Jena ARQ SPARQL engine and TDB2 triple store, Eclipse RDF4J repository APIs and inferencing, and the OWL API for ontology modeling and reasoner integration. Provides guidance on transactions, cluster setups, custom functions, and performance optimizations. ARQ/TDB2 2023; RDF4J 4.x 2023; OWL API 5.x 2024.
+## License if known
+Apache 2.0; Eclipse Public License 2.0
 
-# RDF-star & SPARQL-star Extensions
-## https://w3c.github.io/rdf-star/
-## https://w3c.github.io/rdf-star/sparql-star/
-Describes the RDF-star data model extensions for triple annotations and reification, and the SPARQL-star query syntax for embedded triple patterns and property paths. Critical for advanced provenance tracking, statement-level metadata, and richer querying capabilities beyond standard RDF. (RDF-star draft Sep 2021; SPARQL-star draft Nov 2021.)
-## W3C Community Draft (CC-BY 4.0)
+# OWL 2 Profiles
+## https://www.w3.org/TR/owl2-profiles/
+Describes the formal OWL 2 Profiles (EL, QL, RL, and DL) tailored for different reasoning and scalability requirements. Each profile specifies syntactic restrictions, inference capabilities, and complexity bounds, guiding implementers to choose the optimal subset of OWL constructs for efficient reasoning and data integration. Dec 2012.
+## License if known
+W3C Document License (CC-BY 4.0)
+
+# Schema.org Vocabulary
+## https://schema.org/docs/full.html
+Provides the complete Schema.org data model for structured web markup, covering over 800 types and 1500 properties. Widely adopted for SEO, semantic web integration, and knowledge graph population. The vocabulary documentation includes JSON-LD examples, usage guidelines, and extension mechanisms for domain-specific schemas. Last updated: 2024.
+## License if known
+CC0 Public Domain
