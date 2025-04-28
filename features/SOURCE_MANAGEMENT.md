@@ -1,59 +1,53 @@
 # Description
-
-Enhance the existing source management feature by fully implementing the refreshSources functionality. This addition delivers core value by fetching JSON from all configured public and custom data sources, archiving the raw captures, and enabling automated downstream processing.
+Enhance source management by fully implementing refreshSources to fetch JSON from all configured public and custom data sources, archive raw captures, and enable automated downstream processing.
 
 # Programmatic API
-
-Export async function refreshSources(options?) where options may include dataDir (default "data") and configPath (default "data-sources.json"). Implementation:
-
-1. Call listSources(configPath) to obtain merged array of PUBLIC_DATA_SOURCES and custom entries.
-2. Ensure the dataDir folder exists on disk via fs.mkdirSync(dataDir, { recursive: true }).
-3. For each source in the merged list:
-   - Derive a safe filename slug by normalizing name to lowercase, replacing non-alphanumeric with hyphens, and appending ".json".
-   - Perform a fetch GET to the source URL.
-   - On success, parse the response body as JSON.
-   - Write the JSON content to dataDir/<slug>.json with two-space indentation via fs.writeFileSync.
-   - Log console.log(`fetched <slug>.json`).
-   - Add <slug>.json to a list of written files.
-   - On error, log console.error with the error message and continue to next source.
-4. After processing all sources, return an object { count: <number of files written>, files: <array of written filenames> }.
+- Export async function refreshSources({ dataDir = "data", configPath = "data-sources.json" } = {})
+  1. Use listSources(configPath) to merge PUBLIC_DATA_SOURCES and custom entries.
+  2. Ensure dataDir exists on disk via fs.mkdirSync(dataDir, { recursive: true }).
+  3. For each source in the merged list:
+     - Normalize source.name to a filename-safe slug: lowercase, replace non-alphanumeric with hyphens, append .json.
+     - Perform fetch GET to source.url.
+     - On success parse the response body as JSON; write JSON to dataDir/<slug> with two-space indentation via fs.writeFileSync.
+     - Log console.log(`fetched <slug>`).
+     - Collect <slug> in a list of written files.
+     - On fetch or JSON errors log console.error with the error message and continue processing remaining sources.
+  4. After all sources processed, return { count: <number of files written>, files: <array of written filenames> }.
 
 # CLI Support
+- Add flag --refresh in main(args) with optional positional parameters:
+  - No args: refreshSources() with defaults.
+  - One arg: dataDir only.
+  - Two args: dataDir and configPath.
+- On invocation:
+  - Call refreshSources() with provided arguments.
+  - Stream each fetch log to the console via console.log.
+  - After completion, log summary: `Fetched <count> sources into <dataDir>/`.
+  - Errors are caught and printed via console.error; main returns without throwing.
 
-Add a new flag --refresh in main(args):
-
-- When invoked with --refresh and no additional parameters, call refreshSources() with default options.
-- For custom directories, allow --refresh <dataDir> <configPath>.
-- On completion, after individual fetch logs, log a summary: `Fetched <count> sources into <dataDir>/`.
-- Ensure errors are caught and printed via console.error without throwing.
-
-# HTTP Endpoints
-
+# HTTP Server Endpoints
 Under --serve mode, support GET /refresh:
-
-- Respond with HTTP 200 and Content-Type text/plain.
-- Temporarily override console.log so each fetchSources log line is streamed to the HTTP response.
-- Invoke refreshSources() and stream all log lines.
-- After completion, restore console.log and end the response.
-- On error, respond with HTTP 500 and plain-text error message.
+- Respond with status 200 and Content-Type text/plain.
+- Temporarily override console.log to write each log line to the HTTP response, ending each with a newline.
+- Invoke refreshSources() and stream logs as they occur.
+- Restore console.log and end the response on completion.
+- On any error, respond with status 500 and plain-text error message.
 
 # Testing
-
 - Unit tests for refreshSources:
-  • Mock listSources to return a set of URLs and names.
+  • Mock listSources to return multiple URLs and names.
   • Spy on fs.mkdirSync, fetch, fs.writeFileSync, and console.log/console.error.
-  • Verify files are written with correct filenames and content.
+  • Verify files are written with expected slugs and content.
   • Assert returned object contains correct count and files array.
 - CLI tests:
-  • Invoke main(["--refresh"]) and spy on refreshSources to ensure correct calls with default and custom args.
-  • Simulate fetch errors and verify console.error calls.
+  • Invoke main(["--refresh"]) and spy on refreshSources to assert calls with default and custom args.
+  • Simulate fetch errors and verify console.error calls and summary behavior.
 - HTTP integration tests for GET /refresh:
-  • Start server with --serve on random port.
+  • Start server with --serve on a random port.
   • Issue GET /refresh and capture streamed response lines.
-  • Assert status code 200, content-type text/plain, presence of fetched <slug> messages.
+  • Assert status code 200, content-type text/plain, presence of fetched <slug> messages and final summary.
   • Simulate a fetch failure to verify HTTP 500 and plain-text error body.
 
 # Documentation Updates
-
-- Update docs/FEATURES.md to describe the --refresh flag under Sources Management, including CLI usage and HTTP /refresh.
-- Update docs/USAGE.md and README.md with example CLI invocation of --refresh and sample output, plus example HTTP request to GET /refresh.
+- Update docs/FEATURES.md under Sources Management to describe --refresh flag, its CLI usage, and HTTP GET /refresh endpoint.
+- Update docs/USAGE.md and README.md with example CLI invocation of --refresh, sample output, and example HTTP request to GET /refresh.
