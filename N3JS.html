@@ -24,398 +24,369 @@
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="n3js" href="#n3js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>N3JS</h1>
 <h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
-<p class="md-github">npm package n3 v1.25.2 provides RDF.js low-level implementations in JavaScript: DataFactory with namedNode, blankNode, literal, variable, defaultGraph, quad, triple; Parser and StreamParser with format, baseIRI, blankNodePrefix, isImpliedBy options for Turtle, TriG, N-Triples, N-Quads, N3, RDF-star; Writer and StreamWriter with prefixes, format, end options to serialize quads to strings or streams; Store and EntityIndex for in-memory quad storage and search with add, remove, match, getQuads, countQuads, forEach, getSubjects, getPredicates, getObjects, getGraphs, and DatasetCore interface; Reasoner for Basic Graph Pattern rules; default behaviors: permissive mode, blankNodePrefix 'b', end true. UMD bundle via browserify -s N3 or CDN script.</p>
+<p class="md-github">Installation: npm install n3, require('n3') or UMD via CDN. DataFactory API: namedNode, literal, defaultGraph, quad. Parser API: constructor options format, baseIRI, blankNodePrefix, isImpliedBy; parse(input, callback|listeners|sync)
+StreamParser: Readable stream with optional comments and prefix events.
+Writer API: constructor with prefixes, format, end; methods addQuad, blank, list, end. StreamWriter: Writable stream sink.
+Store API: constructor with optional entityIndex; properties size; methods addQuad(s), removeQuad(s), removeMatches, deleteGraph, createBlankNode, match, getQuads, countQuads, getSubjects/predicates/objects/graphs.
+Reasoner API: Reasoner(store), reason(rules).
+Compatibility: full RDF/JS, W3C RDF1.1 and RDF-star.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
-<p class="md-github">Table of Contents</p>
+<p class="md-github">Table of Contents:
+1  Installation
+2  DataFactory
+3  Parser
+4  StreamParser
+5  Writer
+6  StreamWriter
+7  Store
+8  Reasoner</p>
 <p class="md-github">1 Installation
-2 DataFactory
-3 Parser
-4 StreamParser
-5 Writer
-6 StreamWriter
-7 Store
-8 EntityIndex
-9 Reasoner
-10 Configuration Defaults
-11 RDF/JS Interfaces</p>
-<p class="md-github">1 Installation
-Install: npm install n3
-Browser: browserify -s N3 entry.js -o bundle.js
-CDN: <script src=https://unpkg.com/n3/browser/n3.min.js></script></p>
+npm install n3
+const N3 = require('n3');  // Node.js import</p>
+  <script src="https://unpkg.com/n3/browser/n3.min.js"></script>  // Browser UMD
 <p class="md-github">2 DataFactory
-NamedNode(iri: string): NamedNode
-BlankNode([value?]): BlankNode
-Literal(value: string, language?: string, datatype?: NamedNode): Literal
-Variable(value: string): Variable
-DefaultGraph(): DefaultGraph
-Quad(subject: Term, predicate: Term, object: Term, graph?: Term): Quad
-Triple(subject: Term, predicate: Term, object: Term): Triple</p>
+namedNode(value: string): NamedNode
+literal(value: string, language?: string, datatype?: NamedNode): Literal
+defaultGraph(): DefaultGraph
+quad(subject: Term, predicate: Term, object: Term, graph?: Term): Quad</p>
 <p class="md-github">3 Parser
-Constructor options
-format?: string  values Turtle TriG N-Triples N-Quads N3 Notation3 text/n3 or mime types; includes '*' for RDF-star
-baseIRI?: string default undefined
-blankNodePrefix?: string default 'b'
-isImpliedBy?: boolean default false
-Methods
-parse(input, callback(error, quad, prefixes))  emits quads; last callback quad null and prefixes object
-parse(input, handlers)  handlers.onQuad(err,quad) required; onPrefix(prefix,iri) optional; onComment(comment) optional
-parse(input) returns Quad[] synchronously</p>
+new N3.Parser({format?: string, baseIRI?: string, blankNodePrefix?: string, isImpliedBy?: boolean})
+parse(input: string|Stream, callback: (error, quad, prefixes?)=&gt;void): void
+parse(input: string, listeners: {onQuad, onPrefix?, onComment?}): void
+parse(input: string): Quad[]
+Options:
+format: 'Turtle'|'TriG'|'N-Triples'|'N-Quads'|'N3'|'Notation3'|'text/n3'
+baseIRI: IRI string
+blankNodePrefix: prefix string or ''
+isImpliedBy: boolean</p>
 <p class="md-github">4 StreamParser
-Constructor options as Parser plus
-prefixes?: {[prefix:string]:string}
-comments?: boolean default false
-Events
-data(quad:Quad) prefix(prefix:string,iri:NamedNode) comment(comment:string) end()</p>
+new N3.StreamParser(options?)  // options same as Parser plus comments?: boolean
+rdfStream.pipe(streamParser).pipe(destination)</p>
 <p class="md-github">5 Writer
-Constructor
-new Writer([output],[ options ])
-options.prefixes?: {[prefix:string]:string}
-options.format?: string default Turtle or TriG
-options.end?: boolean default true if output is stream
-Methods
-addQuad(quad:Quad): this
-addPrefix(prefix:string,iri:string): this
-end(callback(error,result:string)): void
-toString(): string</p>
+new N3.Writer(streamOrOptions)
+options.prefixes: Record&lt;string,string&gt;
+options.format: 'Turtle'|'N-Triples'|...  default Turtle/TriG
+options.end: boolean
+addQuad(subject, predicate, object, graph?): Writer
+blank(predicate, object): BlankNode
+list(terms: Term[]): BlankNode
+end(callback: (error, result)=&gt;void): void</p>
 <p class="md-github">6 StreamWriter
-Constructor options same as Writer without output parameter
-Sink and Readable stream: write(quad) emits data(string)</p>
+new N3.StreamWriter({prefixes, format?, end?})
+streamParser.pipe(streamWriter).pipe(process.stdout)</p>
 <p class="md-github">7 Store
-Constructor
-new Store([quads],[{entityIndex}])
-Properties size:number
-Methods add(quad), addQuad(quad), addQuads(quads[]), removeQuad(quad):boolean, removeQuads(quads[]):number, remove(stream):void, removeMatches(s?,p?,o?,g?):void, deleteGraph(g):void, createBlankNode():BlankNode
-Search match(s?,p?,o?,g?) returns Iterable<Quad> getQuads(s?,p?,o?,g?) returns Quad[] countQuads(s?,p?,o?,g?) returns number forEach(fn), every(fn):boolean, some(fn):boolean getSubjects(p?,o?,g?) returns Term[] forSubjects(p?,o?,g?,fn) getPredicates(s?,o?,g?) forPredicates(...) getObjects(s?,p?,g?) forObjects(...) getGraphs(s?,p?,o?) forGraphs(...) iterator via for..of</p>
-<p class="md-github">8 EntityIndex
-new EntityIndex() share index across stores to reduce memory</p>
-<p class="md-github">9 Reasoner
+new N3.Store(quads?: Quad[], {entityIndex?: EntityIndex})
+size: number
+addQuad(quad): void
+addQuads(quads): void
+removeQuad(quad): boolean
+removeQuads(quads): number
+remove(matchesStream): Promise<number>
+removeMatches(s?, p?, o?, g?): number
+deleteGraph(graph): number
+createBlankNode(): BlankNode
+match(s?, p?, o?, g?): Iterable<Quad>
+getQuads(s?, p?, o?, g?): Quad[]
+countQuads(s?, p?, o?, g?): number
+getSubjects(p?, o?, g?): Term[]
+getPredicates(s?, o?, g?): Term[]
+getObjects(s?, p?, g?): Term[]
+getGraphs(s?, p?, o?): Term[]</p>
+<p class="md-github">8 Reasoner
+import {Reasoner} from 'n3';
 new Reasoner(store)
-reason(rules:Quad[]|Store) applies Basic Graph Pattern rules to store</p>
-<p class="md-github">10 Configuration Defaults
-Parser blankNodePrefix='b'; isImpliedBy=false; permissive format
-Writer format=Turtle; end=true
-StreamParser comments=false</p>
-<p class="md-github">11 RDF/JS Interfaces
-DataFactory implements DataFactory, Terms implement NamedNode,BlankNode,Literal,Variable,DefaultGraph; Parser implements Parser; StreamParser implements Stream &amp; Sink; Writer implements Sink; StreamWriter implements Stream &amp; Sink; Store implements Store,Source,Sink,DatasetCore</p>
+reason(rules: string|Quad[]): void</p>
 <h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
-<p class="md-github">Configuration Parameters
-Parser options
-format strict values: 'N-Triples','application/trig','N3','Notation3','text/n3'
-format permissive default combines Turtle,TriG,N-Triples,N-Quads,RDF-star
-baseIRI default undefined; used to resolve relative IRIs
-blankNodePrefix 'b' prevents collisions; set to empty string to disable prefixing
-isImpliedBy false; when true outputs _:q log:isImpliedBy _:p</p>
-<p class="md-github">Writer options
-prefixes default {}  map prefix to namespace URI
-format default 'Turtle' or 'TriG' if named graph quads present; 'N-Triples','application/trig' for forced modes
-end default true when writing to stream; set false to keep stream open</p>
-<p class="md-github">StreamParser options inherit Parser options with additional
-prefixes:{[prefix:string]:string} predeclare prefixes in stream
-comments:false; set true to emit comment events</p>
-<p class="md-github">EntityIndex
-share single instance across multiple stores to reduce Term duplication</p>
-<p class="md-github">Reasoner
-supports only forward reasoning Basic Graph Patterns; built-ins and backward-chaining unsupported</p>
-<p class="md-github">Implementation Steps
-1 import N3
-2 instantiate DataFactory and create terms
-3 instantiate Parser or StreamParser with options
-4 parse input via callback or handlers or sync array
-5 optionally pipe streams for large files
-6 instantiate Writer or StreamWriter with prefixes
-7 serialize quads via addQuad and end or by piping streams
-8 instantiate Store with optional shared EntityIndex
-9 add quads and query via match or getQuads
-10 instantiate Reasoner and apply rules</p>
+<p class="md-github">Parser strict mode: set format to MIME or name, e.g. {format:'application/trig'} for TriG strict. Notation3 supported via {format:'N3'|'Notation3'|'text/n3'}. RDF-star enabled when format contains '*'.
+Base IRI resolution: baseIRI option sets the default graph context. Default blank node prefix uses pattern b{digit}_. Disable by blankNodePrefix:''.
+StreamParser comments event: options.comments=true to emit onComment(comment: string).
+Writer blank nodes and lists: use writer.blank(predicate,object) and writer.list([terms]) to manually create Turtle shorthand. Streaming writers cannot auto-detect blank/list usage.
+Store sharing: instantiate EntityIndex: new N3.EntityIndex(); pass {entityIndex} to multiple stores to share term index and reduce memory.
+Reasoner limits: only Basic Graph Patterns in premise and conclusion. No built-in functions or backward chaining.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
-<p class="md-github">DataFactory API</p>
-<p class="md-github">Function NamedNode(iri: string): NamedNode
-Function BlankNode(value?: string): BlankNode
-Function Literal(value: string, language?: string, datatype?: NamedNode): Literal
-Function Variable(value: string): Variable
-Function DefaultGraph(): DefaultGraph
-Function Quad(subject: Term, predicate: Term, object: Term, graph?: Term): Quad
-Function Triple(subject: Term, predicate: Term, object: Term): Triple</p>
-<p class="md-github">Parser API</p>
-<p class="md-github">Constructor Parser(options?: {
-format?: string,
-baseIRI?: string,
-blankNodePrefix?: string,
-isImpliedBy?: boolean
-})
-Method parse(input: string|Stream, callback: (error: Error|null, quad: Quad|null, prefixes?: {[prefix: string]: NamedNode}) =&gt; void): void
-Method parse(input: string|Stream, handlers: { onQuad(err:Error|null,quad:Quad):void; onPrefix?(prefix:string,iri:NamedNode):void; onComment?(comment:string):void }): void
-Method parse(input: string): Quad[]</p>
-<p class="md-github">StreamParser API</p>
-<p class="md-github">Constructor StreamParser(options?: { format?:string; baseIRI?:string; blankNodePrefix?:string; isImpliedBy?:boolean; prefixes?:{[p:string]:string}; comments?:boolean })
-Event 'data'(quad:Quad)
-Event 'prefix'(prefix:string,iri:NamedNode)
-Event 'comment'(comment:string)
-Event 'end'()</p>
-<p class="md-github">Writer API</p>
-<p class="md-github">Constructor Writer(output?:WritableStream|undefined, options?:{ prefixes?:{[p:string]:string}; format?:string; end?:boolean })
-Method addQuad(quad:Quad): this
-Method addPrefix(prefix:string, iri:string): this
-Method end(callback:(error:Error|null,result:string)=&gt;void): void
-Method toString(): string</p>
-<p class="md-github">StreamWriter API</p>
-<p class="md-github">Constructor StreamWriter(options?:{ prefixes?:{[p:string]:string}; format?:string })
-Sink method write(quad:Quad): boolean
-Event 'data'(chunk:string)
-Event 'end'()</p>
-<p class="md-github">Store API</p>
-<p class="md-github">Constructor Store(quads?:Quad[], options?:{ entityIndex?:EntityIndex })
-Property size: number
-Method add(quad:Quad): void
-Method addQuad(quad:Quad): void
-Method addQuads(quads:Quad[]): void
-Method removeQuad(quad:Quad): boolean
-Method removeQuads(quads:Quad[]): number
-Method remove(stream:Stream): void
-Method removeMatches(subject?:Term,predicate?:Term,object?:Term,graph?:Term): void
-Method deleteGraph(graph:Term): void
-Method createBlankNode():BlankNode
-Method match(subject?:Term,predicate?:Term,object?:Term,graph?:Term):Iterable<Quad>
-Method getQuads(subject?:Term,predicate?:Term,object?:Term,graph?:Term):Quad[]
-Method countQuads(subject?:Term,predicate?:Term,object?:Term,graph?:Term):number
-Method forEach(fn:(quad:Quad)=&gt;void):void
-Method every(fn:(quad:Quad)=&gt;boolean):boolean
-Method some(fn:(quad:Quad)=&gt;boolean):boolean
-Method getSubjects(predicate?:Term,object?:Term,graph?:Term):Term[]
-Method forSubjects(predicate?:Term,object?:Term,graph?:Term,fn:(subject:Term)=&gt;void):void
-Method getPredicates(subject?:Term,object?:Term,graph?:Term):Term[]
-Method forPredicates(subject?:Term,object?:Term,graph?:Term,fn:(predicate:Term)=&gt;void):void
-Method getObjects(subject?:Term,predicate?:Term,graph?:Term):Term[]
-Method forObjects(subject?:Term,predicate?:Term,graph?:Term,fn:(object:Term)=&gt;void):void
-Method getGraphs(subject?:Term,predicate?:Term,object?:Term):Term[]
-Method forGraphs(subject?:Term,predicate?:Term,object?:Term,fn:(graph:Term)=&gt;void):void
-Iterator <a href="" class="md-github">Symbol.iterator</a>:Iterator<Quad></p>
-<p class="md-github">EntityIndex API</p>
-<p class="md-github">Constructor EntityIndex()</p>
-<p class="md-github">Reasoner API</p>
-<p class="md-github">Constructor Reasoner(store:Store)
-Method reason(rules:Quad[]|Store):void  // Applies Basic Graph Pattern rules; mutates store</p>
-<p class="md-github">Configuration Options and Effects</p>
-<p class="md-github">Parser.blankNodePrefix default 'b'; setting '' disables prefixing
-Parser.format default permissive; strict by passing specific format or mime type
-Parser.isImpliedBy default false; true switches rule output style
-StreamParser.comments default false; true emits comment events
-Writer.format default 'Turtle' or 'TriG'; override with 'N-Triples','application/trig'
-Writer.end default true on stream output; false to keep stream open</p>
-<p class="md-github">Best Practices</p>
-<p class="md-github">Use StreamParser and StreamWriter for large files to avoid high memory usage and backpressure. Share EntityIndex across stores for memory optimization. Predeclare prefixes via Writer or StreamParser options to shorten output. Use strict format in Parser to validate input.</p>
-<p class="md-github">Troubleshooting Procedures</p>
-<p class="md-github">1 Parsing large TTL files hangs
-Solution: switch to StreamParser; pipeline fs.createReadStream('file.ttl').pipe(new N3.StreamParser()).on('data',...).</p>
-<p class="md-github">2 Unexpected blank node collisions
-Solution: set blankNodePrefix to unique value per parser: new N3.Parser({ blankNodePrefix: 'x_' }).</p>
-<p class="md-github">3 Strict validation errors
-Solution: pass specific format mime type: new N3.Parser({ format: 'application/trig' }).</p>
-<p class="md-github">4 Slow consumer backpressure
-Command example:
-const parser = new N3.StreamParser();
-fs.createReadStream('data.ttl').pipe(parser).pipe(new Writable({ objectMode: true, write(q,_,cb){ console.log(q); setTimeout(cb,1000); }}));</p>
-<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
-<p class="md-github">npm install n3; DataFactory AP: namedNode(iri), blankNode([value]), literal(val,lang,datatype), variable(val), defaultGraph(), quad(s,p,o,g), triple(s,p,o); Parser(new Parser({format?,baseIRI?,blankNodePrefix='b',isImpliedBy=false})).parse(input,callback|handlers)|sync; StreamParser(new StreamParser({format?,baseIRI?,blankNodePrefix?,isImpliedBy?,prefixes?,comments=false})).on('data',quad).on('prefix',p,iri).on('comment',c); Writer(new Writer(output?,{prefixes?,format='Turtle',end=true})).addQuad(Q).addPrefix(p,iri).end(cb)|toString(); StreamWriter(new StreamWriter({prefixes?,format})).write(Q).pipe(dest); Store(new Store([Q],{entityIndex?})).size, addQuad,addQuads,removeQuad,removeQuads,removeMatches,deleteGraph,createBlankNode,match, getQuads,countQuads,forEach,every,some,getSubjects/forSubjects,getPredicates/forPredicates,getObjects/forObjects,getGraphs/forGraphs,iterator; EntityIndex(); Reasoner(new Reasoner(store)).reason(rules); Defaults: Parser.format permissive superset, blankNodePrefix=b, isImpliedBy=false; Writer.format Turtle/TriG, end=true; StreamParser.comments=false. Use streams for large files; share EntityIndex; strict format via format option.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
-<p class="md-github">Table of Contents</p>
-<p class="md-github">1 Installation
-2 DataFactory
-3 Parser
-4 StreamParser
-5 Writer
-6 StreamWriter
-7 Store
-8 EntityIndex
-9 Reasoner
-10 Configuration Defaults
-11 RDF/JS Interfaces</p>
-<p class="md-github">1 Installation
-Install: npm install n3
-Browser: browserify -s N3 entry.js -o bundle.js
-CDN: <script src=https://unpkg.com/n3/browser/n3.min.js></script></p>
-<p class="md-github">2 DataFactory
-NamedNode(iri: string): NamedNode
-BlankNode([value?]): BlankNode
-Literal(value: string, language?: string, datatype?: NamedNode): Literal
-Variable(value: string): Variable
-DefaultGraph(): DefaultGraph
-Quad(subject: Term, predicate: Term, object: Term, graph?: Term): Quad
-Triple(subject: Term, predicate: Term, object: Term): Triple</p>
-<p class="md-github">3 Parser
-Constructor options
-format?: string  values Turtle TriG N-Triples N-Quads N3 Notation3 text/n3 or mime types; includes '*' for RDF-star
-baseIRI?: string default undefined
-blankNodePrefix?: string default 'b'
-isImpliedBy?: boolean default false
-Methods
-parse(input, callback(error, quad, prefixes))  emits quads; last callback quad null and prefixes object
-parse(input, handlers)  handlers.onQuad(err,quad) required; onPrefix(prefix,iri) optional; onComment(comment) optional
-parse(input) returns Quad[] synchronously</p>
-<p class="md-github">4 StreamParser
-Constructor options as Parser plus
-prefixes?: {[prefix:string]:string}
-comments?: boolean default false
-Events
-data(quad:Quad) prefix(prefix:string,iri:NamedNode) comment(comment:string) end()</p>
-<p class="md-github">5 Writer
-Constructor
-new Writer([output],[ options ])
-options.prefixes?: {[prefix:string]:string}
-options.format?: string default Turtle or TriG
-options.end?: boolean default true if output is stream
-Methods
-addQuad(quad:Quad): this
-addPrefix(prefix:string,iri:string): this
-end(callback(error,result:string)): void
-toString(): string</p>
-<p class="md-github">6 StreamWriter
-Constructor options same as Writer without output parameter
-Sink and Readable stream: write(quad) emits data(string)</p>
-<p class="md-github">7 Store
-Constructor
-new Store([quads],[{entityIndex}])
-Properties size:number
-Methods add(quad), addQuad(quad), addQuads(quads[]), removeQuad(quad):boolean, removeQuads(quads[]):number, remove(stream):void, removeMatches(s?,p?,o?,g?):void, deleteGraph(g):void, createBlankNode():BlankNode
-Search match(s?,p?,o?,g?) returns Iterable<Quad> getQuads(s?,p?,o?,g?) returns Quad[] countQuads(s?,p?,o?,g?) returns number forEach(fn), every(fn):boolean, some(fn):boolean getSubjects(p?,o?,g?) returns Term[] forSubjects(p?,o?,g?,fn) getPredicates(s?,o?,g?) forPredicates(...) getObjects(s?,p?,g?) forObjects(...) getGraphs(s?,p?,o?) forGraphs(...) iterator via for..of</p>
-<p class="md-github">8 EntityIndex
-new EntityIndex() share index across stores to reduce memory</p>
-<p class="md-github">9 Reasoner
-new Reasoner(store)
-reason(rules:Quad[]|Store) applies Basic Graph Pattern rules to store</p>
-<p class="md-github">10 Configuration Defaults
-Parser blankNodePrefix='b'; isImpliedBy=false; permissive format
-Writer format=Turtle; end=true
-StreamParser comments=false</p>
-<p class="md-github">11 RDF/JS Interfaces
-DataFactory implements DataFactory, Terms implement NamedNode,BlankNode,Literal,Variable,DefaultGraph; Parser implements Parser; StreamParser implements Stream &amp; Sink; Writer implements Sink; StreamWriter implements Stream &amp; Sink; Store implements Store,Source,Sink,DatasetCore</p>
-<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
-<p class="md-github">JavaScript RDF &amp; SPARQL Libraries
-https://www.npmjs.com/package/n3</p>
-<h2 class="md-github"><a class="md-github__anchor" name="digest-of-n3js" href="#digest-of-n3js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of N3JS</h2>
-<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
-<p class="md-github">npm install n3</p>
-<p class="md-github">Browser UMD bundle via browserify or webpack: browserify -s N3 input.js -o bundle.js</p>
-<script src="https://unpkg.com/n3/browser/n3.min.js"></script>
-<h1 class="md-github"><a class="md-github__anchor" name="datafactory" href="#datafactory"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DataFactory</h1>
-<p class="md-github">Factory functions (imported via const { DataFactory } = require('n3')):</p>
-<p class="md-github">NamedNode(iri: string): NamedNode
-BlankNode([value?: string]): BlankNode
-Literal(value: string, language?: string, datatype?: NamedNode): Literal
-Variable(value: string): Variable
-DefaultGraph(): DefaultGraph
-Quad(subject: Term, predicate: Term, object: Term, graph?: Term): Quad
-Triple(subject: Term, predicate: Term, object: Term): Triple</p>
-<h1 class="md-github"><a class="md-github__anchor" name="parser" href="#parser"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parser</h1>
-<p class="md-github">Constructor: new N3.Parser(options?: {
-format?: string                      // permissive by default; accepts 'Turtle','TriG','N-Triples','N-Quads','N3','Notation3','text/n3' or mime types; '*'-suffix enables RDF-star
-baseIRI?: string                     // default undefined
-blankNodePrefix?: string             // default 'b'
-isImpliedBy?: boolean                // default false; when true, outputs backwards chaining with log:isImpliedBy
+<p class="md-github">--- DataFactory ---
+NamedNode:
+function namedNode(value: string): NamedNode
+Returns NamedNode with .termType='NamedNode', .value=value
+Literal:
+function literal(value: string, language?: string, datatype?: NamedNode): Literal
+When language provided: .datatype=rdflib.NamedNode('http://www.w3.org/1999/02/22-rdf-syntax-ns#langString'), .language=language
+When datatype provided: .datatype=datatype
+DefaultGraph:
+function defaultGraph(): DefaultGraph
+Quad:
+function quad(subject: Term, predicate: Term, object: Term, graph?: Term): Quad
+Returns .subject, .predicate, .object, .graph(defaultGraph())</p>
+<p class="md-github">--- Parser ---
+Constructor: new Parser(options?: {
+format?: string;  // Default: permissive superset
+baseIRI?: string; // URI
+blankNodePrefix?: string; // Default: 'b{digit}_'
+isImpliedBy?: boolean; // Default: false
 })</p>
+<p class="md-github">Method parse(input: string|Stream, callback|listeners):
+parse(input, (error: Error|null, quad: Quad|null, prefixes?: Record&lt;string,string&gt;)=&gt;void): void
+parse(text: string, {onQuad, onPrefix?, onComment?}): void
+parse(text: string): Quad[]</p>
+<p class="md-github">Error handling: callback receives Error when parse error; quad is null when complete; prefixes returned at end when using callback API.</p>
+<p class="md-github">--- StreamParser ---
+Constructor: new StreamParser(options?: {
+format?: string;
+baseIRI?: string;
+blankNodePrefix?: string;
+isImpliedBy?: boolean;
+comments?: boolean; // Default: false
+})</p>
+<p class="md-github">Usage example:
+const streamParser = new N3.StreamParser({comments:true});
+fs.createReadStream('file.ttl').pipe(streamParser).pipe(new Writable({objectMode:true, write(quad,enc,cb){ console.log(quad); cb(); }}));</p>
+<p class="md-github">--- Writer ---
+Constructor: new Writer(output?: Writable|{prefixes: Record&lt;string,string&gt;; format?: string; end?: boolean})
+Properties:
+prefix:N/A; internal map of prefix to namespace</p>
 <p class="md-github">Methods:
-parse(input: string|Stream, callback(error: Error|null, quad: Quad|null, prefixes?: { [prefix: string]: NamedNode }): void): void
-parse(input: string|Stream, handlers: {
-onQuad(err: Error|null, quad: Quad): void            // required
-onPrefix?(prefix: string, iri: NamedNode): void
-onComment?(comment: string): void
-}): void
-parse(input: string): Quad[]                            // synchronous, returns all quads</p>
-<h1 class="md-github"><a class="md-github__anchor" name="streamparser" href="#streamparser"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>StreamParser</h1>
-<p class="md-github">Constructor: new N3.StreamParser(options?: {
-format?: string
-baseIRI?: string
-blankNodePrefix?: string
-isImpliedBy?: boolean
-prefixes?: { [prefix: string]: string }
-comments?: boolean                  // emit 'comment' events
-})</p>
-<p class="md-github">Events:
-'data'(quad: Quad)
-'prefix'(prefix: string, iri: NamedNode)
-'comment'(comment: string)
-'end'()</p>
-<h1 class="md-github"><a class="md-github__anchor" name="writer" href="#writer"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Writer</h1>
-<p class="md-github">Constructor: new N3.Writer(output?: WritableStream|string, options?: {
-prefixes?: { [prefix: string]: string }
-format?: string                      // 'Turtle' or 'TriG' by default; 'N-Triples','application/trig'
-end?: boolean                        // default true when output is stream
-})</p>
-<p class="md-github">Methods:
-addQuad(quad: Quad): this
-addPrefix(prefix: string, iri: string): this
-end(callback(error: Error|null, result: string): void): void
-toString(): string</p>
-<h1 class="md-github"><a class="md-github__anchor" name="streamwriter" href="#streamwriter"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>StreamWriter</h1>
-<p class="md-github">Constructor: new N3.StreamWriter(options?: {
-prefixes?: { [prefix: string]: string }
-format?: string
-})</p>
-<p class="md-github">Streams:
-writable sink: .write(quad: Quad)
-readable: 'data'(chunk: string)</p>
-<h1 class="md-github"><a class="md-github__anchor" name="store" href="#store"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Store</h1>
-<p class="md-github">Constructor: new N3.Store(quads?: Quad[], options?: { entityIndex?: EntityIndex })</p>
-<p class="md-github">Properties:
-size: number</p>
-<p class="md-github">Methods:
-add(quad: Quad): void
+addQuad(s:Term,p:Term,o:Term,g?:Term): Writer
+blank(predicate: Term, object: Term): BlankNode
+list(elements: Term[]): BlankNode
+end(cb: (error:Error|null, result:string)=&gt;void): void</p>
+<p class="md-github">Example: create TTL string with prefix c:
+const writer=new Writer({prefixes:{c:'http://example.org/#'}});
+writer.addQuad(quad(namedNode('http://example.org/#Tom'),namedNode('rdf:type'),namedNode('http://example.org/#Cat')));
+writer.end((err,res)=&gt;console.log(res));</p>
+<p class="md-github">Configuration:
+format: 'N-Triples'|'application/trig'
+end: when false, stream writer does not close output</p>
+<p class="md-github">--- StreamWriter ---
+Constructor: new StreamWriter({prefixes, format?: string; end?: boolean})
+Pipe usage: streamParser.pipe(streamWriter).pipe(destination)</p>
+<p class="md-github">--- Store ---
+Constructor: new Store(quads?: Quad[], {entityIndex?: EntityIndex})
+Properties:
+size: number // count of quads
+Methods:
 addQuad(quad: Quad): void
 addQuads(quads: Quad[]): void
-removeQuad(quad: Quad): boolean
-removeQuads(quads: Quad[]): number
-remove(stream: Stream): void
-removeMatches(subject?: Term, predicate?: Term, object?: Term, graph?: Term): void
-deleteGraph(graph: Term): void
-createBlankNode(): BlankNode</p>
-<p class="md-github">Search:
-match(subject?: Term, predicate?: Term, object?: Term, graph?: Term): Iterable<Quad>
-getQuads(subject?: Term, predicate?: Term, object?: Term, graph?: Term): Quad[]
-countQuads(subject?: Term, predicate?: Term, object?: Term, graph?: Term): number
-forEach(callback: (quad: Quad) =&gt; void): void
-every(callback: (quad: Quad) =&gt; boolean): boolean
-some(callback: (quad: Quad) =&gt; boolean): boolean
-getSubjects(predicate?: Term, object?: Term, graph?: Term): Term[]
-forSubjects(predicate?: Term, object?: Term, graph?: Term, callback: (subject: Term) =&gt; void): void
-getPredicates(subject?: Term, object?: Term, graph?: Term): Term[]
-forPredicates(subject?: Term, object?: Term, graph?: Term, callback: (predicate: Term) =&gt; void): void
-getObjects(subject?: Term, predicate?: Term, graph?: Term): Term[]
-forObjects(subject?: Term, predicate?: Term, graph?: Term, callback: (object: Term) =&gt; void): void
-getGraphs(subject?: Term, predicate?: Term, object?: Term): Term[]
-forGraphs(subject?: Term, predicate?: Term, object?: Term, callback: (graph: Term) =&gt; void): void
-<a href="" class="md-github">Symbol.iterator</a>: Iterator<Quad></p>
-<h1 class="md-github"><a class="md-github__anchor" name="entityindex" href="#entityindex"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>EntityIndex</h1>
-<p class="md-github">Constructor: new N3.EntityIndex()
-Shared across multiple stores to reduce duplicate Term instances</p>
+removeQuad(quad: Quad): boolean // returns if removed
+removeQuads(quads: Quad[]): number // count removed
+remove(stream: Stream<Quad>): Promise<number>
+removeMatches(s?:Term,p?:Term,o?:Term,g?:Term): number
+deleteGraph(graph:Term): number
+createBlankNode(): BlankNode
+Query methods:
+match(s?,p?,o?,g?): Iterable<Quad>
+getQuads(s?,p?,o?,g?): Quad[]
+countQuads(s?,p?,o?,g?): number
+forEach(callback:(quad:Quad)=&gt;void,s?,p?,o?,g?): void
+every(callback:(quad:Quad)=&gt;boolean,s?,p?,o?,g?): boolean
+some(callback:(quad:Quad)=&gt;boolean,s?,p?,o?,g?): boolean
+getSubjects(p?,o?,g?): Term[]
+getPredicates(s?,o?,g?): Term[]
+getObjects(s?,p?,g?): Term[]
+getGraphs(s?,p?,o?): Term[]</p>
+<p class="md-github">Example: share entityIndex between stores
+const idx=new EntityIndex();
+const store1=new Store([], {entityIndex:idx});
+const store2=new Store([], {entityIndex:idx});</p>
+<p class="md-github">--- Reasoner ---
+Constructor: new Reasoner(store: Store)
+Method:
+reason(rules: string | Quad[]): void // mutates store
+Rules syntax: Notation3 rules with BGP premises and conclusions</p>
+<p class="md-github">--- Troubleshooting ---
+1  Blank node collisions: enable blankNodePrefix to distinguish: {blankNodePrefix:'x_'} expected _:x_1
+2  Parsing large files: use StreamParser to avoid memory overflow
+3  Unexpected streaming behavior: set writer end:false to keep stream open
+4  Prefixes not applied: ensure prefixes map provided to Writer or StreamWriter</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">Installation:npm install n3; require('n3') or include n3.min.js
+DataFactory:namedNode(str):NamedNode;literal(str,lang?,datatype?):Literal;defaultGraph():DefaultGraph;quad(s,p,o,g?):Quad
+Parser:new Parser({format?,baseIRI?,blankNodePrefix?,isImpliedBy?});parse(input,cb|listeners|string):void|Quad[]
+StreamParser:new StreamParser(opts+comments?);pipe RDF streams
+Writer:new Writer(stream|{prefixes,format?,end?});addQuad(s,p,o,g?);blank(pred,obj);list(terms);end(cb)
+StreamWriter:new StreamWriter({prefixes,format?,end?});pipe streamParser→writer→out
+Store:new Store(quads[],{entityIndex?});size;addQuad(s),removeQuad(s),removeMatches(pattern);match(pattern),getQuads, countQuads,getSubjects|Predicates|Objects|Graphs;createBlankNode()
+Reasoner:new Reasoner(store);reason(rules)
+Options:format:'Turtle'|'TriG'|'N-Triples'|'N-Quads'|'N3'|'text/n3' or MIME;RDF-star with '*';baseIRI URI;blankNodePrefix str or '';isImpliedBy boolean;comments boolean
+Interfaces:implements RDF/JS DataFactory,Term,Quad,Stream,Sink,Store,Source,DatasetCore
+Compatibility:full RDF1.1 + RDF-star + Notation3</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:
+1  Installation
+2  DataFactory
+3  Parser
+4  StreamParser
+5  Writer
+6  StreamWriter
+7  Store
+8  Reasoner</p>
+<p class="md-github">1 Installation
+npm install n3
+const N3 = require('n3');  // Node.js import</p>
+  <script src='https://unpkg.com/n3/browser/n3.min.js'></script>  // Browser UMD
+<p class="md-github">2 DataFactory
+namedNode(value: string): NamedNode
+literal(value: string, language?: string, datatype?: NamedNode): Literal
+defaultGraph(): DefaultGraph
+quad(subject: Term, predicate: Term, object: Term, graph?: Term): Quad</p>
+<p class="md-github">3 Parser
+new N3.Parser({format?: string, baseIRI?: string, blankNodePrefix?: string, isImpliedBy?: boolean})
+parse(input: string|Stream, callback: (error, quad, prefixes?)=&gt;void): void
+parse(input: string, listeners: {onQuad, onPrefix?, onComment?}): void
+parse(input: string): Quad[]
+Options:
+format: 'Turtle'|'TriG'|'N-Triples'|'N-Quads'|'N3'|'Notation3'|'text/n3'
+baseIRI: IRI string
+blankNodePrefix: prefix string or ''
+isImpliedBy: boolean</p>
+<p class="md-github">4 StreamParser
+new N3.StreamParser(options?)  // options same as Parser plus comments?: boolean
+rdfStream.pipe(streamParser).pipe(destination)</p>
+<p class="md-github">5 Writer
+new N3.Writer(streamOrOptions)
+options.prefixes: Record&lt;string,string&gt;
+options.format: 'Turtle'|'N-Triples'|...  default Turtle/TriG
+options.end: boolean
+addQuad(subject, predicate, object, graph?): Writer
+blank(predicate, object): BlankNode
+list(terms: Term[]): BlankNode
+end(callback: (error, result)=&gt;void): void</p>
+<p class="md-github">6 StreamWriter
+new N3.StreamWriter({prefixes, format?, end?})
+streamParser.pipe(streamWriter).pipe(process.stdout)</p>
+<p class="md-github">7 Store
+new N3.Store(quads?: Quad[], {entityIndex?: EntityIndex})
+size: number
+addQuad(quad): void
+addQuads(quads): void
+removeQuad(quad): boolean
+removeQuads(quads): number
+remove(matchesStream): Promise<number>
+removeMatches(s?, p?, o?, g?): number
+deleteGraph(graph): number
+createBlankNode(): BlankNode
+match(s?, p?, o?, g?): Iterable<Quad>
+getQuads(s?, p?, o?, g?): Quad[]
+countQuads(s?, p?, o?, g?): number
+getSubjects(p?, o?, g?): Term[]
+getPredicates(s?, o?, g?): Term[]
+getObjects(s?, p?, g?): Term[]
+getGraphs(s?, p?, o?): Term[]</p>
+<p class="md-github">8 Reasoner
+import {Reasoner} from 'n3';
+new Reasoner(store)
+reason(rules: string|Quad[]): void</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">JavaScript RDF &amp; JSON-LD Ecosystem
+https://github.com/rdfjs/N3.js#readme</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-n3js" href="#digest-of-n3js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of N3JS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
+<p class="md-github"><strong class="md-github">Node.js</strong></p>
+<ul class="md-github">
+<li class="md-github">Command: <code class="md-github">npm install n3</code></li>
+<li class="md-github">Import: <code class="md-github">const N3 = require('n3');</code></li>
+<li class="md-github">Browser (UMD): bundle with webpack or browserify using <code class="md-github">-s N3</code>, or include <code class="md-github">&lt;script src=&quot;https://unpkg.com/n3/browser/n3.min.js&quot;&gt;&lt;/script&gt;</code></li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="datafactory" href="#datafactory"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>DataFactory</h1>
+<p class="md-github">Provides factory methods to create RDF terms and quads:</p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">namedNode(value: string): NamedNode</code></li>
+<li class="md-github"><code class="md-github">literal(value: string, language?: string, datatype?: NamedNode): Literal</code></li>
+<li class="md-github"><code class="md-github">defaultGraph(): DefaultGraph</code></li>
+<li class="md-github"><code class="md-github">quad(subject: Term, predicate: Term, object: Term, graph?: Term): Quad</code></li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="parser" href="#parser"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parser</h1>
+<p class="md-github"><strong class="md-github">Constructor</strong>: <code class="md-github">new N3.Parser(options?: { format?: string; baseIRI?: string; blankNodePrefix?: string; isImpliedBy?: boolean })</code></p>
+<p class="md-github"><strong class="md-github">Methods</strong>:</p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">parse(input: string | Stream, onQuad: (error: Error|null, quad: Quad|null, prefixes?: Record&lt;string,string&gt;) =&gt; void): void</code></li>
+<li class="md-github"><code class="md-github">parse(input: string, listeners: { onQuad: (err:Error|null, quad:Quad) =&gt; void; onPrefix?: (prefix:string, iri:NamedNode) =&gt; void; onComment?: (comment:string)=&gt;void }): void</code></li>
+<li class="md-github"><code class="md-github">parse(input: string): Quad[]</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">Options</strong>:</p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">format</code>: MIME type or name (<code class="md-github">'Turtle'</code>, <code class="md-github">'TriG'</code>, <code class="md-github">'N-Triples'</code>, <code class="md-github">'N-Quads'</code>, <code class="md-github">'N3'</code>, <code class="md-github">'Notation3'</code>, <code class="md-github">'text/n3'</code>)</li>
+<li class="md-github"><code class="md-github">baseIRI</code>: base IRI for relative IRIs</li>
+<li class="md-github"><code class="md-github">blankNodePrefix</code>: default <code class="md-github">'b' + digit + '_'</code>, set <code class="md-github">''</code> to disable</li>
+<li class="md-github"><code class="md-github">isImpliedBy</code>: default <code class="md-github">false</code>, when <code class="md-github">true</code> emits <code class="md-github">log:isImpliedBy</code></li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="streamparser" href="#streamparser"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>StreamParser</h1>
+<p class="md-github">Implements Node.js Readable Stream &amp; RDF.js Sink</p>
+<p class="md-github"><strong class="md-github">Constructor</strong>: <code class="md-github">new N3.StreamParser(options?: { format?: string; baseIRI?: string; blankNodePrefix?: string; isImpliedBy?: boolean; comments?: boolean })</code></p>
+<p class="md-github"><strong class="md-github">Usage</strong>:</p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">streamParser.pipe(destinationSink)</code></li>
+<li class="md-github"><code class="md-github">rdfStream.pipe(streamParser)</code></li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="writer" href="#writer"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Writer</h1>
+<p class="md-github"><strong class="md-github">Constructor</strong>: <code class="md-github">new N3.Writer(output?: WritableStream | { prefixes: Record&lt;string,string&gt;; format?: string; end?: boolean })</code></p>
+<p class="md-github"><strong class="md-github">Methods</strong>:</p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">addQuad(subject: Term, predicate: Term, object: Term, graph?: Term): Writer</code></li>
+<li class="md-github"><code class="md-github">blank(predicate: Term, object: Term): BlankNode</code></li>
+<li class="md-github"><code class="md-github">list(elements: Term[]): BlankNode</code></li>
+<li class="md-github"><code class="md-github">end(callback: (error: Error|null, result: string) =&gt; void): void</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">Default format</strong>: <code class="md-github">'Turtle'</code> or <code class="md-github">'TriG'</code> if named graphs present
+<strong class="md-github">Formats</strong>: <code class="md-github">'N-Triples'</code>, <code class="md-github">'application/trig'</code>, RDF-star variants by adding <code class="md-github">'*'</code></p>
+<h1 class="md-github"><a class="md-github__anchor" name="streamwriter" href="#streamwriter"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>StreamWriter</h1>
+<p class="md-github">Implements Node.js Writable Stream &amp; RDF.js Sink</p>
+<p class="md-github"><strong class="md-github">Constructor</strong>: <code class="md-github">new N3.StreamWriter(options?: { prefixes: Record&lt;string,string&gt;; format?: string; end?: boolean })</code></p>
+<p class="md-github"><strong class="md-github">Usage</strong>:</p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">streamParser.pipe(streamWriter).pipe(process.stdout)</code></li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="store" href="#store"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Store</h1>
+<p class="md-github">In-memory quad store implementing RDF/JS DatasetCore</p>
+<p class="md-github"><strong class="md-github">Constructor</strong>: <code class="md-github">new N3.Store(quads?: Quad[], options?: { entityIndex?: EntityIndex })</code></p>
+<p class="md-github"><strong class="md-github">Properties</strong>:</p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">size: number</code></li>
+</ul>
+<p class="md-github"><strong class="md-github">Methods</strong>:</p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">addQuad(quad: Quad): void</code></li>
+<li class="md-github"><code class="md-github">addQuads(quads: Quad[]): void</code></li>
+<li class="md-github"><code class="md-github">removeQuad(quad: Quad): boolean</code></li>
+<li class="md-github"><code class="md-github">removeQuads(quads: Quad[]): number</code></li>
+<li class="md-github"><code class="md-github">remove(stream: Stream&lt;Quad&gt;): Promise&lt;number&gt;</code></li>
+<li class="md-github"><code class="md-github">removeMatches(subject?: Term, predicate?: Term, object?: Term, graph?: Term): number</code></li>
+<li class="md-github"><code class="md-github">deleteGraph(graph: Term): number</code></li>
+<li class="md-github"><code class="md-github">createBlankNode(): BlankNode</code></li>
+<li class="md-github"><code class="md-github">match(subject?: Term, predicate?: Term, object?: Term, graph?: Term): Iterable&lt;Quad&gt;</code></li>
+<li class="md-github"><code class="md-github">getQuads(subject?: Term, predicate?: Term, object?: Term, graph?: Term): Quad[]</code></li>
+<li class="md-github"><code class="md-github">countQuads(subject?: Term, predicate?: Term, object?: Term, graph?: Term): number</code></li>
+<li class="md-github"><code class="md-github">getSubjects(predicate?: Term, object?: Term, graph?: Term): Term[]</code></li>
+<li class="md-github"><code class="md-github">getPredicates(subject?: Term, object?: Term, graph?: Term): Term[]</code></li>
+<li class="md-github"><code class="md-github">getObjects(subject?: Term, predicate?: Term, graph?: Term): Term[]</code></li>
+<li class="md-github"><code class="md-github">getGraphs(subject?: Term, predicate?: Term, object?: Term): Term[]</code></li>
+</ul>
 <h1 class="md-github"><a class="md-github__anchor" name="reasoner" href="#reasoner"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reasoner</h1>
-<p class="md-github">Constructor: new N3.Reasoner(store: Store)
-Methods:
-reason(rules: Quad[]|Store): void          # Mutates store by applying Basic Graph Pattern rules</p>
-<h1 class="md-github"><a class="md-github__anchor" name="configuration-options" href="#configuration-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration Options</h1>
-<p class="md-github">Parser blankNodePrefix default 'b'; format default permissive; strict by format option; RDF-star by '*' format; StreamWriter comments off; Writer end default true</p>
-<h1 class="md-github"><a class="md-github__anchor" name="interfaces" href="#interfaces"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Interfaces</h1>
-<p class="md-github">All classes implement corresponding RDF/JS interfaces:
-DataFactory implements DataFactory
-Parser implements Parser
-StreamParser implements Stream &amp; Sink
-Writer implements Sink
-StreamWriter implements Stream &amp; Sink
-Store implements Store, Source, Sink, DatasetCore</p>
+<p class="md-github"><strong class="md-github">Classes</strong>: <code class="md-github">Reasoner</code></p>
+<p class="md-github"><strong class="md-github">Constructor</strong>: <code class="md-github">new Reasoner(store: Store)</code></p>
+<p class="md-github"><strong class="md-github">Methods</strong>:</p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">reason(rules: string | Quad[]): void</code></li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="compatibility--interfaces" href="#compatibility--interfaces"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Compatibility &amp; Interfaces</h1>
+<ul class="md-github">
+<li class="md-github">Full support: RDF1.1 Turtle, TriG, N-Triples, N-Quads, RDF-star, Notation3</li>
+<li class="md-github">Implements RDF/JS interfaces: DataFactory, Term, Quad, Stream, Sink, Store, Source, DatasetCore</li>
+</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
 <ul class="md-github">
-<li class="md-github">Source: JavaScript RDF &amp; SPARQL Libraries</li>
-<li class="md-github">URL: https://www.npmjs.com/package/n3</li>
-<li class="md-github">License: MIT</li>
-<li class="md-github">Crawl Date: 2025-04-26T13:49:15.269Z</li>
-<li class="md-github">Data Size: 467089 bytes</li>
-<li class="md-github">Links Found: 1584</li>
+<li class="md-github">Source: JavaScript RDF &amp; JSON-LD Ecosystem</li>
+<li class="md-github">URL: https://github.com/rdfjs/N3.js#readme</li>
+<li class="md-github">License: License if known</li>
+<li class="md-github">Crawl Date: 2025-04-28T13:07:10.131Z</li>
+<li class="md-github">Data Size: 668416 bytes</li>
+<li class="md-github">Links Found: 5155</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
-<p class="md-github">2025-04-26</p>
+<p class="md-github">2025-04-28</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-26T17:20:10.842Z</p>
+    <p>Generated on 2025-04-28T13:30:19.986Z</p>
   </footer>
 </body>
 </html>
