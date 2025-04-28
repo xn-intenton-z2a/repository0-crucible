@@ -3,13 +3,13 @@
 ## https://www.w3.org/TR/owl2-overview/
 ## https://www.w3.org/TR/owl2-rdf-based-semantics/
 ## https://www.w3.org/TR/owl2-syntax/
-This combined set of W3C Recommendations defines the core RDF data model (IRIs, literals, blank nodes, triples, graphs) and the OWL 2 ontology language, including serializations (Turtle, RDF/XML, JSON-LD), syntaxes, and formal semantics. These specifications provide essential guidelines for constructing, serializing, and reasoning over OWL ontologies in both CLI workflows and HTTP-based services. (Last updated: RDF Concepts 25 Feb 2014; OWL 2 Overview 27 Oct 2009; OWL 2 Semantics 11 Dec 2012; OWL 2 Syntax 27 Oct 2009; authoritative as W3C Recommendations.)
+This combined set of W3C Recommendations defines the RDF data model (IRIs, literals, blank nodes, triples, graphs) and the OWL 2 ontology language, including Turtle, RDF/XML, and JSON-LD serializations, concrete syntaxes, and formal semantics. These specifications are the authoritative reference for constructing, serializing, and reasoning over OWL ontologies in both CLI and HTTP-based workflows. (Last updated: RDF Concepts 25 Feb 2014; OWL 2 Overview 27 Oct 2009; OWL 2 Semantics 11 Dec 2012; authoritative as W3C Recommendations.)
 ## License
 W3C Document License (CC-BY 4.0)
 
 # SHACL: Shapes Constraint Language
 ## https://www.w3.org/TR/shacl/
-SHACL provides a robust language for validating RDF graphs against declarative shapes, with path expressions, node and property constraints, and detailed validation reports. Its formal semantics and conformance test suite ensure data quality and schema compliance after ontology construction. (Last updated: 21 Oct 2017; authoritative as W3C Recommendation.)
+SHACL provides a declarative, graph-based language for validating RDF graphs against complex shape expressions, including path constraints, cardinalities, and custom severity levels. Its formal semantics and comprehensive conformance test suite ensure reliable data integrity checks after ontology transformations. (Last updated: 21 Oct 2017; authoritative as W3C Recommendation.)
 ## License
 W3C Document License (CC-BY 4.0)
 
@@ -17,21 +17,23 @@ W3C Document License (CC-BY 4.0)
 ## https://www.w3.org/TR/json-ld11/
 ## https://www.w3.org/TR/json-ld11-api/
 ## https://github.com/digitalbazaar/jsonld.js#readme
-The JSON-LD 1.1 specifications and API define framing, compaction, expansion, context processing, and normalization (URDNA2015). The jsonld.js library offers a production-ready implementation with custom document loaders, streaming support, and error-handling patterns. These sources are critical for ingesting and emitting JSON-LD in OWL builder workflows. (Last updated: Specs May 2020; jsonld.js 2024; authoritative as official W3C specs and implementation.)
+The JSON-LD 1.1 Core and API specifications define algorithms for framing, compaction, expansion, and normalization (URDNA2015). The jsonld.js library implements these features with pluggable document loaders, streaming, and robust error handling, enabling seamless JSON-LD processing in Node.js OWL builder pipelines. (Last updated: JSON-LD 1.1 May 2020; jsonld.js v1.8.1 2024; authoritative as W3C specs and reference implementation.)
 ## License
 W3C Document License (CC-BY 4.0); MIT License
 
-# SPARQL 1.1 Specifications & Public Endpoints
+# SPARQL 1.1 Specifications & Server Implementations
 ## https://www.w3.org/TR/sparql11-overview/
 ## https://www.w3.org/TR/sparql11-protocol/
 ## https://www.w3.org/TR/sparql11-update/
 ## https://www.w3.org/TR/sparql11-http-rdf-update/
 ## https://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/
+## https://jena.apache.org/documentation/fuseki2/
+## https://graphdb.ontotext.com/documentation/standard/
 ## https://wiki.dbpedia.org/services-resources/sparql-endpoint
 ## https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Wikidata_Query_Service_User_Help
-This comprehensive set of SPARQL 1.1 Recommendations covers the query language, HTTP protocol, update operations, RDF graph store interactions, and JSON result formats. Public endpoint guides for DBpedia and Wikidata detail rate limits, federation strategies, and resilient client practices in Node.js. These are foundational for implementing CLI commands, federated pipelines, and update workflows. (Last updated: Specs Mar 2013; DBpedia 2024; Wikidata continuously updated; authoritative as W3C Recommendations and official guides.)
+This source aggregates SPARQL 1.1 Recommendations for query, update, HTTP protocol, and JSON results with practical deployment guides for Apache Jena Fuseki and Ontotext GraphDB servers. It also covers best practices and rate limits for public endpoints like DBpedia and Wikidata, including authentication, federation, and performance tuning for resilient Node.js clients. (Last updated: SPARQL specs Mar 2013; Fuseki 4.x; GraphDB Standard 2023; endpoints continuously updated; authoritative as official documentation.)
 ## License
-W3C Document License (CC-BY 4.0); DBpedia CC BY-SA 3.0; Wikidata CC0/Public Domain
+W3C Document License (CC-BY 4.0); Apache License 2.0; GraphDB documentation license
 
 # Node.js v20 Core Modules, Fetch API & Vitest v3
 ## https://nodejs.org/api/http.html
@@ -44,7 +46,7 @@ W3C Document License (CC-BY 4.0); DBpedia CC BY-SA 3.0; Wikidata CC0/Public Doma
 ## https://nodejs.org/api/events.html
 ## https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
 ## https://vitest.dev/
-A unified reference for Node.js v20 core modules (HTTP server/client, filesystem, URL/path utilities, ESM modules, global fetch, performance hooks, events), the standard Fetch API for HTTP interactions, and Vitest v3 testing framework. These sources enable robust CLI command implementations, HTTP services, performance measurement, and comprehensive test suites. (Current as of Node v20.x; MDN and Vitest docs updated continuously; authoritative as official Node.js, MDN, and Vitest documentation.)
+A unified reference for Node.js v20 core modules (HTTP server/client, filesystem, URL/path utilities, ESM loader, global fetch, performance hooks, events), the standard Fetch API on the web, and Vitest v3 testing patterns. These docs inform robust CLI and HTTP server implementations, performance measurement, and comprehensive test suites. (Current as of Node.js v20.x; MDN and Vitest docs updated continuously; authoritative as official Node.js and Vitest documentation.)
 ## License
 MIT License (Node.js & Vitest); MDN content CC0/Public Domain
 
@@ -54,18 +56,20 @@ MIT License (Node.js & Vitest); MDN content CC0/Public Domain
 ## https://rdf-ext.github.io/
 ## https://comunica.dev/docs/query/framework
 ## https://github.com/Callidon/sparqljs#readme
-This ecosystem specification and toolkit defines RDF/JS interfaces for nodes, quads, and streams, with implementations including rdf-ext (data factories, parsers, serializers), Comunica (modular, federated SPARQL query engine with actor pipelines), and SPARQL.js (SPARQL AST parser/serializer). Together they form a scalable, streaming-first RDF processing stack in Node.js for query construction and execution. (Specs Jan 2022; rdf-ext 2024; Comunica 2024; SPARQL.js 2023; authoritative as community-defined specs and active OSS.)
+These community-driven specifications and libraries define RDF/JS interfaces for nodes, quads, and streams, with rdf-ext providing data factories, parsers, and serializers, Comunica enabling modular, federated SPARQL querying over heterogeneous sources, and SPARQL.js offering a SPARQL-to-AST parser/serializer. Together they power scalable, streaming-first RDF processing in Node.js. (Specs Jan 2022; rdf-ext & Comunica 2024; SPARQL.js 2023; authoritative as active OSS and community specs.)
 ## License
-RDF/JS Specs (MIT); rdf-ext (MIT); Comunica (MIT); SPARQL.js (MIT)
-
-# Apache Jena Fuseki SPARQL Server
-## https://jena.apache.org/documentation/fuseki2/
-Detailed documentation for deploying and configuring the Fuseki SPARQL 1.1 server, including dataset management, authentication, CORS, HTTP updates, performance tuning, and CLI utilities (`tdb2` loader). Essential for hosting local or production SPARQL endpoints to support source refresh, testing, and custom data pipelines. (Current as of Fuseki 4.x; authoritative as Apache project documentation.)
-## License
-Apache License 2.0
+MIT License
 
 # Linked Data Platform (LDP) Specification
 ## https://www.w3.org/TR/ldp/
-The LDP Recommendation specifies RESTful HTTP interactions for managing RDF resources and containers, including resource creation (POST), retrieval (GET), updates (PUT, PATCH), deletion (DELETE), and membership management in containers. LDP ensures standardized content negotiation, RDF formats, and container semantics, enabling linked-data-driven HTTP APIs for OWL and JSON-LD artifacts. (Last updated: 30 June 2015; authoritative as W3C Recommendation.)
+The LDP Recommendation defines RESTful HTTP interactions for managing RDF resources and containers, specifying content negotiation, CRUD operations (POST, GET, PUT, PATCH, DELETE), and container semantics. LDP ensures standardized APIs for publishing and consuming linked data in OWL and JSON-LD formats. (Last updated: 30 Jun 2015; authoritative as W3C Recommendation.)
 ## License
 W3C Document License (CC-BY 4.0)
+
+# ShEx 2.0 Shapes Expression Language & shex.js Implementation
+## https://shex.io/shex-semantics/
+## https://shex.io/shex-documents/
+## https://github.com/shexSpec/shex.js#readme
+ShEx (Shape Expressions) provides a concise, formal language for validating RDF graphs against shape schemas, offering constraint constructs for properties, datatypes, and cardinalities. The official specification details both compact and JSON serializations and validation algorithms, while shex.js delivers a JavaScript reference implementation with parsing, compilation, and execution support for streaming and error reporting. This complements SHACL by providing an alternative, developer-friendly validation toolkit. (Last updated: ShEx Semantics 2020; shex.js v4.x 2023; authoritative as official spec and reference implementation.)
+## License
+CC0/Public Domain (spec); MIT License (shex.js)
