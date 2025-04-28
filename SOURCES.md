@@ -1,17 +1,19 @@
-# W3C Semantic Web Standards & JSON-LD
+# W3C Semantic Web & OWL 2 Core Specifications
 ## https://www.w3.org/TR/rdf11-concepts/
 ## https://www.w3.org/TR/owl2-overview/
+## https://www.w3.org/TR/owl2-syntax/
+## https://www.w3.org/TR/owl2-xml/
 ## https://www.w3.org/TR/skos-reference/
 ## https://www.w3.org/TR/vocab-dcat-2/
 ## https://www.w3.org/TR/json-ld11/
 ## https://www.w3.org/TR/json-ld11-framing/
-Provides the definitive W3C specifications for modeling, exchanging, and processing linked data as JSON-LD and OWL. RDF 1.1 Concepts (Feb 2014) defines the graph data model; OWL 2 Overview (Dec 2012) describes ontology profiles; SKOS Reference (Aug 2009) standardizes concept schemes; DCAT 2 (Feb 2023) prescribes dataset catalog metadata; JSON-LD 1.1 (May 2020) specifies syntax, contexts, and processing algorithms; JSON-LD Framing (Dec 2020) defines algorithms to extract and reshape subgraphs. This consolidated reference is authoritative for designing, serializing, and validating ontology artifacts across CLI, HTTP, and programmatic contexts.
+Provides a consolidated reference for W3C standards underpinning RDF graph modeling, ontologies, and JSON-LD serialization. RDF 1.1 Concepts (Feb 2014) defines the core data model; OWL 2 Overview (Dec 2012) and OWL 2 Syntax (Dec 2012) specify ontology profiles, the functional syntax, and RDF/XML mappings. SKOS (Aug 2009) and DCAT 2 (Feb 2023) cover controlled vocabularies and dataset catalog metadata. JSON-LD 1.1 (May 2020) and Framing (Dec 2020) define contexts, algorithms for processing, and subgraph extraction. This authoritative set guides context design, serialization, parsing, and validation in CLI, HTTP, and library workflows.
 ## License if known
 W3C Document License (CC-BY 4.0)
 
 # Linked Data Best Practices
 ## https://www.w3.org/TR/ld-bp/
-Provides practical guidelines for publishing and consuming linked data on the Web, covering URI design, HTTP content negotiation, pagination, vocabulary versioning, and discovery. Emphasizes stable IRIs, human-readable metadata, caching, and negotiation patterns—directly informing REST endpoint design, middleware configuration, and JSON-LD context structuring to ensure reliable, discoverable ontology services.
+Provides actionable guidelines for publishing and consuming linked data on the Web. Covers robust IRI design, HTTP content negotiation, pagination, versioning, and discovery patterns. Directly informs REST endpoint design, caching headers, JSON-LD context structuring, and middleware configuration to ensure scalable, discoverable ontology services.
 ## License if known
 W3C Document License (CC-BY 4.0)
 
@@ -22,7 +24,7 @@ W3C Document License (CC-BY 4.0)
 ## https://github.com/RubenVerborgh/SPARQL.js#readme
 ## https://github.com/linkeddata/rdflib.js#readme
 ## https://github.com/rdfjs/N3.js#readme
-A curated set of actively maintained (2023–2024) JavaScript libraries for manipulating RDF and JSON-LD: jsonld.js for context-based processing; RDF/JS Data Model for interoperable graph representations; Comunica for federated SPARQL querying; SPARQL.js for query parsing; rdflib.js for in-memory graph management; and N3.js for Turtle/N-Quads parsing and serialization. These tools underpin the project's programmatic and CLI data workflows.
+A curated set of up-to-date (2023–2024) JavaScript modules for RDF and JSON-LD processing: jsonld.js for context resolution; the RDF/JS Data Model spec for interoperable graph primitives; Comunica for federated SPARQL queries; SPARQL.js for parsing; rdflib.js for in-memory stores; and N3.js for Turtle and N-Quads parsing/serialization. These libraries form the backbone of the project’s programmatic and CLI data workflows.
 ## License if known
 MIT; CC0/Public Domain
 
@@ -34,7 +36,7 @@ MIT; CC0/Public Domain
 ## https://www.w3.org/TR/rdf11-http-rdf-update/
 ## https://jena.apache.org/documentation/query/
 ## https://jena.apache.org/documentation/fuseki2/
-Covers the complete SPARQL 1.1 family of W3C specifications—query, protocol, result formats, update, and Graph Store HTTP API—paired with Apache Jena ARQ and Fuseki deployment and tuning guides. These sources detail endpoint configuration, performance optimization, federated querying, and reasoning support, critical for robust SPARQL SELECT/ASK/UPDATE capabilities in both server and CLI modes.
+Covers the full SPARQL 1.1 suite—query, protocol, JSON results, updates, and Graph Store HTTP API—paired with Apache Jena ARQ and Fuseki deployment and tuning guides. Essential for configuring SPARQL endpoints: endpoint setup, query federation, result handling, and performance optimization in server and CLI modes.
 ## License if known
 W3C Document License (CC-BY 4.0); Apache 2.0 (Apache Jena)
 
@@ -42,7 +44,7 @@ W3C Document License (CC-BY 4.0); Apache 2.0 (Apache Jena)
 ## https://www.w3.org/TR/shacl/
 ## https://shex.io/shex-semantics/
 ## https://github.com/shexSpec/shex.js#readme
-Defines declarative validation of RDF graphs via SHACL shapes (Core and SPARQL-based constraints) and ShEx schemas. The shex.js library provides streaming validation with precise error reporting, ideal for integrating CI/CD checks and ensuring data integrity of generated ontology artifacts. SHACL (Oct 2017) and ShEx Semantics (Feb 2020) form the foundation of this validation stack.
+Defines declarative validation of RDF graphs via SHACL shapes (Core and SPARQL-based constraints) and ShEx schemas for shape-based validation. The shex.js library delivers streaming validation with precise error reports, ideal for CI/CD checks and ensuring ontology integrity. SHACL (Oct 2017) and ShEx (Feb 2020) are the foundation of the project’s validation pipeline.
 ## License if known
 W3C Document License (CC-BY 4.0); CC0/Public Domain; MIT
 
@@ -55,19 +57,19 @@ W3C Document License (CC-BY 4.0); CC0/Public Domain; MIT
 ## https://nodejs.org/api/esm.html
 ## https://nodejs.org/api/globals.html#fetch
 ## https://url.spec.whatwg.org/multipage/
-Comprehensive reference for Node.js core modules (fs for file I/O; http for HTTP servers/clients; url parsing; streams; ESM loader; performance hooks; global fetch) and Web Platform specifications (WHATWG URL Standard). These sources underpin the CLI file operations, HTTP endpoint implementations, module loading, and performance measurement required by the project. Verified against Node.js 20+ and WHATWG specs.
+Comprehensive reference for Node.js core modules (fs, http, URL parsing, streams, ESM loader, performance hooks, global fetch) and the WHATWG URL standard. Vital for CLI file I/O, HTTP endpoint implementations, module loading, and performance measurement in Node 20+ environments.
 ## License if known
 Node.js Documentation License (CC-BY-SA 3.0); WHATWG Spec (Public Domain)
 
 # Vitest Testing Framework
 ## https://vitest.dev/api/
-Provides a powerful, ESM-first test runner and assertion library with support for unit, integration, and HTTP endpoint testing. Features include mocking, spies, snapshots, coverage reports, watch mode, and parallel test execution. Vitest 3.x (2023–2024) integrates seamlessly with modern JavaScript tooling and is the basis for the project’s comprehensive test suite, enabling reliable validation of CLI, HTTP, and programmatic APIs.
+Provides an ESM-first test runner and assertion library with unit, integration, and HTTP endpoint testing. Features include mocking, spies, snapshots, coverage, watch mode, and parallel execution. Vitest 3.x (2023–2024) integrates with modern JavaScript tooling, forming the basis of the repository’s comprehensive test suite.
 ## License if known
 MIT
 
-# OWL 2 Functional-Style Syntax & RDF/XML Serialization
-## https://www.w3.org/TR/owl2-syntax/
-## https://www.w3.org/TR/owl2-xml/
-Specifies the concrete syntaxes for OWL 2 ontologies—including the Functional-Style Syntax and the RDF/XML Serialization—and their mapping to the abstract ontology model. Last updated Dec 2012, these specifications are essential for serializing and parsing OWL artifacts, ensuring interoperability between JSON-LD outputs and RDF/XML or functional-style inputs in tooling and databases.
+# RDF 1.1 Turtle & Linked Data Platform (LDP)
+## https://www.w3.org/TR/turtle/
+## https://www.w3.org/TR/ldp/
+Specifies the Turtle concrete syntax for RDF (Dec 2014) and the Linked Data Platform 1.0 specification (Jul 2015) for HTTP-based CRUD of linked data containers and resources. These sources provide actionable HTTP interaction patterns (GET, POST, PUT, DELETE) and serialization rules, directly informing Graph Store protocol implementations and client libraries.
 ## License if known
 W3C Document License (CC-BY 4.0)
