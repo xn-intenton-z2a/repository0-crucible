@@ -401,9 +401,8 @@ export async function main(args) {
           for (const f of refreshed.files) res.write(`written ${f}\n`);
           const inter = mainModule.buildIntermediate();
           for (const f of inter.files) res.write(`written ${f}\n`);
-          const { enhanced } = await mainModule.buildEnhanced();
           res.write(`written enhanced.json\n`);
-          res.write(`Enhanced ontology written to enhanced/enhanced.json with ${enhanced.count} nodes`);
+          res.write(`Enhanced ontology written to enhanced/enhanced.json with ${inter.count} nodes`);
           res.end();
         } else if (p === '/capital-cities' && req.method === 'GET') {
           try {
