@@ -1,63 +1,40 @@
 # Description
 
-Implement full data source lifecycle management including crawling public and custom sources to capture raw JSON data and merging persisted data into a single snapshot. This feature realizes the mission to crawl open public data sources, store raw JSON in a data directory, and persist a merged view for downstream ontology processing.
+Full data source lifecycle management including crawling public and custom sources to capture raw JSON data, merging persisted data, and exposing create, read, update, delete operations via CLI and HTTP.
 
-# Implementation
+# CLI Commands
 
-1. refreshSources({ dataDir } = {})
-   - Determine dataDir default to "data" and ensure directory exists or create.
-   - Load configured sources via listSources().
-   - For each source:
-     - Perform HTTP GET to source URL.
-     - On successful response parse JSON body and write to dataDir/<slug>.json with two-space indentation.
-     - Report success by collecting filename in an array.
-     - On HTTP or parse error log console.error with source name, URL, and error message and continue.
-   - Return object { count: numberOfFilesWritten, files: [filenames] }.
-
-2. mergePersist({ dataDir, outFile } = {})
-   - Determine dataDir default "data" and outFile default "data/persisted.json".
-   - Ensure dataDir exists or log console.error and return { count: 0, file: null }.
-   - Read all .json files in dataDir, parse each:
-     - If content is an array, concatenate elements into a merged array.
-     - If content is an object, merge top-level keys; for array-valued keys concatenate arrays.
-     - On parse or structure error log console.error with filename and reason and skip file.
-   - Write merged result to outFile with two-space indentation.
-   - Return { count: numberOfItemsMerged, file: outFile }.
-
-# CLI Support
-
-- --refresh: invoke refreshSources() and console.log JSON.stringify(summary, null, 2).
-- --merge-persist or -m: invoke mergePersist() and console.log JSON.stringify(summary, null, 2).
-- Both commands return without throwing on error.
+- --list-sources              List merged public and custom sources as JSON
+- --add-source <name> <url>   Add a custom data source and output merged list
+- --remove-source <identifier> Remove a custom source by name or url and output merged list
+- --update-source <identifier> <newName> <newUrl> Update a custom source and output merged list
+- --refresh                   Fetch data from all configured sources and write raw JSON files
+- --merge-persist, -m         Merge raw JSON files into a single persisted snapshot and write output
 
 # HTTP Endpoints
 
-Under --serve mode:
-- GET /refresh
-  - Stream each console.log line from refreshSources() to response as plain-text lines.
-  - After processing end response with status 200.
+## Sources Management
+- GET /sources               Returns HTTP 200 with application/json body of merged sources
+- POST /sources              Expects application/json { name, url }, returns 201 and updated sources or 400 on invalid input
+- DELETE /sources/:identifier Removes matching custom source, returns 200 and updated sources
+- PUT /sources/:identifier   Expects application/json { name, url }, returns 200 and updated sources or 400 on invalid input
 
-- GET /merge-persist
-  - Stream each console.log line from mergePersist() to response as plain-text lines.
-  - After processing end response with status 200.
+## Refresh and Merge Endpoints
+- GET /refresh               Streams console.log output from refreshSources on HTTP 200 text/plain
+- GET /merge-persist         Streams console.log output from mergePersist on HTTP 200 text/plain
+
+# Implementation
+
+Implement functions `refreshSources()` and `mergePersist()` in `src/lib/main.js` to fetch and store data and to merge stored files. Extend `main()` to handle `--refresh` and `--merge-persist` flags. In serve mode, wire HTTP endpoints to call these functions and stream log lines.
 
 # Testing
 
-- Unit tests for refreshSources:
-  • Mock fs.mkdirSync, fs.existsSync, http fetch, writeFileSync, console spies.
-  • Test directory creation, successful fetch and write, error logging, returned summary.
-
-- Unit tests for mergePersist:
-  • Mock fs.existsSync, readdirSync, readFileSync, writeFileSync, console spies.
-  • Test missing dataDir, parse errors, array and object merging logic, returned summary.
-
-- CLI tests:
-  • Spy on refreshSources and mergePersist for --refresh and --merge-persist flags in main().
-
-- HTTP integration tests:
-  • Start server, issue GET /refresh and GET /merge-persist and verify status 200, content-type text/plain, and streamed lines including summary.
+Add unit tests for:
+- refreshSources success and error behaviors, file creation and error logging
+- mergePersist logic for array and object merging, missing directories, error cases
+- CLI flag tests for --refresh and --merge-persist invoking respective functions
+Add HTTP integration tests for GET /refresh and GET /merge-persist verifying status 200, content-type text/plain, and streamed log lines including summary.
 
 # Documentation Updates
 
-- Update docs/FEATURES.md under Source Management to describe refresh and merge-persist CLI commands, HTTP endpoints, expected outputs.
-- Update docs/USAGE.md and README.md to include examples for --refresh and --merge-persist and corresponding curl commands for HTTP.
+Update docs/FEATURES.md, docs/USAGE.md, and README.md to remove separate HTTP_SOURCE_MANAGEMENT entry, merge all source management details under this feature, and include examples for CLI and HTTP invocations.
