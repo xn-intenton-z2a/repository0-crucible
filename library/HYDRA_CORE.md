@@ -1,332 +1,365 @@
 # HYDRA_CORE
 
 ## Crawl Summary
-Vocabulary prefix hydra maps to http://www.w3.org/ns/hydra/core#. Core classes: Link, Operation, ApiDocumentation, SupportedProperty, Collection, PartialCollectionView, IriTemplate, TemplatedLink, Status, Error. Core properties: method, expects, returns, possibleStatus, supportedOperation, supportedProperty, member, memberAssertion, template, mapping, variable, property, required, variableRepresentation. JSON-LD clients must include remote context caching. Discover API via HTTP Link header rel=hydra:apiDocumentation. IriTemplate uses RFC6570, BasicRepresentation (default) or ExplicitRepresentation. PartialCollectionView exposes pagination: first, next, previous, last. Error responses use application/problem+json with hydra error context header.
+Namespace: hydra = http://www.w3.org/ns/hydra/core#; key classes: Link, Operation, ApiDocumentation, Class, SupportedProperty, Collection, PartialCollectionView, IriTemplate, TemplatedLink, Status, Error; key properties with domains/ranges and multiplicities; discovery via HTTP Link header rel=hydra:apiDocumentation; use JSON-LD @context to map hydra terms; embed hydra:operation affordances in representations; pagination and templated links via IriTemplate; error handling via Status and application/problem+json
 
 ## Normalised Extract
 Table of Contents
+1 Namespace Definition
+2 API Discovery Header
+3 hydra:Link
+4 hydra:Operation
+5 hydra:ApiDocumentation
+6 Class and SupportedProperty
+7 Collections
+8 IriTemplate and TemplatedLink
+9 Status and Error
 
-1 Vocabulary Namespace
-2 Link Affordance
-3 Operation Definition
-4 API Documentation Structure
-5 Supported Properties and Operations
-6 Collection and Pagination
-7 IRI Templates and Templated Links
-8 Status and Error Handling
-9 Discovery Mechanism
+1 Namespace Definition
+Prefix: hydra
+IRI: http://www.w3.org/ns/hydra/core#
 
+2 API Discovery Header
+HTTP Header: Link: <{apiDocumentationIRI}>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"
+Methods: GET, HEAD
 
-1 Vocabulary Namespace
-   hydra prefix: http://www.w3.org/ns/hydra/core#
-   Use in JSON-LD context: {"hydra":"http://www.w3.org/ns/hydra/core#"}
+3 hydra:Link
+Type: rdf:Class
+Usage: annotate properties representing dereferenceable IRIs
+No mandatory properties
 
-2 Link Affordance
-   Define property as Link:
-     "@context": {"hydra":"...#"},
-     "@type":"hydra:Link",
-     "hydra:source": "schema:Event",
-     "hydra:property": {"@id":"http://api.example.com/vocab#comments"}
-   Client interprets value with @id as IRI to dereference.
+4 hydra:Operation
+Type: rdf:Class
+Properties:
+hydra:method (1..1, xsd:string)
+hydra:expects (0..1, IRI of class)
+hydra:returns (0..1, IRI of class)
+hydra:possibleStatus (0..*, hydra:Status)
+hydra:expectsHeader (0..*, xsd:string)
+hydra:returnsHeader (0..*, xsd:string)
 
-3 Operation Definition
-   hydra:Operation required property meth od:
-     "hydra:operation": {"@type":"hydra:Operation","hydra:method":"POST"}
-   Optional expects, returns:
-     "hydra:expects":"vocab:Issue","hydra:returns":"vocab:Issue"
-   Document status codes:
-     "hydra:possibleStatus":{"hydra:statusCode":201}
+5 hydra:ApiDocumentation
+Type: rdf:Class
+Properties:
+hydra:title (1..1, xsd:string)
+hydra:description (0..1, xsd:string)
+hydra:entrypoint (1..1, IRI)
+hydra:supportedClass (0..*, hydra:Class)
+hydra:supportedOperation (0..*, hydra:Operation)
 
-4 API Documentation Structure
-   Root: hydra:ApiDocumentation
-     hydra:title: xsd:string
-     hydra:description: xsd:string
-     hydra:entryPoint: IRI
-     hydra:class: list of class IRIs
-     hydra:possibleStatus: list of Status resources
+6 Class and SupportedProperty
+hydra:Class properties:
+hydra:supportedOperation (0..*, hydra:Operation)
+hydra:supportedProperty (0..*, hydra:SupportedProperty)
 
-5 Supported Properties and Operations
-   hydra:supportedProperty on class:
-     mapping: property IRI, required true/false, readable true/false, writeable true/false, supportedOperation: Operation resource
-   hydra:supportedOperation lists operations on a class or a Link property.
+hydra:SupportedProperty properties:
+hydra:property (1..1, IRI)
+hydra:required (0..1, xsd:boolean)
+hydra:readable (0..1, xsd:boolean)
+hydra:writable (0..1, xsd:boolean)
 
-6 Collection and Pagination
-   hydra:Collection: include members via hydra:member, members as IRI or object
-   hydra:PartialCollectionView: properties hydra:first, hydra:next, hydra:previous, hydra:last (all optional)
-   Client follows pagination links to retrieve full set.
+7 Collections
+hydra:Collection:
+hydra:member (0..*, IRI or embedded resource)
+hydra:totalItems (0..1, xsd:integer)
 
-7 IRI Templates and Templated Links
-   hydra:IriTemplate: hydra:template (RFC6570 string), hydra:mapping: one or more hydra:IriTemplateMapping
-   Mapping: hydra:variable (name), hydra:property (IRI), hydra:required (true/false default false)
-   hydra:variableRepresentation: BasicRepresentation or ExplicitRepresentation
-   Use hydra:TemplatedLink to define search interface:
-     "hydra:search":{"@type":"hydra:TemplatedLink","hydra:template":"http://api...{/q}","hydra:mapping":[{"hydra:variable":"q","hydra:property":"hydra:freetextQuery","hydra:required":true}]}
+hydra:PartialCollectionView:
+hydra:first (0..1, IRI)
+hydra:next (0..1, IRI)
+hydra:previous (0..1, IRI)
+hydra:last (0..1, IRI)
 
-8 Status and Error Handling
-   hydra:Status: hydra:statusCode xsd:integer, hydra:title, hydra:description
-   hydra:Error extends Status
-   Use application/problem+json with HTTP header:
-     Content-Type: application/problem+json
-     Link: <http://www.w3.org/ns/hydra/core#error>; rel="http://www.w3.org/ns/hydra/context"
+8 IriTemplate and TemplatedLink
+hydra:IriTemplate properties:
+hydra:template (1..1, xsd:string, RFC6570)
+hydra:mapping (1..*, hydra:IriTemplateMapping)
+hydra:variableRepresentation (0..1, BasicRepresentation|ExplicitRepresentation)
 
-9 Discovery Mechanism
-   HTTP Link header on any response:
-     Link: <http://api.example.com/doc/>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"
-   Client may use GET or HEAD to fetch documentation.
+hydra:IriTemplateMapping:
+hydra:variable (1..1, xsd:string)
+hydra:property (1..1, IRI)
+hydra:required (0..1, xsd:boolean)
+
+templated links: use hydra:TemplatedLink
+
+9 Status and Error
+hydra:Status:
+hydra:statusCode (1..1, xsd:integer)
+hydra:description (0..1, xsd:string)
+
+hydra:Error: subclass of hydra:Status
 
 
 ## Supplementary Details
-JSON-LD Context Snippet:
-{
-  "@context":{
-    "hydra":"http://www.w3.org/ns/hydra/core#",
-    "schema":"http://schema.org/"
+1 Configure JSON-LD Context
+- Include in API responses:
+  @context: {"hydra":"http://www.w3.org/ns/hydra/core#","vocab":"http://api.example.com/vocab#"}
+2 Emit HTTP Discovery Header
+- In server: add response header:
+  Link: <http://api.example.com/doc/>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"
+3 Define ApiDocumentation Resource
+- At /doc:
+  {
+    "@id": "http://api.example.com/doc/",
+    "@type": "hydra:ApiDocumentation",
+    "hydra:title": "Issue Tracker API",
+    "hydra:entrypoint": "http://api.example.com/",
+    "hydra:supportedClass": [ ... ]
   }
-}
-
-HTTP Server Configuration:
-- Add header: Link: <{API_DOC_URL}>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"
-- Ensure CORS exposes Link header or use Access-Control-Expose-Headers: Link
-
-Implementation Steps:
-1. Install hydra-core tooling: npm install hydra-core
-2. Define JSON-LD context file and host it at /contexts/hydra.jsonld
-3. In API responses include context and hydra terms in payload
-4. Configure server to generate hydra:ApiDocumentation resource at documented URL
-5. For each domain class, populate supportedProperty and supportedOperation lists
-6. For collections, embed hydra:Collection with hydra:member and optional PartialCollectionView
-7. For search, attach hydra:TemplatedLink to entryPoint with hydra:search mapping
-8. On errors, serialize Error resources using application/problem+json and link to hydra error context
+4 Represent Operations in Payloads
+- Embed in resources:
+  "hydra:operation": [{"hydra:method":"POST","hydra:expects":"vocab:Issue","hydra:returns":"vocab:Issue"}]
+5 Pagination Pattern
+- Use hydra:PartialCollectionView for pages
+- Provide hydra:first, hydra:next links
+6 Templated Search
+- Define IriTemplate at documentation:
+  template: "http://api.example.com/issues{?search}", mapping variable search to hydra:freetextQuery required:true
+7 CORS and Headers
+- Document hydra:expectsHeader: ["Content-Type","Authorization"]
+- Document hydra:returnsHeader: ["Location","Content-Type"]
 
 
 ## Reference Details
-Vocabulary Terms and Definitions:
-- hydra:Link (Class)
-    Domain: rdf:Property
-    Range: IRI
+### Hydra Vocabulary OWL Definitions (Turtle)
+@prefix hydra: <http://www.w3.org/ns/hydra/core#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-- hydra:Operation (Class)
-    hydra:method (IRI->xsd:string) (required)
-    hydra:expects (Operation->Class IRI) (optional)
-    hydra:returns (Operation->Class IRI) (optional)
-    hydra:possibleStatus (Operation->Status) (zero or more)
-    hydra:statusCode on Status (xsd:integer)
+hydra:Operation a rdfs:Class .
+hydra:method a rdf:Property ; rdfs:domain hydra:Operation ; rdfs:range xsd:string ; hydra:required true .
+hydra:expects a rdf:Property ; rdfs:domain hydra:Operation ; rdfs:range rdfs:Class .
+hydra:returns a rdf:Property ; rdfs:domain hydra:Operation ; rdfs:range rdfs:Class .
+hydra:possibleStatus a rdf:Property ; rdfs:domain hydra:Operation ; rdfs:range hydra:Status .
+hydra:expectsHeader a rdf:Property ; rdfs:domain hydra:Operation ; rdfs:range xsd:string .
+hydra:returnsHeader a rdf:Property ; rdfs:domain hydra:Operation ; rdfs:range xsd:string .
 
-- hydra:ApiDocumentation (Class)
-    hydra:title xsd:string
-    hydra:description xsd:string
-    hydra:entryPoint IRI
-    hydra:class IRI (zero or more)
-    hydra:possibleStatus Status (zero or more)
+hydra:ApiDocumentation a rdfs:Class .
+hydra:title a rdf:Property ; rdfs:domain hydra:ApiDocumentation ; rdfs:range xsd:string ; hydra:required true .
+hydra:description a rdf:Property ; rdfs:domain hydra:ApiDocumentation ; rdfs:range xsd:string .
+hydra:entrypoint a rdf:Property ; rdfs:domain hydra:ApiDocumentation ; rdfs:range rdfs:Resource ; hydra:required true .
 
-- hydra:SupportedProperty (Class)
-    hydra:property IRI (required)
-    hydra:title xsd:string
-    hydra:description xsd:string
-    hydra:required xsd:boolean (default false)
-    hydra:readable xsd:boolean (default true)
-    hydra:writeable xsd:boolean (default true)
-    hydra:supportedOperation Operation (zero or more)
+### JSON Example: Creating an Issue (Node.js)
+const client = new HydraClient({ entrypoint: 'http://api.example.com/' });
+const issue = await client.create('issues', {title:'Bug','description':'Details'});
+console.log(issue['@id']);
 
-- hydra:Collection (Class)
-    hydra:member IRI or object ({"@id":IRI})
-    hydra:memberAssertion uses hydra:subject, hydra:property, hydra:object triples
+### Java Example (hydra-java)
+@ApiResource(path="/issues")
+public class Issue {
+  @ApiProperty
+  private String title;
+}
 
-- hydra:PartialCollectionView (Class)
-    hydra:first IRI
-    hydra:next IRI
-    hydra:previous IRI
-    hydra:last IRI
-
-- hydra:IriTemplate (Class)
-    hydra:template xsd:string (RFC6570)
-    hydra:mapping IriTemplateMapping (one or more)
-    hydra:variableRepresentation hydra:BasicRepresentation or hydra:ExplicitRepresentation
-
-- hydra:IriTemplateMapping (Class)
-    hydra:variable xsd:string (required)
-    hydra:property IRI (required)
-    hydra:required xsd:boolean (default false)
-
-- hydra:TemplatedLink (Class)
-    Domain: rdf:Property
-    Equivalent to IriTemplate
-    Predefined: hydra:search
-
-- hydra:Status (Class)
-    hydra:statusCode xsd:integer (required)
-    hydra:title xsd:string
-    hydra:description xsd:string
-
-- hydra:Error (Class)
-    SubClass of hydra:Status
-
-SDK Examples:
-JavaScript (hydra-core client):
-const hydraClient = require('hydra-core').Client;
-const client = new hydraClient({ entrypoint: 'http://api.example.com/' });
-client.getApiDocumentation().then(doc => { console.log(doc.title); });
-
-Generic HTTP Client:
-// Discover API Documentation
-curl -I http://api.example.com/ \
-  -H "Accept: application/ld+json"
-// Expect header:
-// Link: <http://api.example.com/doc/>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"
-
-Troubleshooting:
-Command: curl -i http://api.example.com/resource/1
-Expected: JSON-LD payload containing @context pointing to hydra core context
-Error: Missing @context -> ensure JSON-LD serializer includes context
-
-Command: curl -i http://api.example.com/
-Error: No Link header -> configure server: res.setHeader('Link', `<${docUrl}>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"`)
+### Troubleshooting
+1 Missing operations in payload:
+  - Verify @context mapping contains hydra prefix
+  - Check server emits hydra:operation in JSON-LD
+2 API Documentation not discovered:
+  curl -I http://api.example.com/ | grep Link
+  Expected: Link: <http://api.example.com/doc/>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"
+3 IriTemplate expansion errors:
+  - Ensure template syntax RFC6570
+  - Verify mapping variables match property names
 
 
 ## Information Dense Extract
-hydra namespace= http://www.w3.org/ns/hydra/core#; prefix=hydra; JSON-LD context: {hydra:URI}. Core classes: Link(rdf:Property), Operation(method[xsd:string],expects[Class],returns[Class],possibleStatus[Status]), ApiDocumentation(title[xsd:string],description[xsd:string],entryPoint[IRI],class[IRI],possibleStatus[Status]), SupportedProperty(property[IRI],required[boolean],readable[boolean],writeable[boolean],supportedOperation[Operation]), Collection(member[IRI|object],memberAssertion[triple pattern]), PartialCollectionView(first[next|previous|last][IRI]), IriTemplate(template[RFC6570],mapping[IriTemplateMapping],variableRepresentation[{Basic,Explicit}]), IriTemplateMapping(variable[xsd:string],property[IRI],required[boolean]), TemplatedLink(rdf:Property as IriTemplate; hydra:search predefined), Status(statusCode[xsd:integer],title[xsd:string],description[xsd:string]), Error(subclass of Status). Key properties: hydra:method,hydra:expects,hydra:returns,hydra:possibleStatus,hydra:supportedOperation,hydra:supportedProperty,hydra:member,hydra:template,hydra:mapping,hydra:variableRepresentation. Discovery: HTTP Link header rel=hydra:apiDocumentation. Error responses: application/problem+json with Link to hydra error context. IriTemplate uses RFC6570; default BasicRepresentation. PartialCollectionView: optional pagination links. SupportedProperty enables read/write/required flags. IriTemplateMapping enables variable mapping to properties and required flag.
+hydra namespace: http://www.w3.org/ns/hydra/core#; Link header rel=hydra:apiDocumentation for discovery; hydra:Link for dereferenceable IRIs; hydra:Operation(method string[1], expects IRI, returns IRI, possibleStatus Status[0..*], expectsHeader string*, returnsHeader string*); hydra:ApiDocumentation(title string[1], description string, entrypoint IRI[1], supportedClass Class*, supportedOperation Operation*); hydra:SupportedProperty(property IRI[1], required boolean, readable boolean, writable boolean); hydra:Collection(member IRI|resource*, totalItems integer); hydra:PartialCollectionView(first|last|next|previous IRI); hydra:IriTemplate(template string RFC6570[1], mapping IriTemplateMapping*, variableRepresentation Basic|Explicit); IriTemplateMapping(variable string[1], property IRI[1], required boolean); hydra:Status(statusCode integer[1], description string); hydra:Error subclass Status; JSON-LD @context mapping hydra; embed operations under hydra:operation; use PartialCollectionView for paging; define search via IriTemplate; document headers via hydra:expectsHeader and hydra:returnsHeader; troubleshooting: validate @context, Link header, template syntax.
 
 ## Sanitised Extract
 Table of Contents
+1 Namespace Definition
+2 API Discovery Header
+3 hydra:Link
+4 hydra:Operation
+5 hydra:ApiDocumentation
+6 Class and SupportedProperty
+7 Collections
+8 IriTemplate and TemplatedLink
+9 Status and Error
 
-1 Vocabulary Namespace
-2 Link Affordance
-3 Operation Definition
-4 API Documentation Structure
-5 Supported Properties and Operations
-6 Collection and Pagination
-7 IRI Templates and Templated Links
-8 Status and Error Handling
-9 Discovery Mechanism
+1 Namespace Definition
+Prefix: hydra
+IRI: http://www.w3.org/ns/hydra/core#
 
+2 API Discovery Header
+HTTP Header: Link: <{apiDocumentationIRI}>; rel='http://www.w3.org/ns/hydra/core#apiDocumentation'
+Methods: GET, HEAD
 
-1 Vocabulary Namespace
-   hydra prefix: http://www.w3.org/ns/hydra/core#
-   Use in JSON-LD context: {'hydra':'http://www.w3.org/ns/hydra/core#'}
+3 hydra:Link
+Type: rdf:Class
+Usage: annotate properties representing dereferenceable IRIs
+No mandatory properties
 
-2 Link Affordance
-   Define property as Link:
-     '@context': {'hydra':'...#'},
-     '@type':'hydra:Link',
-     'hydra:source': 'schema:Event',
-     'hydra:property': {'@id':'http://api.example.com/vocab#comments'}
-   Client interprets value with @id as IRI to dereference.
+4 hydra:Operation
+Type: rdf:Class
+Properties:
+hydra:method (1..1, xsd:string)
+hydra:expects (0..1, IRI of class)
+hydra:returns (0..1, IRI of class)
+hydra:possibleStatus (0..*, hydra:Status)
+hydra:expectsHeader (0..*, xsd:string)
+hydra:returnsHeader (0..*, xsd:string)
 
-3 Operation Definition
-   hydra:Operation required property meth od:
-     'hydra:operation': {'@type':'hydra:Operation','hydra:method':'POST'}
-   Optional expects, returns:
-     'hydra:expects':'vocab:Issue','hydra:returns':'vocab:Issue'
-   Document status codes:
-     'hydra:possibleStatus':{'hydra:statusCode':201}
+5 hydra:ApiDocumentation
+Type: rdf:Class
+Properties:
+hydra:title (1..1, xsd:string)
+hydra:description (0..1, xsd:string)
+hydra:entrypoint (1..1, IRI)
+hydra:supportedClass (0..*, hydra:Class)
+hydra:supportedOperation (0..*, hydra:Operation)
 
-4 API Documentation Structure
-   Root: hydra:ApiDocumentation
-     hydra:title: xsd:string
-     hydra:description: xsd:string
-     hydra:entryPoint: IRI
-     hydra:class: list of class IRIs
-     hydra:possibleStatus: list of Status resources
+6 Class and SupportedProperty
+hydra:Class properties:
+hydra:supportedOperation (0..*, hydra:Operation)
+hydra:supportedProperty (0..*, hydra:SupportedProperty)
 
-5 Supported Properties and Operations
-   hydra:supportedProperty on class:
-     mapping: property IRI, required true/false, readable true/false, writeable true/false, supportedOperation: Operation resource
-   hydra:supportedOperation lists operations on a class or a Link property.
+hydra:SupportedProperty properties:
+hydra:property (1..1, IRI)
+hydra:required (0..1, xsd:boolean)
+hydra:readable (0..1, xsd:boolean)
+hydra:writable (0..1, xsd:boolean)
 
-6 Collection and Pagination
-   hydra:Collection: include members via hydra:member, members as IRI or object
-   hydra:PartialCollectionView: properties hydra:first, hydra:next, hydra:previous, hydra:last (all optional)
-   Client follows pagination links to retrieve full set.
+7 Collections
+hydra:Collection:
+hydra:member (0..*, IRI or embedded resource)
+hydra:totalItems (0..1, xsd:integer)
 
-7 IRI Templates and Templated Links
-   hydra:IriTemplate: hydra:template (RFC6570 string), hydra:mapping: one or more hydra:IriTemplateMapping
-   Mapping: hydra:variable (name), hydra:property (IRI), hydra:required (true/false default false)
-   hydra:variableRepresentation: BasicRepresentation or ExplicitRepresentation
-   Use hydra:TemplatedLink to define search interface:
-     'hydra:search':{'@type':'hydra:TemplatedLink','hydra:template':'http://api...{/q}','hydra:mapping':[{'hydra:variable':'q','hydra:property':'hydra:freetextQuery','hydra:required':true}]}
+hydra:PartialCollectionView:
+hydra:first (0..1, IRI)
+hydra:next (0..1, IRI)
+hydra:previous (0..1, IRI)
+hydra:last (0..1, IRI)
 
-8 Status and Error Handling
-   hydra:Status: hydra:statusCode xsd:integer, hydra:title, hydra:description
-   hydra:Error extends Status
-   Use application/problem+json with HTTP header:
-     Content-Type: application/problem+json
-     Link: <http://www.w3.org/ns/hydra/core#error>; rel='http://www.w3.org/ns/hydra/context'
+8 IriTemplate and TemplatedLink
+hydra:IriTemplate properties:
+hydra:template (1..1, xsd:string, RFC6570)
+hydra:mapping (1..*, hydra:IriTemplateMapping)
+hydra:variableRepresentation (0..1, BasicRepresentation|ExplicitRepresentation)
 
-9 Discovery Mechanism
-   HTTP Link header on any response:
-     Link: <http://api.example.com/doc/>; rel='http://www.w3.org/ns/hydra/core#apiDocumentation'
-   Client may use GET or HEAD to fetch documentation.
+hydra:IriTemplateMapping:
+hydra:variable (1..1, xsd:string)
+hydra:property (1..1, IRI)
+hydra:required (0..1, xsd:boolean)
+
+templated links: use hydra:TemplatedLink
+
+9 Status and Error
+hydra:Status:
+hydra:statusCode (1..1, xsd:integer)
+hydra:description (0..1, xsd:string)
+
+hydra:Error: subclass of hydra:Status
 
 ## Original Source
-Linked Data Platform & Hydra Core Vocabulary
+Linked Data Platform & Hydra
 https://www.hydra-cg.com/spec/latest/core/
 
 ## Digest of HYDRA_CORE
 
-# Namespace Definition
+# Hydra Core Vocabulary
 
-Vocabulary URI: http://www.w3.org/ns/hydra/core#
-Suggested JSON-LD prefix: hydra
+## Namespaces
+- Prefix: hydra
+- IRI: http://www.w3.org/ns/hydra/core#
 
-# Core Classes and Properties
+## Discovery
+- HTTP Link Header: Link: <{apiDocumentationIRI}>; rel="http://www.w3.org/ns/hydra/core#apiDocumentation"
+- Default method: GET or HEAD on publisher homepage
 
-## hydra:Link (Class)
-Domain: rdf:Property
-Description: Defines dereferenceable links; value must be an IRI.
+## Classes and Key Properties
 
-## hydra:Operation (Class)
-Required property: hydra:method (HTTP method name) 
-Optional properties: hydra:expects (class IRI), hydra:returns (class IRI), hydra:possibleStatus (Status resource)
+### hydra:Link (rdf:Class)
+Properties:
+- None mandatory. Used to annotate properties whose values are dereferenceable IRIs.
 
-## hydra:ApiDocumentation (Class)
-Properties: hydra:title (xsd:string), hydra:description (xsd:string), hydra:entryPoint (IRI of entry resource), hydra:class (IRI of supported class), hydra:possibleStatus (Status resource)
+### hydra:Operation (rdf:Class)
+Properties:
+- hydra:method (required, range xsd:string): HTTP method name (GET, POST, PUT, DELETE)
+- hydra:expects (optional, range IRI of schema/class): request payload type
+- hydra:returns (optional, range IRI of schema/class): response payload type
+- hydra:possibleStatus (optional, range hydra:Status): expected HTTP status codes
+- hydra:expectsHeader (optional, range xsd:string): list of header names expected
+- hydra:returnsHeader (optional, range xsd:string): list of header names returned
 
-## hydra:SupportedProperty (Class)
-Properties: hydra:property (IRI), hydra:title (xsd:string), hydra:description (xsd:string), hydra:required (xsd:boolean), hydra:readable (xsd:boolean), hydra:writeable (xsd:boolean), hydra:supportedOperation (Operation resource)
+### hydra:ApiDocumentation (rdf:Class)
+Properties:
+- hydra:title (required, range xsd:string)
+- hydra:description (optional, range xsd:string)
+- hydra:entrypoint (required, range IRI): main API entrypoint resource
+- hydra:supportedClass (optional, range hydra:Class)
+- hydra:supportedOperation (optional, range hydra:Operation)
 
-## hydra:SupportedOperation (Class)
-Equivalent to hydra:Operation, used on properties.
+### hydra:Class (rdf:Class)
+Properties:
+- hydra:supportedOperation (range hydra:Operation)
+- hydra:supportedProperty (range hydra:SupportedProperty)
 
-## hydra:Collection (Class)
-Property: hydra:member (IRI or object with @id), hydra:memberAssertion (triple pattern)
+### hydra:SupportedProperty (rdf:Class)
+Properties:
+- hydra:property (required, range IRI)
+- hydra:required (optional, range xsd:boolean)
+- hydra:readable (optional, range xsd:boolean)
+- hydra:writable (optional, range xsd:boolean)
+- hydra:description (optional, range xsd:string)
+- hydra:title (optional, range xsd:string)
 
-## hydra:PartialCollectionView (Class)
-Optional properties: hydra:first, hydra:next, hydra:previous, hydra:last (all view IRIs)
+### hydra:Collection (rdf:Class)
+Properties:
+- hydra:member (repeatable, range IRI or embedded resource)
+- hydra:totalItems (optional, range xsd:integer)
 
-## hydra:IriTemplate (Class)
-Properties: hydra:template (template string), hydra:mapping (IriTemplateMapping resource), hydra:variableRepresentation (BasicRepresentation or ExplicitRepresentation), hydra:rdfSyntax (defaults RFC6570)
+### hydra:PartialCollectionView (rdf:Class)
+Properties:
+- hydra:first (optional, range IRI)
+- hydra:last (optional, range IRI)
+- hydra:next (optional, range IRI)
+- hydra:previous (optional, range IRI)
 
-## hydra:IriTemplateMapping (Class)
-Properties: hydra:variable (xsd:string), hydra:property (IRI), hydra:required (xsd:boolean default false)
+### hydra:memberAssertion (rdf:Class)
+Properties:
+- hydra:subject (required, range IRI)
+- hydra:property (required, range IRI)
+- hydra:object (required, range IRI)
 
-## hydra:TemplatedLink (Class)
-Applies IriTemplate semantics to a property; predefined mapping: hydra:search (IRI template for search)
+### hydra:IriTemplate (rdf:Class)
+Properties:
+- hydra:template (required, range xsd:string, RFC6570)
+- hydra:mapping (repeatable, range hydra:IriTemplateMapping)
+- hydra:variableRepresentation (optional, range xsd:string: BasicRepresentation or ExplicitRepresentation)
 
-## hydra:Status (Class)
-Properties: hydra:statusCode (xsd:integer), hydra:title (xsd:string), hydra:description (xsd:string)
+### hydra:IriTemplateMapping (rdf:Class)
+Properties:
+- hydra:variable (required, range xsd:string)
+- hydra:property (required, range IRI)
+- hydra:required (optional, range xsd:boolean)
 
-## hydra:Error (Class, subclass of Status)
-No additional required properties
+### hydra:TemplatedLink (rdf:Class)
+Subclass of hydra:Link, used for properties whose values are IRI templates
 
-# HTTP Discovery
+### hydra:Status (rdf:Class)
+Properties:
+- hydra:statusCode (required, range xsd:integer)
+- hydra:description (optional, range xsd:string)
 
-Hydra clients MUST look for HTTP Link header with rel="http://www.w3.org/ns/hydra/core#apiDocumentation" to discover ApiDocumentation.
+### hydra:Error (rdf:Class)
+Subclass of hydra:Status
 
-# Conventions
+## Serialization and Context
+- Use JSON-LD with @context mapping hydra terms to full IRIs
+- Inline remote contexts or reference via remote @context URL for caching
 
-Use JSON-LD context pointing hydra prefix to core URI. Cache remote context. Client MUST process all JSON-LD graphs; handle incomplete triples by consulting ApiDocumentation or dereferencing same-host IRIs.
+## Pagination Controls
+- Client-initiated via hydra:offset, hydra:limit, hydra:pageIndex, hydra:pageReference
 
-# Conformance
-
-Key words RFC2119 apply. All sections not marked non-normative are normative.
 
 ## Attribution
-- Source: Linked Data Platform & Hydra Core Vocabulary
+- Source: Linked Data Platform & Hydra
 - URL: https://www.hydra-cg.com/spec/latest/core/
 - License: License
-- Crawl Date: 2025-04-28T05:54:58.312Z
-- Data Size: 455188 bytes
-- Links Found: 298
+- Crawl Date: 2025-04-28T11:08:57.983Z
+- Data Size: 443961 bytes
+- Links Found: 294
 
 ## Retrieved
 2025-04-28
