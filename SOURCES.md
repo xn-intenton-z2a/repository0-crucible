@@ -29,7 +29,10 @@ This source aggregates SPARQL 1.1 Recommendations for query, update, HTTP protoc
 ## License
 W3C Document License (CC-BY 4.0); Apache License 2.0; GraphDB documentation license
 
-# JavaScript RDF Ecosystem: Node.js v20, RDF/JS, Comunica, SPARQL.js, rdflib.js & Vitest v3
+# JavaScript RDF Ecosystem & Node.js Core Modules
+## https://nodejs.org/api/fs.html
+## https://nodejs.org/api/path.html
+## https://nodejs.org/api/perf_hooks.html
 ## https://nodejs.org/api/http.html
 ## https://nodejs.org/api/stream.html
 ## https://nodejs.org/api/url.html
@@ -43,7 +46,7 @@ W3C Document License (CC-BY 4.0); Apache License 2.0; GraphDB documentation lice
 ## https://github.com/Callidon/sparqljs#readme
 ## https://linkeddata.github.io/rdflib.js/
 ## https://vitest.dev/
-A unified reference for Node.js v20 core modules (HTTP server/client, streams, URL/ESM loader, global fetch), the RDF/JS Data Model and Streams specifications, rdf-ext data factories, Comunica federated query framework, SPARQL.js parser/serializer, rdflib.js graph toolkit, and Vitest v3 testing patterns. These docs inform robust CLI and HTTP server implementations, streaming-first RDF processing, modular SPARQL query construction, graph management, and comprehensive test suites. (Current as of Node.js v20.x, RDF/JS Jan 2022, Comunica 2024, SPARQL.js 2023, rdflib.js 2024, Vitest continuously updated; authoritative as official Node.js docs and active community specs/implementations.)
+A consolidated reference for Node.js v20 core modules (fs for file operations, path resolution, performance timing, HTTP server/client, streams, URL/ESM loader, global fetch), the WHATWG Fetch spec, the RDF/JS Data Model and Streams specifications, rdf-ext data factories, Comunica federated query framework, SPARQL.js parser/serializer, rdflib.js graph toolkit, and Vitest v3 testing patterns. These docs inform robust CLI and HTTP server implementations, efficient file and performance handling, streaming-first RDF processing, modular SPARQL query construction, graph management, and comprehensive test suites. (Current as of Node.js v20.x, RDF/JS Jan 2022, Comunica 2024, SPARQL.js 2023, rdflib.js 2024, Vitest continuously updated; authoritative as official Node.js docs and active community specs/implementations.)
 ## License
 MIT (Node.js, rdf-ext, Comunica, SPARQL.js, rdflib.js, Vitest); WHATWG License (Fetch); CC0/Public Domain (RDF/JS Streams)
 
