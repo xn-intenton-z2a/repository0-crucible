@@ -1,475 +1,380 @@
 # VITEST_CONFIG
 
 ## Crawl Summary
-Default test file globs: include '**/*.{test,spec}.?(c|m)[jt]s?(x)', exclude node_modules, dist, config files. Config priority: vitest.config.* overrides vite.config.*; CLI --config overrides. defineConfig from 'vitest/config' for TS support. Single file config recommended. Common options: include, exclude, globals, environment, threads/forks pools, alias, coverage, reporters, outputFile, root, dir. Server and deps options identical to Vite's SSR and optimizeDeps options with defaults. Inline environment via docblock. Workspaces via vitest.workspace file with defineWorkspace. CLI commands: vitest, vitest run, vitest --coverage, flags: --update, --watch, --port, --https, --reporter, --outputFile, --pool. Automatic dependency install prompts, disable with VITEST_SKIP_INSTALL_CHECKS. IDE: VSCode extension. Sling usage examples and troubleshooting cases.
+Vitest unified config with Vite: supports defineConfig and mergeConfig APIs, vitest.config file priority, file extensions .js/.ts variants. Core test options: include, exclude, includeSource, name, environment, globals, reporters, outputFile. Dependency resolution: deps.external, deps.inline, deps.fallbackCJS, deps.cacheDir, deps.optimizer.web options. Server options: sourcemap inline. CLI flags: --config, --watch, --update, --port, --root, --environment, --pool. Pools: threads, forks, vmThreads, vmForks. Workspace support via defineWorkspace.
 
 ## Normalised Extract
 Table of Contents
-1. Configuration File Loading
-2. CLI Commands & Flags
-3. Test File Patterns
-4. Config Options Reference
-5. Workspaces Setup
-6. Environment Configuration
-7. Pool Strategies
-8. Dependency Resolution
-9. Coverage Setup
+1 Config File Resolution
+2 defineConfig & mergeConfig
+3 CLI Options
+4 Core Test Patterns (include, exclude, includeSource)
+5 Dependency Options (deps.external, deps.inline, deps.fallbackCJS, deps.cacheDir)
+6 Server Options (sourcemap)
+7 Pools & Runner
+8 Environments & Globals
+9 Reporters & Output
+10 Workspace Support
 
-1. Configuration File Loading
-• vite.config.(js|mjs|cjs|ts|cts|mts) is read by default.
-• vitest.config.(js|ts|mjs|cjs) with defineConfig higher priority.
-• CLI: --config <file> overrides both. Mode property/mode env=‘test’ by default.
+1 Config File Resolution
+- Order: vitest.config.ts/js > CLI --config > mode/env override
+- Reads root vite.config.ts if no separate config
+- Extensions: .js .mjs .cjs .ts .cts .mts
 
-2. CLI Commands & Flags
-• vitest             (watch)
-• vitest run         (single-run)
-• --coverage         (runs with coverage)
-• -u,--update        (update snapshots)
-• -w,--watch         (watch mode)
-• --port <n>         (dev server port)
-• --https            (enable HTTPS)
-• --reporter <name>  (default,json,html,junit)
-• --outputFile <f>   (path or map of reporter->path)
-• --pool <mode>      (threads,forks,vmThreads,vmForks)
+2 defineConfig & mergeConfig
+- defineConfig(testOptions: TestConfig): Config
+- mergeConfig(base: Config, override: Config): Config
 
-3. Test File Patterns
-• include: ['**/*.{test,spec}.?(c|m)[jt]s?(x)']
-• exclude: ['**/node_modules/**','**/dist/**','**/.{idea,git,cache,output,temp}/**','**/...config.*']
-• includeSource: []
-• name: custom project name
+3 CLI Options
+--config <path>
+-w, --watch (default: !CI)
+-u, --update
+--port <num>
+--root <path>, --dir <path>
+--environment <env>
+--pool <pool>
 
-4. Config Options Reference
-• globals: boolean=false
-• environment: node | jsdom | happy-dom | edge-runtime | <custom>
-• environmentOptions: {}
-• alias: Record<string,string> or Array<{find,replacement,customResolver?>}
-• root: string
-• dir: string
-• reporters: ['default'] or Reporter[]
-• outputFile: string|Record<string,string>
+4 Core Test Patterns
+include: string[] default ["**/*.{test,spec}.?(c|m)[jt]s?(x)"]
+exclude: string[] default [standard excludes]
+includeSource: string[] default []
 
-5. Workspaces Setup
-• File: vitest.workspace.(js|ts|json) uses defineWorkspace
-• Accepts array of glob patterns or config objects
+5 Dependency Options
+deps.external: (string|RegExp)[] default [/\/node_modules\//]
+deps.inline: (string|RegExp)[]|true default []
+deps.fallbackCJS: boolean default false
+deps.cacheDir: string default 'node_modules/.vite'
 
-6. Environment Configuration
-• Builtins: node, jsdom, happy-dom, edge-runtime
-• Override per-file via docblock or comment
-• Custom env via package vitest-environment-<name> exporting Environment interface
+6 Server Options
+server.sourcemap: 'inline'|boolean default 'inline'
 
-7. Pool Strategies
-• forks: child_process (default)
-• threads: worker_threads
-• vmForks: forked VM contexts
-• vmThreads: sandboxed VM threads (fast, memory leaks)
+7 Pools & Runner
+pool: 'threads'|'forks'|'vmThreads'|'vmForks' default 'forks'
+runner: string default internal
 
-8. Dependency Resolution
-• server.deps.external: [/\/node_modules\//]
-• server.deps.inline: [] or true
-• server.deps.fallbackCJS: false
-• server.deps.cacheDir: 'node_modules/.vite'
-• deps.optimizer.ssr/web: include[], exclude[], enabled=false by default
-• deps.web.transformAssets/css: true
-deps.web.transformGlobPattern: []
-• deps.interopDefault: true
-• deps.moduleDirectories: ['node_modules']
+8 Environments & Globals
+environment: string default 'node'
+globals: boolean default false
 
-9. Coverage Setup
-• coverage: {exclude:['**/node_modules/**','**/dist/**','**/.{idea,git,cache,output,temp}/**'], reporter:['lcov','text'], all?: boolean}
+9 Reporters & Output
+reporters: Reporter|string[] default ['default']
+outputFile: string|Record<string,string>
 
-All options available at test property within defineConfig.
-
+10 Workspace Support
+defineWorkspace(patterns: string[]|WorkspaceConfig[]): WorkspaceConfig[]
 
 ## Supplementary Details
-Installation Steps:
-1. Ensure Vite>=5.0.0, Node>=18.0.0 installed.
-2. Install Vitest:
-   npm install -D vitest
-3. Add scripts to package.json:
-   "scripts": { "test": "vitest", "coverage": "vitest run --coverage" }
-4. (Optional) Disable auto-install prompt: set VITEST_SKIP_INSTALL_CHECKS=1.
+1 Create vitest.config.ts
+import { defineConfig } from 'vitest/config'
+export default defineConfig({ test: { include:['tests/**/*.ts'], exclude:['node_modules'], environment:'jsdom' } })
 
-Config File Creation:
-• Create vitest.config.ts:
-  import { defineConfig } from 'vitest/config'
-  export default defineConfig({
-    test: {
-      include: ['tests/**/*.spec.ts'],
-      environment: 'jsdom',
-      globals: true,
-      alias: { '@': '/src' }
-    }
-  })
+2 Merge Vite & Vitest
+import { defineConfig, mergeConfig } from 'vitest/config'
+import viteConfig from './vite.config'
+export default mergeConfig(viteConfig, defineConfig({ test:{ globals:true } }))
 
-Merging Vite Config:
-• import { defineConfig, mergeConfig } from 'vitest/config'
-  import viteConfig from './vite.config.ts'
-  export default mergeConfig(viteConfig, defineConfig({ test: {...} }))
+3 Triple-Slash Types
+/// <reference types="vitest/config" /> at top of vite.config.ts
 
-Workspaces:
-• Create vitest.workspace.ts with defineWorkspace([...]) to run multiple configs in one process.
+4 Workspace
+import { defineWorkspace } from 'vitest/config'
+export default defineWorkspace(['packages/*', { test:{ name:'node', pool:'threads' } }])
 
-Environment Declaration per File:
-// @vitest-environment happy-dom
-
-Pools Configuration:
-// CLI override
-vitest --pool=threads
-
-Alias for CJS Dependencies:
-deps: { interopDefault: false }
-
-Debugging:
-• Enable dumping modules: test.server.debug.dumpModules=true
-• Load dumped for inspection: test.server.debug.loadDumppedModules=true
-
-Performance Tuning:
-• Enable deps.optimizer.ssr/web enabled=true to bundle dependencies via esbuild.
-
-Coverage Exclusions via config
-• coverage.exclude: ['**/tests/helpers/**']
-
-IDE Integration:
-• Add triple slash for types in tsconfig:
-  "types": ["vitest/globals","vitest/jsdom"]
-
-
+5 CLI Usage
+npm run test: "vitest --config vitest.config.ts --environment jsdom --pool threads"
 
 ## Reference Details
-Complete CLI Reference:
-vitest [run] [--config <file>] [--coverage] [--reporter <default|json|html|junit>] [--outputFile <path>] [--update] [--watch] [--port <n>] [--https] [--pool <threads|forks|vmThreads|vmForks>]
-
-Full Test API (Node.js API):
-import { createVitest, VitestRunnerConstructor } from 'vitest'
-
-// Create runner
-const runner: VitestRunnerConstructor = createVitest({
-  root: '/project',
-  globals: false,
-  configFile: '/project/vitest.config.ts',
-  watch: true,
-  mode: 'test'
-})
-
-// Methods:
-runner.run(): Promise<Ri.Report>
-runner.watch(): void
-runner.clearCache(): Promise<void>
-
-Configuration Options Schema (test property):
-interface TestConfig {
-  include?: string[]               // default ['**/*.{test,spec}.?(c|m)[jt]s?(x)']
-  exclude?: string[]               // default see exclude glob list
-  includeSource?: string[]         // default []
-  name?: string                    // project name
-  root?: string                    // project root
-  dir?: string                     // scan directory
-  globals?: boolean                // default false
-  environment?: 'node'|'jsdom'|'happy-dom'|'edge-runtime'|string // default 'node'
-  environmentOptions?: Record<string,unknown>
-  server?: {
-    sourcemap?: 'inline'|boolean   // default 'inline'
-    deps?: {
-      external?: (string|RegExp)[] // default [/\/node_modules\//]
-      inline?: (string|RegExp)[]|true // default []
-      fallbackCJS?: boolean        // default false
-      cacheDir?: string            // default 'node_modules/.vite'
-    }
-    debug?: {
-      dumpModules?: boolean|string // default false
-      loadDumppedModules?: boolean // default false
-    }
-  }
-  deps?: {
-    optimizer?: {
-      ssr?: { include?: string[]; exclude?: string[]; enabled?: boolean }
-      web?: { include?: string[]; exclude?: string[]; enabled?: boolean }
-    }
-    moduleDirectories?: string[]   // default ['node_modules']
-    interopDefault?: boolean       // default true
-  }
-  alias?: Record<string,string>|Array<{find:string|RegExp,replacement:string,customResolver?:any}>
-  coverage?: {
-    enabled?: boolean
-    reporter?: string[]           // default ['default','lcov']
-    exclude?: string[]            // default see exclude list
-    include?: string[]
-    all?: boolean
-  }
-  reporters?: Array<string|Reporter> // default ['default']
-  outputFile?: string|Record<string,string>
-  pool?: 'threads'|'forks'|'vmThreads'|'vmForks' // default 'forks'
-  watch?: boolean                 // default !process.env.CI
-  update?: boolean                // default false
-}
-
-Example Code:
+## defineConfig API
 ```ts
-// vitest.config.ts
-import { defineConfig } from 'vitest/config'
-
-export default defineConfig({
-  test: {
-    include: ['src/**/*.test.ts'],
-    exclude: ['**/integration/**'],
-    globals: true,
-    environment: 'jsdom',
-    alias: { '@': '/src' },
-    deps: { interopDefault: false },
-    coverage: { reporter: ['text','html'], exclude: ['**/mocks/**'], all: true },
-    pool: 'threads',
-    reporters: ['json'],
-    outputFile: { json: 'results.json' }
-  }
-})
+declare function defineConfig(config: { test: TestConfig }): FullConfig;
+interface TestConfig {
+  include?: string[];
+  exclude?: string[];
+  includeSource?: string[];
+  name?: string;
+  environment?: 'node'|'jsdom'|'happy-dom'|'edge-runtime'|string;
+  globals?: boolean;
+  reporters?: Arrayable<Reporter>;
+  outputFile?: string|Record<string,string>;
+  deps?: {
+    external?: Array<string|RegExp>;
+    inline?: Array<string|RegExp>|true;
+    fallbackCJS?: boolean;
+    cacheDir?: string;
+    optimizer?: {
+      web?: { transformAssets?: boolean; transformCss?: boolean; transformGlobPattern?: RegExp|RegExp[]; enabled?: boolean; include?: string[]; exclude?: string[]; force?: boolean };
+      ssr?: { enabled?: boolean; include?: string[]; exclude?: string[]; force?: boolean };
+    };
+    moduleDirectories?: string[];
+  };
+  server?: { sourcemap?: boolean|'inline'; debug?: { dumpModules?: boolean|string; loadDumppedModules?: boolean }; deps?: { external?: Array<string|RegExp>; inline?: Array<string|RegExp>|true; fallbackCJS?: boolean; cacheDir?: string } };
+  pool?: 'threads'|'forks'|'vmThreads'|'vmForks';
+  runner?: string;
+  root?: string;
+  dir?: string;
+  watch?: boolean;
+  update?: boolean;
+}
 ```
 
-Best Practices:
-• Use single config file for Vite & Vitest.
-• Enable globals: false for explicit imports; set true if migrating from Jest.
-• Leverage deps.optimizer to bundle heavy UI libs for test performance.
-• Use workspaces for monorepos via vitest.workspace.
+## mergeConfig API
+```ts
+declare function mergeConfig(base: Config, override: Config): Config;
+```
 
-Troubleshooting:
-1. ERR_UNKNOWN_FILE_EXTENSION on CSS imports:
-   - Set test.deps.web.transformCss = false in config.
-2. Named export errors from CJS:
-   - Set test.deps.interopDefault = true or adjust import syntax.
-3. Bun conflict:
-   - Run tests via `bun run test`, not `bun test`.
-4. Snapshot mismatch:
-   - `vitest -u` to update, inspect diff, commit updated snapshot.
-5. Memory leaks in vmThreads:
-   - Lower poolOptions.vmThreads.memoryLimit or switch to forks.
-6. Debug transforms:
-   - Enable test.server.debug.dumpModules = true; inspect dumped files.
+## CLI Options
+- vitest: runs in watch mode
+- vitest run: runs once
+- --config <path>
+- --watch, --update, --port <num>, --https
+- --globals
+- --environment <env>
+- --pool <pool>
+- --reporter <name>
+- --outputFile <path>
 
-Exact Commands & Expected Output:
-$ npm run test
-> vitest
+## Reporter Interface
+```ts
+declare type Reporter = {
+  onInit: (ctx: Context) => void;
+  onFinished: (results: Result[]) => void;
+};
+```
 
-  ✓ sum.test.js (1)  adds 1 + 2 to equal 3
+## Environment Customization
+Docblock: /** @vitest-environment jsdom */
+CLI override: --environment=happy-dom
+Custom env:
+```ts
+import type { Environment } from 'vitest';
+export default <Environment>{ name:'custom', transformMode:'ssr', setup(){ return{ teardown(){} } } };
+```
 
-  Test Files  1 passed (1)
-  Tests       1 passed (1)
-  Duration    <500ms
+## Best Practices
+- Use same file for Vite & Vitest
+- Use mergeConfig to extend
+- Pin vitest version in package.json
+- Use include/exclude to narrow test scope
 
-$ vitest run --coverage
-  -----------------|--------|--------|--------|--------|----------------|
-  File             | % Stmts| % Branch| % Funcs| % Lines| Uncovered Lines|
-  -----------------|--------|--------|--------|--------|----------------|
-  All files        |   100  |   100   |   100  |   100  |                |
-  -----------------|--------|--------|--------|--------|----------------|
-
-
+## Troubleshooting
+- Disable auto-install: export VITEST_SKIP_INSTALL_CHECKS=1
+- Bun: run bun run test
+- Debug server loader: set server.debug.dumpModules=true and inspect cacheDir
+- Clear cache: delete node_modules/.vite
 
 ## Information Dense Extract
-Vitest config: default globs include '**/*.{test,spec}.?(c|m)[jt]s?(x)'; exclude node_modules, dist, .{idea,git,cache,...}/**, *config.* defaults. Config files: vite.config.(js|ts|mjs|cjs,cts,mts) read; vitest.config.(js|ts|mjs|cjs) overrides; --config flag highest. Use defineConfig from 'vitest/config'. Key test options: include[], exclude[], includeSource[], name:string, root:string, dir:string, globals:boolean(false), environment:'node'|'jsdom'|'happy-dom'|'edge-runtime'|custom, environmentOptions:Record<string,unknown>, alias:Record<string,string>|[{find,replacement,customResolver?}], server:{sourcemap:'inline'|boolean, deps:{external:(string|RegExp)[] default [/\/node_modules\//], inline:(string|RegExp)[]|true, fallbackCJS:boolean,false, cacheDir:'node_modules/.vite'}, debug:{dumpModules:boolean|string,loadDumppedModules:boolean}}, deps:{optimizer:{ssr:web both include?:string[];exclude?:string[];enabled?:boolean false}, moduleDirectories:['node_modules'], interopDefault:true}, coverage:{enabled?, reporter?:string[], exclude?:string[], include?:string[], all?:boolean}, reporters:['default'], outputFile:string|Record<string,string>, pool:'forks', 'threads','vmThreads','vmForks'; watch:!CI; update:false. CLI: vitest [run] [--coverage] [-u] [-w] [--reporter <name>] [--outputFile <path>] [--pool <mode>] [--port <n>] [--https]. Workspaces via vitest.workspace defineWorkspace([...]). Inline env override via /**@vitest-environment jsdom*/. Automatic dep prompts disable with VITEST_SKIP_INSTALL_CHECKS=1. Pools: forks(child_process), threads(worker_threads), vmForks, vmThreads. Troubleshoot: transformCss:false; interopDefault; bun run test; dumpModules; update snapshots; adjust vmThreads.memoryLimit. Merge Vite config via mergeConfig. Examples in vitest.config.ts provided. IDE: triple slash types vitest/globals, vitest/jsdom. Coverage output via --coverage, reporters json/html/junit, outputFile map.
+VitestConfig: resolution vitest.config.ts>CLI--config>mode; ext .js/.ts variants; defineConfig({test:TestConfig}): include:string[](['**/*.{test,spec}.?(c|m)[jt]s?(x)']),exclude:string[],includeSource:string[],name:string,environment:string,node/jsdom/happy-dom/edge,globals:boolean,false,reporters:Arrayable<Reporter>,outputFile:string|Record;deps.external:(string|RegExp)[]([/\/node_modules\//]),inline:(string|RegExp)[]|true, fallbackCJS:boolean(false),cacheDir:string('node_modules/.vite'),optimizer.web:{enabled?:boolean(false),transformAssets:boolean(true),transformCss:boolean(true),transformGlobPattern:RegExp[]},server:{sourcemap:'inline',debug:{dumpModules:boolean,loadDumppedModules:boolean}},pool:'forks',runner:string,root:string,dir:string,watch:boolean(!CI),update:boolean; CLI flags: --watch,-w;--update,-u;--config;--port;--root;--dir;--environment;--globals;--pool;--reporter;--outputFile;defineWorkspace(patterns|configs):Workspace[]}
 
 ## Sanitised Extract
 Table of Contents
-1. Configuration File Loading
-2. CLI Commands & Flags
-3. Test File Patterns
-4. Config Options Reference
-5. Workspaces Setup
-6. Environment Configuration
-7. Pool Strategies
-8. Dependency Resolution
-9. Coverage Setup
+1 Config File Resolution
+2 defineConfig & mergeConfig
+3 CLI Options
+4 Core Test Patterns (include, exclude, includeSource)
+5 Dependency Options (deps.external, deps.inline, deps.fallbackCJS, deps.cacheDir)
+6 Server Options (sourcemap)
+7 Pools & Runner
+8 Environments & Globals
+9 Reporters & Output
+10 Workspace Support
 
-1. Configuration File Loading
- vite.config.(js|mjs|cjs|ts|cts|mts) is read by default.
- vitest.config.(js|ts|mjs|cjs) with defineConfig higher priority.
- CLI: --config <file> overrides both. Mode property/mode env=test by default.
+1 Config File Resolution
+- Order: vitest.config.ts/js > CLI --config > mode/env override
+- Reads root vite.config.ts if no separate config
+- Extensions: .js .mjs .cjs .ts .cts .mts
 
-2. CLI Commands & Flags
- vitest             (watch)
- vitest run         (single-run)
- --coverage         (runs with coverage)
- -u,--update        (update snapshots)
- -w,--watch         (watch mode)
- --port <n>         (dev server port)
- --https            (enable HTTPS)
- --reporter <name>  (default,json,html,junit)
- --outputFile <f>   (path or map of reporter->path)
- --pool <mode>      (threads,forks,vmThreads,vmForks)
+2 defineConfig & mergeConfig
+- defineConfig(testOptions: TestConfig): Config
+- mergeConfig(base: Config, override: Config): Config
 
-3. Test File Patterns
- include: ['**/*.{test,spec}.?(c|m)[jt]s?(x)']
- exclude: ['**/node_modules/**','**/dist/**','**/.{idea,git,cache,output,temp}/**','**/...config.*']
- includeSource: []
- name: custom project name
+3 CLI Options
+--config <path>
+-w, --watch (default: !CI)
+-u, --update
+--port <num>
+--root <path>, --dir <path>
+--environment <env>
+--pool <pool>
 
-4. Config Options Reference
- globals: boolean=false
- environment: node | jsdom | happy-dom | edge-runtime | <custom>
- environmentOptions: {}
- alias: Record<string,string> or Array<{find,replacement,customResolver?>}
- root: string
- dir: string
- reporters: ['default'] or Reporter[]
- outputFile: string|Record<string,string>
+4 Core Test Patterns
+include: string[] default ['**/*.{test,spec}.?(c|m)[jt]s?(x)']
+exclude: string[] default [standard excludes]
+includeSource: string[] default []
 
-5. Workspaces Setup
- File: vitest.workspace.(js|ts|json) uses defineWorkspace
- Accepts array of glob patterns or config objects
+5 Dependency Options
+deps.external: (string|RegExp)[] default [/'/node_modules'//]
+deps.inline: (string|RegExp)[]|true default []
+deps.fallbackCJS: boolean default false
+deps.cacheDir: string default 'node_modules/.vite'
 
-6. Environment Configuration
- Builtins: node, jsdom, happy-dom, edge-runtime
- Override per-file via docblock or comment
- Custom env via package vitest-environment-<name> exporting Environment interface
+6 Server Options
+server.sourcemap: 'inline'|boolean default 'inline'
 
-7. Pool Strategies
- forks: child_process (default)
- threads: worker_threads
- vmForks: forked VM contexts
- vmThreads: sandboxed VM threads (fast, memory leaks)
+7 Pools & Runner
+pool: 'threads'|'forks'|'vmThreads'|'vmForks' default 'forks'
+runner: string default internal
 
-8. Dependency Resolution
- server.deps.external: [/'/node_modules'//]
- server.deps.inline: [] or true
- server.deps.fallbackCJS: false
- server.deps.cacheDir: 'node_modules/.vite'
- deps.optimizer.ssr/web: include[], exclude[], enabled=false by default
- deps.web.transformAssets/css: true
-deps.web.transformGlobPattern: []
- deps.interopDefault: true
- deps.moduleDirectories: ['node_modules']
+8 Environments & Globals
+environment: string default 'node'
+globals: boolean default false
 
-9. Coverage Setup
- coverage: {exclude:['**/node_modules/**','**/dist/**','**/.{idea,git,cache,output,temp}/**'], reporter:['lcov','text'], all?: boolean}
+9 Reporters & Output
+reporters: Reporter|string[] default ['default']
+outputFile: string|Record<string,string>
 
-All options available at test property within defineConfig.
+10 Workspace Support
+defineWorkspace(patterns: string[]|WorkspaceConfig[]): WorkspaceConfig[]
 
 ## Original Source
-JavaScript RDF Ecosystem: Node.js v20, RDF/JS, Comunica, SPARQL.js, rdflib.js & Vitest v3
+JavaScript RDF Ecosystem & Node.js Core Modules
 https://vitest.dev/
 
 ## Digest of VITEST_CONFIG
 
-# Vitest Configuration
-
-Last Updated: 2024-06-01
-Data Size Retrieved: 45468122 bytes
+# Configuring Vitest
 
 ## Configuration File Resolution
+- Priority: vitest.config.ts/js > CLI --config <path> > process.env.VITEST or mode property
+- If no vitest.config present, reads root vite.config.ts under Vite conventions
 
-- vitest reads Vite root config file (vite.config.js, .mjs, .cjs, .ts, .cts, .mts) if present.
-- To override or supply separate config, create a vitest.config.js/ts using defineConfig from 'vitest/config'.
-- CLI flag `--config <path>` overrides default config file lookup.
-- Mode selection: use `process.env.VITEST` or `mode` property in defineConfig; default mode is 'test'.
+## Supported Config File Extensions
+.js, .mjs, .cjs, .ts, .cts, .mts (no .json)
 
-## Combined Vite & Vitest Config
+## defineConfig API Signature
+```ts
+import { defineConfig } from 'vitest/config'
+export default defineConfig({
+  test: {
+    // options
+  }
+})
+```
 
-- Single-file approach recommended. At top of vite.config.ts add:
-  ```ts
-  /// <reference types="vitest/config" />
-  import { defineConfig } from 'vite'
-
-  export default defineConfig({
-    test: { /* options */ },
-    resolve: { alias: [...] },
-    plugins: [...]
+## mergeConfig API Signature
+```ts
+import { defineConfig, mergeConfig } from 'vitest/config'
+import viteConfig from './vite.config'
+export default mergeConfig(
+  viteConfig,
+  defineConfig({
+    test: {
+      // overrides
+    }
   })
-  ```
-- To merge existing Vite config:
-  ```js
-  import { defineConfig, mergeConfig } from 'vitest/config'
-  import viteConfig from './vite.config'
+)
+```
 
-  export default mergeConfig(viteConfig, defineConfig({ test: { /*...*/ } }))
-  ```
+## Workspace Support
+```ts
+import { defineWorkspace } from 'vitest/config'
+export default defineWorkspace([
+  'packages/*',
+  'tests/**/vitest.config.{e2e,unit}.ts',
+  { test: { name: 'node', environment: 'node', setupFiles: ['./setup.node.ts'] } }
+])
+```
 
-## Workspaces Support
+## CLI Options (partial)
+- --config <path>       : Specify config file
+- -w, --watch           : Enable watch mode (default: !process.env.CI)
+- -u, --update          : Update snapshots (default: false)
+- --port <number>       : Specify server port
+- --root <path>, --dir  : Define project root and scan directory
+- --environment <env>   : Set test environment (node|jsdom|happy-dom|edge-runtime)
+- --pool <pool>         : Set pool type (threads|forks|vmThreads|vmForks)
 
-- Define vitest.workspace file (js/ts/json). Example:
-  ```ts
-  import { defineWorkspace } from 'vitest/config'
+## Core Configuration Options
+### include
+Type: string[]
+Default: ["**/*.{test,spec}.?(c|m)[jt]s?(x)"]
+CLI: vitest [patterns]
 
-  export default defineWorkspace([
-    'packages/*',
-    'tests/*/vitest.config.{e2e,unit}.ts',
-    { test: { name: 'happy-dom', environment: 'happy-dom', setupFiles: ['./setup.happy-dom.ts'] } },
-    { test: { name: 'node', environment: 'node', setupFiles: ['./setup.node.ts'] } }
-  ])
-  ```
+### exclude
+Type: string[]
+Default: ["**/node_modules/**","**/dist/**","**/cypress/**","**/.{idea,git,cache,output,temp}/**","**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*"]
+CLI: --exclude "pattern"
 
-## CLI Usage
+### includeSource
+Type: string[]
+Default: []
+Runs files containing import.meta.vitest
 
-- `vitest` (watch mode)
-- `vitest run` (single run)
-- `vitest --coverage` or npm script `"coverage": "vitest run --coverage"`
-- Common flags:
-  - `--config <path>`
-  - `--port <number>`
-  - `--https` (enable HTTPS server)
-  - `-u, --update` (update snapshots)
-  - `-w, --watch` (watch files)
-  - `--reporter <name>` (e.g. json, html, junit)
-  - `--outputFile <path>`
-  - `--pool <threads|forks|vmThreads|vmForks>`
+### name
+Type: string
+Default: undefined
+Assign custom project name
 
-## Environment Selection
+### environment
+Type: string
+Default: "node"
 
-- Default `node`.
-- Built-ins: `jsdom`, `happy-dom`, `edge-runtime`.
-- Custom: load package `vitest-environment-<name>` exporting Environment interface.
-- Inline override via docblock: `/** @vitest-environment jsdom */` or comment `// @vitest-environment happy-dom`.
+### globals
+Type: boolean
+Default: false
+CLI: --globals
+Provides global APIs like test, expect
 
-## Pools
+### reporters
+Type: Reporter|string[]
+Default: ["default"]
+CLI: --reporter <name>
 
-- forks: uses child_process (default).
-- threads: uses worker_threads (fast IPC, no process APIs).
-- vmForks: forked VM contexts.
-- vmThreads: VM contexts in threads (faster, potential memory leaks).
+### outputFile
+Type: string|Record<string,string>
+CLI: --outputFile <path>
 
-## Key Config Options
+### deps.external
+Type: (string|RegExp)[]
+Default: [/\/node_modules\//]
 
-- include: glob[] default ['**/*.{test,spec}.?(c|m)[jt]s?(x)']
-- exclude: glob[] default ['**/node_modules/**','**/dist/**','**/.{idea,git,cache,output,temp}/**','**/{karma,rollup,webpack,vite,vitest,jest,ava,babel,nyc,cypress,tsup,build,eslint,prettier}.config.*']
-- includeSource: string[] default []
-- name: string
-- globals: boolean default false
-- environment: string
-- environmentOptions: Record<string, unknown>
-- alias: Record<string,string> | Array<{find,replacement,customResolver?}>
-- server: { sourcemap: boolean|'inline'; deps:{ external: (string|RegExp)[]; inline: (string|RegExp)[]|true; fallbackCJS:boolean; cacheDir:string }; debug:{ dumpModules:string|boolean; loadDumppedModules:boolean } }
-- deps.optimizer: { ssr:{include?: string[]; exclude?: string[]; enabled:boolean}; web:{transformAssets:boolean; transformCss:boolean; transformGlobPattern:RegExp|RegExp[]; enabled:boolean} }
-- deps.interopDefault: boolean default true
-- deps.moduleDirectories: string[]
-- coverage: { enabled?; reporter?: string[]; exclude?: string[]; all?: boolean; include?: string[] }
-- reporters: Reporter[] default ['default']
-- outputFile: string|Record<string,string>
-- root: string
-- dir: string
+### deps.inline
+Type: (string|RegExp)[]|true
+Default: []
 
-## Dependency Installation Check
+### deps.fallbackCJS
+Type: boolean
+Default: false
 
-- Automatic prompts for missing deps. Disable via env `VITEST_SKIP_INSTALL_CHECKS=1`.
+### deps.cacheDir
+Type: string
+Default: 'node_modules/.vite'
 
-## IDE Integration
+### deps.optimizer.web
+Type: { transformAssets?: boolean, transformCss?: boolean, transformGlobPattern?: RegExp|RegExp[] }
+Defaults: transformAssets:true, transformCss:true, transformGlobPattern:[]
 
-- Official VSCode extension available in Marketplace.
+### server.sourcemap
+Type: boolean|'inline'
+Default: 'inline'
 
-## Examples
+### pool
+Type: 'threads'|'forks'|'vmThreads'|'vmForks'
+Default: 'forks'
 
-- sum.js and sum.test.js demonstration with expect and test imports.
+### runner
+Type: string
+Default: builtin runner
+
+### root, dir
+Type: string
+Defaults: project root
+
+## Code Examples
+- Creating vitest.config.ts
+- Merging with vite.config
+- Defining workspaces
 
 ## Troubleshooting
-
-- ERR_UNKNOWN_FILE_EXTENSION: add transformCss:false or configure loader in deps.web.
-- CJS named exports errors: disable interopDefault or adjust deps.external/inline.
-- Bun test runner conflict: use `bun run test` instead of `bun test`.
-
+- Use VITEST_SKIP_INSTALL_CHECKS=1 to disable dependency prompts
+- For Bun, run `bun run test` instead of `bun test`
 
 ## Attribution
-- Source: JavaScript RDF Ecosystem: Node.js v20, RDF/JS, Comunica, SPARQL.js, rdflib.js & Vitest v3
+- Source: JavaScript RDF Ecosystem & Node.js Core Modules
 - URL: https://vitest.dev/
 - License: License
-- Crawl Date: 2025-04-28T03:56:05.117Z
-- Data Size: 45468122 bytes
-- Links Found: 27290
+- Crawl Date: 2025-04-28T08:00:28.640Z
+- Data Size: 32213878 bytes
+- Links Found: 24552
 
 ## Retrieved
 2025-04-28
