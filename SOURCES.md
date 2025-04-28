@@ -4,7 +4,7 @@
 ## https://www.w3.org/TR/skos-reference/
 ## https://www.w3.org/TR/vocab-dcat-2/
 ## https://www.w3.org/TR/json-ld11/
-Provides the definitive W3C specifications for modeling and exchanging linked data: RDF 1.1 Concepts (Feb 2014) defines the graph data model and serialization; OWL 2 Overview (Dec 2012) outlines ontology profiles and reasoning; SKOS Reference (Aug 2009) standardizes concept schemes; DCAT 2 (Feb 2023) defines dataset catalog metadata; and JSON-LD 1.1 (May 2020) specifies syntax, contexts, and processing algorithms for serializing RDF as JSON. This consolidated reference is essential for designing, processing, and validating JSON-LD and OWL artifacts across CLI, HTTP, and programmatic contexts. The specifications are maintained by W3C Working Groups and are the authoritative source for linked data interoperability.
+Provides the definitive W3C specifications for modeling and exchanging linked data: RDF 1.1 Concepts (Feb 2014) defines the graph data model and serialization; OWL 2 Overview (Dec 2012) outlines ontology profiles and reasoning; SKOS Reference (Aug 2009) standardizes concept schemes; DCAT 2 (Feb 2023) defines dataset catalog metadata; and JSON-LD 1.1 (May 2020) specifies syntax, contexts, and processing algorithms for serializing RDF as JSON. This consolidated reference is essential for designing, processing, and validating JSON-LD and OWL artifacts across CLI, HTTP, and programmatic contexts. These specifications are maintained by W3C Working Groups and are the authoritative source for linked data interoperability.
 ## License if known
 W3C Document License (CC-BY 4.0)
 
@@ -21,9 +21,9 @@ W3C Document License (CC-BY 4.0)
 ## https://github.com/RubenVerborgh/SPARQL.js#readme
 ## https://github.com/linkeddata/rdflib.js#readme
 ## https://github.com/rdfjs/N3.js#readme
-A curated set of JavaScript libraries for building and manipulating RDF and JSON-LD: jsonld.js for context-based JSON-LD processing; RDF/JS Data Model spec for interoperable graph representation; Comunica for federated SPARQL querying; SPARQL.js for query parsing; rdflib.js for in-memory graph management; and N3.js for Turtle/N-Quads parsing and serialization. These tools are actively maintained (2023–2024) and form the core of the project’s programmatic and CLI data workflows.
+A curated set of JavaScript libraries for building and manipulating RDF and JSON-LD: jsonld.js for context-based JSON-LD processing; the RDF/JS Data Model spec for interoperable graph representation; Comunica for federated SPARQL querying; SPARQL.js for query parsing; rdflib.js for in-memory graph management; and N3.js for Turtle/N-Quads parsing and serialization. These tools are actively maintained (2023–2024) and form the core of the project’s programmatic and CLI data workflows.
 ## License if known
-MIT; CC0/Public Domain (per library)
+MIT; CC0/Public Domain
 
 # SPARQL 1.1 & Graph Store Protocol
 ## https://www.w3.org/TR/sparql11-overview/
@@ -63,3 +63,9 @@ Node.js Documentation License (CC-BY-SA 3.0); WHATWG Spec (Public Domain)
 Provides a powerful, ESM-first test runner and assertion library with support for unit, integration, and HTTP endpoint testing. Features include mocking, spies, snapshots, coverage reports, watch mode, and parallel test execution. Vitest 3.x (2023–2024) integrates seamlessly with modern JavaScript tooling and is the basis for the project’s comprehensive test suite, enabling reliable validation of CLI, HTTP, and programmatic APIs.
 ## License if known
 MIT
+
+# JSON-LD Framing
+## https://www.w3.org/TR/json-ld11-framing/
+Specifies the JSON-LD framing algorithms for shaping and extracting subgraphs from complex JSON-LD documents (Dec 2020). Framing enables the definition of a static frame context to restructure data, merge values, and control container behavior programmatically. This is essential for building enhanced ontologies that require filtered or nested structures and ensures predictable output during serialization and processing.
+## License if known
+W3C Document License (CC-BY 4.0)
