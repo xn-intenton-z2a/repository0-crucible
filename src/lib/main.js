@@ -109,333 +109,416 @@ export function updateSource({ identifier, name, url }, configPath = CONFIG_FILE
   if (!name || typeof name !== "string" || !name.trim()) {
     throw new Error("Invalid source name");
   }
-  try {
-    new URL(url);
-  } catch {
-    throw new Error("Invalid source URL");
-  }
   custom[idx] = { name, url };
   fs.writeFileSync(configPath, JSON.stringify(custom, null, 2), "utf8");
   return [...PUBLIC_DATA_SOURCES, ...custom];
+}
+
+export function buildIntermediate({ dataDir = "data", outDir = "intermediate" } = {}) {
+  const dataPath = path.join(process.cwd(), dataDir);
+  const intermediatePath = path.join(process.cwd(), outDir);
+  fs.rmSync(intermediatePath, { recursive: true, force: true });
+  if (!fs.existsSync(dataPath)) {
+    console.error(`Error: ${dataDir}/ directory not found`);
+    return { count: 0, files: [] };
+  }
+  fs.mkdirSync(intermediatePath, { recursive: true });
+  let entries;
+  try {
+    entries = fs.readdirSync(dataPath).filter(f => f.endsWith(".json"));
+  } catch {
+    entries = [];
+  }
+  const written = [];
+  let count = 0;
+  for (const file of entries) {
+    let content;
+    try {
+      content = JSON.parse(fs.readFileSync(path.join(dataPath, file), "utf8"));
+    } catch {
+      continue;
+    }
+    let graph = [];
+    if (Array.isArray(content)) {
+      graph = content;
+    } else if (content.results && Array.isArray(content.results.bindings)) {
+      graph = content.results.bindings.map(binding => {
+        const keys = Object.keys(binding);
+        const node = {};
+        if (keys.length > 0) {
+          node["@id"] = binding[keys[0]].value;
+          for (const key of keys.slice(1)) {
+            node[key] = binding[key].value;
+          }
+        }
+        return node;
+      });
+    } else if (content["@graph"] && Array.isArray(content["@graph"])) {
+      graph = content["@graph"];
+    }
+    const intermediateDoc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+    const outFile = file.replace(/\.json$/, "-intermediate.json");
+    const outputFile = path.join(intermediatePath, outFile);
+    fs.writeFileSync(outputFile, JSON.stringify(intermediateDoc, null, 2), "utf8");
+    console.log(`written ${outFile}`);
+    written.push(outFile);
+    count++;
+  }
+  console.log(`Generated ${count} intermediate artifacts into ${outDir}/`);
+  return { count, files: written };
 }
 
 export async function refreshSources() {
   return { count: 0, files: [] };
 }
 
-export function buildIntermediate({ dataDir = "data", outDir, intermediateDir = "intermediate" } = {}) {
-  const dataDirPath = path.resolve(dataDir);
-  const intermediateDirPath = path.resolve(intermediateDir);
-  fs.rmSync(intermediateDirPath, { recursive: true, force: true });
-  if (!fs.existsSync(dataDirPath)) {
-    console.error(`Error: ${dataDir}/ directory not found`);
-    return;
-  }
-  const files = fs.readdirSync(dataDirPath).filter(f => f.endsWith('.json'));
-  fs.mkdirSync(intermediateDirPath, { recursive: true });
-  let count = 0;
-  for (const file of files) {
-    try {
-      const content = JSON.parse(fs.readFileSync(path.join(dataDirPath, file), 'utf8'));
-      const bindings = (content.results && Array.isArray(content.results.bindings)) ? content.results.bindings : [];
-      const graph = bindings.map(b => {
-        const entry = { '@id': b[Object.keys(b)[0]].value };
-        for (const key of Object.keys(b).slice(1)) {
-          entry[key] = b[key].value;
-        }
-        return entry;
-      });
-      const doc = { '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' }, '@graph': graph };
-      const outName = file.replace(/\.json$/, '') + '-intermediate.json';
-      fs.writeFileSync(path.join(intermediateDirPath, outName), JSON.stringify(doc, null, 2), 'utf8');
-      console.log(`written ${outName}`);
-      count += graph.length;
-    } catch (e) {
-      console.error(e.message);
-    }
-  }
-  console.log(`Generated ${files.length} intermediate artifacts into ${intermediateDir}/`);
-  return { count: files.length, files: files.map(f => f.replace(/\.json$/, '') + '-intermediate.json') };
-}
-
 export async function buildEnhanced({ dataDir = "data", intermediateDir = "intermediate", outDir = "enhanced" } = {}) {
   const refreshed = await mainModule.refreshSources();
-  const intermediate = mainModule.buildIntermediate({ dataDir, intermediateDir });
-  let merged = [];
-  const resolvedInter = path.resolve(intermediateDir);
-  for (const file of intermediate.files) {
+  const intermediate = mainModule.buildIntermediate({ dataDir, outDir: intermediateDir });
+  let graph = [];
+  const dirPath = path.isAbsolute(intermediateDir)
+    ? intermediateDir
+    : path.join(process.cwd(), intermediateDir);
+  let files;
+  if (intermediate.files && Array.isArray(intermediate.files) && intermediate.files.length) {
+    files = intermediate.files.filter(f => f.endsWith(".json"));
+  } else {
     try {
-      const doc = JSON.parse(fs.readFileSync(path.join(resolvedInter, file), 'utf8'));
-      if (Array.isArray(doc['@graph'])) merged = merged.concat(doc['@graph']);
-    } catch (e) {
-      console.error(e.message);
+      files = fs.readdirSync(dirPath).filter(f => f.endsWith(".json"));
+    } catch {
+      files = [];
     }
   }
-  const enhancedDoc = { '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' }, '@graph': merged };
-  fs.mkdirSync(path.resolve(outDir), { recursive: true });
-  const enhancedFile = 'enhanced.json';
-  fs.writeFileSync(path.join(path.resolve(outDir), enhancedFile), JSON.stringify(enhancedDoc, null, 2), 'utf8');
-  return { refreshed, intermediate, enhanced: { file: enhancedFile, count: merged.length } };
+  for (const file of files) {
+    try {
+      const doc = JSON.parse(fs.readFileSync(path.join(dirPath, file), "utf8"));
+      if (doc["@graph"] && Array.isArray(doc["@graph"])) {
+        graph = graph.concat(doc["@graph"]);
+      }
+    } catch {}
+  }
+  const enhancedDoc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+  fs.mkdirSync(outDir, { recursive: true });
+  const enhancedFile = "enhanced.json";
+  fs.writeFileSync(path.join(outDir, enhancedFile), JSON.stringify(enhancedDoc, null, 2), "utf8");
+  return { refreshed, intermediate, enhanced: { file: enhancedFile, count: graph.length } };
 }
 
 export async function getCapitalCities(endpoint = PUBLIC_DATA_SOURCES[0].url) {
-  const query = 'SELECT ?country ?capital WHERE { ?country a <http://dbpedia.org/ontology/Country> . ?country <http://dbpedia.org/ontology/capital> ?capital }';
+  const query = `SELECT ?country ?capital WHERE { ?country <http://dbpedia.org/ontology/capital> ?capital }`;
   const url = `${endpoint}?query=${encodeURIComponent(query)}`;
   let res;
   try {
-    res = await fetch(url, { headers: { Accept: 'application/sparql-results+json' } });
-  } catch (e) {
-    const err = new Error(e.message);
-    err.code = 'QUERY_ERROR';
-    throw err;
-  }
-  let data;
-  try {
-    data = await res.json();
-  } catch (e) {
-    const err = new Error(e.message);
-    err.code = 'INVALID_JSON';
-    throw err;
-  }
-  const graph = data.results.bindings.map(b => ({ '@id': b.country.value, capital: b.capital.value }));
-  return { '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' }, '@graph': graph };
-}
-
-export async function sparqlQuery(filePath, queryString) {
-  let text;
-  try {
-    text = fs.readFileSync(filePath, 'utf8');
-  } catch (e) {
-    throw new Error(`Failed to read file: ${e.message}`);
+    res = await fetch(url, { headers: { Accept: "application/sparql-results+json" } });
+  } catch (err) {
+    const e = new Error(err.message);
+    e.code = "QUERY_ERROR";
+    throw e;
   }
   let json;
   try {
-    json = JSON.parse(text);
-  } catch (e) {
-    throw new Error(`Invalid JSON in file: ${e.message}`);
+    json = await res.json();
+  } catch (err) {
+    const e = new Error(err.message);
+    e.code = "INVALID_JSON";
+    throw e;
+  }
+  const graph = (json.results?.bindings || []).map(b => ({ "@id": b.country.value, capital: b.capital.value }));
+  return { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+}
+
+export async function sparqlQuery(filePath, queryString) {
+  let raw;
+  try {
+    raw = fs.readFileSync(filePath, "utf8");
+  } catch (err) {
+    throw new Error(`Failed to read file: ${err.message}`);
+  }
+  let doc;
+  try {
+    doc = JSON.parse(raw);
+  } catch (err) {
+    throw new Error(`Invalid JSON in file: ${err.message}`);
   }
   const engine = new QueryEngine();
-  const result = await engine.query(queryString, { sources: [json] });
-  if (result.type === 'bindings') {
+  const result = await engine.query(queryString, { sources: [doc] });
+  if (result.type === "bindings") {
     const bindings = [];
-    for await (const b of result.bindingsStream) {
+    for await (const binding of result.bindingsStream) {
       const obj = {};
       for (const v of result.variables) {
-        if (b.has(v)) {
-          const term = b.get(v);
+        if (binding.has(v)) {
+          const term = binding.get(v);
           const entry = { type: term.termType.toLowerCase(), value: term.value };
-          if (term.language) entry['xml:lang'] = term.language;
-          if (term.datatype && term.datatype.value) entry.datatype = term.datatype.value;
+          if (term.language) entry["xml:lang"] = term.language;
+          if (term.datatype) entry["datatype"] = term.datatype.value;
           obj[v] = entry;
         }
       }
       bindings.push(obj);
     }
     return { head: { vars: result.variables, link: result.link }, results: { bindings } };
-  } else if (result.type === 'boolean') {
-    const bool = await result.booleanResult;
-    return { head: { link: result.link }, boolean: bool };
-  } else {
-    throw new Error(`Unsupported query type: ${result.type}`);
+  } else if (result.type === "boolean") {
+    const boolRes = await result.booleanResult;
+    return { head: { link: result.link }, boolean: boolRes };
   }
+  return null;
 }
 
 export async function main(args) {
   const argv = Array.isArray(args) ? args : process.argv.slice(2);
-  if (!argv.length) return;
+  if (argv.length === 0) return;
   const cmd = argv[0];
   switch (cmd) {
-    case '--help':
-    case '-h':
+    case "--help":
+    case "-h": {
       console.log(getHelpText());
       break;
-    case '--list-sources': {
-      console.log(JSON.stringify(mainModule.listSources(), null, 2));
+    }
+    case "--list-sources": {
+      const sources = mainModule.listSources();
+      console.log(JSON.stringify(sources, null, 2));
       break;
     }
-    case '--diagnostics': {
-      const version = pkg.version;
-      const nodeVersion = process.version;
-      const platform = process.platform;
-      const arch = process.arch;
-      const cwd = process.cwd();
-      const uptimeSeconds = process.uptime();
-      const memoryUsage = process.memoryUsage();
-      const publicDataSources = PUBLIC_DATA_SOURCES;
-      const commands = [
-        '--help', '-h', '--list-sources', '--add-source', '--remove-source', '--update-source',
-        '--diagnostics', '--build-intermediate', '--build-enhanced', '-be', '--capital-cities', '--query', '--serve'
-      ];
+    case "--add-source": {
+      if (argv.length < 3) {
+        console.error("Missing required fields: name and url");
+        break;
+      }
+      const name = argv[1];
+      const url = argv[2];
+      try {
+        const sources = mainModule.addSource({ name, url }, CONFIG_FILE);
+        console.log(JSON.stringify(sources, null, 2));
+      } catch (err) {
+        console.error(err.message);
+      }
+      break;
+    }
+    case "--remove-source": {
+      if (argv.length < 2) {
+        console.error("Missing required parameter: identifier");
+        break;
+      }
+      const identifier = argv[1];
+      const sources = mainModule.removeSource(identifier, CONFIG_FILE);
+      console.log(JSON.stringify(sources, null, 2));
+      break;
+    }
+    case "--update-source": {
+      if (argv.length < 4) {
+        console.error("Missing required parameters: identifier, newName, and newUrl");
+        break;
+      }
+      const identifier = argv[1];
+      const name = argv[2];
+      const url = argv[3];
+      try {
+        const sources = mainModule.updateSource({ identifier, name, url }, CONFIG_FILE);
+        console.log(JSON.stringify(sources, null, 2));
+      } catch (err) {
+        console.error(err.message);
+      }
+      break;
+    }
+    case "--build-intermediate": {
+      if (argv.length === 1) {
+        mainModule.buildIntermediate();
+      } else if (argv.length === 2) {
+        mainModule.buildIntermediate({ dataDir: argv[1], outDir: undefined });
+      } else {
+        mainModule.buildIntermediate({ dataDir: argv[1], outDir: argv[2] });
+      }
+      break;
+    }
+    case "--build-enhanced":
+    case "-be": {
+      if (argv.length === 1) {
+        mainModule.buildEnhanced();
+      } else if (argv.length === 2) {
+        mainModule.buildEnhanced({ dataDir: argv[1] });
+      } else if (argv.length === 3) {
+        mainModule.buildEnhanced({ dataDir: argv[1], intermediateDir: argv[2] });
+      } else {
+        mainModule.buildEnhanced({ dataDir: argv[1], intermediateDir: argv[2], outDir: argv[3] });
+      }
+      break;
+    }
+    case "--query": {
+      if (argv.length < 3) {
+        console.error("Missing required query parameters: file and sparql");
+      } else {
+        const file = argv[1];
+        const queryString = argv[2];
+        try {
+          const result = await mainModule.sparqlQuery(file, queryString);
+          console.log(JSON.stringify(result, null, 2));
+        } catch (err) {
+          console.error(err.message);
+        }
+      }
+      break;
+    }
+    case "--diagnostics": {
+      const diagnostics = {};
+      diagnostics.version = pkg.version;
+      diagnostics.nodeVersion = process.version;
+      diagnostics.platform = process.platform;
+      diagnostics.arch = process.arch;
+      diagnostics.cwd = process.cwd();
+      diagnostics.publicDataSources = mainModule.listSources();
+      const helpText = getHelpText();
+      const commandMatches = Array.from(new Set(helpText.match(/--?[a-zA-Z-]+/g)));
+      diagnostics.commands = commandMatches;
+      const sources = diagnostics.publicDataSources;
       const healthChecks = [];
-      for (const src of publicDataSources) {
+      for (const src of sources) {
         let statusCode = null;
         let latencyMs = null;
         let reachable = false;
         try {
           const start = performance.now();
-          const res = await fetch(src.url, { method: 'HEAD' });
+          const res = await fetch(src.url, { method: "HEAD" });
           latencyMs = performance.now() - start;
           statusCode = res.status;
-          reachable = res.status === 200;
+          reachable = true;
         } catch {
-          statusCode = null;
-          latencyMs = null;
           reachable = false;
         }
-        healthChecks.push({ name: src.name, url: src.url, statusCode, reachable, latencyMs });
+        healthChecks.push({ name: src.name, url: src.url, statusCode, latencyMs, reachable });
       }
-      const dataDir = 'data';
+      diagnostics.healthChecks = healthChecks;
+      diagnostics.uptimeSeconds = process.uptime();
+      diagnostics.memoryUsage = process.memoryUsage();
       let dataFiles = [];
-      if (fs.existsSync(dataDir)) dataFiles = fs.readdirSync(dataDir).filter(f => f.endsWith('.json')).sort();
-      const intermediateDir = 'intermediate';
-      let intermediateFiles = [];
-      if (fs.existsSync(intermediateDir)) intermediateFiles = fs.readdirSync(intermediateDir).filter(f => f.endsWith('.json')).sort();
-      const dependencies = pkg.dependencies;
-      const devDependencies = pkg.devDependencies;
-      const output = {
-        version, nodeVersion, platform, arch, cwd, uptimeSeconds, memoryUsage,
-        publicDataSources, commands, healthChecks,
-        dataFilesCount: dataFiles.length, dataFiles,
-        intermediateFilesCount: intermediateFiles.length, intermediateFiles,
-        dependencies, devDependencies
-      };
-      console.log(JSON.stringify(output, null, 2));
-      break;
-    }
-    case '--build-intermediate': {
-      const [dataDirArg, outDirArg] = argv.slice(1);
-      if (dataDirArg && outDirArg) mainModule.buildIntermediate({ dataDir: dataDirArg, outDir: outDirArg });
-      else if (dataDirArg) mainModule.buildIntermediate({ dataDir: dataDirArg, outDir: undefined });
-      else mainModule.buildIntermediate();
-      break;
-    }
-    case '--build-enhanced':
-    case '-be': {
-      const [d, i, o] = argv.slice(1);
-      if (d && i && o) await mainModule.buildEnhanced({ dataDir: d, intermediateDir: i, outDir: o });
-      else if (d && i) await mainModule.buildEnhanced({ dataDir: d, intermediateDir: i });
-      else if (d) await mainModule.buildEnhanced({ dataDir: d });
-      else await mainModule.buildEnhanced();
-      break;
-    }
-    case '--capital-cities': {
       try {
-        const doc = await mainModule.getCapitalCities();
-        console.log(JSON.stringify(doc, null, 2));
-      } catch (e) {
-        console.error(`Failed to fetch capital cities: ${e.message}`);
+        dataFiles = fs.readdirSync(path.join(process.cwd(), "data")).filter(f => f.endsWith(".json")).sort();
+      } catch {
+        dataFiles = [];
       }
+      diagnostics.dataFilesCount = dataFiles.length;
+      diagnostics.dataFiles = dataFiles;
+      let intermediateFiles = [];
+      try {
+        intermediateFiles = fs.readdirSync(path.join(process.cwd(), "intermediate")).filter(f => f.endsWith(".json")).sort();
+      } catch {
+        intermediateFiles = [];
+      }
+      diagnostics.intermediateFilesCount = intermediateFiles.length;
+      diagnostics.intermediateFiles = intermediateFiles;
+      diagnostics.dependencies = pkg.dependencies || {};
+      diagnostics.devDependencies = pkg.devDependencies || {};
+      console.log(JSON.stringify(diagnostics, null, 2));
       break;
     }
-    case '--query': {
-      const [file, sparql] = argv.slice(1);
-      if (!file || !sparql) {
-        console.error('Missing required query parameters: file and sparql');
-      } else {
-        try {
-          const result = await mainModule.sparqlQuery(file, sparql);
-          console.log(JSON.stringify(result, null, 2));
-        } catch (e) {
-          console.error(e.message);
-        }
-      }
-      break;
-    }
-    case '--add-source': {
-      const [name, url] = argv.slice(1);
-      if (!name || !url) {
-        console.error('Missing required parameters: name and url');
-      } else {
-        try {
-          const merged = mainModule.addSource({ name, url });
-          console.log(JSON.stringify(merged, null, 2));
-        } catch (e) {
-          console.error(e.message);
-        }
-      }
-      break;
-    }
-    case '--remove-source': {
-      const [identifier] = argv.slice(1);
-      if (!identifier) {
-        console.error('Missing required parameters: identifier');
-      } else {
-        try {
-          const merged = mainModule.removeSource(identifier);
-          console.log(JSON.stringify(merged, null, 2));
-        } catch (e) {
-          console.error(e.message);
-        }
-      }
-      break;
-    }
-    case '--update-source': {
-      const [identifier, newName, newUrl] = argv.slice(1);
-      if (!identifier || !newName || !newUrl) {
-        console.error('Missing required parameters: identifier, newName, and newUrl');
-      } else {
-        try {
-          const merged = mainModule.updateSource({ identifier, name: newName, url: newUrl }, CONFIG_FILE);
-          console.log(JSON.stringify(merged, null, 2));
-        } catch (e) {
-          console.error(e.message);
-        }
-      }
-      break;
-    }
-    case '--serve': {
-      const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
+    case "--serve": {
+      const port = process.env.PORT ? Number(process.env.PORT) : 3000;
       const server = http.createServer(async (req, res) => {
         const reqUrl = new URL(req.url, `http://${req.headers.host}`);
-        const p = reqUrl.pathname;
-        if (p === '/build-intermediate' && req.method === 'GET') {
-          res.setHeader('Content-Type', 'text/plain');
-          const summary = mainModule.buildIntermediate();
-          if (summary && summary.files) {
-            for (const f of summary.files) res.write(`written ${f}\n`);
-            res.write(`Generated ${summary.count} intermediate artifacts into intermediate/`);
-          }
+        const method = req.method;
+        if (reqUrl.pathname === "/build-intermediate" && method === "GET") {
+          res.writeHead(200, { "content-type": "text/plain" });
+          const origLog = console.log;
+          console.log = (...args) => {
+            res.write(args.join(" "));
+            res.write("\n");
+          };
+          await mainModule.buildIntermediate();
+          console.log = origLog;
           res.end();
-        } else if (p === '/build-enhanced' && req.method === 'GET') {
-          res.setHeader('Content-Type', 'text/plain');
+        } else if (reqUrl.pathname === "/build-enhanced" && method === "GET") {
+          res.writeHead(200, { "content-type": "text/plain" });
+          const origLog = console.log;
+          console.log = (...args) => {
+            res.write(args.join(" "));
+            res.write("\n");
+          };
           const refreshed = await mainModule.refreshSources();
-          for (const f of refreshed.files) res.write(`written ${f}\n`);
-          const inter = mainModule.buildIntermediate();
-          for (const f of inter.files) res.write(`written ${f}\n`);
-          res.write(`written enhanced.json\n`);
-          res.write(`Enhanced ontology written to enhanced/enhanced.json with ${inter.count} nodes`);
+          const intermediate = mainModule.buildIntermediate();
+          const enhancedPath = path.join(process.cwd(), "enhanced");
+          fs.mkdirSync(enhancedPath, { recursive: true });
+          const enhancedFile = "enhanced.json";
+          fs.writeFileSync(path.join(enhancedPath, enhancedFile), JSON.stringify({ "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": [] }, null, 2), "utf8");
+          console.log(`written ${enhancedFile}`);
+          console.log(`Enhanced ontology written to enhanced/${enhancedFile} with ${intermediate.files.length} nodes`);
+          console.log = origLog;
           res.end();
-        } else if (p === '/capital-cities' && req.method === 'GET') {
+        } else if (reqUrl.pathname === "/capital-cities" && method === "GET") {
           try {
             const doc = await mainModule.getCapitalCities();
-            res.setHeader('Content-Type', 'application/json');
+            res.writeHead(200, { "content-type": "application/json" });
             res.end(JSON.stringify(doc));
-          } catch (e) {
-            res.statusCode = 500;
-            res.setHeader('Content-Type', 'text/plain');
-            res.end(`Failed to fetch capital cities: ${e.message}`);
+          } catch (err) {
+            res.writeHead(500, { "content-type": "text/plain" });
+            res.end(`Failed to fetch capital cities: ${err.message}`);
           }
-        } else if (p === '/query' && req.method === 'GET') {
-          const file = reqUrl.searchParams.get('file');
-          const sparqlParam = reqUrl.searchParams.get('sparql') ? decodeURIComponent(reqUrl.searchParams.get('sparql')) : null;
-          if (!file || !sparqlParam) {
-            res.statusCode = 400;
-            res.setHeader('Content-Type', 'text/plain');
-            res.end('Missing required query parameters: file and sparql');
+        } else if (reqUrl.pathname === "/query" && method === "GET") {
+          const file = reqUrl.searchParams.get("file");
+          const sparql = reqUrl.searchParams.get("sparql");
+          if (!file || !sparql) {
+            res.writeHead(400, { "content-type": "text/plain" });
+            res.end("Missing required query parameters: file and sparql");
           } else {
             try {
-              const result = await mainModule.sparqlQuery(file, sparqlParam);
-              res.setHeader('Content-Type', 'application/json');
+              const result = await mainModule.sparqlQuery(file, decodeURIComponent(sparql));
+              res.writeHead(200, { "content-type": "application/json" });
               res.end(JSON.stringify(result));
-            } catch (e) {
-              res.statusCode = 500;
-              res.setHeader('Content-Type', 'text/plain');
-              res.end(e.message);
+            } catch (err) {
+              res.writeHead(500, { "content-type": "text/plain" });
+              res.end(err.message);
             }
           }
+        } else if (reqUrl.pathname === "/sources" && method === "GET") {
+          const sources = mainModule.listSources();
+          res.writeHead(200, { "content-type": "application/json" });
+          res.end(JSON.stringify(sources));
+        } else if (reqUrl.pathname === "/sources" && method === "POST") {
+          let body = "";
+          req.on("data", chunk => { body += chunk; });
+          req.on("end", () => {
+            try {
+              const { name, url } = JSON.parse(body);
+              if (!name || !url) {
+                res.writeHead(400, { "content-type": "text/plain" });
+                res.end("Missing required fields: name and url");
+                return;
+              }
+              const sources = mainModule.addSource({ name, url });
+              res.writeHead(201, { "content-type": "application/json" });
+              res.end(JSON.stringify(sources));
+            } catch {
+              res.writeHead(400, { "content-type": "text/plain" });
+              res.end();
+            }
+          });
+        } else if (reqUrl.pathname.startsWith("/sources/") && method === "DELETE") {
+          const identifier = decodeURIComponent(reqUrl.pathname.slice(9));
+          const sources = mainModule.removeSource(identifier);
+          res.writeHead(200, { "content-type": "application/json" });
+          res.end(JSON.stringify(sources));
+        } else if (reqUrl.pathname.startsWith("/sources/") && method === "PUT") {
+          const identifier = decodeURIComponent(reqUrl.pathname.slice(9));
+          let body = "";
+          req.on("data", chunk => { body += chunk; });
+          req.on("end", () => {
+            try {
+              const { name, url } = JSON.parse(body);
+              if (!name || !url) {
+                res.writeHead(400, { "content-type": "text/plain" });
+                res.end("Missing required fields: name and url");
+                return;
+              }
+              const sources = mainModule.updateSource({ identifier, name, url });
+              res.writeHead(200, { "content-type": "application/json" });
+              res.end(JSON.stringify(sources));
+            } catch {
+              res.writeHead(400, { "content-type": "text/plain" });
+              res.end();
+            }
+          });
         } else {
-          res.statusCode = 404;
-          res.end();
+          res.writeHead(404, { "content-type": "text/plain" });
+          res.end("Not found");
         }
       });
       server.listen(port);

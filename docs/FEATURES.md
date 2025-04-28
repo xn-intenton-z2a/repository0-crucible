@@ -19,8 +19,7 @@
 - **Capital Cities (`--capital-cities`)**: Queries DBpedia for country-capital pairs and outputs an OWL-compatible JSON-LD document with `@context` and `@graph`.
 - **SPARQL Query (`--query`, `-q`)**: Execute SPARQL SELECT or ASK queries on JSON-LD OWL artifacts and output results in SPARQL JSON format. Also available via HTTP GET `/query?file=<path>&sparql=<query>`.
 - **HTTP Endpoint for Sources Management:**
-  - **POST /sources**: Add a custom data source.
-    - Request: Content-Type: application/json body `{ "name": string, "url": string }`
-    - Response: `201 Created`, JSON list of merged sources or `400 Bad Request` with plain error message.
-  - **DELETE /sources/:identifier**: Remove a custom data source by name or URL.
-    - Response: `200 OK`, JSON list of merged sources.
+  - **GET /sources**: Responds with HTTP 200 and a JSON array of merged default and custom data sources.
+  - **POST /sources**: Reads and buffers the request body as JSON with fields `{ name: string, url: string }`. Adds a custom data source via `addSource`, responds with HTTP 201 and the merged list as JSON, or HTTP 400 with a plain-text error on invalid input.
+  - **DELETE /sources/:identifier**: Removes a custom data source by name or URL via `removeSource`, responds with HTTP 200 and the merged list as JSON.
+  - **PUT /sources/:identifier**: Reads and buffers the request body as JSON with fields `{ name: string, url: string }`. Updates an existing custom data source via `updateSource`, responds with HTTP 200 and the merged list as JSON, or HTTP 400 with a plain-text error on invalid input.
