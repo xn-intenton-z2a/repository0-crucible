@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="jsonld11" href="#jsonld11"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSONLD11</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Keywords, context definition fields, IRI resolution rules, processing modes, data model nodes forms, processor API signatures, exceptions, configuration, best practices, and troubleshooting steps.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Syntax Tokens and Keywords</p>
+</li>
+<li class="md-github">
+<p class="md-github">Context Definitions</p>
+</li>
+<li class="md-github">
+<p class="md-github">IRI Resolution</p>
+</li>
+<li class="md-github">
+<p class="md-github">Processing Modes</p>
+</li>
+<li class="md-github">
+<p class="md-github">Data Model Structures</p>
+</li>
+<li class="md-github">
+<p class="md-github">Algorithms Summary</p>
+</li>
+<li class="md-github">
+<p class="md-github">API Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Errors</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Best Practices</p>
+</li>
+<li class="md-github">
+<p class="md-github">Troubleshooting</p>
+</li>
+<li class="md-github">
+<p class="md-github">Syntax Tokens and Keywords</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">@context,@id,@type,@value,@list,@set,@language,@vocab,@base,@graph,@included,@reverse,@index,@nest,@direction,@version,@json,@none,@explicit</li>
+<li class="md-github">Literal @version value: numeric 1.1</li>
+</ul>
+<ol start="2" class="md-github">
+<li class="md-github">
+<p class="md-github">Context Definitions
+TermDefinition:
+@id: IRI string
+@type: IRI
+@container: one of list,set,index,id,type,language
+@reverse: boolean
+@language: BCP47 code/null
+@direction: &quot;ltr&quot;|&quot;rtl&quot;|null
+@prefix: boolean
+@protected: boolean
+Context value: IRI | map | array of contexts
+Default vocabulary: @vocab: IRI|null
+Base IRI from @base or doc URL</p>
+</li>
+<li class="md-github">
+<p class="md-github">IRI Resolution
+Expand IRI: RFC3986#5.2
+Compact IRI: prefix:suffix where prefix term maps to IRI
+Vocabulary-relative: @vocab+term</p>
+</li>
+<li class="md-github">
+<p class="md-github">Processing Modes
+json-ld-1.1 (default)
+json-ld-1.0 disables 1.1 features; errors on numeric @version 1.1</p>
+</li>
+<li class="md-github">
+<p class="md-github">Data Model Structures
+NodeObject: map without @value,@list,@set or top-level only @graph
+ValueObject: {&quot;@value&quot;:literal, optional &quot;@type&quot;|&quot;@language&quot;|&quot;@direction&quot;}
+ListObject: {&quot;@list&quot;:array, optional &quot;@index&quot;:string}
+SetObject: {&quot;@set&quot;:array, optional &quot;@index&quot;:string}
+GraphObject: {&quot;@graph&quot;:array, optional &quot;@id&quot;:IRI, &quot;@index&quot;:string}</p>
+</li>
+<li class="md-github">
+<p class="md-github">Algorithms Summary
+expand(input,options): Promise<expandedDocuments>
+compact(input,context,options): Promise<compactedDoc>
+flatten(input,context?,options): Promise<flattenedDoc>
+frame(input,frame,options): Promise<framedDoc>
+toRDF(input,options): Promise<QuadMap>
+fromRDF(quads,options): Promise<expandedDoc></p>
+</li>
+<li class="md-github">
+<p class="md-github">API Methods (complete signatures in referenceDetails)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Errors
+InvalidContext, InvalidIRIMapping, UnresolvedPrefix, LoadingDocumentFailed, ProcessingModeMismatch</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration
+options: {base?:string,documentLoader?:(iri)=&gt;Promise<Document>,processingMode?:&quot;json-ld-1.0&quot;|&quot;json-ld-1.1&quot;,expandContext?:any,compactToRelative?:boolean,skipExpansion?:boolean}</p>
+</li>
+<li class="md-github">
+<p class="md-github">Best Practices</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Local context caching</li>
+<li class="md-github">Explicit processingMode</li>
+<li class="md-github">Frame for predictable structure</li>
+<li class="md-github">Explicit @id for blank nodes</li>
+</ul>
+<ol start="11" class="md-github">
+<li class="md-github">Troubleshooting</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">CLI --trace</li>
+<li class="md-github">Check CORS, MIME application/ld+json</li>
+<li class="md-github">Log active context mid-process</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Context loading: defaultDocumentLoader fetches JSON-LD with fetch(), enforces Content-Type application/ld+json. documentLoader must return {documentUrl:string,document:Object}. Processing order: parse JSON, preprocess context, expand IRIs, term-scoped contexts, container processing, type coercion, list-setting, embedding, indexing, framing, normalization. Default options: base: input document URL, processingMode: json-ld-1.1, documentLoader: built-in loader. Context priority: local expansions override remote. Container processing order: @language, @index, @id, @type, @list, @set. Type coercion rules: if @type defined in term definition, coerce value to that datatype. Language direction: defaults to context baseDirection.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">// Example: expand
+import { JSONLDProcessor } from 'jsonld';</p>
+<p class="md-github">const processor: JSONLDProcessor = require('jsonld');</p>
+<p class="md-github">(async ()=&gt;{
+const expanded = await processor.expand(
+{&quot;@context&quot;:&quot;https://schema.org/&quot;,&quot;name&quot;:&quot;Alice&quot;},
+{
+base: 'https://example.com/',
+expandContext: { ex: 'https://example.com/' },
+documentLoader: async iri =&gt; {
+const res = await fetch(iri, {headers:{Accept:'application/ld+json'}});
+return {documentUrl: res.url, document: await res.json()};
+}
+}
+);
+console.log(expanded);
+})();</p>
+<p class="md-github">// toRDF
+const quads = await processor.toRDF(doc, {produceGeneralizedRdf:false});
+quads.get('default').forEach(({subject,predicate,object,graph})=&gt;{
+console.log(<code class="md-github">${subject} ${predicate} ${object.value} .</code>);
+});</p>
+<p class="md-github">// fromRDF
+const jsonld = await processor.fromRDF(quads, {rdfDirection:'i18n-datatype'});</p>
+<p class="md-github">// CLI usage
+jsonld expand --trace input.jsonld &gt; expanded.jsonld
+jsonld toRDF --format nquads input.jsonld &gt; out.nq</p>
+<p class="md-github">// Best practice: local context hosting
+const localLoader = (iri)=&gt;{
+if(iri==='https://schema.org/') return Promise.resolve({documentUrl:iri,document: require('./schema.context.json')});
+return defaultDocumentLoader(iri);
+};</p>
+<p class="md-github">// Troubleshooting commands
+// 1. Verify JSON-LD version
+grep 'json-ld' input.jsonld
+// 2. Trace loading
+jsonld expand --loader node --trace input.jsonld</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">@context:@context,@id,@type,@value,@list,@set,@language,@vocab,@base,@graph,@included,@reverse,@index,@nest,@direction,@version,@json,@none,@explicit;TermDefinition:{@id:IRI,@type:IRI,@container:(list,set,index,id,type,language),@reverse:boolean,@language:BCP47|null,@direction:ltr|rtl|null,@prefix:boolean,@protected:boolean};Context:Iri|Map|Array;DefaultVocab:@vocab:Iri|null;Base:@base|URL;IRIMode:RFC3986;Compact:prefix:suffix;Mode:json-ld-1.1|json-ld-1.0;Node:{!@value,!@list,!@set|only @graph};Value:{@value,optional(@type|@language|@direction)};List:{@list,@index?};Set:{@set,@index?};Graph:{@graph,@id?,@index?};expand(input,opts)-&gt;Promise any[];compact(input,ctx,opts)-&gt;Promise any;flatten(input,ctx?,opts)-&gt;Promise any;frame(input,frame,opts)-&gt;Promise any;toRDF(input,opts)-&gt;Promise Map&lt;string,Quad[]&gt;;fromRDF(quads,opts)-&gt;Promise any;Errors:InvalidContext,InvalidIRIMapping,UnresolvedPrefix,LoadingDocumentFailed,ProcessingModeMismatch;Opts:{base?:string,documentLoader?:(iri)=&gt;Promise&lt;{documentUrl,document}&gt;,processingMode?,expandContext?,compactToRelative?,skipExpansion?};BestPractices:cache contexts,explicitMode,frame,explicitIds;Troubleshoot:--trace,CORS,MIME,logContext</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Syntax Tokens and Keywords</p>
+</li>
+<li class="md-github">
+<p class="md-github">Context Definitions</p>
+</li>
+<li class="md-github">
+<p class="md-github">IRI Resolution</p>
+</li>
+<li class="md-github">
+<p class="md-github">Processing Modes</p>
+</li>
+<li class="md-github">
+<p class="md-github">Data Model Structures</p>
+</li>
+<li class="md-github">
+<p class="md-github">Algorithms Summary</p>
+</li>
+<li class="md-github">
+<p class="md-github">API Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Errors</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Best Practices</p>
+</li>
+<li class="md-github">
+<p class="md-github">Troubleshooting</p>
+</li>
+<li class="md-github">
+<p class="md-github">Syntax Tokens and Keywords</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">@context,@id,@type,@value,@list,@set,@language,@vocab,@base,@graph,@included,@reverse,@index,@nest,@direction,@version,@json,@none,@explicit</li>
+<li class="md-github">Literal @version value: numeric 1.1</li>
+</ul>
+<ol start="2" class="md-github">
+<li class="md-github">
+<p class="md-github">Context Definitions
+TermDefinition:
+@id: IRI string
+@type: IRI
+@container: one of list,set,index,id,type,language
+@reverse: boolean
+@language: BCP47 code/null
+@direction: 'ltr'|'rtl'|null
+@prefix: boolean
+@protected: boolean
+Context value: IRI | map | array of contexts
+Default vocabulary: @vocab: IRI|null
+Base IRI from @base or doc URL</p>
+</li>
+<li class="md-github">
+<p class="md-github">IRI Resolution
+Expand IRI: RFC3986#5.2
+Compact IRI: prefix:suffix where prefix term maps to IRI
+Vocabulary-relative: @vocab+term</p>
+</li>
+<li class="md-github">
+<p class="md-github">Processing Modes
+json-ld-1.1 (default)
+json-ld-1.0 disables 1.1 features; errors on numeric @version 1.1</p>
+</li>
+<li class="md-github">
+<p class="md-github">Data Model Structures
+NodeObject: map without @value,@list,@set or top-level only @graph
+ValueObject: {'@value':literal, optional '@type'|'@language'|'@direction'}
+ListObject: {'@list':array, optional '@index':string}
+SetObject: {'@set':array, optional '@index':string}
+GraphObject: {'@graph':array, optional '@id':IRI, '@index':string}</p>
+</li>
+<li class="md-github">
+<p class="md-github">Algorithms Summary
+expand(input,options): Promise<expandedDocuments>
+compact(input,context,options): Promise<compactedDoc>
+flatten(input,context?,options): Promise<flattenedDoc>
+frame(input,frame,options): Promise<framedDoc>
+toRDF(input,options): Promise<QuadMap>
+fromRDF(quads,options): Promise<expandedDoc></p>
+</li>
+<li class="md-github">
+<p class="md-github">API Methods (complete signatures in referenceDetails)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Errors
+InvalidContext, InvalidIRIMapping, UnresolvedPrefix, LoadingDocumentFailed, ProcessingModeMismatch</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration
+options: {base?:string,documentLoader?:(iri)=&gt;Promise<Document>,processingMode?:'json-ld-1.0'|'json-ld-1.1',expandContext?:any,compactToRelative?:boolean,skipExpansion?:boolean}</p>
+</li>
+<li class="md-github">
+<p class="md-github">Best Practices</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Local context caching</li>
+<li class="md-github">Explicit processingMode</li>
+<li class="md-github">Frame for predictable structure</li>
+<li class="md-github">Explicit @id for blank nodes</li>
+</ul>
+<ol start="11" class="md-github">
+<li class="md-github">Troubleshooting</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">CLI --trace</li>
+<li class="md-github">Check CORS, MIME application/ld+json</li>
+<li class="md-github">Log active context mid-process</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">JSON-LD 1.1 Core &amp; Processing Algorithms
+https://www.w3.org/TR/json-ld11/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-jsonld11" href="#digest-of-jsonld11"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of JSONLD11</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="json-ld-11-recommendation-16-july-2020" href="#json-ld-11-recommendation-16-july-2020"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSON-LD 1.1 Recommendation (16 July 2020)</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="1-syntax-tokens-and-keywords" href="#1-syntax-tokens-and-keywords"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Syntax Tokens and Keywords</h2>
+<ul class="md-github">
+<li class="md-github">Keywords: @context, @id, @type, @value, @list, @set, @language, @vocab, @base, @graph, @included, @reverse, @index, @nest, @direction, @version, @json, @none, @explicit</li>
+<li class="md-github">Values: 1.1 (numeric), &quot;json-ld-1.1&quot; unsupported for @version in context</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="2-context-definitions" href="#2-context-definitions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Context Definitions</h2>
+<ul class="md-github">
+<li class="md-github">@context value types: IRI string, map of term definitions, array of contexts</li>
+<li class="md-github">Term definition map fields: @id (IRI), @type (IRI), @container (@list,@set,@index,@id,@type,@language), @reverse (boolean), @language (BCP47 tag or null), @direction (&quot;ltr&quot;,&quot;rtl&quot;,null), @nest (string key), @prefix (boolean), @protected (boolean)</li>
+<li class="md-github">Default vocabulary: @vocab IRI or null</li>
+<li class="md-github">Base IRI resolution: Use @base in context or document base location</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="3-iri-resolution" href="#3-iri-resolution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. IRI Resolution</h2>
+<ul class="md-github">
+<li class="md-github">Expand relative IRI: resolution algorithm per RFC3986, section 5.2</li>
+<li class="md-github">Compact IRI: prefix:suffix where prefix term maps to IRI+suffix</li>
+<li class="md-github">Vocabulary-relative term: term expands to @vocab+term</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="4-document-processing-modes" href="#4-document-processing-modes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Document Processing Modes</h2>
+<ul class="md-github">
+<li class="md-github">json-ld-1.1: default</li>
+<li class="md-github">json-ld-1.0: disable 1.1 features; error on 1.1 context usage</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="5-data-model-structures" href="#5-data-model-structures"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. Data Model Structures</h2>
+<ul class="md-github">
+<li class="md-github">Node object: map without @value,@list,@set or single top-level @graph</li>
+<li class="md-github">Value object: map with @value, optional @type or @language or @direction</li>
+<li class="md-github">List object: map with @list and optional @index</li>
+<li class="md-github">Set object: map with @set and optional @index</li>
+<li class="md-github">Graph object: map with @graph and optional @id,@index</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="6-processing-algorithms" href="#6-processing-algorithms"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6. Processing Algorithms</h2>
+<ul class="md-github">
+<li class="md-github">Expand: produce expanded form</li>
+<li class="md-github">Compact: require active context, produce compacted form</li>
+<li class="md-github">Flatten: produce flat array of node objects</li>
+<li class="md-github">Frame: apply frame document matching rules</li>
+<li class="md-github">ToRDF: map to RDF dataset</li>
+<li class="md-github">FromRDF: map RDF dataset to expanded JSON-LD</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="7-api-method-signatures" href="#7-api-method-signatures"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7. API Method Signatures</h2>
+<p class="md-github">Interface JSONLDProcessor {
+expand(input          : any,
+options?       : {
+base?: string;
+expandContext?: any;
+processingMode?: &quot;json-ld-1.0&quot;|&quot;json-ld-1.1&quot;;
+documentLoader?: (iri:string)=&gt;Promise&lt;{documentUrl:string;document:any}&gt;;
+}
+) : Promise&lt;any[]&gt;;</p>
+<p class="md-github">compact(input          : any,
+context        : any,
+options?       : {
+base?: string;
+compactToRelative?: boolean;
+processingMode?: &quot;json-ld-1.0&quot;|&quot;json-ld-1.1&quot;;
+documentLoader?: (iri:string)=&gt;Promise&lt;{documentUrl:string;document:any}&gt;;
+}
+) : Promise<any>;</p>
+<p class="md-github">flatten(input          : any,
+context?       : any,
+options?       : {
+base?: string;
+processingMode?: &quot;json-ld-1.0&quot;|&quot;json-ld-1.1&quot;;
+documentLoader?: (iri:string)=&gt;Promise&lt;{documentUrl:string;document:any}&gt;;
+}
+) : Promise<any>;</p>
+<p class="md-github">frame(input          : any,
+frame             : any,
+options?          : {
+base?: string;
+compact?: boolean;
+embed?: boolean;
+explicit?: boolean;
+omitGraph?: boolean;
+pruneBlankNodeIdentifiers?: boolean;
+skipExpansion?: boolean;
+documentLoader?: (iri:string)=&gt;Promise&lt;{documentUrl:string;document:any}&gt;;
+}
+) : Promise<any>;</p>
+<p class="md-github">toRDF(input          : any,
+options?       : {
+base?: string;
+produceGeneralizedRdf?: boolean;
+processingMode?: &quot;json-ld-1.0&quot;|&quot;json-ld-1.1&quot;;
+documentLoader?: (iri:string)=&gt;Promise&lt;{documentUrl:string;document:any}&gt;;
+}
+) : Promise&lt;Map&lt;string,{subject:string;predicate:string;object:{value:string;type:string;datatype?:string;language?:string};graph?:string}[]&gt;&gt;;</p>
+<p class="md-github">fromRDF(quads          : Map&lt;string,{subject:string;predicate:string;object:{value:string;type:string;datatype?:string;language?:string};graph?:string}[]&gt;,
+options         : {
+rdfDirection?: &quot;i18n-datatype&quot;;
+processingMode?: &quot;json-ld-1.0&quot;|&quot;json-ld-1.1&quot;;
+}
+) : Promise<any>;
+}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="8-errors-and-exceptions" href="#8-errors-and-exceptions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>8. Errors and Exceptions</h2>
+<ul class="md-github">
+<li class="md-github">InvalidContext: thrown when term definition malformed</li>
+<li class="md-github">InvalidIRIMapping: invalid IRI expansion</li>
+<li class="md-github">UnresolvedPrefix: compact IRI prefix not defined</li>
+<li class="md-github">LoadingDocumentFailed: documentLoader rejected; includes error.url</li>
+<li class="md-github">ProcessingModeMismatch: @version mismatch</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="9-configuration-options" href="#9-configuration-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>9. Configuration Options</h2>
+<ul class="md-github">
+<li class="md-github">documentLoader(iri): Promise resolving to {documentUrl,document}</li>
+<li class="md-github">processingMode: &quot;json-ld-1.0&quot;|&quot;json-ld-1.1&quot; default json-ld-1.1</li>
+<li class="md-github">base: string or document URL</li>
+<li class="md-github">expandContext: JSON-LD context to apply before expansion</li>
+<li class="md-github">compactToRelative: boolean default true</li>
+<li class="md-github">skipExpansion: boolean default false</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="10-best-practices" href="#10-best-practices"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>10. Best Practices</h2>
+<ul class="md-github">
+<li class="md-github">Preload contexts locally to avoid network fetch</li>
+<li class="md-github">Always set processingMode explicitly in security contexts</li>
+<li class="md-github">Use framing to generate predictable document shape</li>
+<li class="md-github">Manage blank nodes with explicit @id when preserving identity</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="11-troubleshooting" href="#11-troubleshooting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>11. Troubleshooting</h2>
+<ul class="md-github">
+<li class="md-github">Use --trace option in CLI to log each algorithm step</li>
+<li class="md-github">For document load failures, verify network CORS and server MIME type application/ld+json</li>
+<li class="md-github">On expansion errors, print intermediate active context</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: JSON-LD 1.1 Core &amp; Processing Algorithms</li>
+<li class="md-github">URL: https://www.w3.org/TR/json-ld11/</li>
+<li class="md-github">License: License if known</li>
+<li class="md-github">Crawl Date: 2025-04-28T17:48:30.747Z</li>
+<li class="md-github">Data Size: 13192003 bytes</li>
+<li class="md-github">Links Found: 93583</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-28</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-28T18:22:52.807Z</p>
+  </footer>
+</body>
+</html>
