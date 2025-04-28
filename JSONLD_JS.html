@@ -24,255 +24,390 @@
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="jsonld_js" href="#jsonld_js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSONLD_JS</h1>
 <h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
-<p class="md-github">Installation commands: npm install jsonld; CommonJS and ES imports. Bundles: dist/jsonld.min.js (legacy/polyfills), dist/jsonld.esm.min.js (ESM). CDN script tags: cdnjs, jsDelivr, unpkg. Core API methods with signatures: compact, expand, flatten, frame, canonize, toRDF, fromRDF. Custom extensions: registerRDFParser, documentLoaders.node()/xhr(), override documentLoader. Safe mode option (safe:true). Configuration: default algorithm URDNA2015, format application/n-quads, default UA 'jsonld.js'. Testing: npm test, test-karma, coverage, env vars TESTS, REPORTER, EARL. Troubleshooting commands for EARL and RDF serialization.</p>
+<p class="md-github">Implementation of JSON-LD spec in JS. Core async API methods: compact(input,context,options):Promise<object>, expand(input,options):Promise&lt;object[]&gt;, flatten(input,context?,options):Promise<object>, frame(input,frame,options):Promise<object>, canonize(input,{algorithm:'URDNA2015'|'URGNA2012',format:'application/n-quads'|'application/trig',useNative?:boolean}):Promise<string>, toRDF(input,{format:'application/n-quads'|'application/trig'}):Promise&lt;string|object&gt;, fromRDF(input,{format:'application/n-quads'|'application/trig',rdfParser?:Function}):Promise<object>. Customization: registerRDFParser(mime,parser), documentLoaders.node(), documentLoaders.xhr(), override jsonld.documentLoader. Safe mode via option safe:true. Bundles: dist/jsonld.min.js (polyfills), dist/jsonld.esm.min.js (ESM). Install via npm install jsonld. Testing commands: npm test, npm run test-karma, npm run coverage, use TESTS, BENCHMARK, EARL environment variables.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
 <p class="md-github">Table of Contents
 1 Installation
-2 Bundles and CDN
-3 Core API Methods
-4 Custom RDF Parsers
-5 Custom Document Loader
-6 Safe Mode
-7 Testing and Benchmarks</p>
+2 Browser Bundles
+3 API Methods
+3.1 compact
+3.2 expand
+3.3 flatten
+3.4 frame
+3.5 canonize
+3.6 toRDF
+3.7 fromRDF
+3.8 registerRDFParser
+3.9 documentLoader
+3.10 Safe Mode
+4 Testing
+5 Troubleshooting</p>
 <p class="md-github">1 Installation
-Install via npm: npm install jsonld
-CommonJS import: const jsonld = require('jsonld')
-ES Module import: import * as jsonld from 'jsonld'</p>
-<p class="md-github">2 Bundles and CDN
-Bundler: webpack/Rollup (ES2017+)
-Legacy bundle: dist/jsonld.min.js (polyfills, transforms)
-ESM bundle: dist/jsonld.esm.min.js (minimal transforms)
-CDNJS: <script src="https://cdnjs.cloudflare.com/ajax/libs/jsonld/1.0.0/jsonld.min.js"></script>
-jsDelivr: <script src="https://cdn.jsdelivr.net/npm/jsonld@1.0.0/dist/jsonld.min.js"></script>
-unpkg: <script src="https://unpkg.com/jsonld@1.0.0/dist/jsonld.min.js"></script></p>
-<p class="md-github">3 Core API Methods
-compact(input, context, options?) → Promise<Object>
-expand(input, options?) → Promise&lt;Array<Object>&gt;
-flatten(input, context?, options?) → Promise<Object>
-frame(input, frame, options?) → Promise<Object>
-canonize(input, {algorithm, format, useNative}?) → Promise<string>
-toRDF(input, {format}?) → Promise<string>
-fromRDF(input, {format}?) → Promise<Object></p>
-<p class="md-github">4 Custom RDF Parsers
-jsonld.registerRDFParser(contentType, parser)
-parser(input: string) → RDF.Dataset or Promise&lt;RDF.Dataset&gt;</p>
-<p class="md-github">5 Custom Document Loader
-const nodeLoader = jsonld.documentLoaders.node()
-const xhrLoader = jsonld.documentLoaders.xhr()
-jsonld.documentLoader = async (url, options) =&gt; {
-if(url in CONTEXTS) return {contextUrl:null,document:CONTEXTS[url],documentUrl:url};
-return nodeLoader(url,options);
-}
-Pass custom loader via options.documentLoader</p>
-<p class="md-github">6 Safe Mode
-Enable data loss detection: await jsonld.expand(data, {safe:true})
-Failures throw errors on lossy JSON-LD constructs</p>
-<p class="md-github">7 Testing and Benchmarks
-Run Node tests: npm test
-Browser tests: npm run test-karma -- --browsers Firefox,Chrome
-Generate coverage: npm run coverage &amp;&amp; npm run coverage-report
-Specify test suites: TESTS=&quot;/path1 /path2&quot; npm test
-Configure Mocha reporter: REPORTER=dot npm test
-Generate EARL report: EARL=report.jsonld npm test
-Convert EARL to Turtle: rdf serialize report.jsonld --output-format turtle -o report.ttl
-Benchmark flag: BENCHMARK=1 npm test</p>
+npm install jsonld
+const jsonld = require('jsonld');</p>
+<p class="md-github">2 Browser Bundles
+dist/jsonld.min.js (polyfilled)<br>
+dist/jsonld.esm.min.js (ESM only)<br>
+script tags: type=module for esm, nomodule for min</p>
+<p class="md-github">3 API Methods
+3.1 compact
+Signature: jsonld.compact(input: object|string, context: object|string, options?: {documentLoader, expandContext, processingMode:'json-ld-1.1'|'json-ld-1.0', compactArrays:boolean, compactToRelative:boolean, base:string}):Promise<object>
+Behavior: apply @context to shrink terms</p>
+<p class="md-github">3.2 expand
+Signature: jsonld.expand(input: object|string, options?: {documentLoader, expandContext, processingMode}):Promise&lt;Array<object>&gt;</p>
+<p class="md-github">3.3 flatten
+Signature: jsonld.flatten(input: object|string, context?: object|string, options?: object):Promise<object></p>
+<p class="md-github">3.4 frame
+Signature: jsonld.frame(input: object|string, frame: object|string, options?: {documentLoader, pruneBlankNodeIdentifiers:boolean, embed:boolean, explicit:boolean, omitGraph:boolean, processingMode}):Promise<object></p>
+<p class="md-github">3.5 canonize
+Signature: jsonld.canonize(input: object|string, options: {algorithm:'URDNA2015'|'URGNA2012', format:'application/n-quads'|'application/trig', documentLoader?, processingMode?, useNative?:boolean}):Promise<string></p>
+<p class="md-github">3.6 toRDF
+Signature: jsonld.toRDF(input: object|string, options: {format:'application/n-quads'|'application/trig', documentLoader?, processingMode?}):Promise&lt;string|object&gt;</p>
+<p class="md-github">3.7 fromRDF
+Signature: jsonld.fromRDF(input: string|object, options: {format:'application/n-quads'|'application/trig', rdfParser?:Function, documentLoader?, processingMode?}):Promise<object></p>
+<p class="md-github">3.8 registerRDFParser
+Usage:
+jsonld.registerRDFParser(mime: string, parser: sync input=&gt;dataset):void
+jsonld.registerRDFParser(mime: string, parser: async input=&gt;Promise<dataset>):void</p>
+<p class="md-github">3.9 documentLoader
+Default Node loader: jsonld.documentLoaders.node() sets UA 'jsonld.js'
+Default XHR loader: jsonld.documentLoaders.xhr()
+Override by: jsonld.documentLoader = async (url,opts)=&gt;{...}</p>
+<p class="md-github">3.10 Safe Mode
+Add safe:true to options of expand/compact/frame/canonize to fail on lossy operations</p>
+<p class="md-github">4 Testing
+npm test
+TESTS=&quot;/path&quot; npm test
+npm run test-karma -- --browsers Firefox,Chrome
+npm run coverage
+REPORTER=dot npm test
+npm run fetch-test-suites
+BENCHMARK=1 npm test
+EARL=earl.jsonld npm test</p>
+<p class="md-github">5 Troubleshooting
+Use custom documentLoader for missing contexts
+Compare native vs JS canonize performance
+Choose appropriate bundle for target environment</p>
 <h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
-<p class="md-github">Default user-agent header: 'jsonld.js'
-Default expand/base: null
-Default compact options: {compactArrays:true,compactToRelative:true,graph:false,expandContext:null,base:null}
-Default frame options: {embed:true,explicit:false,omitGraph:false}
-Default canonize options: {algorithm:'URDNA2015',format:'application/n-quads',useNative:false}
-Default toRDF/fromRDF format: 'application/n-quads'
-Default document loader uses node-fetch with UA and redirects; xhr loader uses XMLHttpRequest with CORS</p>
+<p class="md-github">Default Values and Options</p>
+<ul class="md-github">
+<li class="md-github">processingMode defaults to 'json-ld-1.1'</li>
+<li class="md-github">documentLoader default: node() or xhr()</li>
+<li class="md-github">compactArrays default: true</li>
+<li class="md-github">compactToRelative default: true</li>
+<li class="md-github">pruneBlankNodeIdentifiers default: false</li>
+<li class="md-github">embed default: true</li>
+<li class="md-github">explicit default: false</li>
+<li class="md-github">omitGraph default: false</li>
+<li class="md-github">algorithm default for canonize: 'URDNA2015'</li>
+<li class="md-github">format default for canonize/toRDF/fromRDF: 'application/n-quads'</li>
+</ul>
+<p class="md-github">Implementation Steps</p>
+<ol class="md-github">
+<li class="md-github">Install package</li>
+<li class="md-github">Import jsonld</li>
+<li class="md-github">Choose bundle or loader</li>
+<li class="md-github">Call API methods with required parameters and optional options</li>
+<li class="md-github">Handle returned Promise</li>
+<li class="md-github">For custom parsing or loading, registerRDFParser or override documentLoader</li>
+</ol>
+<p class="md-github">Example: compact with custom loader
+const CONTEXTS={&quot;http://example.com&quot;:{&quot;@context&quot;:{...}}};
+const nodeLoader=jsonld.documentLoaders.node();
+jsonld.documentLoader=async(url,opts)=&gt;url in CONTEXTS?{document:CONTEXTS[url],documentUrl:url,contextUrl:null}:nodeLoader(url,opts);
+const result=await jsonld.compact(doc,context,{documentLoader:jsonld.documentLoader});</p>
 <h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
-<p class="md-github">API: compact
-Signature: compact(input:Object|string, context:Object|string, options?:{
-expandContext?:Object|string,
-base?:string,
-compactArrays?:boolean,
-compactToRelative?:boolean,
-graph?:boolean,
-skipExpansion?:boolean,
-documentLoader?:Function,
-safe?:boolean
-}):Promise<Object>
-Returns: Promise resolved with compacted JSON-LD
-Example:
-const compacted = await jsonld.compact(
-{&quot;http://schema.org/name&quot;:&quot;Manu Sporny&quot;},
-{name:&quot;http://schema.org/name&quot;},
-{compactArrays:false}
-)</p>
-<p class="md-github">API: expand
-Signature: expand(input:Object|string, options?:{
-base?:string,
-expandContext?:Object|string,
-documentLoader?:Function,
-safe?:boolean
-}):Promise&lt;Array<Object>&gt;</p>
-<p class="md-github">API: flatten
-Signature: flatten(input:Object|string, context?:Object|string, options?:{
-base?:string,
-documentLoader?:Function
-}):Promise<Object></p>
-<p class="md-github">API: frame
-Signature: frame(input:Object|string, frame:Object|string, options?:{
-embed?:boolean,
-explicit?:boolean,
-omitGraph?:boolean,
-documentLoader?:Function,
-expandContext?:Object|string
-}):Promise<Object></p>
-<p class="md-github">API: canonize
-Signature: canonize(input:Object|string, options?:{
-algorithm?:'URDNA2015',
-format?:'application/n-quads',
-documentLoader?:Function,
-useNative?:boolean
-}):Promise<string></p>
-<p class="md-github">API: toRDF
-Signature: toRDF(input:Object|string, options?:{
-format?:'application/n-quads',
-documentLoader?:Function
-}):Promise<string></p>
-<p class="md-github">API: fromRDF
-Signature: fromRDF(input:string, options?:{
-format?:'application/n-quads',
-documentLoader?:Function
-}):Promise<Object></p>
-<p class="md-github">Best Practices:
-• Use safe mode for digital signing workflows
-• Cache contexts via custom documentLoader to reduce network latency
-• Prefer ESM bundle in modern browser environments
-• Specify TESTS env for running selective test suites</p>
-<p class="md-github">Troubleshooting:
-• If features unsupported, update test suites: npm run fetch-test-suites
-• Adjust TESTS path to include correct directory
-• Control Mocha reporter via REPORTER env
-• Generate and convert EARL reports as needed</p>
+<p class="md-github">APIs and SDK Method Signatures</p>
+<p class="md-github">jsonld.compact(input, context, options?)
+input: object | string (URL or JSON-LD document)
+context: object | string (URL or JSON-LD context)
+options:
+documentLoader(url:string, options?): Promise&lt;{document:any, documentUrl:string, contextUrl:string|null}&gt;
+expandContext: object | string
+processingMode: 'json-ld-1.1' | 'json-ld-1.0'
+compactArrays: boolean
+compactToRelative: boolean
+base: string
+returns: Promise<object>
+rejects: on invalid JSON-LD or context errors</p>
+<p class="md-github">jsonld.expand(input, options?)
+input: object | string
+options:
+documentLoader
+expandContext
+processingMode
+returns: Promise&lt;Array<object>&gt;</p>
+<p class="md-github">jsonld.flatten(input, context?, options?)
+input: object | string
+context: object | string
+options: same as expand
+returns: Promise<object></p>
+<p class="md-github">jsonld.frame(input, frame, options?)
+frame: object | string
+options:
+documentLoader
+pruneBlankNodeIdentifiers: boolean
+embed: boolean
+explicit: boolean
+omitGraph: boolean
+processingMode
+returns: Promise<object></p>
+<p class="md-github">jsonld.canonize(input, options)
+options:
+algorithm: 'URDNA2015' | 'URGNA2012'
+format: 'application/n-quads' | 'application/trig'
+documentLoader
+processingMode
+useNative: boolean
+returns: Promise<string></p>
+<p class="md-github">jsonld.toRDF(input, options)
+options:
+format: 'application/n-quads' | 'application/trig'
+documentLoader
+processingMode
+returns: Promise&lt;string | object&gt; // object when dataset option used</p>
+<p class="md-github">jsonld.fromRDF(input, options)
+options:
+format: 'application/n-quads' | 'application/trig'
+rdfParser: (input:any, contentType:string)=&gt;Promise<any>
+documentLoader
+processingMode
+returns: Promise<object></p>
+<p class="md-github">jsonld.registerRDFParser(contentType, parser)
+contentType: string
+parser: (input:string)=&gt;any | Promise<any>
+returns: void</p>
+<p class="md-github">jsonld.documentLoaders.node()
+returns: (url:string, options?:object)=&gt;Promise&lt;{document:any,documentUrl:string,contextUrl:string|null}&gt;</p>
+<p class="md-github">jsonld.documentLoaders.xhr()
+returns browser loader</p>
+<p class="md-github">Best Practices</p>
+<ul class="md-github">
+<li class="md-github">Use safe mode for digital signing: await jsonld.expand(data,{safe:true});</li>
+<li class="md-github">Prefer esm bundle in modern browsers</li>
+<li class="md-github">Run JSON-LD API and framing test suites via npm run fetch-test-suites</li>
+</ul>
+<p class="md-github">Troubleshooting Procedures</p>
+<ul class="md-github">
+<li class="md-github">Missing @context errors: verify custom documentLoader returns context for known URLs</li>
+<li class="md-github">CPU-intensive canonize: benchmark can be faster in JS than native, set useNative accordingly</li>
+</ul>
+<p class="md-github">Exact Commands
+npm install jsonld
+npm test
+BENCHMARK=1 TESTS=path/to/manifest.jsonld npm test
+npm run test-karma -- --browsers Chrome,Firefox
+EARL=report.jsonld npm test</p>
 <h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
-<p class="md-github">npm install jsonld; require/import jsonld; Bundles: dist/jsonld.min.js, dist/jsonld.esm.min.js; CDN: cdnjs, jsdelivr, unpkg; API Signatures: compact(input,context,options)-&gt;Promise<Object>; expand(input,options)-&gt;Promise&lt;Array<Object>&gt;; flatten(input,context,options)-&gt;Promise<Object>; frame(input,frame,options)-&gt;Promise<Object>; canonize(input,{algorithm,format,useNative})-&gt;Promise<string>; toRDF(input,{format})-&gt;Promise<string>; fromRDF(input,{format})-&gt;Promise<Object>; Extensions: registerRDFParser(contentType,parser); documentLoaders.node()/xhr(); override documentLoader; Safe mode: {safe:true}; Defaults: user-agent 'jsonld.js', algorithm URDNA2015, format application/n-quads, compactArrays true; Testing: npm test, test-karma, coverage, TESTS/REPORTER/EARL/BENCHMARK env; Troubleshoot: fetch-test-suites, rdf serialize</p>
+<p class="md-github">jsonld.compact(input:object|string,context:object|string,options?:{documentLoader,expandContext,processingMode:'json-ld-1.1'|'json-ld-1.0',compactArrays:boolean,compactToRelative:boolean,base:string}):Promise<object>
+jsonld.expand(input:object|string,options?:{documentLoader,expandContext,processingMode}):Promise&lt;object[]&gt;
+jsonld.flatten(input:object|string,context?:object|string,options?:object):Promise<object>
+jsonld.frame(input:object|string,frame:object|string,options?:{documentLoader,pruneBlankNodeIdentifiers:boolean,embed:boolean,explicit:boolean,omitGraph:boolean,processingMode}):Promise<object>
+jsonld.canonize(input:object|string,options:{algorithm:'URDNA2015'|'URGNA2012',format:'application/n-quads'|'application/trig',documentLoader?,processingMode?,useNative?:boolean}):Promise<string>
+jsonld.toRDF(input:object|string,options:{format:'application/n-quads'|'application/trig',documentLoader?,processingMode?}):Promise&lt;string|object&gt;
+jsonld.fromRDF(input:string|object,options:{format:'application/n-quads'|'application/trig',rdfParser?:Function,documentLoader?,processingMode?}):Promise<object>
+jsonld.registerRDFParser(contentType:string,parser:sync|async):void
+jsonld.documentLoader=nodeLoader|xhrLoader|customLoader
+Safe mode: safe:true
+Bundles: dist/jsonld.min.js (polyfilled), dist/jsonld.esm.min.js (ESM)
+Test: npm test, BENCHMARK=1 TESTS=... npm test, npm run test-karma, EARL=... npm test</p>
 <h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
 <p class="md-github">Table of Contents
 1 Installation
-2 Bundles and CDN
-3 Core API Methods
-4 Custom RDF Parsers
-5 Custom Document Loader
-6 Safe Mode
-7 Testing and Benchmarks</p>
+2 Browser Bundles
+3 API Methods
+3.1 compact
+3.2 expand
+3.3 flatten
+3.4 frame
+3.5 canonize
+3.6 toRDF
+3.7 fromRDF
+3.8 registerRDFParser
+3.9 documentLoader
+3.10 Safe Mode
+4 Testing
+5 Troubleshooting</p>
 <p class="md-github">1 Installation
-Install via npm: npm install jsonld
-CommonJS import: const jsonld = require('jsonld')
-ES Module import: import * as jsonld from 'jsonld'</p>
-<p class="md-github">2 Bundles and CDN
-Bundler: webpack/Rollup (ES2017+)
-Legacy bundle: dist/jsonld.min.js (polyfills, transforms)
-ESM bundle: dist/jsonld.esm.min.js (minimal transforms)
-CDNJS: <script src='https://cdnjs.cloudflare.com/ajax/libs/jsonld/1.0.0/jsonld.min.js'></script>
-jsDelivr: <script src='https://cdn.jsdelivr.net/npm/jsonld@1.0.0/dist/jsonld.min.js'></script>
-unpkg: <script src='https://unpkg.com/jsonld@1.0.0/dist/jsonld.min.js'></script></p>
-<p class="md-github">3 Core API Methods
-compact(input, context, options?)  Promise<Object>
-expand(input, options?)  Promise&lt;Array<Object>&gt;
-flatten(input, context?, options?)  Promise<Object>
-frame(input, frame, options?)  Promise<Object>
-canonize(input, {algorithm, format, useNative}?)  Promise<string>
-toRDF(input, {format}?)  Promise<string>
-fromRDF(input, {format}?)  Promise<Object></p>
-<p class="md-github">4 Custom RDF Parsers
-jsonld.registerRDFParser(contentType, parser)
-parser(input: string)  RDF.Dataset or Promise&lt;RDF.Dataset&gt;</p>
-<p class="md-github">5 Custom Document Loader
-const nodeLoader = jsonld.documentLoaders.node()
-const xhrLoader = jsonld.documentLoaders.xhr()
-jsonld.documentLoader = async (url, options) =&gt; {
-if(url in CONTEXTS) return {contextUrl:null,document:CONTEXTS[url],documentUrl:url};
-return nodeLoader(url,options);
-}
-Pass custom loader via options.documentLoader</p>
-<p class="md-github">6 Safe Mode
-Enable data loss detection: await jsonld.expand(data, {safe:true})
-Failures throw errors on lossy JSON-LD constructs</p>
-<p class="md-github">7 Testing and Benchmarks
-Run Node tests: npm test
-Browser tests: npm run test-karma -- --browsers Firefox,Chrome
-Generate coverage: npm run coverage &amp;&amp; npm run coverage-report
-Specify test suites: TESTS='/path1 /path2' npm test
-Configure Mocha reporter: REPORTER=dot npm test
-Generate EARL report: EARL=report.jsonld npm test
-Convert EARL to Turtle: rdf serialize report.jsonld --output-format turtle -o report.ttl
-Benchmark flag: BENCHMARK=1 npm test</p>
+npm install jsonld
+const jsonld = require('jsonld');</p>
+<p class="md-github">2 Browser Bundles
+dist/jsonld.min.js (polyfilled)<br>
+dist/jsonld.esm.min.js (ESM only)<br>
+script tags: type=module for esm, nomodule for min</p>
+<p class="md-github">3 API Methods
+3.1 compact
+Signature: jsonld.compact(input: object|string, context: object|string, options?: {documentLoader, expandContext, processingMode:'json-ld-1.1'|'json-ld-1.0', compactArrays:boolean, compactToRelative:boolean, base:string}):Promise<object>
+Behavior: apply @context to shrink terms</p>
+<p class="md-github">3.2 expand
+Signature: jsonld.expand(input: object|string, options?: {documentLoader, expandContext, processingMode}):Promise&lt;Array<object>&gt;</p>
+<p class="md-github">3.3 flatten
+Signature: jsonld.flatten(input: object|string, context?: object|string, options?: object):Promise<object></p>
+<p class="md-github">3.4 frame
+Signature: jsonld.frame(input: object|string, frame: object|string, options?: {documentLoader, pruneBlankNodeIdentifiers:boolean, embed:boolean, explicit:boolean, omitGraph:boolean, processingMode}):Promise<object></p>
+<p class="md-github">3.5 canonize
+Signature: jsonld.canonize(input: object|string, options: {algorithm:'URDNA2015'|'URGNA2012', format:'application/n-quads'|'application/trig', documentLoader?, processingMode?, useNative?:boolean}):Promise<string></p>
+<p class="md-github">3.6 toRDF
+Signature: jsonld.toRDF(input: object|string, options: {format:'application/n-quads'|'application/trig', documentLoader?, processingMode?}):Promise&lt;string|object&gt;</p>
+<p class="md-github">3.7 fromRDF
+Signature: jsonld.fromRDF(input: string|object, options: {format:'application/n-quads'|'application/trig', rdfParser?:Function, documentLoader?, processingMode?}):Promise<object></p>
+<p class="md-github">3.8 registerRDFParser
+Usage:
+jsonld.registerRDFParser(mime: string, parser: sync input=&gt;dataset):void
+jsonld.registerRDFParser(mime: string, parser: async input=&gt;Promise<dataset>):void</p>
+<p class="md-github">3.9 documentLoader
+Default Node loader: jsonld.documentLoaders.node() sets UA 'jsonld.js'
+Default XHR loader: jsonld.documentLoaders.xhr()
+Override by: jsonld.documentLoader = async (url,opts)=&gt;{...}</p>
+<p class="md-github">3.10 Safe Mode
+Add safe:true to options of expand/compact/frame/canonize to fail on lossy operations</p>
+<p class="md-github">4 Testing
+npm test
+TESTS='/path' npm test
+npm run test-karma -- --browsers Firefox,Chrome
+npm run coverage
+REPORTER=dot npm test
+npm run fetch-test-suites
+BENCHMARK=1 npm test
+EARL=earl.jsonld npm test</p>
+<p class="md-github">5 Troubleshooting
+Use custom documentLoader for missing contexts
+Compare native vs JS canonize performance
+Choose appropriate bundle for target environment</p>
 <h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
-<p class="md-github">JSON-LD 1.1 Specification &amp; JavaScript Implementation (jsonld.js)
+<p class="md-github">JSON-LD 1.1 Specification &amp; jsonld.js Implementation
 https://github.com/digitalbazaar/jsonld.js#readme</p>
 <h2 class="md-github"><a class="md-github__anchor" name="digest-of-jsonld_js" href="#digest-of-jsonld_js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of JSONLD_JS</h2>
-<h1 class="md-github"><a class="md-github__anchor" name="jsonldjs-technical-digest" href="#jsonldjs-technical-digest"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>jsonld.js Technical Digest</h1>
-<p class="md-github">Retrieved: 2024-06-07
-Attribution: digitalbazaar/jsonld.js
-Data Size: 610986 bytes
-Links Found: 4762</p>
-<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
-<p class="md-github">Node.js (CommonJS)</p>
+<h1 class="md-github"><a class="md-github__anchor" name="json-ldjs-api-implementation-documentation" href="#json-ldjs-api-implementation-documentation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSON-LD.js API Implementation Documentation</h1>
+<p class="md-github">Date Retrieved: 2024-06-15</p>
+<h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="nodejs--npm" href="#nodejs--npm"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Node.js + npm</h3>
 <p class="md-github">npm install jsonld
 const jsonld = require('jsonld');</p>
-<p class="md-github">ES Module</p>
+<h3 class="md-github"><a class="md-github__anchor" name="browser-bundler--npm" href="#browser-bundler--npm"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Browser (bundler) + npm</h3>
 <p class="md-github">npm install jsonld
-import * as jsonld from 'jsonld';</p>
-<p class="md-github">Browser Bundler</p>
-<p class="md-github">npm install jsonld
-Use webpack/Rollup targeting ES2017+</p>
-<h1 class="md-github"><a class="md-github__anchor" name="bundles" href="#bundles"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Bundles</h1>
-<p class="md-github">./dist/jsonld.min.js
-Polyfills, code transforms, legacy browser support</p>
-<p class="md-github">./dist/jsonld.esm.min.js
-ES Modules, minimal polyfills, modern browser support</p>
-<h1 class="md-github"><a class="md-github__anchor" name="api-methods" href="#api-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Methods</h1>
-<p class="md-github">compact(input: Object|string, context: Object|string, options?: Object): Promise<Object>
-expand(input: Object|string, options?: Object): Promise&lt;Array<Object>&gt;
-flatten(input: Object|string, context?: Object|string, options?: Object): Promise<Object>
-frame(input: Object|string, frame: Object|string, options?: Object): Promise<Object>
-canonize(input: Object|string, options?: {algorithm?: string, format?: string, useNative?: boolean}): Promise<string>
-toRDF(input: Object|string, options?: {format?: string}): Promise<string>
-fromRDF(input: string, options?: {format?: string}): Promise<Object>
-jsonld.registerRDFParser(contentType: string, parser: Function): void
-jsonld.documentLoaders.node(): Function
-jsonld.documentLoaders.xhr(): Function
-jsonld.documentLoader: Function override</p>
-<h1 class="md-github"><a class="md-github__anchor" name="configuration-options" href="#configuration-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration Options</h1>
-<p class="md-github">Default user-agent (Node.js): jsonld.js
-canonize algorithm: URDNA2015 (default)
-canonize format: application/n-quads
-expand/base defaults: null
-compactArrays: true
-compactToRelative: true
-embed (frame): true</p>
-<h1 class="md-github"><a class="md-github__anchor" name="safe-mode" href="#safe-mode"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Safe Mode</h1>
-<p class="md-github">Use safe mode to detect lossy operations:</p>
-<p class="md-github">await jsonld.expand(data, {safe: true});</p>
-<h1 class="md-github"><a class="md-github__anchor" name="testing--troubleshooting" href="#testing--troubleshooting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Testing &amp; Troubleshooting</h1>
+import * as jsonld from 'jsonld';
+// ES2017+ support required</p>
+<h3 class="md-github"><a class="md-github__anchor" name="browser-bundles" href="#browser-bundles"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Browser Bundles</h3>
+<p class="md-github">./dist/jsonld.min.js        // polyfilled, wide browser compatibility
+./dist/jsonld.esm.min.js    // ES Module browsers, lighter weight</p>
+<p class="md-github">Include via <script type="module" src=".../jsonld.esm.min.js"></script> and <script nomodule src=".../jsonld.min.js"></script></p>
+<h2 class="md-github"><a class="md-github__anchor" name="core-api-methods-and-signatures" href="#core-api-methods-and-signatures"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Core API Methods and Signatures</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="compactinput-context-options" href="#compactinput-context-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>compact(input, context, options)</h3>
+<p class="md-github">Signature:
+jsonld.compact(input: object|string, context: object|string, options?: {
+documentLoader?: (url: string, options?: object) =&gt; Promise&lt;{document: any, documentUrl: string, contextUrl: string|null}&gt;,
+expandContext?: object|string,
+processingMode?: 'json-ld-1.1'|'json-ld-1.0',
+compactArrays?: boolean,
+compactToRelative?: boolean,
+base?: string
+}): Promise<object></p>
+<p class="md-github">Description:
+Compacts an expanded JSON-LD document using a context.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="expandinput-options" href="#expandinput-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>expand(input, options)</h3>
+<p class="md-github">Signature:
+jsonld.expand(input: object|string, options?: {
+documentLoader?: Function,
+expandContext?: object|string,
+processingMode?: 'json-ld-1.1'|'json-ld-1.0'
+}): Promise&lt;Array<object>&gt;</p>
+<p class="md-github">Description:
+Removes contexts, returns array of expanded nodes.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="flatteninput-context-options" href="#flatteninput-context-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>flatten(input, context?, options?)</h3>
+<p class="md-github">Signature:
+jsonld.flatten(input: object|string, context?: object|string, options?: object): Promise<object></p>
+<p class="md-github">Description:
+Flattens a document by merging all graph elements into one.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="frameinput-frame-options" href="#frameinput-frame-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>frame(input, frame, options?)</h3>
+<p class="md-github">Signature:
+jsonld.frame(input: object|string, frame: object|string, options?: {
+documentLoader?: Function,
+pruneBlankNodeIdentifiers?: boolean,
+embed?: boolean,
+explicit?: boolean,
+omitGraph?: boolean,
+processingMode?: 'json-ld-1.1'|'json-ld-1.0'
+}): Promise<object></p>
+<p class="md-github">Description:
+Applies a frame to extract substructure matching the frame.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="canonizeinput-options" href="#canonizeinput-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>canonize(input, options)</h3>
+<p class="md-github">Signature:
+jsonld.canonize(input: object|string, options: {
+algorithm: 'URDNA2015'|'URGNA2012',
+format: 'application/n-quads'|'application/trig',
+documentLoader?: Function,
+processingMode?: 'json-ld-1.1'|'json-ld-1.0',
+useNative?: boolean
+}): Promise<string></p>
+<p class="md-github">Description:
+Returns canonical N-Quads string for hashing or comparison.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="tordfinput-options" href="#tordfinput-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>toRDF(input, options)</h3>
+<p class="md-github">Signature:
+jsonld.toRDF(input: object|string, options: {
+format: 'application/n-quads'|'application/trig',
+documentLoader?: Function,
+processingMode?: 'json-ld-1.1'|'json-ld-1.0'
+}): Promise&lt;string|object&gt;</p>
+<p class="md-github">Description:
+Serializes JSON-LD to RDF dataset or N-Quads.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="fromrdfinput-options" href="#fromrdfinput-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>fromRDF(input, options)</h3>
+<p class="md-github">Signature:
+jsonld.fromRDF(input: string|object, options: {
+format: 'application/n-quads'|'application/trig',
+rdfParser?: (input: any, contentType: string) =&gt; Promise<any>,
+documentLoader?: Function,
+processingMode?: 'json-ld-1.1'|'json-ld-1.0'
+}): Promise<object></p>
+<p class="md-github">Description:
+Parses RDF/N-Quads into JSON-LD.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="registerrdfparsercontenttype-parser" href="#registerrdfparsercontenttype-parser"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>registerRDFParser(contentType, parser)</h3>
+<p class="md-github">Signature(s):
+jsonld.registerRDFParser(contentType: string, parser: (input: string) =&gt; any): void
+jsonld.registerRDFParser(contentType: string, parser: (input: string) =&gt; Promise<any>): void</p>
+<p class="md-github">Description:
+Registers a custom synchronous or promise-based RDF parser for given MIME type.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="documentloaders" href="#documentloaders"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>documentLoaders</h3>
+<p class="md-github">jsonld.documentLoaders.node(): default Node.js loader (uses fetch), sets User-Agent: jsonld.js
+jsonld.documentLoaders.xhr(): default browser XHR loader</p>
+<p class="md-github">Override:
+jsonld.documentLoader = async (url, options) =&gt; { if(url in CONTEXTS) return {document: CONTEXTS[url], documentUrl: url, contextUrl: null}; return nodeLoader(url, options); };</p>
+<h3 class="md-github"><a class="md-github__anchor" name="safe-mode" href="#safe-mode"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Safe Mode</h3>
+<p class="md-github">Option <code class="md-github">safe: true</code> in expand, compact, frame, canonize to throw on lossy constructs.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="testing-and-tooling" href="#testing-and-tooling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Testing and Tooling</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="running-tests" href="#running-tests"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Running Tests</h3>
 <p class="md-github">npm test
+TESTS=&quot;/path/to/suites1 /path/to/suites2&quot; npm test
 npm run test-karma -- --browsers Firefox,Chrome
-npm run coverage &amp;&amp; npm run coverage-report
-TESTS=&quot;/path/to/suites&quot; npm test
-REPORTER=dot npm test
-EARL=earl.jsonld npm test
-rdf serialize earl.jsonld --output-format turtle -o earl.ttl</p>
+npm run coverage
+REPORTER=dot npm test</p>
+<h3 class="md-github"><a class="md-github__anchor" name="fetch-external-test-suites" href="#fetch-external-test-suites"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Fetch External Test Suites</h3>
+<p class="md-github">npm run fetch-test-suites  // clones into test-suites dir</p>
+<h3 class="md-github"><a class="md-github__anchor" name="earl-reports" href="#earl-reports"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>EARL Reports</h3>
+<p class="md-github">EARL=earl-node.jsonld npm test
+EARL=earl-firefox.jsonld npm run test-karma -- --browser Firefox</p>
+<h2 class="md-github"><a class="md-github__anchor" name="troubleshooting" href="#troubleshooting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting</h2>
+<ul class="md-github">
+<li class="md-github">If missing context URLs, use custom documentLoader.</li>
+<li class="md-github">For native canonize failures, benchmark and decide useNative flag.</li>
+<li class="md-github">For performance, disable polyfills by using esm bundle.</li>
+<li class="md-github">Check TEST_ENV and BENCHMARK flags in test.js for environment control.</li>
+</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
 <ul class="md-github">
-<li class="md-github">Source: JSON-LD 1.1 Specification &amp; JavaScript Implementation (jsonld.js)</li>
+<li class="md-github">Source: JSON-LD 1.1 Specification &amp; jsonld.js Implementation</li>
 <li class="md-github">URL: https://github.com/digitalbazaar/jsonld.js#readme</li>
 <li class="md-github">License: License</li>
-<li class="md-github">Crawl Date: 2025-04-27T11:49:07.705Z</li>
-<li class="md-github">Data Size: 610986 bytes</li>
-<li class="md-github">Links Found: 4762</li>
+<li class="md-github">Crawl Date: 2025-04-28T03:09:37.048Z</li>
+<li class="md-github">Data Size: 632028 bytes</li>
+<li class="md-github">Links Found: 4838</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
-<p class="md-github">2025-04-27</p>
+<p class="md-github">2025-04-28</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-28T02:47:50.792Z</p>
+    <p>Generated on 2025-04-28T03:31:08.730Z</p>
   </footer>
 </body>
 </html>
