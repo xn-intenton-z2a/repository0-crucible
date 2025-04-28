@@ -42,6 +42,10 @@
 </ul>
 </li>
 <li class="md-github"><strong class="md-github">Build Intermediate (<code class="md-github">--build-intermediate</code>)</strong>: Reads JSON files from <code class="md-github">data/</code>, transforms each into OWL JSON-LD intermediate artifacts in <code class="md-github">intermediate/</code>, logs each write, and prints a summary line.</li>
+<li class="md-github"><strong class="md-github">Build Enhanced (<code class="md-github">--build-enhanced</code>, alias <code class="md-github">-be</code>)</strong>: Runs the full ontology-building pipeline: refresh sources, build intermediate artifacts, and merge into a single enhanced OWL JSON-LD document. Examples:<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --build-enhanced
+node src/lib/main.js --build-enhanced data1 int1 out1
+</code></pre>
+</li>
 <li class="md-github"><strong class="md-github">Default Behavior</strong>: Running the CLI without any flags logs the provided arguments.</li>
 <li class="md-github"><strong class="md-github">Capital Cities (<code class="md-github">--capital-cities</code>)</strong>: Queries DBpedia for country-capital pairs and outputs an OWL-compatible JSON-LD document with <code class="md-github">@context</code> and <code class="md-github">@graph</code>.</li>
 </ul>
@@ -49,7 +53,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-04-28T04:22:13.517Z</p>
+    <p>Generated on 2025-04-28T05:22:53.721Z</p>
   </footer>
 </body>
 </html>
