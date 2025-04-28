@@ -5904,7 +5904,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
   
     
   
-    Read more about Etsy's customer story
+    Read more about ZibaSec's customer story
     
       
         
@@ -5915,8 +5915,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Etsy
-    Etsy migrated to the cloud to focus their craft on customers, not infrastructure.
+     ZibaSec
+    ZibaSec achieves great feats with a small team to protect federal organizations from phishing attacks.
     
       Read story 
 
@@ -5926,7 +5926,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Otto Group's customer story
+    Read more about Zendesk's customer story
     
       
         
@@ -5937,8 +5937,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Otto Group
-    Otto Group elevates developer engagement with GitHub Advanced Security.
+     Zendesk
+    Zendesk and GitHub: Building best-in-class tools for a decade—and counting.
     
       Read story 
 
@@ -5948,7 +5948,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Mercari's customer story
+    Read more about Zalando's customer story
     
       
         
@@ -5959,8 +5959,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Mercari
-    Mercari simplifies its security and CI/CD with GitHub Advanced Security and Actions.
+     Zalando
+    Zalando uses GitHub to facilitate collaboration and prioritize open source contributions.
     
       Read story 
 
@@ -5970,7 +5970,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Decathlon's customer story
+    Read more about XING's customer story
     
       
         
@@ -5981,8 +5981,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Decathlon
-    The world’s largest sporting goods retail brand embraces open source to stay modern.
+     XING
+    XING integrates open and closed source code to build collaborative workflows everyone can use—from project planning to QA.
     
       Read story 
 
@@ -5992,7 +5992,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Brother Industries's customer story
+    Read more about White Label: International Retailer's customer story
     
       
         
@@ -6003,8 +6003,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Brother Industries
-    Brother Industries stays ahead of their customer’s needs through cross-functional collaboration.
+     White Label: International Retailer
+    The world’s third largest retailer partners with GitHub to drive innovation through open source best practices.
     
       Read story 
 
@@ -6703,7 +6703,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
   
     
   
-    Read more about Buffer's customer story
+    Read more about Netdata's customer story
     
       
         
@@ -6714,8 +6714,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Buffer
-    Buffer goes from siloed to synced for better production releases.
+     Netdata
+    Netdata accelerates their developer workflow with built-in security and open source.
     
       Read story 
 
@@ -6725,7 +6725,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Cesium's customer story
+    Read more about Peak Money's customer story
     
       
         
@@ -6736,8 +6736,8 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Cesium
-    Cesium leverages an open source community to support the development of 3D geospatial applications.
+     Peak Money
+    Peak Money collaborates across tools, teams, and time zones with GitHub Team.
     
       Read story 
 
@@ -6769,28 +6769,6 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Knock's customer story
-    
-      
-        
-  
-  
-  
-  
-
-      
-    
-     Knock
-    Knock pivots to new products, with the help of GitHub’s fast, flexible developer workflows.
-    
-      Read story 
-
-    
-  
-
-
-    
-  
     Read more about Modsy's customer story
     
       
@@ -6813,7 +6791,7 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
     
   
-    Read more about Netdata's customer story
+    Read more about Sketch's customer story
     
       
         
@@ -6824,8 +6802,30 @@ Learn moreModernizing COBOL with GitHub CopilotEbookExplore how GitHub Copilot c
 
       
     
-     Netdata
-    Netdata accelerates their developer workflow with built-in security and open source.
+     Sketch
+    Sketch streamlines their workflows to provide teams with a comprehensive digital design editor.
+    
+      Read story 
+
+    
+  
+
+
+    
+  
+    Read more about Tray.io's customer story
+    
+      
+        
+  
+  
+  
+  
+
+      
+    
+     Tray.io
+    GitHub Team helps the general automation platform build, package, and deploy code faster than ever.
     
       Read story 
 
@@ -8273,9 +8273,9 @@ The ReadME Project
     
         
       
-        Bitcoin
+        SpaceVim
       
-      Bitcoin is a cryptocurrency developed by Satoshi Nakamoto.
+      SpaceVim is a community-driven distribution of the vim editor that allows managing your plugins in layers.
     
   
 
@@ -8289,9 +8289,9 @@ The ReadME Project
     
         
       
-        C++
+        Linux
       
-      C++ is a general purpose and object-oriented programming language.
+      Linux is an open source kernel.
     
   
 
@@ -8305,9 +8305,9 @@ The ReadME Project
     
         
       
-        Ruby
+        R
       
-      Ruby is a scripting language designed for simplified object-oriented programming.
+      R is a free programming language and software environment for statistical computing and graphics.
     
   
 
@@ -8889,6 +8889,11 @@ The ReadME Project
       
           
             
+  javascript
+
+          
+          
+            
   css
 
           
@@ -8904,12 +8909,17 @@ The ReadME Project
           
           
             
+  java
+
+          
+          
+            
   html
 
           
           
             
-  automation
+  api
 
           
           
@@ -8919,17 +8929,7 @@ The ReadME Project
           
           
             
-  html5
-
-          
-          
-            
-  css3
-
-          
-          
-            
-  404-page
+  ai
 
           
           
@@ -8943,160 +8943,12 @@ The ReadME Project
     
 
       
-        getzep /
+        hacksider /
 
-      graphiti  
-
-    
-      Build Real-Time Knowledge Graphs for AI Agents
-    
-
-  
-      
-  
-  Python
-
-
-
-      
-        6,702
-      
-        448
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        461 stars today
-  
-
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        microsoft /
-
-      generative-ai-for-beginners  
+      Deep-Live-Cam  
 
     
-      21 Lessons, Get Started Building with Generative AI 🔗 https://microsoft.github.io/generative-ai-for-beginners/
-    
-
-  
-      
-  
-  Jupyter Notebook
-
-
-
-      
-        80,546
-      
-        41,498
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        277 stars today
-  
-
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        rowboatlabs /
-
-      rowboat  
-
-    
-      AI-powered multi-agent builder
-    
-
-  
-      
-  
-  TypeScript
-
-
-
-      
-        1,968
-      
-        155
-      
-        Built by
-
-          
-          
-          
-          
-
-      
-        
-        329 stars today
-  
-
-  
-        
-    
-    
-      Sponsor
-    
-  
-
-
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        bregman-arie /
-
-      devops-exercises  
-
-    
-      Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, Terraform, OpenStack, SQL, NoSQL, Azure, GCP, DNS, Elastic, Network, Virtualization. DevOps Interview Questions
+      real time face swap and one-click video deepfake with only a single image
     
 
   
@@ -9107,56 +8959,9 @@ The ReadME Project
 
 
       
-        75,217
+        51,081
       
-        16,733
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        296 stars today
-  
-
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        Stirling-Tools /
-
-      Stirling-PDF  
-
-    
-      #1 Locally hosted web application that allows you to perform various operations on PDF files
-    
-
-  
-      
-  
-  Java
-
-
-
-      
-        57,057
-      
-        4,782
+        7,581
       
         Built by
 
@@ -9168,276 +8973,7 @@ The ReadME Project
 
       
         
-        100 stars today
-  
-
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        tracel-ai /
-
-      burn  
-
-    
-      Burn is a next generation Deep Learning Framework that doesn't compromise on flexibility, efficiency and portability.
-    
-
-  
-      
-  
-  Rust
-
-
-
-      
-        10,802
-      
-        545
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        50 stars today
-  
-
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        trimstray /
-
-      the-book-of-secret-knowledge  
-
-    
-      A collection of inspiring lists, manuals, cheatsheets, blogs, hacks, one-liners, cli/web tools and more.
-    
-
-  
-
-      
-        167,020
-      
-        10,450
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        1,321 stars today
-  
-
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        0xk1h0 /
-
-      ChatGPT_DAN  
-
-    
-      ChatGPT DAN, Jailbreaks prompt
-    
-
-  
-
-      
-        7,904
-      
-        714
-      
-        Built by
-
-          
-          
-
-      
-        
-        277 stars today
-  
-
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        codecrafters-io /
-
-      build-your-own-x  
-
-    
-      Master programming by recreating your favorite technologies from scratch.
-    
-
-  
-      
-  
-  Markdown
-
-
-
-      
-        375,762
-      
-        34,974
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        354 stars today
-  
-
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        simular-ai /
-
-      Agent-S  
-
-    
-      Agent S: an open agentic framework that uses computers like a human
-    
-
-  
-      
-  
-  Python
-
-
-
-      
-        2,965
-      
-        309
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        110 stars today
-  
-
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        2dust /
-
-      v2rayN  
-
-    
-      A GUI client for Windows, Linux and macOS, support Xray and sing-box and others
-    
-
-  
-      
-  
-  C#
-
-
-
-      
-        78,863
-      
-        12,544
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        68 stars today
+        173 stars today
   
 
   
@@ -9470,9 +9006,9 @@ The ReadME Project
 
 
       
-        35,636
+        35,671
       
-        1,102
+        1,105
       
         Built by
 
@@ -9501,25 +9037,25 @@ The ReadME Project
     
 
       
-        exa-labs /
+        getzep /
 
-      exa-mcp-server  
+      graphiti  
 
     
-      Claude can perform Web Search | Exa with MCP (Model Context Protocol)
+      Build Real-Time Knowledge Graphs for AI Agents
     
 
   
       
   
-  TypeScript
+  Python
 
 
 
       
-        1,359
+        7,078
       
-        107
+        462
       
         Built by
 
@@ -9531,7 +9067,373 @@ The ReadME Project
 
       
         
-        118 stars today
+        461 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        jujumilk3 /
+
+      leaked-system-prompts  
+
+    
+      Collection of leaked system prompts
+    
+
+  
+
+      
+        4,477
+      
+        522
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        483 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        drawdb-io /
+
+      drawdb  
+
+    
+      Free, simple, and intuitive online database diagram editor and SQL generator.
+    
+
+  
+      
+  
+  JavaScript
+
+
+
+      
+        28,938
+      
+        2,027
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        391 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        microsoft /
+
+      generative-ai-for-beginners  
+
+    
+      21 Lessons, Get Started Building with Generative AI 🔗 https://microsoft.github.io/generative-ai-for-beginners/
+    
+
+  
+      
+  
+  Jupyter Notebook
+
+
+
+      
+        80,652
+      
+        41,526
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        277 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        Tencent /
+
+      Hunyuan3D-2  
+
+    
+      High-Resolution 3D Assets Generation with Large Scale Hunyuan3D Diffusion Models.
+    
+
+  
+      
+  
+  Python
+
+
+
+      
+        8,848
+      
+        754
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        61 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        kortix-ai /
+
+      suna  
+
+    
+      Suna - Open Source Generalist AI Agent
+    
+
+  
+      
+  
+  TypeScript
+
+
+
+      
+        8,326
+      
+        938
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        1,450 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        trimstray /
+
+      the-book-of-secret-knowledge  
+
+    
+      A collection of inspiring lists, manuals, cheatsheets, blogs, hacks, one-liners, cli/web tools and more.
+    
+
+  
+
+      
+        167,141
+      
+        10,460
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        1,321 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        langgenius /
+
+      dify  
+
+    
+      Dify is an open-source LLM app development platform. Dify's intuitive interface combines AI workflow, RAG pipeline, agent capabilities, model management, observability features and more, letting you quickly go from prototype to production.
+    
+
+  
+      
+  
+  TypeScript
+
+
+
+      
+        94,730
+      
+        14,162
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        219 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        codecrafters-io /
+
+      build-your-own-x  
+
+    
+      Master programming by recreating your favorite technologies from scratch.
+    
+
+  
+      
+  
+  Markdown
+
+
+
+      
+        375,892
+      
+        34,992
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        354 stars today
   
 
   
@@ -9556,25 +9458,25 @@ The ReadME Project
     
 
       
-        khoj-ai /
+        patchy631 /
 
-      khoj  
+      ai-engineering-hub  
 
     
-      Your AI second brain. Self-hostable. Get answers from the web or your docs. Build custom agents, schedule automations, do deep research. Turn any online or local LLM into your personal, autonomous AI (gpt, claude, gemini, llama, qwen, mistral). Get started - free.
+      In-depth tutorials on LLMs, RAGs and real-world AI agent applications.
     
 
   
       
   
-  Python
+  Jupyter Notebook
 
 
 
       
-        29,762
+        8,262
       
-        1,652
+        1,412
       
         Built by
 
@@ -9586,7 +9488,108 @@ The ReadME Project
 
       
         
-        219 stars today
+        44 stars today
+  
+
+  
+        
+    
+    
+      Sponsor
+    
+  
+
+
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        lobehub /
+
+      lobe-chat  
+
+    
+      🤯 Lobe Chat - an open-source, modern-design AI chat framework. Supports Multi AI Providers( OpenAI / Claude 3 / Gemini / Ollama / DeepSeek / Qwen), Knowledge Base (file upload / knowledge management / RAG ), Multi-Modals (Plugins/Artifacts) and Thinking. One-click FREE deployment of your private ChatGPT/ Claude / DeepSeek application.
+    
+
+  
+      
+  
+  TypeScript
+
+
+
+      
+        59,427
+      
+        12,603
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        61 stars today
+  
+
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        rowboatlabs /
+
+      rowboat  
+
+    
+      AI-powered multi-agent builder
+    
+
+  
+      
+  
+  TypeScript
+
+
+
+      
+        2,041
+      
+        159
+      
+        Built by
+
+          
+          
+          
+          
+
+      
+        
+        329 stars today
   
 
   
@@ -9627,7 +9630,7 @@ The ReadME Project
 
 
       
-        11,909
+        11,941
       
         235
       
@@ -9645,14 +9648,6 @@ The ReadME Project
   
 
   
-        
-    
-    
-      Sponsor
-    
-  
-
-
 
       
             
@@ -9666,83 +9661,34 @@ The ReadME Project
     
 
       
-        Raphire /
+        bgstaal /
 
-      Win11Debloat  
+      multipleWindow3dScene  
 
     
-      A simple, easy to use PowerShell script to remove pre-installed apps from Windows, disable telemetry, remove Bing from Windows search as well as perform various other changes to declutter and improve your Windows experience. This script works for both Windows 10 and Windows 11.
+      A quick example of how one can "synchronize" a 3d scene across multiple windows using three.js and localStorage
     
 
   
       
   
-  PowerShell
+  JavaScript
 
 
 
       
-        19,442
+        17,665
       
-        826
+        2,716
       
         Built by
 
           
           
-          
-          
 
       
         
-        92 stars today
-  
-
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        microsoft /
-
-      terminal  
-
-    
-      The new Windows Terminal and the original Windows console host, all in the same place!
-    
-
-  
-      
-  
-  C++
-
-
-
-      
-        97,907
-      
-        8,535
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        24 stars today
+        253 stars today
   
 
   
@@ -9759,37 +9705,29 @@ The ReadME Project
     
 
       
-        kortix-ai /
+        0xk1h0 /
 
-      suna  
+      ChatGPT_DAN  
 
     
-      Suna - Open Source Generalist AI Agent
+      ChatGPT DAN, Jailbreaks prompt
     
 
   
-      
-  
-  TypeScript
-
-
 
       
-        8,103
+        8,019
       
-        912
+        716
       
         Built by
 
           
           
-          
-          
-          
 
       
         
-        1,450 stars today\n\nExplore
+        277 stars today\n\nExplore
 
       Topics
 
@@ -11863,166 +11801,12 @@ The ReadME Project
     
 
       
-        getzep /
+        hacksider /
 
-      graphiti  
-
-    
-      Build Real-Time Knowledge Graphs for AI Agents
-    
-
-  
-      
-  
-  Python
-
-
-
-      
-        6,702
-      
-        448
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        461 stars today
-  
-
-
-          
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        microsoft /
-
-      generative-ai-for-beginners  
+      Deep-Live-Cam  
 
     
-      21 Lessons, Get Started Building with Generative AI 🔗 https://microsoft.github.io/generative-ai-for-beginners/
-    
-
-  
-      
-  
-  Jupyter Notebook
-
-
-
-      
-        80,546
-      
-        41,498
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        277 stars today
-  
-
-
-          
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        rowboatlabs /
-
-      rowboat  
-
-    
-      AI-powered multi-agent builder
-    
-
-  
-      
-  
-  TypeScript
-
-
-
-      
-        1,968
-      
-        155
-      
-        Built by
-
-          
-          
-          
-          
-
-      
-        
-        329 stars today
-  
-
-
-          
-  
-        
-    
-    
-      Sponsor
-    
-  
-
-
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        bregman-arie /
-
-      devops-exercises  
-
-    
-      Linux, Jenkins, AWS, SRE, Prometheus, Docker, Python, Ansible, Git, Kubernetes, Terraform, OpenStack, SQL, NoSQL, Azure, GCP, DNS, Elastic, Network, Virtualization. DevOps Interview Questions
+      real time face swap and one-click video deepfake with only a single image
     
 
   
@@ -12033,58 +11817,9 @@ The ReadME Project
 
 
       
-        75,217
+        51,081
       
-        16,733
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        296 stars today
-  
-
-
-          
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        Stirling-Tools /
-
-      Stirling-PDF  
-
-    
-      #1 Locally hosted web application that allows you to perform various operations on PDF files
-    
-
-  
-      
-  
-  Java
-
-
-
-      
-        57,057
-      
-        4,782
+        7,581
       
         Built by
 
@@ -12096,288 +11831,7 @@ The ReadME Project
 
       
         
-        100 stars today
-  
-
-
-          
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        tracel-ai /
-
-      burn  
-
-    
-      Burn is a next generation Deep Learning Framework that doesn't compromise on flexibility, efficiency and portability.
-    
-
-  
-      
-  
-  Rust
-
-
-
-      
-        10,802
-      
-        545
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        50 stars today
-  
-
-
-          
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        trimstray /
-
-      the-book-of-secret-knowledge  
-
-    
-      A collection of inspiring lists, manuals, cheatsheets, blogs, hacks, one-liners, cli/web tools and more.
-    
-
-  
-
-      
-        167,020
-      
-        10,450
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        1,321 stars today
-  
-
-
-          
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        0xk1h0 /
-
-      ChatGPT_DAN  
-
-    
-      ChatGPT DAN, Jailbreaks prompt
-    
-
-  
-
-      
-        7,904
-      
-        714
-      
-        Built by
-
-          
-          
-
-      
-        
-        277 stars today
-  
-
-
-          
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        codecrafters-io /
-
-      build-your-own-x  
-
-    
-      Master programming by recreating your favorite technologies from scratch.
-    
-
-  
-      
-  
-  Markdown
-
-
-
-      
-        375,762
-      
-        34,974
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        354 stars today
-  
-
-
-          
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        simular-ai /
-
-      Agent-S  
-
-    
-      Agent S: an open agentic framework that uses computers like a human
-    
-
-  
-      
-  
-  Python
-
-
-
-      
-        2,965
-      
-        309
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        110 stars today
-  
-
-
-          
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        2dust /
-
-      v2rayN  
-
-    
-      A GUI client for Windows, Linux and macOS, support Xray and sing-box and others
-    
-
-  
-      
-  
-  C#
-
-
-
-      
-        78,863
-      
-        12,544
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        68 stars today
+        173 stars today
   
 
 
@@ -12412,9 +11866,9 @@ The ReadME Project
 
 
       
-        35,636
+        35,671
       
-        1,102
+        1,105
       
         Built by
 
@@ -12445,25 +11899,25 @@ The ReadME Project
     
 
       
-        exa-labs /
+        getzep /
 
-      exa-mcp-server  
+      graphiti  
 
     
-      Claude can perform Web Search | Exa with MCP (Model Context Protocol)
+      Build Real-Time Knowledge Graphs for AI Agents
     
 
   
       
   
-  TypeScript
+  Python
 
 
 
       
-        1,359
+        7,078
       
-        107
+        462
       
         Built by
 
@@ -12475,7 +11929,389 @@ The ReadME Project
 
       
         
-        118 stars today
+        461 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        jujumilk3 /
+
+      leaked-system-prompts  
+
+    
+      Collection of leaked system prompts
+    
+
+  
+
+      
+        4,477
+      
+        522
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        483 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        drawdb-io /
+
+      drawdb  
+
+    
+      Free, simple, and intuitive online database diagram editor and SQL generator.
+    
+
+  
+      
+  
+  JavaScript
+
+
+
+      
+        28,938
+      
+        2,027
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        391 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        microsoft /
+
+      generative-ai-for-beginners  
+
+    
+      21 Lessons, Get Started Building with Generative AI 🔗 https://microsoft.github.io/generative-ai-for-beginners/
+    
+
+  
+      
+  
+  Jupyter Notebook
+
+
+
+      
+        80,652
+      
+        41,526
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        277 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        Tencent /
+
+      Hunyuan3D-2  
+
+    
+      High-Resolution 3D Assets Generation with Large Scale Hunyuan3D Diffusion Models.
+    
+
+  
+      
+  
+  Python
+
+
+
+      
+        8,848
+      
+        754
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        61 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        kortix-ai /
+
+      suna  
+
+    
+      Suna - Open Source Generalist AI Agent
+    
+
+  
+      
+  
+  TypeScript
+
+
+
+      
+        8,326
+      
+        938
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        1,450 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        trimstray /
+
+      the-book-of-secret-knowledge  
+
+    
+      A collection of inspiring lists, manuals, cheatsheets, blogs, hacks, one-liners, cli/web tools and more.
+    
+
+  
+
+      
+        167,141
+      
+        10,460
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        1,321 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        langgenius /
+
+      dify  
+
+    
+      Dify is an open-source LLM app development platform. Dify's intuitive interface combines AI workflow, RAG pipeline, agent capabilities, model management, observability features and more, letting you quickly go from prototype to production.
+    
+
+  
+      
+  
+  TypeScript
+
+
+
+      
+        94,730
+      
+        14,162
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        219 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        codecrafters-io /
+
+      build-your-own-x  
+
+    
+      Master programming by recreating your favorite technologies from scratch.
+    
+
+  
+      
+  
+  Markdown
+
+
+
+      
+        375,892
+      
+        34,992
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        354 stars today
   
 
 
@@ -12502,25 +12338,25 @@ The ReadME Project
     
 
       
-        khoj-ai /
+        patchy631 /
 
-      khoj  
+      ai-engineering-hub  
 
     
-      Your AI second brain. Self-hostable. Get answers from the web or your docs. Build custom agents, schedule automations, do deep research. Turn any online or local LLM into your personal, autonomous AI (gpt, claude, gemini, llama, qwen, mistral). Get started - free.
+      In-depth tutorials on LLMs, RAGs and real-world AI agent applications.
     
 
   
       
   
-  Python
+  Jupyter Notebook
 
 
 
       
-        29,762
+        8,262
       
-        1,652
+        1,412
       
         Built by
 
@@ -12532,7 +12368,112 @@ The ReadME Project
 
       
         
-        219 stars today
+        44 stars today
+  
+
+
+          
+  
+        
+    
+    
+      Sponsor
+    
+  
+
+
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        lobehub /
+
+      lobe-chat  
+
+    
+      🤯 Lobe Chat - an open-source, modern-design AI chat framework. Supports Multi AI Providers( OpenAI / Claude 3 / Gemini / Ollama / DeepSeek / Qwen), Knowledge Base (file upload / knowledge management / RAG ), Multi-Modals (Plugins/Artifacts) and Thinking. One-click FREE deployment of your private ChatGPT/ Claude / DeepSeek application.
+    
+
+  
+      
+  
+  TypeScript
+
+
+
+      
+        59,427
+      
+        12,603
+      
+        Built by
+
+          
+          
+          
+          
+          
+
+      
+        
+        61 stars today
+  
+
+
+          
+  
+
+      
+            
+        
+          Star
+
+
+  
+
+  
+    
+
+      
+        rowboatlabs /
+
+      rowboat  
+
+    
+      AI-powered multi-agent builder
+    
+
+  
+      
+  
+  TypeScript
+
+
+
+      
+        2,041
+      
+        159
+      
+        Built by
+
+          
+          
+          
+          
+
+      
+        
+        329 stars today
   
 
 
@@ -12575,7 +12516,7 @@ The ReadME Project
 
 
       
-        11,909
+        11,941
       
         235
       
@@ -12595,14 +12536,6 @@ The ReadME Project
 
           
   
-        
-    
-    
-      Sponsor
-    
-  
-
-
 
       
             
@@ -12616,85 +12549,34 @@ The ReadME Project
     
 
       
-        Raphire /
+        bgstaal /
 
-      Win11Debloat  
+      multipleWindow3dScene  
 
     
-      A simple, easy to use PowerShell script to remove pre-installed apps from Windows, disable telemetry, remove Bing from Windows search as well as perform various other changes to declutter and improve your Windows experience. This script works for both Windows 10 and Windows 11.
+      A quick example of how one can "synchronize" a 3d scene across multiple windows using three.js and localStorage
     
 
   
       
   
-  PowerShell
+  JavaScript
 
 
 
       
-        19,442
+        17,665
       
-        826
+        2,716
       
         Built by
 
           
           
-          
-          
 
       
         
-        92 stars today
-  
-
-
-          
-  
-
-      
-            
-        
-          Star
-
-
-  
-
-  
-    
-
-      
-        microsoft /
-
-      terminal  
-
-    
-      The new Windows Terminal and the original Windows console host, all in the same place!
-    
-
-  
-      
-  
-  C++
-
-
-
-      
-        97,907
-      
-        8,535
-      
-        Built by
-
-          
-          
-          
-          
-          
-
-      
-        
-        24 stars today
+        253 stars today
   
 
 
@@ -12713,37 +12595,29 @@ The ReadME Project
     
 
       
-        kortix-ai /
+        0xk1h0 /
 
-      suna  
+      ChatGPT_DAN  
 
     
-      Suna - Open Source Generalist AI Agent
+      ChatGPT DAN, Jailbreaks prompt
     
 
   
-      
-  
-  TypeScript
-
-
 
       
-        8,103
+        8,019
       
-        912
+        716
       
         Built by
 
           
           
-          
-          
-          
 
       
         
-        1,450 stars today\n\n\n\n#
+        277 stars today\n\n\n\n#
     
 
     
@@ -12945,17 +12819,9 @@ The ReadME Project
     
         
   
-      #
-    Game Engines
-    Frameworks for building games across multiple platforms.
-  
-
-
-        
-  
       
-    Learn to Code
-    Resources to help people learn to code
+    Pixel Art Tools
+    Creating pixel art for fun or animated sprites for a game? The digital artist in you will love these apps and tools!
   
 
 
@@ -12964,6 +12830,14 @@ The ReadME Project
       
     Made in Brazil
     Open source projects built in or receiving significant contributions from Brazil :brazil:
+  
+
+
+        
+  
+      #
+    Game Engines
+    Frameworks for building games across multiple platforms.
   
 
 
@@ -24896,7 +24770,6 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
 
       
           
-  
   digitalbazaar/vc-commit-tracker’s past year of commit activity
 
     
@@ -25292,26 +25165,10 @@ We recommend limiting training sessions to a maximum of 16 participants to ensur
   
 
 
+  
     
-      
-        
-          Most used topics
-        
-        
-            
-  json-ld
-
-            
-  rdf
-
-            
-  linked-data
-
-            
-  cryptography
-
-            
-  semantic-web\n\n\n\njsonld.js
+      Most used topics
+      Loading…\n\n\n\njsonld.js
 
 
 
@@ -30559,4 +30416,10087 @@ Additional navigation options
         
       
         
-          Insights\n\n\n\n
+          Insights\n\n\n\ndigitalbazaar
+    
+    /
+    
+      jsonld.js
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    200
+
+  
+
+  
+        
+            
+          Star
+          1.7k
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          125
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          28
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Wiki
+          
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Wiki
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+    
+      
+  
+
+
+  Issues: digitalbazaar/jsonld.js
+
+
+
+  
+      Beta
+      
+    ⚡Try the new experience
+  
+
+
+    
+
+
+  
+
+    
+      
+      
+    
+      
+
+  
+    
+    Labels
+      3
+  
+    
+    Milestones
+      2
+
+
+    
+  
+  
+    
+      
+
+  
+    
+    Labels
+      3
+  
+    
+    Milestones
+      2
+
+
+    
+             
+
+
+  
+    
+    New issue
+  
+  
+            
+    
+              
+  
+
+
+
+  
+    Have a question about this project? Sign up for a free GitHub account to open an issue and contact its maintainers and the community.
+  
+
+  
+          Sign up for GitHub
+
+  
+
+  By clicking “Sign up for GitHub”, you agree to our terms of service and
+  privacy statement. We’ll occasionally send you account related emails.
+
+  
+    Already on GitHub?
+    Sign in
+    to your account
+  
+
+
+
+  
+
+  
+
+
+
+
+  
+    
+
+    
+      
+      125 Open
+    
+
+    
+      
+      231 Closed
+    
+
+
+  
+
+  
+        
+
+  
+    
+      
+
+    
+      
+      125 Open
+    
+
+    
+      
+      231 Closed
+    
+
+
+    
+
+      
+        
+  
+    
+      Author
+      
+    
+    
+      
+        
+          Filter by author
+          
+            
+          
+        
+        
+          
+        
+        
+          
+            
+              
+      Loading
+
+          
+          
+            
+            
+              author:
+              Filter by this user
+            
+        
+      
+    
+  
+
+          
+
+  
+    Label
+    
+  
+  
+    
+      
+        Filter by label
+        
+          
+        
+      
+      
+        
+      
+      
+        
+      Loading
+
+      
+        
+          Use alt + click/return to exclude labels
+        
+        
+          or ⇧ + click/return for logical OR
+        
+      
+    
+  
+
+
+        
+            
+
+        Projects
+    
+  
+    
+      
+        Filter by project
+        
+          
+        
+      
+      
+        
+      Loading
+
+     
+  
+
+
+            
+
+        Milestones
+    
+  
+    
+      
+        Filter by milestone
+        
+          
+        
+      
+      
+        
+      
+      
+        
+      Loading
+
+    
+  
+
+
+        
+        
+
+  
+    Assignee
+    
+  
+  
+    
+      
+        Filter by who’s assigned
+        
+          
+        
+      
+      
+        
+      
+      
+        
+          
+            
+            Assigned to nobody
+          
+          
+            
+      Loading
+
+        
+        
+          
+          
+            assignee:
+            Filter by this user
+          
+      
+    
+  
+
+
+        
+
+  
+    Sort
+    
+  
+  
+    
+      
+        Sort by
+        
+          
+        
+      
+
+      
+          
+            
+            Newest
+          
+          
+            
+            Oldest
+          
+          
+            
+            Most commented
+          
+          
+            
+            Least commented
+          
+          
+            
+            Recently updated
+          
+          
+            
+            Least recently updated
+          
+          
+            
+            Best match
+          
+
+        Most reactions
+        
+            
+              👍
+            
+            
+              👎
+            
+            
+              😄
+            
+            
+              🎉
+            
+            
+              😕
+            
+            
+              ❤️
+            
+            
+              🚀
+            
+            
+              👀
+            
+        
+      
+    
+  
+
+
+      
+  
+
+
+
+
+      Issues list
+      
+        
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      @type as an array allowed for literals
+
+
+      
+        
+          #568
+            opened Mar 12, 2025 by
+            Tpt
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Module not found: Can't resolve 'rdf-canonize-native' during build in RDFLib dependency
+
+
+      
+        
+          #567
+            opened Mar 6, 2025 by
+            danielbakas
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            6
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Frame error : "RangeError Maximum call stack exceeded"
+
+
+        
+              
+
+                bug
+
+        
+      
+        
+          #566
+            opened Mar 5, 2025 by
+            tfrancart
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            2
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Framing : @type still included although @explicit = true
+
+
+      
+        
+          #565
+            opened Feb 28, 2025 by
+            tfrancart
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Lint complains of redefinition when re-using term with context
+
+
+      
+        
+          #563
+            opened Feb 4, 2025 by
+            absoludity
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            3
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Report invalid data URL errors.
+
+
+      
+        
+          #562
+            opened Jan 30, 2025 by
+            BigBlueHat
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            3
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Improve jsonld.UnsupportedVersion error for strings.
+
+
+      
+        
+          #559
+            opened Oct 17, 2024 by
+            davidlehn
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            1
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      defining a prop as xsd:boolean loses its prefixed URL
+
+
+      
+        
+          #558
+            opened Oct 12, 2024 by
+            VladimirAlexiev
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            3
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      use the JSON primitive types for Boolean, Integer, Number in compaction output
+
+
+      
+        
+          #554
+            opened Jun 17, 2024 by
+            fennibay
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Ll
+
+
+      
+        
+          #553
+            opened Jun 7, 2024 by
+            Sheenacain
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            1
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Consider optimizing createNodeMap by using Map internally (instead of JS object)
+
+
+      
+        
+          #551
+            opened May 26, 2024 by
+            dlongley
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Update devDependencies.
+
+
+      
+        
+          #550
+            opened Apr 24, 2024 by
+            BigBlueHat
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            1
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Bug with using @import and contexts that use @vocab
+
+
+      
+        
+          #547
+            opened Jan 2, 2024 by
+            dlongley
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+
+              
+                
+          
+        
+      
+
+      
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Forward slash in JSON key treated as error
+
+
+      
+        
+          #543
+            opened Nov 23, 2023 by
+            jakubklimek
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            6
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Improve @language and @direction safe mode checks.
+
+
+      
+        
+          #541
+            opened Nov 9, 2023 by
+            davidlehn
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            2
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Request to release an update with updated dependecies
+
+
+      
+        
+          #540
+            opened Oct 23, 2023 by
+            sukeshpabolu
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            6
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      CORS issue with schema.org, with minimal example
+
+
+      
+        
+          #538
+            opened Sep 22, 2023 by
+            Pfeil
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            1
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      @import overrides ResolvedContext LRU cache
+
+
+      
+        
+          #537
+            opened Sep 12, 2023 by
+            F-Node-Karlsruhe
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Improve regex usage.
+
+
+        
+              
+
+                performance
+
+        
+      
+        
+          #532
+            opened Aug 31, 2023 by
+            davidlehn
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+
+              
+                
+          
+        
+      
+
+      
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Are there any plans to add again the custom documentLoader?
+
+
+      
+        
+          #530
+            opened Aug 30, 2023 by
+            phochste
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Safe-mode breaks DID-Core spec
+
+
+      
+        
+          #526
+            opened Jul 31, 2023 by
+            lemoustachiste
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            4
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Example 9 has different results in the playground
+
+
+      
+        
+          #525
+            opened Jun 16, 2023 by
+            wouterbeek
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            1
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      digitalbazaar/http-client
+
+
+      
+        
+          #516
+            opened Mar 23, 2023 by
+            malins
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            12
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Handle blank nodes without blank node prefix properly
+
+
+      
+        
+          #515
+            opened Mar 23, 2023 by
+            MarcusElevait
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            2
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      JSON Array of length 1 gets compacted into non array
+
+
+      
+        
+          #509
+            opened Feb 22, 2023 by
+            adlerfaulkner
+            
+        
+
+        
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            8
+          
+      
+    
+
+      
+  
+
+
+        
+      
+  
+
+  
+      Previous 1 2 3 4 5 Next
+  
+
+  
+      Previous Next
+  
+
+  
+  
+  ProTip!
+  Type g p on any issue or pull request to go back to the pull request listing page.\n\n\n\ndigitalbazaar
+    
+    /
+    
+      jsonld.js
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    200
+
+  
+
+  
+        
+            
+          Star
+          1.7k
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          125
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          28
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Wiki
+          
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Wiki
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+    
+      
+  
+
+
+  Pull requests: digitalbazaar/jsonld.js
+
+
+
+
+    
+
+
+  
+
+    
+      
+      
+    
+      
+
+  
+    
+    Labels
+      3
+  
+    
+    Milestones
+      2
+
+
+    
+  
+  
+    
+      
+
+  
+    
+    Labels
+      3
+  
+    
+    Milestones
+      2
+
+
+    
+            
+    New pull request
+            New
+  
+
+  
+
+
+
+
+  
+    
+
+    
+      
+      28 Open
+    
+
+    
+      
+      182 Closed
+    
+
+
+  
+
+  
+        
+
+  
+    
+      
+
+    
+      
+      28 Open
+    
+
+    
+      
+      182 Closed
+    
+
+
+    
+
+      
+        
+  
+    
+      Author
+      
+    
+    
+      
+        
+          Filter by author
+          
+            
+          
+        
+        
+          
+        
+        
+          
+            
+              
+      Loading
+
+          
+          
+            
+            
+              author:
+              Filter by this user
+            
+        
+      
+    
+  
+
+          
+
+  
+    Label
+    
+  
+  
+    
+      
+        Filter by label
+        
+          
+        
+      
+      
+        
+      
+      
+        
+      Loading
+
+      
+        
+          Use alt + click/return to exclude labels
+        
+        
+          or ⇧ + click/return for logical OR
+        
+      
+    
+  
+
+
+        
+            
+
+        Projects
+    
+  
+    
+      
+        Filter by project
+        
+          
+        
+      
+      
+        
+      Loading
+
+     
+  
+
+
+            
+
+        Milestones
+    
+  
+    
+      
+        Filter by milestone
+        
+          
+        
+      
+      
+        
+      
+      
+        
+      Loading
+
+    
+  
+
+
+            
+        Reviews
+    
+  
+    
+      
+        Filter by reviews
+        
+          
+        
+      
+      
+          
+            
+            No reviews
+          
+          
+            
+            Review required
+          
+          
+            
+            Approved review
+          
+          
+            
+            Changes requested
+          
+      
+    
+  
+
+
+        
+        
+
+  
+    Assignee
+    
+  
+  
+    
+      
+        Filter by who’s assigned
+        
+          
+        
+      
+      
+        
+      
+      
+        
+          
+            
+            Assigned to nobody
+          
+          
+            
+      Loading
+
+        
+        
+          
+          
+            assignee:
+            Filter by this user
+          
+      
+    
+  
+
+
+        
+
+  
+    Sort
+    
+  
+  
+    
+      
+        Sort by
+        
+          
+        
+      
+
+      
+          
+            
+            Newest
+          
+          
+            
+            Oldest
+          
+          
+            
+            Most commented
+          
+          
+            
+            Least commented
+          
+          
+            
+            Recently updated
+          
+          
+            
+            Least recently updated
+          
+          
+            
+            Best match
+          
+
+        Most reactions
+        
+            
+              👍
+            
+            
+              👎
+            
+            
+              😄
+            
+            
+              🎉
+            
+            
+              😕
+            
+            
+              ❤️
+            
+            
+              🚀
+            
+            
+              👀
+            
+        
+      
+    
+  
+
+
+      
+  
+
+
+
+
+      Pull requests list
+      
+        
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Move platform code to index so that lib/jsonld is platform-independent
+
+
+      
+        
+          #569
+            opened Apr 1, 2025 by
+            divdavem
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Bump http-client version to 4.1.1
+
+
+      
+        
+          #560
+            opened Dec 19, 2024 by
+            RinkeHoekstra
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            1
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Update README to use default export and destructure on default export.
+
+
+      
+        
+          #555
+            opened Jun 19, 2024 by
+            aljones15
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+
+              
+                
+          
+        
+      
+
+      
+          
+            
+            1
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Use a per-documentLoader resolved context cache.
+
+
+      
+        
+          #552
+            opened May 31, 2024 by
+            davidlehn
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            1
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Update rdf-canonize, node versions, and more.
+
+
+      
+        
+          #548
+            opened Feb 7, 2024 by
+            davidlehn
+            
+        
+
+        
+          
+  
+    •
+    
+      Draft
+    
+  
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            5
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Add compound-literal support.
+
+
+      
+        
+          #535
+            opened Sep 1, 2023 by
+            davidlehn
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            1
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Add react-native section to package.json
+
+
+      
+        
+          #528
+            opened Aug 11, 2023 by
+            dmitrizagidulin
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            6
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      init ipfs in default document loader
+
+
+      
+        
+          #513
+            opened Mar 21, 2023 by
+            F-Node-Karlsruhe
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            14
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Faster isObject and other util functions
+
+
+      
+        
+          #507
+            opened Feb 2, 2023 by
+            dlongley
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            1
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      feat(compat): take into account native xsd types in "@type" in context
+
+
+      
+        
+          #487
+            opened Jun 2, 2022 by
+            ethieblin
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+          
+              
+                
+                  
+                  1
+                
+              
+          
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            1
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Add support for xsd:float as native type
+
+
+      
+        
+          #462
+            opened Sep 16, 2021 by
+            pduchesne
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            3
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Improve compactIri performance
+
+
+      
+        
+          #460
+            opened Aug 13, 2021 by
+            Janpot
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            1
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      fix: allow remove base on urn uids
+
+
+      
+        
+          #458
+            opened Jul 27, 2021 by
+            ethieblin
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+          
+              
+                
+                  
+                  1
+                
+              
+          
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Adds preserve order logic for fromRdf and test case
+
+
+      
+        
+          #396
+            opened May 16, 2020 by
+            dnllowe
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Add various list + base tests.
+
+
+        
+              
+
+                bug
+
+        
+      
+        
+          #390
+            opened Apr 15, 2020 by
+            davidlehn
+            
+        
+
+        
+          
+  
+    •
+    
+      Draft
+    
+  
+
+
+
+        
+
+        
+
+            
+              
+                
+                
+                  JSON-LD 1.1
+                
+              
+            
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            3
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Add event handler
+
+
+        
+              
+
+                feature
+
+        
+      
+        
+          #366
+            opened Feb 23, 2020 by
+            davidlehn
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+            
+              
+                
+                
+                  JSON-LD 1.1
+                
+              
+            
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            9
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Load html
+
+
+      
+        
+          #347
+            opened Dec 28, 2019 by
+            gkellogg
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+            
+              
+                
+                
+                  JSON-LD 1.1
+                
+              
+            
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            26
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Fix "Invalid calling object" in Edge and ES6 syntax error in IE
+
+
+      
+        
+          #321
+            opened Jul 16, 2019 by
+            AlexeyMz
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            2
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      fix: webpack should use build result for browser instead of node entry
+
+
+      
+        
+          #317
+            opened May 19, 2019 by
+            chigix
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Emit only valid N-Quads from toRdf.
+
+
+      
+        
+          #284
+            opened Jan 4, 2019 by
+            davidlehn
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+            
+              
+                
+                
+                  JSON-LD 1.1
+                
+              
+            
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+
+              
+                
+          
+        
+      
+
+      
+          
+            
+            5
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Update jsonld.js
+
+
+      
+        
+          #279
+            opened Dec 12, 2018 by
+            piggyman007
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            2
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Restore browserify support (fix #128)
+
+
+      
+        
+          #236
+            opened Mar 5, 2018 by
+            nopnop
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Allow valid accept headers in document loader options
+
+
+      
+        
+          #182
+            opened May 12, 2017 by
+            lutangar
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            1
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Self-provided test suite and assert @version correctly when specified (port of #179 to 0.5.x)
+
+
+      
+        
+          #180
+            opened May 6, 2017 by
+            aredridel
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            2
+          
+      
+    
+
+      
+  
+
+
+              
+
+  
+
+
+    
+      
+        
+      
+    
+
+    
+    
+
+      Self-provided test suite, skip two tests, and assert @version correctly when specified
+
+
+      
+        
+          #179
+            opened May 6, 2017 by
+            aredridel
+            
+        
+
+        
+          
+  
+    
+
+  
+    Loading…
+
+
+
+
+        
+
+        
+
+      
+    
+
+    
+
+      
+      
+
+      
+        
+          
+          
+        
+      
+
+      
+          
+            
+            4
+          
+      
+    
+
+      
+  
+
+
+        
+      
+  
+
+  
+      Previous 1 2 Next
+  
+
+  
+      Previous Next
+  
+
+  
+  
+  ProTip!
+  Find all pull requests that aren't related to any open issues with -linked:issue.\n\n\n\ndigitalbazaar
+    
+    /
+    
+      jsonld.js
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    200
+
+  
+
+  
+        
+            
+          Star
+          1.7k
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          125
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          28
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Wiki
+          
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Wiki
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+  Actions: digitalbazaar/jsonld.js
+  
+  
+    
+      
+                  
+
+  
+    Actions
+  
+
+  
+    
+      
+
+        
+  
+  
+    
+        
+          
+
+    
+    
+    
+      
+        
+                        All workflows
+
+      
+
+  
+
+
+          
+        
+          
+
+
+  
+      
+  
+    Workflows
+  
+
+    
+        
+
+    
+    
+    
+      
+        
+          
+  Dependabot Updates
+
+      
+
+  
+
+
+
+        
+
+    
+    
+    
+      
+        
+          
+  Node.js CI
+
+      
+
+  
+
+
+
+          
+
+    
+    
+    
+      
+        
+                        Show more workflows...
+
+      
+
+  
+
+
+
+
+
+
+          
+        
+          
+
+
+  
+      
+  
+    Management
+  
+
+    
+        
+
+    
+    
+    
+        
+          
+        
+      
+        
+                        Caches
+
+      
+
+  
+
+
+    
+
+
+
+  
+
+        
+          
+        
+
+        
+          
+        
+      
+    
+
+
+
+                
+      
+
+  
+  
+  
+    
+            
+          
+            
+              All workflows
+            
+          
+      
+      
+              All workflows
+      
+
+
+  
+      
+        
+          
+            Actions
+          
+          
+            
+          
+        
+      
+    
+      
+                
+        Loading...
+        
+      Loading
+
+      
+      
+        Sorry, something went wrong.
+      
+
+
+    
+
+
+      
+
+      
+
+                
+          
+  
+    
+    
+    
+      
+    
+
+    
+      
+        
+      
+      
+        
+        
+        will be ignored since log searching is not yet available
+      
+    
+
+
+        
+
+  
+            Showing runs from all workflows
+
+            
+  
+    
+    
+    
+      
+    
+
+    
+      
+        
+      
+      
+        
+        
+        will be ignored since log searching is not yet available
+      
+    
+
+
+
+
+      
+    
+
+
+
+
+  
+    
+      17 workflow runs
+    
+  
+
+
+  
+    
+        
+          17 workflow runs
+        
+    
+    
+      
+  
+      
+    Event
+  
+    
+      
+    
+
+
+    
+      
+  
+    
+      
+        Filter by Event
+      
+        
+    
+    
+      
+    
+  
+              
+              
+  
+      
+        
+      
+    
+      
+                  Sorry, something went wrong.
+
+            
+            
+                
+      
+        Filter
+    
+  
+      
+        
+          
+      Loading
+
+      
+    
+      
+
+      
+  
+  
+  
+
+    
+
+
+      
+        
+          
+          
+            
+                
+                  
+                    
+                      
+  
+                    
+                    
+                        
+                          
+                          Sorry, something went wrong.
+                        
+                    
+            
+            
+              No matching events.
+            
+        
+      
+  
+
+      
+  
+      
+    Status
+  
+    
+      
+    
+
+
+    
+      
+  
+    
+      
+        Filter by Status
+      
+        
+    
+    
+      
+    
+  
+              
+              
+  
+      
+        
+      
+    
+      
+                  Sorry, something went wrong.
+
+            
+            
+                
+      
+        Filter
+    
+  
+      
+        
+          
+      Loading
+
+      
+    
+      
+
+      
+  
+  
+  
+
+    
+
+
+      
+        
+          
+          
+            
+                
+                  
+                    
+                      
+  
+                    
+                    
+                        
+                          
+                          Sorry, something went wrong.
+                        
+                    
+            
+            
+              No matching statuses.
+            
+        
+      
+  
+
+      
+  
+      
+    Branch
+  
+    
+      
+    
+
+
+    
+      
+  
+    
+      
+        Filter by Branch
+      
+        
+    
+    
+      
+    
+  
+              
+              
+  
+      
+        
+      
+    
+      
+                  Sorry, something went wrong.
+
+            
+            
+                
+      
+        Filter
+    
+  
+      
+        
+          
+      Loading
+
+      
+    
+      
+
+      
+  
+  
+  
+
+    
+
+
+      
+        
+          
+          
+            
+                
+                  
+                    
+                      
+  
+                    
+                    
+                        
+                          
+                          Sorry, something went wrong.
+                        
+                    
+            
+            
+              No matching branches.
+            
+        
+      
+  
+
+      
+  
+      
+    Actor
+  
+    
+      
+    
+
+
+    
+      
+  
+    
+      
+        Filter by Actor
+      
+        
+    
+    
+      
+    
+  
+              
+              
+  
+      
+        
+      
+    
+      
+                  Sorry, something went wrong.
+
+            
+            
+                
+      
+        Filter
+    
+  
+      
+        
+          
+      Loading
+
+      
+    
+      
+
+      
+  
+  
+  
+
+    
+
+
+      
+        
+          
+          
+            
+                
+                  
+                    
+                      
+  
+                    
+                    
+                        
+                          
+                          Sorry, something went wrong.
+                        
+                    
+            
+            
+              No matching users.
+            
+        
+      
+  
+
+    
+  
+
+
+      
+
+
+    
+  
+    
+      
+          
+
+    
+
+
+          
+            npm_and_yarn in /. for karma - Update #936382287
+          
+        
+
+      
+        Dependabot Updates
+        #3:
+
+        
+
+            
+            by
+              dependabot
+              bot
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:19
+
+
+            
+      
+      
+        47s
+      
+    
+
+          main
+      
+    
+
+    
+        main
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:19
+
+
+              
+      
+      
+        47s
+      
+    
+
+        
+
+        
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Start 8.3.4-0.
+          
+        
+
+      
+        Node.js CI
+        #266:
+
+        
+            Commit 7165607
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:19
+
+
+            
+      
+      
+        3m 40s
+      
+    
+
+          main
+      
+    
+
+    
+        main
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:19
+
+
+              
+      
+      
+        3m 40s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            npm_and_yarn in /. for karma - Update #936382259
+          
+        
+
+      
+        Dependabot Updates
+        #2:
+
+        
+
+            
+            by
+              dependabot
+              bot
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:18
+
+
+            
+      
+      
+        42s
+      
+    
+
+          main
+      
+    
+
+    
+        main
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:18
+
+
+              
+      
+      
+        42s
+      
+    
+
+        
+
+        
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Release 8.3.3.
+          
+        
+
+      
+        Node.js CI
+        #265:
+
+        
+            Commit 76e853a
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:18
+
+
+            
+      
+      
+        1m 48s
+      
+    
+
+          v8.3.3
+      
+    
+
+    
+        v8.3.3
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:18
+
+
+              
+      
+      
+        1m 48s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Release 8.3.3.
+          
+        
+
+      
+        Node.js CI
+        #264:
+
+        
+            Commit 76e853a
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:18
+
+
+            
+      
+      
+        1m 45s
+      
+    
+
+          main
+      
+    
+
+    
+        main
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:18
+
+
+              
+      
+      
+        1m 45s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            npm_and_yarn in /. for karma - Update #936382161
+          
+        
+
+      
+        Dependabot Updates
+        #1:
+
+        
+
+            
+            by
+              dependabot
+              bot
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:14
+
+
+            
+      
+      
+        40s
+      
+    
+
+          main
+      
+    
+
+    
+        main
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:14
+
+
+              
+      
+      
+        40s
+      
+    
+
+        
+
+        
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Update actions.
+          
+        
+
+      
+        Node.js CI
+        #263:
+
+        
+            Commit 253cccf
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:14
+
+
+            
+      
+      
+        2m 8s
+      
+    
+
+          main
+      
+    
+
+    
+        main
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:14
+
+
+              
+      
+      
+        2m 8s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Update actions.
+          
+        
+
+      
+        Node.js CI
+        #262:
+
+        
+            Commit 62e527a
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:11
+
+
+            
+      
+      
+        1m 49s
+      
+    
+
+          add-url-to-error-messages
+      
+    
+
+    
+        add-url-to-error-messages
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:11
+
+
+              
+      
+      
+        1m 49s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+                  
+                    
+                      View #561
+                    
+                  
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Test on Node.js 22.x.
+          
+        
+
+      
+        Node.js CI
+        #261:
+
+        
+            Commit 461830b
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:05
+
+
+            
+      
+      
+        2m 2s
+      
+    
+
+          add-url-to-error-messages
+      
+    
+
+    
+        add-url-to-error-messages
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:05
+
+
+              
+      
+      
+        2m 2s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Ignore failing tests.
+          
+        
+
+      
+        Node.js CI
+        #260:
+
+        
+            Commit 351506f
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 21:04
+
+
+            
+      
+      
+        1m 0s
+      
+    
+
+          add-url-to-error-messages
+      
+    
+
+    
+        add-url-to-error-messages
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 21:04
+
+
+              
+      
+      
+        1m 0s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Put URL at end of messages.
+          
+        
+
+      
+        Node.js CI
+        #259:
+
+        
+            Commit 9da7768
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  December 21, 2024 20:50
+
+
+            
+      
+      
+        57s
+      
+    
+
+          add-url-to-error-messages
+      
+    
+
+    
+        add-url-to-error-messages
+    
+
+    
+      
+        
+          
+  
+  December 21, 2024 20:50
+
+
+              
+      
+      
+        57s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Update README to use default export and destructure on default export.
+          
+        
+
+      
+        Node.js CI
+        #258:
+
+        
+            Commit 422d823
+
+            pushed
+            by
+              aljones15
+              
+        
+      
+
+      
+        
+  
+  June 19, 2024 20:36
+
+
+            
+      
+      
+        1m 5s
+      
+    
+
+          update-es6-import-examples-readme
+      
+    
+
+    
+        update-es6-import-examples-readme
+    
+
+    
+      
+        
+          
+  
+  June 19, 2024 20:36
+
+
+              
+      
+      
+        1m 5s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+                  
+                    
+                      View #555
+                    
+                  
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Ignore test-suites/ directory.
+          
+        
+
+      
+        Node.js CI
+        #257:
+
+        
+            Commit 5367858
+
+            pushed
+            by
+              aljones15
+              
+        
+      
+
+      
+        
+  
+  June 19, 2024 20:26
+
+
+            
+      
+      
+        1m 43s
+      
+    
+
+          update-es6-import-examples-readme
+      
+    
+
+    
+        update-es6-import-examples-readme
+    
+
+    
+      
+        
+          
+  
+  June 19, 2024 20:26
+
+
+              
+      
+      
+        1m 43s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Use Symbol for default document loader key.
+          
+        
+
+      
+        Node.js CI
+        #256:
+
+        
+            Commit f02e3cf
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  May 31, 2024 20:23
+
+
+            
+      
+      
+        1m 1s
+      
+    
+
+          per-loader-context-cache
+      
+    
+
+    
+        per-loader-context-cache
+    
+
+    
+      
+        
+          
+  
+  May 31, 2024 20:23
+
+
+              
+      
+      
+        1m 1s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+                  
+                    
+                      View #552
+                    
+                  
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Use a per-documentLoader resolved context cache.
+          
+        
+
+      
+        Node.js CI
+        #255:
+
+        
+            Commit 0664018
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  May 31, 2024 19:48
+
+
+            
+      
+      
+        57s
+      
+    
+
+          per-loader-context-cache
+      
+    
+
+    
+        per-loader-context-cache
+    
+
+    
+      
+        
+          
+  
+  May 31, 2024 19:48
+
+
+              
+      
+      
+        57s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Use a per-documentLoader resolved context cache.
+          
+        
+
+      
+        Node.js CI
+        #254:
+
+        
+            Commit 67f38b9
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  May 31, 2024 04:28
+
+
+            
+      
+      
+        1m 3s
+      
+    
+
+          per-loader-context-cache
+      
+    
+
+    
+        per-loader-context-cache
+    
+
+    
+      
+        
+          
+  
+  May 31, 2024 04:28
+
+
+              
+      
+      
+        1m 3s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file
+                    
+                  
+
+
+              
+            
+        
+      
+    
+  
+
+
+  
+    
+      
+          
+
+    
+
+
+          
+            Ignore test-suites/ directory.
+          
+        
+
+      
+        Node.js CI
+        #253:
+
+        
+            Commit 5367858
+
+            pushed
+            by
+              davidlehn
+              
+        
+      
+
+      
+        
+  
+  May 31, 2024 04:24
+
+
+            
+      
+      
+        1m 2s
+      
+    
+
+          per-loader-context-cache
+      
+    
+
+    
+        per-loader-context-cache
+    
+
+    
+      
+        
+          
+  
+  May 31, 2024 04:24
+
+
+              
+      
+      
+        1m 2s
+      
+    
+
+        
+
+        
+            
+                    
+
+              
+
+
+                  
+                    
+                      View workflow file\n\n\n\ndigitalbazaar
+    
+    /
+    
+      jsonld.js
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    200
+
+  
+
+  
+        
+            
+          Star
+          1.7k
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          125
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          28
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Wiki
+          
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Wiki
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+    
+      
+  digitalbazaar/jsonld.js projects
+  
+    
+  
+      
+      
+        
+  
+          
+        
+          
+          
+            Projects
+          
+        
+        
+      
+
+    
+      
+        
+            
+              
+              
+              Projects
+            
+            
+              
+              
+              Templates
+            
+        
+      
+    
+  
+
+
+
+      
+          
+    
+  
+    
+        
+  
+      
+        
+      
+    
+                  Projects
+
+    
+
+        
+  
+      
+        
+      
+    
+                  Templates
+
+    
+
+  
+
+
+    
+        
+      
+      
+          
+            
+              
+  
+    
+      
+      
+        Search all projects
+    
+  
+      
+        
+      
+    
+      
+      
+        
+      
+
+      
+  
+  
+  
+
+    
+
+
+    
+    
+
+
+
+
+
+
+
+  Search results
+  
+    0 open and 0 closed projects found.
+  
+  
+  
+            
+  
+    
+      0 Open    
+      0 Closed
+  
+  
+      
+    Sort
+  
+    
+      
+    
+
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+                    Recently updated
+
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+                    Newest
+
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+                    Oldest
+
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+                    Least recently updated
+
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+                    Name
+
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+    
+                    
+  
+    
+      
+
+            No open projects\n\n\n\ndigitalbazaar
+    
+    /
+    
+      jsonld.js
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    200
+
+  
+
+  
+        
+            
+          Star
+          1.7k
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          125
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          28
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Wiki
+          
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Wiki
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+
+  
+      
+          
+    New page
+  
+
+
+      
+    Pages\n\n\n\ndigitalbazaar
+    
+    /
+    
+      jsonld.js
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    200
+
+  
+
+  
+        
+            
+          Star
+          1.7k
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          125
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          28
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Wiki
+          
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Wiki
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+Security: digitalbazaar/jsonld.js
+
+
+
+    
+    
+    
+  Security
+  
+  
+
+
+  
+  
+    
+    No security policy detected
+  
+    This project has not set up a SECURITY.md file yet.
+
+
+
+
+
+    
+  
+    
+      
+
+              There aren’t any published security advisories\n\n\n\ndigitalbazaar
+    
+    /
+    
+      jsonld.js
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    200
+
+  
+
+  
+        
+            
+          Star
+          1.7k
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          125
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          28
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Wiki
+          
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Wiki
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+Insights: digitalbazaar/jsonld.js
+
+  
+  
+        
+
+  
+    Pulse
+    Contributors
+      Community Standards
+    Commits
+    Code frequency
+      Dependency graph
+    Network
+    Forks
+  
+
+
+
+  
+      
+  
+  April 21, 2025 – April 28, 2025
+  
+        
+              Period:
+          1 week
+        
+          
+            Filter activity
+          
+          
+              
+                
+                24 hours
+              
+              
+                
+                3 days
+              
+              
+                
+                1 week
+              
+              
+                
+                1 month
+              
+          
+        
+      
+
+
+  
+    
+      Overview
+    
+
+    
+      
+        
+          
+          
+          
+            0
+            Active pull requests
+          
+        
+
+        
+          
+          
+          
+            0
+            Active issues
+          
+        
+      
+
+      
+        
+          
+                
+                  
+                  0
+                
+                Merged pull requests
+          
+          
+              
+                
+                0
+              
+              Open pull requests
+          
+          
+              
+                
+                0
+              
+              Closed issues
+          
+          
+              
+                
+                0
+              
+              New issues
+          
+        
+      
+    
+  
+
+    
+  
+      There hasn’t been any commit activity on digitalbazaar/jsonld.js in the last  week.
+
+        Want to help out?
+          
+            
+                    
+                Fork this repository
+          
+
+
+  
+
+
+      
+  
+    
+      
+      1
+      Unresolved conversation
+    
+  
+  
+    Sometimes conversations happen on old items that aren’t yet closed.
+    Here is a list of all the Issues and Pull Requests with unresolved
+    conversations.
+  
+
+  
+    
+      
+      
+        Module not found: Can't resolve 'rdf-canonize-native' during build in RDFLib dependency
+        
+          #567 commented on Apr 23, 2025 • 0 new comments\n\n\n\ndigitalbazaar
+    
+    /
+    
+      jsonld.js
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    200
+
+  
+
+  
+        
+            
+          Star
+          1.7k
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          125
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          28
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Wiki
+          
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Wiki
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+    
+
+
+
+
+
+
+
+
+
+  
+  
+    CommitsBranch selector mainUser selectorAll usersDatepickerAll timeCommit HistoryCommits on Dec 21, 2024Start 8.3.4-0.davidlehncommitted7165607Copy full SHA for 7165607Release 8.3.3.davidlehncommitted76e853aCopy full SHA for 76e853aUpdate changelog.davidlehncommitted2619f0eCopy full SHA for 2619f0eUpdate actions.Show description for 253cccfdavidlehncommitted253cccfCopy full SHA for 253cccfTest on Node.js 22.x.davidlehncommitted2dd36ebCopy full SHA for 2dd36ebIgnore failing tests.davidlehncommitted3a26105Copy full SHA for 3a26105Put URL at end of messages.davidlehncommittedccd9065Copy full SHA for ccd9065Update lib/ContextResolver.jsShow description for 8c16611 2 peopleauthored anddavidlehncommitted8c16611Copy full SHA for 8c16611Update lib/ContextResolver.jsShow description for 7cf70fb 2 peopleauthored anddavidlehncommitted7cf70fbCopy full SHA for 7cf70fbAdded URL to context resolution error message. brianorwhateverauthored anddavidlehncommittedd8696b6Copy full SHA for d8696b6Commits on Dec 7, 2023Ignore `test-suites/` directory.Show description for 5367858 BigBlueHatauthored anddavidlehncommitted5367858Copy full SHA for 5367858Commits on Dec 6, 2023Start 8.3.3-0.davidlehncommitted5a7efc3Copy full SHA for 5a7efc3Release 8.3.2.davidlehncommittedc7eb16aCopy full SHA for c7eb16aUpdate changelog.davidlehncommitted9851c5dCopy full SHA for 9851c5dFix `@graph` `@container` term `@context` handling.Show description for d5ad0d9davidlehncommittedd5ad0d9Copy full SHA for d5ad0d9Commits on Sep 7, 2023Start 8.3.2-0.davidlehncommittede2f6523Copy full SHA for e2f6523Release 8.3.1.davidlehncommitted822af1cCopy full SHA for 822af1cUpdate changelog.davidlehncommitted6705026Copy full SHA for 6705026Handle unset `rdfDirection` the same as `null`.davidlehncommitted93e2785Copy full SHA for 93e2785Start 8.3.1-0.davidlehncommittede297249Copy full SHA for e297249Release 8.3.0.davidlehncommitted7544b47Copy full SHA for 7544b47Update changelog.davidlehncommittedea6d0b3Copy full SHA for ea6d0b3Improve `@direction` support.Show description for 8f9f888davidlehncommitted8f9f888Copy full SHA for 8f9f888Fix lint issues.davidlehncommittedd12ccd9Copy full SHA for d12ccd9Update test comment style.davidlehncommitted5e4ab33Copy full SHA for 5e4ab33Commits on Sep 1, 2023Start 8.2.2-0.davidlehncommitted7ba788eCopy full SHA for 7ba788eRelease 8.2.1.davidlehncommittedaec8209Copy full SHA for aec8209Update changelog.davidlehncommitted5cb04f7Copy full SHA for 5cb04f7Fix relative IRI parsing.Show description for cf26930davidlehncommittedcf26930Copy full SHA for cf26930fix: incorrect @id expansion ndr-brtauthored anddavidlehncommitted7f2d83bCopy full SHA for 7f2d83bCommits on Aug 31, 2023Improve test names.davidlehncommitted7b64cd0Copy full SHA for 7b64cd0Fix protected redefinition of equivalent id terms.Show description for 29e85cadavidlehncommitted29e85caCopy full SHA for 29e85caImprove graph tests.Show description for 9802161davidlehncommitted9802161Copy full SHA for 9802161Fix graph property empty array and safe mode.Show description for 8101388davidlehncommitted8101388Copy full SHA for 8101388Commits on May 20, 2023Start 8.2.1-0.davidlehncommitted1f34863Copy full SHA for 1f34863PaginationPreviousNext\n\n\n\ndigitalbazaar
+    
+    /
+    
+      jsonld.js
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    200
+
+  
+
+  
+        
+            
+          Star
+          1.7k
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          125
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          28
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Wiki
+          
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Wiki
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+    
+
+
+
+
+
+
+
+
+
+  
+  
+     Files mainBreadcrumbsjsonld.js/.github/workflows/Copy pathDirectory actionsMore optionsDirectory actionsMore optionsLatest commit HistoryHistory mainBreadcrumbsjsonld.js/.github/workflows/TopFolders and filesNameNameLast commit messageLast commit dateparent directory..main.ymlmain.yml  View all files\n\n\n\ndigitalbazaar
+    
+    /
+    
+      jsonld.js
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    200
+
+  
+
+  
+        
+            
+          Star
+          1.7k
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          125
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          28
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Wiki
+          
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Wiki
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+    
+
+
+
+
+
+
+
+
+
+  
+  
+     Files mainBreadcrumbsjsonld.js/benchmarks/compare/Copy pathDirectory actionsMore optionsDirectory actionsMore optionsLatest commit HistoryHistory mainBreadcrumbsjsonld.js/benchmarks/compare/TopFolders and filesNameNameLast commit messageLast commit dateparent directory..compare.jscompare.js  package.jsonpackage.json  View all files\n\n\n\ndigitalbazaar
+    
+    /
+    
+      jsonld.js
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    200
+
+  
+
+  
+        
+            
+          Star
+          1.7k
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          125
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          28
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Wiki
+          
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Wiki
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+    
+
+
+
+
+
+
+
+
+
+  
+  
+     Files mainBreadcrumbsjsonld.js/lib/Copy pathDirectory actionsMore optionsDirectory actionsMore optionsLatest commit HistoryHistory mainBreadcrumbsjsonld.js/lib/TopFolders and filesNameNameLast commit messageLast commit dateparent directory..documentLoadersdocumentLoaders  ContextResolver.jsContextResolver.js  JsonLdError.jsJsonLdError.js  JsonLdProcessor.jsJsonLdProcessor.js  NQuads.jsNQuads.js  RequestQueue.jsRequestQueue.js  ResolvedContext.jsResolvedContext.js  compact.jscompact.js  constants.jsconstants.js  context.jscontext.js  events.jsevents.js  expand.jsexpand.js  flatten.jsflatten.js  frame.jsframe.js  fromRdf.jsfromRdf.js  graphTypes.jsgraphTypes.js  index.jsindex.js  jsonld.jsjsonld.js  nodeMap.jsnodeMap.js  platform-browser.jsplatform-browser.js  platform.jsplatform.js  toRdf.jstoRdf.js  types.jstypes.js  url.jsurl.js  util.jsutil.js  View all files\n\n\n\ndigitalbazaar
+    
+    /
+    
+      jsonld.js
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    200
+
+  
+
+  
+        
+            
+          Star
+          1.7k
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          125
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          28
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Wiki
+          
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Wiki
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+    
+
+
+
+
+
+
+
+
+
+  
+  
+     Files mainBreadcrumbsjsonld.js/tests/Copy pathDirectory actionsMore optionsDirectory actionsMore optionsLatest commit HistoryHistory mainBreadcrumbsjsonld.js/tests/TopFolders and filesNameNameLast commit messageLast commit dateparent directory..contextscontexts  webidlwebidl  .eslintrc.js.eslintrc.js  earl-report.jsearl-report.js  fromRdf-0001-in.nqfromRdf-0001-in.nq  fromRdf-0001-out.jsonldfromRdf-0001-out.jsonld  graph-container.jsgraph-container.js  manifest.jsonldmanifest.jsonld  misc.jsmisc.js  node-document-loader-tests.jsnode-document-loader-tests.js  remote-0001-in.jsonldremote-0001-in.jsonld  remote-0001-out.jsonldremote-0001-out.jsonld  remote-0002-in.jsonldremote-0002-in.jsonld  remote-0002-out.jsonldremote-0002-out.jsonld  remote-0003-in.jsonldremote-0003-in.jsonld  remote-0003-out.jsonldremote-0003-out.jsonld  remote-0004-in.jsonldremote-0004-in.jsonld  remote-0004-out.jsonldremote-0004-out.jsonld  remote-0005-in.jsonldremote-0005-in.jsonld  remote-0005-out.jsonldremote-0005-out.jsonld  remote-0006-in.jsonldremote-0006-in.jsonld  remote-0006-out.jsonldremote-0006-out.jsonld  remote-0008-in.jsonldremote-0008-in.jsonld  remote-0008-out.jsonldremote-0008-out.jsonld  remote-context-server.jsremote-context-server.js  test-karma.jstest-karma.js  test-node.jstest-node.js  test-webidl.jstest-webidl.js  test.jstest.js  View all files\n\n\n\ndigitalbazaar
+    
+    /
+    
+      jsonld.js
+    
+
+    Public
+  
+
+
+        
+
+        
+            
+    
+      
+
+  
+                Notifications
+    You must be signed in to change notification settings
+
+  
+
+  
+              Fork
+    200
+
+  
+
+  
+        
+            
+          Star
+          1.7k
+
+  
+
+
+
+        
+      
+
+        
+
+
+
+          
+
+  
+      
+  
+    
+              
+        Code
+          
+
+
+    
+
+      
+  
+    
+              
+        Issues
+          125
+
+
+    
+
+      
+  
+    
+              
+        Pull requests
+          28
+
+
+    
+
+      
+  
+    
+              
+        Actions
+          
+
+
+    
+
+      
+  
+    
+              
+        Projects
+          0
+
+
+    
+
+      
+  
+    
+              
+        Wiki
+          
+
+
+    
+
+      
+  
+    
+              
+        Security
+          
+
+    
+
+      
+  
+    
+              
+        Insights
+          
+
+
+    
+
+
+          
+  
+      
+Additional navigation options
+
+
+
+  
+    
+                
+  
+    
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Code
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Issues
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Pull requests
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Actions
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Projects
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Wiki
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Security
+      
+
+  
+
+        
+    
+    
+    
+        
+          
+        
+      
+        
+          Insights
+      
+
+  
+
+    
+
+
+
+
+      
+  
+
+
+
+  
+
+  
+
+
+
+
+    
+    
+
+
+
+    
+      
+    
+
+
+
+
+
+
+
+
+
+  
+  
+     Files mainBreadcrumbsjsonld.js/.editorconfigCopy path Blame  Blame        Latest commit HistoryHistory17 lines (13 loc) · 251 Bytes mainBreadcrumbsjsonld.js/.editorconfigTopFile metadata and controlsCodeBlame17 lines (13 loc) · 251 BytesRaw1234567891011121314151617# http://editorconfig.org
+root = true
+[*]charset = utf-8end_of_line = lfinsert_final_newline = truetrim_trailing_whitespace = true
+[*.{js,json,jsonld,yaml,yml}]indent_style = spaceindent_size = 2
+[*.idl]indent_style = spaceindent_size = 4\n\n\n\n
