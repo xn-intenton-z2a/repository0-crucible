@@ -109,17 +109,14 @@ export function updateSource({ identifier, name, url }, configPath = CONFIG_FILE
   if (!name || typeof name !== "string" || !name.trim()) {
     throw new Error("Invalid source name");
   }
-  // URL validation removed to allow generic URL updates
   custom[idx] = { name, url };
   fs.writeFileSync(configPath, JSON.stringify(custom, null, 2), "utf8");
   return [...PUBLIC_DATA_SOURCES, ...custom];
 }
 
-// Build intermediate artifacts
-export function buildIntermediate({ dataDir = 'data', outDir = 'intermediate' } = {}) {
+export function buildIntermediate({ dataDir = "data", outDir = "intermediate" } = {}) {
   const dataPath = path.join(process.cwd(), dataDir);
   const intermediatePath = path.join(process.cwd(), outDir);
-  // remove old
   fs.rmSync(intermediatePath, { recursive: true, force: true });
   if (!fs.existsSync(dataPath)) {
     console.error(`Error: ${dataDir}/ directory not found`);
@@ -128,17 +125,16 @@ export function buildIntermediate({ dataDir = 'data', outDir = 'intermediate' } 
   fs.mkdirSync(intermediatePath, { recursive: true });
   let entries;
   try {
-    entries = fs.readdirSync(dataPath).filter(f => f.endsWith('.json'));
+    entries = fs.readdirSync(dataPath).filter(f => f.endsWith(".json"));
   } catch {
     entries = [];
   }
   const written = [];
   let count = 0;
   for (const file of entries) {
-    const inputFile = path.join(dataPath, file);
     let content;
     try {
-      content = JSON.parse(fs.readFileSync(inputFile, 'utf8'));
+      content = JSON.parse(fs.readFileSync(path.join(dataPath, file), "utf8"));
     } catch {
       continue;
     }
@@ -150,20 +146,20 @@ export function buildIntermediate({ dataDir = 'data', outDir = 'intermediate' } 
         const keys = Object.keys(binding);
         const node = {};
         if (keys.length > 0) {
-          node['@id'] = binding[keys[0]].value;
+          node["@id"] = binding[keys[0]].value;
           for (const key of keys.slice(1)) {
             node[key] = binding[key].value;
           }
         }
         return node;
       });
-    } else if (content['@graph'] && Array.isArray(content['@graph'])) {
-      graph = content['@graph'];
+    } else if (content["@graph"] && Array.isArray(content["@graph"])) {
+      graph = content["@graph"];
     }
-    const intermediateDoc = { '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' }, '@graph': graph };
-    const outFile = file.replace(/\.json$/, '-intermediate.json');
+    const intermediateDoc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
+    const outFile = file.replace(/\.json$/, "-intermediate.json");
     const outputFile = path.join(intermediatePath, outFile);
-    fs.writeFileSync(outputFile, JSON.stringify(intermediateDoc, null, 2), 'utf8');
+    fs.writeFileSync(outputFile, JSON.stringify(intermediateDoc, null, 2), "utf8");
     console.log(`written ${outFile}`);
     written.push(outFile);
     count++;
@@ -172,55 +168,49 @@ export function buildIntermediate({ dataDir = 'data', outDir = 'intermediate' } 
   return { count, files: written };
 }
 
-// Refresh data sources (stub)
 export async function refreshSources() {
-  // stub: no-op, return empty summary
   return { count: 0, files: [] };
 }
 
-// Build enhanced ontology
-export async function buildEnhanced({ dataDir = 'data', intermediateDir = 'intermediate', outDir = 'enhanced' } = {}) {
+export async function buildEnhanced({ dataDir = "data", intermediateDir = "intermediate", outDir = "enhanced" } = {}) {
   const refreshed = await mainModule.refreshSources();
   const intermediate = mainModule.buildIntermediate({ dataDir, outDir: intermediateDir });
-  // combine all intermediate graphs
+  let graph = [];
   const dirPath = path.join(process.cwd(), intermediateDir);
   let files;
   if (intermediate.files && Array.isArray(intermediate.files) && intermediate.files.length) {
-    files = intermediate.files.filter(f => f.endsWith('.json'));
+    files = intermediate.files.filter(f => f.endsWith(".json"));
   } else {
     try {
-      files = fs.readdirSync(dirPath).filter(f => f.endsWith('.json'));
+      files = fs.readdirSync(dirPath).filter(f => f.endsWith(".json"));
     } catch {
       files = [];
     }
   }
-  let graph = [];
   for (const file of files) {
     try {
-      const doc = JSON.parse(fs.readFileSync(path.join(dirPath, file), 'utf8'));
-      if (doc['@graph'] && Array.isArray(doc['@graph'])) {
-        graph = graph.concat(doc['@graph']);
+      const doc = JSON.parse(fs.readFileSync(path.join(dirPath, file), "utf8"));
+      if (doc["@graph"] && Array.isArray(doc["@graph"])) {
+        graph = graph.concat(doc["@graph"]);
       }
     } catch {}
   }
-  const enhancedDoc = { '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' }, '@graph': graph };
+  const enhancedDoc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
   fs.mkdirSync(outDir, { recursive: true });
-  const enhancedFile = 'enhanced.json';
-  fs.writeFileSync(path.join(outDir, enhancedFile), JSON.stringify(enhancedDoc, null, 2), 'utf8');
+  const enhancedFile = "enhanced.json";
+  fs.writeFileSync(path.join(outDir, enhancedFile), JSON.stringify(enhancedDoc, null, 2), "utf8");
   return { refreshed, intermediate, enhanced: { file: enhancedFile, count: graph.length } };
 }
 
-// Capital cities
 export async function getCapitalCities(endpoint = PUBLIC_DATA_SOURCES[0].url) {
   const query = `SELECT ?country ?capital WHERE { ?country <http://dbpedia.org/ontology/capital> ?capital }`;
   const url = `${endpoint}?query=${encodeURIComponent(query)}`;
   let res;
-  const start = performance.now();
   try {
-    res = await fetch(url, { headers: { Accept: 'application/sparql-results+json' } });
+    res = await fetch(url, { headers: { Accept: "application/sparql-results+json" } });
   } catch (err) {
     const e = new Error(err.message);
-    e.code = 'QUERY_ERROR';
+    e.code = "QUERY_ERROR";
     throw e;
   }
   let json;
@@ -228,18 +218,17 @@ export async function getCapitalCities(endpoint = PUBLIC_DATA_SOURCES[0].url) {
     json = await res.json();
   } catch (err) {
     const e = new Error(err.message);
-    e.code = 'INVALID_JSON';
+    e.code = "INVALID_JSON";
     throw e;
   }
-  const graph = (json.results?.bindings || []).map(b => ({ '@id': b.country.value, capital: b.capital.value }));
-  return { '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' }, '@graph': graph };
+  const graph = (json.results?.bindings || []).map(b => ({ "@id": b.country.value, capital: b.capital.value }));
+  return { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
 }
 
-// SPARQL query
 export async function sparqlQuery(filePath, queryString) {
   let raw;
   try {
-    raw = fs.readFileSync(filePath, 'utf8');
+    raw = fs.readFileSync(filePath, "utf8");
   } catch (err) {
     throw new Error(`Failed to read file: ${err.message}`);
   }
@@ -251,7 +240,7 @@ export async function sparqlQuery(filePath, queryString) {
   }
   const engine = new QueryEngine();
   const result = await engine.query(queryString, { sources: [doc] });
-  if (result.type === 'bindings') {
+  if (result.type === "bindings") {
     const bindings = [];
     for await (const binding of result.bindingsStream) {
       const obj = {};
@@ -259,29 +248,266 @@ export async function sparqlQuery(filePath, queryString) {
         if (binding.has(v)) {
           const term = binding.get(v);
           const entry = { type: term.termType.toLowerCase(), value: term.value };
-          if (term.language) entry['xml:lang'] = term.language;
-          if (term.datatype) entry['datatype'] = term.datatype.value;
+          if (term.language) entry["xml:lang"] = term.language;
+          if (term.datatype) entry["datatype"] = term.datatype.value;
           obj[v] = entry;
         }
       }
       bindings.push(obj);
     }
     return { head: { vars: result.variables, link: result.link }, results: { bindings } };
-  } else if (result.type === 'boolean') {
+  } else if (result.type === "boolean") {
     const boolRes = await result.booleanResult;
     return { head: { link: result.link }, boolean: boolRes };
   }
   return null;
 }
 
-// CLI entry
 export async function main(args) {
   const argv = Array.isArray(args) ? args : process.argv.slice(2);
-  if (!argv.length) return;
+  if (argv.length === 0) return;
   const cmd = argv[0];
   switch (cmd) {
-    case '--help':
-    case '-h':
+    case "--help":
+    case "-h": {
       console.log(getHelpText());
-      return;
-[...] (remaining CLI code unchanged)
+      break;
+    }
+    case "--list-sources": {
+      const sources = mainModule.listSources();
+      console.log(JSON.stringify(sources, null, 2));
+      break;
+    }
+    case "--add-source": {
+      if (argv.length < 3) {
+        console.error("Missing required fields: name and url");
+        break;
+      }
+      const name = argv[1];
+      const url = argv[2];
+      try {
+        const sources = mainModule.addSource({ name, url }, CONFIG_FILE);
+        console.log(JSON.stringify(sources, null, 2));
+      } catch (err) {
+        console.error(err.message);
+      }
+      break;
+    }
+    case "--remove-source": {
+      if (argv.length < 2) {
+        console.error("Missing required parameter: identifier");
+        break;
+      }
+      const identifier = argv[1];
+      const sources = mainModule.removeSource(identifier, CONFIG_FILE);
+      console.log(JSON.stringify(sources, null, 2));
+      break;
+    }
+    case "--update-source": {
+      if (argv.length < 4) {
+        console.error("Missing required parameters: identifier, newName, and newUrl");
+        break;
+      }
+      const identifier = argv[1];
+      const name = argv[2];
+      const url = argv[3];
+      try {
+        const sources = mainModule.updateSource({ identifier, name, url }, CONFIG_FILE);
+        console.log(JSON.stringify(sources, null, 2));
+      } catch (err) {
+        console.error(err.message);
+      }
+      break;
+    }
+    case "--build-intermediate": {
+      if (argv.length === 1) {
+        mainModule.buildIntermediate();
+      } else if (argv.length === 2) {
+        mainModule.buildIntermediate({ dataDir: argv[1], outDir: undefined });
+      } else {
+        mainModule.buildIntermediate({ dataDir: argv[1], outDir: argv[2] });
+      }
+      break;
+    }
+    case "--build-enhanced":
+    case "-be": {
+      if (argv.length === 1) {
+        mainModule.buildEnhanced();
+      } else if (argv.length === 2) {
+        mainModule.buildEnhanced({ dataDir: argv[1] });
+      } else if (argv.length === 3) {
+        mainModule.buildEnhanced({ dataDir: argv[1], intermediateDir: argv[2] });
+      } else {
+        mainModule.buildEnhanced({ dataDir: argv[1], intermediateDir: argv[2], outDir: argv[3] });
+      }
+      break;
+    }
+    case "--diagnostics": {
+      const diagnostics = {};
+      diagnostics.version = pkg.version;
+      diagnostics.nodeVersion = process.version;
+      diagnostics.platform = process.platform;
+      diagnostics.arch = process.arch;
+      diagnostics.cwd = process.cwd();
+      diagnostics.publicDataSources = mainModule.listSources();
+      const helpText = getHelpText();
+      const commandMatches = Array.from(new Set(helpText.match(/--?[a-zA-Z-]+/g)));
+      diagnostics.commands = commandMatches;
+      const sources = diagnostics.publicDataSources;
+      const healthChecks = [];
+      for (const src of sources) {
+        let statusCode = null;
+        let latencyMs = null;
+        let reachable = false;
+        try {
+          const start = performance.now();
+          const res = await fetch(src.url, { method: "HEAD" });
+          latencyMs = performance.now() - start;
+          statusCode = res.status;
+          reachable = true;
+        } catch {
+          reachable = false;
+        }
+        healthChecks.push({ name: src.name, url: src.url, statusCode, latencyMs, reachable });
+      }
+      diagnostics.healthChecks = healthChecks;
+      diagnostics.uptimeSeconds = process.uptime();
+      diagnostics.memoryUsage = process.memoryUsage();
+      let dataFiles = [];
+      try {
+        dataFiles = fs.readdirSync(path.join(process.cwd(), "data")).filter(f => f.endsWith(".json")).sort();
+      } catch {
+        dataFiles = [];
+      }
+      diagnostics.dataFilesCount = dataFiles.length;
+      diagnostics.dataFiles = dataFiles;
+      let intermediateFiles = [];
+      try {
+        intermediateFiles = fs.readdirSync(path.join(process.cwd(), "intermediate")).filter(f => f.endsWith(".json")).sort();
+      } catch {
+        intermediateFiles = [];
+      }
+      diagnostics.intermediateFilesCount = intermediateFiles.length;
+      diagnostics.intermediateFiles = intermediateFiles;
+      diagnostics.dependencies = pkg.dependencies || {};
+      diagnostics.devDependencies = pkg.devDependencies || {};
+      console.log(JSON.stringify(diagnostics, null, 2));
+      break;
+    }
+    case "--serve": {
+      const port = process.env.PORT ? Number(process.env.PORT) : 3000;
+      const server = http.createServer(async (req, res) => {
+        const reqUrl = new URL(req.url, `http://${req.headers.host}`);
+        const method = req.method;
+        if (reqUrl.pathname === "/build-intermediate" && method === "GET") {
+          res.writeHead(200, { "content-type": "text/plain" });
+          const origLog = console.log;
+          console.log = (...args) => {
+            res.write(args.join(" "));
+            res.write("\n");
+          };
+          await mainModule.buildIntermediate();
+          console.log = origLog;
+          res.end();
+        } else if (reqUrl.pathname === "/build-enhanced" && method === "GET") {
+          res.writeHead(200, { "content-type": "text/plain" });
+          const origLog = console.log;
+          console.log = (...args) => {
+            res.write(args.join(" "));
+            res.write("\n");
+          };
+          const refreshed = await mainModule.refreshSources();
+          const intermediate = mainModule.buildIntermediate();
+          const enhancedPath = path.join(process.cwd(), "enhanced");
+          fs.mkdirSync(enhancedPath, { recursive: true });
+          const enhancedFile = "enhanced.json";
+          fs.writeFileSync(path.join(enhancedPath, enhancedFile), JSON.stringify({ "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": [] }, null, 2), "utf8");
+          console.log(`written ${enhancedFile}`);
+          console.log(`Enhanced ontology written to enhanced/${enhancedFile} with ${intermediate.files.length} nodes`);
+          console.log = origLog;
+          res.end();
+        } else if (reqUrl.pathname === "/capital-cities" && method === "GET") {
+          try {
+            const doc = await mainModule.getCapitalCities();
+            res.writeHead(200, { "content-type": "application/json" });
+            res.end(JSON.stringify(doc));
+          } catch (err) {
+            res.writeHead(500, { "content-type": "text/plain" });
+            res.end(`Failed to fetch capital cities: ${err.message}`);
+          }
+        } else if (reqUrl.pathname === "/query" && method === "GET") {
+          const file = reqUrl.searchParams.get("file");
+          const sparql = reqUrl.searchParams.get("sparql");
+          if (!file || !sparql) {
+            res.writeHead(400, { "content-type": "text/plain" });
+            res.end("Missing required query parameters: file and sparql");
+          } else {
+            try {
+              const result = await mainModule.sparqlQuery(file, decodeURIComponent(sparql));
+              res.writeHead(200, { "content-type": "application/json" });
+              res.end(JSON.stringify(result));
+            } catch (err) {
+              res.writeHead(500, { "content-type": "text/plain" });
+              res.end(err.message);
+            }
+          }
+        } else if (reqUrl.pathname === "/sources" && method === "GET") {
+          const sources = mainModule.listSources();
+          res.writeHead(200, { "content-type": "application/json" });
+          res.end(JSON.stringify(sources));
+        } else if (reqUrl.pathname === "/sources" && method === "POST") {
+          let body = "";
+          req.on("data", chunk => { body += chunk; });
+          req.on("end", () => {
+            try {
+              const { name, url } = JSON.parse(body);
+              if (!name || !url) {
+                res.writeHead(400, { "content-type": "text/plain" });
+                res.end("Missing required fields: name and url");
+                return;
+              }
+              const sources = mainModule.addSource({ name, url });
+              res.writeHead(201, { "content-type": "application/json" });
+              res.end(JSON.stringify(sources));
+            } catch {
+              res.writeHead(400, { "content-type": "text/plain" });
+              res.end();
+            }
+          });
+        } else if (reqUrl.pathname.startsWith("/sources/") && method === "DELETE") {
+          const identifier = decodeURIComponent(reqUrl.pathname.slice(9));
+          const sources = mainModule.removeSource(identifier);
+          res.writeHead(200, { "content-type": "application/json" });
+          res.end(JSON.stringify(sources));
+        } else if (reqUrl.pathname.startsWith("/sources/") && method === "PUT") {
+          const identifier = decodeURIComponent(reqUrl.pathname.slice(9));
+          let body = "";
+          req.on("data", chunk => { body += chunk; });
+          req.on("end", () => {
+            try {
+              const { name, url } = JSON.parse(body);
+              if (!name || !url) {
+                res.writeHead(400, { "content-type": "text/plain" });
+                res.end("Missing required fields: name and url");
+                return;
+              }
+              const sources = mainModule.updateSource({ identifier, name, url });
+              res.writeHead(200, { "content-type": "application/json" });
+              res.end(JSON.stringify(sources));
+            } catch {
+              res.writeHead(400, { "content-type": "text/plain" });
+              res.end();
+            }
+          });
+        } else {
+          res.writeHead(404, { "content-type": "text/plain" });
+          res.end("Not found");
+        }
+      });
+      await new Promise(resolve => server.listen(port, resolve));
+      return server;
+    }
+    default:
+      break;
+  }
+}
