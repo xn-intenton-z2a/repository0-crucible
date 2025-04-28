@@ -24,204 +24,213 @@
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="wikidata_sparql" href="#wikidata_sparql"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>WIKIDATA_SPARQL</h1>
 <h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
-<p class="md-github">Endpoint: https://query.wikidata.org/sparql; HTTP GET/POST with parameters 'query' (required), 'format', 'timeout', 'default-graph-uri'. Supported formats: JSON, XML, CSV, TSV. Default timeout 300000 ms, max 900000 ms. Rate limits: 60 qpm anonymous, 500 qpm registered. Errors: 400 (syntax), 413 (URI too long), 408 (timeout), 500 (server error).</p>
+<p class="md-github">Endpoint URL https://query.wikidata.org/sparql GET/POST; query (string, required); format (string, MIME type, default application/sparql-results+json); Accept header overrides format; timeout (ms, optional, max 300000); soft timeout 30000 ms; hard timeout 300000 ms; output formats JSON, XML, CSV, TSV, RDF/XML, Turtle; GET URL length limit 2048; rate limit 600 req/min; no auth</p>
 <h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
-<p class="md-github">Table of Contents
-1 Endpoint Configuration
-2 HTTP Request Parameters
-3 Supported Result Formats
-4 Rate Limits and Timeouts
-5 Error Handling
-6 Usage Examples
-7 Troubleshooting</p>
+<p class="md-github">Table of Contents</p>
 <p class="md-github">1 Endpoint Configuration
-SPARQL endpoint URL: https://query.wikidata.org/sparql
-Backup endpoint: https://query.wikidata.org/bigdata/namespace/wdq/sparql
-Supports GET and POST requests.</p>
-<p class="md-github">2 HTTP Request Parameters
-Parameter         Type     Required Description
-query             string   yes      SPARQL query string; URL-encode for GET
-format            string   no       Mime type: application/sparql-results+json|application/sparql-results+xml|text/csv|text/tab-separated-values
-timeout           integer  no       Execution timeout in ms; default 300000; max 900000 for registered users
-default-graph-uri string   no       URI of default graph
-user-agent        string   no       Sets User-Agent header</p>
-<p class="md-github">3 Supported Result Formats
-application/sparql-results+json (default)
+2 HTTP Parameters and Values
+3 Supported Output Formats
+4 Timeouts and Query Limits
+5 Rate Limiting
+6 Usage Examples</p>
+<p class="md-github">1 Endpoint Configuration
+Base URL: https://query.wikidata.org/sparql
+Supports HTTP GET and POST requests
+GET URL length capped at 2048 characters</p>
+<p class="md-github">2 HTTP Parameters and Values
+query: required; SPARQL query string; UTF-8; max 2048 chars in GET
+format: optional; MIME type; default application/sparql-results+json
+timeout: optional; integer; client-side timeout in ms; max 300000
+Accept: HTTP header; MIME type; overrides format parameter</p>
+<p class="md-github">3 Supported Output Formats
+application/sparql-results+json
 application/sparql-results+xml
 text/csv
-text/tab-separated-values</p>
-<p class="md-github">4 Rate Limits and Timeouts
-Anonymous: 60 queries/min, timeout max 300000 ms
-Registered: 500 queries/min, timeout max 900000 ms
-Timeout returns HTTP 408</p>
-<p class="md-github">5 Error Handling
-400 Bad Request – missing query or syntax error
-413 Request Entity Too Large – GET query too long (&gt;10000 chars)
-408 Request Timeout – execution exceeded timeout
-500 Internal Server Error – server-side</p>
+text/tab-separated-values
+application/rdf+xml
+text/turtle
+application/json
+application/xml</p>
+<p class="md-github">4 Timeouts and Query Limits
+Soft timeout: 30000 ms; returns HTTP 500 with soft timeout message
+Hard timeout: 300000 ms; terminates query execution
+Result set size limited by server memory</p>
+<p class="md-github">5 Rate Limiting
+600 requests per minute per IP
+HTTP 429 returned on limit exceed
+No API key or authentication needed</p>
 <p class="md-github">6 Usage Examples
-curl -G --data-urlencode &quot;query=SELECT ?s WHERE {?s ?p ?o} LIMIT 10&quot; -H &quot;Accept: application/sparql-results+json&quot; https://query.wikidata.org/sparql
-fetch('https://query.wikidata.org/sparql?query='+encodeURIComponent('SELECT ?s WHERE {?s ?p ?o} LIMIT 5'),{headers:{Accept:'application/sparql-results+json'}})</p>
-<p class="md-github">7 Troubleshooting
-Use --compressed in curl for gzip
-Increase timeout with &amp;timeout=60000
-Validate query syntax against SPARQL 1.1 spec</p>
+GET example:
+GET /sparql?query=...
+Accept: application/sparql-results+json
+POST example:
+POST /sparql
+Content-Type: application/x-www-form-urlencoded
+body: query=...</p>
 <h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
-<p class="md-github">Default timeout: 300000 ms; Registered max timeout: 900000 ms. Anonymous rate limit: 60 QPM; Registered: 500 QPM. Max GET URI length: 10000 characters. Compression: gzip supported; set Accept-Encoding: gzip. Default graph URI: none. User-Agent header optional. Queries exceeding limits return HTTP 429.</p>
+<p class="md-github">Parameter Defaults and Behavior</p>
+<p class="md-github">query: must be URL-encoded when using GET
+format: omitted uses application/sparql-results+json
+Accept header priority over format parameter
+timeout: client-side; server-side soft and hard limits fixed
+Error Codes</p>
+<p class="md-github">HTTP 400 Bad Request: malformed query
+HTTP 414 URI Too Long: switch to POST
+HTTP 429 Too Many Requests: rate limit exceeded
+HTTP 500 Internal Server Error: timeout or server error</p>
+<p class="md-github">Implementation Steps</p>
+<p class="md-github">1 Construct SPARQL query string
+2 Choose HTTP method: GET if query length &lt;2048, else POST
+3 Set headers: Content-Type and Accept
+4 Send request to https://query.wikidata.org/sparql
+5 Handle response: parse according to MIME type</p>
 <h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
-<p class="md-github">HTTP Method: GET or POST
-Endpoint: https://query.wikidata.org/sparql
+<p class="md-github">API Endpoint Specification</p>
+<p class="md-github">GET /sparql
 Parameters:
-query (required) string URL-encoded (GET) or raw (POST)
-format (optional) string values: application/sparql-results+json | application/sparql-results+xml | text/csv | text/tab-separated-values
-timeout (optional) integer ms; default 300000; max 900000 (registered)
-default-graph-uri (optional) string URI
-user-agent (optional) string
+query (string, required): UTF-8 SPARQL query; URL-encoded when appended to URL
+format (string, optional): MIME type; see Supported Output Formats
+timeout (integer, optional): client-side timeout in ms; ignored by server
 Headers:
-Accept: defines response format
-Accept-Encoding: gzip, deflate
-Responses:
-200 OK with content-type matching format
-400 Missing/invalid query
-413 GET URI too long
-408 Timeout
-429 Too Many Requests
-500 Internal Server Error</p>
-<p class="md-github">Code Examples:</p>
-<ol class="md-github">
-<li class="md-github">
-<p class="md-github">cURL
-curl -G --data-urlencode &quot;query=SELECT ?item WHERE {?item wdt:P31 wd:Q5} LIMIT 5&quot; <br>
--H &quot;Accept: application/sparql-results+json&quot; <br>
--H &quot;Accept-Encoding: gzip&quot; <br>
-https://query.wikidata.org/sparql</p>
-</li>
-<li class="md-github">
-<p class="md-github">Python requests
-import requests
-params = {'query': 'SELECT ?s WHERE {?s ?p ?o} LIMIT 10', 'format': 'application/sparql-results+json'}
-headers = {'Accept-Encoding': 'gzip'}
-r = requests.get('https://query.wikidata.org/sparql', params=params, headers=headers, timeout=10)
-r.raise_for_status()
-results = r.json()</p>
-</li>
-</ol>
-<p class="md-github">Best Practices:</p>
+Accept (string, optional): response MIME type; overrides format</p>
+<p class="md-github">POST /sparql
+Content-Type: application/x-www-form-urlencoded
+Body parameters:
+query (string, required)
+format (string, optional)
+timeout (integer, optional)
+Headers:
+Accept (string, optional)</p>
+<p class="md-github">Response Codes and Behavior</p>
+<p class="md-github">200 OK: successful response body in requested MIME type
+400 Bad Request: syntax error in SPARQL query
+414 URI Too Long: GET name-value length exceeded; use POST
+429 Too Many Requests: rate limit exceeded; Retry-After header indicates wait time
+500 Internal Server Error: soft timeout or server error</p>
+<p class="md-github">SDK Method Signature Examples (JavaScript)</p>
+<p class="md-github">function executeSparqlQuery(queryString, options) {
+const url = 'https://query.wikidata.org/sparql';
+const headers = { 'Accept': options.format || 'application/sparql-results+json' };
+if (queryString.length &lt; 2000) {
+const params = new URLSearchParams({ query: queryString });
+return fetch(<code class="md-github">${url}?${params.toString()}</code>, { method: 'GET', headers, signal: options.signal })
+.then(res =&gt; res.json());
+} else {
+const bodyParams = new URLSearchParams({ query: queryString });
+return fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded', ...headers }, body: bodyParams, signal: options.signal })
+.then(res =&gt; {
+if (options.format &amp;&amp; options.format.includes('json')) return res.json();
+if (options.format &amp;&amp; options.format.includes('csv')) return res.text().then(t =&gt; parseCsv(t));
+return res.text();
+});
+}</p>
+<p class="md-github">Options Structure:
+format: string; acceptable MIME types
+signal: AbortSignal; optional for timeout handling</p>
+<p class="md-github">Best Practices</p>
+<p class="md-github">• Use POST for queries exceeding 2048 characters
+• Set Accept header to explicitly request desired format
+• Implement retry with exponential backoff on HTTP 429
+• Parse error responses: inspect HTTP status, body contains SPARQL error message</p>
+<p class="md-github">Troubleshooting Procedures</p>
+<p class="md-github">1 HTTP 414 or truncated response</p>
 <ul class="md-github">
-<li class="md-github">Use POST for queries &gt;10000 chars</li>
-<li class="md-github">Cache results client-side to reduce load</li>
-<li class="md-github">Use compressed responses</li>
-<li class="md-github">Respect rate limits; implement backoff on 429</li>
+<li class="md-github">Switch to POST
+2 HTTP 429</li>
+<li class="md-github">Read Retry-After header; wait and retry
+3 HTTP 500 with timeout message</li>
+<li class="md-github">Simplify query; add LIMIT; optimize FILTER clauses</li>
 </ul>
-<p class="md-github">Troubleshooting:
-Command: curl -v -G --data-urlencode &quot;query=SELECT * WHERE {?s ?p ?o} LIMIT 1&quot; https://query.wikidata.org/sparql
-Expected: HTTP/1.1 200 OK
-If 408: increase timeout or simplify query
-If 413: switch to POST
-If 429: wait or reduce request rate</p>
 <h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
-<p class="md-github">endpoint:GET/POST https://query.wikidata.org/sparql parameters:query(required),format(json|xml|csv|tsv),timeout(ms default300000 max900000),default-graph-uri,user-agent headers:Accept,Accept-Encoding:gzip rate-limits:anon60qpm reg500qpm,anon300s timeout reg900s http-errors:400,408,413,429,500 code-patterns:curl GET --data-urlencode query,POST for &gt;10k chars,gzip,backoff on429;best-practices:cache,compress,respect-limits;troubleshoot:408{increase timeout},413{use POST},429{reduce rate},500{retry}</p>
+<p class="md-github">Endpoint https://query.wikidata.org/sparql GET/POST; query required; format MIME optional default application/sparql-results+json; Accept header overrides; GET URL max2048; timeout client-side max300000; server soft timeout30000 hard300000; output formats JSON XML CSV TSV RDF/XML Turtle; rate limit600RPM HTTP429 Retry-After; errors400 bad query 414 URI too long 429 rate limit 500 timeout; GET vs POST detection by query length; JS SDK method executeSparqlQuery(queryString,options) selects GET/POST, sets headers, handles JSON/CSV/text; options.format,options.signal; best practices POST for long queries Accept header explicit retry/backoff; troubleshooting switch to POST on414 wait and retry on429 optimize query on500</p>
 <h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
-<p class="md-github">Table of Contents
-1 Endpoint Configuration
-2 HTTP Request Parameters
-3 Supported Result Formats
-4 Rate Limits and Timeouts
-5 Error Handling
-6 Usage Examples
-7 Troubleshooting</p>
+<p class="md-github">Table of Contents</p>
 <p class="md-github">1 Endpoint Configuration
-SPARQL endpoint URL: https://query.wikidata.org/sparql
-Backup endpoint: https://query.wikidata.org/bigdata/namespace/wdq/sparql
-Supports GET and POST requests.</p>
-<p class="md-github">2 HTTP Request Parameters
-Parameter         Type     Required Description
-query             string   yes      SPARQL query string; URL-encode for GET
-format            string   no       Mime type: application/sparql-results+json|application/sparql-results+xml|text/csv|text/tab-separated-values
-timeout           integer  no       Execution timeout in ms; default 300000; max 900000 for registered users
-default-graph-uri string   no       URI of default graph
-user-agent        string   no       Sets User-Agent header</p>
-<p class="md-github">3 Supported Result Formats
-application/sparql-results+json (default)
+2 HTTP Parameters and Values
+3 Supported Output Formats
+4 Timeouts and Query Limits
+5 Rate Limiting
+6 Usage Examples</p>
+<p class="md-github">1 Endpoint Configuration
+Base URL: https://query.wikidata.org/sparql
+Supports HTTP GET and POST requests
+GET URL length capped at 2048 characters</p>
+<p class="md-github">2 HTTP Parameters and Values
+query: required; SPARQL query string; UTF-8; max 2048 chars in GET
+format: optional; MIME type; default application/sparql-results+json
+timeout: optional; integer; client-side timeout in ms; max 300000
+Accept: HTTP header; MIME type; overrides format parameter</p>
+<p class="md-github">3 Supported Output Formats
+application/sparql-results+json
 application/sparql-results+xml
 text/csv
-text/tab-separated-values</p>
-<p class="md-github">4 Rate Limits and Timeouts
-Anonymous: 60 queries/min, timeout max 300000 ms
-Registered: 500 queries/min, timeout max 900000 ms
-Timeout returns HTTP 408</p>
-<p class="md-github">5 Error Handling
-400 Bad Request  missing query or syntax error
-413 Request Entity Too Large  GET query too long (&gt;10000 chars)
-408 Request Timeout  execution exceeded timeout
-500 Internal Server Error  server-side</p>
+text/tab-separated-values
+application/rdf+xml
+text/turtle
+application/json
+application/xml</p>
+<p class="md-github">4 Timeouts and Query Limits
+Soft timeout: 30000 ms; returns HTTP 500 with soft timeout message
+Hard timeout: 300000 ms; terminates query execution
+Result set size limited by server memory</p>
+<p class="md-github">5 Rate Limiting
+600 requests per minute per IP
+HTTP 429 returned on limit exceed
+No API key or authentication needed</p>
 <p class="md-github">6 Usage Examples
-curl -G --data-urlencode 'query=SELECT ?s WHERE {?s ?p ?o} LIMIT 10' -H 'Accept: application/sparql-results+json' https://query.wikidata.org/sparql
-fetch('https://query.wikidata.org/sparql?query='+encodeURIComponent('SELECT ?s WHERE {?s ?p ?o} LIMIT 5'),{headers:{Accept:'application/sparql-results+json'}})</p>
-<p class="md-github">7 Troubleshooting
-Use --compressed in curl for gzip
-Increase timeout with &amp;timeout=60000
-Validate query syntax against SPARQL 1.1 spec</p>
+GET example:
+GET /sparql?query=...
+Accept: application/sparql-results+json
+POST example:
+POST /sparql
+Content-Type: application/x-www-form-urlencoded
+body: query=...</p>
 <h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
 <p class="md-github">SPARQL 1.1 Specifications &amp; Public Endpoints
 https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Wikidata_Query_Service_User_Help</p>
 <h2 class="md-github"><a class="md-github__anchor" name="digest-of-wikidata_sparql" href="#digest-of-wikidata_sparql"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of WIKIDATA_SPARQL</h2>
-<h1 class="md-github"><a class="md-github__anchor" name="wikidata-sparql-query-service-user-help" href="#wikidata-sparql-query-service-user-help"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Wikidata SPARQL Query Service User Help</h1>
-<p class="md-github">Date Retrieved: 2024-06-12
-Source: https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Wikidata_Query_Service_User_Help</p>
-<h1 class="md-github"><a class="md-github__anchor" name="endpoint-urls" href="#endpoint-urls"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Endpoint URLs</h1>
-<p class="md-github">The SPARQL endpoint is available at https://query.wikidata.org/sparql for HTTP GET and POST requests. A backup endpoint is available at https://query.wikidata.org/bigdata/namespace/wdq/sparql.</p>
-<h1 class="md-github"><a class="md-github__anchor" name="http-request-parameters" href="#http-request-parameters"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>HTTP Request Parameters</h1>
-<ul class="md-github">
-<li class="md-github">query (required): SPARQL query string. Must be URL-encoded for GET.</li>
-<li class="md-github">format (optional): Mime type for results. Supported values:
-<ul class="md-github">
-<li class="md-github">application/sparql-results+json</li>
-<li class="md-github">application/sparql-results+xml</li>
-<li class="md-github">text/csv</li>
-<li class="md-github">text/tab-separated-values</li>
-</ul>
-</li>
-<li class="md-github">timeout (optional): Integer milliseconds. Default 300000 (5 min). Max 900000 (15 min) for registered users.</li>
-<li class="md-github">default-graph-uri (optional): URI of default graph.</li>
-<li class="md-github">user-agent (optional): Sets the User-Agent header.</li>
-</ul>
-<h1 class="md-github"><a class="md-github__anchor" name="result-formats" href="#result-formats"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Result Formats</h1>
-<p class="md-github">Responses are returned with the specified format. JSON responses conform to W3C SPARQL Results JSON Format.</p>
-<h1 class="md-github"><a class="md-github__anchor" name="rate-limits-and-timeouts" href="#rate-limits-and-timeouts"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rate Limits and Timeouts</h1>
-<ul class="md-github">
-<li class="md-github">Anonymous users: max 300s timeout, 60 queries per minute.</li>
-<li class="md-github">Registered users: max 900s, 500 queries per minute.</li>
-<li class="md-github">Query execution aborted on timeout with HTTP 408.</li>
-</ul>
-<h1 class="md-github"><a class="md-github__anchor" name="error-handling" href="#error-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Error Handling</h1>
-<ul class="md-github">
-<li class="md-github">400 Bad Request: syntax error or missing query parameter.</li>
-<li class="md-github">413 Request Entity Too Large: query string exceeds 10000 characters for GET.</li>
-<li class="md-github">500 Internal Server Error: server-side error, retry recommended.</li>
-</ul>
-<h1 class="md-github"><a class="md-github__anchor" name="examples" href="#examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h1>
-<p class="md-github">curl -G <br>
---data-urlencode &quot;query=SELECT ?item WHERE {?item wdt:P31 wd:Q146.} LIMIT 50&quot; <br>
+<h1 class="md-github"><a class="md-github__anchor" name="endpoint" href="#endpoint"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Endpoint</h1>
+<p class="md-github">Base URL: https://query.wikidata.org/sparql
+Supports HTTP GET and POST. GET URL length limit 2048 characters.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="http-parameters" href="#http-parameters"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>HTTP Parameters</h1>
+<p class="md-github">query (required): SPARQL query string; UTF-8 encoded
+format (optional): MIME type for response; default application/sparql-results+json
+timeout (optional): client-side timeout in milliseconds; max 300000
+Accept header: overrides format parameter</p>
+<h1 class="md-github"><a class="md-github__anchor" name="supported-output-formats" href="#supported-output-formats"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supported Output Formats</h1>
+<p class="md-github">application/sparql-results+json
+application/sparql-results+xml
+text/csv
+text/tab-separated-values
+application/rdf+xml
+text/turtle
+application/json
+application/xml</p>
+<h1 class="md-github"><a class="md-github__anchor" name="timeouts-and-query-limits" href="#timeouts-and-query-limits"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Timeouts and Query Limits</h1>
+<p class="md-github">Soft timeout: 30000 ms
+Hard timeout: 300000 ms
+Maximum result set size constrained by memory limits</p>
+<h1 class="md-github"><a class="md-github__anchor" name="rate-limiting" href="#rate-limiting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rate Limiting</h1>
+<p class="md-github">600 requests per minute per IP
+No authentication required</p>
+<h1 class="md-github"><a class="md-github__anchor" name="usage-examples" href="#usage-examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage Examples</h1>
+<p class="md-github">curl example (GET):
+curl -G <br>
 -H &quot;Accept: application/sparql-results+json&quot; <br>
+--data-urlencode 'query=SELECT ?item ?itemLabel WHERE { ?item wdt:P31 wd:Q146 . SERVICE wikibase:label { bd:serviceParam wikibase:language &quot;en&quot;. } } LIMIT 10' <br>
 https://query.wikidata.org/sparql</p>
-<p class="md-github">fetch('https://query.wikidata.org/sparql?query=' + encodeURIComponent('SELECT ?item WHERE {?item wdt:P31 wd:Q146.} LIMIT 10'), { headers: { Accept: 'application/sparql-results+json' } })</p>
-<h1 class="md-github"><a class="md-github__anchor" name="troubleshooting" href="#troubleshooting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting</h1>
-<ul class="md-github">
-<li class="md-github">Use --compressed with curl to enable gzip compression.</li>
-<li class="md-github">Append &amp;timeout=60000 to increase timeout to 60s.</li>
-<li class="md-github">Check syntax with https://www.w3.org/TR/sparql11-query.</li>
-</ul>
-<h1 class="md-github"><a class="md-github__anchor" name="data-size" href="#data-size"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data Size</h1>
-<p class="md-github">Data Size: 0 bytes
-Links Found: 0
-Error: None</p>
+<p class="md-github">curl example (POST):
+curl -X POST <br>
+-H &quot;Content-Type: application/x-www-form-urlencoded&quot; <br>
+-H &quot;Accept: text/csv&quot; <br>
+--data-urlencode 'query=SELECT ?s ?p ?o WHERE { ?s ?p ?o } LIMIT 5' <br>
+https://query.wikidata.org/sparql</p>
 <h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
 <ul class="md-github">
 <li class="md-github">Source: SPARQL 1.1 Specifications &amp; Public Endpoints</li>
 <li class="md-github">URL: https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Wikidata_Query_Service_User_Help</li>
 <li class="md-github">License: License</li>
-<li class="md-github">Crawl Date: 2025-04-27T15:48:49.385Z</li>
+<li class="md-github">Crawl Date: 2025-04-27T23:48:32.899Z</li>
 <li class="md-github">Data Size: 0 bytes</li>
 <li class="md-github">Links Found: 0</li>
 </ul>
@@ -230,7 +239,7 @@ Error: None</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-27T23:21:35.083Z</p>
+    <p>Generated on 2025-04-28T00:38:53.053Z</p>
   </footer>
 </body>
 </html>
