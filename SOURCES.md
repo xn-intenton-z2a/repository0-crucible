@@ -11,7 +11,7 @@ W3C Document License (CC-BY 4.0)
 ## https://www.w3.org/TR/json-ld11/
 ## https://www.w3.org/TR/json-ld11-api/
 ## https://github.com/digitalbazaar/jsonld.js#readme
-Defines the JSON-LD 1.1 Core and API algorithms for framing, compaction, expansion, and normalization (URDNA2015). The jsonld.js library provides a production-ready Node.js implementation with pluggable document loaders, streaming support, and comprehensive error handling, enabling seamless JSON-LD processing in OWL builder pipelines. (Last updated: JSON-LD 1.1 May 2020; jsonld.js v1.8.1 Apr 2024.)
+Defines the JSON-LD 1.1 Core and API algorithms for framing, compaction, expansion, and normalization (URDNA2015). The jsonld.js library provides a production-ready Node.js implementation with pluggable document loaders, streaming support, and comprehensive error handling, enabling seamless JSON-LD processing in OWL-builder pipelines. (Last updated: JSON-LD 1.1 May 2020; jsonld.js v1.8.1 Apr 2024.)
 ## License
 W3C Document License (CC-BY 4.0); MIT License
 
@@ -23,8 +23,6 @@ W3C Document License (CC-BY 4.0); MIT License
 ## https://www.w3.org/TR/2013/REC-sparql11-results-json-20130321/
 ## https://jena.apache.org/documentation/fuseki2/
 ## https://graphdb.ontotext.com/documentation/standard/
-## https://wiki.dbpedia.org/services-resources/sparql-endpoint
-## https://www.wikidata.org/wiki/Wikidata:SPARQL_query_service/Wikidata_Query_Service_User_Help
 Aggregates SPARQL 1.1 Recommendations for querying, updating, HTTP protocol, and JSON result serializations, alongside deployment and tuning guides for Apache Jena Fuseki and Ontotext GraphDB. It covers performance optimization, authentication, federation, and best practices for resilient Node.js clients and public endpoints like DBpedia and Wikidata. (Last updated: SPARQL specs Mar 2013; Fuseki 4.x; GraphDB Standard 2023.)
 ## License
 W3C Document License (CC-BY 4.0); Apache License 2.0; GraphDB documentation license
@@ -46,7 +44,7 @@ W3C Document License (CC-BY 4.0); Apache License 2.0; GraphDB documentation lice
 ## https://github.com/Callidon/sparqljs#readme
 ## https://linkeddata.github.io/rdflib.js/
 ## https://vitest.dev/
-A consolidated reference for Node.js v20 core modules (fs, path, perf_hooks, http, streams, URL/ESM loader, global fetch), the WHATWG Fetch spec, the RDF/JS Data Model and Streams specifications, rdf-ext data factories, the Comunica federated query framework, SPARQL.js parser/serializer, rdflib.js graph toolkit, and Vitest v3 testing patterns. These docs underpin robust CLI and HTTP server implementations, efficient file and performance handling, streaming‐first RDF processing, modular SPARQL query construction, graph management, and comprehensive test suites. (Current as of Node.js v20.x; RDF/JS Jan 2022; Comunica 2024; SPARQL.js 2023; rdflib.js 2024; Vitest continuously updated.)
+A consolidated reference for Node.js v20 core modules (fs, path, perf_hooks, http, streams, URL/ESM loader, global fetch), the WHATWG Fetch spec, the RDF/JS Data Model and Streams specifications, rdf-ext data factories, the Comunica federated query framework, SPARQL.js parser/serializer, rdflib.js graph toolkit, and Vitest v3 testing patterns. These docs underpin robust CLI and HTTP server implementations, efficient file and performance handling, streaming-first RDF processing, modular SPARQL query construction, graph management, and comprehensive test suites. (Current as of Node.js v20.x; RDF/JS Jan 2022; Comunica 2024; SPARQL.js 2023; rdflib.js 2024; Vitest continuously updated.)
 ## License
 MIT (Node.js, rdf-ext, Comunica, SPARQL.js, rdflib.js, Vitest); WHATWG License (Fetch); CC0/Public Domain (RDF/JS Streams)
 
@@ -65,14 +63,17 @@ Covers SHACL for declarative RDF graph validation with formal semantics and conf
 ## License
 W3C Document License (CC-BY 4.0); CC0/Public Domain (ShEx spec); MIT License (shex.js)
 
-# HTTP/1.1 Semantics and Content (RFC 7231)
-## https://tools.ietf.org/html/rfc7231
-The IETF RFC defines HTTP/1.1 method semantics, status codes, header fields, and content negotiation protocols (Accept, Content-Type, etc.). It is the foundational reference for implementing reliable RESTful APIs and HTTP-based workflows in OWL-builder's CLI server, diagnostics, and linked-data operations. (Published: Jun 2014.)
+# JSON Schema Specification & Zod Validation Library
+## https://json-schema.org/specification.html
+## https://github.com/colinhacks/zod#readme
+JSON Schema provides a declarative vocabulary to define and validate JSON structures, including JSON-LD contexts and RDF shapes. The Zod library offers runtime, TypeScript-first schema validation with composable and type-safe builders, enabling concise validators for configuration files, HTTP payloads, and transformed ontology artifacts. (Last updated: JSON Schema 2020-12 Dec 2020; Zod v3.24.3 Apr 2024.)
 ## License
-IETF Trust
+CC0/Public Domain (JSON Schema); MIT License (Zod)
 
-# SPARQL-HTTP-Client Library
-## https://github.com/zazuko/sparql-http-client#readme
-A lightweight, promise-based Node.js client for interacting with SPARQL endpoints. It supports configurable GET/POST queries, Accept header negotiation, authentication, pagination, and streaming of results, enabling robust programmatic SPARQL operations with minimal boilerplate. (Last updated: 2024.)
+# Apache Jena ARQ & TDB2 Documentation
+## https://jena.apache.org/documentation/arq/
+## https://jena.apache.org/documentation/tdb2/
+## https://jena.apache.org/documentation/fuseki2/
+ARQ is Jena’s SPARQL query engine offering advanced features like service federation, custom functions, and high-performance graph pattern matching. TDB2 is Jena’s transactional RDF storage backend optimized for large-scale datasets, and Fuseki2 provides a robust SPARQL-over-HTTP server with authentication, CORS, and scalability tuning. Together, they serve as a reference Java-based stack for deploying production RDF stores and SPARQL endpoints, informing performance tuning, clustering, and resilience strategies. (Last updated: ARQ 4.x 2023; TDB2 2023; Fuseki 4.x.)
 ## License
-MIT License
+Apache License 2.0
