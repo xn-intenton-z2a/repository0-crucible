@@ -114,6 +114,33 @@ Output:
 ]
 ```
 
+## Build Intermediate (CLI)
+
+Reads JSON files from `data/`, transforms each into OWL JSON-LD intermediate artifacts in `intermediate/`, logs each write, and prints a summary line.
+
+```bash
+node src/lib/main.js --build-intermediate
+```
+
+```text
+written sample-intermediate.json
+Generated 1 intermediate artifacts into intermediate/
+```
+
+## Build Enhanced (CLI)
+
+Runs the full ontology-building pipeline: refresh → intermediate → enhanced.
+
+Default invocation:
+```bash
+node src/lib/main.js --build-enhanced
+```
+
+Custom directories:
+```bash
+node src/lib/main.js --build-enhanced data1 int1 out1
+```
+
 ## Manage Sources (HTTP)
 
 ### Add Source

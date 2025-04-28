@@ -12,19 +12,19 @@ export const PUBLIC_DATA_SOURCES = [{ name: "DBpedia SPARQL", url: "https://dbpe
 export function getHelpText() {
   return `owl-builder: create and manage OWL ontologies from public data sources
 Usage: node src/lib/main.js [options]
---help                Display this help message
--h                   Display this help message
---list-sources                        List public data sources
---add-source <name> <url>            Add a custom data source
---remove-source <identifier>         Remove a custom data source
+--help                      Display this help message
+-h                          Display this help message
+--list-sources              List public data sources
+--add-source <name> <url>   Add a custom data source
+--remove-source <identifier> Remove a custom data source
 --update-source <identifier> <newName> <newUrl>  Update a custom data source
---diagnostics                        Display diagnostics
---capital-cities                     Fetch capital cities
---query <file> "<SPARQL query>"      Execute SPARQL query on a JSON-LD OWL artifact
---serve                               Start HTTP server
---refresh                             Refresh sources
---build-intermediate                  Build intermediate artifacts
---build-enhanced [dataDir] [intermediateDir] [outDir]    Build enhanced ontology, optionally specifying custom input/output directories (default: data → intermediate → enhanced)
+--diagnostics               Display diagnostics
+--capital-cities            Fetch capital cities
+--query <file> "<SPARQL query>" Execute SPARQL query on a JSON-LD OWL artifact
+--serve                     Start HTTP server
+--refresh                   Refresh sources
+--build-intermediate        Build intermediate artifacts
+--build-enhanced, -be [dataDir] [intermediateDir] [outDir]    Build enhanced ontology, optionally specifying custom input/output directories (default: data -> intermediate -> enhanced)
 `;
 }
 
@@ -264,7 +264,7 @@ export async function main(args) {
       const publicDataSources = PUBLIC_DATA_SOURCES;
       const commands = [
         '--help', '-h', '--list-sources', '--add-source', '--remove-source', '--update-source',
-        '--diagnostics', '--build-intermediate', '--build-enhanced', '--capital-cities', '--query', '--serve'
+        '--diagnostics', '--build-intermediate', '--build-enhanced', '-be', '--capital-cities', '--query', '--serve'
       ];
       const healthChecks = [];
       for (const src of publicDataSources) {
@@ -309,7 +309,8 @@ export async function main(args) {
       else mainModule.buildIntermediate();
       break;
     }
-    case '--build-enhanced': {
+    case '--build-enhanced':
+    case '-be': {
       const [d, i, o] = argv.slice(1);
       if (d && i && o) await mainModule.buildEnhanced({ dataDir: d, intermediateDir: i, outDir: o });
       else if (d && i) await mainModule.buildEnhanced({ dataDir: d, intermediateDir: i });

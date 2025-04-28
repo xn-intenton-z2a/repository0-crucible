@@ -18,6 +18,11 @@ To create a self-evolving agentic coding system of your own based on this one se
   - `dependencies`: object mapping runtime dependency names to their installed versions from `package.json`
   - `devDependencies`: object mapping development dependency names to their installed versions from `package.json`
 - **Build Intermediate (`--build-intermediate`)**: Reads JSON files from `data/`, transforms each into OWL JSON-LD intermediate artifacts in `intermediate/`, logs each write, and prints a summary line.
+- **Build Enhanced (`--build-enhanced`, alias `-be`)**: Runs the full ontology-building pipeline: refresh sources, build intermediate artifacts, and merge into a single enhanced OWL JSON-LD document. Examples:
+  ```bash
+  node src/lib/main.js --build-enhanced
+  node src/lib/main.js --build-enhanced data1 int1 out1
+  ```
 - **Default Behavior**: Running the CLI without any flags logs the provided arguments.
 - **Capital Cities (`--capital-cities`)**: Queries DBpedia for country-capital pairs and outputs an OWL-compatible JSON-LD document with `@context` and `@graph`.
 
