@@ -176,7 +176,9 @@ export async function buildEnhanced({ dataDir = "data", intermediateDir = "inter
   const refreshed = await mainModule.refreshSources();
   const intermediate = mainModule.buildIntermediate({ dataDir, outDir: intermediateDir });
   let graph = [];
-  const dirPath = path.join(process.cwd(), intermediateDir);
+  const dirPath = path.isAbsolute(intermediateDir)
+    ? intermediateDir
+    : path.join(process.cwd(), intermediateDir);
   let files;
   if (intermediate.files && Array.isArray(intermediate.files) && intermediate.files.length) {
     files = intermediate.files.filter(f => f.endsWith(".json"));
@@ -342,6 +344,21 @@ export async function main(args) {
       }
       break;
     }
+    case "--query": {
+      if (argv.length < 3) {
+        console.error("Missing required query parameters: file and sparql");
+      } else {
+        const file = argv[1];
+        const queryString = argv[2];
+        try {
+          const result = await mainModule.sparqlQuery(file, queryString);
+          console.log(JSON.stringify(result, null, 2));
+        } catch (err) {
+          console.error(err.message);
+        }
+      }
+      break;
+    }
     case "--diagnostics": {
       const diagnostics = {};
       diagnostics.version = pkg.version;
@@ -504,7 +521,7 @@ export async function main(args) {
           res.end("Not found");
         }
       });
-      await new Promise(resolve => server.listen(port, resolve));
+      server.listen(port);
       return server;
     }
     default:
