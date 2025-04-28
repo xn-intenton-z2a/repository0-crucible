@@ -3,13 +3,13 @@
 ## https://www.w3.org/TR/owl2-overview/
 ## https://www.w3.org/TR/skos-reference/
 ## https://www.w3.org/TR/vocab-dcat-2/
-Provides the foundational standards for linked data modeling and vocabulary management. RDF 1.1 Concepts defines the graph data model and syntax for triples/terms; OWL 2 Overview details ontology semantics and reasoning profiles; SKOS Reference specifies concept scheme structures; DCAT 2 defines a vocab for dataset catalogs. Critical for interoperable JSON-LD OWL artifact design, ontology definition, and metadata cataloging. Last updated: RDF 1.1 (Feb 2014), OWL 2 (Dec 2012), SKOS (Aug 2009), DCAT 2 (Feb 2023). Authoritative via W3C Working Groups.
+Provides the foundational standards for linked data modeling, ontology semantics, and dataset cataloging. RDF 1.1 Concepts (Feb 2014) defines the graph data model and term syntax; OWL 2 Overview (Dec 2012) details ontology profiles and reasoning; SKOS Reference (Aug 2009) standardizes concept schemes; DCAT 2 (Feb 2023) specifies dataset catalogs. Critical for interoperable JSON-LD and OWL artifact design, ontology definition, and metadata management. Authoritative via W3C Working Groups.
 ## License if known
 W3C Document License (CC-BY 4.0)
 
 # JSON-LD 1.1 Core & Processing Algorithms
 ## https://www.w3.org/TR/json-ld11/
-The definitive specification for JSON-LD 1.1 data model, contexts, and conversion algorithms (expand, compact, flatten, frame, and normalize). It provides essential syntax rules, processor requirements, and JSON-LD/URI interplay, enabling reliable serialization and deserialization of OWL ontologies. Last updated May 2020. Recognized by W3C Semantic Web Community.
+The definitive specification for JSON-LD 1.1 data modeling and processing, including the expand, compact, flatten, frame, and normalize algorithms. It details syntax rules, context definitions, processor requirements, and JSON-LD/URI interplay, enabling reliable serialization and deserialization of RDF and OWL ontologies in JSON. Last updated May 2020. Recognized by the W3C Semantic Web Community.
 ## License if known
 W3C Document License (CC-BY 4.0)
 
@@ -20,48 +20,50 @@ W3C Document License (CC-BY 4.0)
 ## https://github.com/RubenVerborgh/SPARQL.js#readme
 ## https://github.com/linkeddata/rdflib.js#readme
 ## https://github.com/rdfjs/N3.js#readme
-This collection covers key JS implementations for RDF/JSON-LD artifact handling: jsonld.js for framing and compaction; RDF/JS Data Model interface for graph interoperability; Comunica for federated SPARQL querying; SPARQL.js for parsing; rdflib.js for graph operations; N3.js for Turtle/N-Quads parsing and serialization. Essential for in-code JSON-LD OWL generation, streaming, and SPARQL integration. Libraries maintained actively: Comunica (2024), SPARQL.js (2023), rdflib.js (2024), N3.js (2024).
+This curated set of JavaScript libraries facilitates working with RDF, JSON-LD, and SPARQL in Node.js. jsonld.js handles context framing and compaction; the RDF/JS Data Model spec ensures graph interoperability; Comunica provides federated SPARQL querying; SPARQL.js parses queries; rdflib.js manages in-memory graphs; N3.js parses and serializes Turtle/N-Quads. Essential for in-app JSON-LD OWL generation, streaming data workflows, and SPARQL integration. Actively maintained (2023–2024).
 ## License if known
 MIT; CC0/Public Domain (per library)
 
-# SPARQL 1.1 & Server Deployments
+# SPARQL 1.1 & Enterprise RDF Stores
 ## https://www.w3.org/TR/sparql11-overview/
 ## https://www.w3.org/TR/sparql11-protocol/
 ## https://www.w3.org/TR/sparql11-results-json/
 ## https://jena.apache.org/documentation/query/
 ## https://jena.apache.org/documentation/fuseki2/
 ## https://graphdb.ontotext.com/documentation/standard/
-Comprehensive SPARQL 1.1 Query, Update, Protocol, and JSON Results formats, coupled with practical deployment guides: ARQ query engine details; Fuseki 4.x for HTTP/Graph Store endpoints; GraphDB 2023 for enterprise SPARQL with reasoning and clustering. Includes endpoint configuration, result parsing, federation setups, and performance tuning for scalable SPARQL pipelines. Specs published Mar 2013; deployments updated 2024.
+## https://docs.stardog.com
+Comprehensive resources for SPARQL 1.1 querying, updates, protocols, and JSON result formats, paired with deployment guides for Apache Jena ARQ, Fuseki, GraphDB, and Stardog. Covers endpoint configuration, federated queries, performance tuning, reasoning support, high-availability clustering, and security best practices. Specs published Mar 2013; deployments updated through 2024.
 ## License if known
-W3C Document License (CC-BY 4.0); Apache 2.0; GraphDB Documentation License
+W3C Document License (CC-BY 4.0); Apache 2.0; GraphDB Documentation License; Stardog Documentation License
 
 # RDF Validation: SHACL & ShEx
 ## https://www.w3.org/TR/shacl/
 ## https://shex.io/shex-semantics/
 ## https://github.com/shexSpec/shex.js#readme
-Defines declarative validation of RDF graphs using SHACL shapes (Core and SPARQL‐based constraints) and concise schema definitions with ShEx. The shex.js library delivers streaming validation with detailed errors for use in CI/CD and data integrity checks of JSON-LD OWL artifacts. SHACL published Oct 2017; ShEx semantics Feb 2020; shex.js v4.x (2023).
+Defines declarative validation of RDF graphs using SHACL shapes (Core and SPARQL-based constraints) and concise ShEx schemas. The shex.js library offers streaming validation with detailed error reporting ideal for CI/CD pipelines and data integrity checks of JSON-LD OWL artifacts. SHACL published Oct 2017; ShEx semantics Feb 2020; shex.js v4.x (2023).
 ## License if known
 W3C Document License (CC-BY 4.0); CC0/Public Domain; MIT
 
 # Schema.org Vocabulary
 ## https://schema.org/docs/full.html
-The comprehensive enumeration of Schema.org types and properties (800+ types, 1500+ properties) for structured web markup and knowledge graph enrichment. Offers JSON-LD examples, extension guidelines, and best practices for customizing domains, widely adopted for SEO and interlinking OWL JSON-LD outputs with web data. Last updated 2024.
+The canonical enumeration of 800+ types and 1500+ properties for structured web data and knowledge graph enrichment. Includes JSON-LD examples, extension guidelines, and best practices for custom domains, facilitating SEO and linking OWL JSON-LD outputs to web resources. Last updated 2024; widely adopted across platforms.
 ## License if known
 CC0 Public Domain
 
-# Node.js Core & Web Platform APIs
+# Node.js Platform & Performance APIs
 ## https://nodejs.org/api/fs.html
 ## https://nodejs.org/api/http.html
 ## https://nodejs.org/api/url.html
 ## https://nodejs.org/api/stream.html
 ## https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
 ## https://url.spec.whatwg.org/multipage/
-An integrated reference for Node.js core modules (fs for file I/O; http for server/client operations; url module for URL parsing) and the WHATWG standards (Streams API, Fetch API, URL Standard). Essential for CLI flags, server endpoints (/build-intermediate, /build-enhanced, /refresh), efficient payload streaming, robust HTTP request handling, and error management. Verified against Node.js v20+ and WHATWG specs.
+## https://nodejs.org/api/perf_hooks.html
+An integrated reference for Node.js core modules (fs for file I/O; http for servers/clients; url for parsing; streams for I/O pipelines), the Fetch API for HTTP interactions, the WHATWG URL Standard, and the Performance Hooks API (performance.now, marks, measures). Essential for CLI file operations, HTTP endpoint streaming, latency measurement in diagnostics, and robust resource handling. Verified against Node.js v20+ and WHATWG specs.
 ## License if known
 Node.js Documentation License (CC-BY-SA 3.0); MDN Web Docs (CC-BY-SA 2.5); WHATWG Spec (Public Domain)
 
-# Stardog GraphDB Documentation
-## https://docs.stardog.com
-The official guide for Stardog GraphDB, covering installation, configuration, SPARQL endpoint setup, security, enterprise clustering, reasoning, and performance optimization. Provides actionable insights into high-availability architectures, query profiling, caching strategies, and schema management. Updated 2024; publicly accessible under Stardog documentation terms.
+# Vitest Testing Framework
+## https://vitest.dev/
+Documentation for Vitest, the fast, Vite-native test runner powering unit and integration tests in this project. Covers configuration, mocking strategies, assertion APIs, snapshot testing, coverage reporting, and ESM compatibility. Enables reliable testing of CLI commands, HTTP streams, and asynchronous APIs. Updated 2024; maintained by the Vitest community.
 ## License if known
-Stardog Documentation License (Public Access)
+MIT
