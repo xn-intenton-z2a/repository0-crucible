@@ -124,18 +124,19 @@ export async function refreshSources() {
 }
 
 export function buildIntermediate({ dataDir = "data", outDir, intermediateDir = "intermediate" } = {}) {
-  // clean
-  fs.rmSync(intermediateDir, { recursive: true, force: true });
-  if (!fs.existsSync(dataDir)) {
+  const dataDirPath = path.resolve(dataDir);
+  const intermediateDirPath = path.resolve(intermediateDir);
+  fs.rmSync(intermediateDirPath, { recursive: true, force: true });
+  if (!fs.existsSync(dataDirPath)) {
     console.error(`Error: ${dataDir}/ directory not found`);
     return;
   }
-  const files = fs.readdirSync(dataDir).filter(f => f.endsWith('.json'));
-  fs.mkdirSync(intermediateDir, { recursive: true });
+  const files = fs.readdirSync(dataDirPath).filter(f => f.endsWith('.json'));
+  fs.mkdirSync(intermediateDirPath, { recursive: true });
   let count = 0;
   for (const file of files) {
     try {
-      const content = JSON.parse(fs.readFileSync(path.join(dataDir, file), 'utf8'));
+      const content = JSON.parse(fs.readFileSync(path.join(dataDirPath, file), 'utf8'));
       const bindings = (content.results && Array.isArray(content.results.bindings)) ? content.results.bindings : [];
       const graph = bindings.map(b => {
         const entry = { '@id': b[Object.keys(b)[0]].value };
@@ -146,7 +147,7 @@ export function buildIntermediate({ dataDir = "data", outDir, intermediateDir = 
       });
       const doc = { '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' }, '@graph': graph };
       const outName = file.replace(/\.json$/, '') + '-intermediate.json';
-      fs.writeFileSync(path.join(intermediateDir, outName), JSON.stringify(doc, null, 2), 'utf8');
+      fs.writeFileSync(path.join(intermediateDirPath, outName), JSON.stringify(doc, null, 2), 'utf8');
       console.log(`written ${outName}`);
       count += graph.length;
     } catch (e) {
@@ -158,22 +159,23 @@ export function buildIntermediate({ dataDir = "data", outDir, intermediateDir = 
 }
 
 export async function buildEnhanced({ dataDir = "data", intermediateDir = "intermediate", outDir = "enhanced" } = {}) {
-  const refreshed = await refreshSources();
-  const intermediate = buildIntermediate({ dataDir, intermediateDir });
-  // merge graphs
+  const mod = await import(import.meta.url);
+  const refreshed = await mod.refreshSources();
+  const intermediate = mod.buildIntermediate({ dataDir, intermediateDir });
   let merged = [];
+  const resolvedInter = path.resolve(intermediateDir);
   for (const file of intermediate.files) {
     try {
-      const doc = JSON.parse(fs.readFileSync(path.join(intermediateDir, file), 'utf8'));
+      const doc = JSON.parse(fs.readFileSync(path.join(resolvedInter, file), 'utf8'));
       if (Array.isArray(doc['@graph'])) merged = merged.concat(doc['@graph']);
     } catch (e) {
       console.error(e.message);
     }
   }
   const enhancedDoc = { '@context': { '@vocab': 'http://www.w3.org/2002/07/owl#' }, '@graph': merged };
-  fs.mkdirSync(outDir, { recursive: true });
+  fs.mkdirSync(path.resolve(outDir), { recursive: true });
   const enhancedFile = 'enhanced.json';
-  fs.writeFileSync(path.join(outDir, enhancedFile), JSON.stringify(enhancedDoc, null, 2), 'utf8');
+  fs.writeFileSync(path.join(path.resolve(outDir), enhancedFile), JSON.stringify(enhancedDoc, null, 2), 'utf8');
   return { refreshed, intermediate, enhanced: { file: enhancedFile, count: merged.length } };
 }
 
@@ -242,14 +244,15 @@ export async function sparqlQuery(filePath, queryString) {
 export async function main(args) {
   const argv = Array.isArray(args) ? args : process.argv.slice(2);
   if (!argv.length) return;
+  const mod = await import(import.meta.url);
   const cmd = argv[0];
   switch (cmd) {
     case '--help':
     case '-h':
-      console.log(getHelpText());
+      console.log(mod.getHelpText());
       break;
     case '--list-sources': {
-      const sources = listSources();
+      const sources = mod.listSources();
       console.log(JSON.stringify(sources, null, 2));
       break;
     }
@@ -303,23 +306,23 @@ export async function main(args) {
       break;
     }
     case '--build-intermediate': {
-      const [dataDir, outDir] = argv.slice(1);
-      if (dataDir && outDir) buildIntermediate({ dataDir, outDir });
-      else if (dataDir) buildIntermediate({ dataDir });
-      else buildIntermediate();
+      const [dataDirArg, outDirArg] = argv.slice(1);
+      if (dataDirArg && outDirArg) mod.buildIntermediate({ dataDir: dataDirArg, outDir: outDirArg });
+      else if (dataDirArg) mod.buildIntermediate({ dataDir: dataDirArg, outDir: undefined });
+      else mod.buildIntermediate();
       break;
     }
     case '--build-enhanced': {
       const [d, i, o] = argv.slice(1);
-      if (d && i && o) await buildEnhanced({ dataDir: d, intermediateDir: i, outDir: o });
-      else if (d && i) await buildEnhanced({ dataDir: d, intermediateDir: i });
-      else if (d) await buildEnhanced({ dataDir: d });
-      else await buildEnhanced();
+      if (d && i && o) await mod.buildEnhanced({ dataDir: d, intermediateDir: i, outDir: o });
+      else if (d && i) await mod.buildEnhanced({ dataDir: d, intermediateDir: i });
+      else if (d) await mod.buildEnhanced({ dataDir: d });
+      else await mod.buildEnhanced();
       break;
     }
     case '--capital-cities': {
       try {
-        const doc = await getCapitalCities();
+        const doc = await mod.getCapitalCities();
         console.log(JSON.stringify(doc, null, 2));
       } catch (e) {
         console.error(`Failed to fetch capital cities: ${e.message}`);
@@ -333,7 +336,7 @@ export async function main(args) {
         break;
       }
       try {
-        const result = await sparqlQuery(file, sparql);
+        const result = await mod.sparqlQuery(file, sparql);
         console.log(JSON.stringify(result, null, 2));
       } catch (e) {
         console.error(e.message);
@@ -347,7 +350,7 @@ export async function main(args) {
         break;
       }
       try {
-        const merged = addSource({ name, url });
+        const merged = mod.addSource({ name, url });
         console.log(JSON.stringify(merged, null, 2));
       } catch (e) {
         console.error(e.message);
@@ -361,7 +364,7 @@ export async function main(args) {
         break;
       }
       try {
-        const merged = removeSource(identifier);
+        const merged = mod.removeSource(identifier);
         console.log(JSON.stringify(merged, null, 2));
       } catch (e) {
         console.error(e.message);
@@ -375,7 +378,7 @@ export async function main(args) {
         break;
       }
       try {
-        const merged = updateSource({ identifier, name: newName, url: newUrl });
+        const merged = mod.updateSource({ identifier, name: newName, url: newUrl }, CONFIG_FILE);
         console.log(JSON.stringify(merged, null, 2));
       } catch (e) {
         console.error(e.message);
@@ -385,11 +388,12 @@ export async function main(args) {
     case '--serve': {
       const port = process.env.PORT ? parseInt(process.env.PORT, 10) : 3000;
       const server = http.createServer(async (req, res) => {
+        const mod2 = await import(import.meta.url);
         const reqUrl = new URL(req.url, `http://${req.headers.host}`);
         const p = reqUrl.pathname;
         if (p === '/build-intermediate' && req.method === 'GET') {
           res.setHeader('Content-Type', 'text/plain');
-          const summary = buildIntermediate();
+          const summary = mod2.buildIntermediate();
           if (summary && summary.files) {
             for (const f of summary.files) res.write(`written ${f}\n`);
             res.write(`Generated ${summary.count} intermediate artifacts into intermediate/`);
@@ -397,17 +401,17 @@ export async function main(args) {
           res.end();
         } else if (p === '/build-enhanced' && req.method === 'GET') {
           res.setHeader('Content-Type', 'text/plain');
-          const refreshed = await refreshSources();
+          const refreshed = await mod2.refreshSources();
           for (const f of refreshed.files) res.write(`written ${f}\n`);
-          const inter = buildIntermediate();
+          const inter = mod2.buildIntermediate();
           for (const f of inter.files) res.write(`written ${f}\n`);
-          const { enhanced } = await buildEnhanced();
+          const { enhanced } = await mod2.buildEnhanced();
           res.write(`written enhanced.json\n`);
           res.write(`Enhanced ontology written to enhanced/enhanced.json with ${enhanced.count} nodes`);
           res.end();
         } else if (p === '/capital-cities' && req.method === 'GET') {
           try {
-            const doc = await getCapitalCities();
+            const doc = await mod2.getCapitalCities();
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(doc));
           } catch (e) {
@@ -424,7 +428,7 @@ export async function main(args) {
             res.end('Missing required query parameters: file and sparql');
           } else {
             try {
-              const result = await sparqlQuery(file, sparql);
+              const result = await mod2.sparqlQuery(file, sparql);
               res.setHeader('Content-Type', 'application/json');
               res.end(JSON.stringify(result));
             } catch (e) {
