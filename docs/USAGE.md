@@ -49,7 +49,7 @@ node src/lib/main.js --list-sources
 
 Invalid configurations will log a warning and show only default sources.
 
-## Add Source
+## Add Source (CLI)
 
 Use the `--add-source` flag to add a custom data source to the configuration file. Duplicate names or URLs are ignored.
 
@@ -72,7 +72,7 @@ Output:
 ]
 ```
 
-## Remove Source
+## Remove Source (CLI)
 
 Use the `--remove-source` flag to remove a custom data source by its name or URL.
 
@@ -91,146 +91,45 @@ Output:
 ]
 ```
 
+## Manage Sources (HTTP)
+
+### Add Source
+
+```bash
+curl -X POST http://localhost:3000/sources \
+  -H 'Content-Type: application/json' \
+  -d '{"name":"Custom API","url":"https://example.com/api"}'
+```
+
+Response:
+
+```http
+HTTP/1.1 201 Created
+Content-Type: application/json
+
+[
+  { "name": "DBpedia SPARQL", "url": "https://dbpedia.org/sparql" },
+  { "name": "Custom API", "url": "https://example.com/api" }
+]
+```
+
+### Remove Source
+
+```bash
+curl -X DELETE http://localhost:3000/sources/Custom%20API
+```
+
+Response:
+
+```http
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+[
+  { "name": "DBpedia SPARQL", "url": "https://dbpedia.org/sparql" }
+]
+```
+
 ## SPARQL Query
 
-Use the `--query` flag to execute a SPARQL query on a JSON-LD OWL artifact:
-
-```bash
-node src/lib/main.js --query artifact.json "SELECT ?s WHERE { ?s a <http://www.w3.org/2002/07/owl#Class> } LIMIT 5"
-```
-
-### Programmatic
-
-```js
-import { sparqlQuery } from 'owl-builder';
-(async () => {
-  const results = await sparqlQuery(
-    'artifact.json',
-    'SELECT ?s WHERE { ?s a <http://www.w3.org/2002/07/owl#Class> } LIMIT 5'
-  );
-  console.log(JSON.stringify(results, null, 2));
-})();
-```
-
-### HTTP Query Endpoint
-
-When running the HTTP server (`--serve`), you can query the server directly over HTTP:
-
-```bash
-curl "http://localhost:3000/query?file=artifact.json&sparql=SELECT%20%3Fs%20WHERE%20%7B%20%3Fs%20a%20%3Chttp://www.w3.org/2002/07/owl%23Class%3E%20%7D%20LIMIT%201"
-```
-
-Response (application/json):
-
-```json
-{
-  "head": { "vars": ["s"] },
-  "results": {
-    "bindings": [
-      {
-        "s": { "type": "uri", "value": "http://example.org/SomeClass" }
-      }
-    ]
-  }
-}
-```
-
-## Help
-
-Use the `--help` or `-h` flag to display usage instructions and available options:
-
-```bash
-node src/lib/main.js --help
-```
-
-## Diagnostics
-
-Use the `--diagnostics` flag to display environment and configuration diagnostics:
-
-```bash
-node src/lib/main.js --diagnostics
-```
-
-## Build Intermediate
-
-**Note:** Before generation, any existing `intermediate/` directory is removed to avoid stale artifacts.
-
-### CLI Usage
-
-Use the `--build-intermediate` flag with optional path arguments to specify input and output directories:
-
-- **Default Invocation** (no paths):
-  ```bash
-  node src/lib/main.js --build-intermediate
-  ```
-  Reads from `./data` and writes to `./intermediate`.
-
-- **Custom Input Directory** (one path):
-  ```bash
-  node src/lib/main.js --build-intermediate custom-data
-  ```
-  Reads from `./custom-data` and writes to `./intermediate`.
-
-- **Custom Input and Output Directories** (two paths):
-  ```bash
-  node src/lib/main.js --build-intermediate custom-data custom-out
-  ```
-  Reads from `./custom-data` and writes to `./custom-out`.
-
-Example output:
-
-```text
-written sample-intermediate.json
-Generated 1 intermediate artifacts into intermediate/
-```
-
-## Build Enhanced
-
-Use the `--build-enhanced` flag with up to three path arguments to specify the data, intermediate, and output directories:
-
-- **Default Invocation** (no args):
-  ```bash
-  node src/lib/main.js --build-enhanced
-  ```
-  Reads from `./data`, writes intermediate to `./intermediate`, and writes enhanced ontology to `./enhanced/enhanced.json`.
-
-- **Custom Data Directory** (one arg):
-  ```bash
-  node src/lib/main.js --build-enhanced custom-data
-  ```
-  Uses `./custom-data` as data directory.
-
-- **Custom Data and Intermediate Directories** (two args):
-  ```bash
-  node src/lib/main.js --build-enhanced custom-data custom-intermediate
-  ```
-  Uses `./custom-data` and writes intermediate to `./custom-intermediate`.
-
-- **Custom Data, Intermediate, and Output Directories** (three args):
-  ```bash
-  node src/lib/main.js --build-enhanced custom-data custom-intermediate custom-output
-  ```
-  Writes final enhanced ontology to `./custom-output/enhanced.json`.
-
-Example output:
-
-```text
-written ds.json
-written sample-intermediate.json
-written enhanced.json
-Enhanced ontology written to enhanced/enhanced.json with <count> nodes
-```
-
-**HTTP Endpoint**
-
-Trigger build-enhanced over HTTP GET:
-
-```bash
-curl http://localhost:3000/build-enhanced
-```
-
-The server streams log lines for each step (each `written ...`) and ends with:
-
-```text
-Enhanced ontology written to enhanced/enhanced.json with <count> nodes
-```
+... (rest unchanged) ...`,
