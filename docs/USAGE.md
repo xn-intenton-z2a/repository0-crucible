@@ -43,7 +43,8 @@ node src/lib/main.js --list-sources
   },
   {
     "name": "Custom API",
-    "url": "https://example.com/api" }
+    "url": "https://example.com/api"
+  }
 ]
 ```
 
@@ -143,7 +144,28 @@ node src/lib/main.js --build-enhanced data1 int1 out1
 
 ## Manage Sources (HTTP)
 
+### List Sources
+
+Retrieve the merged list of default and custom data sources:
+
+```bash
+curl http://localhost:3000/sources
+```
+
+Response:
+
+```json
+[
+  {
+    "name": "DBpedia SPARQL",
+    "url": "https://dbpedia.org/sparql"
+  }
+]
+```
+
 ### Add Source
+
+Add a custom data source:
 
 ```bash
 curl -X POST http://localhost:3000/sources \
@@ -151,4 +173,58 @@ curl -X POST http://localhost:3000/sources \
   -d '{"name":"Custom API","url":"https://example.com/api"}'
 ```
 
-... (rest unchanged) ...
+Response (201 Created):
+```json
+[
+  {
+    "name": "DBpedia SPARQL",
+    "url": "https://dbpedia.org/sparql"
+  },
+  {
+    "name": "Custom API",
+    "url": "https://example.com/api"
+  }
+]
+```
+
+### Delete Source
+
+Remove a custom data source by name or URL:
+
+```bash
+curl -X DELETE http://localhost:3000/sources/Custom%20API
+```
+
+Response (200 OK):
+```json
+[
+  {
+    "name": "DBpedia SPARQL",
+    "url": "https://dbpedia.org/sparql"
+  }
+]
+```
+
+### Update Source
+
+Update an existing custom data source:
+
+```bash
+curl -X PUT http://localhost:3000/sources/Custom%20API \
+  -H 'Content-Type: application/json' \
+  -d '{"name":"NewName","url":"https://new.url"}'
+```
+
+Response (200 OK):
+```json
+[
+  {
+    "name": "DBpedia SPARQL",
+    "url": "https://dbpedia.org/sparql"
+  },
+  {
+    "name": "NewName",
+    "url": "https://new.url"
+  }
+]
+```
