@@ -5,6 +5,7 @@ import { URL } from "url";
 import pkg from "../../package.json" assert { type: "json" };
 import { performance } from "perf_hooks";
 import { QueryEngine } from "@comunica/query-sparql";
+import * as mainModule from "./main.js";
 
 export const PUBLIC_DATA_SOURCES = [{ name: "DBpedia SPARQL", url: "https://dbpedia.org/sparql" }];
 
@@ -158,8 +159,8 @@ export function buildIntermediate({ dataDir = "data", outDir, intermediateDir = 
 }
 
 export async function buildEnhanced({ dataDir = "data", intermediateDir = "intermediate", outDir = "enhanced" } = {}) {
-  const refreshed = await refreshSources();
-  const intermediate = buildIntermediate({ dataDir, intermediateDir });
+  const refreshed = await mainModule.refreshSources();
+  const intermediate = mainModule.buildIntermediate({ dataDir, intermediateDir });
   let merged = [];
   const resolvedInter = path.resolve(intermediateDir);
   for (const file of intermediate.files) {
@@ -249,7 +250,7 @@ export async function main(args) {
       console.log(getHelpText());
       break;
     case '--list-sources': {
-      console.log(JSON.stringify(listSources(), null, 2));
+      console.log(JSON.stringify(mainModule.listSources(), null, 2));
       break;
     }
     case '--diagnostics': {
@@ -303,22 +304,22 @@ export async function main(args) {
     }
     case '--build-intermediate': {
       const [dataDirArg, outDirArg] = argv.slice(1);
-      if (dataDirArg && outDirArg) buildIntermediate({ dataDir: dataDirArg, outDir: outDirArg });
-      else if (dataDirArg) buildIntermediate({ dataDir: dataDirArg, outDir: undefined });
-      else buildIntermediate();
+      if (dataDirArg && outDirArg) mainModule.buildIntermediate({ dataDir: dataDirArg, outDir: outDirArg });
+      else if (dataDirArg) mainModule.buildIntermediate({ dataDir: dataDirArg, outDir: undefined });
+      else mainModule.buildIntermediate();
       break;
     }
     case '--build-enhanced': {
       const [d, i, o] = argv.slice(1);
-      if (d && i && o) await buildEnhanced({ dataDir: d, intermediateDir: i, outDir: o });
-      else if (d && i) await buildEnhanced({ dataDir: d, intermediateDir: i });
-      else if (d) await buildEnhanced({ dataDir: d });
-      else await buildEnhanced();
+      if (d && i && o) await mainModule.buildEnhanced({ dataDir: d, intermediateDir: i, outDir: o });
+      else if (d && i) await mainModule.buildEnhanced({ dataDir: d, intermediateDir: i });
+      else if (d) await mainModule.buildEnhanced({ dataDir: d });
+      else await mainModule.buildEnhanced();
       break;
     }
     case '--capital-cities': {
       try {
-        const doc = await getCapitalCities();
+        const doc = await mainModule.getCapitalCities();
         console.log(JSON.stringify(doc, null, 2));
       } catch (e) {
         console.error(`Failed to fetch capital cities: ${e.message}`);
@@ -331,7 +332,7 @@ export async function main(args) {
         console.error('Missing required query parameters: file and sparql');
       } else {
         try {
-          const result = await sparqlQuery(file, sparql);
+          const result = await mainModule.sparqlQuery(file, sparql);
           console.log(JSON.stringify(result, null, 2));
         } catch (e) {
           console.error(e.message);
@@ -345,7 +346,7 @@ export async function main(args) {
         console.error('Missing required parameters: name and url');
       } else {
         try {
-          const merged = addSource({ name, url });
+          const merged = mainModule.addSource({ name, url });
           console.log(JSON.stringify(merged, null, 2));
         } catch (e) {
           console.error(e.message);
@@ -359,7 +360,7 @@ export async function main(args) {
         console.error('Missing required parameters: identifier');
       } else {
         try {
-          const merged = removeSource(identifier);
+          const merged = mainModule.removeSource(identifier);
           console.log(JSON.stringify(merged, null, 2));
         } catch (e) {
           console.error(e.message);
@@ -373,7 +374,7 @@ export async function main(args) {
         console.error('Missing required parameters: identifier, newName, and newUrl');
       } else {
         try {
-          const merged = updateSource({ identifier, name: newName, url: newUrl }, CONFIG_FILE);
+          const merged = mainModule.updateSource({ identifier, name: newName, url: newUrl }, CONFIG_FILE);
           console.log(JSON.stringify(merged, null, 2));
         } catch (e) {
           console.error(e.message);
@@ -388,7 +389,7 @@ export async function main(args) {
         const p = reqUrl.pathname;
         if (p === '/build-intermediate' && req.method === 'GET') {
           res.setHeader('Content-Type', 'text/plain');
-          const summary = buildIntermediate();
+          const summary = mainModule.buildIntermediate();
           if (summary && summary.files) {
             for (const f of summary.files) res.write(`written ${f}\n`);
             res.write(`Generated ${summary.count} intermediate artifacts into intermediate/`);
@@ -396,17 +397,17 @@ export async function main(args) {
           res.end();
         } else if (p === '/build-enhanced' && req.method === 'GET') {
           res.setHeader('Content-Type', 'text/plain');
-          const refreshed = await refreshSources();
+          const refreshed = await mainModule.refreshSources();
           for (const f of refreshed.files) res.write(`written ${f}\n`);
-          const inter = buildIntermediate();
+          const inter = mainModule.buildIntermediate();
           for (const f of inter.files) res.write(`written ${f}\n`);
-          const { enhanced } = await buildEnhanced();
+          const { enhanced } = await mainModule.buildEnhanced();
           res.write(`written enhanced.json\n`);
           res.write(`Enhanced ontology written to enhanced/enhanced.json with ${enhanced.count} nodes`);
           res.end();
         } else if (p === '/capital-cities' && req.method === 'GET') {
           try {
-            const doc = await getCapitalCities();
+            const doc = await mainModule.getCapitalCities();
             res.setHeader('Content-Type', 'application/json');
             res.end(JSON.stringify(doc));
           } catch (e) {
@@ -423,7 +424,7 @@ export async function main(args) {
             res.end('Missing required query parameters: file and sparql');
           } else {
             try {
-              const result = await sparqlQuery(file, sparqlParam);
+              const result = await mainModule.sparqlQuery(file, sparqlParam);
               res.setHeader('Content-Type', 'application/json');
               res.end(JSON.stringify(result));
             } catch (e) {
@@ -437,7 +438,8 @@ export async function main(args) {
           res.end();
         }
       });
-      return new Promise(resolve => server.listen(port, () => resolve(server)));
+      server.listen(port);
+      return server;
     }
     default:
       break;
