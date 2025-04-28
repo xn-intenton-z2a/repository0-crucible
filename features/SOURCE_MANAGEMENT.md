@@ -1,31 +1,59 @@
 # Description
-Consolidate full lifecycle management of public and custom data sources including listing, adding, removing, updating, and refreshing. Ensure consistent behavior and output across the programmatic API, the command line interface, and the HTTP server.
 
-# Implementation
-- listSources reads or initializes the data-sources configuration and returns a merged list of default and custom entries
-- addSource validates name and URL, prevents duplicates, writes updated custom list to configuration, and returns merged sources
-- removeSource filters out entries by name or URL, writes updated list on change, and returns merged sources
-- updateSource locates an existing entry by name or URL, validates updates, writes back the updated list, and returns merged sources
-- refreshSources ensures the data directory exists, loads the merged sources, fetches JSON from each source URL, handles errors by logging, writes each fetched document to data/<slug>.json with pretty formatting, logs each write, and returns summary of count and files
+Enhance the existing source management feature by fully implementing the refreshSources functionality. This addition delivers core value by fetching JSON from all configured public and custom data sources, archiving the raw captures, and enabling automated downstream processing.
+
+# Programmatic API
+
+Export async function refreshSources(options?) where options may include dataDir (default "data") and configPath (default "data-sources.json"). Implementation:
+
+1. Call listSources(configPath) to obtain merged array of PUBLIC_DATA_SOURCES and custom entries.
+2. Ensure the dataDir folder exists on disk via fs.mkdirSync(dataDir, { recursive: true }).
+3. For each source in the merged list:
+   - Derive a safe filename slug by normalizing name to lowercase, replacing non-alphanumeric with hyphens, and appending ".json".
+   - Perform a fetch GET to the source URL.
+   - On success, parse the response body as JSON.
+   - Write the JSON content to dataDir/<slug>.json with two-space indentation via fs.writeFileSync.
+   - Log console.log(`fetched <slug>.json`).
+   - Add <slug>.json to a list of written files.
+   - On error, log console.error with the error message and continue to next source.
+4. After processing all sources, return an object { count: <number of files written>, files: <array of written filenames> }.
 
 # CLI Support
-- Option --list-sources invokes listSources and prints the merged array as pretty JSON
-- Option --add-source name url invokes addSource and prints the merged array as pretty JSON or prints an error message for invalid input
-- Option --remove-source identifier invokes removeSource and prints the merged array as pretty JSON
-- Option --update-source identifier newName newUrl invokes updateSource and prints the merged array as pretty JSON or prints an error message for invalid input
-- Option --refresh invokes refreshSources, logs each written file line by line to console, and prints a summary line "Fetched X sources into data/"
+
+Add a new flag --refresh in main(args):
+
+- When invoked with --refresh and no additional parameters, call refreshSources() with default options.
+- For custom directories, allow --refresh <dataDir> <configPath>.
+- On completion, after individual fetch logs, log a summary: `Fetched <count> sources into <dataDir>/`.
+- Ensure errors are caught and printed via console.error without throwing.
 
 # HTTP Endpoints
-- GET /sources responds with status 200 and application JSON body of merged default and custom sources
-- POST /sources expects a JSON body with fields name and url, invokes addSource, responds with status 201 and updated list or 400 with a plain text error
-- DELETE /sources/:identifier invokes removeSource and responds with status 200 and updated list as JSON
-- PUT /sources/:identifier expects a JSON body with fields name and url, invokes updateSource, responds with status 200 and updated list or 400 with a plain text error
-- GET /refresh responds with status 200 and text plain, overrides console log to stream each line emitted by refreshSources, restores the logger, and ends the response when complete
+
+Under --serve mode, support GET /refresh:
+
+- Respond with HTTP 200 and Content-Type text/plain.
+- Temporarily override console.log so each fetchSources log line is streamed to the HTTP response.
+- Invoke refreshSources() and stream all log lines.
+- After completion, restore console.log and end the response.
+- On error, respond with HTTP 500 and plain-text error message.
 
 # Testing
-- Unit tests for each API function listSources, addSource, removeSource, updateSource, and refreshSources with fs and fetch mocks, verifying directory creation, file writes, error handling, return summaries, and console logs
-- CLI tests for each flag including missing or invalid parameters and success scenarios, verifying invocation of underlying functions and console output
-- HTTP integration tests for GET endpoints /sources and /refresh and methods POST, DELETE, PUT on /sources, verifying status codes, content types, response bodies, error cases, and that configuration file is created or updated
+
+- Unit tests for refreshSources:
+  • Mock listSources to return a set of URLs and names.
+  • Spy on fs.mkdirSync, fetch, fs.writeFileSync, and console.log/console.error.
+  • Verify files are written with correct filenames and content.
+  • Assert returned object contains correct count and files array.
+- CLI tests:
+  • Invoke main(["--refresh"]) and spy on refreshSources to ensure correct calls with default and custom args.
+  • Simulate fetch errors and verify console.error calls.
+- HTTP integration tests for GET /refresh:
+  • Start server with --serve on random port.
+  • Issue GET /refresh and capture streamed response lines.
+  • Assert status code 200, content-type text/plain, presence of fetched <slug> messages.
+  • Simulate a fetch failure to verify HTTP 500 and plain-text error body.
 
 # Documentation Updates
-Update docs/FEATURES.md under Sources Management to include the refresh flag and HTTP endpoint, update docs/USAGE.md and README.md to provide example CLI invocation for refresh, sample output, and example HTTP request to GET /refresh
+
+- Update docs/FEATURES.md to describe the --refresh flag under Sources Management, including CLI usage and HTTP /refresh.
+- Update docs/USAGE.md and README.md with example CLI invocation of --refresh and sample output, plus example HTTP request to GET /refresh.
