@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="rdf4j_guide" href="#rdf4j_guide"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RDF4J_GUIDE</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Repository setup classes: SailRepository with MemoryStore or NativeStore(dataDir,indexes). Initialize via initialize() and shutDown(). Obtain RepositoryConnection via getConnection(). Perform SPARQL queries with prepareTupleQuery/prepareGraphQuery/prepareBooleanQuery and evaluate(). Perform SPARQL updates with prepareUpdate() and execute(). Manage transactions via setAutoCommit, begin, commit, rollback. Import RDF via Rio.createParser and StatementCollector. Export via Rio.createWriter and connection.export(). Remote via HTTPRepository(serverURL,repoID) with optional setUsernameAndPassword. Configuration parameters: dataDir path, tripleIndexes, autoCommit default true, supported formats: RDFXML,TURTLE,NTRIPLES,N3,JSONLD.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Repository Setup</p>
+</li>
+<li class="md-github">
+<p class="md-github">Connection Lifecycle</p>
+</li>
+<li class="md-github">
+<p class="md-github">SPARQL Query Execution</p>
+</li>
+<li class="md-github">
+<p class="md-github">SPARQL Update Execution</p>
+</li>
+<li class="md-github">
+<p class="md-github">Transaction Management</p>
+</li>
+<li class="md-github">
+<p class="md-github">RDF Import and Export</p>
+</li>
+<li class="md-github">
+<p class="md-github">Remote HTTP Repository</p>
+</li>
+<li class="md-github">
+<p class="md-github">Logging Configuration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Repository Setup</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Instantiate repository:
+<ul class="md-github">
+<li class="md-github">In-memory: new SailRepository(new MemoryStore())</li>
+<li class="md-github">Native: new SailRepository(new NativeStore(new File(&quot;/data/rdf4j&quot;),&quot;spoc,posc,cpso&quot;))</li>
+</ul>
+</li>
+<li class="md-github">Initialize: repository.initialize()</li>
+<li class="md-github">Shutdown: repository.shutDown()</li>
+</ul>
+<ol start="2" class="md-github">
+<li class="md-github">Connection Lifecycle</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Obtain: RepositoryConnection conn = repository.getConnection()</li>
+<li class="md-github">Close: conn.close()</li>
+</ul>
+<ol start="3" class="md-github">
+<li class="md-github">SPARQL Query Execution</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Prepare: TupleQuery q = conn.prepareTupleQuery(QueryLanguage.SPARQL,queryString)</li>
+<li class="md-github">Execute: TupleQueryResult r = q.evaluate()</li>
+<li class="md-github">Iterate: while(r.hasNext()){BindingSet bs=r.next();}</li>
+<li class="md-github">Close: r.close()</li>
+</ul>
+<ol start="4" class="md-github">
+<li class="md-github">SPARQL Update Execution</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Prepare: Update u = conn.prepareUpdate(QueryLanguage.SPARQL,updateString)</li>
+<li class="md-github">Execute: u.execute()</li>
+</ul>
+<ol start="5" class="md-github">
+<li class="md-github">Transaction Management</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Auto-commit: conn.setAutoCommit(false) or true</li>
+<li class="md-github">Begin: conn.begin()</li>
+<li class="md-github">Commit: conn.commit()</li>
+<li class="md-github">Rollback: conn.rollback()</li>
+</ul>
+<ol start="6" class="md-github">
+<li class="md-github">RDF Import and Export</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Import Turtle: RDFParser p=Rio.createParser(RDFFormat.TURTLE); p.setRDFHandler(new StatementCollector(conn)); p.parse(new FileInputStream(&quot;in.ttl&quot;),baseURI)</li>
+<li class="md-github">Export N-Triples: RDFWriter w=Rio.createWriter(RDFFormat.NTRIPLES,out); conn.export(w)</li>
+</ul>
+<ol start="7" class="md-github">
+<li class="md-github">Remote HTTP Repository</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Create: HTTPRepository repo = new HTTPRepository(&quot;http://localhost:8080/rdf4j-server&quot;,&quot;repoID&quot;)</li>
+<li class="md-github">Auth: repo.setUsernameAndPassword(&quot;user&quot;,&quot;pass&quot;)</li>
+<li class="md-github">Initialize and get connection as above</li>
+</ul>
+<ol start="8" class="md-github">
+<li class="md-github">Logging Configuration</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">log4j.properties:
+<ul class="md-github">
+<li class="md-github">log4j.logger.org.eclipse.rdf4j=INFO, file</li>
+<li class="md-github">log4j.appender.file.File=logs/rdf4j.log</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Configuration Options:</p>
+<ul class="md-github">
+<li class="md-github">dataDir (File): directory for NativeStore data (default: user.home/.rdf4j)</li>
+<li class="md-github">tripleIndexes (String): comma-separated combination of spo,sop,pso,pos,osp,ops (default: spo,pso,pos)</li>
+<li class="md-github">autoCommit (boolean): true/false, default true</li>
+<li class="md-github">syncDelayMS (long): delay in ms for FS sync (default: 1000)</li>
+</ul>
+<p class="md-github">Supported RDFFormat values and MIME mapping:</p>
+<ul class="md-github">
+<li class="md-github">RDFXML: application/rdf+xml</li>
+<li class="md-github">TURTLE: text/turtle</li>
+<li class="md-github">NTRIPLES: application/n-triples</li>
+<li class="md-github">N3: text/rdf+n3</li>
+<li class="md-github">JSONLD: application/ld+json</li>
+</ul>
+<p class="md-github">HTTPRepository settings:</p>
+<ul class="md-github">
+<li class="md-github">serverURL: full endpoint of RDF4J server</li>
+<li class="md-github">repositoryID: identifier of remote repo</li>
+<li class="md-github">httpMaxConnections (system property org.eclipse.rdf4j.httpclient.maxConnections): default 20</li>
+</ul>
+<p class="md-github">Initialization Steps:</p>
+<ol class="md-github">
+<li class="md-github">Instantiate repository</li>
+<li class="md-github">Call initialize()</li>
+<li class="md-github">Obtain connection</li>
+<li class="md-github">Execute operations</li>
+<li class="md-github">Close connection</li>
+<li class="md-github">Call shutDown()</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Interface Repository:</p>
+<ul class="md-github">
+<li class="md-github">void initialize() throws RepositoryException</li>
+<li class="md-github">boolean isInitialized()</li>
+<li class="md-github">void shutDown() throws RepositoryException</li>
+<li class="md-github">RepositoryConnection getConnection() throws RepositoryException</li>
+</ul>
+<p class="md-github">Interface RepositoryConnection:</p>
+<ul class="md-github">
+<li class="md-github">void setAutoCommit(boolean autoCommit)</li>
+<li class="md-github">boolean isAutoCommit()</li>
+<li class="md-github">void begin() throws RepositoryException</li>
+<li class="md-github">void commit() throws RepositoryException</li>
+<li class="md-github">void rollback() throws RepositoryException</li>
+<li class="md-github">TupleQuery prepareTupleQuery(QueryLanguage lang,String query) throws RepositoryException,MalformedQueryException</li>
+<li class="md-github">GraphQuery prepareGraphQuery(QueryLanguage lang,String query) throws RepositoryException,MalformedQueryException</li>
+<li class="md-github">BooleanQuery prepareBooleanQuery(QueryLanguage lang,String query) throws RepositoryException,MalformedQueryException</li>
+<li class="md-github">Update prepareUpdate(QueryLanguage lang,String update) throws RepositoryException,MalformedQueryException</li>
+<li class="md-github">void add(Iterable&lt;? extends Statement&gt; statements,Resource... contexts) throws RepositoryException</li>
+<li class="md-github">void remove(IRI subj,IRI pred,Value obj,Resource... contexts) throws RepositoryException</li>
+<li class="md-github">RepositoryResult<Statement> getStatements(Resource subj,IRI pred,Value obj,boolean includeInferred,Resource... contexts) throws RepositoryException</li>
+<li class="md-github">void clear(Resource... contexts) throws RepositoryException</li>
+<li class="md-github">void export(RDFHandler handler,Resource... contexts) throws RepositoryException</li>
+<li class="md-github">void close() throws RepositoryException</li>
+</ul>
+<p class="md-github">Class HTTPRepository:</p>
+<ul class="md-github">
+<li class="md-github">HTTPRepository(String serverURL,String repositoryID)</li>
+<li class="md-github">void setUsernameAndPassword(String user,String pass)</li>
+<li class="md-github">inherits Repository methods</li>
+</ul>
+<p class="md-github">Code Example:</p>
+<pre class="md-github"><code class="md-github">SailRepository repository=new SailRepository(new NativeStore(new File(&quot;/var/data/rdf4j&quot;),&quot;spoc,posc,osp&quot;));
+repository.initialize();
+try(RepositoryConnection conn=repository.getConnection()){
+  conn.setAutoCommit(false);
+  TupleQuery q=conn.prepareTupleQuery(QueryLanguage.SPARQL,&quot;SELECT ?s?o WHERE{?s ?p ?o}&quot;);
+  try(TupleQueryResult res=q.evaluate()){
+    while(res.hasNext()){System.out.println(res.next().getValue(&quot;s&quot;));}
+  }
+  conn.commit();
+}
+repository.shutDown();
+</code></pre>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Batch imports within a single transaction</li>
+<li class="md-github">Configure appropriate indexes for expected query patterns</li>
+<li class="md-github">Use try-with-resources for connections and results</li>
+</ul>
+<p class="md-github">Troubleshooting:</p>
+<ul class="md-github">
+<li class="md-github">Repository not initialized: call initialize() before getConnection()</li>
+<li class="md-github">Excessive memory use: increase JVM heap or switch to NativeStore</li>
+<li class="md-github">HTTP 429 Too Many Requests: increase httpMaxConnections</li>
+<li class="md-github">To list repos via curl: <code class="md-github">curl -X GET http://localhost:8080/rdf4j-server/repositories</code> (expect JSON array of IDs)</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">RDF4J Programming Guide: Instantiate SailRepository(MemoryStore|NativeStore(dataDir,indexes)); call initialize(); RepositoryConnection conn=getConnection(); conn.setAutoCommit(false); conn.begin();
+prepareTupleQuery/SPARQL, prepareUpdate/SPARQL; TupleQueryResult evaluate(); Update.execute(); commit()/rollback(); conn.close(); repository.shutDown();
+Rio.createParser(RDFFormat.TURTLE) with StatementCollector; Rio.createWriter(RDFFormat.NTRIPLES,out); conn.export(writer);
+HTTPRepository(serverURL,repoID); setUsernameAndPassword; inherits Repository API; httpMaxConnections default 20.
+Config options: dataDir user.home/.rdf4j; tripleIndexes spo,pso,pos; autoCommit=true; syncDelayMS=1000.
+API signatures: Repository.initialize(),getConnection(),shutDown(); RepositoryConnection methods: setAutoCommit,begin,commit,rollback,prepareTupleQuery,prepareGraphQuery,prepareBooleanQuery,prepareUpdate,add,remove,getStatements,clear,export,close().
+Supported formats: RDFXML,TURTLE,NTRIPLES,N3,JSONLD.
+Best practices: batch transactions, proper indexes, try-with-resources.
+Troubleshoot: init order errors, memory config, HTTP rate limits, curl list.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Repository Setup</p>
+</li>
+<li class="md-github">
+<p class="md-github">Connection Lifecycle</p>
+</li>
+<li class="md-github">
+<p class="md-github">SPARQL Query Execution</p>
+</li>
+<li class="md-github">
+<p class="md-github">SPARQL Update Execution</p>
+</li>
+<li class="md-github">
+<p class="md-github">Transaction Management</p>
+</li>
+<li class="md-github">
+<p class="md-github">RDF Import and Export</p>
+</li>
+<li class="md-github">
+<p class="md-github">Remote HTTP Repository</p>
+</li>
+<li class="md-github">
+<p class="md-github">Logging Configuration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Repository Setup</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Instantiate repository:
+<ul class="md-github">
+<li class="md-github">In-memory: new SailRepository(new MemoryStore())</li>
+<li class="md-github">Native: new SailRepository(new NativeStore(new File('/data/rdf4j'),'spoc,posc,cpso'))</li>
+</ul>
+</li>
+<li class="md-github">Initialize: repository.initialize()</li>
+<li class="md-github">Shutdown: repository.shutDown()</li>
+</ul>
+<ol start="2" class="md-github">
+<li class="md-github">Connection Lifecycle</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Obtain: RepositoryConnection conn = repository.getConnection()</li>
+<li class="md-github">Close: conn.close()</li>
+</ul>
+<ol start="3" class="md-github">
+<li class="md-github">SPARQL Query Execution</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Prepare: TupleQuery q = conn.prepareTupleQuery(QueryLanguage.SPARQL,queryString)</li>
+<li class="md-github">Execute: TupleQueryResult r = q.evaluate()</li>
+<li class="md-github">Iterate: while(r.hasNext()){BindingSet bs=r.next();}</li>
+<li class="md-github">Close: r.close()</li>
+</ul>
+<ol start="4" class="md-github">
+<li class="md-github">SPARQL Update Execution</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Prepare: Update u = conn.prepareUpdate(QueryLanguage.SPARQL,updateString)</li>
+<li class="md-github">Execute: u.execute()</li>
+</ul>
+<ol start="5" class="md-github">
+<li class="md-github">Transaction Management</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Auto-commit: conn.setAutoCommit(false) or true</li>
+<li class="md-github">Begin: conn.begin()</li>
+<li class="md-github">Commit: conn.commit()</li>
+<li class="md-github">Rollback: conn.rollback()</li>
+</ul>
+<ol start="6" class="md-github">
+<li class="md-github">RDF Import and Export</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Import Turtle: RDFParser p=Rio.createParser(RDFFormat.TURTLE); p.setRDFHandler(new StatementCollector(conn)); p.parse(new FileInputStream('in.ttl'),baseURI)</li>
+<li class="md-github">Export N-Triples: RDFWriter w=Rio.createWriter(RDFFormat.NTRIPLES,out); conn.export(w)</li>
+</ul>
+<ol start="7" class="md-github">
+<li class="md-github">Remote HTTP Repository</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Create: HTTPRepository repo = new HTTPRepository('http://localhost:8080/rdf4j-server','repoID')</li>
+<li class="md-github">Auth: repo.setUsernameAndPassword('user','pass')</li>
+<li class="md-github">Initialize and get connection as above</li>
+</ul>
+<ol start="8" class="md-github">
+<li class="md-github">Logging Configuration</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">log4j.properties:
+<ul class="md-github">
+<li class="md-github">log4j.logger.org.eclipse.rdf4j=INFO, file</li>
+<li class="md-github">log4j.appender.file.File=logs/rdf4j.log</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Java-based RDF Frameworks &amp; Stores
+https://rdf4j.org/documentation/programmers-guide/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-rdf4j_guide" href="#digest-of-rdf4j_guide"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of RDF4J_GUIDE</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="rdf4j-programming-guide" href="#rdf4j-programming-guide"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RDF4J Programming Guide</h1>
+<p class="md-github">Date: 2024-06-15</p>
+<h2 class="md-github"><a class="md-github__anchor" name="repository-configuration" href="#repository-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Repository Configuration</h2>
+<p class="md-github">Implementation classes:</p>
+<ul class="md-github">
+<li class="md-github">SailRepository (org.eclipse.rdf4j.repository.sail.SailRepository)</li>
+<li class="md-github">MemoryStore (org.eclipse.rdf4j.sail.memory.MemoryStore)</li>
+<li class="md-github">NativeStore (org.eclipse.rdf4j.sail.nativerdf.NativeStore)</li>
+</ul>
+<p class="md-github">NativeStore constructor:</p>
+<pre class="md-github"><code class="md-github">new NativeStore(File dataDir,String tripleIndexes)
+</code></pre>
+<p class="md-github">Parameters:</p>
+<ul class="md-github">
+<li class="md-github">dataDir: File path to store indexes and data</li>
+<li class="md-github">tripleIndexes: comma-separated index names (valid values: spo, sop, pso, pos, osp, ops)</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="initialization-api" href="#initialization-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Initialization API</h2>
+<p class="md-github">Method signatures:</p>
+<pre class="md-github"><code class="md-github">void initialize() throws RepositoryException
+void shutDown() throws RepositoryException
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="connection-api" href="#connection-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Connection API</h2>
+<pre class="md-github"><code class="md-github">RepositoryConnection getConnection() throws RepositoryException
+</code></pre>
+<p class="md-github">Return: RepositoryConnection instance</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sparql-query-api" href="#sparql-query-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SPARQL Query API</h2>
+<p class="md-github">TupleQuery prepareTupleQuery(QueryLanguage language,String queryString)
+throws RepositoryException, MalformedQueryException</p>
+<p class="md-github">TupleQueryResult evaluate() throws QueryEvaluationException</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sparql-update-api" href="#sparql-update-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SPARQL Update API</h2>
+<p class="md-github">Update prepareUpdate(QueryLanguage language,String updateString)
+throws RepositoryException, MalformedQueryException</p>
+<p class="md-github">void execute() throws UpdateExecutionException</p>
+<h2 class="md-github"><a class="md-github__anchor" name="transaction-management" href="#transaction-management"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Transaction Management</h2>
+<pre class="md-github"><code class="md-github">void setAutoCommit(boolean autoCommit)
+void begin() throws RepositoryException
+void commit() throws RepositoryException
+void rollback() throws RepositoryException
+</code></pre>
+<p class="md-github">Defaults: autoCommit=true</p>
+<h2 class="md-github"><a class="md-github__anchor" name="rio-parsers-and-writers" href="#rio-parsers-and-writers"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rio Parsers and Writers</h2>
+<p class="md-github">RDFParser createParser(RDFFormat format)
+RDFWriter createWriter(RDFFormat format, OutputStream out)</p>
+<p class="md-github">Supported formats: RDFXML, TURTLE, NTRIPLES, N3, JSONLD</p>
+<h2 class="md-github"><a class="md-github__anchor" name="importexport" href="#importexport"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Import/Export</h2>
+<p class="md-github">Import:</p>
+<pre class="md-github"><code class="md-github">RDFParser parser=Rio.createParser(RDFFormat.TURTLE);
+parser.setRDFHandler(new StatementCollector(repo.getConnection()));
+parser.parse(new FileInputStream(&quot;data.ttl&quot;),&quot;http://example.org/base&quot;);
+</code></pre>
+<p class="md-github">Export:</p>
+<pre class="md-github"><code class="md-github">RDFWriter writer=Rio.createWriter(RDFFormat.NTRIPLES,out);
+conn.getConnection().export(writer);
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="http-repository" href="#http-repository"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>HTTP Repository</h2>
+<p class="md-github">Class: HTTPRepository (org.eclipse.rdf4j.repository.http.HTTPRepository)</p>
+<p class="md-github">Constructor:</p>
+<pre class="md-github"><code class="md-github">HTTPRepository(String serverURL,String repositoryID)
+</code></pre>
+<p class="md-github">Methods:</p>
+<pre class="md-github"><code class="md-github">void setUsernameAndPassword(String user,String pass)
+void initialize()
+RepositoryConnection getConnection()
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="logging-configuration" href="#logging-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Logging Configuration</h2>
+<p class="md-github">Use log4j:</p>
+<pre class="md-github"><code class="md-github">log4j.logger.org.eclipse.rdf4j=INFO, file
+log4j.appender.file.File=logs/rdf4j.log
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Java-based RDF Frameworks &amp; Stores</li>
+<li class="md-github">URL: https://rdf4j.org/documentation/programmers-guide/</li>
+<li class="md-github">License: License</li>
+<li class="md-github">Crawl Date: 2025-04-28T10:29:56.927Z</li>
+<li class="md-github">Data Size: 0 bytes</li>
+<li class="md-github">Links Found: 0</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-28</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-28T10:51:41.715Z</p>
+  </footer>
+</body>
+</html>
