@@ -6,7 +6,7 @@ W3C Document License (CC-BY 4.0)
 
 # Linked Data Best Practices & Hypermedia Vocabulary
 ## https://www.w3.org/TR/ld-bp/
-Comprehensive guidelines for HTTP-based Linked Data publication, covering IRI design, content negotiation, pagination, versioning, caching, and discoverability (Linked Data Best Practices, 2020), combined with the Linked Data Platform (LDP 1.0, 2015) container semantics and the Hydra Core Vocabulary (CC0) for hypermedia-driven REST APIs over RDF. Directly informs endpoint URL schemes, HTTP methods, headers, in-band metadata, and client navigation strategies.
+Comprehensive guidelines for HTTP-based Linked Data publication, covering IRI design, content negotiation, pagination, versioning, caching, and discoverability (Linked Data Best Practices, 2020), combined with the Linked Data Platform (LDP 1.0, 2015) container semantics and the Hydra Core Vocabulary (CC0) for hypermedia-driven REST APIs over RDF. Directly informs endpoint URL schemes, HTTP methods, headers, in-band metadata, and client navigation strategies. Last updated September 2020. Authoritative W3C Recommendations and community vocabulary.
 ## License if known
 W3C Document License (CC-BY 4.0); CC0/Public Domain
 
@@ -30,18 +30,18 @@ Node.js Documentation License (CC-BY-SA 3.0); WHATWG Spec (Public Domain); IETF 
 
 # ROBOT: Release OWL Ontology Builder
 ## https://github.com/ontodev/robot#readme
-ROBOT is a comprehensive CLI and Java library (Apache 2.0) for automating OWL ontology workflows: module extraction, reasoning, merging, format conversion, validation, and release packaging. Its best-practice patterns for ontology versioning, provenance tracking, and CI integration inform the repository’s pipeline. Last release 2024; widely adopted by the OBO Foundry community.
+ROBOT is a comprehensive CLI and Java library (Apache 2.0) for automating OWL ontology workflows: module extraction, reasoning, merging, format conversion, validation, and release packaging. Its best-practice patterns for ontology versioning, provenance tracking, and CI integration inform the repository’s pipeline. Last release April 2024; widely adopted by the OBO Foundry community.
 ## License if known
 Apache 2.0
 
-# Hosted Graph Databases: GraphDB & Amazon Neptune
-## https://graphdb.ontotext.com/documentation/free/rest-api.html
-Actionable documentation for hosted RDF triplestores: Ontotext GraphDB’s REST API (repository management, data import/export, transactions, SPARQL endpoints) and Amazon Neptune’s SPARQL protocol endpoint configuration (IAM auth, HTTP headers, error handling, performance tuning). Provides concrete examples for high-throughput RDF ingestion and federated SPARQL query patterns. Last updated 2024.
+# SHACL & Data Shape Validation
+## https://www.w3.org/TR/shacl/
+The Shapes Constraint Language (SHACL) W3C Recommendation defines a vocabulary and processing framework for validating RDF graphs. It specifies core shapes, property constraints, target definitions, SPARQL-based extensibility, and rule extensions. Essential for schema validation in the ontology build pipeline, enabling graph-level integrity checks, inference-driven constraint enforcement, and automated validation workflows. Last updated July 2023. Authoritative W3C Recommendation.
 ## License if known
-Ontotext GraphDB Documentation License (CC-BY 4.0); AWS Content License (CC-BY-SA 4.0)
+W3C Document License (CC-BY 4.0)
 
-# Stardog HTTP API Documentation
-## https://docs.stardog.com/http/getting-started
-Detailed guide to using Stardog’s HTTP REST API for SPARQL queries, updates, inference configuration, data loading, and transaction management. Covers endpoint schemas, required headers, payload formats, authentication, error codes, and performance tuning. Essential for integrating Stardog triplestore as a backend for ontology persistence and query services. Last updated 2024.
+# Triplestore HTTP APIs & Protocols
+## https://graphdb.ontotext.com/documentation/free/rest-api.html
+Comprehensive HTTP API documentation for major RDF triplestores: Ontotext GraphDB (repository management, transactions, SPARQL endpoints), Amazon Neptune (IAM-secured SPARQL endpoints, bulk loader, error handling), Stardog (queries, updates, inference, data loading, transaction management), Blazegraph (REST namespace and query management), and Apache Jena Fuseki (dataset configuration, administration endpoints). Includes concrete examples, performance tuning strategies, and security configurations for integrating these backends in production systems. Last reviewed 2024.
 ## License if known
-Stardog Documentation License (CC-BY 4.0)
+GraphDB: CC-BY 4.0; AWS: CC-BY-SA 4.0; Stardog: CC-BY 4.0; Blazegraph: CC-BY 4.0; Fuseki: Apache 2.0
