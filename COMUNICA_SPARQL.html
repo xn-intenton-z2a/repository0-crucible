@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="comunica_sparql" href="#comunica_sparql"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>COMUNICA_SPARQL</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Initialized QueryEngine via new QueryEngine(config?). Core methods: queryBindings(query,context)→BindingsStream; queryBoolean(query,context)→Promise<boolean>; queryQuads(query,context)→QuadStream; queryVoid(query,context)→Promise<void>; invalidateHttpCache(sources?)→Promise<void>. Context keys: sources: string[]|ILinkRecord[]; fetch; httpRetryCount=3; httpTimeout=30000; httpIncludeCredentials=false; headers; logger. BindingsStream: Node.js readable stream of Map&lt;string,Term&gt;. QuadStream: stream of RDF.Quad. metadata():Promise<Record>. Errors: QueryEngineError. HTTP cache: maxSize=1000,maxAge=300000ms. Use web-streams-polyfill in browsers.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1  Importing the Engine
+2  Engine Configuration
+3  Query Methods
+4  Context Keys
+5  Stream Consumption
+6  Error Handling
+7  HTTP Cache Management</p>
+<p class="md-github">1  Importing the Engine
+• ESM: import { QueryEngine } from &quot;@comunica/query-sparql&quot;;
+• CommonJS: const { QueryEngine } = require(&quot;@comunica/query-sparql&quot;);
+• Initialize: const engine = new QueryEngine({ baseIRI, pluginModules, initialContext });</p>
+<p class="md-github">2  Engine Configuration
+• baseIRI: string base IRI for relative IRIs
+• pluginModules: custom mediator modules array
+• initialContext: IActionContext initial context keys</p>
+<p class="md-github">3  Query Methods
+3.1  queryBindings(query:string|Query, context?:IActionContext) → Promise<BindingsStream>
+• Use for SELECT queries.
+• Returns Node.js Readable stream of Bindings: on('data', binding:Map&lt;string,Term&gt;).</p>
+<p class="md-github">3.2  queryBoolean(query:string|Query, context?:IActionContext) → Promise<boolean>
+• Use for ASK queries.</p>
+<p class="md-github">3.3  queryQuads(query:string|Query, context?:IActionContext) → Promise<QuadStream>
+• Use for CONSTRUCT/DESCRIBE; QuadStream: stream of RDF.Quad.</p>
+<p class="md-github">3.4  queryVoid(query:string|Query, context?:IActionContext) → Promise<void>
+• Use for SPARQL UPDATE operations (INSERT/DELETE).</p>
+<p class="md-github">3.5  invalidateHttpCache(sources?:string[]) → Promise<void>
+• Clears HTTP cache for listed endpoints or all if omitted.</p>
+<p class="md-github">4  Context Keys
+• sources: Array&lt;string|{type: 'file'|'sparql'|'hypermedia'|'rdfjsSource',value:string|Readable}&gt;
+• fetch: (input,init?)→Promise<Response>
+• httpRetryCount: number default 3
+• httpTimeout: number default 30000
+• httpIncludeCredentials: boolean default false
+• headers: Record&lt;string,string&gt;
+• logger: Console-like object</p>
+<p class="md-github">5  Stream Consumption
+• BindingsStream: on('data', binding); on('end'); on('error')
+• QuadStream: on('data', quad); on('end'); on('error')</p>
+<p class="md-github">6  Error Handling
+• result.metadata() → Promise&lt;Record&lt;string,any&gt;&gt;
+• Errors thrown: QueryEngineError { message, details:{cause, query} }</p>
+<p class="md-github">7  HTTP Cache Management
+• Default cacheConfig: { maxSize: 1000, maxAge: 300000 }
+• invalidateHttpCache clears entries older than maxAge or resets all</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Engine Constructor Options
+• baseIRI: default '', used as base for relative IRIs
+• pluginModules: [], to override internal mediators
+• initialContext: merges into action context on each query</p>
+<p class="md-github">Context Parameters
+• sources: required. Each entry may be:
+- String URL
+- Object { type: 'file', value: '/path/to/file.ttl' }
+- Object { type: 'sparql', value: 'https://dbpedia.org/sparql' }
+- Object { type: 'hypermedia', value: 'https://fragments.example.org' }
+- Object { type: 'rdfjsSource', value: rdfSourceInstance }
+• fetch: cross-fetch or custom function. default uses node-fetch
+• httpRetryCount: 3 retries on network errors
+• httpTimeout: 30000ms after which request aborts
+• httpIncludeCredentials: false by default; set true to send cookies
+• headers: custom HTTP headers for all requests
+• logger: must implement debug(info), error(err)</p>
+<p class="md-github">HTTP Cache Config
+• maxSize: 1000 URIs stored
+• maxAge: 300000ms TTL per entry</p>
+<p class="md-github">Fetch Integration
+• Use web-streams-polyfill for browser:
+import { ponyfill } from 'web-streams-polyfill';
+const engine = new QueryEngine(ponyfill);</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Import Statements
+ESM: import { QueryEngine } from &quot;@comunica/query-sparql&quot;;
+CJS: const { QueryEngine } = require(&quot;@comunica/query-sparql&quot;);</p>
+<p class="md-github">QueryEngine(config?: IQueryEngineConfig)</p>
+<p class="md-github">Interface IQueryEngineConfig
+baseIRI?: string
+pluginModules?: any[]
+initialContext?: IActionContext</p>
+<p class="md-github">Interface IActionContext
+sources: Array&lt;string|ILinkRecord&gt;
+fetch?: (input: string|Request, init?: RequestInit) =&gt; Promise<Response>
+httpRetryCount?: number
+httpTimeout?: number
+httpIncludeCredentials?: boolean
+headers?: Record&lt;string,string&gt;
+logger?: { debug(msg:string):void; error(msg:string):void }</p>
+<p class="md-github">Method Signatures
+queryBindings(query: string|Query, context?: IActionContext): Promise<BindingsStream>
+queryBoolean(query: string|Query, context?: IActionContext): Promise<boolean>
+queryQuads(query: string|Query, context?: IActionContext): Promise<QuadStream>
+queryVoid(query: string|Query, context?: IActionContext): Promise<void>
+invalidateHttpCache(sources?: string[]): Promise<void></p>
+<p class="md-github">BindingsStream extends Readable
+'data': (binding: Map&lt;string, RDF.Term&gt;) =&gt; void
+'end': () =&gt; void
+'error': (err: Error) =&gt; void</p>
+<p class="md-github">QuadStream extends Readable
+'data': (quad: RDF.Quad) =&gt; void
+'end': () =&gt; void
+'error': (err: Error) =&gt; void</p>
+<p class="md-github">Error Types
+QueryEngineError
+message: string
+details: { cause: Error; query: string }</p>
+<p class="md-github">Code Example
+import { QueryEngine } from &quot;@comunica/query-sparql&quot;;
+import { ponyfill } from 'web-streams-polyfill';</p>
+<p class="md-github">const engine = new QueryEngine(ponyfill);</p>
+<p class="md-github">async function run() {
+const result = await engine.queryBindings(
+&quot;SELECT ?s ?p ?o WHERE { ?s ?p ?o }&quot;,
+{ sources: [
+'https://fragments.dbpedia.org/2016-04/en',
+{ type: 'file', value: './local.ttl' }
+],
+httpTimeout: 60000,
+headers: { 'User-Agent': 'MyAgent/1.0' }
+}
+);
+result.on('data', binding =&gt; {
+console.log(binding.get('s').value, binding.get('p').value, binding.get('o').value);
+});
+result.on('end', () =&gt; console.log('Query complete'));
+}</p>
+<p class="md-github">best practices
+• Pre-declare frequent endpoints in sources array
+• Use small page sizes on hypermedia sources: context.hypermediaLinksPageSize=25
+• Clear cache before testing: await engine.invalidateHttpCache()</p>
+<p class="md-github">Troubleshooting
+1  Timeouts on SPARQL endpoint:
+increase httpTimeout or reduce timeout scope
+2  Empty results on CONSTRUCT:
+verify query syntax; check default graph specification
+3  Fetch errors:
+enable debug logging: context.logger={debug:console.log,error:console.error}
+4  HTTP cache stale entries:
+await engine.invalidateHttpCache(['https://dbpedia.org/sparql'])</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">QueryEngine({baseIRI?,pluginModules?,initialContext?}) Methods: queryBindings(q: string|Query,ctx?:IActionContext)→Promise<BindingsStream> queryBoolean(q,ctx?)→Promise<boolean> queryQuads(q,ctx?)→Promise<QuadStream> queryVoid(q,ctx?)→Promise<void> invalidateHttpCache(sources?:string[])→Promise<void> Context keys: sources: Array&lt;string|{type:'file'|'sparql'|'hypermedia'|'rdfjsSource',value:string|Readable}&gt;; fetch(input,init?)→Promise<Response>; httpRetryCount=3; httpTimeout=30000; httpIncludeCredentials=false; headers:Record&lt;string,string&gt;; logger:{debug(),error()} BindingsStream: Node Readable stream of Map&lt;string,RDF.Term&gt; QuadStream: Readable stream of RDF.Quad metadata()→Promise<Record> Errors: QueryEngineError{message,details:{cause,query}} HTTP cache: maxSize=1000,maxAge=300000ms. Use web-streams-polyfill in browsers.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1  Importing the Engine
+2  Engine Configuration
+3  Query Methods
+4  Context Keys
+5  Stream Consumption
+6  Error Handling
+7  HTTP Cache Management</p>
+<p class="md-github">1  Importing the Engine
+ESM: import { QueryEngine } from '@comunica/query-sparql';
+CommonJS: const { QueryEngine } = require('@comunica/query-sparql');
+Initialize: const engine = new QueryEngine({ baseIRI, pluginModules, initialContext });</p>
+<p class="md-github">2  Engine Configuration
+baseIRI: string base IRI for relative IRIs
+pluginModules: custom mediator modules array
+initialContext: IActionContext initial context keys</p>
+<p class="md-github">3  Query Methods
+3.1  queryBindings(query:string|Query, context?:IActionContext)  Promise<BindingsStream>
+Use for SELECT queries.
+Returns Node.js Readable stream of Bindings: on('data', binding:Map&lt;string,Term&gt;).</p>
+<p class="md-github">3.2  queryBoolean(query:string|Query, context?:IActionContext)  Promise<boolean>
+Use for ASK queries.</p>
+<p class="md-github">3.3  queryQuads(query:string|Query, context?:IActionContext)  Promise<QuadStream>
+Use for CONSTRUCT/DESCRIBE; QuadStream: stream of RDF.Quad.</p>
+<p class="md-github">3.4  queryVoid(query:string|Query, context?:IActionContext)  Promise<void>
+Use for SPARQL UPDATE operations (INSERT/DELETE).</p>
+<p class="md-github">3.5  invalidateHttpCache(sources?:string[])  Promise<void>
+Clears HTTP cache for listed endpoints or all if omitted.</p>
+<p class="md-github">4  Context Keys
+sources: Array&lt;string|{type: 'file'|'sparql'|'hypermedia'|'rdfjsSource',value:string|Readable}&gt;
+fetch: (input,init?)Promise<Response>
+httpRetryCount: number default 3
+httpTimeout: number default 30000
+httpIncludeCredentials: boolean default false
+headers: Record&lt;string,string&gt;
+logger: Console-like object</p>
+<p class="md-github">5  Stream Consumption
+BindingsStream: on('data', binding); on('end'); on('error')
+QuadStream: on('data', quad); on('end'); on('error')</p>
+<p class="md-github">6  Error Handling
+result.metadata()  Promise&lt;Record&lt;string,any&gt;&gt;
+Errors thrown: QueryEngineError { message, details:{cause, query} }</p>
+<p class="md-github">7  HTTP Cache Management
+Default cacheConfig: { maxSize: 1000, maxAge: 300000 }
+invalidateHttpCache clears entries older than maxAge or resets all</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Comunica SPARQL Framework
+https://comunica.dev/docs/query/sparql/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-comunica_sparql" href="#digest-of-comunica_sparql"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of COMUNICA_SPARQL</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="comunica-sparql-query-module" href="#comunica-sparql-query-module"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Comunica SPARQL Query Module</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="1-import-and-initialization" href="#1-import-and-initialization"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Import and Initialization</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="esm-import" href="#esm-import"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ESM Import</h3>
+<p class="md-github">import { QueryEngine } from &quot;@comunica/query-sparql&quot;;
+const engine = new QueryEngine({
+baseIRI?: string;
+pluginModules?: any[];
+initialContext?: Record&lt;string, any&gt;;
+});</p>
+<h3 class="md-github"><a class="md-github__anchor" name="commonjs-import" href="#commonjs-import"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CommonJS Import</h3>
+<p class="md-github">const { QueryEngine } = require(&quot;@comunica/query-sparql&quot;);
+const engine = new QueryEngine();</p>
+<h2 class="md-github"><a class="md-github__anchor" name="2-core-query-methods" href="#2-core-query-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Core Query Methods</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="querybindings" href="#querybindings"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>queryBindings</h3>
+<p class="md-github">Signature: queryBindings(query: string | Query, context?: IActionContext): Promise<BindingsStream>
+Description: Executes SELECT queries and returns a Node.js readable stream of Bindings.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="queryboolean" href="#queryboolean"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>queryBoolean</h3>
+<p class="md-github">Signature: queryBoolean(query: string | Query, context?: IActionContext): Promise<boolean>
+Description: Executes ASK queries and resolves to true or false based on data.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="queryquads" href="#queryquads"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>queryQuads</h3>
+<p class="md-github">Signature: queryQuads(query: string | Query, context?: IActionContext): Promise<QuadStream>
+Description: Executes CONSTRUCT/DESCRIBE queries and returns a stream of RDF quads.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="queryvoid" href="#queryvoid"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>queryVoid</h3>
+<p class="md-github">Signature: queryVoid(query: string | Query, context?: IActionContext): Promise<void>
+Description: Executes UPDATE operations (INSERT/DELETE).</p>
+<h3 class="md-github"><a class="md-github__anchor" name="invalidatehttpcache" href="#invalidatehttpcache"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>invalidateHttpCache</h3>
+<p class="md-github">Signature: invalidateHttpCache(sources?: string[]): Promise<void>
+Description: Clears HTTP cache for specified endpoints or all by default.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="3-context-configuration" href="#3-context-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. Context Configuration</h2>
+<p class="md-github">Actions Context Keys:</p>
+<ul class="md-github">
+<li class="md-github">sources: Array&lt;string | ILinkRecord&gt; (mandatory):
+Each entry may be:
+• URL string
+• { type: &quot;file&quot;|&quot;sparql&quot;|&quot;hypermedia&quot;|&quot;rdfjsSource&quot;, value: string | Readable }</li>
+<li class="md-github">fetch: (input: string | Request, init?: RequestInit) =&gt; Promise<Response> (optional)</li>
+<li class="md-github">httpRetryCount: number (default: 3)</li>
+<li class="md-github">httpTimeout: number in milliseconds (default: 30000)</li>
+<li class="md-github">httpIncludeCredentials: boolean (default: false)</li>
+<li class="md-github">headers: Record&lt;string, string&gt; (for fetch)</li>
+<li class="md-github">logger: Console or custom logger with .debug/.error</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="4-consuming-streams" href="#4-consuming-streams"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Consuming Streams</h2>
+<p class="md-github">BindingsStream: Node.js stream of Map&lt;string, RDF.Term&gt;. Methods:
+.on('data', binding)
+.on('end')
+.on('error')</p>
+<p class="md-github">QuadStream: Node.js stream of RDF.Quad</p>
+<h2 class="md-github"><a class="md-github__anchor" name="5-error-handling-and-metadata" href="#5-error-handling-and-metadata"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. Error Handling and Metadata</h2>
+<ul class="md-github">
+<li class="md-github">result.metadata(): Promise&lt;Record&lt;string, any&gt;&gt;</li>
+<li class="md-github">Throws QueryEngineError with:
+• message: string
+• details: { cause: Error; query: string }</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="6-http-cache-management" href="#6-http-cache-management"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6. HTTP Cache Management</h2>
+<ul class="md-github">
+<li class="md-github">invalidateHttpCache(): clears internal fetch cache</li>
+<li class="md-github">cacheConfig:
+• maxSize: number (default: 1000 entries)
+• maxAge: number in ms (default: 5 minutes)</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="7-best-practices" href="#7-best-practices"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7. Best Practices</h2>
+<ul class="md-github">
+<li class="md-github">Use web-streams-polyfill in browser:
+import { ponyfill } from 'web-streams-polyfill';
+const engine = new QueryEngine(ponyfill);</li>
+<li class="md-github">Pre-warm HTTP cache via dummy HEAD requests</li>
+<li class="md-github">Limit sources array to required endpoints to reduce planning overhead</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Comunica SPARQL Framework</li>
+<li class="md-github">URL: https://comunica.dev/docs/query/sparql/</li>
+<li class="md-github">License: License if known</li>
+<li class="md-github">Crawl Date: 2025-04-29T07:49:01.555Z</li>
+<li class="md-github">Data Size: 0 bytes</li>
+<li class="md-github">Links Found: 0</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-29</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-29T08:22:53.290Z</p>
+  </footer>
+</body>
+</html>
