@@ -7,13 +7,13 @@
 ## https://www.w3.org/TR/vocab-dcat-2/
 ## https://www.w3.org/TR/json-ld11/
 ## https://www.w3.org/TR/json-ld11-framing/
-Provides the foundational W3C recommendations for RDF graph modeling, ontology definition, and JSON-LD serialization. RDF 1.1 Concepts (Feb 2014) defines the core triple model; OWL 2 Overview, Syntax, and XML mapping (Dec 2012) specify ontology profiles and functional syntaxes. SKOS (Aug 2009) and DCAT 2 (Feb 2023) standardize controlled vocabularies and dataset metadata. JSON-LD 1.1 (May 2020) and Framing (Dec 2020) cover context processing, algorithms, and subgraph extraction. This authoritative set is essential for designing contexts, serializing OWL artifacts, and ensuring interoperability across CLI, HTTP, and library layers.
+Provides the authoritative W3C recommendations for RDF graph modeling, ontology definition, and JSON-LD serialization. RDF 1.1 Concepts (Feb 2014) defines the core triple model; OWL 2 Overview, Syntax, and XML mapping (Dec 2012) specify ontology profiles and functional syntaxes. SKOS (Aug 2009) and DCAT 2 (Feb 2023) standardize controlled vocabularies and dataset metadata. JSON-LD 1.1 (May 2020) and Framing (Dec 2020) cover context processing, algorithms, and subgraph extraction. Essential for designing contexts, serializing OWL artifacts, and ensuring interoperability across CLI, HTTP, and library layers.
 ## License if known
 W3C Document License (CC-BY 4.0)
 
 # Linked Data Best Practices
 ## https://www.w3.org/TR/ld-bp/
-Offers pragmatic guidelines for HTTP-based linked data publication and consumption. Covers IRI design, content negotiation, pagination, versioning, and discoverability patterns. Directly informs REST endpoint structure, cache-control headers, JSON-LD context organization, and middleware configuration to ensure scalable and discoverable services.
+Pragmatic guidelines for HTTP-based linked data publication and consumption. Covers IRI design, content negotiation, pagination, versioning, caching, and discoverability patterns. Directly informs REST endpoint structure, cache-control headers, JSON-LD context organization, and middleware configuration to ensure scalable, discoverable, and performant services.
 ## License if known
 W3C Document License (CC-BY 4.0)
 
@@ -24,7 +24,7 @@ W3C Document License (CC-BY 4.0)
 ## https://github.com/RubenVerborgh/SPARQL.js#readme
 ## https://github.com/linkeddata/rdflib.js#readme
 ## https://github.com/rdfjs/N3.js#readme
-A curated set of interoperable JavaScript modules (2023–2024) for RDF/JSON-LD processing: jsonld.js for context resolution, the RDF/JS Data Model spec for graph primitives, Comunica for federated SPARQL querying, SPARQL.js for query parsing, rdflib.js for in-memory stores, and N3.js for Turtle/N-Quads parsing and serialization. These libraries underpin the project’s programmatic, CLI, and HTTP data workflows.
+A curated set of interoperable JavaScript modules (2023–2024) for RDF/JSON-LD processing: jsonld.js for context resolution and framing, the RDF/JS Data Model spec for graph primitives, Comunica for federated SPARQL querying, SPARQL.js for query parsing, rdflib.js for in-memory stores, and N3.js for Turtle/N-Quads parsing and serialization. Underpins programmatic, CLI, and HTTP data workflows in the project.
 ## License if known
 MIT; CC0/Public Domain
 
@@ -46,20 +46,15 @@ W3C Document License (CC-BY 4.0); Apache 2.0 (Apache Jena)
 ## https://www.w3.org/TR/shacl/
 ## https://shex.io/shex-semantics/
 ## https://github.com/shexSpec/shex.js#readme
-Defines declarative RDF graph validation via SHACL shapes (Core and SPARQL-based) and ShEx schemas (Feb 2020). The shex.js library offers streaming validation with detailed error reporting, ideal for CI/CD pipelines and ontology integrity checks.
+Defines declarative RDF graph validation via SHACL shapes (Core and SPARQL-based) and ShEx schemas (Feb 2020). The shex.js library offers streaming validation with detailed error reporting, ideal for CI/CD pipelines and ensuring ontology integrity and data quality early in the build process.
 ## License if known
 W3C Document License (CC-BY 4.0); CC0/Public Domain; MIT
 
 # Node.js Core & Web Platform APIs
-## https://nodejs.org/api/fs.html
-## https://nodejs.org/api/http.html
-## https://nodejs.org/api/url.html
-## https://nodejs.org/api/stream.html
-## https://nodejs.org/api/perf_hooks.html
-## https://nodejs.org/api/esm.html
-## https://nodejs.org/api/globals.html#fetch
+## https://nodejs.org/api/
 ## https://url.spec.whatwg.org/multipage/
-Comprehensive reference for Node.js core modules (fs, http, URL parsing, streams, ESM loader, performance hooks, global fetch) and the WHATWG URL standard. Vital for CLI file I/O, HTTP endpoint implementation, module loading, performance metrics, and robust fetch usage in Node 20+ environments.
+## https://fetch.spec.whatwg.org/
+Comprehensive reference for Node.js core modules (fs, http, URL parsing, streams, ESM loader, performance hooks, global fetch) alongside the WHATWG URL and Fetch standards. Covers Request/Response objects, streaming bodies, headers management, CORS, and error handling. Vital for CLI file I/O, HTTP endpoint implementation, module loading, performance metrics, and resilient network interactions in Node 20+ environments.
 ## License if known
 Node.js Documentation License (CC-BY-SA 3.0); WHATWG Spec (Public Domain)
 
@@ -69,8 +64,8 @@ An ESM-first test runner and assertion library with unit, integration, and HTTP 
 ## License if known
 MIT
 
-# Fetch Standard
-## https://fetch.spec.whatwg.org/
-The living WHATWG Fetch Standard defines the fetch API for HTTP requests and responses, including Request/Response objects, streaming bodies, headers management, CORS, and error handling. Understanding this spec is critical for Node’s global fetch behavior, streaming logs to HTTP clients, and implementing resilient network interactions.
+# JSON-LD 1.1 Processing Algorithms and API
+## https://www.w3.org/TR/json-ld11-api/
+Specifies the JSON-LD 1.1 Processing Algorithms for expansion, compaction, flattening, normalization (URDNA2015), conversion between JSON-LD and RDF, and framing. Defines the programmatic API for JSON-LD processors, detailing function signatures, options, error handling, and performance considerations. Crucial for implementing robust context processing, document transformation pipelines, and ensuring compliance with the JSON-LD standard.
 ## License if known
-WHATWG Public Domain
+W3C Document License (CC-BY 4.0)
