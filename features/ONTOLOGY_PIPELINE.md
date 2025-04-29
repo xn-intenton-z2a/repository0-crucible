@@ -1,15 +1,13 @@
 # Description
-
-Provide a unified build pipeline for creating OWL JSON-LD ontologies from captured data. This feature consolidates the intermediate artifact generation, enhanced ontology assembly, and timestamped persistence of snapshots into a single, coherent workflow that can be invoked via programmatic API, CLI flags, or HTTP endpoints.
+Provide a unified build pipeline for creating OWL JSON-LD ontologies from captured data, including intermediate artifact generation, enhanced ontology assembly, and timestamped persistence of snapshots. The pipeline can be invoked via API, CLI flags, or HTTP endpoints to support reproducible ontology versioning.
 
 # Programmatic API
-
 Export the following async functions from src/lib/main.js:
 
 • buildIntermediate({ dataDir = "data", intermediateDir = "intermediate" } = {})
-  • Remove and recreate the intermediateDir
-  • Read each .json file from dataDir
-  • Transform array or results.bindings or @graph structures into JSON-LD OWL with @context and @graph
+  • Remove and recreate intermediateDir
+  • Read .json files from dataDir
+  • Transform array, results.bindings, or @graph structures into JSON-LD OWL with @context and @graph
   • Write each artifact as <name>-intermediate.json into intermediateDir
   • Return { count, files: string[] }
 
@@ -28,11 +26,10 @@ Export the following async functions from src/lib/main.js:
   • Write snapshot file and return { snapshotFile, count }
 
 # CLI Support
-
-Extend main(args) in src/lib/main.js to handle:
+Extend main(args) in src/lib/main.js:
 
 • --build-intermediate [dataDir] [intermediateDir]
-  • Invoke buildIntermediate with defaults or provided dirs
+  • Invoke buildIntermediate with defaults or provided paths
 
 • --build-enhanced, -be [dataDir] [intermediateDir] [outDir]
   • Invoke buildEnhanced with defaults or provided paths
@@ -40,10 +37,9 @@ Extend main(args) in src/lib/main.js to handle:
 • --merge-persist [dataDir] [intermediateDir] [persistenceDir]
   • Invoke mergePersist and log the persisted snapshot filename
 
-All CLI handlers must log errors via console.error on missing parameters or execution failures and return without throwing.
+All handlers must log errors via console.error and return without throwing.
 
 # HTTP Server Endpoints
-
 Under serve mode add GET handlers:
 
 • GET /build-intermediate
@@ -58,21 +54,18 @@ Under serve mode add GET handlers:
 Error conditions should respond with 500 and plain-text error messages.
 
 # Testing
+Add or update unit tests in tests/unit:
 
-Add or update unit tests in tests/unit for each API function:
+• buildIntermediate: simulate dataDir contents, assert writes and return value
+• buildEnhanced: mock refreshSources and buildIntermediate, verify enhanced.json
+• mergePersist: mock buildEnhanced, simulate enhanced.json, assert timestamped filename and return data
 
-• buildIntermediate: simulate dataDir contents and fs methods, assert writes and return value
-• buildEnhanced: mock refreshSources and buildIntermediate, verify enhanced.json content and return shape
-• mergePersist: mock buildEnhanced, simulate existing enhanced.json file, assert snapshot naming and return data
-
-Add CLI tests for --build-intermediate, --build-enhanced, --merge-persist covering default and custom arguments, missing parameter errors, and console.log outputs.
+Add CLI tests for --merge-persist covering default and custom arguments, error logging on missing params
 
 Add HTTP integration tests under serve mode:
 
-• GET /build-intermediate returns status 200, content-type text/plain, and artifact lines
-• GET /build-enhanced returns status 200 and pipeline messages
-• GET /merge-persist returns status 200 and snapshot line matching ISO basic timestamp pattern
+• GET /merge-persist returns status 200, content-type text/plain, and snapshot line matching ISO basic timestamp pattern
 
 # Documentation Updates
-
-Update docs/FEATURES.md to replace separate Build Intermediate and Build Enhanced entries with the new Ontology Pipeline feature. Update docs/USAGE.md and README.md to include example invocations for all three CLI flags and HTTP endpoints, sample outputs, and description of timestamped snapshots.
+Update docs/FEATURES.md to describe --merge-persist flag and /merge-persist endpoint under Ontology Pipeline.
+Update docs/USAGE.md and README.md with examples of merge-persist usage and sample timestamped snapshot names.
