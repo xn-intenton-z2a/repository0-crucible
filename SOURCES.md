@@ -1,8 +1,8 @@
-# W3C Semantic Web & OWL 2 Ontology Profiles
+# W3C RDF 1.1, OWL 2 Profiles & Semantics
 
-## https://www.w3.org/TR/rdf11-concepts/
+## https://www.w3.org/TR/owl2-overview/
 
-This consolidated source delivers the definitive W3C Recommendation for RDF 1.1 Concepts and Abstract Syntax (graph modeling, serializations) and OWL 2 ontology profiles (DL, EL, QL, RL). It underpins context management, framing, expansion, normalization, and serialization steps in the ontology build pipeline, providing essential graph modeling semantics and vocabulary definitions. Last updated June 2014 (RDF 1.1) and October 2012 (OWL 2). Authoritative W3C Recommendation.
+This consolidated source provides the high-level document overview of the OWL 2 Web Ontology Language and links to all foundational W3C Recommendations: RDF 1.1 Concepts & Abstract Syntax, OWL 2 Ontology Profiles (DL, EL, QL, RL), OWL 2 Structural Specification, OWL 2 Direct Semantics, and OWL 2 Mapping to RDF Graphs. It underpins context management, framing, reasoning, consistency checking, normalization, and serialization steps in the ontology build pipeline by defining graph modeling semantics, profile conformance, formal semantics, and RDF mapping. Last updated December 2012 for OWL 2; RDF 1.1 parts last updated June 2014. Authoritative W3C Recommendation.
 
 ## License if known
 
