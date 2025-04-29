@@ -173,8 +173,8 @@ export async function refreshSources() {
 }
 
 export async function buildEnhanced({ dataDir = "data", intermediateDir = "intermediate", outDir = "enhanced" } = {}) {
-  const refreshed = await refreshSources();
-  const intermediate = buildIntermediate({ dataDir, outDir: intermediateDir });
+  const refreshed = await mainModule.refreshSources();
+  const intermediate = mainModule.buildIntermediate({ dataDir, outDir: intermediateDir });
   let graph = [];
   const dirPath = path.isAbsolute(intermediateDir)
     ? intermediateDir
@@ -313,7 +313,7 @@ export async function main(args) {
         const name = argv[2];
         const url = argv[3];
         try {
-          const sources = updateSource({ identifier, name, url }, CONFIG_FILE);
+          const sources = mainModule.updateSource({ identifier, name, url }, CONFIG_FILE);
           console.log(JSON.stringify(sources, null, 2));
         } catch (err) {
           console.error(err.message);
@@ -323,24 +323,24 @@ export async function main(args) {
     }
     case "--build-intermediate": {
       if (argv.length === 1) {
-        buildIntermediate();
+        mainModule.buildIntermediate();
       } else if (argv.length === 2) {
-        buildIntermediate({ dataDir: argv[1], outDir: undefined });
+        mainModule.buildIntermediate({ dataDir: argv[1], outDir: undefined });
       } else {
-        buildIntermediate({ dataDir: argv[1], outDir: argv[2] });
+        mainModule.buildIntermediate({ dataDir: argv[1], outDir: argv[2] });
       }
       break;
     }
     case "--build-enhanced":
     case "-be": {
       if (argv.length === 1) {
-        buildEnhanced();
+        mainModule.buildEnhanced();
       } else if (argv.length === 2) {
-        buildEnhanced({ dataDir: argv[1] });
+        mainModule.buildEnhanced({ dataDir: argv[1] });
       } else if (argv.length === 3) {
-        buildEnhanced({ dataDir: argv[1], intermediateDir: argv[2] });
+        mainModule.buildEnhanced({ dataDir: argv[1], intermediateDir: argv[2] });
       } else {
-        buildEnhanced({ dataDir: argv[1], intermediateDir: argv[2], outDir: argv[3] });
+        mainModule.buildEnhanced({ dataDir: argv[1], intermediateDir: argv[2], outDir: argv[3] });
       }
       break;
     }
@@ -351,7 +351,7 @@ export async function main(args) {
         const file = argv[1];
         const queryString = argv[2];
         try {
-          const result = await sparqlQuery(file, queryString);
+          const result = await mainModule.sparqlQuery(file, queryString);
           console.log(JSON.stringify(result, null, 2));
         } catch (err) {
           console.error(err.message);
@@ -431,7 +431,7 @@ export async function main(args) {
           console.log = (...args) => { logs.push(args.join(' ')); };
           let result;
           try {
-            result = await buildEnhanced();
+            result = await mainModule.buildEnhanced();
             logs.push('written enhanced.json');
           } catch (err) {
             console.log = origLog;
@@ -451,7 +451,7 @@ export async function main(args) {
           const logs = [];
           const origLog = console.log;
           console.log = (...args) => { logs.push(args.join(' ')); };
-          try { buildIntermediate(); } catch {};
+          try { mainModule.buildIntermediate(); } catch {};
           console.log = origLog;
           res.writeHead(200, { 'Content-Type': 'text/plain' });
           res.write(logs.join('\n'));
@@ -554,7 +554,7 @@ export async function main(args) {
             return;
           }
           try {
-            const result = await sparqlQuery(file, sparql);
+            const result = await mainModule.sparqlQuery(file, sparql);
             res.writeHead(200, { 'Content-Type': 'application/json' });
             res.end(JSON.stringify(result));
           } catch (err) {
