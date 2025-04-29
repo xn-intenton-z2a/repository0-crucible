@@ -56,8 +56,15 @@ Practical guides for configuring and using persistent triplestores. Includes Jen
 ## License if known
 Apache 2.0; Eclipse Public License 2.0
 
-# OWL API (Java) Documentation & Patterns
-## https://owlcs.github.io/owlapi/doc/
-Comprehensive JavaDoc for the OWL API (LGPL 3.0), covering ontology model creation, entity and axiom management, and serialization in RDF/XML, Functional, and Manchester syntaxes. Offers best-practice patterns for modular ontology design, versioned persistence, and API-driven assembly that directly inform our JSON-LD pipeline architecture.
+# RDFJS Data Model & Stream Interfaces
+## https://rdf.js.org/data-model-spec/
+## https://rdf.js.org/streams/spec/
+Defines the core RDFJS Data Model interfaces (Term, NamedNode, Literal, Quad) and Stream interfaces for RDFJS-compatible libraries. This specification ensures interoperability among N3.js, RDF-Ext, Comunica, and other RDF-based JavaScript tools by standardizing term representation and stream processing patterns. Last updated 2016 with ongoing community maintenance. Highly authoritative within the RDFJS community.
 ## License if known
-LGPL 3.0
+CC0/Public Domain
+
+# Comunica SPARQL Framework
+## https://comunica.dev/docs/query/sparql/
+Comprehensive guide to the Comunica SPARQL framework (MIT), detailing its modular architecture, query mediation across diverse sources (HTTP, file, in-memory), custom engine configuration, and extension points. Includes examples for in-process and HTTP-based SPARQL queries, metadata extraction, streaming result handling, and optimization strategies. Last updated 2024, widely adopted in linked-data applications.
+## License if known
+MIT
