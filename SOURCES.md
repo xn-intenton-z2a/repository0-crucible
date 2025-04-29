@@ -4,16 +4,18 @@
 ## https://www.w3.org/TR/owl2-profiles/
 ## https://www.w3.org/TR/json-ld11/
 ## https://www.w3.org/TR/json-ld11-api/
-This consolidated source delivers the definitive W3C specifications for modeling and serializing RDF graphs, OWL ontologies (OWL 2 Profiles: DL, EL, QL, RL published December 2012), and JSON-LD documents (Core & API published July 2020). It underpins context management, framing, compaction, and dataset normalization (URDNA2015), and defines the programmatic interfaces essential to the ontology build pipeline and serialization modules. Last edited July 2020. Authoritative W3C Recommendation.
+## https://www.w3.org/TR/json-ld11-framing/
+This consolidated source delivers the definitive W3C Recommendations for modeling and serializing RDF graphs (RDF 1.1 Concepts), defining OWL ontologies (OWL 2 Profiles: DL, EL, QL, RL published December 2012), and working with JSON-LD documents (Core & API published July 2020, Framing published February 2019). It underpins context management, framing templates, compaction, expansion, and dataset normalization (URDNA2015), and defines the programmatic interfaces essential to the ontology build pipeline, serialization modules, and JSON-LD shaping operations. Last edited February 2019 – July 2020. Authoritative W3C Recommendation.
 ## License if known
 W3C Document License (CC-BY 4.0)
 
-# Linked Data Best Practices & Hydra Core Vocabulary
+# Linked Data Best Practices & Hypermedia Vocabulary
 ## https://www.w3.org/TR/ld-bp/
+## https://www.w3.org/TR/ldp/
 ## https://www.hydra-cg.com/spec/latest/core/
-Comprehensive guidelines (W3C Linked Data Best Practices, February 2020) for HTTP-based linked data publication—covering IRI design, content negotiation, pagination, versioning, caching, discoverability patterns—and the Hydra Core Vocabulary (CC0) for hypermedia-driven REST APIs over RDF. Directly informs our endpoint URL schemes, HTTP headers, in-band metadata, and client navigation strategies. Highly regarded in the Linked Data community.
+Comprehensive guidelines (W3C Linked Data Best Practices, February 2020) for HTTP-based Linked Data publication—covering IRI design, content negotiation, pagination, versioning, caching, discoverability patterns—combined with the Linked Data Platform (LDP 1.0, June 2015) container semantics for managing RDF resources over HTTP and the Hydra Core Vocabulary (CC0) for hypermedia-driven REST APIs over RDF. Directly informs our endpoint URL schemes, HTTP methods, headers, in-band metadata, and client navigation strategies. Highly regarded in the Linked Data community.
 ## License if known
-W3C Document License (CC-BY 4.0); CC0/Public Domain
+W3C Document License (CC-BY 4.0); CC0/Public Domain (Hydra)
 
 # Schema, Validation, RDF/OWL JavaScript Libraries & RDFJS Specifications
 ## https://github.com/colinhacks/zod#readme
@@ -47,7 +49,7 @@ W3C Document License (CC-BY 4.0); Apache 2.0 (Apache Jena)
 ## https://nodejs.org/api/esm.html
 ## https://fetch.spec.whatwg.org/
 ## https://vitest.dev/api/
-Authoritative references for Node.js v20+ core modules (fs, http, streams), ESM loader architecture, the WHATWG Fetch standard for request/response streams, and Vitest (MIT, 2023–2024) for ESM-first testing. Essential for implementing CLI I/O, HTTP servers, automated tests, mocks, snapshots, and performance profiling in our toolchain.
+Authoritative references for Node.js v20+ core modules (fs, http, streams), the ESM loader architecture, the WHATWG Fetch standard for request/response streams, and Vitest (MIT, 2023–2024) for ESM-first testing. Essential for implementing CLI I/O, HTTP servers, automated tests, mocks, snapshots, and performance profiling in our toolchain.
 ## License if known
 Node.js Documentation License (CC-BY-SA 3.0); WHATWG Spec (Public Domain); MIT
 
@@ -64,8 +66,8 @@ Comprehensive guide to the Comunica SPARQL framework (MIT), detailing its modula
 ## License if known
 MIT
 
-# W3C Linked Data Platform (LDP) 1.0
-## https://www.w3.org/TR/ldp/
-Defines a read-write RESTful architecture for Linked Data with containers and resource semantics. Specifies how to create, read, update, and delete RDF resources over HTTP, including paging, membership triples, and content negotiation patterns. Guides REST endpoint design and CRUD operations in our Sources Management and RefreshFeatures. Published June 2015 by W3C. 
+# HTTP/1.1 Semantics & Content Negotiation
+## https://tools.ietf.org/html/rfc7231
+The definitive IETF standard (RFC 7231, June 2014) for HTTP/1.1 semantics, defining methods (GET, POST, HEAD), status codes, headers (Accept, Content-Type, Cache-Control), and content negotiation mechanisms. Authoritative reference for designing RESTful APIs, error handling, and caching strategies aligned with web standards.
 ## License if known
-W3C Document License (CC-BY 4.0)
+IETF Trust License
