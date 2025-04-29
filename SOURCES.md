@@ -34,14 +34,14 @@ ROBOT is a comprehensive CLI and Java library (Apache 2.0) for automating OWL on
 ## License if known
 Apache 2.0
 
-# SHACL & Data Shape Validation
+# RDF Graph Shape Validation Standards: SHACL & ShEx
 ## https://www.w3.org/TR/shacl/
-The Shapes Constraint Language (SHACL) W3C Recommendation defines RDF graph validation, specifying core shapes, property constraints, target definitions, SPARQL-based extensibility, and rule extensions. Essential for graph-level integrity checks in the ontology build pipeline, enabling inference-driven constraint enforcement and automated validation. Last updated July 2023. Authoritative W3C Recommendation.
+This unified specification covers both the W3C SHACL Recommendation for RDF graph validation—defining core shapes, property constraints, targets, SPARQL-based extensibility, and rule extensions—and the community-driven Shape Expressions (ShEx) grammar for high-performance shape definitions and streaming validation (see also https://shex.io/shex-semantics/). Essential for enforcing graph integrity in ontology pipelines, providing declarative shape languages for automated validation across different use cases. Last updated July 2023 (SHACL) and February 2023 (ShEx). Authoritative W3C and community standards.
 ## License if known
-W3C Document License (CC-BY 4.0)
+W3C Document License (CC-BY 4.0); CC0/Public Domain
 
-# Shape Expressions (ShEx) — RDF Graph Structure Validation
-## https://shex.io/shex-semantics/
-Shape Expressions (ShEx) provides an alternative, grammar-based language for defining and validating structures in RDF graphs. This specification details core syntax, semantics, validation algorithms, streaming validation, and integration examples using shex.js. It complements SHACL with high-performance validation scenarios and clear shape definitions. Community standard, last updated February 2023.
+# Comunica SPARQL Query Engine Documentation
+## https://comunica.dev/docs/
+The official documentation for the Comunica modular SPARQL query engine (MIT licensed) provides in-depth guidance on programmatic use of the QueryEngine API, configuring data sources (RDF files, HTTP endpoints, streams), advanced actors (join, filter, pattern), query optimization strategies, and CLI tooling. It covers integration with RDFJS sources, how to build custom query pipelines, using plugins, and performance tuning. Last updated 2024. Maintained by the Comunica community and reference implementation authors.
 ## License if known
-CC0/Public Domain
+MIT
