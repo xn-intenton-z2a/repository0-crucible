@@ -28,26 +28,19 @@ Comprehensive guidelines for HTTP-based linked data publication and consumption.
 ## License if known
 W3C Document License (CC-BY 4.0)
 
-# JavaScript RDF & Validation Libraries
+# Schema & Data Validation Libraries
 ## https://github.com/digitalbazaar/jsonld.js#readme
 ## https://rdf.js.org/specification/data-model/
 ## https://comunica.dev/docs/query/framework/
 ## https://github.com/RubenVerborgh/SPARQL.js#readme
 ## https://github.com/linkeddata/rdflib.js#readme
 ## https://github.com/rdfjs/N3.js#readme
+## https://github.com/colinhacks/zod#readme
 ## https://www.w3.org/TR/shacl/
 ## https://shex.io/shex-semantics/
 ## https://github.com/zazuko/shacl-js#readme
 ## https://github.com/shexSpec/shex.js#readme
-A curated collection of interoperable JavaScript libraries (2023–2024) for RDF/JSON-LD processing, SPARQL parsing, federated querying, graph serialization, and validation:
-- jsonld.js for expansion, compaction, framing, normalization;
-- RDF/JS Data Model for in-memory graph primitives;
-- Comunica for SPARQL engine integration;
-- SPARQL.js for AST-based parsing;
-- rdflib.js for RDF stores;
-- N3.js for Turtle and N-Quads I/O;
-- SHACL.js and ShEx.js for schema validation.
-Provides streaming APIs, precise error reporting, and schema enforcement patterns crucial for CI/CD pipelines and data-quality checks in CLI and server contexts.
+A unified reference for both schema-level (Zod) and graph-level (SHACL, ShEx) validation, combined with JSON-LD processing, SPARQL parsing, federated query engines, and RDF serialization libraries. Provides comprehensive actionable APIs for type-safe data parsing, streaming graph transformations, precise error reporting, and automated data-quality enforcement critical to CI/CD workflows and robust ontology management environments.
 ## License if known
 MIT; CC0/Public Domain; W3C Document License (CC-BY 4.0)
 
@@ -62,7 +55,7 @@ MIT; CC0/Public Domain; W3C Document License (CC-BY 4.0)
 ## https://jena.apache.org/documentation/query/
 ## https://jena.apache.org/documentation/fuseki2/
 ## https://www.w3.org/TR/sparql11-service-description/
-Unified SPARQL 1.1 query/update operations, Graph Store HTTP API, Turtle serialization, and Linked Data Platform CRUD patterns. Apache Jena ARQ and Fuseki guides provide deployment best practices, federation strategies, transaction management, and performance tuning. The SPARQL Service Description spec adds discoverability metadata for endpoint introspection, enabling dynamic query tooling and automated client integrations in production.
+Unified SPARQL 1.1 query/update operations, Graph Store HTTP API, Turtle serialization, and Linked Data Platform CRUD patterns, extended with practical guidance for integrating public SPARQL endpoints like DBpedia. Covers result formats, pagination, rate-limiting, CORS configuration, and service descriptions for dynamic client integrations.
 ## License if known
 W3C Document License (CC-BY 4.0); Apache 2.0 (Apache Jena)
 
@@ -75,20 +68,20 @@ Authoritative references for Node.js v20+ core modules (fs, http, streams, perfo
 ## License if known
 Node.js Documentation License (CC-BY-SA 3.0); WHATWG Spec (Public Domain); MIT
 
-# Zod Schema Validation Library
-## https://github.com/colinhacks/zod#readme
-Zod is a TypeScript-first schema declaration and validation library enabling runtime parsing of JSON data, configuration files, and HTTP payloads. With fluent APIs, zero dependencies, and full type inference, Zod ensures robust data integrity checks for `data-sources.json`, CLI arguments, and JSON-LD artifacts, providing clear error messages and fail-fast strategies across workflows.
-## License if known
-MIT
-
-# DBpedia SPARQL Endpoint Guide
-## https://wiki.dbpedia.org/services-resources/sparql-endpoint
-Community-maintained documentation of the public DBpedia SPARQL service. Covers endpoint URL patterns, accepted query parameters, result formats (JSON, XML), rate limits, CORS configuration, and example queries. Practical guidance for integrating DBpedia queries in CLI and API modules, handling pagination, and managing large result sets efficiently.
-## License if known
-CC-BY-SA (DBpedia Wiki)
-
 # Hydra Core Vocabulary
 ## https://www.hydra-cg.com/spec/latest/core/
-Defines the Hydra Core Vocabulary for hypermedia-driven REST APIs over RDF. Introduces terms for collections, search, pagination, and operations (`hydra:operation`). Provides a model for discoverable linked-data APIs, informing dynamic HTTP endpoint design with in-band metadata for client navigation and tooling automation.
+Defines the Hydra Core Vocabulary for hypermedia-driven REST APIs over RDF. Introduces terms for collections, search, pagination, and operations (hydra:operation). Provides a model for discoverable linked-data APIs, informing dynamic HTTP endpoint design with in-band metadata for client navigation and tooling automation.
 ## License if known
 CC0/Public Domain
+
+# W3C N-Quads Specification
+## https://www.w3.org/TR/n-quads/
+The N-Quads specification defines a line-based plain text serialization for RDF datasets, extending N-Triples with support for named graphs. Essential for exporting JSON-LD OWL artifacts to N-Quads using jsonld.toRDF, and for streaming multi-graph data to SPARQL endpoints or persistence layers.
+## License if known
+W3C Document License (CC-BY 4.0)
+
+# OWL API Documentation
+## https://owlcs.github.io/owlapi/doc/
+Comprehensive Java documentation for the OWL API, covering ontology model creation, entity and axiom management, and serialization in RDF/XML, Functional Syntax, and Manchester Syntax. While Java-based, the API patterns for ontology assembly, modularization, and versioned persistence directly inform the architecture of the JSON-LD ontology pipeline and snapshot strategies.
+## License if known
+LGPL
