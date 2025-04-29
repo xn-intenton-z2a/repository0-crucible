@@ -13,9 +13,9 @@ W3C Document License (CC-BY 4.0)
 ## https://www.w3.org/TR/ld-bp/
 ## https://www.w3.org/TR/ldp/
 ## https://www.hydra-cg.com/spec/latest/core/
-Comprehensive guidelines (W3C Linked Data Best Practices, February 2020) for HTTP-based Linked Data publication—covering IRI design, content negotiation, pagination, versioning, caching, discoverability patterns—combined with the Linked Data Platform (LDP 1.0, June 2015) container semantics for managing RDF resources over HTTP and the Hydra Core Vocabulary (CC0) for hypermedia-driven REST APIs over RDF. Directly informs our endpoint URL schemes, HTTP methods, headers, in-band metadata, and client navigation strategies. Highly regarded in the Linked Data community.
+Comprehensive guidelines (W3C Linked Data Best Practices, February 2020) for HTTP-based Linked Data publication—including IRI design, content negotiation, pagination, versioning, caching, and discoverability patterns—combined with the Linked Data Platform (LDP 1.0, June 2015) container semantics and the Hydra Core Vocabulary (CC0) for hypermedia-driven REST APIs over RDF. Directly informs endpoint URL schemes, HTTP methods, headers, in-band metadata, and client navigation strategies. Widely adopted in the Linked Data community.
 ## License if known
-W3C Document License (CC-BY 4.0); CC0/Public Domain (Hydra)
+W3C Document License (CC-BY 4.0); CC0/Public Domain
 
 # Schema, Validation, RDF/OWL JavaScript Libraries & RDFJS Specifications
 ## https://github.com/colinhacks/zod#readme
@@ -27,9 +27,16 @@ W3C Document License (CC-BY 4.0); CC0/Public Domain (Hydra)
 ## https://github.com/rdf-ext/rdf-ext#readme
 ## https://rdf.js.org/data-model-spec/
 ## https://rdf.js.org/streams/spec/
-A unified reference combining runtime schema validation (Zod 3.x, MIT), graph-level constraints (SHACL W3C Recommendation, February 2023; ShEx CC0), and core RDFJS specifications for data model interfaces (Terms, Quads) and stream processing. Actionable JavaScript libraries—jsonld.js, SHACL-js, ShEx.js, OWLJS, RDF-Ext—provide type-safe parsing, streaming graph transformations, validation, and ontology manipulation aligned with the RDFJS community standards. Essential for building and validating RDF/OWL artifacts in Node.js.
+## https://github.com/linkeddata/rdflib.js
+A unified reference combining runtime schema validation (Zod 3.x, MIT), graph-level constraints (SHACL W3C Recommendation, February 2023; ShEx CC0), and core RDFJS specifications for data model interfaces and stream processing. Actionable JavaScript libraries—Zod, SHACL-js, ShEx.js, OWLJS, RDF-Ext, and rdflib.js—provide type-safe parsing, streaming graph transformations, validation, and ontology manipulation aligned with the RDFJS ecosystem. Essential for building and validating RDF/OWL artifacts in both browser and Node.js environments. Last updated June 2024.
 ## License if known
 MIT; CC0/Public Domain; W3C Document License (CC-BY 4.0)
+
+# JSON-LD JavaScript Library (jsonld.js)
+## https://github.com/digitalbazaar/jsonld.js#readme
+The official JavaScript implementation of the JSON-LD API, maintained by Digital Bazaar. Provides robust support for JSON-LD 1.1 operations—including compaction, expansion, framing, flattening, and URDNA2015 normalization—as well as both Promise-based and callback-based interfaces. Critical for programmatic JSON-LD processing in Node.js and browsers, with extensive examples, performance notes, and interoperability guidelines. Last updated June 2024.
+## License if known
+MIT
 
 # SPARQL Engines, Protocols & Frameworks
 ## https://www.w3.org/TR/sparql11-overview/
@@ -41,9 +48,9 @@ MIT; CC0/Public Domain; W3C Document License (CC-BY 4.0)
 ## https://jena.apache.org/documentation/query/
 ## https://jena.apache.org/documentation/io/
 ## https://comunica.dev/docs/query/sparql/
-This unified source consolidates W3C SPARQL 1.1 specifications for querying, updates, and protocol (Graph Store HTTP API), standard serializations (Turtle, N-Quads), practical guides for Apache Jena (SPARQL and RIOT I/O modules), and the Comunica SPARQL framework (modular query engine, multi-source federation, streaming result handling). It delivers essential protocols, configuration details, query optimization strategies, and examples for both in-process and HTTP-based SPARQL operations, forming the backbone of the repository’s query functionality. Last updated February 2013 – 2024. Authoritative W3C and project documentation.
+This unified source consolidates W3C SPARQL 1.1 specifications (query, update, and protocol via the Graph Store HTTP API), standard serializations (Turtle & N-Quads), Apache Jena’s SPARQL and RIOT I/O documentation (Apache 2.0), and the Comunica query engine (modular federation, streaming results, MIT). Provides essential protocols, configuration details, query optimization strategies, and examples for both in-process and HTTP-based SPARQL operations. Published February 2013 – 2024.
 ## License if known
-W3C Document License (CC-BY 4.0); Apache 2.0 (Apache Jena); MIT (Comunica)
+W3C Document License (CC-BY 4.0); Apache 2.0; MIT
 
 # Web Platform, Protocol & Date-Time Standards
 ## https://nodejs.org/api/
@@ -51,25 +58,19 @@ W3C Document License (CC-BY 4.0); Apache 2.0 (Apache Jena); MIT (Comunica)
 ## https://fetch.spec.whatwg.org/
 ## https://tools.ietf.org/html/rfc7231
 ## https://tools.ietf.org/html/rfc3339
-This source merges Node.js Core (v20+) APIs for filesystem, HTTP, streams, and ESM loader architecture; the WHATWG Fetch standard for request/response streams; the IETF HTTP/1.1 semantics (RFC 7231) defining methods, status codes, headers, and content negotiation; and the internet timestamp profile (RFC 3339) based on ISO 8601 to ensure standardized, sortable timestamps for snapshot filenames and audit logs. It provides practical guidance on implementing CLI I/O, HTTP servers, automated tests, mocks, designing RESTful endpoints, and generating interoperable date-time strings.
+Merges Node.js Core (v20+) guides for filesystem, HTTP, streams, and the ESM loader architecture; the WHATWG Fetch standard for request/response streams; the IETF HTTP/1.1 semantics (RFC 7231) defining methods, status codes, headers, and content negotiation; and the internet timestamp profile (RFC 3339). Offers practical guidance for CLI I/O, HTTP server implementation, automated tests, mocks, RESTful endpoint design, and interoperable date-time formatting.
 ## License if known
 Node.js Documentation License (CC-BY-SA 3.0); WHATWG Spec (Public Domain); IETF Trust License
 
 # Triplestore & Persistence Engines: Apache Jena TDB2 & Eclipse RDF4J
 ## https://jena.apache.org/documentation/tdb2/
 ## https://rdf4j.org/documentation/
-Practical guides for configuring and using persistent triplestores. Includes Jena TDB2 (2024) command-line tools and Java APIs for dataset management, transaction control, and high-performance querying (Apache 2.0), and Eclipse RDF4J (4.x, 2023) setup, repository APIs, SHACL validation integration, and HTTP endpoint configuration (EPL). Crucial for backing the persistence layer of ontology snapshots and SPARQL services.
+Practical guides for configuring and using persistent triplestores: Jena TDB2 command-line tools and Java APIs for dataset management, transaction control, and high-performance querying (Apache 2.0), and Eclipse RDF4J setup, repository APIs, SHACL validation integration, and HTTP endpoint configuration (EPL). Crucial for the ontology persistence layer and SPARQL services.
 ## License if known
 Apache 2.0; Eclipse Public License 2.0
 
 # ROBOT: Release OWL Ontology Builder
 ## https://github.com/ontodev/robot#readme
-ROBOT is a comprehensive, Apache-licensed CLI and Java library for automating OWL ontology workflows, including module extraction, reasoning, merging, format conversion, validation, and release packaging. Its best-practice patterns for ontology versioning, provenance tracking, and continuous integration inform the repository’s pipeline and snapshot management, highlighting advanced merge strategies and validation steps. Last release in 2024, widely adopted by the OBO Foundry community.
+ROBOT is a comprehensive CLI and Java library (Apache 2.0) for automating OWL ontology workflows: module extraction, reasoning, merging, format conversion, validation, and release packaging. Its best-practice patterns for ontology versioning, provenance tracking, and CI integration inform the repository’s pipeline, highlighting advanced merge strategies and validation steps. Last release 2024; widely adopted by the OBO Foundry community.
 ## License if known
 Apache 2.0
-
-# rdflib.js: RDF Library for JavaScript
-## https://github.com/linkeddata/rdflib.js
-rdflib.js is a robust, MIT-licensed JavaScript library for working with RDF data in browsers and Node.js. It provides parsers and serializers for RDF/XML, Turtle, N-Triples, and JSON-LD; an in-memory RDF store with graph updating and querying capabilities; and utilities for HTTP document fetching, SPARQL updates, and basic reasoning. Its extensive API and active community support advanced Linked Data applications and seamless integration with RDFJS ecosystems. Last updated June 2024.
-## License if known
-MIT
