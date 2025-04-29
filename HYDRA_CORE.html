@@ -24,343 +24,334 @@
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="hydra_core" href="#hydra_core"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>HYDRA_CORE</h1>
 <h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
-<p class="md-github">Namespace: hydra = http://www.w3.org/ns/hydra/core#; key classes: Link, Operation, ApiDocumentation, Class, SupportedProperty, Collection, PartialCollectionView, IriTemplate, TemplatedLink, Status, Error; key properties with domains/ranges and multiplicities; discovery via HTTP Link header rel=hydra:apiDocumentation; use JSON-LD @context to map hydra terms; embed hydra:operation affordances in representations; pagination and templated links via IriTemplate; error handling via Status and application/problem+json</p>
+<p class="md-github">Namespace fixed at http://www.w3.org/ns/hydra/core#. Key classes: Link, Operation, ApiDocumentation, IriTemplate, Collection, PartialCollectionView, Status, Error. Link marks dereferenceable IRIs. Operation defines HTTP method plus optional expects, returns, statusCode. ApiDocumentation defines title, description, entrypoint, supportedClass, possibleStatus. IriTemplate defines template string, mapping variables to properties, variableRepresentation, resolveRelativeTo. Collections via hydra:member; paging via hydra:PartialCollectionView with hydra:first/next/previous/last. Error reporting via hydra:Status and hydra:Error with statusCode, title, description. Clients discover API docs via HTTP Link header with rel hydra:apiDocumentation. IriTemplate expansions follow RFC6570 with Basic or Explicit representations.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
 <p class="md-github">Table of Contents
-1 Namespace Definition
-2 API Discovery Header
-3 hydra:Link
-4 hydra:Operation
-5 hydra:ApiDocumentation
-6 Class and SupportedProperty
-7 Collections
-8 IriTemplate and TemplatedLink
-9 Status and Error</p>
-<p class="md-github">1 Namespace Definition
-Prefix: hydra
-IRI: http://www.w3.org/ns/hydra/core#</p>
-<p class="md-github">2 API Discovery Header
-HTTP Header: Link: &lt;{apiDocumentationIRI}&gt;; rel=&quot;http://www.w3.org/ns/hydra/core#apiDocumentation&quot;
-Methods: GET, HEAD</p>
-<p class="md-github">3 hydra:Link
-Type: rdf:Class
-Usage: annotate properties representing dereferenceable IRIs
-No mandatory properties</p>
-<p class="md-github">4 hydra:Operation
-Type: rdf:Class
-Properties:
-hydra:method (1..1, xsd:string)
-hydra:expects (0..1, IRI of class)
-hydra:returns (0..1, IRI of class)
-hydra:possibleStatus (0..<em class="md-github">, hydra:Status)
-hydra:expectsHeader (0..</em>, xsd:string)
-hydra:returnsHeader (0..*, xsd:string)</p>
-<p class="md-github">5 hydra:ApiDocumentation
-Type: rdf:Class
-Properties:
-hydra:title (1..1, xsd:string)
-hydra:description (0..1, xsd:string)
-hydra:entrypoint (1..1, IRI)
-hydra:supportedClass (0..<em class="md-github">, hydra:Class)
-hydra:supportedOperation (0..</em>, hydra:Operation)</p>
-<p class="md-github">6 Class and SupportedProperty
-hydra:Class properties:
-hydra:supportedOperation (0..<em class="md-github">, hydra:Operation)
-hydra:supportedProperty (0..</em>, hydra:SupportedProperty)</p>
-<p class="md-github">hydra:SupportedProperty properties:
-hydra:property (1..1, IRI)
-hydra:required (0..1, xsd:boolean)
-hydra:readable (0..1, xsd:boolean)
-hydra:writable (0..1, xsd:boolean)</p>
-<p class="md-github">7 Collections
-hydra:Collection:
-hydra:member (0..*, IRI or embedded resource)
-hydra:totalItems (0..1, xsd:integer)</p>
-<p class="md-github">hydra:PartialCollectionView:
-hydra:first (0..1, IRI)
-hydra:next (0..1, IRI)
-hydra:previous (0..1, IRI)
-hydra:last (0..1, IRI)</p>
-<p class="md-github">8 IriTemplate and TemplatedLink
-hydra:IriTemplate properties:
-hydra:template (1..1, xsd:string, RFC6570)
-hydra:mapping (1..*, hydra:IriTemplateMapping)
-hydra:variableRepresentation (0..1, BasicRepresentation|ExplicitRepresentation)</p>
-<p class="md-github">hydra:IriTemplateMapping:
-hydra:variable (1..1, xsd:string)
-hydra:property (1..1, IRI)
-hydra:required (0..1, xsd:boolean)</p>
-<p class="md-github">templated links: use hydra:TemplatedLink</p>
-<p class="md-github">9 Status and Error
-hydra:Status:
-hydra:statusCode (1..1, xsd:integer)
-hydra:description (0..1, xsd:string)</p>
-<p class="md-github">hydra:Error: subclass of hydra:Status</p>
+1 Prefix and Namespace
+2 Classes
+2.1 Link
+2.2 Operation
+2.3 ApiDocumentation
+2.4 IriTemplate
+2.5 Collection &amp; PartialCollectionView
+2.6 Status &amp; Error
+3 HTTP Discovery
+4 IriTemplate Serialization</p>
+<p class="md-github">1 Prefix and Namespace
+Namespace IRI: http://www.w3.org/ns/hydra/core#
+Prefix: hydra</p>
+<p class="md-github">2 Classes
+2.1 Link
+Definition: rdfs:Class hydra:Link
+Use: Mark property as dereferenceable
+Example:
+@context{ &quot;hydra&quot;:&quot;http://www.w3.org/ns/hydra/core#&quot; }
+&quot;@type&quot;:&quot;hydra:Link&quot;</p>
+<p class="md-github">2.2 Operation
+Definition: rdfs:Class hydra:Operation
+Required:
+hydra:method  IRI  http://www.w3.org/2011/http-methods#GET | POST | PUT | DELETE
+Optional:
+hydra:expects  IRI  class of input
+hydra:returns  IRI  class of output
+hydra:statusCode  xsd:integer</p>
+<p class="md-github">2.3 ApiDocumentation
+Definition: rdfs:Class hydra:ApiDocumentation
+Required:
+hydra:title  xsd:string
+hydra:description  xsd:string
+hydra:entrypoint  IRI
+Optional:
+hydra:supportedClass  IRI
+hydra:possibleStatus  hydra:Status</p>
+<p class="md-github">2.4 IriTemplate
+Definition: rdfs:Class hydra:IriTemplate
+Required:
+hydra:template  xsd:string  syntax RFC6570
+hydra:mapping  hydra:IriTemplateMapping
+Optional:
+hydra:variableRepresentation  hydra:BasicRepresentation|hydra:ExplicitRepresentation
+hydra:resolveRelativeTo  hydra:IriTemplateResolution</p>
+<p class="md-github">2.5 Collection &amp; PartialCollectionView
+hydra:Collection  rdfs:Class
+hydra:member  IRI or object
+hydra:PartialCollectionView  rdfs:Class
+hydra:first|last|next|previous  IRI</p>
+<p class="md-github">2.6 Status &amp; Error
+hydra:Status  rdfs:Class
+hydra:statusCode  xsd:integer
+hydra:title  xsd:string
+hydra:description  xsd:string
+hydra:Error  rdfs:Class  subclass of hydra:Status</p>
+<p class="md-github">3 HTTP Discovery
+Clients send GET or HEAD to root
+Look for Link header rel=&quot;http://www.w3.org/ns/hydra/core#apiDocumentation&quot;
+Retrieve URI as ApiDocumentation</p>
+<p class="md-github">4 IriTemplate Serialization
+BasicRepresentation: lexical form
+ExplicitRepresentation: &quot;lexical&quot;@lang ^^datatype</p>
 <h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
-<p class="md-github">1 Configure JSON-LD Context</p>
+<ol class="md-github">
+<li class="md-github">HTTP Headers</li>
+</ol>
 <ul class="md-github">
-<li class="md-github">Include in API responses:
-@context: {&quot;hydra&quot;:&quot;http://www.w3.org/ns/hydra/core#&quot;,&quot;vocab&quot;:&quot;http://api.example.com/vocab#&quot;}
-2 Emit HTTP Discovery Header</li>
-<li class="md-github">In server: add response header:
-Link: <a href="http://api.example.com/doc/" class="md-github">http://api.example.com/doc/</a>; rel=&quot;http://www.w3.org/ns/hydra/core#apiDocumentation&quot;
-3 Define ApiDocumentation Resource</li>
-<li class="md-github">At /doc:
-{
-&quot;@id&quot;: &quot;http://api.example.com/doc/&quot;,
-&quot;@type&quot;: &quot;hydra:ApiDocumentation&quot;,
-&quot;hydra:title&quot;: &quot;Issue Tracker API&quot;,
-&quot;hydra:entrypoint&quot;: &quot;http://api.example.com/&quot;,
-&quot;hydra:supportedClass&quot;: [ ... ]
-}
-4 Represent Operations in Payloads</li>
-<li class="md-github">Embed in resources:
-&quot;hydra:operation&quot;: [{&quot;hydra:method&quot;:&quot;POST&quot;,&quot;hydra:expects&quot;:&quot;vocab:Issue&quot;,&quot;hydra:returns&quot;:&quot;vocab:Issue&quot;}]
-5 Pagination Pattern</li>
-<li class="md-github">Use hydra:PartialCollectionView for pages</li>
-<li class="md-github">Provide hydra:first, hydra:next links
-6 Templated Search</li>
-<li class="md-github">Define IriTemplate at documentation:
-template: &quot;http://api.example.com/issues{?search}&quot;, mapping variable search to hydra:freetextQuery required:true
-7 CORS and Headers</li>
-<li class="md-github">Document hydra:expectsHeader: [&quot;Content-Type&quot;,&quot;Authorization&quot;]</li>
-<li class="md-github">Document hydra:returnsHeader: [&quot;Location&quot;,&quot;Content-Type&quot;]</li>
+<li class="md-github">Link: &lt;{apiDocumentationURI}&gt;; rel=&quot;http://www.w3.org/ns/hydra/core#apiDocumentation&quot;</li>
+<li class="md-github">Prefer: Preference: return=representation; include=&quot;http://www.w3.org/ns/hydra/core#extension&quot;</li>
+</ul>
+<ol start="2" class="md-github">
+<li class="md-github">JSON-LD Context</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">hydra:method -&gt; http://www.w3.org/2011/http-methods#GET etc.</li>
+<li class="md-github">hydra:operation -&gt; hydra:Operation</li>
+</ul>
+<ol start="3" class="md-github">
+<li class="md-github">Configuration Steps</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Expose HTTP Link header on all responses</li>
+<li class="md-github">Host JSON-LD context at /hydra/context.jsonld</li>
+</ul>
+<ol start="4" class="md-github">
+<li class="md-github">Usage Patterns</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Embed supportedOperation on hydra:Link properties for dynamic affordances</li>
+<li class="md-github">Use hydra:SupportedProperty to define read-only/write-only</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
-<h3 class="md-github"><a class="md-github__anchor" name="hydra-vocabulary-owl-definitions-turtle" href="#hydra-vocabulary-owl-definitions-turtle"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Hydra Vocabulary OWL Definitions (Turtle)</h3>
-<p class="md-github">@prefix hydra: <a href="http://www.w3.org/ns/hydra/core#" class="md-github">http://www.w3.org/ns/hydra/core#</a> .
-@prefix xsd: <a href="http://www.w3.org/2001/XMLSchema#" class="md-github">http://www.w3.org/2001/XMLSchema#</a> .</p>
-<p class="md-github">hydra:Operation a rdfs:Class .
-hydra:method a rdf:Property ; rdfs:domain hydra:Operation ; rdfs:range xsd:string ; hydra:required true .
-hydra:expects a rdf:Property ; rdfs:domain hydra:Operation ; rdfs:range rdfs:Class .
-hydra:returns a rdf:Property ; rdfs:domain hydra:Operation ; rdfs:range rdfs:Class .
-hydra:possibleStatus a rdf:Property ; rdfs:domain hydra:Operation ; rdfs:range hydra:Status .
-hydra:expectsHeader a rdf:Property ; rdfs:domain hydra:Operation ; rdfs:range xsd:string .
-hydra:returnsHeader a rdf:Property ; rdfs:domain hydra:Operation ; rdfs:range xsd:string .</p>
-<p class="md-github">hydra:ApiDocumentation a rdfs:Class .
-hydra:title a rdf:Property ; rdfs:domain hydra:ApiDocumentation ; rdfs:range xsd:string ; hydra:required true .
-hydra:description a rdf:Property ; rdfs:domain hydra:ApiDocumentation ; rdfs:range xsd:string .
-hydra:entrypoint a rdf:Property ; rdfs:domain hydra:ApiDocumentation ; rdfs:range rdfs:Resource ; hydra:required true .</p>
-<h3 class="md-github"><a class="md-github__anchor" name="json-example-creating-an-issue-nodejs" href="#json-example-creating-an-issue-nodejs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSON Example: Creating an Issue (Node.js)</h3>
-<p class="md-github">const client = new HydraClient({ entrypoint: 'http://api.example.com/' });
-const issue = await client.create('issues', {title:'Bug','description':'Details'});
-console.log(issue['@id']);</p>
-<h3 class="md-github"><a class="md-github__anchor" name="java-example-hydra-java" href="#java-example-hydra-java"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Java Example (hydra-java)</h3>
-<p class="md-github">@ApiResource(path=&quot;/issues&quot;)
-public class Issue {
-@ApiProperty
-private String title;
+<p class="md-github">API Vocabulary:
+Class hydra:Link
+Properties:
+hydra:readable  xsd:boolean default true
+hydra:writable  xsd:boolean default false</p>
+<p class="md-github">Class hydra:Operation
+Properties:
+hydra:method  IRI (one of http://www.w3.org/2011/http-methods#GET, POST, PUT, DELETE, PATCH)
+hydra:expects  IRI any rdfs:Class
+hydra:returns  IRI any rdfs:Class
+hydra:statusCode  xsd:integer</p>
+<p class="md-github">Class hydra:ApiDocumentation
+Properties:
+hydra:title  xsd:string
+hydra:description  xsd:string
+hydra:entrypoint  IRI
+hydra:supportedClass  IRI
+hydra:possibleStatus  hydra:Status</p>
+<p class="md-github">Class hydra:IriTemplate
+Properties:
+hydra:template  xsd:string
+hydra:mapping  hydra:IriTemplateMapping [1..*]
+hydra:variableRepresentation  hydra:BasicRepresentation|hydra:ExplicitRepresentation
+hydra:resolveRelativeTo  hydra:IriTemplateResolution</p>
+<p class="md-github">Class hydra:Collection
+Properties:
+hydra:member  IRI|object [0..*]</p>
+<p class="md-github">Class hydra:PartialCollectionView
+Properties: hydra:first, hydra:last, hydra:next, hydra:previous  IRI optional</p>
+<p class="md-github">Class hydra:Status
+Properties:
+hydra:statusCode  xsd:integer
+hydra:title  xsd:string
+hydra:description  xsd:string</p>
+<p class="md-github">Class hydra:Error subclass of hydra:Status</p>
+<p class="md-github">Code Example:
+{
+&quot;@context&quot;: &quot;/hydra/context.jsonld&quot;,
+&quot;@type&quot;: &quot;hydra:ApiDocumentation&quot;,
+&quot;hydra:title&quot;: &quot;IssueTracker API&quot;,
+&quot;hydra:description&quot;: &quot;API for issue tracking&quot;,
+&quot;hydra:entrypoint&quot;: &quot;/issues&quot;,
+&quot;hydra:supportedClass&quot;: [
+{ &quot;@id&quot;: &quot;Issue&quot; }
+]
 }</p>
-<h3 class="md-github"><a class="md-github__anchor" name="troubleshooting" href="#troubleshooting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting</h3>
-<p class="md-github">1 Missing operations in payload:</p>
-<ul class="md-github">
-<li class="md-github">Verify @context mapping contains hydra prefix</li>
-<li class="md-github">Check server emits hydra:operation in JSON-LD
-2 API Documentation not discovered:
-curl -I http://api.example.com/ | grep Link
-Expected: Link: <a href="http://api.example.com/doc/" class="md-github">http://api.example.com/doc/</a>; rel=&quot;http://www.w3.org/ns/hydra/core#apiDocumentation&quot;
-3 IriTemplate expansion errors:</li>
-<li class="md-github">Ensure template syntax RFC6570</li>
-<li class="md-github">Verify mapping variables match property names</li>
-</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
-<p class="md-github">hydra namespace: http://www.w3.org/ns/hydra/core#; Link header rel=hydra:apiDocumentation for discovery; hydra:Link for dereferenceable IRIs; hydra:Operation(method string[1], expects IRI, returns IRI, possibleStatus Status[0..<em class="md-github">], expectsHeader string</em>, returnsHeader string*); hydra:ApiDocumentation(title string[1], description string, entrypoint IRI[1], supportedClass Class*, supportedOperation Operation*); hydra:SupportedProperty(property IRI[1], required boolean, readable boolean, writable boolean); hydra:Collection(member IRI|resource*, totalItems integer); hydra:PartialCollectionView(first|last|next|previous IRI); hydra:IriTemplate(template string RFC6570[1], mapping IriTemplateMapping*, variableRepresentation Basic|Explicit); IriTemplateMapping(variable string[1], property IRI[1], required boolean); hydra:Status(statusCode integer[1], description string); hydra:Error subclass Status; JSON-LD @context mapping hydra; embed operations under hydra:operation; use PartialCollectionView for paging; define search via IriTemplate; document headers via hydra:expectsHeader and hydra:returnsHeader; troubleshooting: validate @context, Link header, template syntax.</p>
+<p class="md-github">Namespace=http://www.w3.org/ns/hydra/core# Classes={Link,Operation,ApiDocumentation,IriTemplate,Collection,PartialCollectionView,Status,Error} Properties Link={hydra:readable:boolean,true;hydra:writable:boolean,false} Operation={hydra:method:IRI(rdf HTTP methods),hydra:expects:Class,hydra:returns:Class,hydra:statusCode:integer} ApiDocumentation={hydra:title:string,hydra:description:string,hydra:entrypoint:IRI,hydra:supportedClass:IRI,hydra:possibleStatus:Status} IriTemplate={hydra:template:string(RFC6570),hydra:mapping:IriTemplateMapping+,hydra:variableRepresentation:(BasicRepresentation|ExplicitRepresentation),hydra:resolveRelativeTo:IriTemplateResolution} Collection={hydra:member:IRI|object*} PartialCollectionView={hydra:first|last|next|previous:IRI?} Status={hydra:statusCode:integer,hydra:title:string,hydra:description:string} Error=subclass Status HTTP Discovery: header Link rel=hydra:apiDocumentation expand templates per RFC6570 Basic or Explicit expansions</p>
 <h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
 <p class="md-github">Table of Contents
-1 Namespace Definition
-2 API Discovery Header
-3 hydra:Link
-4 hydra:Operation
-5 hydra:ApiDocumentation
-6 Class and SupportedProperty
-7 Collections
-8 IriTemplate and TemplatedLink
-9 Status and Error</p>
-<p class="md-github">1 Namespace Definition
-Prefix: hydra
-IRI: http://www.w3.org/ns/hydra/core#</p>
-<p class="md-github">2 API Discovery Header
-HTTP Header: Link: &lt;{apiDocumentationIRI}&gt;; rel='http://www.w3.org/ns/hydra/core#apiDocumentation'
-Methods: GET, HEAD</p>
-<p class="md-github">3 hydra:Link
-Type: rdf:Class
-Usage: annotate properties representing dereferenceable IRIs
-No mandatory properties</p>
-<p class="md-github">4 hydra:Operation
-Type: rdf:Class
-Properties:
-hydra:method (1..1, xsd:string)
-hydra:expects (0..1, IRI of class)
-hydra:returns (0..1, IRI of class)
-hydra:possibleStatus (0..<em class="md-github">, hydra:Status)
-hydra:expectsHeader (0..</em>, xsd:string)
-hydra:returnsHeader (0..*, xsd:string)</p>
-<p class="md-github">5 hydra:ApiDocumentation
-Type: rdf:Class
-Properties:
-hydra:title (1..1, xsd:string)
-hydra:description (0..1, xsd:string)
-hydra:entrypoint (1..1, IRI)
-hydra:supportedClass (0..<em class="md-github">, hydra:Class)
-hydra:supportedOperation (0..</em>, hydra:Operation)</p>
-<p class="md-github">6 Class and SupportedProperty
-hydra:Class properties:
-hydra:supportedOperation (0..<em class="md-github">, hydra:Operation)
-hydra:supportedProperty (0..</em>, hydra:SupportedProperty)</p>
-<p class="md-github">hydra:SupportedProperty properties:
-hydra:property (1..1, IRI)
-hydra:required (0..1, xsd:boolean)
-hydra:readable (0..1, xsd:boolean)
-hydra:writable (0..1, xsd:boolean)</p>
-<p class="md-github">7 Collections
-hydra:Collection:
-hydra:member (0..*, IRI or embedded resource)
-hydra:totalItems (0..1, xsd:integer)</p>
-<p class="md-github">hydra:PartialCollectionView:
-hydra:first (0..1, IRI)
-hydra:next (0..1, IRI)
-hydra:previous (0..1, IRI)
-hydra:last (0..1, IRI)</p>
-<p class="md-github">8 IriTemplate and TemplatedLink
-hydra:IriTemplate properties:
-hydra:template (1..1, xsd:string, RFC6570)
-hydra:mapping (1..*, hydra:IriTemplateMapping)
-hydra:variableRepresentation (0..1, BasicRepresentation|ExplicitRepresentation)</p>
-<p class="md-github">hydra:IriTemplateMapping:
-hydra:variable (1..1, xsd:string)
-hydra:property (1..1, IRI)
-hydra:required (0..1, xsd:boolean)</p>
-<p class="md-github">templated links: use hydra:TemplatedLink</p>
-<p class="md-github">9 Status and Error
-hydra:Status:
-hydra:statusCode (1..1, xsd:integer)
-hydra:description (0..1, xsd:string)</p>
-<p class="md-github">hydra:Error: subclass of hydra:Status</p>
+1 Prefix and Namespace
+2 Classes
+2.1 Link
+2.2 Operation
+2.3 ApiDocumentation
+2.4 IriTemplate
+2.5 Collection &amp; PartialCollectionView
+2.6 Status &amp; Error
+3 HTTP Discovery
+4 IriTemplate Serialization</p>
+<p class="md-github">1 Prefix and Namespace
+Namespace IRI: http://www.w3.org/ns/hydra/core#
+Prefix: hydra</p>
+<p class="md-github">2 Classes
+2.1 Link
+Definition: rdfs:Class hydra:Link
+Use: Mark property as dereferenceable
+Example:
+@context{ 'hydra':'http://www.w3.org/ns/hydra/core#' }
+'@type':'hydra:Link'</p>
+<p class="md-github">2.2 Operation
+Definition: rdfs:Class hydra:Operation
+Required:
+hydra:method  IRI  http://www.w3.org/2011/http-methods#GET | POST | PUT | DELETE
+Optional:
+hydra:expects  IRI  class of input
+hydra:returns  IRI  class of output
+hydra:statusCode  xsd:integer</p>
+<p class="md-github">2.3 ApiDocumentation
+Definition: rdfs:Class hydra:ApiDocumentation
+Required:
+hydra:title  xsd:string
+hydra:description  xsd:string
+hydra:entrypoint  IRI
+Optional:
+hydra:supportedClass  IRI
+hydra:possibleStatus  hydra:Status</p>
+<p class="md-github">2.4 IriTemplate
+Definition: rdfs:Class hydra:IriTemplate
+Required:
+hydra:template  xsd:string  syntax RFC6570
+hydra:mapping  hydra:IriTemplateMapping
+Optional:
+hydra:variableRepresentation  hydra:BasicRepresentation|hydra:ExplicitRepresentation
+hydra:resolveRelativeTo  hydra:IriTemplateResolution</p>
+<p class="md-github">2.5 Collection &amp; PartialCollectionView
+hydra:Collection  rdfs:Class
+hydra:member  IRI or object
+hydra:PartialCollectionView  rdfs:Class
+hydra:first|last|next|previous  IRI</p>
+<p class="md-github">2.6 Status &amp; Error
+hydra:Status  rdfs:Class
+hydra:statusCode  xsd:integer
+hydra:title  xsd:string
+hydra:description  xsd:string
+hydra:Error  rdfs:Class  subclass of hydra:Status</p>
+<p class="md-github">3 HTTP Discovery
+Clients send GET or HEAD to root
+Look for Link header rel='http://www.w3.org/ns/hydra/core#apiDocumentation'
+Retrieve URI as ApiDocumentation</p>
+<p class="md-github">4 IriTemplate Serialization
+BasicRepresentation: lexical form
+ExplicitRepresentation: 'lexical'@lang ^^datatype</p>
 <h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
-<p class="md-github">Linked Data Platform &amp; Hydra
+<p class="md-github">Hydra Core Vocabulary
 https://www.hydra-cg.com/spec/latest/core/</p>
 <h2 class="md-github"><a class="md-github__anchor" name="digest-of-hydra_core" href="#digest-of-hydra_core"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of HYDRA_CORE</h2>
-<h1 class="md-github"><a class="md-github__anchor" name="hydra-core-vocabulary" href="#hydra-core-vocabulary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Hydra Core Vocabulary</h1>
-<h2 class="md-github"><a class="md-github__anchor" name="namespaces" href="#namespaces"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Namespaces</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="hydra-core-vocabulary-detailed-digest-retrieved-2024-06-10" href="#hydra-core-vocabulary-detailed-digest-retrieved-2024-06-10"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Hydra Core Vocabulary Detailed Digest (retrieved 2024-06-10)</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="hydra-namespace" href="#hydra-namespace"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Hydra Namespace</h2>
 <ul class="md-github">
-<li class="md-github">Prefix: hydra</li>
 <li class="md-github">IRI: http://www.w3.org/ns/hydra/core#</li>
+<li class="md-github">Prefix: hydra</li>
 </ul>
-<h2 class="md-github"><a class="md-github__anchor" name="discovery" href="#discovery"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Discovery</h2>
+<h2 class="md-github"><a class="md-github__anchor" name="classes-and-properties" href="#classes-and-properties"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Classes and Properties</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="hydralink" href="#hydralink"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:Link</h3>
 <ul class="md-github">
-<li class="md-github">HTTP Link Header: Link: &lt;{apiDocumentationIRI}&gt;; rel=&quot;http://www.w3.org/ns/hydra/core#apiDocumentation&quot;</li>
-<li class="md-github">Default method: GET or HEAD on publisher homepage</li>
+<li class="md-github">Type: rdfs:Class</li>
+<li class="md-github">Purpose: Marks a property as a dereferenceable hyperlink.</li>
+<li class="md-github">Usage: Define a property with <code class="md-github">rdf:type hydra:Link</code> to indicate its value is an IRI to dereference.</li>
 </ul>
-<h2 class="md-github"><a class="md-github__anchor" name="classes-and-key-properties" href="#classes-and-key-properties"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Classes and Key Properties</h2>
-<h3 class="md-github"><a class="md-github__anchor" name="hydralink-rdfclass" href="#hydralink-rdfclass"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:Link (rdf:Class)</h3>
-<p class="md-github">Properties:</p>
+<h3 class="md-github"><a class="md-github__anchor" name="hydraoperation" href="#hydraoperation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:Operation</h3>
 <ul class="md-github">
-<li class="md-github">None mandatory. Used to annotate properties whose values are dereferenceable IRIs.</li>
+<li class="md-github">Type: rdfs:Class</li>
+<li class="md-github">Required Properties:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">hydra:method</code> (HTTP method, IRI from http://www.w3.org/2011/http-methods#)</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="hydraoperation-rdfclass" href="#hydraoperation-rdfclass"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:Operation (rdf:Class)</h3>
-<p class="md-github">Properties:</p>
+</li>
+<li class="md-github">Optional Properties:
 <ul class="md-github">
-<li class="md-github">hydra:method (required, range xsd:string): HTTP method name (GET, POST, PUT, DELETE)</li>
-<li class="md-github">hydra:expects (optional, range IRI of schema/class): request payload type</li>
-<li class="md-github">hydra:returns (optional, range IRI of schema/class): response payload type</li>
-<li class="md-github">hydra:possibleStatus (optional, range hydra:Status): expected HTTP status codes</li>
-<li class="md-github">hydra:expectsHeader (optional, range xsd:string): list of header names expected</li>
-<li class="md-github">hydra:returnsHeader (optional, range xsd:string): list of header names returned</li>
+<li class="md-github"><code class="md-github">hydra:expects</code> (IRI of expected input class)</li>
+<li class="md-github"><code class="md-github">hydra:returns</code> (IRI of returned output class)</li>
+<li class="md-github"><code class="md-github">hydra:statusCode</code> (integer HTTP status code hints)</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="hydraapidocumentation-rdfclass" href="#hydraapidocumentation-rdfclass"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:ApiDocumentation (rdf:Class)</h3>
-<p class="md-github">Properties:</p>
-<ul class="md-github">
-<li class="md-github">hydra:title (required, range xsd:string)</li>
-<li class="md-github">hydra:description (optional, range xsd:string)</li>
-<li class="md-github">hydra:entrypoint (required, range IRI): main API entrypoint resource</li>
-<li class="md-github">hydra:supportedClass (optional, range hydra:Class)</li>
-<li class="md-github">hydra:supportedOperation (optional, range hydra:Operation)</li>
+</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="hydraclass-rdfclass" href="#hydraclass-rdfclass"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:Class (rdf:Class)</h3>
-<p class="md-github">Properties:</p>
+<h3 class="md-github"><a class="md-github__anchor" name="hydraapidocumentation" href="#hydraapidocumentation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:ApiDocumentation</h3>
 <ul class="md-github">
-<li class="md-github">hydra:supportedOperation (range hydra:Operation)</li>
-<li class="md-github">hydra:supportedProperty (range hydra:SupportedProperty)</li>
+<li class="md-github">Type: rdfs:Class</li>
+<li class="md-github">Required Properties:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">hydra:title</code> (xsd:string)</li>
+<li class="md-github"><code class="md-github">hydra:description</code> (xsd:string)</li>
+<li class="md-github"><code class="md-github">hydra:entrypoint</code> (IRI of entry point resource)</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="hydrasupportedproperty-rdfclass" href="#hydrasupportedproperty-rdfclass"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:SupportedProperty (rdf:Class)</h3>
-<p class="md-github">Properties:</p>
+</li>
+<li class="md-github">Optional Properties:
 <ul class="md-github">
-<li class="md-github">hydra:property (required, range IRI)</li>
-<li class="md-github">hydra:required (optional, range xsd:boolean)</li>
-<li class="md-github">hydra:readable (optional, range xsd:boolean)</li>
-<li class="md-github">hydra:writable (optional, range xsd:boolean)</li>
-<li class="md-github">hydra:description (optional, range xsd:string)</li>
-<li class="md-github">hydra:title (optional, range xsd:string)</li>
+<li class="md-github"><code class="md-github">hydra:supportedClass</code> (link to classes)</li>
+<li class="md-github"><code class="md-github">hydra:possibleStatus</code> (hydra:Status definitions)</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="hydracollection-rdfclass" href="#hydracollection-rdfclass"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:Collection (rdf:Class)</h3>
-<p class="md-github">Properties:</p>
-<ul class="md-github">
-<li class="md-github">hydra:member (repeatable, range IRI or embedded resource)</li>
-<li class="md-github">hydra:totalItems (optional, range xsd:integer)</li>
+</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="hydrapartialcollectionview-rdfclass" href="#hydrapartialcollectionview-rdfclass"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:PartialCollectionView (rdf:Class)</h3>
-<p class="md-github">Properties:</p>
+<h3 class="md-github"><a class="md-github__anchor" name="hydrairitemplate" href="#hydrairitemplate"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:IriTemplate</h3>
 <ul class="md-github">
-<li class="md-github">hydra:first (optional, range IRI)</li>
-<li class="md-github">hydra:last (optional, range IRI)</li>
-<li class="md-github">hydra:next (optional, range IRI)</li>
-<li class="md-github">hydra:previous (optional, range IRI)</li>
+<li class="md-github">Type: rdfs:Class</li>
+<li class="md-github">Required Properties:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">hydra:template</code> (xsd:string, RFC6570 URI template)</li>
+<li class="md-github"><code class="md-github">hydra:mapping</code> (hydra:IriTemplateMapping)</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="hydramemberassertion-rdfclass" href="#hydramemberassertion-rdfclass"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:memberAssertion (rdf:Class)</h3>
-<p class="md-github">Properties:</p>
+</li>
+<li class="md-github">Optional Properties:
 <ul class="md-github">
-<li class="md-github">hydra:subject (required, range IRI)</li>
-<li class="md-github">hydra:property (required, range IRI)</li>
-<li class="md-github">hydra:object (required, range IRI)</li>
+<li class="md-github"><code class="md-github">hydra:variableRepresentation</code> (hydra:BasicRepresentation | hydra:ExplicitRepresentation)</li>
+<li class="md-github"><code class="md-github">hydra:resolveRelativeTo</code> (hydra:IriTemplateResolution)</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="hydrairitemplate-rdfclass" href="#hydrairitemplate-rdfclass"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:IriTemplate (rdf:Class)</h3>
-<p class="md-github">Properties:</p>
-<ul class="md-github">
-<li class="md-github">hydra:template (required, range xsd:string, RFC6570)</li>
-<li class="md-github">hydra:mapping (repeatable, range hydra:IriTemplateMapping)</li>
-<li class="md-github">hydra:variableRepresentation (optional, range xsd:string: BasicRepresentation or ExplicitRepresentation)</li>
+</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="hydrairitemplatemapping-rdfclass" href="#hydrairitemplatemapping-rdfclass"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:IriTemplateMapping (rdf:Class)</h3>
-<p class="md-github">Properties:</p>
+<h3 class="md-github"><a class="md-github__anchor" name="hydracollection" href="#hydracollection"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:Collection</h3>
 <ul class="md-github">
-<li class="md-github">hydra:variable (required, range xsd:string)</li>
-<li class="md-github">hydra:property (required, range IRI)</li>
-<li class="md-github">hydra:required (optional, range xsd:boolean)</li>
+<li class="md-github">Type: rdfs:Class</li>
+<li class="md-github">Properties:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">hydra:member</code> (IRI or embedded members)</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="hydratemplatedlink-rdfclass" href="#hydratemplatedlink-rdfclass"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:TemplatedLink (rdf:Class)</h3>
-<p class="md-github">Subclass of hydra:Link, used for properties whose values are IRI templates</p>
-<h3 class="md-github"><a class="md-github__anchor" name="hydrastatus-rdfclass" href="#hydrastatus-rdfclass"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:Status (rdf:Class)</h3>
-<p class="md-github">Properties:</p>
-<ul class="md-github">
-<li class="md-github">hydra:statusCode (required, range xsd:integer)</li>
-<li class="md-github">hydra:description (optional, range xsd:string)</li>
+</li>
 </ul>
-<h3 class="md-github"><a class="md-github__anchor" name="hydraerror-rdfclass" href="#hydraerror-rdfclass"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:Error (rdf:Class)</h3>
-<p class="md-github">Subclass of hydra:Status</p>
-<h2 class="md-github"><a class="md-github__anchor" name="serialization-and-context" href="#serialization-and-context"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Serialization and Context</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="hydrapartialcollectionview" href="#hydrapartialcollectionview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:PartialCollectionView</h3>
 <ul class="md-github">
-<li class="md-github">Use JSON-LD with @context mapping hydra terms to full IRIs</li>
-<li class="md-github">Inline remote contexts or reference via remote @context URL for caching</li>
+<li class="md-github">Type: rdfs:Class</li>
+<li class="md-github">Properties:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">hydra:first</code>, <code class="md-github">hydra:last</code>, <code class="md-github">hydra:next</code>, <code class="md-github">hydra:previous</code> (IRIs to views)</li>
 </ul>
-<h2 class="md-github"><a class="md-github__anchor" name="pagination-controls" href="#pagination-controls"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Pagination Controls</h2>
+</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="hydrastatus-and-hydraerror" href="#hydrastatus-and-hydraerror"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hydra:Status and hydra:Error</h3>
 <ul class="md-github">
-<li class="md-github">Client-initiated via hydra:offset, hydra:limit, hydra:pageIndex, hydra:pageReference</li>
+<li class="md-github">Type: rdfs:Class</li>
+<li class="md-github">Properties:
+<ul class="md-github">
+<li class="md-github"><code class="md-github">hydra:statusCode</code> (integer)</li>
+<li class="md-github"><code class="md-github">hydra:title</code>, <code class="md-github">hydra:description</code> (xsd:string)</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="http-discovery" href="#http-discovery"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>HTTP Discovery</h2>
+<ul class="md-github">
+<li class="md-github">Clients MUST look for HTTP Link header <code class="md-github">&lt;...&gt;; rel=&quot;http://www.w3.org/ns/hydra/core#apiDocumentation&quot;</code>.</li>
+<li class="md-github">Use GET or HEAD to retrieve ApiDocumentation.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="iritemplate-serialization" href="#iritemplate-serialization"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>IriTemplate Serialization</h2>
+<ul class="md-github">
+<li class="md-github">BasicRepresentation: expand variables to lexical form.</li>
+<li class="md-github">ExplicitRepresentation: serialize literals with quotes and type or language tags.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
 <ul class="md-github">
-<li class="md-github">Source: Linked Data Platform &amp; Hydra</li>
+<li class="md-github">Source: Hydra Core Vocabulary</li>
 <li class="md-github">URL: https://www.hydra-cg.com/spec/latest/core/</li>
-<li class="md-github">License: License</li>
-<li class="md-github">Crawl Date: 2025-04-28T11:08:57.983Z</li>
+<li class="md-github">License: License if known</li>
+<li class="md-github">Crawl Date: 2025-04-29T02:22:13.338Z</li>
 <li class="md-github">Data Size: 443961 bytes</li>
 <li class="md-github">Links Found: 294</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
-<p class="md-github">2025-04-28</p>
+<p class="md-github">2025-04-29</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-29T01:51:15.495Z</p>
+    <p>Generated on 2025-04-29T02:45:40.798Z</p>
   </footer>
 </body>
 </html>
