@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="linked_data_bp" href="#linked_data_bp"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>LINKED_DATA_BP</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">HTTP URIs for identifying resources; content negotiation mappings for HTML, Turtle, JSON-LD; URI stability rules; HTTP redirection codes for persistence; embedding license metadata via dcterms:license; reuse of DCAT, org, qb vocabularies with key classes and properties; mapping relational data to RDF via R2RML TriplesMaps; serialization formats; machine access methods including SPARQL GET parameters and Accept headers; DCAT-based dataset metadata; announcement channels; persistence policy documentation.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">URI Design Principles</p>
+</li>
+<li class="md-github">
+<p class="md-github">License Metadata Embedding</p>
+</li>
+<li class="md-github">
+<p class="md-github">Vocabulary Reuse</p>
+</li>
+<li class="md-github">
+<p class="md-github">RDF Conversion via R2RML</p>
+</li>
+<li class="md-github">
+<p class="md-github">Machine-Access Interfaces</p>
+</li>
+<li class="md-github">
+<p class="md-github">Dataset Catalog Description</p>
+</li>
+<li class="md-github">
+<p class="md-github">Persistence Policy</p>
+</li>
+<li class="md-github">
+<p class="md-github">URI Design Principles
+Use HTTP scheme only
+Accept header routing:
+Accept:text/html→text/html; charset=UTF-8
+Accept:text/turtle→text/turtle; charset=UTF-8
+Accept:application/ld+json→application/ld+json
+Avoid query parameters conveying state
+Define persistent URI policy with 301 and 303 redirections
+PURL or HTTPS-only service for secure environments</p>
+</li>
+<li class="md-github">
+<p class="md-github">License Metadata Embedding
+Assign dcterms:license triple per dataset
+Value = license dereferenceable URI (e.g. https://creativecommons.org/licenses/by/4.0/)
+Include within RDF output header</p>
+</li>
+<li class="md-github">
+<p class="md-github">Vocabulary Reuse
+DCAT core:
+dcat:Dataset
+dcat:distribution→dcat:Distribution
+dcat:accessURL→IRI
+Organization ontology:
+org:Organization
+org:hasUnit
+Data Cube:
+qb:DataSet
+qb:Observation
+qb:measureType</p>
+</li>
+<li class="md-github">
+<p class="md-github">RDF Conversion via R2RML
+Define rr:TriplesMap
+rr:logicalTable tableName
+rr:subjectMap template
+rr:predicateObjectMap predicate and column mapping
+Serialize to Turtle or JSON-LD</p>
+</li>
+<li class="md-github">
+<p class="md-github">Machine-Access Interfaces
+SPARQL endpoint:
+GET /sparql?query=<sparql>&amp;default-graph-uri=<IRI>
+Header Accept:application/sparql-results+json
+REST JSON-LD:
+GET /api/{resource} returns application/ld+json
+Raw download:
+GET /data/{dataset}.ttl returns text/turtle</p>
+</li>
+<li class="md-github">
+<p class="md-github">Dataset Catalog Description
+Publish dcat:Dataset graph with:
+dcterms:title; dcterms:description
+dcterms:issued; dcterms:modified
+dcat:distribution {dcat:accessURL,dcat:mediaType}</p>
+</li>
+<li class="md-github">
+<p class="md-github">Persistence Policy
+Host /uri-policy.txt plain text
+List 301 and 303 rules
+Define retention period and change procedure</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">HTTP Server Configuration
+Apache example for content negotiation:
+&lt;Directory &quot;/var/www/html&quot;&gt;
+Options MultiViews
+AddType application/ld+json .jsonld
+AddType text/turtle .ttl
+</Directory></p>
+</li>
+<li class="md-github">
+<p class="md-github">SPARQL Endpoint Setup
+Fuseki example:
+fuseki-server --update --mem /dataset
+SPARQL endpoint at http://localhost:3030/dataset/sparql
+Accept header handles JSON, XML, CSV</p>
+</li>
+<li class="md-github">
+<p class="md-github">R2RML Processor Invocation
+rrloader --triples-map mapping.ttl --output graph.ttl</p>
+</li>
+<li class="md-github">
+<p class="md-github">DCAT Publishing
+curl -X PUT -H &quot;Content-Type: text/turtle&quot; <br>
+--data @dcat.ttl http://example.gov/catalog</p>
+</li>
+<li class="md-github">
+<p class="md-github">Announcing Catalog
+echo &quot;New dataset published at http://example.gov/catalog&quot; | mail -s &quot;New LOD&quot; data-list@example.gov</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">A. SPARQL HTTP Protocol
+Method: GET
+URL: /sparql
+Query parameters:
+query (required): SPARQL query string
+default-graph-uri (optional, repeatable): IRI
+named-graph-uri (optional, repeatable): IRI
+output: determined by Accept header</p>
+<p class="md-github">Headers:
+Accept: application/sparql-results+json | application/ld+json | text/csv</p>
+<p class="md-github">Response: 200 OK
+Content-Type: as negotiated
+Body: SPARQL Results XML/JSON or RDF graph serialization</p>
+<p class="md-github">B. R2RML TriplesMap Syntax (Turtle)
+Prefix rr: <a href="http://www.w3.org/ns/r2rml#" class="md-github">http://www.w3.org/ns/r2rml#</a>
+:TriplesMap1
+rr:logicalTable [ rr:tableName &quot;facilities&quot; ];
+rr:subjectMap [
+rr:template &quot;http://example.gov/facility/{id}&quot;;
+rr:class <a href="http://example.gov/schema#Facility" class="md-github">http://example.gov/schema#Facility</a>
+];
+rr:predicateObjectMap [
+rr:predicate <a href="http://www.w3.org/2003/01/geo/wgs84_pos#lat" class="md-github">http://www.w3.org/2003/01/geo/wgs84_pos#lat</a>;
+rr:objectMap [ rr:column &quot;latitude&quot; ]
+];</p>
+<p class="md-github">C. JSON-LD API Endpoint
+GET /api/facility/{id}
+Headers:
+Accept: application/ld+json</p>
+<p class="md-github">Response:
+HTTP/1.1 200 OK
+Content-Type: application/ld+json; charset=UTF-8
+Body:
+{
+&quot;@context&quot;: [ ... ],
+&quot;@id&quot;: &quot;http://example.gov/facility/123&quot;,
+&quot;@type&quot;: &quot;Facility&quot;,
+&quot;latitude&quot;: 41.40338,
+&quot;longitude&quot;: 2.17403
+}</p>
+<p class="md-github">D. Troubleshooting
+Issue: 406 Not Acceptable
+Command: curl -H &quot;Accept: application/ld+json&quot; http://example.gov/resource
+Expected: application/ld+json body
+Fix: enable AddType for .jsonld and MultiViews in server config</p>
+<p class="md-github">Issue: SPARQL endpoint 404
+Check: correct path /sparql, verify server running
+Command: curl -I http://localhost:3030/dataset/sparql
+Expected: HTTP/1.1 200 OK</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">HTTP URIs only; content negotiation: text/html, text/turtle, application/ld+json via Accept header; URIs omit dynamic tokens; persistent policy with 301/303 redirection or PURL service; embed dcterms:license per dataset; reuse DCAT (dcat:Dataset, dcat:distribution, dcat:accessURL), org (org:Organization, org:hasUnit), qb (qb:DataSet, qb:Observation, qb:measureType); map relational tables via R2RML TriplesMap (rr:logicalTable tableName, rr:subjectMap template+class, rr:predicateObjectMap column); serialize to Turtle/JSON-LD; SPARQL GET /sparql?query=&amp;default-graph-uri= with Accept negotiation; JSON-LD REST API GET /api/{resource}; raw download GET /data/{dataset}.ttl; publish catalog using DCAT triples with dcterms:title,description,issued,modified, dcat:distribution(accessURL,mediaType); announce via email/blog; host /uri-policy.txt listing 301/303 rules and retention; Apache MultiViews &amp; AddType config; Fuseki --update --mem /dataset; rrloader invocation; curl PUT for DCAT; curl troubleshooting for 406 and 404</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">URI Design Principles</p>
+</li>
+<li class="md-github">
+<p class="md-github">License Metadata Embedding</p>
+</li>
+<li class="md-github">
+<p class="md-github">Vocabulary Reuse</p>
+</li>
+<li class="md-github">
+<p class="md-github">RDF Conversion via R2RML</p>
+</li>
+<li class="md-github">
+<p class="md-github">Machine-Access Interfaces</p>
+</li>
+<li class="md-github">
+<p class="md-github">Dataset Catalog Description</p>
+</li>
+<li class="md-github">
+<p class="md-github">Persistence Policy</p>
+</li>
+<li class="md-github">
+<p class="md-github">URI Design Principles
+Use HTTP scheme only
+Accept header routing:
+Accept:text/htmltext/html; charset=UTF-8
+Accept:text/turtletext/turtle; charset=UTF-8
+Accept:application/ld+jsonapplication/ld+json
+Avoid query parameters conveying state
+Define persistent URI policy with 301 and 303 redirections
+PURL or HTTPS-only service for secure environments</p>
+</li>
+<li class="md-github">
+<p class="md-github">License Metadata Embedding
+Assign dcterms:license triple per dataset
+Value = license dereferenceable URI (e.g. https://creativecommons.org/licenses/by/4.0/)
+Include within RDF output header</p>
+</li>
+<li class="md-github">
+<p class="md-github">Vocabulary Reuse
+DCAT core:
+dcat:Dataset
+dcat:distributiondcat:Distribution
+dcat:accessURLIRI
+Organization ontology:
+org:Organization
+org:hasUnit
+Data Cube:
+qb:DataSet
+qb:Observation
+qb:measureType</p>
+</li>
+<li class="md-github">
+<p class="md-github">RDF Conversion via R2RML
+Define rr:TriplesMap
+rr:logicalTable tableName
+rr:subjectMap template
+rr:predicateObjectMap predicate and column mapping
+Serialize to Turtle or JSON-LD</p>
+</li>
+<li class="md-github">
+<p class="md-github">Machine-Access Interfaces
+SPARQL endpoint:
+GET /sparql?query=<sparql>&amp;default-graph-uri=<IRI>
+Header Accept:application/sparql-results+json
+REST JSON-LD:
+GET /api/{resource} returns application/ld+json
+Raw download:
+GET /data/{dataset}.ttl returns text/turtle</p>
+</li>
+<li class="md-github">
+<p class="md-github">Dataset Catalog Description
+Publish dcat:Dataset graph with:
+dcterms:title; dcterms:description
+dcterms:issued; dcterms:modified
+dcat:distribution {dcat:accessURL,dcat:mediaType}</p>
+</li>
+<li class="md-github">
+<p class="md-github">Persistence Policy
+Host /uri-policy.txt plain text
+List 301 and 303 rules
+Define retention period and change procedure</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Linked Data Best Practices
+https://www.w3.org/TR/ld-bp/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-linked_data_bp" href="#digest-of-linked_data_bp"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of LINKED_DATA_BP</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="best-practices-for-publishing-linked-data" href="#best-practices-for-publishing-linked-data"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Best Practices for Publishing Linked Data</h1>
+<p class="md-github">retrieved: 2024-06-11
+source data size: 12870794 bytes</p>
+<h2 class="md-github"><a class="md-github__anchor" name="1-uri-design-principles" href="#1-uri-design-principles"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1 URI Design Principles</h2>
+<ul class="md-github">
+<li class="md-github">Use HTTP URIs as global identifiers.</li>
+<li class="md-github">Support content negotiation for at least one machine-readable form:
+<ul class="md-github">
+<li class="md-github">Accept: text/html → HTML representation</li>
+<li class="md-github">Accept: text/turtle → Turtle serialization</li>
+<li class="md-github">Accept: application/ld+json → JSON-LD serialization</li>
+</ul>
+</li>
+<li class="md-github">URIs must omit session tokens, timestamps or stateful parameters; remain stable indefinitely.</li>
+<li class="md-github">Implement a persistence strategy:
+<ul class="md-github">
+<li class="md-github">Use 301 Moved Permanently when resource URIs change.</li>
+<li class="md-github">Use 303 See Other for non-information resources.</li>
+<li class="md-github">Leverage PURL or HTTPS-only redirection services for high-security domains.</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="2-license-specification" href="#2-license-specification"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2 License Specification</h2>
+<ul class="md-github">
+<li class="md-github">Embed license metadata with each dataset:
+<ul class="md-github">
+<li class="md-github">dcterms:license → <license URI></li>
+<li class="md-github">Example: dcterms:license “https://creativecommons.org/licenses/by/4.0/”</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="3-standard-vocabularies" href="#3-standard-vocabularies"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3 Standard Vocabularies</h2>
+<ul class="md-github">
+<li class="md-github">Reuse existing vocabularies; extend only when necessary.</li>
+<li class="md-github">Key vocabularies and their core classes/properties:
+<ul class="md-github">
+<li class="md-github">DCAT:
+<ul class="md-github">
+<li class="md-github">dcat:Dataset</li>
+<li class="md-github">dcat:distribution (link to dcat:Distribution)</li>
+<li class="md-github">dcat:accessURL (IRI to service endpoint)</li>
+</ul>
+</li>
+<li class="md-github">DCAT-AP profiles for government data catalogs.</li>
+<li class="md-github">Organization Ontology:
+<ul class="md-github">
+<li class="md-github">org:Organization</li>
+<li class="md-github">org:hasUnit</li>
+</ul>
+</li>
+<li class="md-github">Data Cube Vocabulary:
+<ul class="md-github">
+<li class="md-github">qb:DataSet</li>
+<li class="md-github">qb:Observation</li>
+<li class="md-github">qb:measureType</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="4-data-conversion" href="#4-data-conversion"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4 Data Conversion</h2>
+<ul class="md-github">
+<li class="md-github">Map source records to RDF triples via scripts or mapping languages:
+<ul class="md-github">
+<li class="md-github">R2RML mappings: define rr:TriplesMap with rr:subjectMap, rr:predicateObjectMap.</li>
+<li class="md-github">Example Turtle snippet:
+@prefix rr: <a href="http://www.w3.org/ns/r2rml#" class="md-github">http://www.w3.org/ns/r2rml#</a> .
+:TriplesMap1
+rr:logicalTable [ rr:tableName “facilities” ];
+rr:subjectMap [ rr:template “http://example.gov/facility/{id}”; rr:class ex:Facility];
+rr:predicateObjectMap [ rr:predicate ex:latitude; rr:objectMap [ rr:column “lat” ] ] .</li>
+</ul>
+</li>
+<li class="md-github">Serialize converted graph to preferred formats: Turtle, JSON-LD, RDF/XML.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="5-machine-access-methods" href="#5-machine-access-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5 Machine-Access Methods</h2>
+<ul class="md-github">
+<li class="md-github">Direct URI resolution (“follow your nose”).</li>
+<li class="md-github">SPARQL HTTP Protocol endpoint:
+<ul class="md-github">
+<li class="md-github">HTTP GET /sparql?query=<sparql>&amp;default-graph-uri=<graph></li>
+<li class="md-github">Required headers: Accept: application/sparql-results+json or application/ld+json</li>
+</ul>
+</li>
+<li class="md-github">RESTful JSON-LD API endpoints:
+<ul class="md-github">
+<li class="md-github">GET /api/facility/{id} → returns application/ld+json</li>
+</ul>
+</li>
+<li class="md-github">Raw dataset download:
+<ul class="md-github">
+<li class="md-github">GET /data/dataset.ttl</li>
+<li class="md-github">Content-Type: text/turtle; charset=UTF-8</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="6-dataset-announcement--metadata" href="#6-dataset-announcement--metadata"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6 Dataset Announcement &amp; Metadata</h2>
+<ul class="md-github">
+<li class="md-github">Publish catalog description with DCAT:
+<ul class="md-github">
+<li class="md-github">dcat:Dataset</li>
+<li class="md-github">dcterms:title; dcterms:description</li>
+<li class="md-github">dcterms:issued; dcterms:modified</li>
+<li class="md-github">dcat:distribution with dcat:accessURL and dcat:mediaType</li>
+</ul>
+</li>
+<li class="md-github">Announce via:
+<ul class="md-github">
+<li class="md-github">Mailing lists, blogs, Linked Data portals</li>
+<li class="md-github">Register SPARQL endpoint in federation indices</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="7-persistence-and-social-contract" href="#7-persistence-and-social-contract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7 Persistence and Social Contract</h2>
+<ul class="md-github">
+<li class="md-github">Define URI policy document at /uri-policy.txt:
+<ul class="md-github">
+<li class="md-github">Outline redirection rules, retention commitments</li>
+</ul>
+</li>
+<li class="md-github">Provide human- and machine-readable stability statement:
+<ul class="md-github">
+<li class="md-github">e.g., HTTP GET /v1/{resource} → 301 to /v2/{resource}</li>
+</ul>
+</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Linked Data Best Practices</li>
+<li class="md-github">URL: https://www.w3.org/TR/ld-bp/</li>
+<li class="md-github">License: License if known</li>
+<li class="md-github">Crawl Date: 2025-04-29T05:49:55.665Z</li>
+<li class="md-github">Data Size: 12870794 bytes</li>
+<li class="md-github">Links Found: 50794</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-29</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-29T06:22:54.821Z</p>
+  </footer>
+</body>
+</html>
