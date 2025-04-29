@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="rdf4j_model" href="#rdf4j_model"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RDF4J_MODEL</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Model interface extends Set<Statement> with add, remove, filter methods. Value factory methods: iri, literal(type or lang), bnode. ModelBuilder fluent API: setNamespace, subject, add overloads, build. Rio parser/writer: Rio.write(model, out, format), Rio.parse(in, baseURI, format). Supported formats: RDFXML, TURTLE, NTRIPLES, JSON-LD. Core model implementations: TreeModel, DynamicModel, LinkedHashModel. Blank nodes via Values.bnode().</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Value Factory</p>
+</li>
+<li class="md-github">
+<p class="md-github">Model Implementations</p>
+</li>
+<li class="md-github">
+<p class="md-github">ModelBuilder</p>
+</li>
+<li class="md-github">
+<p class="md-github">Rio Parser/Writer</p>
+</li>
+<li class="md-github">
+<p class="md-github">Blank Nodes</p>
+</li>
+<li class="md-github">
+<p class="md-github">Value Factory
+IRI subject = Values.iri(namespace, localName)
+Literal simple = Values.literal(label)
+Literal typed = Values.literal(label, XSD.DATATYPE)
+Literal langged = Values.literal(label, languageTag)
+BNode bnode = Values.bnode()</p>
+</li>
+<li class="md-github">
+<p class="md-github">Model Implementations
+Model model = new TreeModel() // or DynamicModel, LinkedHashModel
+model.add(subject, predicate, object)
+model.remove(subject, predicate, object)
+model.filter(subject, predicate, object) returns Model
+model.forEach(statementConsumer)</p>
+</li>
+<li class="md-github">
+<p class="md-github">ModelBuilder
+ModelBuilder builder = new ModelBuilder()
+builder.setNamespace(prefix, namespace)
+.subject(prefixedSubject)
+.add(prefixedPredicate, objectValue)
+Model model = builder.build()</p>
+</li>
+<li class="md-github">
+<p class="md-github">Rio Parser/Writer
+Rio.write(model, OutputStream, RDFFormat.TURTLE)
+Rio.parse(InputStream, baseURI, RDFFormat.RDFXML) returns Model</p>
+</li>
+<li class="md-github">
+<p class="md-github">Blank Nodes
+BNode anon = Values.bnode()
+builder.subject(mainResource)
+.add(prefixedPredicate, anon)
+.subject(anon)
+.add(prefixedProperty, value)</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Maven BOM configuration
+<dependencyManagement>
+<dependencies>
+<dependency>
+<groupId>org.eclipse.rdf4j</groupId>
+<artifactId>rdf4j-bom</artifactId>
+<version>5.1.3</version>
+<type>pom</type>
+<scope>import</scope>
+</dependency>
+</dependencies>
+</dependencyManagement>
+Full storage dependency
+<dependency>
+<groupId>org.eclipse.rdf4j</groupId>
+<artifactId>rdf4j-storage</artifactId>
+<type>pom</type>
+</dependency>
+Snapshot builds
+<repository>
+<id>oss.sonatype.org-snapshot</id>
+<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+<releases><enabled>false</enabled></releases>
+<snapshots><enabled>true</enabled></snapshots>
+</repository></p>
+<p class="md-github">Configuration options</p>
+<ul class="md-github">
+<li class="md-github">RDFFormat constants control parser/writer syntax</li>
+<li class="md-github">Model implementations choose internal indexing and ordering</li>
+<li class="md-github">Namespace prefixes via ModelBuilder.setNamespace</li>
+</ul>
+<p class="md-github">Implementation steps</p>
+<ol class="md-github">
+<li class="md-github">Instantiate ModelBuilder or concrete Model</li>
+<li class="md-github">Create IRIs and Literals via Values</li>
+<li class="md-github">Add statements</li>
+<li class="md-github">Write or parse via Rio</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specifications</p>
+<p class="md-github">org.eclipse.rdf4j.model.Model (extends Set<Statement>)
+Methods:
+boolean add(IRI subject, IRI predicate, Value object)
+boolean remove(Resource subject, IRI predicate, Value object)
+Model filter(Resource s, IRI p, Value o)
+void forEach(Consumer<Statement> consumer)</p>
+<p class="md-github">org.eclipse.rdf4j.model.util.ModelBuilder
+Constructors:
+ModelBuilder()
+Methods:
+ModelBuilder setNamespace(String prefix, String namespace)
+ModelBuilder subject(String prefixedName)
+ModelBuilder subject(IRI subjectIRI)
+ModelBuilder add(IRI predicate, Value object)
+ModelBuilder add(String prefixedPredicate, String objectLabel)
+ModelBuilder add(String prefixedPredicate, int objectValue)
+ModelBuilder add(String prefixedPredicate, LocalDate dateValue)
+Model build()</p>
+<p class="md-github">org.eclipse.rdf4j.model.Values
+Methods:
+static IRI iri(String namespace, String localName)
+static Literal literal(String label)
+static Literal literal(String label, IRI datatype)
+static Literal literal(String label, String languageTag)
+static BNode bnode()</p>
+<p class="md-github">org.eclipse.rdf4j.rio.Rio
+Methods:
+static void write(Model model, OutputStream out, RDFFormat format)
+static void write(Model model, Writer writer, RDFFormat format)
+static Model parse(InputStream in, String baseURI, RDFFormat format)
+static Model parse(Reader reader, String baseURI, RDFFormat format)</p>
+<p class="md-github">Code Examples</p>
+<p class="md-github">// Create model via builder
+ModelBuilder builder = new ModelBuilder();
+builder.setNamespace(&quot;ex&quot;, &quot;http://example.org/&quot;)
+.subject(&quot;ex:Picasso&quot;)
+.add(RDF.TYPE, &quot;ex:Artist&quot;)
+.add(FOAF.FIRST_NAME, &quot;Pablo&quot;);
+Model model = builder.build();</p>
+<p class="md-github">// Write as Turtle
+try(OutputStream out = new FileOutputStream(&quot;output.ttl&quot;)){
+Rio.write(model, out, RDFFormat.TURTLE);
+}</p>
+<p class="md-github">// Read from RDF/XML
+Model parsed;
+try(InputStream in = new FileInputStream(&quot;input.rdf&quot;)){
+parsed = Rio.parse(in, &quot;&quot;, RDFFormat.RDFXML);
+}</p>
+<p class="md-github">Best Practices</p>
+<ul class="md-github">
+<li class="md-github">Use ModelBuilder for small to medium construction, switch to direct Model for very large data</li>
+<li class="md-github">Choose TreeModel for stable iteration order</li>
+<li class="md-github">Always set namespace prefixes for readability</li>
+<li class="md-github">Use typed and language-tagged literals via Values.literal overloads</li>
+</ul>
+<p class="md-github">Troubleshooting
+Command: mvn dependency:tree
+Expected: org.eclipse.rdf4j:rdf4j-bom:5.1.3
+Fix missing BOM by adding dependencyManagement</p>
+<p class="md-github">Command: java -cp rdf4j-storage-5.1.3.jar org.eclipse.rdf4j.rio.RDFFormat
+Expected: List of supported formats including TURTLE, RDFXML</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">Model: extends Set<Statement>; implementations: TreeModel, DynamicModel, LinkedHashModel. Methods: add(IRI,IRI,Value), remove(Resource,IRI,Value), filter(Resource,IRI,Value)-&gt;Model, forEach(Consumer). ModelBuilder: fluent API: setNamespace(prefix,ns), subject(prefixedName), add(predicate,Object) overloads for IRI, prefixedName with String, int, LocalDate; build()-&gt;Model. Values: iri(ns,local), literal(label), literal(label,datatypeIRI), literal(label,langTag), bnode(). Rio: write(Model,out/Writer,RDFFormat), parse(InputStream/Reader,baseURI,RDFFormat)-&gt;Model. Supported RDFFormat: RDFXML,TURTLE,NTRIPLES,NQUADS,TRIG,JSONLD. Maven BOM: org.eclipse.rdf4j:rdf4j-bom:5.1.3 type=pom scope=import; storage: rdf4j-storage:pom. Snapshot repo config. Practice: prefixed names, typed literals, blank nodes via bnode. Troubleshoot: mvn dependency:tree, check BOM; java classpath for Rio.RDFFormat outputs formats.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Value Factory</p>
+</li>
+<li class="md-github">
+<p class="md-github">Model Implementations</p>
+</li>
+<li class="md-github">
+<p class="md-github">ModelBuilder</p>
+</li>
+<li class="md-github">
+<p class="md-github">Rio Parser/Writer</p>
+</li>
+<li class="md-github">
+<p class="md-github">Blank Nodes</p>
+</li>
+<li class="md-github">
+<p class="md-github">Value Factory
+IRI subject = Values.iri(namespace, localName)
+Literal simple = Values.literal(label)
+Literal typed = Values.literal(label, XSD.DATATYPE)
+Literal langged = Values.literal(label, languageTag)
+BNode bnode = Values.bnode()</p>
+</li>
+<li class="md-github">
+<p class="md-github">Model Implementations
+Model model = new TreeModel() // or DynamicModel, LinkedHashModel
+model.add(subject, predicate, object)
+model.remove(subject, predicate, object)
+model.filter(subject, predicate, object) returns Model
+model.forEach(statementConsumer)</p>
+</li>
+<li class="md-github">
+<p class="md-github">ModelBuilder
+ModelBuilder builder = new ModelBuilder()
+builder.setNamespace(prefix, namespace)
+.subject(prefixedSubject)
+.add(prefixedPredicate, objectValue)
+Model model = builder.build()</p>
+</li>
+<li class="md-github">
+<p class="md-github">Rio Parser/Writer
+Rio.write(model, OutputStream, RDFFormat.TURTLE)
+Rio.parse(InputStream, baseURI, RDFFormat.RDFXML) returns Model</p>
+</li>
+<li class="md-github">
+<p class="md-github">Blank Nodes
+BNode anon = Values.bnode()
+builder.subject(mainResource)
+.add(prefixedPredicate, anon)
+.subject(anon)
+.add(prefixedProperty, value)</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Triplestore &amp; Persistence Engines: Apache Jena TDB2 &amp; Eclipse RDF4J
+https://rdf4j.org/documentation/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-rdf4j_model" href="#digest-of-rdf4j_model"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of RDF4J_MODEL</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="rdf4j-model-api-and-rio-parsers" href="#rdf4j-model-api-and-rio-parsers"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RDF4J Model API and Rio Parsers</h1>
+<p class="md-github">Retrieved: 2024-06-10
+Source: https://rdf4j.org/documentation/
+Data Size: 3188175 bytes, Links Found: 7635</p>
+<h2 class="md-github"><a class="md-github__anchor" name="model-api-implementations" href="#model-api-implementations"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Model API Implementations</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="interfaces-and-classes" href="#interfaces-and-classes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Interfaces and Classes</h3>
+<ul class="md-github">
+<li class="md-github">interface Model extends java.util.Set<Statement></li>
+<li class="md-github">TreeModel implements Model (ordered, optimized for iteration)</li>
+<li class="md-github">DynamicModel implements Model (adaptive indexing)</li>
+<li class="md-github">LinkedHashModel implements Model (insertion-ordered)</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="core-methods" href="#core-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Core Methods</h3>
+<ul class="md-github">
+<li class="md-github">Model.add(IRI subject, IRI predicate, Value object)</li>
+<li class="md-github">Model.remove(IRI subject, IRI predicate, Value object)</li>
+<li class="md-github">Model.filter(IRI subject, IRI predicate, Value object) : Model</li>
+<li class="md-github">Model.forEach(Consumer<Statement>)</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="value-factory" href="#value-factory"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Value Factory</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="class-orgeclipserdf4jmodelvalues" href="#class-orgeclipserdf4jmodelvalues"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Class: org.eclipse.rdf4j.model.Values</h3>
+<p class="md-github">public static IRI iri(String namespace, String localName)
+public static Literal literal(String label)
+public static Literal literal(String label, IRI datatype)
+public static Literal literal(String label, String languageTag)
+public static BNode bnode()</p>
+<h2 class="md-github"><a class="md-github__anchor" name="modelbuilder" href="#modelbuilder"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ModelBuilder</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="class-orgeclipserdf4jmodelutilmodelbuilder" href="#class-orgeclipserdf4jmodelutilmodelbuilder"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Class: org.eclipse.rdf4j.model.util.ModelBuilder</h3>
+<p class="md-github">ModelBuilder setNamespace(String prefix, String namespace)
+ModelBuilder subject(String subjectIRI)
+ModelBuilder add(IRI predicate, Value object)
+ModelBuilder add(String predicatePrefixedName, String objectLabel)
+ModelBuilder add(String predicatePrefixedName, int objectValue)
+ModelBuilder add(String predicatePrefixedName, LocalDate dateValue)
+Model build()</p>
+<h2 class="md-github"><a class="md-github__anchor" name="rio-parser-and-writer" href="#rio-parser-and-writer"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rio Parser and Writer</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="class-orgeclipserdf4jriorio" href="#class-orgeclipserdf4jriorio"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Class: org.eclipse.rdf4j.rio.Rio</h3>
+<p class="md-github">static void write(Model model, OutputStream out, RDFFormat format)
+static void write(Model model, Writer writer, RDFFormat format)
+static Model parse(InputStream in, String baseURI, RDFFormat format)
+static Model parse(Reader reader, String baseURI, RDFFormat format)</p>
+<p class="md-github">Supported RDFFormat constants: RDFXML, TURTLE, NTRIPLES, NQUADS, TRIG, JSONLD</p>
+<h2 class="md-github"><a class="md-github__anchor" name="blank-nodes" href="#blank-nodes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Blank Nodes</h2>
+<ul class="md-github">
+<li class="md-github">BNode address = Values.bnode();</li>
+<li class="md-github">Link blank node via subject(address) in ModelBuilder</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Triplestore &amp; Persistence Engines: Apache Jena TDB2 &amp; Eclipse RDF4J</li>
+<li class="md-github">URL: https://rdf4j.org/documentation/</li>
+<li class="md-github">License: License if known</li>
+<li class="md-github">Crawl Date: 2025-04-29T10:52:17.367Z</li>
+<li class="md-github">Data Size: 3188175 bytes</li>
+<li class="md-github">Links Found: 7635</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-04-29</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-04-29T11:20:55.605Z</p>
+  </footer>
+</body>
+</html>
