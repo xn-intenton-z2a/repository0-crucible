@@ -33,7 +33,18 @@ W3C Document License (CC-BY 4.0)
 ## https://github.com/rdfjs/N3.js#readme
 ## https://www.w3.org/TR/shacl/
 ## https://shex.io/shex-semantics/
-A curated collection of interoperable JavaScript libraries (2023–2024) for RDF/JSON-LD processing, SPARQL parsing, federated querying, and graph validation: jsonld.js (expansion, compaction, framing, normalization); RDF/JS Data Model for graph primitives; Comunica for federated SPARQL; SPARQL.js for query ASTs; rdflib.js for in-memory stores; N3.js for Turtle and N-Quads handling; SHACL Core/SPARQL-based and ShEx schemas for declarative validation. Provides streaming APIs, precise error reporting, and schema enforcement patterns crucial for CI/CD and data pipelines.
+## https://github.com/zazuko/shacl-js#readme
+## https://github.com/shexSpec/shex.js#readme
+A curated collection of interoperable JavaScript libraries (2023–2024) for RDF/JSON-LD processing, SPARQL parsing, federated querying, graph serialization, and validation:
+- jsonld.js for expansion, compaction, framing, and normalization;
+- RDF/JS Data Model for graph primitives;
+- Comunica for SPARQL query engine integration;
+- SPARQL.js for parsing SPARQL into ASTs;
+- rdflib.js for in-memory RDF stores;
+- N3.js for Turtle and N-Quads parsing and writing;
+- SHACL.js (shacl-js) for SHACL validation in JavaScript;
+- Shex.js for ShEx schema validation and I/O.
+Provides streaming APIs, precise error reporting, and schema enforcement patterns crucial for CI/CD pipelines and data quality checks in both CLI and server contexts.
 ## License if known
 MIT; CC0/Public Domain; W3C Document License (CC-BY 4.0)
 
@@ -47,7 +58,7 @@ MIT; CC0/Public Domain; W3C Document License (CC-BY 4.0)
 ## https://www.w3.org/TR/ldp/
 ## https://jena.apache.org/documentation/query/
 ## https://jena.apache.org/documentation/fuseki2/
-Unified SPARQL 1.1 query/update, Graph Store HTTP API, and results JSON formats alongside RDF serialization (Turtle) and Linked Data Platform (LDP) CRUD patterns. Apache Jena ARQ and Fuseki guides offer in-depth deployment, federation strategies, transaction handling, and performance tuning for robust SPARQL endpoint configuration and management in production.
+Unified SPARQL 1.1 query and update operations, Graph Store HTTP API, and results JSON formats alongside RDF serialization (Turtle) and Linked Data Platform CRUD patterns. Apache Jena ARQ and Fuseki guides offer deployment best practices, federation strategies, transaction management, and performance tuning for robust SPARQL endpoint configuration and management in production.
 ## License if known
 W3C Document License (CC-BY 4.0); Apache 2.0 (Apache Jena)
 
@@ -55,9 +66,15 @@ W3C Document License (CC-BY 4.0); Apache 2.0 (Apache Jena)
 ## https://nodejs.org/api/
 ## https://fetch.spec.whatwg.org/
 ## https://vitest.dev/api/
-Authoritative reference for Node.js v20+ core modules (fs, http, streams, ESM loader, performance hooks) and the WHATWG Fetch standard (Request/Response streams, headers, URL parsing, retries). Paired with Vitest (2023–2024) for ESM-first unit, integration, and HTTP endpoint testing—featuring mocks, spies, snapshots, coverage reporting, watch mode, and parallel execution. Essential for reliable CLI file I/O, HTTP server implementation, and comprehensive automated test suites.
+Authoritative reference for Node.js v20+ core modules (fs, http, streams, ESM loader, performance hooks) and the WHATWG Fetch standard (Request/Response streams, headers, URL parsing). Paired with Vitest (2023–2024) for ESM-first unit, integration, and HTTP endpoint testing—featuring mocks, spies, snapshots, coverage reporting, watch mode, and parallel execution. Essential for reliable CLI file I/O, HTTP server implementation, and comprehensive automated test suites.
 ## License if known
 Node.js Documentation License (CC-BY-SA 3.0); WHATWG Spec (Public Domain); MIT
+
+# Zod Schema Validation Library
+## https://github.com/colinhacks/zod#readme
+Zod is a TypeScript-first schema declaration and validation library that enables runtime parsing and validation of JSON data, configuration files, and HTTP request payloads. With fluent APIs, zero dependencies, and full type inference, Zod ensures robust data integrity checks for `data-sources.json`, command-line arguments, and JSON-LD artifacts, providing clear error messages and enabling fail-fast strategies in both CLI and server workflows.
+## License if known
+MIT
 
 # DBpedia SPARQL Endpoint Guide
 ## https://wiki.dbpedia.org/services-resources/sparql-endpoint
@@ -67,12 +84,6 @@ CC-BY-SA (DBpedia Wiki)
 
 # Hydra Core Vocabulary
 ## https://www.hydra-cg.com/spec/latest/core/
-Defines the Hydra Core Vocabulary for hypermedia-driven REST APIs over RDF. Introduces terms for collections, search, pagination, and operations (hydra:operation). Provides a model for discoverable linked-data APIs, informing the design of dynamic HTTP endpoints with in-band metadata for client navigation and tooling automation.
+Defines the Hydra Core Vocabulary for hypermedia-driven REST APIs over RDF. Introduces terms for collections, search, pagination, and operations (`hydra:operation`). Provides a model for discoverable linked-data APIs, informing the design of dynamic HTTP endpoints with in-band metadata for client navigation and tooling automation.
 ## License if known
 CC0/Public Domain
-
-# Eclipse RDF4J SPARQL HTTP Repository API
-## https://rdf4j.org/documentation/programming/#_sparql_http_repository
-Detailed guide to using Eclipse RDF4J's HTTPRepository for SPARQL query and update operations over HTTP, including transaction management, content negotiation, graph store CRUD, and error handling patterns. Java-centric client examples offer insights into robust HTTP client reuse, session handling, and endpoint configuration that can inform similar Node.js implementations.
-## License if known
-Eclipse Public License 2.0
