@@ -7,98 +7,90 @@ Provide a comprehensive source management subsystem for configuring and retrievi
 Export the following async functions from src/lib/main.js:
 
 • listSources(configPath = "data-sources.json")
-  • Return the built-in PUBLIC_DATA_SOURCES merged with any custom entries in configPath
-  • On missing configPath return PUBLIC_DATA_SOURCES
-  • On invalid JSON or structure log an error via console.error and fall back to defaults
+  • Return the built-in PUBLIC_DATA_SOURCES merged with any custom entries in data-sources.json
+  • On missing or invalid structure fall back to defaults and log an error
 
 • addSource({ name, url }, configPath = "data-sources.json")
-  • Validate name is nonempty string and url is a valid URL
-  • Read or initialize custom list from configPath
-  • Prevent duplicates by name or URL
-  • Append new entry and write back JSON.stringify(custom, null, 2)
-  • Return [...PUBLIC_DATA_SOURCES, ...custom]
+  • Validate name is a nonempty string and url is a valid URL
+  • Read or initialize custom list, prevent duplicates, append and write back JSON
+  • Return merged array of default and custom sources
 
 • removeSource(identifier, configPath = "data-sources.json")
-  • Read existing custom list or return PUBLIC_DATA_SOURCES if configPath is missing or invalid
-  • Filter out any entry whose name or url matches identifier
-  • If removal occurred write updated list to configPath
+  • Read existing custom list or return defaults on missing/invalid
+  • Filter out entries matching name or URL, write updated list if changed
   • Return merged array
 
 • updateSource({ identifier, name, url }, configPath = "data-sources.json")
-  • Ensure configPath exists and contains a valid array
-  • Find entry matching identifier by name or url
-  • Validate new name and url and replace the item
-  • Write updated custom list to configPath
+  • Ensure config file exists and valid
+  • Find entry by identifier, validate new fields, replace entry, write back
   • Return merged array
 
 • refreshSources({ dataDir = "data", configPath = "data-sources.json" } = {})
-  • Ensure dataDir exists or create it
-  • Invoke listSources(configPath) to get all sources
-  • For each source slugify name for a safe filename
-  • Fetch JSON via HTTP GET, parse to JSON; on error console.error and continue
-  • Write each successful JSON to dataDir/<slug>.json with two-space indentation
-  • Log each "written <slug>.json" via console.log and return { count, files }
+  • Ensure data directory exists or create it
+  • Invoke listSources(configPath) to retrieve all sources
+  • For each source:
+    • Slugify the source name into a safe filename
+    • Perform HTTP GET to source.url, parse JSON response; on fetch or parse error log via console.error and continue
+    • Write each successful JSON to dataDir/<slug>.json with two-space indentation
+    • Log each write as "written <slug>.json" via console.log
+  • Return an object { count: number of successful writes, files: array of written filenames }
 
 # CLI Support
 
-Extend main(args) in src/lib/main.js to support:
-
 • --list-sources
-  • Print JSON.stringify(listSources(), null, 2) via console.log
+  • Invoke listSources and console.log(JSON.stringify(sources, null, 2))
 
 • --add-source <name> <url>
-  • Validate arguments and invoke addSource
-  • On error console.error and return
-  • On success console.log merged list
+  • Validate arguments, invoke addSource or console.error on failure, console.log merged list on success
 
 • --remove-source <identifier>
-  • Validate argument and invoke removeSource
-  • On success console.log merged list
+  • Validate argument, invoke removeSource, console.log merged list
 
 • --update-source <identifier> <newName> <newUrl>
-  • Validate arguments and invoke updateSource
-  • On success console.log merged list
+  • Validate arguments, invoke updateSource or console.error, console.log merged list
 
 • --refresh [dataDir] [configPath]
   • Invoke refreshSources with provided or default paths
-  • Stream each console.log line to stdout
+  • Stream console.log output to stdout
   • Return summary object without throwing
 
 # HTTP Endpoints
 
-Under --serve mode in src/lib/main.js HTTP server logic add:
+Under --serve mode in src/lib/main.js server logic:
 
-• GET /sources
-  • Respond 200 application/json with JSON.stringify(listSources(), null, 2)
+GET /sources
+  • Respond with HTTP 200 application/json and JSON.stringify(listSources(), null, 2)
 
-• POST /sources
-  • Read buffered JSON body { name, url }
-  • On missing or invalid fields respond 400 plain-text error
-  • Invoke addSource and respond 201 application/json with merged list
+POST /sources
+  • Read JSON body { name, url }, validate, invoke addSource, respond 201 application/json or 400 on invalid
 
-• DELETE /sources/:identifier
-  • Decode identifier
-  • Invoke removeSource and respond 200 application/json with merged list
+DELETE /sources/:identifier
+  • Decode identifier, invoke removeSource, respond 200 application/json
 
-• PUT /sources/:identifier
-  • Decode identifier, read JSON body { name, url }
-  • On invalid input respond 400
-  • Invoke updateSource and respond 200 application/json with merged list
+PUT /sources/:identifier
+  • Decode identifier and JSON body { name, url }, validate, invoke updateSource, respond 200 application/json or 400 on invalid
 
-• GET /refresh
-  • Respond 200 text/plain
-  • Override console.log to stream each line into the response
-  • Invoke refreshSources and end response
-  • On error respond 500 plain-text error message
+GET /refresh
+  • Respond with HTTP 200 text/plain
+  • Override console.log to stream each written line
+  • Invoke refreshSources and end response, or respond 500 plain-text on error
 
 # Testing
 
 - Unit tests for listSources, addSource, removeSource, updateSource covering valid and error scenarios
-- Unit tests for refreshSources mocking HTTP and fs to simulate writes and errors, asserting returned { count, files }
-- CLI tests for each flag validating correct invocation, error logging, and successful output
-- HTTP integration tests under --serve for /sources CRUD endpoints and /refresh endpoint verifying status codes, content-types, response bodies, and error cases
+- Unit tests for refreshSources mocking HTTP fetch and fs:
+  • Simulate successful fetch and write operations, verify returned count and files array and console.log calls
+  • Simulate fetch errors and invalid JSON bodies and verify console.error calls and continuing behavior
+
+- CLI tests for --refresh flag:
+  • Missing or invalid parameters should log errors without throwing
+  • Successful invocation should call refreshSources and stream expected log lines
+
+- HTTP integration tests under --serve for GET /refresh:
+  • Returns status 200 text/plain with streamed lines and ends cleanly
+  • On errors returns HTTP 500 with plain-text error message
 
 # Documentation Updates
 
-- Update docs/FEATURES.md under Sources Management to describe all CLI flags and HTTP endpoints
-- Update docs/USAGE.md and README.md with example invocations for --list-sources, --add-source, --remove-source, --update-source, and --refresh and sample outputs
+- Update docs/FEATURES.md to describe the refreshSources behavior under Sources Management, including CLI and HTTP /refresh examples
+- Update docs/USAGE.md and README.md to add usage examples for the refresh command and sample outputs
