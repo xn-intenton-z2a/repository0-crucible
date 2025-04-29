@@ -45,15 +45,15 @@ This unified source consolidates W3C SPARQL 1.1 specifications for querying, upd
 ## License if known
 W3C Document License (CC-BY 4.0); Apache 2.0 (Apache Jena); MIT (Comunica)
 
-# Web Platform & Protocol Standards
+# Web Platform, Protocol & Date-Time Standards
 ## https://nodejs.org/api/
 ## https://nodejs.org/api/esm.html
 ## https://fetch.spec.whatwg.org/
-## https://vitest.dev/api/
 ## https://tools.ietf.org/html/rfc7231
-This source merges Node.js Core (v20+) APIs for filesystem, HTTP, streams, and ESM loader architecture; the WHATWG Fetch standard for request/response streams; Vitest (MIT, 2023–2024) for ESM-first testing; and the IETF HTTP/1.1 semantics (RFC 7231) defining methods, status codes, headers, and content negotiation. It provides practical guidance on implementing CLI I/O, HTTP servers, automated tests, mocks, and designing RESTful endpoints with robust error handling and caching strategies.
+## https://tools.ietf.org/html/rfc3339
+This source merges Node.js Core (v20+) APIs for filesystem, HTTP, streams, and ESM loader architecture; the WHATWG Fetch standard for request/response streams; the IETF HTTP/1.1 semantics (RFC 7231) defining methods, status codes, headers, and content negotiation; and the internet timestamp profile (RFC 3339) based on ISO 8601 to ensure standardized, sortable timestamps for snapshot filenames and audit logs. It provides practical guidance on implementing CLI I/O, HTTP servers, automated tests, mocks, designing RESTful endpoints, and generating interoperable date-time strings.
 ## License if known
-Node.js Documentation License (CC-BY-SA 3.0); WHATWG Spec (Public Domain); MIT; IETF Trust License
+Node.js Documentation License (CC-BY-SA 3.0); WHATWG Spec (Public Domain); IETF Trust License
 
 # Triplestore & Persistence Engines: Apache Jena TDB2 & Eclipse RDF4J
 ## https://jena.apache.org/documentation/tdb2/
@@ -62,14 +62,14 @@ Practical guides for configuring and using persistent triplestores. Includes Jen
 ## License if known
 Apache 2.0; Eclipse Public License 2.0
 
-# ISO 8601 & RFC 3339: Date and Time Formats
-## https://tools.ietf.org/html/rfc3339
-This IETF recommendation defines internet timestamp profiles based on ISO 8601 (RFC 3339), detailing formats for date, time, and time zone offsets. It guides the repository’s timestamp generation (YYYYMMDDThhmmssZ) for snapshot filenames, ensuring standardized, sortable, and interoperable audit logs across systems. Last updated June 2006, authoritative IETF standard.
-## License if known
-IETF Trust License
-
 # ROBOT: Release OWL Ontology Builder
 ## https://github.com/ontodev/robot#readme
 ROBOT is a comprehensive, Apache-licensed CLI and Java library for automating OWL ontology workflows, including module extraction, reasoning, merging, format conversion, validation, and release packaging. Its best-practice patterns for ontology versioning, provenance tracking, and continuous integration inform the repository’s pipeline and snapshot management, highlighting advanced merge strategies and validation steps. Last release in 2024, widely adopted by the OBO Foundry community.
 ## License if known
 Apache 2.0
+
+# rdflib.js: RDF Library for JavaScript
+## https://github.com/linkeddata/rdflib.js
+rdflib.js is a robust, MIT-licensed JavaScript library for working with RDF data in browsers and Node.js. It provides parsers and serializers for RDF/XML, Turtle, N-Triples, and JSON-LD; an in-memory RDF store with graph updating and querying capabilities; and utilities for HTTP document fetching, SPARQL updates, and basic reasoning. Its extensive API and active community support advanced Linked Data applications and seamless integration with RDFJS ecosystems. Last updated June 2024.
+## License if known
+MIT
