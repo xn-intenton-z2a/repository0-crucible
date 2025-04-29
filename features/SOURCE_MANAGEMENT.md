@@ -1,102 +1,56 @@
 # Description
 
-Enhance source management by providing full programmatic, CLI and HTTP support for custom data sources and data refresh. Enable listing, adding, removing and updating of configured sources, and implement fetching raw data captures from all sources for downstream processing.
+Enhance source management by fully implementing the refreshSources function to fetch raw data captures from all configured data sources and persist them as JSON files in the data directory. Provide CLI and HTTP endpoints for on-demand data refresh.
 
-# Programmatic API
+# Implementation
 
-- Export async function listSources(configPath = data-sources.json)
-  • Merge built in PUBLIC_DATA_SOURCES with custom entries read from configPath
-  • On missing or invalid config fall back to defaults and log a warning
-  • Return array of source objects with name and url
-
-- Export async function addSource(source, configPath = data-sources.json)
-  • Validate source name and url format
-  • Prevent duplicates by name or url
-  • Write updated array to configPath with two space indentation
-  • Return merged list of sources
-
-- Export async function removeSource(identifier, configPath = data-sources.json)
-  • Filter custom entries by name or url matching identifier
-  • Write updated array when removal occurs
-  • Return merged list of sources
-
-- Export async function updateSource({ identifier, name, url }, configPath = data-sources.json)
-  • Locate custom entry by name or url matching identifier
-  • Validate new name and url
-  • Replace entry and write updated array
-  • Throw error when identifier not found or JSON invalid
-  • Return merged list of sources
-
-- Export async function refreshSources({ dataDir = data, configPath = data-sources.json } = {})
-  • Ensure dataDir exists on disk
-  • Use listSources to obtain array of sources
-  • For each source fetch via HTTP GET and parse JSON
-  • Write each response to dataDir with slug safe filenames and two space indentation
-  • Log fetched filename on success or error message on failure
-  • Return object with count of files written and array of filenames
+- In src/lib/main.js update refreshSources({ dataDir = "data", configPath = "data-sources.json" } = {}) to:
+  1. Ensure the dataDir exists, creating it if necessary.
+  2. Call listSources(configPath) to obtain merged list of public and custom sources.
+  3. For each source:
+     a. Construct a safe filename by slugifying the source name or using host from URL.
+     b. Perform HTTP GET to fetch JSON data from the source URL.
+     c. Parse the response as JSON. On error log error.message and continue.
+     d. Write the JSON to dataDir/<slug>.json with two-space indentation.
+     e. Log each successful write via console.log with the filename.
+  4. Return an object { count, files } summarizing how many files were written and their filenames.
 
 # CLI Support
 
-- Add flag --list-sources
-  • Invoke listSources and print pretty JSON of returned list
+- Add flag --refresh [dataDir] [configPath] to main(args) in src/lib/main.js:
+  • When invoked, call refreshSources with provided or default paths.
+  • Stream each console.log line to output as text lines.
+  • On invalid directory or URL errors, log error messages without throwing.
+  • Return the summary object.
 
-- Add flag --add-source name url
-  • Invoke addSource with provided arguments and print merged list
-  • On validation or file error log error and exit gracefully
+# HTTP Server Endpoint
 
-- Add flag --remove-source identifier
-  • Invoke removeSource and print merged list
-  • On error log message and exit gracefully
-
-- Add flag --update-source identifier newName newUrl
-  • Invoke updateSource with provided arguments and print merged list
-  • On missing parameters or error log message and exit gracefully
-
-- Add flag --refresh [dataDir] [configPath]
-  • Invoke refreshSources with provided or default paths
-  • Stream each log line to console
-  • Print final summary line and exit without throwing
-
-# HTTP Server Endpoints
-
-Under serve mode support:
-
-- GET /sources
-  • Respond status 200 with application/json and merged list from listSources
-
-- POST /sources
-  • Read request body as JSON with name and url
-  • On validation success invoke addSource and respond 201 with application/json list
-  • On missing fields or invalid JSON respond 400 with plain text error message
-
-- DELETE /sources/:identifier
-  • Invoke removeSource with decoded identifier
-  • Respond 200 with application/json updated list
-
-- PUT /sources/:identifier
-  • Read request body as JSON with name and url
-  • On validation success invoke updateSource and respond 200 with application/json list
-  • On error respond 400 with plain text error
-
-- GET /refresh
-  • Respond 200 with text/plain
-  • Override console log to stream each fetch and summary line
-  • Invoke refreshSources and end response
-  • On error respond 500 with plain text error message
+- Under serve mode support GET /refresh:
+  • Respond with status 200 and content-type text/plain.
+  • Override console.log to stream each log line into the response.
+  • Invoke refreshSources and then end the response.
+  • On error respond with status 500 and plain-text error message.
 
 # Testing
 
-- Add unit tests for listSources, addSource, removeSource, updateSource and refreshSources
-  • Cover valid and invalid config JSON, validation errors, duplicate handling and fetch failures
+- Unit tests for refreshSources():
+  • Mock fs and listSources to simulate a variety of sources and HTTP responses.
+  • Verify creation of dataDir, correct writeFileSync calls with expected filenames and content.
+  • Assert that returned summary object has correct count and filenames.
+  • Simulate fetch failures and JSON parse errors to ensure errors are logged and do not halt execution.
 
-- Add CLI tests for each flag
-  • Test missing parameters error paths and successful console output
+- CLI tests for --refresh:
+  • Invoke main(['--refresh']) with no args and spy on refreshSources to assert correct invocation.
+  • Supply custom dataDir and configPath to verify parameter passing.
+  • Simulate errors inside refreshSources to assert console.error is called and process does not crash.
 
-- Add HTTP integration tests for /sources endpoints and /refresh
-  • Verify status codes, content types, request and response behaviors for success and error cases
+- HTTP integration test for GET /refresh:
+  • Start server in serve mode, issue GET /refresh, and verify status 200 and text/plain.
+  • Body contains lines for each fetched file, matched by filename pattern.
+  • Simulate a source fetch error to assert status 500 and plain-text error message.
 
 # Documentation Updates
 
-- Update docs/FEATURES.md to describe source management feature under Sources Management
-- Update docs/USAGE.md with examples for list, add, remove, update and refresh commands
-- Update README.md to list new flags and HTTP endpoints with usage samples
+- Update docs/FEATURES.md under Sources Management to describe the --refresh flag and GET /refresh endpoint.
+- Update docs/USAGE.md to include example CLI invocation of refresh and sample output lines.
+- Update README.md to list the new --refresh flag and explain data refresh behavior.
