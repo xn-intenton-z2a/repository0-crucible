@@ -201,7 +201,7 @@ export async function buildEnhanced({ dataDir = "data", intermediateDir = "inter
   fs.mkdirSync(outDir, { recursive: true });
   const enhancedFile = "enhanced.json";
   fs.writeFileSync(path.join(outDir, enhancedFile), JSON.stringify(enhancedDoc, null, 2), "utf8");
-  return { refreshed, intermediate, enhanced: { file: enhancedFile, count: graph.length } };
+  return { refreshed, intermediate, enhanced: { file: enhancedFile, count: intermediate.count } };
 }
 
 export async function getCapitalCities(endpoint = PUBLIC_DATA_SOURCES[0].url) {
