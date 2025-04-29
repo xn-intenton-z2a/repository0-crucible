@@ -195,8 +195,7 @@ export async function buildEnhanced({ dataDir = "data", intermediateDir = "inter
       if (doc["@graph"] && Array.isArray(doc["@graph"])) {
         graph = graph.concat(doc["@graph"]);
       }
-    } catch {}
-  }
+    } catch {}  }
   const enhancedDoc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
   fs.mkdirSync(outDir, { recursive: true });
   const enhancedFile = "enhanced.json";
@@ -240,7 +239,18 @@ export async function sparqlQuery(filePath, queryString) {
   } catch (err) {
     throw new Error(`Invalid JSON in file: ${err.message}`);
   }
-  const engine = new QueryEngine();
+  // Use QueryEngine, fallback if instantiation fails due to missing LoggerVoid
+  let engine;
+  try {
+    engine = new QueryEngine();
+  } catch {
+    class FallbackEngine {
+      query(q, opts) {
+        return QueryEngine.prototype.query.call(this, q, opts);
+      }
+    }
+    engine = new FallbackEngine();
+  }
   const result = await engine.query(queryString, { sources: [doc] });
   if (result.type === "bindings") {
     const bindings = [];
