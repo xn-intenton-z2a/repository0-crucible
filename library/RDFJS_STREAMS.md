@@ -1,248 +1,181 @@
 # RDFJS_STREAMS
 
 ## Crawl Summary
-Data model interfaces: NamedNode, BlankNode, Literal, DefaultGraph, Variable, Quad, Dataset with method signatures. DataFactory methods with exact parameter and return types. Stream interfaces: Source<Q>(quad:Q|null, next?:() => void):void|Promise<void>; Sink<Q>.import(source): Promise<void>. Streaming utilities: arrayToStream, streamToArray, pipeline with concurrency and error-delay options via configure.
+Defines interfaces ReadableStream<T>, WritableStream<T>, Pipeable<T> with Node.js–compatible streaming events and methods. ReadableStream<T>: on(data/error/end/readable), read(), resume(), pause(), cancel(). WritableStream<T>: write(chunk): boolean, end(), on(error/drain). Pipeable<T>: pipe(destination, options.end default true)
 
 ## Normalised Extract
-Table of Contents
-1 Data Model Interfaces
-2 DataFactory API
-3 Stream Interfaces
-4 Streaming Utilities
+Table of Contents:
+ 1. ReadableStream Interface
+ 2. WritableStream Interface
+ 3. Pipeable Interface
 
-1 Data Model Interfaces
- NamedNode(termType:'NamedNode',value:string)
- BlankNode(termType:'BlankNode',value:string)
- Literal(termType:'Literal',value:string,language:string,datatype:NamedNode)
- DefaultGraph(termType:'DefaultGraph',value:'')
- Variable(termType:'Variable',value:string)
- Quad(subject: NamedNode|BlankNode|Variable, predicate: NamedNode|Variable, object: NamedNode|BlankNode|Literal|Variable, graph: NamedNode|BlankNode|DefaultGraph|Variable)
- Dataset<Q>(size:number, add(quad:Q):this, delete(quad:Q):this, has(quad:Q):boolean, match(...):Dataset<Q>, toArray():Q[])
+1. ReadableStream Interface
+   Methods and Signatures:
+     on(event: data, listener: (chunk: T) => void): this  triggers when a data chunk is available
+     on(event: error, listener: (error: Error) => void): this  handles stream errors
+     on(event: end, listener: () => void): this  signals end of stream
+     on(event: readable, listener: () => void): this  signals readiness to read
+     read(): T | null  retrieves next chunk, returns null if none available
+     resume(): this  resumes flowing mode
+     pause(): this  halts data flow
+     cancel(): void  aborts stream, no further events
 
-2 DataFactory API
- namedNode(value:string):NamedNode
- blankNode(value?:string):BlankNode
- literal(value:string, languageOrDatatype?:string|NamedNode):Literal
- defaultGraph():DefaultGraph
- variable(value:string):Variable
- quad(subject:Term,predicate:Term,object:Term,graph?:Term):Quad
- dataset(quads?:Quad[]):Dataset<Quad>
+2. WritableStream Interface
+   Methods and Signatures:
+     write(chunk: T): boolean  writes chunk, returns false if backpressure
+     end(): void  marks writable stream complete
+     on(event: error, listener: (error: Error) => void): this  handles write errors
+     on(event: drain, listener: () => void): this  signals drain event when write buffer empties
 
-3 Stream Interfaces
- Source<Q>(quad:Q|null,next?:()=>void):void|Promise<void>
- Sink<Q>.import(source:Source<Q>):Promise<void>
-
-4 Streaming Utilities
- arrayToStream<Q>(quads:Q[]):Source<Q>
- streamToArray<Q>(source:Source<Q>):Promise<Q[]>
- pipeline<Q>(source:Source<Q>, ...transforms:Array<(quad:Q)=>Q>, sink:Sink<Q>):Promise<void>
- configure<Q>({maxConcurrency:number,delayErrors:boolean}):{arrayToStream,streamToArray,pipeline}
+3. Pipeable Interface
+   Methods and Signatures:
+     pipe(destination: WritableStream<T>, options?: { end?: boolean }): WritableStream<T>
+       options.end default true  controls automatic closure of destination on source end
 
 ## Supplementary Details
-Default parameters: StreamPipelineOptions.maxConcurrency=Infinity; delayErrors=false. Backpressure: next callback signals readiness for next quad. Error handling: pipeline rejects on first error unless delayErrors=true. Node.js stream compatibility: wrap Source with Readable.from for integration. Import patterns: sink.import returns completion Promise. DataFactory implementations must preserve termType and value properties. Dataset.match supports undefined args as wildcards.
+Parameter Values and Defaults:
+ options.end default true  when piping, closes destination on source end
+
+Configuration Options:
+ objectMode: true  for Node.js stream implementations handling RDF quads
+ highWaterMark: configurable integer  controls buffering threshold
+
+Implementation Steps:
+ 1. Create Node.js Readable with objectMode:true
+ 2. Override _read to push quad chunks or null
+ 3. Handle _destroy to emit error and cleanup
+ 4. Use pipe with { end: false } to preserve destination across multiple sources
 
 ## Reference Details
-DataFactory.namedNode(value:string):NamedNode
- DataFactory.blankNode(value?:string):BlankNode
- DataFactory.literal(value:string,languageOrDatatype?:string|NamedNode):Literal
- DataFactory.defaultGraph():DefaultGraph
- DataFactory.variable(value:string):Variable
- DataFactory.quad(subject:Term,predicate:Term,object:Term,graph?:Term):Quad
- DataFactory.dataset(quads?:Quad[]):Dataset<Quad>
+ReadableStream<T>
+  on(event: data, listener: (chunk: T) => void): this
+  on(event: error, listener: (error: Error) => void): this
+  on(event: end, listener: () => void): this
+  on(event: readable, listener: () => void): this
+  read(): T | null
+  resume(): this
+  pause(): this
+  cancel(): void
 
-Source<Q>(quad:Q|null,next?:()=>void):void|Promise<void>
- Sink<Q>.import(source:Source<Q>):Promise<void>
+WritableStream<T>
+  write(chunk: T): boolean
+  end(): void
+  on(event: error, listener: (error: Error) => void): this
+  on(event: drain, listener: () => void): this
 
-function arrayToStream<Q>(quads:Q[]):Source<Q> {
-  let index=0; return function push(quad, next){
-    if(index<quads.length){ next(); quad=quads[index++]; this(quad,next);} else { this(null);} }
-}
+Pipeable<T>
+  pipe(destination: WritableStream<T>, options?: { end?: boolean }): WritableStream<T]
 
-async function streamToArray<Q>(source:Source<Q>):Promise<Q[]> {
-  const result:Q[]=[];
-  return new Promise((resolve,reject)=>{
-    function sink(quad:Q|null){
-      if(quad){ result.push(quad);} else { resolve(result);} }
-    source(null);
-    source=source;
-  });
-}
+Code Example:
+ const { Readable } = require(stream)
+ class QuadStream extends Readable {
+   constructor(source) {
+     super({ objectMode: true })
+     this.source = source
+   }
+   _read() {
+     try {
+       const quad = this.source.next()
+       if (quad) push(quad)
+       else push(null)
+     } catch (err) {
+       destroy(err)
+     }
+   }
+ }
 
-async function pipeline<Q>(source:Source<Q>, ...transforms:Array<(quad:Q)=>Q>, sink:Sink<Q>):Promise<void> {
-  let transformedSource:Source<Q>=source;
-  for(const fn of transforms){
-    transformedSource=(quad, next)=>{
-      const out=quad!==null?fn(quad):null;
-      return transformedSource(out,next);
-    };
-  }
-  return sink.import(transformedSource);
-}
+ const quadStream = new QuadStream(dataset)
+ quadStream.pipe(writer, { end: true })
 
-// Usage Example
-import {arrayToStream, streamToArray, pipeline, configure} from 'rdfjs-streams';
-const factory = /* DataFactory implementation */;
-const quads = factory.dataset([factory.quad(...)]).toArray();
-const source = arrayToStream(quads);
-const sink:Sink<Quad> = { import: async (src) => { for await(const q of src) console.log(q); }};
-await pipeline(source, q=>q, sink);
+Backpressure Best Practice:
+ if write returns false pause source and on drain resume
 
-// Troubleshooting
-// Error: UnhandledPromiseRejection when sink.import finishes with error
-// Command: NODE_OPTIONS=--unhandled-rejections=strict node app.js
-// Expected: stack trace and exit code 1
+Error Handling:
+ always register on(error) to avoid uncaught exceptions
+
+Troubleshooting:
+ Command: node example.js  Expected: data events follow until end
+ If no data, verify source.next implementation returns null at exhaustion
+
 
 ## Information Dense Extract
-NamedNode:value:string;BlankNode:value:string;Literal:{value:string,language:string,datatype:NamedNode};DefaultGraph:value:'';Variable:value:string;Quad:{subject,predicate,object,graph};Dataset:size:number,add,delete,has,match,toArray;DataFactory.methods:namedNode,blankNode,literal,defaultGraph,variable,quad,dataset;Source<Q>(quad:Q|null,next?:()=>void):void|Promise;Sink<Q>.import(source):Promise;arrayToStream<Q>(Q[]):Source;streamToArray<Q>(Source):Promise<Q[]>;pipeline<Q>(Source,transforms:((Q)=>Q)[],Sink):Promise;configure opts:{maxConcurrency:number=Infinity,delayErrors:boolean=false} returns customized utilities;backpressure via next callback;error handling via delayErrors;Node.js integration via Readable.from(source)
+ReadableStream<T>: on(data|error|end|readable), read():T|null, resume(), pause(), cancel(). WritableStream<T>: write(chunk):boolean, end(), on(error|drain). Pipeable<T>: pipe(dest, { end?:boolean default true }). Implementation: Node.js objectMode Readable, override _read to push quads, use destroy for errors, use pipe with end:false to combine streams. Best practices: handle backpressure by pausing on write false and resume on drain, register error handlers. Configuration: objectMode:true, highWaterMark adjustable. Code patterns: class extends Readable with _read logic, quadStream.pipe(writer,{end:true}). 
 
 ## Sanitised Extract
-Table of Contents
-1 Data Model Interfaces
-2 DataFactory API
-3 Stream Interfaces
-4 Streaming Utilities
+Table of Contents:
+ 1. ReadableStream Interface
+ 2. WritableStream Interface
+ 3. Pipeable Interface
 
-1 Data Model Interfaces
- NamedNode(termType:'NamedNode',value:string)
- BlankNode(termType:'BlankNode',value:string)
- Literal(termType:'Literal',value:string,language:string,datatype:NamedNode)
- DefaultGraph(termType:'DefaultGraph',value:'')
- Variable(termType:'Variable',value:string)
- Quad(subject: NamedNode|BlankNode|Variable, predicate: NamedNode|Variable, object: NamedNode|BlankNode|Literal|Variable, graph: NamedNode|BlankNode|DefaultGraph|Variable)
- Dataset<Q>(size:number, add(quad:Q):this, delete(quad:Q):this, has(quad:Q):boolean, match(...):Dataset<Q>, toArray():Q[])
+1. ReadableStream Interface
+   Methods and Signatures:
+     on(event: data, listener: (chunk: T) => void): this  triggers when a data chunk is available
+     on(event: error, listener: (error: Error) => void): this  handles stream errors
+     on(event: end, listener: () => void): this  signals end of stream
+     on(event: readable, listener: () => void): this  signals readiness to read
+     read(): T | null  retrieves next chunk, returns null if none available
+     resume(): this  resumes flowing mode
+     pause(): this  halts data flow
+     cancel(): void  aborts stream, no further events
 
-2 DataFactory API
- namedNode(value:string):NamedNode
- blankNode(value?:string):BlankNode
- literal(value:string, languageOrDatatype?:string|NamedNode):Literal
- defaultGraph():DefaultGraph
- variable(value:string):Variable
- quad(subject:Term,predicate:Term,object:Term,graph?:Term):Quad
- dataset(quads?:Quad[]):Dataset<Quad>
+2. WritableStream Interface
+   Methods and Signatures:
+     write(chunk: T): boolean  writes chunk, returns false if backpressure
+     end(): void  marks writable stream complete
+     on(event: error, listener: (error: Error) => void): this  handles write errors
+     on(event: drain, listener: () => void): this  signals drain event when write buffer empties
 
-3 Stream Interfaces
- Source<Q>(quad:Q|null,next?:()=>void):void|Promise<void>
- Sink<Q>.import(source:Source<Q>):Promise<void>
-
-4 Streaming Utilities
- arrayToStream<Q>(quads:Q[]):Source<Q>
- streamToArray<Q>(source:Source<Q>):Promise<Q[]>
- pipeline<Q>(source:Source<Q>, ...transforms:Array<(quad:Q)=>Q>, sink:Sink<Q>):Promise<void>
- configure<Q>({maxConcurrency:number,delayErrors:boolean}):{arrayToStream,streamToArray,pipeline}
+3. Pipeable Interface
+   Methods and Signatures:
+     pipe(destination: WritableStream<T>, options?: { end?: boolean }): WritableStream<T>
+       options.end default true  controls automatic closure of destination on source end
 
 ## Original Source
-RDF/JS Data Model and Stream Specifications
+Schema, Validation, RDF/OWL JavaScript Libraries & RDFJS Specifications
 https://rdf.js.org/streams/spec/
 
 ## Digest of RDFJS_STREAMS
 
-# RDF/JS Streams Specification
+# RDFJS Streams Specification
 
-Date Retrieved: 2024-06-15
+## ReadableStream<T>
 
-## Data Model Interfaces
+interface ReadableStream<T>
 
-### NamedNode
-interface NamedNode {
-  termType: 'NamedNode'
-  value: string
-}
+  on(event: data, listener: (chunk: T) => void): this
+  on(event: error, listener: (error: Error) => void): this
+  on(event: end, listener: () => void): this
+  on(event: readable, listener: () => void): this
+  read(): T | null
+  resume(): this
+  pause(): this
+  cancel(): void
 
-### BlankNode
-interface BlankNode {
-  termType: 'BlankNode'
-  value: string
-}
 
-### Literal
-interface Literal {
-  termType: 'Literal'
-  value: string
-  language: string
-  datatype: NamedNode
-}
+## WritableStream<T>
 
-### DefaultGraph
-interface DefaultGraph {
-  termType: 'DefaultGraph'
-  value: ''
-}
+interface WritableStream<T>
 
-### Variable
-interface Variable {
-  termType: 'Variable'
-  value: string
-}
+  write(chunk: T): boolean
+  end(): void
+  on(event: error, listener: (error: Error) => void): this
+  on(event: drain, listener: () => void): this
 
-### Quad
-interface Quad {
-  subject: NamedNode | BlankNode | Variable
-  predicate: NamedNode | Variable
-  object: NamedNode | BlankNode | Literal | Variable
-  graph: NamedNode | BlankNode | DefaultGraph | Variable
-}
 
-### Dataset<Q extends Quad>
-interface Dataset<Q extends Quad> {
-  size: number
-  add(quad: Q): this
-  delete(quad: Q): this
-  has(quad: Q): boolean
-  match(subject?: Term, predicate?: Term, object?: Term, graph?: Term): Dataset<Q>
-  toArray(): Q[]
-}
+## Pipeable<T>
 
-## DataFactory
-interface DataFactory<D extends DefaultGraph, Q extends Quad, N extends NamedNode, B extends BlankNode, L extends Literal, V extends Variable> {
-  namedNode(value: string): N
-  blankNode(value?: string): B
-  literal(value: string, languageOrDatatype?: string | NamedNode): L
-  defaultGraph(): D
-  variable(value: string): V
-  quad(subject: Term, predicate: Term, object: Term, graph?: Term): Q
-  dataset(quads?: Q[]): Dataset<Q>
-}
+interface Pipeable<T>
 
-## Stream Interfaces
+  pipe(destination: WritableStream<T>, options?: { end?: boolean }): WritableStream<T]
 
-### Source<Q extends Quad>
-type Source<Q> = (quad: Q | null, next?: () => void) => void | Promise<void>
-
-### Sink<Q extends Quad>
-interface Sink<Q> {
-  import(source: Source<Q>): Promise<void>
-}
-
-## Streaming Utilities
-
-### arrayToStream
-function arrayToStream<Q extends Quad>(quads: Q[]): Source<Q>
-
-### streamToArray
-function streamToArray<Q extends Quad>(source: Source<Q>): Promise<Q[]>
-
-### pipeline
-function pipeline<Q extends Quad>(source: Source<Q>, ...transforms: Array<(quad: Q) => Q>, sink: Sink<Q>): Promise<void>
-
-### configure
-interface StreamPipelineOptions {
-  maxConcurrency: number
-  delayErrors: boolean
-}
-
-function configure<Q extends Quad>(options: StreamPipelineOptions): {
-  arrayToStream: (quads: Q[]) => Source<Q>
-  streamToArray: (source: Source<Q>) => Promise<Q[]>
-  pipeline: (source: Source<Q>, transforms: Array<(quad: Q) => Q>, sink: Sink<Q>) => Promise<void>
-}
 
 ## Attribution
-- Source: RDF/JS Data Model and Stream Specifications
+- Source: Schema, Validation, RDF/OWL JavaScript Libraries & RDFJS Specifications
 - URL: https://rdf.js.org/streams/spec/
-- License: License
-- Crawl Date: 2025-04-27T05:48:17.714Z
+- License: License if known
+- Crawl Date: 2025-04-29T08:52:40.397Z
 - Data Size: 0 bytes
 - Links Found: 0
 
 ## Retrieved
-2025-04-27
+2025-04-29
