@@ -31,7 +31,7 @@ A unified reference combining runtime schema validation (Zod 3.x, MIT), graph-le
 ## License if known
 MIT; CC0/Public Domain; W3C Document License (CC-BY 4.0)
 
-# RDF Data Access, SPARQL & Serializations
+# SPARQL Engines, Protocols & Frameworks
 ## https://www.w3.org/TR/sparql11-overview/
 ## https://www.w3.org/TR/sparql11-protocol/
 ## https://www.w3.org/TR/sparql11-update/
@@ -40,18 +40,20 @@ MIT; CC0/Public Domain; W3C Document License (CC-BY 4.0)
 ## https://www.w3.org/TR/n-quads/
 ## https://jena.apache.org/documentation/query/
 ## https://jena.apache.org/documentation/io/
-Unified SPARQL 1.1 query/update (February 2013), Graph Store HTTP API, Turtle (February 2014) and N-Quads (June 2014) serializations, plus Apache Jena RIOT I/O guides. Covers protocol details, result formats, pagination, CORS, and integration with public endpoints (e.g., DBpedia), enabling robust client/server SPARQL operations and RDF data import/export. 
+## https://comunica.dev/docs/query/sparql/
+This unified source consolidates W3C SPARQL 1.1 specifications for querying, updates, and protocol (Graph Store HTTP API), standard serializations (Turtle, N-Quads), practical guides for Apache Jena (SPARQL and RIOT I/O modules), and the Comunica SPARQL framework (modular query engine, multi-source federation, streaming result handling). It delivers essential protocols, configuration details, query optimization strategies, and examples for both in-process and HTTP-based SPARQL operations, forming the backbone of the repository’s query functionality. Last updated February 2013 – 2024. Authoritative W3C and project documentation.
 ## License if known
-W3C Document License (CC-BY 4.0); Apache 2.0 (Apache Jena)
+W3C Document License (CC-BY 4.0); Apache 2.0 (Apache Jena); MIT (Comunica)
 
-# Node.js Core, ESM & Testing Standards
+# Web Platform & Protocol Standards
 ## https://nodejs.org/api/
 ## https://nodejs.org/api/esm.html
 ## https://fetch.spec.whatwg.org/
 ## https://vitest.dev/api/
-Authoritative references for Node.js v20+ core modules (fs, http, streams), the ESM loader architecture, the WHATWG Fetch standard for request/response streams, and Vitest (MIT, 2023–2024) for ESM-first testing. Essential for implementing CLI I/O, HTTP servers, automated tests, mocks, snapshots, and performance profiling in our toolchain.
+## https://tools.ietf.org/html/rfc7231
+This source merges Node.js Core (v20+) APIs for filesystem, HTTP, streams, and ESM loader architecture; the WHATWG Fetch standard for request/response streams; Vitest (MIT, 2023–2024) for ESM-first testing; and the IETF HTTP/1.1 semantics (RFC 7231) defining methods, status codes, headers, and content negotiation. It provides practical guidance on implementing CLI I/O, HTTP servers, automated tests, mocks, and designing RESTful endpoints with robust error handling and caching strategies.
 ## License if known
-Node.js Documentation License (CC-BY-SA 3.0); WHATWG Spec (Public Domain); MIT
+Node.js Documentation License (CC-BY-SA 3.0); WHATWG Spec (Public Domain); MIT; IETF Trust License
 
 # Triplestore & Persistence Engines: Apache Jena TDB2 & Eclipse RDF4J
 ## https://jena.apache.org/documentation/tdb2/
@@ -60,14 +62,14 @@ Practical guides for configuring and using persistent triplestores. Includes Jen
 ## License if known
 Apache 2.0; Eclipse Public License 2.0
 
-# Comunica SPARQL Framework
-## https://comunica.dev/docs/query/sparql/
-Comprehensive guide to the Comunica SPARQL framework (MIT), detailing its modular architecture, query mediation across diverse sources (HTTP, file, in-memory), custom engine configuration, and extension points. Includes examples for in-process and HTTP-based SPARQL queries, metadata extraction, streaming result handling, and optimization strategies. Last updated 2024, widely adopted in Linked Data applications.
-## License if known
-MIT
-
-# HTTP/1.1 Semantics & Content Negotiation
-## https://tools.ietf.org/html/rfc7231
-The definitive IETF standard (RFC 7231, June 2014) for HTTP/1.1 semantics, defining methods (GET, POST, HEAD), status codes, headers (Accept, Content-Type, Cache-Control), and content negotiation mechanisms. Authoritative reference for designing RESTful APIs, error handling, and caching strategies aligned with web standards.
+# ISO 8601 & RFC 3339: Date and Time Formats
+## https://tools.ietf.org/html/rfc3339
+This IETF recommendation defines internet timestamp profiles based on ISO 8601 (RFC 3339), detailing formats for date, time, and time zone offsets. It guides the repository’s timestamp generation (YYYYMMDDThhmmssZ) for snapshot filenames, ensuring standardized, sortable, and interoperable audit logs across systems. Last updated June 2006, authoritative IETF standard.
 ## License if known
 IETF Trust License
+
+# ROBOT: Release OWL Ontology Builder
+## https://github.com/ontodev/robot#readme
+ROBOT is a comprehensive, Apache-licensed CLI and Java library for automating OWL ontology workflows, including module extraction, reasoning, merging, format conversion, validation, and release packaging. Its best-practice patterns for ontology versioning, provenance tracking, and continuous integration inform the repository’s pipeline and snapshot management, highlighting advanced merge strategies and validation steps. Last release in 2024, widely adopted by the OBO Foundry community.
+## License if known
+Apache 2.0
