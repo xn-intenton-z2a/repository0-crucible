@@ -24,421 +24,233 @@
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="shacl_core" href="#shacl_core"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SHACL_CORE</h1>
 <h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
-<p class="md-github">Core SHACL vocabulary: sh:Shape, sh:NodeShape, sh:PropertyShape. Namespace prefixes: rdf,rdfs,sh,xsd. Constraint parameters for property shapes grouped by category (value type, cardinality, range, string, pair, logical, shape-based, other). Validation algorithm: link shapes graph, compute focus nodes from targets (sh:targetNode, sh:targetClass, sh:targetSubjectsOf, sh:targetObjectsOf), apply constraints, produce results. Validation report: sh:ValidationReport with conforms flag, results list, shapesGraphWellFormed flag; sh:ValidationResult with focusNode, resultPath, value, sourceShape, sourceConstraintComponent, detail, resultMessage, resultSeverity. Entailment: sh:entailment values, failure on unsupported regimes.</p>
+<p class="md-github">Namespaces bound to URIs, core classes sh:Shape, sh:NodeShape, sh:PropertyShape with exact properties and default values, all constraint components with required parameters and default settings, validation report model with all result properties and datatypes, SHACL list semantics.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
-<p class="md-github">Table of Contents:
-1  Namespace Prefixes
-2  Core Classes and Properties
-2.1 sh:Shape Properties
-2.2 sh:NodeShape Extensions
-2.3 sh:PropertyShape Constraint Parameters
-3  Validation Process
-3.1 Linking Shapes Graph
-3.2 Focus Node Computation
-3.3 Constraint Evaluation
-4  Validation Report Structure
-5  Entailment Configuration</p>
-<p class="md-github">1 Namespace Prefixes
-rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns#
-rdfs: http://www.w3.org/2000/01/rdf-schema#
-sh:   http://www.w3.org/ns/shacl#
-xsd:  http://www.w3.org/2001/XMLSchema#</p>
+<p class="md-github">Table of Contents
+1 Namespace Prefix Bindings
+2 Core Classes and Properties
+3 Constraint Components and Parameter Definitions
+4 Validation Report Model
+5 SHACL List Semantics</p>
+<p class="md-github">1 Namespace Prefix Bindings
+rdf  http://www.w3.org/1999/02/22-rdf-syntax-ns#
+rdfs http://www.w3.org/2000/01/rdf-schema#
+sh   http://www.w3.org/ns/shacl#
+owl  http://www.w3.org/2002/07/owl#
+xsd  http://www.w3.org/2001/XMLSchema#
+ex   http://example.com/ns#</p>
 <p class="md-github">2 Core Classes and Properties
-2.1 sh:Shape Properties
-sh:targetNode      -&gt; IRI or literal (zero-or-more)
-sh:targetClass     -&gt; rdfs:Class       (zero-or-more)
-sh:targetSubjectsOf-&gt; rdf:Property     (zero-or-more)
-sh:targetObjectsOf -&gt; rdf:Property     (zero-or-more)
-sh:deactivated     -&gt; xsd:boolean      (zero-or-one; default false)
-sh:message         -&gt; xsd:string or rdf:langString (zero-or-more)
-sh:severity        -&gt; sh:Severity      (zero-or-one; default sh:Violation)</p>
-<p class="md-github">2.2 sh:NodeShape (subclass of sh:Shape)
-inherits all sh:Shape properties
-sh:property      -&gt; sh:PropertyShape (zero-or-more)</p>
-<p class="md-github">2.3 sh:PropertyShape Constraint Parameters</p>
-<ul class="md-github">
-<li class="md-github">Value Type
-sh:class     -&gt; rdfs:Resource      (zero-or-one)
-sh:datatype  -&gt; rdfs:Resource      (zero-or-one)
-sh:nodeKind  -&gt; sh:NodeKind        (zero-or-one)</li>
-<li class="md-github">Cardinality
-sh:minCount  -&gt; xsd:integer        (zero-or-one; default 0)
-sh:maxCount  -&gt; xsd:integer        (zero-or-one; default unlimited)</li>
-<li class="md-github">Value Range
-sh:minExclusive  -&gt; xsd:anyAtomicType (zero-or-one)
-sh:minInclusive  -&gt; xsd:anyAtomicType (zero-or-one)
-sh:maxExclusive  -&gt; xsd:anyAtomicType (zero-or-one)
-sh:maxInclusive  -&gt; xsd:anyAtomicType (zero-or-one)</li>
-<li class="md-github">String-based
-sh:minLength  -&gt; xsd:integer        (zero-or-one)
-sh:maxLength  -&gt; xsd:integer        (zero-or-one)
-sh:pattern    -&gt; xsd:string         (zero-or-one; regex)
-sh:languageIn -&gt; rdf:List           (zero-or-one)
-sh:uniqueLang -&gt; xsd:boolean        (zero-or-one; default false)</li>
-<li class="md-github">Property Pair
-sh:equals    -&gt; rdf:Property        (zero-or-more)
-sh:disjoint  -&gt; rdf:Property        (zero-or-more)
-sh:lessThan  -&gt; rdf:Property        (zero-or-one)
-sh:lessThanOrEquals -&gt; rdf:Property (zero-or-one)</li>
-<li class="md-github">Logical
-sh:not       -&gt; sh:Shape            (zero-or-one)
-sh:and       -&gt; rdf:List            (zero-or-one)
-sh:or        -&gt; rdf:List            (zero-or-one)
-sh:xone      -&gt; rdf:List            (zero-or-one)</li>
-<li class="md-github">Shape-based
-sh:node      -&gt; sh:NodeShape        (zero-or-one)
-sh:property  -&gt; sh:PropertyShape     (zero-or-more)
-sh:qualifiedValueShape  -&gt; sh:Shape    (zero-or-one)
-sh:qualifiedMinCount    -&gt; xsd:integer (zero-or-one)
-sh:qualifiedMaxCount    -&gt; xsd:integer (zero-or-one)</li>
-<li class="md-github">Other
-sh:closed           -&gt; xsd:boolean    (zero-or-one; default false)
-sh:ignoredProperties-&gt; rdf:Property    (zero-or-more)
-sh:hasValue         -&gt; any RDF term    (zero-or-one)
-sh:in               -&gt; rdf:List        (zero-or-one)</li>
-</ul>
-<p class="md-github">3 Validation Process
-3.1 Link shapes graph: sh:shapesGraph predicate
-3.2 Compute focus nodes:
-apply targets: sh:targetNode, sh:targetClass, sh:targetSubjectsOf, sh:targetObjectsOf
-3.3 For each focus node, evaluate all constraint parameters of each shape
-record failures if parameter conditions not met</p>
-<p class="md-github">4 Validation Report Structure
-Report: instance of sh:ValidationReport
-sh:conforms (boolean)
-sh:shapesGraphWellFormed (boolean)
-sh:result             -&gt; list of sh:ValidationResult
-Result: instance of sh:ValidationResult
-sh:focusNode
-sh:resultPath
-sh:value
-sh:sourceShape
-sh:sourceConstraintComponent
-sh:detail           -&gt; nested sh:ValidationResult
-sh:resultMessage
-sh:resultSeverity</p>
-<p class="md-github">5 Entailment
-sh:entailment -&gt; IRI (zero-or-more)
-common regimes: sh:RDFS, sh:OWL
-unsupported regime -&gt; validation error</p>
+sh:Shape parameters: targetClass rdfs:Class, targetNode any, targetObjectsOf rdf:Property, targetSubjectsOf rdf:Property, deactivated xsd:boolean default false, severity sh:Severity default sh:Violation, message xsd:string default none
+sh:NodeShape inherits sh:Shape and adds property sh:property sh:PropertyShape, closed xsd:boolean default false, ignoredProperties rdf:List default rdf:nil
+sh:PropertyShape inherits sh:Shape and adds path rdf:Property or path expression, minCount xsd:integer default 1, maxCount xsd:integer no default, datatype/class/node/name/description/defaultValue/group</p>
+<p class="md-github">3 Constraint Components and Parameter Definitions
+Value Type: class datatype required; nodeKind optional with allowed values IRI BlankNode Literal
+Cardinality: minCount default 0; maxCount optional
+Value Range: minExclusive Inclusive, maxExclusive Inclusive of any literal no defaults
+String-based: minLength default 0; maxLength optional; pattern regex; languageIn list of language tags; uniqueLang default false
+Logical: not one Shape; and or or xone list of Shapes
+Shape-based: node one NodeShape; property one PropertyShape; qualifiedValueShape one Shape; qualifiedMinCount default 0; qualifiedMaxCount optional
+Other: closed default false; ignoredProperties list default empty; hasValue any; in list of allowed values</p>
+<p class="md-github">4 Validation Report Model
+ValidationReport: conforms xsd:boolean, result list of ValidationResult, shapesGraphWellFormed xsd:boolean
+ValidationResult: focusNode any, resultPath property or path, value any, sourceShape Shape, sourceConstraintComponent IRI, detail nested ValidationResult, resultMessage string, resultSeverity Severity</p>
+<p class="md-github">5 SHACL List Semantics
+Definition of SHACL list: rdf:nil or node with exactly one rdf:first and one rdf:rest linking to another list, no cycles, member order by rdf:first then rdf:rest chain</p>
 <h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
-<p class="md-github">Implementation Steps:
-1  Parse shapes graph as RDF with Turtle or JSON-LD
-2  Ensure namespace prefixes match spec
-3  Validate shapes graph syntactic rules: each shape node must satisfy one sh:Shape subclass and mandatory sh:path for property shapes
-4  Load data graph as RDF
-5  For each shape s:
-a  Compute targets: nodes in data graph where any sh:target* triple applies
-6  For each target node and each constraint parameter p of s:
-a  Retrieve parameter value(s)
-b  Evaluate constraint: e.g., for sh:minCount  count(values(path,n)) &gt;= minCount
-c  For failure, instantiate a sh:ValidationResult:
-focusNode  = target node
-resultPath = path expression used
-value      = offending value (if any)
-sourceShape= s
-sourceConstraintComponent = IRI of parameter p's constraint component
-resultMessage and resultSeverity from s
-7  Aggregate all results into a sh:ValidationReport:
-sh:conforms              = no failures
-sh:shapesGraphWellFormed = true
-sh:result                = all validation results</p>
-<p class="md-github">Entailment Handling:</p>
-<ul class="md-github">
-<li class="md-github">If shapes graph contains sh:entailment E and E not supported, abort with error 'Unsupported entailment regime: E'</li>
-<li class="md-github">Otherwise pre-compute inferences and include them in data graph queries</li>
-</ul>
-<p class="md-github">Configuration Options:</p>
-<ul class="md-github">
-<li class="md-github">deactivated: skip shape when set to true</li>
-<li class="md-github">defaultValue: use when missing property values</li>
-<li class="md-github">group: property grouping in UI generation</li>
-</ul>
+<p class="md-github">Implementation Steps
+1 Load shapes graph and data graph in RDF/Turtle
+2 Apply SHACL Core validation engine
+3 If shapesGraph contains sh:entailment with regime E and processor does not support E then fail
+4 Pre-bind $this, $shapesGraph, $currentShape in SPARQL-based constraints if SHACL-SPARQL
+5 Collect all ValidationResult and assemble ValidationReport</p>
+<p class="md-github">Configuration Options
+sh:deactivated: xsd:boolean default false disables a Shape
+sh:closed: xsd:boolean default false disallows triples not covered by property shapes
+sh:ignoredProperties: rdf:List default rdf:nil allows specific extra predicates
+sh:severity: sh:Severity default sh:Violation sets message severity
+sh:entailment: IRI list of entailment regimes required</p>
+<p class="md-github">Parameter Effects
+minCount zero enforces minimum occurrences
+maxCount restricts maximum occurrences if set
+pattern uses JavaScript regex syntax for xsd:string
+languageIn uses BCP47 language tag list
+uniqueLang enforces distinct language tags on string values</p>
 <h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
-<p class="md-github">Vocabulary and Parameter Specification:</p>
-<ul class="md-github">
-<li class="md-github">sh:Severity: enumeration {sh:Violation, sh:Warning, sh:Info}</li>
-</ul>
-<p class="md-github">Constraint API Patterns (generic RDF engine pseudo-code):</p>
-<p class="md-github">function validateShapes(dataGraph, shapesGraph) {
-report = new ValidationReport()
-report.shapesGraphWellFormed = isWellFormed(shapesGraph)
-for each shape in shapesGraph.getShapes():
-if shape.deactivated == true: continue
-focusNodes = getTargets(dataGraph, shape)
-for each node in focusNodes:
-for each parameter in shape.getConstraintParameters():
-component = parameter.getConstraintComponent()
-resultSet = component.evaluate(dataGraph, node, shape)
-for each fail in resultSet:
-vr = new ValidationResult()
-vr.focusNode = node
-vr.resultPath = parameter.path
-vr.value = fail.offendingValue
-vr.sourceShape = shape
-vr.sourceConstraintComponent = component.iri
-vr.resultMessage = selectMessage(shape, parameter)
-vr.resultSeverity = shape.severity or sh:Violation
-report.results.add(vr)
-report.conforms = report.results.isEmpty()
-return report
+<p class="md-github">Turtle Vocabulary Fragment</p>
+<p class="md-github">@prefix sh: <a href="http://www.w3.org/ns/shacl#" class="md-github">http://www.w3.org/ns/shacl#</a> .
+@prefix rdfs: <a href="http://www.w3.org/2000/01/rdf-schema#" class="md-github">http://www.w3.org/2000/01/rdf-schema#</a> .
+@prefix xsd: <a href="http://www.w3.org/2001/XMLSchema#" class="md-github">http://www.w3.org/2001/XMLSchema#</a> .</p>
+<p class="md-github">sh:class a rdf:Property ;
+rdfs:domain sh:PropertyShape ;
+rdfs:range rdfs:Class ;
+sh:parameter sh:parameter_class .</p>
+<p class="md-github">sh:parameter_class a sh:Parameter ;
+sh:path sh:class ;
+sh:datatype rdfs:Class ;
+sh:minCount 1 ;
+sh:maxCount 1 .</p>
+<p class="md-github">sh:minCount a rdf:Property ;
+rdfs:domain sh:PropertyShape ;
+rdfs:range xsd:integer ;
+sh:defaultValue 0 .</p>
+<h1 class="md-github"><a class="md-github__anchor" name="json-ld-example" href="#json-ld-example"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSON-LD Example</h1>
+<p class="md-github">{
+&quot;@context&quot;: { &quot;sh&quot;: &quot;http://www.w3.org/ns/shacl#&quot; },
+&quot;@id&quot;: &quot;ex:PersonShape&quot;,
+&quot;@type&quot;: &quot;sh:NodeShape&quot;,
+&quot;sh:targetClass&quot;: { &quot;@id&quot;: &quot;ex:Person&quot; },
+&quot;sh:property&quot;: [
+{ &quot;sh:path&quot;: { &quot;@id&quot;: &quot;ex:ssn&quot; }, &quot;sh:datatype&quot;: { &quot;@id&quot;: &quot;xsd:string&quot; }, &quot;sh:pattern&quot;: &quot;[0-9]{3}-[0-9]{2}-[0-9]{4}&quot;, &quot;sh:maxCount&quot;: 1 },
+{ &quot;sh:path&quot;: { &quot;@id&quot;: &quot;ex:worksFor&quot; }, &quot;sh:class&quot;: { &quot;@id&quot;: &quot;ex:Company&quot; } }
+]
 }</p>
-<p class="md-github">SPARQL-based Constraint Variables:</p>
-<ul class="md-github">
-<li class="md-github">$this -&gt; focus node</li>
-<li class="md-github">$shapesGraph -&gt; shapes graph as dataset</li>
-<li class="md-github">$currentShape -&gt; shape being applied</li>
-</ul>
-<p class="md-github">Example Constraint Component Implementation:
-Component: sh:minCount
-Parameter: sh:minCount (xsd:integer)
-Evaluation:
-count(dataGraph.values(node, shape.path)) &lt; minCount -&gt; violation</p>
-<p class="md-github">Component: sh:pattern
-Parameter: sh:pattern (xsd:string)
-Evaluation:
-for each literal v in dataGraph.values(node, shape.path):
-if not matches(regex, v) -&gt; violation</p>
-<p class="md-github">Exception Codes:</p>
-<ul class="md-github">
-<li class="md-github">ErrIllFormedShape: shapesGraphWellFormed = false</li>
-<li class="md-github">ErrUnsupportedEntailment: abort validation</li>
-</ul>
-<p class="md-github">Troubleshooting Commands:</p>
-<ul class="md-github">
-<li class="md-github">rdf-validator --syntax shapes.ttl -&gt; syntax errors in shapes graph</li>
-<li class="md-github">shacl-validator --data data.ttl --shapes shapes.ttl --report report.ttl
-Expected output: report.ttl with sh:ValidationReport.conforms true or false</li>
-</ul>
+<p class="md-github">Java API Example
+Model dataModel = RDFDataMgr.loadModel(&quot;data.ttl&quot;);
+Model shapesModel = RDFDataMgr.loadModel(&quot;shapes.ttl&quot;);
+ValidationReport report = ShaclValidator.get().validate(shapesModel.getGraph(), dataModel.getGraph(), true);
+if (!report.conforms()) {
+report.getEntries().forEach(e -&gt; System.err.println(e.getMessage()));
+}</p>
+<p class="md-github">CLI Usage
+shacl --data data.ttl --shapes shapes.ttl --output report.ttl</p>
+<p class="md-github">Troubleshooting
+Command: shacl --data invalidData.ttl --shapes shapes.ttl
+Expected Output contains rdf:type sh:ValidationReport with sh:conforms false and at least one sh:ValidationResult</p>
 <h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
-<p class="md-github">Prefixes: rdf,rdfs,sh,xsd. Classes: sh:Shape, sh:NodeShape, sh:PropertyShape. sh:Shape properties: targetNode, targetClass, targetSubjectsOf, targetObjectsOf, deactivated, message, severity. sh:NodeShape adds sh:property. sh:PropertyShape adds sh:path plus constraint parameters: value type (sh:class,sh:datatype,sh:nodeKind), cardinality (sh:minCount,sh:maxCount), range (sh:minExclusive,sh:minInclusive,sh:maxExclusive,sh:maxInclusive), string (sh:minLength,sh:maxLength,sh:pattern,sh:languageIn,sh:uniqueLang), pair (sh:equals,sh:disjoint,sh:lessThan,sh:lessThanOrEquals), logical (sh:not,sh:and,sh:or,sh:xone), shape-based (sh:node,sh:property,sh:qualifiedValueShape,sh:qualifiedMinCount,sh:qualifiedMaxCount), other (sh:closed,sh:ignoredProperties,sh:hasValue,sh:in). Validation: compute focus nodes via targets, evaluate each constraint parameter, record failures as sh:ValidationResult, aggregate in sh:ValidationReport with conforms, shapesGraphWellFormed flags. ValidationResult: focusNode,resultPath,value,sourceShape,sourceConstraintComponent,detail,resultMessage,resultSeverity. Entailment: sh:entailment values must be supported or fail validation.</p>
+<p class="md-github">prefixes rdf rdfs sh xsd owl ex; classes sh:Shape sh:NodeShape sh:PropertyShape; properties targetClass rdfs:Class targetNode any targetObjectsOf rdf:Property targetSubjectsOf rdf:Property deactivated xsd:boolean false severity sh:Severity sh:Violation message xsd:string; NodeShape adds property sh:property list closed false ignoredProperties rdf:nil; PropertyShape adds path property minCount 1 maxCount unlimited datatype/class/node/name/description/defaultValue/group; constraint components definitions: ValueType(class datatype required nodeKind optional), Cardinality(minCount0 maxCount unlimited), ValueRange(minExclusive Inclusive no default), String(minLength0 maxLength unlimited pattern regex languageIn list uniqueLang false), Logical(not one, and/or/xone lists), ShapeBased(node property qualifiedValueShape qualifiedMinCount0 qualifiedMaxCount unlimited), Other(closed false ignoredProperties empty hasValue any in list); list semantics rdf:nil or node(first rest chain no cycles); ValidationReport(conforms boolean result list shapesGraphWellFormed boolean); ValidationResult(focusNode value resultPath sourceShape sourceConstraintComponent detail message severity)</p>
 <h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
-<p class="md-github">Table of Contents:
-1  Namespace Prefixes
-2  Core Classes and Properties
-2.1 sh:Shape Properties
-2.2 sh:NodeShape Extensions
-2.3 sh:PropertyShape Constraint Parameters
-3  Validation Process
-3.1 Linking Shapes Graph
-3.2 Focus Node Computation
-3.3 Constraint Evaluation
-4  Validation Report Structure
-5  Entailment Configuration</p>
-<p class="md-github">1 Namespace Prefixes
-rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns#
-rdfs: http://www.w3.org/2000/01/rdf-schema#
-sh:   http://www.w3.org/ns/shacl#
-xsd:  http://www.w3.org/2001/XMLSchema#</p>
+<p class="md-github">Table of Contents
+1 Namespace Prefix Bindings
+2 Core Classes and Properties
+3 Constraint Components and Parameter Definitions
+4 Validation Report Model
+5 SHACL List Semantics</p>
+<p class="md-github">1 Namespace Prefix Bindings
+rdf  http://www.w3.org/1999/02/22-rdf-syntax-ns#
+rdfs http://www.w3.org/2000/01/rdf-schema#
+sh   http://www.w3.org/ns/shacl#
+owl  http://www.w3.org/2002/07/owl#
+xsd  http://www.w3.org/2001/XMLSchema#
+ex   http://example.com/ns#</p>
 <p class="md-github">2 Core Classes and Properties
-2.1 sh:Shape Properties
-sh:targetNode      -&gt; IRI or literal (zero-or-more)
-sh:targetClass     -&gt; rdfs:Class       (zero-or-more)
-sh:targetSubjectsOf-&gt; rdf:Property     (zero-or-more)
-sh:targetObjectsOf -&gt; rdf:Property     (zero-or-more)
-sh:deactivated     -&gt; xsd:boolean      (zero-or-one; default false)
-sh:message         -&gt; xsd:string or rdf:langString (zero-or-more)
-sh:severity        -&gt; sh:Severity      (zero-or-one; default sh:Violation)</p>
-<p class="md-github">2.2 sh:NodeShape (subclass of sh:Shape)
-inherits all sh:Shape properties
-sh:property      -&gt; sh:PropertyShape (zero-or-more)</p>
-<p class="md-github">2.3 sh:PropertyShape Constraint Parameters</p>
-<ul class="md-github">
-<li class="md-github">Value Type
-sh:class     -&gt; rdfs:Resource      (zero-or-one)
-sh:datatype  -&gt; rdfs:Resource      (zero-or-one)
-sh:nodeKind  -&gt; sh:NodeKind        (zero-or-one)</li>
-<li class="md-github">Cardinality
-sh:minCount  -&gt; xsd:integer        (zero-or-one; default 0)
-sh:maxCount  -&gt; xsd:integer        (zero-or-one; default unlimited)</li>
-<li class="md-github">Value Range
-sh:minExclusive  -&gt; xsd:anyAtomicType (zero-or-one)
-sh:minInclusive  -&gt; xsd:anyAtomicType (zero-or-one)
-sh:maxExclusive  -&gt; xsd:anyAtomicType (zero-or-one)
-sh:maxInclusive  -&gt; xsd:anyAtomicType (zero-or-one)</li>
-<li class="md-github">String-based
-sh:minLength  -&gt; xsd:integer        (zero-or-one)
-sh:maxLength  -&gt; xsd:integer        (zero-or-one)
-sh:pattern    -&gt; xsd:string         (zero-or-one; regex)
-sh:languageIn -&gt; rdf:List           (zero-or-one)
-sh:uniqueLang -&gt; xsd:boolean        (zero-or-one; default false)</li>
-<li class="md-github">Property Pair
-sh:equals    -&gt; rdf:Property        (zero-or-more)
-sh:disjoint  -&gt; rdf:Property        (zero-or-more)
-sh:lessThan  -&gt; rdf:Property        (zero-or-one)
-sh:lessThanOrEquals -&gt; rdf:Property (zero-or-one)</li>
-<li class="md-github">Logical
-sh:not       -&gt; sh:Shape            (zero-or-one)
-sh:and       -&gt; rdf:List            (zero-or-one)
-sh:or        -&gt; rdf:List            (zero-or-one)
-sh:xone      -&gt; rdf:List            (zero-or-one)</li>
-<li class="md-github">Shape-based
-sh:node      -&gt; sh:NodeShape        (zero-or-one)
-sh:property  -&gt; sh:PropertyShape     (zero-or-more)
-sh:qualifiedValueShape  -&gt; sh:Shape    (zero-or-one)
-sh:qualifiedMinCount    -&gt; xsd:integer (zero-or-one)
-sh:qualifiedMaxCount    -&gt; xsd:integer (zero-or-one)</li>
-<li class="md-github">Other
-sh:closed           -&gt; xsd:boolean    (zero-or-one; default false)
-sh:ignoredProperties-&gt; rdf:Property    (zero-or-more)
-sh:hasValue         -&gt; any RDF term    (zero-or-one)
-sh:in               -&gt; rdf:List        (zero-or-one)</li>
-</ul>
-<p class="md-github">3 Validation Process
-3.1 Link shapes graph: sh:shapesGraph predicate
-3.2 Compute focus nodes:
-apply targets: sh:targetNode, sh:targetClass, sh:targetSubjectsOf, sh:targetObjectsOf
-3.3 For each focus node, evaluate all constraint parameters of each shape
-record failures if parameter conditions not met</p>
-<p class="md-github">4 Validation Report Structure
-Report: instance of sh:ValidationReport
-sh:conforms (boolean)
-sh:shapesGraphWellFormed (boolean)
-sh:result             -&gt; list of sh:ValidationResult
-Result: instance of sh:ValidationResult
-sh:focusNode
-sh:resultPath
-sh:value
-sh:sourceShape
-sh:sourceConstraintComponent
-sh:detail           -&gt; nested sh:ValidationResult
-sh:resultMessage
-sh:resultSeverity</p>
-<p class="md-github">5 Entailment
-sh:entailment -&gt; IRI (zero-or-more)
-common regimes: sh:RDFS, sh:OWL
-unsupported regime -&gt; validation error</p>
+sh:Shape parameters: targetClass rdfs:Class, targetNode any, targetObjectsOf rdf:Property, targetSubjectsOf rdf:Property, deactivated xsd:boolean default false, severity sh:Severity default sh:Violation, message xsd:string default none
+sh:NodeShape inherits sh:Shape and adds property sh:property sh:PropertyShape, closed xsd:boolean default false, ignoredProperties rdf:List default rdf:nil
+sh:PropertyShape inherits sh:Shape and adds path rdf:Property or path expression, minCount xsd:integer default 1, maxCount xsd:integer no default, datatype/class/node/name/description/defaultValue/group</p>
+<p class="md-github">3 Constraint Components and Parameter Definitions
+Value Type: class datatype required; nodeKind optional with allowed values IRI BlankNode Literal
+Cardinality: minCount default 0; maxCount optional
+Value Range: minExclusive Inclusive, maxExclusive Inclusive of any literal no defaults
+String-based: minLength default 0; maxLength optional; pattern regex; languageIn list of language tags; uniqueLang default false
+Logical: not one Shape; and or or xone list of Shapes
+Shape-based: node one NodeShape; property one PropertyShape; qualifiedValueShape one Shape; qualifiedMinCount default 0; qualifiedMaxCount optional
+Other: closed default false; ignoredProperties list default empty; hasValue any; in list of allowed values</p>
+<p class="md-github">4 Validation Report Model
+ValidationReport: conforms xsd:boolean, result list of ValidationResult, shapesGraphWellFormed xsd:boolean
+ValidationResult: focusNode any, resultPath property or path, value any, sourceShape Shape, sourceConstraintComponent IRI, detail nested ValidationResult, resultMessage string, resultSeverity Severity</p>
+<p class="md-github">5 SHACL List Semantics
+Definition of SHACL list: rdf:nil or node with exactly one rdf:first and one rdf:rest linking to another list, no cycles, member order by rdf:first then rdf:rest chain</p>
 <h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
 <p class="md-github">RDF Graph Shape Validation Standards: SHACL &amp; ShEx
 https://www.w3.org/TR/shacl/</p>
 <h2 class="md-github"><a class="md-github__anchor" name="digest-of-shacl_core" href="#digest-of-shacl_core"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of SHACL_CORE</h2>
-<h1 class="md-github"><a class="md-github__anchor" name="shacl-core-language-specification" href="#shacl-core-language-specification"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SHACL Core Language Specification</h1>
-<p class="md-github">Retrieved: 2024-06-05
-Source: W3C Recommendation SHACL 20 July 2017 (https://www.w3.org/TR/2017/REC-shacl-20170720/)</p>
-<h1 class="md-github"><a class="md-github__anchor" name="1-namespace-prefixes" href="#1-namespace-prefixes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Namespace Prefixes</h1>
-<ul class="md-github">
-<li class="md-github">rdf:  http://www.w3.org/1999/02/22-rdf-syntax-ns#</li>
-<li class="md-github">rdfs: http://www.w3.org/2000/01/rdf-schema#</li>
-<li class="md-github">sh:   http://www.w3.org/ns/shacl#</li>
-<li class="md-github">xsd:  http://www.w3.org/2001/XMLSchema#</li>
-<li class="md-github">ex:   http://example.com/ns#</li>
-</ul>
-<h1 class="md-github"><a class="md-github__anchor" name="2-core-classes-and-properties" href="#2-core-classes-and-properties"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Core Classes and Properties</h1>
-<h2 class="md-github"><a class="md-github__anchor" name="21-class-shshape" href="#21-class-shshape"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.1 Class: sh:Shape</h2>
-<ul class="md-github">
-<li class="md-github">sh:targetNode      (zero-or-more)  IRI or literal</li>
-<li class="md-github">sh:targetClass     (zero-or-more)  rdfs:Class</li>
-<li class="md-github">sh:targetSubjectsOf(zero-or-more) rdf:Property</li>
-<li class="md-github">sh:targetObjectsOf (zero-or-more) rdf:Property</li>
-<li class="md-github">sh:deactivated     (zero-or-one)   xsd:boolean</li>
-<li class="md-github">sh:message         (zero-or-more)  xsd:string or rdf:langString</li>
-<li class="md-github">sh:severity        (zero-or-one)   sh:Severity</li>
-</ul>
-<h2 class="md-github"><a class="md-github__anchor" name="22-class-shnodeshape-subclass-of-shshape" href="#22-class-shnodeshape-subclass-of-shshape"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.2 Class: sh:NodeShape (subclass of sh:Shape)</h2>
-<ul class="md-github">
-<li class="md-github">inherits all sh:Shape properties</li>
-<li class="md-github">sh:property        (zero-or-more)  sh:PropertyShape</li>
-</ul>
-<h2 class="md-github"><a class="md-github__anchor" name="23-class-shpropertyshape-subclass-of-shshape" href="#23-class-shpropertyshape-subclass-of-shshape"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.3 Class: sh:PropertyShape (subclass of sh:Shape)</h2>
-<ul class="md-github">
-<li class="md-github">sh:path            (one-or-one)    rdf:Resource (property path)</li>
-<li class="md-github">sh:name            (zero-or-one)   xsd:string or rdf:langString</li>
-<li class="md-github">sh:description     (zero-or-one)   xsd:string or rdf:langString</li>
-<li class="md-github">sh:defaultValue    (zero-or-one)   any RDF term</li>
-<li class="md-github">sh:group           (zero-or-one)   sh:PropertyGroup</li>
-<li class="md-github">constraint parameters:
-<ul class="md-github">
-<li class="md-github">Value type:       sh:class (zero-or-one)   rdfs:Resource
-sh:datatype (zero-or-one) rdfs:Resource
-sh:nodeKind (zero-or-one)   sh:NodeKind</li>
-<li class="md-github">Cardinality:      sh:minCount (zero-or-one)   xsd:integer
-sh:maxCount (zero-or-one)   xsd:integer</li>
-<li class="md-github">Value range:      sh:minExclusive (zero-or-one) xsd:anyAtomicType
-sh:minInclusive (zero-or-one) xsd:anyAtomicType
-sh:maxExclusive (zero-or-one) xsd:anyAtomicType
-sh:maxInclusive (zero-or-one) xsd:anyAtomicType</li>
-<li class="md-github">String-based:     sh:minLength   (zero-or-one) xsd:integer
-sh:maxLength   (zero-or-one) xsd:integer
-sh:pattern     (zero-or-one) xsd:string
-sh:languageIn  (zero-or-one) rdf:List
-sh:uniqueLang  (zero-or-one) xsd:boolean</li>
-<li class="md-github">Property pairs:   sh:equals (zero-or-more) rdf:Property
-sh:disjoint (zero-or-more) rdf:Property
-sh:lessThan (zero-or-one) rdf:Property
-sh:lessThanOrEquals (zero-or-one) rdf:Property</li>
-<li class="md-github">Logical:          sh:not (zero-or-one) sh:Shape
-sh:and (zero-or-one) rdf:List
-sh:or (zero-or-one) rdf:List
-sh:xone (zero-or-one) rdf:List</li>
-<li class="md-github">Shape-based:      sh:node (zero-or-one) sh:NodeShape
-sh:property (zero-or-more) sh:PropertyShape
-sh:qualifiedValueShape (zero-or-one) sh:Shape
-sh:qualifiedMinCount (zero-or-one) xsd:integer
-sh:qualifiedMaxCount (zero-or-one) xsd:integer</li>
-<li class="md-github">Other:            sh:closed (zero-or-one) xsd:boolean
-sh:ignoredProperties (zero-or-more) rdf:Property
-sh:hasValue (zero-or-one) any RDF term
-sh:in (zero-or-one) rdf:List</li>
-</ul>
-</li>
-</ul>
-<h1 class="md-github"><a class="md-github__anchor" name="3-validation-process" href="#3-validation-process"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. Validation Process</h1>
-<ul class="md-github">
-<li class="md-github">Link shapes graph: use sh:shapesGraph to associate a data graph with its shapes graph</li>
-<li class="md-github">Precondition: shapes graph must be well-formed (all syntactic rules satisfied)</li>
-</ul>
-<h2 class="md-github"><a class="md-github__anchor" name="31-validation-steps" href="#31-validation-steps"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3.1 Validation Steps</h2>
-<ol class="md-github">
-<li class="md-github">For each shape in shapes graph, compute focus nodes based on targets</li>
-<li class="md-github">For each focus node and each shape, validate all associated constraint components</li>
-<li class="md-github">Collect violations as sh:ValidationResult instances</li>
-<li class="md-github">Aggregate results into a sh:ValidationReport</li>
-</ol>
-<h2 class="md-github"><a class="md-github__anchor" name="32-validation-report-structure" href="#32-validation-report-structure"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3.2 Validation Report Structure</h2>
-<ul class="md-github">
-<li class="md-github">
-<p class="md-github">sh:ValidationReport (IRI/class)</p>
-<ul class="md-github">
-<li class="md-github">sh:conforms (one-or-one) xsd:boolean</li>
-<li class="md-github">sh:result (zero-or-more)  sh:ValidationResult</li>
-<li class="md-github">sh:shapesGraphWellFormed (one-or-one) xsd:boolean</li>
-</ul>
-</li>
-<li class="md-github">
-<p class="md-github">sh:ValidationResult</p>
-<ul class="md-github">
-<li class="md-github">sh:focusNode (one-or-one)   IRI or blank node</li>
-<li class="md-github">sh:resultPath (zero-or-one) rdf:Resource</li>
-<li class="md-github">sh:value (zero-or-one)      RDF term</li>
-<li class="md-github">sh:sourceShape (zero-or-one) IRI or blank node</li>
-<li class="md-github">sh:sourceConstraintComponent (zero-or-one) IRI</li>
-<li class="md-github">sh:detail (zero-or-more)    sh:ValidationResult</li>
-<li class="md-github">sh:resultMessage (zero-or-more) xsd:string or rdf:langString</li>
-<li class="md-github">sh:resultSeverity (one-or-one) sh:Severity</li>
-</ul>
-</li>
-</ul>
-<h1 class="md-github"><a class="md-github__anchor" name="4-entailment" href="#4-entailment"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Entailment</h1>
-<ul class="md-github">
-<li class="md-github">Property: sh:entailment (zero-or-more) IRI
-common values: http://www.w3.org/ns/shacl#RDFS, http://www.w3.org/ns/shacl#OWL</li>
-<li class="md-github">Behavior: if a shapes graph specifies an entailment regime not supported, validation MUST fail</li>
-</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="shacl-core-language-specification" href="#shacl-core-language-specification"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SHACL CORE LANGUAGE SPECIFICATION</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="namespace-prefix-bindings" href="#namespace-prefix-bindings"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Namespace Prefix Bindings</h2>
+<p class="md-github">rdf  http://www.w3.org/1999/02/22-rdf-syntax-ns#
+rdfs http://www.w3.org/2000/01/rdf-schema#
+sh   http://www.w3.org/ns/shacl#
+owl  http://www.w3.org/2002/07/owl#
+xsd  http://www.w3.org/2001/XMLSchema#
+ex   http://example.com/ns#</p>
+<h2 class="md-github"><a class="md-github__anchor" name="core-classes-and-properties" href="#core-classes-and-properties"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Core Classes and Properties</h2>
+<p class="md-github">sh:Shape
+sh:targetClass    rdfs:Class<br>
+sh:targetNode     any IRI or literal<br>
+sh:targetObjectsOf rdf:Property<br>
+sh:targetSubjectsOf rdf:Property<br>
+sh:deactivated    xsd:boolean default false
+sh:severity       sh:Severity default sh:Violation
+sh:message        xsd:string or rdf:langString default none</p>
+<p class="md-github">sh:NodeShape   subclass of sh:Shape
+sh:property   sh:PropertyShape (multiple)
+sh:closed     xsd:boolean default false
+sh:ignoredProperties rdf:List default rdf:nil</p>
+<p class="md-github">sh:PropertyShape   subclass of sh:Shape
+sh:path        rdf:Property or sequence path
+sh:minCount    xsd:integer default 1
+sh:maxCount    xsd:integer no default
+sh:datatype    rdfs:Resource
+sh:class       rdfs:Resource
+sh:node        sh:NodeShape
+sh:name        xsd:string
+sh:description xsd:string
+sh:defaultValue any
+sh:group       sh:PropertyGroup</p>
+<h2 class="md-github"><a class="md-github__anchor" name="constraint-components-and-parameters" href="#constraint-components-and-parameters"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Constraint Components and Parameters</h2>
+<p class="md-github">Value Type
+sh:class       rdfs:Resource required
+sh:datatype    rdfs:Resource required
+sh:nodeKind    [ sh:IRI sh:BlankNode sh:Literal ] default none</p>
+<p class="md-github">Cardinality
+sh:minCount    xsd:integer default 0
+sh:maxCount    xsd:integer no default</p>
+<p class="md-github">Value Range
+sh:minExclusive   anyLiteral no default
+sh:minInclusive   anyLiteral no default
+sh:maxExclusive   anyLiteral no default
+sh:maxInclusive   anyLiteral no default</p>
+<p class="md-github">String-based
+sh:minLength   xsd:integer default 0
+sh:maxLength   xsd:integer no default
+sh:pattern     xsd:string regex no default
+sh:languageIn  rdf:List of xsd:languageTags default rdf:nil
+sh:uniqueLang  xsd:boolean default false</p>
+<p class="md-github">Logical
+sh:not           sh:Shape
+sh:and           rdf:List of sh:Shape
+sh:or            rdf:List of sh:Shape
+sh:xone          rdf:List of sh:Shape</p>
+<p class="md-github">Shape-based
+sh:node            sh:NodeShape
+sh:property        sh:PropertyShape
+sh:qualifiedValueShape       sh:Shape
+sh:qualifiedMinCount         xsd:integer default 0
+sh:qualifiedMaxCount         xsd:integer no default</p>
+<p class="md-github">Other
+sh:closed            xsd:boolean default false
+sh:ignoredProperties rdf:List default rdf:nil
+sh:hasValue          any
+sh:in                rdf:List of allowed values</p>
+<h2 class="md-github"><a class="md-github__anchor" name="validation-report-structure" href="#validation-report-structure"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Validation Report Structure</h2>
+<p class="md-github">sh:ValidationReport
+sh:conforms         xsd:boolean
+sh:result           rdf:List of sh:ValidationResult
+sh:shapesGraphWellFormed xsd:boolean</p>
+<p class="md-github">sh:ValidationResult
+sh:focusNode       any
+sh:resultPath      rdf:Property or path
+sh:value           any
+sh:sourceShape     sh:Shape
+sh:sourceConstraintComponent  rdf:IRI
+sh:detail          sh:ValidationResult
+sh:resultMessage   xsd:string or rdf:langString
+sh:resultSeverity  sh:Severity</p>
+<h2 class="md-github"><a class="md-github__anchor" name="shacl-list-definition" href="#shacl-list-definition"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SHACL List Definition</h2>
+<p class="md-github">A SHACL list is either rdf:nil or a node with exactly one rdf:first and one rdf:rest whose object is another SHACL list. Members order follow rdf:first then rdf:rest chain. No cycles.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
 <ul class="md-github">
 <li class="md-github">Source: RDF Graph Shape Validation Standards: SHACL &amp; ShEx</li>
 <li class="md-github">URL: https://www.w3.org/TR/shacl/</li>
 <li class="md-github">License: License if known</li>
-<li class="md-github">Crawl Date: 2025-04-29T18:52:25.166Z</li>
-<li class="md-github">Data Size: 14330371 bytes</li>
-<li class="md-github">Links Found: 113541</li>
+<li class="md-github">Crawl Date: 2025-04-29T20:51:52.892Z</li>
+<li class="md-github">Data Size: 18127168 bytes</li>
+<li class="md-github">Links Found: 144052</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
 <p class="md-github">2025-04-29</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-29T20:21:55.957Z</p>
+    <p>Generated on 2025-04-29T21:21:16.797Z</p>
   </footer>
 </body>
 </html>
