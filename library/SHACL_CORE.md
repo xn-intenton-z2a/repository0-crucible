@@ -1,158 +1,224 @@
 # SHACL_CORE
 
 ## Crawl Summary
-Namespaces bound to URIs, core classes sh:Shape, sh:NodeShape, sh:PropertyShape with exact properties and default values, all constraint components with required parameters and default settings, validation report model with all result properties and datatypes, SHACL list semantics.
+4.1: sh:class requires class IRI; sh:datatype expects xsd datatype; sh:nodeKind limits node type. 4.2: sh:minCount and sh:maxCount enforce occurrence counts. 4.3: sh:minExclusive, sh:minInclusive, sh:maxExclusive, sh:maxInclusive define literal-based range checks. 4.4: sh:minLength, sh:maxLength control string lengths; sh:pattern enforces regex; sh:languageIn and sh:uniqueLang restrict language tags. 4.5: sh:equals, sh:disjoint, sh:lessThan, sh:lessThanOrEquals express cross-property comparisons. 4.6: sh:not, sh:and, sh:or, sh:xone enable boolean combination of shapes. 4.7: sh:node, sh:property apply nested shapes; qualifiedValueShape with qualifiedMinCount and qualifiedMaxCount enforce counted shapes. 4.8: sh:closed locks additional properties; sh:ignoredProperties exempts properties; sh:hasValue and sh:in restrict allowed values.
 
 ## Normalised Extract
 Table of Contents
-1 Namespace Prefix Bindings
-2 Core Classes and Properties
-3 Constraint Components and Parameter Definitions
-4 Validation Report Model
-5 SHACL List Semantics
+1 Value Type Constraint Components
+2 Cardinality Constraint Components
+3 Value Range Constraint Components
+4 String-based Constraint Components
+5 Property Pair Constraint Components
+6 Logical Constraint Components
+7 Shape-based Constraint Components
+8 Other Constraint Components
 
-1 Namespace Prefix Bindings
-rdf  http://www.w3.org/1999/02/22-rdf-syntax-ns#
-rdfs http://www.w3.org/2000/01/rdf-schema#
-sh   http://www.w3.org/ns/shacl#
-owl  http://www.w3.org/2002/07/owl#
-xsd  http://www.w3.org/2001/XMLSchema#
-ex   http://example.com/ns#
+1 Value Type Constraint Components
+sh:class: IRI of class; single or multiple; enforces RDF type membership.
+sh:datatype: IRI of xsd datatype; single; enforces literal datatype.
+sh:nodeKind: IRI from {sh:BlankNode, sh:IRI, sh:Literal, sh:BlankNodeOrIRI, sh:BlankNodeOrLiteral, sh:IRIOrLiteral}; single.
 
-2 Core Classes and Properties
-sh:Shape parameters: targetClass rdfs:Class, targetNode any, targetObjectsOf rdf:Property, targetSubjectsOf rdf:Property, deactivated xsd:boolean default false, severity sh:Severity default sh:Violation, message xsd:string default none
-sh:NodeShape inherits sh:Shape and adds property sh:property sh:PropertyShape, closed xsd:boolean default false, ignoredProperties rdf:List default rdf:nil
-sh:PropertyShape inherits sh:Shape and adds path rdf:Property or path expression, minCount xsd:integer default 1, maxCount xsd:integer no default, datatype/class/node/name/description/defaultValue/group
+2 Cardinality Constraint Components
+sh:minCount: integer ≥ 0; default 0; enforces at least n occurrences.
+sh:maxCount: integer ≥ 0; no default; enforces at most n occurrences.
 
-3 Constraint Components and Parameter Definitions
-Value Type: class datatype required; nodeKind optional with allowed values IRI BlankNode Literal
-Cardinality: minCount default 0; maxCount optional
-Value Range: minExclusive Inclusive, maxExclusive Inclusive of any literal no defaults
-String-based: minLength default 0; maxLength optional; pattern regex; languageIn list of language tags; uniqueLang default false
-Logical: not one Shape; and or or xone list of Shapes
-Shape-based: node one NodeShape; property one PropertyShape; qualifiedValueShape one Shape; qualifiedMinCount default 0; qualifiedMaxCount optional
-Other: closed default false; ignoredProperties list default empty; hasValue any; in list of allowed values
+3 Value Range Constraint Components
+sh:minExclusive: literal; focus values > literal.
+sh:minInclusive: literal; focus values ≥ literal.
+sh:maxExclusive: literal; focus values < literal.
+sh:maxInclusive: literal; focus values ≤ literal.
 
-4 Validation Report Model
-ValidationReport: conforms xsd:boolean, result list of ValidationResult, shapesGraphWellFormed xsd:boolean
-ValidationResult: focusNode any, resultPath property or path, value any, sourceShape Shape, sourceConstraintComponent IRI, detail nested ValidationResult, resultMessage string, resultSeverity Severity
+4 String-based Constraint Components
+sh:minLength: integer ≥ 0; enforces minimum string length.
+sh:maxLength: integer ≥ 0; enforces maximum string length.
+sh:pattern: regex string; SPARQL regex syntax; must match at least one substring.
+sh:languageIn: List of xsd:languageTag strings; literal language tag must be in list.
+sh:uniqueLang: boolean; if true, each language tag appears at most once.
 
-5 SHACL List Semantics
-Definition of SHACL list: rdf:nil or node with exactly one rdf:first and one rdf:rest linking to another list, no cycles, member order by rdf:first then rdf:rest chain
+5 Property Pair Constraint Components
+sh:equals: property IRI; values equal to values of this property on same focus node.
+sh:disjoint: property IRI; values disjoint from values of this property.
+sh:lessThan: property IRI; value < values of this property.
+sh:lessThanOrEquals: property IRI; value ≤ values.
+
+6 Logical Constraint Components
+sh:not: shape IRI; focus nodes must not conform.
+sh:and: List of shape IRIs; must conform to all.
+sh:or: List of shape IRIs; must conform to at least one.
+sh:xone: List of shape IRIs; must conform to exactly one.
+
+7 Shape-based Constraint Components
+sh:node: NodeShape IRI; nested node shape.
+sh:property: PropertyShape IRI; nested property shape.
+sh:qualifiedValueShape: Shape IRI; shape for counted values.
+sh:qualifiedMinCount: integer ≥ 0; min count.
+sh:qualifiedMaxCount: integer ≥ 0; max count.
+
+8 Other Constraint Components
+sh:closed: boolean; default false; if true, no extra properties allowed.
+sh:ignoredProperties: List of property IRIs; exempt from closed.
+sh:hasValue: RDF term; value must equal this.
+sh:in: List of RDF terms; value must be one of these.
 
 ## Supplementary Details
+Prerequisites
+Define prefix bindings:
+  PREFIX sh: <http://www.w3.org/ns/shacl#>
+  PREFIX ex: <http://example.com/ns#>
+  PREFIX xsd: <http://www.w3.org/2001/XMLSchema#>
+
 Implementation Steps
-1 Load shapes graph and data graph in RDF/Turtle
-2 Apply SHACL Core validation engine
-3 If shapesGraph contains sh:entailment with regime E and processor does not support E then fail
-4 Pre-bind $this, $shapesGraph, $currentShape in SPARQL-based constraints if SHACL-SPARQL
-5 Collect all ValidationResult and assemble ValidationReport
+1 Create a Shapes Graph in Turtle
+   - Use sh:NodeShape and sh:PropertyShape classes
+   - Declare sh:targetClass or sh:targetNode on node shapes
+   - Inside node shape, add sh:property statements linking to blank-node property shapes
+2 Define Property Shapes
+   - Use sh:path to identify property IRI
+   - Apply constraint parameters (sh:datatype, sh:maxCount, sh:pattern, etc.)
+3 Validate Data Graph
+   - Load data graph and shapes graph into SHACL engine
+   - Call validation API: validate(dataGraph, shapesGraph, options)
+4 Handle Validation Report
+   - Check sh:conforms boolean
+   - Inspect sh:ValidationResult entries for sh:focusNode, sh:resultPath, sh:resultMessage
 
 Configuration Options
-sh:deactivated: xsd:boolean default false disables a Shape
-sh:closed: xsd:boolean default false disallows triples not covered by property shapes
-sh:ignoredProperties: rdf:List default rdf:nil allows specific extra predicates
-sh:severity: sh:Severity default sh:Violation sets message severity
-sh:entailment: IRI list of entailment regimes required
-
-Parameter Effects
-minCount zero enforces minimum occurrences
-maxCount restricts maximum occurrences if set
-pattern uses JavaScript regex syntax for xsd:string
-languageIn uses BCP47 language tag list
-uniqueLang enforces distinct language tags on string values
+--infer  : boolean default false : apply RDFS entailment
+--debug  : boolean default false : log SPARQL queries
+--results-format : text|ttl|json default text
 
 
 ## Reference Details
-Turtle Vocabulary Fragment
+Example Shapes Graph in Turtle
 
-@prefix sh: <http://www.w3.org/ns/shacl#> .
-@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+ex:PersonShape a sh:NodeShape ;
+  sh:targetClass ex:Person ;
+  sh:closed true ;
+  sh:ignoredProperties ( rdf:type ) ;
+  sh:property [
+    a sh:PropertyShape ;
+    sh:path ex:ssn ;
+    sh:datatype xsd:string ;
+    sh:pattern "^[0-9]{3}-[0-9]{2}-[0-9]{4}$" ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    a sh:PropertyShape ;
+    sh:path ex:worksFor ;
+    sh:nodeKind sh:IRI ;
+    sh:class ex:Company ;
+  ] .
 
-sh:class a rdf:Property ;
-  rdfs:domain sh:PropertyShape ;
-  rdfs:range rdfs:Class ;
-  sh:parameter sh:parameter_class .
+Python pySHACL Validation Example
 
-sh:parameter_class a sh:Parameter ;
-  sh:path sh:class ;
-  sh:datatype rdfs:Class ;
-  sh:minCount 1 ;
-  sh:maxCount 1 .
+from pyshacl import validate
+import rdflib
 
-sh:minCount a rdf:Property ;
-  rdfs:domain sh:PropertyShape ;
-  rdfs:range xsd:integer ;
-  sh:defaultValue 0 .
+graph = rdflib.Graph()
+graph.parse('data.ttl', format='turtle')
+shapes = rdflib.Graph()
+shapes.parse('shapes.ttl', format='turtle')
 
-# JSON-LD Example
-{
-  "@context": { "sh": "http://www.w3.org/ns/shacl#" },
-  "@id": "ex:PersonShape",
-  "@type": "sh:NodeShape",
-  "sh:targetClass": { "@id": "ex:Person" },
-  "sh:property": [
-    { "sh:path": { "@id": "ex:ssn" }, "sh:datatype": { "@id": "xsd:string" }, "sh:pattern": "[0-9]{3}-[0-9]{2}-[0-9]{4}", "sh:maxCount": 1 },
-    { "sh:path": { "@id": "ex:worksFor" }, "sh:class": { "@id": "ex:Company" } }
-  ]
-}
+conforms, report_graph, report_text = validate(
+    data_graph=graph,
+    shacl_graph=shapes,
+    inference='rdfs',
+    debug=False,
+    serialize_report_graph='json'
+)
 
-Java API Example
-Model dataModel = RDFDataMgr.loadModel("data.ttl");
-Model shapesModel = RDFDataMgr.loadModel("shapes.ttl");
-ValidationReport report = ShaclValidator.get().validate(shapesModel.getGraph(), dataModel.getGraph(), true);
-if (!report.conforms()) {
-  report.getEntries().forEach(e -> System.err.println(e.getMessage()));
-}
-
-CLI Usage
-shacl --data data.ttl --shapes shapes.ttl --output report.ttl
+print('Conforms:', conforms)
+print(report_text)
 
 Troubleshooting
-Command: shacl --data invalidData.ttl --shapes shapes.ttl
-Expected Output contains rdf:type sh:ValidationReport with sh:conforms false and at least one sh:ValidationResult
+
+Command: pyshacl --data data.ttl --shapes shapes.ttl --prefix sh: http://www.w3.org/ns/shacl#
+Expected Output: Validation report with conforms=true or JSON with results array
+
+Ill-formed Shapes
+- Missing sh:path in PropertyShape triggers error: "PropertyShape must have sh:path"
+- Invalid datatype IRI triggers SPARQL error: "Unknown datatype"
 
 
 ## Information Dense Extract
-prefixes rdf rdfs sh xsd owl ex; classes sh:Shape sh:NodeShape sh:PropertyShape; properties targetClass rdfs:Class targetNode any targetObjectsOf rdf:Property targetSubjectsOf rdf:Property deactivated xsd:boolean false severity sh:Severity sh:Violation message xsd:string; NodeShape adds property sh:property list closed false ignoredProperties rdf:nil; PropertyShape adds path property minCount 1 maxCount unlimited datatype/class/node/name/description/defaultValue/group; constraint components definitions: ValueType(class datatype required nodeKind optional), Cardinality(minCount0 maxCount unlimited), ValueRange(minExclusive Inclusive no default), String(minLength0 maxLength unlimited pattern regex languageIn list uniqueLang false), Logical(not one, and/or/xone lists), ShapeBased(node property qualifiedValueShape qualifiedMinCount0 qualifiedMaxCount unlimited), Other(closed false ignoredProperties empty hasValue any in list); list semantics rdf:nil or node(first rest chain no cycles); ValidationReport(conforms boolean result list shapesGraphWellFormed boolean); ValidationResult(focusNode value resultPath sourceShape sourceConstraintComponent detail message severity)
+sh:class  requires rdfs:Class IRI
+sh:datatype requires xsd:Datatype IRI
+sh:nodeKind requires one of six sh: nodeKind IRIs
+sh:minCount/minCount enforce integer bounds per focus node
+sh:maxCount enforces upper bound per focus node
+sh:minExclusive/minInclusive/maxExclusive/maxInclusive enforce literal range checks
+sh:minLength/maxLength enforce literal length
+sh:pattern enforces regex match per literal
+sh:languageIn enforces literal language tag from list
+sh:uniqueLang enforces unique language tags
+sh:equals/disjoint/lessThan/lessThanOrEquals enforce property comparison
+sh:not/and/or/xone enforce logical shape combination
+sh:node and sh:property apply nested shapes
+sh:qualifiedValueShape with qualifiedMinCount/qualifiedMaxCount enforce counted nested shapes
+sh:closed locks extra properties; default false
+sh:ignoredProperties exempts properties from closed
+sh:hasValue enforces literal equality
+sh:in enforces value membership
+Turtle example and pySHACL usage pattern included
 
 ## Sanitised Extract
 Table of Contents
-1 Namespace Prefix Bindings
-2 Core Classes and Properties
-3 Constraint Components and Parameter Definitions
-4 Validation Report Model
-5 SHACL List Semantics
+1 Value Type Constraint Components
+2 Cardinality Constraint Components
+3 Value Range Constraint Components
+4 String-based Constraint Components
+5 Property Pair Constraint Components
+6 Logical Constraint Components
+7 Shape-based Constraint Components
+8 Other Constraint Components
 
-1 Namespace Prefix Bindings
-rdf  http://www.w3.org/1999/02/22-rdf-syntax-ns#
-rdfs http://www.w3.org/2000/01/rdf-schema#
-sh   http://www.w3.org/ns/shacl#
-owl  http://www.w3.org/2002/07/owl#
-xsd  http://www.w3.org/2001/XMLSchema#
-ex   http://example.com/ns#
+1 Value Type Constraint Components
+sh:class: IRI of class; single or multiple; enforces RDF type membership.
+sh:datatype: IRI of xsd datatype; single; enforces literal datatype.
+sh:nodeKind: IRI from {sh:BlankNode, sh:IRI, sh:Literal, sh:BlankNodeOrIRI, sh:BlankNodeOrLiteral, sh:IRIOrLiteral}; single.
 
-2 Core Classes and Properties
-sh:Shape parameters: targetClass rdfs:Class, targetNode any, targetObjectsOf rdf:Property, targetSubjectsOf rdf:Property, deactivated xsd:boolean default false, severity sh:Severity default sh:Violation, message xsd:string default none
-sh:NodeShape inherits sh:Shape and adds property sh:property sh:PropertyShape, closed xsd:boolean default false, ignoredProperties rdf:List default rdf:nil
-sh:PropertyShape inherits sh:Shape and adds path rdf:Property or path expression, minCount xsd:integer default 1, maxCount xsd:integer no default, datatype/class/node/name/description/defaultValue/group
+2 Cardinality Constraint Components
+sh:minCount: integer  0; default 0; enforces at least n occurrences.
+sh:maxCount: integer  0; no default; enforces at most n occurrences.
 
-3 Constraint Components and Parameter Definitions
-Value Type: class datatype required; nodeKind optional with allowed values IRI BlankNode Literal
-Cardinality: minCount default 0; maxCount optional
-Value Range: minExclusive Inclusive, maxExclusive Inclusive of any literal no defaults
-String-based: minLength default 0; maxLength optional; pattern regex; languageIn list of language tags; uniqueLang default false
-Logical: not one Shape; and or or xone list of Shapes
-Shape-based: node one NodeShape; property one PropertyShape; qualifiedValueShape one Shape; qualifiedMinCount default 0; qualifiedMaxCount optional
-Other: closed default false; ignoredProperties list default empty; hasValue any; in list of allowed values
+3 Value Range Constraint Components
+sh:minExclusive: literal; focus values > literal.
+sh:minInclusive: literal; focus values  literal.
+sh:maxExclusive: literal; focus values < literal.
+sh:maxInclusive: literal; focus values  literal.
 
-4 Validation Report Model
-ValidationReport: conforms xsd:boolean, result list of ValidationResult, shapesGraphWellFormed xsd:boolean
-ValidationResult: focusNode any, resultPath property or path, value any, sourceShape Shape, sourceConstraintComponent IRI, detail nested ValidationResult, resultMessage string, resultSeverity Severity
+4 String-based Constraint Components
+sh:minLength: integer  0; enforces minimum string length.
+sh:maxLength: integer  0; enforces maximum string length.
+sh:pattern: regex string; SPARQL regex syntax; must match at least one substring.
+sh:languageIn: List of xsd:languageTag strings; literal language tag must be in list.
+sh:uniqueLang: boolean; if true, each language tag appears at most once.
 
-5 SHACL List Semantics
-Definition of SHACL list: rdf:nil or node with exactly one rdf:first and one rdf:rest linking to another list, no cycles, member order by rdf:first then rdf:rest chain
+5 Property Pair Constraint Components
+sh:equals: property IRI; values equal to values of this property on same focus node.
+sh:disjoint: property IRI; values disjoint from values of this property.
+sh:lessThan: property IRI; value < values of this property.
+sh:lessThanOrEquals: property IRI; value  values.
+
+6 Logical Constraint Components
+sh:not: shape IRI; focus nodes must not conform.
+sh:and: List of shape IRIs; must conform to all.
+sh:or: List of shape IRIs; must conform to at least one.
+sh:xone: List of shape IRIs; must conform to exactly one.
+
+7 Shape-based Constraint Components
+sh:node: NodeShape IRI; nested node shape.
+sh:property: PropertyShape IRI; nested property shape.
+sh:qualifiedValueShape: Shape IRI; shape for counted values.
+sh:qualifiedMinCount: integer  0; min count.
+sh:qualifiedMaxCount: integer  0; max count.
+
+8 Other Constraint Components
+sh:closed: boolean; default false; if true, no extra properties allowed.
+sh:ignoredProperties: List of property IRIs; exempt from closed.
+sh:hasValue: RDF term; value must equal this.
+sh:in: List of RDF terms; value must be one of these.
 
 ## Original Source
 RDF Graph Shape Validation Standards: SHACL & ShEx
@@ -160,113 +226,155 @@ https://www.w3.org/TR/shacl/
 
 ## Digest of SHACL_CORE
 
-# SHACL CORE LANGUAGE SPECIFICATION
+# Value Type Constraint Components
 
-## Namespace Prefix Bindings
-rdf  http://www.w3.org/1999/02/22-rdf-syntax-ns#
-rdfs http://www.w3.org/2000/01/rdf-schema#
-sh   http://www.w3.org/ns/shacl#
-owl  http://www.w3.org/2002/07/owl#
-xsd  http://www.w3.org/2001/XMLSchema#
-ex   http://example.com/ns#
+sh:class
+Parameter: rdfs:Class
+Accepts a class IRI. Indicates that every value of the focus property must be a SHACL instance of the given class.
 
-## Core Classes and Properties
-sh:Shape
-  sh:targetClass    rdfs:Class             
-  sh:targetNode     any IRI or literal    
-  sh:targetObjectsOf rdf:Property         
-  sh:targetSubjectsOf rdf:Property        
-  sh:deactivated    xsd:boolean default false
-  sh:severity       sh:Severity default sh:Violation
-  sh:message        xsd:string or rdf:langString default none
+sh:datatype
+Parameter: xsd:Datatype IRI
+Specifies that every value must be a literal of the given datatype.
 
-sh:NodeShape   subclass of sh:Shape
-  sh:property   sh:PropertyShape (multiple)
-  sh:closed     xsd:boolean default false
-  sh:ignoredProperties rdf:List default rdf:nil
+sh:nodeKind
+Parameter: one of sh:BlankNode, sh:IRI, sh:Literal, sh:BlankNodeOrIRI, sh:BlankNodeOrLiteral, sh:IRIOrLiteral
+Specifies the kind of RDF node required.
 
-sh:PropertyShape   subclass of sh:Shape
-  sh:path        rdf:Property or sequence path
-  sh:minCount    xsd:integer default 1
-  sh:maxCount    xsd:integer no default
-  sh:datatype    rdfs:Resource
-  sh:class       rdfs:Resource
-  sh:node        sh:NodeShape
-  sh:name        xsd:string
-  sh:description xsd:string
-  sh:defaultValue any
-  sh:group       sh:PropertyGroup
+# Cardinality Constraint Components
 
-## Constraint Components and Parameters
-Value Type
-  sh:class       rdfs:Resource required
-  sh:datatype    rdfs:Resource required
-  sh:nodeKind    [ sh:IRI sh:BlankNode sh:Literal ] default none
+sh:minCount
+Parameter: xsd:integer
+Defines the minimum number of occurrences of the property per focus node.
 
-Cardinality
-  sh:minCount    xsd:integer default 0
-  sh:maxCount    xsd:integer no default
+sh:maxCount
+Parameter: xsd:integer
+Defines the maximum number of occurrences of the property per focus node.
 
-Value Range
-  sh:minExclusive   anyLiteral no default
-  sh:minInclusive   anyLiteral no default
-  sh:maxExclusive   anyLiteral no default
-  sh:maxInclusive   anyLiteral no default
+# Value Range Constraint Components
 
-String-based
-  sh:minLength   xsd:integer default 0
-  sh:maxLength   xsd:integer no default
-  sh:pattern     xsd:string regex no default
-  sh:languageIn  rdf:List of xsd:languageTags default rdf:nil
-  sh:uniqueLang  xsd:boolean default false
+sh:minExclusive
+Parameter: literal value comparable by SPARQL
+Excludes the given literal value; focus values must be greater.
 
-Logical
-  sh:not           sh:Shape
-  sh:and           rdf:List of sh:Shape
-  sh:or            rdf:List of sh:Shape
-  sh:xone          rdf:List of sh:Shape
+sh:minInclusive
+Parameter: literal value comparable by SPARQL
+Focus values must be greater than or equal to the given literal.
 
-Shape-based
-  sh:node            sh:NodeShape
-  sh:property        sh:PropertyShape
-  sh:qualifiedValueShape       sh:Shape
-  sh:qualifiedMinCount         xsd:integer default 0
-  sh:qualifiedMaxCount         xsd:integer no default
+sh:maxExclusive
+Parameter: literal value comparable by SPARQL
+Excludes the given literal; focus values must be less.
 
-Other
-  sh:closed            xsd:boolean default false
-  sh:ignoredProperties rdf:List default rdf:nil
-  sh:hasValue          any
-  sh:in                rdf:List of allowed values
+sh:maxInclusive
+Parameter: literal value comparable by SPARQL
+Focus values must be less than or equal to the given literal.
 
-## Validation Report Structure
-sh:ValidationReport
-  sh:conforms         xsd:boolean
-  sh:result           rdf:List of sh:ValidationResult
-  sh:shapesGraphWellFormed xsd:boolean
+# String-based Constraint Components
 
-sh:ValidationResult
-  sh:focusNode       any
-  sh:resultPath      rdf:Property or path
-  sh:value           any
-  sh:sourceShape     sh:Shape
-  sh:sourceConstraintComponent  rdf:IRI
-  sh:detail          sh:ValidationResult
-  sh:resultMessage   xsd:string or rdf:langString
-  sh:resultSeverity  sh:Severity
+sh:minLength
+Parameter: xsd:integer
+Minimum string length of literal values.
 
-## SHACL List Definition
-A SHACL list is either rdf:nil or a node with exactly one rdf:first and one rdf:rest whose object is another SHACL list. Members order follow rdf:first then rdf:rest chain. No cycles.
+sh:maxLength
+Parameter: xsd:integer
+Maximum string length of literal values.
 
+sh:pattern
+Parameter: xsd:string (regex)
+Regular expression that literal values must match.
 
+sh:languageIn
+Parameter: rdf:List of language tags
+Allowed language tags for literal values.
+
+sh:uniqueLang
+Parameter: xsd:boolean
+If true, literal values must each have a unique language tag.
+
+# Property Pair Constraint Components
+
+sh:equals
+Parameter: rdf:Property IRI
+Focus values must be equal to values of the given property on the same node.
+
+sh:disjoint
+Parameter: rdf:Property IRI
+Focus values must be disjoint from values of the given property.
+
+sh:lessThan
+Parameter: rdf:Property IRI
+Focus values must be less than values of the given property.
+
+sh:lessThanOrEquals
+Parameter: rdf:Property IRI
+Focus values must be less than or equal to values of the given property.
+
+# Logical Constraint Components
+
+sh:not
+Parameter: sh:Shape IRI
+Focus nodes must not conform to the given shape.
+
+sh:and
+Parameter: rdf:List of sh:Shape IRIs
+Focus nodes must conform to all shapes in the list.
+
+sh:or
+Parameter: rdf:List of sh:Shape IRIs
+Focus nodes must conform to at least one shape in the list.
+
+sh:xone
+Parameter: rdf:List of sh:Shape IRIs
+Focus nodes must conform to exactly one shape in the list.
+
+# Shape-based Constraint Components
+
+sh:node
+Parameter: sh:NodeShape IRI
+Applies the given node shape to focus nodes.
+
+sh:property
+Parameter: sh:PropertyShape IRI
+Applies the given property shape to focus nodes.
+
+sh:qualifiedValueShape
+Parameter: sh:Shape IRI
+Specifies a shape that each value must conform to, counted by min and max.
+
+sh:qualifiedMinCount
+Parameter: xsd:integer
+Minimum count of values conforming to qualifiedValueShape.
+
+sh:qualifiedMaxCount
+Parameter: xsd:integer
+Maximum count of values conforming to qualifiedValueShape.
+
+# Other Constraint Components
+
+sh:closed
+Parameter: xsd:boolean (default false)
+If true, focus nodes cannot have properties other than those declared in property shapes or ignoredProperties.
+
+sh:ignoredProperties
+Parameter: rdf:List of rdf:Property IRIs
+Properties exempted from closed constraint.
+
+sh:hasValue
+Parameter: any RDF term
+Focus nodes must have this exact value for the property.
+
+sh:in
+Parameter: rdf:List of RDF terms
+Focus property values must be one of the listed values.
+
+Retrieved on: 2024-06-16
 
 ## Attribution
 - Source: RDF Graph Shape Validation Standards: SHACL & ShEx
 - URL: https://www.w3.org/TR/shacl/
 - License: License if known
-- Crawl Date: 2025-04-29T20:51:52.892Z
-- Data Size: 18127168 bytes
-- Links Found: 144052
+- Crawl Date: 2025-04-30T04:51:13.994Z
+- Data Size: 21477283 bytes
+- Links Found: 170631
 
 ## Retrieved
-2025-04-29
+2025-04-30
