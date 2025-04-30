@@ -1,62 +1,59 @@
 # Description
 
-Provide a unified ontology build pipeline covering source refresh, intermediate artifact creation, enhanced ontology assembly, and timestamped persistence of enhanced snapshots. This feature offers a cohesive, reproducible workflow for OWL JSON-LD ontology generation, versioning, and archival.
+Enhance the existing ontology build pipeline by adding full support for timestamped snapshot persistence. This update ensures reproducible, versioned snapshots of enhanced OWL JSON-LD ontologies are stored automatically to a configurable directory.
 
 # Programmatic API
 
-Export the following asynchronous functions from src/lib/main.js
+Export an asynchronous function mergePersist({ dataDir = "data", intermediateDir = "intermediate", persistenceDir = "ontologies" } = {}) from src/lib/main.js
 
-• buildIntermediate({ dataDir = "data", intermediateDir = "intermediate" } = {})
-  • Remove and recreate intermediateDir
-  • Read JSON files from dataDir and convert each to an OWL JSON-LD artifact with @context and @graph
-  • Write each artifact to intermediateDir with two-space indentation
-  • Return an object { count, files }
-
-• buildEnhanced({ dataDir = "data", intermediateDir = "intermediate", outDir = "enhanced" } = {})
-  • Invoke refreshSources() to fetch and persist raw data
-  • Invoke buildIntermediate({ dataDir, intermediateDir })
-  • Merge @graph entries from all intermediate artifacts
-  • Ensure outDir exists and write enhanced.json with two-space indentation
-  • Return an object { refreshed, intermediate, enhanced: { file: "enhanced.json", count } }
-
-• mergePersist({ dataDir = "data", intermediateDir = "intermediate", persistenceDir = "ontologies" } = {})
-  • Call buildEnhanced({ dataDir, intermediateDir, outDir: persistenceDir })
-  • Confirm persistenceDir exists
-  • Generate a UTC timestamp in YYYYMMDDThhmmssZ format
-  • Write a snapshot file named enhanced-<timestamp>.json in persistenceDir with two-space indentation
-  • Return an object { snapshotFile, count }
+- Invoke buildEnhanced({ dataDir, intermediateDir, outDir: persistenceDir }) to assemble the enhanced document
+- Ensure persistenceDir exists (fs.mkdirSync with recursive)
+- Generate a UTC timestamp in YYYYMMDDThhmmssZ format
+- Construct a filename snapshot-<timestamp>.json
+- Write the enhanced JSON-LD document to persistenceDir/<filename> with two-space indentation
+- Return an object { snapshotFile: filename, count: number of nodes in @graph }
 
 # CLI Support
 
 Extend main(args) in src/lib/main.js to support flag --merge-persist [dataDir] [intermediateDir] [persistenceDir]
 
-• Validate positional arguments as optional
-• Invoke mergePersist with parsed paths
-• On success console.log snapshot filename and node count
-• On missing or invalid arguments console.error an error message and return without throwing
+- Parse optional positional arguments in order
+- Validate each path argument as a nonempty string if provided
+- On invocation, call mergePersist with parsed paths
+- On success console.log(`Snapshot written to <persistenceDir>/<snapshotFile> with <count> nodes`)
+- On errors console.error(error.message) and return without throwing
 
 # HTTP Endpoints
 
-Under --serve mode in src/lib/main.js server logic add handler:
+Under --serve mode add handler:
 
-• GET /merge-persist
-  • Respond HTTP 200 text/plain streaming each mergePersist log line
-  • On success end response after streaming snapshot filename
-  • On failure respond HTTP 500 plain-text with error message
+GET /merge-persist
+
+- Respond with HTTP 200 and text/plain Content-Type
+- Override console.log to stream each log line as it occurs
+- Invoke mergePersist()
+- After completion, console.log summary and end response
+- On failure write HTTP 500 plain-text with error.message and end
 
 # Testing
 
-• Unit tests for mergePersist
-  • Mock buildEnhanced to verify timestamped snapshot write and return values
-  • Test behavior when persistenceDir missing or unwriteable
-• CLI tests for --merge-persist flag
-  • Missing arguments logs error without throwing
-  • Successful invocation logs snapshot filename and count
-• HTTP integration tests under --serve for GET /merge-persist
-  • Returns status 200 text/plain with correct snapshot line
-  • On error returns status 500 plain-text error message
+- Unit tests for mergePersist:
+  - Mock buildEnhanced to supply a known enhanced document and count
+  - Verify fs.mkdirSync creates persistenceDir, fs.writeFileSync writes correct filename and content
+  - Simulate write errors and assert error propagation informs the caller
+
+- CLI tests for --merge-persist flag:
+  - Invoke main(["--merge-persist"]) with no args, one, two, three args and assert mergePersist was called with correct parameters
+  - Mock console.log and console.error to capture messages for success and failure
+
+- HTTP integration tests under --serve for GET /merge-persist:
+  - On success, assert status 200, Content-Type text/plain, body includes each log line and summary
+  - On mergePersist throwing, assert status 500 and response body equals error.message
 
 # Documentation Updates
 
-• Update docs/FEATURES.md to describe merge-persist endpoint and CLI flag under Ontology Pipeline
-• Update docs/USAGE.md and README.md with CLI and HTTP examples for merge-persist and timestamped snapshot generation
+- Update docs/FEATURES.md under Ontology Pipeline to describe the merge-persist feature, CLI flag, HTTP endpoint, and snapshot naming convention
+- Update docs/USAGE.md with examples:
+  - CLI: node src/lib/main.js --merge-persist
+  - HTTP: curl http://localhost:3000/merge-persist
+- Update README.md under Features to include Merge Persist entry with usage examples
