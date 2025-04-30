@@ -2,7 +2,7 @@
 
 ## https://www.w3.org/TR/owl2-overview/
 
-This consolidated source provides the high-level document overview of the OWL 2 Web Ontology Language and links to all foundational W3C Recommendations: RDF 1.1 Concepts & Abstract Syntax, OWL 2 Ontology Profiles (DL, EL, QL, RL), OWL 2 Structural Specification, OWL 2 Direct Semantics, and OWL 2 Mapping to RDF Graphs. It underpins context management, framing, reasoning, consistency checking, normalization, and serialization steps in the ontology build pipeline by defining graph modeling semantics, profile conformance, formal semantics, and RDF mapping. Last updated December 2012 for OWL 2; RDF 1.1 parts last updated June 2014. Authoritative W3C Recommendation.
+This consolidated source provides the high-level overview of the OWL 2 Web Ontology Language, linked to all foundational W3C Recommendations: RDF 1.1 Concepts & Abstract Syntax, OWL 2 Ontology Profiles (DL, EL, QL, RL), OWL 2 Structural Specification, OWL 2 Direct Semantics, and OWL 2 Mapping to RDF Graphs. It underpins context management, framing, reasoning, consistency checking, normalization, and serialization in the ontology build pipeline by defining graph modeling semantics, profile conformance, formal semantics, and RDF mapping. Last updated December 2012 for OWL 2; RDF 1.1 parts last updated June 2014. Authoritative W3C Recommendation.
 
 ## License if known
 
@@ -22,7 +22,7 @@ W3C Document License (CC-BY 4.0)
 
 ## https://www.w3.org/TR/ld-bp/
 
-Comprehensive guidelines for publishing and consuming HTTP-based Linked Data, covering IRI design, content negotiation, pagination, versioning, caching, and discoverability. Includes the Linked Data Platform (LDP 1.0) container semantics and Hydra Core Vocabulary (CC0) for hypermedia-driven REST APIs over RDF, directly informing endpoint schemes, HTTP methods, headers, and client navigation strategies. Last updated September 2020. Authoritative W3C Recommendations and Community Vocabulary.
+Comprehensive guidelines for publishing and consuming HTTP-based Linked Data, covering IRI design, content negotiation, pagination, versioning, caching, and discoverability. Includes the Linked Data Platform (LDP 1.0) container semantics and Hydra Core Vocabulary (CC0) for hypermedia-driven REST APIs over RDF, directly informing endpoint schemes, HTTP methods, headers, and client navigation strategies. Last updated September 2020. Authoritative W3C Recommendation and Community Vocabulary.
 
 ## License if known
 
@@ -32,7 +32,7 @@ W3C Document License (CC-BY 4.0); CC0/Public Domain
 
 ## https://github.com/colinhacks/zod#readme
 
-A unified reference for runtime schema validation (Zod 3.x), W3C SHACL (July 2023) and ShEx (February 2023) shape definitions, the RDFJS data model and stream-processing specifications, the OWL manipulation toolkit (owljs), and the official JSON-LD JavaScript API implementation (jsonld.js). Provides type-safe parsing, streaming graph transformations, framing, validation, and ontology manipulation in browser and Node.js environments. Last updated June 2024. Maintained by open-source communities.
+A unified reference for runtime schema validation (Zod 3.x), W3C SHACL (July 2023) and ShEx (February 2023) shape definitions, the RDFJS data model and stream-processing specifications, the OWL manipulation toolkit (owljs), and the official JSON-LD JavaScript API implementation (jsonld.js). Provides type-safe parsing, streaming graph transformations, framing, validation, and ontology manipulation in browser and Node.js environments. Last updated June 2024. Maintained by open-source communities under MIT, CC0, and W3C licenses.
 
 ## License if known
 
@@ -48,26 +48,6 @@ This unified source consolidates W3C SPARQL 1.1 specifications (Query, Update, P
 
 W3C Document License (CC-BY 4.0); Apache 2.0; MIT; Eclipse Public License 2.0
 
-# Web Platform, Fetch & HTTP Standards
-
-## https://nodejs.org/api/
-
-Merges Node.js Core (v20+) documentation for filesystem, HTTP server, streams, and ESM loader architecture with the WHATWG Fetch Standard and HTTP/1.1 semantics (RFC 7231). Offers practical guidance for CLI I/O, HTTP handling, content negotiation, and interoperable date-time formatting, enabling robust server and client implementations. Last reviewed March 2024.
-
-## License if known
-
-Node.js Documentation License (CC-BY-SA 3.0); WHATWG Spec (Public Domain); IETF Trust License
-
-# ROBOT: Release OWL Ontology Builder
-
-## https://github.com/ontodev/robot#readme
-
-ROBOT is a comprehensive CLI and Java library for automating OWL ontology workflows: module extraction, reasoning, merging, format conversion, validation, and release packaging. Its best-practice patterns for ontology versioning, provenance tracking, and CI integration directly inform the repository’s build and release pipelines. Last release April 2024; widely adopted by the OBO Foundry community.
-
-## License if known
-
-Apache 2.0
-
 # RDF Graph Shape Validation Standards: SHACL & ShEx
 
 ## https://www.w3.org/TR/shacl/
@@ -77,3 +57,23 @@ This source covers the W3C SHACL Recommendation for RDF graph validation—defin
 ## License if known
 
 W3C Document License (CC-BY 4.0); CC0/Public Domain
+
+# Apache Jena Fuseki HTTP SPARQL Endpoint API
+
+## https://jena.apache.org/documentation/fuseki2/fuseki-protocol.html
+
+Provides a detailed HTTP API specification for SPARQL endpoints via Apache Jena Fuseki (v4.x). Covers query execution (GET/POST), update operations, dataset and graph management via the SPARQL Graph Store Protocol, CORS configuration, authentication, error codes, and URL patterns for endpoint administration. Essential for implementing and integrating HTTP-based SPARQL services in server and client modules. Last updated June 2024. Authoritative project documentation.
+
+## License if known
+
+Apache License 2.0
+
+# Comunica Query Engine Documentation
+
+## https://comunica.dev/docs/
+
+Official documentation for Comunica, a modular SPARQL query engine for JavaScript and TypeScript. Includes configuration of actors, mediators, and source definitions; integration of in-memory and HTTP RDF sources; optimization techniques; streaming query results; and API usage patterns for the `QueryEngine` class. Directly informs the repository's programmatic `sparqlQuery` and `getCapitalCities` functions. Last updated April 2024. Maintained under MIT License.
+
+## License if known
+
+MIT
