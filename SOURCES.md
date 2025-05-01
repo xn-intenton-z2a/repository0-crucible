@@ -37,31 +37,32 @@ Last updated: ongoing. Community‐verified endpoint documentation.
 # Apache Jena Documentation
 ## https://jena.apache.org/documentation/
 Covers the Jena API for Java-based RDF processing, SPARQL engine (ARQ), ontology API, and command‐line tools (riot, tdbloader). Though Java-centric, this documentation provides insight into common RDF processing pipelines, reasoning configurations (OWL Miner), and tuning SPARQL performance—guidance translatable to JS-based tooling.
-Last updated: 2023. Licensed under Apache-2.0.
+Last updated: 2023.
 ## Apache-2.0
 
 # rdflib.js Documentation
 ## https://linkeddata.github.io/rdflib.js/doc/index.html
 Official API reference for rdflib.js, covering graph manipulation, fetcher for HTTP‐based RDF acquisition, parsers/serializers for Turtle, RDF/XML, and JSON-LD, as well as query interfaces. Demonstrates how to load remote ontologies, perform in-memory reasoning, and serialize graphs—directly applicable patterns for `owl-builder` implementations.
-Last updated: 2022. MIT License.
+Last updated: 2022.
 ## MIT
 
 # N3.js Documentation
 ## https://n3.js.org/
 Documentation for the N3.js library, including the N3Parser, N3Writer, and N3.Store. It provides performance benchmarks, streaming API usage, and examples for handling large RDF datasets in Node.js—essential for efficient crawling and conversion pipelines.
-Last updated: 2021. MIT License.
+Last updated: 2021.
 ## MIT
 
 # OGC API - Features
 ## https://ogcapi.ogc.org/features/
 The Open Geospatial Consortium's OGC API – Features standard defines RESTful endpoints for geographic feature retrieval. It specifies GeoJSON responses, paging, filtering, and coordinate reference system support. This is a high-value pattern for integrating spatial datasets into OWL ontologies (e.g., capital cities example) through an API-first approach.
-Last updated: 2022. CC-BY 4.0.
+Last updated: 2022.
 ## CC-BY 4.0
 
 # DBpedia SPARQL Endpoint
 ## https://dbpedia.org/sparql
 Endpoint documentation with usage guidelines, sample queries for class and property extraction, and details on dataset coverage and update frequency. DBpedia offers structured knowledge extracted from Wikipedia that can seed ontology classes and instances, complementing OWL creation workflows.
-Last updated: 2023. CC-BY-SA 3.0
+Last updated: 2023.
+## CC-BY-SA 3.0
 
 # SPARQL 1.1 Query Language
 ## https://www.w3.org/TR/sparql11-query/
@@ -122,3 +123,51 @@ Last updated: February 2021. CC-BY 4.0.
 Documentation for Comunica, a modular SPARQL query engine for JavaScript that can query over various RDF sources (HTTP, file, in-memory) and federation setups. It provides tutorials for constructing engine configurations, optimizing query plans, and extending with custom actors—ideal for embedding high-performance querying within `owl-builder` workflows.
 Last updated: 2023. MIT License.
 ## MIT
+
+# JSON-LD API (Core Algorithms)
+## https://json-ld.org/spec/latest/json-ld-api/
+The JSON-LD API specification defines the core algorithms and HTTP conventions for JSON-LD processing, including compaction, expansion, framing, normalization, as well as conversion between RDF and JSON-LD. It details algorithmic steps, error handling, and HTTP content negotiation patterns for JSON-LD, which are directly relevant to implementing the `compact`, `expand`, and `generateOntology` functions in `owl-builder`.
+Last updated: January 2020. Authoritative as the W3C Recommendation for JSON-LD processing algorithms.
+## CC-BY 4.0
+
+# JSON-LD JavaScript Implementation (jsonld.js)
+## https://github.com/digitalbazaar/jsonld.js/
+The `jsonld.js` library documentation provides an API reference and usage examples for the official JavaScript implementation of JSON-LD 1.1. It covers asynchronous functions for compaction, expansion, framing, normalization, and RDF dataset conversion, along with context handling and custom document loaders—perfect for integrating into the `owl-builder` library and CLI.
+Last updated: 2023. Licensed under MIT.
+## MIT
+
+# RDFJS Data Model Specification
+## https://rdf.js.org/data-model-spec/
+This specification defines standard interfaces for RDF Terms (NamedNode, BlankNode, Literal), Quads, and Datasets in JavaScript. It provides TypeScript definitions and usage patterns ensuring interoperability between RDF libraries, which guides consistent graph construction and serialization workflows in `owl-builder`.
+Last updated: 2017. Community-maintained standard.
+## CC-BY 4.0
+
+# RDFJS Query Interface Specification
+## https://rdf.js.org/query/spec/
+The RDFJS Query Specification outlines an abstract query interface for RDF datasets in JavaScript, including asynchronous iteration and promise-based patterns for `match`, `find`, and `reduce` operations. These interfaces inform the design of in-memory querying capabilities when working with parsed OWL ontologies.
+Last updated: 2017. Community-maintained standard.
+## CC-BY 4.0
+
+# JSON-LD Streaming Parser
+## https://github.com/rubensworks/jsonld-streaming-parser.js
+This library parses streaming JSON-LD inputs using a pull-based SAX-style API to handle large datasets without loading entire documents into memory. Documentation includes API usage, event streams for triples and quads, and examples for integration with Node.js streams—a key resource for building scalable crawling and transformation pipelines in `owl-builder`.
+Last updated: 2022. Licensed under MIT.
+## MIT
+
+# Node.js Stream API
+## https://nodejs.org/api/stream.html
+The Node.js Stream API documentation covers the design and usage of readable, writable, duplex, and transform streams. It provides essential patterns for processing standard input (`process.stdin`) and output (`process.stdout`) in a CLI context, enabling streaming large JSON-LD payloads and efficient file handling in `owl-builder`.
+Last updated: v20.5.1 (May 2024). Authoritative from Node.js Foundation.
+## Node.js Foundation License
+
+# Commander.js CLI Framework
+## https://github.com/tj/commander.js
+Commander.js documentation describes a mature API for building feature-rich command-line interfaces in Node.js, including option parsing, subcommands, and automatic help generation. This source offers practical guidance to implement the `--compact`, `--expand`, `--to-owl`, and other CLI flags defined for `owl-builder`.
+Last updated: 2024. Licensed under MIT.
+## MIT
+
+# ES Modules in Node.js
+## https://nodejs.org/api/esm.html
+The Node.js ESM documentation explains how to use ECMAScript modules natively, covering import/export semantics, module resolution, file extension requirements, and interoperability with CommonJS. Understanding these details is critical for maintaining the ESM-based codebase of `owl-builder`.
+Last updated: v20.5.1 (May 2024). Authoritative from Node.js Foundation.
+## Node.js Foundation License
