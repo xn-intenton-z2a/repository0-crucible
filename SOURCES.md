@@ -22,16 +22,10 @@ Normative rules for serializing OWL 2 ontologies as RDF graphs, specifying how c
 Published December 2012. W3C Recommendation with full technical mappings.
 ## License: W3C Document License
 
-# SPARQL 1.1 Query Language
-## https://www.w3.org/TR/sparql11-query/
-The formal W3C specification for SPARQL 1.1, describing the grammar, operators, graph patterns, solution modifiers, and result forms. Directly informs how we process and validate SPARQL queries in `queryOntology` and drive correct translation to Comunica queries.
+# SPARQL 1.1 Query & Protocol
+## https://www.w3.org/TR/sparql11-overview/
+This combined entry covers both the SPARQL 1.1 Query Language specification and its HTTP Protocol. It explains grammar, operators, graph patterns, solution modifiers, result forms, and endpoint communication patterns (methods, parameters, streaming). Essential for parsing, validating and executing SPARQL (`queryOntology`) against remote endpoints.
 Published March 2013. Authoritative W3C Recommendation.
-## License: W3C Document License
-
-# SPARQL 1.1 Protocol
-## https://www.w3.org/TR/sparql11-protocol/
-Defines HTTP-based communication patterns for SPARQL endpoints, including request methods, parameter formats, and result streaming. Essential for implementing SPARQL over HTTP and aligning our CLI `--query` behavior to standard protocols.
-Published March 2013. W3C Recommendation.
 ## License: W3C Document License
 
 # Comunica SPARQL Documentation
@@ -40,17 +34,11 @@ Official guide to using the Comunica SPARQL engine in JavaScript, covering engin
 Last updated 2024. Licensed under MIT. Highly practical for our `@comunica/query-sparql` integration.
 ## License: MIT
 
-# JSONata Query and Transformation Language
-## https://docs.jsonata.org/
-Detailed reference for JSONata’s functional query and transformation syntax, including path navigation, filtering, and aggregation operators. Offers a more expressive alternative to simple dot‐expression querying, informing possible enhancements to our `esjQuery` feature.
-Actively maintained; v1.8 published April 2024.
-## License: Apache-2.0
-
-# JMESPath Specification
-## https://jmespath.org/specification.html
-Defines the formal grammar and evaluation semantics for JMESPath, a JSON query language supporting projections, filters, and multi-select. Useful for extending or benchmarking our simple expression-based queries in `esjQuery`.
-Published 2017; specification maintained by the community.
-## License: MIT
+# JSON Query and Transformation Languages
+## https://docs.jsonata.org/ & https://jmespath.org/specification.html
+A consolidated overview of JSONata and JMESPath, two expressive JSON query languages. JSONata provides functional operators (filtering, aggregation, path navigation) for transformation pipelines, while JMESPath offers projection and filtering semantics in JSON. Useful for enhancing or benchmarking `esjQuery` features with richer querying capabilities.
+JSONata v1.8 published April 2024 (Apache-2.0). JMESPath spec maintained since 2017 (MIT).
+## License: Apache-2.0 (JSONata), MIT (JMESPath)
 
 # Wikidata API Entities Module
 ## https://www.wikidata.org/w/api.php?action=help&modules=wbgetentities
@@ -76,23 +64,29 @@ The reference JavaScript implementation of JSON-LD, providing complete functiona
 Repository last updated 2024.
 ## License: BSD-3-Clause
 
+# Reference Implementations & Toolkits
+## https://github.com/jsonld-java/jsonld-java & https://github.com/digininja/owljs
+Covers Java (`jsonld-java`) and Node.js (`OwlJS`) implementations of JSON-LD and OWL toolkits respectively, showcasing context processing, framing, serialization, and reasoning support. Useful for cross-language design patterns and advanced feature considerations.
+`jsonld-java` last updated 2024 (Apache-2.0). `OwlJS` released 2023 (MIT).
+## License: Apache-2.0, MIT
+
 # Apache Jena Documentation
 ## https://jena.apache.org/documentation/
 Comprehensive tutorials and API references for Apache Jena, a Java framework for RDF and OWL processing. Offers insights on ontology models, SPARQL execution, and inference that can guide feature parity and potential Java interop considerations.
 Published regularly; licensed under Apache-2.0.
 ## License: Apache-2.0
 
-# RDFLib Python Library
-## https://rdflib.readthedocs.io/en/stable/
-Documentation for RDFLib’s graph APIs, SPARQL support, and serialization mechanisms in Python. Provides comparative patterns for graph construction, query execution, and context management that can inspire enhancements to our core JSON-LD/OWL processing.
-Stable release documentation (2023).
-## License: BSD
+# RDF/JS Data Model Specification
+## https://rdf.js.org/data-model-spec/
+Community-driven specification defining the RDF/JS interfaces for terms, quads, and datasets in JavaScript. Establishes a standard data model that can inform interoperable graph representations and potential integration with RDF/JS libraries.
+Published 2020; CC-BY 4.0.
+## License: CC-BY 4.0
 
-# OBO Foundry Metadata and Ontology Formats
-## http://www.obofoundry.org/ontology-development/ontology-file-utilization.html
-Standards and best practices for developing and distributing OWL ontologies in the biomedical domain. Useful for structuring `@graph` metadata and ensuring interoperability with existing ontology ecosystems.
-Maintained collaboratively; terms under CC-BY 1.0.
-## License: CC-BY 1.0
+# N3.js RDF Library
+## https://github.com/rdfjs/N3.js#readme
+High-performance Node.js library for parsing and serializing RDF in N3, Turtle, TriG, and N-Triples formats. Offers streaming support and an in-memory quad store for advanced graph operations, complementing JSON-LD conversion workflows.
+Repository last updated 2024.
+## License: MIT
 
 # RDF 1.1 Concepts and Abstract Syntax
 ## https://www.w3.org/TR/rdf11-concepts/
@@ -117,18 +111,6 @@ Last updated December 2020.
 Specification of the SPARQL 1.1 Update language, detailing the syntax and semantics of INSERT, DELETE, LOAD, and other graph update operations. Provides guidance for implementing future ontology modification commands (e.g., `updateOntology`).
 Published March 2013. Authoritative as W3C Recommendation.
 ## License: W3C Document License
-
-# jsonld-java
-## https://github.com/jsonld-java/jsonld-java
-Java implementation of the JSON-LD 1.1 specification offering context processing, framing, and RDF conversions. Examining its modular architecture and performance optimizations can inform enhancements in error handling and pipeline design in our JS library.
-Last updated 2024.
-## License: Apache-2.0
-
-# pyld - Python JSON-LD Implementation
-## https://github.com/digitalbazaar/pyld
-A Python reference implementation of the JSON-LD API providing full support for compaction, expansion, framing, and RDF conversions. Useful for cross-language comparison of API interfaces and performance characteristics.
-Last updated 2024.
-## License: BSD-3-Clause
 
 # Node.js Global Fetch API
 ## https://nodejs.org/api/globals.html#fetch
@@ -160,22 +142,10 @@ Lightweight JavaScript Expression Parser that parses JS expressions into ASTs. P
 Repository last updated 2024. License: MIT.
 ## License: MIT
 
-# RDF/JS Data Model Specification
-## https://rdf.js.org/data-model-spec/
-Community-driven specification defining the RDF/JS interfaces for terms, quads, and datasets in JavaScript. Establishes a standard data model that can inform interoperable graph representations and potential integration with RDF/JS libraries.
-Published 2020; CC-BY 4.0.
-## License: CC-BY 4.0
-
 # SPARQL.js - SPARQL Parser in JavaScript
 ## https://github.com/RubenVerborgh/SPARQL.js
 A JavaScript library that parses SPARQL queries into JSON syntax trees and serializes back. Enables programmatic inspection and transformation of SPARQL queries, which can be leveraged for advanced query rewriting in `queryOntology`.
 Last updated 2024. License: MIT.
-## License: MIT
-
-# OwlJS - OWL Ontology Toolkit for Node.js
-## https://digininja.github.io/owljs/docs/
-An OWL-focused toolkit for interacting with ontologies in Node.js. Provides utilities for loading, manipulating, serializing, and querying OWL ontologies, including support for reasoning. Offers design insights and feature ideas for our OWL generation and query modules.
-Last released 2023. License: MIT.
 ## License: MIT
 
 # Dotenv - Environment Variable Loader
@@ -189,3 +159,15 @@ Version 16.x. Documentation under MIT.
 Collection of utilities and implementations for RDF/JS data models and parsers, including dataset factories and serialization. Useful for advanced graph manipulation, dataset merging, and streaming operations that could complement our JSON-LD handling.
 Last updated 2024. License: MIT.
 ## License: MIT
+
+# GraphQL-LD Documentation
+## https://graphql-ld.dev/docs/getting-started
+Integrates GraphQL query syntax with Linked Data sources using JSON-LD contexts, enabling expressive data retrieval from RDF endpoints. Includes technical setup, context mappings, resolver patterns, and performance guidelines—actionable for designing alternative query interfaces in our CLI.
+Last updated 2024. Licensed under MIT.
+## License: MIT
+
+# OWL API (Java) Documentation
+## http://owlcs.github.io/owlapi/apidocs/
+Comprehensive Java API for building, manipulating, and serializing OWL ontologies programmatically. Covers ontology classes, properties, axioms, and reasoning support via HermiT and other reasoners. Essential for cross-language reference and design patterns.
+Last updated 2023; maintained by the OWLAPI community.
+## License: LGPL-3.0-or-later
