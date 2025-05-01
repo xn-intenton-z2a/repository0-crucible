@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="sparql_js" href="#sparql_js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SPARQL_JS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">SPARQL.js v3.x provides Parser and Generator classes to translate SPARQL 1.1 (including SPARQL* and property paths, federation, updates) into a JSON AST and back. Parser.parse(query:string):object constructs an RDF/JS–compliant AST. Generator.stringify(ast:object):string regenerates the SPARQL text. Parser options: skipValidation:boolean=false, sparqlStar:boolean=false, pathOnly:boolean=false. Generator options: prefixes:Record&lt;string,string&gt;, baseIRI:string, factory:DataFactory, sparqlStar:boolean=false, pathOnly:boolean=false. CLI tool sparql-to-json [--strict] reads .sparql files and prints JSON AST. JSON AST: { queryType:string, variables:Array&lt;{termType,value}&gt;, where:Array&lt;{type,triples:[{subject,predicate,object}] }&gt;, prefixes:Record }.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Installation</p>
+</li>
+<li class="md-github">
+<p class="md-github">Parser API</p>
+</li>
+<li class="md-github">
+<p class="md-github">Generator API</p>
+</li>
+<li class="md-github">
+<p class="md-github">CLI Usage</p>
+</li>
+<li class="md-github">
+<p class="md-github">JSON AST Structure</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration Options</p>
+</li>
+<li class="md-github">
+<p class="md-github">Installation
+• npm install sparqljs</p>
+</li>
+<li class="md-github">
+<p class="md-github">Parser API
+• Constructor signature: new Parser({ skipValidation?: boolean; sparqlStar?: boolean; pathOnly?: boolean })
+• Method: parse(query: string) =&gt; JSON AST object</p>
+</li>
+<li class="md-github">
+<p class="md-github">Generator API
+• Constructor signature: new Generator({ prefixes?: Record&lt;string,string&gt;; baseIRI?: string; factory?: RDFJS.DataFactory; sparqlStar?: boolean; pathOnly?: boolean })
+• Method: stringify(ast: object) =&gt; SPARQL string</p>
+</li>
+<li class="md-github">
+<p class="md-github">CLI Usage
+• Command: sparql-to-json [--strict] input.sparql [--output file.json]
+• --strict enforces pure SPARQL 1.1 (disables SPARQL*)</p>
+</li>
+<li class="md-github">
+<p class="md-github">JSON AST Structure
+• queryType: SELECT, ASK, CONSTRUCT, DESCRIBE
+• variables: [ { termType: Variable|NamedNode|Literal, value: string, language?: string, datatype?: object } ]
+• where: [ { type: bgp|path|filter|..., triples?: [...], path?: {...}, expression?: {...} } ]
+• prefixes: { prefix: IRI }</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration Options
+• skipValidation (Parser): skip syntax-level SPARQL compliance checks (default false)
+• sparqlStar (Parser &amp; Generator): enable SPARQL* extension (default false)
+• pathOnly (Parser &amp; Generator): parse property paths into path objects rather than full algebra (default false)
+• strict (CLI): disable SPARQL* in CLI parser</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">• Version: 3.7.3 (Latest Aug 23, 2024)
+• Supports SPARQL 1.1 features: property paths, aggregates, subqueries, federated SERVICE calls, UPDATE operations via query AST.
+• SPARQL* extension: nest triple patterns in subject or object fields when sparqlStar=true.
+• Installation step: npm install sparqljs@3.7.3
+• Integration Steps:</p>
+<ol class="md-github">
+<li class="md-github">Import: const { Parser, Generator } = require('sparqljs');</li>
+<li class="md-github">Instantiate Parser: const parser = new Parser({ skipValidation: false, sparqlStar: true, pathOnly: false });</li>
+<li class="md-github">Parse SPARQL text: const ast = parser.parse(sparqlText);</li>
+<li class="md-github">Modify AST as needed (e.g., ast.variables = ['?x']);</li>
+<li class="md-github">Instantiate Generator: const generator = new Generator({ prefixes, baseIRI, factory, sparqlStar: true });</li>
+<li class="md-github">Generate SPARQL: const text = generator.stringify(ast);
+• CLI integration:</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Add bin entry in package.json: &quot;sparql-to-json&quot;: &quot;sparql-to-json&quot;</li>
+<li class="md-github">Use in scripts: &quot;test-queries&quot;: &quot;sparql-to-json --strict queries/*.sparql &gt; out.json&quot;</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="parser-class" href="#parser-class"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parser Class</h3>
+<p class="md-github">Constructor:</p>
+<pre class="md-github"><code class="md-github">new Parser(options?: {
+  skipValidation?: boolean; // default false
+  sparqlStar?: boolean;    // default false
+  pathOnly?: boolean;      // default false
+})
+</code></pre>
+<p class="md-github">Methods:</p>
+<pre class="md-github"><code class="md-github">parse(query: string): {
+  queryType: 'SELECT'|'ASK'|'CONSTRUCT'|'DESCRIBE';
+  variables: Array&lt;{ termType: string; value: string; language?: string; datatype?: { termType:string; value:string } }&gt;;
+  where: Array&lt;{
+    type: string;
+    triples?: Array&lt;{ subject: object; predicate: object; object: object }&gt;;
+    path?: object;
+    expression?: object;
+  }&gt;;
+  prefixes: Record&lt;string,string&gt;;
+  type: 'query';
+};
+</code></pre>
+<p class="md-github">Throws SyntaxError on invalid SPARQL syntax unless skipValidation=true.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="generator-class" href="#generator-class"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Generator Class</h3>
+<p class="md-github">Constructor:</p>
+<pre class="md-github"><code class="md-github">new Generator(options?: {
+  prefixes?: Record&lt;string,string&gt;; // default {}
+  baseIRI?: string;                 // default undefined
+  factory?: RDFJS.DataFactory;      // default RDF/JS default factory
+  sparqlStar?: boolean;             // default false
+  pathOnly?: boolean;               // default false
+})
+</code></pre>
+<p class="md-github">Methods:</p>
+<pre class="md-github"><code class="md-github">stringify(ast: object): string
+</code></pre>
+<p class="md-github">Produces valid SPARQL 1.1 text. Respects prefixes and baseIRI. Throws Error on unsupported AST shapes.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="cli-usage" href="#cli-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Usage</h3>
+<p class="md-github">Command:</p>
+<pre class="md-github"><code class="md-github">sparql-to-json [--strict] &lt;input.sparql&gt; [--output &lt;file.json&gt;]
+</code></pre>
+<p class="md-github">Options:
+• --strict: parse pure SPARQL 1.1 only (disables SPARQL*)
+• input.sparql: path to SPARQL file
+• --output: path to write JSON AST (stdout if omitted)</p>
+<p class="md-github">Exit Codes:
+• 0: success
+• 1: parse error (prints error message to stderr)</p>
+<h3 class="md-github"><a class="md-github__anchor" name="configuration-options" href="#configuration-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration Options</h3>
+<p class="md-github">Parser options:
+• skipValidation: skip spec compliance tests (true|false)
+• sparqlStar: enable SPARQL* syntax (true|false)
+• pathOnly: parse property paths into path constructs instead of triples (true|false)</p>
+<p class="md-github">Generator options:
+• prefixes: shorthand-&gt;IRI map
+• baseIRI: base IRI for relative names
+• factory: custom RDF/JS DataFactory
+• sparqlStar: emit SPARQL* triple patterns
+• pathOnly: emit property path syntax</p>
+<h3 class="md-github"><a class="md-github__anchor" name="best-practices" href="#best-practices"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Best Practices</h3>
+<ol class="md-github">
+<li class="md-github">Always supply prefixes in Generator to avoid auto-expanding IRIs.</li>
+<li class="md-github">Use skipValidation=false in production to catch non-compliant queries.</li>
+<li class="md-github">Use sparqlStar=true only when dealing with RDF* data.</li>
+<li class="md-github">Wrap parse and stringify calls in try/catch to handle errors gracefully.</li>
+</ol>
+<h3 class="md-github"><a class="md-github__anchor" name="troubleshooting" href="#troubleshooting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting</h3>
+<p class="md-github">Parse errors:</p>
+<pre class="md-github"><code class="md-github">try {
+  const ast = parser.parse(text);
+} catch (err) {
+  console.error('ParseError:', err.message);
+  process.exit(1);
+}
+</code></pre>
+<p class="md-github">CLI error example:</p>
+<pre class="md-github"><code class="md-github">$ sparql-to-json query.sparql
+Error: Unmatched brace at line 3: ...
+Exit code: 1
+</code></pre>
+<p class="md-github">Use --strict to disable SPARQL* if unexpected triple nesting:</p>
+<pre class="md-github"><code class="md-github">$ sparql-to-json --strict query-with-star.sparql
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">Parser(options:{skipValidation:boolean=false,sparqlStar:boolean=false,pathOnly:boolean=false}).parse(query:string)-&gt;AST{queryType:string,variables:Array&lt;{termType,value,language?,datatype?}&gt;,where:Array&lt;{type,triples?,path?,expression?}&gt;,prefixes:Record,type:'query'};Generator(options:{prefixes?:Record,baseIRI?:string,factory?:DataFactory,sparqlStar?:boolean=false,pathOnly?:boolean=false}).stringify(AST)-&gt;string;CLI:sparql-to-json [--strict(false)] &lt;in.sparql&gt; [--output out.json],exit0/1;AST structure matches RDF/JS objects;options defaults enforce SPARQL1.1+extensions;best practices: supply prefixes,use skipValidation=false;troubleshoot via try/catch and --strict flag.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Installation</p>
+</li>
+<li class="md-github">
+<p class="md-github">Parser API</p>
+</li>
+<li class="md-github">
+<p class="md-github">Generator API</p>
+</li>
+<li class="md-github">
+<p class="md-github">CLI Usage</p>
+</li>
+<li class="md-github">
+<p class="md-github">JSON AST Structure</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration Options</p>
+</li>
+<li class="md-github">
+<p class="md-github">Installation
+npm install sparqljs</p>
+</li>
+<li class="md-github">
+<p class="md-github">Parser API
+Constructor signature: new Parser({ skipValidation?: boolean; sparqlStar?: boolean; pathOnly?: boolean })
+Method: parse(query: string) =&gt; JSON AST object</p>
+</li>
+<li class="md-github">
+<p class="md-github">Generator API
+Constructor signature: new Generator({ prefixes?: Record&lt;string,string&gt;; baseIRI?: string; factory?: RDFJS.DataFactory; sparqlStar?: boolean; pathOnly?: boolean })
+Method: stringify(ast: object) =&gt; SPARQL string</p>
+</li>
+<li class="md-github">
+<p class="md-github">CLI Usage
+Command: sparql-to-json [--strict] input.sparql [--output file.json]
+--strict enforces pure SPARQL 1.1 (disables SPARQL*)</p>
+</li>
+<li class="md-github">
+<p class="md-github">JSON AST Structure
+queryType: SELECT, ASK, CONSTRUCT, DESCRIBE
+variables: [ { termType: Variable|NamedNode|Literal, value: string, language?: string, datatype?: object } ]
+where: [ { type: bgp|path|filter|..., triples?: [...], path?: {...}, expression?: {...} } ]
+prefixes: { prefix: IRI }</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration Options
+skipValidation (Parser): skip syntax-level SPARQL compliance checks (default false)
+sparqlStar (Parser &amp; Generator): enable SPARQL* extension (default false)
+pathOnly (Parser &amp; Generator): parse property paths into path objects rather than full algebra (default false)
+strict (CLI): disable SPARQL* in CLI parser</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">SPARQL.js - SPARQL Parser in JavaScript
+https://github.com/RubenVerborgh/SPARQL.js</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-sparql_js" href="#digest-of-sparql_js"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of SPARQL_JS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
+<p class="md-github">npm install sparqljs</p>
+<h1 class="md-github"><a class="md-github__anchor" name="parser-api" href="#parser-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parser API</h1>
+<h3 class="md-github"><a class="md-github__anchor" name="constructor" href="#constructor"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Constructor</h3>
+<p class="md-github">new Parser(options?: {
+skipValidation?: boolean;
+sparqlStar?: boolean;
+pathOnly?: boolean;
+})</p>
+<h3 class="md-github"><a class="md-github__anchor" name="method" href="#method"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Method</h3>
+<p class="md-github">parser.parse(query: string): object</p>
+<h1 class="md-github"><a class="md-github__anchor" name="generator-api" href="#generator-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Generator API</h1>
+<h3 class="md-github"><a class="md-github__anchor" name="constructor-1" href="#constructor-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Constructor</h3>
+<p class="md-github">new Generator(options?: {
+prefixes?: Record&lt;string,string&gt;;
+baseIRI?: string;
+factory?: RDFJS.DataFactory;
+sparqlStar?: boolean;
+pathOnly?: boolean;
+})</p>
+<h3 class="md-github"><a class="md-github__anchor" name="method-1" href="#method-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Method</h3>
+<p class="md-github">generator.stringify(queryObject: object): string</p>
+<h1 class="md-github"><a class="md-github__anchor" name="cli" href="#cli"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI</h1>
+<pre class="md-github"><code class="md-github language-bash">sparql-to-json [--strict] &lt;input.sparql&gt; [--output &lt;file.json&gt;]
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="json-representation" href="#json-representation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSON Representation</h1>
+<ul class="md-github">
+<li class="md-github">queryType: &quot;SELECT&quot; | &quot;ASK&quot; | &quot;CONSTRUCT&quot; | &quot;DESCRIBE&quot;</li>
+<li class="md-github">variables: Array&lt;{ termType: string; value: string }&gt;</li>
+<li class="md-github">where: Array&lt;{ type: string; triples: Array&lt;{ subject: object; predicate: object; object: object }&gt; }&gt;</li>
+<li class="md-github">prefixes: Record&lt;string,string&gt;</li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="options" href="#options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Options</h1>
+<ul class="md-github">
+<li class="md-github">skipValidation: boolean (default: false)</li>
+<li class="md-github">sparqlStar: boolean (default: false)</li>
+<li class="md-github">pathOnly: boolean (default: false)</li>
+<li class="md-github">strict (CLI): boolean (default: false)</li>
+</ul>
+<h1 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h1>
+<p class="md-github">MIT License</p>
+<p class="md-github"><em class="md-github">Retrieved on: 2024-06-04</em>
+<em class="md-github">Data Size: 587512 bytes</em></p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: SPARQL.js - SPARQL Parser in JavaScript</li>
+<li class="md-github">URL: https://github.com/RubenVerborgh/SPARQL.js</li>
+<li class="md-github">License: License: MIT</li>
+<li class="md-github">Crawl Date: 2025-05-01T18:50:36.316Z</li>
+<li class="md-github">Data Size: 587512 bytes</li>
+<li class="md-github">Links Found: 4918</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-01</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-01T19:20:39.119Z</p>
+  </footer>
+</body>
+</html>
