@@ -1,78 +1,56 @@
 # repository0-crucible
 
-`repository0-crucible` is a JavaScript library and CLI tool for generating OWL ontologies in JSON-LD format from JSON data. It provides a simple API to convert arbitrary JSON objects into OWL ontology documents and a command-line interface to integrate into data pipelines.
+`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
 
-**Prerequisite:** Node.js >= 20
+To create a self-evolving agentic coding system of your own based on this one see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
+
+This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+
+## Repository Template
+
+The repository is intended as a template that includes:
+* A Template Base: A starting point for new projects.
+* A Running Experiment: An example implementation that demonstrates one way to use the template.
+* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+
+* See [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
 
 ## Installation
 
-Install from npm:
+Install via npm:
 
 ```bash
-npm install @xn-intenton-z2a/repository0-crucible
+npm install repository0-crucible
 ```
 
 ## Features
 
-- Generate OWL ontology in JSON-LD from JSON data.
-- Easy-to-use library API: `generateOntology`.
-- CLI support: `--to-owl` and `--ontology-base` flags.
-- Standard JSON-LD prefixes (`owl`, `rdf`) automatically included.
+TODO: Add features here.
 
-## Library API
+## Usage
 
-Import and call `generateOntology`:
-
-```js
-import { generateOntology } from "@xn-intenton-z2a/repository0-crucible";
-
-const data = { Person: { name: "Alice" } };
-const options = {
-  ontologyIri: "http://example.org/onto",
-  baseIri: "http://example.org/base", // optional
-};
-
-const ontology = await generateOntology(data, options);
-console.log(JSON.stringify(ontology, null, 2));
-```
-
-### `generateOntology(data, options)`
-
-- `data` (Object): keys are term names, values are term property objects.
-- `options.ontologyIri` (String, required): IRI for the ontology.
-- `options.baseIri` (String, optional): base IRI for `@base` in the `@context`.
-- Returns: `Promise<Object>` resolving to the OWL ontology document in JSON-LD.
-
-## CLI Usage
-
-Read JSON data from stdin and output the ontology to stdout or redirect to a file:
-
-```bash
-cat data.json \
-  | node src/lib/main.js --to-owl http://example.org/onto --ontology-base http://example.org/base \
-  > ontology.json
-```
-
-Use `--help` to display available options:
+To run the CLI tool and see help instructions:
 
 ```bash
 node src/lib/main.js --help
 ```
 
-Output:
+### Example Commands
 
-```
-Usage: node main.js [options]
-Options:
-  --help                  Show this help message.
-  --to-owl <ontologyIri>  Generate OWL ontology JSON-LD for the input data.
-  --ontology-base <IRI>   Base IRI to include in the @context @base field.
-```
+- **Default Demo Output:**
+  ```bash
+  npm run start
+  ```
+
+
+## Incremental Changes Plan
+
+TODO: Add forthcoming changes here.
 
 ## Contributing
 
-Contributions are welcome! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on reporting issues, submitting changes, and updating documentation.
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
 
 ## License
 
-Released under the MIT License. See [LICENSE](./LICENSE) for details.
+Released under the MIT License (see [LICENSE](./LICENSE)).
