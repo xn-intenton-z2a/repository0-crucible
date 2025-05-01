@@ -36,7 +36,7 @@ export function listSources(configPath = CONFIG_FILE) {
   }
   try {
     const data = JSON.parse(fs.readFileSync(configPath, "utf8"));
-    if (!Array.isArray(data) || !data.every(item => item.name && item.url)) {
+    if (!Array.isArray(data) || !data.every((item) => item.name && item.url)) {
       throw new Error("Invalid structure");
     }
     return [...PUBLIC_DATA_SOURCES, ...data];
@@ -64,7 +64,7 @@ export function addSource(source, configPath = CONFIG_FILE) {
       custom = [];
     }
   }
-  const exists = custom.some(item => item.name === name || item.url === url);
+  const exists = custom.some((item) => item.name === name || item.url === url);
   if (!exists) {
     custom.push({ name, url });
     fs.writeFileSync(configPath, JSON.stringify(custom, null, 2), "utf8");
@@ -82,7 +82,7 @@ export function removeSource(identifier, configPath = CONFIG_FILE) {
   } catch {
     return PUBLIC_DATA_SOURCES;
   }
-  const filtered = custom.filter(item => item.name !== identifier && item.url !== identifier);
+  const filtered = custom.filter((item) => item.name !== identifier && item.url !== identifier);
   if (filtered.length !== custom.length) {
     fs.writeFileSync(configPath, JSON.stringify(filtered, null, 2), "utf8");
   }
@@ -102,7 +102,7 @@ export function updateSource({ identifier, name, url }, configPath = CONFIG_FILE
   if (!Array.isArray(custom)) {
     throw new Error(`Invalid structure in ${configPath}`);
   }
-  const idx = custom.findIndex(item => item.name === identifier || item.url === identifier);
+  const idx = custom.findIndex((item) => item.name === identifier || item.url === identifier);
   if (idx === -1) {
     throw new Error(`Source not found: ${identifier}`);
   }
@@ -125,7 +125,7 @@ export function buildIntermediate({ dataDir = "data", outDir = "intermediate" } 
   fs.mkdirSync(intermediatePath, { recursive: true });
   let entries;
   try {
-    entries = fs.readdirSync(dataPath).filter(f => f.endsWith(".json"));
+    entries = fs.readdirSync(dataPath).filter((f) => f.endsWith(".json"));
   } catch {
     entries = [];
   }
@@ -142,7 +142,7 @@ export function buildIntermediate({ dataDir = "data", outDir = "intermediate" } 
     if (Array.isArray(content)) {
       graph = content;
     } else if (content.results && Array.isArray(content.results.bindings)) {
-      graph = content.results.bindings.map(binding => {
+      graph = content.results.bindings.map((binding) => {
         const keys = Object.keys(binding);
         const node = {};
         if (keys.length > 0) {
@@ -176,15 +176,13 @@ export async function buildEnhanced({ dataDir = "data", intermediateDir = "inter
   const refreshed = await mainModule.refreshSources();
   const intermediate = mainModule.buildIntermediate({ dataDir, outDir: intermediateDir });
   let graph = [];
-  const dirPath = path.isAbsolute(intermediateDir)
-    ? intermediateDir
-    : path.join(process.cwd(), intermediateDir);
+  const dirPath = path.isAbsolute(intermediateDir) ? intermediateDir : path.join(process.cwd(), intermediateDir);
   let files;
   if (intermediate.files && Array.isArray(intermediate.files) && intermediate.files.length) {
-    files = intermediate.files.filter(f => f.endsWith(".json"));
+    files = intermediate.files.filter((f) => f.endsWith(".json"));
   } else {
     try {
-      files = fs.readdirSync(dirPath).filter(f => f.endsWith(".json"));
+      files = fs.readdirSync(dirPath).filter((f) => f.endsWith(".json"));
     } catch {
       files = [];
     }
@@ -195,7 +193,8 @@ export async function buildEnhanced({ dataDir = "data", intermediateDir = "inter
       if (doc["@graph"] && Array.isArray(doc["@graph"])) {
         graph = graph.concat(doc["@graph"]);
       }
-    } catch {}  }
+    } catch {}
+  }
   const enhancedDoc = { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
   fs.mkdirSync(outDir, { recursive: true });
   const enhancedFile = "enhanced.json";
@@ -222,7 +221,7 @@ export async function getCapitalCities(endpoint = PUBLIC_DATA_SOURCES[0].url) {
     e.code = "INVALID_JSON";
     throw e;
   }
-  const graph = (json.results?.bindings || []).map(b => ({ "@id": b.country.value, capital: b.capital.value }));
+  const graph = (json.results?.bindings || []).map((b) => ({ "@id": b.country.value, "capital": b.capital.value }));
   return { "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": graph };
 }
 
@@ -402,7 +401,10 @@ export async function main(args) {
       diagnostics.memoryUsage = process.memoryUsage();
       let dataFiles = [];
       try {
-        dataFiles = fs.readdirSync(path.join(process.cwd(), "data")).filter(f => f.endsWith(".json")).sort();
+        dataFiles = fs
+          .readdirSync(path.join(process.cwd(), "data"))
+          .filter((f) => f.endsWith(".json"))
+          .sort();
       } catch {
         dataFiles = [];
       }
@@ -410,7 +412,10 @@ export async function main(args) {
       diagnostics.dataFiles = dataFiles;
       let intermediateFiles = [];
       try {
-        intermediateFiles = fs.readdirSync(path.join(process.cwd(), "intermediate")).filter(f => f.endsWith(".json")).sort();
+        intermediateFiles = fs
+          .readdirSync(path.join(process.cwd(), "intermediate"))
+          .filter((f) => f.endsWith(".json"))
+          .sort();
       } catch {
         intermediateFiles = [];
       }
@@ -448,7 +453,11 @@ export async function main(args) {
           const enhancedPath = path.join(process.cwd(), "enhanced");
           fs.mkdirSync(enhancedPath, { recursive: true });
           const enhancedFile = "enhanced.json";
-          fs.writeFileSync(path.join(enhancedPath, enhancedFile), JSON.stringify({ "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": [] }, null, 2), "utf8");
+          fs.writeFileSync(
+            path.join(enhancedPath, enhancedFile),
+            JSON.stringify({ "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" }, "@graph": [] }, null, 2),
+            "utf8",
+          );
           console.log(`written ${enhancedFile}`);
           console.log(`Enhanced ontology written to enhanced/${enhancedFile} with ${intermediate.files.length} nodes`);
           console.log = origLog;
@@ -484,7 +493,9 @@ export async function main(args) {
           res.end(JSON.stringify(sources));
         } else if (reqUrl.pathname === "/sources" && method === "POST") {
           let body = "";
-          req.on("data", chunk => { body += chunk; });
+          req.on("data", (chunk) => {
+            body += chunk;
+          });
           req.on("end", () => {
             try {
               const { name, url } = JSON.parse(body);
@@ -509,7 +520,9 @@ export async function main(args) {
         } else if (reqUrl.pathname.startsWith("/sources/") && method === "PUT") {
           const identifier = decodeURIComponent(reqUrl.pathname.slice(9));
           let body = "";
-          req.on("data", chunk => { body += chunk; });
+          req.on("data", (chunk) => {
+            body += chunk;
+          });
           req.on("end", () => {
             try {
               const { name, url } = JSON.parse(body);

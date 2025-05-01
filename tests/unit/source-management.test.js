@@ -12,11 +12,7 @@ describe("addSource function", () => {
     const writeSpy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
     const newSource = { name: "Custom API", url: "https://example.com/api" };
     const result = addSource(newSource, "data-sources.json");
-    expect(writeSpy).toHaveBeenCalledWith(
-      "data-sources.json",
-      JSON.stringify([newSource], null, 2),
-      "utf8"
-    );
+    expect(writeSpy).toHaveBeenCalledWith("data-sources.json", JSON.stringify([newSource], null, 2), "utf8");
     expect(result).toEqual([...PUBLIC_DATA_SOURCES, newSource]);
   });
 
@@ -31,15 +27,11 @@ describe("addSource function", () => {
   });
 
   test("throws error for invalid name", () => {
-    expect(() => addSource({ name: "", url: "https://example.com" })).toThrow(
-      "Invalid source name"
-    );
+    expect(() => addSource({ name: "", url: "https://example.com" })).toThrow("Invalid source name");
   });
 
   test("throws error for invalid URL", () => {
-    expect(() => addSource({ name: "name", url: "not a url" })).toThrow(
-      "Invalid source URL"
-    );
+    expect(() => addSource({ name: "name", url: "not a url" })).toThrow("Invalid source URL");
   });
 });
 
@@ -57,7 +49,10 @@ describe("removeSource function", () => {
   });
 
   test("removes existing source by name", () => {
-    const custom = [{ name: "A", url: "u1" }, { name: "B", url: "u2" }];
+    const custom = [
+      { name: "A", url: "u1" },
+      { name: "B", url: "u2" },
+    ];
     vi.spyOn(fs, "existsSync").mockReturnValue(true);
     vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(custom));
     const writeSpy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
@@ -65,13 +60,16 @@ describe("removeSource function", () => {
     expect(writeSpy).toHaveBeenCalledWith(
       "data-sources.json",
       JSON.stringify([{ name: "B", url: "u2" }], null, 2),
-      "utf8"
+      "utf8",
     );
     expect(result).toEqual([...PUBLIC_DATA_SOURCES, { name: "B", url: "u2" }]);
   });
 
   test("removes existing source by url", () => {
-    const custom = [{ name: "A", url: "u1" }, { name: "B", url: "u2" }];
+    const custom = [
+      { name: "A", url: "u1" },
+      { name: "B", url: "u2" },
+    ];
     vi.spyOn(fs, "existsSync").mockReturnValue(true);
     vi.spyOn(fs, "readFileSync").mockReturnValue(JSON.stringify(custom));
     const writeSpy = vi.spyOn(fs, "writeFileSync").mockImplementation(() => {});
@@ -79,7 +77,7 @@ describe("removeSource function", () => {
     expect(writeSpy).toHaveBeenCalledWith(
       "data-sources.json",
       JSON.stringify([{ name: "A", url: "u1" }], null, 2),
-      "utf8"
+      "utf8",
     );
     expect(result).toEqual([...PUBLIC_DATA_SOURCES, { name: "A", url: "u1" }]);
   });

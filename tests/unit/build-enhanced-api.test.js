@@ -16,16 +16,8 @@ describe("buildEnhanced programmatic API", () => {
     process.chdir(tmpDir);
     // create intermediate directory and files
     fs.mkdirSync(path.join(tmpDir, "intermediate"));
-    fs.writeFileSync(
-      path.join(tmpDir, "intermediate", "i1.json"),
-      JSON.stringify({ "@graph": [{ a: 1 }] }),
-      "utf8"
-    );
-    fs.writeFileSync(
-      path.join(tmpDir, "intermediate", "i2.json"),
-      JSON.stringify({ "@graph": [{ b: 2 }] }),
-      "utf8"
-    );
+    fs.writeFileSync(path.join(tmpDir, "intermediate", "i1.json"), JSON.stringify({ "@graph": [{ a: 1 }] }), "utf8");
+    fs.writeFileSync(path.join(tmpDir, "intermediate", "i2.json"), JSON.stringify({ "@graph": [{ b: 2 }] }), "utf8");
     // mock calls
     vi.spyOn(mainModule, "refreshSources").mockResolvedValue(mockedRefresh);
     vi.spyOn(mainModule, "buildIntermediate").mockReturnValue(mockedIntermediate);
