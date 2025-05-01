@@ -1,46 +1,44 @@
-# Core JSON-LD and Ontology Processing and Querying
+# Core OWL Ontology Generation
 
-# Dependencies
-- Add jsonld to dependencies in package.json for JSON-LD operations
-- Add @comunica/query-sparql to dependencies for SPARQL querying support
+This feature provides the fundamental library API and command-line interface for generating OWL ontologies in JSON-LD format from arbitrary JSON data.
 
 # Library API
-- Export function compact(document, context)
-  Returns a promise resolving to a compacted JSON-LD document based on the provided context
-- Export function expand(document)
-  Returns a promise resolving to an expanded JSON-LD document
-- Export function generateOntology(data, options)
-  Returns a promise resolving to a JSON-LD OWL ontology document with @context including OWL and RDF prefixes, @id set to the provided ontology IRI, @graph containing converted data nodes
-- Export function queryOntology(ontologyDocument, sparqlQuery, options)
-  Returns a promise resolving to SPARQL result set in JSON format; supports defaultGraph IRI and query bindings
-- Export function esjQuery(ontologyDocument, expression)
-  Returns a promise resolving to an array of matched JSON nodes for a simple dot expression syntax
 
-# CLI Enhancements
+- Export function generateOntology(data, options)
+  - data: object whose keys are term names and values are term property objects
+  - options: object with required property ontologyIri (string) and optional baseIri (string)
+  - Returns: Promise resolving to a JSON-LD document with @context containing owl and rdf prefixes and optional @base, @id set to the ontology IRI, and @graph containing term nodes
+  - Throws an error when options.ontologyIri is missing
+
+# CLI Interface
+
 - Support flags:
-  --compact to read JSON from stdin or file and output compacted JSON-LD
-  --expand to read JSON-LD input and output expanded form
-  --context <path> to supply a JSON-LD context file for compacting
-  --to-owl <ontologyIri> to generate an OWL ontology JSON-LD and write to stdout or a file
-  --ontology-base <IRI> to include @base in context
-  --query <sparqlFile> to run a SPARQL query file against an OWL ontology JSON input
-  --esj <expression> to run a dot expression query against the ontology JSON
-  --default-graph <IRI> to set the default graph IRI for SPARQL query semantics
-- Read JSON input from stdin or a file argument
-- Write JSON output or query results to stdout or a specified output path
-- Update help text to include new flags and usage examples
+  --help              Show help text describing usage and available flags
+  --to-owl <IRI>      Read JSON from stdin or file argument, parse as data, and output JSON-LD OWL ontology to stdout
+  --ontology-base <IRI>  Include @base in the JSON-LD @context
+
+- Behavior:
+  - Read JSON text from stdin or a file path argument
+  - Parse input into an object or default to empty object
+  - Invoke generateOntology with parsed data and provided IRI options
+  - Serialize and print the resulting JSON-LD with indentation
+  - On parse or missing option errors, print descriptive error messages
 
 # Tests
-- Add unit tests for compact and expand using examples from JSON_LD_SYNTAX.md
-- Add unit tests for queryOntology with SPARQL_PROTOCOL.md examples
-- Add unit tests for esjQuery covering nested object access and filtering
-- Add CLI tests to verify each flag invokes correct library API and produces valid JSON or SPARQL result output
+
+- Unit tests for generateOntology covering:
+  - Correct inclusion of owl and rdf prefixes
+  - Proper @id and @graph entries for sample term data
+  - Inclusion of @base when baseIri is provided
+- CLI tests for:
+  - Help output includes --to-owl and --ontology-base flags
+  - Invocation without flags exits gracefully and prints help
+  - Invocation of --to-owl with valid JSON input and valid IRI prints expected JSON-LD
+  - Error handling when JSON parse fails or missing ontology IRI
 
 # Documentation
-- Update README Features section to describe Core JSON-LD and Ontology Processing and Querying OWL Ontologies
-- Provide usage examples without code escapes:
-  cat input.json | node src/lib/main.js --compact --context context.json
-  cat input.json | node src/lib/main.js --expand
+
+- Update README Features section to describe OWL ontology generation capabilities
+- Provide examples without code fences:
   cat data.json | node src/lib/main.js --to-owl http://example.org/onto --ontology-base http://example.org/base > ontology.json
-  cat ontology.json | node src/lib/main.js --query select.sparql > results.json
-  cat ontology.json | node src/lib/main.js --esj term.property
+  node src/lib/main.js --help
