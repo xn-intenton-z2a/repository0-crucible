@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="block_api" href="#block_api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>BLOCK_API</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">POST to /w/api.php action=block supports required parameters: user (user|IP|#ID), token (CSRF), optional id (integer), expiry (string duration or timestamp, default never), reason (string), flags boolean: anononly, nocreate, autoblock, noemail, hidename, allowusertalk, reblock, newblock, watchuser, partial; additional parameters watchlistexpiry (timestamp), tags (pipe list), pagerestrictions (pipe list max10), namespacerestrictions (pipe list or *), actionrestrictions (pipe list); format=json</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Endpoint and Method
+2 Authentication and Token Retrieval
+3 Parameter Reference
+4 Example Requests</p>
+<p class="md-github">1 Endpoint and Method
+URL: https://www.wikidata.org/w/api.php
+Method: POST</p>
+<p class="md-github">2 Authentication and Token Retrieval
+GET https://www.wikidata.org/w/api.php?action=query&amp;meta=tokens&amp;type=csrf&amp;format=json
+Response: {
+query: { tokens: { csrftoken: &quot;TOKEN_VALUE&quot; } }
+}
+Include token_value in POST requests as token parameter.</p>
+<p class="md-github">3 Parameter Reference
+action: block (fixed)
+user: user string specifying username IP or #ID. Required.
+id: integer block entry ID to modify.
+expiry: string relative duration or ISO8601 timestamp. Default never.
+reason: string block log comment.
+anononly, nocreate, autoblock, noemail, hidename, allowusertalk, reblock, newblock, watchuser, partial: flags set by including parameter name with empty value.
+watchlistexpiry: ISO8601 timestamp.
+tags: pipe separated tags. Allowed values see tag list documentation.
+pagerestrictions: pipe separated page titles, max10.
+namespacerestrictions: pipe separated namespace ids or *.
+actionrestrictions: pipe separated action names.
+token: CSRF token string. Required.
+format: json (default).</p>
+<p class="md-github">4 Example Requests
+POST body urlencoded
+action=block&amp;user=192.0.2.5&amp;expiry=3 days&amp;reason=First strike&amp;token=ABC123
+POST body urlencoded
+action=block&amp;user=Vandal&amp;expiry=never&amp;reason=Vandalism&amp;nocreate=&amp;autoblock=&amp;noemail=&amp;token=ABC123</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Implementation Steps
+1 Retrieve CSRF token via query meta tokens type csrf.
+2 Compose POST request with Content-Type: application/x-www-form-urlencoded.
+3 Include required parameters action, user, token and optional parameters as needed.
+4 Send request. Expect HTTP 200 with JSON response.
+5 On error code badtoken retrieve new token and retry.</p>
+<p class="md-github">Configuration Options
+Content-Type: application/x-www-form-urlencoded or application/json with body as JSON.
+Timeout: 30s recommended.
+Retries: up to 3 on transient server errors (HTTP 5xx).
+Redirects: follow by default.</p>
+<p class="md-github">Error Handling
+missingtoken or badtoken: fetch new CSRF token.
+invaliduser or cantblockself: validate user parameter.
+toomanyrequests: implement backoff and respect rate limit headers.</p>
+<p class="md-github">Dependencies
+Works with any HTTP client supporting POST and URL encoding.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Endpoint: https://www.wikidata.org/w/api.php
+HTTP Method: POST</p>
+<p class="md-github">Request Parameters</p>
+<ul class="md-github">
+<li class="md-github">action (string) Required. Value must be block.</li>
+<li class="md-github">format (string) Optional. Default json.</li>
+<li class="md-github">user (string) Required. Username, IP, or user ID (#ID).</li>
+<li class="md-github">id (integer) Optional. Block entry ID to modify.</li>
+<li class="md-github">expiry (string) Optional. Default never. Relative (e.g. 2 weeks) or absolute ISO8601.</li>
+<li class="md-github">reason (string) Optional. Default empty.</li>
+<li class="md-github">anononly, nocreate, autoblock, noemail, hidename, allowusertalk, reblock, newblock, watchuser, partial (boolean flags). Set by including parameter name.</li>
+<li class="md-github">watchlistexpiry (string) Optional. ISO8601 timestamp.</li>
+<li class="md-github">tags (string) Optional. Pipe separated tag identifiers.</li>
+<li class="md-github">pagerestrictions (string) Optional. Pipe separated page titles max10.</li>
+<li class="md-github">namespacerestrictions (string) Optional. Pipe separated namespace IDs or *.</li>
+<li class="md-github">actionrestrictions (string) Optional. Pipe separated actions create move thanks upload.</li>
+<li class="md-github">token (string) Required. CSRF token.</li>
+</ul>
+<p class="md-github">Response Fields</p>
+<ul class="md-github">
+<li class="md-github">batchcomplete (string)</li>
+<li class="md-github">blocked (object)
+<ul class="md-github">
+<li class="md-github">user (string) blocked username or IP</li>
+<li class="md-github">type (string) global or partial</li>
+<li class="md-github">id (integer) block entry id</li>
+<li class="md-github">expiry (string) expiry timestamp or duration</li>
+<li class="md-github">reason (string) block reason</li>
+</ul>
+</li>
+</ul>
+<p class="md-github">SDK Method Signatures
+JavaScript (Node fetch)
+async function blockUser({user, token, expiry = 'never', reason = '', flags = {}}) {
+const url = 'https://www.wikidata.org/w/api.php';
+const params = new URLSearchParams({action: 'block', format: 'json', user, expiry, reason, token});
+Object.keys(flags).forEach(flag =&gt; { if (flags[flag]) params.append(flag, ''); });
+const res = await fetch(url, {method: 'POST', body: params, headers: {'Content-Type': 'application/x-www-form-urlencoded'}});
+const json = await res.json();
+return json.blocked;
+}</p>
+<p class="md-github">Python (requests)
+def block_user(session, user, token, expiry='never', reason='', **flags):
+url = 'https://www.wikidata.org/w/api.php'
+data = {'action': 'block', 'format': 'json', 'user': user, 'expiry': expiry, 'reason': reason, 'token': token}
+for flag, val in flags.items():
+if val: data[flag] = ''
+resp = session.post(url, data=data, timeout=30)
+resp.raise_for_status()
+return resp.json().get('blocked')</p>
+<p class="md-github">Best Practices</p>
+<ul class="md-github">
+<li class="md-github">Always fetch fresh CSRF token before write.</li>
+<li class="md-github">Minimize scope by using flags only when necessary.</li>
+<li class="md-github">Validate expiry formats.</li>
+<li class="md-github">Handle rate limit responses with exponential backoff.</li>
+</ul>
+<p class="md-github">Troubleshooting
+Curl example and expected output:
+$ curl -s -X POST -d action=block -d user=Vandal -d expiry=never -d reason=Test -d token=ABC123 https://www.wikidata.org/w/api.php
+{&quot;batchcomplete&quot;:&quot;&quot;,&quot;blocked&quot;:{&quot;user&quot;:&quot;Vandal&quot;,&quot;type&quot;:&quot;global&quot;,&quot;id&quot;:456,&quot;expiry&quot;:&quot;infinite&quot;,&quot;reason&quot;:&quot;Test&quot;}}
+Error Codes</p>
+<ul class="md-github">
+<li class="md-github">badtoken: CSRF token missing or invalid. Retrieve new token.</li>
+<li class="md-github">invaliduser: user parameter invalid. Check spelling or format.</li>
+<li class="md-github">missingparam: required parameter not provided.</li>
+<li class="md-github">toomanyrequests: rate limit exceeded, retry later.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">POST https://www.wikidata.org/w/api.php?action=block&amp;format=json Required: user string expiry string token string Optional flags: anononly nocreate autoblock noemail hidename allowusertalk reblock newblock watchuser partial Optional lists: tags pageRestrictions nameSpaceRestrictions actionRestrictions watchListExpiry id integer Example: curl -X POST -d action=block -d user=User -d expiry=&quot;3 days&quot; -d token=TOKEN https://www.wikidata.org/w/api.php</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Endpoint and Method
+2 Authentication and Token Retrieval
+3 Parameter Reference
+4 Example Requests</p>
+<p class="md-github">1 Endpoint and Method
+URL: https://www.wikidata.org/w/api.php
+Method: POST</p>
+<p class="md-github">2 Authentication and Token Retrieval
+GET https://www.wikidata.org/w/api.php?action=query&amp;meta=tokens&amp;type=csrf&amp;format=json
+Response: {
+query: { tokens: { csrftoken: 'TOKEN_VALUE' } }
+}
+Include token_value in POST requests as token parameter.</p>
+<p class="md-github">3 Parameter Reference
+action: block (fixed)
+user: user string specifying username IP or #ID. Required.
+id: integer block entry ID to modify.
+expiry: string relative duration or ISO8601 timestamp. Default never.
+reason: string block log comment.
+anononly, nocreate, autoblock, noemail, hidename, allowusertalk, reblock, newblock, watchuser, partial: flags set by including parameter name with empty value.
+watchlistexpiry: ISO8601 timestamp.
+tags: pipe separated tags. Allowed values see tag list documentation.
+pagerestrictions: pipe separated page titles, max10.
+namespacerestrictions: pipe separated namespace ids or *.
+actionrestrictions: pipe separated action names.
+token: CSRF token string. Required.
+format: json (default).</p>
+<p class="md-github">4 Example Requests
+POST body urlencoded
+action=block&amp;user=192.0.2.5&amp;expiry=3 days&amp;reason=First strike&amp;token=ABC123
+POST body urlencoded
+action=block&amp;user=Vandal&amp;expiry=never&amp;reason=Vandalism&amp;nocreate=&amp;autoblock=&amp;noemail=&amp;token=ABC123</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Wikidata REST API
+https://www.wikidata.org/w/api.php</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-block_api" href="#digest-of-block_api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of BLOCK_API</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="block-api-module" href="#block-api-module"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Block API Module</h1>
+<p class="md-github">Source MediaWiki License GPL-2.0-or-later
+Check to block a user or IP address via the MediaWiki action API</p>
+<h1 class="md-github"><a class="md-github__anchor" name="endpoint" href="#endpoint"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Endpoint</h1>
+<p class="md-github">https://www.wikidata.org/w/api.php
+Method: POST (only accepts POST requests for write operations)</p>
+<h1 class="md-github"><a class="md-github__anchor" name="parameters" href="#parameters"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Parameters</h1>
+<p class="md-github">id             Type: integer        The existing block entry ID to modify. Optional when modifying a specific block.
+user           Type: user           Username, IP address, temporary user, IP range or user ID (#ID). Required.
+expiry         Type: string         Expiry timestamp or duration. Relative (e.g. 5 months, 2 weeks, 3 days) or absolute (e.g. 2014-09-18T12:34:56Z). Keywords infinite, indefinite, never for no expiry. Default: never.
+reason         Type: string         Block log reason. Default: empty.
+anononly       Type: boolean        Block anonymous users only. Use value yes or empty flag. Default: unset.
+nocreate       Type: boolean        Prevent account creation by blocked IP. Use flag. Default: unset.
+autoblock      Type: boolean        Also block last used IP and subsequent addresses. Use flag. Default: unset.
+noemail        Type: boolean        Prevent sending email through wiki. Requires blockemail right. Use flag. Default: unset.
+hidename       Type: boolean        Hide blocked name in log. Requires hideuser right. Use flag. Default: unset.
+allowusertalk  Type: boolean        Allow blocked user to edit own talk page (depends on wgBlockAllowsUTEdit). Use flag. Default: unset.
+reblock        Type: boolean        Overwrite existing single block. Fails if multiple blocks. Use flag. Default: unset.
+newblock       Type: boolean        Always create a new block even if existing. Use flag. Default: unset.
+watchuser      Type: boolean        Watch the user and talk pages. Use flag. Default: unset.
+watchlistexpiry Type: expiry         Timestamp for watchlist expiry. Omit to leave unchanged.
+tags           Type: list           Pipe-separated list of tag identifiers. See tag value list. Default: none.
+partial        Type: boolean        Restrict block to specific pages or namespaces. Use flag. Default: unset.
+pagerestrictions       Type: list   Pipe-separated list of page titles (must exist). Max 10 values. Only with partial.
+namespacerestrictions Type: list    Pipe-separated list of namespace IDs or '*' for all. Only with partial.
+actionrestrictions    Type: list    Pipe-separated list of actions to block (create, move, thanks, upload). Only with partial.
+token          Type: string        CSRF token obtained via action=query&amp;meta=tokens&amp;type=csrf. Required.
+format         Type: string        Response format. Default: json.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="examples" href="#examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h1>
+<p class="md-github">Block IP address 192.0.2.5 for three days with reason
+POST https://www.wikidata.org/w/api.php
+action=block
+user=192.0.2.5
+expiry=3 days
+reason=First strike
+token=123ABC</p>
+<p class="md-github">Block user Vandal indefinitely, prevent account creation and email
+POST https://www.wikidata.org/w/api.php
+action=block
+user=Vandal
+expiry=never
+reason=Vandalism
+nocreate=
+autoblock=
+noemail=
+token=123ABC</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Wikidata REST API</li>
+<li class="md-github">URL: https://www.wikidata.org/w/api.php</li>
+<li class="md-github">License: Public Domain</li>
+<li class="md-github">Crawl Date: 2025-05-01T11:45:48.287Z</li>
+<li class="md-github">Data Size: 838618 bytes</li>
+<li class="md-github">Links Found: 1578</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-01</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-01T12:23:23.796Z</p>
+  </footer>
+</body>
+</html>
