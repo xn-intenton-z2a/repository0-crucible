@@ -28,14 +28,16 @@ This combined entry covers both the SPARQL 1.1 Query Language specification and 
 Published March 2013. Authoritative W3C Recommendation.
 ## License: W3C Document License
 
-# Comunica SPARQL Documentation
+# JavaScript SPARQL Tools
 ## https://comunica.dev/docs/query/sparql/
-Official guide to using the Comunica SPARQL engine in JavaScript, covering engine configuration, bindings, HTTP sources, and performance tuning. Provides actionable examples for setting default graphs, passing bindings, and handling result streams in `queryOntology`.
+## https://github.com/RubenVerborgh/SPARQL.js
+Consolidated guidance on JavaScript SPARQL processing: Comunica engine configuration, bindings, HTTP sources, streaming results, and engine tuning alongside SPARQL.js parsing of queries into JSON syntax trees for programmatic inspection and rewriting. Informs our `queryOntology` implementation and potential performance optimizations.
 Last updated 2024. Licensed under MIT.
 ## License: MIT
 
 # JSON Query and Transformation Languages
-## https://docs.jsonata.org/ & https://jmespath.org/specification.html
+## https://docs.jsonata.org/
+## https://jmespath.org/specification.html
 A consolidated overview of JSONata and JMESPath, two expressive JSON query languages. JSONata provides functional operators (filtering, aggregation, path navigation) for transformation pipelines, while JMESPath offers projection and filtering semantics in JSON. Useful for enhancing or benchmarking `esjQuery` features with richer querying capabilities.
 JSONata v1.8 published April 2024 (Apache-2.0). JMESPath spec maintained since 2017 (MIT).
 ## License: Apache-2.0 (JSONata), MIT (JMESPath)
@@ -58,23 +60,38 @@ Official documentation for accessing the DBpedia public SPARQL endpoint, detaili
 Maintained by the DBpedia community; content under CC-BY 4.0.
 ## License: CC-BY 4.0
 
-# JSON-LD JavaScript Implementation (jsonld.js)
-## https://github.com/digitalbazaar/jsonld.js
-The reference JavaScript implementation of JSON-LD, providing complete functionality for context processing, framing, and RDF conversions. Studying its modular design can inform performance optimizations and error handling in our library.
-Repository last updated 2024.
-## License: BSD-3-Clause
+# JSEP JavaScript Expression Parser
+## https://github.com/EricSmekens/jsep
+Lightweight JavaScript Expression Parser that parses JS expressions into ASTs. Provides grammar definitions for identifiers, literals, operators, and supports custom plugins. Useful for formalizing our `queryOntology` expression parsing and error diagnostics.
+Repository last updated 2024. License: MIT.
+## License: MIT
 
-# Reference Implementations & Toolkits
-## https://github.com/jsonld-java/jsonld-java & https://github.com/digininja/owljs
-Covers Java (`jsonld-java`) and Node.js (`OwlJS`) implementations of JSON-LD and OWL toolkits respectively, showcasing context processing, framing, serialization, and reasoning support. Useful for cross-language design patterns and advanced feature considerations.
-`jsonld-java` last updated 2024 (Apache-2.0). `OwlJS` released 2023 (MIT).
-## License: Apache-2.0, MIT
+# rdf-ext: RDF/JS Library Ecosystem
+## https://github.com/rdf-ext/rdf-ext
+Collection of utilities and implementations for RDF/JS data models and parsers, including dataset factories and serialization. Useful for advanced graph manipulation, dataset merging, and streaming operations that could complement our JSON-LD handling.
+Last updated 2024. License: MIT.
+## License: MIT
 
-# Apache Jena Documentation
+# GraphQL-LD Documentation
+## https://graphql-ld.dev/docs/getting-started
+Integrates GraphQL query syntax with Linked Data sources using JSON-LD contexts, enabling expressive data retrieval from RDF endpoints. Includes technical setup, context mappings, resolver patterns, and performance guidelines—actionable for designing alternative query interfaces in our CLI.
+Last updated 2024. Licensed under MIT.
+## License: MIT
+
+# Java Semantic Web Frameworks
 ## https://jena.apache.org/documentation/
-Comprehensive tutorials and API references for Apache Jena, a Java framework for RDF and OWL processing. Offers insights on ontology models, SPARQL execution, and inference that can guide feature parity and potential Java interop considerations.
-Published regularly; licensed under Apache-2.0.
-## License: Apache-2.0
+## http://owlcs.github.io/owlapi/apidocs/
+Comprehensive Java-based tooling: Apache Jena tutorials and API references for RDF and OWL processing, and the OWL API programmatic interface covering ontology classes, properties, axioms, and reasoning with HermiT. Provides cross-language design patterns and potential interop considerations.
+Jena licensed under Apache-2.0; OWL API licensed LGPL-3.0-or-later.
+## License: Apache-2.0, LGPL-3.0-or-later
+
+# Reference JSON-LD and OWL Implementations
+## https://github.com/digitalbazaar/jsonld.js
+## https://github.com/jsonld-java/jsonld-java
+## https://github.com/digininja/owljs
+Reference implementations in JavaScript (`jsonld.js`) and Java (`jsonld-java`, `OwlJS`) showcasing context processing, framing, serialization, and reasoning support. Useful for performance tuning, error handling, and advanced feature design.
+Last updated 2024. Licenses: BSD-3-Clause, Apache-2.0, MIT.
+## License: BSD-3-Clause, Apache-2.0, MIT
 
 # RDF/JS Data Model Specification
 ## https://rdf.js.org/data-model-spec/
@@ -112,77 +129,54 @@ Specification of the SPARQL 1.1 Update language, detailing the syntax and semant
 Published March 2013. Authoritative as W3C Recommendation.
 ## License: W3C Document License
 
-# Node.js Global Fetch API
+# Fetch API (Node.js & Browser)
 ## https://nodejs.org/api/globals.html#fetch
-Official Node.js v20 documentation describing the built-in global `fetch` function, including its usage, request/response details, streaming support, and error handling. Ensures our `fetchSource` implementation aligns with the platform’s native HTTP client.
-Last updated 2024. Authoritative as Node.js Foundation documentation.
-## License: MIT
-
-# MDN Fetch API
 ## https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
-Comprehensive guide to the Fetch API standards in browsers, covering HTTP methods, request/response objects, streaming, CORS, and error scenarios. Provides broader context and best practices for implementing reliable HTTP fetching in our data crawler.
-Last reviewed 2024. Community-maintained; CC-BY-SA 2.5.
-## License: CC-BY-SA 2.5
+Unified reference for the Fetch API in Node.js v20 and browsers, covering request/response objects, streaming, CORS, and error handling. Ensures our `fetchSource` implementation aligns with platform-native HTTP clients and adheres to web standards.
+Node.js docs updated 2024 (MIT); MDN last reviewed 2024 (CC-BY-SA 2.5).
+## License: MIT, CC-BY-SA 2.5
 
-# Zod Validation Library
+# Utility Libraries for Configuration, Validation, Templating & Patterns
+## https://github.com/motdotla/dotenv
+## https://github.com/nodeca/js-yaml#readme
+## https://ejs.co/#docs
 ## https://zod.dev
-Documentation for Zod, a TypeScript-first schema validation library used for parsing and validating input data. Offers examples of schema definitions, type inference, and error formatting—applicable for enhancing option and payload validation in our API surfaces.
-Latest version 3.x. Licensed under MIT. Highly practical for robust input handling.
+## https://github.com/isaacs/minimatch
+Documentation for key utility packages: dotenv (environment variable loading), js-yaml (YAML parsing/dumping), EJS (embedded JS templating), Zod (schema validation), and minimatch (glob pattern matching). Essential for robust configuration, input validation, template-driven outputs, and file matching in CLI workflows.
+All licensed under MIT; package docs last updated 2024.
 ## License: MIT
-
-# Vitest Testing Framework
-## https://vitest.dev
-Official documentation for Vitest, a blazing-fast test runner and assertion library for Vite and ESM projects. Covers test configuration, mock APIs, snapshot testing, and coverage reports. Essential for expanding our test suite (`vitest`) effectively.
-Last updated 2024. Licensed under MIT.
-## License: MIT
-
-# JSEP JavaScript Expression Parser
-## https://github.com/EricSmekens/jsep
-Lightweight JavaScript Expression Parser that parses JS expressions into ASTs. Provides grammar definitions for identifiers, literals, operators, and supports custom plugins. Useful for formalizing our `queryOntology` expression parsing and error diagnostics.
-Repository last updated 2024. License: MIT.
-## License: MIT
-
-# SPARQL.js - SPARQL Parser in JavaScript
-## https://github.com/RubenVerborgh/SPARQL.js
-A JavaScript library that parses SPARQL queries into JSON syntax trees and serializes back. Enables programmatic inspection and transformation of SPARQL queries, which can be leveraged for advanced query rewriting in `queryOntology`.
-Last updated 2024. License: MIT.
-## License: MIT
-
-# Dotenv - Environment Variable Loader
-## https://github.com/motdotla/dotenv#readme
-Defines how to load environment variables from `.env` files into `process.env`. Guides configuration patterns for API endpoints and credentials in our data crawler, ensuring consistent handling of secrets and defaults.
-Version 16.x. Documentation under MIT.
-## License: MIT
-
-# rdf-ext: RDF/JS Library Ecosystem
-## https://github.com/rdf-ext/rdf-ext
-Collection of utilities and implementations for RDF/JS data models and parsers, including dataset factories and serialization. Useful for advanced graph manipulation, dataset merging, and streaming operations that could complement our JSON-LD handling.
-Last updated 2024. License: MIT.
-## License: MIT
-
-# GraphQL-LD Documentation
-## https://graphql-ld.dev/docs/getting-started
-Integrates GraphQL query syntax with Linked Data sources using JSON-LD contexts, enabling expressive data retrieval from RDF endpoints. Includes technical setup, context mappings, resolver patterns, and performance guidelines—actionable for designing alternative query interfaces in our CLI.
-Last updated 2024. Licensed under MIT.
-## License: MIT
-
-# OWL API (Java) Documentation
-## http://owlcs.github.io/owlapi/apidocs/
-Comprehensive Java API for building, manipulating, and serializing OWL ontologies programmatically. Covers ontology classes, properties, axioms, and reasoning support via HermiT and other reasoners. Essential for cross-language reference and design patterns.
-Last updated 2023; maintained by the OWLAPI community.
-## License: LGPL-3.0-or-later
 
 # REST Countries API v3.1
 ## https://restcountries.com/#api-endpoints-v3-all
-The REST Countries API provides a comprehensive endpoint to retrieve country data in JSON format, including names, capitals, region, population, and more. The `/v3.1/all` endpoint returns an array of country objects with normalized property names and supports field filtering via query parameters. Essential for implementing the `--capital-cities` feature, allowing efficient HTTP GET requests, response filtering, and JSON parsing. Publicly accessible without authentication.
+The REST Countries API provides a comprehensive endpoint to retrieve country data in JSON format, including names, capitals, region, population, and more. The `/v3.1/all` endpoint returns an array of country objects with normalized property names and supports field filtering via query parameters. Essential for implementing the `--capital-cities` feature, allowing efficient HTTP GET requests, response filtering, and JSON parsing.
 ## License: Public domain / free to use
 
-# EJS - Embedded JavaScript Templates
-## https://ejs.co/#docs
-Official documentation for EJS template engine, describing syntax for templating, control flow, partials, and custom filters. Useful for generating intermediate or enhanced representations (e.g., HTML reports for ontologies) in CLI workflows such as `--build-intermediate` or `--build-enhanced`.
+# OpenAI API Reference
+## https://platform.openai.com/docs/api-reference
+Official OpenAI REST API documentation covering authentication, request/response schemas, completions, chat, embeddings, and usage examples. Valuable for extending CLI features like `--refresh` or AI-driven data generation, providing concrete API patterns and error handling guidance.
+Last updated 2024. See OpenAI API Terms of Service for usage.
+## License: Proprietary (see terms)
+
+# RDFLib Documentation
+## https://rdflib.readthedocs.io/en/stable/
+Python library for RDF graph processing, supporting parsing/serializing various formats, SPARQL querying, and graph manipulation. Contains extensive code examples and API references; useful as a cross-language reference for feature parity and advanced graph operations.
+Last updated 2024. Licensed under BSD-3-Clause.
+## License: BSD-3-Clause
+
+# Protégé Desktop Documentation
+## https://protege.stanford.edu/documentation/
+Comprehensive user and developer guide for the Protégé OWL ontology editor, covering UI workflows, ontology modeling best practices, plugin architecture, and reasoning integration. Provides a rich conceptual reference to inform ontology design patterns and tool interoperability.
+Last updated 2023. Licensed under BSD-2-Clause.
+## License: BSD-2-Clause
+
+# Yargs CLI Arguments Parser Documentation
+## https://yargs.js.org/docs/
+Comprehensive guide to using yargs for command-line argument parsing in Node.js, including option definitions, positional arguments, command modules, automatic help text generation, and advanced usage patterns. Could simplify and enhance our CLI flag handling in `main.js`.
+Last updated 2024. Licensed under MIT.
 ## License: MIT
 
-# js-yaml - YAML parser and dumper
-## https://github.com/nodeca/js-yaml#readme
-Documentation for `js-yaml`, a YAML 1.2 parser and dumper for JavaScript. Includes API for loading, dumping, custom schema support, and AST nodes. Valuable for reading and writing YAML-based ontology configurations and intermediate files in CLI workflows.
+# Node.js File System API Documentation
+## https://nodejs.org/api/fs.html
+The Node.js File System module reference, detailing `fs.watch`, `fs.promises`, file streams, and directory operations. Essential for implementing and optimizing CLI commands like `--refresh`, `--serve`, and intermediate build features that depend on watching or manipulating files.
+Last updated 2024. Licensed under MIT.
 ## License: MIT
