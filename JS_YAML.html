@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="js_yaml" href="#js_yaml"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JS_YAML</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">load(string,options) parses single-doc YAML into JS types or throws YAMLException; options filename, onWarning, schema (DEFAULT_SCHEMA), json (false). loadAll(string,iterator,options) handles multi-doc. dump(object,options) serializes with defaults indent=2,flowLevel=-1,skipInvalid=false,sortKeys=false,lineWidth=80,noRefs=false,noCompatMode=false,condenseFlow=false,quotingType=' ,forceQuotes=false; supports STYLE map. CLI flags -h,--help,-v,--version,-c,--compact,-t,--trace. Schemas: FAILSAFE,JSON,CORE,DEFAULT.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Method Signatures</p>
+</li>
+<li class="md-github">
+<p class="md-github">Option Definitions</p>
+</li>
+<li class="md-github">
+<p class="md-github">Schemas</p>
+</li>
+<li class="md-github">
+<p class="md-github">Style Map</p>
+</li>
+<li class="md-github">
+<p class="md-github">Supported Types</p>
+</li>
+<li class="md-github">
+<p class="md-github">CLI Flags</p>
+</li>
+<li class="md-github">
+<p class="md-github">Caveats</p>
+</li>
+<li class="md-github">
+<p class="md-github">Method Signatures:</p>
+<ul class="md-github">
+<li class="md-github">load(source: string, options?: LoadOptions) =&gt; any | throws YAMLException</li>
+<li class="md-github">loadAll(source: string, iterator?: (doc: any) =&gt; void, options?: LoadOptions) =&gt; any[] | void</li>
+<li class="md-github">dump(obj: any, options?: DumpOptions) =&gt; string</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Option Definitions:
+LoadOptions:
+filename: string|null = null
+onWarning: (e: YAMLException)=&gt;void|null = null
+schema: Schema = DEFAULT_SCHEMA
+json: boolean = false</p>
+<p class="md-github">DumpOptions:
+indent: number = 2
+noArrayIndent: boolean = false
+skipInvalid: boolean = false
+flowLevel: number = -1
+styles: {[tag: string]: string} = {}
+schema: Schema = DEFAULT_SCHEMA
+sortKeys: boolean|((a: string,b: string)=&gt;number) = false
+lineWidth: number = 80
+noRefs: boolean = false
+noCompatMode: boolean = false
+condenseFlow: boolean = false
+quotingType: &quot;'&quot;|&quot;&quot;&quot; = &quot;'&quot;
+forceQuotes: boolean = false
+replacer: ((key: string,value: any)=&gt;any)|null = null</p>
+</li>
+<li class="md-github">
+<p class="md-github">Schemas:
+FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA</p>
+</li>
+<li class="md-github">
+<p class="md-github">Style Map:
+{&quot;!!null&quot;:&quot;canonical&quot;,&quot;!!int&quot;:&quot;decimal&quot;,&quot;!!bool&quot;:&quot;lowercase&quot;,&quot;!!float&quot;:&quot;lowercase&quot;}</p>
+</li>
+<li class="md-github">
+<p class="md-github">Supported Types:
+null, boolean, integer, float, buffer, date, omap, pairs, set, string, sequence, mapping</p>
+</li>
+<li class="md-github">
+<p class="md-github">CLI Flags:
+-h,--help
+-v,--version
+-c,--compact
+-t,--trace</p>
+</li>
+<li class="md-github">
+<p class="md-github">Caveats:
+Objects/arrays as keys are stringified; implicit block mapping nested keys unsupported.</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Installation:
+npm install js-yaml
+npm install -g js-yaml</p>
+<p class="md-github">Implementation Steps:</p>
+<ol class="md-github">
+<li class="md-github">require('js-yaml'), fs</li>
+<li class="md-github">fs.readFileSync(path,'utf8')</li>
+<li class="md-github">yaml.load(source,options) inside try/catch</li>
+<li class="md-github">yaml.dump(object,options) and fs.writeFileSync if needed</li>
+</ol>
+<p class="md-github">Schema URLs:
+https://www.yaml.org/spec/1.2/spec.html#id2802346   (FAILSAFE_SCHEMA)
+https://www.yaml.org/spec/1.2/spec.html#id2803231   (JSON_SCHEMA)
+https://www.yaml.org/spec/1.2/spec.html#id2804923   (CORE_SCHEMA)</p>
+<p class="md-github">Configuration Effects:
+json=true: allow duplicate keys override instead of error
+skipInvalid=true: omit unsupported types on dump
+sortKeys=function: deterministic key order
+noCompatMode=true: emit YAML 1.2 features (unquoted yes/no)</p>
+<p class="md-github">Advanced Tags:
+js-yaml-js-types plugin for !!binary, !!timestamp, !!omap, !!pairs, !!set</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">// Load API Specification
+function load(source: string, options?: {
+filename?: string|null;
+onWarning?: (e: YAMLException)=&gt;void;
+schema?: Schema;
+json?: boolean;
+}): any;
+Throws: YAMLException
+Returns: Object|Array|String|Number|Boolean|null|undefined</p>
+<p class="md-github">// loadAll API Specification
+function loadAll(source: string, iterator?: (doc: any)=&gt;void, options?: LoadOptions): any[] | void;
+Throws: YAMLException for invalid YAML
+Returns: Array of documents if iterator omitted</p>
+<p class="md-github">// dump API Specification
+function dump(obj: any, options?: {
+indent?: number;
+noArrayIndent?: boolean;
+skipInvalid?: boolean;
+flowLevel?: number;
+styles?: {[tag: string]: string};
+schema?: Schema;
+sortKeys?: boolean|((a:string,b:string)=&gt;number);
+lineWidth?: number;
+noRefs?: boolean;
+noCompatMode?: boolean;
+condenseFlow?: boolean;
+quotingType?: &quot;'&quot;|&quot;&quot;&quot;;
+forceQuotes?: boolean;
+replacer?: (key:string,value:any)=&gt;any;
+}): string;
+Throws: YAMLException</p>
+<p class="md-github">// Code Example
+const yaml = require('js-yaml');
+const fs = require('fs');
+try {
+const src = fs.readFileSync('example.yml','utf8');
+const doc = yaml.load(src, {filename:'example.yml',schema:yaml.JSON_SCHEMA});
+console.log(doc);
+} catch(e) {
+console.error(e.name, e.reason, 'at', e.mark);
+}</p>
+<p class="md-github">// Best Practices:
+// - Specify filename for accurate error location
+// - Use json:true to match JSON.parse behavior
+// - sortKeys for deterministic output in CI
+// - noRefs to simplify output when refs not needed</p>
+<p class="md-github">// Troubleshooting:
+// Command: js-yaml -c -t config.yml
+// Expect on error: YAMLException: message at line:column
+// To show stack: add -t flag</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">load(source,options)-&gt;any|throws YAMLException; options: filename=null, onWarning=null, schema=DEFAULT_SCHEMA, json=false; loadAll(source,iterator,options)-&gt;any[]|void; dump(obj,options)-&gt;string; options indent=2,flowLevel=-1,skipInvalid=false,styles={},schema=DEFAULT_SCHEMA,sortKeys=false,lineWidth=80,noRefs=false,noCompatMode=false,condenseFlow=false,quotingType=' ,forceQuotes=false,replacer=null; schemas: FAILSAFE,JSON,CORE,DEFAULT; CLI flags: -h,-v,-c,-t; supported types: null,bool,int,float,binary,timestamp,omap,pairs,set,str,seq,map; caveats: objects as keys stringify, implicit block mapping nested keys unsupported.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Method Signatures</p>
+</li>
+<li class="md-github">
+<p class="md-github">Option Definitions</p>
+</li>
+<li class="md-github">
+<p class="md-github">Schemas</p>
+</li>
+<li class="md-github">
+<p class="md-github">Style Map</p>
+</li>
+<li class="md-github">
+<p class="md-github">Supported Types</p>
+</li>
+<li class="md-github">
+<p class="md-github">CLI Flags</p>
+</li>
+<li class="md-github">
+<p class="md-github">Caveats</p>
+</li>
+<li class="md-github">
+<p class="md-github">Method Signatures:</p>
+<ul class="md-github">
+<li class="md-github">load(source: string, options?: LoadOptions) =&gt; any | throws YAMLException</li>
+<li class="md-github">loadAll(source: string, iterator?: (doc: any) =&gt; void, options?: LoadOptions) =&gt; any[] | void</li>
+<li class="md-github">dump(obj: any, options?: DumpOptions) =&gt; string</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Option Definitions:
+LoadOptions:
+filename: string|null = null
+onWarning: (e: YAMLException)=&gt;void|null = null
+schema: Schema = DEFAULT_SCHEMA
+json: boolean = false</p>
+<p class="md-github">DumpOptions:
+indent: number = 2
+noArrayIndent: boolean = false
+skipInvalid: boolean = false
+flowLevel: number = -1
+styles: {[tag: string]: string} = {}
+schema: Schema = DEFAULT_SCHEMA
+sortKeys: boolean|((a: string,b: string)=&gt;number) = false
+lineWidth: number = 80
+noRefs: boolean = false
+noCompatMode: boolean = false
+condenseFlow: boolean = false
+quotingType: '''|'''' = '''
+forceQuotes: boolean = false
+replacer: ((key: string,value: any)=&gt;any)|null = null</p>
+</li>
+<li class="md-github">
+<p class="md-github">Schemas:
+FAILSAFE_SCHEMA, JSON_SCHEMA, CORE_SCHEMA, DEFAULT_SCHEMA</p>
+</li>
+<li class="md-github">
+<p class="md-github">Style Map:
+{'!!null':'canonical','!!int':'decimal','!!bool':'lowercase','!!float':'lowercase'}</p>
+</li>
+<li class="md-github">
+<p class="md-github">Supported Types:
+null, boolean, integer, float, buffer, date, omap, pairs, set, string, sequence, mapping</p>
+</li>
+<li class="md-github">
+<p class="md-github">CLI Flags:
+-h,--help
+-v,--version
+-c,--compact
+-t,--trace</p>
+</li>
+<li class="md-github">
+<p class="md-github">Caveats:
+Objects/arrays as keys are stringified; implicit block mapping nested keys unsupported.</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">js-yaml - YAML parser and dumper
+https://github.com/nodeca/js-yaml#readme</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-js_yaml" href="#digest-of-js_yaml"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of JS_YAML</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="js-yaml-usage-and-api" href="#js-yaml-usage-and-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JS-YAML Usage and API</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
+<p class="md-github">npm install js-yaml
+npm install -g js-yaml</p>
+<h2 class="md-github"><a class="md-github__anchor" name="cli-executable" href="#cli-executable"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Executable</h2>
+<p class="md-github">usage: js-yaml [-h] [-v] [-c] [-t] file</p>
+<p class="md-github">Positional arguments:
+file           File with YAML document(s)</p>
+<p class="md-github">Optional arguments:
+-h, --help     Show this help message and exit.
+-v, --version  Show program's version number and exit.
+-c, --compact  Display errors in compact mode
+-t, --trace    Show stack trace on error</p>
+<h2 class="md-github"><a class="md-github__anchor" name="api-methods" href="#api-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Methods</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="loadstring-options" href="#loadstring-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>load(string, options)</h3>
+<p class="md-github">Parses a single YAML document. Returns one of: Object, Array, String, Number, Boolean, null or undefined. Throws YAMLException on error.</p>
+<p class="md-github">Options:
+filename    (string|null) default: null
+onWarning   (function|null) default: null  Called with YAMLException on each warning
+schema      (Schema) default: DEFAULT_SCHEMA
+json        (boolean) default: false  If true, duplicate mapping keys override instead of error</p>
+<p class="md-github">Available schemas:
+FAILSAFE_SCHEMA  only strings, arrays, plain objects
+JSON_SCHEMA      JSON types: string, number, array, object, boolean, null
+CORE_SCHEMA      alias for JSON_SCHEMA
+DEFAULT_SCHEMA   all YAML types</p>
+<h3 class="md-github"><a class="md-github__anchor" name="loadallstring-iterator-options" href="#loadallstring-iterator-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>loadAll(string, iterator, options)</h3>
+<p class="md-github">Parses multi-document YAML source. Returns Array if iterator omitted, else applies iterator(doc) for each document.</p>
+<p class="md-github">Parameters:
+string    YAML source containing one or more documents
+iterator  (function) optional
+options   same as load</p>
+<h3 class="md-github"><a class="md-github__anchor" name="dumpobject-options" href="#dumpobject-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>dump(object, options)</h3>
+<p class="md-github">Serializes object into YAML document. Throws on unsupported types unless skipInvalid true.</p>
+<p class="md-github">Options:
+indent         (number) default: 2  Spaces per indent level
+noArrayIndent  (boolean) default: false  Do not indent array elements
+skipInvalid    (boolean) default: false  Skip non-supported types instead of throwing
+flowLevel      (number) default: -1  Nesting level to switch to flow style, -1 = always block
+styles         (object) default: {}  Map of tag strings to style strings
+schema         (Schema) default: DEFAULT_SCHEMA
+sortKeys       (boolean|function) default: false  If true or function, sort keys accordingly
+lineWidth      (number) default: 80  Max line width, -1 = unlimited
+noRefs         (boolean) default: false  Do not convert duplicates into anchors and refs
+noCompatMode   (boolean) default: false  Do not maintain YAML 1.1 compatibility
+condenseFlow   (boolean) default: false  Remove spaces in flow sequences and mappings
+quotingType    (string) default: '  Quote style for strings: ' or &quot;
+forceQuotes    (boolean) default: false  Quote all non-key strings
+replacer       (function|null) default: null  Preprocess key,value pairs like JSON.stringify replacer</p>
+<h2 class="md-github"><a class="md-github__anchor" name="style-values-table" href="#style-values-table"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Style Values Table</h2>
+<p class="md-github">Tag    | Available styles     | Example default
+!!null | canonical, lowercase, uppercase, camelcase, empty | '~'
+!!int  | binary, octal, decimal, hexadecimal | '42'
+!!bool | lowercase, uppercase, camelcase | 'true'
+!!float| lowercase, uppercase, camelcase | '.inf'</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supported-yaml-types" href="#supported-yaml-types"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supported YAML Types</h2>
+<p class="md-github">!!null, !!bool, !!int, !!float, !!binary, !!timestamp, !!omap, !!pairs, !!set, !!str, !!seq, !!map</p>
+<h2 class="md-github"><a class="md-github__anchor" name="caveats" href="#caveats"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Caveats</h2>
+<p class="md-github">JavaScript does not support objects or arrays as keys; they are stringified via toString().
+Implicit block mapping keys cannot use property access; duplicate anchors in mappings cause load errors.</p>
+<p class="md-github">Retrieved 2024-06-10 from https://github.com/nodeca/js-yaml#readme
+Data Size: 611651 bytes</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: js-yaml - YAML parser and dumper</li>
+<li class="md-github">URL: https://github.com/nodeca/js-yaml#readme</li>
+<li class="md-github">License: License: MIT</li>
+<li class="md-github">Crawl Date: 2025-05-01T20:47:24.718Z</li>
+<li class="md-github">Data Size: 611651 bytes</li>
+<li class="md-github">Links Found: 4965</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-01</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-01T21:21:13.760Z</p>
+  </footer>
+</body>
+</html>
