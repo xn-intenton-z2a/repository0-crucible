@@ -43,25 +43,25 @@ Last updated 2024. Licensed under MIT. Highly practical for our `@comunica/query
 # JSONata Query and Transformation Language
 ## https://docs.jsonata.org/
 Detailed reference for JSONata’s functional query and transformation syntax, including path navigation, filtering, and aggregation operators. Offers a more expressive alternative to simple dot‐expression querying, informing possible enhancements to our `esjQuery` feature.
-Actively maintained; v1.8 published April 2024. Licensed under Apache-2.0.
+Actively maintained; v1.8 published April 2024.
 ## License: Apache-2.0
 
 # JMESPath Specification
 ## https://jmespath.org/specification.html
 Defines the formal grammar and evaluation semantics for JMESPath, a JSON query language supporting projections, filters, and multi-select. Useful for extending or benchmarking our simple expression-based queries in `esjQuery`.
-Published 2017; specification maintained by the community. Licensed under MIT.
+Published 2017; specification maintained by the community.
 ## License: MIT
 
 # Wikidata API Entities Module
 ## https://www.wikidata.org/w/api.php?action=help&modules=wbgetentities
 Documentation for the `wbgetentities` module, enabling retrieval of structured Wikidata items in JSON. Essential for our data crawler (`fetchSource`) to fetch and map public entity data into OWL concepts and individuals.
-Live documentation, updated continuously. API governed by CC-BY-SA 3.0 for docs and CC0 for data.
+Live documentation; API governed by CC-BY-SA 3.0 for docs and CC0 for data.
 ## License: CC-BY-SA 3.0 (docs), CC0 (data)
 
 # Wikidata Query Service User Manual
 ## https://www.mediawiki.org/wiki/Wikibase_Query_Service/User_Manual
 Guide to executing SPARQL queries against the Wikidata Query Service endpoint. Includes examples of querying item labels, property values, and qualifiers—directly applicable to `queryOntology` against remote sources.
-Last reviewed 2024. Content under CC-BY-SA 3.0.
+Last reviewed 2024.
 ## License: CC-BY-SA 3.0
 
 # DBpedia SPARQL Endpoint
@@ -73,7 +73,7 @@ Maintained by the DBpedia community; content under CC-BY 4.0.
 # JSON-LD JavaScript Implementation (jsonld.js)
 ## https://github.com/digitalbazaar/jsonld.js
 The reference JavaScript implementation of JSON-LD, providing complete functionality for context processing, framing, and RDF conversions. Studying its modular design can inform performance optimizations and error handling in our library.
-Repository last updated 2024. Licensed under BSD-3-Clause.
+Repository last updated 2024.
 ## License: BSD-3-Clause
 
 # Apache Jena Documentation
@@ -85,11 +85,47 @@ Published regularly; licensed under Apache-2.0.
 # RDFLib Python Library
 ## https://rdflib.readthedocs.io/en/stable/
 Documentation for RDFLib’s graph APIs, SPARQL support, and serialization mechanisms in Python. Provides comparative patterns for graph construction, query execution, and context management that can inspire enhancements to our core JSON-LD/OWL processing.
-Stable release documentation (2023). Licensed under BSD.
+Stable release documentation (2023).
 ## License: BSD
 
 # OBO Foundry Metadata and Ontology Formats
 ## http://www.obofoundry.org/ontology-development/ontology-file-utilization.html
 Standards and best practices for developing and distributing OWL ontologies in the biomedical domain. Useful for structuring `@graph` metadata and ensuring interoperability with existing ontology ecosystems.
-Maintained collaboratively; terms usually under CC-BY 1.0.
+Maintained collaboratively; terms under CC-BY 1.0.
 ## License: CC-BY 1.0
+
+# RDF 1.1 Concepts and Abstract Syntax
+## https://www.w3.org/TR/rdf11-concepts/
+Describes the RDF graph data model, including triples, subjects, predicates, and objects, and the abstract syntax used for serializing RDF. Underpins understanding of JSON-LD to RDF conversion in `jsonld.toRDF` and `jsonld.fromRDF` processes.
+Published February 2014. Authoritative as W3C Recommendation.
+## License: W3C Document License
+
+# SHACL - Shapes Constraint Language
+## https://www.w3.org/TR/shacl/
+Defines a vocabulary and rules for validating RDF graphs, including shapes, constraints, and SPARQL-based extensions. Essential for implementing future graph validation features in the library (e.g., ensuring generated OWL ontologies meet shape constraints).
+Published July 2023. Authoritative as W3C Recommendation.
+## License: W3C Document License
+
+# JSON Schema Core (Draft 2020-12)
+## https://json-schema.org/draft/2020-12/json-schema-core.html
+The meta-schema and core definitions for JSON Schema validation, defining vocabulary for data modeling, type keywords, and validation mechanisms. Valuable for mapping JSON Schema constructs to OWL classes and properties in `generateOntology`.
+Last updated December 2020.
+## License: CC0
+
+# SPARQL 1.1 Update
+## https://www.w3.org/TR/sparql11-update/
+Specification of the SPARQL 1.1 Update language, detailing the syntax and semantics of INSERT, DELETE, LOAD, and other graph update operations. Provides guidance for implementing future ontology modification commands (e.g., `updateOntology`).
+Published March 2013. Authoritative as W3C Recommendation.
+## License: W3C Document License
+
+# jsonld-java
+## https://github.com/jsonld-java/jsonld-java
+Java implementation of the JSON-LD 1.1 specification offering context processing, framing, and RDF conversions. Examining its modular architecture and performance optimizations can inform enhancements in error handling and pipeline design in our JS library.
+Last updated 2024.
+## License: Apache-2.0
+
+# pyld - Python JSON-LD Implementation
+## https://github.com/digitalbazaar/pyld
+A Python reference implementation of the JSON-LD API providing full support for compaction, expansion, framing, and RDF conversions. Useful for cross-language comparison of API interfaces and performance characteristics.
+Last updated 2024.
+## License: BSD-3-Clause
