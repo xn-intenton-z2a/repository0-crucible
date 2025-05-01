@@ -17,7 +17,7 @@ describe("HTTP Server (--serve) Integration Tests", () => {
       }
       // For GET /capital-cities
       return Promise.resolve({
-        json: () => Promise.resolve({ results: { bindings: mockBindings } })
+        json: () => Promise.resolve({ results: { bindings: mockBindings } }),
       });
     });
     server = await main(["--serve"]);
@@ -48,7 +48,7 @@ describe("HTTP Server (--serve) Integration Tests", () => {
     const data = JSON.parse(res.body);
     expect(data).toEqual({
       "@context": { "@vocab": "http://www.w3.org/2002/07/owl#" },
-      "@graph": [{ "@id": "http://example.org/C", capital: "http://example.org/K" }]
+      "@graph": [{ "@id": "http://example.org/C", "capital": "http://example.org/K" }],
     });
   });
 
@@ -68,5 +68,4 @@ describe("HTTP Server (--serve) Integration Tests", () => {
     expect(res.headers["content-type"]).toMatch(/text\/plain/);
     expect(res.body).toBe("Failed to fetch capital cities: fail");
   });
-
 });

@@ -66,7 +66,7 @@ describe("List Sources", () => {
 
 // Diagnostics Flag
 // Extended to include data and intermediate file metrics
-import globalFetch from 'node-fetch'; // ensure fetch structure
+import globalFetch from "node-fetch"; // ensure fetch structure
 
 describe("Diagnostics Flag", () => {
   let tmpDir;

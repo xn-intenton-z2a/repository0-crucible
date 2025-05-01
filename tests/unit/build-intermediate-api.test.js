@@ -15,11 +15,7 @@ describe("buildIntermediate programmatic API", () => {
     process.chdir(tmpDir);
     fs.mkdirSync(path.join(tmpDir, "data"));
     // sample JSON array input
-    fs.writeFileSync(
-      path.join(tmpDir, "data", "sample.json"),
-      JSON.stringify([{ foo: "bar" }]),
-      "utf8"
-    );
+    fs.writeFileSync(path.join(tmpDir, "data", "sample.json"), JSON.stringify([{ foo: "bar" }]), "utf8");
     rmSpy = vi.spyOn(fs, "rmSync").mockImplementation(() => {});
   });
 
