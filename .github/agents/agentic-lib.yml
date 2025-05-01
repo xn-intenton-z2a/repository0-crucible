@@ -5,54 +5,48 @@ schedule: schedule-3
 paths:
   # Filepaths for elaborator workflows
   missionFilepath:
-    path: MISSION.md
+    path: 'MISSION.md'
   librarySourcesFilepath:
-    path: SOURCES.md
+    path: 'SOURCES.md'
+    permissions: [ 'write' ]
     limit: 32
-    permissions:
-      - write
   libraryDocumentsPath:
-    path: library/
+    path: 'library/'
+    permissions: [ 'write' ]
     limit: 8
-    permissions:
-      - write
   featuresPath:
-    path: features/
+    path: 'features/'
+    permissions: [ 'write' ]
     limit: 2
-    permissions:
-      - write
 
   # Filepaths for engineer workflows
   contributingFilepath:
-    path: CONTRIBUTING.md
-  allTestsPaths:
-    paths:
-      - tests/unit/
+    path: 'CONTRIBUTING.md'
   targetTestsPath:
-    path: tests/unit/
-    permissions:
-      - write
-  allSourcePaths:
-    paths:
-      - src/lib/
+    path: 'tests/unit/'
+    permissions: [ 'write' ]
+  otherTestsPaths:
+    paths: [ ]
   targetSourcePath:
-    path: src/lib/
-    permissions:
-      - write
+    path: 'src/lib/'
+    permissions: [ 'write' ]
+  otherSourcePaths:
+    paths: [ ]
   dependenciesFilepath:
-    path: package.json
+    path: 'package.json'
+    permissions: [ 'write' ]
   documentationPath:
-    path: docs/
-    permissions:
-      - write
+    path: 'docs/'
+    permissions: [ 'write' ]
 
   # Filepaths for maintainer workflows
   formattingFilepath:
-    path: .prettierrc
+    path: '.prettierrc'
   lintingFilepath:
-    path: eslint.config.js
+    path: 'eslint.config.js'
   readmeFilepath:
-    path: README.md
+    path: 'README.md'
+    permissions: [ 'write' ]
 
 # Execution commands
 buildScript: "npm run build"
@@ -68,5 +62,4 @@ attemptsPerBranch: 2
 attemptsPerIssue: 2
 
 # Web publishing
-docRoot: public
-
+docRoot: 'public'
