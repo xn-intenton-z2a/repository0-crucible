@@ -1,48 +1,50 @@
 # Core OWL Ontology Generation
 
-This feature provides the fundamental library API and command-line interface for generating OWL ontologies in JSON-LD format from arbitrary JSON data, and adds powerful query capabilities to filter and extract ontology nodes based on expressions.
+This feature provides the library API and command-line interface for generating OWL ontologies in JSON-LD format from JSON input.
 
 # Library API
 
 - Export function generateOntology(data, options)
   - data: object whose keys are term names and values are term property objects
-  - options: object with required property ontologyIri (string) and optional baseIri (string)
-  - Returns: Promise resolving to a JSON-LD document with @context containing owl and rdf prefixes and optional @base, @id set to the ontology IRI, and @graph containing term nodes
+  - options: object with required property ontologyIri and optional property baseIri
+  - Returns a promise resolving to a JSON-LD document with
+    - @context containing owl and rdf prefixes and @base when baseIri is provided
+    - @id set to the ontology IRI
+    - @graph containing one node per term, each with an @id constructed as ontologyIri#term and all supplied properties
   - Throws an error when options.ontologyIri is missing
 
-- Export function queryOntology(ontology, expression)
-  - ontology: JSON-LD document as produced by generateOntology or loaded from file
-  - expression: string using ESJ-like syntax for filtering, for example type=Person and name=Alice
-  - Returns: Promise resolving to an array of nodes from the ontology @graph that match the expression, supporting equality and logical and/or operators
-  - Throws an error for invalid syntax or when ontology has no @graph
+- Default export is undefined
 
 # CLI Interface
 
-- Support flags:
-  --help                  Show help text describing usage and available flags
-  --to-owl <IRI>          Read JSON from stdin or file argument, parse as data, and output JSON-LD OWL ontology to stdout
-  --ontology-base <IRI>   Include @base in the JSON-LD @context
-  --query <expression>    Read an OWL JSON-LD document from stdin or file, apply queryOntology with the expression, and output matching nodes as JSON
+- Support flags
+  --help                  Show usage information
+  --to-owl <ontologyIri>  Read JSON from stdin, invoke generateOntology, and output JSON-LD OWL ontology to stdout
+  --ontology-base <IRI>   Supply base IRI for the @context @base field
 
-- Behavior:
-  - Read input from stdin or a file path argument
-  - If --to-owl is provided, parse input JSON into data and invoke generateOntology
-  - If --query is provided, parse input JSON-LD into an object and invoke queryOntology
-  - Serialize and print resulting JSON with indentation
-  - On parse, missing option, or query errors, print descriptive error messages
+- Behavior
+  - Read JSON input from stdin
+  - Parse the input or report a parse error message
+  - If --to-owl is provided, require a following ontology IRI and invoke generateOntology
+  - On success, print the resulting JSON-LD document with two-space indentation
+  - On missing option or error, write a descriptive message to stderr
 
 # Tests
 
-- Unit tests for generateOntology covering existing scenarios
-- Unit tests for queryOntology covering simple equality, logical combinations, and syntax errors
-- CLI tests for:
-  - Help output includes --query flag
-  - Invocation of --query with valid ontology and expression prints expected filtered nodes
-  - Error handling when query syntax is invalid or input is not a JSON-LD ontology
+- Unit tests for generateOntology covering
+  - Correct inclusion of owl and rdf prefixes
+  - Construction of @id and @graph nodes
+  - Inclusion of @base when baseIri is provided
+
+- CLI tests covering
+  - Main module imports cleanly and default export non-null
+  - Running without flags terminates without error
+  - --help flag prints usage including --to-owl description
+  - Error handling when JSON parse fails or ontology IRI is missing
 
 # Documentation
 
-- Update README Features section to describe query capabilities and new CLI flag --query
-- Provide examples without code fences:
-  cat ontology.json | node src/lib/main.js --query type=Person and name=Alice > result.json
+- Update README Features section to describe generateOntology and CLI flags --to-owl and --ontology-base
+- Provide usage examples without code fences, for example:
+  cat data.json | node src/lib/main.js --to-owl http://example.org/onto --ontology-base http://example.org/base
   node src/lib/main.js --help
