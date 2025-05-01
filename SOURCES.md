@@ -24,7 +24,7 @@ Last updated: July 2019. W3C Recommendation.
 
 # Wikidata REST API
 ## https://www.wikidata.org/w/api.php
-A comprehensive reference for the MediaWiki‐based REST API powering Wikidata. It details query modules (action=query), entity content endpoints (action=wbgetentities), parameterization for languages and revisions, and paging options. This source is crucial for crawling rich entity data (labels, statements) and converting them into OWL individuals or annotation properties.
+A comprehensive reference for the MediaWiki‐based REST API powering Wikidata. It details query modules (`action=query`), entity content endpoints (`action=wbgetentities`), parameterization for languages and revisions, and paging options. This source is crucial for crawling rich entity data (labels, statements) and converting them into OWL individuals or annotation properties.
 Last known update: continuously maintained by Wikimedia. Public domain.
 ## Public Domain
 
@@ -36,7 +36,7 @@ Last updated: ongoing. Community‐verified endpoint documentation.
 
 # Apache Jena Documentation
 ## https://jena.apache.org/documentation/
-Covers the Jena API for Java-based RDF processing, SPARQL engine (ARQ), ontology API, and command‐line tools (riot, tdbloader). Though Java-centric, this documentation provides insight into common RDF processing pipelines, reasoning configurations (OWL Miner), and tuning SPARQL performance—guidance translatable to JS-based tooling.
+Covers the Jena API for Java-based RDF processing, SPARQL engine (ARQ), ontology API, and command‐line tools (`riot`, `tdbloader`). Though Java-centric, this documentation provides insight into common RDF processing pipelines, reasoning configurations (OWL Miner), and tuning SPARQL performance—guidance translatable to JS-based tooling.
 Last updated: 2023.
 ## Apache-2.0
 
@@ -48,7 +48,7 @@ Last updated: 2022.
 
 # N3.js Documentation
 ## https://n3.js.org/
-Documentation for the N3.js library, including the N3Parser, N3Writer, and N3.Store. It provides performance benchmarks, streaming API usage, and examples for handling large RDF datasets in Node.js—essential for efficient crawling and conversion pipelines.
+Documentation for the N3.js library, including the `N3Parser`, `N3Writer`, and `N3.Store`. It provides performance benchmarks, streaming API usage, and examples for handling large RDF datasets in Node.js—essential for efficient crawling and conversion pipelines.
 Last updated: 2021.
 ## MIT
 
@@ -66,13 +66,13 @@ Last updated: 2023.
 
 # SPARQL 1.1 Query Language
 ## https://www.w3.org/TR/sparql11-query/
-The SPARQL 1.1 Query Language specification defines syntax and semantics for querying RDF graphs. It provides comprehensive guidance on query forms (SELECT, ASK, CONSTRUCT, DESCRIBE), solution modifiers (ORDER BY, LIMIT), subqueries, aggregates, and property paths. This source is critical for implementing query capabilities over generated OWL ontologies stored as RDF or JSON representations, enabling extraction of class hierarchies, instance retrieval, and inference-driven queries within `owl-builder`.
+The SPARQL 1.1 Query Language specification defines syntax and semantics for querying RDF graphs. It provides comprehensive guidance on query forms (`SELECT`, `ASK`, `CONSTRUCT`, `DESCRIBE`), solution modifiers (`ORDER BY`, `LIMIT`), subqueries, aggregates, and property paths. This source is critical for implementing query capabilities over generated OWL ontologies stored as RDF or JSON representations, enabling extraction of class hierarchies, instance retrieval, and inference-driven queries within `owl-builder`.
 Last updated: March 2013. W3C Recommendation; normative reference for query engine compliance.
 ## W3C Software and Document License
 
 # SPARQL 1.1 Update
 ## https://www.w3.org/TR/sparql11-update/
-Defines the syntax and semantics for updating RDF graphs, including INSERT, DELETE, and combined operations within SPARQL Update requests. It is indispensable for implementing mutation operations on OWL ontologies exposed via a SPARQL endpoint or used in local graph stores, allowing incremental ontology evolution and annotation.
+Defines the syntax and semantics for updating RDF graphs, including `INSERT`, `DELETE`, and combined operations within SPARQL Update requests. It is indispensable for implementing mutation operations on OWL ontologies exposed via a SPARQL endpoint or used in local graph stores, allowing incremental ontology evolution and annotation.
 Last updated: March 2013. W3C Recommendation.
 ## W3C Software and Document License
 
@@ -171,3 +171,21 @@ Last updated: 2024. Licensed under MIT.
 The Node.js ESM documentation explains how to use ECMAScript modules natively, covering import/export semantics, module resolution, file extension requirements, and interoperability with CommonJS. Understanding these details is critical for maintaining the ESM-based codebase of `owl-builder`.
 Last updated: v20.5.1 (May 2024). Authoritative from Node.js Foundation.
 ## Node.js Foundation License
+
+# WHATWG Fetch Standard
+## https://fetch.spec.whatwg.org/
+The Fetch Standard defines the fundamental API for HTTP requests and responses in browsers and compliant runtimes, including request/response streams, CORS, redirects, caching, and content negotiation. It is the normative reference for `fetch` behaviors and error handling, guiding robust implementation of data fetching in `owl-builder`.
+Last updated: March 2023. Published under CC0 1.0 Universal (public domain dedication).
+## CC0 1.0 Universal
+
+# Node.js Global Fetch API
+## https://nodejs.org/api/globals.html#fetch
+Node.js documentation for the built-in global `fetch` API in modern releases. Covers usage patterns, supported options, stream handling, and integration with built-in `AbortController` for timeouts. Essential for implementing `fetchSource` in `owl-builder` without external libraries.
+Last updated: v20.5.1 (May 2024). Authoritative from Node.js Foundation.
+## Node.js Foundation License
+
+# p-retry
+## https://github.com/sindresorhus/p-retry
+Documentation for `p-retry`, a promise-based retry library. Demonstrates how to wrap asynchronous operations (such as `fetch`) with customizable retry strategies, exponential backoff, and error filtering. This source provides patterns for reliable HTTP fetches in `owl-builder` when network instability occurs.
+Last updated: 2024. Licensed under MIT.
+## MIT
