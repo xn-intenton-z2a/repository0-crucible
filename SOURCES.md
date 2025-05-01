@@ -62,3 +62,63 @@ Last updated: 2022. CC-BY 4.0.
 ## https://dbpedia.org/sparql
 Endpoint documentation with usage guidelines, sample queries for class and property extraction, and details on dataset coverage and update frequency. DBpedia offers structured knowledge extracted from Wikipedia that can seed ontology classes and instances, complementing OWL creation workflows.
 Last updated: 2023. CC-BY-SA 3.0
+
+# SPARQL 1.1 Query Language
+## https://www.w3.org/TR/sparql11-query/
+The SPARQL 1.1 Query Language specification defines syntax and semantics for querying RDF graphs. It provides comprehensive guidance on query forms (SELECT, ASK, CONSTRUCT, DESCRIBE), solution modifiers (ORDER BY, LIMIT), subqueries, aggregates, and property paths. This source is critical for implementing query capabilities over generated OWL ontologies stored as RDF or JSON representations, enabling extraction of class hierarchies, instance retrieval, and inference-driven queries within `owl-builder`.
+Last updated: March 2013. W3C Recommendation; normative reference for query engine compliance.
+## W3C Software and Document License
+
+# SPARQL 1.1 Update
+## https://www.w3.org/TR/sparql11-update/
+Defines the syntax and semantics for updating RDF graphs, including INSERT, DELETE, and combined operations within SPARQL Update requests. It is indispensable for implementing mutation operations on OWL ontologies exposed via a SPARQL endpoint or used in local graph stores, allowing incremental ontology evolution and annotation.
+Last updated: March 2013. W3C Recommendation.
+## W3C Software and Document License
+
+# SPARQL 1.1 Protocol
+## https://www.w3.org/TR/sparql11-protocol/
+Specifies the HTTP-based protocol for executing SPARQL queries and updates over the web. It outlines request/response formats, content negotiation, and error handling, which is key for integrating remote SPARQL services into `owl-builder` workflows and ensuring interoperability with standard-compliant endpoints.
+Last updated: March 2013. W3C Recommendation.
+## W3C Software and Document License
+
+# SPARQL 1.1 Service Description
+## https://www.w3.org/TR/sparql11-service-description/
+Describes how SPARQL endpoints can advertise their capabilities, supported features, and dataset metadata using RDF vocabulary. Leveraging service descriptions allows `owl-builder` to dynamically adapt to endpoint limits, supported query forms, and default dataset selections, improving resilience and configurability.
+Last updated: March 2013. W3C Recommendation.
+## W3C Software and Document License
+
+# OWL 2 RDF-Based Semantics
+## https://www.w3.org/TR/owl2-rdf-based-semantics/
+Provides the formal semantics for OWL 2 ontologies when serialized as RDF graphs. It defines interpretation functions, entailment regimes, and semantic conditions for class and property axioms, enabling `owl-builder` to validate ontology correctness and support custom reasoning workflows based on RDF entailment.
+Last updated: December 2012. W3C Recommendation.
+## W3C Software and Document License
+
+# RDF Schema 1.1
+## https://www.w3.org/TR/rdf-schema/
+Defines the RDF Schema (RDFS) vocabulary for basic ontological modeling, including classes, properties, and hierarchies. Understanding RDFS is fundamental for extending OWL ontologies with lightweight schema constructs and interoperability with non-OWL datasets in `owl-builder`.
+Last updated: April 2014. W3C Recommendation.
+## W3C Software and Document License
+
+# SHACL - Shapes Constraint Language
+## https://www.w3.org/TR/shacl/
+Specifies a language for validating RDF graphs against shapes (constraints). SHACL shapes can enforce cardinalities, datatype constraints, and value ranges on OWL individuals and properties, offering a pragmatic approach to data quality assurance in ontologies generated or consumed by `owl-builder`.
+Last updated: October 2017. W3C Recommendation.
+## W3C Software and Document License
+
+# RDF-Star
+## https://www.w3.org/TR/rdf-star/
+Introduces RDF-Star, an extension of RDF that allows triples to be treated as first-class subjects for annotations. This emerging standard supports provenance and metadata modeling on statements, which can be leveraged in `owl-builder` for annotating ontology axioms and data transformations.
+Last updated: October 2021. W3C Note.
+## W3C Software and Document License
+
+# Hydra Core Vocabulary
+## https://www.hydra-cg.com/spec/latest/core/
+Defines a hypermedia-driven vocabulary for building REST APIs on top of JSON-LD. It outlines classes and properties for operations, resources, and collections—useful for designing hypermedia interfaces to browse, query, and mutate OWL ontologies managed by `owl-builder` over HTTP.
+Last updated: February 2021. CC-BY 4.0.
+## CC-BY 4.0
+
+# Comunica Query Engine
+## https://comunica.dev/docs/
+Documentation for Comunica, a modular SPARQL query engine for JavaScript that can query over various RDF sources (HTTP, file, in-memory) and federation setups. It provides tutorials for constructing engine configurations, optimizing query plans, and extending with custom actors—ideal for embedding high-performance querying within `owl-builder` workflows.
+Last updated: 2023. MIT License.
+## MIT
