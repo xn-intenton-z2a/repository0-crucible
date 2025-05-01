@@ -129,3 +129,63 @@ Last updated 2024.
 A Python reference implementation of the JSON-LD API providing full support for compaction, expansion, framing, and RDF conversions. Useful for cross-language comparison of API interfaces and performance characteristics.
 Last updated 2024.
 ## License: BSD-3-Clause
+
+# Node.js Global Fetch API
+## https://nodejs.org/api/globals.html#fetch
+Official Node.js v20 documentation describing the built-in global `fetch` function, including its usage, request/response details, streaming support, and error handling. This reference ensures our `fetchSource` implementation aligns with the platform’s native HTTP client.
+Last updated 2024. Authoritative as Node.js Foundation documentation.
+## License: MIT
+
+# MDN Fetch API
+## https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+Comprehensive guide to the Fetch API standards in browsers, covering HTTP methods, request/response objects, streaming, CORS, and error scenarios. Provides broader context and best practices for implementing reliable HTTP fetching in our data crawler.
+Last reviewed 2024. Community-maintained; CC-BY-SA 2.5.
+## License: CC-BY-SA 2.5
+
+# Zod Validation Library
+## https://zod.dev
+Documentation for Zod, a TypeScript-first schema validation library used for parsing and validating input data. Offers examples of schema definitions, type inference, and error formatting—applicable for enhancing option and payload validation in our API surfaces.
+Latest version 3.x. License: MIT. Highly practical for robust input handling.
+## License: MIT
+
+# Vitest Testing Framework
+## https://vitest.dev
+Official documentation for Vitest, a blazing-fast test runner and assertion library for Vite and ESM projects. Covers test configuration, mock APIs, snapshot testing, and coverage reports. Essential for expanding our test suite (`vitest`) effectively.
+Last updated 2024. Licensed under MIT.
+## License: MIT
+
+# JSEP JavaScript Expression Parser
+## https://github.com/EricSmekens/jsep
+Lightweight JavaScript Expression Parser that parses JS expressions into ASTs. Provides grammar definitions for identifiers, literals, operators, and supports custom plugins. Useful for formalizing our `queryOntology` expression parsing and error diagnostics.
+Repository last updated 2024. License: MIT.
+## License: MIT
+
+# RDF/JS Data Model Specification
+## https://rdf.js.org/data-model-spec/
+Community-driven specification defining the RDF/JS interfaces for terms, quads, and datasets in JavaScript. Establishes a standard data model that can inform interoperable graph representations and potential integration with RDF/JS libraries.
+Published 2020; CC-BY 4.0.
+## License: CC-BY 4.0
+
+# SPARQL.js - SPARQL Parser in JavaScript
+## https://github.com/RubenVerborgh/SPARQL.js
+A JavaScript library that parses SPARQL queries into JSON syntax trees and serializes back. Enables programmatic inspection and transformation of SPARQL queries, which can be leveraged for advanced query rewriting in `queryOntology`.
+Last updated 2024. License: MIT.
+## License: MIT
+
+# OwlJS - OWL Ontology Toolkit for Node.js
+## https://digininja.github.io/owljs/docs/
+An OWL-focused toolkit for interacting with ontologies in Node.js. Provides utilities for loading, manipulating, serializing, and querying OWL ontologies, including support for reasoning. Offers design insights and feature ideas for our OWL generation and query modules.
+Last released 2023. License: MIT.
+## License: MIT
+
+# Dotenv - Environment Variable Loader
+## https://github.com/motdotla/dotenv#readme
+Defines how to load environment variables from `.env` files into `process.env`. Guides configuration patterns for API endpoints and credentials in our data crawler, ensuring consistent handling of secrets and defaults.
+Version 16.x. Documentation under MIT.
+## License: MIT
+
+# rdf-ext: RDF/JS Library Ecosystem
+## https://github.com/rdf-ext/rdf-ext
+Collection of utilities and implementations for RDF/JS data models and parsers, including dataset factories and serialization. Useful for advanced graph manipulation, dataset merging, and streaming operations that could complement our JSON-LD handling.
+Last updated 2024. License: MIT.
+## License: MIT
