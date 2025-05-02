@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, vi } from "vitest";
+import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
 import * as mainModule from "@src/lib/main.js";
 import { main } from "@src/lib/main.js";
 import path from "path";
@@ -99,7 +99,7 @@ describe("Help Flag", () => {
   });
 
   test("prints usage and exits on --help", () => {
-    expect(() => main(["--help"])).toThrow("exit:0");
+    expect(() => main(["--help"]) ).toThrow("exit:0");
     expect(logSpy).toHaveBeenCalledTimes(1);
     const usage = logSpy.mock.calls[0][0];
     expect(usage).toContain("Usage");
@@ -108,7 +108,7 @@ describe("Help Flag", () => {
   });
 
   test("prints usage and exits on -h", () => {
-    expect(() => main(["-h"])).toThrow("exit:0");
+    expect(() => main(["-h"]) ).toThrow("exit:0");
     expect(logSpy).toHaveBeenCalledTimes(1);
   });
 });
