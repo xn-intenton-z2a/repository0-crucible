@@ -112,3 +112,18 @@ Defines the JSON data interchange format, covering its grammar, data types, enco
 ## https://github.com/tj/commander.js
 A comprehensive Node.js framework for building command-line interfaces, supporting command definitions, nested subcommands, option parsing, version management, and automatic help generation. Commander.js offers an alternative to manual parsing and demonstrates structured CLI architecture that could be adopted to simplify main.js and enhance maintainability. (MIT License)
 ## MIT License
+
+# Node HTTP Module
+## https://nodejs.org/api/http.html
+The Node.js HTTP module provides APIs for creating HTTP servers and clients, handling requests and responses, setting headers, streaming data, and managing status codes. Critical for implementing the serve subcommand to expose an HTTP API for listing and retrieving ontology terms, including endpoints, routing logic, and graceful shutdown. (Node.js v20.4.0)
+## CC BY 4.0
+
+# Apache Jena - ARQ Query Engine Documentation
+## https://jena.apache.org/documentation/query/
+Apache Jena is a Java framework for building semantic web and linked data applications; ARQ is its SPARQL query engine. Documentation covers SPARQL syntax, query algebra, optimization techniques, endpoint configuration, and federation. Useful for understanding enterprise-grade SPARQL processing, advanced query features, and performance considerations for future extensions of CLI querying or HTTP serve functionality. (Documentation updated 2023)
+## Apache-2.0
+
+# OWL API GitHub Repository
+## https://github.com/owlcs/owlapi
+OWL API is a Java library for programmatic creation, manipulation, and serialization of OWL ontologies. It supports rich ontology constructs, reasoning integration, imports management, and annotations. Reviewing its architecture provides insights into representing complex axioms, versioning strategies, and semantic validation, informing improvements to JSON-LD generation and semantic correctness features. (Last updated 2024)
+## LGPL-3.0
