@@ -5,12 +5,12 @@ The official W3C Recommendation for JSON-LD 1.1 details the data model, framing,
 
 # JSON-LD Processing Algorithms and API
 ## https://www.w3.org/TR/json-ld11-api/
-Defines the step-by-step algorithms for expansion, compaction, flattening, framing, and normalization, along with a high-level JavaScript API. Critical for implementing advanced transformations, error handling, and performance optimizations in generateOntology and framing or normalization subcommands. (Published July 9, 2020)
+Defines step-by-step algorithms for expansion, compaction, flattening, framing, and normalization, along with a JavaScript API reference. Critical for implementing advanced transformations, error handling, and performance optimizations in generateOntology and framing or normalization subcommands. (Published July 9, 2020)
 ## W3C Document License
 
 # JSON-LD Framing
 ## https://www.w3.org/TR/json-ld11-framing/
-Specifies how to extract and reshape specific node structures from JSON-LD documents using frames. Covers embedding strategies, conditional filters, and nested shapes. Useful for implementing get-term, filter, or custom framing-based outputs. (Published July 16, 2020)
+Specifies how to extract and reshape specific node structures from JSON-LD documents using frames. Covers embedding strategies, conditional filters, and nested shapes, directly informing get-term, filter, and custom framing-based outputs. (Published July 16, 2020)
 ## W3C Document License
 
 # OWL 2 Specifications
@@ -28,8 +28,7 @@ Standard vocabulary and validation framework for describing constraints on RDF g
 # SPARQL 1.1 Recommendation Set
 ## Query: https://www.w3.org/TR/sparql11-query/
 ## Update: https://www.w3.org/TR/sparql11-update/
-## Graph Store HTTP Protocol: https://www.w3.org/TR/rdf11-http/
-These combined W3C Recommendations cover querying (SELECT, CONSTRUCT, ASK), update operations (INSERT, DELETE, LOAD), and the Graph Store HTTP protocol for managing RDF graphs over REST. Foundations for future CLI or server subcommands handling remote triple-store operations and federation. (Query/Update published March 21, 2013; Graph Store HTTP published March 25, 2014)
+These combined W3C Recommendations cover querying (SELECT, CONSTRUCT, ASK), update operations (INSERT, DELETE, LOAD), and outline the Graph Store HTTP protocol for managing RDF graphs over REST. Foundations for future CLI or server subcommands handling remote triple-store operations and federation. (Query/Update published March 21, 2013)
 ## W3C Document License
 
 # RDF/JS Specification
@@ -67,6 +66,11 @@ Documentation on configuring and running federated SPARQL queries over HTTP endp
 Enterprise-grade SPARQL engine docs, covering syntax, query algebra, optimization, and federation. Provides performance and architectural insights for future CLI query or server subcommands. (Documentation updated 2023)
 ## Apache-2.0
 
+# Apache Jena — Fuseki Server Documentation
+## https://jena.apache.org/documentation/fuseki2/
+Documentation for Fuseki, Jena's SPARQL server, covering server configuration, dataset management, security, and REST API usage. Provides a model for HTTP-based triple store operations to inspire the serve subcommand architecture. (Documentation updated 2023)
+## Apache-2.0
+
 # Zod Schema Validation
 ## https://github.com/colinhacks/zod
 TypeScript-first schema declaration and validation library used to validate CLI options. Covers parsing, transforms, and custom error formatting crucial for robust subcommand option handling. (Last release May 2024)
@@ -97,14 +101,14 @@ Specifies the JSON grammar, data types, encoding rules, and media type. Ensures 
 Vite-native unit testing framework with Jest-compatible API, snapshot and coverage support. Documentation covers mocking, spying, asynchronous tests, and configuration—directly applicable to existing tests in tests/unit. (MIT License)
 ## MIT License
 
-# Apache Jena — Fuseki Server Documentation
-## https://jena.apache.org/documentation/fuseki2/
-Documentation for Fuseki, Jena's SPARQL server, covering server configuration, dataset management, security, and REST API usage. Provides a model for HTTP-based triple store operations to inspire the serve subcommand architecture. (Documentation updated 2023)
-## Apache-2.0
-
 # Express.js API Reference
 ## https://expressjs.com/en/4x/api.html
 Comprehensive reference for Express.js 4.x, detailing middleware, routing, request handling, and error management. Useful for evaluating more ergonomic HTTP API patterns and middleware integration for the serve subcommand. (Express 4.18)
+## MIT License
+
+# body-parser (Express Middleware)
+## https://github.com/expressjs/body-parser
+Middleware for parsing JSON, URL-encoded, and raw request bodies in Express.js. Explains parsing limits, encoding options, and error handling, relevant if migrating to expressive HTTP routing or handling POST payloads. (Last updated 2024)
 ## MIT License
 
 # JSON:API Specification
@@ -127,16 +131,6 @@ Machine-readable specification for RESTful APIs, covering paths, operations, com
 Provides a high-level abstraction for testing HTTP servers in Node.js, supporting assertions on response status, headers, and body. Essential for writing integration tests for the serve subcommand endpoints. (Last updated 2024)
 ## MIT License
 
-# body-parser (Express Middleware)
-## https://github.com/expressjs/body-parser
-Middleware for parsing JSON, URL-encoded, and raw request bodies in Express.js. Explains parsing limits, encoding options, and error handling, relevant if migrating to expressive HTTP routing or handling POST payloads. (Last updated 2024)
-## MIT License
-
-# cors (Express Middleware)
-## https://github.com/expressjs/cors
-Middleware to enable Cross-Origin Resource Sharing (CORS) in Express.js applications, configuring allowed origins, methods, and headers. Guides implementation of secure cross-domain API access for the serve subcommand. (Last updated 2024)
-## MIT License
-
 # RDF 1.1 Concepts and Abstract Syntax
 ## https://www.w3.org/TR/rdf11-concepts/
 Defines the abstract graph model, semantics of RDF triples, terms (IRIs, blank nodes, literals), and processing rules. It is essential for understanding how generateOntology constructs graphs and how RDF/JS interfaces represent them. (Published March 25, 2014)
@@ -145,11 +139,6 @@ Defines the abstract graph model, semantics of RDF triples, terms (IRIs, blank n
 # Turtle – Terse RDF Triple Language
 ## https://www.w3.org/TR/turtle/
 Specifies the Turtle syntax for RDF, including abbreviations, prefixes, graph serialization, and directives. Provides the foundation for converting JSON-LD outputs to Turtle or integrating with N3.js serializers. (Published February 25, 2014)
-## W3C Document License
-
-# RDF 1.1 Graph Store HTTP Protocol
-## https://www.w3.org/TR/rdf11-http/
-Defines the RESTful HTTP protocol for managing RDF graph stores, including GET, POST, PUT, and DELETE operations on graphs. Critical for designing serve subcommand endpoints that manipulate full RDF datasets via HTTP. (Published March 25, 2014)
 ## W3C Document License
 
 # Fetch API Documentation and Standard
@@ -162,3 +151,13 @@ Combined reference for the WHATWG Fetch Standard and MDN Fetch API documentation
 ## https://url.spec.whatwg.org/
 Defines URL parsing, resolution, serialization algorithms, query parameters handling, and Internationalized Resource Identifiers (IRIs). Crucial for constructing and normalizing IRIs in JSON-LD contexts and managing file paths and dynamic imports in an ESM environment. (WHATWG standard, latest revision)
 ## CC0
+
+# Commander.js – Node.js CLI Framework
+## https://github.com/tj/commander.js#readme
+Commander.js provides a robust, declarative API for defining command-line interfaces in Node.js. It supports nested subcommands, option parsing, default values, and automatic help generation. Its patterns for organizing complex CLI tools can inform enhancements to subcommand dispatch, flag validation, and help output in main.js. (Last updated 2024)
+## MIT License
+
+# Jayway JSONPath – XPath for JSON
+## https://github.com/json-path/JsonPath
+JSONPath allows declarative querying of JSON structures using path expressions, filters, and functions similar to XPath. Its implementation guidance for indexing, filtering, and extracting JSON nodes can inform the design of the filter subcommand, especially for complex selection criteria. (Last updated 2024)
+## Apache-2.0
