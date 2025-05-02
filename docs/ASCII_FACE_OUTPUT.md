@@ -15,6 +15,9 @@ node src/lib/main.js [options]
 - -h, --help  
   Show this help message and exit.
 
+- -v, --version  
+  Print the current version and exit.
+
 - --faces <path>  
   Path to a YAML file defining custom faces.
 
@@ -35,4 +38,10 @@ node src/lib/main.js --faces custom_faces.yaml --count 3
 
 node src/lib/main.js --help
 # Displays usage instructions and exits.
+
+node src/lib/main.js --version
+# Prints the current version and exits.
+
+node src/lib/main.js -v
+# Prints the current version and exits.
 ```

@@ -2,6 +2,7 @@
 import fs from "fs";
 import { fileURLToPath } from "url";
 import yaml from "js-yaml";
+import { version } from "../../package.json";
 
 const defaultFaces = [
   "( ͡° ͜ʖ ͡°)",
@@ -24,6 +25,7 @@ function printUsage() {
     "",
     "Options:",
     "  -h, --help        Show this help message and exit",
+    "  -v, --version     Print the current version and exit",
     "  --faces <path>    Path to a YAML file defining custom faces",
     "  --seed <number>   Seed for deterministic face selection",
     "  --count <n>       Number of faces to output (default 1)",
@@ -31,7 +33,8 @@ function printUsage() {
     "Examples:",
     "  node src/lib/main.js",
     "  node src/lib/main.js --faces custom_faces.yaml --count 3",
-    "  node src/lib/main.js --help"
+    "  node src/lib/main.js --help",
+    "  node src/lib/main.js --version"
   ].join("\n");
   console.log(usage);
 }
@@ -77,6 +80,12 @@ function parseArgs(args) {
 }
 
 export function main(args) {
+  // Version flag detection
+  if (args.includes("--version") || args.includes("-v")) {
+    console.log(version);
+    process.exit(0);
+  }
+
   const options = parseArgs(args);
 
   if (options.help) {

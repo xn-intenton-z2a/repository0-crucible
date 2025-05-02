@@ -3,6 +3,7 @@ import * as mainModule from "@src/lib/main.js";
 import { main } from "@src/lib/main.js";
 import path from "path";
 import { fileURLToPath } from "url";
+import { version } from "../../package.json";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -110,6 +111,35 @@ describe("Help Flag", () => {
   test("prints usage and exits on -h", () => {
     expect(() => main(["-h"]) ).toThrow("exit:0");
     expect(logSpy).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe("Version Flag", () => {
+  let logSpy;
+  let exitSpy;
+  beforeEach(() => {
+    logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    exitSpy = vi
+      .spyOn(process, "exit")
+      .mockImplementation((code) => { throw new Error(`exit:${code}`); });
+  });
+  afterEach(() => {
+    exitSpy.mockRestore();
+    logSpy.mockRestore();
+  });
+
+  test("prints version and exits on --version", () => {
+    expect(() => main(["--version"]))
+      .toThrow("exit:0");
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    expect(logSpy.mock.calls[0][0]).toBe(version);
+  });
+
+  test("prints version and exits on -v", () => {
+    expect(() => main(["-v"]))
+      .toThrow("exit:0");
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    expect(logSpy.mock.calls[0][0]).toBe(version);
   });
 });
 
