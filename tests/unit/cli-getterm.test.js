@@ -4,31 +4,27 @@ import os from "os";
 import path from "path";
 import { main } from "@src/lib/main.js";
 
-// Allow fs.readFile to be spied on by making the property configurable
-Object.defineProperty(fs, "readFile", {
-  configurable: true,
-  writable: true,
-  value: fs.readFile,
-});
-
 describe("Get-Term Subcommand", () => {
   afterEach(() => {
     vi.restoreAllMocks();
   });
 
   test("successful retrieval to stdout", async () => {
+    const tmpDir = os.tmpdir();
+    const inputFile = path.join(tmpDir, `term-${Date.now()}.json`);
     const mockDoc = { "@graph": [
       { "@id": "http://example.org/onto#Term1", foo: "bar" },
       { "@id": "http://example.org/onto#Term2" }
     ] };
-    vi.spyOn(fs, "readFile").mockResolvedValue(JSON.stringify(mockDoc));
+    await fs.writeFile(inputFile, JSON.stringify(mockDoc), "utf-8");
     const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    const code = await main(["get-term", "--input", "dummy.json", "--term", "Term1"]);
+    const code = await main(["get-term", "--input", inputFile, "--term", "Term1"]);
     expect(code).toBe(0);
     expect(logSpy).toHaveBeenCalled();
     const out = logSpy.mock.calls[0][0];
     const obj = JSON.parse(out);
     expect(obj.foo).toBe("bar");
+    await fs.rm(inputFile);
   });
 
   test("successful retrieval to file", async () => {
@@ -64,11 +60,14 @@ describe("Get-Term Subcommand", () => {
   });
 
   test("term not found exits with error", async () => {
+    const tmpDir = os.tmpdir();
+    const inputFile = path.join(tmpDir, `term-${Date.now()}.json`);
     const mockDoc = { "@graph": [ { "@id": "http://example.org/onto#A" } ] };
-    vi.spyOn(fs, "readFile").mockResolvedValue(JSON.stringify(mockDoc));
+    await fs.writeFile(inputFile, JSON.stringify(mockDoc), "utf-8");
     const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
-    const code = await main(["get-term", "--input", "dummy.json", "--term", "X"]);
+    const code = await main(["get-term", "--input", inputFile, "--term", "X"]);
     expect(code).toBe(1);
     expect(errorSpy).toHaveBeenCalledWith("Term not found: X");
+    await fs.rm(inputFile);
   });
 });
