@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="geonames_webservices" href="#geonames_webservices"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GEONAMES_WEBSERVICES</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Authentication: every request must include <code class="md-github">username</code>. Register account and enable via confirmation link.
+Rate Limits: 10 000 daily, 1 000 hourly credits per <code class="md-github">username</code>, 1 credit per request, HTTP 503 on exceed.
+Endpoints: REST GET at <code class="md-github">api.geonames.org</code> (HTTP) or <code class="md-github">secure.geonames.org</code> (HTTPS); append <code class="md-github">JSON</code> to path for JSON output; default XML.
+Common Params: <code class="md-github">username</code>(required), <code class="md-github">style</code>(SHORT|MEDIUM|LONG|FULL; default MEDIUM), <code class="md-github">charset</code>(UTF-8), <code class="md-github">maxRows</code>, <code class="md-github">lat</code>,<code class="md-github">lng</code>,<code class="md-github">radius</code>.
+Postal Code Search: <code class="md-github">/postalCodeSearch</code>, filters by <code class="md-github">postalcode</code>, <code class="md-github">placename</code>, supports wildcards and bounding box.
+Reverse Geocoding: <code class="md-github">/findNearbyPostalCodes</code>, <code class="md-github">/findNearbyPlaceName</code>, <code class="md-github">/findNearby</code>, <code class="md-github">/extendedFindNearby</code>.
+Country Data: <code class="md-github">/postalCodeCountryInfo</code>, <code class="md-github">/countryInfo</code>, <code class="md-github">/countryCode</code>, <code class="md-github">/countrySubdivision</code>.
+Geospatial: <code class="md-github">/ocean</code>, <code class="md-github">/neighbourhood</code>, <code class="md-github">/srtm1</code>,<code class="md-github">/srtm3</code>,<code class="md-github">/astergdem</code>,<code class="md-github">/gtopo30</code>,<code class="md-github">/timezone</code>.
+Restrictions: CA/IE/MT partial codes, AR 4-digit codes, BR major codes only.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Authentication</p>
+</li>
+<li class="md-github">
+<p class="md-github">Rate Limits</p>
+</li>
+<li class="md-github">
+<p class="md-github">Secure and JSON Endpoints</p>
+</li>
+<li class="md-github">
+<p class="md-github">Common Parameters</p>
+</li>
+<li class="md-github">
+<p class="md-github">Postal Code Restrictions</p>
+</li>
+<li class="md-github">
+<p class="md-github">Postal Code Search Endpoint</p>
+</li>
+<li class="md-github">
+<p class="md-github">Reverse Geocoding Endpoints</p>
+</li>
+<li class="md-github">
+<p class="md-github">Country Information Endpoints</p>
+</li>
+<li class="md-github">
+<p class="md-github">Geospatial and Elevation Endpoints</p>
+</li>
+<li class="md-github">
+<p class="md-github">Timezone Endpoint</p>
+</li>
+<li class="md-github">
+<p class="md-github">Authentication
+username: string, required. Register account, confirm email.</p>
+</li>
+<li class="md-github">
+<p class="md-github">Rate Limits
+dailyCredits: int = 10000 per username
+hourlyCredits: int = 1000 per username
+creditPerRequest: 1
+onLimitExceeded: HTTP 503 + error payload</p>
+</li>
+<li class="md-github">
+<p class="md-github">Secure and JSON Endpoints
+hostHTTP: api.geonames.org
+hostHTTPS: secure.geonames.org
+outputXML: /endpoint
+outputJSON: /endpointJSON
+charset: UTF-8 URL encoding required</p>
+</li>
+<li class="md-github">
+<p class="md-github">Common Parameters
+style: enum {SHORT,MEDIUM,LONG,FULL}, default MEDIUM
+charset: string, default UTF-8
+maxRows: integer, default varies
+lat,lng: float (WGS84)
+radius: float (km)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Postal Code Restrictions
+CA, IE, MT: only initial letters
+AR: 4-digit codes
+BR: codes ending 000 only</p>
+</li>
+<li class="md-github">
+<p class="md-github">Postal Code Search Endpoint
+HTTP GET /postalCodeSearch
+Required: postalcode or placename
+Optional: postalcode_startsWith, placename_startsWith, country (ISO-3166, repeatable), countryBias, operator (AND|OR, default AND), east,west,north,south
+Response: list of postal codes with place name, countryCode, adminName, lat, lng, distance</p>
+</li>
+<li class="md-github">
+<p class="md-github">Reverse Geocoding Endpoints</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">findNearbyPostalCodes: /findNearbyPostalCodes
+params: lat,lng or postalcode,country; radius, maxRows, style, localCountry, isReduced</li>
+<li class="md-github">findNearbyPlaceName: /findNearbyPlaceName
+params: lat,lng, lang, radius, maxRows, style, localCountry, cities filter</li>
+<li class="md-github">findNearby: /findNearby
+params: lat,lng, featureClass, featureCode[], radius, maxRows, style, localCountry</li>
+<li class="md-github">extendedFindNearby: /extendedFindNearby
+params: lat,lng</li>
+</ul>
+<ol start="8" class="md-github">
+<li class="md-github">Country Information Endpoints</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">postalCodeCountryInfo: /postalCodeCountryInfo</li>
+<li class="md-github">countryInfo: /countryInfo, params: country[], lang</li>
+<li class="md-github">countryCode: /countryCode, params: lat,lng, type(xml|JSON), lang, radius</li>
+<li class="md-github">countrySubdivision: /countrySubdivision, params: lat,lng, lang, level, radius, maxRows</li>
+</ul>
+<ol start="9" class="md-github">
+<li class="md-github">Geospatial and Elevation Endpoints</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">ocean: /ocean, params: lat,lng, radius</li>
+<li class="md-github">neighbourhood: /neighbourhood, params: lat,lng</li>
+<li class="md-github">srtm1: /srtm1, params: lat,lng or lists lats[], lngs[]</li>
+<li class="md-github">srtm3: /srtm3, same as srtm1</li>
+<li class="md-github">astergdem: /astergdem, same pattern</li>
+<li class="md-github">gtopo30: /gtopo30, params: lat,lng</li>
+</ul>
+<ol start="10" class="md-github">
+<li class="md-github">Timezone Endpoint
+GET /timezone
+params: lat,lng, radius, lang, date
+response: countryCode, countryName, timezoneId, time, sunrise, sunset, rawOffset, dstOffset</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Secure Endpoint Configuration:</p>
+<ul class="md-github">
+<li class="md-github">Use HTTPS by directing requests to secure.geonames.org</li>
+<li class="md-github">No change to path or parameters when switching to HTTPS</li>
+</ul>
+<p class="md-github">URL Encoding:</p>
+<ul class="md-github">
+<li class="md-github">All string parameters must be UTF-8 URL-encoded (spaces → %20, accents → %C3%A9, etc.)</li>
+</ul>
+<p class="md-github">JSON vs XML:</p>
+<ul class="md-github">
+<li class="md-github">Default response: XML</li>
+<li class="md-github">For JSON: call <code class="md-github">&lt;endpoint&gt;JSON</code> and set <code class="md-github">Accept: application/json</code></li>
+</ul>
+<p class="md-github">Client Integration Patterns:</p>
+<ul class="md-github">
+<li class="md-github">Browser: use JSON endpoints to avoid CORS XML issues</li>
+<li class="md-github">Server: choose XML or JSON based on toolchain</li>
+</ul>
+<p class="md-github">Error Handling Steps:</p>
+<ol class="md-github">
+<li class="md-github">Check HTTP status; non-200 indicates transport error</li>
+<li class="md-github">Check response body for <code class="md-github">&lt;status&gt;&lt;message&gt;...</code> or JSON <code class="md-github">status</code> object</li>
+<li class="md-github">On limit breach, catch HTTP 503 and implement exponential backoff</li>
+</ol>
+<p class="md-github">Registration Workflow:</p>
+<ol class="md-github">
+<li class="md-github">POST no payload; visit registration URL</li>
+<li class="md-github">Confirm via email link</li>
+<li class="md-github">Enable WebService on account page</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="common-http-request" href="#common-http-request"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Common HTTP Request</h3>
+<p class="md-github">ingetRequest(endpoint, params) {
+baseURL = 'https://api.geonames.org';
+url = baseURL + endpoint;
+query = '?' + Object.entries(params).map(([k,v]) =&gt; <code class="md-github">${k}=${encodeURIComponent(v)}</code>).join('&amp;');
+return fetch(url + query).then(res =&gt; {
+if (!res.ok) throw new Error(<code class="md-github">HTTP ${res.status}</code>);
+return res.text();
+});
+}</p>
+<h3 class="md-github"><a class="md-github__anchor" name="postalcodesearch" href="#postalcodesearch"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>postalCodeSearch</h3>
+<p class="md-github">HTTP GET https://api.geonames.org/postalCodeSearch
+Parameters:
+postalcode: string, required if placename not set
+placename: string, required if postalcode not set
+postalcode_startsWith: string, optional
+placename_startsWith: string, optional
+country: ISO-3166 code, optional, repeatable
+countryBias: string, optional
+operator: enum {AND,OR}, default AND
+maxRows: integer, default 10
+style: enum {SHORT,MEDIUM,LONG,FULL}, default MEDIUM
+charset: string, default UTF-8
+isReduced: boolean, default false
+east,west,north,south: float bounding box, optional
+Response Types:
+XML: <code class="md-github">&lt;geonames&gt;&lt;code&gt;…&lt;/code&gt;…&lt;/geonames&gt;</code>
+JSON: <code class="md-github">{&quot;geonames&quot;:[{postalcode,name,countryCode,adminName1,lat,lng,...}]}</code>
+Example (curl):
+curl &quot;https://api.geonames.org/postalCodeSearchJSON?postalcode=9011&amp;maxRows=10&amp;username=demo&quot;</p>
+<h3 class="md-github"><a class="md-github__anchor" name="findnearbypostalcodes" href="#findnearbypostalcodes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>findNearbyPostalCodes</h3>
+<p class="md-github">HTTP GET https://api.geonames.org/findNearbyPostalCodes
+Parameters (lat/lng mode):
+lat,lng: float required
+radius: float km, default 5
+maxRows: integer, default 5
+style: enum, default MEDIUM
+country: ISO-3166, optional
+localCountry: boolean, default false
+isReduced: boolean, default true on commercial servers
+Parameters (postalcode mode):
+postalcode: string
+country: ISO-3166
+radius,maxRows,style same as above
+Returns: list sorted by distance, XML or JSON structure</p>
+<h3 class="md-github"><a class="md-github__anchor" name="findnearbyplacename" href="#findnearbyplacename"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>findNearbyPlaceName</h3>
+<p class="md-github">HTTP GET /findNearbyPlaceName
+Parameters: lat,lng; lang; radius; maxRows; style; localCountry; cities filter {cities1000,cities5000,cities15000}
+Response: nearest populated place (featureClass=P)</p>
+<h3 class="md-github"><a class="md-github__anchor" name="countryinfo" href="#countryinfo"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>countryInfo</h3>
+<p class="md-github">HTTP GET /countryInfo
+Parameters: country (code), lang
+Response: list of country records: countryCode, countryName, capital, population, areaInSqKm, bbox
+CSV variant: /countryInfoCSV</p>
+<h3 class="md-github"><a class="md-github__anchor" name="countrycode" href="#countrycode"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>countryCode</h3>
+<p class="md-github">HTTP GET /countryCode
+Parameters: lat,lng; type(xml|JSON); lang; radius
+Response XML: <code class="md-github">&lt;countryCode&gt;US&lt;/countryCode&gt;&lt;countryName&gt;United States&lt;/countryName&gt;</code>
+JSON: <code class="md-github">{&quot;countryCode&quot;:&quot;US&quot;,&quot;countryName&quot;:&quot;United States&quot;}</code></p>
+<h3 class="md-github"><a class="md-github__anchor" name="countrysubdivision" href="#countrysubdivision"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>countrySubdivision</h3>
+<p class="md-github">HTTP GET /countrySubdivision
+Parameters: lat,lng; lang; level; radius; maxRows
+Response: administrative subdivisions with code and name</p>
+<h3 class="md-github"><a class="md-github__anchor" name="ocean" href="#ocean"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ocean</h3>
+<p class="md-github">HTTP GET /ocean
+Parameters: lat,lng; radius
+Response: <code class="md-github">&lt;ocean&gt;Atlantic Ocean&lt;/ocean&gt;</code> or JSON</p>
+<h3 class="md-github"><a class="md-github__anchor" name="neighbourhood" href="#neighbourhood"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>neighbourhood</h3>
+<p class="md-github">HTTP GET /neighbourhood
+Parameters: lat,lng
+Response: <code class="md-github">&lt;neighbourhood&gt;Upper West Side&lt;/neighbourhood&gt;</code></p>
+<h3 class="md-github"><a class="md-github__anchor" name="elevation-services-srtm1-srtm3-astergdem-gtopo30" href="#elevation-services-srtm1-srtm3-astergdem-gtopo30"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Elevation Services (srtm1, srtm3, astergdem, gtopo30)</h3>
+<p class="md-github">HTTP GET /{srtm1|srtm3|astergdem|gtopo30}
+Parameters: lat,lng or lists lats[],lngs[]; username; GET or POST allowed
+Response: single integer per point. No-data flagged as -32768 or -9999
+Limits: free server max 20 points; premium 2000 points</p>
+<h3 class="md-github"><a class="md-github__anchor" name="timezone" href="#timezone"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>timezone</h3>
+<p class="md-github">HTTP GET /timezone
+Parameters: lat,lng; radius; lang; date (YYYY-MM-DD)
+Response JSON: {countryCode, countryName, timezoneId, time, sunrise, sunset, rawOffset, dstOffset}</p>
+<h3 class="md-github"><a class="md-github__anchor" name="implementation-best-practices" href="#implementation-best-practices"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Implementation Best Practices</h3>
+<ul class="md-github">
+<li class="md-github">Use JSON endpoints in browser to avoid XML/CORS issues</li>
+<li class="md-github">Back off and retry on HTTP 503</li>
+<li class="md-github">Cache static endpoints (countryInfo, postalCodeCountryInfo)</li>
+<li class="md-github">Batch elevation requests when possible</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="troubleshooting-commands" href="#troubleshooting-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting Commands</h3>
+<ul class="md-github">
+<li class="md-github">Verbose HTTP: <code class="md-github">curl -v &quot;https://api.geonames.org/countryInfo?username=demo&quot;</code></li>
+<li class="md-github">Check rate limit errors: look for HTTP 503 and <code class="md-github">&lt;status&gt;&lt;message&gt;daily limit</code> or JSON <code class="md-github">{status:{message}}</code></li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">username(required); dailyCredits=10000,hourlyCredits=1000; host=api.geonames.org or secure.geonames.org; default output=XML, JSON=endpointJSON;
+commonParams={style:[SHORT,MEDIUM,LONG,FULL]=MEDIUM,charset=UTF-8,maxRows,varies,lat:float,lng:float,radius:float};
+postalCodeSearch GET /postalCodeSearch?postalcode=string|placename=string&amp;[,postalcode_startsWith,placename_startsWith,country=ISO-3166+,countryBias,operator=[AND|OR],east,west,north,south];
+findNearbyPostalCodes GET /findNearbyPostalCodes?lat=float&amp;lng=float or postalcode=string&amp;country=ISO-3166[,radius,maxRows,style,localCountry,isReduced];
+findNearbyPlaceName GET /findNearbyPlaceName?lat,lng,lang,radius,maxRows,style,localCountry,citiesFilter;
+countryInfo GET /countryInfo?username&amp;[country=ISO-3166+,lang];
+countryCode GET /countryCode?lat,lng[,type=xml|JSON,lang,radius];
+countrySubdivision GET /countrySubdivision?lat,lng[,lang,level,radius,maxRows];
+ocean GET /ocean?lat,lng; neighbourhood GET /neighbourhood?lat,lng;
+elevation GET /{srtm1|srtm3|astergdem|gtopo30}?lat,lng or lats[],lngs[]; pointsLimit free=20,premium=2000;
+timezone GET /timezone?lat,lng[,radius,lang,date]; responses include offsets,sunrise/sunset; errors=HTTP503+{status.message}.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Authentication</p>
+</li>
+<li class="md-github">
+<p class="md-github">Rate Limits</p>
+</li>
+<li class="md-github">
+<p class="md-github">Secure and JSON Endpoints</p>
+</li>
+<li class="md-github">
+<p class="md-github">Common Parameters</p>
+</li>
+<li class="md-github">
+<p class="md-github">Postal Code Restrictions</p>
+</li>
+<li class="md-github">
+<p class="md-github">Postal Code Search Endpoint</p>
+</li>
+<li class="md-github">
+<p class="md-github">Reverse Geocoding Endpoints</p>
+</li>
+<li class="md-github">
+<p class="md-github">Country Information Endpoints</p>
+</li>
+<li class="md-github">
+<p class="md-github">Geospatial and Elevation Endpoints</p>
+</li>
+<li class="md-github">
+<p class="md-github">Timezone Endpoint</p>
+</li>
+<li class="md-github">
+<p class="md-github">Authentication
+username: string, required. Register account, confirm email.</p>
+</li>
+<li class="md-github">
+<p class="md-github">Rate Limits
+dailyCredits: int = 10000 per username
+hourlyCredits: int = 1000 per username
+creditPerRequest: 1
+onLimitExceeded: HTTP 503 + error payload</p>
+</li>
+<li class="md-github">
+<p class="md-github">Secure and JSON Endpoints
+hostHTTP: api.geonames.org
+hostHTTPS: secure.geonames.org
+outputXML: /endpoint
+outputJSON: /endpointJSON
+charset: UTF-8 URL encoding required</p>
+</li>
+<li class="md-github">
+<p class="md-github">Common Parameters
+style: enum {SHORT,MEDIUM,LONG,FULL}, default MEDIUM
+charset: string, default UTF-8
+maxRows: integer, default varies
+lat,lng: float (WGS84)
+radius: float (km)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Postal Code Restrictions
+CA, IE, MT: only initial letters
+AR: 4-digit codes
+BR: codes ending 000 only</p>
+</li>
+<li class="md-github">
+<p class="md-github">Postal Code Search Endpoint
+HTTP GET /postalCodeSearch
+Required: postalcode or placename
+Optional: postalcode_startsWith, placename_startsWith, country (ISO-3166, repeatable), countryBias, operator (AND|OR, default AND), east,west,north,south
+Response: list of postal codes with place name, countryCode, adminName, lat, lng, distance</p>
+</li>
+<li class="md-github">
+<p class="md-github">Reverse Geocoding Endpoints</p>
+</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">findNearbyPostalCodes: /findNearbyPostalCodes
+params: lat,lng or postalcode,country; radius, maxRows, style, localCountry, isReduced</li>
+<li class="md-github">findNearbyPlaceName: /findNearbyPlaceName
+params: lat,lng, lang, radius, maxRows, style, localCountry, cities filter</li>
+<li class="md-github">findNearby: /findNearby
+params: lat,lng, featureClass, featureCode[], radius, maxRows, style, localCountry</li>
+<li class="md-github">extendedFindNearby: /extendedFindNearby
+params: lat,lng</li>
+</ul>
+<ol start="8" class="md-github">
+<li class="md-github">Country Information Endpoints</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">postalCodeCountryInfo: /postalCodeCountryInfo</li>
+<li class="md-github">countryInfo: /countryInfo, params: country[], lang</li>
+<li class="md-github">countryCode: /countryCode, params: lat,lng, type(xml|JSON), lang, radius</li>
+<li class="md-github">countrySubdivision: /countrySubdivision, params: lat,lng, lang, level, radius, maxRows</li>
+</ul>
+<ol start="9" class="md-github">
+<li class="md-github">Geospatial and Elevation Endpoints</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">ocean: /ocean, params: lat,lng, radius</li>
+<li class="md-github">neighbourhood: /neighbourhood, params: lat,lng</li>
+<li class="md-github">srtm1: /srtm1, params: lat,lng or lists lats[], lngs[]</li>
+<li class="md-github">srtm3: /srtm3, same as srtm1</li>
+<li class="md-github">astergdem: /astergdem, same pattern</li>
+<li class="md-github">gtopo30: /gtopo30, params: lat,lng</li>
+</ul>
+<ol start="10" class="md-github">
+<li class="md-github">Timezone Endpoint
+GET /timezone
+params: lat,lng, radius, lang, date
+response: countryCode, countryName, timezoneId, time, sunrise, sunset, rawOffset, dstOffset</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">GeoNames Web Services
+http://www.geonames.org/export/ws-overview.html</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-geonames_webservices" href="#digest-of-geonames_webservices"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of GEONAMES_WEBSERVICES</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="geonames-web-services" href="#geonames-web-services"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GeoNames Web Services</h1>
+<p class="md-github">Retrieved: 2024-07-04
+Data Size: 831367 bytes
+Source Contact: info@geonames.org</p>
+<h2 class="md-github"><a class="md-github__anchor" name="authentication" href="#authentication"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Authentication</h2>
+<p class="md-github">All REST endpoints require a <code class="md-github">username</code> query parameter. Register at http://www.geonames.org/login, confirm by email, then enable on your account page.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="rate-limits-and-credits" href="#rate-limits-and-credits"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Rate Limits and Credits</h2>
+<ul class="md-github">
+<li class="md-github">Daily limit: 10 000 credits per <code class="md-github">username</code>.</li>
+<li class="md-github">Hourly limit: 1 000 credits per <code class="md-github">username</code>.</li>
+<li class="md-github">Each request consumes 1 credit; on limit breach the service responds with HTTP 503 and an error payload.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="secure-endpoint" href="#secure-endpoint"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Secure Endpoint</h2>
+<p class="md-github">Switch host from <code class="md-github">api.geonames.org</code> to <code class="md-github">secure.geonames.org</code> for HTTPS.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="json-vs-xml" href="#json-vs-xml"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSON vs XML</h2>
+<ul class="md-github">
+<li class="md-github">Append <code class="md-github">JSON</code> to the endpoint path for JSON output (e.g. <code class="md-github">/postalCodeSearchJSON</code>).</li>
+<li class="md-github">Default output is XML.</li>
+<li class="md-github">Always URL-encode parameters using UTF-8.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="common-query-parameters" href="#common-query-parameters"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Common Query Parameters</h2>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">username</code> (string, required)</li>
+<li class="md-github"><code class="md-github">style</code> (enum: SHORT, MEDIUM, LONG, FULL; default = MEDIUM)</li>
+<li class="md-github"><code class="md-github">charset</code> (string; default = UTF-8)</li>
+<li class="md-github"><code class="md-github">maxRows</code> (integer; default varies by service)</li>
+<li class="md-github"><code class="md-github">lat</code>, <code class="md-github">lng</code> (float; WGS84)</li>
+<li class="md-github"><code class="md-github">radius</code> (float; kilometers)</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="postal-code-restrictions" href="#postal-code-restrictions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Postal Code Restrictions</h2>
+<ul class="md-github">
+<li class="md-github">CA, IE, MT: only initial letters of full codes</li>
+<li class="md-github">AR: 4-digit codes only</li>
+<li class="md-github">BR: codes ending “000” only</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="key-endpoints" href="#key-endpoints"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Key Endpoints</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="postalcodesearch-1" href="#postalcodesearch-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>postalCodeSearch</h3>
+<p class="md-github"><strong class="md-github">URL</strong>  GET <code class="md-github">/postalCodeSearch?postalcode={string}&amp;username={string}[…]&amp;maxRows={int}&amp;style={enum}</code>
+Returns postal code data by code or place name. US first result uses area shape; others use centroid.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="findnearbypostalcodes-1" href="#findnearbypostalcodes-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>findNearbyPostalCodes</h3>
+<p class="md-github"><strong class="md-github">URL</strong>  GET <code class="md-github">/findNearbyPostalCodes?lat={float}&amp;lng={float}&amp;username={string}[…]&amp;radius={float}&amp;maxRows={int}</code>
+Reverse-geocoding via coordinates or postal code; sorted by distance.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="findnearbyplacename-1" href="#findnearbyplacename-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>findNearbyPlaceName</h3>
+<p class="md-github"><strong class="md-github">URL</strong>  GET <code class="md-github">/findNearbyPlaceName?lat={float}&amp;lng={float}&amp;username={string}[…]&amp;lang={string}&amp;radius={float}&amp;maxRows={int}</code>
+Closest populated place (featureClass = P).</p>
+<h3 class="md-github"><a class="md-github__anchor" name="countryinfo-1" href="#countryinfo-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>countryInfo</h3>
+<p class="md-github"><strong class="md-github">URL</strong>  GET <code class="md-github">/countryInfo?username={string}[&amp;country={ISO-3166}][&amp;lang={string}]</code>
+Returns capital, population, area, bounding box.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="countrycode-1" href="#countrycode-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>countryCode</h3>
+<p class="md-github"><strong class="md-github">URL</strong>  GET <code class="md-github">/countryCode?lat={float}&amp;lng={float}&amp;username={string}[&amp;type={xml|JSON}][&amp;radius={float}]</code>
+ISO code (+ country name if <code class="md-github">type=xml</code>).</p>
+<h3 class="md-github"><a class="md-github__anchor" name="countrysubdivision-1" href="#countrysubdivision-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>countrySubdivision</h3>
+<p class="md-github"><strong class="md-github">URL</strong>  GET <code class="md-github">/countrySubdivision?lat={float}&amp;lng={float}&amp;username={string}[&amp;lang={string}][&amp;level={int}][&amp;radius={float}][&amp;maxRows={int}]</code>
+Returns adm division names and codes.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="ocean-1" href="#ocean-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ocean</h3>
+<p class="md-github"><strong class="md-github">URL</strong>  GET <code class="md-github">/ocean?lat={float}&amp;lng={float}&amp;username={string}</code>
+Returns ocean or sea name.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="neighbourhood-1" href="#neighbourhood-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>neighbourhood</h3>
+<p class="md-github"><strong class="md-github">URL</strong>  GET <code class="md-github">/neighbourhood?lat={float}&amp;lng={float}&amp;username={string}</code>
+Returns US neighbourhood (Zillow cc-by-sa).</p>
+<h3 class="md-github"><a class="md-github__anchor" name="srtm1--srtm3--astergdem--gtopo30" href="#srtm1--srtm3--astergdem--gtopo30"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>srtm1 / srtm3 / astergdem / gtopo30</h3>
+<p class="md-github"><strong class="md-github">URL</strong>  GET <code class="md-github">/{service}?lat={float}&amp;lng={float}&amp;username={string}[&amp;lats={list}&amp;lngs={list}]</code>
+Returns elevation (integer meters; masked as –32768 or –9999 for no data).</p>
+<h3 class="md-github"><a class="md-github__anchor" name="timezone-1" href="#timezone-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>timezone</h3>
+<p class="md-github"><strong class="md-github">URL</strong>  GET <code class="md-github">/timezone?lat={float}&amp;lng={float}&amp;username={string}[&amp;radius={float}][&amp;lang={string}][&amp;date={YYYY-MM-DD}]</code>
+Returns raw and DST offsets, local time, sunrise/sunset.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: GeoNames Web Services</li>
+<li class="md-github">URL: http://www.geonames.org/export/ws-overview.html</li>
+<li class="md-github">License: Creative Commons Attribution 4.0 International (CC BY 4.0)</li>
+<li class="md-github">Crawl Date: 2025-05-02T20:02:28.667Z</li>
+<li class="md-github">Data Size: 831367 bytes</li>
+<li class="md-github">Links Found: 3002</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-02</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-02T20:21:54.121Z</p>
+  </footer>
+</body>
+</html>
