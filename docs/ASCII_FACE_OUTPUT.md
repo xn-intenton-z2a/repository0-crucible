@@ -36,6 +36,9 @@ node src/lib/main.js
 node src/lib/main.js --faces custom_faces.yaml --count 3
 # Outputs three faces from the custom set.
 
+node src/lib/main.js --seed 10 --count 2
+# Outputs two faces deterministically based on the seed.
+
 node src/lib/main.js --help
 # Displays usage instructions and exits.
 

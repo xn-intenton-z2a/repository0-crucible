@@ -34,6 +34,7 @@ function printUsage() {
     "Examples:",
     "  node src/lib/main.js",
     "  node src/lib/main.js --faces custom_faces.yaml --count 3",
+    "  node src/lib/main.js --seed 10 --count 2",
     "  node src/lib/main.js --help",
     "  node src/lib/main.js --version"
   ].join("\n");
