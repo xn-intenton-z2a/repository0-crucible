@@ -24,326 +24,460 @@
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="jsonld_framing" href="#jsonld_framing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSONLD_FRAMING</h1>
 <h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
-<p class="md-github">Frame input documents by matching a JSON-LD frame structure using keys @context,@id,@type and framing flags (@embed,@explicit,@omitDefault,@omitGraph,@requireAll). The framing algorithm expands both input and frame, generates a flattened subject map, then recursively matches outermost frame object to select node objects, embedding or referencing based on embed flag. JsonLdProcessor.frame method signature returns a promise of the framed document. JsonLdOptions include embed('@once'||'@always'||'@never'), explicit(boolean), omitDefault(boolean), omitGraph(boolean), requireAll(boolean), processingMode('json-ld-1.1'||'json-ld-1.0'), documentLoader(function), base(string), expandContext(object).</p>
+<p class="md-github">JsonLdProcessor.frame(input, frame, options) returns Promise<object> or invokes callback. JsonLdOptions framing-specific fields: embed:'@once'|'@always'|'@never' (default '@once'), explicit:boolean=false, omitDefault:boolean=false, omitGraph:boolean=false, requireAll:boolean=false, ordered:boolean=false. Framing keywords @embed, @explicit, @omitDefault, @omitGraph, @requireAll, @ordered override options. Algorithm: expand input/frame, generate node map, frame match, value pattern match, embed recursively, apply @default content, compact output. Error codes: invalidFrameError, invalidFrameKeywordError.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
 <p class="md-github">Table of Contents:</p>
 <ol class="md-github">
 <li class="md-github">
-<p class="md-github">Framing API Method</p>
+<p class="md-github">Framing API Method Signature</p>
 </li>
 <li class="md-github">
-<p class="md-github">JsonLdOptions Properties</p>
+<p class="md-github">Frame Options (JsonLdOptions)</p>
 </li>
 <li class="md-github">
-<p class="md-github">Frame Document Structure</p>
+<p class="md-github">Framing Keywords</p>
 </li>
 <li class="md-github">
-<p class="md-github">Framing Flags and Their Effects</p>
+<p class="md-github">Matching Features
+4.1 Property Matching
+4.2 Wildcard Matching
+4.3 Absence Matching
+4.4 Value Pattern Matching
+4.5 @id Matching
+4.6 Empty Frame</p>
 </li>
 <li class="md-github">
-<p class="md-github">Matching Mechanisms</p>
+<p class="md-github">Default Content (@default)</p>
 </li>
 <li class="md-github">
-<p class="md-github">Usage Examples</p>
+<p class="md-github">Algorithm Steps</p>
 </li>
 <li class="md-github">
-<p class="md-github">Framing API Method
-Name: frame<br>
-Input: any JSON-LD data (object or array)<br>
-Frame: JSON-LD frame document (object)<br>
-Options: JsonLdOptions<br>
-Output: Promise resolving to framed JSON-LD document (object)</p>
+<p class="md-github">Data Structures</p>
 </li>
 <li class="md-github">
-<p class="md-github">JsonLdOptions Properties
-embed: '@once'||'@always'||'@never' (default '@once')
+<p class="md-github">Reverse Framing</p>
+</li>
+<li class="md-github">
+<p class="md-github">Framing Named Graphs</p>
+</li>
+<li class="md-github">
+<p class="md-github">Framing API Method Signature
+Interface JsonLdProcessor {
+frame(input: any, frame: object|any[], options?: JsonLdOptions): Promise<object>;
+frame(input, frame, options, callback): void;
+}</p>
+</li>
+<li class="md-github">
+<p class="md-github">Frame Options (JsonLdOptions)
+embed: '@once'|'@always'|'@never' (default '@once')
 explicit: boolean (default false)
 omitDefault: boolean (default false)
 omitGraph: boolean (default false)
 requireAll: boolean (default false)
-processingMode: 'json-ld-1.1'||'json-ld-1.0' (default 'json-ld-1.1')
-documentLoader: function(Iri)-&gt;Promise<Response> (default built-in)
-base: string (base IRI for expansion)
-expandContext: object|array (context(s) applied during expansion)</p>
+ordered: boolean (default false)</p>
 </li>
 <li class="md-github">
-<p class="md-github">Frame Document Structure
-Must contain @context mapping; optional @id and @type selectors; nested property names map values or frame objects; frame objects may include @default specifying fallback value for missing property or type.</p>
+<p class="md-github">Framing Keywords
+Use @embed, @explicit, @omitDefault, @omitGraph, @requireAll, @ordered within frame objects to set flags locally.</p>
 </li>
 <li class="md-github">
-<p class="md-github">Framing Flags and Their Effects
-@embed controls object embedding vs reference: @once embeds first occurrence, @always embeds every, @never yields only references.
-@explicit=true suppresses output of properties not explicitly declared in frame.
-@omitDefault=true omits adding default-valued properties.
-@omitGraph=true omits top-level @graph wrapper when data contains single node.
-@requireAll=true requires all frame properties present in input for match.</p>
+<p class="md-github">Matching Features
+4.1 Property Matching:
+Frame property:value matches node objects with same property and value.
+4.2 Wildcard Matching:
+property:{} matches any value present for that property.
+4.3 Absence Matching:
+property:[] matches node objects lacking that property, adds null if explicit inclusion false.
+4.4 Value Pattern Matching:
+property:{'@value':{}, '@language':'lang'} matches value objects with language tag.
+4.5 @id Matching:
+'@id':'IRI' or array of IRIs matches nodes by identifier.
+4.6 Empty Frame:
+{} matches all node objects at top-level.</p>
 </li>
 <li class="md-github">
-<p class="md-github">Matching Mechanisms
-Property matching: exact literal or nested frame objects.
-Wildcard ({}): match any value present for property.
-Absence ([]): match absence of property and add null output if explicit false.
-Value matching: frame may specify @value,@language,@type constraints nested.
-ID matching: @id may be string or array of strings to match specific node IRI(s).</p>
+<p class="md-github">Default Content (@default)
+property:{'@default':value} in frame supplies default value when missing; defaults for @type supported.</p>
 </li>
 <li class="md-github">
-<p class="md-github">Usage Examples</p>
+<p class="md-github">Algorithm Steps
+expand input/frame
+generate node map
+apply Frame Matching Algorithm
+value pattern matching
+recursive embedding by embed flag
+default insertion
+compact with frame context</p>
+</li>
+<li class="md-github">
+<p class="md-github">Data Structures
+JsonLdContext: map for term resolution
+JsonLdOptions: framing and core API options</p>
+</li>
+<li class="md-github">
+<p class="md-github">Reverse Framing
+Use JSON-LD API reverse flag on properties to invert embedding direction.</p>
+</li>
+<li class="md-github">
+<p class="md-github">Framing Named Graphs
+Frame with @graph key to target named graphs; omitGraph controls top-level output.</p>
 </li>
 </ol>
-<ul class="md-github">
-<li class="md-github">Basic call: frame(inputDoc,frameDoc,{embed:'@once'})</li>
-<li class="md-github">Type-based frame selecting Library-&gt;Book-&gt;Chapter</li>
-<li class="md-github">Property matching example filtering by title or location</li>
-<li class="md-github">Wildcard and absence matching cases</li>
-<li class="md-github">Language-based value matching using @value and @language</li>
-<li class="md-github">ID-based framing with single or array of IRIs</li>
-</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
-<p class="md-github">Parameter values and defaults:
-embed: '@once' embeds the first matching node in place then references further matches; '@always' embeds all matches; '@never' never embeds, always uses references.<br>
-explicit: when true, only properties declared in frame appear in output, others are omitted.<br>
-omitDefault: when true, properties with default values from frame are omitted from output if missing in input.<br>
-omitGraph: when true and only one top-level node results, the @graph property is omitted.<br>
-requireAll: when true, frame matches only nodes containing all properties listed in frame; when false matches any listed property.<br>
-processingMode: 'json-ld-1.1' enables JSON-LD 1.1 framing, 'json-ld-1.0' disables 1.1-specific features or errors if context requests 1.1.<br>
-documentLoader signature: function(url: string): Promise&lt;{contextUrl:string|null,documentUrl:string,response:object}&gt;.<br>
-base: base IRI string used to resolve relative IRIs.<br>
-expandContext: JSON-LD context object or array inserted before expansion algorithm.<br>
-Implementation steps:</p>
+<p class="md-github">Implementation Steps:</p>
 <ol class="md-github">
-<li class="md-github">Expand input and frame using JSON-LD expansion algorithm with options.processingMode, options.expandContext.</li>
-<li class="md-github">Generate node map by blank node inlining and subject flattening.</li>
-<li class="md-github">Starting from outermost frame object, recursively apply Frame Matching Algorithm, using Frame Matching and Value Pattern Matching algorithms.</li>
-<li class="md-github">Construct framed output, applying flags: embedding vs referencing, default values, explicit suppression, graph omission.</li>
-<li class="md-github">Compact output using frame's @context and JsonLdContext.</li>
+<li class="md-github">Expand document: expanded = await jsonld.expand(input, {expandContext, documentLoader, processingMode});</li>
+<li class="md-github">Flatten expanded: flattened = await jsonld.flatten(expanded, {}, {documentLoader, processingMode});</li>
+<li class="md-github">Frame flattened: framed = await jsonld.frame(flattened, frame, {embed:'@once', explicit:false, omitDefault:false, omitGraph:false, requireAll:false, ordered:false, documentLoader, processingMode});</li>
+<li class="md-github">Compact framed: result = await jsonld.compact(framed, frameContext, {compactArrays, documentLoader, processingMode});</li>
 </ol>
+<p class="md-github">JsonLdOptions defaults:
+embed:'@once', explicit:false, omitDefault:false, omitGraph:false, requireAll:false, ordered:false</p>
+<p class="md-github">DocumentLoader:
+function(url:string):Promise<RemoteDocument></p>
+<p class="md-github">Error Behavior:</p>
+<ul class="md-github">
+<li class="md-github">invalidFrameError: thrown if frame missing required keys or invalid JSON-LD structure</li>
+<li class="md-github">invalidFrameKeywordError: thrown if framing keyword value not in allowed set</li>
+</ul>
+<p class="md-github">Reverse Framing:
+options.expandContext may include '@reverse':{'prop':'@id'} to invert edges</p>
+<p class="md-github">Named Graph Framing:
+Frame object:
+'@graph':{'@id':'graphIRI', 'prop':{...}}
+omitGraph:true to inline nodes without @graph wrapper</p>
 <h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
-<p class="md-github">API Signature:
-WebIDL:
-interface JsonLdProcessor {
-Promise<object> frame(object input, object frame, JsonLdOptions               options);
-};</p>
-<p class="md-github">JsonLdOptions WebIDL:
-dictionary JsonLdOptions {
-boolean embed = '@once';
-boolean explicit = false;
-boolean omitDefault = false;
-boolean omitGraph = false;
-boolean requireAll = false;
-DOMString processingMode = 'json-ld-1.1';
-JsonLdDocumentLoader documentLoader = <built-in loader>;
-DOMString base = null;
-object|sequence<object> expandContext = [];
-};</p>
-<p class="md-github">JavaScript SDK Method Signature (jsonld.js v6+):
-jsonld.frame(inputDocument: object|Array<object>, frameDocument: object, options?: {
-embed?: '@once'|'@always'|'@never',
-explicit?: boolean,
-omitDefault?: boolean,
-omitGraph?: boolean,
-requireAll?: boolean,
-processingMode?: 'json-ld-1.1'|'json-ld-1.0',
-documentLoader?: (url: string)=&gt;Promise&lt;{contextUrl: string|null,documentUrl: string,response: any}&gt;,
-base?: string,
-expandContext?: object|Array<object>
-}): Promise<object></p>
-<p class="md-github">Code Example:</p>
-<pre class="md-github"><code class="md-github language-javascript">import jsonld from 'jsonld';
+<h2 class="md-github"><a class="md-github__anchor" name="api-method-signature" href="#api-method-signature"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Method Signature</h2>
+<pre class="md-github"><code class="md-github language-js">interface JsonLdProcessor {
+  frame(
+    input: any,
+    frame: object|any[],
+    options?: JsonLdOptions,
+    callback?: (err: JsonLdError|null, framed?: object, meta?: JsonLdMeta) =&gt; void
+  ): Promise&lt;object&gt; | void;
+}
+</code></pre>
+<p class="md-github">Parameters:</p>
+<ul class="md-github">
+<li class="md-github">input: object|array|string|RemoteDocument (expanded or flattened JSON-LD)</li>
+<li class="md-github">frame: object|array|string (JSON-LD framing document)</li>
+<li class="md-github">options: JsonLdOptions</li>
+</ul>
+<p class="md-github">JsonLdOptions fields:</p>
+<ul class="md-github">
+<li class="md-github">documentLoader?: DocumentLoader = user-supplied loader</li>
+<li class="md-github">base?: string = undefined</li>
+<li class="md-github">processingMode?: 'json-ld-1.0'|'json-ld-1.1' = 'json-ld-1.1'</li>
+<li class="md-github">expandContext?: any = undefined</li>
+<li class="md-github">compactArrays?: boolean = true</li>
+<li class="md-github">graph?: boolean = false</li>
+<li class="md-github">embed?: '@once'|'@always'|'@never' = '@once'</li>
+<li class="md-github">explicit?: boolean = false</li>
+<li class="md-github">omitDefault?: boolean = false</li>
+<li class="md-github">omitGraph?: boolean = false</li>
+<li class="md-github">requireAll?: boolean = false</li>
+<li class="md-github">ordered?: boolean = false</li>
+</ul>
+<p class="md-github">Return:</p>
+<ul class="md-github">
+<li class="md-github">Promise resolving to framed JSON-LD object</li>
+<li class="md-github">Or void if callback provided</li>
+</ul>
+<p class="md-github">Errors:</p>
+<ul class="md-github">
+<li class="md-github">JsonLdError.code = 'invalidFrameError'</li>
+<li class="md-github">JsonLdError.code = 'invalidFrameKeywordError'</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="code-example" href="#code-example"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Code Example</h2>
+<pre class="md-github"><code class="md-github language-js">const jsonld = require('jsonld');
+const inputDoc = require('./input.json');
+const frameDoc = require('./frame.json');
+const frameContext = {&quot;@vocab&quot;:&quot;http://example.org/&quot;};
 
-const input = require('./input.json');
-const frame = require('./frame.json');
-
-const options = {
-  embed: '@always',
-  explicit: true,
-  omitDefault: false,
-  omitGraph: true,
-  requireAll: true,
-  processingMode: 'json-ld-1.1',
-  documentLoader: customLoader,
-  base: 'http://example.org/',
-  expandContext: {'@vocab':'http://example.org/'}
-};
-
-async function run() {
+async function runFraming() {
   try {
-    const result = await jsonld.frame(input, frame, options);
-    console.log(JSON.stringify(result, null, 2));
-  } catch(err) {
-    console.error('Framing error', err);
+    const expanded = await jsonld.expand(inputDoc, {processingMode:'json-ld-1.1'});
+    const flattened = await jsonld.flatten(expanded, {}, {processingMode:'json-ld-1.1'});
+    const options = {embed:'@once', explicit:false, omitDefault:false, omitGraph:false, requireAll:false, ordered:false};
+    const framed = await jsonld.frame(flattened, frameDoc, options);
+    const compacted = await jsonld.compact(framed, frameContext, {compactArrays:true});
+    console.log(JSON.stringify(compacted, null, 2));
+  } catch (err) {
+    console.error(err.code, err.message);
   }
 }
 
-run();
+runFraming();
 </code></pre>
-<p class="md-github">Best Practices:</p>
+<h2 class="md-github"><a class="md-github__anchor" name="best-practices" href="#best-practices"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Best Practices</h2>
 <ul class="md-github">
-<li class="md-github">Pre-flatten large documents before framing to improve performance.</li>
-<li class="md-github">Use explicit:true to avoid unexpected default nulls.</li>
-<li class="md-github">Choose embed mode based on output size and reference needs.</li>
-<li class="md-github">Supply custom documentLoader for offline environments.</li>
+<li class="md-github">Always expand and flatten before framing to normalize graph structure.</li>
+<li class="md-github">Supply a custom documentLoader for remote contexts.</li>
+<li class="md-github">Use explicit:true to output only declared frame properties.</li>
+<li class="md-github">Use omitDefault:true to avoid null placeholders for missing data.</li>
+<li class="md-github">Use ordered:true when deterministic embedding order is required.</li>
 </ul>
-<p class="md-github">Troubleshooting:
-Command: node run-framing.js
-Expected console log: JSON document with nested structure matching frame.
-Error: Invalid @embed value =&gt; check frame.@embed must be '@once','@always' or '@never'.
-Error: Frame did not match any nodes =&gt; verify frame selectors (@type,@id,property values) against input expansion results.
-To debug subject map, insert console.log(nodeMap) after flattening algorithm in processor implementation.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="troubleshooting" href="#troubleshooting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Troubleshooting</h2>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Invalid @embed value:
+Error: JsonLdError.code === 'invalidFrameKeywordError'
+Expected '@once', '@always', or '@never'.
+Fix: ensure frame contains valid @embed value.</p>
+</li>
+<li class="md-github">
+<p class="md-github">No output or empty frame result:</p>
+<ul class="md-github">
+<li class="md-github">Check flattened subjects: console.log(await jsonld.flatten(...));</li>
+<li class="md-github">Verify frame property paths match expanded data IRIs.</li>
+<li class="md-github">Use wildcard {} or array [] patterns to broaden matches.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Unexpected default nulls:</p>
+<ul class="md-github">
+<li class="md-github">Omit default placeholders with omitDefault:true.</li>
+</ul>
+</li>
+<li class="md-github">
+<p class="md-github">Debug metadata:
+Provide callback to frame to inspect meta argument:</p>
+<pre class="md-github"><code class="md-github language-js">jsonld.frame(flattened, frameDoc, options, (err, framed, meta) =&gt; {
+  console.dir(meta, {depth:5});
+});
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">CLI usage:</p>
+<pre class="md-github"><code class="md-github language-bash">jsonld frame input.json frame.json \
+  --embed=@once --explicit=false --omitDefault=false \
+  --omitGraph=false --requireAll=false --ordered=false \
+  -o output.json
+</code></pre>
+</li>
+</ol>
 <h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
-<p class="md-github">JsonLdProcessor.frame(input,frame,options)-&gt;Promise<object>. Options: embed:'@once'|'@always'|'@never'(default '@once'), explicit:false, omitDefault:false, omitGraph:false, requireAll:false, processingMode:'json-ld-1.1', documentLoader:function, base:string, expandContext:object|array. Frame doc: must include @context, may include @id,@type/property constraints/@default. Flags:@embed controls embedding strategy; @explicit suppresses undeclared properties; @omitDefault suppresses defaulted nulls; @omitGraph suppresses top-level @graph; @requireAll enforces all properties for match. Matching: property exact, wildcard '{}', absence '[]', value patterns using @value/@language/@type, ID matching via @id string or array. Process: expand input+frame; generate subject map; apply Frame Matching Algorithm; compact result with context; return framed doc. Code example uses jsonld.frame(input,frame,options).</p>
+<p class="md-github">JsonLdProcessor.frame(input:any,frame:any,options?:JsonLdOptions):Promise<object>. JsonLdOptions embed:'@once'|'@always'|'@never'(default '@once'), explicit:boolean=false, omitDefault:boolean=false, omitGraph:boolean=false, requireAll:boolean=false, ordered:boolean=false. Framing keywords @embed,@explicit,@omitDefault,@omitGraph,@requireAll,@ordered override options locally. Matching: property:value, wildcard {}, absence [], value patterns {@value, @language, @type, @direction}, @id string|array, empty frame {}. Default content via {@default:value} injects missing props. Algorithm: expand-&gt;node map-&gt;frame match-&gt;value pattern-&gt;embed-&gt;default-&gt;compact. Errors: invalidFrameError, invalidFrameKeywordError. Code: await jsonld.expand-&gt;flatten-&gt;frame-&gt;compact. Best practices: flatten input, custom documentLoader, use explicit/omitDefault/ordered flags. Troubleshoot via meta callback and CLI flags.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
 <p class="md-github">Table of Contents:</p>
 <ol class="md-github">
 <li class="md-github">
-<p class="md-github">Framing API Method</p>
+<p class="md-github">Framing API Method Signature</p>
 </li>
 <li class="md-github">
-<p class="md-github">JsonLdOptions Properties</p>
+<p class="md-github">Frame Options (JsonLdOptions)</p>
 </li>
 <li class="md-github">
-<p class="md-github">Frame Document Structure</p>
+<p class="md-github">Framing Keywords</p>
 </li>
 <li class="md-github">
-<p class="md-github">Framing Flags and Their Effects</p>
+<p class="md-github">Matching Features
+4.1 Property Matching
+4.2 Wildcard Matching
+4.3 Absence Matching
+4.4 Value Pattern Matching
+4.5 @id Matching
+4.6 Empty Frame</p>
 </li>
 <li class="md-github">
-<p class="md-github">Matching Mechanisms</p>
+<p class="md-github">Default Content (@default)</p>
 </li>
 <li class="md-github">
-<p class="md-github">Usage Examples</p>
+<p class="md-github">Algorithm Steps</p>
 </li>
 <li class="md-github">
-<p class="md-github">Framing API Method
-Name: frame<br>
-Input: any JSON-LD data (object or array)<br>
-Frame: JSON-LD frame document (object)<br>
-Options: JsonLdOptions<br>
-Output: Promise resolving to framed JSON-LD document (object)</p>
+<p class="md-github">Data Structures</p>
 </li>
 <li class="md-github">
-<p class="md-github">JsonLdOptions Properties
-embed: '@once'||'@always'||'@never' (default '@once')
+<p class="md-github">Reverse Framing</p>
+</li>
+<li class="md-github">
+<p class="md-github">Framing Named Graphs</p>
+</li>
+<li class="md-github">
+<p class="md-github">Framing API Method Signature
+Interface JsonLdProcessor {
+frame(input: any, frame: object|any[], options?: JsonLdOptions): Promise<object>;
+frame(input, frame, options, callback): void;
+}</p>
+</li>
+<li class="md-github">
+<p class="md-github">Frame Options (JsonLdOptions)
+embed: '@once'|'@always'|'@never' (default '@once')
 explicit: boolean (default false)
 omitDefault: boolean (default false)
 omitGraph: boolean (default false)
 requireAll: boolean (default false)
-processingMode: 'json-ld-1.1'||'json-ld-1.0' (default 'json-ld-1.1')
-documentLoader: function(Iri)-&gt;Promise<Response> (default built-in)
-base: string (base IRI for expansion)
-expandContext: object|array (context(s) applied during expansion)</p>
+ordered: boolean (default false)</p>
 </li>
 <li class="md-github">
-<p class="md-github">Frame Document Structure
-Must contain @context mapping; optional @id and @type selectors; nested property names map values or frame objects; frame objects may include @default specifying fallback value for missing property or type.</p>
+<p class="md-github">Framing Keywords
+Use @embed, @explicit, @omitDefault, @omitGraph, @requireAll, @ordered within frame objects to set flags locally.</p>
 </li>
 <li class="md-github">
-<p class="md-github">Framing Flags and Their Effects
-@embed controls object embedding vs reference: @once embeds first occurrence, @always embeds every, @never yields only references.
-@explicit=true suppresses output of properties not explicitly declared in frame.
-@omitDefault=true omits adding default-valued properties.
-@omitGraph=true omits top-level @graph wrapper when data contains single node.
-@requireAll=true requires all frame properties present in input for match.</p>
+<p class="md-github">Matching Features
+4.1 Property Matching:
+Frame property:value matches node objects with same property and value.
+4.2 Wildcard Matching:
+property:{} matches any value present for that property.
+4.3 Absence Matching:
+property:[] matches node objects lacking that property, adds null if explicit inclusion false.
+4.4 Value Pattern Matching:
+property:{'@value':{}, '@language':'lang'} matches value objects with language tag.
+4.5 @id Matching:
+'@id':'IRI' or array of IRIs matches nodes by identifier.
+4.6 Empty Frame:
+{} matches all node objects at top-level.</p>
 </li>
 <li class="md-github">
-<p class="md-github">Matching Mechanisms
-Property matching: exact literal or nested frame objects.
-Wildcard ({}): match any value present for property.
-Absence ([]): match absence of property and add null output if explicit false.
-Value matching: frame may specify @value,@language,@type constraints nested.
-ID matching: @id may be string or array of strings to match specific node IRI(s).</p>
+<p class="md-github">Default Content (@default)
+property:{'@default':value} in frame supplies default value when missing; defaults for @type supported.</p>
 </li>
 <li class="md-github">
-<p class="md-github">Usage Examples</p>
+<p class="md-github">Algorithm Steps
+expand input/frame
+generate node map
+apply Frame Matching Algorithm
+value pattern matching
+recursive embedding by embed flag
+default insertion
+compact with frame context</p>
+</li>
+<li class="md-github">
+<p class="md-github">Data Structures
+JsonLdContext: map for term resolution
+JsonLdOptions: framing and core API options</p>
+</li>
+<li class="md-github">
+<p class="md-github">Reverse Framing
+Use JSON-LD API reverse flag on properties to invert embedding direction.</p>
+</li>
+<li class="md-github">
+<p class="md-github">Framing Named Graphs
+Frame with @graph key to target named graphs; omitGraph controls top-level output.</p>
 </li>
 </ol>
-<ul class="md-github">
-<li class="md-github">Basic call: frame(inputDoc,frameDoc,{embed:'@once'})</li>
-<li class="md-github">Type-based frame selecting Library-&gt;Book-&gt;Chapter</li>
-<li class="md-github">Property matching example filtering by title or location</li>
-<li class="md-github">Wildcard and absence matching cases</li>
-<li class="md-github">Language-based value matching using @value and @language</li>
-<li class="md-github">ID-based framing with single or array of IRIs</li>
-</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
 <p class="md-github">JSON-LD Framing
 https://www.w3.org/TR/json-ld11-framing/</p>
 <h2 class="md-github"><a class="md-github__anchor" name="digest-of-jsonld_framing" href="#digest-of-jsonld_framing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of JSONLD_FRAMING</h2>
-<h1 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h1>
-<h2 class="md-github"><a class="md-github__anchor" name="framing" href="#framing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Framing</h2>
-<p class="md-github">Framing binds JSON-LD triple statements into a specific tree layout by matching a JSON-LD input document against a frame document. A frame document is a JSON-LD structure using keys:@context,@id,@type and other property names, plus framing keywords (@embed,@explicit,@default,@omitDefault,@omitGraph,@requireAll) to control matching and output shape.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="framing-flags" href="#framing-flags"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Framing Flags</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="framing-extension-to-json-ld-api" href="#framing-extension-to-json-ld-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Framing Extension to JSON-LD API</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="51-jsonldprocessorframe" href="#51-jsonldprocessorframe"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5.1 JsonLdProcessor.frame</h2>
+<p class="md-github">Interface JsonLdProcessor {
+/**</p>
 <ul class="md-github">
-<li class="md-github">object embed flag (@embed): @once (default), @always, @never</li>
-<li class="md-github">explicit inclusion flag (@explicit): false (default), true</li>
-<li class="md-github">omit default flag (@omitDefault): false (default), true</li>
-<li class="md-github">omit graph flag (@omitGraph): false (default), true</li>
-<li class="md-github">require all flag (@requireAll): false (default), true</li>
+<li class="md-github">Frames a JSON-LD document by example, producing a tree layout matching a frame document.</li>
+<li class="md-github">@param input  object|array|string|RemoteDocument JSON-LD expanded or flattened input</li>
+<li class="md-github">@param frame  object|array|string         JSON-LD frame document</li>
+<li class="md-github">@param options JsonLdOptions               framing options</li>
+<li class="md-github">@param callback err, framed, meta        Node-style callback</li>
+<li class="md-github">@returns Promise<object> framed document if callback omitted
+*/
+frame(
+input: any,
+frame: object|any[],
+options?: JsonLdOptions,
+callback?: (err: JsonLdError|null, framed?: object, meta?: JsonLdMeta) =&gt; void
+): Promise<object> | void;
+}</li>
 </ul>
-<h2 class="md-github"><a class="md-github__anchor" name="matching-patterns" href="#matching-patterns"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Matching Patterns</h2>
+<h2 class="md-github"><a class="md-github__anchor" name="532-jsonldoptions-framing" href="#532-jsonldoptions-framing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5.3.2 JsonLdOptions (framing)</h2>
+<p class="md-github">Dictionary JsonLdOptions {
+documentLoader?: DocumentLoader;           // loader for remote contexts
+base?: string;                             // base IRI for expansion
+processingMode?: 'json-ld-1.0'|'json-ld-1.1';
+expandContext?: any;                       // context to apply during expand
+compactArrays?: boolean;                   // omit arrays of single items
+graph?: boolean;                           // treat input as graph</p>
+<p class="md-github">// framing-specific options:
+embed?: '@once'|'@always'|'@never';       // default '@once'
+explicit?: boolean;                       // require explicit properties, default false
+omitDefault?: boolean;                    // omit default values, default false
+omitGraph?: boolean;                      // omit top-level @graph if single node, default false
+requireAll?: boolean;                     // require all frame props to match, default false
+ordered?: boolean;                        // embed first-found node, default false
+}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="52-error-handling" href="#52-error-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5.2 Error Handling</h2>
+<p class="md-github">Throws JsonLdError with codes:</p>
 <ul class="md-github">
-<li class="md-github">Match on properties: specify property name with literal value or nested frame</li>
-<li class="md-github">Wildcard matching: use empty map ({}) as value to match any value of that property</li>
-<li class="md-github">Absence matching: use empty array ([]) to match when property is not present</li>
-<li class="md-github">Value matching: frame nested structures with @value,@language,@type constraints</li>
-<li class="md-github">Identifier matching: use @id with string or array of IRIs</li>
+<li class="md-github">invalidFrameError         if frame document is not valid JSON-LD</li>
+<li class="md-github">invalidFrameKeywordError  if frame keywords have invalid values</li>
 </ul>
-<h1 class="md-github"><a class="md-github__anchor" name="application-programming-interface" href="#application-programming-interface"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Application Programming Interface</h1>
-<h2 class="md-github"><a class="md-github__anchor" name="jsonldprocessorframeinput-frame-options" href="#jsonldprocessorframeinput-frame-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JsonLdProcessor.frame(input, frame, options)</h2>
-<p class="md-github">WebIDL signature:</p>
-<pre class="md-github"><code class="md-github">Promise&lt;object&gt; frame(object input, object frame, JsonLdOptions options);
-</code></pre>
-<p class="md-github">JavaScript signature (jsonld.js):</p>
-<pre class="md-github"><code class="md-github">frame(inputDocument  object,  frameDocument  object,  options?  JsonLdOptions): Promise&lt;object&gt;
-</code></pre>
-<p class="md-github">Returns a promise resolving to the framed output document.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="jsonldoptions-fields-and-defaults" href="#jsonldoptions-fields-and-defaults"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JsonLdOptions (fields and defaults)</h2>
-<ul class="md-github">
-<li class="md-github">embed: one of '@once'||'@always'||'@never' (default '@once')</li>
-<li class="md-github">explicit: boolean (default false)</li>
-<li class="md-github">omitDefault: boolean (default false)</li>
-<li class="md-github">omitGraph: boolean (default false)</li>
-<li class="md-github">requireAll: boolean (default false)</li>
-<li class="md-github">processingMode: string 'json-ld-1.1'||'json-ld-1.0' (default 'json-ld-1.1')</li>
-<li class="md-github">documentLoader: function (IRI)-&gt;Promise<Response> (default bundled loader)</li>
-<li class="md-github">base: string base IRI for relative resolution</li>
-<li class="md-github">expandContext: object or array of contexts to apply before expansion</li>
-</ul>
-<h1 class="md-github"><a class="md-github__anchor" name="data-structures" href="#data-structures"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Data Structures</h1>
-<h3 class="md-github"><a class="md-github__anchor" name="jsonldcontext" href="#jsonldcontext"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JsonLdContext</h3>
-<p class="md-github">Map of term definitions and vocabulary mapping. Used for compaction of output.</p>
-<h3 class="md-github"><a class="md-github__anchor" name="frame-document" href="#frame-document"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Frame Document</h3>
-<p class="md-github">Must include @context. May include nested objects mapping property names to literal or frame objects.
-Frame objects may include @default keys for default values when matched data lacks that property.</p>
-<h1 class="md-github"><a class="md-github__anchor" name="code-examples" href="#code-examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Code Examples</h1>
-<h3 class="md-github"><a class="md-github__anchor" name="basic-framing-call" href="#basic-framing-call"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Basic framing call</h3>
-<pre class="md-github"><code class="md-github language-javascript">const framed = await jsonld.frame(input, frame, {embed:'@once', explicit:false});
-</code></pre>
-<h3 class="md-github"><a class="md-github__anchor" name="nested-frame-structure" href="#nested-frame-structure"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Nested frame structure</h3>
-<p class="md-github">Frame selects nodes of type Library, embeds Books then Chapters:</p>
-<pre class="md-github"><code class="md-github language-json">{  
-  &quot;@context&quot;:{&quot;@vocab&quot;:&quot;http://example.org/&quot;},  
-  &quot;@type&quot;:&quot;Library&quot;,  
-  &quot;contains&quot;:{  
-    &quot;@type&quot;:&quot;Book&quot;,  
-    &quot;contains&quot;:{&quot;@type&quot;:&quot;Chapter&quot;}  
-  }  
-}
-</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="framing-keywords-in-frame-overrides-options" href="#framing-keywords-in-frame-overrides-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Framing Keywords (in-frame overrides options)</h2>
+<table class="md-github">
+<thead class="md-github">
+<tr class="md-github">
+<th class="md-github">Keyword</th>
+<th class="md-github">Value</th>
+<th class="md-github">Effect</th>
+</tr>
+</thead>
+<tbody class="md-github">
+<tr class="md-github">
+<td class="md-github">@embed</td>
+<td class="md-github">@once</td>
+<td class="md-github">@always</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">@explicit</td>
+<td class="md-github">true</td>
+<td class="md-github">false</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">@omitDefault</td>
+<td class="md-github">true</td>
+<td class="md-github">false</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">@omitGraph</td>
+<td class="md-github">true</td>
+<td class="md-github">false</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">@requireAll</td>
+<td class="md-github">true</td>
+<td class="md-github">false</td>
+</tr>
+<tr class="md-github">
+<td class="md-github">@ordered</td>
+<td class="md-github">true</td>
+<td class="md-github">false</td>
+</tr>
+</tbody>
+</table>
+<h2 class="md-github"><a class="md-github__anchor" name="configuration-defaults" href="#configuration-defaults"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration Defaults</h2>
+<p class="md-github">embed: &quot;@once&quot;
+explicit: false
+omitDefault: false
+omitGraph: false
+requireAll: false
+ordered: false</p>
+<h2 class="md-github"><a class="md-github__anchor" name="framing-algorithm-overview" href="#framing-algorithm-overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Framing Algorithm Overview</h2>
+<ol class="md-github">
+<li class="md-github">Expand input and frame to internal representation.</li>
+<li class="md-github">Generate node map via Node Map Generation algorithm.</li>
+<li class="md-github">Apply Frame Matching Algorithm per frame node object.</li>
+<li class="md-github">Use Value Pattern Matching Algorithm for @value, @language, @type, @direction.</li>
+<li class="md-github">Recursively embed matching node objects based on embed flag.</li>
+<li class="md-github">Insert default content for missing properties using @default in frame.</li>
+<li class="md-github">Compact result using frame context to produce JSON-LD.</li>
+</ol>
 <h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
 <ul class="md-github">
 <li class="md-github">Source: JSON-LD Framing</li>
 <li class="md-github">URL: https://www.w3.org/TR/json-ld11-framing/</li>
 <li class="md-github">License: W3C Document License</li>
-<li class="md-github">Crawl Date: 2025-05-02T14:48:52.310Z</li>
-<li class="md-github">Data Size: 11430591 bytes</li>
-<li class="md-github">Links Found: 67909</li>
+<li class="md-github">Crawl Date: 2025-05-02T15:48:35.290Z</li>
+<li class="md-github">Data Size: 9690892 bytes</li>
+<li class="md-github">Links Found: 58880</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
 <p class="md-github">2025-05-02</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-05-02T15:21:43.868Z</p>
+    <p>Generated on 2025-05-02T16:22:21.228Z</p>
   </footer>
 </body>
 </html>
