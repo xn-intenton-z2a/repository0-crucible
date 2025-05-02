@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="yargs" href="#yargs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>YARGS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Installation: npm install --save yargs. Import via ESM or CommonJS. Entry: yargs(args) returns Argv. Argv methods: scriptName, usage, command, positional, option, demandCommand, help, version, parse, argv. Helpers: hideBin removes node executable and script path. Builders: define commands, positional args, options with type, alias, default, describe, demand, requiresArg, choices. Handlers invoked with parsed argv. Example CLI provided.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Initialization and Imports</p>
+</li>
+<li class="md-github">
+<p class="md-github">Argv Interface and Method Signatures</p>
+</li>
+<li class="md-github">
+<p class="md-github">Positional Arguments Configuration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Options Configuration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Command Registration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Help and Version Configuration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Parsing and Accessing Arguments</p>
+</li>
+<li class="md-github">
+<p class="md-github">Helper Functions</p>
+</li>
+<li class="md-github">
+<p class="md-github">Initialization and Imports
+Function: yargs(args?: string[]): Argv
+Default args: hideBin(process.argv)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Argv Interface and Method Signatures
+scriptName(name: string): Argv
+usage(usage: string): Argv
+command(cmd: string, desc: string, builder?: (yargs: Argv) =&gt; Argv, handler?: (argv: Arguments) =&gt; void): Argv
+option(key: string, options: OptionDefinition | OptionDefinition[]): Argv
+positional(key: string, opts: PositionalOptions): Argv
+demandCommand(min?: number, max?: number, minMsg?: string, maxMsg?: string): Argv
+help(opt?: string, desc?: string): Argv
+version(opt?: string, desc?: string, ver?: string): Argv
+parse(args?: string[]): Arguments
+argv: Arguments</p>
+</li>
+<li class="md-github">
+<p class="md-github">Positional Arguments Configuration
+PositionalOptions:
+type: string|number|boolean
+default: any
+describe: string</p>
+</li>
+<li class="md-github">
+<p class="md-github">Options Configuration
+OptionDefinition fields:
+alias: string|string[]
+type: string|number|boolean|count
+default: any
+describe: string
+demandOption: boolean
+requiresArg: boolean
+choices: any[]</p>
+</li>
+<li class="md-github">
+<p class="md-github">Command Registration
+Provide cmd string with placeholders (&lt;&gt;, []), description, builder callback to set options/positionals, and handler callback receiving parsed argv.</p>
+</li>
+<li class="md-github">
+<p class="md-github">Help and Version Configuration
+help(option: string='--help', description: string='Show help'): Argv
+version(option: string='--version', description: string='Show version', version: string=package.version): Argv</p>
+</li>
+<li class="md-github">
+<p class="md-github">Parsing and Accessing Arguments
+parse(args?: string[]): Arguments
+Access via .argv property</p>
+</li>
+<li class="md-github">
+<p class="md-github">Helper Functions
+hideBin(argv: string[]): returns argv.slice(2)</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Parameter Defaults and Types
+yargs: args:string[] default hideBin(process.argv)
+scriptName: name:string
+usage: usage:string
+command: cmd:string, desc:string, builder: function returning Argv, handler: function(argv)
+positional: key:string, opts: {type, default, describe}
+option: key:string, opts: multiple fields
+demandCommand: min:number default 1, max:number undefined, messages:string
+help/version: default switches and descriptions
+parse: args:string[] default hideBin(process.argv)</p>
+<p class="md-github">Implementation Steps</p>
+<ol class="md-github">
+<li class="md-github">Import yargs and hideBin</li>
+<li class="md-github">Call yargs(hideBin(process.argv)) to get Argv</li>
+<li class="md-github">Chain scriptName, usage, command, option, positional</li>
+<li class="md-github">Chain help, version as needed</li>
+<li class="md-github">Call parse() or access .argv</li>
+</ol>
+<p class="md-github">Configuration Options
+Options set via .option and .positional include type, default, describe, alias, demandOption, choices, requiresArg
+Default parsing behavior resolves abbreviations and coercions</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specifications</p>
+<p class="md-github">yargs(args?: string[]): Argv</p>
+<p class="md-github">Argv
+Methods:
+scriptName(name:string): Argv
+usage(usage:string): Argv
+command(cmd:string, desc:string, builder?: (yargs:Argv)=&gt;Argv, handler?: (argv:Arguments)=&gt;void): Argv
+option(key:string, def:OptionDefinition|OptionDefinition[]): Argv
+positional(key:string, opts:PositionalOptions): Argv
+demandCommand(min?:number,max?:number,minMsg?:string,maxMsg?:string): Argv
+help(opt?:string,desc?:string): Argv
+version(opt?:string,desc?:string,ver?:string): Argv
+parse(args?:string[]): Arguments
+argv: Arguments</p>
+<p class="md-github">Types
+interface Arguments { [key:string]: any }
+interface PositionalOptions { type: 'string'|'number'|'boolean'; default?: any; describe: string }
+interface OptionDefinition { alias?: string|string[]; type?: 'string'|'number'|'boolean'|'count'; default?: any; describe?: string; demandOption?: boolean; requiresArg?: boolean; choices?: any[] }</p>
+<p class="md-github">hideBin(argv:string[]): string[]</p>
+<p class="md-github">Code Example
+#!/usr/bin/env node
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'</p>
+<p class="md-github">yargs(hideBin(process.argv))
+.scriptName('app')
+.usage('$0 <cmd> [opts]')
+.command('deploy <env>', 'Deploy to environment', yargs=&gt;
+yargs.positional('env',{ describe:'environment', type:'string' })
+.option('force',{ alias:'f', type:'boolean', describe:'force deploy', default:false })
+, argv=&gt;{
+if(argv.force) console.log('Force deploying to',argv.env)
+else console.log('Deploying to',argv.env)
+})
+.demandCommand(1,'Command required')
+.help()
+.version('v', 'Show version', '1.0.0')
+.parse()</p>
+<p class="md-github">Best Practices
+• Always use hideBin(process.argv) to ignore node exec path
+• Define .demandCommand to enforce at least one command
+• Use .strict() to error on unknown options</p>
+<p class="md-github">Troubleshooting
+Command: node app.js unknown
+Expected: Error 输出 'Unknown argument: unknown'
+If missing .strict(), unknown args are ignored</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">yargs(args?:string[]):Argv default hideBin(process.argv); Argv.scriptName(name:string), usage(usage:string), command(cmd:string,desc:string,builder?:fn,handler?:fn), option(key:string,def:OptionDefinition|[]), positional(key:string,PosOpts), demandCommand(min=1,max?,minMsg?,maxMsg?):Argv, help(opt='--help',desc?):Argv, version(opt='--version',desc?,ver?):Argv, parse(args?:string[]):Arguments, argv:Arguments. PosOpts: type:string|number|boolean, default?, describe:string. OptionDefinition: alias?:string|[],type?:string|number|boolean|count,default?,describe?,demandOption?,requiresArg?,choices?:[]. hideBin(argv):argv.slice(2). Example: yargs(hideBin(process.argv)).scriptName('app').usage('$0 <cmd> [opts]').command('deploy <env>','desc',y=&gt;y.positional('env',{type:'string',describe:'env'}).option('force',{alias:'f',type:'boolean',default:false,describe:'force'}),(argv)=&gt;...).demandCommand(1).strict().help().version('v','Show version','1.0.0').parse().</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Initialization and Imports</p>
+</li>
+<li class="md-github">
+<p class="md-github">Argv Interface and Method Signatures</p>
+</li>
+<li class="md-github">
+<p class="md-github">Positional Arguments Configuration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Options Configuration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Command Registration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Help and Version Configuration</p>
+</li>
+<li class="md-github">
+<p class="md-github">Parsing and Accessing Arguments</p>
+</li>
+<li class="md-github">
+<p class="md-github">Helper Functions</p>
+</li>
+<li class="md-github">
+<p class="md-github">Initialization and Imports
+Function: yargs(args?: string[]): Argv
+Default args: hideBin(process.argv)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Argv Interface and Method Signatures
+scriptName(name: string): Argv
+usage(usage: string): Argv
+command(cmd: string, desc: string, builder?: (yargs: Argv) =&gt; Argv, handler?: (argv: Arguments) =&gt; void): Argv
+option(key: string, options: OptionDefinition | OptionDefinition[]): Argv
+positional(key: string, opts: PositionalOptions): Argv
+demandCommand(min?: number, max?: number, minMsg?: string, maxMsg?: string): Argv
+help(opt?: string, desc?: string): Argv
+version(opt?: string, desc?: string, ver?: string): Argv
+parse(args?: string[]): Arguments
+argv: Arguments</p>
+</li>
+<li class="md-github">
+<p class="md-github">Positional Arguments Configuration
+PositionalOptions:
+type: string|number|boolean
+default: any
+describe: string</p>
+</li>
+<li class="md-github">
+<p class="md-github">Options Configuration
+OptionDefinition fields:
+alias: string|string[]
+type: string|number|boolean|count
+default: any
+describe: string
+demandOption: boolean
+requiresArg: boolean
+choices: any[]</p>
+</li>
+<li class="md-github">
+<p class="md-github">Command Registration
+Provide cmd string with placeholders (&lt;&gt;, []), description, builder callback to set options/positionals, and handler callback receiving parsed argv.</p>
+</li>
+<li class="md-github">
+<p class="md-github">Help and Version Configuration
+help(option: string='--help', description: string='Show help'): Argv
+version(option: string='--version', description: string='Show version', version: string=package.version): Argv</p>
+</li>
+<li class="md-github">
+<p class="md-github">Parsing and Accessing Arguments
+parse(args?: string[]): Arguments
+Access via .argv property</p>
+</li>
+<li class="md-github">
+<p class="md-github">Helper Functions
+hideBin(argv: string[]): returns argv.slice(2)</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Yargs (CLI Argument Parser)
+https://yargs.js.org/docs/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-yargs" href="#digest-of-yargs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of YARGS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="yargs-cli-argument-parser-api-reference" href="#yargs-cli-argument-parser-api-reference"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Yargs CLI Argument Parser API Reference</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
+<p class="md-github">npm install --save yargs</p>
+<h2 class="md-github"><a class="md-github__anchor" name="import" href="#import"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Import</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="esm" href="#esm"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>ESM</h3>
+<p class="md-github">import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'</p>
+<h3 class="md-github"><a class="md-github__anchor" name="commonjs" href="#commonjs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CommonJS</h3>
+<p class="md-github">const yargs = require('yargs')
+const { hideBin } = require('yargs/helpers')</p>
+<h2 class="md-github"><a class="md-github__anchor" name="entry-point" href="#entry-point"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Entry Point</h2>
+<p class="md-github">yargs(args?: string[]): Argv</p>
+<p class="md-github">Parameters:
+args: string[] (default: hideBin(process.argv))</p>
+<p class="md-github">Returns:
+Argv instance</p>
+<h2 class="md-github"><a class="md-github__anchor" name="argv-interface" href="#argv-interface"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Argv Interface</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="methods" href="#methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Methods</h3>
+<h4 class="md-github"><a class="md-github__anchor" name="scriptnamename-string-argv" href="#scriptnamename-string-argv"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>scriptName(name: string): Argv</h4>
+<p class="md-github">Sets the displayed script name</p>
+<h4 class="md-github"><a class="md-github__anchor" name="usageusage-string-argv" href="#usageusage-string-argv"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>usage(usage: string): Argv</h4>
+<p class="md-github">Defines the usage string</p>
+<h4 class="md-github"><a class="md-github__anchor" name="commandcommand-string-description-string-builder-yargs-argv--argv-handler-argv-arguments--void-argv" href="#commandcommand-string-description-string-builder-yargs-argv--argv-handler-argv-arguments--void-argv"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>command(command: string, description: string, builder?: (yargs: Argv) =&gt; Argv, handler?: (argv: Arguments) =&gt; void): Argv</h4>
+<p class="md-github">Registers a command</p>
+<h4 class="md-github"><a class="md-github__anchor" name="positionalkey-string-options-positionaloptions-argv" href="#positionalkey-string-options-positionaloptions-argv"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>positional(key: string, options: PositionalOptions): Argv</h4>
+<p class="md-github">Defines a positional argument</p>
+<p class="md-github">PositionalOptions:
+type: 'string' | 'number' | 'boolean'
+default: string|number|boolean
+describe: string</p>
+<h4 class="md-github"><a class="md-github__anchor" name="optionkey-string-options-optiondefinition--optiondefinition-argv" href="#optionkey-string-options-optiondefinition--optiondefinition-argv"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>option(key: string, options: OptionDefinition | OptionDefinition[]): Argv</h4>
+<p class="md-github">Defines an option</p>
+<p class="md-github">OptionDefinition:
+alias?: string|string[]
+type?: 'string'|'number'|'boolean'|'count'
+default?: any
+describe?: string
+demandOption?: boolean
+requiresArg?: boolean
+choices?: any[]</p>
+<h4 class="md-github"><a class="md-github__anchor" name="demandcommandmin-number-max-number-minmsg-string-maxmsg-string-argv" href="#demandcommandmin-number-max-number-minmsg-string-maxmsg-string-argv"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>demandCommand(min?: number, max?: number, minMsg?: string, maxMsg?: string): Argv</h4>
+<p class="md-github">Requires commands</p>
+<h4 class="md-github"><a class="md-github__anchor" name="helpoption-string-description-string-argv" href="#helpoption-string-description-string-argv"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>help(option?: string, description?: string): Argv</h4>
+<p class="md-github">Defines help option</p>
+<h4 class="md-github"><a class="md-github__anchor" name="versionoption-string-description-string-version-string-argv" href="#versionoption-string-description-string-version-string-argv"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>version(option?: string, description?: string, version?: string): Argv</h4>
+<p class="md-github">Defines version option</p>
+<h4 class="md-github"><a class="md-github__anchor" name="parseargs-string-context--arguments" href="#parseargs-string-context--arguments"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>parse(args?: string[], context?: {}): Arguments</h4>
+<p class="md-github">Parses arguments</p>
+<h4 class="md-github"><a class="md-github__anchor" name="argv-arguments" href="#argv-arguments"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>argv: Arguments</h4>
+<p class="md-github">Getter for parsed arguments</p>
+<p class="md-github">Arguments: {[key: string]: any}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="helpershidebinargv-string-string" href="#helpershidebinargv-string-string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>helpers.hideBin(argv: string[]): string[]</h2>
+<p class="md-github">Removes node and script path from argv</p>
+<h2 class="md-github"><a class="md-github__anchor" name="examples" href="#examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="basic-cli" href="#basic-cli"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Basic CLI</h3>
+<p class="md-github">#!/usr/bin/env node
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'</p>
+<p class="md-github">yargs(hideBin(process.argv))
+.scriptName('pirate-parser')
+.usage('$0 <cmd> [args]')
+.command('hello [name]', 'welcome ter yargs!', yargs =&gt;
+yargs.positional('name', { type: 'string', default: 'Cambi', describe: 'name to say hello to' })
+, argv =&gt; {
+console.log('hello', argv.name)
+})
+.help()
+.parse()</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Yargs (CLI Argument Parser)</li>
+<li class="md-github">URL: https://yargs.js.org/docs/</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-05-02T08:48:26.390Z</li>
+<li class="md-github">Data Size: 348060 bytes</li>
+<li class="md-github">Links Found: 34</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-02</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-02T09:21:46.605Z</p>
+  </footer>
+</body>
+</html>
