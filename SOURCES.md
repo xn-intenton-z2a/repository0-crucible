@@ -5,7 +5,7 @@ The official W3C Recommendation for JSON-LD 1.1 details the data model, framing,
 
 # JSON-LD Processing Algorithms and API
 ## https://www.w3.org/TR/json-ld11-api/
-Defines the step-by-step algorithms for expansion, compaction, flattening, framing, and normalization, along with a high-level JavaScript API. Critical for implementing advanced transformations, error handling, and performance optimizations in generateOntology and potential framing or normalization subcommands. (Published July 9, 2020)
+Defines the step-by-step algorithms for expansion, compaction, flattening, framing, and normalization, along with a high-level JavaScript API. Critical for implementing advanced transformations, error handling, and performance optimizations in generateOntology and framing or normalization subcommands. (Published July 9, 2020)
 ## W3C Document License
 
 # JSON-LD Framing
@@ -13,19 +13,11 @@ Defines the step-by-step algorithms for expansion, compaction, flattening, frami
 Specifies how to extract and reshape specific node structures from JSON-LD documents using frames. Covers embedding strategies, conditional filters, and nested shapes. Useful for implementing get-term, filter, or custom framing-based outputs. (Published July 16, 2020)
 ## W3C Document License
 
-# OWL 2 Web Ontology Language Overview
-## https://www.w3.org/TR/owl2-overview/
-Introduces the core constructs of OWL 2 (classes, properties, individuals) and its profiles (DL, EL, QL, RL). Guides the structure of @graph nodes and selection of OWL vocabulary terms for JSON-LD outputs. (Published October 27, 2009)
-## W3C Document License
-
-# OWL 2 Quick Reference
-## https://www.w3.org/TR/owl2-quick-reference/
-A concise reference of OWL 2 syntax in functional, RDF/XML, and Manchester formats. Lists common IRIs (e.g., owl:Class, rdf:Property) and axiom patterns—helpful for mapping JavaScript objects to OWL constructs in generateOntology. (Published October 27, 2009)
-## W3C Document License
-
-# OWL 2 RDF-Based Semantics
-## https://www.w3.org/TR/owl2-semantics/
-Provides the formal semantics for OWL 2 ontologies expressed in RDF, including entailment principles and consistency conditions. Useful for validating that generated JSON-LD OWL documents will be correctly interpreted by reasoners. (Published October 27, 2009)
+# OWL 2 Specifications
+## Overview: https://www.w3.org/TR/owl2-overview/
+## Quick Reference: https://www.w3.org/TR/owl2-quick-reference/
+## RDF-Based Semantics: https://www.w3.org/TR/owl2-semantics/
+A consolidated entry covering OWL 2 core constructs (classes, properties, individuals), profiles (DL, EL, QL, RL), syntaxes (functional, RDF/XML, Manchester), and formal semantics. Guides vocabulary selection and ensures generated JSON-LD OWL documents adhere to entailment and consistency principles. (Overview published October 27, 2009)
 ## W3C Document License
 
 # SHACL – Shapes Constraint Language
@@ -34,25 +26,25 @@ Standard vocabulary and validation framework for describing constraints on RDF g
 ## W3C Document License
 
 # SPARQL 1.1 Recommendation Set
-## https://www.w3.org/TR/sparql11-query/
-## https://www.w3.org/TR/sparql11-update/
-## https://www.w3.org/TR/sparql11-http-rdf-update/
-These combined W3C Recommendations cover querying (SELECT, CONSTRUCT, ASK), update operations (INSERT, DELETE, LOAD), and HTTP protocols for graph store management. Useful for future CLI extensions involving remote triple-store queries, updates, and federation. (All published March 21, 2013)
+## Query: https://www.w3.org/TR/sparql11-query/
+## Update: https://www.w3.org/TR/sparql11-update/
+## Graph Store HTTP Protocol: https://www.w3.org/TR/rdf11-http/
+These combined W3C Recommendations cover querying (SELECT, CONSTRUCT, ASK), update operations (INSERT, DELETE, LOAD), and the Graph Store HTTP protocol for managing RDF graphs over REST. Foundations for future CLI or server subcommands handling remote triple-store operations and federation. (Query/Update published March 21, 2013; Graph Store HTTP published March 25, 2014)
 ## W3C Document License
 
 # RDF/JS Specification
 ## https://rdf.js.org/
-Defines standard JavaScript interfaces for RDF terms, quads, and datasets to promote library interoperability. Guides potential streaming, quad-based processing, or integration with RDF stores beyond simple JSON-LD object manipulation. (Last updated 2023)
+Defines standard JavaScript interfaces for RDF terms, quads, and datasets to promote library interoperability. Guides potential streaming, quad-based processing, and integration with RDF stores beyond simple JSON-LD object manipulation. (Last updated 2023)
 ## CC0
 
 # jsonld.js (JavaScript JSON-LD API)
 ## https://github.com/digitalbazaar/jsonld.js
-An open-source library implementing JSON-LD operations—expansion, compaction, framing, normalization—with streaming support and promise-based API. Serves as reference for advanced JSON-LD handling and can be leveraged if deeper control is needed beyond generateOntology. (Last updated 2024)
+An open-source library implementing JSON-LD operations—expansion, compaction, framing, normalization—with streaming support and promise-based API. Serves as a reference for advanced JSON-LD handling and can be leveraged for deeper control beyond generateOntology. (Last updated 2024)
 ## MIT License
 
 # jsonld-cli (JSON-LD Command-Line Interface)
 ## https://github.com/digitalbazaar/jsonld-cli
-Provides a CLI wrapper around jsonld.js demonstrating modular subcommands, streaming, and error handling patterns. Useful to model the structure of convert, framing, and normalization subcommands in main.js. (Last updated 2024)
+Provides a CLI wrapper around jsonld.js demonstrating modular subcommands, streaming, and robust error handling. Useful to model the structure of convert, framing, and normalization subcommands in main.js. (Last updated 2024)
 ## MIT License
 
 # N3.js (RDF/JS Turtle and N3 Library)
@@ -85,25 +77,10 @@ TypeScript-first schema declaration and validation library used to validate CLI 
 Authoritative guide to JSON Schema, examples for object and array schemas, references, and conditionals. Informs future export of Zod schemas to JSON Schema for interoperability or validation workflows. (Updated July 2024)
 ## CC0 (Public Domain)
 
-# Node.js Core API
+# Node.js API Reference
 ## https://nodejs.org/api/
-Comprehensive guide to fs/promises, process.argv, URL and path utilities, ESM behaviors, and global fetch with AbortController. Essential reference for CLI file I/O, module resolution, and HTTP requests. (Node.js v20.4.0)
+Comprehensive guide to Node.js core modules, including file system, HTTP, ESM module resolution, global fetch, AbortController, URL/path utilities, and streams. Essential reference for CLI file I/O, server creation, HTTP request handling, and dynamic imports in an ESM-based tool. (Node.js v20.4.0)
 ## CC BY 4.0
-
-# Node.js ECMAScript Modules (ESM)
-## https://nodejs.org/api/esm.html
-Details Node.js ESM support including import/export, package scopes, and interoperability with CommonJS. Vital for ensuring reliable dynamic imports and module resolution in this ESM-based CLI. (Node.js v20.4.0)
-## CC BY 4.0
-
-# Node.js HTTP Module
-## https://nodejs.org/api/http.html
-Official Node.js documentation for the HTTP module, covering server creation, request/response handling, and streams. Critical for implementing the 'serve' subcommand and handling JSON payloads, routing, and error responses. (Node.js v20.4.0)
-## CC BY 4.0
-
-# Fetch Standard
-## https://fetch.spec.whatwg.org/
-Living standard specifying the fetch() API, request/response objects, streaming, and caching behaviors. Authoritative for implementing HTTP requests with proper error handling and abort semantics in the CLI. (WHATWG)
-## WHATWG License
 
 # REST Countries API Documentation
 ## https://restcountries.com/#api-endpoints-v3-all
@@ -122,7 +99,7 @@ Vite-native unit testing framework with Jest-compatible API, snapshot and covera
 
 # Apache Jena — Fuseki Server Documentation
 ## https://jena.apache.org/documentation/fuseki2/
-Documentation for Fuseki, Jena's SPARQL server, covering server configuration, dataset management, security, and REST API usage. Provides a model for HTTP-based triple store operations that can inspire the 'serve' subcommand architecture. (Documentation updated 2023)
+Documentation for Fuseki, Jena's SPARQL server, covering server configuration, dataset management, security, and REST API usage. Provides a model for HTTP-based triple store operations to inspire the serve subcommand architecture. (Documentation updated 2023)
 ## Apache-2.0
 
 # Express.js API Reference
@@ -137,12 +114,12 @@ Defines a standard JSON-based format for RESTful APIs, including conventions for
 
 # Hydra Core Vocabulary
 ## https://www.hydra-cg.com/spec/latest/core/
-A framework for hypermedia-driven Web APIs using JSON-LD, defining templates, links, and operations. Offers best practices for enhanced discoverability and dynamic API navigation. (Latest release 2023)
+A framework for hypermedia-driven Web APIs using JSON-LD, defining templates, links, and operations. Offers best practices for enhanced discoverability and dynamic API navigation in JSON-LD APIs. (Latest release 2023)
 ## CC BY 4.0
 
 # OpenAPI Specification 3.1
 ## https://spec.openapis.org/oas/v3.1.0
-Machine-readable specification for RESTful APIs, covering paths, operations, components, and server definitions. Facilitates automated documentation and validation of HTTP API endpoints. (Published February 2021)
+Machine-readable specification for RESTful APIs, covering paths, operations, components, and server definitions. Facilitates automated documentation and validation of HTTP API endpoints for the serve subcommand. (Published February 2021)
 ## Apache-2.0
 
 # Supertest — HTTP Assertions for Node.js
@@ -159,3 +136,18 @@ Middleware for parsing JSON, URL-encoded, and raw request bodies in Express.js. 
 ## https://github.com/expressjs/cors
 Middleware to enable Cross-Origin Resource Sharing (CORS) in Express.js applications, configuring allowed origins, methods, and headers. Guides implementation of secure cross-domain API access for the serve subcommand. (Last updated 2024)
 ## MIT License
+
+# RDF 1.1 Concepts and Abstract Syntax
+## https://www.w3.org/TR/rdf11-concepts/
+Defines the abstract graph model, semantics of RDF triples, terms (IRIs, blank nodes, literals), and processing rules. It is essential for understanding how generateOntology constructs graphs and how RDF/JS interfaces represent them. (Published March 25, 2014)
+## W3C Document License
+
+# Turtle – Terse RDF Triple Language
+## https://www.w3.org/TR/turtle/
+Specifies the Turtle syntax for RDF, including abbreviations, prefixes, graph serialization, and directives. Provides the foundation for converting JSON-LD outputs to Turtle or integrating with N3.js serializers. (Published February 25, 2014)
+## W3C Document License
+
+# RDF 1.1 Graph Store HTTP Protocol
+## https://www.w3.org/TR/rdf11-http/
+Defines the RESTful HTTP protocol for managing RDF graph stores, including GET, POST, PUT, and DELETE operations on graphs. Critical for designing serve subcommand endpoints that manipulate full RDF datasets via HTTP. (Published March 25, 2014)
+## W3C Document License
