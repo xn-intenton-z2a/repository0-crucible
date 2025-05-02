@@ -24,295 +24,286 @@
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="fetch_api" href="#fetch_api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>FETCH_API</h1>
 <h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
-<p class="md-github">Signature: fetch(input: RequestInfo, init?: RequestInit): Promise<Response> returns header-ready Response including errors. RequestInit options: method(string, default GET), headers(HeadersInit), body(BodyInit|null), mode(cors/no-cors/same-origin/navigate default cors), credentials(omit/same-origin/include default same-origin), cache(default/no-store/reload/no-cache/force-cache/only-if-cached default default), redirect(follow/error/manual default follow), referrer(string default about:client), referrerPolicy(no-referrer/no-referrer-when-downgrade/origin/origin-when-cross-origin/unsafe-url default no-referrer-when-downgrade), integrity(string), keepalive(boolean default false), signal(AbortSignal). Request, Response, Headers, Body mixin full method lists. Service worker respondWith(fetch(request)).</p>
+<p class="md-github">Unified fetch across web platform. fetch(RequestInfo, RequestInit) returns Promise<Response>. RequestInit options: method, headers, body, mode, credentials, cache, redirect, referrer, referrerPolicy, integrity, keepalive, signal. AbortController controls cancellation. Response methods: clone, arrayBuffer, blob, formData, json, text. Headers API methods: append, delete, get, has, set, iteration. CORS safelist rules for methods and headers. Streaming via ReadableStream.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
-<p class="md-github">Table of Contents</p>
-<ol class="md-github">
-<li class="md-github">
-<p class="md-github">fetch() signature and behavior</p>
-</li>
-<li class="md-github">
-<p class="md-github">RequestInit options</p>
-</li>
-<li class="md-github">
-<p class="md-github">Request constructor</p>
-</li>
-<li class="md-github">
-<p class="md-github">Response constructor and Body methods</p>
-</li>
-<li class="md-github">
-<p class="md-github">Headers interface</p>
-</li>
-<li class="md-github">
-<p class="md-github">Service Worker usage</p>
-</li>
-<li class="md-github">
-<p class="md-github">fetch() signature and behavior
-fetch(input: RequestInfo, init?: RequestInit): Promise<Response></p>
-</li>
-</ol>
-<ul class="md-github">
-<li class="md-github">Returns Promise resolving to Response when headers arrive</li>
-<li class="md-github">Does not reject on HTTP error status; use response.ok to detect success</li>
-</ul>
-<ol start="2" class="md-github">
-<li class="md-github">
-<p class="md-github">RequestInit options
-method: string (default GET)
-headers: HeadersInit (Records, arrays, or Headers)
-body: BodyInit|null (string, Blob, BufferSource, FormData, URLSearchParams, ReadableStream)
-mode: cors|no-cors|same-origin|navigate (default cors)
-credentials: omit|same-origin|include (default same-origin)
-cache: default|no-store|reload|no-cache|force-cache|only-if-cached (default default)
-redirect: follow|error|manual (default follow)
-referrer: string (default about:client)
-referrerPolicy: no-referrer|no-referrer-when-downgrade|origin|origin-when-cross-origin|unsafe-url (default no-referrer-when-downgrade)
-integrity: string
-keepalive: boolean (default false)
-signal: AbortSignal</p>
-</li>
-<li class="md-github">
-<p class="md-github">Request constructor
-new Request(input: RequestInfo, init?: RequestInit)
-Properties: method, headers, url, mode, credentials, cache, redirect, referrer, referrerPolicy, integrity, keepalive, signal
-Clone: request.clone()</p>
-</li>
-<li class="md-github">
-<p class="md-github">Response constructor and Body methods
-new Response(body?: BodyInit|null, init?: ResponseInit)
-ResponseInit: status:number(default200), statusText:string(default &quot;OK&quot;), headers:HeadersInit
-Properties: status, statusText, ok, redirected, type, url, bodyUsed
-Body methods: arrayBuffer(), blob(), formData(), json(), text()
-Body property: body: ReadableStream|null</p>
-</li>
-<li class="md-github">
-<p class="md-github">Headers interface
-new Headers(init?: HeadersInit)
-HeadersInit: Headers|string[][]|Record&lt;string,string&gt;
-Methods: append(name,value), delete(name), get(name), getAll(name), has(name), set(name,value), forEach(callback)</p>
-</li>
-<li class="md-github">
-<p class="md-github">Service Worker usage
-In service worker file:
-self.addEventListener('fetch', event =&gt; {
-event.respondWith(fetch(event.request));
-});</p>
-</li>
-</ol>
+<p class="md-github">Table of Contents
+1 fetch API Signature
+2 RequestInit Options
+3 AbortController Usage
+4 Response Methods and Properties
+5 Headers Interface and Rules
+6 Body Streaming</p>
+<p class="md-github">1 fetch API Signature
+fetch(input: RequestInfo, init?: RequestInit) -&gt; Promise<Response></p>
+<p class="md-github">2 RequestInit Options
+method: string default GET
+headers: HeadersInit default empty
+body: BodyInit default null
+mode: same-origin|no-cors|cors|navigate|websocket default no-cors
+credentials: omit|same-origin|include default same-origin
+cache: default|no-store|reload|no-cache|force-cache|only-if-cached default default
+redirect: follow|error|manual default follow
+referrer: no-referrer|client|URL default client
+referrerPolicy: no-referrer,no-referrer-when-downgrade,origin,origin-when-cross-origin,same-origin,strict-origin,strict-origin-when-cross-origin,unsafe-url default empty
+integrity: string default empty
+keepalive: boolean default false
+signal: AbortSignal default null</p>
+<p class="md-github">3 AbortController Usage
+Create: controller = new AbortController(), signal = controller.signal
+Abort: controller.abort() sets state to aborted and rejects fetch with AbortError</p>
+<p class="md-github">4 Response Methods and Properties
+clone() -&gt; Response
+arrayBuffer() -&gt; Promise<ArrayBuffer>
+blob() -&gt; Promise<Blob>
+formData() -&gt; Promise<FormData>
+json() -&gt; Promise<any>
+text() -&gt; Promise<string>
+Properties: type, url, redirected, status, ok, statusText, headers, bodyUsed, body</p>
+<p class="md-github">5 Headers Interface and Rules
+Constructor: new Headers(entries)
+append(name, value)
+delete(name)
+get(name) -&gt; string|null
+has(name) -&gt; boolean
+set(name, value)
+iterate: entries(), keys(), values(), forEach, Symbol.iterator
+Rules: names stored lowercased, duplicates combined, forbidden request headers list, CORS-safelisted methods/headers</p>
+<p class="md-github">6 Body Streaming
+reader = response.body.getReader()
+read loop: reader.read().then(({done,value}) =&gt; ...)
+full read: response.text(), response.json(), etc.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
-<p class="md-github">AbortController integration: const controller=new AbortController(); fetch(url,{signal:controller.signal}); controller.abort() cancels request.  CORS effect: mode:'cors' sends Origin header; no-cors restricts methods to GET, POST, HEAD and opaque response.  Credentials effect: include sends cookies, omit never sends, same-origin for same-site.  Cache modes: reload bypasses cache, force-cache uses cache even if stale, only-if-cached returns cached or error.  Redirect behavior: manual preserves redirect in response.type 'opaqueredirect'; error rejects if unsafe.  Keepalive true allows request outside unload.  Integrity enforces SRI checks; mismatch rejects the request.  Default referrer 'about:client' uses document URL, override to empty string for no-referrer.  Body manual stream consumption: assign response.body to ReadableStream and pipe to other streams.</p>
+<p class="md-github">Request modes impact redirect and CORS behavior: same-origin enforces origin match; cors triggers preflight if needed; no-cors restricts methods to GET,HEAD,POST and safelisted headers; navigate for document navigation; websocket for ws connection. Cache modes: default inspects HTTP cache, no-store bypasses cache, reload bypass request cache, no-cache conditional, force-cache any cached, only-if-cached same-origin only. Credentials modes: omit removes credentials, same-origin includes only same-origin, include always include. Redirect modes: follow auto-redirect, error rejects on redirect, manual returns opaque-redirect for service workers. ReferrerPolicy mapping defines header value transformation. Integrity checks subresource integrity string of form hash-algorithm-base64. keepalive allows outliving page unload. signal aborts network fetch. CORS-safelisted headers limited to Accept, Accept-Language, Content-Language, Content-Type with specific MIME essences. Forbidden headers include Accept-Encoding, Host, Origin, Referer, Set-Cookie, Transfer-Encoding.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
-<p class="md-github">// Simple GET
-fetch('https://api.example.com/data',{
-method:'GET',
-headers:{'Accept':'application/json'},
-credentials:'include',
-cache:'no-cache'
+<p class="md-github">IDL Definitions:
+interface WindowOrWorkerGlobalScope {
+Promise<Response> fetch(RequestInfo input, optional RequestInit init);
+};
+dictionary RequestInit {
+DOMString method = &quot;GET&quot;;
+HeadersInit headers;
+BodyInit body;
+RequestMode mode = &quot;no-cors&quot;;
+RequestCredentials credentials = &quot;same-origin&quot;;
+RequestCache cache = &quot;default&quot;;
+RequestRedirect redirect = &quot;follow&quot;;
+USVString referrer = &quot;client&quot;;
+ReferrerPolicy referrerPolicy = &quot;&quot;;
+DOMString integrity = &quot;&quot;;
+boolean keepalive = false;
+AbortSignal signal = null;
+};</p>
+<p class="md-github">Example Usage:</p>
+<pre class="md-github"><code class="md-github language-js">const controller = new AbortController();
+fetch('https://api.example.com/data', {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify({ key: 'value' }),
+  mode: 'cors',
+  credentials: 'include',
+  cache: 'no-cache',
+  redirect: 'follow',
+  referrerPolicy: 'no-referrer',
+  integrity: 'sha256-AbCdEf123=',
+  keepalive: true,
+  signal: controller.signal
 })
-.then(response=&gt;{
-if(!response.ok) throw new Error('HTTP '+response.status);
-return response.json();
+.then(response =&gt; {
+  if (!response.ok) throw new Error('Network response was not ok');
+  return response.json();
 })
-.then(data=&gt;console.log(data))
-.catch(err=&gt;console.error('Fetch error:',err));</p>
-<p class="md-github">// POST with JSON
-const payload={name:'Alice', age:30};
-fetch('/users',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
-.then(r=&gt;r.text())
-.then(text=&gt;console.log(text));</p>
-<p class="md-github">// Abort example
-const ctrl=new AbortController();
-fetch('/long', {signal:ctrl.signal})
-.catch(err=&gt;{ if(err.name==='AbortError') console.log('Aborted'); });
-// later
-ctrl.abort();</p>
-<p class="md-github">// Service Worker fetch event
-self.addEventListener('fetch', event=&gt;{
-event.respondWith(
-fetch(event.request, {mode:'no-cors'})
-.then(res=&gt;res)
-.catch(()=&gt;new Response('Offline', {status:503, statusText:'Service Unavailable'}))
-);
-});</p>
-<p class="md-github">// Best practice: set timeout
-function fetchWithTimeout(url,options,timeout=5000){
-const controller=new AbortController();
-const timer=setTimeout(()=&gt;controller.abort(),timeout);
-return fetch(url,{...options,signal:controller.signal})
-.finally(()=&gt;clearTimeout(timer));
-}</p>
-<p class="md-github">// Troubleshoot
-// Inspect headers via curl equivalent
-// curl -i 'https://api.example.com/data'
-// Expected: HTTP/1.1 200 OK\nContent-Type: application/json\n...</p>
-<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
-<p class="md-github">fetch(input: RequestInfo, init?: RequestInit): Promise<Response> | RequestInit{method:string=GET,headers:HeadersInit,body:BodyInit|null,mode:'cors'=cors,credentials:'same-origin'=same-origin,cache:'default'=default,redirect:'follow'=follow,referrer:'about:client'=about:client,referrerPolicy:'no-referrer-when-downgrade'=no-referrer-when-downgrade,integrity:string,keepalive:boolean=false,signal:AbortSignal} | Request: new Request(input,init) {method,headers,url,mode,credentials,cache,redirect,referrer,referrerPolicy,integrity,keepalive,signal,clone()} | Response: new Response(body?,{status:number=200,statusText:'OK',headers:HeadersInit}) {status,statusText,ok,redirected,type,url,bodyUsed,arrayBuffer(),blob(),formData(),json(),text(),body} | Headers: new Headers(init?:HeadersInit) {append(name,value),delete(name),get(name),getAll(name),has(name),set(name,value),forEach()} | Usage patterns: GET, POST JSON, AbortController, timeout wrapper, Service Worker fetch; handle response.ok; configure CORS, credentials, cache, redirect, integrity and keepalive.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
-<p class="md-github">Table of Contents</p>
-<ol class="md-github">
-<li class="md-github">
-<p class="md-github">fetch() signature and behavior</p>
-</li>
-<li class="md-github">
-<p class="md-github">RequestInit options</p>
-</li>
-<li class="md-github">
-<p class="md-github">Request constructor</p>
-</li>
-<li class="md-github">
-<p class="md-github">Response constructor and Body methods</p>
-</li>
-<li class="md-github">
-<p class="md-github">Headers interface</p>
-</li>
-<li class="md-github">
-<p class="md-github">Service Worker usage</p>
-</li>
-<li class="md-github">
-<p class="md-github">fetch() signature and behavior
-fetch(input: RequestInfo, init?: RequestInit): Promise<Response></p>
-</li>
-</ol>
+.then(data =&gt; console.log(data))
+.catch(err =&gt; console.error('Fetch error:', err));
+
+// Abort example
+setTimeout(() =&gt; controller.abort(), 5000);
+
+Best Practices:
+- Use AbortController for cancellable requests.
+- Validate response.ok before processing.
+- Use appropriate cache and credentials modes to avoid stale data and security issues.
+- Use subresource integrity on cross-origin fetches.
+
+Troubleshooting:
+// Check CORS errors via preflight
+curl -i -X OPTIONS 'https://api.example.com/data' \
+  -H 'Origin: https://client.example' \
+  -H 'Access-Control-Request-Method: POST'
+
+Expected 204 No Content with Access-Control-Allow-Origin header.
+
+// Inspect network timing
+performance.getEntriesByType('resource').filter(e =&gt; e.name.includes('api.example'))
+
+
+## Information Dense Extract
+fetch(input,init)-&gt;Promise&lt;Response&gt;; init fields method default GET,headers,body,mode(no-cors),credentials(same-origin),cache(default),redirect(follow),referrer(client),referrerPolicy,integrity,keepalive(false),signal; AbortController.abort() triggers AbortError; Response.clone,arrayBuffer,blob,formData,json,text; Headers append,delete,get,has,set,iterate; requestMode effects, cacheMode semantics, credentialsMode behavior, redirectMode semantics; forbidden headers list and CORS safelist rules; use performance entries for timing.
+
+## Sanitised Extract
+Table of Contents
+1 fetch API Signature
+2 RequestInit Options
+3 AbortController Usage
+4 Response Methods and Properties
+5 Headers Interface and Rules
+6 Body Streaming
+
+1 fetch API Signature
+fetch(input: RequestInfo, init?: RequestInit) -&gt; Promise&lt;Response&gt;
+
+2 RequestInit Options
+method: string default GET
+headers: HeadersInit default empty
+body: BodyInit default null
+mode: same-origin|no-cors|cors|navigate|websocket default no-cors
+credentials: omit|same-origin|include default same-origin
+cache: default|no-store|reload|no-cache|force-cache|only-if-cached default default
+redirect: follow|error|manual default follow
+referrer: no-referrer|client|URL default client
+referrerPolicy: no-referrer,no-referrer-when-downgrade,origin,origin-when-cross-origin,same-origin,strict-origin,strict-origin-when-cross-origin,unsafe-url default empty
+integrity: string default empty
+keepalive: boolean default false
+signal: AbortSignal default null
+
+3 AbortController Usage
+Create: controller = new AbortController(), signal = controller.signal
+Abort: controller.abort() sets state to aborted and rejects fetch with AbortError
+
+4 Response Methods and Properties
+clone() -&gt; Response
+arrayBuffer() -&gt; Promise&lt;ArrayBuffer&gt;
+blob() -&gt; Promise&lt;Blob&gt;
+formData() -&gt; Promise&lt;FormData&gt;
+json() -&gt; Promise&lt;any&gt;
+text() -&gt; Promise&lt;string&gt;
+Properties: type, url, redirected, status, ok, statusText, headers, bodyUsed, body
+
+5 Headers Interface and Rules
+Constructor: new Headers(entries)
+append(name, value)
+delete(name)
+get(name) -&gt; string|null
+has(name) -&gt; boolean
+set(name, value)
+iterate: entries(), keys(), values(), forEach, Symbol.iterator
+Rules: names stored lowercased, duplicates combined, forbidden request headers list, CORS-safelisted methods/headers
+
+6 Body Streaming
+reader = response.body.getReader()
+read loop: reader.read().then(({done,value}) =&gt; ...)
+full read: response.text(), response.json(), etc.
+
+## Original Source
+Fetch Standard
+https://fetch.spec.whatwg.org/
+
+## Digest of FETCH_API
+
+# Fetch API
+
+## fetch()
+
+Signature:
+```webidl
+[Exposed=Window]
+Promise&lt;Response&gt; fetch(RequestInfo input, optional RequestInit init);
+</code></pre>
+<p class="md-github">Parameters:</p>
 <ul class="md-github">
-<li class="md-github">Returns Promise resolving to Response when headers arrive</li>
-<li class="md-github">Does not reject on HTTP error status; use response.ok to detect success</li>
+<li class="md-github">input: Request or USVString URL</li>
+<li class="md-github">init: RequestInit dictionary</li>
 </ul>
-<ol start="2" class="md-github">
-<li class="md-github">
-<p class="md-github">RequestInit options
-method: string (default GET)
-headers: HeadersInit (Records, arrays, or Headers)
-body: BodyInit|null (string, Blob, BufferSource, FormData, URLSearchParams, ReadableStream)
-mode: cors|no-cors|same-origin|navigate (default cors)
-credentials: omit|same-origin|include (default same-origin)
-cache: default|no-store|reload|no-cache|force-cache|only-if-cached (default default)
-redirect: follow|error|manual (default follow)
-referrer: string (default about:client)
-referrerPolicy: no-referrer|no-referrer-when-downgrade|origin|origin-when-cross-origin|unsafe-url (default no-referrer-when-downgrade)
-integrity: string
-keepalive: boolean (default false)
-signal: AbortSignal</p>
-</li>
-<li class="md-github">
-<p class="md-github">Request constructor
-new Request(input: RequestInfo, init?: RequestInit)
-Properties: method, headers, url, mode, credentials, cache, redirect, referrer, referrerPolicy, integrity, keepalive, signal
-Clone: request.clone()</p>
-</li>
-<li class="md-github">
-<p class="md-github">Response constructor and Body methods
-new Response(body?: BodyInit|null, init?: ResponseInit)
-ResponseInit: status:number(default200), statusText:string(default 'OK'), headers:HeadersInit
-Properties: status, statusText, ok, redirected, type, url, bodyUsed
-Body methods: arrayBuffer(), blob(), formData(), json(), text()
-Body property: body: ReadableStream|null</p>
-</li>
-<li class="md-github">
-<p class="md-github">Headers interface
-new Headers(init?: HeadersInit)
-HeadersInit: Headers|string[][]|Record&lt;string,string&gt;
-Methods: append(name,value), delete(name), get(name), getAll(name), has(name), set(name,value), forEach(callback)</p>
-</li>
-<li class="md-github">
-<p class="md-github">Service Worker usage
-In service worker file:
-self.addEventListener('fetch', event =&gt; {
-event.respondWith(fetch(event.request));
-});</p>
-</li>
-</ol>
-<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
-<p class="md-github">Node.js &amp; Web Platform APIs
-https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API</p>
-<h2 class="md-github"><a class="md-github__anchor" name="digest-of-fetch_api" href="#digest-of-fetch_api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of FETCH_API</h2>
-<h1 class="md-github"><a class="md-github__anchor" name="fetch-api" href="#fetch-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Fetch API</h1>
-<p class="md-github">Data Size: 2261980 bytes<br>
-Retrieved: 2024-06-15<br>
-Source: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API</p>
-<h1 class="md-github"><a class="md-github__anchor" name="fetch" href="#fetch"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>fetch()</h1>
-<p class="md-github">Signature: fetch(input: RequestInfo, init?: RequestInit): Promise<Response>
-Returns a Promise resolving to a Response once headers are received, regardless of HTTP status code.</p>
-<h1 class="md-github"><a class="md-github__anchor" name="requestinit" href="#requestinit"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RequestInit</h1>
-<p class="md-github">Interface RequestInit {
-method?: string            // HTTP method, default: &quot;GET&quot;
-headers?: HeadersInit      // Headers object, array or record
-body?: BodyInit | null     // Request payload: string, Blob, BufferSource, FormData, URLSearchParams, ReadableStream
-mode?: &quot;cors&quot;|&quot;no-cors&quot;|&quot;same-origin&quot;|&quot;navigate&quot;  // default: &quot;cors&quot;
-credentials?: &quot;omit&quot;|&quot;same-origin&quot;|&quot;include&quot;      // default: &quot;same-origin&quot;
-cache?: &quot;default&quot;|&quot;no-store&quot;|&quot;reload&quot;|&quot;no-cache&quot;|&quot;force-cache&quot;|&quot;only-if-cached&quot;  // default: &quot;default&quot;
-redirect?: &quot;follow&quot;|&quot;error&quot;|&quot;manual&quot;               // default: &quot;follow&quot;
-referrer?: string          // default: &quot;about:client&quot;
-referrerPolicy?: &quot;no-referrer&quot;|&quot;no-referrer-when-downgrade&quot;|&quot;origin&quot;|&quot;origin-when-cross-origin&quot;|&quot;unsafe-url&quot;  // default: &quot;no-referrer-when-downgrade&quot;
-integrity?: string         // subresource integrity value
-keepalive?: boolean        // default: false
-signal?: AbortSignal       // abort controller signal
-}</p>
-<h1 class="md-github"><a class="md-github__anchor" name="request" href="#request"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Request</h1>
-<p class="md-github">Signature: new Request(input: RequestInfo, init?: RequestInit)
-Properties:
-method      // as in RequestInit
-headers     // Headers instance
-url         // normalized URL string
-mode, credentials, cache, redirect, referrer, referrerPolicy, integrity, keepalive, signal
-Methods:
-clone(): Request      // deep clone usable for multiple consumers</p>
-<h1 class="md-github"><a class="md-github__anchor" name="response" href="#response"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Response</h1>
-<p class="md-github">Signature: new Response(body?: BodyInit|null, init?: ResponseInit)
-Interface ResponseInit {
-status?: number           // HTTP status code, default: 200
-statusText?: string       // default: &quot;OK&quot;
-headers?: HeadersInit     // response headers
-}
-Properties:
-status, statusText, ok (boolean status&gt;=200&amp;&amp;status&lt;300), redirected, type, url, bodyUsed
-Methods from Body mixin:
-arrayBuffer(): Promise<ArrayBuffer>
-blob(): Promise<Blob>
-formData(): Promise<FormData>
-json(): Promise<any>
-text(): Promise<string>
-readonly body: ReadableStream|null</p>
-<h1 class="md-github"><a class="md-github__anchor" name="headers" href="#headers"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Headers</h1>
-<p class="md-github">Signature: new Headers(init?: HeadersInit)
-Type HeadersInit = Headers | string[][] | Record&lt;string,string&gt;
-Methods:
-append(name: string, value: string): void
-delete(name: string): void
-get(name: string): string|null
-getAll(name: string): string[]
-has(name: string): boolean
-set(name: string, value: string): void
-forEach(callback: (value:string,name:string,headers:Headers)=&gt;void): void</p>
-<h1 class="md-github"><a class="md-github__anchor" name="body" href="#body"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Body</h1>
-<p class="md-github">Mixin on Request and Response
-Properties:
-bodyUsed: boolean
-Methods:
-arrayBuffer(): Promise<ArrayBuffer>
-blob(): Promise<Blob>
-formData(): Promise<FormData>
-json(): Promise<any>
-text(): Promise<string></p>
-<h1 class="md-github"><a class="md-github__anchor" name="service-worker-integration" href="#service-worker-integration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Service Worker Integration</h1>
-<p class="md-github">In FetchEvent handler:
-self.addEventListener('fetch', event =&gt; {
-event.respondWith(fetch(event.request));
-});</p>
+<p class="md-github">Returns: Promise resolving to Response object or rejecting with TypeError or network error.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="requestinit-dictionary" href="#requestinit-dictionary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>RequestInit Dictionary</h2>
+<p class="md-github">Fields and defaults:</p>
+<ul class="md-github">
+<li class="md-github">method (string): defaults to GET</li>
+<li class="md-github">headers (HeadersInit): empty</li>
+<li class="md-github">body (BodyInit or null): null</li>
+<li class="md-github">mode (&quot;same-origin&quot;, &quot;no-cors&quot;, &quot;cors&quot;, &quot;navigate&quot;, &quot;websocket&quot;): &quot;no-cors&quot;</li>
+<li class="md-github">credentials (&quot;omit&quot;, &quot;same-origin&quot;, &quot;include&quot;): &quot;same-origin&quot;</li>
+<li class="md-github">cache (&quot;default&quot;, &quot;no-store&quot;, &quot;reload&quot;, &quot;no-cache&quot;, &quot;force-cache&quot;, &quot;only-if-cached&quot;): &quot;default&quot;</li>
+<li class="md-github">redirect (&quot;follow&quot;, &quot;error&quot;, &quot;manual&quot;): &quot;follow&quot;</li>
+<li class="md-github">referrer (USVString or &quot;no-referrer&quot; or &quot;client&quot;): &quot;client&quot;</li>
+<li class="md-github">referrerPolicy (&quot;no-referrer&quot;, &quot;no-referrer-when-downgrade&quot;, &quot;origin&quot;, &quot;origin-when-cross-origin&quot;, &quot;same-origin&quot;, &quot;strict-origin&quot;, &quot;strict-origin-when-cross-origin&quot;, &quot;unsafe-url&quot;): &quot;&quot;</li>
+<li class="md-github">integrity (string): &quot;&quot;</li>
+<li class="md-github">keepalive (boolean): false</li>
+<li class="md-github">signal (AbortSignal): null</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="abortcontroller-and-abortsignal" href="#abortcontroller-and-abortsignal"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>AbortController and AbortSignal</h2>
+<p class="md-github">Create controller:</p>
+<pre class="md-github"><code class="md-github language-js">const controller = new AbortController();
+const signal = controller.signal;
+</code></pre>
+<p class="md-github">Abort fetch:</p>
+<pre class="md-github"><code class="md-github language-js">controller.abort();  // triggers fetch rejection with AbortError
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="response-interface" href="#response-interface"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Response Interface</h2>
+<p class="md-github">Methods:</p>
+<ul class="md-github">
+<li class="md-github">clone(): Response</li>
+<li class="md-github">arrayBuffer(): Promise<ArrayBuffer></li>
+<li class="md-github">blob(): Promise<Blob></li>
+<li class="md-github">formData(): Promise<FormData></li>
+<li class="md-github">json(): Promise<any></li>
+<li class="md-github">text(): Promise<string></li>
+</ul>
+<p class="md-github">Properties:</p>
+<ul class="md-github">
+<li class="md-github">type (&quot;basic&quot;,&quot;cors&quot;,&quot;default&quot;,&quot;error&quot;,&quot;opaque&quot;,&quot;opaqueredirect&quot;)</li>
+<li class="md-github">url (USVString)</li>
+<li class="md-github">redirected (boolean)</li>
+<li class="md-github">status (unsigned short)</li>
+<li class="md-github">ok (boolean) // status in 200–299</li>
+<li class="md-github">statusText (USVString)</li>
+<li class="md-github">headers (Headers)</li>
+<li class="md-github">bodyUsed (boolean)</li>
+<li class="md-github">body (ReadableStream<Uint8Array> or null)</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="headers-api" href="#headers-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Headers API</h2>
+<p class="md-github">Construct:</p>
+<pre class="md-github"><code class="md-github language-js">new Headers([[name, value], ...]);
+</code></pre>
+<p class="md-github">Methods:</p>
+<ul class="md-github">
+<li class="md-github">append(name, value)</li>
+<li class="md-github">delete(name)</li>
+<li class="md-github">get(name): string or null</li>
+<li class="md-github">getAll(name): string[] (nonstandard)</li>
+<li class="md-github">has(name): boolean</li>
+<li class="md-github">set(name, value)</li>
+<li class="md-github">entries(), keys(), values(), forEach(callback)</li>
+<li class="md-github"><a href="" class="md-github">Symbol.iterator</a></li>
+</ul>
+<p class="md-github">Rules:</p>
+<ul class="md-github">
+<li class="md-github">header names byte-lowercased for storage; original casing on output</li>
+<li class="md-github">combine duplicates on get(name)</li>
+<li class="md-github">forbidden request headers: Accept-Charset, Accept-Encoding, Cookie, Host, Origin, Referer, Set-Cookie, Transfer-Encoding, etc.</li>
+<li class="md-github">CORS-safelisted methods: GET, HEAD, POST</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="body-streaming" href="#body-streaming"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Body Streaming</h2>
+<p class="md-github">Consume as stream:</p>
+<pre class="md-github"><code class="md-github language-js">response.body.getReader().read().then(function process({ done, value }) { ... });
+</code></pre>
+<p class="md-github">Consume fully:</p>
+<pre class="md-github"><code class="md-github language-js">response.text().then(text =&gt; { ... });
+</code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
 <ul class="md-github">
-<li class="md-github">Source: Node.js &amp; Web Platform APIs</li>
-<li class="md-github">URL: https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API</li>
-<li class="md-github">License: License if known</li>
-<li class="md-github">Crawl Date: 2025-04-28T18:52:56.581Z</li>
-<li class="md-github">Data Size: 2261980 bytes</li>
-<li class="md-github">Links Found: 23802</li>
+<li class="md-github">Source: Fetch Standard</li>
+<li class="md-github">URL: https://fetch.spec.whatwg.org/</li>
+<li class="md-github">License: WHATWG License</li>
+<li class="md-github">Crawl Date: 2025-05-02T12:58:16.610Z</li>
+<li class="md-github">Data Size: 10569720 bytes</li>
+<li class="md-github">Links Found: 149699</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
-<p class="md-github">2025-04-28</p>
+<p class="md-github">2025-05-02</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-05-01T10:22:04.972Z</p>
+    <p>Generated on 2025-05-02T13:23:28.382Z</p>
   </footer>
 </body>
 </html>
