@@ -2,7 +2,8 @@
 import fs from "fs";
 import { fileURLToPath } from "url";
 import yaml from "js-yaml";
-import { version } from "../../package.json";
+import pkg from "../../package.json" assert { type: "json" };
+const { version } = pkg;
 
 const defaultFaces = [
   "( ͡° ͜ʖ ͡°)",
