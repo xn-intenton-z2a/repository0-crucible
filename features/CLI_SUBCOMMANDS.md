@@ -1,47 +1,49 @@
 # Overview
 
-Ensure the CLI entrypoint in src/lib/main.js fully implements and documents two core subcommands: convert and capital-cities. Handle option parsing, validation, error handling, and output behavior consistently, building on existing diagnostics support.
+Unify and extend the command-line interface to support four core subcommands: convert, capital-cities, list-terms, and get-term. Ensure each subcommand uses consistent option parsing, validation, error handling, and output behavior.
 
 # Implementation
 
 1. Command Dispatch
-   - After handling --diagnostics, read the first CLI argument as subcommand name.
-   - If the subcommand is convert or capital-cities, invoke its handler. Otherwise log an error to stderr and return exit code 1.
+   - After handling --diagnostics, read the first CLI argument as the subcommand name.
+   - Support subcommands: convert, capital-cities, list-terms, get-term. If an unknown subcommand is provided, print an error to stderr and return exit code 1.
 
 2. Convert Handler (existing behavior)
-   - Define a zod schema requiring input and ontology-iri; optional base-iri and output.
-   - Read and parse the input JSON file using fs.promises.readFile.
-   - Call generateOntology with parsed data and options.
-   - Serialize result with JSON.stringify(indent 2).
-   - If an output path is provided, write to file; otherwise print to stdout.
-   - On file access, parse, or generation errors, log a descriptive message to stderr and return exit code 1.
+   - Require flags --input, --ontology-iri; support optional --base-iri, --output.
+   - Read and parse JSON from the input file; generate ontology; serialize with indent 2; write to file or stdout.
+   - On any error, log descriptive message to stderr and return exit code 1.
 
-3. Capital-Cities Handler (new implementation)
-   - Define a zod schema requiring ontology-iri; optional base-iri, api-endpoint (default https://restcountries.com/v3.1/all), and output.
-   - Use global fetch to retrieve country data from api-endpoint.
-   - Filter for entries with non-empty capital arrays.
-   - Build a term map where each key is the country name (common or official) and the value is an object with capital set to the first capital.
-   - Call generateOntology with the term map and options.
-   - Serialize and write or print the ontology as in convert handler.
-   - On fetch, network, or processing errors, log a descriptive message to stderr and return exit code 1.
+3. Capital-Cities Handler (existing behavior)
+   - Require flag --ontology-iri; support optional --base-iri, --api-endpoint, --output.
+   - Fetch country data; filter for entries with a capital; build a term map; generate ontology; serialize and write or print.
+   - Handle HTTP errors and network errors with descriptive stderr messages and exit code 1.
 
-4. Validation and Error Handling
-   - Use zod schemas for both handlers to ensure clear errors on missing or invalid flags.
-   - Ensure exit codes are 0 on success and 1 on any failure.
+4. List-Terms Handler (merged behavior)
+   - Require flag --input; no other flags.
+   - Read and parse JSON-LD ontology file; validate that it contains an @graph array.
+   - For each node in @graph, console.log its @id on a separate line.
+   - Return exit code 0 on success; on read, parse, or validation error, console.error a descriptive message and return exit code 1.
+
+5. Get-Term Handler (new behavior)
+   - Require flags --input and --term; support optional --output.
+   - Read and parse JSON-LD ontology file; validate structure.
+   - Search @graph for a node with local name matching the provided term (after the last '#').
+   - If found, serialize that node with indent 2 and write to file or stdout. If not found, console.error a descriptive message and return exit code 1.
 
 # Testing
 
-1. Update tests/unit/cli-convert.test.js to cover existing convert scenarios (already present).
-2. Add tests/unit/cli-capitals.test.js:
-   • Mock global fetch to return sample country data with and without capital fields.
-   • Invoke CLI with capital-cities flags and capture stdout or file write; assert JSON-LD document graph includes only countries with capitals and correct term IDs and properties.
-   • Test missing required flags returns exit code 1 and logs descriptive error.
-   • Test fetch failures return exit code 1 and log an error.
-3. Ensure existing tests for diagnostics and main termination continue to pass.
+1. Update existing tests/unit/cli-convert.test.js and tests/unit/cli-capitals.test.js to ensure coverage remains passing.
+2. Add or update tests/unit/cli-listterms.test.js to cover:
+   • Successful listing of term IDs to stdout by mocking fs.readFile and spying on console.log.
+   • Missing --input flag returns exit code 1 with error message.
+   • Invalid JSON or missing @graph returns exit code 1 with error message.
+3. Create tests/unit/cli-getterm.test.js covering:
+   • Successful retrieval of a term node to stdout by mocking fs.readFile and spying on console.log.
+   • Writing output to file when --output is provided.
+   • Missing required flags returns exit code 1 with error message.
+   • Term not found returns exit code 1 with descriptive error.
 
 # Documentation
 
-1. Update README.md under Command-Line Interface to document the capital-cities command:
-   - List flags: --ontology-iri, --base-iri, --api-endpoint, --output.
-   - Provide usage examples and sample JSON-LD output.
-2. Update docs/USAGE.md under CLI Usage with a section for capital-cities, listing flags, defaults, invocation snippets, and expected output fields.
+1. Update README.md under Command-Line Interface to document the four subcommands with their flags, defaults, and usage examples.
+2. In docs/USAGE.md under CLI Usage, add sections for list-terms and get-term, listing flags, default values, invocation snippets, and expected output formats.
