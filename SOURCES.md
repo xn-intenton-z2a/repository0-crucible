@@ -77,3 +77,43 @@ rdflib.js provides a comprehensive RDF graph store for JavaScript, including par
 ## https://github.com/owlcs/owlapi/wiki
 The OWL API GitHub Wiki provides detailed tutorials and code snippets for programmatic ontology creation, manipulation, and serialization in Java. Guides cover parsing RDF/XML, manipulating class expressions, and exporting to various syntaxes—valuable for comparative design of a JavaScript-based OWL JSON toolchain.
 ## LGPL 3.0
+
+# OWL 2 Web Ontology Language Structural Specification and Functional-Style Syntax
+## https://www.w3.org/TR/owl2-syntax/
+This W3C Recommendation defines the functional-style syntax for OWL 2, detailing class expressions, property axioms, and annotation structures. It is vital for parsing or generating OWL textual representations beyond RDF, serving as a blueprint for serializing ontologies in multiple formats. Last published October 2012.
+## W3C Document License (CC-BY 4.0)
+
+# OWL 2 Web Ontology Language Mapping to RDF Graphs
+## https://www.w3.org/TR/owl2-mapping-to-rdf/
+The OWL 2 Mapping to RDF Graphs specification describes how OWL axioms, annotations, and structures map onto RDF triples. This is essential for understanding serialization and ensuring consistent round-tripping between functional syntax, RDF, and JSON-LD serializations. Published December 2012.
+## W3C Document License (CC-BY 4.0)
+
+# SPARQL 1.1 Update
+## https://www.w3.org/TR/sparql11-update/
+This W3C Recommendation details the SPARQL 1.1 Update language for modifying RDF graphs, covering INSERT, DELETE, LOAD, and graph management operations. It is crucial for implementing CLI commands that mutate stored OWL JSON representations via SPARQL endpoints. Published March 2013.
+## W3C Document License (CC-BY 4.0)
+
+# OWL2JSON Community Group Report
+## https://w3c-lbd-cg.github.io/owl2json/
+The OWL2JSON Community Group report proposes a JSON serialization schema for OWL 2 constructs, including ontologies, axioms, and annotations. It provides actionable JSON schema definitions and examples that directly inform the design of the OWL JSON format in this toolchain. Last revised December 2022.
+## W3C Document License (CC-BY 4.0)
+
+# OWLReady2 Python Library Documentation
+## https://owlready2.readthedocs.io/en/latest/
+OWLReady2 is a Python library for ontology-oriented programming, enabling loading, manipulating, and saving OWL ontologies in various serializations. It illustrates an alternative API approach with inference capabilities, guiding the design of programmatic ontology manipulation features in JavaScript. Last updated May 2024.
+## LGPL 3.0
+
+# RDFLib Python Library Documentation
+## https://rdflib.readthedocs.io/en/stable/
+RDFLib offers a mature Python implementation for RDF parsing, serialization, and SPARQL querying. It demonstrates modular design of parsers, stores, and query engines, serving as inspiration for structuring the JavaScript components of this CLI. Last updated 2024.
+## BSD 3-Clause
+
+# RDF-Ext Core Library
+## https://github.com/rdf-ext/rdf-ext
+RDF-Ext is a modular JavaScript implementation of the RDFJS interfaces, providing datasets, parsers, serializers, and plugin mechanisms. It exemplifies composable architecture and performance considerations for large-scale RDF processing in Node.js. Maintained under MIT.
+## MIT License
+
+# Eclipse RDF4J Documentation
+## https://rdf4j.org/documentation/
+Eclipse RDF4J is a Java framework for RDF and Linked Data, offering APIs for parsing, storing, and querying RDF graphs with integrated SPARQL support. The documentation covers configuration, transaction handling, and inference, which can inform backend persistence strategies for OWL JSON outputs. Last updated 2023.
+## Eclipse Public License 2.0
