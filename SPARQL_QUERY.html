@@ -24,277 +24,335 @@
   <section>
     <h1 class="md-github"><a class="md-github__anchor" name="sparql_query" href="#sparql_query"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SPARQL_QUERY</h1>
 <h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
-<p class="md-github">Syntax definitions for IRIs, literals, variables, blank nodes, triple patterns; basic graph patterns and optional matching semantics; functional forms and built-in functions; core grammar productions and query forms.</p>
+<p class="md-github">Defines SPARQL 1.1 query language syntax and semantics: prefix/base resolution, triple patterns with abbreviations, query variables ($?,), literal syntax (strings, language tags, datatypes, numeric shorthand), basic graph patterns, OPTIONAL, UNION, FILTER (regex, numeric, logical), property paths (/,^,*,+,?,|), assignments (BIND, VALUES), aggregates (COUNT,SUM,AVG,MIN,MAX,GROUP_CONCAT,SAMPLE), dataset clauses (FROM,FROM NAMED,GRAPH), query forms (SELECT,CONSTRUCT,ASK,DESCRIBE), solution modifiers (DISTINCT,REDUCED,ORDER BY,LIMIT,OFFSET), functions library (RDF term tests, string,numeric,datetime,hash), SPARQL algebra, grammar, conformance.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
 <p class="md-github">Table of Contents
-1 IRI Syntax
-2 Literal Syntax
-3 Variable Syntax
-4 Blank Node Syntax
-5 Triple Pattern Syntax
-6 Basic Graph Patterns
-7 Optional Patterns
-8 Built-in Functions
-9 Core Grammar</p>
-<p class="md-github">1 IRI Syntax</p>
-<ul class="md-github">
-<li class="md-github">IRIREF: '&lt;' IRICHAR* '&gt;'</li>
-<li class="md-github">PrefixedName: PNAME_NS | PNAME_NS PN_LOCAL</li>
-<li class="md-github">BASE and PREFIX declarations</li>
-<li class="md-github">Relative IRI resolution: RFC3986, no normalization</li>
-</ul>
-<p class="md-github">2 Literal Syntax</p>
-<ul class="md-github">
-<li class="md-github">STRING_LITERAL_QUOTE: '&quot;'... '&quot;'; single-quote variant</li>
-<li class="md-github">Long literals: '''...''' or &quot;&quot;&quot;...&quot;&quot;&quot;</li>
-<li class="md-github">LANGTAG: '@'[a-zA-Z]+('-'[a-zA-Z0-9]+)*</li>
-<li class="md-github">Datatype: '^^' IRIREF or PrefixedName</li>
-<li class="md-github">Numeric shortcuts: INTEGER, DECIMAL, DOUBLE</li>
-<li class="md-github">Boolean: true, false</li>
-</ul>
-<p class="md-github">3 Variable Syntax</p>
-<ul class="md-github">
-<li class="md-github">VAR1: ('?'|'$')VARNAME, VARNAME: PN_CHARS_U(PN_CHARS)*</li>
-</ul>
-<p class="md-github">4 Blank Node Syntax</p>
-<ul class="md-github">
-<li class="md-github">BlankNode: '_:'PN_LOCAL or '[]'</li>
-<li class="md-github">Property list: '[' PredicateObjectList ']' allocates blank node</li>
-</ul>
-<p class="md-github">5 Triple Pattern Syntax</p>
-<ul class="md-github">
-<li class="md-github">Subject PredicateObjectList '.'</li>
-<li class="md-github">PredicateObjectList: Verb ObjectList (';' Verb ObjectList)*</li>
-<li class="md-github">ObjectList: Object (',' Object)*</li>
-<li class="md-github">Abbreviations: ';' for common subject, ',' for common predicate</li>
-</ul>
-<p class="md-github">6 Basic Graph Patterns</p>
-<ul class="md-github">
-<li class="md-github">'{' TriplesBlock '}'</li>
-<li class="md-github">Subgraph matching by variable binding</li>
-</ul>
-<p class="md-github">7 Optional Patterns</p>
-<ul class="md-github">
-<li class="md-github">OPTIONAL GroupGraphPattern</li>
-<li class="md-github">Semantics: left-join preserving unmatched solutions</li>
-</ul>
-<p class="md-github">8 Built-in Functions</p>
-<ul class="md-github">
-<li class="md-github">BOUND(?var) -&gt; xsd:boolean</li>
-<li class="md-github">IF(expr1,expr2,expr3) -&gt; term</li>
-<li class="md-github">COALESCE(expr...) -&gt; term</li>
-<li class="md-github">EXISTS, NOT EXISTS(pattern) -&gt; xsd:boolean</li>
-<li class="md-github">Logical: &amp;&amp;, ||, !</li>
-<li class="md-github">Comparison: =, !=, &lt;, &lt;=, &gt;, &gt;=</li>
-<li class="md-github">IN, NOT IN</li>
-<li class="md-github">RDF term funcs: STR, LANG, DATATYPE, isIRI, isBLANK, isLITERAL, isNUMERIC, SAME_TERM</li>
-</ul>
-<p class="md-github">9 Core Grammar</p>
-<ul class="md-github">
-<li class="md-github">Prologue: BaseDecl*, PrefixDecl*</li>
-<li class="md-github">Query forms: SELECT, CONSTRUCT, ASK, DESCRIBE</li>
-<li class="md-github">DatasetClause: FROM, FROM NAMED</li>
-<li class="md-github">SolutionModifier: ORDER BY, LIMIT, OFFSET, GROUP BY, HAVING</li>
-</ul>
+1 Prefixes and Base Resolution
+2 Triple Pattern Abbreviations
+3 Variables and Literals
+4 Basic Graph Patterns, OPTIONAL, UNION
+5 FILTER Expressions
+6 Property Paths
+7 Assignments (BIND, VALUES)
+8 Aggregates and Grouping
+9 Dataset and Graph Selection
+10 Query Forms and Modifiers
+11 Functions Library</p>
+<p class="md-github">1 Prefixes and Base Resolution
+PREFIX <label>:<IRI>
+BASE <IRI>
+Relative IRI resolution: RFC3986 section 5.2 basic algorithm; no normalization.</p>
+<p class="md-github">2 Triple Pattern Abbreviations
+Subject common: <s> <p1> o1; p2 o2.
+Object list: <s> p o1,o2.
+Blank nodes: [] yields _:bN; _:label constant; [p o; q v].</p>
+<p class="md-github">3 Variables and Literals
+Variables: ?v or $v.
+Literals:
+&quot;str&quot; or 'str'
+&quot;str&quot;@lang
+&quot;lex&quot;^^<IRI> or ^^prefix:local
+Numeric: integer, decimal, double, true/false.
+Multi-line: &quot;&quot;&quot; ... &quot;&quot;&quot;.</p>
+<p class="md-github">4 Basic Graph Patterns, OPTIONAL, UNION
+BGP: sequence of triple patterns.
+OPTIONAL { pattern }
+{ pat1 } UNION { pat2 }</p>
+<p class="md-github">5 FILTER Expressions
+Numeric: (&lt;,&gt;,&lt;=,&gt;=,=,!=)
+Logical: &amp;&amp;,||,!, IN(), NOT IN(), EXISTS(), NOT EXISTS().
+regex(str,pattern,flags).</p>
+<p class="md-github">6 Property Paths
+Concatenation: p1/p2
+Inverse: ^p
+Zero-or-more: p*
+One-or-more: p+
+Zero-or-one: p?
+Alternatives: p1|p2</p>
+<p class="md-github">7 Assignments (BIND, VALUES)
+BIND(expr AS ?v)
+VALUES (?v1 ?v2) {(v11 v21) (v12 v22)}</p>
+<p class="md-github">8 Aggregates and Grouping
+SELECT (COUNT(?v) AS ?c) WHERE{} GROUP BY ?g HAVING(condition)
+Aggregates: COUNT, SUM, AVG, MIN, MAX, GROUP_CONCAT, SAMPLE</p>
+<p class="md-github">9 Dataset and Graph Selection
+FROM <graphIRI>
+FROM NAMED <graphIRI>
+GRAPH ?g { pattern }</p>
+<p class="md-github">10 Query Forms and Modifiers
+SELECT [DISTINCT|REDUCED] ?vars WHERE { } [ORDER BY (?v|ASC(?v)|DESC(?v))] [LIMIT n] [OFFSET m]
+CONSTRUCT { template } WHERE { }
+ASK WHERE { }
+DESCRIBE <IRI>+ WHERE { }</p>
+<p class="md-github">11 Functions Library
+isIRI(arg): boolean
+isBlank(arg): boolean
+isLiteral(arg): boolean
+isNumeric(arg): boolean
+str(arg): xsd:string
+lang(arg): language-tag
+datatype(arg): IRI
+IRI(str): IRI
+BNODE(): blank node
+STRDT(str,datatypeIRI): literal
+STRLANG(str,lang): literal
+UUID(): xsd:string
+STRUUDI(): xsd:string
+String functions: STRLEN(str): integer, SUBSTR(str,pos,len): string, UCASE(str): string, LCASE(str): string, STRSTARTS(str,pref): boolean, STRENDS(str,suf): boolean, CONTAINS(str,substr): boolean, STRBEFORE(str,substr): string, STRAFTER(str,substr): string, ENCODE_FOR_URI(str): string, CONCAT(str1,...): string, langMatches(tag,pattern): boolean, REGEX(str,pattern,flags): boolean, REPLACE(str,pattern,repl,flags): string
+Numeric: abs(x): numeric, round(x): numeric, ceil(x): numeric, floor(x): numeric, RAND(): double
+DateTime: now(): xsd:dateTime, year(dt): integer, month(dt): integer, day(dt): integer, hours(dt): integer, minutes(dt): integer, seconds(dt): decimal, timezone(dt): xsd:dayTimeDuration, tz(dt): xsd:string
+Hash: MD5(str): hexBinary, SHA1(str): hexBinary, SHA256(str): hexBinary, SHA384(str): hexBinary, SHA512(str): hexBinary</p>
 <h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
-<p class="md-github">Base URI resolution: apply RFC3986 section 5.1.1 algorithm; no syntax or scheme normalization. Prefix declarations: accumulate mappings per Prologue in order. Blank nodes: unique per query execution; labels scoped to result or template. Filter execution: evaluate expression per solution, exclude on error or false. Optional: bind missing vars to unbound state. Query forms selection: SELECT returns solution sequence, CONSTRUCT returns template-built graph, ASK returns boolean, DESCRIBE returns union of descriptions. Parameter order: put graph patterns before FILTER and solution modifiers for performance. Use LIMIT/OFFSET to page results.</p>
+<p class="md-github">Implementation Steps:</p>
+<ol class="md-github">
+<li class="md-github">Define PREFIX and BASE.</li>
+<li class="md-github">Construct WHERE clause with BGP.</li>
+<li class="md-github">Use abbreviations for compact patterns.</li>
+<li class="md-github">Apply OPTIONAL, UNION as needed.</li>
+<li class="md-github">Add FILTER with expressions or regex.</li>
+<li class="md-github">Use property paths for graph traversal.</li>
+<li class="md-github">Introduce BIND/VALUES for inline data.</li>
+<li class="md-github">Group results with GROUP BY and apply aggregates.</li>
+<li class="md-github">Specify source graphs via FROM, FROM NAMED, and GRAPH.</li>
+<li class="md-github">Select output form (SELECT, CONSTRUCT, ASK, DESCRIBE).</li>
+<li class="md-github">Modify solution sequence with ORDER BY, LIMIT, OFFSET.</li>
+</ol>
+<p class="md-github">Configuration Options:</p>
+<ul class="md-github">
+<li class="md-github">DISTINCT vs REDUCED: duplicate elimination.</li>
+<li class="md-github">Order expressions: variable, ASC()/DESC().</li>
+<li class="md-github">Limit: non-negative integer.</li>
+<li class="md-github">Offset: non-negative integer.</li>
+</ul>
+<p class="md-github">Performance Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Restrict dataset sizes with FROM and named graphs.</li>
+<li class="md-github">Use BIND over subqueries for computed values.</li>
+<li class="md-github">Use property path alternatives sparingly.</li>
+</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
-<p class="md-github">Prologue declarations
-BASE IRIREF ; default Base IRI
-PREFIX PNAME_NS IRIREF ; prefix mapping</p>
-<p class="md-github">SelectQuery signature
-SELECT [DISTINCT|REDUCED]? (VarOrWildcard)+ DatasetClause* WHERE? GroupGraphPattern SolutionModifier*
-VarOrWildcard: Var | '*'</p>
-<p class="md-github">groupGraphPattern: '{' TriplesBlock? (GraphPatternNotTriples '.'? TriplesBlock?)* '}'</p>
-<p class="md-github">ConstructQuery signature
-CONSTRUCT ConstructTemplate DatasetClause* WHERE? GroupGraphPattern SolutionModifier*
-ConstructTemplate: '{' ConstructTriples? '}'</p>
-<p class="md-github">DatasetClause
-FROM IRIREF ; default graph
-FROM NAMED IRIREF ; named graph</p>
-<p class="md-github">Triple pattern binding
-subject ∈ {IRIREF, PrefixedName, Var, BlankNode, Collection}
-predicate: Var | IRIREF | PrefixedName
-object ∈ {IRIREF, PrefixedName, Var, BlankNode, Literal, Collection}</p>
-<p class="md-github">FILTER usage
-FILTER '(' Expression ')'
-Examples:
-FILTER regex(?title,&quot;^SPARQL&quot;,&quot;i&quot;)
-FILTER (?price &lt; 30.5)</p>
-<p class="md-github">Best practices:
-Use specific PREFIX declarations at top. Combine common subjects with ';' and predicates with ',' to reduce query size. Order graph patterns by selectivity. Use BIND for computed values. Apply LIMIT/OFFSET for paging.</p>
-<p class="md-github">Troubleshooting:
-Curl example:
-curl -X POST --data-urlencode &quot;query=SELECT ?s WHERE { ?s ?p ?o } LIMIT 10&quot; <br>
--H &quot;Accept: application/sparql-results+json&quot; <br>
-http://example.com/sparql
-Expected JSON: {&quot;head&quot;:{&quot;vars&quot;:[&quot;s&quot;]},&quot;results&quot;:{&quot;bindings&quot;:[...]}}</p>
-<p class="md-github">If endpoint returns HTTP 400, check PREFIX and syntax. Use DESCRIBE <IRI> to inspect graph.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="api-specifications-and-implementation-patterns" href="#api-specifications-and-implementation-patterns"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>API Specifications and Implementation Patterns</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="a-sdk-method-signatures-pseudo-javapython" href="#a-sdk-method-signatures-pseudo-javapython"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>A. SDK Method Signatures (Pseudo-Java/Python)</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="executeselectquery-string-dataset-optionaldataset-parameters-mapstringobject---resultset" href="#executeselectquery-string-dataset-optionaldataset-parameters-mapstringobject---resultset"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>executeSelect(query: String, dataset: Optional<Dataset>, parameters: Map&lt;String,Object&gt;) -&gt; ResultSet</h3>
+<p class="md-github">Parameters:
+query: SPARQL SELECT query string
+dataset: optional default and named graphs
+parameters: bindings for parameterized queries
+Return: ResultSet with getVariableBindings() -&gt; List&lt;Map&lt;String,RDFTerm&gt;&gt;</p>
+<h3 class="md-github"><a class="md-github__anchor" name="executeconstructquery-string-dataset-optionaldataset-parameters-mapstringobject---graph" href="#executeconstructquery-string-dataset-optionaldataset-parameters-mapstringobject---graph"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>executeConstruct(query: String, dataset: Optional<Dataset>, parameters: Map&lt;String,Object&gt;) -&gt; Graph</h3>
+<p class="md-github">Return: RDF graph</p>
+<h3 class="md-github"><a class="md-github__anchor" name="executeaskquery-string-dataset-optionaldataset-parameters-mapstringobject---boolean" href="#executeaskquery-string-dataset-optionaldataset-parameters-mapstringobject---boolean"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>executeAsk(query: String, dataset: Optional<Dataset>, parameters: Map&lt;String,Object&gt;) -&gt; Boolean</h3>
+<h3 class="md-github"><a class="md-github__anchor" name="executedescribequery-string-dataset-optionaldataset-parameters-mapstringobject---graph" href="#executedescribequery-string-dataset-optionaldataset-parameters-mapstringobject---graph"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>executeDescribe(query: String, dataset: Optional<Dataset>, parameters: Map&lt;String,Object&gt;) -&gt; Graph</h3>
+<h2 class="md-github"><a class="md-github__anchor" name="b-code-examples" href="#b-code-examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>B. Code Examples</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="java-example-apache-jena" href="#java-example-apache-jena"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Java Example (Apache Jena)</h3>
+<p class="md-github">Model model = FileManager.get().loadModel(&quot;data.ttl&quot;);
+Query query = QueryFactory.create(&quot;PREFIX dc:<a href="http://purl.org/dc/elements/1.1/" class="md-github">http://purl.org/dc/elements/1.1/</a> SELECT ?title WHERE { ?s dc:title ?title } ORDER BY ?title LIMIT 10&quot;);
+try(QueryExecution qexec = QueryExecutionFactory.create(query, model)) {
+ResultSet rs = qexec.execSelect();
+while(rs.hasNext()) {
+QuerySolution sol = rs.nextSolution();
+System.out.println(sol.getLiteral(&quot;title&quot;).getString());
+}
+}</p>
+<h3 class="md-github"><a class="md-github__anchor" name="python-example-rdflib" href="#python-example-rdflib"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Python Example (RDFlib)</h3>
+<p class="md-github">from rdflib import Graph
+from rdflib.plugins.sparql.processor import prepareQuery</p>
+<p class="md-github">g = Graph()
+g.parse(&quot;data.ttl&quot;, format=&quot;turtle&quot;)
+q = prepareQuery(
+&quot;PREFIX foaf:<a href="http://xmlns.com/foaf/0.1/" class="md-github">http://xmlns.com/foaf/0.1/</a>\n&quot;
+&quot;SELECT ?name WHERE { ?s foaf:name ?name } ORDER BY ?name&quot;
+)
+for row in g.query(q):
+print(row.name)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="c-configuration-options" href="#c-configuration-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>C. Configuration Options</h2>
+<ul class="md-github">
+<li class="md-github">queryTimeout: integer milliseconds (default 0 = no timeout)</li>
+<li class="md-github">maxQueryDepth: integer (default 10)</li>
+<li class="md-github">enablePropertyPaths: boolean (default true)</li>
+<li class="md-github">defaultOrder: ASC</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="d-troubleshooting-procedures" href="#d-troubleshooting-procedures"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>D. Troubleshooting Procedures</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="1-syntax-errors" href="#1-syntax-errors"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Syntax Errors</h3>
+<p class="md-github">Command: run query via CLI <code class="md-github">sparql --query q.rq</code>
+Expected: <code class="md-github">ERROR: Syntax error at line X, column Y: unexpected token</code>
+Action: verify prefix declarations, variable names, grammar compliance.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="2-performance-issues" href="#2-performance-issues"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Performance Issues</h3>
+<p class="md-github">Symptoms: query execution slow, high memory
+Commands: ENABLE PROFILE
+Expected: detailed operation cost breakdown
+Action: add FILTER early, restrict GRAPH, use indexes.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="3-missing-results" href="#3-missing-results"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. Missing Results</h3>
+<p class="md-github">Check: dataset default graph, FROM clauses.
+Command: <code class="md-github">sparql --query q.rq --data data.ttl --default-graph-uri &lt;graphIRI&gt;</code>
+Expected: correct bindings.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="e-best-practices" href="#e-best-practices"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>E. Best Practices</h2>
+<ul class="md-github">
+<li class="md-github">Always declare PREFIX to shorten URIs.</li>
+<li class="md-github">Use LIMIT and ORDER BY to paginate.</li>
+<li class="md-github">Prefer BIND over nested SELECT for computed expressions.</li>
+<li class="md-github">Use VALUES for small inline data sets.</li>
+<li class="md-github">Use GRAPH to restrict queries to specific named graphs.</li>
+</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
-<p class="md-github">IRI: '&lt;...&gt;'; PNAME_NS: PN_PREFIX? ':'; resolve via PREFIX. Literal: '&quot;...&quot;'(@lang|^^IRI); INTEGER-&gt;xsd:integer; DECIMAL-&gt;xsd:decimal; DOUBLE-&gt;xsd:double; BOOLEAN-&gt;xsd:boolean; long '''...''' . Var: '?'| '$'+VARNAME. Blank: '_:'+PN_LOCAL | '[]'; property list '[' PoList ']'. Triple: S PoList '.'; PoList: V OList('; V OList)<em class="md-github">; OList: O(',' O)</em>. BGP: '{' TriplesBlock '}'. OPTIONAL '{' pattern '}' =&gt; left-join. Functions: BOUND, IF, COALESCE, EXISTS, NOT EXISTS, &amp;&amp;, ||, !, =, !=, &lt;, &lt;=, &gt;, &gt;=, IN, NOT IN, STR, LANG, DATATYPE, isIRI, isBLANK, isLITERAL, isNUMERIC. Grammar: Prologue: BaseDecl*, PrefixDecl*; Query: Select|Construct|Ask|Describe; DatasetClause: FROM IRIREF| NAMED IRIREF; SolutionModifier: ORDER BY ExprList; LIMIT n; OFFSET n; GROUP BY Var+; HAVING Expr.</p>
+<p class="md-github">PREFIX,BASE: label-&gt;IRI, relative IRI resolution per RFC3986. Triple patterns: s p o; s p1 o1,p2 o2. Blank nodes: [],_:lbl,[p o;q v]. Variables: ?v,$v. Literals: &quot;...&quot;,'...',@lang,^^<IRI>,integer,decimal,double,boolean. BGP: sequence of triple patterns. OPTIONAL{pat},{pat1}UNION{pat2}. FILTER: comparison,logical,IN,NOT IN,EXISTS,NOT EXISTS,regex(str,pat,flags). Property paths: p1/p2,^p,p*,p+,p?,p1|p2. BIND(expr AS ?v),VALUES(?v1?v2){(v11 v21)...}. Aggregates:COUNT,SUM,AVG,MIN,MAX,GROUP_CONCAT,SAMPLE; GROUP BY,HAVING. Dataset:FROM<iri>,FROM NAMED<iri>,GRAPH?g{pat}. Query forms:SELECT[DISTINCT|REDUCED]?varsWHERE{pat}[ORDER BY expr][LIMIT n][OFFSET m];CONSTRUCT{tpl}WHERE{pat};ASK;DESCRIBE. Functions: isIRI,isBlank,isLiteral,isNumeric,str,lang,datatype,IRI(),BNODE(),STRDT(),STRLANG(),UUID(),STRUUID(); STRLEN,SUBSTR,UCASE,LCASE,STRSTARTS,STRENDS,CONTAINS,STRBEFORE,STRAFTER,ENCODE_FOR_URI,CONCAT,langMatches,REGEX,REPLACE; abs,round,ceil,floor,RAND; now,year,month,day,hours,minutes,seconds,timezone,tz; MD5,SHA1,SHA256,SHA384,SHA512. Execution: executeSelect(query,dataset,params)-&gt;ResultSet; execConstruct-&gt;Graph; execAsk-&gt;Boolean; execDescribe-&gt;Graph. CLI debugging: syntax errors, profiling, dataset URIs. Defaults: queryTimeout=0,maxQueryDepth=10,enablePropertyPaths=true,defaultOrder=ASC.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
 <p class="md-github">Table of Contents
-1 IRI Syntax
-2 Literal Syntax
-3 Variable Syntax
-4 Blank Node Syntax
-5 Triple Pattern Syntax
-6 Basic Graph Patterns
-7 Optional Patterns
-8 Built-in Functions
-9 Core Grammar</p>
-<p class="md-github">1 IRI Syntax</p>
-<ul class="md-github">
-<li class="md-github">IRIREF: '&lt;' IRICHAR* '&gt;'</li>
-<li class="md-github">PrefixedName: PNAME_NS | PNAME_NS PN_LOCAL</li>
-<li class="md-github">BASE and PREFIX declarations</li>
-<li class="md-github">Relative IRI resolution: RFC3986, no normalization</li>
-</ul>
-<p class="md-github">2 Literal Syntax</p>
-<ul class="md-github">
-<li class="md-github">STRING_LITERAL_QUOTE: '''... '''; single-quote variant</li>
-<li class="md-github">Long literals: '''...''' or '''...'''</li>
-<li class="md-github">LANGTAG: '@'[a-zA-Z]+('-'[a-zA-Z0-9]+)*</li>
-<li class="md-github">Datatype: '^^' IRIREF or PrefixedName</li>
-<li class="md-github">Numeric shortcuts: INTEGER, DECIMAL, DOUBLE</li>
-<li class="md-github">Boolean: true, false</li>
-</ul>
-<p class="md-github">3 Variable Syntax</p>
-<ul class="md-github">
-<li class="md-github">VAR1: ('?'|'$')VARNAME, VARNAME: PN_CHARS_U(PN_CHARS)*</li>
-</ul>
-<p class="md-github">4 Blank Node Syntax</p>
-<ul class="md-github">
-<li class="md-github">BlankNode: '_:'PN_LOCAL or '[]'</li>
-<li class="md-github">Property list: '[' PredicateObjectList ']' allocates blank node</li>
-</ul>
-<p class="md-github">5 Triple Pattern Syntax</p>
-<ul class="md-github">
-<li class="md-github">Subject PredicateObjectList '.'</li>
-<li class="md-github">PredicateObjectList: Verb ObjectList (';' Verb ObjectList)*</li>
-<li class="md-github">ObjectList: Object (',' Object)*</li>
-<li class="md-github">Abbreviations: ';' for common subject, ',' for common predicate</li>
-</ul>
-<p class="md-github">6 Basic Graph Patterns</p>
-<ul class="md-github">
-<li class="md-github">'{' TriplesBlock '}'</li>
-<li class="md-github">Subgraph matching by variable binding</li>
-</ul>
-<p class="md-github">7 Optional Patterns</p>
-<ul class="md-github">
-<li class="md-github">OPTIONAL GroupGraphPattern</li>
-<li class="md-github">Semantics: left-join preserving unmatched solutions</li>
-</ul>
-<p class="md-github">8 Built-in Functions</p>
-<ul class="md-github">
-<li class="md-github">BOUND(?var) -&gt; xsd:boolean</li>
-<li class="md-github">IF(expr1,expr2,expr3) -&gt; term</li>
-<li class="md-github">COALESCE(expr...) -&gt; term</li>
-<li class="md-github">EXISTS, NOT EXISTS(pattern) -&gt; xsd:boolean</li>
-<li class="md-github">Logical: &amp;&amp;, ||, !</li>
-<li class="md-github">Comparison: =, !=, &lt;, &lt;=, &gt;, &gt;=</li>
-<li class="md-github">IN, NOT IN</li>
-<li class="md-github">RDF term funcs: STR, LANG, DATATYPE, isIRI, isBLANK, isLITERAL, isNUMERIC, SAME_TERM</li>
-</ul>
-<p class="md-github">9 Core Grammar</p>
-<ul class="md-github">
-<li class="md-github">Prologue: BaseDecl*, PrefixDecl*</li>
-<li class="md-github">Query forms: SELECT, CONSTRUCT, ASK, DESCRIBE</li>
-<li class="md-github">DatasetClause: FROM, FROM NAMED</li>
-<li class="md-github">SolutionModifier: ORDER BY, LIMIT, OFFSET, GROUP BY, HAVING</li>
-</ul>
+1 Prefixes and Base Resolution
+2 Triple Pattern Abbreviations
+3 Variables and Literals
+4 Basic Graph Patterns, OPTIONAL, UNION
+5 FILTER Expressions
+6 Property Paths
+7 Assignments (BIND, VALUES)
+8 Aggregates and Grouping
+9 Dataset and Graph Selection
+10 Query Forms and Modifiers
+11 Functions Library</p>
+<p class="md-github">1 Prefixes and Base Resolution
+PREFIX <label>:<IRI>
+BASE <IRI>
+Relative IRI resolution: RFC3986 section 5.2 basic algorithm; no normalization.</p>
+<p class="md-github">2 Triple Pattern Abbreviations
+Subject common: <s> <p1> o1; p2 o2.
+Object list: <s> p o1,o2.
+Blank nodes: [] yields _:bN; _:label constant; [p o; q v].</p>
+<p class="md-github">3 Variables and Literals
+Variables: ?v or $v.
+Literals:
+'str' or 'str'
+'str'@lang
+'lex'^^<IRI> or ^^prefix:local
+Numeric: integer, decimal, double, true/false.
+Multi-line: ''' ... '''.</p>
+<p class="md-github">4 Basic Graph Patterns, OPTIONAL, UNION
+BGP: sequence of triple patterns.
+OPTIONAL { pattern }
+{ pat1 } UNION { pat2 }</p>
+<p class="md-github">5 FILTER Expressions
+Numeric: (&lt;,&gt;,&lt;=,&gt;=,=,!=)
+Logical: &amp;&amp;,||,!, IN(), NOT IN(), EXISTS(), NOT EXISTS().
+regex(str,pattern,flags).</p>
+<p class="md-github">6 Property Paths
+Concatenation: p1/p2
+Inverse: ^p
+Zero-or-more: p*
+One-or-more: p+
+Zero-or-one: p?
+Alternatives: p1|p2</p>
+<p class="md-github">7 Assignments (BIND, VALUES)
+BIND(expr AS ?v)
+VALUES (?v1 ?v2) {(v11 v21) (v12 v22)}</p>
+<p class="md-github">8 Aggregates and Grouping
+SELECT (COUNT(?v) AS ?c) WHERE{} GROUP BY ?g HAVING(condition)
+Aggregates: COUNT, SUM, AVG, MIN, MAX, GROUP_CONCAT, SAMPLE</p>
+<p class="md-github">9 Dataset and Graph Selection
+FROM <graphIRI>
+FROM NAMED <graphIRI>
+GRAPH ?g { pattern }</p>
+<p class="md-github">10 Query Forms and Modifiers
+SELECT [DISTINCT|REDUCED] ?vars WHERE { } [ORDER BY (?v|ASC(?v)|DESC(?v))] [LIMIT n] [OFFSET m]
+CONSTRUCT { template } WHERE { }
+ASK WHERE { }
+DESCRIBE <IRI>+ WHERE { }</p>
+<p class="md-github">11 Functions Library
+isIRI(arg): boolean
+isBlank(arg): boolean
+isLiteral(arg): boolean
+isNumeric(arg): boolean
+str(arg): xsd:string
+lang(arg): language-tag
+datatype(arg): IRI
+IRI(str): IRI
+BNODE(): blank node
+STRDT(str,datatypeIRI): literal
+STRLANG(str,lang): literal
+UUID(): xsd:string
+STRUUDI(): xsd:string
+String functions: STRLEN(str): integer, SUBSTR(str,pos,len): string, UCASE(str): string, LCASE(str): string, STRSTARTS(str,pref): boolean, STRENDS(str,suf): boolean, CONTAINS(str,substr): boolean, STRBEFORE(str,substr): string, STRAFTER(str,substr): string, ENCODE_FOR_URI(str): string, CONCAT(str1,...): string, langMatches(tag,pattern): boolean, REGEX(str,pattern,flags): boolean, REPLACE(str,pattern,repl,flags): string
+Numeric: abs(x): numeric, round(x): numeric, ceil(x): numeric, floor(x): numeric, RAND(): double
+DateTime: now(): xsd:dateTime, year(dt): integer, month(dt): integer, day(dt): integer, hours(dt): integer, minutes(dt): integer, seconds(dt): decimal, timezone(dt): xsd:dayTimeDuration, tz(dt): xsd:string
+Hash: MD5(str): hexBinary, SHA1(str): hexBinary, SHA256(str): hexBinary, SHA384(str): hexBinary, SHA512(str): hexBinary</p>
 <h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
 <p class="md-github">SPARQL 1.1 Query Language
 https://www.w3.org/TR/sparql11-query/</p>
 <h2 class="md-github"><a class="md-github__anchor" name="digest-of-sparql_query" href="#digest-of-sparql_query"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of SPARQL_QUERY</h2>
-<h1 class="md-github"><a class="md-github__anchor" name="sparql-11-query-language-retrieved-2024-06-01" href="#sparql-11-query-language-retrieved-2024-06-01"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SPARQL 1.1 Query Language (retrieved 2024-06-01)</h1>
-<h2 class="md-github"><a class="md-github__anchor" name="41-syntax-for-iris" href="#41-syntax-for-iris"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4.1 Syntax for IRIs</h2>
-<p class="md-github">IRIREF: '&lt;' IRICHAR* '&gt;'
-PrefixedName: PNAME_LN | PNAME_NS
-PNAME_NS: PN_PREFIX? ':'
-PNAME_LN: PNAME_NS PN_LOCAL
-PN_PREFIX: PN_CHARS_BASE (PN_CHARS | '.')*
-PN_LOCAL: (PN_CHARS_U | ':' | [0-9]) (PN_CHARS | '.' | ':' | '\')*
-Mapping: Resolve PrefixedName by concatenating the IRI bound to the prefix via PREFIX declaration and the local part exactly.</p>
-<p class="md-github">BASE <IRIREF> sets base URI for resolving relative IRIs per RFC3986 section 5.1.1.
-Relative IRIs: match irelative-ref in RFC3987, resolved using base URI without normalization.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="412-syntax-for-literals" href="#412-syntax-for-literals"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4.1.2 Syntax for Literals</h2>
-<p class="md-github">STRING_LITERAL_QUOTE: '&quot;' ( ( '\' . )| ~[&quot;\] )* '&quot;'
-STRING_LITERAL_SINGLE_QUOTE: similar with '''
-LANGTAG: '@' [a-zA-Z]+ ('-' [a-zA-Z0-9]+)*
-Datatype: '^^' IRIREF | '^^' PrefixedName
-Numeric shortcuts: INTEGER: [0-9]+ -&gt; '&quot;'%lex%'&quot;'^^xsd:integer
-DECIMAL: [0-9]* '.' [0-9]+ -&gt; xsd:decimal
-DOUBLE: (DECIMAL | INTEGER)? [eE] [+-]? [0-9]+ -&gt; xsd:double
-Boolean: 'true' | 'false' -&gt; xsd:boolean
-Long literals: '''...''' or &quot;&quot;&quot;...&quot;&quot;&quot;</p>
-<h2 class="md-github"><a class="md-github__anchor" name="413-query-variables" href="#413-query-variables"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4.1.3 Query Variables</h2>
-<p class="md-github">VAR1: ('?' | '$') VARNAME
-VARNAME: PN_CHARS_U (PN_CHARS)*
-Note: '?' and '$' interchangeable for same variable name.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="414-blank-nodes" href="#414-blank-nodes"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4.1.4 Blank Nodes</h2>
-<p class="md-github">Blank node label: '_:' PN_LOCAL
-Abbreviated form: '[]' allocates unique blank each occurrence.
-Property list form: '[' PredicateObjectList ']' allocates blank and triples.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="42-syntax-for-triple-patterns" href="#42-syntax-for-triple-patterns"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4.2 Syntax for Triple Patterns</h2>
-<p class="md-github">TriplePattern: Subject PredicateObjectList '.'
-PredicateObjectList: Verb ObjectList ( ';' ( Verb ObjectList )* )
-ObjectList: Object ( ',' Object )*
-Subject, Verb, Object ∈ { IRIREF, PrefixedName, Var, BlankNode, Collection }</p>
-<p class="md-github">Abbreviations:
-: Common subject: Subject Verb1 Object1 ; Verb2 Object2 .
-: Common subject &amp; predicate: Subject Verb Object1 , Object2 .</p>
-<h2 class="md-github"><a class="md-github__anchor" name="51-basic-graph-patterns" href="#51-basic-graph-patterns"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5.1 Basic Graph Patterns</h2>
-<p class="md-github">BasicGraphPattern: '{' TriplesBlock '}'
-Matches subgraph of dataset where each triple pattern unified with data by substituting variables with RDF terms.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="61-optional-pattern-matching" href="#61-optional-pattern-matching"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6.1 Optional Pattern Matching</h2>
-<p class="md-github">Syntax: 'OPTIONAL' GroupGraphPattern
-Semantics: left-join; include solutions where pattern fails with unbound variables.</p>
-<h2 class="md-github"><a class="md-github__anchor" name="174-function-definitions" href="#174-function-definitions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>17.4 Function Definitions</h2>
-<p class="md-github">Functional forms:
-BOUND(?var) -&gt; boolean
-IF(expr1, expr2, expr3) -&gt; value
-COALESCE(expr1, expr2, ...) -&gt; first non-error
-NOT EXISTS( pattern ) -&gt; boolean
-EXISTS( pattern ) -&gt; boolean
-Logical: ||, &amp;&amp;, !
-Comparison: =, !=, &lt;, &lt;=, &gt;, &gt;=
-IN / NOT IN (valueList)
-Functions on RDF terms: STR(?term) -&gt; xsd:string
-LANG(?term) -&gt; xsd:language
-DATATYPE(?term) -&gt; IRI
-SameTerm(arg1, arg2) -&gt; boolean
-isIRI(?term), isBLANK(?term), isLITERAL(?term), isNUMERIC(?term)</p>
-<h2 class="md-github"><a class="md-github__anchor" name="19-sparql-grammar" href="#19-sparql-grammar"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>19 SPARQL Grammar</h2>
-<p class="md-github">Key productions:
-Query: Prologue ( SelectQuery | ConstructQuery | AskQuery | DescribeQuery )
-Prologue: BaseDecl* PrefixDecl*
-BaseDecl: 'BASE' IRIREF
-PrefixDecl: 'PREFIX' PNAME_NS IRIREF
-SelectQuery: 'SELECT' ( 'DISTINCT' | 'REDUCED' )? (VarOrWildcard)+ DatasetClause* WhereClause SolutionModifier*
-WhereClause: 'WHERE'? GroupGraphPattern
-ConstructQuery: 'CONSTRUCT' ConstructTemplate DatasetClause* WhereClause SolutionModifier*
-AskQuery: 'ASK' DatasetClause* WhereClause
-DescribeQuery: 'DESCRIBE' ( VarOrIRIref+ ) DatasetClause* WhereClause?
-DatasetClause: 'FROM' ( DefaultGraphClause | NamedGraphClause )
-DefaultGraphClause: IRIref
-NamedGraphClause: 'NAMED' IRIref
-SolutionModifier: OrderClause | LimitOffsetClauses | GroupBy | Having</p>
+<h1 class="md-github"><a class="md-github__anchor" name="sparql-11-query-language-w3c-recommendation-21-march-2013" href="#sparql-11-query-language-w3c-recommendation-21-march-2013"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SPARQL 1.1 Query Language (W3C Recommendation 21 March 2013)</h1>
+<p class="md-github">Date Retrieved: 2024-06-05</p>
+<h2 class="md-github"><a class="md-github__anchor" name="1-introduction" href="#1-introduction"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1 Introduction</h2>
+<p class="md-github">RDF represents data as directed labeled graph. SPARQL defines syntax and semantics to query RDF: basic graph patterns, OPTIONAL, UNION, FILTER, GROUP BY, ORDER BY, subqueries, property paths, negation (MINUS, NOT EXISTS), assignments (BIND, VALUES), aggregates, dataset specification (FROM, FROM NAMED), query forms (SELECT, CONSTRUCT, ASK, DESCRIBE), solution modifiers (DISTINCT, REDUCED, LIMIT, OFFSET), functions on RDF terms, numerics, strings, dates, hash, extensible value testing, SPARQL algebra, grammar, conformance.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="2-key-syntax--semantics" href="#2-key-syntax--semantics"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2 Key Syntax &amp; Semantics</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="21-prefixes--base" href="#21-prefixes--base"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.1 Prefixes &amp; Base</h3>
+<p class="md-github">PREFIX <label>: <IRI>
+BASE <IRI>
+Relative IRIs resolved per RFC3986 (no normalization steps).</p>
+<h3 class="md-github"><a class="md-github__anchor" name="22-triple-pattern-syntax" href="#22-triple-pattern-syntax"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.2 Triple Pattern Syntax</h3>
+<p class="md-github">A triple pattern: subject predicate object. Abbreviations:</p>
+<ul class="md-github">
+<li class="md-github">Predicate-object list: <code class="md-github">&lt;s&gt; &lt;p1&gt; &lt;o1&gt;; &lt;p2&gt; &lt;o2&gt;.</code></li>
+<li class="md-github">Object list: <code class="md-github">&lt;s&gt; &lt;p&gt; &lt;o1&gt;,&lt;o2&gt;.</code></li>
+<li class="md-github">Blank node: <code class="md-github">[]</code> or <code class="md-github">_:label</code> or <code class="md-github">[p o; q v]</code>.</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="23-query-variables" href="#23-query-variables"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.3 Query Variables</h3>
+<p class="md-github">Syntax: <code class="md-github">?var</code> or <code class="md-github">$var</code> (identical semantics).</p>
+<h3 class="md-github"><a class="md-github__anchor" name="24-literals" href="#24-literals"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.4 Literals</h3>
+<ul class="md-github">
+<li class="md-github">String: <code class="md-github">&quot;...&quot;</code>, <code class="md-github">&quot;&quot;&quot;...&quot;&quot;&quot;</code>.</li>
+<li class="md-github">Language-tag: <code class="md-github">&quot;text&quot;@lang</code>.</li>
+<li class="md-github">Typed: <code class="md-github">&quot;lex&quot;^^&lt;datatypeIRI&gt;</code> or <code class="md-github">&quot;lex&quot;^^prefix:local</code>.</li>
+<li class="md-github">Numeric shorthand: integer, decimal, double, boolean.</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="25-basic-graph-pattern-bgp" href="#25-basic-graph-pattern-bgp"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.5 Basic Graph Pattern (BGP)</h3>
+<p class="md-github">List of triple patterns in WHERE.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="26-optional--union" href="#26-optional--union"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.6 Optional &amp; Union</h3>
+<ul class="md-github">
+<li class="md-github">OPTIONAL { pattern }</li>
+<li class="md-github">{ pattern1 } UNION { pattern2 }</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="27-filters" href="#27-filters"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.7 Filters</h3>
+<p class="md-github">FILTER expressions: numeric comparisons, logical, regex, EXISTS/NOT EXISTS, IN, NOT IN.
+Flags: case-insensitive <code class="md-github">regex(&quot;str&quot;,&quot;pat&quot;,&quot;i&quot;)</code>.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="28-property-paths" href="#28-property-paths"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.8 Property Paths</h3>
+<p class="md-github">Syntax: <code class="md-github">&lt;p1&gt;/&lt;p2&gt;</code>, <code class="md-github">^&lt;p&gt;</code>, <code class="md-github">&lt;p&gt;*</code>, <code class="md-github">&lt;p&gt;+</code>, <code class="md-github">&lt;p&gt;?</code>, <code class="md-github">&lt;p1&gt;|&lt;p2&gt;</code>.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="29-assignments" href="#29-assignments"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.9 Assignments</h3>
+<ul class="md-github">
+<li class="md-github">BIND(expression AS ?var)</li>
+<li class="md-github">VALUES (?v1 ?v2) { (val1 val2) … }</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="210-aggregates" href="#210-aggregates"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.10 Aggregates</h3>
+<p class="md-github">COUNT, SUM, AVG, MIN, MAX, GROUP_CONCAT, SAMPLE.
+GROUP BY, HAVING.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="211-dataset" href="#211-dataset"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.11 Dataset</h3>
+<p class="md-github">FROM <graphIRI>, FROM NAMED <graphIRI>
+GRAPH ?g { pattern }</p>
+<h3 class="md-github"><a class="md-github__anchor" name="212-query-forms" href="#212-query-forms"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.12 Query Forms</h3>
+<p class="md-github">SELECT [DISTINCT|REDUCED] ?vars WHERE { … } [ORDER BY …] [LIMIT n] [OFFSET m]
+CONSTRUCT { template } WHERE { … }
+ASK WHERE { … }
+DESCRIBE IRI-list WHERE { … }</p>
+<h3 class="md-github"><a class="md-github__anchor" name="213-functions" href="#213-functions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.13 Functions</h3>
+<p class="md-github"><strong class="md-github">RDF Terms</strong>: isIRI, isBlank, isLiteral, isNumeric, str, lang, datatype, IRI(), BNODE(), STRDT(), STRLANG(), UUID(), STRUUID()
+<strong class="md-github">Strings</strong>: STRLEN, SUBSTR, UCASE, LCASE, STRSTARTS, STRENDS, CONTAINS, STRBEFORE, STRAFTER, ENCODE_FOR_URI, CONCAT, langMatches, REGEX, REPLACE
+<strong class="md-github">Numerics</strong>: abs, round, ceil, floor, RAND
+<strong class="md-github">DateTime</strong>: now, year, month, day, hours, minutes, seconds, timezone, tz
+<strong class="md-github">Hash</strong>: MD5, SHA1, SHA256, SHA384, SHA512</p>
+<h2 class="md-github"><a class="md-github__anchor" name="3-grammar--conformance" href="#3-grammar--conformance"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3 Grammar &amp; Conformance</h2>
+<p class="md-github">EBNF grammar in section 19. Conformance in section 20.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
 <ul class="md-github">
 <li class="md-github">Source: SPARQL 1.1 Query Language</li>
 <li class="md-github">URL: https://www.w3.org/TR/sparql11-query/</li>
-<li class="md-github">License: W3C Document License 1.0</li>
-<li class="md-github">Crawl Date: 2025-04-25T23:32:00.365Z</li>
-<li class="md-github">Data Size: 63611775 bytes</li>
-<li class="md-github">Links Found: 71461</li>
+<li class="md-github">License: License: Royalty-Free W3C Recommendation</li>
+<li class="md-github">Crawl Date: 2025-05-02T01:04:26.204Z</li>
+<li class="md-github">Data Size: 87957753 bytes</li>
+<li class="md-github">Links Found: 96214</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
-<p class="md-github">2025-04-25</p>
+<p class="md-github">2025-05-02</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-04-26T17:20:11.301Z</p>
+    <p>Generated on 2025-05-02T01:51:23.865Z</p>
   </footer>
 </body>
 </html>
