@@ -117,3 +117,38 @@ Defines a hypermedia-driven approach to RESTful APIs for Linked Data, including 
 ## https://owlcs.github.io/owlapi/
 OWL API is a robust Java library for creating, manipulating, and serializing OWL ontologies programmatically. Its design patterns for ontology construction, reasoning integration, and object model APIs provide reference implementation strategies that can inspire enhancements to the JavaScript generateOntology API. Last updated 2024.
 ## License: LGPL 3.0
+
+# SPARQL 1.1 Update
+## https://www.w3.org/TR/sparql11-update/
+The SPARQL 1.1 Update specification defines operations for modifying RDF graphs, including INSERT, DELETE, LOAD, CLEAR, and CREATE. Critical for building features that support ontology evolution or interactive SPARQL-based editing of generated ontologies. Last updated 21 March 2013. Authoritative W3C Recommendation.
+## License: Royalty-Free W3C Recommendation
+
+# RDF-Ext Getting Started Guide
+## https://rdf-ext.org/docs/getting-started/
+The RDF-Ext documentation provides a step-by-step guide to using the rdf-ext library for creating, parsing, and manipulating RDF graphs in JavaScript. It covers core APIs for data factories, stream processing, and plugin integration, offering practical code examples that can inform advanced graph handling features in the library. Last reviewed 2023. Community-driven.
+## License: MIT
+
+# RDFine TypeScript & JavaScript Library
+## https://rdfine.org/
+RDFine is a high-level framework for building linked data resources and ontologies with TypeScript decorators and RDF/JS. It provides patterns for class-based ontology modeling, schema-driven data processing, and integration with common RDF libraries. Its design approach can inspire richer type-safe API extensions for generateOntology. Last updated 2024.
+## License: MIT
+
+# JSON Schema Core Specification
+## https://json-schema.org/draft/2020-12/json-schema-core.html
+Defines the foundational vocabulary and meta-schema for JSON Schema, including the structure of schemas, validation keywords, and reference resolution. Useful for validating input term definition files and ensuring conformity before ontology generation. Last updated December 2020. Governed under CC0.
+## License: CC0
+
+# OpenAI API Reference
+## https://platform.openai.com/docs/api-reference
+The OpenAI API Reference provides detailed REST endpoints, request/response schemas, authentication methods, rate limits, and best practices for AI-assisted data enrichment. Valuable for automating term definition generation or annotation workflows within the CLI. Continuously updated. Authoritative from OpenAI.
+## License: Proprietary API documentation (free to access)
+
+# dotenv Library Documentation
+## https://github.com/motdotla/dotenv#readme
+The dotenv library documentation details how to load environment variables from a .env file in Node.js, manage configuration settings, and handle variable interpolation. Fundamental for managing API keys or configuration options for future integrations. Last updated 2024. MIT License.
+## License: BSD-2-Clause
+
+# JSON-LD 1.1 Primer
+## https://www.w3.org/TR/json-ld11-primer/
+The JSON-LD 1.1 Primer provides an approachable introduction to JSON-LD concepts with practical examples on contexts, IRI compaction, and framing. It is instrumental for developers new to JSON-LD, supplementing the formal specification with real-world use cases and best practices. Last updated 16 July 2019. Authoritative W3C Recommendation.
+## License: Royalty-Free W3C Recommendation
