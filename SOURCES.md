@@ -1,44 +1,79 @@
 # OWL 2 Web Ontology Language Overview
 ## https://www.w3.org/TR/owl2-overview/
-The W3C OWL 2 Overview specification provides a clear introduction to the semantics, syntax, and profiles of the OWL 2 Web Ontology Language. It includes detailed examples of class axioms, property restrictions, and profile-specific constraints (EL, QL, RL) that address core implementation needs when generating or validating ontologies. Last published December 2012 and maintained by the W3C Semantic Web Activity, this document is authoritative for any OWL-based tool.
+The W3C OWL 2 Overview specification provides a clear introduction to the semantics, syntax, and profiles of the OWL 2 Web Ontology Language. It includes detailed examples of class axioms, property restrictions, and profile-specific constraints (EL, QL, RL) that address core implementation needs when generating or validating ontologies. Last published December 2012 and maintained by the W3C Semantic Web Activity, this document is authoritative for any OWL-based toolchain and remains the starting point for understanding OWL constructs.
 ## W3C Document License (CC-BY 4.0)
 
 # RDF 1.1 Concepts and Abstract Syntax
 ## https://www.w3.org/TR/rdf11-concepts/
-This W3C Recommendation defines the fundamental RDF 1.1 data model, including triples, graphs, IRIs, literals, and blank nodes. It also covers serialization-neutral constructs crucial for mapping JSON input into RDF graphs when building OWL JSON outputs. Published March 2014, it remains the definitive reference for RDF implementations.
+This W3C Recommendation defines the fundamental RDF 1.1 data model, including triples, graphs, IRIs, literals, and blank nodes. It also covers serialization-neutral constructs crucial for mapping JSON input into RDF graphs when building OWL JSON outputs. Published March 2014, it is the definitive reference for any RDF implementation and essential for ensuring compliance across serializations.
 ## W3C Document License (CC-BY 4.0)
 
 # JSON-LD 1.1 Specification
 ## https://www.w3.org/TR/json-ld11/
-The W3C JSON-LD 1.1 specification describes the JSON-based serialization format for Linked Data, including context syntax, framing, and compaction algorithms. Provides practical examples for converting JSON payloads into RDF triples and back, directly informing how to embed OWL annotations in JSON structures. Last updated July 2020 and maintained by the W3C Community Group.
+The W3C JSON-LD 1.1 specification describes the JSON-based serialization format for Linked Data, including context syntax, framing, and compaction algorithms. It provides practical examples for converting JSON payloads into RDF triples and back, directly informing how to embed OWL annotations in JSON structures. Last updated July 2020 and maintained by the W3C Community Group, it is the authoritative guide for JSON-LD implementations.
 ## W3C Document License (CC-BY 4.0)
 
-# REST Countries API
-## https://restcountries.com/v3.1/all
-The REST Countries API delivers comprehensive country data (names, capitals, ISO codes, geospatial coordinates, and more) via a simple HTTPS endpoint. It supports CORS and JSON output, ideal for quickly prototyping ontology individuals from live data. The documentation includes example queries, filtering parameters, and response schemas.
-## MIT License
+# SPARQL 1.1 Query Language
+## https://www.w3.org/TR/sparql11-query/
+The SPARQL 1.1 Query Language Recommendation defines the syntax and semantics for querying RDF graphs. It covers SELECT, ASK, CONSTRUCT, and DESCRIBE forms, as well as aggregation, subqueries, and federation. This source provides detailed grammar definitions and query examples essential for implementing and testing SPARQL queries against OWL-enriched datasets. Published January 2013 and maintained by the W3C.
+## W3C Document License (CC-BY 4.0)
+
+# SPARQL 1.1 Protocol
+## https://www.w3.org/TR/sparql11-protocol/
+The SPARQL 1.1 Protocol specification outlines how to send SPARQL queries and updates over HTTP. It includes request and response formats, parameter conventions, and error handling guidelines, which are critical for integrating remote SPARQL endpoints into CLI tools and web services. Published March 2013 by the W3C.
+## W3C Document License (CC-BY 4.0)
+
+# Turtle RDF Syntax
+## https://www.w3.org/TR/turtle/
+This W3C Recommendation specifies the Turtle compact, human-readable syntax for RDF graphs. It covers prefixes, triples, blank nodes, collections, and literals. Examples illustrate advanced constructs such as property paths and inline annotations, informing serialization and parsing modules within the OWL JSON toolchain. Published February 2014.
+## W3C Document License (CC-BY 4.0)
+
+# SHACL: Shapes Constraint Language
+## https://www.w3.org/TR/shacl/
+The W3C Shapes Constraint Language (SHACL) defines a language for validating RDF graphs against a set of constraints (shapes). It includes detailed explanations of node shapes, property shapes, and SPARQL-based constraints, which can be leveraged to verify OWL ontologies generated by the CLI. Published July 2017 and maintained by the W3C.
+## W3C Document License (CC-BY 4.0)
+
+# RDFJS Data Model Specification
+## https://rdf.js.org/data-model-spec/
+The RDFJS Data Model specification defines standard JavaScript interfaces for RDF terms, quads, and datasets that ensure interoperability among RDF libraries. It provides interface definitions and method contracts that the OWL JSON toolchain can implement or consume to remain compatible with the broader RDF/JS ecosystem. Published by the RDFJS community.
+## Community Specification (MIT-like)
+
+# Apache Jena Fuseki Documentation
+## https://jena.apache.org/documentation/fuseki2/
+The Apache Jena Fuseki guide covers installation, configuration, and command-line operations for running a SPARQL server. It includes examples for loading TTL/OWL files, executing SPARQL updates, and securing endpoints—essential for persisting or querying OWL JSON outputs via SPARQL. Licensed under Apache 2.0.
+## Apache License 2.0
 
 # DBpedia SPARQL Endpoint
 ## https://dbpedia.org/sparql
 DBpedia’s public SPARQL endpoint exposes structured data extracted from Wikipedia. This source provides actionable guidance on SPARQL query patterns for retrieving ontology classes, properties, and entities, enabling advanced enrichment of OWL ontologies. The documentation highlights pagination, timeouts, and query optimization techniques. Data is licensed under CC BY-SA 3.0.
 ## Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
 
+# REST Countries API
+## https://restcountries.com/v3.1/all
+The REST Countries API delivers comprehensive country data (names, capitals, ISO codes, geospatial coordinates, and more) via a simple HTTPS endpoint. It supports CORS and JSON output, ideal for quickly prototyping ontology individuals from live data. The documentation includes example queries, filtering parameters, and response schemas.
+## MIT License
+
 # GeoNames Web Services
 ## http://www.geonames.org/export/ws-overview.html
-GeoNames offers RESTful endpoints for geographic information (countries, cities, time zones, and coordinates). The overview explains parameter usage, rate limits, and response structures—critical for integrating gazetteer data into OWL individuals. Data is under CC BY 4.0, and the services require a free signup but responses are publicly accessible.
+GeoNames offers RESTful endpoints for geographic information (countries, cities, time zones, and coordinates). The overview explains parameter usage, rate limits, and response structures—critical for integrating gazetteer data into OWL individuals. Data is under CC BY 4.0.
 ## Creative Commons Attribution 4.0 International (CC BY 4.0)
-
-# Apache Jena Fuseki Documentation
-## https://jena.apache.org/documentation/fuseki2/
-The Apache Jena Fuseki guide covers installation, configuration, and command-line operations for running a SPARQL server. Includes examples for loading TTL/OWL files, executing SPARQL updates, and securing endpoints. Essential for users wanting to persist or query OWL JSON outputs via SPARQL. Licensed under Apache License 2.0.
-## Apache License 2.0
-
-# OWL API (Java) GitHub Wiki
-## https://github.com/owlcs/owlapi/wiki
-The OWL API GitHub Wiki provides detailed tutorials and code snippets for programmatic ontology creation, manipulation, and serialization in Java. Guides cover parsing RDF/XML, manipulating class expressions, and exporting to various syntaxes—valuable for comparative design of a JavaScript-based OWL JSON toolchain.
-## LGPL 3.0
 
 # JSON-LD JavaScript Library (jsonld.js)
 ## https://github.com/digitalbazaar/jsonld.js
 The jsonld.js repository contains implementation details, usage examples, and API references for the official JSON-LD JavaScript library. It demonstrates context processing, expansion, compaction, and framing—key operations when transforming JSON data into OWL-aligned JSON-LD structures in a Node.js environment.
 ## MIT License
+
+# N3.js RDF Library
+## https://github.com/rdfjs/N3.js
+N3.js is a high-performance JavaScript library for parsing, serializing, and manipulating RDF in Turtle, N-Triples, and TriG syntaxes. It includes streaming interfaces and solid examples of triple pattern matching, which can be integrated for efficient data processing in large OWL datasets. Maintained under MIT.
+## MIT License
+
+# rdflib.js Linked Data Library
+## http://linkeddata.github.io/rdflib.js/docs/
+rdflib.js provides a comprehensive RDF graph store for JavaScript, including parsers, serializers, update mechanisms, and a high-level API for browser and Node environments. It supports SPARQL querying, patching, and offline stores—valuable references when designing persistence and query features for OWL JSON.
+## MIT License
+
+# OWL API (Java) GitHub Wiki
+## https://github.com/owlcs/owlapi/wiki
+The OWL API GitHub Wiki provides detailed tutorials and code snippets for programmatic ontology creation, manipulation, and serialization in Java. Guides cover parsing RDF/XML, manipulating class expressions, and exporting to various syntaxes—valuable for comparative design of a JavaScript-based OWL JSON toolchain.
+## LGPL 3.0
