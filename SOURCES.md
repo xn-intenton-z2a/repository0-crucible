@@ -74,25 +74,10 @@ Documentation for configuring Fuseki SPARQL server: dataset management, security
 TypeScript-first schema declaration and validation library used for robust CLI option parsing. Covers transforms and custom error formatting essential for consistent subcommand behavior. (Last release May 2024)
 ## MIT License
 
-# Understanding JSON Schema
-## https://json-schema.org/understanding-json-schema/
-Authoritative guide with examples on object/array schemas, conditionals, and references. Informs future export of Zod schemas to JSON Schema for interoperability and validation workflows. (Updated July 2024)
-## CC0 (Public Domain)
-
 # Node.js API Reference
 ## https://nodejs.org/api/
 Comprehensive guide to Node.js core modules—file system, HTTP, ESM resolution, streams, and global fetch. Essential reference for file I/O, HTTP server/client code, dynamic imports, and stream-based processing in an ESM environment. (Node.js v20.4.0)
 ## CC BY 4.0
-
-# REST Countries API Documentation
-## https://restcountries.com/#api-endpoints-v3-all
-Defines endpoints and response schemas for country data including capital fields. Guides pagination, filtering, and error handling for the **capital-cities** subcommand. (Public domain)
-## Public Domain
-
-# RFC 8259: The JSON Data Interchange Format
-## https://tools.ietf.org/html/rfc8259
-Specifies JSON grammar, data types, and encoding rules. Ensures JSON-LD outputs produced by **generateOntology** conform to the JSON standard. (Published December 2017)
-## IETF Trust
 
 # Vitest Automated Testing Framework
 ## https://vitest.dev/
@@ -110,11 +95,6 @@ Hypermedia-driven Web API framework using JSON-LD, defining templates, links, an
 Combines JSON:API conventions (resource structure, relationships, error handling) and OpenAPI 3.1 machine-readable schemas. Crucial for designing consistent, self-documenting HTTP endpoints in serve/HTTP modes. (Published February 2021)
 ## CC0 (JSON:API) / Apache-2.0 (OpenAPI)
 
-# Supertest — HTTP Assertions for Node.js
-## https://github.com/visionmedia/supertest
-High-level abstraction for testing HTTP servers with assertions on status, headers, and body. Essential for integration tests of serve subcommand endpoints. (Last updated 2024)
-## MIT License
-
 # RDF 1.1 Concepts and Abstract Syntax
 ## https://www.w3.org/TR/rdf11-concepts/
 Defines the RDF graph model, term semantics (IRIs, blank nodes, literals), and processing rules. Foundational for understanding **generateOntology** graph construction and RDF/JS interfaces. (Published March 2014)
@@ -124,12 +104,6 @@ Defines the RDF graph model, term semantics (IRIs, blank nodes, literals), and p
 ## https://www.w3.org/TR/turtle/
 Specifies Turtle syntax for RDF serialization including prefixes, abbreviations, and directives. Underpins conversion of JSON-LD to Turtle via N3.js or other serializers. (Published February 2014)
 ## W3C Document License
-
-# WHATWG Web Standards
-## https://fetch.spec.whatwg.org/
-## https://url.spec.whatwg.org/
-Combined WHATWG specifications for the Fetch API and URL parsing/resolution. Covers request/response lifecycles, streaming, cache controls, IRI normalization—critical for HTTP interactions and IRI construction in JSON-LD contexts. (Latest revisions)
-## CC0
 
 # Commander.js – Node.js CLI Framework
 ## https://github.com/tj/commander.js#readme
@@ -166,3 +140,28 @@ Wikidata Query Service (WDQS) user manual detailing SPARQL endpoint usage for qu
 ## https://wiki.dbpedia.org/services-resources/sparql-endpoint
 DBpedia SPARQL endpoint documentation outlining endpoint configuration, supported query features, graph datasets, and HTTP parameters. Includes practical examples for querying linked open data, result streaming, and performance tuning. Directly informs building robust SPARQL-driven data ingestion and conversion pipelines for **generateOntology**. (Last reviewed 2023; maintained by the DBpedia community)
 ## CC BY-SA 3.0
+
+# OWL API (Java)
+## https://owlcs.github.io/owlapi/
+The OWL API is a Java library for programmatic creation, manipulation, and serialization of OWL ontologies, covering parsing, reasoning integration, and multiple serialization formats. It offers advanced ontology management functions, profile support, and connection with reasoners like HermiT and Pellet, providing a mature reference for graph construction and reasoning workflows. (Latest documentation)
+## GNU LGPL v3
+
+# SPARQL.js Parser
+## https://github.com/RubenVerborgh/SPARQL.js
+Provides a JavaScript parser that translates SPARQL queries into JSON-based abstract syntax trees, supporting query modification, validation, and client-side transformations. Essential for CLI commands that accept SPARQL input, enabling programmatic introspection of query structure and conversion into SPARQL Update or algebra operations. (Last updated 2024)
+## MIT License
+
+# sparqlalgebrajs
+## https://github.com/Callidon/sparqlalgebrajs
+Implements conversion from SPARQL queries into SPARQL Algebra with support for optimizing query patterns and translating algebra back into SPARQL. Critical for building advanced query planning, federated query execution, and result shaping within the CLI toolchain. (Last updated 2024)
+## MIT License
+
+# rdf-ext
+## https://github.com/rdf-ext/rdf-ext
+High-level collection of modular JavaScript libraries for RDF processing under the RDF/JS interfaces, including dataset manipulation, importers/exporters, and robust stream handling. Facilitates complex graph transformations, dataset merging, and extensible plugin architecture for additional RDF syntaxes. (Last updated 2024)
+## MIT License
+
+# LDflex (Linked Data Flexibility)
+## https://github.com/solid/query-ldflex
+DSL for dynamic linked data graph navigation and querying built on RDF/JS and JSON-LD. Demonstrates real-time traversal patterns, asynchronous property access, and query templating, offering inspiration for interactive CLI exploration commands and live data crawling features. (Last updated 2024)
+## MIT License
