@@ -1,158 +1,79 @@
-# JSON-LD 1.1 Specification Suite
-## https://www.w3.org/TR/json-ld11/
-## https://www.w3.org/TR/json-ld11-api/
-## https://www.w3.org/TR/json-ld11-framing/
-The W3C Recommendation suite for JSON-LD 1.1 includes the core data model, framing, compaction, expansion, normalization algorithms, and a JavaScript API reference. It details @context definitions, term expansion rules, graph operations, error handling, and advanced framing patterns. Essential for implementing all **generateOntology**, framing, filtering, and normalization subcommands. (Published July 2020; authoritative W3C Recommendation)
-## W3C Document License
-
-# OWL 2 Specifications
+# OWL 2 Web Ontology Language Overview
 ## https://www.w3.org/TR/owl2-overview/
-## https://www.w3.org/TR/owl2-quick-reference/
-## https://www.w3.org/TR/owl2-semantics/
-Comprehensive guidance on OWL 2 constructs, profiles (DL, EL, QL, RL), syntaxes (Functional, RDF/XML, Manchester), and formal semantics. Crucial for vocabulary selection, ensuring generated JSON-LD OWL ontologies conform to entailment, consistency, and interoperability requirements. (Overview published October 2009; definitive W3C Recommendation)
-## W3C Document License
-
-# SHACL – Shapes Constraint Language
-## https://www.w3.org/TR/shacl/
-Defines node shapes, property shapes, and constraint types (minCount, datatype, pattern) for RDF graph validation. Directly informs adding validation layers to guarantee **generateOntology** outputs meet expected shape definitions and data integrity rules. (Published October 2017)
-## W3C Document License
-
-# SPARQL 1.1 Recommendation Suite
-## https://www.w3.org/TR/sparql11-query/
-## https://www.w3.org/TR/sparql11-update/
-## https://www.w3.org/TR/2012/REC-rdf-graph-store-protocol-20120927/
-Combined recommendations covering SPARQL query and update operations alongside the Graph Store HTTP Protocol for remote graph management. Provides syntax, protocols, and HTTP endpoints for querying, inserting, deleting, and loading RDF graphs—critical foundations for future CLI or server subcommands handling federated stores. (Published 2012 & 2013)
-## W3C Document License
-
-# RDF/JS Specification
-## https://rdf.js.org/
-Standard JavaScript interfaces for RDF terms, quads, and datasets promoting library interoperability. Guides streaming quad-based processing and store integration beyond simple JSON-LD manipulation. (Last updated 2023)
-## CC0
-
-# jsonld.js (JavaScript JSON-LD API)
-## https://github.com/digitalbazaar/jsonld.js
-An open-source library implementing JSON-LD core algorithms in JavaScript with promise-based and streaming APIs. Serves as a reference for advanced compaction, expansion, framing, normalization, and performance tuning in **generateOntology** and CLI workflows. (Last updated 2024)
-## MIT License
-
-# jsonld-cli (Command-Line Interface)
-## https://github.com/digitalbazaar/jsonld-cli
-A modular CLI wrapper around jsonld.js showcasing subcommands, streaming integration, and robust error handling. Useful model for the **convert**, framing, and normalization subcommands in main.js. (Last updated 2024)
-## MIT License
-
-# jsonld-java (Java JSON-LD API)
-## https://github.com/jsonld-java/jsonld-java
-Java implementation of the JSON-LD Processing Algorithms and API, covering expansion, compaction, framing, and normalization. Demonstrates cross-language approach and edge-case handling, which can inspire JavaScript feature parity and interoperability testing. (Last commit 2023)
-## Apache-2.0
-
-# N3.js (RDF/JS Turtle and N3 Library)
-## https://github.com/rdfjs/N3.js
-High-performance parser and serializer for Turtle/N3 formats implementing RDF/JS interfaces. Enables conversion pipelines between JSON-LD and other RDF syntaxes or streaming processing in Node.js. (Last updated 2024)
-## MIT License
-
-# rdflib.js (Linked Data Library for JavaScript)
-## https://github.com/linkeddata/rdflib.js
-Comprehensive toolkit for parsing, serializing, and querying RDF graphs in JSON-LD, Turtle, and other formats. Demonstrates complex graph manipulation patterns and SPARQL integration for advanced CLI features. (Last commit 2024)
-## MIT License
-
-# Comunica – Modular SPARQL Query Engine
-## https://comunica.dev/docs/query/query-overview/
-Documentation on federated SPARQL querying over HTTP endpoints, files, and RDF/JS datasets. Essential for building dynamic query or validation features in CLI or server modes. (Latest version 2024)
-## MIT License
-
-# Apache Jena ARQ Query Engine
-## https://jena.apache.org/documentation/query/
-Enterprise-grade SPARQL engine documentation, covering query algebra, optimization, and federation. Provides architectural insights for scaling CLI query subcommands and potential server implementations. (Updated 2023)
-## Apache-2.0
-
-# Apache Jena Fuseki Server
-## https://jena.apache.org/documentation/fuseki2/
-Documentation for configuring Fuseki SPARQL server: dataset management, security, and REST API usage. Inspires HTTP-based graph store operations and server subcommand design. (Updated 2023)
-## Apache-2.0
-
-# Zod Schema Validation
-## https://github.com/colinhacks/zod
-TypeScript-first schema declaration and validation library used for robust CLI option parsing. Covers transforms and custom error formatting essential for consistent subcommand behavior. (Last release May 2024)
-## MIT License
-
-# Understanding JSON Schema
-## https://json-schema.org/understanding-json-schema/
-Authoritative guide with examples on object/array schemas, conditionals, and references. Informs future export of Zod schemas to JSON Schema for interoperability and validation workflows. (Updated July 2024)
-## CC0 (Public Domain)
-
-# Node.js API Reference
-## https://nodejs.org/api/
-Comprehensive guide to Node.js core modules—file system, HTTP, ESM resolution, streams, and global fetch. Essential reference for file I/O, HTTP server/client code, dynamic imports, and stream-based processing in an ESM environment. (Node.js v20.4.0)
-## CC BY 4.0
-
-# REST Countries API Documentation
-## https://restcountries.com/#api-endpoints-v3-all
-Defines endpoints and response schemas for country data including capital fields. Guides pagination, filtering, and error handling for the **capital-cities** subcommand. (Public domain)
-## Public Domain
-
-# RFC 8259: The JSON Data Interchange Format
-## https://tools.ietf.org/html/rfc8259
-Specifies JSON grammar, data types, and encoding rules. Ensures JSON-LD outputs produced by **generateOntology** conform to the JSON standard. (Published December 2017)
-## IETF Trust
-
-# Vitest Automated Testing Framework
-## https://vitest.dev/
-Vite-native unit testing framework with Jest-compatible API, snapshot, and coverage support. Documentation on mocking, spying, and async tests directly applies to existing tests in tests/unit. (MIT License)
-## MIT License
-
-# Hydra Core Vocabulary
-## https://www.hydra-cg.com/spec/latest/core/
-Hypermedia-driven Web API framework using JSON-LD, defining templates, links, and operations. Offers best practices for discoverable, self-describing APIs—informing future serve subcommand design. (Latest release 2023)
-## CC BY 4.0
-
-# RESTful API Specifications
-## https://jsonapi.org/format/
-## https://spec.openapis.org/oas/v3.1.0
-Combines JSON:API conventions (resource structure, relationships, error handling) and OpenAPI 3.1 machine-readable schemas. Crucial for designing consistent, self-documenting HTTP endpoints in serve/HTTP modes. (Published February 2021)
-## CC0 (JSON:API) / Apache-2.0 (OpenAPI)
-
-# Supertest — HTTP Assertions for Node.js
-## https://github.com/visionmedia/supertest
-High-level abstraction for testing HTTP servers with assertions on status, headers, and body. Essential for integration tests of serve subcommand endpoints. (Last updated 2024)
-## MIT License
+The W3C OWL 2 Overview specification provides a clear introduction to the semantics, syntax, and profiles of the OWL 2 Web Ontology Language. It includes detailed examples of class axioms, property restrictions, and profile-specific constraints (EL, QL, RL) that address core implementation needs when generating or validating ontologies. Last published December 2012 and maintained by the W3C Semantic Web Activity, this document is authoritative for any OWL-based toolchain and remains the starting point for understanding OWL constructs.
+## W3C Document License (CC-BY 4.0)
 
 # RDF 1.1 Concepts and Abstract Syntax
 ## https://www.w3.org/TR/rdf11-concepts/
-Defines the RDF graph model, term semantics (IRIs, blank nodes, literals), and processing rules. Foundational for understanding **generateOntology** graph construction and RDF/JS interfaces. (Published March 2014)
-## W3C Document License
+This W3C Recommendation defines the fundamental RDF 1.1 data model, including triples, graphs, IRIs, literals, and blank nodes. It also covers serialization-neutral constructs crucial for mapping JSON input into RDF graphs when building OWL JSON outputs. Published March 2014, it is the definitive reference for any RDF implementation and essential for ensuring compliance across serializations.
+## W3C Document License (CC-BY 4.0)
 
-# Turtle – Terse RDF Triple Language
+# JSON-LD 1.1 Specification
+## https://www.w3.org/TR/json-ld11/
+The W3C JSON-LD 1.1 specification describes the JSON-based serialization format for Linked Data, including context syntax, framing, and compaction algorithms. It provides practical examples for converting JSON payloads into RDF triples and back, directly informing how to embed OWL annotations in JSON structures. Last updated July 2020 and maintained by the W3C Community Group, it is the authoritative guide for JSON-LD implementations.
+## W3C Document License (CC-BY 4.0)
+
+# SPARQL 1.1 Query Language
+## https://www.w3.org/TR/sparql11-query/
+The SPARQL 1.1 Query Language Recommendation defines the syntax and semantics for querying RDF graphs. It covers SELECT, ASK, CONSTRUCT, and DESCRIBE forms, as well as aggregation, subqueries, and federation. This source provides detailed grammar definitions and query examples essential for implementing and testing SPARQL queries against OWL-enriched datasets. Published January 2013 and maintained by the W3C.
+## W3C Document License (CC-BY 4.0)
+
+# SPARQL 1.1 Protocol
+## https://www.w3.org/TR/sparql11-protocol/
+The SPARQL 1.1 Protocol specification outlines how to send SPARQL queries and updates over HTTP. It includes request and response formats, parameter conventions, and error handling guidelines, which are critical for integrating remote SPARQL endpoints into CLI tools and web services. Published March 2013 by the W3C.
+## W3C Document License (CC-BY 4.0)
+
+# Turtle RDF Syntax
 ## https://www.w3.org/TR/turtle/
-Specifies Turtle syntax for RDF serialization including prefixes, abbreviations, and directives. Underpins conversion of JSON-LD to Turtle via N3.js or other serializers. (Published February 2014)
-## W3C Document License
+This W3C Recommendation specifies the Turtle compact, human-readable syntax for RDF graphs. It covers prefixes, triples, blank nodes, collections, and literals. Examples illustrate advanced constructs such as property paths and inline annotations, informing serialization and parsing modules within the OWL JSON toolchain. Published February 2014.
+## W3C Document License (CC-BY 4.0)
 
-# WHATWG Web Standards
-## https://fetch.spec.whatwg.org/
-## https://url.spec.whatwg.org/
-Combined WHATWG specifications for the Fetch API and URL parsing/resolution. Covers request/response lifecycles, streaming, cache controls, IRI normalization—critical for HTTP interactions and IRI construction in JSON-LD contexts. (Latest revisions)
-## CC0
+# SHACL: Shapes Constraint Language
+## https://www.w3.org/TR/shacl/
+The W3C Shapes Constraint Language (SHACL) defines a language for validating RDF graphs against a set of constraints (shapes). It includes detailed explanations of node shapes, property shapes, and SPARQL-based constraints, which can be leveraged to verify OWL ontologies generated by the CLI. Published July 2017 and maintained by the W3C.
+## W3C Document License (CC-BY 4.0)
 
-# Commander.js – Node.js CLI Framework
-## https://github.com/tj/commander.js#readme
-Declarative API for defining Node.js CLIs with nested subcommands, option parsing, defaults, and auto-generated help. Patterns for organizing complex CLI tools that can inspire subcommand dispatch and help output enhancements in main.js. (Last updated 2024)
+# RDFJS Data Model Specification
+## https://rdf.js.org/data-model-spec/
+The RDFJS Data Model specification defines standard JavaScript interfaces for RDF terms, quads, and datasets that ensure interoperability among RDF libraries. It provides interface definitions and method contracts that the OWL JSON toolchain can implement or consume to remain compatible with the broader RDF/JS ecosystem. Published by the RDFJS community.
+## Community Specification (MIT-like)
+
+# Apache Jena Fuseki Documentation
+## https://jena.apache.org/documentation/fuseki2/
+The Apache Jena Fuseki guide covers installation, configuration, and command-line operations for running a SPARQL server. It includes examples for loading TTL/OWL files, executing SPARQL updates, and securing endpoints—essential for persisting or querying OWL JSON outputs via SPARQL. Licensed under Apache 2.0.
+## Apache License 2.0
+
+# DBpedia SPARQL Endpoint
+## https://dbpedia.org/sparql
+DBpedia’s public SPARQL endpoint exposes structured data extracted from Wikipedia. This source provides actionable guidance on SPARQL query patterns for retrieving ontology classes, properties, and entities, enabling advanced enrichment of OWL ontologies. The documentation highlights pagination, timeouts, and query optimization techniques. Data is licensed under CC BY-SA 3.0.
+## Creative Commons Attribution-ShareAlike 3.0 (CC BY-SA 3.0)
+
+# REST Countries API
+## https://restcountries.com/v3.1/all
+The REST Countries API delivers comprehensive country data (names, capitals, ISO codes, geospatial coordinates, and more) via a simple HTTPS endpoint. It supports CORS and JSON output, ideal for quickly prototyping ontology individuals from live data. The documentation includes example queries, filtering parameters, and response schemas.
 ## MIT License
 
-# Express.js and body-parser Middleware
-## https://expressjs.com/en/4x/api.html
-## https://github.com/expressjs/body-parser
-Express routing, middleware configuration, error handling patterns, and body-parser JSON/URL-encoded parsing capabilities. Directly applicable to the serve subcommand’s HTTP endpoints and middleware design. (Express 4.18, body-parser latest 2024)
+# GeoNames Web Services
+## http://www.geonames.org/export/ws-overview.html
+GeoNames offers RESTful endpoints for geographic information (countries, cities, time zones, and coordinates). The overview explains parameter usage, rate limits, and response structures—critical for integrating gazetteer data into OWL individuals. Data is under CC BY 4.0.
+## Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+# JSON-LD JavaScript Library (jsonld.js)
+## https://github.com/digitalbazaar/jsonld.js
+The jsonld.js repository contains implementation details, usage examples, and API references for the official JSON-LD JavaScript library. It demonstrates context processing, expansion, compaction, and framing—key operations when transforming JSON data into OWL-aligned JSON-LD structures in a Node.js environment.
 ## MIT License
 
-# PyLD – Python JSON-LD Processor
-## https://github.com/digitalbazaar/pyld
-Reference implementation of JSON-LD algorithms in Python with context loaders and advanced error handling. Useful for cross-language consistency checks and edge-case algorithm insights. (Last updated 2023)
+# N3.js RDF Library
+## https://github.com/rdfjs/N3.js
+N3.js is a high-performance JavaScript library for parsing, serializing, and manipulating RDF in Turtle, N-Triples, and TriG syntaxes. It includes streaming interfaces and solid examples of triple pattern matching, which can be integrated for efficient data processing in large OWL datasets. Maintained under MIT.
 ## MIT License
 
-# RFC 6901: JSON Pointer
-## https://tools.ietf.org/html/rfc6901
-Defines JSON Pointer syntax for locating values within JSON documents, including token unescaping and error handling. Direct guide for implementing the **query** subcommand’s pointer resolver. (Published April 2013)
-## IETF Trust
-
-# json-pointer (Node.js JSON Pointer Library)
-## https://github.com/janl/node-json-pointer
-Minimal library providing get, set, and remove operations according to RFC 6901. Offers a robust API for pointer resolution and validation, streamlining **query** implementation and reducing custom traversal logic. (Last updated 2024)
+# rdflib.js Linked Data Library
+## http://linkeddata.github.io/rdflib.js/docs/
+rdflib.js provides a comprehensive RDF graph store for JavaScript, including parsers, serializers, update mechanisms, and a high-level API for browser and Node environments. It supports SPARQL querying, patching, and offline stores—valuable references when designing persistence and query features for OWL JSON.
 ## MIT License
+
+# OWL API (Java) GitHub Wiki
+## https://github.com/owlcs/owlapi/wiki
+The OWL API GitHub Wiki provides detailed tutorials and code snippets for programmatic ontology creation, manipulation, and serialization in Java. Guides cover parsing RDF/XML, manipulating class expressions, and exporting to various syntaxes—valuable for comparative design of a JavaScript-based OWL JSON toolchain.
+## LGPL 3.0
