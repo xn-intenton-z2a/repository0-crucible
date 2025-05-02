@@ -36,18 +36,57 @@ function printUsage() {
   console.log(usage);
 }
 
-export function main(args) {
+function parseArgs(args) {
+  const result = { help: false, facesPath: null, seed: null, count: 1 };
   // Help flag
   if (args.includes("--help") || args.includes("-h")) {
+    result.help = true;
+  }
+
+  // Faces option
+  const facesIdx = args.indexOf("--faces");
+  if (facesIdx !== -1) {
+    result.facesPath = args[facesIdx + 1] || null;
+  }
+
+  // Seed option
+  const seedIdx = args.indexOf("--seed");
+  if (seedIdx !== -1) {
+    const seedVal = args[seedIdx + 1];
+    const num = Number(seedVal);
+    if (isNaN(num)) {
+      console.error("Error: --seed value is not a number");
+      process.exit(1);
+    }
+    result.seed = num;
+  }
+
+  // Count option
+  const countIdx = args.indexOf("--count");
+  if (countIdx !== -1) {
+    const countVal = args[countIdx + 1];
+    const num = Number(countVal);
+    if (isNaN(num) || num < 1) {
+      console.error("Error: --count value is not a positive number");
+      process.exit(1);
+    }
+    result.count = num;
+  }
+
+  return result;
+}
+
+export function main(args) {
+  const options = parseArgs(args);
+
+  if (options.help) {
     printUsage();
     process.exit(0);
   }
 
-  // Parse --faces
-  const facesIdx = args.indexOf("--faces");
   let faces = defaultFaces;
-  if (facesIdx !== -1) {
-    const filePath = args[facesIdx + 1];
+  if (options.facesPath !== null) {
+    const filePath = options.facesPath;
     if (!filePath) {
       console.error("Error: --faces flag provided but no file path specified");
       process.exit(1);
@@ -75,36 +114,11 @@ export function main(args) {
     }
   }
 
-  // Parse --seed
-  const seedIdx = args.indexOf("--seed");
-  let seed = null;
-  if (seedIdx !== -1) {
-    const seedVal = args[seedIdx + 1];
-    seed = Number(seedVal);
-    if (isNaN(seed)) {
-      console.error("Error: --seed value is not a number");
-      process.exit(1);
-    }
-  }
-
-  // Parse --count
-  const countIdx = args.indexOf("--count");
-  let count = 1;
-  if (countIdx !== -1) {
-    const countVal = args[countIdx + 1];
-    count = Number(countVal);
-    if (isNaN(count) || count < 1) {
-      console.error("Error: --count value is not a positive number");
-      process.exit(1);
-    }
-  }
-
-  // Generate and output faces
-  for (let i = 0; i < count; i++) {
+  for (let i = 0; i < options.count; i++) {
     let face;
-    if (seed !== null) {
-      const idx = seed % faces.length;
-      seed++;
+    if (options.seed !== null) {
+      const idx = options.seed % faces.length;
+      options.seed++;
       face = faces[idx];
     } else {
       face = faces[Math.floor(Math.random() * faces.length)];
@@ -114,6 +128,5 @@ export function main(args) {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const args = process.argv.slice(2);
-  main(args);
+  main(process.argv.slice(2));
 }
