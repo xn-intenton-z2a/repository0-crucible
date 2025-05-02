@@ -151,3 +151,14 @@ Specifies the Turtle syntax for RDF, including abbreviations, prefixes, graph se
 ## https://www.w3.org/TR/rdf11-http/
 Defines the RESTful HTTP protocol for managing RDF graph stores, including GET, POST, PUT, and DELETE operations on graphs. Critical for designing serve subcommand endpoints that manipulate full RDF datasets via HTTP. (Published March 25, 2014)
 ## W3C Document License
+
+# Fetch API Documentation and Standard
+## https://fetch.spec.whatwg.org/
+## https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API
+Combined reference for the WHATWG Fetch Standard and MDN Fetch API documentation, covering request and response lifecycles, streaming, cache controls, credentials, and AbortController integration. Essential for robust HTTP interactions in the CLI tool and error handling across fetch-based subcommands. (WHATWG spec is CC0; MDN content under CC BY-SA)
+## CC0 (spec) / CC BY-SA (MDN)
+
+# URL Standard
+## https://url.spec.whatwg.org/
+Defines URL parsing, resolution, serialization algorithms, query parameters handling, and Internationalized Resource Identifiers (IRIs). Crucial for constructing and normalizing IRIs in JSON-LD contexts and managing file paths and dynamic imports in an ESM environment. (WHATWG standard, latest revision)
+## CC0
