@@ -102,6 +102,22 @@
 <li class="md-github"><code class="md-github">--output</code> (string, optional): Path to write the term node JSON. If omitted, prints to stdout.</li>
 </ul>
 <p class="md-github">The command outputs the JSON object for the requested term node, either to stdout or to the specified file.</p>
+<p class="md-github"><strong class="md-github">Filter Subcommand</strong></p>
+<p class="md-github">Filter ontology nodes by a specified property and value, producing a JSON-LD fragment:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js filter \
+  --input path/ontology.json \
+  --property PropertyName \
+  --value Value \
+  [--output out.json]
+</code></pre>
+<p class="md-github">Options:</p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">--input</code> (string, required): Path to the JSON-LD ontology file.</li>
+<li class="md-github"><code class="md-github">--property</code> (string, required): Node property to filter by.</li>
+<li class="md-github"><code class="md-github">--value</code> (string, required): Value to match.</li>
+<li class="md-github"><code class="md-github">--output</code> (string, optional): Path to write the output JSON fragment. If omitted, prints to stdout.</li>
+</ul>
+<p class="md-github">The command outputs a JSON array of matching nodes, either to stdout or to the specified file.</p>
 <p class="md-github"><strong class="md-github">Unknown Commands</strong></p>
 <p class="md-github">Any unrecognized subcommand or flag combination will be echoed back:</p>
 <pre class="md-github"><code class="md-github language-bash">node src/lib/main.js foo --bar baz
@@ -109,18 +125,19 @@
 </code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
 <ul class="md-github">
-<li class="md-github"><code class="md-github">generateOntology</code>: Programmatic API to build JSON-LD OWL ontologies.</li>
-<li class="md-github">CLI subcommands:
+<li class="md-github">Programmatic API:
 <ul class="md-github">
-<li class="md-github"><code class="md-github">convert</code>: Convert a JSON file of term definitions into a JSON-LD OWL ontology.</li>
-<li class="md-github"><code class="md-github">capital-cities</code>: Fetch capital cities from REST Countries API and generate an ontology.</li>
-<li class="md-github"><code class="md-github">list-terms</code>: List all term identifiers from a JSON-LD ontology file.</li>
-<li class="md-github"><code class="md-github">get-term</code>: Retrieve a single term node from a JSON-LD ontology file.</li>
+<li class="md-github"><code class="md-github">generateOntology</code>: Build JSON-LD OWL ontology documents from JavaScript objects.</li>
 </ul>
 </li>
-<li class="md-github">Future subcommands (not yet implemented):
+<li class="md-github">CLI Subcommands:
 <ul class="md-github">
-<li class="md-github"><code class="md-github">filter</code>: Filter ontology nodes by a specified property and value, producing a JSON-LD fragment.</li>
+<li class="md-github"><code class="md-github">--diagnostics</code>: Print environment and dependency information.</li>
+<li class="md-github"><code class="md-github">convert</code>: Convert a JSON file of term definitions into an OWL ontology.</li>
+<li class="md-github"><code class="md-github">capital-cities</code>: Fetch capital cities from REST Countries API and generate an ontology.</li>
+<li class="md-github"><code class="md-github">list-terms</code>: List term identifiers from a JSON-LD ontology file.</li>
+<li class="md-github"><code class="md-github">get-term</code>: Retrieve a specific term node by local name.</li>
+<li class="md-github"><code class="md-github">filter</code>: Filter ontology nodes by property and value, producing a JSON-LD fragment.</li>
 </ul>
 </li>
 </ul>
@@ -131,7 +148,7 @@
 
   </section>
   <footer>
-    <p>Generated on 2025-05-02T17:21:08.596Z</p>
+    <p>Generated on 2025-05-02T18:22:40.445Z</p>
   </footer>
 </body>
 </html>
