@@ -1,16 +1,16 @@
 # JSON-LD 1.1 Specification
 ## https://www.w3.org/TR/json-ld11/
-The official W3C Recommendation for JSON-LD 1.1 details the data model, framing, compaction, expansion, and normalization algorithms. It covers @context definitions, term expansion rules, and the use of @graph. Essential for ensuring that generateOntology outputs conform to the standard and interoperate with other JSON-LD tools. (Published July 16, 2020)
+The official W3C Recommendation for JSON-LD 1.1 details the data model, framing, compaction, expansion, and normalization algorithms. It covers @context definitions, term expansion rules, and the use of @graph. Essential for ensuring that **generateOntology** outputs conform to the standard and interoperate with other JSON-LD tools. (Published July 16, 2020)
 ## W3C Document License
 
 # JSON-LD Processing Algorithms and API
 ## https://www.w3.org/TR/json-ld11-api/
-Defines step-by-step algorithms for expansion, compaction, flattening, framing, and normalization, along with a JavaScript API reference. Critical for implementing advanced transformations, error handling, and performance optimizations in generateOntology and framing or normalization subcommands. (Published July 9, 2020)
+Defines step-by-step algorithms for expansion, compaction, flattening, framing, and normalization, along with a JavaScript API reference. Critical for implementing advanced transformations, error handling, and performance optimizations in **generateOntology** and framing or normalization subcommands. (Published July 9, 2020)
 ## W3C Document License
 
 # JSON-LD Framing
 ## https://www.w3.org/TR/json-ld11-framing/
-Specifies how to extract and reshape specific node structures from JSON-LD documents using frames. Covers embedding strategies, conditional filters, and nested shapes, directly informing get-term, filter, and custom framing-based outputs. (Published July 16, 2020)
+Specifies how to extract and reshape specific node structures from JSON-LD documents using frames. Covers embedding strategies, conditional filters, and nested shapes, directly informing **get-term**, **filter**, and custom framing-based outputs. (Published July 16, 2020)
 ## W3C Document License
 
 # OWL 2 Specifications
@@ -28,7 +28,7 @@ Standard vocabulary and validation framework for describing constraints on RDF g
 # SPARQL 1.1 Recommendation Set
 ## Query: https://www.w3.org/TR/sparql11-query/
 ## Update: https://www.w3.org/TR/sparql11-update/
-These combined W3C Recommendations cover querying (SELECT, CONSTRUCT, ASK), update operations (INSERT, DELETE, LOAD), and outline the Graph Store HTTP protocol for managing RDF graphs over REST. Foundations for future CLI or server subcommands handling remote triple-store operations and federation. (Query/Update published March 21, 2013)
+These combined W3C Recommendations cover querying (SELECT, CONSTRUCT, ASK), update operations (INSERT, DELETE, LOAD), and outline the Graph Store HTTP protocol for managing RDF graphs over REST. Foundations for potential CLI or server subcommands handling remote triple-store operations and federation. (Published March 21, 2013)
 ## W3C Document License
 
 # RDF/JS Specification
@@ -38,12 +38,12 @@ Defines standard JavaScript interfaces for RDF terms, quads, and datasets to pro
 
 # jsonld.js (JavaScript JSON-LD API)
 ## https://github.com/digitalbazaar/jsonld.js
-An open-source library implementing JSON-LD operations—expansion, compaction, framing, normalization—with streaming support and promise-based API. Serves as a reference for advanced JSON-LD handling and can be leveraged for deeper control beyond generateOntology. (Last updated 2024)
+An open-source library implementing JSON-LD operations—expansion, compaction, framing, normalization—with streaming support and promise-based API. Serves as a reference for advanced JSON-LD handling and can be leveraged for deeper control beyond **generateOntology**. (Last updated 2024)
 ## MIT License
 
 # jsonld-cli (JSON-LD Command-Line Interface)
 ## https://github.com/digitalbazaar/jsonld-cli
-Provides a CLI wrapper around jsonld.js demonstrating modular subcommands, streaming, and robust error handling. Useful to model the structure of convert, framing, and normalization subcommands in main.js. (Last updated 2024)
+Provides a CLI wrapper around jsonld.js demonstrating modular subcommands, streaming, and robust error handling. Useful to model the structure of **convert**, framing, and normalization subcommands in main.js. (Last updated 2024)
 ## MIT License
 
 # N3.js (RDF/JS Turtle and N3 Library)
@@ -58,7 +58,7 @@ Comprehensive RDF toolkit for parsing, serializing, querying (SPARQL), and persi
 
 # Comunica – Modular SPARQL Query Engine
 ## https://comunica.dev/docs/query/query-overview/
-Documentation on configuring and running federated SPARQL queries over HTTP endpoints, files, and RDFJS datasets. Useful for building on-the-fly query or validation features in the CLI. (Latest version 2024)
+Documentation on configuring and running federated SPARQL queries over HTTP endpoints, files, and RDF/JS datasets. Useful for building on-the-fly query or validation features in the CLI. (Latest version 2024)
 ## MIT License
 
 # Apache Jena — ARQ Query Engine Documentation
@@ -88,7 +88,7 @@ Comprehensive guide to Node.js core modules, including file system, HTTP, ESM mo
 
 # REST Countries API Documentation
 ## https://restcountries.com/#api-endpoints-v3-all
-Defines endpoints and response schemas for country data (including capitals). Guides pagination, field filters, and error handling for the capital-cities subcommand. (Public domain)
+Defines endpoints and response schemas for country data (including capitals). Guides pagination, field filters, and error handling for the **capital-cities** subcommand. (Public domain)
 ## Public Domain
 
 # RFC 8259: The JavaScript Object Notation (JSON) Data Interchange Format
@@ -101,30 +101,16 @@ Specifies the JSON grammar, data types, encoding rules, and media type. Ensures 
 Vite-native unit testing framework with Jest-compatible API, snapshot and coverage support. Documentation covers mocking, spying, asynchronous tests, and configuration—directly applicable to existing tests in tests/unit. (MIT License)
 ## MIT License
 
-# Express.js API Reference
-## https://expressjs.com/en/4x/api.html
-Comprehensive reference for Express.js 4.x, detailing middleware, routing, request handling, and error management. Useful for evaluating more ergonomic HTTP API patterns and middleware integration for the serve subcommand. (Express 4.18)
-## MIT License
-
-# body-parser (Express Middleware)
-## https://github.com/expressjs/body-parser
-Middleware for parsing JSON, URL-encoded, and raw request bodies in Express.js. Explains parsing limits, encoding options, and error handling, relevant if migrating to expressive HTTP routing or handling POST payloads. (Last updated 2024)
-## MIT License
-
-# JSON:API Specification
-## https://jsonapi.org/format/
-Defines a standard JSON-based format for RESTful APIs, including conventions for resource structure, error responses, and pagination. Guides design of consistent and interoperable HTTP endpoints in the serve subcommand. (Version 1.1)
-## CC0
-
 # Hydra Core Vocabulary
 ## https://www.hydra-cg.com/spec/latest/core/
 A framework for hypermedia-driven Web APIs using JSON-LD, defining templates, links, and operations. Offers best practices for enhanced discoverability and dynamic API navigation in JSON-LD APIs. (Latest release 2023)
 ## CC BY 4.0
 
-# OpenAPI Specification 3.1
+# RESTful API Specifications
+## https://jsonapi.org/format/
 ## https://spec.openapis.org/oas/v3.1.0
-Machine-readable specification for RESTful APIs, covering paths, operations, components, and server definitions. Facilitates automated documentation and validation of HTTP API endpoints for the serve subcommand. (Published February 2021)
-## Apache-2.0
+Combines JSON:API’s detailed conventions for resource structure, relationships, error responses, and pagination with OpenAPI 3.1's machine-readable paths, operations, and component schemas. Crucial for designing consistent, self-documenting, and validated HTTP endpoints in the serve subcommand. (JSON:API v1.1 / OpenAPI 3.1 Published February 2021)
+## CC0 (JSON:API) / Apache-2.0 (OpenAPI)
 
 # Supertest — HTTP Assertions for Node.js
 ## https://github.com/visionmedia/supertest
@@ -133,7 +119,7 @@ Provides a high-level abstraction for testing HTTP servers in Node.js, supportin
 
 # RDF 1.1 Concepts and Abstract Syntax
 ## https://www.w3.org/TR/rdf11-concepts/
-Defines the abstract graph model, semantics of RDF triples, terms (IRIs, blank nodes, literals), and processing rules. It is essential for understanding how generateOntology constructs graphs and how RDF/JS interfaces represent them. (Published March 25, 2014)
+Defines the abstract graph model, semantics of RDF triples, terms (IRIs, blank nodes, literals), and processing rules. It is essential for understanding how **generateOntology** constructs graphs and how RDF/JS interfaces represent them. (Published March 25, 2014)
 ## W3C Document License
 
 # Turtle – Terse RDF Triple Language
@@ -157,7 +143,23 @@ Defines URL parsing, resolution, serialization algorithms, query parameters hand
 Commander.js provides a robust, declarative API for defining command-line interfaces in Node.js. It supports nested subcommands, option parsing, default values, and automatic help generation. Its patterns for organizing complex CLI tools can inform enhancements to subcommand dispatch, flag validation, and help output in main.js. (Last updated 2024)
 ## MIT License
 
-# Jayway JSONPath – XPath for JSON
-## https://github.com/json-path/JsonPath
-JSONPath allows declarative querying of JSON structures using path expressions, filters, and functions similar to XPath. Its implementation guidance for indexing, filtering, and extracting JSON nodes can inform the design of the filter subcommand, especially for complex selection criteria. (Last updated 2024)
-## Apache-2.0
+# Express.js and body-parser Middleware
+## https://expressjs.com/en/4x/api.html
+## https://github.com/expressjs/body-parser
+Combines Express.js core routing, middleware interfaces, error handling patterns, and body-parser’s JSON and URL-encoded parsing capabilities. Covers middleware configuration, parse limits, and robust request handling strategies for the serve subcommand’s HTTP endpoints. (Express 4.18, body-parser latest 2024)
+## MIT License
+
+# PyLD – Python JSON-LD Processor
+## https://github.com/digitalbazaar/pyld
+The reference implementation of JSON-LD algorithms in Python, covering compaction, expansion, framing, and normalization. Includes context loader utilities and advanced error handling patterns. Useful for cross-language consistency checks and edge-case algorithm insights. (Last updated 2023)
+## MIT License
+
+# RFC 6901: JSON Pointer
+## https://tools.ietf.org/html/rfc6901
+Defines the JSON Pointer syntax for identifying specific values within a JSON document. Specifies token unescaping (~0, ~1), array indexing, and error handling, directly guiding the implementation of the **query** subcommand’s pointer resolver. (Published April 2013)
+## IETF Trust
+
+# json-pointer (Node.js JSON Pointer Library)
+## https://github.com/janl/node-json-pointer
+A minimal, MIT-licensed library providing `get`, `set`, and `remove` operations using RFC 6901 JSON Pointers. Offers a robust API for pointer resolution, validation, and edge-case handling, which can streamline the **query** implementation and reduce custom traversal logic. (Last updated 2024)
+## MIT License
