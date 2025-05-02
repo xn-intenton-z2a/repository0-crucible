@@ -1,6 +1,6 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
+`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
 
 To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
 
@@ -11,7 +11,7 @@ This readme shall evolve into a JavaScript library based on of the seed CONTRIBU
 The repository is intended as a template that includes:
 * A Template Base: A starting point for new projects.
 * A Running Experiment: An example implementation that demonstrates one way to use the template.
-* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+* Example GitHub Workflows from [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
 
 ## Installation
 
@@ -23,23 +23,46 @@ npm install repository0-crucible
 
 ## Features
 
-TODO: Add features here.
+- **-h, --help** — Show usage instructions and exit
+- **-v, --version** — Print the current version and exit
+- **--faces <path>** — Load custom face set from YAML
+- **--seed <number>** — Deterministic face selection
+- **--count <n>** — Number of faces to output (default 1)
 
 ## Usage
 
-To run the CLI tool and see help instructions:
+Run the CLI tool with the desired options:
 
+```bash
+node src/lib/main.js [options]
+```
+
+### Examples
+
+Default invocation:
+```bash
+node src/lib/main.js
+```
+
+Custom faces with count:
+```bash
+node src/lib/main.js --faces custom_faces.yaml --count 3
+```
+
+Deterministic seed with count:
+```bash
+node src/lib/main.js --seed 10 --count 2
+```
+
+Help flag:
 ```bash
 node src/lib/main.js --help
 ```
 
-### Example Commands
-
-- **Default Demo Output:**
-  ```bash
-  npm run start
-  ```
-
+Version flag:
+```bash
+node src/lib/main.js --version
+```
 
 ## Incremental Changes Plan
 
