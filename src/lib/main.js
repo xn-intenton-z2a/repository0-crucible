@@ -40,7 +40,6 @@ export async function main(args) {
   const [subcommand, ...restArgs] = cliArgs;
 
   if (subcommand === "convert") {
-    // Parse flags
     const argObj = {};
     for (let i = 0; i < restArgs.length; i++) {
       const arg = restArgs[i];
@@ -82,6 +81,78 @@ export async function main(args) {
       return 0;
     } catch (error) {
       console.error(`Error during conversion: ${error.message}`);
+      return 1;
+    }
+  }
+
+  if (subcommand === "capital-cities") {
+    // Parse flags
+    const argObj = {};
+    for (let i = 0; i < restArgs.length; i++) {
+      const arg = restArgs[i];
+      if (arg.startsWith("--")) {
+        const key = arg.slice(2);
+        const value = restArgs[i + 1];
+        argObj[key] = value;
+        i++;
+      }
+    }
+    const schema = z.object({
+      "ontology-iri": z.string().nonempty(),
+      "base-iri": z.string().optional(),
+      "api-endpoint": z.string().optional(),
+      output: z.string().optional(),
+    });
+    const parse = schema.safeParse(argObj);
+    if (!parse.success) {
+      console.error(
+        `Error: ${parse.error.errors.map((e) => e.message).join(", ")}`
+      );
+      return 1;
+    }
+    const {
+      "ontology-iri": ontologyIri,
+      "base-iri": baseIri,
+      "api-endpoint": apiEndpoint,
+      output,
+    } = parse.data;
+    const endpoint = apiEndpoint ?? "https://restcountries.com/v3.1/all";
+    try {
+      const response = await fetch(endpoint);
+      if (!response.ok) {
+        console.error(
+          `Error fetching country data: HTTP ${response.status} ${response.statusText}`
+        );
+        return 1;
+      }
+      const countries = await response.json();
+      const termMap = {};
+      for (const country of countries) {
+        if (
+          country.capital &&
+          Array.isArray(country.capital) &&
+          country.capital.length > 0
+        ) {
+          const name =
+            country.name?.common ?? country.name?.official;
+          if (name) {
+            termMap[name] = { capital: country.capital[0] };
+          }
+        }
+      }
+      const ontology = await generateOntology(termMap, {
+        ontologyIri,
+        baseIri,
+      });
+      const serialized = JSON.stringify(ontology, null, 2);
+      if (output) {
+        await fs.writeFile(output, serialized, "utf-8");
+      } else {
+        console.log(serialized);
+      }
+      return 0;
+    } catch (error) {
+      console.error(`Error during capital-cities: ${error.message}`);
       return 1;
     }
   }

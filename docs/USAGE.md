@@ -91,7 +91,7 @@ Example output:
 
 ---
 
-### Convert Subcommand
+## Convert Subcommand
 
 Convert a JSON file of term definitions into a JSON-LD OWL ontology document.
 
@@ -130,8 +130,55 @@ Example output:
 
 ---
 
+## Capital-Cities Subcommand
+
+Fetch capital city data from a public API and generate a JSON-LD OWL ontology document.
+
+```bash
+node src/lib/main.js capital-cities \
+  --ontology-iri http://example.org/onto \
+  [--base-iri http://example.org/base] \
+  [--api-endpoint https://restcountries.com/v3.1/all] \
+  [--output capitals.json]
+```
+
+Options:
+
+- `--ontology-iri` (string, required): IRI for the ontology document.
+- `--base-iri` (string, optional): Base IRI for term identifiers in the context.
+- `--api-endpoint` (string, optional): REST API endpoint for country data (default: `https://restcountries.com/v3.1/all`).
+- `--output` (string, optional): Path to write the output JSON-LD file. If omitted, prints to stdout.
+
+The generated document contains:
+
+- `@context`: with `owl`, `rdf`, and optional `@base` entries.
+- `@id`: equal to the provided ontology IRI.
+- `@graph`: an array of country nodes, each with an `@id` and a `capital` property.
+
+Example output:
+
+```json
+{
+  "@context": {
+    "owl": "http://www.w3.org/2002/07/owl#",
+    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+  },
+  "@id": "http://example.org/onto",
+  "@graph": [
+    {
+      "@id": "http://example.org/onto#France",
+      "capital": "Paris"
+    },
+    {
+      "@id": "http://example.org/onto#Germany",
+      "capital": "Berlin"
+    }
+  ]
+}
+```
+
+---
+
 ### Future Subcommands
 
 - `capital-cities`: Fetch capital cities from a public API and generate an ontology.
-
-Contributions to implement and enhance these commands are welcome!
