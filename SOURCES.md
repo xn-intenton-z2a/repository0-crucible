@@ -156,3 +156,13 @@ Defines JSON Pointer syntax for locating values within JSON documents, including
 ## https://github.com/janl/node-json-pointer
 Minimal library providing get, set, and remove operations according to RFC 6901. Offers a robust API for pointer resolution and validation, streamlining **query** implementation and reducing custom traversal logic. (Last updated 2024)
 ## MIT License
+
+# Wikidata Query Service User Manual
+## https://www.mediawiki.org/wiki/Wikidata_Query_Service/User_Manual
+Wikidata Query Service (WDQS) user manual detailing SPARQL endpoint usage for querying the Wikimedia knowledge graph. It covers query endpoint setup, prefix management, result formats (JSON, CSV, RDF), pagination, optimization strategies (property paths, query plan inspection), and federated queries. Essential for implementing **crawl** and **query** subcommands against a high-volume, real-world SPARQL service. (Last updated March 2024; authoritative Wikimedia documentation)
+## CC BY-SA 3.0
+
+# DBpedia SPARQL Endpoint Documentation
+## https://wiki.dbpedia.org/services-resources/sparql-endpoint
+DBpedia SPARQL endpoint documentation outlining endpoint configuration, supported query features, graph datasets, and HTTP parameters. Includes practical examples for querying linked open data, result streaming, and performance tuning. Directly informs building robust SPARQL-driven data ingestion and conversion pipelines for **generateOntology**. (Last reviewed 2023; maintained by the DBpedia community)
+## CC BY-SA 3.0
