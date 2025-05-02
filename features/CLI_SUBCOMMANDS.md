@@ -1,54 +1,48 @@
 # Overview
-
-The CLI entrypoint in src/lib/main.js will support two subcommands: convert and capital-cities. Users can invoke each subcommand with specific options to generate JSON-LD OWL ontologies from a local file or from a public API.
+Enhance the CLI entrypoint to implement two core subcommands: convert and capital-cities. The convert command reads a local JSON file of term definitions and generates a JSON-LD OWL ontology document. The capital-cities command fetches country data from a public REST API, extracts capital city terms, and outputs a JSON-LD OWL ontology.
 
 # Implementation
-
 1. Command dispatch
-   Parse the first argument as the subcommand name. If the subcommand is not recognized or missing, print an error and return exit code 1.
+   - After diagnostics handling, inspect the first argument as subcommand name.
+   - If the name is convert or capital-cities, invoke the corresponding handler, else print an error to stderr and return exit code 1.
+   - Use zod to define and validate option schemas for each subcommand.
 
-2. Option validation
-   Use zod to define schemas for each subcommand:
-   - convert: schema of options --input <path> (required), --ontology-iri <iri> (required), --base-iri <iri> (optional), --output <path> (optional).
-   - capital-cities: schema of options --ontology-iri <iri> (required), --base-iri <iri> (optional), --api-endpoint <url> (optional, default https://restcountries.com/v3.1/all), --output <path> (optional).
+2. Convert handler
+   - Define a schema requiring input (file path) and ontology-iri, with optional base-iri and output path.
+   - Use fs promises to read the input file and parse JSON to a data object.
+   - Call generateOntology with the data object and options.
+   - Serialize the resulting JSON-LD document with JSON stringify using indent of 2.
+   - If an output path is provided, write the serialized document to that file, otherwise print to stdout.
+   - Catch and handle errors: log a descriptive message to stderr and return exit code 1.
 
-3. Convert handler
-   - Import fs from node:fs/promises.
-   - Read the file at the input path and parse its JSON content into a data object.
-   - Call generateOntology(data, { ontologyIri, baseIri }).
-   - Serialize the result with JSON.stringify(document, null, 2).
-   - If output path is provided, write the serialized document to that file; otherwise, print to stdout.
+3. Capital-cities handler
+   - Define a schema requiring ontology-iri, optional base-iri, optional api-endpoint with default https://restcountries.com/v3.1/all, and optional output path.
+   - Use global fetch to request the country list from the API endpoint.
+   - Filter countries that have a non-empty capital array.
+   - Build a term map where each key is the country name and its value is an object with capital equal to the first capital string.
+   - Call generateOntology with the term map and options, then serialize and write or print as in convert handler.
+   - Handle fetch or processing errors by logging to stderr and returning exit code 1.
 
-4. Capital-cities handler
-   - Use global fetch to request country data from the API endpoint.
-   - Filter countries with non-empty capital, map each to a term: key is country name, value is an object with capital property set to the first capital entry.
-   - Call generateOntology with the map of terms and options.
-   - Serialize and write or print the output as in the convert handler.
-
-5. Error handling
-   Catch synchronous and asynchronous errors in each handler, log an error message to stderr, and return exit code 1.
+4. Option parsing
+   - Use zod to parse raw CLI arguments into validated options for each handler.
+   - Ensure clear error messages on validation failures and return exit code 1.
 
 # Testing
-
 Add unit tests under tests/unit:
-- cli-convert.test.js:
-  • Test successful conversion reads a temporary JSON file of term definitions, invokes main with convert options, captures stdout or file write, and verifies the JSON-LD document structure and graph nodes.
-  • Test missing required options returns exit code 1 with descriptive error message.
+- cli-convert.test.js
+  • Mock a temporary JSON file of term definitions, invoke the CLI with convert options, capture stdout or file write, and assert the JSON-LD document has correct @context, @id, and @graph nodes.
+  • Test missing required options returns exit code 1 and logs a descriptive error.
   • Test custom base-iri appears in @context.
-
-- cli-capitals.test.js:
-  • Mock fetch to return sample country data with capitals.
-  • Invoke main with capital-cities options and capture output, verify term definitions and @graph mapping of country names to capital properties.
-  • Test error on fetch failure returns exit code 1 and logs an error.
+- cli-capitals.test.js
+  • Mock global fetch to return sample country data with and without capital arrays.
+  • Invoke the CLI with capital-cities options and capture output, verify the document graph includes only countries with capitals and correct term properties.
+  • Test fetch failure returns exit code 1 and logs an error.
 
 # Documentation
-
 1. Update README.md under Command-Line Interface:
-   - Describe convert and capital-cities subcommands with example commands:
-     node src/lib/main.js convert --input path/to/terms.json --ontology-iri http://example.org/onto --output result.json
-     node src/lib/main.js capital-cities --ontology-iri http://example.org/onto
-   - Show sample JSON-LD output for each subcommand.
-
-2. Update docs/USAGE.md:
-   - Add sections for convert and capital-cities with tables of options and invocation snippets.
-   - Describe default values and error conditions.
+   - Document the convert and capital-cities commands, listing their options, usage examples, and sample outputs.
+   - Show example: node src/lib/main.js convert --input path/terms.json --ontology-iri http://example.org/onto --output result.json
+   - Show example: node src/lib/main.js capital-cities --ontology-iri http://example.org/onto
+2. Update docs/USAGE.md under CLI Usage:
+   - Add sections for convert and capital-cities with tables of option names, descriptions, and defaults.
+   - Include invocation snippets and expected JSON-LD output fields.
