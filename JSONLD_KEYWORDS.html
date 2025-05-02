@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="jsonld_keywords" href="#jsonld_keywords"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSONLD_KEYWORDS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">List of  thirty-two JSON-LD specific terms and their exact keyword names, expected value types, allowed contexts, and container mappings. Each term is defined by its keyword (e.g. @context,@id,@type,@list,@set,@language,@direction) with normative constraints and usage scope.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Term and Keyword List</p>
+</li>
+<li class="md-github">
+<p class="md-github">Detailed Keyword Definitions</p>
+</li>
+<li class="md-github">
+<p class="md-github">Term and Keyword List
+active context
+base direction (@direction)
+compact IRI
+context (@context)
+default language (@language)
+default object
+embedded context
+expanded term definition
+frame
+frame object
+graph object
+id map
+implicitly named graph
+included block
+index map
+language map
+list object
+local context
+nested property
+node object
+node reference
+prefix
+processing mode
+scoped context
+set object
+term
+type map
+typed value
+value object
+vocabulary mapping (@vocab)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Detailed Keyword Definitions
+active context: runtime context structure used to resolve term definitions
+base direction: use @direction key with literal &quot;ltr&quot;,&quot;rtl&quot; or null
+compact IRI: syntax prefix:suffix, prefix must map to IRI
+context: @context entry value may be IRI, map, or array of these
+default language: @language key mapping to [BCP47] code or null
+default object: map containing @default entry resets default values
+embedded context: nested @context inside node/value/graph/list/set or term definition
+expanded term definition: map containing any of @id(IRI),@type(IRI),@container(one of @list,@set,@index,@language,@graph,@id,@type),@language(BCP47|string|null),@direction(&quot;ltr&quot;|&quot;rtl&quot;|null),@context(context),@protected(true|false)
+frame: JSON-LD document defining matching and embedding rules
+frame object: entry in frame for matching node or value shapes
+graph object: map with an @graph array plus optional @id, @index
+id map: container mapping type @id, values node objects keyed by IRI
+implicitly named graph: term definition with @container:@graph yields named graph
+included block: @included entry with array of node objects for inclusion
+index map: container mapping type @index, values string,number,boolean,null,node/value/list/set or array
+language map: container mapping type @language, keys BCP47 codes, values string|null|array
+list object: map with @list array and optional @index
+local context: @context map definition embedded in document
+nested property: nested map inside node object for grouping only
+node object: map representing resource or blank node; may include @id,@type,properties; excludes @value,@list,@set when top-level
+node reference: node object with only @id entry
+prefix: term mapping that serves as IRI prefix for compact IRI expansion
+processing mode: API option or @version entry, values json-ld-1.0 or json-ld-1.1
+scoped context: @context in expanded term defining context scoped to type or property
+set object: map with @set array and optional @index
+term: key in context mapping to IRI
+term definition: entry in @context mapping term to IRI or map of keyword entries
+type map: container mapping type @type, map keys interpreted as type IRIs
+typed value: map with @value (string) and @type IRI
+value object: map with @value, optional @type,@language,@direction for typed and language strings
+vocabulary mapping: @vocab entry mapping default vocabulary IRI or null</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Implementation details:</p>
+<ul class="md-github">
+<li class="md-github">Context parser must recognize @context at document, node, graph, value, list, set, and term-definition levels.</li>
+<li class="md-github">Term definition maps: parse string values as shorthand for {&quot;@id&quot;:value}.</li>
+<li class="md-github">Keyword entries valid in term definition: @id, @type, @container, @language, @direction, @context, @protected.</li>
+<li class="md-github">Container mapping returns different internal structures: @list→list array, @set→set array, @index→map index→entries, @language→language map, @graph→graph container, @id→id map, @type→type map.</li>
+<li class="md-github">Language tag validation per BCP47 section 2.2.9: lowercase normalization required.</li>
+<li class="md-github">Processing mode selection: if context contains @version:1.1 numeric, enforce JSON-LD1.1 feature set; if @version string, reject or ignore per processor.</li>
+<li class="md-github">Compact IRI resolution: split on colon, match prefix term in active context, then resolve suffix relative to prefix IRI. If no prefix match, term is keyword or error.</li>
+<li class="md-github">Protected term definitions: @protected:true prevents term override on subsequent contexts.</li>
+<li class="md-github">Scoped contexts: when term used as type or property, merge type- or property-scoped context before processing children.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Best practices and patterns:</p>
+<ol class="md-github">
+<li class="md-github">Defining a simple context:
+{
+&quot;@context&quot;: {
+&quot;schema&quot;: &quot;http://schema.org/&quot;,
+&quot;name&quot;: &quot;schema:name&quot;,
+&quot;homepage&quot;: {&quot;@id&quot;:&quot;schema:url&quot;,&quot;@type&quot;:&quot;@id&quot;}
+}
+}</li>
+<li class="md-github">Container mapping example:
+{
+&quot;@context&quot;: {
+&quot;tags&quot;: {&quot;@id&quot;:&quot;schema:keywords&quot;,&quot;@container&quot;:&quot;@set&quot;},
+&quot;translations&quot;: {&quot;@id&quot;:&quot;schema:description&quot;,&quot;@container&quot;:&quot;@language&quot;}
+}
+}</li>
+<li class="md-github">Processing mode configuration (jsonld.js):
+jsonld.expand(doc,{processingMode:'json-ld-1.1',strictSSL:true})</li>
+<li class="md-github">Error handling:</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">Duplicate term definitions: throw ReferenceError(&quot;Term already defined and protected: termName&quot;).</li>
+<li class="md-github">Invalid language tag: throw SyntaxError(&quot;Invalid language tag: tag&quot;).</li>
+</ul>
+<ol start="5" class="md-github">
+<li class="md-github">Troubleshooting:
+Command: node validateContext.js myContext.json
+Expected output on success: &quot;Context valid&quot;
+On error: &quot;Error at key 'name': @id must be a string with valid IRI&quot;</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">activeContext-runtimeContext;baseDirection-@direction=&gt;&quot;ltr&quot;|&quot;rtl&quot;|null;compactIRI-prefix:suffix via context;context-@context=&gt;IRI|object|array;defaultLanguage-@language=&gt;BCP47|string|null;defaultObject:@default key;embeddedContext:nested @context;expandedTermDef:{@id:IRI,@type:IRI,@container:@list|@set|...,@language:BCP47,@direction:&quot;ltr&quot;|&quot;rtl&quot;,@context, @protected:true|false};frame:document for framing;frameObject:entry in frame;graphObject:@graph array,+optional @id,@index;idMap:@container:@id =&gt;IRI-&gt;nodeObjects;implicitlyNamedGraph:@container:@graph;includedBlock:@included-&gt;nodeObjects;indexMap:@container:@index-&gt;map;languageMap:@container:@language-&gt;lang-&gt;string|null|array;listObject:@list,array[@index];localContext:@context map;nestedProperty:map group;nodeObject:map no @value,@list,@set;nodeReference:@id only;prefix:term-&gt;IRI prefix;processingMode:json-ld-1.0|1.1 via API or @version;scopedContext:@context in term;setObject:@set,array[@index];term:context key-&gt;IRI;termDefinition:string or map;typeMap:@container:@type-&gt;nodeObjects;typedValue:@value with @type;valueObject:@value,@type,@language,@direction;vocabMapping:@vocab-&gt;IRI|compactIRI|null</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Term and Keyword List</p>
+</li>
+<li class="md-github">
+<p class="md-github">Detailed Keyword Definitions</p>
+</li>
+<li class="md-github">
+<p class="md-github">Term and Keyword List
+active context
+base direction (@direction)
+compact IRI
+context (@context)
+default language (@language)
+default object
+embedded context
+expanded term definition
+frame
+frame object
+graph object
+id map
+implicitly named graph
+included block
+index map
+language map
+list object
+local context
+nested property
+node object
+node reference
+prefix
+processing mode
+scoped context
+set object
+term
+type map
+typed value
+value object
+vocabulary mapping (@vocab)</p>
+</li>
+<li class="md-github">
+<p class="md-github">Detailed Keyword Definitions
+active context: runtime context structure used to resolve term definitions
+base direction: use @direction key with literal 'ltr','rtl' or null
+compact IRI: syntax prefix:suffix, prefix must map to IRI
+context: @context entry value may be IRI, map, or array of these
+default language: @language key mapping to [BCP47] code or null
+default object: map containing @default entry resets default values
+embedded context: nested @context inside node/value/graph/list/set or term definition
+expanded term definition: map containing any of @id(IRI),@type(IRI),@container(one of @list,@set,@index,@language,@graph,@id,@type),@language(BCP47|string|null),@direction('ltr'|'rtl'|null),@context(context),@protected(true|false)
+frame: JSON-LD document defining matching and embedding rules
+frame object: entry in frame for matching node or value shapes
+graph object: map with an @graph array plus optional @id, @index
+id map: container mapping type @id, values node objects keyed by IRI
+implicitly named graph: term definition with @container:@graph yields named graph
+included block: @included entry with array of node objects for inclusion
+index map: container mapping type @index, values string,number,boolean,null,node/value/list/set or array
+language map: container mapping type @language, keys BCP47 codes, values string|null|array
+list object: map with @list array and optional @index
+local context: @context map definition embedded in document
+nested property: nested map inside node object for grouping only
+node object: map representing resource or blank node; may include @id,@type,properties; excludes @value,@list,@set when top-level
+node reference: node object with only @id entry
+prefix: term mapping that serves as IRI prefix for compact IRI expansion
+processing mode: API option or @version entry, values json-ld-1.0 or json-ld-1.1
+scoped context: @context in expanded term defining context scoped to type or property
+set object: map with @set array and optional @index
+term: key in context mapping to IRI
+term definition: entry in @context mapping term to IRI or map of keyword entries
+type map: container mapping type @type, map keys interpreted as type IRIs
+typed value: map with @value (string) and @type IRI
+value object: map with @value, optional @type,@language,@direction for typed and language strings
+vocabulary mapping: @vocab entry mapping default vocabulary IRI or null</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">JSON-LD 1.1 Specification
+https://www.w3.org/TR/json-ld11/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-jsonld_keywords" href="#digest-of-jsonld_keywords"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of JSONLD_KEYWORDS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="json-ld-specific-terms-and-keywords" href="#json-ld-specific-terms-and-keywords"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>JSON-LD Specific Terms and Keywords</h1>
+<p class="md-github">This section provides the complete normative definitions of JSON-LD terms and keywords as specified in JSON-LD 1.1 Recommendation (16 July 2020).</p>
+<h2 class="md-github"><a class="md-github__anchor" name="term-definitions" href="#term-definitions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Term Definitions</h2>
+<p class="md-github">active context
+A context used at runtime for resolving terms</p>
+<p class="md-github">base direction
+@direction key; value: &quot;ltr&quot; | &quot;rtl&quot; | null</p>
+<p class="md-github">compact IRI
+prefix:suffix; requires prefix mapping in context</p>
+<p class="md-github">context
+@context entry; value: IRI | object | array</p>
+<p class="md-github">default language
+@language key; value: BCP47 language code | null</p>
+<p class="md-github">default object
+object with @default key</p>
+<p class="md-github">embedded context
+@context appearing inside node, value, graph, list, set or term definition</p>
+<p class="md-github">expanded term definition
+map containing keyword entries (@id, @type, @container, @language, @direction, @context, @protected)</p>
+<p class="md-github">frame
+JSON-LD document describing transformation rules</p>
+<p class="md-github">frame object
+map inside frame for matching node or value</p>
+<p class="md-github">graph object
+map with @graph and optional @id, @index</p>
+<p class="md-github">id map
+container mapping @id; map keys→node objects</p>
+<p class="md-github">implicitly named graph
+expanded term definition with @container:@graph</p>
+<p class="md-github">included block
+@included map entry with array of node objects</p>
+<p class="md-github">index map
+container mapping @index; values: string, number, boolean, null, node/value/list/set objects or array</p>
+<p class="md-github">language map
+container mapping @language; keys: BCP47 codes; values: string|null|array of strings</p>
+<p class="md-github">list object
+map with @list and optional @index</p>
+<p class="md-github">local context
+context map via @context keyword</p>
+<p class="md-github">nested property
+map entry inside node for sub-structure only</p>
+<p class="md-github">node object
+map representing RDF node; no @value,@list,@set; not top-level @graph-only</p>
+<p class="md-github">node reference
+node object with only @id</p>
+<p class="md-github">prefix
+term mapping to string that as IRI prefix for compact IRI</p>
+<p class="md-github">processing mode
+runtime mode; options: json-ld-1.0, json-ld-1.1; set via API option or @version</p>
+<p class="md-github">scoped context
+@context entry in expanded term for type or property scope</p>
+<p class="md-github">set object
+map with @set and optional @index</p>
+<p class="md-github">term
+short string in context mapping to IRI</p>
+<p class="md-github">term definition
+context entry: string→@id, or map with keyword keys</p>
+<p class="md-github">type map
+@container:@type mapping; map keys→node objects</p>
+<p class="md-github">typed value
+map with @value and @type IRI</p>
+<p class="md-github">value object
+map with @value and optional @type,@language,@direction</p>
+<p class="md-github">vocabulary mapping
+@vocab key; value: IRI | compact IRI | term | null</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: JSON-LD 1.1 Specification</li>
+<li class="md-github">URL: https://www.w3.org/TR/json-ld11/</li>
+<li class="md-github">License: W3C Document License</li>
+<li class="md-github">Crawl Date: 2025-05-02T16:49:39.122Z</li>
+<li class="md-github">Data Size: 12552365 bytes</li>
+<li class="md-github">Links Found: 88987</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-02</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-02T17:21:07.203Z</p>
+  </footer>
+</body>
+</html>
