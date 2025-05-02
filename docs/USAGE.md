@@ -38,7 +38,7 @@ import { generateOntology } from '@xn-intenton-z2a/repository0-crucible';
 
 ## CLI Usage
 
-The command-line entrypoint is `src/lib/main.js`. It supports printing diagnostics, converting JSON to OWL ontologies, and serves as the base for future subcommands.
+The command-line entrypoint is `src/lib/main.js`. It supports diagnostics, conversion, and capital-cities subcommands, and serves as the base for future subcommands.
 
 ```bash
 # Show diagnostics information:
@@ -50,6 +50,13 @@ node src/lib/main.js convert \
   --ontology-iri http://example.org/onto \
   [--base-iri http://example.org/base] \
   [--output out.json]
+
+# Fetch capital city data and generate an ontology:
+node src/lib/main.js capital-cities \
+  --ontology-iri http://example.org/onto \
+  [--base-iri http://example.org/base] \
+  [--api-endpoint https://restcountries.com/v3.1/all] \
+  [--output capitals.json]
 
 # Run a command stub:
 node src/lib/main.js example --key value
@@ -83,8 +90,7 @@ Example output:
   "platform": "linux",
   "dependencies": {
     "openai": "^4.96.2",
-    "dotenv": "^16.5.0",
-    // ... other dependencies
+    "dotenv": "^16.5.0"
   }
 }
 ```
@@ -108,25 +114,6 @@ The generated document contains:
 - `@context`: with `owl`, `rdf`, and optional `@base` entries.
 - `@id`: equal to the provided ontology IRI.
 - `@graph`: an array of term nodes, each with an `@id` and the term's properties.
-
-Example output:
-
-```json
-{
-  "@context": {
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
-    "@base": "http://example.org/base"
-  },
-  "@id": "http://example.org/onto",
-  "@graph": [
-    {
-      "@id": "http://example.org/onto#TermA",
-      "description": "An example term"
-    }
-  ]
-}
-```
 
 ---
 
@@ -155,30 +142,8 @@ The generated document contains:
 - `@id`: equal to the provided ontology IRI.
 - `@graph`: an array of country nodes, each with an `@id` and a `capital` property.
 
-Example output:
-
-```json
-{
-  "@context": {
-    "owl": "http://www.w3.org/2002/07/owl#",
-    "rdf": "http://www.w3.org/1999/02/22-rdf-syntax-ns#"
-  },
-  "@id": "http://example.org/onto",
-  "@graph": [
-    {
-      "@id": "http://example.org/onto#France",
-      "capital": "Paris"
-    },
-    {
-      "@id": "http://example.org/onto#Germany",
-      "capital": "Berlin"
-    }
-  ]
-}
-```
-
 ---
 
 ### Future Subcommands
 
-- `capital-cities`: Fetch capital cities from a public API and generate an ontology.
+- `list-terms` (planned): List all term identifiers from a JSON-LD ontology file.
