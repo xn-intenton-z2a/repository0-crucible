@@ -1,4 +1,4 @@
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import fs from "fs";
 import os from "os";
 import path from "path";
@@ -81,5 +81,92 @@ describe("Capital Cities CLI", () => {
       ])
     );
     fs.unlinkSync(tempFile);
+  });
+});
+
+// Tests for the new Ontology CLI feature
+
+describe("Ontology CLI", () => {
+  let tmpDir;
+  beforeEach(() => {
+    tmpDir = os.tmpdir();
+  });
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  test("should output ontology to stdout", () => {
+    const input = [
+      { name: "Alice", age: 30 },
+      { type: "Person", name: "Bob", age: 25 },
+    ];
+    const inputFile = path.join(tmpDir, "ontology_input.json");
+    fs.writeFileSync(inputFile, JSON.stringify(input));
+
+    const consoleSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    process.argv = ["node", "src/lib/main.js", "--ontology", inputFile];
+
+    expect(() => main()).not.toThrow();
+    expect(consoleSpy).toHaveBeenCalledTimes(1);
+    const outputArg = consoleSpy.mock.calls[0][0];
+    const parsed = JSON.parse(outputArg);
+    const pkg = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), 'package.json'), 'utf-8'));
+    expect(parsed).toHaveProperty('ontologyVersion', pkg.version);
+    expect(Array.isArray(parsed.individuals)).toBe(true);
+    expect(parsed.individuals).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ name: "Alice", age: 30, type: "Individual" }),
+        expect.objectContaining({ type: "Person", name: "Bob", age: 25 }),
+      ])
+    );
+    consoleSpy.mockRestore();
+    fs.unlinkSync(inputFile);
+  });
+
+  test("should write ontology to file with --output", () => {
+    const input = [{ foo: "bar" }];
+    const inputFile = path.join(tmpDir, "ontology_input2.json");
+    fs.writeFileSync(inputFile, JSON.stringify(input));
+    const outFile = path.join(tmpDir, "ontology_output.json");
+    if (fs.existsSync(outFile)) fs.unlinkSync(outFile);
+
+    process.argv = ["node", "src/lib/main.js", "--ontology", inputFile, "--output", outFile];
+    expect(() => main()).not.toThrow();
+    expect(fs.existsSync(outFile)).toBe(true);
+    const parsed = JSON.parse(fs.readFileSync(outFile, 'utf-8'));
+    const pkg = JSON.parse(fs.readFileSync(path.resolve(process.cwd(), 'package.json'), 'utf-8'));
+    expect(parsed.ontologyVersion).toBe(pkg.version);
+    expect(parsed.individuals).toEqual([
+      { foo: "bar", type: "Individual" }
+    ]);
+    fs.unlinkSync(inputFile);
+    fs.unlinkSync(outFile);
+  });
+
+  test("should error when missing input file", () => {
+    process.argv = ["node", "src/lib/main.js", "--ontology"];
+    expect(() => main()).toThrow('Missing input file for --ontology');
+  });
+
+  test("should error for non-existent file", () => {
+    const fakeFile = path.join(tmpDir, "does_not_exist.json");
+    process.argv = ["node", "src/lib/main.js", "--ontology", fakeFile];
+    expect(() => main()).toThrow(`Input file not found: ${fakeFile}`);
+  });
+
+  test("should error for invalid JSON", () => {
+    const badFile = path.join(tmpDir, "bad.json");
+    fs.writeFileSync(badFile, "not a json");
+    process.argv = ["node", "src/lib/main.js", "--ontology", badFile];
+    expect(() => main()).toThrow(/Invalid JSON in input file:/);
+    fs.unlinkSync(badFile);
+  });
+
+  test("should error when input JSON is not array", () => {
+    const notArrayFile = path.join(tmpDir, "notarray.json");
+    fs.writeFileSync(notArrayFile, JSON.stringify({ foo: "bar" }));
+    process.argv = ["node", "src/lib/main.js", "--ontology", notArrayFile];
+    expect(() => main()).toThrow('Input JSON must be an array of objects');
+    fs.unlinkSync(notArrayFile);
   });
 });
