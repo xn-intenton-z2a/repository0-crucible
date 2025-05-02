@@ -1,57 +1,58 @@
-features/CLI_COMMANDS.md
-# features/CLI_COMMANDS.md
+features/CAPITAL_CITIES_CLI.md
+# features/CAPITAL_CITIES_CLI.md
+# Overview
+Add a new CLI option --capital-cities to output a simple OWL ontology in JSON format for a set of world capital cities.
+
+# Behavior
+When the user runs node src/lib/main.js --capital-cities, the tool builds an ontology object representing each capital city as an individual of type CapitalCity with name and country properties.  
+Optionally the user may supply --output <path> to write the JSON ontology to a file instead of stdout.  
+No other processing occurs when this flag is present.
+
+# Implementation
+Modify src/lib/main.js to define a static array of capital city records with name and country fields.  
+Extend argument parsing to detect --capital-cities and an optional --output flag with its path.  
+When --capital-cities is present, construct a JSON object with a root field ontologyVersion and an array of individuals.  
+Write JSON to stdout or to the file path provided by --output.  
+Skip the default run logic when --capital-cities is handled.
+
+# Tests
+Update tests/unit/main.test.js to add tests that set process.argv to include --capital-cities and capture console output.  
+Parse the captured output as JSON and verify that it contains an individuals array with at least one object having name and country matching an entry from the static array.  
+Also test providing --output with a temporary file path, read and parse the file, and verify the contents.
+
+# Documentation
+In README.md update the Features section to include --capital-cities.  
+Add usage examples showing invocation with and without --output and sample output excerpts.features/ONTOLOGY_CLI.md
+# features/ONTOLOGY_CLI.md
 # Overview
 
-This feature consolidates the existing CLI parser and capital-cities command into a unified command-line interface using commander.js. It introduces an in-code mapping of data sources and implements two core commands: list-sources and capital-cities, delivering immediate value to users by enabling discovery of available data sources and generation of an OWL ontology for world capitals.
+Provide a unified CLI interface for working with OWL ontologies in JSON format. Merge existing list-sources and capital-cities behaviors into a single feature set under a consolidated ontology CLI.
 
-# Source File Changes (src/lib/main.js)
+# Behavior
 
-1. Import dependencies:
-   - import { program } from 'commander'
-   - import fetch from 'node-fetch'
-2. Define a constant DATA_SOURCES as an object mapping source names to their URLs (e.g., restcountries: "https://restcountries.com/v3.1/all").
-3. Configure program metadata: name, description, version (sync with package.json).
-4. Define command list-sources:
-   - Description: List available public data sources and their endpoints.
-   - Action: Print DATA_SOURCES as a JSON object to stdout.
-5. Define command capital-cities:
-   - Description: Fetch world capital data and output an OWL ontology in JSON format.
-   - Action handler:
-     a. Perform HTTP GET to the restcountries endpoint from DATA_SOURCES.
-     b. Extract each country’s capital array and build an OWL JSON structure:
-        - @context: standard OWL JSON context metadata.
-        - ontology:
-          - individuals: array of CapitalCity instances with id, name, country.
-          - classes: define CapitalCity as an rdfs:Class.
-     c. Serialize the structure and output to stdout.
-     d. Catch and log errors, exiting with a nonzero code.
-6. Invoke program.parseAsync() to handle CLI input and async actions.
+- When the user runs `node src/lib/main.js --list-sources`, the tool prints each built-in public data source name and URL on its own line, then exits.
+- When the user runs `node src/lib/main.js --capital-cities`, the tool outputs a JSON object representing an OWL-like ontology for the predefined set of capital cities and then exits.
+- Support an optional `--output <path>` flag for both `--list-sources` (writing the list to a file, one source per line) and `--capital-cities` (writing the JSON ontology to a file). If `--output` is not provided, write to stdout.
+- Skip the default demo logic when either `--list-sources` or `--capital-cities` is used.
 
-# Tests (tests/unit/main.test.js)
+# Implementation
 
-1. Add a test suite for list-sources:
-   - Simulate invocation of node src/lib/main.js list-sources.
-   - Capture stdout, parse as JSON, and assert keys match DATA_SOURCES.
-2. Enhance the existing capital-cities tests:
-   - Mock fetch to return a sample array of countries with capitals.
-   - Simulate CLI invocation of node src/lib/main.js capital-cities.
-   - Capture stdout, parse JSON, verify @context, individuals array entries, and classes definition.
-   - Mock fetch rejection to assert error is caught and process exits gracefully.
-3. Retain the Main Module Import test.
+- In `src/lib/main.js`, consolidate flag handling into a single CLI module:
+  - Detect `--list-sources` and `--capital-cities` before the default behavior.
+  - Read the existing `dataSources` object and the `capitalCities` array.
+  - On `--list-sources`, format each entry as `<name> <url>` and write to stdout or file.
+  - On `--capital-cities`, build the ontology object with `ontologyVersion` and `individuals`, then serialize to JSON and write to stdout or file.
+  - Handle `--output <path>` generically for both modes.
+  - Ensure only one primary mode flag is accepted at a time; throw an error if both are provided.
 
-# Documentation (README.md)
+# Tests
 
-1. Update the Features section to describe two commands:
-   - list-sources: list public data sources and endpoints.
-   - capital-cities: generate an OWL ontology of world capitals in JSON.
-2. Add usage examples:
-   ```bash
-   node src/lib/main.js list-sources
-   node src/lib/main.js capital-cities
-   ```
-3. Note output formats and error behavior.
+- Update `tests/unit/main.test.js` to cover:
+  - Listing sources to stdout and to a temporary file.
+  - Exporting capital cities ontology to stdout and to a temporary file.
+  - Error case when both `--list-sources` and `--capital-cities` are provided.
 
-# Dependencies (package.json)
+# Documentation
 
-1. Add commander to dependencies for CLI parsing.
-2. Add node-fetch to dependencies for HTTP requests.
+- Update `README.md` under Features to describe both flags and the new consolidated behavior.
+- Merge content from `docs/LIST_SOURCES_CLI.md` and `docs/CAPITAL_CITIES_CLI.md` into a single `docs/ONTOLOGY_CLI.md` file with usage examples for both modes.

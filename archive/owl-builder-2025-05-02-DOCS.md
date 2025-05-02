@@ -1,102 +1,111 @@
-docs/USAGE.md
-# docs/USAGE.md
-# Usage Guide
+docs/CAPITAL_CITIES_CLI.md
+# docs/CAPITAL_CITIES_CLI.md
+# Capital Cities CLI
 
-This guide explains how to use the owl-builder library API and CLI tool.
+## Overview
 
----
+The `--capital-cities` flag prints a JSON representation of an OWL-like ontology for a predefined set of world capital cities, then exits.
 
-## Library Usage
+## Usage
 
-Use the `generateOntology` function to build a JSON-LD OWL ontology document from a JavaScript object.
+```bash
+node src/lib/main.js --capital-cities
+node src/lib/main.js --capital-cities --output ./capitals.json
+```
 
-```js
-import { generateOntology } from '@xn-intenton-z2a/repository0-crucible';
+## Sample Output
 
-(async () => {
-  const data = {
-    TermA: { description: 'An example term' },
-    TermB: { relatedTo: 'TermA' },
-  };
-  const options = {
-    ontologyIri: 'http://example.com/ontology',
-    baseIri:     'http://example.com/base',
-  };
-  try {
-    const ontology = await generateOntology(data, options);
-    console.log(JSON.stringify(ontology, null, 2));
-  } catch (err) {
-    console.error('Error generating ontology:', err.message);
+Truncated example:
+
+```json
+{
+  "ontologyVersion": "1.0.0",
+  "individuals": [
+    {
+      "type": "CapitalCity",
+      "name": "Paris",
+      "country": "France"
+    },
+    {
+      "type": "CapitalCity",
+      "name": "Tokyo",
+      "country": "Japan"
+    }
+    // ... additional entries
+  ]
+}
+```docs/LIST_SOURCES_CLI.md
+# docs/LIST_SOURCES_CLI.md
+# List Sources CLI
+
+## Overview
+
+The `--list-sources` flag prints the available built-in public data sources and exits.
+
+## Usage
+
+```bash
+node src/lib/main.js --list-sources
+```
+
+## Sample Output
+
+```
+wikipedia https://en.wikipedia.org/
+geonames http://api.geonames.org/
+dbpedia https://dbpedia.org/
+```docs/ONTOLOGY_CLI.md
+# docs/ONTOLOGY_CLI.md
+# Ontology CLI
+
+## Overview
+
+The `--ontology <input.json>` flag transforms a JSON array file into a simple OWL-like ontology in JSON format, then exits.
+
+## Usage
+
+```bash
+node src/lib/main.js --ontology input.json
+node src/lib/main.js --ontology input.json --output output.json
+```
+
+## Behavior
+
+- Reads and parses the specified JSON file, which must contain an array of objects.
+- Each object becomes an individual in the ontology. Objects without a `type` property receive a default `type` of `Individual`.
+- The output JSON includes:
+  ```json
+  {
+    "ontologyVersion": "<version from package.json>",
+    "individuals": [ /* transformed records */ ]
   }
-})();
+  ```
+- If `--output <path>` is provided, the result is written to the given file. Otherwise, it is printed to stdout.
+- On missing or invalid input, the CLI reports an error and exits with a non-zero code.
+
+## Sample Input (data.json)
+```json
+[
+  { "name": "Alice", "age": 30 },
+  { "type": "Person", "name": "Bob", "age": 25 }
+]
 ```
 
-### Options
-
-- `ontologyIri` (string, required): The root IRI for the ontology document.
-- `baseIri` (string, optional): Base IRI for term identifiers in the context.
-
----
-
-## CLI Usage
-
-The command-line entrypoint is `src/lib/main.js`. It supports diagnostics, conversion, capital-cities, list-terms, get-term, and filter subcommands.
-
-```bash
-# Show diagnostics information:
-node src/lib/main.js --diagnostics
-
-# Convert a JSON file of term definitions into a JSON-LD OWL ontology document:
-node src/lib/main.js convert \
-  --input path/terms.json \
-  --ontology-iri http://example.org/onto \
-  [--base-iri http://example.org/base] \
-  [--output out.json]
-
-# Fetch capital city data and generate an ontology:
-node src/lib/main.js capital-cities \
-  --ontology-iri http://example.org/onto \
-  [--base-iri http://example.org/base] \
-  [--api-endpoint https://restcountries.com/v3.1/all] \
-  [--output capitals.json]
-
-# List all term identifiers from an ontology file:
-node src/lib/main.js list-terms \
-  --input path/ontology.json
-
-# Retrieve a single term node from an ontology file:
-node src/lib/main.js get-term \
-  --input path/ontology.json \
-  --term TermName \
-  [--output out.json]
-
-# Filter ontology nodes by property and value:
-node src/lib/main.js filter \
-  --input path/ontology.json \
-  --property PropertyName \
-  --value Value \
-  [--output out.json]
+## Sample Output
+```json
+{
+  "ontologyVersion": "1.2.0-0",
+  "individuals": [
+    {
+      "name": "Alice",
+      "age": 30,
+      "type": "Individual"
+    },
+    {
+      "type": "Person",
+      "name": "Bob",
+      "age": 25
+    }
+  ]
+}
 ```
-
----
-
-### Filter Subcommand
-
-Filter ontology nodes by a specified property and value, producing a JSON-LD fragment.
-
-```bash
-node src/lib/main.js filter \
-  --input path/ontology.json \
-  --property PropertyName \
-  --value Value \
-  [--output out.json]
-```
-
-Options:
-
-- `--input` (string, required): Path to the JSON-LD ontology file.
-- `--property` (string, required): Node property to filter by.
-- `--value` (string, required): Value to match.
-- `--output` (string, optional): Path to write the output JSON fragment. If omitted, prints to stdout.
-
-The command outputs a JSON array of matching nodes, either to stdout or to the specified file. It always exits 0 on success, even if no nodes match (empty array).
