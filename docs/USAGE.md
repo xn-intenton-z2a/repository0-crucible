@@ -38,17 +38,51 @@ import { generateOntology } from '@xn-intenton-z2a/repository0-crucible';
 
 ## CLI Usage
 
-The command-line entrypoint is `src/lib/main.js`. Currently it prints out the parsed CLI arguments for debugging.
+The command-line entrypoint is `src/lib/main.js`. It supports printing diagnostics and will serve as the base for future subcommands.
 
 ```bash
-# Show help (not yet implemented, placeholder)
-node src/lib/main.js --help
+# Show diagnostics information:
+node src/lib/main.js --diagnostics
 
 # Run a command stub:
 node src/lib/main.js example --key value
 # Output:
 # Run with: ["example","--key","value"]
 ```
+
+---
+
+## Diagnostics Mode
+
+Use the `--diagnostics` flag to print runtime environment and dependency information as JSON:
+
+```bash
+node src/lib/main.js --diagnostics
+```
+
+The output includes:
+
+- `packageVersion`: the version of the owl-builder package.
+- `nodeVersion`: the current Node.js version.
+- `platform`: the operating system platform.
+- `dependencies`: an object listing direct dependencies and their versions.
+
+Example output:
+
+```json
+{
+  "packageVersion": "1.2.0-0",
+  "nodeVersion": "v20.4.1",
+  "platform": "linux",
+  "dependencies": {
+    "openai": "^4.96.2",
+    "dotenv": "^16.5.0",
+    // ... other dependencies
+  }
+}
+```
+
+---
 
 ### Future Subcommands
 
