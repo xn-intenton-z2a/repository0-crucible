@@ -67,3 +67,53 @@ Describes the OWL 2 profiles—EL, QL, and RL—each offering a tailored subset 
 ## https://jena.apache.org/documentation/fuseki2/
 Comprehensive guide to Apache Jena Fuseki, an open-source SPARQL server. Covers installation, REST API endpoints for data upload, SPARQL query and update operations, security configurations, and performance tuning. Useful as a reference for serving and testing generated ontologies in a SPARQL-capable environment. Last updated May 2024. Authoritative Apache documentation.
 ## License: Apache License 2.0
+
+# JSON-LD 1.1 API and Processing Algorithms
+## https://www.w3.org/TR/json-ld11-api/
+Defines the core JSON-LD API operations (expand, compact, flatten, frame, fromRDF, toRDF) and detailed processing algorithms for safe and interoperable document handling. Provides error handling patterns and performance considerations critical to robust implementation of JSON-LD transformations. Last updated 16 July 2019. Authoritative W3C Recommendation.
+## License: Royalty-Free W3C Recommendation
+
+# Zod Validation Library
+## https://github.com/colinhacks/zod#readme
+Zod is a TypeScript-first schema validation library offering declarative schema definitions, input parsing, and comprehensive error reporting. Ideal for parsing and validating CLI options and JSON inputs in generateOntology subcommands. Actively maintained with frequent updates in 2024.
+## License: MIT
+
+# Yargs CLI Argument Parser
+## https://github.com/yargs/yargs#readme
+Yargs simplifies building command-line tools in Node.js by parsing arguments, generating help text, and managing subcommands. Its structured approach enhances maintainability for the CLI framework, providing built-in validation and user-friendly error messages. Actively maintained with recent commits in 2024.
+## License: MIT
+
+# Node.js URL Module
+## https://nodejs.org/api/url.html
+Documentation for the URL module, including URL class, URLSearchParams, and fileURLToPath conversions. Crucial for IRI manipulation, CLI file path resolution, and constructing base or ontology IRIs from user input. Last updated with Node.js 20 LTS. Authoritative Node.js documentation.
+## License: Open source (Node.js Foundation)
+
+# Node.js Process Documentation
+## https://nodejs.org/api/process.html
+Provides details on process.argv, process.exit codes, environment variables, and signal handling. Integral for implementing CLI subcommand dispatch, exit codes, and debugging diagnostics. Last updated with Node.js 20.
+## License: Open source (Node.js Foundation)
+
+# Vitest Testing Framework
+## https://vitest.dev/
+Vitest offers a fast, Vite-powered test runner with support for mocking, snapshots, and code coverage. Its features facilitate comprehensive unit and end-to-end tests for both library functions and CLI commands, ensuring reliability and maintainability. Last updated 2024.
+## License: MIT
+
+# RDF/JS Data Model Specification
+## https://rdf.js.org/data-model-spec/
+Defines standard interfaces for RDF data in JavaScript, including NamedNode, Literal, Quad, and dataset interfaces. Ensures interoperability across RDF libraries and guides API design for RDF object manipulation in future library enhancements. Last updated 2022. Community-driven.
+## License: CC-BY-4.0
+
+# SPARQL Graph Store HTTP Protocol
+## https://www.w3.org/TR/sparql11-http-rdf-update/
+Specifies HTTP methods and endpoints for querying and updating RDF graphs via SPARQL. Provides concrete API patterns for integrating SPARQL Update and Graph Store protocol when exposing generated ontologies as web services. Last updated 21 March 2013. Authoritative W3C Recommendation.
+## License: Royalty-Free W3C Recommendation
+
+# Hydra Core Vocabulary
+## https://www.w3.org/TR/hydra/
+Defines a hypermedia-driven approach to RESTful APIs for Linked Data, including documentation resources, operations, and pagination. Offers best practices for exposing and navigating RDF data over HTTP, valuable for designing future REST endpoints around generated ontologies. Last updated 23 June 2015. Authoritative W3C Recommendation.
+## License: Royalty-Free W3C Recommendation
+
+# OWL API Library Documentation
+## https://owlcs.github.io/owlapi/
+OWL API is a robust Java library for creating, manipulating, and serializing OWL ontologies programmatically. Its design patterns for ontology construction, reasoning integration, and object model APIs provide reference implementation strategies that can inspire enhancements to the JavaScript generateOntology API. Last updated 2024.
+## License: LGPL 3.0
