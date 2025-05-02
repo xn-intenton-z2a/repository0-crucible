@@ -45,7 +45,7 @@ Describes the SPARQL 1.1 Update language, defining operations (INSERT, DELETE, L
 
 # RDF/JS Specification
 ## https://rdf.js.org/
-Defines standard interfaces for RDF data structures (Term, Quad, Dataset) in JavaScript, enabling interoperability between RDF libraries. Although generateOntology produces JSON-LD objects directly, understanding RDF/JS can guide extension towards streaming data, quad management, or integration with RDF stores. (Latest version 2023)
+Defines standard interfaces for RDF data structures (Term, Quad, Dataset) in JavaScript, enabling interoperability between RDF libraries. Although generateOntology produces JSON-LD objects directly, understanding RDF/JS can guide extension towards streaming data, quad management, or integration with RDF stores. (Last updated 2023)
 ## CC0
 
 # jsonld.js (JavaScript JSON-LD API)
@@ -113,11 +113,6 @@ Defines the JSON data interchange format, covering its grammar, data types, enco
 A comprehensive Node.js framework for building command-line interfaces, supporting command definitions, nested subcommands, option parsing, version management, and automatic help generation. Commander.js offers an alternative to manual parsing and demonstrates structured CLI architecture that could be adopted to simplify main.js and enhance maintainability. (MIT License)
 ## MIT License
 
-# Node HTTP Module
-## https://nodejs.org/api/http.html
-The Node.js HTTP module provides APIs for creating HTTP servers and clients, handling requests and responses, setting headers, streaming data, and managing status codes. Critical for implementing the serve subcommand to expose an HTTP API for listing and retrieving ontology terms, including endpoints, routing logic, and graceful shutdown. (Node.js v20.4.0)
-## CC BY 4.0
-
 # Apache Jena - ARQ Query Engine Documentation
 ## https://jena.apache.org/documentation/query/
 Apache Jena is a Java framework for building semantic web and linked data applications; ARQ is its SPARQL query engine. Documentation covers SPARQL syntax, query algebra, optimization techniques, endpoint configuration, and federation. Useful for understanding enterprise-grade SPARQL processing, advanced query features, and performance considerations for future extensions of CLI querying or HTTP serve functionality. (Documentation updated 2023)
@@ -127,3 +122,38 @@ Apache Jena is a Java framework for building semantic web and linked data applic
 ## https://github.com/owlcs/owlapi
 OWL API is a Java library for programmatic creation, manipulation, and serialization of OWL ontologies. It supports rich ontology constructs, reasoning integration, imports management, and annotations. Reviewing its architecture provides insights into representing complex axioms, versioning strategies, and semantic validation, informing improvements to JSON-LD generation and semantic correctness features. (Last updated 2024)
 ## LGPL-3.0
+
+# JSON-LD Framing
+## https://www.w3.org/TR/json-ld11-framing/
+The JSON-LD Framing specification describes how to extract specific structures from JSON-LD documents by applying a frame that defines the desired node shape and relationships. It supports nested structures, embedding, and conditional filtering of nodes, which can inform advanced filter or get-term implementations using framing patterns. (Published July 16, 2020)
+## W3C Document License
+
+# JSON Pointer (RFC 6901)
+## https://tools.ietf.org/html/rfc6901
+Specifies a syntax for identifying specific values within a JSON document by using a string of tokens. This standard can guide robust implementation of term retrieval, enabling precise JSON path addressing for get-term and filter commands with JSON pointers. (Published April 2013)
+## IETF Trust
+
+# JMESPath Specification
+## http://jmespath.org/specification.html
+Defines a query language for JSON, offering powerful filtering, projection, and transformation capabilities. JMESPath expressions allow concise extraction and manipulation of JSON data, which can be integrated into filter and list-terms subcommands to support more flexible queries. (Specification updated 2022)
+## MIT License
+
+# jmespath.js (JMESPath JavaScript Implementation)
+## https://github.com/jmespath/jmespath.js
+An open-source JavaScript library implementing the JMESPath specification. Provides APIs to search and transform JSON documents using JMESPath expressions. Can be used to extend filter and list-terms functionalities with declarative query capabilities. (Last updated 2024)
+## MIT License
+
+# JSONPath by Stefan Goessner
+## https://goessner.net/articles/JsonPath/
+An informal yet widely adopted reference for JSONPath, a query notation similar to XPath for JSON data. Covers expression syntax, filters, wildcards, and path navigation. Useful for understanding community standards for JSON querying and potential adoption for repository filtering features. (Last updated 2013)
+## Public Domain
+
+# Node.js ECMAScript Modules (ESM)
+## https://nodejs.org/api/esm.html
+Documentation of ECMAScript module support in Node.js, covering import/export syntax, package scopes, and interoperability with CommonJS modules. Essential for ensuring robust handling of dynamic imports and ESM resolution in the CLI and library code. (Node.js v20.4.0)
+## CC BY 4.0
+
+# Fetch Standard
+## https://fetch.spec.whatwg.org/
+The Fetch Standard specifies the `fetch()` API, request/response objects, streaming, and caching behaviors. It is authoritative for implementing HTTP requests in the CLI (e.g., in capital-cities and potential serve subcommands) with correct error handling and abort capabilities. (Living Standard)
+## WHATWG
