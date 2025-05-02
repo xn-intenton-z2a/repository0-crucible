@@ -22,64 +22,66 @@
     <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
   </header>
   <section>
-    <h1 class="md-github"><a class="md-github__anchor" name="repository0-crucible" href="#repository0-crucible"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>repository0-crucible</h1>
-<p class="md-github"><code class="md-github">repository0-crucible</code> is a JavaScript library and CLI tool for generating OWL ontologies in JSON-LD format from JSON data. It provides a simple API to convert arbitrary JSON objects into OWL ontology documents and a command-line interface to integrate into data pipelines.</p>
-<p class="md-github"><strong class="md-github">Prerequisite:</strong> Node.js &gt;= 20</p>
+    <h1 class="md-github"><a class="md-github__anchor" name="owl-builder" href="#owl-builder"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>owl-builder</h1>
+<p class="md-github"><code class="md-github">owl-builder</code> is a JavaScript library and CLI tool for generating JSON-LD OWL ontology documents from input data. It provides a programmatic API (<code class="md-github">generateOntology</code>) and a command-line interface stub for future subcommands.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
-<p class="md-github">Install from npm:</p>
+<p class="md-github">Install via npm:</p>
 <pre class="md-github"><code class="md-github language-bash">npm install @xn-intenton-z2a/repository0-crucible
 </code></pre>
-<h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
-<ul class="md-github">
-<li class="md-github">Generate OWL ontology in JSON-LD from JSON data.</li>
-<li class="md-github">Easy-to-use library API: <code class="md-github">generateOntology</code>.</li>
-<li class="md-github">CLI support: <code class="md-github">--to-owl</code> and <code class="md-github">--ontology-base</code> flags.</li>
-<li class="md-github">Standard JSON-LD prefixes (<code class="md-github">owl</code>, <code class="md-github">rdf</code>) automatically included.</li>
-</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="library-api" href="#library-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Library API</h2>
-<p class="md-github">Import and call <code class="md-github">generateOntology</code>:</p>
-<pre class="md-github"><code class="md-github language-js">import { generateOntology } from &quot;@xn-intenton-z2a/repository0-crucible&quot;;
+<p class="md-github">Import the <code class="md-github">generateOntology</code> function:</p>
+<pre class="md-github"><code class="md-github language-js">import { generateOntology } from '@xn-intenton-z2a/repository0-crucible';
 
-const data = { Person: { name: &quot;Alice&quot; } };
-const options = {
-  ontologyIri: &quot;http://example.org/onto&quot;,
-  baseIri: &quot;http://example.org/base&quot;, // optional
-};
-
-const ontology = await generateOntology(data, options);
-console.log(JSON.stringify(ontology, null, 2));
+(async () =&gt; {
+  const data = {
+    Person: { name: 'Alice' },
+    City:   { population: 100000 },
+  };
+  const options = {
+    ontologyIri: 'http://example.org/ontology',
+    baseIri:     'http://example.org/base',
+  };
+  const ontology = await generateOntology(data, options);
+  console.log(JSON.stringify(ontology, null, 2));
+})();
 </code></pre>
 <h3 class="md-github"><a class="md-github__anchor" name="generateontologydata-options" href="#generateontologydata-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code class="md-github">generateOntology(data, options)</code></h3>
 <ul class="md-github">
-<li class="md-github"><code class="md-github">data</code> (Object): keys are term names, values are term property objects.</li>
-<li class="md-github"><code class="md-github">options.ontologyIri</code> (String, required): IRI for the ontology.</li>
-<li class="md-github"><code class="md-github">options.baseIri</code> (String, optional): base IRI for <code class="md-github">@base</code> in the <code class="md-github">@context</code>.</li>
-<li class="md-github">Returns: <code class="md-github">Promise&lt;Object&gt;</code> resolving to the OWL ontology document in JSON-LD.</li>
+<li class="md-github"><code class="md-github">data</code> (object): Keys are term names; values are term properties.</li>
+<li class="md-github"><code class="md-github">options</code> (object):
+<ul class="md-github">
+<li class="md-github"><code class="md-github">ontologyIri</code> (string, required): IRI for the ontology root.</li>
+<li class="md-github"><code class="md-github">baseIri</code> (string, optional): Base IRI for relative term IRIs.</li>
 </ul>
-<h2 class="md-github"><a class="md-github__anchor" name="cli-usage" href="#cli-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CLI Usage</h2>
-<p class="md-github">Read JSON data from stdin and output the ontology to stdout or redirect to a file:</p>
-<pre class="md-github"><code class="md-github language-bash">cat data.json \
-  | node src/lib/main.js --to-owl http://example.org/onto --ontology-base http://example.org/base \
-  &gt; ontology.json
+</li>
+<li class="md-github">Returns: Promise resolving to a JSON-LD OWL ontology document.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="command-line-interface" href="#command-line-interface"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Command-Line Interface</h2>
+<p class="md-github">The CLI entry point is <code class="md-github">src/lib/main.js</code>. Currently, it logs the parsed arguments:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js [subcommand] [options]
+# Example:
+node src/lib/main.js foo --bar baz
+# Output: Run with: [&quot;foo&quot;,&quot;--bar&quot;,&quot;baz&quot;]
 </code></pre>
-<p class="md-github">Use <code class="md-github">--help</code> to display available options:</p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
-</code></pre>
-<p class="md-github">Output:</p>
-<pre class="md-github"><code class="md-github">Usage: node main.js [options]
-Options:
-  --help                  Show this help message.
-  --to-owl &lt;ontologyIri&gt;  Generate OWL ontology JSON-LD for the input data.
-  --ontology-base &lt;IRI&gt;   Base IRI to include in the @context @base field.
-</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="features" href="#features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Features</h2>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">generateOntology</code>: Programmatic API to build JSON-LD OWL ontologies.</li>
+<li class="md-github">CLI stub for subcommands (future enhancement).</li>
+<li class="md-github">Planned subcommands (not yet implemented):
+<ul class="md-github">
+<li class="md-github"><code class="md-github">convert</code>: Convert a JSON file of term definitions into an ontology.</li>
+<li class="md-github"><code class="md-github">capital-cities</code>: Fetch capital cities from REST Countries API and build an ontology.</li>
+</ul>
+</li>
+</ul>
 <h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
-<p class="md-github">Contributions are welcome! Please see <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines on reporting issues, submitting changes, and updating documentation.</p>
+<p class="md-github">We welcome contributions! Please review our <a href="./CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for guidelines.</p>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
-<p class="md-github">Released under the MIT License. See <a href="./LICENSE" class="md-github">LICENSE</a> for details.</p>
+<p class="md-github">Released under the MIT License. See <a href="./LICENSE" class="md-github">LICENSE</a>.</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-05-01T23:21:19.035Z</p>
+    <p>Generated on 2025-05-02T00:37:19.416Z</p>
   </footer>
 </body>
 </html>
