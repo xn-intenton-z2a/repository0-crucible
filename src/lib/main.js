@@ -157,6 +157,98 @@ export async function main(args) {
     }
   }
 
+  if (subcommand === "list-terms") {
+    const argObj = {};
+    for (let i = 0; i < restArgs.length; i++) {
+      const arg = restArgs[i];
+      if (arg.startsWith("--")) {
+        const key = arg.slice(2);
+        const value = restArgs[i + 1];
+        argObj[key] = value;
+        i++;
+      }
+    }
+    const schema = z.object({
+      input: z.string().nonempty(),
+    });
+    const parse = schema.safeParse(argObj);
+    if (!parse.success) {
+      console.error(
+        `Error: ${parse.error.errors.map((e) => e.message).join(", ")}`
+      );
+      return 1;
+    }
+    const { input } = parse.data;
+    try {
+      const fileContent = await fs.readFile(input, "utf-8");
+      const data = JSON.parse(fileContent);
+      if (!Array.isArray(data["@graph"])) {
+        console.error("Invalid ontology: missing @graph array");
+        return 1;
+      }
+      for (const node of data["@graph"]) {
+        console.log(node["@id"]);
+      }
+      return 0;
+    } catch (error) {
+      console.error(`Error during list-terms: ${error.message}`);
+      return 1;
+    }
+  }
+
+  if (subcommand === "get-term") {
+    const argObj = {};
+    for (let i = 0; i < restArgs.length; i++) {
+      const arg = restArgs[i];
+      if (arg.startsWith("--")) {
+        const key = arg.slice(2);
+        const value = restArgs[i + 1];
+        argObj[key] = value;
+        i++;
+      }
+    }
+    const schema = z.object({
+      input: z.string().nonempty(),
+      term: z.string().nonempty(),
+      output: z.string().optional(),
+    });
+    const parse = schema.safeParse(argObj);
+    if (!parse.success) {
+      console.error(
+        `Error: ${parse.error.errors.map((e) => e.message).join(", ")}`
+      );
+      return 1;
+    }
+    const { input, term, output } = parse.data;
+    try {
+      const fileContent = await fs.readFile(input, "utf-8");
+      const data = JSON.parse(fileContent);
+      if (!Array.isArray(data["@graph"])) {
+        console.error("Invalid ontology: missing @graph array");
+        return 1;
+      }
+      const node = data["@graph"].find((n) => {
+        const id = n["@id"];
+        const local = id.includes("#") ? id.split("#").pop() : id;
+        return local === term;
+      });
+      if (!node) {
+        console.error(`Term not found: ${term}`);
+        return 1;
+      }
+      const serialized = JSON.stringify(node, null, 2);
+      if (output) {
+        await fs.writeFile(output, serialized, "utf-8");
+      } else {
+        console.log(serialized);
+      }
+      return 0;
+    } catch (error) {
+      console.error(`Error during get-term: ${error.message}`);
+      return 1;
+    }
+  }
+
   // Placeholder for other subcommands
   console.log(`Run with: ${JSON.stringify(cliArgs)}`);
   return 0;

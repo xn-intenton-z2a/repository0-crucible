@@ -38,7 +38,7 @@ import { generateOntology } from '@xn-intenton-z2a/repository0-crucible';
 
 ## CLI Usage
 
-The command-line entrypoint is `src/lib/main.js`. It supports diagnostics, conversion, and capital-cities subcommands, and serves as the base for future subcommands.
+The command-line entrypoint is `src/lib/main.js`. It supports diagnostics, conversion, capital-cities, list-terms, and get-term subcommands.
 
 ```bash
 # Show diagnostics information:
@@ -57,6 +57,16 @@ node src/lib/main.js capital-cities \
   [--base-iri http://example.org/base] \
   [--api-endpoint https://restcountries.com/v3.1/all] \
   [--output capitals.json]
+
+# List all term identifiers from an ontology file:
+node src/lib/main.js list-terms \
+  --input path/ontology.json
+
+# Retrieve a single term node from an ontology file:
+node src/lib/main.js get-term \
+  --input path/ontology.json \
+  --term TermName \
+  [--output out.json]
 
 # Run a command stub:
 node src/lib/main.js example --key value
@@ -144,6 +154,38 @@ The generated document contains:
 
 ---
 
-### Future Subcommands
+## List-Terms Subcommand
 
-- `list-terms` (planned): List all term identifiers from a JSON-LD ontology file.
+List all term identifiers from a JSON-LD ontology file.
+
+```bash
+node src/lib/main.js list-terms \
+  --input path/ontology.json
+```
+
+Options:
+
+- `--input` (string, required): Path to the JSON-LD ontology file.
+
+The command prints each term IRI on a separate line to stdout.
+
+---
+
+## Get-Term Subcommand
+
+Retrieve a single term node from a JSON-LD ontology file by term name.
+
+```bash
+node src/lib/main.js get-term \
+  --input path/ontology.json \
+  --term TermName \
+  [--output out.json]
+```
+
+Options:
+
+- `--input` (string, required): Path to the JSON-LD ontology file.
+- `--term` (string, required): Local term name to retrieve.
+- `--output` (string, optional): Path to write the term node JSON. If omitted, prints to stdout.
+
+The command outputs the JSON object for the requested term node, either to stdout or to the specified file.
