@@ -1,13 +1,227 @@
 #!/usr/bin/env node
 // src/lib/main.js
 
-import { fileURLToPath } from "url";
+import fs from 'fs/promises';
+import { fileURLToPath } from 'url';
+import { generateOntology } from './index.js';
 
-export function main(args) {
-  console.log(`Run with: ${JSON.stringify(args)}`);
+export async function main(args = process.argv.slice(2)) {
+  // Diagnostics
+  if (args.length > 0 && args[0] === '--diagnostics') {
+    console.log(
+      JSON.stringify(
+        {
+          version: process.env.npm_package_version,
+          node: process.version,
+          args: args.slice(1),
+        },
+        null,
+        2
+      )
+    );
+    return 0;
+  }
+
+  const cmd = args[0];
+  if (!cmd) {
+    return;
+  }
+
+  // Parse flags
+  const flags = {};
+  for (let i = 1; i < args.length; i++) {
+    const arg = args[i];
+    if (arg.startsWith('--')) {
+      const key = arg.slice(2);
+      const val = args[i + 1];
+      flags[key] = val;
+      i++;
+    }
+  }
+
+  try {
+    // Convert subcommand
+    if (cmd === 'convert') {
+      const input = flags.input;
+      const ontologyIri = flags['ontology-iri'];
+      const baseIri = flags['base-iri'];
+      if (!input || !ontologyIri) {
+        console.error('Missing required flags for convert');
+        return 1;
+      }
+      const content = await fs.readFile(input, 'utf-8');
+      const data = JSON.parse(content);
+      const doc = await generateOntology(data, { ontologyIri, baseIri });
+      const output = JSON.stringify(doc, null, 2);
+      if (flags.output) {
+        await fs.writeFile(flags.output, output, 'utf-8');
+      } else {
+        console.log(output);
+      }
+      return 0;
+    }
+
+    // Capital-cities subcommand
+    if (cmd === 'capital-cities') {
+      const ontologyIri = flags['ontology-iri'];
+      const baseIri = flags['base-iri'];
+      const apiEndpoint = flags['api-endpoint'] || 'https://restcountries.com/v3.1/all';
+      if (!ontologyIri) {
+        console.error('Missing required flags for capital-cities');
+        return 1;
+      }
+      let res;
+      try {
+        res = await fetch(apiEndpoint);
+      } catch (e) {
+        console.error(e.message);
+        return 1;
+      }
+      if (!res.ok) {
+        console.error(`Error fetching country data: HTTP ${res.status} ${res.statusText}`);
+        return 1;
+      }
+      const countries = await res.json();
+      const data = {};
+      for (const c of countries) {
+        if (c.capital && Array.isArray(c.capital) && c.capital.length > 0) {
+          data[c.name.common] = { capital: c.capital[0] };
+        }
+      }
+      const doc = await generateOntology(data, { ontologyIri, baseIri });
+      const output = JSON.stringify(doc, null, 2);
+      if (flags.output) {
+        await fs.writeFile(flags.output, output, 'utf-8');
+      } else {
+        console.log(output);
+      }
+      return 0;
+    }
+
+    // List-terms subcommand
+    if (cmd === 'list-terms') {
+      const input = flags.input;
+      if (!input) {
+        console.error('Missing required flags for list-terms');
+        return 1;
+      }
+      let content;
+      try {
+        content = await fs.readFile(input, 'utf-8');
+      } catch (e) {
+        console.error(e.message);
+        return 1;
+      }
+      let doc;
+      try {
+        doc = JSON.parse(content);
+      } catch (e) {
+        console.error(e.message);
+        return 1;
+      }
+      const graph = doc['@graph'];
+      if (!Array.isArray(graph)) {
+        console.error('Invalid ontology: missing @graph array');
+        return 1;
+      }
+      for (const node of graph) {
+        console.log(node['@id']);
+      }
+      return 0;
+    }
+
+    // Get-term subcommand
+    if (cmd === 'get-term') {
+      const input = flags.input;
+      const term = flags.term;
+      if (!input || !term) {
+        console.error('Missing required flags for get-term');
+        return 1;
+      }
+      let content;
+      try {
+        content = await fs.readFile(input, 'utf-8');
+      } catch (e) {
+        console.error(e.message);
+        return 1;
+      }
+      let doc;
+      try {
+        doc = JSON.parse(content);
+      } catch (e) {
+        console.error(e.message);
+        return 1;
+      }
+      const graph = doc['@graph'];
+      if (!Array.isArray(graph)) {
+        console.error('Invalid ontology: missing @graph array');
+        return 1;
+      }
+      const node = graph.find(
+        (n) => typeof n['@id'] === 'string' && n['@id'].endsWith(`#${term}`)
+      );
+      if (!node) {
+        console.error(`Term not found: ${term}`);
+        return 1;
+      }
+      const out = JSON.stringify(node, null, 2);
+      if (flags.output) {
+        await fs.writeFile(flags.output, out, 'utf-8');
+      } else {
+        console.log(out);
+      }
+      return 0;
+    }
+
+    // Filter subcommand
+    if (cmd === 'filter') {
+      const input = flags.input;
+      const prop = flags.property;
+      const value = flags.value;
+      if (!input || !prop || !value) {
+        console.error('Missing required flags for filter');
+        return 1;
+      }
+      let content;
+      try {
+        content = await fs.readFile(input, 'utf-8');
+      } catch (e) {
+        console.error(e.message);
+        return 1;
+      }
+      let doc;
+      try {
+        doc = JSON.parse(content);
+      } catch (e) {
+        console.error(e.message);
+        return 1;
+      }
+      const graph = doc['@graph'];
+      if (!Array.isArray(graph)) {
+        console.error('Error during filter: missing @graph array');
+        return 1;
+      }
+      const results = graph.filter((n) => n[prop] === value);
+      const out = JSON.stringify(results, null, 2);
+      if (flags.output) {
+        await fs.writeFile(flags.output, out, 'utf-8');
+      } else {
+        console.log(out);
+      }
+      return 0;
+    }
+
+    // Unknown subcommand
+    console.error(`Unknown command: ${cmd}`);
+    return 1;
+  } catch (e) {
+    console.error(`Error during ${cmd}: ${e.message}`);
+    return 1;
+  }
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const args = process.argv.slice(2);
-  main(args);
+  main().then((code) => {
+    if (code != null) process.exit(code);
+  });
 }
