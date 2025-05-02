@@ -46,6 +46,12 @@ Details on accessing process.argv, environment variables, exit codes, and synchr
 ## License  
 CC BY 4.0
 
+# Node.js URL Module
+## https://nodejs.org/api/url.html#url_fileurltopath_url
+The URL module provides utilities for URL resolution and parsing. Specifically, fileURLToPath transforms file:// URLs (used in import.meta.url) into file system paths. Understanding its behavior across platforms ensures correct file location resolution in ESM contexts, as used in the CLI diagnostic implementation. (Node.js v20.4.0)  
+## License  
+CC BY 4.0
+
 # Node.js ESM import.meta.url
 ## https://nodejs.org/api/esm.html#esm_import_meta_url
 Explains import.meta.url and how to derive file paths in ES modules (using fileURLToPath and dirname). Critical for locating package.json in the --diagnostics implementation without CommonJS. (Node.js Foundation)  
@@ -117,3 +123,21 @@ MIT
 A modular SPARQL query engine for JavaScript enabling federated query execution over diverse sources (HTTP, local files, RDFJS datasets). Documentation covers engine configuration, supported sources, optimization techniques, and extension points. Valuable reference for implementing on-the-fly querying or validation of JSON-LD OWL outputs. (Latest version 2024)  
 ## License  
 MIT
+
+# Yargs (CLI Argument Parser)
+## https://yargs.js.org/docs/
+Yargs is a robust command-line argument parsing library for Node.js. It simplifies the definition of commands, options, and validations, and automatically generates help and error messages. Integrating Yargs could streamline the manual parsing in main.js, improve user experience for convert and capital-cities subcommands, and facilitate future command extensions with built-in middleware and localization support. (Active project, widely adopted in the Node.js ecosystem)  
+## License  
+MIT
+
+# jsonld-cli (JSON-LD Command-Line Interface)
+## https://github.com/digitalbazaar/jsonld-cli
+The jsonld-cli package provides a command-line interface for JSON-LD operations (expansion, compaction, framing, normalization), built on top of jsonld.js. Its architecture demonstrates patterns for implementing streaming, modular subcommands, and error handling in a JSON-LD context. Reviewing its implementation guides enhancements to support advanced JSON-LD workflows in this CLI. (Last updated 2024)  
+## License  
+MIT
+
+# Understanding JSON Schema
+## https://json-schema.org/understanding-json-schema/
+This resource explains the JSON Schema standard with clear examples for object, array, and primitive schemas, including validation keywords, references, and conditional subschemas. Although CLI option validation uses Zod, JSON Schema best practices inform robust schema design, error messaging, and future export of Zod schemas to JSON Schema for interoperability. (Updated July 2024)  
+## License  
+CC0 (Public Domain)
