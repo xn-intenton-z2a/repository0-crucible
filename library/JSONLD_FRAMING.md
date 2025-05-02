@@ -1,213 +1,282 @@
 # JSONLD_FRAMING
 
 ## Crawl Summary
-Frame input documents by matching a JSON-LD frame structure using keys @context,@id,@type and framing flags (@embed,@explicit,@omitDefault,@omitGraph,@requireAll). The framing algorithm expands both input and frame, generates a flattened subject map, then recursively matches outermost frame object to select node objects, embedding or referencing based on embed flag. JsonLdProcessor.frame method signature returns a promise of the framed document. JsonLdOptions include embed('@once'||'@always'||'@never'), explicit(boolean), omitDefault(boolean), omitGraph(boolean), requireAll(boolean), processingMode('json-ld-1.1'||'json-ld-1.0'), documentLoader(function), base(string), expandContext(object).
+JsonLdProcessor.frame(input, frame, options) returns Promise<object> or invokes callback. JsonLdOptions framing-specific fields: embed:'@once'|'@always'|'@never' (default '@once'), explicit:boolean=false, omitDefault:boolean=false, omitGraph:boolean=false, requireAll:boolean=false, ordered:boolean=false. Framing keywords @embed, @explicit, @omitDefault, @omitGraph, @requireAll, @ordered override options. Algorithm: expand input/frame, generate node map, frame match, value pattern match, embed recursively, apply @default content, compact output. Error codes: invalidFrameError, invalidFrameKeywordError.
 
 ## Normalised Extract
 Table of Contents:
-1. Framing API Method  
-2. JsonLdOptions Properties  
-3. Frame Document Structure  
-4. Framing Flags and Their Effects  
-5. Matching Mechanisms  
-6. Usage Examples
+1. Framing API Method Signature
+2. Frame Options (JsonLdOptions)
+3. Framing Keywords
+4. Matching Features
+   4.1 Property Matching
+   4.2 Wildcard Matching
+   4.3 Absence Matching
+   4.4 Value Pattern Matching
+   4.5 @id Matching
+   4.6 Empty Frame
+5. Default Content (@default)
+6. Algorithm Steps
+7. Data Structures
+8. Reverse Framing
+9. Framing Named Graphs
 
-1. Framing API Method
-  Name: frame  
-  Input: any JSON-LD data (object or array)  
-  Frame: JSON-LD frame document (object)  
-  Options: JsonLdOptions  
-  Output: Promise resolving to framed JSON-LD document (object)
+1. Framing API Method Signature
+   Interface JsonLdProcessor {
+     frame(input: any, frame: object|any[], options?: JsonLdOptions): Promise<object>;
+     frame(input, frame, options, callback): void;
+   }
 
-2. JsonLdOptions Properties
-  embed: '@once'||'@always'||'@never' (default '@once')
-  explicit: boolean (default false)
-  omitDefault: boolean (default false)
-  omitGraph: boolean (default false)
-  requireAll: boolean (default false)
-  processingMode: 'json-ld-1.1'||'json-ld-1.0' (default 'json-ld-1.1')
-  documentLoader: function(Iri)->Promise<Response> (default built-in)
-  base: string (base IRI for expansion)
-  expandContext: object|array (context(s) applied during expansion)
+2. Frame Options (JsonLdOptions)
+   embed: '@once'|'@always'|'@never' (default '@once')
+   explicit: boolean (default false)
+   omitDefault: boolean (default false)
+   omitGraph: boolean (default false)
+   requireAll: boolean (default false)
+   ordered: boolean (default false)
 
-3. Frame Document Structure
-  Must contain @context mapping; optional @id and @type selectors; nested property names map values or frame objects; frame objects may include @default specifying fallback value for missing property or type.
+3. Framing Keywords
+   Use @embed, @explicit, @omitDefault, @omitGraph, @requireAll, @ordered within frame objects to set flags locally.
 
-4. Framing Flags and Their Effects
-  @embed controls object embedding vs reference: @once embeds first occurrence, @always embeds every, @never yields only references.
-  @explicit=true suppresses output of properties not explicitly declared in frame.
-  @omitDefault=true omits adding default-valued properties.
-  @omitGraph=true omits top-level @graph wrapper when data contains single node.
-  @requireAll=true requires all frame properties present in input for match.
+4. Matching Features
+4.1 Property Matching:
+   Frame property:value matches node objects with same property and value.
+4.2 Wildcard Matching:
+   property:{} matches any value present for that property.
+4.3 Absence Matching:
+   property:[] matches node objects lacking that property, adds null if explicit inclusion false.
+4.4 Value Pattern Matching:
+   property:{'@value':{}, '@language':'lang'} matches value objects with language tag.
+4.5 @id Matching:
+   '@id':'IRI' or array of IRIs matches nodes by identifier.
+4.6 Empty Frame:
+   {} matches all node objects at top-level.
 
-5. Matching Mechanisms
-  Property matching: exact literal or nested frame objects.
-  Wildcard ({}): match any value present for property.
-  Absence ([]): match absence of property and add null output if explicit false.
-  Value matching: frame may specify @value,@language,@type constraints nested.
-  ID matching: @id may be string or array of strings to match specific node IRI(s).
+5. Default Content (@default)
+   property:{'@default':value} in frame supplies default value when missing; defaults for @type supported.
 
-6. Usage Examples
-  - Basic call: frame(inputDoc,frameDoc,{embed:'@once'})
-  - Type-based frame selecting Library->Book->Chapter  
-  - Property matching example filtering by title or location  
-  - Wildcard and absence matching cases  
-  - Language-based value matching using @value and @language  
-  - ID-based framing with single or array of IRIs
+6. Algorithm Steps
+   expand input/frame
+   generate node map
+   apply Frame Matching Algorithm
+   value pattern matching
+   recursive embedding by embed flag
+   default insertion
+   compact with frame context
+
+7. Data Structures
+   JsonLdContext: map for term resolution
+   JsonLdOptions: framing and core API options
+
+8. Reverse Framing
+   Use JSON-LD API reverse flag on properties to invert embedding direction.
+
+9. Framing Named Graphs
+   Frame with @graph key to target named graphs; omitGraph controls top-level output.
+
 
 ## Supplementary Details
-Parameter values and defaults:
-embed: '@once' embeds the first matching node in place then references further matches; '@always' embeds all matches; '@never' never embeds, always uses references.  
-explicit: when true, only properties declared in frame appear in output, others are omitted.  
-omitDefault: when true, properties with default values from frame are omitted from output if missing in input.  
-omitGraph: when true and only one top-level node results, the @graph property is omitted.  
-requireAll: when true, frame matches only nodes containing all properties listed in frame; when false matches any listed property.  
-processingMode: 'json-ld-1.1' enables JSON-LD 1.1 framing, 'json-ld-1.0' disables 1.1-specific features or errors if context requests 1.1.  
-documentLoader signature: function(url: string): Promise<{contextUrl:string|null,documentUrl:string,response:object}>.  
-base: base IRI string used to resolve relative IRIs.  
-expandContext: JSON-LD context object or array inserted before expansion algorithm.  
-Implementation steps:
-1. Expand input and frame using JSON-LD expansion algorithm with options.processingMode, options.expandContext.  
-2. Generate node map by blank node inlining and subject flattening.  
-3. Starting from outermost frame object, recursively apply Frame Matching Algorithm, using Frame Matching and Value Pattern Matching algorithms.  
-4. Construct framed output, applying flags: embedding vs referencing, default values, explicit suppression, graph omission.  
-5. Compact output using frame's @context and JsonLdContext.  
+Implementation Steps:
+1. Expand document: expanded = await jsonld.expand(input, {expandContext, documentLoader, processingMode});
+2. Flatten expanded: flattened = await jsonld.flatten(expanded, {}, {documentLoader, processingMode});
+3. Frame flattened: framed = await jsonld.frame(flattened, frame, {embed:'@once', explicit:false, omitDefault:false, omitGraph:false, requireAll:false, ordered:false, documentLoader, processingMode});
+4. Compact framed: result = await jsonld.compact(framed, frameContext, {compactArrays, documentLoader, processingMode});
 
+JsonLdOptions defaults:
+  embed:'@once', explicit:false, omitDefault:false, omitGraph:false, requireAll:false, ordered:false
+
+DocumentLoader:
+  function(url:string):Promise<RemoteDocument>
+
+Error Behavior:
+- invalidFrameError: thrown if frame missing required keys or invalid JSON-LD structure
+- invalidFrameKeywordError: thrown if framing keyword value not in allowed set
+
+Reverse Framing:
+  options.expandContext may include '@reverse':{'prop':'@id'} to invert edges
+
+Named Graph Framing:
+  Frame object:
+    '@graph':{'@id':'graphIRI', 'prop':{...}}
+  omitGraph:true to inline nodes without @graph wrapper
 
 
 ## Reference Details
-API Signature:
-WebIDL:
+## API Method Signature
+
+```js
 interface JsonLdProcessor {
-  Promise<object> frame(object input, object frame, JsonLdOptions               options);
-};
+  frame(
+    input: any,
+    frame: object|any[],
+    options?: JsonLdOptions,
+    callback?: (err: JsonLdError|null, framed?: object, meta?: JsonLdMeta) => void
+  ): Promise<object> | void;
+}
+```
 
-JsonLdOptions WebIDL:
-dictionary JsonLdOptions {
-  boolean embed = '@once';
-  boolean explicit = false;
-  boolean omitDefault = false;
-  boolean omitGraph = false;
-  boolean requireAll = false;
-  DOMString processingMode = 'json-ld-1.1';
-  JsonLdDocumentLoader documentLoader = <built-in loader>;
-  DOMString base = null;
-  object|sequence<object> expandContext = [];
-};
+Parameters:
+- input: object|array|string|RemoteDocument (expanded or flattened JSON-LD)
+- frame: object|array|string (JSON-LD framing document)
+- options: JsonLdOptions
 
-JavaScript SDK Method Signature (jsonld.js v6+):
-jsonld.frame(inputDocument: object|Array<object>, frameDocument: object, options?: {
-  embed?: '@once'|'@always'|'@never',
-  explicit?: boolean,
-  omitDefault?: boolean,
-  omitGraph?: boolean,
-  requireAll?: boolean,
-  processingMode?: 'json-ld-1.1'|'json-ld-1.0',
-  documentLoader?: (url: string)=>Promise<{contextUrl: string|null,documentUrl: string,response: any}>,
-  base?: string,
-  expandContext?: object|Array<object>
-}): Promise<object>
+JsonLdOptions fields:
+- documentLoader?: DocumentLoader = user-supplied loader
+- base?: string = undefined
+- processingMode?: 'json-ld-1.0'|'json-ld-1.1' = 'json-ld-1.1'
+- expandContext?: any = undefined
+- compactArrays?: boolean = true
+- graph?: boolean = false
+- embed?: '@once'|'@always'|'@never' = '@once'
+- explicit?: boolean = false
+- omitDefault?: boolean = false
+- omitGraph?: boolean = false
+- requireAll?: boolean = false
+- ordered?: boolean = false
 
-Code Example:
-```javascript
-import jsonld from 'jsonld';
+Return:
+- Promise resolving to framed JSON-LD object
+- Or void if callback provided
 
-const input = require('./input.json');
-const frame = require('./frame.json');
+Errors:
+- JsonLdError.code = 'invalidFrameError'
+- JsonLdError.code = 'invalidFrameKeywordError'
 
-const options = {
-  embed: '@always',
-  explicit: true,
-  omitDefault: false,
-  omitGraph: true,
-  requireAll: true,
-  processingMode: 'json-ld-1.1',
-  documentLoader: customLoader,
-  base: 'http://example.org/',
-  expandContext: {'@vocab':'http://example.org/'}
-};
+## Code Example
 
-async function run() {
+```js
+const jsonld = require('jsonld');
+const inputDoc = require('./input.json');
+const frameDoc = require('./frame.json');
+const frameContext = {"@vocab":"http://example.org/"};
+
+async function runFraming() {
   try {
-    const result = await jsonld.frame(input, frame, options);
-    console.log(JSON.stringify(result, null, 2));
-  } catch(err) {
-    console.error('Framing error', err);
+    const expanded = await jsonld.expand(inputDoc, {processingMode:'json-ld-1.1'});
+    const flattened = await jsonld.flatten(expanded, {}, {processingMode:'json-ld-1.1'});
+    const options = {embed:'@once', explicit:false, omitDefault:false, omitGraph:false, requireAll:false, ordered:false};
+    const framed = await jsonld.frame(flattened, frameDoc, options);
+    const compacted = await jsonld.compact(framed, frameContext, {compactArrays:true});
+    console.log(JSON.stringify(compacted, null, 2));
+  } catch (err) {
+    console.error(err.code, err.message);
   }
 }
 
-run();
+runFraming();
 ```
 
-Best Practices:
-- Pre-flatten large documents before framing to improve performance.
-- Use explicit:true to avoid unexpected default nulls.
-- Choose embed mode based on output size and reference needs.
-- Supply custom documentLoader for offline environments.
+## Best Practices
+- Always expand and flatten before framing to normalize graph structure.
+- Supply a custom documentLoader for remote contexts.
+- Use explicit:true to output only declared frame properties.
+- Use omitDefault:true to avoid null placeholders for missing data.
+- Use ordered:true when deterministic embedding order is required.
 
-Troubleshooting:
-Command: node run-framing.js
-Expected console log: JSON document with nested structure matching frame.
-Error: Invalid @embed value => check frame.@embed must be '@once','@always' or '@never'.
-Error: Frame did not match any nodes => verify frame selectors (@type,@id,property values) against input expansion results.
-To debug subject map, insert console.log(nodeMap) after flattening algorithm in processor implementation.
+## Troubleshooting
 
+1. Invalid @embed value:
+   Error: JsonLdError.code === 'invalidFrameKeywordError'
+   Expected '@once', '@always', or '@never'.
+   Fix: ensure frame contains valid @embed value.
 
+2. No output or empty frame result:
+   - Check flattened subjects: console.log(await jsonld.flatten(...));
+   - Verify frame property paths match expanded data IRIs.
+   - Use wildcard {} or array [] patterns to broaden matches.
+
+3. Unexpected default nulls:
+   - Omit default placeholders with omitDefault:true.
+
+4. Debug metadata:
+   Provide callback to frame to inspect meta argument:
+   ```js
+   jsonld.frame(flattened, frameDoc, options, (err, framed, meta) => {
+     console.dir(meta, {depth:5});
+   });
+   ```
+
+5. CLI usage:
+   ```bash
+   jsonld frame input.json frame.json \
+     --embed=@once --explicit=false --omitDefault=false \
+     --omitGraph=false --requireAll=false --ordered=false \
+     -o output.json
+   ```
 
 ## Information Dense Extract
-JsonLdProcessor.frame(input,frame,options)->Promise<object>. Options: embed:'@once'|'@always'|'@never'(default '@once'), explicit:false, omitDefault:false, omitGraph:false, requireAll:false, processingMode:'json-ld-1.1', documentLoader:function, base:string, expandContext:object|array. Frame doc: must include @context, may include @id,@type/property constraints/@default. Flags:@embed controls embedding strategy; @explicit suppresses undeclared properties; @omitDefault suppresses defaulted nulls; @omitGraph suppresses top-level @graph; @requireAll enforces all properties for match. Matching: property exact, wildcard '{}', absence '[]', value patterns using @value/@language/@type, ID matching via @id string or array. Process: expand input+frame; generate subject map; apply Frame Matching Algorithm; compact result with context; return framed doc. Code example uses jsonld.frame(input,frame,options).
+JsonLdProcessor.frame(input:any,frame:any,options?:JsonLdOptions):Promise<object>. JsonLdOptions embed:'@once'|'@always'|'@never'(default '@once'), explicit:boolean=false, omitDefault:boolean=false, omitGraph:boolean=false, requireAll:boolean=false, ordered:boolean=false. Framing keywords @embed,@explicit,@omitDefault,@omitGraph,@requireAll,@ordered override options locally. Matching: property:value, wildcard {}, absence [], value patterns {@value, @language, @type, @direction}, @id string|array, empty frame {}. Default content via {@default:value} injects missing props. Algorithm: expand->node map->frame match->value pattern->embed->default->compact. Errors: invalidFrameError, invalidFrameKeywordError. Code: await jsonld.expand->flatten->frame->compact. Best practices: flatten input, custom documentLoader, use explicit/omitDefault/ordered flags. Troubleshoot via meta callback and CLI flags.
 
 ## Sanitised Extract
 Table of Contents:
-1. Framing API Method  
-2. JsonLdOptions Properties  
-3. Frame Document Structure  
-4. Framing Flags and Their Effects  
-5. Matching Mechanisms  
-6. Usage Examples
+1. Framing API Method Signature
+2. Frame Options (JsonLdOptions)
+3. Framing Keywords
+4. Matching Features
+   4.1 Property Matching
+   4.2 Wildcard Matching
+   4.3 Absence Matching
+   4.4 Value Pattern Matching
+   4.5 @id Matching
+   4.6 Empty Frame
+5. Default Content (@default)
+6. Algorithm Steps
+7. Data Structures
+8. Reverse Framing
+9. Framing Named Graphs
 
-1. Framing API Method
-  Name: frame  
-  Input: any JSON-LD data (object or array)  
-  Frame: JSON-LD frame document (object)  
-  Options: JsonLdOptions  
-  Output: Promise resolving to framed JSON-LD document (object)
+1. Framing API Method Signature
+   Interface JsonLdProcessor {
+     frame(input: any, frame: object|any[], options?: JsonLdOptions): Promise<object>;
+     frame(input, frame, options, callback): void;
+   }
 
-2. JsonLdOptions Properties
-  embed: '@once'||'@always'||'@never' (default '@once')
-  explicit: boolean (default false)
-  omitDefault: boolean (default false)
-  omitGraph: boolean (default false)
-  requireAll: boolean (default false)
-  processingMode: 'json-ld-1.1'||'json-ld-1.0' (default 'json-ld-1.1')
-  documentLoader: function(Iri)->Promise<Response> (default built-in)
-  base: string (base IRI for expansion)
-  expandContext: object|array (context(s) applied during expansion)
+2. Frame Options (JsonLdOptions)
+   embed: '@once'|'@always'|'@never' (default '@once')
+   explicit: boolean (default false)
+   omitDefault: boolean (default false)
+   omitGraph: boolean (default false)
+   requireAll: boolean (default false)
+   ordered: boolean (default false)
 
-3. Frame Document Structure
-  Must contain @context mapping; optional @id and @type selectors; nested property names map values or frame objects; frame objects may include @default specifying fallback value for missing property or type.
+3. Framing Keywords
+   Use @embed, @explicit, @omitDefault, @omitGraph, @requireAll, @ordered within frame objects to set flags locally.
 
-4. Framing Flags and Their Effects
-  @embed controls object embedding vs reference: @once embeds first occurrence, @always embeds every, @never yields only references.
-  @explicit=true suppresses output of properties not explicitly declared in frame.
-  @omitDefault=true omits adding default-valued properties.
-  @omitGraph=true omits top-level @graph wrapper when data contains single node.
-  @requireAll=true requires all frame properties present in input for match.
+4. Matching Features
+4.1 Property Matching:
+   Frame property:value matches node objects with same property and value.
+4.2 Wildcard Matching:
+   property:{} matches any value present for that property.
+4.3 Absence Matching:
+   property:[] matches node objects lacking that property, adds null if explicit inclusion false.
+4.4 Value Pattern Matching:
+   property:{'@value':{}, '@language':'lang'} matches value objects with language tag.
+4.5 @id Matching:
+   '@id':'IRI' or array of IRIs matches nodes by identifier.
+4.6 Empty Frame:
+   {} matches all node objects at top-level.
 
-5. Matching Mechanisms
-  Property matching: exact literal or nested frame objects.
-  Wildcard ({}): match any value present for property.
-  Absence ([]): match absence of property and add null output if explicit false.
-  Value matching: frame may specify @value,@language,@type constraints nested.
-  ID matching: @id may be string or array of strings to match specific node IRI(s).
+5. Default Content (@default)
+   property:{'@default':value} in frame supplies default value when missing; defaults for @type supported.
 
-6. Usage Examples
-  - Basic call: frame(inputDoc,frameDoc,{embed:'@once'})
-  - Type-based frame selecting Library->Book->Chapter  
-  - Property matching example filtering by title or location  
-  - Wildcard and absence matching cases  
-  - Language-based value matching using @value and @language  
-  - ID-based framing with single or array of IRIs
+6. Algorithm Steps
+   expand input/frame
+   generate node map
+   apply Frame Matching Algorithm
+   value pattern matching
+   recursive embedding by embed flag
+   default insertion
+   compact with frame context
+
+7. Data Structures
+   JsonLdContext: map for term resolution
+   JsonLdOptions: framing and core API options
+
+8. Reverse Framing
+   Use JSON-LD API reverse flag on properties to invert embedding direction.
+
+9. Framing Named Graphs
+   Frame with @graph key to target named graphs; omitGraph controls top-level output.
 
 ## Original Source
 JSON-LD Framing
@@ -215,84 +284,90 @@ https://www.w3.org/TR/json-ld11-framing/
 
 ## Digest of JSONLD_FRAMING
 
-# Features
+# Framing Extension to JSON-LD API
 
-## Framing
-Framing binds JSON-LD triple statements into a specific tree layout by matching a JSON-LD input document against a frame document. A frame document is a JSON-LD structure using keys:@context,@id,@type and other property names, plus framing keywords (@embed,@explicit,@default,@omitDefault,@omitGraph,@requireAll) to control matching and output shape.
+## 5.1 JsonLdProcessor.frame
 
-## Framing Flags
-- object embed flag (@embed): @once (default), @always, @never
-- explicit inclusion flag (@explicit): false (default), true
-- omit default flag (@omitDefault): false (default), true
-- omit graph flag (@omitGraph): false (default), true
-- require all flag (@requireAll): false (default), true
-
-## Matching Patterns
-- Match on properties: specify property name with literal value or nested frame
-- Wildcard matching: use empty map ({}) as value to match any value of that property
-- Absence matching: use empty array ([]) to match when property is not present
-- Value matching: frame nested structures with @value,@language,@type constraints
-- Identifier matching: use @id with string or array of IRIs
-
-# Application Programming Interface
-
-## JsonLdProcessor.frame(input, frame, options)
-WebIDL signature:
-```
-Promise<object> frame(object input, object frame, JsonLdOptions options);
-```  
-JavaScript signature (jsonld.js):
-```
-frame(inputDocument  object,  frameDocument  object,  options?  JsonLdOptions): Promise<object>
-```  
-Returns a promise resolving to the framed output document.
-
-## JsonLdOptions (fields and defaults)
-- embed: one of '@once'||'@always'||'@never' (default '@once')
-- explicit: boolean (default false)
-- omitDefault: boolean (default false)
-- omitGraph: boolean (default false)
-- requireAll: boolean (default false)
-- processingMode: string 'json-ld-1.1'||'json-ld-1.0' (default 'json-ld-1.1')
-- documentLoader: function (IRI)->Promise<Response> (default bundled loader)
-- base: string base IRI for relative resolution
-- expandContext: object or array of contexts to apply before expansion
-
-# Data Structures
-
-### JsonLdContext
-Map of term definitions and vocabulary mapping. Used for compaction of output.
-
-### Frame Document
-Must include @context. May include nested objects mapping property names to literal or frame objects.
-Frame objects may include @default keys for default values when matched data lacks that property.
-
-# Code Examples
-
-### Basic framing call
-```javascript
-const framed = await jsonld.frame(input, frame, {embed:'@once', explicit:false});
-```  
-### Nested frame structure  
-Frame selects nodes of type Library, embeds Books then Chapters:
-```json
-{  
-  "@context":{"@vocab":"http://example.org/"},  
-  "@type":"Library",  
-  "contains":{  
-    "@type":"Book",  
-    "contains":{"@type":"Chapter"}  
-  }  
+Interface JsonLdProcessor {
+  /**
+   * Frames a JSON-LD document by example, producing a tree layout matching a frame document.
+   * @param input  object|array|string|RemoteDocument JSON-LD expanded or flattened input
+   * @param frame  object|array|string         JSON-LD frame document
+   * @param options JsonLdOptions               framing options
+   * @param callback err, framed, meta        Node-style callback
+   * @returns Promise<object> framed document if callback omitted
+   */
+  frame(
+    input: any,
+    frame: object|any[],
+    options?: JsonLdOptions,
+    callback?: (err: JsonLdError|null, framed?: object, meta?: JsonLdMeta) => void
+  ): Promise<object> | void;
 }
-```
+
+## 5.3.2 JsonLdOptions (framing)
+
+Dictionary JsonLdOptions {
+  documentLoader?: DocumentLoader;           // loader for remote contexts
+  base?: string;                             // base IRI for expansion
+  processingMode?: 'json-ld-1.0'|'json-ld-1.1';
+  expandContext?: any;                       // context to apply during expand
+  compactArrays?: boolean;                   // omit arrays of single items
+  graph?: boolean;                           // treat input as graph
+
+  // framing-specific options:
+  embed?: '@once'|'@always'|'@never';       // default '@once'
+  explicit?: boolean;                       // require explicit properties, default false
+  omitDefault?: boolean;                    // omit default values, default false
+  omitGraph?: boolean;                      // omit top-level @graph if single node, default false
+  requireAll?: boolean;                     // require all frame props to match, default false
+  ordered?: boolean;                        // embed first-found node, default false
+}
+
+## 5.2 Error Handling
+
+Throws JsonLdError with codes:
+- invalidFrameError         if frame document is not valid JSON-LD
+- invalidFrameKeywordError  if frame keywords have invalid values
+
+## Framing Keywords (in-frame overrides options)
+
+Keyword    | Value                              | Effect
+-----------|------------------------------------|-------------------------------
+@embed     | @once | @always | @never       | sets embed flag
+@explicit  | true | false                    | sets explicit flag
+@omitDefault | true | false                  | sets omitDefault flag
+@omitGraph | true | false                    | sets omitGraph flag
+@requireAll | true | false                   | sets requireAll flag
+@ordered   | true | false                    | sets ordered flag
+
+## Configuration Defaults
+
+embed: "@once"
+explicit: false
+omitDefault: false
+omitGraph: false
+requireAll: false
+ordered: false
+
+## Framing Algorithm Overview
+
+1. Expand input and frame to internal representation.
+2. Generate node map via Node Map Generation algorithm.
+3. Apply Frame Matching Algorithm per frame node object.
+4. Use Value Pattern Matching Algorithm for @value, @language, @type, @direction.
+5. Recursively embed matching node objects based on embed flag.
+6. Insert default content for missing properties using @default in frame.
+7. Compact result using frame context to produce JSON-LD.
+
 
 ## Attribution
 - Source: JSON-LD Framing
 - URL: https://www.w3.org/TR/json-ld11-framing/
 - License: W3C Document License
-- Crawl Date: 2025-05-02T14:48:52.310Z
-- Data Size: 11430591 bytes
-- Links Found: 67909
+- Crawl Date: 2025-05-02T15:48:35.290Z
+- Data Size: 9690892 bytes
+- Links Found: 58880
 
 ## Retrieved
 2025-05-02
