@@ -38,7 +38,7 @@ import { generateOntology } from '@xn-intenton-z2a/repository0-crucible';
 
 ## CLI Usage
 
-The command-line entrypoint is `src/lib/main.js`. It supports diagnostics, conversion, capital-cities, list-terms, and get-term subcommands.
+The command-line entrypoint is `src/lib/main.js`. It supports diagnostics, conversion, capital-cities, list-terms, get-term, and filter subcommands.
 
 ```bash
 # Show diagnostics information:
@@ -68,126 +68,33 @@ node src/lib/main.js get-term \
   --term TermName \
   [--output out.json]
 
-# Run a command stub:
-node src/lib/main.js example --key value
-# Output:
-# Run with: ["example","--key","value"]
-```
-
----
-
-## Diagnostics Mode
-
-Use the `--diagnostics` flag to print runtime environment and dependency information as JSON:
-
-```bash
-node src/lib/main.js --diagnostics
-```
-
-The output includes:
-
-- `packageVersion`: the version of the owl-builder package.
-- `nodeVersion`: the current Node.js version.
-- `platform`: the operating system platform.
-- `dependencies`: an object listing direct dependencies and their versions.
-
-Example output:
-
-```json
-{
-  "packageVersion": "1.2.0-0",
-  "nodeVersion": "v20.4.1",
-  "platform": "linux",
-  "dependencies": {
-    "openai": "^4.96.2",
-    "dotenv": "^16.5.0"
-  }
-}
-```
-
----
-
-## Convert Subcommand
-
-Convert a JSON file of term definitions into a JSON-LD OWL ontology document.
-
-```bash
-node src/lib/main.js convert \
-  --input path/terms.json \
-  --ontology-iri http://example.org/onto \
-  [--base-iri http://example.org/base] \
-  [--output out.json]
-```
-
-The generated document contains:
-
-- `@context`: with `owl`, `rdf`, and optional `@base` entries.
-- `@id`: equal to the provided ontology IRI.
-- `@graph`: an array of term nodes, each with an `@id` and the term's properties.
-
----
-
-## Capital-Cities Subcommand
-
-Fetch capital city data from a public API and generate a JSON-LD OWL ontology document.
-
-```bash
-node src/lib/main.js capital-cities \
-  --ontology-iri http://example.org/onto \
-  [--base-iri http://example.org/base] \
-  [--api-endpoint https://restcountries.com/v3.1/all] \
-  [--output capitals.json]
-```
-
-Options:
-
-- `--ontology-iri` (string, required): IRI for the ontology document.
-- `--base-iri` (string, optional): Base IRI for term identifiers in the context.
-- `--api-endpoint` (string, optional): REST API endpoint for country data (default: `https://restcountries.com/v3.1/all`).
-- `--output` (string, optional): Path to write the output JSON-LD file. If omitted, prints to stdout.
-
-The generated document contains:
-
-- `@context`: with `owl`, `rdf`, and optional `@base` entries.
-- `@id`: equal to the provided ontology IRI.
-- `@graph`: an array of country nodes, each with an `@id` and a `capital` property.
-
----
-
-## List-Terms Subcommand
-
-List all term identifiers from a JSON-LD ontology file.
-
-```bash
-node src/lib/main.js list-terms \
-  --input path/ontology.json
-```
-
-Options:
-
-- `--input` (string, required): Path to the JSON-LD ontology file.
-
-The command prints each term IRI on a separate line to stdout.
-
----
-
-## Get-Term Subcommand
-
-Retrieve a single term node from a JSON-LD ontology file by term name.
-
-```bash
-node src/lib/main.js get-term \
+# Filter ontology nodes by property and value:
+node src/lib/main.js filter \
   --input path/ontology.json \
-  --term TermName \
+  --property PropertyName \
+  --value Value \
+  [--output out.json]
+```
+
+---
+
+### Filter Subcommand
+
+Filter ontology nodes by a specified property and value, producing a JSON-LD fragment.
+
+```bash
+node src/lib/main.js filter \
+  --input path/ontology.json \
+  --property PropertyName \
+  --value Value \
   [--output out.json]
 ```
 
 Options:
 
 - `--input` (string, required): Path to the JSON-LD ontology file.
-- `--term` (string, required): Local term name to retrieve.
-- `--output` (string, optional): Path to write the term node JSON. If omitted, prints to stdout.
+- `--property` (string, required): Node property to filter by.
+- `--value` (string, required): Value to match.
+- `--output` (string, optional): Path to write the output JSON fragment. If omitted, prints to stdout.
 
-The command outputs the JSON object for the requested term node, either to stdout or to the specified file.
-
----
+The command outputs a JSON array of matching nodes, either to stdout or to the specified file. It always exits 0 on success, even if no nodes match (empty array).

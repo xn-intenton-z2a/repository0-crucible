@@ -86,7 +86,6 @@ export async function main(args) {
   }
 
   if (subcommand === "capital-cities") {
-    // Parse flags
     const argObj = {};
     for (let i = 0; i < restArgs.length; i++) {
       const arg = restArgs[i];
@@ -249,7 +248,52 @@ export async function main(args) {
     }
   }
 
-  // Placeholder for other subcommands
+  if (subcommand === "filter") {
+    const argObj = {};
+    for (let i = 0; i < restArgs.length; i++) {
+      const arg = restArgs[i];
+      if (arg.startsWith("--")) {
+        const key = arg.slice(2);
+        const value = restArgs[i + 1];
+        argObj[key] = value;
+        i++;
+      }
+    }
+    const schemaFilter = z.object({
+      input: z.string().nonempty(),
+      property: z.string().nonempty(),
+      value: z.string().nonempty(),
+      output: z.string().optional(),
+    });
+    const parseFilter = schemaFilter.safeParse(argObj);
+    if (!parseFilter.success) {
+      console.error(
+        `Error: ${parseFilter.error.errors.map((e) => e.message).join(", ")}`
+      );
+      return 1;
+    }
+    const { input: inputFile, property, value: filterValue, output: outputFile } = parseFilter.data;
+    try {
+      const fileContent = await fs.readFile(inputFile, "utf-8");
+      const data = JSON.parse(fileContent);
+      if (!Array.isArray(data["@graph"])) {
+        console.error("Error during filter: missing @graph array");
+        return 1;
+      }
+      const matches = data["@graph"].filter((node) => node[property] === filterValue);
+      const serialized = JSON.stringify(matches, null, 2);
+      if (outputFile) {
+        await fs.writeFile(outputFile, serialized, "utf-8");
+      } else {
+        console.log(serialized);
+      }
+      return 0;
+    } catch (error) {
+      console.error(`Error during filter: ${error.message}`);
+      return 1;
+    }
+  }
+
   console.log(`Run with: ${JSON.stringify(cliArgs)}`);
   return 0;
 }
