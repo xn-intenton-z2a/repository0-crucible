@@ -16,7 +16,33 @@ const defaultFaces = [
   "(¬_¬)"
 ];
 
+function printUsage() {
+  const usage = [
+    "Usage: node src/lib/main.js [options]",
+    "",
+    "A CLI tool to output random ASCII facial expressions.",
+    "",
+    "Options:",
+    "  -h, --help        Show this help message and exit",
+    "  --faces <path>    Path to a YAML file defining custom faces",
+    "  --seed <number>   Seed for deterministic face selection",
+    "  --count <n>       Number of faces to output (default 1)",
+    "",
+    "Examples:",
+    "  node src/lib/main.js",
+    "  node src/lib/main.js --faces custom_faces.yaml --count 3",
+    "  node src/lib/main.js --help"
+  ].join("\n");
+  console.log(usage);
+}
+
 export function main(args) {
+  // Help flag
+  if (args.includes("--help") || args.includes("-h")) {
+    printUsage();
+    process.exit(0);
+  }
+
   // Parse --faces
   const facesIdx = args.indexOf("--faces");
   let faces = defaultFaces;
