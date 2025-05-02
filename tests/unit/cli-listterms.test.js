@@ -2,6 +2,13 @@ import { describe, test, expect, vi, afterEach } from "vitest";
 import * as fs from "node:fs/promises";
 import { main } from "@src/lib/main.js";
 
+// Allow fs.readFile to be spied on by making the property configurable
+Object.defineProperty(fs, "readFile", {
+  configurable: true,
+  writable: true,
+  value: fs.readFile,
+});
+
 describe("List-Terms Subcommand", () => {
   afterEach(() => {
     vi.restoreAllMocks();

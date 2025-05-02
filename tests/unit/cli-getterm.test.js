@@ -4,6 +4,13 @@ import os from "os";
 import path from "path";
 import { main } from "@src/lib/main.js";
 
+// Allow fs.readFile to be spied on by making the property configurable
+Object.defineProperty(fs, "readFile", {
+  configurable: true,
+  writable: true,
+  value: fs.readFile,
+});
+
 describe("Get-Term Subcommand", () => {
   afterEach(() => {
     vi.restoreAllMocks();
