@@ -102,6 +102,25 @@ Options:
 
 The command outputs the JSON object for the requested term node, either to stdout or to the specified file.
 
+**Filter Subcommand**
+
+Filter ontology nodes by a specified property and value, producing a JSON-LD fragment:
+```bash
+node src/lib/main.js filter \
+  --input path/ontology.json \
+  --property PropertyName \
+  --value Value \
+  [--output out.json]
+```
+
+Options:
+- `--input` (string, required): Path to the JSON-LD ontology file.
+- `--property` (string, required): Node property to filter by.
+- `--value` (string, required): Value to match.
+- `--output` (string, optional): Path to write the output JSON fragment. If omitted, prints to stdout.
+
+The command outputs a JSON array of matching nodes, either to stdout or to the specified file.
+
 **Unknown Commands**
 
 Any unrecognized subcommand or flag combination will be echoed back:
@@ -112,14 +131,15 @@ node src/lib/main.js foo --bar baz
 
 ## Features
 
-- `generateOntology`: Programmatic API to build JSON-LD OWL ontologies.
-- CLI subcommands:
-  - `convert`: Convert a JSON file of term definitions into a JSON-LD OWL ontology.
+- Programmatic API:
+  - `generateOntology`: Build JSON-LD OWL ontology documents from JavaScript objects.
+- CLI Subcommands:
+  - `--diagnostics`: Print environment and dependency information.
+  - `convert`: Convert a JSON file of term definitions into an OWL ontology.
   - `capital-cities`: Fetch capital cities from REST Countries API and generate an ontology.
-  - `list-terms`: List all term identifiers from a JSON-LD ontology file.
-  - `get-term`: Retrieve a single term node from a JSON-LD ontology file.
-- Future subcommands (not yet implemented):
-  - `filter`: Filter ontology nodes by a specified property and value, producing a JSON-LD fragment.
+  - `list-terms`: List term identifiers from a JSON-LD ontology file.
+  - `get-term`: Retrieve a specific term node by local name.
+  - `filter`: Filter ontology nodes by property and value, producing a JSON-LD fragment.
 
 ## Contributing
 
