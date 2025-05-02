@@ -1,70 +1,68 @@
 # Overview
 
-Consolidate all command-line interface functionality into a single coherent feature supporting convert, capital-cities, list-terms, get-term, filter, and query subcommands. Ensure consistent argument parsing, Zod validation, error handling, and output behavior across all commands for a unified CLI experience.
+Implement a unified command-line interface entrypoint in src/lib/main.js that dispatches subcommands, validates flags with Zod, handles I/O errors, and outputs JSON or logs errors consistently. Support diagnostics and core subcommands for ontology conversion and querying.
 
 # Implementation
 
-1. Command Dispatch
-   - Recognize global flag --diagnostics before any subcommand.
-   - Extract the first positional argument as the subcommand name.
-   - On unrecognized subcommand, print an error to stderr and exit with code 1.
+1. Dispatch Logic
+   - Recognize global flag --diagnostics before any subcommand and print diagnostic info (version, node version, args) to stdout with exit code 0.
+   - Extract first positional argument as subcommand name and route to handler functions.
+   - On unknown subcommand, log error to stderr: "Unknown command: <subcommand>", exit code 1.
 
 2. Shared Argument Parsing
-   - Iterate restArgs, capture flags prefixed with -- and their values.
-   - Validate flags per subcommand using Zod schemas.
-   - On validation failure, log all error messages to stderr and return exit code 1.
+   - For each subcommand define a Zod schema for expected flags and types.
+   - Parse flags: collect args starting with -- and their values, map to object.
+   - Validate with Zod; on failure, log each error to stderr, exit code 1.
 
-3. Convert Subcommand
-   - Flags: --input (string, required), --ontology-iri (string, required), --base-iri (string, optional), --output (string, optional).
-   - Read JSON from input file, call generateOntology, serialize with indent 2, write to output file or stdout.
-   - On errors, log "Error during conversion: <message>" and exit 1.
+3. I/O Helpers
+   - Read JSON files with fs/promises.readFile; catch and log I/O and JSON parse errors as "Error during <subcommand>: <message>", exit code 1.
+   - Write output with fs/promises.writeFile if --output flag provided; otherwise write to stdout via console.log(JSON.stringify(value, null, 2)).
 
-4. Capital-Cities Subcommand
-   - Flags: --ontology-iri (string, required), --base-iri (string, optional), --api-endpoint (string, optional default https://restcountries.com/v3.1/all), --output (string, optional).
-   - Fetch country data, handle non-2xx responses with descriptive error and exit 1.
-   - Build term map for each country with a non-empty capital, call generateOntology, serialize, and write or print.
-   - On errors, log "Error during capital-cities: <message>" and exit 1.
+# Subcommands
 
-5. List-Terms Subcommand
-   - Flags: --input (string, required).
-   - Read JSON-LD, validate that @graph is an array, print each node @id on a separate line.
-   - On missing @graph, log "Invalid ontology: missing @graph array" and exit 1.
-   - On other errors, log "Error during list-terms: <message>" and exit 1.
+- convert
+  - Flags: --input (string, required), --ontology-iri (string, required), --base-iri (string, optional), --output (string, optional).
+  - Read JSON from input, call generateOntology, serialize with indent 2, write to file or stdout.
 
-6. Get-Term Subcommand
-   - Flags: --input (string, required), --term (string, required), --output (string, optional).
-   - Read JSON-LD, validate @graph array, locate node by local name (after '#'), serialize node, write or print.
-   - If not found, log "Term not found: <term>" and exit 1.
-   - On errors, log "Error during get-term: <message>" and exit 1.
+- capital-cities
+  - Flags: --ontology-iri (string, required), --base-iri (string, optional), --api-endpoint (string, optional, default https://restcountries.com/v3.1/all), --output (string, optional).
+  - Fetch country data, on non-2xx response log "Error fetching country data: HTTP <status> <statusText>", exit 1.
+  - Build data map for non-empty capitals, call generateOntology, serialize, output.
 
-7. Filter Subcommand
-   - Flags: --input (string, required), --property (string, required), --value (string, required), --output (string, optional).
-   - Read JSON-LD, validate @graph array, filter nodes where node[property] strictly equals value, serialize matches.
-   - Write to output file or stdout. On missing @graph, log "Error during filter: missing @graph array" and exit 1.
-   - On errors, log "Error during filter: <message>" and exit 1.
+- list-terms
+  - Flags: --input (string, required).
+  - Read JSON-LD, ensure @graph is array; on missing log "Invalid ontology: missing @graph array", exit 1.
+  - Log each node @id to stdout on separate lines.
 
-8. Query Subcommand
-   - Flags: --input (string, required), --pointer (string, required), --output (string, optional).
-   - Read and parse input JSON file. Validate pointer syntax: must start with '/'.
-   - Implement JSON Pointer resolver: split on '/', unescape '~1' to '/' and '~0' to '~', traverse objects and arrays, throw descriptive errors on missing property or out-of-range index.
-   - Serialize the extracted value with indent 2, write to output or stdout.
-   - Catch ReferenceError, RangeError, TypeError, or I/O errors, log "Error during query: <message>" and exit 1.
+- get-term
+  - Flags: --input (string, required), --term (string, required), --output (string, optional).
+  - Read JSON-LD, validate @graph, find node with @id ending in #term; if not found log "Term not found: <term>", exit 1.
+  - Serialize node, write to output or stdout.
+
+- filter
+  - Flags: --input (string, required), --property (string, required), --value (string, required), --output (string, optional).
+  - Read JSON-LD, validate @graph, filter nodes where node[property] strictly equals value.
+  - Output JSON array of matches.
+
+- query
+  - Flags: --input (string, required), --pointer (string, required), --output (string, optional).
+  - Validate pointer starts with '/'; on invalid pointer log "Error during query: <message>", exit 1.
+  - Implement evaluatePointer as per JSON_POINTER.md; on ReferenceError, RangeError, TypeError catch and log error.
+  - Serialize extracted value and output.
 
 # Testing
 
-Add tests in tests/unit/cli-query.test.js:  
- • Successful extraction to stdout for nested values.  
- • Writing result to file with --output.  
- • Missing required flags exits with code 1 and logs validation errors.  
- • Invalid JSON input exits with code 1 and logs error.  
- • Pointer without leading slash exits with code 1 and descriptive error.  
- • Pointer to non-existent path exits with code 1 with descriptive error.
+- Add tests in tests/unit/cli-query.test.js covering:
+  • Successful pointer extraction to stdout.
+  • Writing to file with --output.
+  • Missing flags exits 1 and logs validation errors.
+  • Invalid pointer syntax and non-existent path yield descriptive errors and exit 1.
 
 # Documentation
 
-- Update README.md under the Command-Line Interface section to document the query subcommand with flags --input, --pointer, --output and example usages.
-- Update docs/USAGE.md in CLI Usage with a section for query demonstrating invocation and expected output.
+- Update README.md under CLI Usage to add diagnostics and query sections with flags --input, --pointer, --output and examples.
+- Update docs/USAGE.md to include query usage in CLI Usage guide with examples.
 
 # Consistency
 
-Ensure all additions follow CONTRIBUTING.md guidelines, maintain code style, include tests, and integrate seamlessly with existing subcommand patterns.
+Follow CONTRIBUTING.md: ESM modules, Node 20 compatibility, tests with Vitest, use zod for validation, consistent error messages, code style, and logging conventions.
