@@ -189,3 +189,5 @@ Options:
 - `--output` (string, optional): Path to write the term node JSON. If omitted, prints to stdout.
 
 The command outputs the JSON object for the requested term node, either to stdout or to the specified file.
+
+---
