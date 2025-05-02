@@ -1,6 +1,6 @@
 # owl-builder
 
-`owl-builder` is a JavaScript library and CLI tool for generating JSON-LD OWL ontology documents from input data. It provides a programmatic API (`generateOntology`) and a command-line interface stub for future subcommands.
+`owl-builder` is a JavaScript library and CLI tool for generating JSON-LD OWL ontology documents from input data. It provides a programmatic API (`generateOntology`) and a command-line interface with subcommands for conversion and data fetching.
 
 ## Installation
 
@@ -41,11 +41,43 @@ import { generateOntology } from '@xn-intenton-z2a/repository0-crucible';
 
 ## Command-Line Interface
 
-The CLI entry point is `src/lib/main.js`. Currently, it logs the parsed arguments:
+The CLI entry point is `src/lib/main.js`. It supports commands for diagnostics, conversion, and fetching capital city data.
+
+**Diagnostics**
 
 ```bash
-node src/lib/main.js [subcommand] [options]
-# Example:
+node src/lib/main.js --diagnostics
+```
+
+Prints runtime environment and dependency information as JSON.
+
+**Convert Subcommand**
+
+Convert a JSON file of term definitions into a JSON-LD OWL ontology document:
+
+```bash
+node src/lib/main.js convert \
+  --input path/terms.json \
+  --ontology-iri http://example.org/onto \
+  [--base-iri http://example.org/base] \
+  [--output out.json]
+```
+
+**Capital-Cities Subcommand**
+
+Fetch capital city data from a public API and generate a JSON-LD OWL ontology document:
+
+```bash
+node src/lib/main.js capital-cities \
+  --ontology-iri http://example.org/onto \
+  [--base-iri http://example.org/base] \
+  [--api-endpoint https://restcountries.com/v3.1/all] \
+  [--output capitals.json]
+```
+
+**Unknown Commands**
+
+```bash
 node src/lib/main.js foo --bar baz
 # Output: Run with: ["foo","--bar","baz"]
 ```
@@ -53,10 +85,11 @@ node src/lib/main.js foo --bar baz
 ## Features
 
 - `generateOntology`: Programmatic API to build JSON-LD OWL ontologies.
-- CLI stub for subcommands (future enhancement).
-- Planned subcommands (not yet implemented):
-  - `convert`: Convert a JSON file of term definitions into an ontology.
-  - `capital-cities`: Fetch capital cities from REST Countries API and build an ontology.
+- CLI subcommands:
+  - `convert`: Convert a JSON file of term definitions into a JSON-LD OWL ontology.
+  - `capital-cities`: Fetch capital cities from REST Countries API and generate an ontology.
+- Future subcommands (not yet implemented):
+  - `list-terms`: List all term identifiers from a JSON-LD ontology file.
 
 ## Contributing
 
