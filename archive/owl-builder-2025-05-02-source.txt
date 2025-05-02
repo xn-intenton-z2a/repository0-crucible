@@ -1,0 +1,343 @@
+src/lib/index.js
+# src/lib/index.js
+// src/lib/index.js
+
+export default undefined;
+
+/**
+ * Generate a JSON-LD OWL ontology document from input data.
+ * @param {object} data - keys are term names, values are term properties
+ * @param {object} options - { ontologyIri: string, baseIri?: string }
+ * @returns {Promise<object>} JSON-LD document
+ */
+export async function generateOntology(data, options) {
+  const { ontologyIri, baseIri } = options || {};
+  if (!ontologyIri) {
+    throw new Error("Missing ontologyIri option");
+  }
+  const context = {
+    owl: "http://www.w3.org/2002/07/owl#",
+    rdf: "http://www.w3.org/1999/02/22-rdf-syntax-ns#",
+  };
+  if (baseIri) {
+    context["@base"] = baseIri;
+  }
+  const graph = [];
+  for (const term in data) {
+    const node = {
+      "@id": `${ontologyIri}#${term}`,
+      ...data[term],
+    };
+    graph.push(node);
+  }
+  return {
+    "@context": context,
+    "@id": ontologyIri,
+    "@graph": graph,
+  };
+}
+src/lib/main.js
+# src/lib/main.js
+#!/usr/bin/env node
+// src/lib/main.js
+
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
+import { readFileSync } from "fs";
+import * as fs from "node:fs/promises";
+import { z } from "zod";
+import { generateOntology } from "./index.js";
+
+/**
+ * Main entrypoint for CLI
+ * @param {string[]} [args] CLI arguments (excluding node and script path)
+ * @returns {Promise<number>} exit code (0 for success, 1 for error)
+ */
+export async function main(args) {
+  const cliArgs = args ?? process.argv.slice(2);
+
+  if (cliArgs.includes("--diagnostics")) {
+    try {
+      const __filename = fileURLToPath(import.meta.url);
+      const __dirname = dirname(__filename);
+      const pkgPath = join(__dirname, "..", "..", "package.json");
+      const pkgContent = readFileSync(pkgPath, "utf-8");
+      const pkg = JSON.parse(pkgContent);
+      const diagnostic = {
+        packageVersion: pkg.version,
+        nodeVersion: process.version,
+        platform: process.platform,
+        dependencies: pkg.dependencies,
+      };
+      console.log(JSON.stringify(diagnostic, null, 2));
+      return 0;
+    } catch (error) {
+      console.error(`Error reading package.json: ${error.message}`);
+      return 1;
+    }
+  }
+
+  const [subcommand, ...restArgs] = cliArgs;
+
+  if (subcommand === "convert") {
+    const argObj = {};
+    for (let i = 0; i < restArgs.length; i++) {
+      const arg = restArgs[i];
+      if (arg.startsWith("--")) {
+        const key = arg.slice(2);
+        const value = restArgs[i + 1];
+        argObj[key] = value;
+        i++;
+      }
+    }
+    const schema = z.object({
+      input: z.string().nonempty(),
+      "ontology-iri": z.string().nonempty(),
+      "base-iri": z.string().optional(),
+      output: z.string().optional(),
+    });
+    const parse = schema.safeParse(argObj);
+    if (!parse.success) {
+      console.error(
+        `Error: ${parse.error.errors.map((e) => e.message).join(", ")}`
+      );
+      return 1;
+    }
+    const { input, "ontology-iri": ontologyIri, "base-iri": baseIri, output } =
+      parse.data;
+    try {
+      const fileContent = await fs.readFile(input, "utf-8");
+      const data = JSON.parse(fileContent);
+      const ontology = await generateOntology(data, {
+        ontologyIri,
+        baseIri,
+      });
+      const serialized = JSON.stringify(ontology, null, 2);
+      if (output) {
+        await fs.writeFile(output, serialized, "utf-8");
+      } else {
+        console.log(serialized);
+      }
+      return 0;
+    } catch (error) {
+      console.error(`Error during conversion: ${error.message}`);
+      return 1;
+    }
+  }
+
+  if (subcommand === "capital-cities") {
+    const argObj = {};
+    for (let i = 0; i < restArgs.length; i++) {
+      const arg = restArgs[i];
+      if (arg.startsWith("--")) {
+        const key = arg.slice(2);
+        const value = restArgs[i + 1];
+        argObj[key] = value;
+        i++;
+      }
+    }
+    const schema = z.object({
+      "ontology-iri": z.string().nonempty(),
+      "base-iri": z.string().optional(),
+      "api-endpoint": z.string().optional(),
+      output: z.string().optional(),
+    });
+    const parse = schema.safeParse(argObj);
+    if (!parse.success) {
+      console.error(
+        `Error: ${parse.error.errors.map((e) => e.message).join(", ")}`
+      );
+      return 1;
+    }
+    const {
+      "ontology-iri": ontologyIri,
+      "base-iri": baseIri,
+      "api-endpoint": apiEndpoint,
+      output,
+    } = parse.data;
+    const endpoint = apiEndpoint ?? "https://restcountries.com/v3.1/all";
+    try {
+      const response = await fetch(endpoint);
+      if (!response.ok) {
+        console.error(
+          `Error fetching country data: HTTP ${response.status} ${response.statusText}`
+        );
+        return 1;
+      }
+      const countries = await response.json();
+      const termMap = {};
+      for (const country of countries) {
+        if (
+          country.capital &&
+          Array.isArray(country.capital) &&
+          country.capital.length > 0
+        ) {
+          const name =
+            country.name?.common ?? country.name?.official;
+          if (name) {
+            termMap[name] = { capital: country.capital[0] };
+          }
+        }
+      }
+      const ontology = await generateOntology(termMap, {
+        ontologyIri,
+        baseIri,
+      });
+      const serialized = JSON.stringify(ontology, null, 2);
+      if (output) {
+        await fs.writeFile(output, serialized, "utf-8");
+      } else {
+        console.log(serialized);
+      }
+      return 0;
+    } catch (error) {
+      console.error(`Error during capital-cities: ${error.message}`);
+      return 1;
+    }
+  }
+
+  if (subcommand === "list-terms") {
+    const argObj = {};
+    for (let i = 0; i < restArgs.length; i++) {
+      const arg = restArgs[i];
+      if (arg.startsWith("--")) {
+        const key = arg.slice(2);
+        const value = restArgs[i + 1];
+        argObj[key] = value;
+        i++;
+      }
+    }
+    const schema = z.object({
+      input: z.string().nonempty(),
+    });
+    const parse = schema.safeParse(argObj);
+    if (!parse.success) {
+      console.error(
+        `Error: ${parse.error.errors.map((e) => e.message).join(", ")}`
+      );
+      return 1;
+    }
+    const { input } = parse.data;
+    try {
+      const fileContent = await fs.readFile(input, "utf-8");
+      const data = JSON.parse(fileContent);
+      if (!Array.isArray(data["@graph"])) {
+        console.error("Invalid ontology: missing @graph array");
+        return 1;
+      }
+      for (const node of data["@graph"]) {
+        console.log(node["@id"]);
+      }
+      return 0;
+    } catch (error) {
+      console.error(`Error during list-terms: ${error.message}`);
+      return 1;
+    }
+  }
+
+  if (subcommand === "get-term") {
+    const argObj = {};
+    for (let i = 0; i < restArgs.length; i++) {
+      const arg = restArgs[i];
+      if (arg.startsWith("--")) {
+        const key = arg.slice(2);
+        const value = restArgs[i + 1];
+        argObj[key] = value;
+        i++;
+      }
+    }
+    const schema = z.object({
+      input: z.string().nonempty(),
+      term: z.string().nonempty(),
+      output: z.string().optional(),
+    });
+    const parse = schema.safeParse(argObj);
+    if (!parse.success) {
+      console.error(
+        `Error: ${parse.error.errors.map((e) => e.message).join(", ")}`
+      );
+      return 1;
+    }
+    const { input, term, output } = parse.data;
+    try {
+      const fileContent = await fs.readFile(input, "utf-8");
+      const data = JSON.parse(fileContent);
+      if (!Array.isArray(data["@graph"])) {
+        console.error("Invalid ontology: missing @graph array");
+        return 1;
+      }
+      const node = data["@graph"].find((n) => {
+        const id = n["@id"];
+        const local = id.includes("#") ? id.split("#").pop() : id;
+        return local === term;
+      });
+      if (!node) {
+        console.error(`Term not found: ${term}`);
+        return 1;
+      }
+      const serialized = JSON.stringify(node, null, 2);
+      if (output) {
+        await fs.writeFile(output, serialized, "utf-8");
+      } else {
+        console.log(serialized);
+      }
+      return 0;
+    } catch (error) {
+      console.error(`Error during get-term: ${error.message}`);
+      return 1;
+    }
+  }
+
+  if (subcommand === "filter") {
+    const argObj = {};
+    for (let i = 0; i < restArgs.length; i++) {
+      const arg = restArgs[i];
+      if (arg.startsWith("--")) {
+        const key = arg.slice(2);
+        const value = restArgs[i + 1];
+        argObj[key] = value;
+        i++;
+      }
+    }
+    const schemaFilter = z.object({
+      input: z.string().nonempty(),
+      property: z.string().nonempty(),
+      value: z.string().nonempty(),
+      output: z.string().optional(),
+    });
+    const parseFilter = schemaFilter.safeParse(argObj);
+    if (!parseFilter.success) {
+      console.error(
+        `Error: ${parseFilter.error.errors.map((e) => e.message).join(", ")}`
+      );
+      return 1;
+    }
+    const { input: inputFile, property, value: filterValue, output: outputFile } = parseFilter.data;
+    try {
+      const fileContent = await fs.readFile(inputFile, "utf-8");
+      const data = JSON.parse(fileContent);
+      if (!Array.isArray(data["@graph"])) {
+        console.error("Error during filter: missing @graph array");
+        return 1;
+      }
+      const matches = data["@graph"].filter((node) => node[property] === filterValue);
+      const serialized = JSON.stringify(matches, null, 2);
+      if (outputFile) {
+        await fs.writeFile(outputFile, serialized, "utf-8");
+      } else {
+        console.log(serialized);
+      }
+      return 0;
+    } catch (error) {
+      console.error(`Error during filter: ${error.message}`);
+      return 1;
+    }
+  }
+
+  console.log(`Run with: ${JSON.stringify(cliArgs)}`);
+  return 0;
+}
+
+if (process.argv[1] === fileURLToPath(import.meta.url)) {
+  main().then((code) => process.exit(code));
+}

@@ -1,90 +1,133 @@
-features/ONTOLOGY_QUERY.md
-# features/ONTOLOGY_QUERY.md
+features/CLI_SUBCOMMANDS.md
+# features/CLI_SUBCOMMANDS.md
 # Overview
 
-This feature enables users to query OWL ontologies in JSON-LD format from the command line or library API. It provides a simple filtering mechanism using a JavaScript predicate expression evaluated against each node in the ontology graph.
+Consolidate all command-line interface functionality into a single coherent feature supporting convert, capital-cities, list-terms, get-term, filter, and query subcommands. Ensure consistent argument parsing, Zod validation, error handling, and output behavior across all commands for a unified CLI experience.
 
-# Library API
+# Implementation
 
-Export function queryOntology(document, expression)
+1. Command Dispatch
+   - Recognize global flag --diagnostics before any subcommand.
+   - Extract the first positional argument as the subcommand name.
+   - On unrecognized subcommand, print an error to stderr and exit with code 1.
 
-- document: JSON object representing an OWL ontology in JSON-LD
-- expression: string, a JavaScript expression returning a boolean when applied to a term object
+2. Shared Argument Parsing
+   - Iterate restArgs, capture flags prefixed with -- and their values.
+   - Validate flags per subcommand using Zod schemas.
+   - On validation failure, log all error messages to stderr and return exit code 1.
 
-Returns: Promise resolving to an array of nodes for which the expression evaluates to true
+3. Convert Subcommand
+   - Flags: --input (string, required), --ontology-iri (string, required), --base-iri (string, optional), --output (string, optional).
+   - Read JSON from input file, call generateOntology, serialize with indent 2, write to output file or stdout.
+   - On errors, log "Error during conversion: <message>" and exit 1.
 
-Throws an error when expression is missing or invalid
+4. Capital-Cities Subcommand
+   - Flags: --ontology-iri (string, required), --base-iri (string, optional), --api-endpoint (string, optional default https://restcountries.com/v3.1/all), --output (string, optional).
+   - Fetch country data, handle non-2xx responses with descriptive error and exit 1.
+   - Build term map for each country with a non-empty capital, call generateOntology, serialize, and write or print.
+   - On errors, log "Error during capital-cities: <message>" and exit 1.
 
-# CLI Interface
+5. List-Terms Subcommand
+   - Flags: --input (string, required).
+   - Read JSON-LD, validate that @graph is an array, print each node @id on a separate line.
+   - On missing @graph, log "Invalid ontology: missing @graph array" and exit 1.
+   - On other errors, log "Error during list-terms: <message>" and exit 1.
 
-Support flags
+6. Get-Term Subcommand
+   - Flags: --input (string, required), --term (string, required), --output (string, optional).
+   - Read JSON-LD, validate @graph array, locate node by local name (after '#'), serialize node, write or print.
+   - If not found, log "Term not found: <term>" and exit 1.
+   - On errors, log "Error during get-term: <message>" and exit 1.
 
---query <expression>     Read JSON-LD from stdin, apply predicate expression against each @graph node, and output matching nodes
+7. Filter Subcommand
+   - Flags: --input (string, required), --property (string, required), --value (string, required), --output (string, optional).
+   - Read JSON-LD, validate @graph array, filter nodes where node[property] strictly equals value, serialize matches.
+   - Write to output file or stdout. On missing @graph, log "Error during filter: missing @graph array" and exit 1.
+   - On errors, log "Error during filter: <message>" and exit 1.
 
---help                   Show usage information (includes --query)
+8. Query Subcommand
+   - Flags: --input (string, required), --pointer (string, required), --output (string, optional).
+   - Read and parse input JSON file. Validate pointer syntax: must start with '/'.
+   - Implement JSON Pointer resolver: split on '/', unescape '~1' to '/' and '~0' to '~', traverse objects and arrays, throw descriptive errors on missing property or out-of-range index.
+   - Serialize the extracted value with indent 2, write to output or stdout.
+   - Catch ReferenceError, RangeError, TypeError, or I/O errors, log "Error during query: <message>" and exit 1.
 
-# Behavior
+# Testing
 
-When invoked with --query
-1. Read JSON from stdin and parse, or report parse errors
-2. Compile the expression string into a predicate function
-3. Apply the function to each node in the @graph array
-4. Collect all nodes for which the predicate returns true
-5. Output the resulting array as pretty-printed JSON to stdout
-6. Report errors for missing expression or compilation failures
+Add tests in tests/unit/cli-query.test.js:  
+ • Successful extraction to stdout for nested values.  
+ • Writing result to file with --output.  
+ • Missing required flags exits with code 1 and logs validation errors.  
+ • Invalid JSON input exits with code 1 and logs error.  
+ • Pointer without leading slash exits with code 1 and descriptive error.  
+ • Pointer to non-existent path exits with code 1 with descriptive error.
 
-# Examples
+# Documentation
 
-Query all terms with name Alice:
-cat ontology.json | node src/lib/main.js --query "node.name==='Alice'"
+- Update README.md under the Command-Line Interface section to document the query subcommand with flags --input, --pointer, --output and example usages.
+- Update docs/USAGE.md in CLI Usage with a section for query demonstrating invocation and expected output.
 
-List all term identifiers:
-cat ontology.json | node src/lib/main.js --query "true" | jq -r '.[].@id'
-features/ONTOLOGY_GENERATION.md
-# features/ONTOLOGY_GENERATION.md
+# Consistency
+
+Ensure all additions follow CONTRIBUTING.md guidelines, maintain code style, include tests, and integrate seamlessly with existing subcommand patterns.features/HTTP_SERVER.md
+# features/HTTP_SERVER.md
 # Overview
 
-This feature provides unified OWL ontology generation functionality, combining the core library API with built-in data source integration for common public datasets.
+Add a serve subcommand to the CLI that launches an HTTP server exposing the ontology loaded from a JSON file as REST endpoints. The server will support endpoints to list all terms, retrieve a single term, query by JSON pointer, and return the full graph.
 
-# Library API
+# Implementation
 
-Export function generateOntology(data, options)
+1. Argument Parsing
+   - Extend dispatch logic in src/lib/main.js to recognize subcommand serve.
+   - Collect flags input (string required) and port (string optional, default 3000).
+   - Define a Zod schema requiring input nonempty and port optional numeric string matching digits.
+   - On validation failure, log each error to stderr and exit code 1.
 
-- data: object whose keys are term names and values are term property objects
-- options:
-  ontologyIri: string (required)  IRI for the ontology document
-  baseIri: string (optional)      Base IRI for the @base field in @context
-- Returns a promise resolving to a JSON-LD document with
-  - @context containing owl and rdf prefixes and optional @base when baseIri is provided
-  - @id set to the ontologyIri
-  - @graph as an array of nodes, one per term, each with an @id constructed as ontologyIri#term and all supplied properties
-- Throws an error when options.ontologyIri is missing
+2. Ontology Loading
+   - On serve invocation, read file at input path using fs/promises readFile.
+   - Parse JSON and validate that @graph is an array.
+   - On missing or invalid @graph, log error and exit code 1.
 
-# CLI Interface
+3. HTTP Server
+   - Use the built in http module to create a server listening on the specified port.
+   - Define endpoints:
+     /graph
+       Return full JSON-LD document with content type application/json and status 200.
+     /terms
+       Return JSON array of all node @id values from @graph with status 200.
+     /term/:termName
+       Extract termName from URL, find node in @graph by local name after '#'.
+       If found, respond with JSON node and status 200; otherwise, respond status 404 with JSON { message: "Term not found" }.
+     /query
+       Accept query parameter pointer; require pointer to start with '/'.
+       Use existing evaluatePointer helper logic to resolve value.
+       On success respond with JSON result and status 200.
+       On error, respond status 400 with JSON { message: error message }.
+     For unmatched paths respond status 404 with JSON { message: "Not found" }.
 
-Support flags
+4. Graceful Shutdown
+   - Log a message when server starts and on errors.
+   - Allow interruption via SIGINT to close server and exit.
 
---help                 Show usage information
---to-owl <ontologyIri> Generate OWL ontology JSON-LD from JSON data read from stdin
---ontology-base <IRI>  Include base IRI in @context
---capital-cities <ontologyIri>  Fetch capital city data and generate an OWL ontology JSON-LD document using the REST Countries public API
+# Testing
 
-Behavior
+Add tests in tests/unit/cli-serve.test.js covering:
+ • Missing required flags exits code 1 with validation errors.
+ • Server starts on default port and responds to /graph with the full document.
+ • /terms returns the correct list of IRIs.
+ • /term/validName returns the correct node.
+ • /term/invalidName returns 404 and proper JSON message.
+ • /query pointer nested value returns correct JSON.
+ • /query missing slash or invalid pointer returns 400 and error message.
 
-When invoked with --to-owl
-1. Read input from stdin
-2. Parse JSON input or report parse errors
-3. Invoke generateOntology with parsed data
-4. Output pretty-printed JSON-LD to stdout
+# Documentation
 
-When invoked with --capital-cities
-1. Perform HTTP GET to https://restcountries.com/v3.1/all
-2. Extract each country name and capital
-3. Build data mapping capitals to country property
-4. Invoke generateOntology with this data and provided IRI and optional base
-5. Output resulting JSON-LD to stdout
-6. Report errors for missing options, fetch failures, or parse errors
+Update README.md under Command Line Interface to document serve subcommand:
+ • Flags --input and --port.
+ • Example invocation: node src/lib/main.js serve --input path/ontology.json --port 8080.
+ • List available endpoints and example HTTP requests and responses.
+Update docs/USAGE.md to add HTTP Server section describing each endpoint and usage patterns.
 
-# Built-in Data Sources
+# Consistency
 
-This feature can be extended to include additional public data sources by adding new CLI flags and data fetch logic. Currently includes the capital cities dataset from REST Countries API for demonstration and quick ontology creation.
+Follow existing coding conventions in main.js for argument parsing and error handling. Use zod for flag validation. Use fs/promises and http module without new dependencies. Add tests using vitest and implement helper evaluatePointer from JSON_POINTER.md.

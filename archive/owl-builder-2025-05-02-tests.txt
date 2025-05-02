@@ -1,0 +1,510 @@
+tests/unit/cli-getterm.test.js
+# tests/unit/cli-getterm.test.js
+import { describe, test, expect, vi, afterEach } from "vitest";
+import * as fs from "node:fs/promises";
+import os from "os";
+import path from "path";
+import { main } from "@src/lib/main.js";
+
+describe("Get-Term Subcommand", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  test("successful retrieval to stdout", async () => {
+    const tmpDir = os.tmpdir();
+    const inputFile = path.join(tmpDir, `term-${Date.now()}.json`);
+    const mockDoc = { "@graph": [
+      { "@id": "http://example.org/onto#Term1", foo: "bar" },
+      { "@id": "http://example.org/onto#Term2" }
+    ] };
+    await fs.writeFile(inputFile, JSON.stringify(mockDoc), "utf-8");
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const code = await main(["get-term", "--input", inputFile, "--term", "Term1"]);
+    expect(code).toBe(0);
+    expect(logSpy).toHaveBeenCalled();
+    const out = logSpy.mock.calls[0][0];
+    const obj = JSON.parse(out);
+    expect(obj.foo).toBe("bar");
+    await fs.rm(inputFile);
+  });
+
+  test("successful retrieval to file", async () => {
+    const tmpDir = os.tmpdir();
+    const input = path.join(tmpDir, `in-${Date.now()}.json`);
+    const output = path.join(tmpDir, `out-${Date.now()}.json`);
+    const doc = { "@graph": [
+      { "@id": "http://example.org/onto#T1", val: 123 }
+    ] };
+    await fs.writeFile(input, JSON.stringify(doc), "utf-8");
+    const code = await main([
+      "get-term",
+      "--input",
+      input,
+      "--term",
+      "T1",
+      "--output",
+      output
+    ]);
+    expect(code).toBe(0);
+    const content = await fs.readFile(output, "utf-8");
+    const obj = JSON.parse(content);
+    expect(obj.val).toBe(123);
+    await fs.rm(input);
+    await fs.rm(output);
+  });
+
+  test("missing required flags exits with error", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const code = await main(["get-term", "--input", "f.json"]);
+    expect(code).toBe(1);
+    expect(errorSpy).toHaveBeenCalled();
+  });
+
+  test("term not found exits with error", async () => {
+    const tmpDir = os.tmpdir();
+    const inputFile = path.join(tmpDir, `term-${Date.now()}.json`);
+    const mockDoc = { "@graph": [ { "@id": "http://example.org/onto#A" } ] };
+    await fs.writeFile(inputFile, JSON.stringify(mockDoc), "utf-8");
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const code = await main(["get-term", "--input", inputFile, "--term", "X"]);
+    expect(code).toBe(1);
+    expect(errorSpy).toHaveBeenCalledWith("Term not found: X");
+    await fs.rm(inputFile);
+  });
+});
+tests/unit/cli-filter.test.js
+# tests/unit/cli-filter.test.js
+import { describe, test, expect, vi, afterEach } from "vitest";
+import * as fs from "node:fs/promises";
+import os from "os";
+import path from "path";
+import { main } from "@src/lib/main.js";
+
+describe("Filter Subcommand", () => {
+  const tmpDir = os.tmpdir();
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  test("successful filtering to stdout", async () => {
+    const data = { "@graph": [
+      { "@id": "1", type: "Person", name: "Alice" },
+      { "@id": "2", type: "Animal", name: "Bob" },
+      { "@id": "3", type: "Person", name: "Charlie" }
+    ]};
+    const input = path.join(tmpDir, `filt-${Date.now()}.json`);
+    await fs.writeFile(input, JSON.stringify(data), "utf-8");
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const code = await main(["filter", "--input", input, "--property", "type", "--value", "Person"]);
+    expect(code).toBe(0);
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    const out = logSpy.mock.calls[0][0];
+    const arr = JSON.parse(out);
+    expect(Array.isArray(arr)).toBe(true);
+    expect(arr.length).toBe(2);
+    expect(arr[0].type).toBe("Person");
+    await fs.rm(input);
+  });
+
+  test("writes filtered results to file when output provided", async () => {
+    const data = { "@graph": [
+      { "@id": "A", prop: "X" },
+      { "@id": "B", prop: "Y" }
+    ]};
+    const input = path.join(tmpDir, `fil2-${Date.now()}.json`);
+    const output = path.join(tmpDir, `fil2-${Date.now()}-out.json`);
+    await fs.writeFile(input, JSON.stringify(data), "utf-8");
+    const code = await main(["filter", "--input", input, "--property", "prop", "--value", "Y", "--output", output]);
+    expect(code).toBe(0);
+    const content = await fs.readFile(output, "utf-8");
+    const arr = JSON.parse(content);
+    expect(Array.isArray(arr)).toBe(true);
+    expect(arr.length).toBe(1);
+    expect(arr[0]["@id"]).toBe("B");
+    await fs.rm(input);
+    await fs.rm(output);
+  });
+
+  test("missing required flags exits with error", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const code = await main(["filter"]);
+    expect(code).toBe(1);
+    expect(errorSpy).toHaveBeenCalled();
+  });
+
+  test("invalid JSON exits with error", async () => {
+    const input = path.join(tmpDir, `fil3-${Date.now()}.json`);
+    await fs.writeFile(input, "not-json", "utf-8");
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const code = await main(["filter", "--input", input, "--property", "p", "--value", "v"]);
+    expect(code).toBe(1);
+    expect(errorSpy).toHaveBeenCalled();
+    await fs.rm(input);
+  });
+
+  test("missing @graph exits with error", async () => {
+    const input = path.join(tmpDir, `fil4-${Date.now()}.json`);
+    await fs.writeFile(input, JSON.stringify({ foo: [] }), "utf-8");
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const code = await main(["filter", "--input", input, "--property", "p", "--value", "v"]);
+    expect(code).toBe(1);
+    expect(errorSpy).toHaveBeenCalledWith("Error during filter: missing @graph array");
+    await fs.rm(input);
+  });
+
+  test("no nodes match returns empty array", async () => {
+    const data = { "@graph": [
+      { "@id": "1", k: "a" }
+    ]};
+    const input = path.join(tmpDir, `fil5-${Date.now()}.json`);
+    await fs.writeFile(input, JSON.stringify(data), "utf-8");
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const code = await main(["filter", "--input", input, "--property", "k", "--value", "b"]);
+    expect(code).toBe(0);
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    const out = logSpy.mock.calls[0][0];
+    const arr = JSON.parse(out);
+    expect(Array.isArray(arr)).toBe(true);
+    expect(arr.length).toBe(0);
+    await fs.rm(input);
+  });
+});
+tests/unit/main.test.js
+# tests/unit/main.test.js
+import { describe, test, expect, vi } from "vitest";
+import * as mainModule from "@src/lib/main.js";
+import { main } from "@src/lib/main.js";
+import fs from "fs";
+import path from "path";
+
+describe("Main Module Import", () => {
+  test("should be non-null", () => {
+    expect(mainModule).not.toBeNull();
+  });
+});
+
+describe("Main Output", () => {
+  test("should terminate without error", async () => {
+    process.argv = ["node", "src/lib/main.js"];
+    const code = await main();
+    expect(code).toBe(0);
+  });
+});
+
+describe("Diagnostics Mode", () => {
+  test("prints diagnostic JSON", async () => {
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    process.argv = ["node", "src/lib/main.js", "--diagnostics"];
+    const code = await main();
+    expect(code).toBe(0);
+    expect(logSpy).toHaveBeenCalled();
+    const logArg = logSpy.mock.calls[0][0];
+    const obj = JSON.parse(logArg);
+    const pkg = JSON.parse(
+      fs.readFileSync(path.resolve(__dirname, "../../package.json"), "utf-8")
+    );
+    expect(obj.packageVersion).toBe(pkg.version);
+    expect(obj.nodeVersion).toBe(process.version);
+    expect(obj.platform).toBe(process.platform);
+    expect(obj.dependencies).toEqual(pkg.dependencies);
+    logSpy.mockRestore();
+  });
+});
+tests/unit/cli-listterms.test.js
+# tests/unit/cli-listterms.test.js
+import { describe, test, expect, vi, afterEach } from "vitest";
+import * as fs from "node:fs/promises";
+import os from "os";
+import path from "path";
+import { main } from "@src/lib/main.js";
+
+describe("List-Terms Subcommand", () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  test("successful listing to stdout", async () => {
+    const tmpDir = os.tmpdir();
+    const inputFile = path.join(tmpDir, `list-${Date.now()}.json`);
+    const mockDoc = { "@graph": [
+      { "@id": "http://example.org/onto#A" },
+      { "@id": "http://example.org/onto#B" }
+    ] };
+    await fs.writeFile(inputFile, JSON.stringify(mockDoc), "utf-8");
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const code = await main(["list-terms", "--input", inputFile]);
+    expect(code).toBe(0);
+    expect(logSpy).toHaveBeenCalledTimes(2);
+    expect(logSpy).toHaveBeenCalledWith("http://example.org/onto#A");
+    expect(logSpy).toHaveBeenCalledWith("http://example.org/onto#B");
+    await fs.rm(inputFile);
+  });
+
+  test("missing required flag exits with error", async () => {
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const code = await main(["list-terms"]);
+    expect(code).toBe(1);
+    expect(errorSpy).toHaveBeenCalled();
+  });
+
+  test("invalid JSON exits with error", async () => {
+    const tmpDir = os.tmpdir();
+    const inputFile = path.join(tmpDir, `list-${Date.now()}.json`);
+    await fs.writeFile(inputFile, "not-json", "utf-8");
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const code = await main(["list-terms", "--input", inputFile]);
+    expect(code).toBe(1);
+    expect(errorSpy).toHaveBeenCalled();
+    await fs.rm(inputFile);
+  });
+
+  test("missing @graph exits with error", async () => {
+    const tmpDir = os.tmpdir();
+    const inputFile = path.join(tmpDir, `list-${Date.now()}.json`);
+    await fs.writeFile(inputFile, JSON.stringify({ notGraph: [] }), "utf-8");
+    const errorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    const code = await main(["list-terms", "--input", inputFile]);
+    expect(code).toBe(1);
+    expect(errorSpy).toHaveBeenCalledWith("Invalid ontology: missing @graph array");
+    await fs.rm(inputFile);
+  });
+});
+tests/unit/cli-capitals.test.js
+# tests/unit/cli-capitals.test.js
+import { describe, test, expect, vi, afterEach } from "vitest";
+import * as fs from "node:fs/promises";
+import path from "path";
+import os from "os";
+import { main } from "@src/lib/main.js";
+
+describe("Capital-Cities Subcommand", () => {
+  const tmpDir = os.tmpdir();
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+    delete global.fetch;
+  });
+
+  test("successful fetch to stdout", async () => {
+    const sample = [
+      { name: { common: "CountryA" }, capital: ["CapitalA"] },
+      { name: { common: "CountryB" }, capital: [] },
+      { name: { common: "CountryC" }, capital: ["CapitalC"] },
+    ];
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: "OK",
+      json: async () => sample,
+    }));
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const code = await main([
+      "capital-cities",
+      "--ontology-iri",
+      "http://example.org/onto",
+    ]);
+    expect(code).toBe(0);
+    expect(logSpy).toHaveBeenCalled();
+    const output = logSpy.mock.calls[0][0];
+    const doc = JSON.parse(output);
+    expect(doc["@context"].owl).toBe(
+      "http://www.w3.org/2002/07/owl#"
+    );
+    expect(doc["@id"]).toBe("http://example.org/onto");
+    expect(Array.isArray(doc["@graph"])) .toBe(true);
+    expect(doc["@graph"].length).toBe(2);
+    const ids = doc["@graph"].map((node) => node["@id"]);
+    expect(ids).toContain("http://example.org/onto#CountryA");
+    expect(ids).toContain("http://example.org/onto#CountryC");
+  });
+
+  test("successful fetch to file with baseIri and api-endpoint", async () => {
+    const sample = [{ name: { common: "X" }, capital: ["Y"] }];
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
+      ok: true,
+      status: 200,
+      statusText: "OK",
+      json: async () => sample,
+    }));
+    const outputFile = path.join(tmpDir, `cap-${Date.now()}.json`);
+    const code = await main([
+      "capital-cities",
+      "--ontology-iri",
+      "http://example.org/onto",
+      "--base-iri",
+      "http://example.org/base",
+      "--api-endpoint",
+      "https://example.com/api",
+      "--output",
+      outputFile,
+    ]);
+    expect(code).toBe(0);
+    const out = await fs.readFile(outputFile, "utf-8");
+    const doc = JSON.parse(out);
+    expect(doc["@context"]["@base"]).toBe(
+      "http://example.org/base"
+    );
+    expect(doc["@graph"][0]["@id"]).toBe(
+      "http://example.org/onto#X"
+    );
+    await fs.rm(outputFile);
+  });
+
+  test("missing required flags exits with error", async () => {
+    const errorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const code = await main(["capital-cities"]);
+    expect(code).toBe(1);
+    expect(errorSpy).toHaveBeenCalled();
+  });
+
+  test("fetch non-2xx response exits with error", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({
+      ok: false,
+      status: 500,
+      statusText: "Internal Server Error",
+    }));
+    const errorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const code = await main([
+      "capital-cities",
+      "--ontology-iri",
+      "http://example.org/onto",
+    ]);
+    expect(code).toBe(1);
+    expect(errorSpy).toHaveBeenCalledWith(
+      "Error fetching country data: HTTP 500 Internal Server Error"
+    );
+  });
+
+  test("network error exits with error", async () => {
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValue(new Error("network fail")));
+    const errorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const code = await main([
+      "capital-cities",
+      "--ontology-iri",
+      "http://example.org/onto",
+    ]);
+    expect(code).toBe(1);
+    expect(errorSpy).toHaveBeenCalled();
+  });
+});
+tests/unit/module-index.test.js
+# tests/unit/module-index.test.js
+import { describe, test, expect } from "vitest";
+import defaultExport, { generateOntology } from "../../src/lib/index.js";
+
+describe("Index Module Exports", () => {
+  test("default export should be undefined", () => {
+    expect(defaultExport).toBeUndefined();
+  });
+});
+
+describe("generateOntology", () => {
+  test("produces correct JSON-LD output", async () => {
+    const data = { Person: { name: "Alice" } };
+    const options = { ontologyIri: "http://example.org/onto" };
+    const result = await generateOntology(data, options);
+    expect(result["@context"].owl).toBe("http://www.w3.org/2002/07/owl#");
+    expect(result["@context"].rdf).toBe("http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+    expect(result["@id"]).toBe("http://example.org/onto");
+    expect(Array.isArray(result["@graph"])) .toBe(true);
+    expect(result["@graph"][0]["@id"]).toBe("http://example.org/onto#Person");
+    expect(result["@graph"][0].name).toBe("Alice");
+  });
+
+  test("includes @base when baseIri is provided", async () => {
+    const data = { Person: { name: "Bob" } };
+    const options = {
+      ontologyIri: "http://example.org/onto",
+      baseIri: "http://example.org/base",
+    };
+    const result = await generateOntology(data, options);
+    expect(result["@context"]["@base"]).toBe("http://example.org/base");
+  });
+});
+tests/unit/cli-convert.test.js
+# tests/unit/cli-convert.test.js
+import { describe, test, expect, vi } from "vitest";
+import * as fs from "node:fs/promises";
+import path from "path";
+import os from "os";
+import { main } from "@src/lib/main.js";
+
+describe("Convert Subcommand", () => {
+  const tmpDir = os.tmpdir();
+
+  test("successful conversion to stdout", async () => {
+    const data = { TermA: { description: "An example" } };
+    const inputFile = path.join(tmpDir, `terms-${Date.now()}.json`);
+    await fs.writeFile(inputFile, JSON.stringify(data), "utf-8");
+    const logSpy = vi.spyOn(console, "log").mockImplementation(() => {});
+    const code = await main([
+      "convert",
+      "--input",
+      inputFile,
+      "--ontology-iri",
+      "http://example.org/onto",
+    ]);
+    expect(code).toBe(0);
+    expect(logSpy).toHaveBeenCalled();
+    const output = logSpy.mock.calls[0][0];
+    const doc = JSON.parse(output);
+    expect(doc["@context"].owl).toBe(
+      "http://www.w3.org/2002/07/owl#"
+    );
+    expect(doc["@id"]).toBe("http://example.org/onto");
+    expect(Array.isArray(doc["@graph"])) .toBe(true);
+    expect(doc["@graph"][0]["@id"]).toBe(
+      "http://example.org/onto#TermA"
+    );
+    logSpy.mockRestore();
+    await fs.rm(inputFile);
+  });
+
+  test("successful conversion to file with baseIri", async () => {
+    const data = { Person: { name: "Bob" } };
+    const inputFile = path.join(tmpDir, `terms-${Date.now()}.json`);
+    const outputFile = path.join(tmpDir, `out-${Date.now()}.json`);
+    await fs.writeFile(inputFile, JSON.stringify(data), "utf-8");
+    const code = await main([
+      "convert",
+      "--input",
+      inputFile,
+      "--ontology-iri",
+      "http://example.org/onto",
+      "--base-iri",
+      "http://example.org/base",
+      "--output",
+      outputFile,
+    ]);
+    expect(code).toBe(0);
+    const outContent = await fs.readFile(outputFile, "utf-8");
+    const doc = JSON.parse(outContent);
+    expect(doc["@context"]["@base"]).toBe(
+      "http://example.org/base"
+    );
+    expect(doc["@id"]).toBe("http://example.org/onto");
+    expect(doc["@graph"][0]["@id"]).toBe(
+      "http://example.org/onto#Person"
+    );
+    await fs.rm(inputFile);
+    await fs.rm(outputFile);
+  });
+
+  test("missing required flags exits with error", async () => {
+    const errorSpy = vi
+      .spyOn(console, "error")
+      .mockImplementation(() => {});
+    const code = await main(["convert"]);
+    expect(code).toBe(1);
+    expect(errorSpy).toHaveBeenCalled();
+    errorSpy.mockRestore();
+  });
+});

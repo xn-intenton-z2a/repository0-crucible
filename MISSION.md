@@ -7,8 +7,7 @@
 - Read and write and OWL ontologies as JSON files.
 - Provide examples tools for querying OWL ontologies stored as JSON via a CLI with an ESJ like syntax.
 - Include CLI variations on this example: node src/lib/main.js --capital-cities (yielding OWL as JSON file showing capital cities).
-- Showcase all the features of the library via a CLI by dry running tp generate example commands and output in the README.md file.
+- Showcase all the features of the library in the README.md file.
 
-owl-builder is a simple CLI tool which will facilitate the creation of OWL ontologies from public data sources, 
-and to provide a set of tools for managing the OWL ontologies in a JSON format. The CLI wll use a JavaScript library to
-which is also exports features as JS functions at the same level as the CLI tool.
+owl-builder is a CLI tool which will facilitate the creation of OWL ontologies from public data sources, 
+and to provide a set of tools for managing the OWL ontologies in a JSON format.
