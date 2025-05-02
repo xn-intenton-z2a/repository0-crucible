@@ -1,4 +1,4 @@
-import { describe, test, expect, vi } from "vitest";
+import { describe, test, expect, vi, afterEach } from "vitest";
 import * as fs from "node:fs/promises";
 import os from "os";
 import path from "path";
