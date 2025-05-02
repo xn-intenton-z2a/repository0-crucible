@@ -1,56 +1,67 @@
-# repository0-crucible
+# owl-builder
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
-
-To create a self-evolving agentic coding system of your own based on this one see the [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
-
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
-
-## Repository Template
-
-The repository is intended as a template that includes:
-* A Template Base: A starting point for new projects.
-* A Running Experiment: An example implementation that demonstrates one way to use the template.
-* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
-
-* See [TEMPLATE-README.md](./TEMPLATE-README.md) for more details.
+`owl-builder` is a JavaScript library and CLI tool for generating JSON-LD OWL ontology documents from input data. It provides a programmatic API (`generateOntology`) and a command-line interface stub for future subcommands.
 
 ## Installation
 
 Install via npm:
 
 ```bash
-npm install repository0-crucible
+npm install @xn-intenton-z2a/repository0-crucible
+```
+
+## Library API
+
+Import the `generateOntology` function:
+
+```js
+import { generateOntology } from '@xn-intenton-z2a/repository0-crucible';
+
+(async () => {
+  const data = {
+    Person: { name: 'Alice' },
+    City:   { population: 100000 },
+  };
+  const options = {
+    ontologyIri: 'http://example.org/ontology',
+    baseIri:     'http://example.org/base',
+  };
+  const ontology = await generateOntology(data, options);
+  console.log(JSON.stringify(ontology, null, 2));
+})();
+```
+
+### `generateOntology(data, options)`
+
+- `data` (object): Keys are term names; values are term properties.
+- `options` (object):
+  - `ontologyIri` (string, required): IRI for the ontology root.
+  - `baseIri` (string, optional): Base IRI for relative term IRIs.
+- Returns: Promise resolving to a JSON-LD OWL ontology document.
+
+## Command-Line Interface
+
+The CLI entry point is `src/lib/main.js`. Currently, it logs the parsed arguments:
+
+```bash
+node src/lib/main.js [subcommand] [options]
+# Example:
+node src/lib/main.js foo --bar baz
+# Output: Run with: ["foo","--bar","baz"]
 ```
 
 ## Features
 
-TODO: Add features here.
-
-## Usage
-
-To run the CLI tool and see help instructions:
-
-```bash
-node src/lib/main.js --help
-```
-
-### Example Commands
-
-- **Default Demo Output:**
-  ```bash
-  npm run start
-  ```
-
-
-## Incremental Changes Plan
-
-TODO: Add forthcoming changes here.
+- `generateOntology`: Programmatic API to build JSON-LD OWL ontologies.
+- CLI stub for subcommands (future enhancement).
+- Planned subcommands (not yet implemented):
+  - `convert`: Convert a JSON file of term definitions into an ontology.
+  - `capital-cities`: Fetch capital cities from REST Countries API and build an ontology.
 
 ## Contributing
 
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines.
 
 ## License
 
-Released under the MIT License (see [LICENSE](./LICENSE)).
+Released under the MIT License. See [LICENSE](./LICENSE).
