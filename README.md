@@ -1,78 +1,94 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic-lib](nhttps://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
-
-To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
-
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
-
-## Repository Template
-
-The repository is intended as a template that includes:
-* A Template Base: A starting point for new projects.
-* A Running Experiment: An example implementation that demonstrates one way to use the template.
-* Example GitHub Workflows from [agentic-lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+A CLI and Node.js library for random and seeded ASCII emoticon output, featuring a built-in HTTP/Express server with Prometheus metrics and a Web UI, plus a programmatic API.
 
 ## Installation
 
-Install via npm:
-
 ```bash
-npm install repository0-crucible
+npm install @xn-intenton-z2a/repository0-crucible
 ```
 
-## Features
+```js
+import { listFaces } from '@xn-intenton-z2a/repository0-crucible';
+```
 
-- Plain-text random emoticon output (default)
-- `--list` to enumerate all emoticons
-- `--seed <n>` for deterministic selection
-- `--json` to emit JSON output
-- `--interactive, -i` to start the interactive REPL session
+## CLI Usage
 
-## Usage
+- `--config <path>`: Load a custom emoticon list (JSON or YAML)
+- `--diagnostics`: Output diagnostics as JSON
+- `--list`: List all emoticons with zero-based indices
+- `--seed <n>`: Deterministic emoticon by non-negative seed
+- `--json`: JSON output mode
+- `--count <n>`: Output multiple emoticons
+- `--interactive, -i`: Launch interactive REPL
+- `--help, -h`: Display help and exit
+- `--version, -v`: Print version and exit
+- `--serve`: Start built-in HTTP server
+- `--port <n>`: Specify HTTP server port (default: 3000)
 
-To run the CLI tool and see help instructions:
+### Examples
 
 ```bash
 node src/lib/main.js --help
 ```
 
-Start interactive REPL session:
-
 ```bash
-node src/lib/main.js --interactive
-# or
-node src/lib/main.js -i
+node src/lib/main.js --json --seed 3 --count 2
+# Example output: [":D", "(¬_¬)"]
 ```
 
-### Example Commands
+## HTTP Server & Endpoints
 
-- **Default Demo Output:**
+```bash
+node src/lib/main.js --serve [--port <n>]
+```
+
+- `/` → Plain-text random emoticon  
   ```bash
-  npm run start
+  curl http://localhost:3000/
   ```
-
-### HTTP Server
-
-- **Start server on default port:**
+- `/list` → Plain-text list of all emoticons  
   ```bash
-  npm run serve
-  # Listening on port 3000
+  curl http://localhost:3000/list
   ```
-
-- **Start server on a specific port:**
+- `/json`, `/json?seed=<n>`, `/json?count=<n>`, `/json/list` → JSON responses  
   ```bash
-  npm run serve -- --port 4000
-  # Listening on port 4000
+  curl http://localhost:3000/json?seed=1&count=3
   ```
+- `/version` → `{ "version": "<current>" }`
+- `/metrics` → Prometheus counters
+- `/health` → `OK`
+- `/ui` → Web UI browser
 
-- **Fetch version endpoint:**
-  ```bash
-  curl http://localhost:3000/version
-  # { "version": "<current version>" }
-  ```
+## Programmatic API
 
-- **Fetch Prometheus metrics:**
-  ```bash
-  curl http://localhost:3000/metrics
-  ```
+Exported functions and middleware:
+
+`listFaces()`, `randomFace()`, `seededFace()`, `emoticonJson()`, `configureEmoticons()`, `getEmoticonDiagnostics()`, `createEmoticonRouter()`, `graphQLHandler()`
+
+```js
+import {
+  listFaces,
+  randomFace,
+  seededFace,
+  configureEmoticons,
+  getEmoticonDiagnostics
+} from '@xn-intenton-z2a/repository0-crucible';
+
+console.log(listFaces());
+console.log(randomFace());
+console.log(seededFace(3));
+
+const diag = configureEmoticons({ configPath: 'custom.json' });
+console.log(getEmoticonDiagnostics());
+```
+
+## Documentation Links
+
+- [HTTP API](docs/HTTP_API.md)
+- [Emoticon Output](docs/EMOTICON_OUTPUT.md)
+- [GraphQL API](features/GRAPHQL_API.md)
+
+## Verification
+
+Copy and paste the commands and code snippets above into a terminal or code file to confirm they execute without errors.
