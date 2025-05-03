@@ -25,6 +25,32 @@ function mulberry32(a) {
   };
 }
 
+// Programmatic API utilities
+export function listFaces() {
+  return [...EMOTICONS];
+}
+
+export function randomFace() {
+  const idx = Math.floor(Math.random() * EMOTICONS.length);
+  return EMOTICONS[idx];
+}
+
+export function seededFace(seed) {
+  const idx = seed % EMOTICONS.length;
+  return EMOTICONS[idx];
+}
+
+export function emoticonJson({ mode, seed }) {
+  if (mode === "random") {
+    const face = randomFace();
+    return { face, mode, seed: null };
+  } else if (mode === "seeded") {
+    const face = seededFace(seed);
+    return { face, mode, seed };
+  }
+  throw new Error(`Invalid mode: ${mode}`);
+}
+
 export function main(args = []) {
   // Interactive REPL mode
   if (args.includes("--interactive") || args.includes("-i")) {
@@ -32,17 +58,15 @@ export function main(args = []) {
       input: process.stdin,
       output: process.stdout,
       prompt: "> ",
-      // enable history navigation
       historySize: 100,
       removeHistoryDuplicates: true
     });
     let lastResult = null;
 
     const printRandom = () => {
-      const idx = Math.floor(Math.random() * EMOTICONS.length);
-      const face = EMOTICONS[idx];
+      const face = randomFace();
       console.log(face);
-      lastResult = { type: "single", face, mode: "random", seed: null };
+      lastResult = { type: "single", ...emoticonJson({ mode: "random", seed: null }) };
     };
 
     const printSeeded = (seedString) => {
@@ -51,15 +75,14 @@ export function main(args = []) {
         return;
       }
       const seed = Number(seedString);
-      const idx = seed % EMOTICONS.length;
-      const face = EMOTICONS[idx];
+      const face = seededFace(seed);
       console.log(face);
-      lastResult = { type: "single", face, mode: "seeded", seed };
+      lastResult = { type: "single", ...emoticonJson({ mode: "seeded", seed }) };
     };
 
     const printList = () => {
-      EMOTICONS.forEach((face, i) => console.log(`${i}: ${face}`));
-      lastResult = { type: "list", list: [...EMOTICONS] };
+      listFaces().forEach((face, i) => console.log(`${i}: ${face}`));
+      lastResult = { type: "list", list: listFaces() };
     };
 
     const printJson = () => {
@@ -125,7 +148,6 @@ export function main(args = []) {
 
   // HTTP server mode
   if (args.includes("--serve")) {
-    // Default port 3000
     const portIdx = args.indexOf("--port");
     let port = 3000;
     if (portIdx !== -1) {
@@ -159,25 +181,20 @@ export function main(args = []) {
         return sendText(404, "Not Found");
       }
 
-      // Root: random emoticon
       if (pathname === "/") {
-        const idx = Math.floor(Math.random() * EMOTICONS.length);
-        return sendText(200, EMOTICONS[idx]);
+        return sendText(200, randomFace());
       }
 
-      // Plain text list
       if (pathname === "/list") {
-        return sendText(200, EMOTICONS.join("\n"));
+        return sendText(200, listFaces().join("\n"));
       }
 
-      // JSON endpoints
       if (pathname === "/json") {
         if (params.has("list")) {
-          return sendJson(200, EMOTICONS);
+          return sendJson(200, listFaces());
         }
         let mode = "random";
         let seedVal = null;
-        let idx;
         if (params.has("seed")) {
           const seedString = params.get("seed");
           if (!/^[0-9]+$/.test(seedString)) {
@@ -186,22 +203,17 @@ export function main(args = []) {
             }
             return sendText(400, `Invalid seed: ${seedString}`);
           }
-          const s = Number(seedString);
+          seedVal = Number(seedString);
           mode = "seeded";
-          seedVal = s;
-          idx = s % EMOTICONS.length;
-        } else {
-          idx = Math.floor(Math.random() * EMOTICONS.length);
         }
-        return sendJson(200, { face: EMOTICONS[idx], mode, seed: seedVal });
+        const obj = emoticonJson({ mode, seed: seedVal });
+        return sendJson(200, obj);
       }
 
-      // JSON list at /json/list
       if (pathname === "/json/list") {
-        return sendJson(200, EMOTICONS);
+        return sendJson(200, listFaces());
       }
 
-      // Not found
       if (accept.includes("application/json")) {
         return sendJson(404, { error: "Not Found" });
       }
@@ -213,7 +225,7 @@ export function main(args = []) {
     return server;
   }
 
-  // Original CLI behavior
+  // CLI behaviors
   const usage = `ASCII Emoticon CLI
 
 Usage:
@@ -243,50 +255,45 @@ Examples:
 
   if (isJson) {
     if (args.includes("--list")) {
-      console.log(JSON.stringify(EMOTICONS));
+      console.log(JSON.stringify(listFaces()));
       return;
     }
     let mode = "random";
     let seedVal = null;
-    let idx;
-    const seedIndex = args.indexOf("--seed");
-    if (seedIndex !== -1) {
-      const seedString = args[seedIndex + 1];
+    if (args.includes("--seed")) {
+      const seedIdx = args.indexOf("--seed");
+      const seedString = args[seedIdx + 1];
       if (!seedString || !/^[0-9]+$/.test(seedString)) {
         console.error(JSON.stringify({ error: "Invalid seed. Seed must be a non-negative integer." }));
         process.exit(1);
         return;
       }
-      const seed = Number(seedString);
+      seedVal = Number(seedString);
       mode = "seeded";
-      seedVal = seed;
-      idx = seed % EMOTICONS.length;
-    } else {
-      idx = Math.floor(Math.random() * EMOTICONS.length);
     }
-    const result = { face: EMOTICONS[idx], mode, seed: seedVal };
+    const result = emoticonJson({ mode, seed: seedVal });
     console.log(JSON.stringify(result));
     return;
   }
 
   if (args.includes("--list")) {
-    EMOTICONS.forEach((face, idx) => console.log(`${idx}: ${face}`));
+    listFaces().forEach((face, idx) => console.log(`${idx}: ${face}`));
     return;
   }
 
-  let rng = Math.random;
-  const seedIndex = args.indexOf("--seed");
-  if (seedIndex !== -1) {
-    const seedString = args[seedIndex + 1];
+  if (args.includes("--seed")) {
+    const seedIdx = args.indexOf("--seed");
+    const seedString = args[seedIdx + 1];
     if (!seedString || !/^[0-9]+$/.test(seedString)) {
       throw new Error(`Invalid seed: ${seedString}`);
     }
-    const seed = Number(seedString);
-    rng = mulberry32(seed);
+    const seedVal = Number(seedString);
+    console.log(seededFace(seedVal));
+    return;
   }
 
-  const idxNoJson = Math.floor(rng() * EMOTICONS.length);
-  console.log(EMOTICONS[idxNoJson]);
+  // Default: random plain text
+  console.log(randomFace());
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
