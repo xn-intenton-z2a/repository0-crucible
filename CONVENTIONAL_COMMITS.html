@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="conventional_commits" href="#conventional_commits"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>CONVENTIONAL_COMMITS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Commits must follow <code class="md-github">&lt;type&gt;[scope][!]: description</code> header with optional body and footers. Types: feat→MINOR, fix→PATCH; others no effect. Scope in parentheses. Description required, max 72 chars. Body separated by blank line. Footers: <code class="md-github">&lt;token&gt;: &lt;value&gt;</code> or <code class="md-github">token #value</code>, token hyphenated. Breaking changes: use <code class="md-github">!</code> or <code class="md-github">BREAKING CHANGE:</code> footer. Implement with commitlint rules and conventional-changelog CLI.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Commit Message Grammar
+2 Type Definitions
+3 Scope Syntax
+4 Description Requirements
+5 Body Content
+6 Footer Format
+7 Breaking Change Indicators
+8 Usage Examples</p>
+<p class="md-github">1 Commit Message Grammar
+Header must match regex ^(?<type>\w+)(?:((?<scope>[\w- ]+)))?(?<breaking>!)?: (?<description>.+)$</p>
+<p class="md-github">2 Type Definitions
+feat : increment MINOR version
+fix  : increment PATCH version
+Allowed additional types: build, chore, ci, docs, style, refactor, perf, test (no semver effect unless breaking)</p>
+<p class="md-github">3 Scope Syntax
+scope MUST be noun/hyphen words inside () immediately after type, e.g., feat(parser-core)</p>
+<p class="md-github">4 Description Requirements
+MUST follow colon and space. SHOULD be ≤72 chars. No trailing period.</p>
+<p class="md-github">5 Body Content
+MAY include after one blank line. Free-form paragraphs. No metadata tokens.</p>
+<p class="md-github">6 Footer Format
+MAY include after one blank line. Each line:<token>: <value> or <token> #<value>. Tokens use hyphens, e.g., Reviewed-by.</p>
+<p class="md-github">7 Breaking Change Indicators
+MUST use ! in header before : OR FOOTER token BREAKING CHANGE:. Include description after &quot;: &quot;.</p>
+<p class="md-github">8 Usage Examples
+feat(cli): add interactive prompt
+fix(api)!: remove deprecated parameter
+BREAKING CHANGE: config file format changed</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Commitlint configuration snippet:
+{
+&quot;rules&quot;: {
+&quot;type-enum&quot;: [2, &quot;always&quot;, [&quot;feat&quot;,&quot;fix&quot;,&quot;build&quot;,&quot;chore&quot;,&quot;ci&quot;,&quot;docs&quot;,&quot;style&quot;,&quot;refactor&quot;,&quot;perf&quot;,&quot;test&quot;]],
+&quot;scope-case&quot;: [2, &quot;always&quot;, &quot;kebab-case&quot;],
+&quot;header-max-length&quot;: [2, &quot;always&quot;, 72],
+&quot;subject-case&quot;: [2, &quot;never&quot;, [&quot;start-case&quot;,&quot;pascal-case&quot;]]
+}
+}</p>
+<p class="md-github">Conventional-changelog CLI:
+npx conventional-changelog -p angular -i CHANGELOG.md -s</p>
+<p class="md-github">Semantic-release plugin:
+&quot;@semantic-release/commit-analyzer&quot;: {&quot;preset&quot;:&quot;angular&quot;}</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">Regex validation in parser:
+const headerPattern = /^(\w+)(?:([\w- ]+))!?: .+$/;</p>
+<p class="md-github">Sample commitlint.config.js:
+module.exports = {
+extends: ['@commitlint/config-conventional'],
+rules: { 'header-max-length': [2, 'always', 72] }
+};</p>
+<p class="md-github">Git hook integration (husky):
+&quot;husky&quot;:{ &quot;hooks&quot;:{ &quot;commit-msg&quot;:&quot;commitlint -E HUSKY_GIT_PARAMS&quot; }}</p>
+<p class="md-github">Best practice: Use git commit --amend to fix header mismatch. Then git push --force-with-lease.</p>
+<p class="md-github">Troubleshooting common errors:
+Error: header must not be longer than 72 characters
+Command: commitlint -e $GIT_PARAMS
+Fix: shorten header summary.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">HeaderRegex:^(type)((scope))?(!)?:description;Types:feat→MINOR,fix→PATCH,others no semver;Scope:(noun-hyphen);Desc:MUST non-empty,≤72;Body:MAY paragraphs after blank-line;Footer:token: value or token #value;TokenHyphenated;Breaking:! or BREAKING CHANGE:desc;CommitlintRules:type-enum,scope-case,kebab,header-max-length72;CLI:npx conventional-changelog -p angular -i CHANGELOG.md -s;GitHook:husky commitlint;Amend:git commit --amend;Push:--force-with-lease;</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Commit Message Grammar
+2 Type Definitions
+3 Scope Syntax
+4 Description Requirements
+5 Body Content
+6 Footer Format
+7 Breaking Change Indicators
+8 Usage Examples</p>
+<p class="md-github">1 Commit Message Grammar
+Header must match regex ^(?<type>'w+)(?:'((?<scope>['w'- ]+)'))?(?<breaking>!)?: (?<description>.+)$</p>
+<p class="md-github">2 Type Definitions
+feat : increment MINOR version
+fix  : increment PATCH version
+Allowed additional types: build, chore, ci, docs, style, refactor, perf, test (no semver effect unless breaking)</p>
+<p class="md-github">3 Scope Syntax
+scope MUST be noun/hyphen words inside () immediately after type, e.g., feat(parser-core)</p>
+<p class="md-github">4 Description Requirements
+MUST follow colon and space. SHOULD be 72 chars. No trailing period.</p>
+<p class="md-github">5 Body Content
+MAY include after one blank line. Free-form paragraphs. No metadata tokens.</p>
+<p class="md-github">6 Footer Format
+MAY include after one blank line. Each line:<token>: <value> or <token> #<value>. Tokens use hyphens, e.g., Reviewed-by.</p>
+<p class="md-github">7 Breaking Change Indicators
+MUST use ! in header before : OR FOOTER token BREAKING CHANGE:. Include description after ': '.</p>
+<p class="md-github">8 Usage Examples
+feat(cli): add interactive prompt
+fix(api)!: remove deprecated parameter
+BREAKING CHANGE: config file format changed</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Conventional Commits Specification
+https://www.conventionalcommits.org/en/v1.0.0/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-conventional_commits" href="#digest-of-conventional_commits"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of CONVENTIONAL_COMMITS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="conventional-commits-100" href="#conventional-commits-100"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Conventional Commits 1.0.0</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="overview" href="#overview"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Overview</h2>
+<p class="md-github">The Conventional Commits spec defines a strict commit message format:</p>
+<ul class="md-github">
+<li class="md-github">Header: <code class="md-github">&lt;type&gt;[scope][!]: description</code></li>
+<li class="md-github">Body: blank line followed by free-form text</li>
+<li class="md-github">Footers: blank line followed by one or more metadata lines</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="grammar" href="#grammar"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Grammar</h2>
+<pre class="md-github"><code class="md-github language-regex">^(?&lt;type&gt;\w+)(?:\((?&lt;scope&gt;[\w\- ]+)\))?(?&lt;breaking&gt;!)?: (?&lt;description&gt;.+)$```
+
+## Types
+  • feat (MINOR semver)  
+  • fix (PATCH semver)  
+  • build, chore, ci, docs, style, refactor, perf, test, etc. (no semver effect unless breaking)
+
+## Scope
+  • Format: noun or hyphenated words inside parentheses  
+  • Example: `feat(parser): parse arrays`
+
+## Description
+  • Required: non-empty summary after `: `  
+  • Max length: 72 characters recommended
+
+## Body
+  • Optional: blank line then paragraphs  
+  • Explain motivation and internal details
+
+## Footers
+  • Format: `&lt;token&gt;: &lt;value&gt;` or `&lt;token&gt; #&lt;value&gt;`  
+  • Tokens use hyphens instead of spaces except `BREAKING CHANGE`
+
+## Breaking Changes
+  • Indicated by `!` before `:` or `BREAKING CHANGE: description` footer  
+  • Always use uppercase token and provide description
+
+## Examples
+  • `feat: add new API method`
+  • `fix(api)!: update endpoint signature`
+  • Footer example:
+    BREAKING CHANGE: endpoint now requires auth token
+
+## Integration
+  • commitlint rules: type-enum, header-max-length, scope-case, subject-capital-letter
+  • changelog generation: conventional-changelog CLI, semantic-release plugins
+
+## Troubleshooting
+  • git rebase -i HEAD~N to amend past commits  
+  • commitlint error codes and remediation  
+  • Fix invalid header: update to match regex
+
+Retrieved: 2023-10-10
+Data Size: 352798 bytes
+
+## Attribution
+- Source: Conventional Commits Specification
+- URL: https://www.conventionalcommits.org/en/v1.0.0/
+- License: CC0 Public Domain
+- Crawl Date: 2025-05-03T20:48:27.235Z
+- Data Size: 352798 bytes
+- Links Found: 232
+
+## Retrieved
+2025-05-03
+</code></pre>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-03T21:20:50.599Z</p>
+  </footer>
+</body>
+</html>
