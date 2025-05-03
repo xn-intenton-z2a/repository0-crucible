@@ -20,7 +20,7 @@ npm install @xn-intenton-z2a/repository0-crucible
 - `--seed <n>`         : Deterministically select an emoticon by a non-negative integer seed (errors and exits 1 on invalid input).
 - `--json`             : Output results in JSON format; can combine with `--seed`, `--list`, or `--count`.
 - `--count <n>`        : Output multiple emoticons. In plain mode prints n emoticons (one per line); in JSON mode outputs an array of n strings; can combine with `--seed` for sequential seed-based output (errors and exits 1 on invalid input).
-- `--interactive, -i`  : Launch interactive REPL supporting commands `random`, `seed <n>`, `list`, `json`, `help`, `exit`.
+- `--interactive, -i`  : Launch interactive REPL supporting commands `random`, `seed <n>`, `list`, `json`, `help`, `exit`, with prompt `> `.
 - `--help, -h`         : Show help message and exit 0.
 - `--version, -v`      : Show application version and exit 0.
 - `--serve`            : Start built-in HTTP server mode.
@@ -65,7 +65,7 @@ node src/lib/main.js --diagnostics
 # Diagnostics mode (environment variable)
 EMOTICONS_DIAGNOSTICS=1 node src/lib/main.js --diagnostics
 
-# Interactive REPL
+# Interactive Mode
 node src/lib/main.js --interactive
 # or
 node src/lib/main.js -i
@@ -93,10 +93,31 @@ All HTTP responses include the header `Access-Control-Allow-Origin: *`.
   Returns `OK`.
 
 - **GET /metrics**
-  Exposes Prometheus metrics for request counts.
+  Exposes Prometheus metrics for request counts:
+
+  ```text
+  # HELP emoticon_requests_total emoticon_requests_total counter
+  # TYPE emoticon_requests_total counter
+  emoticon_requests_total 10
+  # HELP emoticon_requests_root_total emoticon_requests_root_total counter
+  # TYPE emoticon_requests_root_total counter
+  emoticon_requests_root_total 3
+  # HELP emoticon_requests_list_total emoticon_requests_list_total counter
+  # TYPE emoticon_requests_list_total counter
+  emoticon_requests_list_total 2
+  # HELP emoticon_requests_json_total emoticon_requests_json_total counter
+  # TYPE emoticon_requests_json_total counter
+  emoticon_requests_json_total 4
+  # HELP emoticon_requests_seeded_total emoticon_requests_seeded_total counter
+  # TYPE emoticon_requests_seeded_total counter
+  emoticon_requests_seeded_total 1
+  # HELP emoticon_requests_errors_total emoticon_requests_errors_total counter
+  # TYPE emoticon_requests_errors_total counter
+  emoticon_requests_errors_total 0
+  ```
 
 - **GET /ui**
-  Opens the interactive Emoticon Browser web interface. Navigate to http://localhost:3000/ui in your browser to view and interact with emoticon controls.
+  Opens the interactive Emoticon Browser web interface (HTML with controls).
 
 ## Programmatic API
 

@@ -95,10 +95,23 @@ describe('Express Middleware', () => {
     expect(res.text).toBe('OK');
   });
 
-  test('GET /metrics returns Prometheus metrics', async () => {
+  test('GET /metrics returns Prometheus metrics with all counters', async () => {
     const res = await request(app).get('/metrics');
     expect(res.status).toBe(200);
-    expect(res.text).toMatch(/# HELP emoticon_requests_total emoticon_requests_total counter/);
+    const text = res.text;
+    const counters = [
+      'emoticon_requests_total',
+      'emoticon_requests_root_total',
+      'emoticon_requests_list_total',
+      'emoticon_requests_json_total',
+      'emoticon_requests_seeded_total',
+      'emoticon_requests_errors_total',
+    ];
+    counters.forEach((name) => {
+      expect(text).toContain(`# HELP ${name} ${name} counter`);
+      expect(text).toContain(`# TYPE ${name} counter`);
+      expect(text).toMatch(new RegExp(`${name} \d+`));
+    });
   });
 
   test('unknown path returns 404 and correct format', async () => {
