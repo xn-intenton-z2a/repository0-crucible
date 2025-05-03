@@ -100,30 +100,22 @@ curl http://localhost:3000/version
 
 # Metrics endpoint
 curl http://localhost:3000/metrics
-```
 
-### Handling invalid port values
+# List JSON array via path
+curl http://localhost:3000/json/list
 
-```bash
-# Error on invalid port value
-node src/lib/main.js --serve --port abc
-# Error: Invalid port: abc
-# Exit code: 1
+# List JSON array via query
+curl http://localhost:3000/json?list
 
-# Error on negative port value
-node src/lib/main.js --serve --port -1
-# Error: Invalid port: -1
-# Exit code: 1
-```
+# Error: Invalid seed returns 400 (plain text)
+curl http://localhost:3000/json?seed=abc
 
-### Handling non-GET requests
+# Error: Invalid seed returns 400 and JSON error
+curl -H "Accept: application/json" http://localhost:3000/json?seed=abc
 
-```bash
-# POST request without Accept header
+# Non-GET request without Accept header returns 404 plain text
 curl -X POST http://localhost:3000/
-# Response: 404 Not Found (plain text)
 
-# POST request with Accept: application/json
-curl -X POST -H "Accept: application/json" http://localhost:3000/
-# Response: {"error":"Not Found"} (application/json)
+# Non-GET request with Accept: application/json returns 404 JSON error
+curl -X DELETE -H "Accept: application/json" http://localhost:3000/unknown
 ```
