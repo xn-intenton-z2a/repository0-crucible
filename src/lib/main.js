@@ -31,7 +31,10 @@ export function main(args = []) {
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
-      prompt: "> "
+      prompt: "> ",
+      // enable history navigation
+      historySize: 100,
+      removeHistoryDuplicates: true
     });
     let lastResult = null;
 
@@ -220,7 +223,7 @@ Options:
   --list          List all available ASCII emoticons in order.
   --seed <n>      Provide a non-negative integer seed for deterministic selection.
   --json          Output results in JSON format.
-  --help, -h      Show this help message.
+  --help, -h      Show help message.
 
 Examples:
   node src/lib/main.js

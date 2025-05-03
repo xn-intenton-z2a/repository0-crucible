@@ -78,6 +78,8 @@ Launch an interactive REPL to explore emoticon commands:
 node src/lib/main.js --interactive
 ```
 
+The REPL supports navigation through previous commands using the up and down arrow keys.
+
 Available commands:
 - `random` or empty input: Show a random emoticon.
 - `seed <n>`: Show the emoticon for seed `n` deterministically.

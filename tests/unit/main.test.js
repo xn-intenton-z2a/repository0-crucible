@@ -11,8 +11,7 @@ const FACES = [
   "(ʘ‿ʘ)",
   "(¬‿¬)",
   "ಠ_ಠ",
-  "^_^"
-];
+  "^_^"];
 
 describe('main()', () => {
   let logSpy;
@@ -182,8 +181,14 @@ describe('Interactive Mode', () => {
     exitSpy.mockRestore();
   });
 
-  test('should initialize readline with prompt', () => {
-    expect(createInterfaceSpy).toHaveBeenCalledWith({ input: process.stdin, output: process.stdout, prompt: "> " });
+  test('should initialize readline with prompt and history options', () => {
+    expect(createInterfaceSpy).toHaveBeenCalledWith({
+      input: process.stdin,
+      output: process.stdout,
+      prompt: "> ",
+      historySize: 100,
+      removeHistoryDuplicates: true
+    });
     expect(rl.prompt).toHaveBeenCalled();
   });
 
