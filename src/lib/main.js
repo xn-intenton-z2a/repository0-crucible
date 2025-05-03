@@ -1,18 +1,15 @@
-// src/lib/main.js
-
-import { fileURLToPath } from "url";
-import http from "http";
-import readline from "readline";
-import fs from "fs";
-import path from "path";
-import yaml from "js-yaml";
-import chalk from "chalk";
-import express from "express";
+import fs from 'fs';
+import path from 'path';
+import yaml from 'js-yaml';
+import chalk from 'chalk';
+import express from 'express';
 import pkg from '../../package.json' assert { type: 'json' };
+
+// Version from package
 export const version = pkg.version;
 
-// Built-in emoticon list
-const BUILTIN_EMOTICONS = [
+// Default built-in emoticon list
+let EMOTICONS = [
   ":)",
   ":-([",
   ":D",
@@ -22,334 +19,338 @@ const BUILTIN_EMOTICONS = [
   "(¬‿¬)",
   "ಠ_ಠ",
   "^_^"];
-
-// Dynamic emoticon list and config tracking
-let EMOTICONS = [...BUILTIN_EMOTICONS];
-let isCustomConfig = false;
 let configSource = 'builtin';
+let isCustomConfig = false;
 
-// Load a custom emoticon file
+// Load custom configuration from JSON or YAML
 function loadConfig(configPath) {
   if (!fs.existsSync(configPath)) {
-    console.error("Invalid config: File not found");
+    console.error('Invalid config: File not found');
     process.exit(1);
   }
-  let data;
+  const content = fs.readFileSync(configPath, 'utf8');
+  let arr;
   try {
-    const content = fs.readFileSync(configPath, "utf8");
-    if (configPath.endsWith(".json")) {
-      data = JSON.parse(content);
+    const ext = path.extname(configPath).toLowerCase();
+    if (ext === '.yaml' || ext === '.yml') {
+      arr = yaml.load(content);
     } else {
-      data = yaml.load(content);
+      arr = JSON.parse(content);
     }
   } catch (err) {
-    console.error("Invalid config: Failed to parse file");
+    console.error('Invalid config: Expected an array of strings');
     process.exit(1);
   }
-  if (!Array.isArray(data) || !data.every(item => typeof item === "string")) {
-    console.error("Invalid config: Expected an array of strings");
+  if (!Array.isArray(arr) || !arr.every((item) => typeof item === 'string')) {
+    console.error('Invalid config: Expected an array of strings');
     process.exit(1);
   }
-  EMOTICONS = data;
-  isCustomConfig = true;
+  EMOTICONS = arr;
   configSource = configPath;
+  isCustomConfig = true;
 }
 
-// Check for custom config via CLI or env var
-function maybeLoadCustomConfig(args) {
-  // Reset to built-in each run
-  EMOTICONS = [...BUILTIN_EMOTICONS];
-  isCustomConfig = false;
-  configSource = 'builtin';
-  const configIdx = args.indexOf("--config");
-  const envConfig = process.env.EMOTICONS_CONFIG;
-  let configPath;
-  if (configIdx !== -1) {
-    configPath = args[configIdx + 1];
-  } else if (envConfig) {
-    configPath = envConfig;
-  }
-  if (configPath) {
-    const resolved = path.resolve(process.cwd(), configPath);
-    loadConfig(resolved);
-  }
-}
-
-function mulberry32(a) {
-  return function() {
-    let t = (a += 0x6D2B79F5);
-    t = Math.imul(t ^ (t >>> 15), t | 1);
-    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
-    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
-  };
-}
-
-// Programmatic API utilities
+// Programmatic API
 export function listFaces() {
-  return [...EMOTICONS];
+  return EMOTICONS.slice();
 }
 
 export function randomFace() {
-  const idx = Math.floor(Math.random() * EMOTICONS.length);
-  return EMOTICONS[idx];
+  return EMOTICONS[Math.floor(Math.random() * EMOTICONS.length)];
 }
 
 export function seededFace(seed) {
-  const idx = seed % EMOTICONS.length;
-  return EMOTICONS[idx];
-}
-
-export function emoticonJson({ mode, seed }) {
-  if (mode === "random") {
-    const face = randomFace();
-    return { face, mode, seed: null };
-  } else if (mode === "seeded") {
-    const face = seededFace(seed);
-    return { face, mode, seed };
+  if (!Number.isInteger(seed) || seed < 0) {
+    throw new Error(`Invalid seed: ${seed}`);
   }
-  throw new Error(`Invalid mode: ${mode}`);
+  return EMOTICONS[seed % EMOTICONS.length];
 }
 
-// Express middleware
-export function createEmoticonRouter(options = {}) {
+export function emoticonJson({ face, mode, seed }) {
+  return { face, mode, seed };
+}
+
+// Express middleware for HTTP API
+export function createEmoticonRouter() {
   const router = express.Router();
-  const counters = {
-    emoticon_requests_total: 0,
-    emoticon_requests_root_total: 0,
-    emoticon_requests_list_total: 0,
-    emoticon_requests_json_total: 0,
-    emoticon_requests_seeded_total: 0,
-    emoticon_requests_errors_total: 0,
-  };
+  let totalRequests = 0;
+  let rootRequests = 0;
+  let listRequests = 0;
+  let jsonRequests = 0;
+  let seededRequests = 0;
+  let errorRequests = 0;
 
-  function sendText(res, status, text) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.status(status).type('text/plain').send(text);
-  }
-
-  function sendJson(res, status, obj) {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.status(status).json(obj);
-  }
+  // CORS header
+  router.use((req, res, next) => {
+    res.set('Access-Control-Allow-Origin', '*');
+    next();
+  });
 
   // Metrics endpoint
   router.get('/metrics', (req, res) => {
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    res.status(200).type('text/plain; version=0.0.4');
-    let body = '';
-    for (const [name, value] of Object.entries(counters)) {
-      body += `# HELP ${name} ${name} counter\n`;
-      body += `# TYPE ${name} counter\n`;
-      body += `${name} ${value}\n`;
-    }
-    res.send(body);
-  });
-
-  // Version endpoint
-  router.get('/version', (req, res) => {
-    sendJson(res, 200, { version });
-  });
-
-  // Health endpoint
-  router.get('/health', (req, res) => {
-    sendText(res, 200, 'OK');
+    const lines = [];
+    lines.push('# HELP emoticon_requests_total emoticon_requests_total counter');
+    lines.push('# TYPE emoticon_requests_total counter');
+    lines.push(`emoticon_requests_total ${totalRequests}`);
+    res.type('text/plain').send(lines.join('\n'));
   });
 
   // Root: random emoticon
   router.get('/', (req, res) => {
-    counters.emoticon_requests_total++;
-    counters.emoticon_requests_root_total++;
-    sendText(res, 200, randomFace());
+    totalRequests++;
+    rootRequests++;
+    res.type('text/plain').send(randomFace());
   });
 
-  // List all emoticons
+  // List: all emoticons plain text
   router.get('/list', (req, res) => {
-    counters.emoticon_requests_total++;
-    counters.emoticon_requests_list_total++;
-    const list = listFaces();
-    sendText(res, 200, list.join('\n'));
+    totalRequests++;
+    listRequests++;
+    res.type('text/plain').send(listFaces().join('\n'));
   });
 
-  // JSON single, list, or count
-  router.get('/json', (req, res) => {
-    const params = req.query;
-    const accept = req.headers.accept || '';
-
-    // Count support
-    if (params.count !== undefined) {
-      const countStr = params.count;
-      if (!/^[0-9]+$/.test(countStr)) {
-        counters.emoticon_requests_errors_total++;
-        if (accept.includes('application/json')) {
-          return sendJson(res, 400, { error: `Invalid count: ${countStr}` });
-        }
-        return sendText(res, 400, `Invalid count: ${countStr}`);
-      }
-      const count = Number(countStr);
-      let seedVal = null;
-      if (params.seed !== undefined) {
-        const seedStr = params.seed;
-        if (!/^[0-9]+$/.test(seedStr)) {
-          counters.emoticon_requests_errors_total++;
-          if (accept.includes('application/json')) {
-            return sendJson(res, 400, { error: `Invalid seed: ${seedStr}` });
-          }
-          return sendText(res, 400, `Invalid seed: ${seedStr}`);
-        }
-        seedVal = Number(seedStr);
-      }
-      counters.emoticon_requests_total++;
-      counters.emoticon_requests_json_total++;
-      if (seedVal !== null) counters.emoticon_requests_seeded_total++;
-      const results = [];
-      for (let i = 0; i < count; i++) {
-        if (seedVal !== null) {
-          results.push(seededFace(seedVal + i));
-        } else {
-          results.push(randomFace());
-        }
-      }
-      return sendJson(res, 200, results);
-    }
-
-    // JSON list alias
-    if (params.list !== undefined) {
-      counters.emoticon_requests_total++;
-      counters.emoticon_requests_json_total++;
-      return sendJson(res, 200, listFaces());
-    }
-
-    let mode = 'random';
-    let seedVal = null;
-    if (params.seed !== undefined) {
-      const seedStr = params.seed;
-      if (!/^[0-9]+$/.test(seedStr)) {
-        counters.emoticon_requests_errors_total++;
-        if (accept.includes('application/json')) {
-          return sendJson(res, 400, { error: `Invalid seed: ${seedStr}` });
-        }
-        return sendText(res, 400, `Invalid seed: ${seedStr}`);
-      }
-      seedVal = Number(seedStr);
-      mode = 'seeded';
-    }
-    counters.emoticon_requests_total++;
-    counters.emoticon_requests_json_total++;
-    if (mode === 'seeded') counters.emoticon_requests_seeded_total++;
-    const obj = emoticonJson({ mode, seed: seedVal });
-    return sendJson(res, 200, obj);
-  });
-
-  // JSON list alias via path
+  // JSON list route
   router.get('/json/list', (req, res) => {
-    counters.emoticon_requests_total++;
-    counters.emoticon_requests_json_total++;
-    return sendJson(res, 200, listFaces());
+    totalRequests++;
+    jsonRequests++;
+    res.json(listFaces());
   });
 
-  // Unknown path or non-GET
-  router.use((req, res) => {
-    counters.emoticon_requests_errors_total++;
-    const accept = req.headers.accept || '';
-    res.setHeader('Access-Control-Allow-Origin', '*');
-    if (accept.includes('application/json')) {
-      res.status(404).json({ error: 'Not Found' });
-    } else {
-      res.status(404).type('text/plain').send('Not Found');
+  // JSON endpoint with query params: seed, count, list
+  router.get('/json', (req, res) => {
+    totalRequests++;
+    jsonRequests++;
+    const { seed: seedParam, count: countParam, list } = req.query;
+
+    // All faces
+    if (list !== undefined) {
+      return res.json(listFaces());
     }
+
+    let seed;
+    // Seeded
+    if (seedParam !== undefined) {
+      seed = parseInt(seedParam, 10);
+      if (Number.isNaN(seed) || seed < 0) {
+        errorRequests++;
+        res.status(400);
+        if (req.headers.accept && req.headers.accept.includes('application/json')) {
+          return res.json({ error: `Invalid seed: ${seedParam}` });
+        }
+        return res.type('text/plain').send(`Invalid seed: ${seedParam}`);
+      }
+      seededRequests++;
+    }
+
+    // Counted
+    if (countParam !== undefined) {
+      const count = parseInt(countParam, 10);
+      if (Number.isNaN(count) || count < 0) {
+        errorRequests++;
+        res.status(400);
+        const msg = `Invalid count: ${countParam}`;
+        if (req.headers.accept && req.headers.accept.includes('application/json')) {
+          return res.json({ error: msg });
+        }
+        return res.type('text/plain').send(msg);
+      }
+      const out = [];
+      for (let i = 0; i < count; i++) {
+        if (seed !== undefined) {
+          out.push(seededFace(seed + i));
+        } else {
+          out.push(randomFace());
+        }
+      }
+      return res.json(out);
+    }
+
+    // Single seeded or random
+    if (seed !== undefined) {
+      return res.json({ face: seededFace(seed), mode: 'seeded', seed });
+    }
+    return res.json({ face: randomFace(), mode: 'random', seed: null });
+  });
+
+  // Version endpoint
+  router.get('/version', (req, res) => {
+    totalRequests++;
+    res.json({ version });
+  });
+
+  // Health check
+  router.get('/health', (req, res) => {
+    res.type('text/plain').send('OK');
+  });
+
+  // 404 handler
+  router.use((req, res) => {
+    errorRequests++;
+    res.status(404);
+    const msg = 'Not Found';
+    if (req.headers.accept && req.headers.accept.includes('application/json')) {
+      return res.json({ error: msg });
+    }
+    return res.type('text/plain').send(msg);
   });
 
   return router;
 }
 
-export function main(args = []) {
-  // Load custom emoticons if requested
-  maybeLoadCustomConfig(args);
+// CLI entrypoint
+export function main(args) {
+  const diagnosticsFlag = args.includes('--diagnostics');
+  const helpFlag = args.includes('--help') || args.includes('-h');
+  const versionFlag = args.includes('--version') || args.includes('-v');
+  const listFlag = args.includes('--list');
+  const jsonFlag = args.includes('--json');
+  const serveFlag = args.includes('--serve');
 
-  // Diagnostics mode
-  const hasDiagFlag = args.includes("--diagnostics");
-  const hasDiagEnv = !!process.env.EMOTICONS_DIAGNOSTICS;
-  if (hasDiagFlag || hasDiagEnv) {
-    const diagnostics = {
+  // Configuration flag or env var
+  const configFlagIndex = args.indexOf('--config');
+  if (configFlagIndex !== -1) {
+    loadConfig(args[configFlagIndex + 1]);
+  } else if (process.env.EMOTICONS_CONFIG) {
+    loadConfig(process.env.EMOTICONS_CONFIG);
+  }
+
+  // Diagnostics
+  if (diagnosticsFlag || process.env.EMOTICONS_DIAGNOSTICS) {
+    const output = {
       version,
       configSource,
       emoticonCount: EMOTICONS.length,
       isCustomConfig,
       colorStyle: null,
-      // Ensure this is always a number for test expectations
-      supportsColorLevel: chalk.supportsColor?.level ?? 0
+      supportsColorLevel: chalk.level,
     };
-    console.log(JSON.stringify(diagnostics));
+    console.log(JSON.stringify(output));
     process.exit(0);
     return;
   }
 
-  // Version flag handling
-  if (args.includes("--version") || args.includes("-v")) {
+  // Help
+  if (helpFlag) {
+    console.log(
+      `Usage: node src/lib/main.js [options]
+--config <path>    Load a custom emoticon list from a JSON or YAML file
+--diagnostics      Output application diagnostics as JSON and exit
+--list             Print all available emoticons with their zero-based index
+--seed <n>         Use a non-negative integer seed to deterministically select an emoticon
+--json             Output results in JSON format
+--count <n>        Output multiple emoticons
+--interactive, -i  Launch interactive REPL mode
+--help, -h         Display this help message and exit
+--version, -v      Print application version and exit
+--serve            Start built-in HTTP server mode
+--port <n>         Specify HTTP server port (default: 3000)
+
+node src/lib/main.js --config <path>`
+    );
+    process.exit(0);
+    return;
+  }
+
+  // Version
+  if (versionFlag) {
     console.log(version);
     process.exit(0);
     return;
   }
 
-  // Interactive REPL mode
-  if (args.includes("--interactive") || args.includes("-i")) {
-    // existing REPL code unchanged
-    const rl = readline.createInterface({
-      input: process.stdin,
-      output: process.stdout,
-      prompt: "> ",
-      historySize: 100,
-      removeHistoryDuplicates: true
-    });
-    let lastResult = null;
+  // HTTP Server mode
+  if (serveFlag) {
+    let port = 3000;
+    const portIndex = args.indexOf('--port');
+    if (portIndex !== -1) {
+      const portArg = args[portIndex + 1];
+      const p = parseInt(portArg, 10);
+      if (Number.isNaN(p) || p < 0) {
+        console.error(`Invalid port: ${portArg}`);
+        process.exit(1);
+      }
+      port = p;
+    }
+    const app = express();
+    app.use(createEmoticonRouter());
+    const server = app.listen(port);
+    const assignedPort = server.address().port;
+    console.log(`Listening on port ${assignedPort}`);
+    return server;
+  }
 
-    const printRandom = () => {
-      const face = randomFace();
+  // List emoticons
+  if (listFlag) {
+    listFaces().forEach((face, idx) => console.log(`${idx}: ${face}`));
+    return;
+  }
+
+  // Count and/or seed
+  const countIndex = args.indexOf('--count');
+  const seedIndex = args.indexOf('--seed');
+
+  if (countIndex !== -1) {
+    const countArg = args[countIndex + 1];
+    const count = parseInt(countArg, 10);
+    if (Number.isNaN(count) || count < 0) {
+      console.error(`Invalid count: ${countArg}`);
+      process.exit(1);
+    }
+    if (jsonFlag) {
+      const arr = [];
+      if (seedIndex !== -1) {
+        const seedVal = parseInt(args[seedIndex + 1], 10);
+        for (let i = 0; i < count; i++) {
+          arr.push(seededFace(seedVal + i));
+        }
+      } else {
+        for (let i = 0; i < count; i++) {
+          arr.push(randomFace());
+        }
+      }
+      console.log(JSON.stringify(arr));
+      process.exit(0);
+      return;
+    } else {
+      if (seedIndex !== -1) {
+        const seedVal = parseInt(args[seedIndex + 1], 10);
+        for (let i = 0; i < count; i++) {
+          console.log(seededFace(seedVal + i));
+        }
+      } else {
+        for (let i = 0; i < count; i++) {
+          console.log(randomFace());
+        }
+      }
+      process.exit(0);
+      return;
+    }
+  }
+
+  // Seed without count
+  if (seedIndex !== -1) {
+    const seedArg = args[seedIndex + 1];
+    const seed = parseInt(seedArg, 10);
+    if (Number.isNaN(seed)) {
+      throw new Error(`Invalid seed: ${seedArg}`);
+    }
+    const face = seededFace(seed);
+    if (jsonFlag) {
+      console.log(JSON.stringify({ face, mode: 'seeded', seed }));
+    } else {
       console.log(face);
-      lastResult = { type: "single", ...emoticonJson({ mode: "random", seed: null }) };
-    };
+    }
+    return;
+  }
 
-    const printSeeded = (seedString) => {
-      if (!/^[0-9]+$/.test(seedString)) {
-        console.log(`Invalid seed: ${seedString}`);
-        return;
-      }
-      const seed = Number(seedString);
-      const face = seededFace(seed);
-      console.log(face);
-      lastResult = { type: "single", ...emoticonJson({ mode: "seeded", seed }) };
-    };
-
-    const printList = () => {
-      listFaces().forEach((face, i) => console.log(`${i}: ${face}`));
-      lastResult = { type: "list", list: listFaces() };
-    };
-
-    const printJson = () => {
-      if (lastResult == null) {
-        printRandom();
-        return;
-      }
-      if (lastResult.type === "single") {
-        console.log(JSON.stringify(lastResult.face));
-      } else if (lastResult.type === "list") {
-        console.log(JSON.stringify(lastResult.list));
-      }
-    };
-
-    const printHelp = () => {
-      console.log(`Usage: node src/lib/main.js [options]
-
-Options:
-  --config <path>       Load custom emoticon list (JSON or YAML)
-  --diagnostics         Output diagnostics JSON and exit
-  --list                List all emoticons with indices
-  --seed <n>            Use seed for deterministic emoticon
-  --json                Output JSON formatted results
-  --count <n>           Output multiple emoticons
-  --interactive, -i     Start interactive mode
-  --help, -h            Show help and exit
-  --version, -v         Show version and exit
-  --serve               Start HTTP server mode
-  --port <n>            Specify port for HTTP server`);
-    };
+  // Default random output
+  if (jsonFlag) {
+    console.log(
+      JSON.stringify({ face: randomFace(), mode: 'random', seed: null })
+    );
+    return;
+  } else {
+    console.log(randomFace());
+    return;
+  }
+}
