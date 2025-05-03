@@ -92,7 +92,7 @@ curl http://localhost:3000/json
 # Seeded JSON (seed=2)
 curl http://localhost:3000/json?seed=2
 
-# Health check endpoint
+# Health endpoint
 curl http://localhost:3000/health
 
 # Version endpoint
