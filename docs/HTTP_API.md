@@ -43,18 +43,12 @@ Provide an HTTP server mode for the emoticon CLI that exposes endpoints for rand
 - **GET /metrics**
   - Returns a Prometheus-compatible metrics exposition of internal request counters.
   - Content-Type: `text/plain; version=0.0.4`
-  - Exposes the following counters:
-    - `emoticon_requests_total`: Counter of all HTTP GET requests served (excluding errors)
-    - `emoticon_requests_root_total`: Counter of root requests (GET /)
-    - `emoticon_requests_list_total`: Counter of plain-text list requests (GET /list)
-    - `emoticon_requests_json_total`: Counter of JSON requests (GET /json endpoints, including GET /json?list and GET /json/list)
-    - `emoticon_requests_seeded_total`: Counter of seeded JSON requests (GET /json?seed=<n>)
-    - `emoticon_requests_errors_total`: Counter of requests resulting in non-2xx status codes or invalid inputs
+  - Exposes counters: `emoticon_requests_total`, `emoticon_requests_root_total`, `emoticon_requests_list_total`, `emoticon_requests_json_total`, `emoticon_requests_seeded_total`, `emoticon_requests_errors_total`.
 
 - **Any other path**
   - Responds with status 404.
   - If `Accept: application/json` header is present, returns `{ "error": "Not Found" }`.
-  - Otherwise returns plain text `Not Found`
+  - Otherwise returns plain text `Not Found`.
 
 ## Example Usage with curl
 
@@ -83,6 +77,15 @@ curl http://localhost:3000/version
 # Metrics endpoint
 curl http://localhost:3000/metrics
 
-# Invalid seed returns 400 error
+# Error: Invalid seed returns 400 (plain text)
 curl http://localhost:3000/json?seed=abc
+
+# Error: Invalid seed returns 400 and JSON error
+curl -H "Accept: application/json" http://localhost:3000/json?seed=abc
+
+# Unknown path returns 404 (plain text)
+curl http://localhost:3000/unknown
+
+# Unknown path returns 404 and JSON error
+curl -H "Accept: application/json" http://localhost:3000/unknown
 ```

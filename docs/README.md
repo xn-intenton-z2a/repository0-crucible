@@ -12,15 +12,15 @@ npm install @xn-intenton-z2a/repository0-crucible
 
 ## Features
 
-- Default: Outputs a random emoticon in plain text.
-- `--list` : List all available emoticons with zero-based indices.
-- `--seed <n>` : Select a deterministic emoticon for any non-negative integer seed; invalid seeds produce an error.
-- `--json` : Output results in JSON format (random, seeded, or list).
-- `--interactive`, `-i` : Launch an interactive REPL with commands: `random`, `seed <n>`, `list`, `json`, `help`, `exit`.
-- `--help`, `-h` : Show help message and exit.
-- `--version`, `-v` : Print application version and exit.
-- `--serve` : Start HTTP server mode.
-- `--port <n>` : Specify HTTP server port (default: 3000); invalid ports produce an error.
+- Default (no flags): Outputs a random emoticon in plain text.
+- `--list`: List all available emoticons with zero-based indices.
+- `--seed <n>`: Provide a non-negative integer seed to deterministically select an emoticon; invalid seeds produce an error and exit with code 1.
+- `--json`: Output results in JSON format. Can be combined with `--seed` or `--list`.
+- `--interactive`, `-i`: Launch an interactive REPL with commands: `random`, `seed <n>`, `list`, `json`, `help`, `exit`.
+- `--help`, `-h`: Show help message and exit with code 0.
+- `--version`, `-v`: Print application version and exit with code 0.
+- `--serve`: Start HTTP server mode.
+- `--port <n>`: Specify HTTP server port (default: 3000); invalid ports produce an error and exit with code 1.
 
 ## CLI Usage Examples
 
@@ -53,41 +53,35 @@ node src/lib/main.js --help
 
 # Version
 node src/lib/main.js --version
-``` 
+# Alias for version
+node src/lib/main.js -v
+```
 
 ## HTTP Server Usage Examples
 
-Start the server (default port 3000):
-
 ```bash
+# Start the server (default port 3000)
 node src/lib/main.js --serve
-```
 
-Start the server on port 4000:
-
-```bash
+# Start server on port 4000
 node src/lib/main.js --serve --port 4000
-```
 
-Example HTTP requests:
-
-```bash
-# Random emoticon
+# Random emoticon (plain text)
 curl http://localhost:3000/
 
-# List emoticons
+# List emoticons (plain text)
 curl http://localhost:3000/list
 
 # Random JSON
 curl http://localhost:3000/json
 
-# Seeded JSON
+# Seeded JSON (seed=2)
 curl http://localhost:3000/json?seed=2
 
-# JSON list via query
+# List JSON array via query
 curl http://localhost:3000/json?list
 
-# JSON list via path
+# List JSON array via path
 curl http://localhost:3000/json/list
 
 # Version endpoint
@@ -95,17 +89,27 @@ curl http://localhost:3000/version
 
 # Metrics endpoint
 curl http://localhost:3000/metrics
-```  
+
+# Error: Invalid seed returns 400 error (plain text)
+curl http://localhost:3000/json?seed=abc
+
+# Error: Invalid seed returns 400 error (JSON)
+curl -H "Accept: application/json" http://localhost:3000/json?seed=abc
+
+# 404 Not Found (plain text)
+curl http://localhost:3000/unknown
+
+# 404 Not Found (JSON)
+curl -H "Accept: application/json" http://localhost:3000/unknown
+```
 
 ## Programmatic API
-
-Import and use core utilities in your code:
 
 ```js
 import { listFaces, randomFace, seededFace, emoticonJson } from '@xn-intenton-z2a/repository0-crucible';
 
 console.log(listFaces());
-// [":)",":-(",":D",...]
+// [":)",":-("," :D",...]
 
 console.log(randomFace());
 // e.g. ":-D"
