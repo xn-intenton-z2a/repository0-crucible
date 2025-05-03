@@ -10,7 +10,7 @@ const FACES = [
   "(ʘ‿ʘ)",
   "(¬‿¬)",
   "ಠ_ಠ",
-  "^_^"];  // nine emoticons
+  "^_^"];
 
 describe('main()', () => {
   let logSpy;
@@ -51,5 +51,49 @@ describe('main()', () => {
 
   test('throws error on invalid seed', () => {
     expect(() => main(['--seed', 'abc'])).toThrow('Invalid seed: abc');
+  });
+
+  test('prints help message and exits with code 0 for --help', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
+    logSpy.mockClear();
+    errorSpy.mockClear();
+    exitSpy.mockClear();
+
+    main(['--help']);
+
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    const msg = logSpy.mock.calls[0][0];
+    expect(msg).toContain('Usage:');
+    expect(msg).toContain('--list');
+    expect(msg).toContain('--seed <n>');
+    expect(msg).toContain('--help');
+    expect(errorSpy).not.toHaveBeenCalled();
+    expect(exitSpy).toHaveBeenCalledWith(0);
+
+    errorSpy.mockRestore();
+    exitSpy.mockRestore();
+  });
+
+  test('prints help message and exits with code 0 for -h', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
+    logSpy.mockClear();
+    errorSpy.mockClear();
+    exitSpy.mockClear();
+
+    main(['-h']);
+
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    const msg = logSpy.mock.calls[0][0];
+    expect(msg).toContain('Usage:');
+    expect(msg).toContain('--list');
+    expect(msg).toContain('--seed <n>');
+    expect(msg).toContain('-h');
+    expect(errorSpy).not.toHaveBeenCalled();
+    expect(exitSpy).toHaveBeenCalledWith(0);
+
+    errorSpy.mockRestore();
+    exitSpy.mockRestore();
   });
 });

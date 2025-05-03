@@ -12,7 +12,7 @@ const EMOTICONS = [
   "(ʘ‿ʘ)",
   "(¬‿¬)",
   "ಠ_ಠ",
-  "^_^"];  // nine emoticons
+  "^_^"];
 
 function mulberry32(a) {
   return function() {
@@ -24,6 +24,30 @@ function mulberry32(a) {
 }
 
 export function main(args = []) {
+  const usage = `ASCII Emoticon CLI
+
+Usage:
+  node src/lib/main.js [options]
+
+Options:
+  --list          List all available ASCII emoticons in order.
+  --seed <n>      Provide a non-negative integer seed for deterministic selection.
+  --json          Output results in JSON format.
+  --help, -h      Show this help message.
+
+Examples:
+  node src/lib/main.js
+  node src/lib/main.js --list
+  node src/lib/main.js --seed 5
+  node src/lib/main.js --help
+`;
+
+  if (args.includes('--help') || args.includes('-h')) {
+    console.log(usage);
+    process.exit(0);
+    return;
+  }
+
   // Handle --list option
   if (args.includes('--list')) {
     EMOTICONS.forEach((face, idx) => console.log(`${idx}: ${face}`));
