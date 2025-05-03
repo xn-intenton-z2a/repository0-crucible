@@ -433,6 +433,7 @@ Examples:
     if (!countStr || !/^[0-9]+$/.test(countStr)) {
       console.error(`Invalid count: ${countStr}`);
       process.exit(1);
+      return;
     }
     const count = Number(countStr);
     let seedBase = null;
@@ -442,6 +443,7 @@ Examples:
       if (!seedStr || !/^[0-9]+$/.test(seedStr)) {
         console.error(`Invalid seed: ${seedStr}`);
         process.exit(1);
+        return;
       }
       seedBase = Number(seedStr);
     }
@@ -459,6 +461,7 @@ Examples:
       results.forEach(face => console.log(face));
     }
     process.exit(0);
+    return;
   }
 
   if (isJson) {
