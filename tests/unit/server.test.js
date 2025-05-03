@@ -4,7 +4,7 @@ import http from "http";
 
 const FACES = [
   ":)",
-  ":-(",
+  ":-((",
   ":D",
   "(¬_¬)",
   "(＾◡＾)",
@@ -165,9 +165,10 @@ describe("HTTP Server", () => {
     });
     expect(metrics1).toEqual({
       emoticon_requests_total: 3,
-      emoticon_requests_random_total: 1,
-      emoticon_requests_seeded_total: 1,
+      emoticon_requests_root_total: 1,
+      emoticon_requests_json_total: 1,
       emoticon_requests_list_total: 1,
+      emoticon_requests_seeded_total: 1,
       emoticon_requests_errors_total: 1
     });
 
