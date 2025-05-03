@@ -1,66 +1,36 @@
 # EMOTICON_SERVICE Feature
 
 # Overview
-Unify the core emoticon service to support CLI, built-in HTTP server, Express middleware, GraphQL endpoint, interactive REPL, diagnostics, programmatic API, and metrics. Ensure consistent configuration loading, custom emoticon lists, CORS, and counters across all interfaces.
+Unify and extend the emoticon core service into a single consistent interface supporting CLI usage, HTTP server with metrics, Express middleware, GraphQL API, programmatic API, diagnostics, and custom configuration.
 
 # CLI Interface
-- Default invocation prints one random emoticon.
-- Flags:
-  --config <path> load JSON or YAML emoticon list
-  --diagnostics output JSON diagnostics and exit
-  --list list all emoticons with indices
-  --seed <n> deterministic selection by non-negative seed
-  --json output in JSON; combine with seed, list, or count
-  --count <n> output multiple emoticons
-  --interactive, -i launch REPL with commands random, seed, list, json, help, exit
-  --version, -v print version
-  --help, -h show help and exit
-  --serve start HTTP server on optional --port <n>
+- Default invocation prints a random emoticon in plain text.
+- Flags: --config <path> for custom JSON or YAML list, --diagnostics for JSON diagnostics, --list to enumerate all emoticons with indices, --seed <n> for deterministic selection, --json for JSON output, --count <n> for batch output, --interactive/-i for REPL, --serve to start HTTP server, --port <n> to specify server port, --version/-v and --help/-h.
+- Invalid inputs produce error messages and appropriate exit codes.
 
-# HTTP API Endpoints
-Use the built-in server when --serve is provided:
-- GET / random emoticon in text/plain
-- GET /list all emoticons one per line
-- GET /json object or array based on query parameters seed, count, or list
-- GET /json/list alias for JSON list
-- GET /version object with version
-- GET /health text OK
-- GET /metrics Prometheus metrics of all counters
-- GET /ui HTML Web UI with controls for random, seeded, count, and list
-- All responses include Access-Control-Allow-Origin header
-- Validate inputs, respond 400 on invalid seed or count with JSON or plain text based on Accept
-- Increment counters: total, root, list, json, seeded, history, errors
+# HTTP API
+- Built-in server mode on --serve with endpoints GET /, /list, /json, /json/list, /version, /health, /metrics, /ui.
+- Query parameters: seed, count, list for deterministic and batch retrieval.
+- Responses include Access-Control-Allow-Origin header and correct content types (text/plain, application/json, text/html).
+- Prometheus-style metrics with counters for total requests, list, json, seeded, root, and errors.
 
 # Express Middleware
-Export createEmoticonRouter(options) returning an Express Router with the same HTTP API endpoints, CORS, counters, and UI.
+- Export createEmoticonRouter() returning an Express Router with the same HTTP endpoints, CORS, counters, and web UI.
 
 # GraphQL API
-- Define a GraphQL schema with Query fields:
-  random: String
-  seeded(seed: Int!): String
-  list: [String]
-  count(count: Int!, seed: Int): [String]
-  version: String
-- Validate seed and count as non-negative integers, return GraphQL errors on invalid inputs
-- Mount endpoint at /graphql supporting GET with query and POST with JSON body
-- Use express.json for parsing POST bodies
-- Execute queries with graphql function, reuse emoticon list, version, and counters from the service
-- Include CORS header on all responses
-- Increment emoticon_requests_total and relevant counters when resolvers invoke random or seeded selection
-- Export graphQLHandler() function returning the middleware
+- Define a GraphQL schema using graphql-js with Query fields random, seeded(seed: Int!), list, count(count: Int!, seed: Int), version.
+- Export graphQLHandler() middleware mounted at /graphql supporting GET and POST with express.json parsing.
+- Apply CORS on all GraphQL responses.
+- Validate seed and count as non-negative integers and return GraphQL errors on invalid input.
+- Increment the same internal counters when resolvers invoke random or seeded selection.
 
 # Programmatic API
-Export:
-- listFaces(): string[]
-- randomFace(): string
-- seededFace(seed: number): string
-- emoticonJson({ face, mode, seed }): object
-- version constant
-- graphQLHandler(): Express middleware
-- createEmoticonRouter(options): Express Router
+- Export listFaces(), randomFace(), seededFace(seed), emoticonJson({ face, mode, seed }), configureEmoticons({ configPath }), getEmoticonDiagnostics(), graphQLHandler(), createEmoticonRouter(), and version constant.
 
 # Diagnostics and Configuration
-- Load config via --config or EMOTICONS_CONFIG env var
-- Diagnostics via --diagnostics flag or EMOTICONS_DIAGNOSTICS env var
-- Diagnostics output JSON with version, configSource, emoticonCount, isCustomConfig, colorStyle, supportsColorLevel
-- Reset to builtin list before loading custom config
+- Load custom emoticon lists at runtime via --config flag or EMOTICONS_CONFIG env var.
+- configureEmoticons returns a diagnostics object with version, configSource, emoticonCount, isCustomConfig, colorStyle, supportsColorLevel and updates internal state.
+- getEmoticonDiagnostics returns the last diagnostics snapshot without side effects.
+
+# Dependencies
+- Add graphql to package.json dependencies for GraphQL support.
