@@ -1,39 +1,37 @@
 # EMOTICON_SERVICE Feature
 
 # Overview
-Unify all interfaces for emoticon output and consumption into a single cohesive feature. Provide consistent behavior and configuration across CLI, HTTP server, interactive REPL, Express middleware, and programmatic library API. Preserve custom configuration loading, diagnostics, version reporting, metrics, and ANSI styling support.
+Unify emoticon output and consumption across all interfaces including CLI, HTTP server, Express middleware, GraphQL endpoint, and programmatic API. Ensure consistent handling of custom configuration, diagnostics, version reporting, metrics, and ANSI styling.
 
-# CLI Interface
-- Retain existing flags: --config, --diagnostics, --list, --seed, --json, --interactive (-i), --help (-h), --version (-v)
-- Add --count <n> to output multiple emoticons in plain or JSON modes
-- Validate inputs and exit with appropriate codes (0 on success, 1 on invalid usage)
-- Help output includes usage examples for all combinations of flags
+# GraphQL API Interface
+- Add dependencies graphql and express-graphql to package.json
+- Expose a GraphQL endpoint at /graphql on the existing Express router
+- Define schema types:
+  - type Query:
+    - randomFace: String!
+    - seededFace(seed: Int!): String!
+    - listFaces: [String!]!
+    - batchRandom(count: Int!): [String!]!
+    - batchSeeded(seed: Int!, count: Int!): [String!]!
+    - emoticonJson(mode: String!, seed: Int): EmoticonJson!
+    - version: String!
+  - type EmoticonJson { face: String! mode: String! seed: Int }
+- Enable introspection and GraphiQL playground when NODE_ENV is not production
+- Use the same EMOTICONS list and configuration logic for deterministic and random queries
+- Increment a new counter graphql_requests_total for each operation and include it in Prometheus metrics
 
-# HTTP API Interface
-- Expose built-in server mode via --serve and --port <n>
-- Endpoints:
-  - GET /           → random emoticon in plain text
-  - GET /list       → all emoticons one per line
-  - GET /json       → single JSON object or JSON array when count or list parameters present
-  - Support query parameters: seed=<n>, count=<n>, list
-  - GET /json/list  → alias for full list in JSON array
-  - GET /version    → { version }
-  - GET /health     → OK
-  - GET /metrics    → Prometheus metrics exposition (counters for total, root, list, json, seeded, errors)
-- All responses include Access-Control-Allow-Origin: *
-- Validate seed and count parameters and respond with 400 on invalid values
+# Dependencies
+- Add graphql and express-graphql to dependencies
+- Ensure peer compatibility with existing Express and configuration modules
 
 # Express Middleware
-- Export createEmoticonRouter(options) returning an Express Router
-- Mount same handlers as built-in server under a configurable basePath
-- Share common counters and configuration logic
+- In createEmoticonRouter, mount the GraphQL middleware at /graphql before existing REST routes
+- Share the same configuration and counters object, adding graphql_requests_total
 
 # Programmatic API
-- Export functions: listFaces(), randomFace(), seededFace(seed), emoticonJson({ mode, seed }), version
-- Behavior identical to CLI and HTTP logic, using the same custom-configured emoticon list
-- Documentation examples for importing and using each utility in code
+- Export graphqlSchema and graphqlMiddleware for embedding in other servers
+- Maintain existing exports listFaces, randomFace, seededFace, emoticonJson, and version
 
 # Diagnostics and Configuration
-- --diagnostics flag or EMOTICONS_DIAGNOSTICS env var outputs JSON metadata (version, config source, emoticon count, custom flag, supportsColorLevel)
-- Load custom emoticon list from JSON or YAML via --config or EMOTICONS_CONFIG
-- Validate file presence and format, exit on errors
+- No change: continue supporting --diagnostics, EMOTICONS_DIAGNOSTICS, --config, and EMOTICONS_CONFIG
+- New GraphQL configuration respects custom emoticon sources and diagnostics output
