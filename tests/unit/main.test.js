@@ -10,7 +10,8 @@ const FACES = [
   "(ʘ‿ʘ)",
   "(¬‿¬)",
   "ಠ_ಠ",
-  "^_^"];
+  "^_^"
+];
 
 describe('main()', () => {
   let logSpy;
@@ -95,5 +96,61 @@ describe('main()', () => {
 
     errorSpy.mockRestore();
     exitSpy.mockRestore();
+  });
+});
+
+describe('JSON mode', () => {
+  let logSpy, errorSpy, exitSpy;
+
+  beforeEach(() => {
+    logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    logSpy.mockRestore();
+    errorSpy.mockRestore();
+    exitSpy.mockRestore();
+  });
+
+  test('random JSON mode outputs valid JSON object', () => {
+    main(['--json']);
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    const output = logSpy.mock.calls[0][0];
+    const obj = JSON.parse(output);
+    expect(FACES).toContain(obj.face);
+    expect(obj.mode).toBe('random');
+    expect(obj.seed).toBeNull();
+  });
+
+  test('seeded JSON mode outputs correct JSON object', () => {
+    logSpy.mockClear();
+    main(['--json', '--seed', '5']);
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    const output = logSpy.mock.calls[0][0];
+    const obj = JSON.parse(output);
+    expect(obj.face).toBe(FACES[5 % FACES.length]);
+    expect(obj.mode).toBe('seeded');
+    expect(obj.seed).toBe(5);
+  });
+
+  test('list JSON mode outputs JSON array of all emoticons', () => {
+    main(['--json', '--list']);
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    const output = logSpy.mock.calls[0][0];
+    const arr = JSON.parse(output);
+    expect(Array.isArray(arr)).toBe(true);
+    expect(arr).toEqual(FACES);
+  });
+
+  test('invalid seed in JSON mode outputs error JSON and exits with code 1', () => {
+    main(['--json', '--seed', 'abc']);
+    expect(errorSpy).toHaveBeenCalledTimes(1);
+    const errorOutput = errorSpy.mock.calls[0][0];
+    const errObj = JSON.parse(errorOutput);
+    expect(errObj.error).toBe("Invalid seed. Seed must be a non-negative integer.");
+    expect(exitSpy).toHaveBeenCalledWith(1);
+    expect(logSpy).not.toHaveBeenCalled();
   });
 });
