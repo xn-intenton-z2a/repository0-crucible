@@ -1,31 +1,39 @@
 # HTTP_API Feature
 
 # Overview
-Provide an HTTP server mode for the emoticon CLI that exposes endpoints for random emoticon selection, deterministic seeding, and full list retrieval over HTTP. This feature enables integration of the emoticon service into web-based workflows, dashboards, and monitoring systems.
+Add Prometheus-compatible metrics endpoint to the existing HTTP server mode. The new `/metrics` endpoint provides operational insights on usage patterns, request counts, and error rates. This enables users and operators to integrate emoticon service monitoring into dashboards and alerting systems.
 
 # Endpoints
-GET /                 Returns a single random emoticon as plain text with status 200
-GET /list             Returns all available emoticons, one per line, plain text, status 200
-GET /json             Returns a JSON object { face, mode, seed } for a random selection, status 200
-GET /json?seed=<n>    Returns a JSON object { face, mode: "seeded", seed: <n> } selected deterministically, status 200
-GET /json/list        Returns a JSON array of all emoticon strings, status 200
-Any other path       Returns status 404 with plain text or JSON error depending on Accept header
 
-# CLI Options
---serve               Start the HTTP server instead of printing to console
---port <n>            Set the listening port (default 3000)
+GET /metrics
+  Returns metrics in Prometheus text exposition format.
+  Content-Type: text/plain; version=0.0.4
+
+Metrics exposed:
+  emoticon_requests_total        Counter of all HTTP GET requests served.
+  emoticon_requests_random_total Counter of random emoticon requests (root and /json without seed).
+  emoticon_requests_seeded_total Counter of seeded emoticon requests (/json?seed).
+  emoticon_requests_list_total   Counter of list requests (/list and /json/list).
+  emoticon_requests_errors_total Counter of requests resulting in a non-200 status.
 
 # Implementation Details
-In src/lib/main.js detect --serve early in main(args). Parse --port if provided or use 3000. Use the built-in http module to create a server. For each incoming request, examine request.url and URLSearchParams to route to the corresponding endpoint. Use the existing EMOTICONS array and mulberry32 for seeded random behavior. Set response headers to text/plain or application/json as appropriate. On invalid seed inputs, return status 400 and an error message in the response body. Log a startup message: listening on port <n>.
+
+In src/lib/main.js:
+- Initialize in-memory counters for each metric before server creation.
+- Increment counters appropriately inside request handler based on pathname and status code.
+- For `/metrics`, format counters in Prometheus text format, one metric per line with HELP and TYPE headers:
+  HELP emoticon_requests_total Total number of HTTP emoticon requests
+  TYPE emoticon_requests_total counter
+  emoticon_requests_total <value>
+- Register `/metrics` route in the server request listener before other routes.
+- Ensure metrics endpoint does not increment emoticon_requests_total or error counters.
 
 # Tests
-Add unit tests in tests/unit/main.test.js to cover HTTP server creation and request handling. Mock http.createServer and verify listener is bound to the correct port. Use a simple HTTP client library or built-in http.request in tests to issue GET requests against the server and assert status codes and response bodies for all endpoints, including error cases.
 
-# Documentation
-Update README.md to describe the serve mode and endpoints. Provide example usage:
-To start server on port 4000
-  node src/lib/main.js --serve --port 4000
-Fetch a seeded emoticon JSON
-  curl "http://localhost:4000/json?seed=5"
-Fetch full list as plain text
-  curl http://localhost:4000/list
+In tests/unit/server.test.js:
+- Add a suite for metrics endpoint:
+  - Prime server with a known sequence of requests (random, seeded, list, invalid path).
+  - Request GET /metrics and parse response body lines to extract metric values.
+  - Assert each metric counter matches the number of previous requests of that type.
+  - Verify Content-Type header matches text/plain; version=0.0.4.
+- Use http.request as in existing tests to issue requests and count responses.
