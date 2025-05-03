@@ -1,7 +1,7 @@
 # HTTP_API Feature
 
 ## Overview
-Provide an HTTP server mode for the emoticon CLI that exposes endpoints for random emoticon selection, deterministic seeding, and full list retrieval over HTTP. This feature enables integration of the emoticon service into web-based workflows, dashboards, and monitoring systems.
+Provide an HTTP server mode for the emoticon CLI that exposes endpoints for random emoticon selection, deterministic seeding, full list retrieval over HTTP, version reporting, and monitoring via metrics. This feature enables integration of the emoticon service into web-based workflows, dashboards, and monitoring systems.
 
 ## Endpoints
 
@@ -25,6 +25,11 @@ Provide an HTTP server mode for the emoticon CLI that exposes endpoints for rand
 - **GET /json/list**
   - Returns a JSON array of all emoticon strings.
   - Content-Type: `application/json`
+
+- **GET /version**
+  - Returns the current application version.
+  - Content-Type: `application/json`
+  - Response body: `{ "version": string }`
 
 - **GET /metrics**
   - Returns a Prometheus-compatible metrics exposition of internal request counters.
@@ -86,6 +91,10 @@ curl "http://localhost:3000/json?seed=5"
 
 # Fetch all emoticons as JSON array
 curl http://localhost:3000/json/list
+
+# Fetch version endpoint
+curl http://localhost:3000/version
+# { "version": "<current version>" }
 
 # Fetch Prometheus metrics
 curl http://localhost:3000/metrics
