@@ -109,7 +109,6 @@ describe('main()', () => {
     exitSpy.mockRestore();
   });
 
-  // Tests for version flag
   test('prints version and exits for --version', () => {
     const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
     logSpy.mockClear();
@@ -126,6 +125,32 @@ describe('main()', () => {
     expect(logSpy).toHaveBeenCalledWith(version);
     expect(exitSpy).toHaveBeenCalledWith(0);
     exitSpy.mockRestore();
+  });
+});
+
+// Tests for invalid port handling
+import { vi as vitestVi } from "vitest";
+describe('Invalid --port handling in HTTP server mode', () => {
+  let errorSpy;
+  let exitSpy;
+  beforeEach(() => {
+    errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    exitSpy = vi.spyOn(process, 'exit').mockImplementation((code) => { throw new Error(`process.exit:${code}`); });
+  });
+  afterEach(() => {
+    errorSpy.mockRestore();
+    exitSpy.mockRestore();
+    vi.restoreAllMocks();
+  });
+
+  test('exits with error for non-numeric port', () => {
+    expect(() => main(['--serve', '--port', 'abc'])).toThrow('process.exit:1');
+    expect(errorSpy).toHaveBeenCalledWith('Invalid port: abc');
+  });
+
+  test('exits with error for negative port', () => {
+    expect(() => main(['--serve', '--port', '-1'])).toThrow('process.exit:1');
+    expect(errorSpy).toHaveBeenCalledWith('Invalid port: -1');
   });
 });
 

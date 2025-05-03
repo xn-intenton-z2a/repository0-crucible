@@ -101,3 +101,24 @@ curl http://localhost:3000/version
 # Metrics endpoint
 curl http://localhost:3000/metrics
 ```
+
+### Handling invalid port values
+
+```bash
+# Error on invalid port value
+node src/lib/main.js --serve --port abc
+# Error: Invalid port: abc
+# Exit code: 1
+```
+
+### Non-GET Requests
+
+```bash
+# POST request without Accept header
+curl -X POST http://localhost:3000/
+# Response: 404 Not Found (plain text)
+
+# POST request with Accept: application/json header
+curl -X POST -H "Accept: application/json" http://localhost:3000/
+# Response: {"error":"Not Found"} (application/json)
+```

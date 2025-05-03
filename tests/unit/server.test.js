@@ -209,6 +209,94 @@ describe("HTTP Server", () => {
     });
     expect(metrics2).toEqual(metrics1);
   });
+
+  test("POST / with Accept=application/json returns 404 JSON error", async () => {
+    const port = server.address().port;
+    const options = {
+      hostname: 'localhost',
+      port,
+      path: '/',
+      method: 'POST',
+      headers: { Accept: 'application/json' }
+    };
+    const res = await new Promise((resolve, reject) => {
+      const req = http.request(options, (res) => {
+        let data = '';
+        res.on('data', (chunk) => { data += chunk; });
+        res.on('end', () => {
+          resolve({ statusCode: res.statusCode, headers: res.headers, body: data });
+        });
+      });
+      req.on('error', reject);
+      req.end();
+    });
+    expect(res.statusCode).toBe(404);
+    expect(res.headers['content-type']).toMatch(/application\/json/);
+    const obj = JSON.parse(res.body);
+    expect(obj).toEqual({ error: 'Not Found' });
+  });
+
+  test("POST /unknown without Accept returns 404 plain text error", async () => {
+    const port = server.address().port;
+    const options = {
+      hostname: 'localhost',
+      port,
+      path: '/unknown',
+      method: 'POST',
+      headers: {}
+    };
+    const res = await new Promise((resolve, reject) => {
+      const req = http.request(options, (res) => {
+        let data = '';
+        res.on('data', (chunk) => { data += chunk; });
+        res.on('end', () => {
+          resolve({ statusCode: res.statusCode, headers: res.headers, body: data });
+        });
+      });
+      req.on('error', reject);
+      req.end();
+    });
+    expect(res.statusCode).toBe(404);
+    expect(res.headers['content-type']).toMatch(/text\/plain/);
+    expect(res.body).toBe('Not Found');
+  });
+
+  test("Non-GET requests increment emoticon_requests_errors_total counter", async () => {
+    const before = await makeRequest('/metrics');
+    const beforeCounts = {};
+    before.body.trim().split('\n').forEach(line => {
+      if (!line.startsWith('#')) {
+        const [key, val] = line.split(' ');
+        beforeCounts[key] = Number(val);
+      }
+    });
+    // send two non-GET requests
+    await new Promise((resolve, reject) => {
+      const req = http.request({ hostname: 'localhost', port: server.address().port, path: '/', method: 'PUT' }, (res) => {
+        res.on('data', () => {});
+        res.on('end', resolve);
+      });
+      req.on('error', reject);
+      req.end();
+    });
+    await new Promise((resolve, reject) => {
+      const req = http.request({ hostname: 'localhost', port: server.address().port, path: '/unknown', method: 'DELETE' }, (res) => {
+        res.on('data', () => {});
+        res.on('end', resolve);
+      });
+      req.on('error', reject);
+      req.end();
+    });
+    const after = await makeRequest('/metrics');
+    const afterCounts = {};
+    after.body.trim().split('\n').forEach(line => {
+      if (!line.startsWith('#')) {
+        const [key, val] = line.split(' ');
+        afterCounts[key] = Number(val);
+      }
+    });
+    expect(afterCounts.emoticon_requests_errors_total).toBe(beforeCounts.emoticon_requests_errors_total + 2);
+  });
 });
 
 // Tests for custom config on HTTP server
