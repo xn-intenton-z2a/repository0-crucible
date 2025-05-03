@@ -13,6 +13,7 @@ npm install @xn-intenton-z2a/repository0-crucible
 ## Features
 
 - Default (no flags): Outputs a random emoticon in plain text.
+- `--config <path>`    : Load a custom emoticon list from a JSON or YAML file (overrides default).
 - `--list`: List all available emoticons with zero-based indices.
 - `--seed <n>`: Provide a non-negative integer seed to deterministically select an emoticon; invalid seeds produce an error and exit with code 1.
 - `--json`: Output results in JSON format. Can be combined with `--seed` or `--list`.
@@ -22,11 +23,18 @@ npm install @xn-intenton-z2a/repository0-crucible
 - `--serve`: Start HTTP server mode.
 - `--port <n>`: Specify HTTP server port (default: 3000); invalid ports produce an error and exit with code 1.
 
+### Environment Variable
+
+- `EMOTICONS_CONFIG`: Path to a JSON or YAML file containing an array of emoticon strings; used when `--config` is not provided.
+
 ## CLI Usage Examples
 
 ```bash
 # Random emoticon
 node src/lib/main.js
+
+# Load custom emoticon list
+node src/lib/main.js --config fixtures/custom.json
 
 # List emoticons
 node src/lib/main.js --list
@@ -101,22 +109,4 @@ curl http://localhost:3000/unknown
 
 # 404 Not Found (JSON)
 curl -H "Accept: application/json" http://localhost:3000/unknown
-```
-
-## Programmatic API
-
-```js
-import { listFaces, randomFace, seededFace, emoticonJson } from '@xn-intenton-z2a/repository0-crucible';
-
-console.log(listFaces());
-// [":)",":-","...]"
-
-console.log(randomFace());
-// e.g. ":D"
-
-console.log(seededFace(3));
-// e.g. "(¬_¬)"
-
-console.log(emoticonJson({ mode: 'seeded', seed: 3 }));
-// { face: "(¬_¬)", mode: "seeded", seed: 3 }
 ```

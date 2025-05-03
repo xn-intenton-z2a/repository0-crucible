@@ -10,12 +10,17 @@ npm install @xn-intenton-z2a/repository0-crucible
 
 ## CLI Options
 
+- `--config <path>`    : Load a custom emoticon list from a JSON or YAML file (overrides the default list).
 - `--list`           : Print all available emoticons with their zero-based index, one per line (format: `0: :)`).
 - `--seed <n>`       : Use a non-negative integer seed to deterministically select an emoticon; invalid seeds produce an error and exit code 1.
 - `--json`           : Output results in JSON format. Can be combined with `--seed` or `--list`.
 - `--interactive`, `-i` : Launch interactive REPL mode supporting commands `random`, `seed <n>`, `list`, `json`, `help`, `exit`.
 - `--help`, `-h`     : Display help message and exit with code 0.
 - `--version`, `-v`  : Print application version and exit with code 0.
+
+### Environment Variable
+
+- `EMOTICONS_CONFIG` : Path to a JSON or YAML file containing an array of emoticon strings; used when `--config` is not provided.
 
 ## Usage Examples
 
@@ -41,6 +46,12 @@ node src/lib/main.js --json --seed 5
 
 # List all emoticons as JSON array
 node src/lib/main.js --json --list
+
+# Load custom emoticon list from JSON
+node src/lib/main.js --config fixtures/custom.json
+
+# Load custom emoticon list from YAML via env var
+EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js
 
 # Start interactive REPL session
 node src/lib/main.js --interactive

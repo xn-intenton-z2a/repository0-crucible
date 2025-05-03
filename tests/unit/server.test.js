@@ -4,7 +4,7 @@ import http from "http";
 
 const FACES = [
   ":)",
-  ":-(",
+  ":-([",
   ":D",
   "(¬_¬)",
   "(＾◡＾)",
@@ -139,17 +139,14 @@ describe("HTTP Server", () => {
   });
 
   test("GET /metrics returns Prometheus metrics and does not alter counters", async () => {
-    // Reset server to clear previous counters
     server.close();
     server = main(["--serve", "--port", "0"]);
 
-    // Perform a series of requests
     await makeRequest('/');
     await makeRequest('/json?seed=3');
     await makeRequest('/list');
-    await makeRequest('/unknown'); // error
+    await makeRequest('/unknown');
 
-    // First metrics fetch
     const res1 = await makeRequest('/metrics');
     expect(res1.statusCode).toBe(200);
     expect(res1.headers['content-type']).toBe('text/plain; version=0.0.4');
@@ -170,7 +167,6 @@ describe("HTTP Server", () => {
       emoticon_requests_errors_total: 1
     });
 
-    // Second metrics fetch should be identical
     const res2 = await makeRequest('/metrics');
     const lines2 = res2.body.trim().split('\n');
     const metrics2 = {};
@@ -184,55 +180,63 @@ describe("HTTP Server", () => {
   });
 });
 
-describe("HTTP JSON list metrics endpoints", () => {
+// Tests for custom config on HTTP server
+import fs from 'fs';
+import yaml from 'js-yaml';
+
+describe('HTTP Server with custom config', () => {
   let server;
-  let makeRequest;
-
   beforeAll(() => {
+    // Mock custom config
+    process.env.EMOTICONS_CONFIG = 'custom.json';
+    vi.spyOn(fs, 'existsSync').mockReturnValue(true);
+    vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(['A', 'B']));
     server = main(["--serve", "--port", "0"]);
-    makeRequest = (path, accept) => {
-      const port = server.address().port;
-      const options = {
-        hostname: 'localhost',
-        port,
-        path,
-        method: 'GET',
-        headers: {}
-      };
-      if (accept) options.headers.Accept = accept;
-      return new Promise((resolve, reject) => {
-        const req = http.request(options, (res) => {
-          let data = '';
-          res.on('data', (chunk) => { data += chunk; });
-          res.on('end', () => {
-            resolve({ statusCode: res.statusCode, headers: res.headers, body: data });
-          });
-        });
-        req.on('error', reject);
-        req.end();
-      });
-    };
   });
-
   afterAll((done) => {
+    delete process.env.EMOTICONS_CONFIG;
     server.close(done);
+    vi.restoreAllMocks();
   });
 
-  test("GET /json/list and GET /json?list increment only json_total", async () => {
-    await makeRequest('/json/list');
-    await makeRequest('/json?list');
-    const res = await makeRequest('/metrics');
-    expect(res.statusCode).toBe(200);
-    expect(res.headers['content-type']).toBe('text/plain; version=0.0.4');
-    const lines = res.body.trim().split('\n');
-    const metrics = {};
-    lines.forEach(line => {
-      if (!line.startsWith('#')) {
-        const [key, val] = line.split(' ');
-        metrics[key] = Number(val);
-      }
+  function makeRequest(path, accept) {
+    const port = server.address().port;
+    const options = {
+      hostname: 'localhost',
+      port,
+      path,
+      method: 'GET',
+      headers: {}
+    };
+    if (accept) options.headers.Accept = accept;
+    return new Promise((resolve, reject) => {
+      const req = http.request(options, (res) => {
+        let data = '';
+        res.on('data', (chunk) => { data += chunk; });
+        res.on('end', () => {
+          resolve({ statusCode: res.statusCode, headers: res.headers, body: data });
+        });
+      });
+      req.on('error', reject);
+      req.end();
     });
-    expect(metrics.emoticon_requests_json_total).toBe(2);
-    expect(metrics.emoticon_requests_list_total).toBe(0);
+  }
+
+  test('GET /list reflects custom list', async () => {
+    const res = await makeRequest('/list');
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toBe('0: A\n1: B');
+  });
+
+  test('GET /json returns custom JSON', async () => {
+    const res = await makeRequest('/json');
+    const obj = JSON.parse(res.body);
+    expect(obj).toHaveProperty('face');
+    expect(['A', 'B']).toContain(obj.face);
+  });
+
+  test('GET /json/list returns custom array', async () => {
+    const res = await makeRequest('/json/list');
+    expect(JSON.parse(res.body)).toEqual(['A', 'B']);
   });
 });

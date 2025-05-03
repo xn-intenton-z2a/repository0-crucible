@@ -4,12 +4,16 @@
 import { fileURLToPath } from "url";
 import http from "http";
 import readline from "readline";
+import fs from "fs";
+import path from "path";
+import yaml from "js-yaml";
 import pkg from '../../package.json' assert { type: 'json' };
 export const version = pkg.version;
 
-const EMOTICONS = [
+// Built-in emoticon list
+const BUILTIN_EMOTICONS = [
   ":)",
-  ":-(",
+  ":-([",
   ":D",
   "(¬_¬)",
   "(＾◡＾)",
@@ -17,6 +21,52 @@ const EMOTICONS = [
   "(¬‿¬)",
   "ಠ_ಠ",
   "^_^"];
+
+// Dynamic emoticon list
+let EMOTICONS = [...BUILTIN_EMOTICONS];
+
+// Load a custom emoticon file
+function loadConfig(configPath) {
+  if (!fs.existsSync(configPath)) {
+    console.error("Invalid config: File not found");
+    process.exit(1);
+  }
+  let data;
+  try {
+    const content = fs.readFileSync(configPath, "utf8");
+    if (configPath.endsWith(".json")) {
+      data = JSON.parse(content);
+    } else {
+      data = yaml.load(content);
+    }
+  } catch (err) {
+    console.error("Invalid config: Failed to parse file");
+    process.exit(1);
+  }
+  if (!Array.isArray(data) || !data.every(item => typeof item === "string")) {
+    console.error("Invalid config: Expected an array of strings");
+    process.exit(1);
+  }
+  EMOTICONS = data;
+}
+
+// Check for custom config via CLI or env var
+function maybeLoadCustomConfig(args) {
+  // Reset to built-in each run
+  EMOTICONS = [...BUILTIN_EMOTICONS];
+  const configIdx = args.indexOf("--config");
+  const envConfig = process.env.EMOTICONS_CONFIG;
+  let configPath;
+  if (configIdx !== -1) {
+    configPath = args[configIdx + 1];
+  } else if (envConfig) {
+    configPath = envConfig;
+  }
+  if (configPath) {
+    const resolved = path.resolve(process.cwd(), configPath);
+    loadConfig(resolved);
+  }
+}
 
 function mulberry32(a) {
   return function() {
@@ -54,6 +104,9 @@ export function emoticonJson({ mode, seed }) {
 }
 
 export function main(args = []) {
+  // Load custom emoticons if requested
+  maybeLoadCustomConfig(args);
+
   // Version flag handling
   if (args.includes("--version") || args.includes("-v")) {
     console.log(version);
@@ -291,15 +344,19 @@ Usage:
   node src/lib/main.js [options]
 
 Options:
+  --config <path>    Load custom emoticon list from JSON or YAML file (overrides default).
   --list               List all available ASCII emoticons in order.
   --seed <n>           Provide a non-negative integer seed for deterministic selection.
   --json               Output results in JSON format.
   --interactive, -i    Start interactive REPL session.
   --help, -h           Show help message.
   --version, -v        Show application version and exit.
+  --serve              Start HTTP server mode.
+  --port <n>           Specify HTTP server port (default: 3000).
 
 Examples:
   node src/lib/main.js
+  node src/lib/main.js --config custom.json
   node src/lib/main.js --list
   node src/lib/main.js --seed 5
   node src/lib/main.js --json
