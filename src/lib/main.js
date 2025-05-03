@@ -24,6 +24,8 @@ const BUILTIN_EMOTICONS = [
 
 // Dynamic emoticon list
 let EMOTICONS = [...BUILTIN_EMOTICONS];
+// Flag to indicate custom config load
+let isCustomConfig = false;
 
 // Load a custom emoticon file
 function loadConfig(configPath) {
@@ -48,12 +50,14 @@ function loadConfig(configPath) {
     process.exit(1);
   }
   EMOTICONS = data;
+  isCustomConfig = true;
 }
 
 // Check for custom config via CLI or env var
 function maybeLoadCustomConfig(args) {
   // Reset to built-in each run
   EMOTICONS = [...BUILTIN_EMOTICONS];
+  isCustomConfig = false;
   const configIdx = args.indexOf("--config");
   const envConfig = process.env.EMOTICONS_CONFIG;
   let configPath;
@@ -284,7 +288,11 @@ export function main(args = []) {
       if (pathname === "/list") {
         counters.emoticon_requests_total++;
         counters.emoticon_requests_list_total++;
-        return sendText(200, listFaces().join("\n"));
+        const list = listFaces();
+        const body = isCustomConfig
+          ? list.map((face, i) => `${i}: ${face}`).join("\n")
+          : list.join("\n");
+        return sendText(200, body);
       }
 
       // JSON single or list
