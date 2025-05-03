@@ -37,22 +37,24 @@ describe("HTTP Server", () => {
   function makeRequest(path, accept) {
     const port = server.address().port;
     const options = {
-      hostname: 'localhost',
+      hostname: "localhost",
       port,
       path,
-      method: 'GET',
+      method: "GET",
       headers: {}
     };
-    if (accept) options.headers.Accept = accept;
+    if (accept) {
+      options.headers["Accept"] = accept;
+    }
     return new Promise((resolve, reject) => {
       const req = http.request(options, (res) => {
-        let data = '';
-        res.on('data', (chunk) => { data += chunk; });
-        res.on('end', () => {
+        let data = "";
+        res.on("data", (chunk) => { data += chunk; });
+        res.on("end", () => {
           resolve({ statusCode: res.statusCode, headers: res.headers, body: data });
         });
       });
-      req.on('error', reject);
+      req.on("error", reject);
       req.end();
     });
   }
@@ -151,4 +153,8 @@ describe("HTTP Server", () => {
   test("GET /health returns status 200 with content-type text/plain, body OK, and CORS header", async () => {
     const res = await makeRequest('/health');
     expect(res.statusCode).toBe(200);
-    expect(re… (truncated)
+    expect(res.headers['content-type']).toMatch(/text\/plain/);
+    expect(res.headers['access-control-allow-origin']).toBe('*');
+    expect(res.body).toBe('OK');
+  });
+});
