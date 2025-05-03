@@ -25,7 +25,6 @@ node src/lib/main.js --list
 # 6: (¬‿¬)
 # 7: ಠ_ಠ
 # 8: ^_^
-# 9: (ꈍᴗꈍ)
 
 # Print the same emoticon every run with seed 5
 node src/lib/main.js --seed 5
@@ -33,7 +32,7 @@ node src/lib/main.js --seed 5
 
 ## Error Handling
 
-When an invalid seed is provided (missing, non-integer, negative), the CLI writes an error message to stderr with the format:
+When an invalid seed is provided (missing, non-integer, negative), the CLI writes an error message to stderr or throws an error with the format:
 
 ```
 Invalid seed: <input>
