@@ -1,6 +1,6 @@
 # repository0-crucible
 
-`repository0-crucible` is a CLI application and JavaScript library that outputs random ASCII emoticons, supports deterministic seeding, JSON output, diagnostic reporting, interactive REPL sessions, and HTTP server mode with monitoring and metrics.
+`repository0-crucible` is a CLI application and JavaScript library that outputs random ASCII emoticons, supports deterministic seeding, JSON output, diagnostic reporting, interactive REPL sessions, HTTP server mode with monitoring and metrics, and a programmatic API.
 
 ## Installation
 
@@ -10,37 +10,36 @@ Install via npm:
 npm install @xn-intenton-z2a/repository0-crucible
 ```
 
-## CLI Features
+## CLI Usage
 
-- Default (no flags): Outputs a random emoticon in plain text.
-- `--config <path>`      : Load a custom emoticon list from a JSON or YAML file (overrides the default list).
-- `--diagnostics`        : Output application diagnostics as JSON and exit with code 0.
-- `--list`               : List all available emoticons with zero-based indices, one per line.
-- `--seed <n>`           : Provide a non-negative integer seed to deterministically select an emoticon; invalid seeds produce an error message and exit with code 1.
-- `--json`               : Output results in JSON format. Can be combined with `--seed` or `--list`.
-- `--count <n>`          : Output multiple emoticons per invocation; in plain mode prints n emoticons one per line, in JSON mode outputs a JSON array of n emoticon strings; can be combined with `--seed` for sequential seeded outputs.
-- `--interactive`, `-i`  : Launch an interactive REPL supporting commands `random`, `seed <n>`, `list`, `json`, `help`, `exit`.
-- `--help`, `-h`         : Display help message and exit with code 0.
-- `--version`, `-v`      : Print application version and exit with code 0.
-- `--serve`              : Start built-in HTTP server mode.
-- `--port <n>`           : Specify HTTP server port (default: 3000); invalid ports produce an error message and exit with code 1.
+### CLI Features
 
-## Usage Examples
+- `--config <path>`    : Load a custom emoticon list from a JSON or YAML file (errors and exits 1 on missing or invalid file).
+- `--diagnostics`      : Output diagnostics as JSON and exit 0.
+- `--list`             : List all available emoticons with zero-based indices, one per line.
+- `--seed <n>`         : Deterministically select an emoticon by a non-negative integer seed (errors and exits 1 on invalid input).
+- `--json`             : Output results in JSON format; can combine with `--seed`, `--list`, or `--count`.
+- `--count <n>`        : Output multiple emoticons. In plain mode prints n emoticons (one per line); in JSON mode outputs an array of n strings; can combine with `--seed` for sequential seed-based output (errors and exits 1 on invalid input).
+- `--interactive, -i`  : Launch interactive REPL supporting commands `random`, `seed <n>`, `list`, `json`, `help`, `exit`.
+- `--help, -h`         : Show help message and exit 0.
+- `--version, -v`      : Show application version and exit 0.
+- `--serve`            : Start built-in HTTP server mode.
+- `--port <n>`         : Specify HTTP server port (default: 3000; errors and exits 1 on invalid input).
 
-### CLI Usage
+### CLI Examples
 
 ```bash
 # Print a single random emoticon
 node src/lib/main.js
 
-# List all default emoticons with indices
+# List default emoticons with indices
 node src/lib/main.js --list
+
+# Print a deterministic emoticon by seed
+node src/lib/main.js --seed 5
 
 # Print a random emoticon as JSON
 node src/lib/main.js --json
-
-# Print a seeded emoticon in plain text
-node src/lib/main.js --seed 5
 
 # Print a seeded JSON emoticon
 node src/lib/main.js --json --seed 5
@@ -48,7 +47,17 @@ node src/lib/main.js --json --seed 5
 # List all emoticons as a JSON array
 node src/lib/main.js --json --list
 
-# Load custom emoticon list and list them
+# Print multiple random emoticons in plain text
+node src/lib/main.js --count 3
+
+# Print multiple random emoticons as a JSON array
+node src/lib/main.js --json --count 2
+
+# Print multiple seeded emoticons starting from seed 5
+node src/lib/main.js --seed 5 --count 4
+
+# Load custom emoticon list from JSON and list
+document
 node src/lib/main.js --config custom.json --list
 
 # Diagnostics mode (flag)
@@ -57,71 +66,123 @@ node src/lib/main.js --diagnostics
 # Diagnostics mode (environment variable)
 EMOTICONS_DIAGNOSTICS=1 node src/lib/main.js
 
-# Interactive REPL session
+# Interactive REPL
 node src/lib/main.js --interactive
 # or
 node src/lib/main.js -i
-
-# Print multiple random emoticons in plain text
-node src/lib/main.js --count 3
-
-# Print multiple random emoticons as JSON
-node src/lib/main.js --json --count 2
-
-# Print multiple seeded emoticons starting from seed 5
-node src/lib/main.js --seed 5 --count 4
 ```
 
-### HTTP Server Usage
+## HTTP API
 
-Start the server and make HTTP requests to these endpoints (all responses include `Access-Control-Allow-Origin: *`):
+All HTTP responses include the header `Access-Control-Allow-Origin: *`.
+
+### Endpoints
+
+- **GET /**  
+  Returns a single random emoticon in plain text.  
+  Content-Type: `text/plain`  
+  ```bash
+  curl http://localhost:3000/
+  ```
+
+- **GET /list**  
+  Returns all emoticons, one per line in plain text.  
+  Content-Type: `text/plain`  
+  Increments `emoticon_requests_list_total`.  
+  ```bash
+  curl http://localhost:3000/list
+  ```
+
+- **GET /json**  
+  Returns a JSON object: `{ "face": string, "mode": "random", "seed": null }`.  
+  Content-Type: `application/json`  
+  Increments `emoticon_requests_json_total`.  
+  ```bash
+  curl http://localhost:3000/json
+  ```
+
+- **GET /json?seed=<n>**  
+  Returns `{ "face": string, "mode": "seeded", "seed": <n> }` for valid `<n>`.  
+  Invalid `<n>` yields 400 error with JSON or plain text based on `Accept` header.  
+  Increments `emoticon_requests_json_total` and `emoticon_requests_seeded_total`.  
+  ```bash
+  curl http://localhost:3000/json?seed=2
+  curl -H "Accept: application/json" http://localhost:3000/json?seed=abc
+  ```
+
+- **GET /json?count=<n>**  
+  Returns a JSON array of `<n>` random emoticons.  
+  With `seed=<s>`, returns `<n>` sequential seeded emoticons starting from `<s>`.  
+  Invalid inputs yield status 400.  
+  Increments `emoticon_requests_json_total` and, if seeded, `emoticon_requests_seeded_total`.  
+  ```bash
+  curl http://localhost:3000/json?count=3
+  curl http://localhost:3000/json?seed=5&count=3
+  ```
+
+- **GET /json?list** and **GET /json/list**  
+  Returns a JSON array of all emoticon strings.  
+  Content-Type: `application/json`  
+  Increments `emoticon_requests_json_total`.  
+  ```bash
+  curl http://localhost:3000/json?list
+  curl http://localhost:3000/json/list
+  ```
+
+- **GET /version**  
+  Returns `{ "version": string }`.  
+  ```bash
+  curl http://localhost:3000/version
+  ```
+
+- **GET /health**  
+  Returns `OK` in plain text.  
+  Content-Type: `text/plain`  
+  Does not increment counters.
+
+- **GET /metrics**  
+  Returns Prometheus-compatible metrics.  
+  Content-Type: `text/plain; version=0.0.4`  
+  ```bash
+  curl http://localhost:3000/metrics
+  ```
+
+- **Any other path or non-GET request**  
+  Returns 404 error in JSON or plain text based on `Accept` header and increments `emoticon_requests_errors_total`.
+
+## Programmatic API
+
+You can import and use the core utilities directly in your code:
+
+```js
+import {
+  listFaces,
+  randomFace,
+  seededFace,
+  emoticonJson,
+} from '@xn-intenton-z2a/repository0-crucible';
+
+console.log(listFaces());
+// [":)",":-([",":D",...] ]
+
+console.log(randomFace());
+// e.g. ":D"
+
+console.log(seededFace(3));
+// Deterministic based on seed; e.g. "(:¬_¬)"
+
+console.log(
+  emoticonJson({ mode: 'seeded', seed: 3 })
+);
+// { face: ":)", mode: "seeded", seed: 3 }
+```
+
+## Starting the Server
 
 ```bash
-# Start server on default port 3000
+# Start on default port (3000)
 node src/lib/main.js --serve
 
-# Start server on port 4000
+# Start on custom port (e.g. 4000)
 node src/lib/main.js --serve --port 4000
-
-# Random emoticon (plain text)
-curl http://localhost:3000/
-
-# List emoticons (plain text)
-curl http://localhost:3000/list
-
-# Random JSON emoticon
-curl http://localhost:3000/json
-
-# Seeded JSON emoticon (seed=2)
-curl http://localhost:3000/json?seed=2
-
-# List JSON array via path
-curl http://localhost:3000/json/list
-
-# List JSON array via query
-curl http://localhost:3000/json?list
-
-# Version endpoint
-curl http://localhost:3000/version
-
-# Health endpoint
-curl http://localhost:3000/health
-
-# Metrics endpoint
-curl http://localhost:3000/metrics
-
-# Error: Invalid seed returns 400 plain text
-curl http://localhost:3000/json?seed=abc
-
-# Error: Invalid seed returns 400 and JSON error
-curl -H "Accept: application/json" http://localhost:3000/json?seed=abc
-
-# Unknown path returns 404 (plain text)
-curl http://localhost:3000/unknown
-
-# Unknown path returns 404 and JSON error
-curl -H "Accept: application/json" http://localhost:3000/unknown
-
-# Inspect CORS header
-curl -I http://localhost:3000/  # See Access-Control-Allow-Origin: *
 ```
