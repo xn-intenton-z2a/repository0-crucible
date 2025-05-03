@@ -1,38 +1,48 @@
 # HTTP_API Feature
 
 # Overview
-Extend existing HTTP server mode to expose Prometheus metrics and a version endpoint reporting the application version.
+Extend existing HTTP server mode to expose Prometheus metrics and a version endpoint reporting the application version, and enhance CLI mode with a version flag.
 
 # Endpoints
-
 GET /metrics
   Returns metrics in Prometheus text exposition format with HELP and TYPE headers.
   Content-Type: text/plain; version=0.0.4
-
-Metrics exposed:
-  emoticon_requests_total        Counter of all HTTP GET requests served
-  emoticon_requests_root_total   Counter of root requests (GET /)
-  emoticon_requests_list_total   Counter of list requests (GET /list)
-  emoticon_requests_json_total   Counter of JSON requests (GET /json and GET /json/list)
-  emoticon_requests_seeded_total Counter of seeded requests (GET /json?seed)
-  emoticon_requests_errors_total Counter of requests resulting in non-2xx status codes
 
 GET /version
   Returns a JSON object with the current application version
   Content-Type: application/json
   Response body: { version: string }
 
+GET /
+  Returns a random emoticon in plain text
+
+GET /list
+  Returns all emoticons one per line in plain text
+
+GET /json
+  Returns a JSON object for random or seeded emoticon based on query parameters
+
+GET /json/list
+  Returns a JSON array of all emoticons
+
+Any other GET path
+  Returns 404 with JSON or plain text error depending on Accept header
+
+# CLI Options
+--serve       Start HTTP server mode instead of CLI
+--port <n>    Set listening port (default 3000)
+--version     Show application version and exit
+-v            Alias for --version
+
 # Implementation Details
 In src/lib/main.js:
-- Read the version from package.json via import or process.env.npm_package_version
-- Define and initialize in-memory counters for each endpoint and error case before starting the server
-- In the HTTP server handler, after determining the response status and content, increment the appropriate counter based on pathname and status code
-- Register the GET /metrics route before general handlers to output HELP and TYPE headers and current counter values
-- Register the GET /version route before increment logic to return the version without affecting counters
-- Ensure that requests to /metrics and /version do not increment any emoticon request counters
+- Detect --version or -v flags at the start of main before any other mode
+- Import version from package.json via version export
+- On version flag, call console.log with version and process.exit(0)
+- HTTP server handlers remain unchanged and continue to handle metrics and version endpoints without incrementing counters
 
 # Tests
-In tests/unit/server.test.js:
-- Add a test for GET /metrics to assert status 200, correct Content-Type header, and presence of HELP, TYPE, and metric lines matching defined counters
-- Simulate multiple requests to different endpoints and verify that the metrics endpoint reflects expected counter values
-- Add a test for GET /version to assert status 200, correct Content-Type header, and a JSON response body containing version matching package.json
+In tests/unit/main.test.js:
+- Spy on console.log and process.exit and verify main(['--version']) logs version from package.json and exits with code 0
+- Verify main(['-v']) behaves identically
+- Ensure existing HTTP tests for GET /version and GET /metrics continue to pass
