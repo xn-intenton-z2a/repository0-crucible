@@ -20,8 +20,8 @@ const BUILTIN_EMOTICONS = [
   "(ʘ‿ʘ)",
   "(¬‿¬)",
   "ಠ_ಠ",
-  "^_^"
-];
+  "^_^
+"];
 let emoticons = [...BUILTIN_EMOTICONS];
 
 // Load custom configuration from JSON or YAML
@@ -29,6 +29,7 @@ function loadCustomConfig(filePath) {
   if (!fs.existsSync(filePath)) {
     console.error('Invalid config: File not found');
     process.exit(1);
+    return;
   }
   const content = fs.readFileSync(filePath, 'utf8');
   let data;
@@ -40,11 +41,13 @@ function loadCustomConfig(filePath) {
     } catch (_e) {
       console.error('Invalid config: Expected an array of strings');
       process.exit(1);
+      return;
     }
   }
   if (!Array.isArray(data) || !data.every(item => typeof item === 'string')) {
     console.error('Invalid config: Expected an array of strings');
     process.exit(1);
+    return;
   }
   emoticons = data;
 }
@@ -140,7 +143,11 @@ export function createEmoticonRouter() {
         counters.emoticon_requests_errors_total++;
         const msg = `Invalid seed: ${seed}`;
         res.status(400);
-        return req.accepts('json') ? res.json({ error: msg }) : res.type('text/plain').send(msg);
+        // Use explicit check for Accept header
+        if (req.headers.accept && req.accepts('json')) {
+          return res.json({ error: msg });
+        }
+        return res.type('text/plain').send(msg);
       }
       counters.emoticon_requests_seeded_total++;
     }
@@ -151,7 +158,10 @@ export function createEmoticonRouter() {
         counters.emoticon_requests_errors_total++;
         const msg = `Invalid count: ${count}`;
         res.status(400);
-        return req.accepts('json') ? res.json({ error: msg }) : res.type('text/plain').send(msg);
+        if (req.headers.accept && req.accepts('json')) {
+          return res.json({ error: msg });
+        }
+        return res.type('text/plain').send(msg);
       }
       // Build array
       const arr = [];
@@ -174,7 +184,7 @@ export function createEmoticonRouter() {
     counters.emoticon_requests_total++;
     counters.emoticon_requests_errors_total++;
     res.status(404);
-    if (req.accepts('json')) {
+    if (req.headers.accept && req.accepts('json')) {
       return res.json({ error: 'Not Found' });
     }
     return res.type('text/plain').send('Not Found');
@@ -270,11 +280,13 @@ Examples:
   if (options.help) {
     console.log(helpMessage);
     process.exit(0);
+    return;
   }
   // Version
   if (options.versionFlag) {
     console.log(version);
     process.exit(0);
+    return;
   }
   // Diagnostics
   if (options.diagnostics || process.env.EMOTICONS_DIAGNOSTICS) {
@@ -288,6 +300,7 @@ Examples:
     };
     console.log(JSON.stringify(obj));
     process.exit(0);
+    return;
   }
   // Serve HTTP server
   if (options.serve) {
@@ -295,12 +308,13 @@ Examples:
     if (isNaN(portVal) || portVal < 0) {
       console.error(`Invalid port: ${options.port}`);
       process.exit(1);
+      return;
     }
     const app = express();
     app.use(createEmoticonRouter());
-    const server = http.createServer(app).listen(portVal, () => {
-      console.log(`Listening on port ${server.address().port}`);
-    });
+    const server = http.createServer(app);
+    server.listen(portVal);
+    console.log(`Listening on port ${server.address().port}`);
     return server;
   }
   // CLI operations
@@ -319,6 +333,7 @@ Examples:
     if (isNaN(cnt) || cnt < 0) {
       console.error(`Invalid count: ${options.count}`);
       process.exit(1);
+      return;
     }
     // Multi-output
     if (options.json) {
@@ -331,13 +346,16 @@ Examples:
         }
       }
       console.log(JSON.stringify(arr));
+      process.exit(0);
+      return;
     } else {
       for (let i = 0; i < cnt; i++) {
         if (seedVal !== undefined) console.log(seededFace(seedVal + i));
         else console.log(randomFace());
       }
+      process.exit(0);
+      return;
     }
-    process.exit(0);
   }
   // List
   if (options.list) {
