@@ -8,6 +8,7 @@ import fs from "fs";
 import path from "path";
 import yaml from "js-yaml";
 import chalk from "chalk";
+import express from "express";
 import pkg from '../../package.json' assert { type: 'json' };
 export const version = pkg.version;
 
@@ -110,6 +111,158 @@ export function emoticonJson({ mode, seed }) {
   throw new Error(`Invalid mode: ${mode}`);
 }
 
+// Express middleware
+export function createEmoticonRouter(options = {}) {
+  const router = express.Router();
+  const counters = {
+    emoticon_requests_total: 0,
+    emoticon_requests_root_total: 0,
+    emoticon_requests_list_total: 0,
+    emoticon_requests_json_total: 0,
+    emoticon_requests_seeded_total: 0,
+    emoticon_requests_errors_total: 0,
+  };
+
+  function sendText(res, status, text) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.status(status).type('text/plain').send(text);
+  }
+
+  function sendJson(res, status, obj) {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.status(status).json(obj);
+  }
+
+  // Metrics endpoint
+  router.get('/metrics', (req, res) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.status(200).type('text/plain; version=0.0.4');
+    let body = '';
+    for (const [name, value] of Object.entries(counters)) {
+      body += `# HELP ${name} ${name} counter\n`;
+      body += `# TYPE ${name} counter\n`;
+      body += `${name} ${value}\n`;
+    }
+    res.send(body);
+  });
+
+  // Version endpoint
+  router.get('/version', (req, res) => {
+    sendJson(res, 200, { version });
+  });
+
+  // Health endpoint
+  router.get('/health', (req, res) => {
+    sendText(res, 200, 'OK');
+  });
+
+  // Root: random emoticon
+  router.get('/', (req, res) => {
+    counters.emoticon_requests_total++;
+    counters.emoticon_requests_root_total++;
+    sendText(res, 200, randomFace());
+  });
+
+  // List all emoticons
+  router.get('/list', (req, res) => {
+    counters.emoticon_requests_total++;
+    counters.emoticon_requests_list_total++;
+    const list = listFaces();
+    sendText(res, 200, list.join('\n'));
+  });
+
+  // JSON single, list, or count
+  router.get('/json', (req, res) => {
+    const params = req.query;
+    const accept = req.headers.accept || '';
+
+    // Count support
+    if (params.count !== undefined) {
+      const countStr = params.count;
+      if (!/^[0-9]+$/.test(countStr)) {
+        counters.emoticon_requests_errors_total++;
+        if (accept.includes('application/json')) {
+          return sendJson(res, 400, { error: `Invalid count: ${countStr}` });
+        }
+        return sendText(res, 400, `Invalid count: ${countStr}`);
+      }
+      const count = Number(countStr);
+      let seedVal = null;
+      if (params.seed !== undefined) {
+        const seedStr = params.seed;
+        if (!/^[0-9]+$/.test(seedStr)) {
+          counters.emoticon_requests_errors_total++;
+          if (accept.includes('application/json')) {
+            return sendJson(res, 400, { error: `Invalid seed: ${seedStr}` });
+          }
+          return sendText(res, 400, `Invalid seed: ${seedStr}`);
+        }
+        seedVal = Number(seedStr);
+      }
+      counters.emoticon_requests_total++;
+      counters.emoticon_requests_json_total++;
+      if (seedVal !== null) counters.emoticon_requests_seeded_total++;
+      const results = [];
+      for (let i = 0; i < count; i++) {
+        if (seedVal !== null) {
+          results.push(seededFace(seedVal + i));
+        } else {
+          results.push(randomFace());
+        }
+      }
+      return sendJson(res, 200, results);
+    }
+
+    // JSON list alias
+    if (params.list !== undefined) {
+      counters.emoticon_requests_total++;
+      counters.emoticon_requests_json_total++;
+      return sendJson(res, 200, listFaces());
+    }
+
+    let mode = 'random';
+    let seedVal = null;
+    if (params.seed !== undefined) {
+      const seedStr = params.seed;
+      if (!/^[0-9]+$/.test(seedStr)) {
+        counters.emoticon_requests_errors_total++;
+        if (accept.includes('application/json')) {
+          return sendJson(res, 400, { error: `Invalid seed: ${seedStr}` });
+        }
+        return sendText(res, 400, `Invalid seed: ${seedStr}`);
+      }
+      seedVal = Number(seedStr);
+      mode = 'seeded';
+    }
+    counters.emoticon_requests_total++;
+    counters.emoticon_requests_json_total++;
+    if (mode === 'seeded') counters.emoticon_requests_seeded_total++;
+    const obj = emoticonJson({ mode, seed: seedVal });
+    return sendJson(res, 200, obj);
+  });
+
+  // JSON list alias via path
+  router.get('/json/list', (req, res) => {
+    counters.emoticon_requests_total++;
+    counters.emoticon_requests_json_total++;
+    return sendJson(res, 200, listFaces());
+  });
+
+  // Unknown path or non-GET
+  router.use((req, res) => {
+    counters.emoticon_requests_errors_total++;
+    const accept = req.headers.accept || '';
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    if (accept.includes('application/json')) {
+      res.status(404).json({ error: 'Not Found' });
+    } else {
+      res.status(404).type('text/plain').send('Not Found');
+    }
+  });
+
+  return router;
+}
+
 export function main(args = []) {
   // Load custom emoticons if requested
   maybeLoadCustomConfig(args);
@@ -141,6 +294,7 @@ export function main(args = []) {
 
   // Interactive REPL mode
   if (args.includes("--interactive") || args.includes("-i")) {
+    // existing REPL code unchanged
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -235,6 +389,8 @@ export function main(args = []) {
 
   // HTTP server mode
   if (args.includes("--serve")) {
+    // Load custom emoticons if requested
+    maybeLoadCustomConfig(args);
     const portIdx = args.indexOf("--port");
     let port = 3000;
     if (portIdx !== -1) {
@@ -246,182 +402,10 @@ export function main(args = []) {
       }
       port = p;
     }
-    // Initialize Prometheus-like counters
-    const counters = {
-      emoticon_requests_total: 0,
-      emoticon_requests_root_total: 0,
-      emoticon_requests_list_total: 0,
-      emoticon_requests_json_total: 0,
-      emoticon_requests_seeded_total: 0,
-      emoticon_requests_errors_total: 0
-    };
-
-    const server = http.createServer((req, res) => {
-      const url = new URL(req.url, `http://${req.headers.host}`);
-      const pathname = url.pathname;
-      const params = url.searchParams;
-      const accept = req.headers.accept || "";
-
-      function sendText(status, text) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.writeHead(status, { "Content-Type": "text/plain" });
-        res.end(text);
-      }
-      function sendJson(status, obj) {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.writeHead(status, { "Content-Type": "application/json" });
-        res.end(JSON.stringify(obj));
-      }
-
-      // Metrics endpoint
-      if (req.method === "GET" && pathname === "/metrics") {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.writeHead(200, { "Content-Type": "text/plain; version=0.0.4" });
-        let body = "";
-        for (const [name, value] of Object.entries(counters)) {
-          body += `# HELP ${name} ${name} counter\n`;
-          body += `# TYPE ${name} counter\n`;
-          body += `${name} ${value}\n`;
-        }
-        res.end(body);
-        return;
-      }
-
-      // Version endpoint
-      if (req.method === "GET" && pathname === "/version") {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        return sendJson(200, { version });
-      }
-
-      // Health endpoint
-      if (req.method === "GET" && pathname === "/health") {
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        res.writeHead(200, { "Content-Type": "text/plain" });
-        res.end("OK");
-        return;
-      }
-
-      // Non-GET requests
-      if (req.method !== "GET") {
-        counters.emoticon_requests_errors_total++;
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        if (accept.includes("application/json")) {
-          return sendJson(404, { error: "Not Found" });
-        }
-        return sendText(404, "Not Found");
-      }
-
-      // Root: random emoticon
-      if (pathname === "/") {
-        counters.emoticon_requests_total++;
-        counters.emoticon_requests_root_total++;
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        return sendText(200, randomFace());
-      }
-
-      // List all emoticons
-      if (pathname === "/list") {
-        counters.emoticon_requests_total++;
-        counters.emoticon_requests_list_total++;
-        const list = listFaces();
-        const body = isCustomConfig
-          ? list.map((face, i) => `${i}: ${face}`).join("\n")
-          : list.join("\n");
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        return sendText(200, body);
-      }
-
-      // JSON single, list, or count
-      if (pathname === "/json") {
-        // Count support
-        if (params.has("count")) {
-          const countStr = params.get("count");
-          if (!/^[0-9]+$/.test(countStr)) {
-            counters.emoticon_requests_errors_total++;
-            res.setHeader('Access-Control-Allow-Origin', '*');
-            if (accept.includes("application/json")) {
-              return sendJson(400, { error: `Invalid count: ${countStr}` });
-            }
-            return sendText(400, `Invalid count: ${countStr}`);
-          }
-          const count = Number(countStr);
-          let seedVal = null;
-          if (params.has("seed")) {
-            const seedString = params.get("seed");
-            if (!/^[0-9]+$/.test(seedString)) {
-              counters.emoticon_requests_errors_total++;
-              res.setHeader('Access-Control-Allow-Origin', '*');
-              if (accept.includes("application/json")) {
-                return sendJson(400, { error: `Invalid seed: ${seedString}` });
-              }
-              return sendText(400, `Invalid seed: ${seedString}`);
-            }
-            seedVal = Number(seedString);
-          }
-          counters.emoticon_requests_total++;
-          counters.emoticon_requests_json_total++;
-          if (seedVal !== null) counters.emoticon_requests_seeded_total++;
-          const results = [];
-          for (let i = 0; i < count; i++) {
-            if (seedVal !== null) {
-              results.push(seededFace(seedVal + i));
-            } else {
-              results.push(randomFace());
-            }
-          }
-          res.setHeader('Access-Control-Allow-Origin', '*');
-          return sendJson(200, results);
-        }
-        // JSON list alias
-        if (params.has("list")) {
-          counters.emoticon_requests_total++;
-          counters.emoticon_requests_json_total++;
-          res.setHeader('Access-Control-Allow-Origin', '*');
-          return sendJson(200, listFaces());
-        }
-        let mode = "random";
-        let seedVal = null;
-        if (params.has("seed")) {
-          const seedString = params.get("seed");
-          if (!/^[0-9]+$/.test(seedString)) {
-            counters.emoticon_requests_errors_total++;
-            res.setHeader('Access-Control-Allow-Origin', '*');
-            if (accept.includes("application/json")) {
-              return sendJson(400, { error: `Invalid seed: ${seedString}` });
-            }
-            return sendText(400, `Invalid seed: ${seedString}`);
-          }
-          seedVal = Number(seedString);
-          mode = "seeded";
-        }
-        counters.emoticon_requests_total++;
-        counters.emoticon_requests_json_total++;
-        if (mode === "seeded") {
-          counters.emoticon_requests_seeded_total++;
-        }
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        const obj = emoticonJson({ mode, seed: seedVal });
-        return sendJson(200, obj);
-      }
-
-      // JSON list alias via path
-      if (pathname === "/json/list") {
-        counters.emoticon_requests_total++;
-        counters.emoticon_requests_json_total++;
-        res.setHeader('Access-Control-Allow-Origin', '*');
-        return sendJson(200, listFaces());
-      }
-
-      // Unknown path
-      counters.emoticon_requests_errors_total++;
-      res.setHeader('Access-Control-Allow-Origin', '*');
-      if (accept.includes("application/json")) {
-        return sendJson(404, { error: "Not Found" });
-      }
-      return sendText(404, "Not Found");
-    });
-
-    server.listen(port);
+    const app = express();
+    const router = createEmoticonRouter();
+    app.use(router);
+    const server = app.listen(port);
     console.log(`Listening on port ${server.address().port}`);
     return server;
   }

@@ -85,75 +85,31 @@ EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js --serve
   - Exposes counters: `emoticon_requests_total`, `emoticon_requests_root_total`, `emoticon_requests_list_total`, `emoticon_requests_json_total`, `emoticon_requests_seeded_total`, `emoticon_requests_errors_total`.
   - **Includes header** `Access-Control-Allow-Origin: *`
 
-- **Any other path**
-  - Responds with status 404.
+- **Any other path or non-GET request**
+  - Responds with status `404`.
   - If `Accept: application/json` header is present, returns `{ "error": "Not Found" }`.
   - Otherwise returns plain text `Not Found`.
   - **Includes header** `Access-Control-Allow-Origin: *`
 
-## Non-GET Requests
-All non-GET requests return status `404`. If `Accept: application/json` header is present, the response is JSON:
+## Express Middleware
 
-```json
-{ "error": "Not Found" }
-```
+### createEmoticonRouter(options)
 
-Otherwise, the response is plain text:
+Exports a factory that creates an Express Router instance exposing the same HTTP API endpoints as the built-in server.
 
-```
-Not Found
-```
+**Options**
 
-Each non-GET request increments the `emoticon_requests_errors_total` counter.
+- None currently. The router uses the same custom configuration logic and emoticon list as the CLI and HTTP server.
 
-## Example Usage with curl
+**Usage Example**
 
-```bash
-# Random plain text
-curl http://localhost:3000/
+```js
+import express from 'express';
+import { createEmoticonRouter } from '@xn-intenton-z2a/repository0-crucible';
 
-# List all emoticons in plain text
-curl http://localhost:3000/list
-
-# Random JSON
-curl http://localhost:3000/json
-
-# Seeded JSON (seed=2)
-curl http://localhost:3000/json?seed=2
-
-# JSON count (3 random emoticons)
-curl http://localhost:3000/json?count=3
-
-# Seeded JSON count (seeds 5,6,7)
-curl http://localhost:3000/json?seed=5&count=3
-
-# List JSON array via query
-curl http://localhost:3000/json?list
-
-# List JSON array via path
-curl http://localhost:3000/json/list
-
-# Version endpoint
-curl http://localhost:3000/version
-
-# Health endpoint
-curl http://localhost:3000/health
-
-# Metrics endpoint
-curl http://localhost:3000/metrics
-
-# Error: Invalid seed returns 400 (plain text)
-curl http://localhost:3000/json?seed=abc
-
-# Error: Invalid count returns 400 and JSON error
-curl -H "Accept: application/json" http://localhost:3000/json?count=abc
-
-# Unknown path returns 404 (plain text)
-curl http://localhost:3000/unknown
-
-# Unknown path returns 404 and JSON error
-curl -H "Accept: application/json" http://localhost:3000/unknown
-
-# Check CORS header
-curl -I http://localhost:3000/  # Response headers include Access-Control-Allow-Origin: *
+const app = express();
+app.use(createEmoticonRouter());
+app.listen(3000, () => {
+  console.log('Server listening on port 3000');
+});
 ```
