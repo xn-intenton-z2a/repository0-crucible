@@ -11,8 +11,7 @@ const FACES = [
   "(ʘ‿ʘ)",
   "(¬‿¬)",
   "ಠ_ಠ",
-  "^_^"
-];
+  "^_^"];
 
 describe("HTTP Server", () => {
   let server;
@@ -184,8 +183,6 @@ describe("HTTP Server", () => {
     expect(metrics2).toEqual(metrics1);
   });
 });
-
-// New tests for JSON list metrics
 
 describe("HTTP JSON list metrics endpoints", () => {
   let server;
