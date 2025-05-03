@@ -57,9 +57,9 @@ Examples:
       return;
     }
 
-    let rng = Math.random;
     let mode = "random";
     let seedVal = null;
+    let idx;
     const seedIndex = args.indexOf("--seed");
 
     if (seedIndex !== -1) {
@@ -70,12 +70,13 @@ Examples:
         return;
       }
       const seed = Number(seedString);
-      rng = mulberry32(seed);
       mode = "seeded";
       seedVal = seed;
+      idx = seed % EMOTICONS.length;
+    } else {
+      idx = Math.floor(Math.random() * EMOTICONS.length);
     }
 
-    const idx = Math.floor(rng() * EMOTICONS.length);
     const result = { face: EMOTICONS[idx], mode, seed: seedVal };
     console.log(JSON.stringify(result));
     return;
@@ -97,8 +98,8 @@ Examples:
     rng = mulberry32(seed);
   }
 
-  const idx = Math.floor(rng() * EMOTICONS.length);
-  console.log(EMOTICONS[idx]);
+  const idxNoJson = Math.floor(rng() * EMOTICONS.length);
+  console.log(EMOTICONS[idxNoJson]);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
