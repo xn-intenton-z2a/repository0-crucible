@@ -3,10 +3,11 @@
 
 import { fileURLToPath } from "url";
 import http from "http";
+import readline from "readline";
 
 const EMOTICONS = [
   ":)",
-  ":- (".replace(" ",""), // fix spacing in code example
+  ":-(",
   ":D",
   "(¬_¬)",
   "(＾◡＾)",
@@ -25,6 +26,100 @@ function mulberry32(a) {
 }
 
 export function main(args = []) {
+  // Interactive REPL mode
+  if (args.includes("--interactive") || args.includes("-i")) {
+    const rl = readline.createInterface({
+      input: process.stdin,
+      output: process.stdout,
+      prompt: "> "
+    });
+    let lastResult = null;
+
+    const printRandom = () => {
+      const idx = Math.floor(Math.random() * EMOTICONS.length);
+      const face = EMOTICONS[idx];
+      console.log(face);
+      lastResult = { type: "single", face, mode: "random", seed: null };
+    };
+
+    const printSeeded = (seedString) => {
+      if (!/^[0-9]+$/.test(seedString)) {
+        console.log(`Invalid seed: ${seedString}`);
+        return;
+      }
+      const seed = Number(seedString);
+      const idx = seed % EMOTICONS.length;
+      const face = EMOTICONS[idx];
+      console.log(face);
+      lastResult = { type: "single", face, mode: "seeded", seed };
+    };
+
+    const printList = () => {
+      EMOTICONS.forEach((face, i) => console.log(`${i}: ${face}`));
+      lastResult = { type: "list", list: [...EMOTICONS] };
+    };
+
+    const printJson = () => {
+      if (lastResult == null) {
+        printRandom();
+        return;
+      }
+      if (lastResult.type === "single") {
+        console.log(JSON.stringify({
+          face: lastResult.face,
+          mode: lastResult.mode,
+          seed: lastResult.seed
+        }));
+      } else if (lastResult.type === "list") {
+        console.log(JSON.stringify(lastResult.list));
+      }
+    };
+
+    const printHelp = () => {
+      console.log(
+        "Available commands:\n" +
+        "  random        Show a random emoticon\n" +
+        "  seed <n>      Show emoticon for seed n\n" +
+        "  list          List all emoticons with indices\n" +
+        "  json          Output last result as JSON\n" +
+        "  help          Show this help message\n" +
+        "  exit          Exit the REPL"
+      );
+    };
+
+    rl.prompt();
+
+    rl
+      .on("line", (input) => {
+        const [cmd, ...rest] = input.trim().split(/\s+/);
+        if (!cmd || cmd === "random") {
+          printRandom();
+        } else if (cmd === "seed") {
+          printSeeded(rest[0] || "");
+        } else if (cmd === "list") {
+          printList();
+        } else if (cmd === "json") {
+          printJson();
+        } else if (cmd === "help") {
+          printHelp();
+        } else if (cmd === "exit") {
+          rl.close();
+          return;
+        } else {
+          console.log(`Unknown command: ${input.trim()}`);
+        }
+        rl.prompt();
+      })
+      .on("SIGINT", () => {
+        rl.close();
+      })
+      .on("close", () => {
+        process.exit(0);
+      });
+
+    return rl;
+  }
+
   // HTTP server mode
   if (args.includes("--serve")) {
     // Default port 3000
@@ -43,54 +138,53 @@ export function main(args = []) {
       const url = new URL(req.url, `http://${req.headers.host}`);
       const pathname = url.pathname;
       const params = url.searchParams;
-      const accept = req.headers.accept || '';
+      const accept = req.headers.accept || "";
 
       function sendText(status, text) {
-        res.writeHead(status, { 'Content-Type': 'text/plain' });
+        res.writeHead(status, { "Content-Type": "text/plain" });
         res.end(text);
       }
       function sendJson(status, obj) {
-        res.writeHead(status, { 'Content-Type': 'application/json' });
+        res.writeHead(status, { "Content-Type": "application/json" });
         res.end(JSON.stringify(obj));
       }
 
-      if (req.method !== 'GET') {
-        if (accept.includes('application/json')) {
-          return sendJson(404, { error: 'Not Found' });
+      if (req.method !== "GET") {
+        if (accept.includes("application/json")) {
+          return sendJson(404, { error: "Not Found" });
         }
-        return sendText(404, 'Not Found');
+        return sendText(404, "Not Found");
       }
 
       // Root: random emoticon
-      if (pathname === '/') {
+      if (pathname === "/") {
         const idx = Math.floor(Math.random() * EMOTICONS.length);
         return sendText(200, EMOTICONS[idx]);
       }
 
       // Plain text list
-      if (pathname === '/list') {
-        return sendText(200, EMOTICONS.join('\n'));
+      if (pathname === "/list") {
+        return sendText(200, EMOTICONS.join("\n"));
       }
 
       // JSON endpoints
-      if (pathname === '/json') {
-        // list array
-        if (params.has('list')) {
+      if (pathname === "/json") {
+        if (params.has("list")) {
           return sendJson(200, EMOTICONS);
         }
-        let mode = 'random';
+        let mode = "random";
         let seedVal = null;
         let idx;
-        if (params.has('seed')) {
-          const seedString = params.get('seed');
+        if (params.has("seed")) {
+          const seedString = params.get("seed");
           if (!/^[0-9]+$/.test(seedString)) {
-            if (accept.includes('application/json')) {
+            if (accept.includes("application/json")) {
               return sendJson(400, { error: `Invalid seed: ${seedString}` });
             }
             return sendText(400, `Invalid seed: ${seedString}`);
           }
           const s = Number(seedString);
-          mode = 'seeded';
+          mode = "seeded";
           seedVal = s;
           idx = s % EMOTICONS.length;
         } else {
@@ -100,15 +194,15 @@ export function main(args = []) {
       }
 
       // JSON list at /json/list
-      if (pathname === '/json/list') {
+      if (pathname === "/json/list") {
         return sendJson(200, EMOTICONS);
       }
 
       // Not found
-      if (accept.includes('application/json')) {
-        return sendJson(404, { error: 'Not Found' });
+      if (accept.includes("application/json")) {
+        return sendJson(404, { error: "Not Found" });
       }
-      return sendText(404, 'Not Found');
+      return sendText(404, "Not Found");
     });
 
     server.listen(port);
@@ -149,12 +243,10 @@ Examples:
       console.log(JSON.stringify(EMOTICONS));
       return;
     }
-
     let mode = "random";
     let seedVal = null;
     let idx;
     const seedIndex = args.indexOf("--seed");
-
     if (seedIndex !== -1) {
       const seedString = args[seedIndex + 1];
       if (!seedString || !/^[0-9]+$/.test(seedString)) {
@@ -169,7 +261,6 @@ Examples:
     } else {
       idx = Math.floor(Math.random() * EMOTICONS.length);
     }
-
     const result = { face: EMOTICONS[idx], mode, seed: seedVal };
     console.log(JSON.stringify(result));
     return;
