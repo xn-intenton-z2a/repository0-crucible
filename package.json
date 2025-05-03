@@ -15,7 +15,7 @@
     "update-to-greatest": "npx ncu --upgrade --enginesNode --target greatest --verbose --install always --reject 'alpha'",
     "test": "vitest",
     "test:unit": "vitest --coverage",
-    "test:e2e": "vitest tests/e2e/cli.test.js",
+    "test:e2e": "vitest tests/e2e/server.test.js",
     "start": "node src/lib/main.js",
     "diagnostics": "node src/lib/main.js --diagnostics",
     "serve": "node src/lib/main.js --serve",
