@@ -51,13 +51,21 @@ node src/lib/main.js --json --list
 node src/lib/main.js --config fixtures/custom.json
 
 # Load custom emoticon list from YAML via env var
-EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js
+EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js --list
+```
 
-# Start interactive REPL session
-node src/lib/main.js --interactive
-# or
-node src/lib/main.js -i
-``` 
+## Custom Configuration Examples
+
+```bash
+# Load custom emoticon list from JSON and display random emoticon
+node src/lib/main.js --config fixtures/custom.json
+
+# Load custom emoticon list from JSON and output seeded JSON emoticon
+node src/lib/main.js --config fixtures/custom.json --json --seed 2
+
+# Load custom emoticon list from YAML via env var and list emoticons
+EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js --list
+```
 
 ## Interactive Mode
 
@@ -80,7 +88,7 @@ You can import the core utilities directly in your code:
 import { listFaces, randomFace, seededFace, emoticonJson } from '@xn-intenton-z2a/repository0-crucible';
 
 console.log(listFaces());
-// [":)",":-(",":D",...]
+// [":)",":-([",":D",...]
 
 console.log(randomFace());
 // e.g. ":D"

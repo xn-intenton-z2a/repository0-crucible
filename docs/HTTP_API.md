@@ -3,6 +3,22 @@
 ## Overview
 Provide an HTTP server mode for the emoticon CLI that exposes endpoints for random emoticon selection, deterministic seeding, full list retrieval over HTTP, version reporting, and monitoring via metrics. This feature enables integration of the emoticon service into web-based workflows, dashboards, and monitoring systems.
 
+## Configuration
+The HTTP server supports loading a custom emoticon list using the same mechanism as the CLI:
+
+- CLI Flag: `--config <path>` to a JSON or YAML file.
+- Environment Variable: `EMOTICONS_CONFIG` if the CLI flag is not provided.
+
+When using a custom list, endpoints `/`, `/list`, `/json`, `/json?seed=<n>`, and `/json/list` will use emoticons from the provided list:
+
+```bash
+# Start server with custom JSON config
+node src/lib/main.js --serve --config fixtures/custom.json
+
+# Start server with custom YAML config via env var
+EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js --serve
+```
+
 ## Endpoints
 
 - **GET /**
