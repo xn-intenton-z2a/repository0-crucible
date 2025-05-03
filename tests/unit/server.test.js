@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeAll, afterAll, vi } from "vitest";
-import { main } from "@src/lib/main.js";
+import { main, version } from "@src/lib/main.js";
 import http from "http";
 
 const FACES = [
@@ -57,6 +57,14 @@ describe("HTTP Server", () => {
     });
   }
 
+  test("GET /version returns version JSON", async () => {
+    const res = await makeRequest('/version');
+    expect(res.statusCode).toBe(200);
+    expect(res.headers['content-type']).toMatch(/application\/json/);
+    const obj = JSON.parse(res.body);
+    expect(obj).toEqual({ version });
+  });
+
   test("GET / returns a random emoticon in plain text", async () => {
     const res = await makeRequest('/');
     expect(res.statusCode).toBe(200);
@@ -70,6 +78,8 @@ describe("HTTP Server", () => {
     expect(res.headers['content-type']).toMatch(/text\/plain/);
     expect(res.body).toBe(FACES.join('\n'));
   });
+
+  // ... existing tests follow unchanged
 
   test("GET /json returns random JSON emoticon", async () => {
     const res = await makeRequest('/json');

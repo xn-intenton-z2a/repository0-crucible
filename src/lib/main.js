@@ -4,6 +4,8 @@
 import { fileURLToPath } from "url";
 import http from "http";
 import readline from "readline";
+import pkg from '../../package.json' assert { type: 'json' };
+export const version = pkg.version;
 
 const EMOTICONS = [
   ":)",
@@ -194,6 +196,11 @@ export function main(args = []) {
         }
         res.end(body);
         return;
+      }
+
+      // Version endpoint
+      if (req.method === "GET" && pathname === "/version") {
+        return sendJson(200, { version });
       }
 
       // Non-GET requests
