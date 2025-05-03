@@ -1,6 +1,6 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import readline from "readline";
-import { main } from "@src/lib/main.js";
+import { main, listFaces, randomFace, seededFace, emoticonJson } from "@src/lib/main.js";
 
 const FACES = [
   ":)",
@@ -246,5 +246,40 @@ describe('Interactive Mode', () => {
   test('SIGINT triggers exit', () => {
     callbacks.SIGINT();
     expect(exitSpy).toHaveBeenCalledWith(0);
+  });
+});
+
+// Programmatic API tests
+
+describe('Programmatic API', () => {
+  test('listFaces is a function that returns correct list', () => {
+    expect(typeof listFaces).toBe('function');
+    expect(listFaces()).toEqual(FACES);
+  });
+
+  test('randomFace is a function that returns a known emoticon', () => {
+    expect(typeof randomFace).toBe('function');
+    const face = randomFace();
+    expect(FACES).toContain(face);
+  });
+
+  test('seededFace is a function that returns deterministic emoticon', () => {
+    expect(typeof seededFace).toBe('function');
+    expect(seededFace(5)).toBe(FACES[5 % FACES.length]);
+  });
+
+  test('emoticonJson is a function that returns proper JSON object for random mode', () => {
+    expect(typeof emoticonJson).toBe('function');
+    const obj = emoticonJson({ mode: 'random', seed: null });
+    expect(FACES).toContain(obj.face);
+    expect(obj.mode).toBe('random');
+    expect(obj.seed).toBeNull();
+  });
+
+  test('emoticonJson returns proper JSON object for seeded mode', () => {
+    const obj = emoticonJson({ mode: 'seeded', seed: 4 });
+    expect(obj.face).toBe(FACES[4 % FACES.length]);
+    expect(obj.mode).toBe('seeded');
+    expect(obj.seed).toBe(4);
   });
 });
