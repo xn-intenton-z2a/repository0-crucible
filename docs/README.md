@@ -18,6 +18,7 @@ npm install @xn-intenton-z2a/repository0-crucible
 - `--list`               : List all available emoticons with zero-based indices, one per line.
 - `--seed <n>`           : Provide a non-negative integer seed to deterministically select an emoticon; invalid seeds produce an error message and exit with code 1.
 - `--json`               : Output results in JSON format. Can be combined with `--seed` or `--list`.
+- `--count <n>`          : Output multiple emoticons per invocation; in plain mode prints n emoticons one per line, in JSON mode outputs a JSON array of n emoticon strings; can be combined with `--seed` for sequential seeded outputs.
 - `--interactive`, `-i`  : Launch an interactive REPL supporting commands `random`, `seed <n>`, `list`, `json`, `help`, `exit`.
 - `--help`, `-h`         : Display help message and exit with code 0.
 - `--version`, `-v`      : Print application version and exit with code 0.
@@ -56,10 +57,19 @@ node src/lib/main.js --diagnostics
 # Diagnostics mode (environment variable)
 EMOTICONS_DIAGNOSTICS=1 node src/lib/main.js
 
-# Start interactive REPL
+# Interactive REPL session
 node src/lib/main.js --interactive
 # or
 node src/lib/main.js -i
+
+# Print multiple random emoticons in plain text
+node src/lib/main.js --count 3
+
+# Print multiple random emoticons as JSON
+node src/lib/main.js --json --count 2
+
+# Print multiple seeded emoticons starting from seed 5
+node src/lib/main.js --seed 5 --count 4
 ```
 
 ### HTTP Server Usage
@@ -100,37 +110,18 @@ curl http://localhost:3000/health
 # Metrics endpoint
 curl http://localhost:3000/metrics
 
-# Non-GET returns 404 plain text
-curl -X POST http://localhost:3000/
+# Error: Invalid seed returns 400 plain text
+curl http://localhost:3000/json?seed=abc
 
-# Non-GET with JSON accept returns 404 JSON error
-curl -X DELETE -H "Accept: application/json" http://localhost:3000/unknown
+# Error: Invalid seed returns 400 and JSON error
+curl -H "Accept: application/json" http://localhost:3000/json?seed=abc
+
+# Unknown path returns 404 (plain text)
+curl http://localhost:3000/unknown
+
+# Unknown path returns 404 and JSON error
+curl -H "Accept: application/json" http://localhost:3000/unknown
 
 # Inspect CORS header
 curl -I http://localhost:3000/  # See Access-Control-Allow-Origin: *
-```
-
-## Documentation
-
-- Detailed CLI and feature reference: [EMOTICON_OUTPUT](EMOTICON_OUTPUT.md)
-- HTTP API specification and middleware usage: [HTTP_API](HTTP_API.md)
-
-## Programmatic API
-
-Import and use core utilities directly in your code:
-
-```js
-import { listFaces, randomFace, seededFace, emoticonJson } from '@xn-intenton-z2a/repository0-crucible';
-
-console.log(listFaces());
-// [":)",":-([",":D",...]
-
-console.log(randomFace());
-// e.g. ":D"
-
-console.log(seededFace(3));
-// e.g. "(¬_¬)"
-
-console.log(emoticonJson({ mode: 'seeded', seed: 3 }));
-// { face: "(¬_¬)", mode: "seeded", seed: 3 }
 ```

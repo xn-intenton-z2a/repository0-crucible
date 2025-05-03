@@ -426,6 +426,41 @@ Examples:
 
   const isJson = args.includes("--json");
 
+  // Count option handling
+  const countIdx = args.indexOf("--count");
+  if (countIdx !== -1) {
+    const countStr = args[countIdx + 1];
+    if (!countStr || !/^[0-9]+$/.test(countStr)) {
+      console.error(`Invalid count: ${countStr}`);
+      process.exit(1);
+    }
+    const count = Number(countStr);
+    let seedBase = null;
+    if (args.includes("--seed")) {
+      const seedIdx = args.indexOf("--seed");
+      const seedStr = args[seedIdx + 1];
+      if (!seedStr || !/^[0-9]+$/.test(seedStr)) {
+        console.error(`Invalid seed: ${seedStr}`);
+        process.exit(1);
+      }
+      seedBase = Number(seedStr);
+    }
+    const results = [];
+    for (let i = 0; i < count; i++) {
+      if (seedBase !== null) {
+        results.push(seededFace(seedBase + i));
+      } else {
+        results.push(randomFace());
+      }
+    }
+    if (isJson) {
+      console.log(JSON.stringify(results));
+    } else {
+      results.forEach(face => console.log(face));
+    }
+    process.exit(0);
+  }
+
   if (isJson) {
     if (args.includes("--list")) {
       console.log(JSON.stringify(listFaces()));
