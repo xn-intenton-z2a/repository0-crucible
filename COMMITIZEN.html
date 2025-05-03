@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="commitizen" href="#commitizen"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>COMMITIZEN</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Install commitizen globally or locally, init adapters via npx commitizen init <adapter> --save-dev --save-exact. Configure adapter path in package.json config.commitizen.path or .czrc/.czrc.js. Use git cz or npm run commit. Customize adapters (e.g., cz-customizable) via cz.config.js defining types, scopes, limits. Programmatic API exposed as run(args[], {cwd, config}). Troubleshoot PATH, config syntax, adapter resolution errors.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:
+1 Installation
+2 Initialization
+3 Configuration
+4 Adapter Customization
+5 CLI Usage
+6 Programmatic API
+7 Troubleshooting</p>
+<p class="md-github">1 Installation
+Global: npm install -g commitizen@4.4.4
+Local: npm install --save-dev commitizen@4.4.4</p>
+<p class="md-github">2 Initialization
+Command: npx commitizen init <adapter> --save-dev --save-exact
+Effects:
+add devDependency <adapter>@latest
+package.json: config.commitizen.path = &quot;./node_modules/<adapter>&quot;</p>
+<p class="md-github">3 Configuration
+package.json:
+&quot;config&quot;: { &quot;commitizen&quot;: { &quot;path&quot;: &quot;./node_modules/<adapter>&quot; } }
+.czrc (JSON): { &quot;path&quot;: &quot;node_modules/<adapter>&quot; }
+.czrc.js (Module.exports) supports additional fields maxHeaderWidth, maxLineWidth
+Priority: project .czrc &gt; package.json &gt; user .czrc</p>
+<p class="md-github">4 Adapter Customization (cz-customizable)
+File: cz.config.js
+fields:
+types: array of {value:string, name:string}
+scopes: string[]
+allowCustomScopes: boolean
+allowBreakingChanges: string[]
+subjectLimit: number
+skipQuestions: string[]</p>
+<p class="md-github">5 CLI Usage
+Commands:
+git cz
+npx git-cz
+npm run commit (requires script &quot;commit&quot;: &quot;git-cz&quot;)
+Flags:
+--verbose : debug output
+--config <path> : override adapter path or config file</p>
+<p class="md-github">6 Programmatic API
+Signature:
+run(args: string[], options?: { cwd?: string; config?: string|object; }): Promise<void>
+Example:
+const { run } = require('commitizen');
+run(['--config', './cz.config.js'], { cwd: process.cwd() });</p>
+<p class="md-github">7 Troubleshooting
+Ensure node_modules/.bin in PATH or global install
+Validate JSON/JS syntax in config files
+Verify adapter installation and correct path in config</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Installation versions: commitizen@4.4.4, cz-conventional-changelog@4.3.0, cz-customizable@6.3.0. Adapter init flags: --save-dev adds to devDependencies, --save-exact pins exact version. Config file resolution order: project .czrc -&gt; package.json config.commitizen.path -&gt; user ~/.czrc. Default CLI exit codes: 0 success, 1 invalid config, 2 adapter load error. Adapter config defaults: maxHeaderWidth=100, maxLineWidth=100, allowCustomScopes=false, allowBreakingChanges=[]. Config file names supported: .czrc, .czrc.js, cz.config.js. Package.json key: config.commitizen.path. git-cz shim name resolution: lookup package.json script &quot;commit&quot; alias.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API: run(args: string[], options?: { cwd?: string; config?: string|object; }): Promise<void>
+Parameters:
+args: array of CLI arguments: --config, --verbose, adapter-specific flags
+options.cwd: working directory path string
+options.config: path to adapter config file or object with adapter settings
+Return: Promise resolves on successful commit, rejects with Error containing code, message, stack</p>
+<p class="md-github">CLI:
+Global: commitizen
+Local: npx commitizen
+Alias: git-cz
+Commands:
+init <adapter> [--save-dev] [--save-exact]
+adapter: name or module path
+run [--config <path>] [--verbose]</p>
+<p class="md-github">package.json config:
+&quot;config&quot;: { &quot;commitizen&quot;: { &quot;path&quot;: string } }</p>
+<p class="md-github">Adapter config (cz-config.js): module.exports = { types: {value:string,name:string}[], scopes:string[], allowCustomScopes:boolean, allowBreakingChanges:string[], subjectLimit:number, skipQuestions:string[], breaklineChar:string }</p>
+<p class="md-github">Example .czrc.js:
+module.exports = {
+path: &quot;node_modules/cz-customizable&quot;,
+maxHeaderWidth: 72,
+maxLineWidth: 100
+};</p>
+<p class="md-github">Best Practices:
+• Lock adapter versions with --save-exact
+• Define subjectLimit&lt;=50
+• Allow breaking changes only for feat and fix
+• Skip body/footer prompts if not needed</p>
+<p class="md-github">Troubleshooting Commands:
+$ git cz --verbose
+Expected: prompts appear, commit message printed to stdout</p>
+<p class="md-github">$ npx commitizen init nonexistent-adapter
+Expected: Error: Adapter &quot;nonexistent-adapter&quot; not found</p>
+<p class="md-github">Check:
+$ node -e &quot;console.log(require('commitizen/package.json').version)&quot;
+Expected: 4.4.4</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">commitizen@4.4.4 install via npm global/local; init adapters: npx commitizen init <adapter> --save-dev --save-exact =&gt; config.commitizen.path=./node_modules/<adapter>; config resolution: project .czrc &gt; package.json&gt; user .czrc; .czrc.js supports path, maxHeaderWidth=100, maxLineWidth=100; cz-customizable cz.config.js fields types[{value,name}],scopes[],allowCustomScopes=false,allowBreakingChanges[],subjectLimit=50,skipQuestions[]; CLI: git cz|npx git-cz (script &quot;commit&quot;:&quot;git-cz&quot;); flags: --config<path>,--verbose; API: run(args:string[],options?{cwd?:string,config?:string|object}):Promise<void>; exit codes:0 success,1 invalid config,2 load error; key config.commitizen.path; troubleshooting: ensure node_modules/.bin in PATH, valid JSON/JS, adapter installed.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:
+1 Installation
+2 Initialization
+3 Configuration
+4 Adapter Customization
+5 CLI Usage
+6 Programmatic API
+7 Troubleshooting</p>
+<p class="md-github">1 Installation
+Global: npm install -g commitizen@4.4.4
+Local: npm install --save-dev commitizen@4.4.4</p>
+<p class="md-github">2 Initialization
+Command: npx commitizen init <adapter> --save-dev --save-exact
+Effects:
+add devDependency <adapter>@latest
+package.json: config.commitizen.path = './node_modules/<adapter>'</p>
+<p class="md-github">3 Configuration
+package.json:
+'config': { 'commitizen': { 'path': './node_modules/<adapter>' } }
+.czrc (JSON): { 'path': 'node_modules/<adapter>' }
+.czrc.js (Module.exports) supports additional fields maxHeaderWidth, maxLineWidth
+Priority: project .czrc &gt; package.json &gt; user .czrc</p>
+<p class="md-github">4 Adapter Customization (cz-customizable)
+File: cz.config.js
+fields:
+types: array of {value:string, name:string}
+scopes: string[]
+allowCustomScopes: boolean
+allowBreakingChanges: string[]
+subjectLimit: number
+skipQuestions: string[]</p>
+<p class="md-github">5 CLI Usage
+Commands:
+git cz
+npx git-cz
+npm run commit (requires script 'commit': 'git-cz')
+Flags:
+--verbose : debug output
+--config <path> : override adapter path or config file</p>
+<p class="md-github">6 Programmatic API
+Signature:
+run(args: string[], options?: { cwd?: string; config?: string|object; }): Promise<void>
+Example:
+const { run } = require('commitizen');
+run(['--config', './cz.config.js'], { cwd: process.cwd() });</p>
+<p class="md-github">7 Troubleshooting
+Ensure node_modules/.bin in PATH or global install
+Validate JSON/JS syntax in config files
+Verify adapter installation and correct path in config</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Commitizen &amp; Conventional Commits
+https://github.com/conventional-changelog/commitizen#readme</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-commitizen" href="#digest-of-commitizen"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of COMMITIZEN</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="commitizen-1" href="#commitizen-1"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>COMMITIZEN</h1>
+<p class="md-github">Content retrieved on 2024-06-04 from https://github.com/conventional-changelog/commitizen#readme</p>
+<h2 class="md-github"><a class="md-github__anchor" name="1-installation" href="#1-installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Installation</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="11-global" href="#11-global"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1.1 Global</h3>
+<p class="md-github">npm install -g commitizen@4.4.4</p>
+<h3 class="md-github"><a class="md-github__anchor" name="12-local-project" href="#12-local-project"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1.2 Local (Project)</h3>
+<p class="md-github">npm install --save-dev commitizen@4.4.4</p>
+<h2 class="md-github"><a class="md-github__anchor" name="2-initialization" href="#2-initialization"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Initialization</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="21-init-with-adapter" href="#21-init-with-adapter"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2.1 Init with Adapter</h3>
+<p class="md-github">npx commitizen init cz-conventional-changelog --save-dev --save-exact</p>
+<p class="md-github">Effects:
+• Adds devDependency cz-conventional-changelog@4.3.0
+• Updates package.json with:
+{
+&quot;config&quot;: {
+&quot;commitizen&quot;: {
+&quot;path&quot;: &quot;./node_modules/cz-conventional-changelog&quot;
+}
+}
+}
+• Installs git-cz CLI shim in node_modules/.bin/git-cz</p>
+<h2 class="md-github"><a class="md-github__anchor" name="3-configuration" href="#3-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. Configuration</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="31-packagejson" href="#31-packagejson"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3.1 package.json</h3>
+<p class="md-github">In package.json:
+&quot;config&quot;: {
+&quot;commitizen&quot;: {
+&quot;path&quot;: &quot;./node_modules/<adapter>&quot;
+}
+}</p>
+<h3 class="md-github"><a class="md-github__anchor" name="32-czrc-json" href="#32-czrc-json"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3.2 .czrc (JSON)</h3>
+<p class="md-github">In project root or $HOME/.czrc:
+{
+&quot;path&quot;: &quot;node_modules/<adapter>&quot;
+}</p>
+<h3 class="md-github"><a class="md-github__anchor" name="33-czrcjs-module" href="#33-czrcjs-module"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3.3 .czrc.js (Module)</h3>
+<p class="md-github">module.exports = {
+path: &quot;node_modules/<adapter>&quot;,
+maxHeaderWidth: 100,
+maxLineWidth: 100
+};</p>
+<p class="md-github">Resolution priority: 1) .czrc in project, 2) package.json config.commitizen, 3) $HOME/.czrc</p>
+<h2 class="md-github"><a class="md-github__anchor" name="4-adapter-customization-cz-customizable" href="#4-adapter-customization-cz-customizable"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Adapter Customization (cz-customizable)</h2>
+<p class="md-github">File: cz.config.js in project root:</p>
+<p class="md-github">module.exports = {
+types: [
+{ value: &quot;feat&quot;, name: &quot;feat:     A new feature&quot; },
+{ value: &quot;fix&quot;,  name: &quot;fix:      A bug fix&quot; },
+{ value: &quot;docs&quot;, name: &quot;docs:     Documentation only changes&quot; },
+{ value: &quot;style&quot;,name: &quot;style:    Changes that do not affect the meaning of the code&quot; }
+],
+scopes: [&quot;core&quot;, &quot;cli&quot;, &quot;api&quot;, &quot;infra&quot;],
+allowCustomScopes: true,
+allowBreakingChanges: [&quot;feat&quot;, &quot;fix&quot;],
+subjectLimit: 50,
+skipQuestions: [&quot;body&quot;, &quot;footer&quot;]
+};</p>
+<h2 class="md-github"><a class="md-github__anchor" name="5-usage" href="#5-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. Usage</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="51-cli-commands" href="#51-cli-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5.1 CLI Commands</h3>
+<p class="md-github">• git cz<br>
+• npx git-cz<br>
+• npm run commit (script: &quot;commit&quot;: &quot;git-cz&quot;)</p>
+<h3 class="md-github"><a class="md-github__anchor" name="52-flags" href="#52-flags"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5.2 Flags</h3>
+<p class="md-github">--verbose       Enable debug logging
+--config <path> Override adapter path or config file</p>
+<h2 class="md-github"><a class="md-github__anchor" name="6-programmatic-api" href="#6-programmatic-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6. Programmatic API</h2>
+<p class="md-github">Import and run within Node.js scripts:</p>
+<pre class="md-github"><code class="md-github language-js">const { run } = require(&quot;commitizen&quot;);
+
+run([&quot;--config&quot;, &quot;./cz.config.js&quot;], { cwd: process.cwd() })
+  .then(() =&gt; console.log(&quot;Commit complete&quot;))
+  .catch(err =&gt; console.error(err));
+</code></pre>
+<p class="md-github">Signature:
+run(args: string[], options?: {
+cwd?: string;
+config?: string | object;
+}): Promise<void></p>
+<h2 class="md-github"><a class="md-github__anchor" name="7-troubleshooting" href="#7-troubleshooting"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7. Troubleshooting</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="71-command-not-found" href="#71-command-not-found"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7.1 Command Not Found</h3>
+<p class="md-github">Ensure node_modules/.bin is in PATH or install commitizen globally.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="72-bad-configuration" href="#72-bad-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7.2 Bad Configuration</h3>
+<p class="md-github">Error: Unexpected token in JSON.<br>
+Check .czrc or cz.config.js syntax.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="73-adapter-load-fail" href="#73-adapter-load-fail"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7.3 Adapter Load Fail</h3>
+<p class="md-github">Error: Cannot find module <adapter>.<br>
+Verify adapter installed and config.path correct.</p>
+<p class="md-github">Attribution: Conventional Changelog Commitizen README
+Data Size: 2.5 KB</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Commitizen &amp; Conventional Commits</li>
+<li class="md-github">URL: https://github.com/conventional-changelog/commitizen#readme</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-05-03T00:30:52.200Z</li>
+<li class="md-github">Data Size: 0 bytes</li>
+<li class="md-github">Links Found: 0</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-03</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-03T00:36:21.845Z</p>
+  </footer>
+</body>
+</html>
