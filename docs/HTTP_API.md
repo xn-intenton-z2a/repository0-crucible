@@ -55,3 +55,34 @@ Provide an HTTP server mode for the emoticon CLI that exposes endpoints for rand
   - Responds with status 404.
   - If `Accept: application/json` header is present, returns `{ "error": "Not Found" }`.
   - Otherwise returns plain text `Not Found`
+
+## Example Usage with curl
+
+```bash
+# Random plain text
+curl http://localhost:3000/
+
+# List all emoticons in plain text
+curl http://localhost:3000/list
+
+# Random JSON
+curl http://localhost:3000/json
+
+# Seeded JSON (seed=2)
+curl http://localhost:3000/json?seed=2
+
+# List JSON array via query
+curl http://localhost:3000/json?list
+
+# List JSON array via path
+curl http://localhost:3000/json/list
+
+# Version endpoint
+curl http://localhost:3000/version
+
+# Metrics endpoint
+curl http://localhost:3000/metrics
+
+# Invalid seed returns 400 error
+curl http://localhost:3000/json?seed=abc
+```
