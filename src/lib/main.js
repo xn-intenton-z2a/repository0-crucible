@@ -12,39 +12,40 @@ const EMOTICONS = [
   "(ʘ‿ʘ)",
   "(¬‿¬)",
   "ಠ_ಠ",
-  "^_^",
-  "(ꈍᴗꈍ)"
-];
+  "^_^"];  // nine emoticons
 
-export function main(args = process.argv.slice(2)) {
-  if (args.includes("--list")) {
-    EMOTICONS.forEach((face) => console.log(face));
+function mulberry32(a) {
+  return function() {
+    let t = a += 0x6D2B79F5;
+    t = Math.imul(t ^ (t >>> 15), t | 1);
+    t ^= t + Math.imul(t ^ (t >>> 7), t | 61);
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+
+export function main(args = []) {
+  // Handle --list option
+  if (args.includes('--list')) {
+    EMOTICONS.forEach((face, idx) => console.log(`${idx}: ${face}`));
     return;
   }
 
-  const seedIndex = args.indexOf("--seed");
+  let rng = Math.random;
+  const seedIndex = args.indexOf('--seed');
   if (seedIndex !== -1) {
-    const seedValue = args[seedIndex + 1];
-    const seed = Number(seedValue);
-    if (
-      seedValue === undefined ||
-      Number.isNaN(seed) ||
-      !Number.isInteger(seed) ||
-      seed < 0
-    ) {
-      console.error("Invalid seed. Seed must be a non-negative integer.");
-      process.exit(1);
+    const seedString = args[seedIndex + 1];
+    if (!seedString || !/^\d+$/.test(seedString)) {
+      throw new Error(`Invalid seed: ${seedString}`);
     }
-    const idx = seed % EMOTICONS.length;
-    console.log(EMOTICONS[idx]);
-    return;
+    const seed = Number(seedString);
+    rng = mulberry32(seed);
   }
 
-  const idx = Math.floor(Math.random() * EMOTICONS.length);
+  const idx = Math.floor(rng() * EMOTICONS.length);
   console.log(EMOTICONS[idx]);
 }
 
+// If run as CLI
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-  const args = process.argv.slice(2);
-  main(args);
+  main(process.argv.slice(2));
 }

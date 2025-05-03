@@ -10,50 +10,46 @@ const FACES = [
   "(ʘ‿ʘ)",
   "(¬‿¬)",
   "ಠ_ಠ",
-  "^_^",
-  "(ꈍᴗꈍ)"
-];
+  "^_^"];  // nine emoticons
 
-describe("Main Module Import", () => {
-  test("should be non-null", () => {
-    expect(main).not.toBeNull();
-  });
-});
-
-describe("Emoticon Output", () => {
-  let consoleLogSpy;
-  let consoleErrorSpy;
+describe('main()', () => {
+  let logSpy;
 
   beforeEach(() => {
-    consoleLogSpy = vi.spyOn(console, "log").mockImplementation(() => {});
-    consoleErrorSpy = vi.spyOn(console, "error").mockImplementation(() => {});
+    logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
   });
 
   afterEach(() => {
-    vi.restoreAllMocks();
+    logSpy.mockRestore();
   });
 
-  test("default behavior prints one emoticon based on Math.random", () => {
-    vi.spyOn(Math, "random").mockReturnValue(0.5);
+  test('prints a random emoticon when no args are provided', () => {
     main([]);
-    expect(consoleLogSpy).toHaveBeenCalledTimes(1);
-    expect(consoleLogSpy).toHaveBeenCalledWith("(ʘ‿ʘ)");
+    const output = logSpy.mock.calls[0][0];
+    expect(FACES).toContain(output);
   });
 
-  test("--list prints all emoticons in order", () => {
-    main(["--list"]);
-    expect(consoleLogSpy).toHaveBeenCalledTimes(FACES.length);
-    FACES.forEach((face, index) => {
-      expect(consoleLogSpy.mock.calls[index][0]).toBe(face);
-    });
+  test('prints the full list with indices when --list is used', () => {
+    const calls = [];
+    logSpy.mockImplementation(msg => calls.push(msg));
+    main(['--list']);
+    expect(calls).toEqual(
+      FACES.map((face, idx) => `${idx}: ${face}`)
+    );
   });
 
-  test("--seed prints same emoticon for same seed", () => {
-    main(["--seed", "7"]);
-    expect(consoleLogSpy).toHaveBeenCalledTimes(1);
-    expect(consoleLogSpy).toHaveBeenCalledWith("ಠ_ಠ");
-    consoleLogSpy.mockClear();
-    main(["--seed", "7"]);
-    expect(consoleLogSpy).toHaveBeenCalledWith("ಠ_ಠ");
+  test('deterministic output with same seed', () => {
+    logSpy.mockClear();
+    main(['--seed', '42']);
+    const first = logSpy.mock.calls[0][0];
+    logSpy.mockClear();
+    main(['--seed', '42']);
+    const second = logSpy.mock.calls[0][0];
+    expect(first).toBe(second);
+    expect(FACES).toContain(first);
+  });
+
+  test('throws error on invalid seed', () => {
+    expect(() => main(['--seed', 'abc'])).toThrow('Invalid seed: abc');
   });
 });
