@@ -2,13 +2,20 @@
 
 This feature provides random ASCII emoticon output for the CLI application, offering an emotional feedback mechanism.
 
+## Installation
+
+```bash
+npm install @xn-intenton-z2a/repository0-crucible
+```
+
 ## CLI Options
 
 - `--list`           : Print all available emoticons with their zero-based index, one per line (format: `0: :)`).
-- `--seed <n>`       : Use a non-negative integer seed to deterministically select an emoticon.
-- `--json`           : Output results in JSON format.
-- `--help`, `-h`     : Display help message and exit.
-- `--interactive`, `-i` : Launch interactive REPL mode.
+- `--seed <n>`       : Use a non-negative integer seed to deterministically select an emoticon; invalid seeds produce an error and exit code 1.
+- `--json`           : Output results in JSON format. Can be combined with `--seed` or `--list`.
+- `--interactive`, `-i` : Launch interactive REPL mode supporting commands `random`, `seed <n>`, `list`, `json`, `help`, `exit`.
+- `--help`, `-h`     : Display help message and exit with code 0.
+- `--version`, `-v`  : Print application version and exit with code 0.
 
 ## Usage Examples
 
@@ -22,42 +29,36 @@ node src/lib/main.js --list
 # Print the same emoticon every run with seed 5
 node src/lib/main.js --seed 5
 
+# Error on invalid seed
+node src/lib/main.js --seed abc
+# Error: Invalid seed: abc
+
 # Output a single random emoticon as JSON
 node src/lib/main.js --json
+
+# Seeded JSON emoticon
+node src/lib/main.js --json --seed 5
+
+# List all emoticons as JSON array
+node src/lib/main.js --json --list
 
 # Start interactive REPL session
 node src/lib/main.js --interactive
 # or
 node src/lib/main.js -i
-```
+``` 
 
-## JSON Output Examples
+## Interactive Mode
 
-```bash
-# Single random JSON emoticon
-node src/lib/main.js --json
-```
-Output:
-```json
-{"face":":D","mode":"random","seed":null}
-```
+Inside the REPL, use:
 
-```bash
-# Seeded JSON emoticon
-node src/lib/main.js --json --seed 5
-```
-Output:
-```json
-{"face":"(ʘ‿ʘ)","mode":"seeded","seed":5}
-```
-
-```bash
-# List all emoticons as JSON array
-node src/lib/main.js --json --list
-```
-Output:
-```json
-[":)",":-(",":D","(¬_¬)","(＾◡＾)","(ʘ‿ʘ)","(¬‿¬)","ಠ_ಠ","^_^"]
+```text
+> random        # Show a random emoticon
+> seed 3        # Show emoticon for seed 3
+> list          # List all emoticons with indices
+> json          # Output last result or list as JSON
+> help          # Show help message
+> exit          # Exit the session
 ```
 
 ## Programmatic API
@@ -68,7 +69,7 @@ You can import the core utilities directly in your code:
 import { listFaces, randomFace, seededFace, emoticonJson } from '@xn-intenton-z2a/repository0-crucible';
 
 console.log(listFaces());
-// [":)",":-(",":D",...(rest)]
+// [":)",":-(",":D",...]
 
 console.log(randomFace());
 // e.g. ":D"
