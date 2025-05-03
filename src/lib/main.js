@@ -226,6 +226,7 @@ export function main(args) {
     };
     console.log(JSON.stringify(output));
     process.exit(0);
+    return;
   }
 
   // Help
@@ -247,12 +248,14 @@ export function main(args) {
 node src/lib/main.js --config <path>`
     );
     process.exit(0);
+    return;
   }
 
   // Version
   if (versionFlag) {
     console.log(version);
     process.exit(0);
+    return;
   }
 
   // HTTP Server mode
@@ -270,9 +273,9 @@ node src/lib/main.js --config <path>`
     }
     const app = express();
     app.use(createEmoticonRouter());
-    const server = app.listen(port, () => {
-      console.log(`Listening on port ${server.address().port}`);
-    });
+    const server = app.listen(port);
+    const assignedPort = server.address().port;
+    console.log(`Listening on port ${assignedPort}`);
     return server;
   }
 
@@ -307,6 +310,7 @@ node src/lib/main.js --config <path>`
       }
       console.log(JSON.stringify(arr));
       process.exit(0);
+      return;
     } else {
       if (seedIndex !== -1) {
         const seedVal = parseInt(args[seedIndex + 1], 10);
@@ -319,6 +323,7 @@ node src/lib/main.js --config <path>`
         }
       }
       process.exit(0);
+      return;
     }
   }
 
@@ -343,7 +348,9 @@ node src/lib/main.js --config <path>`
     console.log(
       JSON.stringify({ face: randomFace(), mode: 'random', seed: null })
     );
+    return;
   } else {
     console.log(randomFace());
+    return;
   }
 }
