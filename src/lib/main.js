@@ -7,6 +7,7 @@ import readline from "readline";
 import fs from "fs";
 import path from "path";
 import yaml from "js-yaml";
+import chalk from "chalk";
 import pkg from '../../package.json' assert { type: 'json' };
 export const version = pkg.version;
 
@@ -22,10 +23,10 @@ const BUILTIN_EMOTICONS = [
   "ಠ_ಠ",
   "^_^"];
 
-// Dynamic emoticon list
+// Dynamic emoticon list and config tracking
 let EMOTICONS = [...BUILTIN_EMOTICONS];
-// Flag to indicate custom config load
 let isCustomConfig = false;
+let configSource = 'builtin';
 
 // Load a custom emoticon file
 function loadConfig(configPath) {
@@ -51,6 +52,7 @@ function loadConfig(configPath) {
   }
   EMOTICONS = data;
   isCustomConfig = true;
+  configSource = configPath;
 }
 
 // Check for custom config via CLI or env var
@@ -58,6 +60,7 @@ function maybeLoadCustomConfig(args) {
   // Reset to built-in each run
   EMOTICONS = [...BUILTIN_EMOTICONS];
   isCustomConfig = false;
+  configSource = 'builtin';
   const configIdx = args.indexOf("--config");
   const envConfig = process.env.EMOTICONS_CONFIG;
   let configPath;
@@ -110,6 +113,23 @@ export function emoticonJson({ mode, seed }) {
 export function main(args = []) {
   // Load custom emoticons if requested
   maybeLoadCustomConfig(args);
+
+  // Diagnostics mode
+  const hasDiagFlag = args.includes("--diagnostics");
+  const hasDiagEnv = !!process.env.EMOTICONS_DIAGNOSTICS;
+  if (hasDiagFlag || hasDiagEnv) {
+    const diagnostics = {
+      version,
+      configSource,
+      emoticonCount: EMOTICONS.length,
+      isCustomConfig,
+      colorStyle: null,
+      supportsColorLevel: chalk.supportsColor?.level ?? null
+    };
+    console.log(JSON.stringify(diagnostics));
+    process.exit(0);
+    return;
+  }
 
   // Version flag handling
   if (args.includes("--version") || args.includes("-v")) {
@@ -360,6 +380,7 @@ Usage:
 
 Options:
   --config <path>    Load custom emoticon list from JSON or YAML file (overrides default).
+  --diagnostics      Output application diagnostics as JSON and exit.
   --list               List all available ASCII emoticons in order.
   --seed <n>           Provide a non-negative integer seed for deterministic selection.
   --json               Output results in JSON format.
@@ -372,6 +393,7 @@ Options:
 Examples:
   node src/lib/main.js
   node src/lib/main.js --config custom.json
+  node src/lib/main.js --diagnostics
   node src/lib/main.js --list
   node src/lib/main.js --seed 5
   node src/lib/main.js --json

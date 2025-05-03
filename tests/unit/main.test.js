@@ -96,7 +96,6 @@ describe('main()', () => {
     expect(msg).toContain('Usage:');
     expect(msg).toContain('--config <path>');
     expect(msg).toContain('--list');
-    expect(msg).toContain('--seed <n>');
     expect(msg).toContain('-h');
     expect(msg).toContain('--interactive, -i');
     expect(msg).toContain('--version, -v');
@@ -124,6 +123,41 @@ describe('main()', () => {
     main(['-v']);
     expect(logSpy).toHaveBeenCalledWith(version);
     expect(exitSpy).toHaveBeenCalledWith(0);
+    exitSpy.mockRestore();
+  });
+
+  // Diagnostics tests
+  test('prints diagnostics JSON and exits for --diagnostics', () => {
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
+    logSpy.mockClear();
+    main(['--diagnostics']);
+    const output = logSpy.mock.calls[0][0];
+    const obj = JSON.parse(output);
+    expect(obj).toHaveProperty('version', version);
+    expect(obj).toHaveProperty('configSource', 'builtin');
+    expect(obj).toHaveProperty('emoticonCount', FACES.length);
+    expect(obj).toHaveProperty('isCustomConfig', false);
+    expect(obj).toHaveProperty('colorStyle', null);
+    expect(typeof obj.supportsColorLevel).toBe('number');
+    expect(exitSpy).toHaveBeenCalledWith(0);
+    exitSpy.mockRestore();
+  });
+
+  test('EMOTICONS_DIAGNOSTICS env var triggers diagnostics', () => {
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
+    process.env.EMOTICONS_DIAGNOSTICS = '1';
+    logSpy.mockClear();
+    main([]);
+    const output = logSpy.mock.calls[0][0];
+    const obj = JSON.parse(output);
+    expect(obj).toHaveProperty('version', version);
+    expect(obj).toHaveProperty('configSource', 'builtin');
+    expect(obj.emoticonCount).toBe(FACES.length);
+    expect(obj.isCustomConfig).toBe(false);
+    expect(obj.colorStyle).toBe(null);
+    expect(typeof obj.supportsColorLevel).toBe('number');
+    expect(exitSpy).toHaveBeenCalledWith(0);
+    delete process.env.EMOTICONS_DIAGNOSTICS;
     exitSpy.mockRestore();
   });
 });

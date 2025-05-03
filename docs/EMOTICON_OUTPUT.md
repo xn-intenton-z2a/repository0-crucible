@@ -11,6 +11,7 @@ npm install @xn-intenton-z2a/repository0-crucible
 ## CLI Options
 
 - `--config <path>`    : Load a custom emoticon list from a JSON or YAML file (overrides the default list).
+- `--diagnostics`      : Output application diagnostics as JSON and exit.
 - `--list`           : Print all available emoticons with their zero-based index, one per line (format: `0: :)`).
 - `--seed <n>`       : Use a non-negative integer seed to deterministically select an emoticon; invalid seeds produce an error and exit code 1.
 - `--json`           : Output results in JSON format. Can be combined with `--seed` or `--list`.
@@ -18,9 +19,10 @@ npm install @xn-intenton-z2a/repository0-crucible
 - `--help`, `-h`     : Display help message and exit with code 0.
 - `--version`, `-v`  : Print application version and exit with code 0.
 
-### Environment Variable
+### Environment Variables
 
 - `EMOTICONS_CONFIG` : Path to a JSON or YAML file containing an array of emoticon strings; used when `--config` is not provided.
+- `EMOTICONS_DIAGNOSTICS` : When set, triggers diagnostics JSON output when `--diagnostics` is not provided.
 
 ## Usage Examples
 
@@ -52,6 +54,29 @@ node src/lib/main.js --config fixtures/custom.json
 
 # Load custom emoticon list from YAML via env var
 EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js --list
+```
+
+## Diagnostics Mode Examples
+
+```bash
+# Output diagnostics as JSON
+node src/lib/main.js --diagnostics
+
+# Using environment variable
+EMOTICONS_DIAGNOSTICS=1 node src/lib/main.js
+```
+
+### Diagnostics JSON Schema
+
+```json
+{
+  "version": "string",
+  "configSource": "string",
+  "emoticonCount": number,
+  "isCustomConfig": boolean,
+  "colorStyle": null,
+  "supportsColorLevel": number
+}
 ```
 
 ## Custom Configuration Examples
