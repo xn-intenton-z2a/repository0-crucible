@@ -9,7 +9,7 @@ export const version = pkg.version;
 
 const EMOTICONS = [
   ":)",
-  ":-((",
+  ":-(",
   ":D",
   "(¬_¬)",
   "(＾◡＾)",

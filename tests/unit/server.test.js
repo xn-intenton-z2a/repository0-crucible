@@ -4,14 +4,15 @@ import http from "http";
 
 const FACES = [
   ":)",
-  ":-((",
+  ":-(",
   ":D",
   "(¬_¬)",
   "(＾◡＾)",
   "(ʘ‿ʘ)",
   "(¬‿¬)",
   "ಠ_ಠ",
-  "^_^"];
+  "^_^"
+];
 
 describe("HTTP Server", () => {
   let server;
@@ -78,8 +79,6 @@ describe("HTTP Server", () => {
     expect(res.headers['content-type']).toMatch(/text\/plain/);
     expect(res.body).toBe(FACES.join('\n'));
   });
-
-  // ... existing tests follow unchanged
 
   test("GET /json returns random JSON emoticon", async () => {
     const res = await makeRequest('/json');
