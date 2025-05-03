@@ -1,17 +1,22 @@
 # HTTP_API Feature
 
 # Overview
-Extend existing HTTP server mode to expose Prometheus metrics and a version endpoint reporting the application version, and enhance CLI mode with a version flag.
+Extend existing HTTP server mode to expose Prometheus metrics and version endpoint reporting application version, enhance CLI mode with version flag, and add healthcheck endpoint for monitoring systems.
 
 # Endpoints
 GET /metrics
-  Returns metrics in Prometheus text exposition format with HELP and TYPE headers.
+  Returns metrics in Prometheus text exposition format with HELP and TYPE headers
   Content-Type: text/plain; version=0.0.4
 
 GET /version
   Returns a JSON object with the current application version
   Content-Type: application/json
   Response body: { version: string }
+
+GET /health
+  Returns OK for health check probing
+  Content-Type: text/plain
+  Response body: OK
 
 GET /
   Returns a random emoticon in plain text
@@ -36,13 +41,15 @@ Any other GET path
 
 # Implementation Details
 In src/lib/main.js:
-- Detect --version or -v flags at the start of main before any other mode
-- Import version from package.json via version export
-- On version flag, call console.log with version and process.exit(0)
-- HTTP server handlers remain unchanged and continue to handle metrics and version endpoints without incrementing counters
+- Detect --version or -v flags before any other mode and exit after logging version
+- Add GET /health handler before emoticon routes to return status 200 and text OK without incrementing counters
+- Keep existing handlers for metrics, version, emoticons, JSON modes unchanged except ensure health does not affect counters
+- Do not increment any counters when serving /health
 
 # Tests
+In tests/unit/server.test.js:
+- Add test for GET /health returns status 200 with content-type text/plain and body OK
+- Verify that calling /health does not change metrics values
+
 In tests/unit/main.test.js:
-- Spy on console.log and process.exit and verify main(['--version']) logs version from package.json and exits with code 0
-- Verify main(['-v']) behaves identically
-- Ensure existing HTTP tests for GET /version and GET /metrics continue to pass
+- Ensure main with flags --serve and --port still starts server with health endpoint available as described
