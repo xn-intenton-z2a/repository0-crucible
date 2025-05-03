@@ -22,7 +22,7 @@ let EMOTICONS = [
 let configSource = 'builtin';
 let isCustomConfig = false;
 
-// Load custom configuration from JSON or YAML
+// Load custom configuration from JSON or YAML (CLI usage, prints errors and exits)
 function loadConfig(configPath) {
   if (!fs.existsSync(configPath)) {
     console.error('Invalid config: File not found');
@@ -68,6 +68,58 @@ export function seededFace(seed) {
 
 export function emoticonJson({ face, mode, seed }) {
   return { face, mode, seed };
+}
+
+/**
+ * Load a custom emoticon configuration at runtime and return diagnostics.
+ * @param {{configPath: string}} options
+ * @returns {{version: string, configSource: string, emoticonCount: number, isCustomConfig: boolean, colorStyle: null, supportsColorLevel: number}}
+ */
+export function configureEmoticons({ configPath }) {
+  if (!fs.existsSync(configPath)) {
+    throw new Error('Invalid config: File not found');
+  }
+  const content = fs.readFileSync(configPath, 'utf8');
+  let arr;
+  try {
+    const ext = path.extname(configPath).toLowerCase();
+    if (ext === '.yaml' || ext === '.yml') {
+      arr = yaml.load(content);
+    } else {
+      arr = JSON.parse(content);
+    }
+  } catch (err) {
+    throw new Error('Invalid config: Expected an array of strings');
+  }
+  if (!Array.isArray(arr) || !arr.every((item) => typeof item === 'string')) {
+    throw new Error('Invalid config: Expected an array of strings');
+  }
+  EMOTICONS = arr;
+  configSource = configPath;
+  isCustomConfig = true;
+  return {
+    version,
+    configSource,
+    emoticonCount: EMOTICONS.length,
+    isCustomConfig,
+    colorStyle: null,
+    supportsColorLevel: chalk.level,
+  };
+}
+
+/**
+ * Retrieve current diagnostics without side-effects.
+ * @returns {{version: string, configSource: string, emoticonCount: number, isCustomConfig: boolean, colorStyle: null, supportsColorLevel: number}}
+ */
+export function getEmoticonDiagnostics() {
+  return {
+    version,
+    configSource,
+    emoticonCount: EMOTICONS.length,
+    isCustomConfig,
+    colorStyle: null,
+    supportsColorLevel: chalk.level,
+  };
 }
 
 // Express middleware for HTTP API

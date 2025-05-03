@@ -1,6 +1,17 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
 import readline from "readline";
-import { main, listFaces, randomFace, seededFace, emoticonJson, version } from "@src/lib/main.js";
+import fs from 'fs';
+import yaml from 'js-yaml';
+import {
+  main,
+  listFaces,
+  randomFace,
+  seededFace,
+  emoticonJson,
+  version,
+  configureEmoticons,
+  getEmoticonDiagnostics
+} from '@src/lib/main.js';
 
 const FACES = [
   ":)",
@@ -341,5 +352,67 @@ describe('Custom emoticon config', () => {
     vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify({foo: 'bar'}));
     expect(() => main(['--config', 'bad.json'])).toThrow('process.exit:1');
     expect(logError).toHaveBeenCalledWith('Invalid config: Expected an array of strings');
+  });
+});
+
+// New tests for programmatic API
+describe('Programmatic API Extensions', () => {
+  const CUSTOM = ['A', 'B', 'C'];
+
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  test('getEmoticonDiagnostics returns default diagnostics', () => {
+    const diag = getEmoticonDiagnostics();
+    expect(diag).toHaveProperty('version', version);
+    expect(diag).toHaveProperty('configSource', 'builtin');
+    expect(diag).toHaveProperty('emoticonCount', FACES.length);
+    expect(diag).toHaveProperty('isCustomConfig', false);
+    expect(diag).toHaveProperty('colorStyle', null);
+    expect(typeof diag.supportsColorLevel).toBe('number');
+  });
+
+  test('configureEmoticons loads valid JSON and returns diagnostics', () => {
+    vi.spyOn(fs, 'existsSync').mockReturnValue(true);
+    vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(CUSTOM));
+    const diag = configureEmoticons({ configPath: 'custom.json' });
+    expect(diag).toEqual({
+      version,
+      configSource: 'custom.json',
+      emoticonCount: CUSTOM.length,
+      isCustomConfig: true,
+      colorStyle: null,
+      supportsColorLevel: expect.any(Number),
+    });
+    expect(listFaces()).toEqual(CUSTOM);
+  });
+
+  test('configureEmoticons loads valid YAML and returns diagnostics', () => {
+    vi.spyOn(fs, 'existsSync').mockReturnValue(true);
+    vi.spyOn(fs, 'readFileSync').mockReturnValue(yaml.dump(CUSTOM));
+    const diag = configureEmoticons({ configPath: 'custom.yaml' });
+    expect(diag.configSource).toBe('custom.yaml');
+    expect(diag.emoticonCount).toBe(CUSTOM.length);
+    expect(listFaces()).toEqual(CUSTOM);
+  });
+
+  test('configureEmoticons throws on missing file', () => {
+    vi.spyOn(fs, 'existsSync').mockReturnValue(false);
+    expect(() => configureEmoticons({ configPath: 'nofile' })).toThrow('Invalid config: File not found');
+  });
+
+  test('configureEmoticons throws on invalid content', () => {
+    vi.spyOn(fs, 'existsSync').mockReturnValue(true);
+    vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify({ foo: 'bar' }));
+    expect(() => configureEmoticons({ configPath: 'bad.json' })).toThrow('Invalid config: Expected an array of strings');
+  });
+
+  test('getEmoticonDiagnostics after configureEmoticons returns updated diagnostics', () => {
+    vi.spyOn(fs, 'existsSync').mockReturnValue(true);
+    vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(CUSTOM));
+    const firstDiag = configureEmoticons({ configPath: 'custom.json' });
+    const secondDiag = getEmoticonDiagnostics();
+    expect(secondDiag).toEqual(firstDiag);
   });
 });
