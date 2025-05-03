@@ -1,4 +1,5 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import readline from "readline";
 import { main } from "@src/lib/main.js";
 
 const FACES = [
@@ -152,5 +153,93 @@ describe('JSON mode', () => {
     expect(errObj.error).toBe("Invalid seed. Seed must be a non-negative integer.");
     expect(exitSpy).toHaveBeenCalledWith(1);
     expect(logSpy).not.toHaveBeenCalled();
+  });
+});
+
+describe('Interactive Mode', () => {
+  let createInterfaceSpy;
+  let rl;
+  let callbacks;
+  let logSpy;
+  let exitSpy;
+
+  beforeEach(() => {
+    callbacks = {};
+    rl = {
+      on: (event, cb) => { callbacks[event] = cb; return rl; },
+      prompt: vi.fn(),
+      close: vi.fn().mockImplementation(() => { if (callbacks.close) callbacks.close(); }),
+    };
+    createInterfaceSpy = vi.spyOn(readline, 'createInterface').mockReturnValue(rl);
+    logSpy = vi.spyOn(console, 'log').mockImplementation(() => {});
+    exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
+    main(['--interactive']);
+  });
+
+  afterEach(() => {
+    createInterfaceSpy.mockRestore();
+    logSpy.mockRestore();
+    exitSpy.mockRestore();
+  });
+
+  test('should initialize readline with prompt', () => {
+    expect(createInterfaceSpy).toHaveBeenCalledWith({ input: process.stdin, output: process.stdout, prompt: "> " });
+    expect(rl.prompt).toHaveBeenCalled();
+  });
+
+  test('random command prints random emoticon', () => {
+    callbacks.line("");
+    expect(FACES).toContain(logSpy.mock.calls[0][0]);
+    expect(rl.prompt).toHaveBeenCalled();
+  });
+
+  test('seed command with valid seed prints correct emoticon', () => {
+    callbacks.line("seed 5");
+    expect(logSpy.mock.calls[0][0]).toBe(FACES[5 % FACES.length]);
+    expect(rl.prompt).toHaveBeenCalled();
+  });
+
+  test('seed command with invalid seed prints error and continues', () => {
+    callbacks.line("seed abc");
+    expect(logSpy.mock.calls[0][0]).toBe("Invalid seed: abc");
+    expect(rl.prompt).toHaveBeenCalled();
+  });
+
+  test('list command prints all emoticons with indices', () => {
+    callbacks.line("list");
+    const calls = logSpy.mock.calls.map(call => call[0]);
+    expect(calls).toEqual(FACES.map((face, idx) => `${idx}: ${face}`));
+    expect(rl.prompt).toHaveBeenCalled();
+  });
+
+  test('json command outputs last result as JSON', () => {
+    callbacks.line("seed 3");
+    logSpy.mockClear();
+    callbacks.line("json");
+    const output = logSpy.mock.calls[0][0];
+    const obj = JSON.parse(output);
+    expect(obj).toEqual({ face: FACES[3 % FACES.length], mode: "seeded", seed: 3 });
+    expect(rl.prompt).toHaveBeenCalled();
+  });
+
+  test('help command prints available commands', () => {
+    callbacks.line("help");
+    const helpMsg = logSpy.mock.calls[0][0];
+    expect(helpMsg).toMatch(/Available commands:/);
+    expect(helpMsg).toMatch(/random/);
+    expect(helpMsg).toMatch(/seed <n>/);
+    expect(helpMsg).toMatch(/exit/);
+    expect(rl.prompt).toHaveBeenCalled();
+  });
+
+  test('exit command closes interface and exits', () => {
+    callbacks.line("exit");
+    expect(rl.close).toHaveBeenCalled();
+    expect(exitSpy).toHaveBeenCalledWith(0);
+  });
+
+  test('SIGINT triggers exit', () => {
+    callbacks.SIGINT();
+    expect(exitSpy).toHaveBeenCalledWith(0);
   });
 });
