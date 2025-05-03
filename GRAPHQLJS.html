@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="graphqljs" href="#graphqljs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GRAPHQLJS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Installation via npm or yarn; import core types and functions from 'graphql'; GraphQLSchema requires a config object with query, mutation, subscription fields; GraphQLObjectType needs name and fields definitions with type and resolve functions; graphql() accepts an args object {schema, source, rootValue?, contextValue?, variableValues?, operationName?, fieldResolver?, typeResolver?} and returns Promise<ExecutionResult>; set NODE_ENV=production for performance; install bleeding-edge via git URL; enable experimental @defer and @stream via package.json; use .mjs builds for browser bundling.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">Installation</li>
+<li class="md-github">Schema Construction</li>
+<li class="md-github">Query Execution</li>
+<li class="md-github">Environment Configuration</li>
+<li class="md-github">Bleeding Edge Usage</li>
+<li class="md-github">Enabling Experimental Features</li>
+<li class="md-github">Browser Bundling</li>
+</ol>
+<p class="md-github">Installation
+npm install --save graphql
+yarn add graphql</p>
+<p class="md-github">Schema Construction
+import { graphql, GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql'
+new GraphQLSchema({
+query: new GraphQLObjectType({
+name: 'RootQueryType',
+fields: {
+hello: { type: GraphQLString, resolve: () =&gt; 'world' }
+}
+})
+})</p>
+<p class="md-github">Query Execution
+graphql({
+schema: GraphQLSchema,
+source: string_QUERY,
+rootValue?: any,
+contextValue?: any,
+variableValues?: { [key: string]: any },
+operationName?: string,
+fieldResolver?: Function,
+typeResolver?: Function
+}).then((result) =&gt; console.log(result))</p>
+<p class="md-github">Environment Configuration
+export NODE_ENV=production    # disables type assertion and deprecation warnings</p>
+<p class="md-github">Bleeding Edge Usage
+npm install graphql@git://github.com/graphql/graphql-js.git#npm</p>
+<p class="md-github">Enabling Experimental Features
+In package.json:
+&quot;dependencies&quot;: { &quot;graphql&quot;: &quot;experimental-stream-defer&quot; }</p>
+<p class="md-github">Browser Bundling
+Ensure webpack/rollup resolves .mjs extensions; import { graphql } from 'graphql'; only modules used are included</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Supported Node.js versions: &gt;=10.13.0. GraphQL.js build outputs: dist/index.js (CommonJS), dist/index.mjs (ESModule). GraphQLSchemaConfig: { query?: GraphQLObjectType, mutation?: GraphQLObjectType, subscription?: GraphQLObjectType, types?: GraphQLType[] }. FieldMapDefinition: key: GraphQLFieldConfig with properties: type: GraphQLOutputType, args?: GraphQLFieldConfigArgumentMap, resolve?: GraphQLFieldResolver, subscribe?: GraphQLFieldResolver, description?: string, deprecationReason?: string. graphql function full signature: graphql(args: ExecutionArgs): Promise<ExecutionResult>. Default fieldResolver uses property access. To override, pass fieldResolver. To enable @defer/@stream directives, install experimental-stream-defer. Bundler configs: webpack 5 resolve.extensions: ['.mjs','.js','.json']</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specifications:</p>
+<p class="md-github"><code class="md-github">graphql(args: { schema: GraphQLSchema; source: string; rootValue?: any; contextValue?: any; variableValues?: { [key: string]: any }; operationName?: string; fieldResolver?: Function; typeResolver?: Function }): Promise&lt;ExecutionResult&gt;</code>
+ExecutionResult: { data?: any; errors?: GraphQLError[] }</p>
+<p class="md-github"><code class="md-github">new GraphQLSchema(config: { query?: GraphQLObjectType; mutation?: GraphQLObjectType; subscription?: GraphQLObjectType; types?: GraphQLType[] })</code></p>
+<p class="md-github"><code class="md-github">new GraphQLObjectType(config: { name: string; description?: string; fields: () =&gt; GraphQLFieldConfigMap&lt;any,any&gt;; interfaces?: () =&gt; GraphQLInterfaceType[] })</code></p>
+<p class="md-github">Configuration Options:
+NODE_ENV: 'development' (default), 'production' (disable type checks, improve perf)
+Dependencies entry for experimental features: &quot;graphql&quot;: &quot;experimental-stream-defer&quot;</p>
+<p class="md-github">Best Practices:
+set NODE_ENV=production in production
+separate schema definitions and resolver implementations
+use fieldResolver override for custom resolution logic
+remove unused parts via ESModule builds</p>
+<p class="md-github">Implementation Patterns:</p>
+<ol class="md-github">
+<li class="md-github">Define types and fields in GraphQLObjectType</li>
+<li class="md-github">Compose schema via GraphQLSchema</li>
+<li class="md-github">Call graphql() with full ExecutionArgs</li>
+<li class="md-github">Handle result.data and result.errors</li>
+</ol>
+<p class="md-github">Troubleshooting:
+Error: Cannot query field X on Y
+Command:
+var source = '{ X }';
+graphql({ schema, source }).then(result =&gt; console.log(result.errors));
+Expected error entry: { message: 'Cannot query field X on Y', locations: [{ line:1,column:3 }] }
+Fix: add field X to Y's fields map</p>
+<p class="md-github">bundler missing .mjs resolution:
+Error: Module not found: Error: Can't resolve 'graphql'
+Fix: configure resolve.extensions to include '.mjs'</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">npm install graphql   import { graphql,GraphQLSchema,GraphQLObjectType,GraphQLString } from 'graphql'   schema= new GraphQLSchema({query:new GraphQLObjectType({name:'RootQueryType',fields:{hello:{type:GraphQLString,resolve:()=&gt; 'world'}}})})   graphql({schema,source:'{hello}'}).then(res=&gt;res.data)   graphql(args:ExecutionArgs):Promise<ExecutionResult>   set NODE_ENV=production   enable @defer/@stream via &quot;experimental-stream-defer&quot;   bundle .mjs for tree-shaking</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">Installation</li>
+<li class="md-github">Schema Construction</li>
+<li class="md-github">Query Execution</li>
+<li class="md-github">Environment Configuration</li>
+<li class="md-github">Bleeding Edge Usage</li>
+<li class="md-github">Enabling Experimental Features</li>
+<li class="md-github">Browser Bundling</li>
+</ol>
+<p class="md-github">Installation
+npm install --save graphql
+yarn add graphql</p>
+<p class="md-github">Schema Construction
+import { graphql, GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql'
+new GraphQLSchema({
+query: new GraphQLObjectType({
+name: 'RootQueryType',
+fields: {
+hello: { type: GraphQLString, resolve: () =&gt; 'world' }
+}
+})
+})</p>
+<p class="md-github">Query Execution
+graphql({
+schema: GraphQLSchema,
+source: string_QUERY,
+rootValue?: any,
+contextValue?: any,
+variableValues?: { [key: string]: any },
+operationName?: string,
+fieldResolver?: Function,
+typeResolver?: Function
+}).then((result) =&gt; console.log(result))</p>
+<p class="md-github">Environment Configuration
+export NODE_ENV=production    # disables type assertion and deprecation warnings</p>
+<p class="md-github">Bleeding Edge Usage
+npm install graphql@git://github.com/graphql/graphql-js.git#npm</p>
+<p class="md-github">Enabling Experimental Features
+In package.json:
+'dependencies': { 'graphql': 'experimental-stream-defer' }</p>
+<p class="md-github">Browser Bundling
+Ensure webpack/rollup resolves .mjs extensions; import { graphql } from 'graphql'; only modules used are included</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">GraphQL.js Reference Implementation
+https://github.com/graphql/graphql-js#readme</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-graphqljs" href="#digest-of-graphqljs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of GRAPHQLJS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="graphqljs-reference-implementation" href="#graphqljs-reference-implementation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>GraphQL.js Reference Implementation</h1>
+<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
+<p class="md-github">npm install --save graphql</p>
+<p class="md-github">yarn add graphql</p>
+<h1 class="md-github"><a class="md-github__anchor" name="schema-construction" href="#schema-construction"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Schema Construction</h1>
+<p class="md-github">import { graphql, GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql';</p>
+<p class="md-github">var schema = new GraphQLSchema({
+query: new GraphQLObjectType({
+name: 'RootQueryType',
+fields: {
+hello: {
+type: GraphQLString,
+resolve() {
+return 'world';
+}
+}
+}
+})
+});</p>
+<h1 class="md-github"><a class="md-github__anchor" name="query-execution" href="#query-execution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Query Execution</h1>
+<p class="md-github">var source = '{ hello }';</p>
+<p class="md-github">graphql({ schema, source }).then((result) =&gt; {
+console.log(result);
+});</p>
+<h1 class="md-github"><a class="md-github__anchor" name="environment-configuration" href="#environment-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Configuration</h1>
+<p class="md-github">Set NODE_ENV=production to disable development-only checks and improve execution performance.</p>
+<h1 class="md-github"><a class="md-github__anchor" name="bleeding-edge" href="#bleeding-edge"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Bleeding Edge</h1>
+<p class="md-github">npm install graphql@git://github.com/graphql/graphql-js.git#npm</p>
+<h1 class="md-github"><a class="md-github__anchor" name="experimental-features" href="#experimental-features"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Experimental Features</h1>
+<p class="md-github">In your package.json dependencies section:</p>
+<p class="md-github">&quot;graphql&quot;: &quot;experimental-stream-defer&quot;</p>
+<h1 class="md-github"><a class="md-github__anchor" name="browser-usage" href="#browser-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Browser Usage</h1>
+<p class="md-github">GraphQL.js is distributed with both CommonJS and ESModule (.mjs) builds. Configure webpack or rollup to resolve .mjs files to include only used modules.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: GraphQL.js Reference Implementation</li>
+<li class="md-github">URL: https://github.com/graphql/graphql-js#readme</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-05-03T16:50:28.915Z</li>
+<li class="md-github">Data Size: 654601 bytes</li>
+<li class="md-github">Links Found: 5605</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-03</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-03T17:20:48.503Z</p>
+  </footer>
+</body>
+</html>
