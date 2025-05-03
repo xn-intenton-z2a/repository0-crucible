@@ -11,8 +11,7 @@ const FACES = [
   "(ʘ‿ʘ)",
   "(¬‿¬)",
   "ಠ_ಠ",
-  "^_^"
-];
+  "^_^"];
 
 describe("HTTP Server", () => {
   let server;
@@ -132,6 +131,10 @@ describe("HTTP Server", () => {
   });
 
   test("GET /metrics returns Prometheus metrics and does not alter counters", async () => {
+    // Reset server to clear previous counters
+    server.close();
+    server = main(["--serve", "--port", "0"]);
+
     // Perform a series of requests
     await makeRequest('/');
     await makeRequest('/json?seed=3');
