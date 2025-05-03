@@ -4,10 +4,10 @@ This feature provides random ASCII emoticon output for the CLI application, offe
 
 ## CLI Options
 
-- `--list`       : Print all available emoticons with their zero-based index, one per line (format: `0: :)`).
-- `--seed <n>`   : Use a non-negative integer seed to deterministically select an emoticon.
-- `--json`       : Output results in JSON format.
-- `--help`, `-h` : Display help message and exit.
+- `--list`           : Print all available emoticons with their zero-based index, one per line (format: `0: :)`).
+- `--seed <n>`       : Use a non-negative integer seed to deterministically select an emoticon.
+- `--json`           : Output results in JSON format.
+- `--help`, `-h`     : Display help message and exit.
 - `--interactive`, `-i` : Launch interactive REPL mode.
 
 ## Usage Examples
@@ -27,6 +27,8 @@ node src/lib/main.js --json
 
 # Start interactive REPL session
 node src/lib/main.js --interactive
+# or
+node src/lib/main.js -i
 ```
 
 ## JSON Output Examples
@@ -66,7 +68,7 @@ You can import the core utilities directly in your code:
 import { listFaces, randomFace, seededFace, emoticonJson } from '@xn-intenton-z2a/repository0-crucible';
 
 console.log(listFaces());
-// [":)",":-(",":D","(¬_¬)","(＾◡＾)","(ʘ‿ʘ)","(¬‿¬)","ಠ_ಠ","^_^"]
+// [":)",":-(",":D",...(rest)]
 
 console.log(randomFace());
 // e.g. ":D"
