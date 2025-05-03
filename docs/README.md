@@ -8,7 +8,7 @@ Install via npm:
 
 ```bash
 npm install @xn-intenton-z2a/repository0-crucible
-```
+```  
 
 ## Features
 
@@ -53,9 +53,9 @@ node src/lib/main.js --help
 
 # Version
 node src/lib/main.js --version
-# Alias for version
+# Alias for version flag
 node src/lib/main.js -v
-```
+```  
 
 ## HTTP Server Usage Examples
 
@@ -109,10 +109,10 @@ curl -H "Accept: application/json" http://localhost:3000/unknown
 import { listFaces, randomFace, seededFace, emoticonJson } from '@xn-intenton-z2a/repository0-crucible';
 
 console.log(listFaces());
-// [":)",":-("," :D",...]
+// [":)",":-","...]"
 
 console.log(randomFace());
-// e.g. ":-D"
+// e.g. ":D"
 
 console.log(seededFace(3));
 // e.g. "(¬_¬)"

@@ -54,6 +54,13 @@ export function emoticonJson({ mode, seed }) {
 }
 
 export function main(args = []) {
+  // Version flag handling
+  if (args.includes("--version") || args.includes("-v")) {
+    console.log(version);
+    process.exit(0);
+    return;
+  }
+
   // Interactive REPL mode
   if (args.includes("--interactive") || args.includes("-i")) {
     const rl = readline.createInterface({
@@ -289,6 +296,7 @@ Options:
   --json               Output results in JSON format.
   --interactive, -i    Start interactive REPL session.
   --help, -h           Show help message.
+  --version, -v        Show application version and exit.
 
 Examples:
   node src/lib/main.js
@@ -298,6 +306,8 @@ Examples:
   node src/lib/main.js --interactive
   node src/lib/main.js -i
   node src/lib/main.js --help
+  node src/lib/main.js --version
+  node src/lib/main.js -v
 `;
 
   if (args.includes("--help") || args.includes("-h")) {
