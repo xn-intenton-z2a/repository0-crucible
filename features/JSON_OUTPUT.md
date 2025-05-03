@@ -1,36 +1,49 @@
-# Overview
+# JSON_OUTPUT Feature
 
-Add a new CLI mode that outputs the selected emoticon as a JSON object. This mode enables machine consumption and integration into other tools and pipelines.
+## Overview
 
-# Behavior
+Introduce a new CLI mode to emit the chosen emoticon and context metadata in JSON format. This mode enables downstream programs and scripts to parse and integrate emoticon output reliably.
 
-When the user runs the CLI with the --json option, the tool will select an emoticon as in the random mode and print a single line of valid JSON to standard output. The JSON object will include:
-- face: the ASCII art string chosen
-- mode: string literal "random" or "seeded" depending on whether a seed was provided
-- seed: the numeric seed value or null when random mode was used
+## Behavior
 
-# CLI Options
+When invoked with the --json flag:
 
---json       Output the chosen emoticon in JSON format instead of plain text
---seed <n>   Works in combination with --json to produce deterministic JSON output
+- If used alone, select a random emoticon and print a single-line JSON object with keys:
+  - face: string of the ASCII emoticon
+  - mode: "random" when no seed is provided, otherwise "seeded"
+  - seed: numeric seed value when provided, otherwise null
+- If combined with --seed <n>, deterministically select the emoticon by computing n modulo the number of emoticons, set mode to "seeded", and include seed in the JSON
+- If combined with --list, ignore seed and list all emoticon strings as a JSON array on one line
+- On invalid seed input, emit a JSON object with an error key and message, e.g.:
+  { "error": "Invalid seed. Seed must be a non-negative integer." }
+  Exit with a nonzero status code
 
-# Implementation Details
+## CLI Options
 
-- In src/lib/main.js, extend argument parsing to detect the --json flag.
-- After selecting the emoticon, build a JavaScript object with keys face, mode, and seed.
-- Use JSON.stringify on the object and write the result to console.log without additional formatting.
-- When both --json and --list are provided, print the full array of emoticons as a JSON array and exit successfully.
-- Ensure that handling of invalid seed values produces an error and exit code >0 in JSON mode as well, with a JSON object containing an error message.
+--json        Output results as JSON
+--seed <n>    Provide a non-negative integer seed (only valid with --json or default mode)
+--list        List all available emoticons
 
-# Tests
+## Implementation Details
 
-- In tests/unit/main.test.js, add tests for JSON output:
-  - Running with --json alone prints valid JSON that parses to an object with expected keys.
-  - Combining --json with --seed returns consistent JSON object across runs.
-  - Combining --json with --list prints a JSON array of all emoticon strings.
-  - Invalid seed with --json prints a JSON error object and exits with nonzero code.
+- Modify src/lib/main.js argument parsing to detect the --json flag alongside --seed and --list
+- After selecting or listing emoticons, construct the appropriate JavaScript value:
+  - Single emoticon: { face, mode, seed }
+  - Full list: array of strings
+- Serialize with JSON.stringify and console.log the resulting string without extra formatting or line breaks
+- On error (invalid seed), console.error JSON.stringify({ error: message }) and call process.exit(1)
+- Ensure non-JSON modes remain unchanged
 
-# Documentation
+## Tests
 
-- Update README.md to document the new --json option under CLI Options.
-- Provide examples showing invocation of the CLI with --json and sample JSON output.
+In tests/unit/main.test.js, add tests for JSON mode:
+
+- Running main(["--json"]) logs a valid JSON object that parses to an object with face, mode, seed keys
+- Running main(["--json", "--seed", "5"]) returns consistent output across runs and seed equals 5
+- Running main(["--json", "--list"]) logs a valid JSON array of all emoticon strings
+- Running main(["--json", "--seed", "-1"]) logs a JSON error object and exits with nonzero code
+
+## Documentation
+
+- Update README.md to include the --json option under CLI Options
+- Provide usage examples showing invocation with --json, with --seed, and with --list, and sample JSON outputs
