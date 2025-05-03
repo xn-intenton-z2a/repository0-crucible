@@ -33,8 +33,11 @@ npm install @xn-intenton-z2a/repository0-crucible
 # Random emoticon
 node src/lib/main.js
 
-# Load custom emoticon list
+# Load custom emoticon list from JSON
 node src/lib/main.js --config fixtures/custom.json
+
+# Load custom emoticon list from YAML via env var
+EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js
 
 # List emoticons
 node src/lib/main.js --list
@@ -63,7 +66,7 @@ node src/lib/main.js --help
 node src/lib/main.js --version
 # Alias for version flag
 node src/lib/main.js -v
-```  
+```
 
 ## HTTP Server Usage Examples
 
@@ -73,6 +76,12 @@ node src/lib/main.js --serve
 
 # Start server on port 4000
 node src/lib/main.js --serve --port 4000
+
+# Start server with custom emoticon list from JSON
+node src/lib/main.js --serve --config fixtures/custom.json
+
+# Start server with custom emoticon list via YAML env var
+EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js --serve
 
 # Random emoticon (plain text)
 curl http://localhost:3000/
