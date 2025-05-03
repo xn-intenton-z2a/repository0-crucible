@@ -127,5 +127,3 @@ describe('main()', () => {
     exitSpy.mockRestore();
   });
 });
-
-... (rest of file unchanged)
