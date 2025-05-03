@@ -263,16 +263,19 @@ export function main(args = []) {
       const accept = req.headers.accept || "";
 
       function sendText(status, text) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(status, { "Content-Type": "text/plain" });
         res.end(text);
       }
       function sendJson(status, obj) {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(status, { "Content-Type": "application/json" });
         res.end(JSON.stringify(obj));
       }
 
       // Metrics endpoint
       if (req.method === "GET" && pathname === "/metrics") {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(200, { "Content-Type": "text/plain; version=0.0.4" });
         let body = "";
         for (const [name, value] of Object.entries(counters)) {
@@ -286,11 +289,13 @@ export function main(args = []) {
 
       // Version endpoint
       if (req.method === "GET" && pathname === "/version") {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         return sendJson(200, { version });
       }
 
       // Health endpoint
       if (req.method === "GET" && pathname === "/health") {
+        res.setHeader('Access-Control-Allow-Origin', '*');
         res.writeHead(200, { "Content-Type": "text/plain" });
         res.end("OK");
         return;
@@ -299,6 +304,7 @@ export function main(args = []) {
       // Non-GET requests
       if (req.method !== "GET") {
         counters.emoticon_requests_errors_total++;
+        res.setHeader('Access-Control-Allow-Origin', '*');
         if (accept.includes("application/json")) {
           return sendJson(404, { error: "Not Found" });
         }
@@ -309,6 +315,7 @@ export function main(args = []) {
       if (pathname === "/") {
         counters.emoticon_requests_total++;
         counters.emoticon_requests_root_total++;
+        res.setHeader('Access-Control-Allow-Origin', '*');
         return sendText(200, randomFace());
       }
 
@@ -320,6 +327,7 @@ export function main(args = []) {
         const body = isCustomConfig
           ? list.map((face, i) => `${i}: ${face}`).join("\n")
           : list.join("\n");
+        res.setHeader('Access-Control-Allow-Origin', '*');
         return sendText(200, body);
       }
 
@@ -328,6 +336,7 @@ export function main(args = []) {
         if (params.has("list")) {
           counters.emoticon_requests_total++;
           counters.emoticon_requests_json_total++;
+          res.setHeader('Access-Control-Allow-Origin', '*');
           return sendJson(200, listFaces());
         }
         let mode = "random";
@@ -336,6 +345,7 @@ export function main(args = []) {
           const seedString = params.get("seed");
           if (!/^[0-9]+$/.test(seedString)) {
             counters.emoticon_requests_errors_total++;
+            res.setHeader('Access-Control-Allow-Origin', '*');
             if (accept.includes("application/json")) {
               return sendJson(400, { error: `Invalid seed: ${seedString}` });
             }
@@ -349,6 +359,7 @@ export function main(args = []) {
         if (mode === "seeded") {
           counters.emoticon_requests_seeded_total++;
         }
+        res.setHeader('Access-Control-Allow-Origin', '*');
         const obj = emoticonJson({ mode, seed: seedVal });
         return sendJson(200, obj);
       }
@@ -357,11 +368,13 @@ export function main(args = []) {
       if (pathname === "/json/list") {
         counters.emoticon_requests_total++;
         counters.emoticon_requests_json_total++;
+        res.setHeader('Access-Control-Allow-Origin', '*');
         return sendJson(200, listFaces());
       }
 
       // Unknown path
       counters.emoticon_requests_errors_total++;
+      res.setHeader('Access-Control-Allow-Origin', '*');
       if (accept.includes("application/json")) {
         return sendJson(404, { error: "Not Found" });
       }
