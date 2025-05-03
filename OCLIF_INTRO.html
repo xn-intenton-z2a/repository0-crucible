@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="oclif_intro" href="#oclif_intro"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OCLIF_INTRO</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Install oclif CLI globally via npm. Generate a new project with &quot;oclif generate <name>&quot;, answering prompts for module-type (ESM|CommonJS), npm package name, and binary name. Development mode uses bin/dev.js, production mode uses bin/run.js. Initialize an existing project with &quot;oclif init&quot;, supplying flags --bin, --module-type, --package-manager, --topic-separator, --output-dir, --yes. init adds bin scripts, oclif section to package.json (fields bin, dirname, commands, topicSeparator), dependencies @oclif/core and ts-node. Create commands via &quot;oclif generate command <a href="topic:command" class="md-github">topic:command</a>&quot;, defining class extending Command with static description, flags, args, and async run returning Promise<void>. Create hooks via &quot;oclif generate hook <name> --event <lifecycle>&quot;. package.json oclif section supports bin, dirname, commands, topicSeparator. Flag definitions use Flags.boolean, Flags.string, Flags.integer with char, description, default, required. Args defined as array of {name, description, required}.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<p class="md-github">1 Installation
+2 Project Generation
+3 Development &amp; Production Execution
+4 Initialization in Existing Project
+5 Command Creation
+6 Hook Creation
+7 Configuration Options
+8 Flags Definition
+9 Arguments Definition</p>
+<p class="md-github">1 Installation</p>
+<p class="md-github">Install oclif CLI globally</p>
+<p class="md-github">$ npm install --global oclif</p>
+<p class="md-github">2 Project Generation</p>
+<p class="md-github">$ oclif generate mynewcli
+Prompts:
+module type  ESM or CommonJS
+npm package name  mynewcli
+command bin name  mynewcli</p>
+<p class="md-github">3 Development &amp; Production Execution</p>
+<p class="md-github">Development mode:
+$ ./bin/dev.js hello world
+Production mode:
+$ ./bin/run.js hello world</p>
+<p class="md-github">4 Initialization in Existing Project</p>
+<p class="md-github">$ oclif init --output-dir=/path/to/project --bin=my-pkg --module-type=CommonJS --package-manager=npm --topic-separator=spaces --yes
+Creates:
+bin/run.js, bin/run.cmd, bin/dev.js, bin/dev.cmd
+package.json oclif section with fields:
+bin: my-pkg
+dirname: ./src/commands
+commands: ./src/commands
+topicSeparator: &quot; &quot;
+dependencies: @oclif/core
+devDependencies: ts-node</p>
+<p class="md-github">5 Command Creation</p>
+<p class="md-github">$ oclif generate command foo:bar
+Creates src/commands/foo/bar.ts
+Class skeleton:
+import {Command, Flags} from '@oclif/core'
+export default class FooBar extends Command {
+static description = '...'
+static flags = { force: Flags.boolean({char: 'f', description: '...', default: false}) }
+static args = [{name: 'input', required: true, description: '...'}]
+async run(): Promise<void> { const {args, flags} = await this.parse(FooBar) }
+}</p>
+<p class="md-github">6 Hook Creation</p>
+<p class="md-github">$ oclif generate hook my-hook --event init
+Creates src/hooks/my-hook.ts</p>
+<p class="md-github">7 Configuration Options</p>
+<p class="md-github">package.json oclif section:
+bin          string   CLI executable name
+dirname      string   path to commands folder
+commands     string   path or glob for commands
+topicSeparator string &quot;:&quot; or &quot; &quot;</p>
+<p class="md-github">8 Flags Definition</p>
+<p class="md-github">static flags = {
+count: Flags.integer({char: 'c', description: '...', default: 1, required: true}),
+name: Flags.string({char: 'n', description: '...', required: false}),
+}</p>
+<p class="md-github">9 Arguments Definition</p>
+<p class="md-github">static args = [ { name: 'file', description: '...', required: true } ]</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Exact package.json changes when running init:</p>
+<p class="md-github">Add under dependencies:
+&quot;@oclif/core&quot;: &quot;^<version>&quot;
+Add under devDependencies:
+&quot;ts-node&quot;: &quot;^<version>&quot;</p>
+<p class="md-github">After init, package.json entry:
+&quot;oclif&quot;: {
+&quot;bin&quot;: &quot;my-pkg&quot;,
+&quot;dirname&quot;: &quot;./src/commands&quot;,
+&quot;commands&quot;: &quot;./src/commands&quot;,
+&quot;topicSeparator&quot;: &quot; &quot;
+}</p>
+<p class="md-github">Generated bin scripts content:</p>
+<p class="md-github">bin/run.js:
+#!/usr/bin/env node
+require('@oclif/command').run()</p>
+<p class="md-github">bin/dev.js:
+#!/usr/bin/env node
+process.env.NODE_ENV='development'
+require('@oclif/command').run()</p>
+<p class="md-github">Configuration step-by-step:
+1 install oclif CLI
+2 run oclif init in existing project directory
+3 verify package.json oclif section
+4 add commands or hooks via generate
+5 run dev and run scripts</p>
+<p class="md-github">Flag options for init command:
+--output-dir <value>  default: cwd
+--bin <value>         default: package.json &quot;name&quot;
+--module-type &lt;ESM|CommonJS&gt; default: ESM
+--package-manager &lt;npm|yarn|pnpm&gt; default: npm
+--topic-separator &lt;colons|spaces&gt; default: colons
+-y, --yes             use defaults for all prompts</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">CLI Commands</p>
+<p class="md-github">1 npm install --global oclif
+2 oclif generate <name>
+Options:
+--language &lt;TypeScript|JavaScript&gt;   default: TypeScript
+--module-type &lt;ESM|CommonJS&gt;         default: ESM
+--package-manager &lt;npm|yarn|pnpm&gt;    default: npm
+--bin <value>                        command binary name
+3 oclif init [--output-dir <value>] [--bin <value>] [--module-type &lt;ESM|CommonJS&gt;] [--package-manager &lt;npm|yarn|pnpm&gt;] [--topic-separator &lt;colons|spaces&gt;] [-y]
+Creates bin scripts and updates package.json
+4 oclif generate command <a href="topic:command" class="md-github">topic:command</a>
+Creates src/commands/<topic>/<command>.ts with skeleton:
+import {Command, Flags} from '@oclif/core'
+export default class Name extends Command {
+static description = '...'
+static flags = {...}
+static args = [{name, description, required}]
+async run(): Promise<void> { ... }
+}
+5 oclif generate hook <name> --event <lifecycle>
+Lifecycle events: init, prerun, postrun, command_not_found, update</p>
+<p class="md-github">SDK Method Signatures</p>
+<p class="md-github">declare module '@oclif/core' {
+export abstract class Command {
+static description?: string
+static flags?: Record&lt;string, import('@oclif/core').Flag&gt;
+static args?: Array&lt;{name: string; description?: string; required?: boolean}&gt;
+parse<T extends Command>(this: new () =&gt; T): Promise&lt;{args: any; flags: any}&gt;
+log(message: string): void
+error(message: string, options?: {code?: string; exit?: number; ref?: string; suggestions?: string[]}): void
+}
+export namespace Flags {
+function boolean(opts: {char?: string; description: string; default?: boolean; required?: boolean}): import('@oclif/core').Flag<boolean>
+function string(opts: {char?: string; description: string; required?: boolean; multiple?: boolean; default?: string}): import('@oclif/core').Flag<string>
+function integer(opts: {char?: string; description: string; default?: number; required?: boolean}): import('@oclif/core').Flag<number>
+}
+}</p>
+<p class="md-github">Configuration Variables</p>
+<p class="md-github">In package.json:
+&quot;oclif&quot;: {
+&quot;bin&quot;: &quot;mycli&quot;,
+&quot;dirname&quot;: &quot;./src/commands&quot;,
+&quot;commands&quot;: &quot;./src/commands&quot;,
+&quot;topicSeparator&quot;: &quot;:&quot;  or  &quot; &quot;
+}</p>
+<p class="md-github">Best Practices</p>
+<p class="md-github">Use src/commands subdirectories to group topics. Topic separator default is colon but can switch to spaces. Hide deprecated commands via hiddenAliases array on Command class. Preparse hook example:</p>
+<p class="md-github">export async function preparse(input: string[]): Promise&lt;string[]&gt; {
+if (input[0]==='--flags-dir') {
+const fileFlags = require(input[1])
+return [...fileFlags, ...input.slice(2)]
+}
+return input
+}</p>
+<p class="md-github">Troubleshooting</p>
+<p class="md-github">If commands not found, verify package.json oclif.commands path points to correct directory. Example:
+&quot;commands&quot;: &quot;./build/commands&quot;</p>
+<p class="md-github">Enable debug output:</p>
+<p class="md-github">$ export OCLIF_DEBUG=1
+$ ./bin/run.js hello</p>
+<p class="md-github">Check generated bin scripts have shebang '#!/usr/bin/env node' and correct require('@oclif/core').run() calls.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">npm install -g oclif | oclif generate <name> --language TypeScript --module-type ESM --package-manager npm --bin <name> | cd <name> | ./bin/dev.js <cmd> for dev, ./bin/run.js <cmd> for prod | oclif init [--output-dir=<dir>] [--bin=<name>] [--module-type=ESM|CommonJS] [--package-manager=npm|yarn|pnpm] [--topic-separator=colons|spaces] [-y] adds bin scripts, package.json oclif:{bin,dirname,commands,topicSeparator}, deps:@oclif/core,devDeps:ts-node | oclif generate command <a href="topic:cmd" class="md-github">topic:cmd</a> creates src/commands/<topic>/<cmd>.ts with class extends Command, static description, flags via Flags.boolean/string/integer, args array, async run():Promise<void> parse via this.parse() | oclif generate hook <name> --event &lt;init|prerun|postrun|command_not_found|update&gt; | package.json oclif:{bin:string,dirname:string,commands:string,topicSeparator:':'} | Flags.boolean({char?,description,default?,required?}), Flags.string({char?,description,required?,multiple?,default?}), Flags.integer({char?,description,default?,required?}) | Command.parse<T>():Promise&lt;{args,flags}&gt;, Command.log(msg), Command.error(msg,{code,exit,ref,suggestions}) | Troubleshoot via OCLIF_DEBUG=1, verify oclif.commands path</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<p class="md-github">1 Installation
+2 Project Generation
+3 Development &amp; Production Execution
+4 Initialization in Existing Project
+5 Command Creation
+6 Hook Creation
+7 Configuration Options
+8 Flags Definition
+9 Arguments Definition</p>
+<p class="md-github">1 Installation</p>
+<p class="md-github">Install oclif CLI globally</p>
+<p class="md-github">$ npm install --global oclif</p>
+<p class="md-github">2 Project Generation</p>
+<p class="md-github">$ oclif generate mynewcli
+Prompts:
+module type  ESM or CommonJS
+npm package name  mynewcli
+command bin name  mynewcli</p>
+<p class="md-github">3 Development &amp; Production Execution</p>
+<p class="md-github">Development mode:
+$ ./bin/dev.js hello world
+Production mode:
+$ ./bin/run.js hello world</p>
+<p class="md-github">4 Initialization in Existing Project</p>
+<p class="md-github">$ oclif init --output-dir=/path/to/project --bin=my-pkg --module-type=CommonJS --package-manager=npm --topic-separator=spaces --yes
+Creates:
+bin/run.js, bin/run.cmd, bin/dev.js, bin/dev.cmd
+package.json oclif section with fields:
+bin: my-pkg
+dirname: ./src/commands
+commands: ./src/commands
+topicSeparator: ' '
+dependencies: @oclif/core
+devDependencies: ts-node</p>
+<p class="md-github">5 Command Creation</p>
+<p class="md-github">$ oclif generate command foo:bar
+Creates src/commands/foo/bar.ts
+Class skeleton:
+import {Command, Flags} from '@oclif/core'
+export default class FooBar extends Command {
+static description = '...'
+static flags = { force: Flags.boolean({char: 'f', description: '...', default: false}) }
+static args = [{name: 'input', required: true, description: '...'}]
+async run(): Promise<void> { const {args, flags} = await this.parse(FooBar) }
+}</p>
+<p class="md-github">6 Hook Creation</p>
+<p class="md-github">$ oclif generate hook my-hook --event init
+Creates src/hooks/my-hook.ts</p>
+<p class="md-github">7 Configuration Options</p>
+<p class="md-github">package.json oclif section:
+bin          string   CLI executable name
+dirname      string   path to commands folder
+commands     string   path or glob for commands
+topicSeparator string ':' or ' '</p>
+<p class="md-github">8 Flags Definition</p>
+<p class="md-github">static flags = {
+count: Flags.integer({char: 'c', description: '...', default: 1, required: true}),
+name: Flags.string({char: 'n', description: '...', required: false}),
+}</p>
+<p class="md-github">9 Arguments Definition</p>
+<p class="md-github">static args = [ { name: 'file', description: '...', required: true } ]</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">CLI Frameworks
+https://oclif.io/docs/introduction</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-oclif_intro" href="#digest-of-oclif_intro"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of OCLIF_INTRO</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h1>
+<p class="md-github">Install the oclif CLI globally:</p>
+<pre class="md-github"><code class="md-github">$ npm install --global oclif
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="create-an-oclif-project-from-scratch" href="#create-an-oclif-project-from-scratch"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Create an oclif Project from Scratch</h1>
+<p class="md-github">Run the generator:</p>
+<pre class="md-github"><code class="md-github">$ oclif generate mynewcli
+</code></pre>
+<p class="md-github">Prompts:
+• Select module type           ESM or CommonJS
+• npm package name             mynewcli
+• Command bin name the CLI will export  mynewcli</p>
+<p class="md-github">After generation:</p>
+<pre class="md-github"><code class="md-github">$ cd mynewcli
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="development-and-production-scripts" href="#development-and-production-scripts"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Development and Production Scripts</h1>
+<p class="md-github">Use development script (with automatic reload):</p>
+<pre class="md-github"><code class="md-github">$ ./bin/dev.js hello world
+hello world!  (./src/commands/hello/world.ts)
+</code></pre>
+<p class="md-github">Use production script:</p>
+<pre class="md-github"><code class="md-github">$ ./bin/run.js hello world
+hello world!  (./src/commands/hello/world.ts)
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="initialize-oclif-in-an-existing-project" href="#initialize-oclif-in-an-existing-project"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Initialize oclif in an Existing Project</h1>
+<p class="md-github">Run init with optional flags:</p>
+<pre class="md-github"><code class="md-github">$ oclif init --output-dir=/path/to/project \
+  --bin=my-pkg \
+  --module-type=CommonJS \
+  --package-manager=npm \
+  --topic-separator=spaces \
+  --yes
+</code></pre>
+<p class="md-github">Files and changes added:
+• bin/run.js, bin/run.cmd, bin/dev.js, bin/dev.cmd
+• package.json oclif section:
+{
+&quot;bin&quot;: &quot;my-pkg&quot;,
+&quot;dirname&quot;: &quot;./src/commands&quot;,
+&quot;commands&quot;: &quot;./src/commands&quot;,
+&quot;topicSeparator&quot;: &quot; &quot;
+}
+• @oclif/core added to dependencies
+• ts-node added to devDependencies</p>
+<h1 class="md-github"><a class="md-github__anchor" name="add-commands" href="#add-commands"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Add Commands</h1>
+<p class="md-github">Generate a new command:</p>
+<pre class="md-github"><code class="md-github">$ oclif generate command foo:bar
+</code></pre>
+<p class="md-github">Creates file:</p>
+<pre class="md-github"><code class="md-github">src/commands/foo/bar.ts
+</code></pre>
+<p class="md-github">Skeleton:</p>
+<pre class="md-github"><code class="md-github">import {Command, Flags} from '@oclif/core'
+
+export default class FooBar extends Command {
+  static description = 'describe the command'
+
+  static flags = {
+    force: Flags.boolean({char: 'f', description: 'force operation', default: false}),
+  }
+
+  static args = [
+    {name: 'input', required: true, description: 'input file'}
+  ]
+
+  async run(): Promise&lt;void&gt; {
+    const {args, flags} = await this.parse(FooBar)
+    // implementation
+  }
+}
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="add-hooks" href="#add-hooks"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Add Hooks</h1>
+<p class="md-github">Generate a new hook:</p>
+<pre class="md-github"><code class="md-github">$ oclif generate hook my-hook --event init
+</code></pre>
+<p class="md-github">Creates file:</p>
+<pre class="md-github"><code class="md-github">src/hooks/my-hook.ts
+</code></pre>
+<h1 class="md-github"><a class="md-github__anchor" name="configuration-options" href="#configuration-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Configuration Options</h1>
+<p class="md-github">In package.json under &quot;oclif&quot;:
+• bin: string            Command binary name
+• dirname: string        Path to commands directory
+• commands: string       Glob or directory for command files
+• topicSeparator: string &quot;:&quot; or &quot; &quot;</p>
+<h1 class="md-github"><a class="md-github__anchor" name="flags-and-arguments" href="#flags-and-arguments"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Flags and Arguments</h1>
+<p class="md-github">Flag definition:</p>
+<pre class="md-github"><code class="md-github">static flags = {
+  count: Flags.integer({char: 'c', description: 'number of items', default: 1, required: true}),
+  name: Flags.string({char: 'n', description: 'user name', required: false}),
+}
+</code></pre>
+<p class="md-github">Argument definition:</p>
+<pre class="md-github"><code class="md-github">static args = [
+  {name: 'file', description: 'file to process', required: true}
+]
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: CLI Frameworks</li>
+<li class="md-github">URL: https://oclif.io/docs/introduction</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-05-03T04:50:47.140Z</li>
+<li class="md-github">Data Size: 5079924 bytes</li>
+<li class="md-github">Links Found: 4226</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-03</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-03T19:19:31.967Z</p>
+  </footer>
+</body>
+</html>

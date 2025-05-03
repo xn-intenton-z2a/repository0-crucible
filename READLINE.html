@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="readline" href="#readline"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>READLINE</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">readline.createInterface({input,output,completer?,terminal?,history?,historySize,removeHistoryDuplicates,prompt,crlfDelay,escapeCodeTimeout,tabSize,signal}) returns InterfaceConstructor. InterfaceConstructor extends EventEmitter with events 'line'(string), 'close', 'pause','resume','SIGINT','SIGCONT','SIGTSTP','history'. Methods: close(), pause(), resume(), prompt(preserveCursor?), setPrompt(string), getPrompt():string, write(string|key), <a href="" class="md-github">Symbol.asyncIterator</a>:AsyncIterator<string>, getCursorPos():{rows:number,cols:number}. readline.Interface.question(query[,options],callback) and readlinePromises.Interface.question(query[,options]):Promise<string>. readlinePromises.Readline(stream,options) supports clearLine(dir),clearScreenDown(),cursorTo(x,y),moveCursor(dx,dy),commit(),rollback().</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Interface Creation</p>
+</li>
+<li class="md-github">
+<p class="md-github">Event Handlers</p>
+</li>
+<li class="md-github">
+<p class="md-github">Instance Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Properties</p>
+</li>
+<li class="md-github">
+<p class="md-github">Promises API</p>
+</li>
+<li class="md-github">
+<p class="md-github">Callback API</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration Options</p>
+</li>
+<li class="md-github">
+<p class="md-github">Usage Examples</p>
+</li>
+<li class="md-github">
+<p class="md-github">Interface Creation
+Method: createInterface(options)
+Options:
+input: Readable (required)
+output: Writable
+completer: function(line)→[matches:string[],substr:string] or Promise
+terminal: boolean (default: output.isTTY)
+history: string[] (default: [])
+historySize: number (default: 30)
+removeHistoryDuplicates: boolean (default: false)
+prompt: string (default: '&gt; ')
+crlfDelay: number ≥100 or Infinity (default: 100)
+escapeCodeTimeout: number ms (default: 500)
+tabSize: integer ≥1 (default: 8)
+signal: AbortSignal
+Returns: InterfaceConstructor</p>
+</li>
+<li class="md-github">
+<p class="md-github">Event Handlers
+'line'(input:string)
+'close'()
+'pause'()
+'resume'()
+'history'(history:string[])
+'SIGINT'(), 'SIGCONT'(), 'SIGTSTP'()</p>
+</li>
+<li class="md-github">
+<p class="md-github">Instance Methods
+close(): void
+<a href="" class="md-github">Symbol.dispose</a>: void
+pause(): void
+resume(): void
+setPrompt(prompt:string): void
+getPrompt(): string
+prompt(preserveCursor?:boolean): void
+write(data:string, key?:{ctrl?:boolean;meta?:boolean;shift?:boolean;name:string}): void
+<a href="" class="md-github">Symbol.asyncIterator</a>: AsyncIterator<string>
+getCursorPos(): {rows:number;cols:number}</p>
+</li>
+<li class="md-github">
+<p class="md-github">Properties
+line: string
+cursor: number</p>
+</li>
+<li class="md-github">
+<p class="md-github">Promises API
+question(query:string, options?:{signal:AbortSignal}): Promise<string>
+Usage: const answer = await rl.question('Q? ')</p>
+</li>
+<li class="md-github">
+<p class="md-github">Callback API
+question(query:string, options?:{signal:AbortSignal}, callback:(answer:string)=&gt;void): void</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration Options
+Default values and effects as above under Interface Creation.</p>
+</li>
+<li class="md-github">
+<p class="md-github">Usage Examples
+Basic prompt (Promises) and file streaming (Callback).</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">DefaultValues:
+terminal: inferred from output.isTTY
+history: []
+historySize: 30 (0 disables history)
+removeHistoryDuplicates: false
+prompt: '&gt; '
+crlfDelay: 100ms (min 100) or Infinity
+escapeCodeTimeout: 500ms
+tabSize: 8
+UsageSteps:</p>
+<ol class="md-github">
+<li class="md-github">import createInterface from 'node:readline' or '/promises'</li>
+<li class="md-github">call createInterface with streams and options</li>
+<li class="md-github">attach 'line' and other event listeners or call question()</li>
+<li class="md-github">for Promises API await question(), then close()</li>
+<li class="md-github">call rl.close() or process.stdin.unref() to exit
+ErrorHandling:</li>
+</ol>
+<ul class="md-github">
+<li class="md-github">question() after close() rejects (Promises) or throws (Callback).</li>
+<li class="md-github">signal.abort() during question() causes immediate reject or callback not called.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specifications:
+readline.createInterface(options:Object): InterfaceConstructor
+options.input: stream.Readable (required)
+options.output: stream.Writable
+options.completer: (line:string)-&gt;[string[],string]|Promise&lt;[string[],string]&gt;
+options.terminal: boolean
+options.history: string[]
+options.historySize: number
+options.removeHistoryDuplicates: boolean
+options.prompt: string
+options.crlfDelay: number
+options.escapeCodeTimeout: number
+options.tabSize: number
+options.signal: AbortSignal
+InterfaceConstructor methods:
+close(): void
+<a href="" class="md-github">Symbol.dispose</a>: void
+pause(): void
+resume(): void
+setPrompt(prompt:string): void
+getPrompt(): string
+prompt(preserveCursor?:boolean): void
+write(data:string, key?:{ctrl?:boolean;meta?:boolean;shift?:boolean;name:string}): void
+<a href="" class="md-github">Symbol.asyncIterator</a>: AsyncIterator<string>
+getCursorPos():{rows:number,cols:number}
+InterfaceConstructor events:
+on('line', listener:(line:string)=&gt;void)
+on('close', listener:()=&gt;void)
+on('history', listener:(history:string[])=&gt;void)
+on('pause', listener:()=&gt;void)
+on('resume', listener:()=&gt;void)
+on('SIGINT', listener:()=&gt;void)
+on('SIGCONT', listener:()=&gt;void)
+on('SIGTSTP', listener:()=&gt;void)
+readline.Interface.question(query:string, options?:{signal:AbortSignal}, callback:(answer:string)=&gt;void): void
+readlinePromises.Interface.question(query:string, options?:{signal:AbortSignal}): Promise<string>
+readlinePromises.Readline(stream:Writable, options?:{autoCommit?:boolean})
+clearLine(dir:-1|0|1): this
+clearScreenDown(): this
+cursorTo(x:number, y?:number): this
+moveCursor(dx:number, dy:number): this
+commit(): Promise<void>
+rollback(): this
+Examples:
+// Basic CLI loop
+import { createInterface } from 'node:readline';
+const rl = createInterface({input:process.stdin,output:process.stdout,prompt:'&gt; '});
+rl.prompt();
+rl.on('line', line=&gt;{ switch(line.trim()){ case 'exit': rl.close(); break; default: console.log(line); rl.prompt()} });
+rl.on('close', ()=&gt;process.exit(0));</p>
+<p class="md-github">// Troubleshooting:
+// 1. Missing prompt: ensure output stream is not null and terminal=true
+// 2. question hanging: call rl.close() or abort signal
+// 3. No EOL recognition: set crlfDelay&gt;=input EOL delay</p>
+<p class="md-github">Commands:
+$ node script.js</p>
+<blockquote class="md-github">
+<p class="md-github">hello
+hello
+exit
+$</p>
+</blockquote>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">readline.createInterface({input:Readable,output:Writable,completer?(line)-&gt;[string[],string]|Promise,terminal?:boolean,history?:string[],historySize?:number,removeHistoryDuplicates?:boolean,prompt?:string,crlfDelay?:number&gt;=100||Infinity,escapeCodeTimeout?:number(ms),tabSize?:number,signal?:AbortSignal}):InterfaceConstructor events: 'line'(string),'close','pause','resume','history'(string[]),'SIGINT','SIGCONT','SIGTSTP'; methods: close(),pause(),resume(),prompt(preserveCursor?:boolean),setPrompt(string),getPrompt():string,write(string,key:{ctrl?,meta?,shift?,name}),<a href="" class="md-github">Symbol.asyncIterator</a>:AsyncIterator<string>,getCursorPos():{rows,cols}; properties: line:string,cursor:number; readline.Interface.question(query:string,options?:{signal:AbortSignal},callback:(ans:string)=&gt;void); readlinePromises.Interface.question(query:string,options?:{signal:AbortSignal}):Promise<string>; readlinePromises.Readline(stream:Writable,{autoCommit?:boolean}).clearLine(dir:-1|0|1),clearScreenDown(),cursorTo(x,y?),moveCursor(dx,dy),commit():Promise,rollback(); defaults: terminal=output.isTTY,history=[],historySize=30,removeHistoryDuplicates=false,prompt='&gt; ',crlfDelay=100,escapeCodeTimeout=500,tabSize=8; example: const rl= createInterface(...); const ans=await rl.question('Q? '); rl.close();</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents:</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Interface Creation</p>
+</li>
+<li class="md-github">
+<p class="md-github">Event Handlers</p>
+</li>
+<li class="md-github">
+<p class="md-github">Instance Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Properties</p>
+</li>
+<li class="md-github">
+<p class="md-github">Promises API</p>
+</li>
+<li class="md-github">
+<p class="md-github">Callback API</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration Options</p>
+</li>
+<li class="md-github">
+<p class="md-github">Usage Examples</p>
+</li>
+<li class="md-github">
+<p class="md-github">Interface Creation
+Method: createInterface(options)
+Options:
+input: Readable (required)
+output: Writable
+completer: function(line)[matches:string[],substr:string] or Promise
+terminal: boolean (default: output.isTTY)
+history: string[] (default: [])
+historySize: number (default: 30)
+removeHistoryDuplicates: boolean (default: false)
+prompt: string (default: '&gt; ')
+crlfDelay: number 100 or Infinity (default: 100)
+escapeCodeTimeout: number ms (default: 500)
+tabSize: integer 1 (default: 8)
+signal: AbortSignal
+Returns: InterfaceConstructor</p>
+</li>
+<li class="md-github">
+<p class="md-github">Event Handlers
+'line'(input:string)
+'close'()
+'pause'()
+'resume'()
+'history'(history:string[])
+'SIGINT'(), 'SIGCONT'(), 'SIGTSTP'()</p>
+</li>
+<li class="md-github">
+<p class="md-github">Instance Methods
+close(): void
+<a href="" class="md-github">Symbol.dispose</a>: void
+pause(): void
+resume(): void
+setPrompt(prompt:string): void
+getPrompt(): string
+prompt(preserveCursor?:boolean): void
+write(data:string, key?:{ctrl?:boolean;meta?:boolean;shift?:boolean;name:string}): void
+<a href="" class="md-github">Symbol.asyncIterator</a>: AsyncIterator<string>
+getCursorPos(): {rows:number;cols:number}</p>
+</li>
+<li class="md-github">
+<p class="md-github">Properties
+line: string
+cursor: number</p>
+</li>
+<li class="md-github">
+<p class="md-github">Promises API
+question(query:string, options?:{signal:AbortSignal}): Promise<string>
+Usage: const answer = await rl.question('Q? ')</p>
+</li>
+<li class="md-github">
+<p class="md-github">Callback API
+question(query:string, options?:{signal:AbortSignal}, callback:(answer:string)=&gt;void): void</p>
+</li>
+<li class="md-github">
+<p class="md-github">Configuration Options
+Default values and effects as above under Interface Creation.</p>
+</li>
+<li class="md-github">
+<p class="md-github">Usage Examples
+Basic prompt (Promises) and file streaming (Callback).</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Node.js Readline
+https://nodejs.org/api/readline.html</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-readline" href="#digest-of-readline"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of READLINE</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="readline-module-nodejs-v23110-retrieved-2024-06-20" href="#readline-module-nodejs-v23110-retrieved-2024-06-20"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Readline Module (Node.js v23.11.0, retrieved: 2024-06-20)</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="class-interfaceconstructor" href="#class-interfaceconstructor"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Class: InterfaceConstructor</h2>
+<p class="md-github">Signature: InterfaceConstructor extends EventEmitter</p>
+<p class="md-github">Constructor invoked via readline.createInterface(options) or readlinePromises.createInterface(options).</p>
+<h3 class="md-github"><a class="md-github__anchor" name="events" href="#events"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Events</h3>
+<ul class="md-github">
+<li class="md-github">'close'(): emitted on rl.close(), input end, Ctrl+D, or unhandled Ctrl+C.</li>
+<li class="md-github">'line'(line: string): emitted on end-of-line input (\n, \r, \r\n) or stream end without EOL.</li>
+<li class="md-github">'history'(history: string[]): emitted on history array change (v14.18.0+).</li>
+<li class="md-github">'pause'(): emitted when input stream paused or on SIGCONT if not paused.</li>
+<li class="md-github">'resume'(): emitted on input stream resume.</li>
+<li class="md-github">'SIGCONT'(): emitted when process resumed to foreground (not on Windows).</li>
+<li class="md-github">'SIGINT'(): emitted on Ctrl+C if listeners exist; otherwise 'pause'.</li>
+<li class="md-github">'SIGTSTP'(): emitted on Ctrl+Z if listener; overrides background behavior (not on Windows).</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="instance-methods" href="#instance-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Instance Methods</h3>
+<ul class="md-github">
+<li class="md-github">close(): void — closes interface, emits 'close'.</li>
+<li class="md-github"><a href="" class="md-github">Symbol.dispose</a>: void — alias for close().</li>
+<li class="md-github">pause(): void — pauses input stream.</li>
+<li class="md-github">resume(): void — resumes input stream.</li>
+<li class="md-github">setPrompt(prompt: string): void — sets prompt string.</li>
+<li class="md-github">getPrompt(): string — returns current prompt.</li>
+<li class="md-github">prompt(preserveCursor?: boolean): void — writes prompt, resumes stream; preserveCursor prevents cursor reset.</li>
+<li class="md-github">write(data: string, key?: {ctrl?: boolean; meta?: boolean; shift?: boolean; name: string}): void — writes data or key sequence into input.</li>
+<li class="md-github"><a href="" class="md-github">Symbol.asyncIterator</a>: AsyncIterator<string> — enables for await...of to iterate lines, auto-closes on break.</li>
+<li class="md-github">getCursorPos(): {rows: number; cols: number} — actual cursor position accounting for wrapping.</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="properties" href="#properties"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Properties</h3>
+<ul class="md-github">
+<li class="md-github">line: string — current processed input (cleared after 'line').</li>
+<li class="md-github">cursor: number — cursor offset within rl.line.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="promises-api-experimental-v1700" href="#promises-api-experimental-v1700"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Promises API (experimental, v17.0.0+)</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="class-readlinepromisesinterface" href="#class-readlinepromisesinterface"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Class: readlinePromises.Interface</h3>
+<p class="md-github">Extends InterfaceConstructor with rl.question(query: string, options?: {signal: AbortSignal}): Promise<string>.</p>
+<h3 class="md-github"><a class="md-github__anchor" name="class-readlinepromisesreadline" href="#class-readlinepromisesreadline"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Class: readlinePromises.Readline</h3>
+<p class="md-github">Constructor: new Readline(stream: stream.Writable, options?: {autoCommit?: boolean})</p>
+<ul class="md-github">
+<li class="md-github">clearLine(dir: -1|0|1): this</li>
+<li class="md-github">clearScreenDown(): this</li>
+<li class="md-github">cursorTo(x: number, y?: number): this</li>
+<li class="md-github">moveCursor(dx: number, dy: number): this</li>
+<li class="md-github">commit(): Promise<void></li>
+<li class="md-github">rollback(): this</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="createinterfaceoptions" href="#createinterfaceoptions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>createInterface(options)</h3>
+<p class="md-github">Same options as callback API (below).</p>
+<h2 class="md-github"><a class="md-github__anchor" name="callback-api-stable" href="#callback-api-stable"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Callback API (stable)</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="class-readlineinterface-extends-interfaceconstructor" href="#class-readlineinterface-extends-interfaceconstructor"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Class: readline.Interface extends InterfaceConstructor</h3>
+<ul class="md-github">
+<li class="md-github">question(query: string, options?: {signal: AbortSignal}, callback: (answer: string) =&gt; void): void</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="static-methods" href="#static-methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Static Methods</h3>
+<ul class="md-github">
+<li class="md-github">createInterface(options): Interface</li>
+<li class="md-github">clearLine(stream: stream.Writable, dir: -1|0|1, callback?: (err: Error|null) =&gt; void): boolean</li>
+<li class="md-github">clearScreenDown(stream: stream.Writable, callback?: (err: Error|null) =&gt; void): boolean</li>
+<li class="md-github">cursorTo(stream: stream.Writable, x: number, y?: number, callback?: (err: Error|null) =&gt; void): boolean</li>
+<li class="md-github">moveCursor(stream: stream.Writable, dx: number, dy: number, callback?: (err: Error|null) =&gt; void): boolean</li>
+<li class="md-github">emitKeypressEvents(stream: stream.Readable, interface?: InterfaceConstructor): void</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="createinterface-options" href="#createinterface-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>createInterface Options</h2>
+<p class="md-github">Options object fields:</p>
+<ul class="md-github">
+<li class="md-github">input: Readable (required)</li>
+<li class="md-github">output: Writable</li>
+<li class="md-github">completer: (line: string) =&gt; [string[], string] | Promise&lt;[string[], string&gt;]</li>
+<li class="md-github">terminal: boolean (default: output.isTTY)</li>
+<li class="md-github">history: string[] (default: [])</li>
+<li class="md-github">historySize: number (default: 30)</li>
+<li class="md-github">removeHistoryDuplicates: boolean (default: false)</li>
+<li class="md-github">prompt: string (default: '&gt; ')</li>
+<li class="md-github">crlfDelay: number &gt;=100 or Infinity (default: 100)</li>
+<li class="md-github">escapeCodeTimeout: number in ms (default: 500)</li>
+<li class="md-github">tabSize: integer &gt;=1 (default: 8)</li>
+<li class="md-github">signal: AbortSignal</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="examples" href="#examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="basic-prompt-promises" href="#basic-prompt-promises"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Basic prompt (Promises)</h3>
+<pre class="md-github"><code class="md-github language-js">import { createInterface } from 'node:readline/promises';
+import { stdin, stdout } from 'node:process';
+const rl = createInterface({ input: stdin, output: stdout });
+const answer = await rl.question('What is your favorite food? ');
+console.log(answer);
+rl.close();
+</code></pre>
+<h3 class="md-github"><a class="md-github__anchor" name="file-line-by-line-callback" href="#file-line-by-line-callback"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>File line-by-line (Callback)</h3>
+<pre class="md-github"><code class="md-github language-js">import { createReadStream } from 'node:fs';
+import { createInterface } from 'node:readline';
+const rl = createInterface({ input: createReadStream('input.txt'), crlfDelay: Infinity });
+rl.on('line', line =&gt; console.log(line));
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Node.js Readline</li>
+<li class="md-github">URL: https://nodejs.org/api/readline.html</li>
+<li class="md-github">License: Node.js Foundation (MIT-like)</li>
+<li class="md-github">Crawl Date: 2025-05-03T01:08:44.634Z</li>
+<li class="md-github">Data Size: 3619143 bytes</li>
+<li class="md-github">Links Found: 2718</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-03</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-03T19:19:31.555Z</p>
+  </footer>
+</body>
+</html>
