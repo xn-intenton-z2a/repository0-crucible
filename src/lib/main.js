@@ -231,7 +231,7 @@ export function main(args = []) {
       if (pathname === "/json") {
         if (params.has("list")) {
           counters.emoticon_requests_total++;
-          counters.emoticon_requests_list_total++;
+          counters.emoticon_requests_json_total++;
           return sendJson(200, listFaces());
         }
         let mode = "random";
@@ -260,7 +260,7 @@ export function main(args = []) {
       // JSON list alias
       if (pathname === "/json/list") {
         counters.emoticon_requests_total++;
-        counters.emoticon_requests_list_total++;
+        counters.emoticon_requests_json_total++;
         return sendJson(200, listFaces());
       }
 
