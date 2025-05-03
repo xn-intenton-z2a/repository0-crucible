@@ -1,6 +1,6 @@
 # Node.js API Reference
 ## https://nodejs.org/api/
-Comprehensive API reference for Node.js covering modules such as `process`, `fs`, `http`, `path`, `url`, `console`, `readline`, `tty`, `esm`, and more. Essential for parsing command-line arguments, file I/O, HTTP server implementation, module resolution, and runtime controls in both CLI and HTTP modes. Includes platform-specific behaviors, usage examples, and edge-case considerations.
+Comprehensive API reference for Node.js covering modules such as `process`, `fs`, `http`, `path`, `url`, `console`, `readline`, `tty`, `esm`, `assert` and more. Essential for parsing command-line arguments, file I/O, HTTP server implementation, module resolution, JSON import assertions, and runtime controls in both CLI and HTTP modes. Includes platform-specific behaviors, usage examples, and edge-case considerations.
 ## Node.js Foundation (MIT-like)
 
 # ANSI Escape Codes Reference
@@ -126,4 +126,25 @@ An Express middleware to create GraphQL HTTP servers with minimal configuration.
 # GraphiQL Interactive IDE
 ## https://github.com/graphql/graphiql#readme
 The in-browser IDE for exploring GraphQL APIs with syntax highlighting, autocompletion, and documentation explorer. Covers embedding GraphiQL with Express, enabling interactive queries and mutations during development and supporting introspection-based tooling.
+## MIT License
+
+# Node.js Readline & REPL Modules
+## https://nodejs.org/api/readline.html
+## https://nodejs.org/api/repl.html
+Official Node.js documentation for interactive input via the Readline module and the built-in REPL. Essential for implementing the CLI’s interactive REPL mode (`random`, `seed`, `list`, `json`, `help`, `exit` commands). Describes event-driven line handling, history management, custom prompts, REPL contexts, and evaluation behaviors.
+## Node.js Foundation (MIT-like)
+
+# Prometheus Exposition Formats
+## https://prometheus.io/docs/instrumenting/exposition_formats/
+The formal specification of Prometheus text-based exposition formats for metrics. Defines metric types, HELP and TYPE metadata, sample encoding, and best practices for instrumenting HTTP endpoints. Crucial for ensuring compatibility with Prometheus scrapers across `/metrics` implementations.
+## CC BY 4.0
+
+# prom-client (Node.js Prometheus Client)
+## https://github.com/siimon/prom-client#readme
+A community-maintained Prometheus client for Node.js, providing helpers to define and register counters, histograms, gauges, and summaries. Includes built-in HTTP metric exposition, default registry, and collection of process and runtime metrics. Useful for extending manual `/metrics` to richer instrumentation.
+## MIT License
+
+# cors (Express CORS Middleware)
+## https://github.com/expressjs/cors#readme
+Official Express middleware for enabling Cross-Origin Resource Sharing with fine-grained options. Covers configuring allowed origins, methods, headers, credentials, and preflight caching. Simplifies and standardizes CORS handling instead of manual header injection.
 ## MIT License
