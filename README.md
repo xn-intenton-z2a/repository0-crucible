@@ -23,7 +23,11 @@ npm install repository0-crucible
 
 ## Features
 
-TODO: Add features here.
+- Plain-text random emoticon output (default)
+- `--list` to enumerate all emoticons
+- `--seed <n>` for deterministic selection
+- `--json` to emit JSON output
+- `--interactive, -i` to start the interactive REPL session
 
 ## Usage
 
@@ -31,6 +35,14 @@ To run the CLI tool and see help instructions:
 
 ```bash
 node src/lib/main.js --help
+```
+
+Start interactive REPL session:
+
+```bash
+node src/lib/main.js --interactive
+# or
+node src/lib/main.js -i
 ```
 
 ### Example Commands
@@ -64,7 +76,3 @@ node src/lib/main.js --help
   ```bash
   curl http://localhost:3000/metrics
   ```
-
-## Incremental Changes Plan
-
-TODO: Add forthcoming changes here.
