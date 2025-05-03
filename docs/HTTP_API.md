@@ -35,29 +35,12 @@ Provide an HTTP server mode for the emoticon CLI that exposes endpoints for rand
   - Returns a Prometheus-compatible metrics exposition of internal request counters.
   - Content-Type: `text/plain; version=0.0.4`
   - Exposes the following counters:
-    - `emoticon_requests_total`
-    - `emoticon_requests_random_total`
-    - `emoticon_requests_seeded_total`
-    - `emoticon_requests_list_total`
-    - `emoticon_requests_errors_total`
-  - Sample output:
-    ```
-    # HELP emoticon_requests_total emoticon_requests_total counter
-    # TYPE emoticon_requests_total counter
-    emoticon_requests_total 5
-    # HELP emoticon_requests_random_total emoticon_requests_random_total counter
-    # TYPE emoticon_requests_random_total counter
-    emoticon_requests_random_total 2
-    # HELP emoticon_requests_seeded_total emoticon_requests_seeded_total counter
-    # TYPE emoticon_requests_seeded_total counter
-    emoticon_requests_seeded_total 1
-    # HELP emoticon_requests_list_total emoticon_requests_list_total counter
-    # TYPE emoticon_requests_list_total counter
-    emoticon_requests_list_total 3
-    # HELP emoticon_requests_errors_total emoticon_requests_errors_total counter
-    # TYPE emoticon_requests_errors_total counter
-    emoticon_requests_errors_total 0
-    ```
+    - `emoticon_requests_total`: Counter of all HTTP GET requests served
+    - `emoticon_requests_root_total`: Counter of root requests (GET /)
+    - `emoticon_requests_list_total`: Counter of list requests (GET /list and GET /json/list)
+    - `emoticon_requests_json_total`: Counter of JSON requests (GET /json endpoints)
+    - `emoticon_requests_seeded_total`: Counter of seeded JSON requests (GET /json?seed=<n>)
+    - `emoticon_requests_errors_total`: Counter of requests resulting in non-2xx status codes or invalid inputs
 
 - **Any other path**
   - Responds with status 404.

@@ -164,9 +164,10 @@ export function main(args = []) {
     // Initialize Prometheus-like counters
     const counters = {
       emoticon_requests_total: 0,
-      emoticon_requests_random_total: 0,
-      emoticon_requests_seeded_total: 0,
+      emoticon_requests_root_total: 0,
       emoticon_requests_list_total: 0,
+      emoticon_requests_json_total: 0,
+      emoticon_requests_seeded_total: 0,
       emoticon_requests_errors_total: 0
     };
 
@@ -215,7 +216,7 @@ export function main(args = []) {
       // Root: random emoticon
       if (pathname === "/") {
         counters.emoticon_requests_total++;
-        counters.emoticon_requests_random_total++;
+        counters.emoticon_requests_root_total++;
         return sendText(200, randomFace());
       }
 
@@ -248,9 +249,8 @@ export function main(args = []) {
           mode = "seeded";
         }
         counters.emoticon_requests_total++;
-        if (mode === "random") {
-          counters.emoticon_requests_random_total++;
-        } else {
+        counters.emoticon_requests_json_total++;
+        if (mode === "seeded") {
           counters.emoticon_requests_seeded_total++;
         }
         const obj = emoticonJson({ mode, seed: seedVal });

@@ -11,7 +11,8 @@ const FACES = [
   "(ʘ‿ʘ)",
   "(¬‿¬)",
   "ಠ_ಠ",
-  "^_^"];
+  "^_^"
+];
 
 describe("HTTP Server", () => {
   let server;
@@ -78,8 +79,6 @@ describe("HTTP Server", () => {
     expect(res.headers['content-type']).toMatch(/text\/plain/);
     expect(res.body).toBe(FACES.join('\n'));
   });
-
-  // ... existing tests follow unchanged
 
   test("GET /json returns random JSON emoticon", async () => {
     const res = await makeRequest('/json');
@@ -165,9 +164,10 @@ describe("HTTP Server", () => {
     });
     expect(metrics1).toEqual({
       emoticon_requests_total: 3,
-      emoticon_requests_random_total: 1,
-      emoticon_requests_seeded_total: 1,
+      emoticon_requests_root_total: 1,
+      emoticon_requests_json_total: 1,
       emoticon_requests_list_total: 1,
+      emoticon_requests_seeded_total: 1,
       emoticon_requests_errors_total: 1
     });
 
