@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 // src/lib/main.js
 
 import { fileURLToPath } from "url";
@@ -9,7 +8,7 @@ import path from "path";
 import yaml from "js-yaml";
 import chalk from "chalk";
 import express from "express";
-import pkg from '../../package.json' with { assert: { type: 'json' } };
+import pkg from '../../package.json' assert { type: 'json' };
 export const version = pkg.version;
 
 // Built-in emoticon list
@@ -331,4 +330,26 @@ export function main(args = []) {
         printRandom();
         return;
       }
-      if (lastResult.type === "single")[...truncated...]
+      if (lastResult.type === "single") {
+        console.log(JSON.stringify(lastResult.face));
+      } else if (lastResult.type === "list") {
+        console.log(JSON.stringify(lastResult.list));
+      }
+    };
+
+    const printHelp = () => {
+      console.log(`Usage: node src/lib/main.js [options]
+
+Options:
+  --config <path>       Load custom emoticon list (JSON or YAML)
+  --diagnostics         Output diagnostics JSON and exit
+  --list                List all emoticons with indices
+  --seed <n>            Use seed for deterministic emoticon
+  --json                Output JSON formatted results
+  --count <n>           Output multiple emoticons
+  --interactive, -i     Start interactive mode
+  --help, -h            Show help and exit
+  --version, -v         Show version and exit
+  --serve               Start HTTP server mode
+  --port <n>            Specify port for HTTP server`);
+    };
