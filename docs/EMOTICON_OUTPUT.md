@@ -4,8 +4,10 @@ This feature provides random ASCII emoticon output for the CLI application, offe
 
 ## CLI Options
 
-- `--list`      : Print all available emoticons with their zero-based index, one per line (format: `0: :)`).
-- `--seed <n>`  : Use a non-negative integer seed to deterministically select an emoticon.
+- `--list`       : Print all available emoticons with their zero-based index, one per line (format: `0: :)`).
+- `--seed <n>`   : Use a non-negative integer seed to deterministically select an emoticon.
+- `--json`       : Output results in JSON format.
+- `--help`, `-h` : Display help message and exit.
 
 ## Usage Examples
 
@@ -15,19 +17,12 @@ node src/lib/main.js
 
 # Print all emoticons in order with indices
 node src/lib/main.js --list
-# Output:
-# 0: :)
-# 1: :-(
-# 2: :D
-# 3: (¬_¬)
-# 4: (＾◡＾)
-# 5: (ʘ‿ʘ)
-# 6: (¬‿¬)
-# 7: ಠ_ಠ
-# 8: ^_^
 
 # Print the same emoticon every run with seed 5
 node src/lib/main.js --seed 5
+
+# Show help information
+node src/lib/main.js --help
 ```
 
 ## Error Handling
