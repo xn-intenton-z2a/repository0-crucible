@@ -12,9 +12,9 @@ npm install @xn-intenton-z2a/repository0-crucible
 
 - `--config <path>`    : Load a custom emoticon list from a JSON or YAML file (overrides the default list).
 - `--diagnostics`      : Output application diagnostics as JSON and exit.
-- `--list`           : Print all available emoticons with their zero-based index, one per line (format: `0: :)`).
+- `--list`           : Print the last result or list all available emoticons with their zero-based index, one per line (format: `0: :)`).
 - `--seed <n>`       : Use a non-negative integer seed to deterministically select an emoticon; invalid seeds produce an error and exit code 1.
-- `--json`           : Output results in JSON format. Can be combined with `--seed` or `--list`.
+- `--json`           : Output results in JSON format. Can be combined with `--seed`, `--list`, or `--count`.
 - `--count <n>`      : Output multiple emoticons. In plain mode, prints n emoticons, one per line; in JSON mode, outputs a JSON array of n emoticon strings. Can be combined with `--seed` to produce sequential seeded emoticons.
 - `--interactive`, `-i` : Launch interactive REPL mode supporting commands `random`, `seed <n>`, `list`, `json`, `help`, `exit`.
 - `--help`, `-h`     : Display help message and exit with code 0.
@@ -73,7 +73,7 @@ node src/lib/main.js --seed 5 --count 4
 node src/lib/main.js --diagnostics
 
 # Using environment variable
-EMOTICONS_DIAGNOSTICS=1 node src/lib/main.js
+EMOTICONS_DIAGNISTICS=1 node src/lib/main.js
 ```
 
 ### Diagnostics JSON Schema
@@ -117,20 +117,21 @@ Inside the REPL, use:
 
 ## Programmatic API
 
-You can import the core utilities directly in your code:
+You can import the core utilities directly in your code, including the new configuration functions:
 
 ```js
-import { listFaces, randomFace, seededFace, emoticonJson } from '@xn-intenton-z2a/repository0-crucible';
+import { listFaces, randomFace, seededFace, emoticonJson, configureEmoticons, getEmoticonDiagnostics } from '@xn-intenton-z2a/repository0-crucible';
 
+// List, random, seeded usage
 console.log(listFaces());
-// [":)",":-([",":D",...]
-
 console.log(randomFace());
-// e.g. ":D"
-
 console.log(seededFace(3));
-// e.g. "(¬_¬)"
-
 console.log(emoticonJson({ mode: 'seeded', seed: 3 }));
-// { face: "(¬_¬)", mode: "seeded", seed: 3 }
+
+// Load custom emoticon list and get diagnostics
+const diagnostics = configureEmoticons({ configPath: 'path/to/custom.json' });
+console.log(diagnostics);
+
+// Retrieve current diagnostics without side-effects
+console.log(getEmoticonDiagnostics());
 ```

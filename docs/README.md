@@ -44,7 +44,7 @@ node src/lib/main.js --json
 # Print a seeded JSON emoticon
 node src/lib/main.js --json --seed 5
 
-# List all emoticons as a JSON array
+# List all emoticons as JSON array
 node src/lib/main.js --json --list
 
 # Print multiple random emoticons in plain text
@@ -98,18 +98,9 @@ All HTTP responses include the header `Access-Control-Allow-Origin: *`.
 - **GET /ui**
   Opens the interactive Emoticon Browser web interface. Navigate to http://localhost:3000/ui in your browser to view and interact with emoticon controls.
 
-### Web UI Usage
-
-1. Start the server:
-```bash
-node src/lib/main.js --serve
-```
-2. Open `http://localhost:3000/ui` in your browser.
-3. Use the **Random**, **Seeded**, **Count**, and **List All** controls to fetch and display emoticons.
-
 ## Programmatic API
 
-You can import and use the core utilities directly in your code:
+You can import and use the core utilities directly in your code, including the new configuration functions:
 
 ```js
 import {
@@ -117,25 +108,20 @@ import {
   randomFace,
   seededFace,
   emoticonJson,
+  configureEmoticons,
+  getEmoticonDiagnostics
 } from '@xn-intenton-z2a/repository0-crucible';
 
+// Basic usage
 console.log(listFaces());
 console.log(randomFace());
 console.log(seededFace(3));
 console.log(emoticonJson({ mode: 'seeded', seed: 3 }));
-```
 
-## Express Middleware
+// Load a custom emoticon list and retrieve diagnostics
+const diagnostics = configureEmoticons({ configPath: 'path/to/custom.json' });
+console.log(diagnostics);
 
-You can mount the Express middleware in your server:
-
-```js
-import express from 'express';
-import { createEmoticonRouter } from '@xn-intenton-z2a/repository0-crucible';
-
-const app = express();
-app.use(createEmoticonRouter());
-app.listen(3000, () => {
-  console.log('Listening on port 3000');
-});
+// Retrieve current diagnostics without side-effects
+console.log(getEmoticonDiagnostics());
 ```
