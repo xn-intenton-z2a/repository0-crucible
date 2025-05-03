@@ -159,6 +159,15 @@ export function main(args = []) {
       }
       port = p;
     }
+    // Initialize Prometheus-like counters
+    const counters = {
+      emoticon_requests_total: 0,
+      emoticon_requests_random_total: 0,
+      emoticon_requests_seeded_total: 0,
+      emoticon_requests_list_total: 0,
+      emoticon_requests_errors_total: 0
+    };
+
     const server = http.createServer((req, res) => {
       const url = new URL(req.url, `http://${req.headers.host}`);
       const pathname = url.pathname;
@@ -174,23 +183,47 @@ export function main(args = []) {
         res.end(JSON.stringify(obj));
       }
 
+      // Metrics endpoint
+      if (req.method === "GET" && pathname === "/metrics") {
+        res.writeHead(200, { "Content-Type": "text/plain; version=0.0.4" });
+        let body = "";
+        for (const [name, value] of Object.entries(counters)) {
+          body += `# HELP ${name} ${name} counter\n`;
+          body += `# TYPE ${name} counter\n`;
+          body += `${name} ${value}\n`;
+        }
+        res.end(body);
+        return;
+      }
+
+      // Non-GET requests
       if (req.method !== "GET") {
+        counters.emoticon_requests_errors_total++;
         if (accept.includes("application/json")) {
           return sendJson(404, { error: "Not Found" });
         }
         return sendText(404, "Not Found");
       }
 
+      // Root: random emoticon
       if (pathname === "/") {
+        counters.emoticon_requests_total++;
+        counters.emoticon_requests_random_total++;
         return sendText(200, randomFace());
       }
 
+      // List all emoticons
       if (pathname === "/list") {
+        counters.emoticon_requests_total++;
+        counters.emoticon_requests_list_total++;
         return sendText(200, listFaces().join("\n"));
       }
 
+      // JSON single or list
       if (pathname === "/json") {
         if (params.has("list")) {
+          counters.emoticon_requests_total++;
+          counters.emoticon_requests_list_total++;
           return sendJson(200, listFaces());
         }
         let mode = "random";
@@ -198,6 +231,7 @@ export function main(args = []) {
         if (params.has("seed")) {
           const seedString = params.get("seed");
           if (!/^[0-9]+$/.test(seedString)) {
+            counters.emoticon_requests_errors_total++;
             if (accept.includes("application/json")) {
               return sendJson(400, { error: `Invalid seed: ${seedString}` });
             }
@@ -206,14 +240,25 @@ export function main(args = []) {
           seedVal = Number(seedString);
           mode = "seeded";
         }
+        counters.emoticon_requests_total++;
+        if (mode === "random") {
+          counters.emoticon_requests_random_total++;
+        } else {
+          counters.emoticon_requests_seeded_total++;
+        }
         const obj = emoticonJson({ mode, seed: seedVal });
         return sendJson(200, obj);
       }
 
+      // JSON list alias
       if (pathname === "/json/list") {
+        counters.emoticon_requests_total++;
+        counters.emoticon_requests_list_total++;
         return sendJson(200, listFaces());
       }
 
+      // Unknown path
+      counters.emoticon_requests_errors_total++;
       if (accept.includes("application/json")) {
         return sendJson(404, { error: "Not Found" });
       }
