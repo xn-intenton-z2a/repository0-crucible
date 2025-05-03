@@ -111,9 +111,8 @@ export function main(args = []) {
       return sendText(404, 'Not Found');
     });
 
-    server.listen(port, () => {
-      console.log(`Listening on port ${server.address().port}`);
-    });
+    server.listen(port);
+    console.log(`Listening on port ${server.address().port}`);
     return server;
   }
 
