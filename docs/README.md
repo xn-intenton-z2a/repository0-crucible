@@ -109,16 +109,21 @@ curl http://localhost:3000/metrics
 node src/lib/main.js --serve --port abc
 # Error: Invalid port: abc
 # Exit code: 1
+
+# Error on negative port value
+node src/lib/main.js --serve --port -1
+# Error: Invalid port: -1
+# Exit code: 1
 ```
 
-### Non-GET Requests
+### Handling non-GET requests
 
 ```bash
 # POST request without Accept header
 curl -X POST http://localhost:3000/
 # Response: 404 Not Found (plain text)
 
-# POST request with Accept: application/json header
+# POST request with Accept: application/json
 curl -X POST -H "Accept: application/json" http://localhost:3000/
 # Response: {"error":"Not Found"} (application/json)
 ```
