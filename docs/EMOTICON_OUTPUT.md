@@ -15,6 +15,7 @@ npm install @xn-intenton-z2a/repository0-crucible
 - `--list`           : Print all available emoticons with their zero-based index, one per line (format: `0: :)`).
 - `--seed <n>`       : Use a non-negative integer seed to deterministically select an emoticon; invalid seeds produce an error and exit code 1.
 - `--json`           : Output results in JSON format. Can be combined with `--seed` or `--list`.
+- `--count <n>`      : Output multiple emoticons. In plain mode, prints n emoticons, one per line; in JSON mode, outputs a JSON array of n emoticon strings. Can be combined with `--seed` to produce sequential seeded emoticons.
 - `--interactive`, `-i` : Launch interactive REPL mode supporting commands `random`, `seed <n>`, `list`, `json`, `help`, `exit`.
 - `--help`, `-h`     : Display help message and exit with code 0.
 - `--version`, `-v`  : Print application version and exit with code 0.
@@ -54,6 +55,15 @@ node src/lib/main.js --config fixtures/custom.json
 
 # Load custom emoticon list from YAML via env var
 EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js --list
+
+# Print multiple random emoticons in plain text
+node src/lib/main.js --count 3
+
+# Print multiple random emoticons as JSON
+node src/lib/main.js --json --count 2
+
+# Print multiple seeded emoticons starting from seed 5
+node src/lib/main.js --seed 5 --count 4
 ```
 
 ## Diagnostics Mode Examples

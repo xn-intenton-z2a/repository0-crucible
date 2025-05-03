@@ -160,6 +160,99 @@ describe('main()', () => {
     delete process.env.EMOTICONS_DIAGNOSTICS;
     exitSpy.mockRestore();
   });
+
+  // Count option tests
+  test('prints multiple random emoticons and exits with code 0 for --count', () => {
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
+    logSpy.mockClear();
+    main(['--count', '3']);
+    expect(logSpy).toHaveBeenCalledTimes(3);
+    logSpy.mock.calls.forEach(call => {
+      expect(FACES).toContain(call[0]);
+    });
+    expect(exitSpy).toHaveBeenCalledWith(0);
+    exitSpy.mockRestore();
+  });
+
+  test('prints JSON array when --json and --count are used and exits 0', () => {
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
+    logSpy.mockClear();
+    main(['--json', '--count', '2']);
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    const output = logSpy.mock.calls[0][0];
+    const arr = JSON.parse(output);
+    expect(Array.isArray(arr)).toBe(true);
+    expect(arr).toHaveLength(2);
+    arr.forEach(item => expect(FACES).toContain(item));
+    expect(exitSpy).toHaveBeenCalledWith(0);
+    exitSpy.mockRestore();
+  });
+
+  test('prints seeded multi-output in plain mode and exits 0', () => {
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
+    logSpy.mockClear();
+    main(['--seed', '5', '--count', '4']);
+    const expected = [
+      seededFace(5),
+      seededFace(6),
+      seededFace(7),
+      seededFace(8)
+    ];
+    expect(logSpy).toHaveBeenCalledTimes(4);
+    logSpy.mock.calls.forEach((call, idx) => {
+      expect(call[0]).toBe(expected[idx]);
+    });
+    expect(exitSpy).toHaveBeenCalledWith(0);
+    exitSpy.mockRestore();
+  });
+
+  test('prints seeded JSON multi-output and exits 0', () => {
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
+    logSpy.mockClear();
+    main(['--json', '--seed', '5', '--count', '4']);
+    expect(logSpy).toHaveBeenCalledTimes(1);
+    const output = logSpy.mock.calls[0][0];
+    const arr = JSON.parse(output);
+    const expected = [
+      seededFace(5),
+      seededFace(6),
+      seededFace(7),
+      seededFace(8)
+    ];
+    expect(arr).toEqual(expected);
+    expect(exitSpy).toHaveBeenCalledWith(0);
+    exitSpy.mockRestore();
+  });
+
+  test('exits with error for invalid count value', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
+    main(['--count', 'abc']);
+    expect(errorSpy).toHaveBeenCalledWith('Invalid count: abc');
+    expect(exitSpy).toHaveBeenCalledWith(1);
+    errorSpy.mockRestore();
+    exitSpy.mockRestore();
+  });
+
+  test('exits with error for negative count', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
+    main(['--count', '-1']);
+    expect(errorSpy).toHaveBeenCalledWith('Invalid count: -1');
+    expect(exitSpy).toHaveBeenCalledWith(1);
+    errorSpy.mockRestore();
+    exitSpy.mockRestore();
+  });
+
+  test('exits with error when count value is missing', () => {
+    const errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    const exitSpy = vi.spyOn(process, 'exit').mockImplementation(() => {});
+    main(['--count']);
+    expect(errorSpy).toHaveBeenCalledWith('Invalid count: undefined');
+    expect(exitSpy).toHaveBeenCalledWith(1);
+    errorSpy.mockRestore();
+    exitSpy.mockRestore();
+  });
 });
 
 // Tests for invalid port handling
