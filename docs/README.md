@@ -23,47 +23,6 @@ npm install @xn-intenton-z2a/repository0-crucible
 - `--serve`: Start HTTP server mode.
 - `--port <n>`: Specify HTTP server port (default: 3000); invalid ports produce an error and exit with code 1.
 
-### Environment Variable
-
-- `EMOTICONS_CONFIG`: Path to a JSON or YAML file containing an array of emoticon strings; used when `--config` is not provided.
-
-## CLI Usage Examples
-
-```bash
-# Random emoticon
-node src/lib/main.js
-
-# Load custom emoticon list from JSON
-node src/lib/main.js --config fixtures/custom.json
-
-# Load custom emoticon list from YAML via env var
-EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js --list
-
-# Deterministic emoticon (seed=5)
-node src/lib/main.js --seed 5
-
-# JSON output
-node src/lib/main.js --json
-
-# Seeded JSON output
-node src/lib/main.js --json --seed 5
-
-# JSON list array
-node src/lib/main.js --json --list
-
-# Interactive REPL
-node src/lib/main.js --interactive
-# or
-node src/lib/main.js -i
-
-# Help message
-node src/lib/main.js --help
-
-# Version
-node src/lib/main.js --version
-# Alias for version flag
-node src/lib/main.js -v
-```
 
 ## HTTP Server Usage Examples
 
@@ -101,21 +60,12 @@ curl http://localhost:3000/version
 # Metrics endpoint
 curl http://localhost:3000/metrics
 
-# List JSON array via path
-curl http://localhost:3000/json/list
-
-# List JSON array via query
-curl http://localhost:3000/json?list
-
-# Error: Invalid seed returns 400 (plain text)
-curl http://localhost:3000/json?seed=abc
-
-# Error: Invalid seed returns 400 and JSON error
-curl -H "Accept: application/json" http://localhost:3000/json?seed=abc
-
 # Non-GET request without Accept header returns 404 plain text
 curl -X POST http://localhost:3000/
 
 # Non-GET request with Accept: application/json returns 404 JSON error
 curl -X DELETE -H "Accept: application/json" http://localhost:3000/unknown
+
+# Check CORS header
+curl -I http://localhost:3000/  # Response headers include Access-Control-Allow-Origin: *
 ```

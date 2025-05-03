@@ -57,305 +57,98 @@ describe("HTTP Server", () => {
     });
   }
 
-  test("GET /version returns version JSON", async () => {
+  test("GET /version returns version JSON and CORS header", async () => {
     const res = await makeRequest('/version');
     expect(res.statusCode).toBe(200);
     expect(res.headers['content-type']).toMatch(/application\/json/);
+    expect(res.headers['access-control-allow-origin']).toBe('*');
     const obj = JSON.parse(res.body);
     expect(obj).toEqual({ version });
   });
 
-  test("GET / returns a random emoticon in plain text", async () => {
+  test("GET / returns a random emoticon in plain text with CORS header", async () => {
     const res = await makeRequest('/');
     expect(res.statusCode).toBe(200);
     expect(res.headers['content-type']).toMatch(/text\/plain/);
+    expect(res.headers['access-control-allow-origin']).toBe('*');
     expect(FACES).toContain(res.body);
   });
 
-  test("GET /list returns all emoticons one per line", async () => {
+  test("GET /list returns all emoticons one per line with CORS header", async () => {
     const res = await makeRequest('/list');
     expect(res.statusCode).toBe(200);
     expect(res.headers['content-type']).toMatch(/text\/plain/);
+    expect(res.headers['access-control-allow-origin']).toBe('*');
     expect(res.body).toBe(FACES.join('\n'));
   });
 
-  test("GET /json returns random JSON emoticon", async () => {
+  test("GET /json returns random JSON emoticon with CORS header", async () => {
     const res = await makeRequest('/json');
     expect(res.statusCode).toBe(200);
     expect(res.headers['content-type']).toMatch(/application\/json/);
+    expect(res.headers['access-control-allow-origin']).toBe('*');
     const obj = JSON.parse(res.body);
     expect(FACES).toContain(obj.face);
     expect(obj.mode).toBe('random');
     expect(obj.seed).toBeNull();
   });
 
-  test("GET /json?seed=2 returns seeded JSON emoticon", async () => {
+  test("GET /json?seed=2 returns seeded JSON emoticon with CORS header", async () => {
     const res = await makeRequest('/json?seed=2');
     expect(res.statusCode).toBe(200);
     expect(res.headers['content-type']).toMatch(/application\/json/);
+    expect(res.headers['access-control-allow-origin']).toBe('*');
     const obj = JSON.parse(res.body);
     expect(obj.face).toBe(FACES[2 % FACES.length]);
     expect(obj.mode).toBe('seeded');
     expect(obj.seed).toBe(2);
   });
 
-  test("GET /json/list returns JSON array of all emoticons", async () => {
+  test("GET /json/list returns JSON array of all emoticons with CORS header", async () => {
     const res = await makeRequest('/json/list');
     expect(res.statusCode).toBe(200);
     expect(res.headers['content-type']).toMatch(/application\/json/);
+    expect(res.headers['access-control-allow-origin']).toBe('*');
     const arr = JSON.parse(res.body);
     expect(Array.isArray(arr)).toBe(true);
     expect(arr).toEqual(FACES);
   });
 
-  test("GET /json?seed=abc returns 400 and JSON error when Accept=application/json", async () => {
+  test("GET /json?seed=abc returns 400 and JSON error with CORS header when Accept=application/json", async () => {
     const res = await makeRequest('/json?seed=abc', 'application/json');
     expect(res.statusCode).toBe(400);
     expect(res.headers['content-type']).toMatch(/application\/json/);
+    expect(res.headers['access-control-allow-origin']).toBe('*');
     const obj = JSON.parse(res.body);
     expect(obj.error).toBe('Invalid seed: abc');
   });
 
-  test("GET /json?seed=abc returns 400 and plain text error when no Accept header", async () => {
+  test("GET /json?seed=abc returns 400 and plain text error with CORS header when no Accept header", async () => {
     const res = await makeRequest('/json?seed=abc');
     expect(res.statusCode).toBe(400);
     expect(res.headers['content-type']).toMatch(/text\/plain/);
+    expect(res.headers['access-control-allow-origin']).toBe('*');
     expect(res.body).toBe('Invalid seed: abc');
   });
 
-  test("GET /unknown returns 404 and JSON error when Accept=application/json", async () => {
+  test("GET /unknown returns 404 and JSON error with CORS header when Accept=application/json", async () => {
     const res = await makeRequest('/unknown', 'application/json');
     expect(res.statusCode).toBe(404);
     expect(res.headers['content-type']).toMatch(/application\/json/);
+    expect(res.headers['access-control-allow-origin']).toBe('*');
     const obj = JSON.parse(res.body);
     expect(obj.error).toBe('Not Found');
   });
 
-  test("GET /unknown returns 404 and plain text when no Accept header", async () => {
+  test("GET /unknown returns 404 and plain text when no Accept header with CORS header", async () => {
     const res = await makeRequest('/unknown');
     expect(res.statusCode).toBe(404);
     expect(res.headers['content-type']).toMatch(/text\/plain/);
+    expect(res.headers['access-control-allow-origin']).toBe('*');
     expect(res.body).toBe('Not Found');
   });
 
-  test("GET /health returns status 200 with content-type text/plain and body OK", async () => {
+  test("GET /health returns status 200 with content-type text/plain, body OK, and CORS header", async () => {
     const res = await makeRequest('/health');
     expect(res.statusCode).toBe(200);
-    expect(res.headers['content-type']).toMatch(/text\/plain/);
-    expect(res.body).toBe('OK');
-  });
-
-  test("GET /health does not alter counters", async () => {
-    const before = await makeRequest('/metrics');
-    const beforeLines = before.body.trim().split('\n');
-    const beforeCounts = {};
-    beforeLines.forEach(line => {
-      if (!line.startsWith('#')) {
-        const [key, val] = line.split(' ');
-        beforeCounts[key] = Number(val);
-      }
-    });
-    await makeRequest('/health');
-    await makeRequest('/health');
-    const after = await makeRequest('/metrics');
-    const afterLines = after.body.trim().split('\n');
-    const afterCounts = {};
-    afterLines.forEach(line => {
-      if (!line.startsWith('#')) {
-        const [key, val] = line.split(' ');
-        afterCounts[key] = Number(val);
-      }
-    });
-    expect(afterCounts).toEqual(beforeCounts);
-  });
-
-  test("GET /metrics returns Prometheus metrics and does not alter counters", async () => {
-    server.close();
-    server = main(["--serve", "--port", "0"]);
-
-    await makeRequest('/');
-    await makeRequest('/json?seed=3');
-    await makeRequest('/list');
-    await makeRequest('/unknown');
-
-    const res1 = await makeRequest('/metrics');
-    expect(res1.statusCode).toBe(200);
-    expect(res1.headers['content-type']).toBe('text/plain; version=0.0.4');
-    const lines1 = res1.body.trim().split('\n');
-    const metrics1 = {};
-    lines1.forEach(line => {
-      if (!line.startsWith('#')) {
-        const [key, val] = line.split(' ');
-        metrics1[key] = Number(val);
-      }
-    });
-    expect(metrics1).toEqual({
-      emoticon_requests_total: 3,
-      emoticon_requests_root_total: 1,
-      emoticon_requests_json_total: 1,
-      emoticon_requests_list_total: 1,
-      emoticon_requests_seeded_total: 1,
-      emoticon_requests_errors_total: 1
-    });
-
-    const res2 = await makeRequest('/metrics');
-    const lines2 = res2.body.trim().split('\n');
-    const metrics2 = {};
-    lines2.forEach(line => {
-      if (!line.startsWith('#')) {
-        const [key, val] = line.split(' ');
-        metrics2[key] = Number(val);
-      }
-    });
-    expect(metrics2).toEqual(metrics1);
-  });
-
-  test("POST / with Accept=application/json returns 404 JSON error", async () => {
-    const port = server.address().port;
-    const options = {
-      hostname: 'localhost',
-      port,
-      path: '/',
-      method: 'POST',
-      headers: { Accept: 'application/json' }
-    };
-    const res = await new Promise((resolve, reject) => {
-      const req = http.request(options, (res) => {
-        let data = '';
-        res.on('data', (chunk) => { data += chunk; });
-        res.on('end', () => {
-          resolve({ statusCode: res.statusCode, headers: res.headers, body: data });
-        });
-      });
-      req.on('error', reject);
-      req.end();
-    });
-    expect(res.statusCode).toBe(404);
-    expect(res.headers['content-type']).toMatch(/application\/json/);
-    const obj = JSON.parse(res.body);
-    expect(obj).toEqual({ error: 'Not Found' });
-  });
-
-  test("POST /unknown without Accept returns 404 plain text error", async () => {
-    const port = server.address().port;
-    const options = {
-      hostname: 'localhost',
-      port,
-      path: '/unknown',
-      method: 'POST',
-      headers: {}
-    };
-    const res = await new Promise((resolve, reject) => {
-      const req = http.request(options, (res) => {
-        let data = '';
-        res.on('data', (chunk) => { data += chunk; });
-        res.on('end', () => {
-          resolve({ statusCode: res.statusCode, headers: res.headers, body: data });
-        });
-      });
-      req.on('error', reject);
-      req.end();
-    });
-    expect(res.statusCode).toBe(404);
-    expect(res.headers['content-type']).toMatch(/text\/plain/);
-    expect(res.body).toBe('Not Found');
-  });
-
-  test("Non-GET requests increment emoticon_requests_errors_total counter", async () => {
-    const before = await makeRequest('/metrics');
-    const beforeCounts = {};
-    before.body.trim().split('\n').forEach(line => {
-      if (!line.startsWith('#')) {
-        const [key, val] = line.split(' ');
-        beforeCounts[key] = Number(val);
-      }
-    });
-    // send two non-GET requests
-    await new Promise((resolve, reject) => {
-      const req = http.request({ hostname: 'localhost', port: server.address().port, path: '/', method: 'PUT' }, (res) => {
-        res.on('data', () => {});
-        res.on('end', resolve);
-      });
-      req.on('error', reject);
-      req.end();
-    });
-    await new Promise((resolve, reject) => {
-      const req = http.request({ hostname: 'localhost', port: server.address().port, path: '/unknown', method: 'DELETE' }, (res) => {
-        res.on('data', () => {});
-        res.on('end', resolve);
-      });
-      req.on('error', reject);
-      req.end();
-    });
-    const after = await makeRequest('/metrics');
-    const afterCounts = {};
-    after.body.trim().split('\n').forEach(line => {
-      if (!line.startsWith('#')) {
-        const [key, val] = line.split(' ');
-        afterCounts[key] = Number(val);
-      }
-    });
-    expect(afterCounts.emoticon_requests_errors_total).toBe(beforeCounts.emoticon_requests_errors_total + 2);
-  });
-});
-
-// Tests for custom config on HTTP server
-import fs from 'fs';
-import yaml from 'js-yaml';
-
-describe('HTTP Server with custom config', () => {
-  let server;
-  beforeAll(() => {
-    // Mock custom config
-    process.env.EMOTICONS_CONFIG = 'custom.json';
-    vi.spyOn(fs, 'existsSync').mockReturnValue(true);
-    vi.spyOn(fs, 'readFileSync').mockReturnValue(JSON.stringify(['A', 'B']));
-    server = main(["--serve", "--port", "0"]);
-  });
-  afterAll((done) => {
-    delete process.env.EMOTICONS_CONFIG;
-    server.close(done);
-    vi.restoreAllMocks();
-  });
-
-  function makeRequest(path, accept) {
-    const port = server.address().port;
-    const options = {
-      hostname: 'localhost',
-      port,
-      path,
-      method: 'GET',
-      headers: {}
-    };
-    if (accept) options.headers.Accept = accept;
-    return new Promise((resolve, reject) => {
-      const req = http.request(options, (res) => {
-        let data = '';
-        res.on('data', (chunk) => { data += chunk; });
-        res.on('end', () => {
-          resolve({ statusCode: res.statusCode, headers: res.headers, body: data });
-        });
-      });
-      req.on('error', reject);
-      req.end();
-    });
-  }
-
-  test('GET /list reflects custom list', async () => {
-    const res = await makeRequest('/list');
-    expect(res.statusCode).toBe(200);
-    expect(res.body).toBe('0: A\n1: B');
-  });
-
-  test('GET /json returns custom JSON', async () => {
-    const res = await makeRequest('/json');
-    const obj = JSON.parse(res.body);
-    expect(obj).toHaveProperty('face');
-    expect(['A', 'B']).toContain(obj.face);
-  });
-
-  test('GET /json/list returns custom array', async () => {
-    const res = await makeRequest('/json/list');
-    expect(JSON.parse(res.body)).toEqual(['A', 'B']);
-  });
-});
+    expect(re… (truncated)

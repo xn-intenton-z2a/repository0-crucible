@@ -3,6 +3,8 @@
 ## Overview
 Provide an HTTP server mode for the emoticon CLI that exposes endpoints for random emoticon selection, deterministic seeding, full list retrieval over HTTP, version reporting, and monitoring via metrics. This feature enables integration of the emoticon service into web-based workflows, dashboards, and monitoring systems.
 
+**All responses include Access-Control-Allow-Origin: * by default.**
+
 ## Configuration
 The HTTP server supports loading a custom emoticon list using the same mechanism as the CLI:
 
@@ -24,53 +26,63 @@ EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js --serve
 - **GET /**
   - Returns a single random emoticon as plain text.
   - Content-Type: `text/plain`
+  - **Includes header** `Access-Control-Allow-Origin: *`
 
 - **GET /list**
   - Returns all available emoticons, one per line in plain text.
   - Content-Type: `text/plain`
   - Increments `emoticon_requests_list_total` metric.
+  - **Includes header** `Access-Control-Allow-Origin: *`
 
 - **GET /json**
   - Returns a JSON object: `{ "face": string, "mode": "random", "seed": null }`.
   - Content-Type: `application/json`
   - Increments `emoticon_requests_json_total` metric.
+  - **Includes header** `Access-Control-Allow-Origin: *`
 
 - **GET /json?seed=<n>**
   - If `<n>` is a non-negative integer, returns `{ "face": string, "mode": "seeded", "seed": <n> }` deterministically selected.
   - If `<n>` is invalid, responds with status 400 and error message.
   - Content-Type: `application/json` (when requested via Accept header) or `text/plain`
   - Increments `emoticon_requests_json_total` and `emoticon_requests_seeded_total` metrics.
+  - **Includes header** `Access-Control-Allow-Origin: *`
 
 - **GET /json?list**
   - Returns a JSON array of all emoticon strings.
   - Content-Type: `application/json`
   - Increments `emoticon_requests_json_total` metric.
+  - **Includes header** `Access-Control-Allow-Origin: *`
 
 - **GET /json/list**
   - Returns a JSON array of all emoticon strings.
   - Content-Type: `application/json`
   - Increments `emoticon_requests_json_total` metric.
+  - **Includes header** `Access-Control-Allow-Origin: *`
 
 - **GET /version**
   - Returns the current application version.
   - Content-Type: `application/json`
   - Response body: `{ "version": string }`
+  - **Includes header** `Access-Control-Allow-Origin: *`
 
 - **GET /health**
   - Returns OK for health check probing.
   - Content-Type: `text/plain`
   - Response body: `OK`
   - Does not increment any counters.
+  - **Includes header** `Access-Control-Allow-Origin: *`
 
 - **GET /metrics**
   - Returns a Prometheus-compatible metrics exposition of internal request counters.
   - Content-Type: `text/plain; version=0.0.4`
   - Exposes counters: `emoticon_requests_total`, `emoticon_requests_root_total`, `emoticon_requests_list_total`, `emoticon_requests_json_total`, `emoticon_requests_seeded_total`, `emoticon_requests_errors_total`.
+  - **Includes header** `Access-Control-Allow-Origin: *`
 
 - **Any other path**
   - Responds with status 404.
   - If `Accept: application/json` header is present, returns `{ "error": "Not Found" }`.
   - Otherwise returns plain text `Not Found`.
+  - **Includes header** `Access-Control-Allow-Origin: *`
 
 ## Non-GET Requests
 All non-GET requests return status `404`. If `Accept: application/json` header is present, the response is JSON:
@@ -128,4 +140,7 @@ curl http://localhost:3000/unknown
 
 # Unknown path returns 404 and JSON error
 curl -H "Accept: application/json" http://localhost:3000/unknown
+
+# Check CORS header
+curl -I http://localhost:3000/  # Response headers include Access-Control-Allow-Origin: *
 ```
