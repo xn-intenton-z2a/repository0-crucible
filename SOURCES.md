@@ -142,3 +142,18 @@ A full-featured terminal toolkit offering advanced cursor control, color managem
 ## https://github.com/siimon/prom-client#readme
 A Prometheus instrumentation client for Node.js that provides APIs to define and register counters, histograms, and gauges. Includes default system metrics, registry management, and exposition-format output for `/metrics` endpoints.
 ## MIT License
+
+# Node.js URL Module
+## https://nodejs.org/api/url.html
+The Node.js URL module documentation details the WHATWG URL API including URL parsing, formatting, and resolution. It explains usage of the URL and URLSearchParams classes, constructors, and common operations. Essential for robust handling of request URLs, query parameters, and routing logic in the HTTP server mode.
+## Node.js Foundation (MIT-like)
+
+# Prometheus Exposition Format
+## https://prometheus.io/docs/instrumenting/exposition_formats/
+Describes the Prometheus text-based exposition format for metrics including HELP and TYPE headers, metric naming conventions, and version compatibility (e.g. version 0.0.4). Provides essential guidelines for constructing custom `/metrics` endpoints that are readable by Prometheus servers and exporters.
+## CC BY 4.0
+
+# Twelve-Factor App: Config
+## https://12factor.net/config
+Outlines best practices for configuration management via environment variables, detailing 12-factor principles for declarative formats and separation of config from code. Guides design of CLI options and env-var integration to support flexible deployment in diverse environments.
+## (none)
