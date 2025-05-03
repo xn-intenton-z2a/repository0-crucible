@@ -1,7 +1,7 @@
 # HTTP_API Feature
 
 ## Overview
-Provide an HTTP server mode for the emoticon CLI that exposes endpoints for random emoticon selection, deterministic seeding, full list retrieval over HTTP, version reporting, and monitoring via metrics. This feature enables integration of the emoticon service into web-based workflows, dashboards, and monitoring systems.
+Provide an HTTP server mode for the emoticon CLI that exposes endpoints for random emoticon selection, deterministic seeding, full list retrieval over HTTP, JSON count support, version reporting, and monitoring via metrics. This feature enables integration of the emoticon service into web-based workflows, dashboards, and monitoring systems.
 
 **All responses include Access-Control-Allow-Origin: * by default.**
 
@@ -11,7 +11,7 @@ The HTTP server supports loading a custom emoticon list using the same mechanism
 - CLI Flag: `--config <path>` to a JSON or YAML file.
 - Environment Variable: `EMOTICONS_CONFIG` if the CLI flag is not provided.
 
-When using a custom list, endpoints `/`, `/list`, `/json`, `/json?seed=<n>`, and `/json/list` will use emoticons from the provided list:
+When using a custom list, endpoints `/`, `/list`, `/json`, `/json?seed=<n>`, `/json?count=<n>`, and `/json/list` will use emoticons from the provided list:
 
 ```bash
 # Start server with custom JSON config
@@ -45,6 +45,13 @@ EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js --serve
   - If `<n>` is invalid, responds with status 400 and error message.
   - Content-Type: `application/json` (when requested via Accept header) or `text/plain`
   - Increments `emoticon_requests_json_total` and `emoticon_requests_seeded_total` metrics.
+  - **Includes header** `Access-Control-Allow-Origin: *`
+
+- **GET /json?count=<n>**
+  - If `<n>` is a non-negative integer, returns a JSON array of `<n>` emoticon strings, random by default.
+  - When combined with `seed=<s>`, returns `<n>` deterministic emoticons starting from seed `<s>`, i.e., seeds `<s>`, `<s+1>`, ..., `<s+n-1>`.
+  - If `<n>` or `<s>` is invalid, responds with status 400 and error message in JSON or plain text based on Accept header.
+  - Increments `emoticon_requests_json_total` metric and, if seeded, `emoticon_requests_seeded_total`.
   - **Includes header** `Access-Control-Allow-Origin: *`
 
 - **GET /json?list**
@@ -114,6 +121,12 @@ curl http://localhost:3000/json
 # Seeded JSON (seed=2)
 curl http://localhost:3000/json?seed=2
 
+# JSON count (3 random emoticons)
+curl http://localhost:3000/json?count=3
+
+# Seeded JSON count (seeds 5,6,7)
+curl http://localhost:3000/json?seed=5&count=3
+
 # List JSON array via query
 curl http://localhost:3000/json?list
 
@@ -132,8 +145,8 @@ curl http://localhost:3000/metrics
 # Error: Invalid seed returns 400 (plain text)
 curl http://localhost:3000/json?seed=abc
 
-# Error: Invalid seed returns 400 and JSON error
-curl -H "Accept: application/json" http://localhost:3000/json?seed=abc
+# Error: Invalid count returns 400 and JSON error
+curl -H "Accept: application/json" http://localhost:3000/json?count=abc
 
 # Unknown path returns 404 (plain text)
 curl http://localhost:3000/unknown
