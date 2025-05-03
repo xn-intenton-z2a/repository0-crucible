@@ -1,22 +1,23 @@
 # HTTP_API Feature
 
 # Overview
-Extend existing HTTP server mode to expose Prometheus metrics and version endpoint reporting application version, enhance CLI mode with version flag, and add healthcheck endpoint for monitoring systems.
+Extend the existing HTTP server mode with an embeddable Express middleware interface. Maintain all current endpoints, metrics, version and health checks while allowing users to integrate emoticon routes into their own Express applications via a provided router factory.
 
 # Endpoints
+
+All current endpoints remain unchanged when running built-in server mode:
+
 GET /metrics
-  Returns metrics in Prometheus text exposition format with HELP and TYPE headers
+  Returns Prometheus metrics with HELP and TYPE headers
   Content-Type: text/plain; version=0.0.4
 
 GET /version
-  Returns a JSON object with the current application version
+  Returns JSON object with { version: string }
   Content-Type: application/json
-  Response body: { version: string }
 
 GET /health
-  Returns OK for health check probing
+  Returns OK
   Content-Type: text/plain
-  Response body: OK
 
 GET /
   Returns a random emoticon in plain text
@@ -25,31 +26,45 @@ GET /list
   Returns all emoticons one per line in plain text
 
 GET /json
-  Returns a JSON object for random or seeded emoticon based on query parameters
+  Returns JSON object for random or seeded selection
+  Supports query parameter seed=<n>
 
 GET /json/list
-  Returns a JSON array of all emoticons
+  Returns JSON array of all emoticon strings
 
 Any other GET path
-  Returns 404 with JSON or plain text error depending on Accept header
+  Returns 404 with JSON or plain text error based on Accept header
+
+Non-GET requests
+  Return 404 and increment emoticon_requests_errors_total
+
+# Express Middleware
+
+Provide a function createEmoticonRouter(options) that returns an Express Router mounted with the same endpoint handlers. Options may include:
+  basePath: string (default '/')
+  metricsPrefix: string (default '')
+  initialCounters: object (override default counters)
+The router uses the same request counters and config loading logic as the built-in server mode.
 
 # CLI Options
---serve       Start HTTP server mode instead of CLI
---port <n>    Set listening port (default 3000)
---version     Show application version and exit
--v            Alias for --version
+
+--serve       Start built-in HTTP server mode (listening port defaults to 3000)
+--port <n>    Specify HTTP server port; invalid values result in an error and exit code 1
 
 # Implementation Details
-In src/lib/main.js:
-- Detect --version or -v flags before any other mode and exit after logging version
-- Add GET /health handler before emoticon routes to return status 200 and text OK without incrementing counters
-- Keep existing handlers for metrics, version, emoticons, JSON modes unchanged except ensure health does not affect counters
-- Do not increment any counters when serving /health
+
+1. In src/lib/main.js, export createEmoticonRouter alongside main and version.
+2. Use an internal function that accepts an http.Server or Express Router to mount handlers.
+3. Maintain a single counters object shared between built-in and middleware modes.
+4. Ensure health endpoint does not increment counters and metrics endpoint reflects current values without side effects.
+5. Do not alter existing behavior of built-in server when using --serve.
 
 # Tests
-In tests/unit/server.test.js:
-- Add test for GET /health returns status 200 with content-type text/plain and body OK
-- Verify that calling /health does not change metrics values
 
-In tests/unit/main.test.js:
-- Ensure main with flags --serve and --port still starts server with health endpoint available as described
+- Verify createEmoticonRouter returns an Express Router with all endpoints responding as in standalone mode.
+- Use supertest to mount router on an Express app and assert each path (/ , /list, /json, /version, /health, /metrics, unknown) behaves correctly.
+- Test that non-GET requests on the middleware increment errors counter and return proper format based on Accept header.
+
+# Documentation
+
+Update docs/HTTP_API.md to include Express Middleware section and usage examples. Update README.md to reference createEmoticonRouter in Programmatic API examples.
