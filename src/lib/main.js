@@ -45,6 +45,7 @@ Examples:
   if (args.includes('--help') || args.includes('-h')) {
     console.log(usage);
     process.exit(0);
+    return;
   }
 
   // Handle --list option
