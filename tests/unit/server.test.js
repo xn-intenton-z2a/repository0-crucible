@@ -129,4 +129,48 @@ describe("HTTP Server", () => {
     expect(res.headers['content-type']).toMatch(/text\/plain/);
     expect(res.body).toBe('Not Found');
   });
+
+  test("GET /metrics returns Prometheus metrics and does not alter counters", async () => {
+    // Reset server to clear previous counters
+    server.close();
+    server = main(["--serve", "--port", "0"]);
+
+    // Perform a series of requests
+    await makeRequest('/');
+    await makeRequest('/json?seed=3');
+    await makeRequest('/list');
+    await makeRequest('/unknown'); // error
+
+    // First metrics fetch
+    const res1 = await makeRequest('/metrics');
+    expect(res1.statusCode).toBe(200);
+    expect(res1.headers['content-type']).toBe('text/plain; version=0.0.4');
+    const lines1 = res1.body.trim().split('\n');
+    const metrics1 = {};
+    lines1.forEach(line => {
+      if (!line.startsWith('#')) {
+        const [key, val] = line.split(' ');
+        metrics1[key] = Number(val);
+      }
+    });
+    expect(metrics1).toEqual({
+      emoticon_requests_total: 3,
+      emoticon_requests_random_total: 1,
+      emoticon_requests_seeded_total: 1,
+      emoticon_requests_list_total: 1,
+      emoticon_requests_errors_total: 1
+    });
+
+    // Second metrics fetch should be identical
+    const res2 = await makeRequest('/metrics');
+    const lines2 = res2.body.trim().split('\n');
+    const metrics2 = {};
+    lines2.forEach(line => {
+      if (!line.startsWith('#')) {
+        const [key, val] = line.split(' ');
+        metrics2[key] = Number(val);
+      }
+    });
+    expect(metrics2).toEqual(metrics1);
+  });
 });

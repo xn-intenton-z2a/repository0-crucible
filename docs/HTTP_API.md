@@ -26,6 +26,34 @@ Provide an HTTP server mode for the emoticon CLI that exposes endpoints for rand
   - Returns a JSON array of all emoticon strings.
   - Content-Type: `application/json`
 
+- **GET /metrics**
+  - Returns a Prometheus-compatible metrics exposition of internal request counters.
+  - Content-Type: `text/plain; version=0.0.4`
+  - Exposes the following counters:
+    - `emoticon_requests_total`
+    - `emoticon_requests_random_total`
+    - `emoticon_requests_seeded_total`
+    - `emoticon_requests_list_total`
+    - `emoticon_requests_errors_total`
+  - Sample output:
+    ```
+    # HELP emoticon_requests_total emoticon_requests_total counter
+    # TYPE emoticon_requests_total counter
+    emoticon_requests_total 5
+    # HELP emoticon_requests_random_total emoticon_requests_random_total counter
+    # TYPE emoticon_requests_random_total counter
+    emoticon_requests_random_total 2
+    # HELP emoticon_requests_seeded_total emoticon_requests_seeded_total counter
+    # TYPE emoticon_requests_seeded_total counter
+    emoticon_requests_seeded_total 1
+    # HELP emoticon_requests_list_total emoticon_requests_list_total counter
+    # TYPE emoticon_requests_list_total counter
+    emoticon_requests_list_total 3
+    # HELP emoticon_requests_errors_total emoticon_requests_errors_total counter
+    # TYPE emoticon_requests_errors_total counter
+    emoticon_requests_errors_total 0
+    ```
+
 - **Any other path**
   - Responds with status 404.
   - If `Accept: application/json` header is present, returns `{ "error": "Not Found" }`.
@@ -58,4 +86,7 @@ curl "http://localhost:3000/json?seed=5"
 
 # Fetch all emoticons as JSON array
 curl http://localhost:3000/json/list
+
+# Fetch Prometheus metrics
+curl http://localhost:3000/metrics
 ```
