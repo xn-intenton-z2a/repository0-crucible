@@ -331,8 +331,48 @@ export function main(args = []) {
         return sendText(200, body);
       }
 
-      // JSON single or list
+      // JSON single, list, or count
       if (pathname === "/json") {
+        // Count support
+        if (params.has("count")) {
+          const countStr = params.get("count");
+          if (!/^[0-9]+$/.test(countStr)) {
+            counters.emoticon_requests_errors_total++;
+            res.setHeader('Access-Control-Allow-Origin', '*');
+            if (accept.includes("application/json")) {
+              return sendJson(400, { error: `Invalid count: ${countStr}` });
+            }
+            return sendText(400, `Invalid count: ${countStr}`);
+          }
+          const count = Number(countStr);
+          let seedVal = null;
+          if (params.has("seed")) {
+            const seedString = params.get("seed");
+            if (!/^[0-9]+$/.test(seedString)) {
+              counters.emoticon_requests_errors_total++;
+              res.setHeader('Access-Control-Allow-Origin', '*');
+              if (accept.includes("application/json")) {
+                return sendJson(400, { error: `Invalid seed: ${seedString}` });
+              }
+              return sendText(400, `Invalid seed: ${seedString}`);
+            }
+            seedVal = Number(seedString);
+          }
+          counters.emoticon_requests_total++;
+          counters.emoticon_requests_json_total++;
+          if (seedVal !== null) counters.emoticon_requests_seeded_total++;
+          const results = [];
+          for (let i = 0; i < count; i++) {
+            if (seedVal !== null) {
+              results.push(seededFace(seedVal + i));
+            } else {
+              results.push(randomFace());
+            }
+          }
+          res.setHeader('Access-Control-Allow-Origin', '*');
+          return sendJson(200, results);
+        }
+        // JSON list alias
         if (params.has("list")) {
           counters.emoticon_requests_total++;
           counters.emoticon_requests_json_total++;
@@ -364,7 +404,7 @@ export function main(args = []) {
         return sendJson(200, obj);
       }
 
-      // JSON list alias
+      // JSON list alias via path
       if (pathname === "/json/list") {
         counters.emoticon_requests_total++;
         counters.emoticon_requests_json_total++;
@@ -403,6 +443,7 @@ Options:
   --version, -v        Show application version and exit.
   --serve              Start HTTP server mode.
   --port <n>           Specify HTTP server port (default: 3000).
+  --count <n>          Output multiple emoticons per invocation (plain or JSON modes).
 
 Examples:
   node src/lib/main.js
