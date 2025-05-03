@@ -72,6 +72,21 @@ EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js --serve
   - If `Accept: application/json` header is present, returns `{ "error": "Not Found" }`.
   - Otherwise returns plain text `Not Found`.
 
+## Non-GET Requests
+All non-GET requests return status `404`. If `Accept: application/json` header is present, the response is JSON:
+
+```json
+{ "error": "Not Found" }
+```
+
+Otherwise, the response is plain text:
+
+```
+Not Found
+```
+
+Each non-GET request increments the `emoticon_requests_errors_total` counter.
+
 ## Example Usage with curl
 
 ```bash
