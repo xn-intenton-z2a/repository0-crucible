@@ -184,3 +184,58 @@ describe("HTTP Server", () => {
     expect(metrics2).toEqual(metrics1);
   });
 });
+
+// New tests for JSON list metrics
+
+describe("HTTP JSON list metrics endpoints", () => {
+  let server;
+  let makeRequest;
+
+  beforeAll(() => {
+    server = main(["--serve", "--port", "0"]);
+    makeRequest = (path, accept) => {
+      const port = server.address().port;
+      const options = {
+        hostname: 'localhost',
+        port,
+        path,
+        method: 'GET',
+        headers: {}
+      };
+      if (accept) options.headers.Accept = accept;
+      return new Promise((resolve, reject) => {
+        const req = http.request(options, (res) => {
+          let data = '';
+          res.on('data', (chunk) => { data += chunk; });
+          res.on('end', () => {
+            resolve({ statusCode: res.statusCode, headers: res.headers, body: data });
+          });
+        });
+        req.on('error', reject);
+        req.end();
+      });
+    };
+  });
+
+  afterAll((done) => {
+    server.close(done);
+  });
+
+  test("GET /json/list and GET /json?list increment only json_total", async () => {
+    await makeRequest('/json/list');
+    await makeRequest('/json?list');
+    const res = await makeRequest('/metrics');
+    expect(res.statusCode).toBe(200);
+    expect(res.headers['content-type']).toBe('text/plain; version=0.0.4');
+    const lines = res.body.trim().split('\n');
+    const metrics = {};
+    lines.forEach(line => {
+      if (!line.startsWith('#')) {
+        const [key, val] = line.split(' ');
+        metrics[key] = Number(val);
+      }
+    });
+    expect(metrics.emoticon_requests_json_total).toBe(2);
+    expect(metrics.emoticon_requests_list_total).toBe(0);
+  });
+});
