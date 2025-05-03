@@ -57,14 +57,13 @@ node src/lib/main.js --json --count 2
 node src/lib/main.js --seed 5 --count 4
 
 # Load custom emoticon list from JSON and list
-document
 node src/lib/main.js --config custom.json --list
 
 # Diagnostics mode (flag)
 node src/lib/main.js --diagnostics
 
 # Diagnostics mode (environment variable)
-EMOTICONS_DIAGNOSTICS=1 node src/lib/main.js
+EMOTICONS_DIAGNOSTICS=1 node src/lib/main.js --diagnostics
 
 # Interactive REPL
 node src/lib/main.js --interactive
@@ -169,7 +168,7 @@ console.log(randomFace());
 // e.g. ":D"
 
 console.log(seededFace(3));
-// Deterministic based on seed; e.g. "(:¬_¬)"
+// Deterministic based on seed; e.g. "(¬_¬)"
 
 console.log(
   emoticonJson({ mode: 'seeded', seed: 3 })
@@ -177,12 +176,17 @@ console.log(
 // { face: ":)", mode: "seeded", seed: 3 }
 ```
 
-## Starting the Server
+### Express Middleware
 
-```bash
-# Start on default port (3000)
-node src/lib/main.js --serve
+You can mount the Express middleware in your server:
 
-# Start on custom port (e.g. 4000)
-node src/lib/main.js --serve --port 4000
+```js
+import express from 'express';
+import { createEmoticonRouter } from '@xn-intenton-z2a/repository0-crucible';
+
+const app = express();
+app.use(createEmoticonRouter());
+app.listen(3000, () => {
+  console.log('Listening on port 3000');
+});
 ```
