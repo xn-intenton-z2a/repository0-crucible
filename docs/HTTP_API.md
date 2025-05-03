@@ -1,7 +1,7 @@
 # HTTP_API Feature
 
 ## Overview
-Provide an HTTP server mode for the emoticon CLI that exposes endpoints for random emoticon selection, deterministic seeding, full list retrieval over HTTP, JSON count support, version reporting, and monitoring via metrics. This feature enables integration of the emoticon service into web-based workflows, dashboards, and monitoring systems.
+Provide an HTTP server mode for the emoticon CLI that exposes endpoints for random emoticon selection, deterministic seeding, full list retrieval over HTTP, JSON count support, version reporting, and monitoring via metrics, plus an interactive web UI. This feature enables integration of the emoticon service into web-based workflows, dashboards, and monitoring systems.
 
 **All responses include Access-Control-Allow-Origin: * by default.**
 
@@ -85,6 +85,11 @@ EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js --serve
   - Exposes counters: `emoticon_requests_total`, `emoticon_requests_root_total`, `emoticon_requests_list_total`, `emoticon_requests_json_total`, `emoticon_requests_seeded_total`, `emoticon_requests_errors_total`.
   - **Includes header** `Access-Control-Allow-Origin: *`
 
+- **GET /ui**
+  - Serves the interactive Emoticon Browser as HTML with client-side controls for random, seeded, count, and list fetches.
+  - Content-Type: `text/html; charset=utf-8`
+  - **Includes header** `Access-Control-Allow-Origin: *`
+
 - **Any other path or non-GET request**
   - Responds with status `404`.
   - If `Accept: application/json` header is present, returns `{ "error": "Not Found" }`.
@@ -95,7 +100,7 @@ EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js --serve
 
 ### createEmoticonRouter(options)
 
-Exports a factory that creates an Express Router instance exposing the same HTTP API endpoints as the built-in server.
+Exports a factory that creates an Express Router instance exposing the same HTTP API endpoints as the built-in server, including `/ui`.
 
 **Options**
 
