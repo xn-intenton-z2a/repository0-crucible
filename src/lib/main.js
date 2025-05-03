@@ -114,13 +114,13 @@ export function createEmoticonRouter() {
     };
     document.getElementById('btn-seeded').onclick = async () => {
       const n = document.getElementById('input-seed').value;
-      const res = await fetch(`/json?seed=${n}`);
+      const res = await fetch('/json?seed=' + n);
       const j = await res.json();
       out.textContent = j.face;
     };
     document.getElementById('btn-count').onclick = async () => {
       const n = document.getElementById('input-count').value;
-      const res = await fetch(`/json?count=${n}`);
+      const res = await fetch('/json?count=' + n);
       const arr = await res.json();
       out.textContent = arr.join('\n');
     };
