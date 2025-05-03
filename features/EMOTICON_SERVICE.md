@@ -1,45 +1,66 @@
 # EMOTICON_SERVICE Feature
 
 # Overview
-Unify the core emoticon service to support both CLI and HTTP server modes, interactive REPL, custom configuration, diagnostics, programmatic API, and Express middleware with monitoring and metrics. Ensure consistent behavior across all interfaces, clear usage documentation, and exported utilities.
+Unify the core emoticon service to support CLI, built-in HTTP server, Express middleware, GraphQL endpoint, interactive REPL, diagnostics, programmatic API, and metrics. Ensure consistent configuration loading, custom emoticon lists, CORS, and counters across all interfaces.
 
 # CLI Interface
-- Default invocation prints a single random emoticon in plain text.
-- Support flags:
-  - --config <path>: load custom emoticon list from JSON or YAML, exit 1 on missing or invalid file.
-  - --list: list all emoticons with zero-based indices, one per line.
-  - --seed <n>: deterministic selection by non-negative integer seed, error and exit 1 on invalid input.
-  - --json: output results in JSON; can combine with --seed, --list, or --count.
-  - --count <n>: output multiple emoticons; in plain mode print n lines; in JSON mode print array of n strings; error on invalid values.
-  - --interactive, -i: launch REPL supporting commands random, seed <n>, list, json, help, exit.
-  - --diagnostics: output JSON diagnostics (version, configSource, emoticonCount, isCustomConfig, colorStyle, supportsColorLevel) and exit 0.
-  - --version, -v: print version and exit 0.
-  - --help, -h: show help message detailing all flags and commands, exit 0.
+- Default invocation prints one random emoticon.
+- Flags:
+  --config <path> load JSON or YAML emoticon list
+  --diagnostics output JSON diagnostics and exit
+  --list list all emoticons with indices
+  --seed <n> deterministic selection by non-negative seed
+  --json output in JSON; combine with seed, list, or count
+  --count <n> output multiple emoticons
+  --interactive, -i launch REPL with commands random, seed, list, json, help, exit
+  --version, -v print version
+  --help, -h show help and exit
+  --serve start HTTP server on optional --port <n>
 
 # HTTP API Endpoints
-Use built-in HTTP server when invoked with --serve and optional --port <n>:
-- GET /: return a random emoticon as text/plain, CORS header, increment emoticon_requests_root_total and emoticon_requests_total.
-- GET /list: return all emoticons one per line, text/plain, CORS header, increment emoticon_requests_list_total and emoticon_requests_total.
-- GET /json: without params return {face,mode:"random",seed:null}, application/json, CORS, increment emoticon_requests_json_total and emoticon_requests_total.
-- GET /json?seed=<n>: return seeded face JSON mode seeded; on invalid seed respond 400 JSON or text based on Accept header; increment emoticon_requests_seeded_total.
-- GET /json?count=<n>[&seed=<s>]: return array of n faces; deterministic if seed is provided; error 400 on invalid inputs; increment metrics accordingly.
-- GET /json?list and GET /json/list: return JSON array of all emoticons, increment emoticon_requests_json_total.
-- GET /version: return {version}, application/json, CORS header.
-- GET /health: return OK, text/plain, CORS header.
-- GET /metrics: expose Prometheus metrics counter values, text/plain; version=0.0.4; CORS header.
-- All other paths or non-GET methods: respond 404 with plain text or JSON based on Accept header; increment emoticon_requests_errors_total.
-- Invalid port values: on --serve --port <value> if non-numeric or negative, log error and exit 1.
+Use the built-in server when --serve is provided:
+- GET / random emoticon in text/plain
+- GET /list all emoticons one per line
+- GET /json object or array based on query parameters seed, count, or list
+- GET /json/list alias for JSON list
+- GET /version object with version
+- GET /health text OK
+- GET /metrics Prometheus metrics of all counters
+- GET /ui HTML Web UI with controls for random, seeded, count, and list
+- All responses include Access-Control-Allow-Origin header
+- Validate inputs, respond 400 on invalid seed or count with JSON or plain text based on Accept
+- Increment counters: total, root, list, json, seeded, history, errors
 
 # Express Middleware
-- Export createEmoticonRouter(options) that mounts the same HTTP API routes on an Express Router instance.
-- Reuse the same counters and configuration logic.
-- Attach Access-Control-Allow-Origin header on all responses.
+Export createEmoticonRouter(options) returning an Express Router with the same HTTP API endpoints, CORS, counters, and UI.
+
+# GraphQL API
+- Define a GraphQL schema with Query fields:
+  random: String
+  seeded(seed: Int!): String
+  list: [String]
+  count(count: Int!, seed: Int): [String]
+  version: String
+- Validate seed and count as non-negative integers, return GraphQL errors on invalid inputs
+- Mount endpoint at /graphql supporting GET with query and POST with JSON body
+- Use express.json for parsing POST bodies
+- Execute queries with graphql function, reuse emoticon list, version, and counters from the service
+- Include CORS header on all responses
+- Increment emoticon_requests_total and relevant counters when resolvers invoke random or seeded selection
+- Export graphQLHandler() function returning the middleware
 
 # Programmatic API
-- Export functions: listFaces(), randomFace(), seededFace(seed), emoticonJson({mode,seed}), version constant.
-- Deterministic behavior and input validation consistent with CLI and HTTP interfaces.
+Export:
+- listFaces(): string[]
+- randomFace(): string
+- seededFace(seed: number): string
+- emoticonJson({ face, mode, seed }): object
+- version constant
+- graphQLHandler(): Express middleware
+- createEmoticonRouter(options): Express Router
 
 # Diagnostics and Configuration
-- CLI flag --diagnostics and EMOTICONS_DIAGNOSTICS env var produce JSON diagnostics and exit.
-- CLI and server support --config <path> and EMOTICONS_CONFIG for custom emoticon lists.
-- Reset to builtin list on each invocation before loading custom config.
+- Load config via --config or EMOTICONS_CONFIG env var
+- Diagnostics via --diagnostics flag or EMOTICONS_DIAGNOSTICS env var
+- Diagnostics output JSON with version, configSource, emoticonCount, isCustomConfig, colorStyle, supportsColorLevel
+- Reset to builtin list before loading custom config
