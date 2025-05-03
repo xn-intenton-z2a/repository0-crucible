@@ -1,52 +1,31 @@
 # ENHANCED_OUTPUT Feature
 
 # Overview
-Extend the existing emoticon output pipeline with a diagnostics mode that emits internal application state and configuration details in JSON for observability and automated integration. Retain current capabilities: random and seeded selection, full list output, JSON modes, interactive REPL, custom config, and ANSI color styling.
+Extend the existing emoticon output pipeline with a count option to output multiple emoticons per invocation. Retain diagnostics mode, custom config loading, JSON modes, interactive REPL, and ANSI styling support.
 
-# Diagnostics Mode
-Provide a new CLI flag --diagnostics to output a JSON object containing:
-
-- version: application version string
-- configSource: "builtin" or resolved file path
-- emoticonCount: number of emoticons loaded
-- isCustomConfig: boolean flag
-- colorStyle: current ANSI style or null if none
-- supportsColorLevel: chalk.supportsColor.level
-
-Also support environment variable EMOTICONS_DIAGNOSTICS when --diagnostics is not provided.
+# Count Option
+Introduce a new CLI flag --count <n> where n is a non-negative integer. When provided:
+- In plain mode: output n emoticons, one per line, selected at random by default.
+- In JSON mode (--json): output a JSON array of n emoticon strings.
+- When combined with --seed: generate count emoticons using seed, seed+1, ..., seed+count-1 via the seededFace function.
+- If n is invalid or missing, display an error message and exit with code 1.
 
 # CLI Options
---diagnostics       Output application diagnostics as JSON and exit
---config <path>     Load custom emoticon list from JSON or YAML
---color <style>     Apply ANSI color styling to output
---list              List emoticons with zero-based indices and styling if enabled
---seed <n>          Select deterministically; non-negative integer
---json              Output results in JSON format
---interactive, -i   Launch interactive REPL with commands random, seed, list, json, help, exit
---help, -h          Display help message and exit
---version, -v       Display application version and exit
---serve             Start HTTP server mode
---port <n>          Set HTTP server port (default 3000)
+--count <n>        Output n emoticons instead of a single one
+Existing options remain unchanged: --list, --seed, --json, --diagnostics, --config, --interactive, --serve, --port, --color, --help, --version.
 
 # Implementation Details
-1. Detect --diagnostics flag or EMOTICONS_DIAGNOSTICS env var after loading config and color selection.
-2. Gather state: import version from package.json, track isCustomConfig, EMOTICONS length, resolved config path or "builtin", current chalk style or null, chalk.supportsColor.level.
-3. Output JSON.stringify of diagnostics object to stdout and exit with code 0.
-4. Ensure diagnostics mode bypasses other behaviors (no emoticon output, no server start, no REPL).
-5. On invalid config or style, diagnostic output should include error field and exit code 1.
+1. In main, detect the presence of --count and parse the next argument as an integer.
+2. Validate that the parsed count is a non-negative integer; on failure, log an error and call process.exit(1).
+3. Create a utility to produce an array of emoticons based on mode (random or seeded) and count.
+4. When count is specified, output results according to plain or JSON mode and then exit.
+5. Ensure count handling occurs before default single-output logic and does not interfere with other modes like --list or --interactive.
 
 # Tests
-- Verify --diagnostics prints proper JSON keys and values for default builtin config.
-- Verify EMOTICONS_DIAGNOSTICS env var triggers diagnostics when flag is absent.
-- Confirm emoticonCount matches BUILTIN_EMOTICONS length and matches custom list count.
-- Confirm configSource reflects file path when loading custom config.
-- Confirm colorStyle shows selected style or null when none specified.
-- Confirm supportsColorLevel matches chalk.supportsColor().level.
-- Ensure exit code 0 on success and 1 on config/style errors.
+- Test that main(["--count","3"]) prints three valid emoticons, each on its own line.
+- Test that main(["--json","--count","2"]) logs a JSON array of length 2 with valid emoticon strings.
+- Test that combining --seed 5 --count 4 produces a deterministic array of four emoticons based on seeds 5,6,7,8.
+- Test that invalid count such as --count -1 or --count abc results in an error message and process.exit(1).
 
 # Documentation
-Update README.md and docs/EMOTICON_OUTPUT.md to:
-
-- Document --diagnostics flag and EMOTICONS_DIAGNOSTICS environment variable
-- Show example of running diagnostics with default and custom config
-- Describe JSON schema of diagnostics output
+Update README.md and docs/EMOTICON_OUTPUT.md to include the --count flag, its behavior in plain and JSON modes, interaction with --seed, and usage examples.
