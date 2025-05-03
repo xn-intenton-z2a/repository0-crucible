@@ -56,6 +56,12 @@ EMOTICONS_CONFIG=fixtures/custom.yml node src/lib/main.js --serve
   - Content-Type: `application/json`
   - Response body: `{ "version": string }`
 
+- **GET /health**
+  - Returns OK for health check probing.
+  - Content-Type: `text/plain`
+  - Response body: `OK`
+  - Does not increment any counters.
+
 - **GET /metrics**
   - Returns a Prometheus-compatible metrics exposition of internal request counters.
   - Content-Type: `text/plain; version=0.0.4`
@@ -89,6 +95,9 @@ curl http://localhost:3000/json/list
 
 # Version endpoint
 curl http://localhost:3000/version
+
+# Health endpoint
+curl http://localhost:3000/health
 
 # Metrics endpoint
 curl http://localhost:3000/metrics

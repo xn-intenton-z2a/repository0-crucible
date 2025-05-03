@@ -268,6 +268,13 @@ export function main(args = []) {
         return sendJson(200, { version });
       }
 
+      // Health endpoint
+      if (req.method === "GET" && pathname === "/health") {
+        res.writeHead(200, { "Content-Type": "text/plain" });
+        res.end("OK");
+        return;
+      }
+
       // Non-GET requests
       if (req.method !== "GET") {
         counters.emoticon_requests_errors_total++;
