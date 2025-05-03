@@ -284,16 +284,19 @@ Usage:
   node src/lib/main.js [options]
 
 Options:
-  --list          List all available ASCII emoticons in order.
-  --seed <n>      Provide a non-negative integer seed for deterministic selection.
-  --json          Output results in JSON format.
-  --help, -h      Show help message.
+  --list               List all available ASCII emoticons in order.
+  --seed <n>           Provide a non-negative integer seed for deterministic selection.
+  --json               Output results in JSON format.
+  --interactive, -i    Start interactive REPL session.
+  --help, -h           Show help message.
 
 Examples:
   node src/lib/main.js
   node src/lib/main.js --list
   node src/lib/main.js --seed 5
   node src/lib/main.js --json
+  node src/lib/main.js --interactive
+  node src/lib/main.js -i
   node src/lib/main.js --help
 `;
 

@@ -69,6 +69,9 @@ describe('main()', () => {
     expect(msg).toContain('--list');
     expect(msg).toContain('--seed <n>');
     expect(msg).toContain('--help');
+    expect(msg).toContain('--interactive, -i');
+    expect(msg).toContain('node src/lib/main.js --interactive');
+    expect(msg).toContain('node src/lib/main.js -i');
     expect(errorSpy).not.toHaveBeenCalled();
     expect(exitSpy).toHaveBeenCalledWith(0);
 
@@ -91,6 +94,9 @@ describe('main()', () => {
     expect(msg).toContain('--list');
     expect(msg).toContain('--seed <n>');
     expect(msg).toContain('-h');
+    expect(msg).toContain('--interactive, -i');
+    expect(msg).toContain('node src/lib/main.js --interactive');
+    expect(msg).toContain('node src/lib/main.js -i');
     expect(errorSpy).not.toHaveBeenCalled();
     expect(exitSpy).toHaveBeenCalledWith(0);
 
