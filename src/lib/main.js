@@ -22,6 +22,17 @@ let EMOTICONS = [
 let configSource = 'builtin';
 let isCustomConfig = false;
 
+// Track diagnostics state separately
+const initialDiagnostics = {
+  version,
+  configSource,
+  emoticonCount: EMOTICONS.length,
+  isCustomConfig,
+  colorStyle: null,
+  supportsColorLevel: chalk.level,
+};
+let lastDiagnostics = { ...initialDiagnostics };
+
 // Load custom configuration from JSON or YAML (CLI usage, prints errors and exits)
 function loadConfig(configPath) {
   if (!fs.existsSync(configPath)) {
@@ -97,7 +108,8 @@ export function configureEmoticons({ configPath }) {
   EMOTICONS = arr;
   configSource = configPath;
   isCustomConfig = true;
-  return {
+  // Update diagnostics state
+  const diag = {
     version,
     configSource,
     emoticonCount: EMOTICONS.length,
@@ -105,6 +117,8 @@ export function configureEmoticons({ configPath }) {
     colorStyle: null,
     supportsColorLevel: chalk.level,
   };
+  lastDiagnostics = { ...diag };
+  return diag;
 }
 
 /**
@@ -112,14 +126,7 @@ export function configureEmoticons({ configPath }) {
  * @returns {{version: string, configSource: string, emoticonCount: number, isCustomConfig: boolean, colorStyle: null, supportsColorLevel: number}}
  */
 export function getEmoticonDiagnostics() {
-  return {
-    version,
-    configSource,
-    emoticonCount: EMOTICONS.length,
-    isCustomConfig,
-    colorStyle: null,
-    supportsColorLevel: chalk.level,
-  };
+  return { ...lastDiagnostics };
 }
 
 // Express middleware for HTTP API
