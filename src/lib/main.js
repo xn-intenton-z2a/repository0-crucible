@@ -86,6 +86,54 @@ export function createEmoticonRouter() {
     next();
   });
 
+  // UI endpoint
+  router.get('/ui', (req, res) => {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.send(`<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Emoticon Browser</title>
+</head>
+<body>
+  <h1>Emoticon Browser</h1>
+  <button id="btn-random">Random</button>
+  <input id="input-seed" type="number" placeholder="Seed" min="0" />
+  <button id="btn-seeded">Seeded</button>
+  <input id="input-count" type="number" placeholder="Count" min="0" />
+  <button id="btn-count">Count</button>
+  <button id="btn-list">List All</button>
+  <pre id="output"></pre>
+  <script>
+    const out = document.getElementById('output');
+    document.getElementById('btn-random').onclick = async () => {
+      const res = await fetch('/json');
+      const j = await res.json();
+      out.textContent = j.face;
+    };
+    document.getElementById('btn-seeded').onclick = async () => {
+      const n = document.getElementById('input-seed').value;
+      const res = await fetch('/json?seed=' + n);
+      const j = await res.json();
+      out.textContent = j.face;
+    };
+    document.getElementById('btn-count').onclick = async () => {
+      const n = document.getElementById('input-count').value;
+      const res = await fetch('/json?count=' + n);
+      const arr = await res.json();
+      out.textContent = arr.join('\n');
+    };
+    document.getElementById('btn-list').onclick = async () => {
+      const res = await fetch('/json?list');
+      const arr = await res.json();
+      out.textContent = arr.join('\n');
+    };
+  </script>
+</body>
+</html>`);
+  });
+
   // Metrics endpoint
   router.get('/metrics', (req, res) => {
     const lines = [];
@@ -154,15 +202,15 @@ export function createEmoticonRouter() {
         }
         return res.type('text/plain').send(msg);
       }
-      const out = [];
+      const outArr = [];
       for (let i = 0; i < count; i++) {
         if (seed !== undefined) {
-          out.push(seededFace(seed + i));
+          outArr.push(seededFace(seed + i));
         } else {
-          out.push(randomFace());
+          outArr.push(randomFace());
         }
       }
-      return res.json(out);
+      return res.json(outArr);
     }
 
     // Single seeded or random

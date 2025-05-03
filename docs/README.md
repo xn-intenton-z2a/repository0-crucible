@@ -1,6 +1,6 @@
 # repository0-crucible
 
-`repository0-crucible` is a CLI application and JavaScript library that outputs random ASCII emoticons, supports deterministic seeding, JSON output, diagnostic reporting, interactive REPL sessions, HTTP server mode with monitoring and metrics, and a programmatic API.
+`repository0-crucible` is a CLI application and JavaScript library that outputs random ASCII emoticons, supports deterministic seeding, JSON output, diagnostic reporting, interactive REPL sessions, HTTP server mode with monitoring and metrics, a programmatic API, and a built-in Web UI browser.
 
 ## Installation
 
@@ -71,83 +71,41 @@ node src/lib/main.js --interactive
 node src/lib/main.js -i
 ```
 
-## HTTP API
+## HTTP API and Web UI
 
 All HTTP responses include the header `Access-Control-Allow-Origin: *`.
 
 ### Endpoints
 
-- **GET /**  
-  Returns a single random emoticon in plain text.  
-  Content-Type: `text/plain`  
-  ```bash
-  curl http://localhost:3000/
-  ```
+- **GET /**
+  Returns a single random emoticon in plain text.
 
-- **GET /list**  
-  Returns all emoticons, one per line in plain text.  
-  Content-Type: `text/plain`  
-  Increments `emoticon_requests_list_total`.  
-  ```bash
-  curl http://localhost:3000/list
-  ```
+- **GET /list**
+  Returns all emoticons, one per line in plain text.
 
-- **GET /json**  
-  Returns a JSON object: `{ "face": string, "mode": "random", "seed": null }`.  
-  Content-Type: `application/json`  
-  Increments `emoticon_requests_json_total`.  
-  ```bash
-  curl http://localhost:3000/json
-  ```
+- **GET /json**, **GET /json?seed=<n>**, **GET /json?count=<n>**, **GET /json?list**, **GET /json/list**
+  Offer JSON-based emoticon retrieval.
 
-- **GET /json?seed=<n>**  
-  Returns `{ "face": string, "mode": "seeded", "seed": <n> }` for valid `<n>`.  
-  Invalid `<n>` yields 400 error with JSON or plain text based on `Accept` header.  
-  Increments `emoticon_requests_json_total` and `emoticon_requests_seeded_total`.  
-  ```bash
-  curl http://localhost:3000/json?seed=2
-  curl -H "Accept: application/json" http://localhost:3000/json?seed=abc
-  ```
+- **GET /version**
+  Returns `{ "version": "<current version>" }`.
 
-- **GET /json?count=<n>**  
-  Returns a JSON array of `<n>` random emoticons.  
-  With `seed=<s>`, returns `<n>` sequential seeded emoticons starting from `<s>`.  
-  Invalid inputs yield status 400.  
-  Increments `emoticon_requests_json_total` and, if seeded, `emoticon_requests_seeded_total`.  
-  ```bash
-  curl http://localhost:3000/json?count=3
-  curl http://localhost:3000/json?seed=5&count=3
-  ```
+- **GET /health**
+  Returns `OK`.
 
-- **GET /json?list** and **GET /json/list**  
-  Returns a JSON array of all emoticon strings.  
-  Content-Type: `application/json`  
-  Increments `emoticon_requests_json_total`.  
-  ```bash
-  curl http://localhost:3000/json?list
-  curl http://localhost:3000/json/list
-  ```
+- **GET /metrics**
+  Exposes Prometheus metrics for request counts.
 
-- **GET /version**  
-  Returns `{ "version": string }`.  
-  ```bash
-  curl http://localhost:3000/version
-  ```
+- **GET /ui**
+  Opens the interactive Emoticon Browser web interface. Navigate to http://localhost:3000/ui in your browser to view and interact with emoticon controls.
 
-- **GET /health**  
-  Returns `OK` in plain text.  
-  Content-Type: `text/plain`  
-  Does not increment counters.
+### Web UI Usage
 
-- **GET /metrics**  
-  Returns Prometheus-compatible metrics.  
-  Content-Type: `text/plain; version=0.0.4`  
-  ```bash
-  curl http://localhost:3000/metrics
-  ```
-
-- **Any other path or non-GET request**  
-  Returns 404 error in JSON or plain text based on `Accept` header and increments `emoticon_requests_errors_total`.
+1. Start the server:
+```bash
+node src/lib/main.js --serve
+```
+2. Open `http://localhost:3000/ui` in your browser.
+3. Use the **Random**, **Seeded**, **Count**, and **List All** controls to fetch and display emoticons.
 
 ## Programmatic API
 
@@ -162,21 +120,12 @@ import {
 } from '@xn-intenton-z2a/repository0-crucible';
 
 console.log(listFaces());
-// [":)",":-([",":D",...] ]
-
 console.log(randomFace());
-// e.g. ":D"
-
 console.log(seededFace(3));
-// Deterministic based on seed; e.g. "(¬_¬)"
-
-console.log(
-  emoticonJson({ mode: 'seeded', seed: 3 })
-);
-// { face: ":)", mode: "seeded", seed: 3 }
+console.log(emoticonJson({ mode: 'seeded', seed: 3 }));
 ```
 
-### Express Middleware
+## Express Middleware
 
 You can mount the Express middleware in your server:
 

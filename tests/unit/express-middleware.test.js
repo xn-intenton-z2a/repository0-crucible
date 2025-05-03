@@ -119,4 +119,15 @@ describe('Express Middleware', () => {
     expect(res.status).toBe(404);
     expect(res.headers['access-control-allow-origin']).toBe('*');
   });
+
+  test('GET /ui returns HTML page with controls and charset header', async () => {
+    const res = await request(app).get('/ui');
+    expect(res.status).toBe(200);
+    expect(res.headers['content-type']).toMatch(/text\/html/);
+    expect(res.text).toContain('<h1>Emoticon Browser</h1>');
+    expect(res.text).toContain('id="btn-random"');
+    expect(res.text).toContain('id="btn-seeded"');
+    expect(res.text).toContain('id="btn-count"');
+    expect(res.text).toContain('id="btn-list"');
+  });
 });
