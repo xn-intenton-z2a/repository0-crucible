@@ -1,7 +1,6 @@
 import { describe, test, expect, beforeAll, afterAll, vi } from "vitest";
-import { main } from "@src/lib/main.js";
+import { main, version } from "@src/lib/main.js";
 import http from "http";
-import { version } from '../../../package.json';
 
 const FACES = [
   ":)",

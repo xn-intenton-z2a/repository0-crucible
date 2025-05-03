@@ -4,7 +4,8 @@
 import { fileURLToPath } from "url";
 import http from "http";
 import readline from "readline";
-import { version } from '../../package.json';
+import pkg from '../../package.json' assert { type: 'json' };
+export const version = pkg.version;
 
 const EMOTICONS = [
   ":)",
