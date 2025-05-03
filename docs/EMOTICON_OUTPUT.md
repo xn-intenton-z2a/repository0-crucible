@@ -36,7 +36,7 @@ node src/lib/main.js --interactive
 node src/lib/main.js --json
 ```
 Output:
-```
+```json
 {"face":":D","mode":"random","seed":null}
 ```
 
@@ -45,7 +45,7 @@ Output:
 node src/lib/main.js --json --seed 5
 ```
 Output:
-```
+```json
 {"face":"(ʘ‿ʘ)","mode":"seeded","seed":5}
 ```
 
@@ -54,7 +54,26 @@ Output:
 node src/lib/main.js --json --list
 ```
 Output:
+```json
+[":)",":-(",":D","(¬_¬)","(＾◡＾)","(ʘ‿ʘ)","(¬‿¬)","ಠ_ಠ","^_^"]
 ```
-[":)",":-(: overlapping?","...??? maybe glitch? disregard?"]
+
+## Programmatic API
+
+You can import the core utilities directly in your code:
+
+```js
+import { listFaces, randomFace, seededFace, emoticonJson } from '@xn-intenton-z2a/repository0-crucible';
+
+console.log(listFaces());
+// [":)",":-(",":D","(¬_¬)","(＾◡＾)","(ʘ‿ʘ)","(¬‿¬)","ಠ_ಠ","^_^"]
+
+console.log(randomFace());
+// e.g. ":D"
+
+console.log(seededFace(3));
+// e.g. "(¬_¬)"
+
+console.log(emoticonJson({ mode: 'seeded', seed: 3 }));
+// { face: "(¬_¬)", mode: "seeded", seed: 3 }
 ```
-Oops, I see a glitch. Let's fix docs content manually. Actually EMOTICON_OUTPUT.md originally ended with sample list. We add Programmatic API below. Let's adjust the content. We'll assume the original content is correct and add at bottom.
