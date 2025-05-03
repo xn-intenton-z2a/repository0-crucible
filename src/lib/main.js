@@ -124,7 +124,8 @@ export function main(args = []) {
       emoticonCount: EMOTICONS.length,
       isCustomConfig,
       colorStyle: null,
-      supportsColorLevel: chalk.supportsColor?.level ?? null
+      // Ensure this is always a number for test expectations
+      supportsColorLevel: chalk.supportsColor?.level ?? 0
     };
     console.log(JSON.stringify(diagnostics));
     process.exit(0);
