@@ -138,6 +138,37 @@ describe("HTTP Server", () => {
     expect(res.body).toBe('Not Found');
   });
 
+  test("GET /health returns status 200 with content-type text/plain and body OK", async () => {
+    const res = await makeRequest('/health');
+    expect(res.statusCode).toBe(200);
+    expect(res.headers['content-type']).toMatch(/text\/plain/);
+    expect(res.body).toBe('OK');
+  });
+
+  test("GET /health does not alter counters", async () => {
+    const before = await makeRequest('/metrics');
+    const beforeLines = before.body.trim().split('\n');
+    const beforeCounts = {};
+    beforeLines.forEach(line => {
+      if (!line.startsWith('#')) {
+        const [key, val] = line.split(' ');
+        beforeCounts[key] = Number(val);
+      }
+    });
+    await makeRequest('/health');
+    await makeRequest('/health');
+    const after = await makeRequest('/metrics');
+    const afterLines = after.body.trim().split('\n');
+    const afterCounts = {};
+    afterLines.forEach(line => {
+      if (!line.startsWith('#')) {
+        const [key, val] = line.split(' ');
+        afterCounts[key] = Number(val);
+      }
+    });
+    expect(afterCounts).toEqual(beforeCounts);
+  });
+
   test("GET /metrics returns Prometheus metrics and does not alter counters", async () => {
     server.close();
     server = main(["--serve", "--port", "0"]);
