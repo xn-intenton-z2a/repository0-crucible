@@ -1,7 +1,7 @@
 # HTTP_API Feature
 
 # Overview
-Add Prometheus-compatible metrics endpoint to the existing HTTP server mode. The new `/metrics` endpoint provides operational insights on usage patterns, request counts, and error rates. This enables users and operators to integrate emoticon service monitoring into dashboards and alerting systems.
+Extend the existing HTTP server mode to expose operational insights and service metadata. In addition to existing emoticon endpoints and Prometheus-compatible metrics, add a version endpoint that reports the application version.
 
 # Endpoints
 
@@ -16,24 +16,27 @@ Metrics exposed:
   emoticon_requests_list_total   Counter of list requests (/list and /json/list).
   emoticon_requests_errors_total Counter of requests resulting in a non-200 status.
 
+GET /version
+  Returns a JSON object with the current application version.
+  Content-Type: application/json
+  Response body: { version: string }
+
 # Implementation Details
 
 In src/lib/main.js:
-- Initialize in-memory counters for each metric before server creation.
-- Increment counters appropriately inside request handler based on pathname and status code.
-- For `/metrics`, format counters in Prometheus text format, one metric per line with HELP and TYPE headers:
-  HELP emoticon_requests_total Total number of HTTP emoticon requests
-  TYPE emoticon_requests_total counter
-  emoticon_requests_total <value>
-- Register `/metrics` route in the server request listener before other routes.
-- Ensure metrics endpoint does not increment emoticon_requests_total or error counters.
+- Read version from package.json via import or process.env.npm_package_version.
+- Register /version route before error fallback:
+  - On GET /version, send JSON with version and HTTP 200.
+- Existing metric counters:
+  - Initialize in-memory counters for all HTTP endpoints except /metrics and /version.
+  - Increment counters based on pathname and status code.
+- For /metrics, format counters with HELP and TYPE headers and one metric per line.
+- Ensure /metrics and /version do not increment request counters.
 
 # Tests
 
 In tests/unit/server.test.js:
-- Add a suite for metrics endpoint:
-  - Prime server with a known sequence of requests (random, seeded, list, invalid path).
-  - Request GET /metrics and parse response body lines to extract metric values.
-  - Assert each metric counter matches the number of previous requests of that type.
-  - Verify Content-Type header matches text/plain; version=0.0.4.
-- Use http.request as in existing tests to issue requests and count responses.
+- Add a test for GET /version:
+  - Issue GET /version, parse JSON response body, and assert it contains the version matching package.json.
+  - Verify status code is 200 and Content-Type header matches application/json.
+- Update beforeAll to import version from package.json for comparison.
