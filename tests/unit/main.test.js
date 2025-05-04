@@ -1,5 +1,5 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
-import { parseOptions, getRandomFaceFromList, main } from "@src/lib/main.js";
+import { parseOptions, getRandomFaceFromList, main, generateFaces } from "@src/lib/main.js";
 import seedrandom from "seedrandom";
 
 describe("parseOptions", () => {
@@ -137,5 +137,37 @@ describe("main CLI", () => {
     main(["-c", "3", "-C", "sad", "-s", "99", "-j"]);
     const obj2 = JSON.parse(logs[0]);
     expect(obj2.faces).toEqual(firstFaces);
+  });
+});
+
+// New tests for generateFaces
+
+describe("generateFaces", () => {
+  test("default invocation returns one face from all category with null seed", () => {
+    const result = generateFaces();
+    expect(result).toHaveProperty("faces");
+    expect(Array.isArray(result.faces)).toBe(true);
+    expect(result.faces.length).toBe(1);
+    expect(result.category).toBe("all");
+    expect(result.count).toBe(1);
+    expect(result.seed).toBe(null);
+  });
+
+  test("custom invocation with count, category, and seed is reproducible", () => {
+    const opts = { count: 3, category: "happy", seed: 42 };
+    const first = generateFaces(opts);
+    const second = generateFaces(opts);
+    expect(first.count).toBe(3);
+    expect(first.category).toBe("happy");
+    expect(first.seed).toBe(42);
+    expect(first.faces.length).toBe(3);
+    expect(second.faces).toEqual(first.faces);
+  });
+
+  test("invalid inputs throw errors", () => {
+    expect(() => generateFaces({ count: 0 })).toThrow();
+    expect(() => generateFaces({ category: "unknown" })).toThrow();
+    expect(() => generateFaces({ seed: -1 })).toThrow();
+    expect(() => generateFaces({ seed: 1.5 })).toThrow();
   });
 });
