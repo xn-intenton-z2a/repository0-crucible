@@ -1,11 +1,11 @@
 # Node.js Core API Reference
 ## https://nodejs.org/api/
-Comprehensive API reference for Node.js covering modules such as `process`, `fs`, `http`, `path`, `url`, `console`, `readline`, `tty`, `esm`, `assert`, and more, including ES Module behaviors, loader hooks, and package scope rules. Essential for implementing CLI flag parsing, file I/O, HTTP server patterns via Express (which uses the underlying http module), and ESM module resolution in both script and module contexts. Includes platform-specific notes, migration paths from CommonJS, and detailed examples for robust production usage. Last updated June 2024; authoritative from the Node.js Foundation.
+Comprehensive API reference for Node.js covering modules such as `process`, `fs`, `http`, `path`, `url`, `console`, `readline`, `tty`, `esm`, `assert`, and more, including ES Module behaviors, loader hooks, and package scope rules. Essential for implementing CLI flag parsing, file I/O, HTTP server patterns via Express or native http module, and ESM module resolution across script and module contexts. Includes platform-specific notes, migration paths from CommonJS, and detailed examples for robust production usage. Last updated June 2024; authoritative from the Node.js Foundation.
 ## Node.js Foundation (MIT-like)
 
 # ANSI Escape Codes Reference
 ## https://en.wikipedia.org/wiki/ANSI_escape_code
-An authoritative overview of ANSI escape sequences for text styling, cursor positioning, and terminal control. Crucial for implementing colored output, animations, and cursor movements in CLI banners, progress indicators, and dynamic ASCII-art displays. Covers CSI sequences, SGR parameters, 256-color and truecolor support, and cross-platform compatibility notes. Regularly updated by community contributors.
+An authoritative overview of ANSI escape sequences for text styling, cursor positioning, and terminal control. Crucial for implementing colored output, animations, and cursor movements in CLI banners, progress indicators, and dynamic ASCII-art displays across platforms. Covers CSI sequences, SGR parameters, 256-color and truecolor support, and cross-platform compatibility notes. Regularly updated by community contributors.
 ## CC BY-SA 3.0
 
 # Chalk
@@ -15,12 +15,7 @@ A popular terminal string styling library for Node.js, offering intuitive APIs t
 
 # Commander.js
 ## https://github.com/tj/commander.js#readme
-A robust Node.js module for building CLI applications, covering command definitions, option parsing, help generation, and subcommands. Provides best-practice examples for scalable CLI interfaces, custom flags like `--count`, and automatic documentation. Widely adopted in open-source projects and integrates with custom help formatters. Last updated April 2024.
-## MIT License
-
-# CLI Frameworks Comparison (oclif & Clipanion)
-## https://oclif.io/docs/introduction
-Introduces popular multi-command CLI frameworks—Salesforce’s oclif and Yarn’s Clipanion—demonstrating structured command organization, plugin architectures, decorator-based definitions, and built-in help generation. Useful for planning extensible CLI designs with power-user plugin ecosystems and strong TypeScript support. Updated March 2024.
+A robust Node.js module for building CLI applications, covering command definitions, option parsing, help generation, and subcommands. Provides best-practice examples for scalable CLI interfaces, custom flags like `--seed` and `--list`, and automatic documentation. Widely adopted in open-source projects and integrates with custom help formatters. Last updated April 2024.
 ## MIT License
 
 # Conventional Commits Specification
@@ -30,12 +25,12 @@ Defines a lightweight convention for commit message formatting, enabling automat
 
 # ESLint
 ## https://eslint.org/docs/latest/
-Official ESLint documentation outlining rule configuration, plugin management, and integration with Prettier. Ensures code quality, consistency, and style enforcement across a growing codebase and CI workflows. Covers advanced rules, custom parsers, shareable configurations, and performance tips. Last updated 2024.
+Official ESLint documentation outlining rule configuration, plugin management, and integration with Prettier. Ensures code quality, consistency, and style enforcement across the CLI codebase and CI workflows. Covers advanced rules, custom parsers, shareable configurations, and performance tips. Last updated 2024.
 ## MIT License
 
 # js-yaml
 ## https://github.com/nodeca/js-yaml#readme
-A pure JavaScript YAML parser and dumper that supports custom schemas. Documents APIs for parsing, stringifying, and safe loading—useful for reading and writing YAML-based configurations or emoticon definition sets. Details security considerations for untrusted sources and async APIs. Compatible with Node.js ESM.
+A pure JavaScript YAML parser and dumper that supports custom schemas. Documents APIs for parsing, stringifying, and safe loading—useful for reading and writing YAML-based emoticon definition sets. Details security considerations for untrusted sources and async APIs. Compatible with Node.js ESM.
 ## MIT License
 
 # npm package.json “bin” Field & Scripts
@@ -65,22 +60,17 @@ Comprehensive guide to Vitest including test definitions, mocking, snapshot test
 
 # Yargs
 ## https://yargs.js.org/docs/
-A declarative CLI argument parser supporting commands, options, middleware, and validation. Offers both imperative and builder APIs with examples for maintaining consistent help output and advanced flag handling patterns. Over 3 million weekly downloads; regularly updated.
+A declarative CLI argument parser supporting commands, options, middleware, and validation. Offers both imperative and builder APIs with examples for maintaining consistent help output and advanced flag handling patterns. Over 3 million weekly downloads; regularly updated. Last reviewed 2024.
 ## MIT License
 
 # Zod Schema Validation
 ## https://github.com/colinhacks/zod#readme
-A TypeScript-first schema declaration and validation library. Shows parsing of CLI flags, environment variables, and JSON inputs with strong typing, ensuring robust validation of user options and helpful error messages. Actively maintained with frequent releases and extensive examples.
+A TypeScript-first schema declaration and validation library. Shows parsing of CLI flags, environment variables, and JSON inputs with strong typing, ensuring robust validation of user options and helpful error messages. Actively maintained with frequent releases and extensive examples. Last updated 2024.
 ## MIT License
 
-# Express Routing
-## https://expressjs.com/en/4x/guide/routing.html
-Official Express documentation on routing and middleware composition. Describes `Router` instances, parameterized routes, mounting sub-routers, and middleware chaining—fundamental for integrating potential HTTP endpoints for emoticon services. Covers error-handling patterns and async support.
-## MIT License
-
-# Express Error Handling
-## https://expressjs.com/en/guide/error-handling.html
-Guidance on implementing and customizing error-handling middleware in Express applications. Covers synchronous and asynchronous error traps, the built-in `errorHandler`, and best practices for structured error responses in an HTTP API.
+# Express
+## https://expressjs.com/
+Official Express.js documentation covering routing, middleware composition, error-handling, and application configuration. Describes `Router` instances, parameterized routes, middleware chaining, asynchronous error traps, and structured error responses—essential for integrating HTTP endpoints for emoticon services. Includes examples for JSON APIs, streaming endpoints, and performance considerations. Latest version 4.x; MIT License.
 ## MIT License
 
 # Fastify Framework
@@ -90,12 +80,12 @@ Introduces Fastify as a high-performance HTTP framework with schema-based valida
 
 # MDN CORS
 ## https://developer.mozilla.org/en-US/docs/Web/HTTP/CORS
-Comprehensive guide to Cross-Origin Resource Sharing (CORS), explaining preflight requests, headers (`Access-Control-Allow-Origin`, `Access-Control-Allow-Methods`), and security implications. Helps ensure correct CORS handling in HTTP responses for web-based emoticon APIs.
+Comprehensive guide to Cross-Origin Resource Sharing (CORS), explaining preflight requests, headers (`Access-Control-Allow-Origin`, `Access-Control-Allow-Methods`), and security implications. Helps ensure correct CORS handling in HTTP responses for web-based emoticon APIs. Last reviewed 2023.
 ## CC BY-SA 2.5
 
 # Node.js Readline & REPL Modules
 ## https://nodejs.org/api/readline.html
-Detailed documentation for interactive input via the Readline module and the built-in REPL. Essential for implementing the CLI’s interactive mode with commands like `random`, `seed`, `list`, `json`, `help`, and `exit`. Describes event-driven line handling, history management, and custom evaluator contexts.
+Detailed documentation for interactive input via the Readline module and the built-in REPL. Essential for implementing the CLI’s interactive mode with commands like `random`, `seed`, `list`, `json`, `help`, and `exit`. Describes event-driven line handling, history management, and custom evaluator contexts. Last updated June 2024; authoritative.
 ## Node.js Foundation (MIT-like)
 
 # Prettier Documentation
@@ -105,12 +95,12 @@ Official Prettier documentation covering configuration options, formatting rules
 
 # minimatch
 ## https://github.com/isaacs/minimatch#readme
-A glob-matching library for file path pattern matching. Provides minimatch, micromatch, and brace expansion features, useful for implementing file filters, emoticon set loading, or plugin discovery. Licensed under ISC.
+A glob-matching library for file path pattern matching. Provides minimatch, micromatch, and brace expansion features, useful for implementing file filters, emoticon set loading, or plugin discovery. Licensed under ISC. Updated December 2023.
 ## ISC License
 
 # GitHub Actions Workflow Syntax
 ## https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
-Official GitHub Actions workflow syntax reference covering triggers, jobs, steps, reusable workflows, contexts, and expressions. Essential for customizing CI/CD pipelines, scheduling, and environment variable management within GitHub workflows.
+Official GitHub Actions workflow syntax reference covering triggers, jobs, steps, reusable workflows, contexts, and expressions. Essential for customizing CI/CD pipelines, scheduling, and environment variable management within GitHub workflows. Last updated 2024.
 ## CC BY 4.0
 
 # seedrandom Package
@@ -120,22 +110,22 @@ Documentation for the `seedrandom` library, detailing initialization options for
 
 # Node.js HTTP Module
 ## https://nodejs.org/api/http.html
-Detailed reference for Node.js's built-in HTTP module, covering the `http.createServer`, request and response objects, streaming paradigms, performance considerations, and keep-alive handling. Provides foundational knowledge for HTTP server behavior under Express and for custom low-level server implementations. Last updated June 2024; authoritative from the Node.js Foundation.
+Detailed reference for Node.js's built-in HTTP module, covering the `http.createServer`, request and response objects, streaming paradigms, and keep-alive handling. Provides foundational knowledge for HTTP server behavior and low-level integrations under Express or custom servers. Last updated June 2024; authoritative.
 ## Node.js Foundation (MIT-like)
 
 # Fisher-Yates Shuffle Algorithm
 ## https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
-Detailed description of the Fisher-Yates shuffle algorithm for unbiased random permutations of arrays. Essential for implementing robust and reproducible unique-selection logic in `generateFacesCore`, ensuring no biases in shuffled face pools. Includes complexity analysis and implementation pseudocode.
+Detailed description of the Fisher-Yates shuffle algorithm for unbiased random permutations of arrays. Essential for implementing robust and reproducible unique-selection logic in `generateFacesCore`, ensuring no biases in shuffled face pools. Includes complexity analysis and implementation pseudocode. Last reviewed 2024.
 ## CC BY-SA 3.0
 
 # Node.js Streams API Reference
 ## https://nodejs.org/api/stream.html
-Comprehensive guide to Node.js Streams, covering readable, writable, duplex, and transform streams. Essential for implementing continuous data flows like Server-Sent Events (SSE) over HTTP, backpressure management in streaming responses, and integration with async iterators for programmatic streaming via `generateFacesStream`. Includes highWaterMark settings, objectMode patterns, and lifecycle events. Last updated June 2024; authoritative from the Node.js Foundation.
+Comprehensive guide to Node.js Streams, covering readable, writable, duplex, and transform streams. Essential for implementing continuous data flows like Server-Sent Events (SSE) over HTTP, backpressure management in streaming responses, and integration with async iterators for programmatic streaming via `generateFacesStream`. Includes highWaterMark settings, objectMode patterns, and lifecycle events. Last updated June 2024; authoritative.
 ## Node.js Foundation (MIT-like)
 
 # MDN Server-Sent Events (SSE)
 ## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
-Detailed overview of Server-Sent Events protocol, explaining `EventSource` interface, connection lifecycle, reconnection behavior, and event formatting (`data:`, `event:`, `id:` fields). Crucial for implementing HTTP `/stream` endpoint with SSE, including proper headers (`Content-Type: text/event-stream`), heartbeat events, and client disconnect handling. Includes examples in JavaScript and browser usage. Last reviewed May 2024; highly authoritative in web API context.
+Detailed overview of Server-Sent Events protocol, explaining `EventSource` interface, connection lifecycle, reconnection behavior, and event formatting (`data:`, `event:`, `id:` fields). Crucial for implementing HTTP `/stream` endpoint with SSE, including proper headers, heartbeat events, and client disconnect handling. Last reviewed May 2024; highly authoritative.
 ## CC BY-SA 2.5
 
 # MDN Async Iteration Protocol
@@ -145,5 +135,25 @@ Specifies the async iteration protocol with `Symbol.asyncIterator`, `next()` met
 
 # IANA HTTP Status Codes Registry
 ## https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
-Official registry of HTTP status codes maintained by IANA, covering standard and extension codes, class definitions (1xx–5xx), and associated semantics. Essential for returning correct HTTP responses in API endpoints (`200 OK`, `400 Bad Request`) and for designing error handling in Express routes. Updated April 2024; public domain.
+Official registry of HTTP status codes maintained by IANA, covering standard and extension codes, class definitions (1xx–5xx), and associated semantics. Essential for returning correct HTTP responses in API endpoints (`200 OK`, `400 Bad Request`) and for designing error handling. Updated April 2024; public domain.
 ## Public Domain
+
+# EJS Templating Documentation
+## https://ejs.co/#docs
+Official EJS (Embedded JavaScript) documentation detailing template syntax, includes, partials, and custom delimiters. Useful for generating dynamic ASCII-art templates, customizable face layouts, and HTML or text-based email previews. Covers performance considerations and caching strategies. Last updated 2023; authoritative.
+## MIT License
+
+# ASCII-art Library
+## https://github.com/khrome/ascii-art#readme
+Documentation for the `ascii-art` Node.js library, offering modules for text-to-ASCII conversion, font loading, image-to-ASCII rendering, and animations. Enables generation of expressive ASCII faces and banners with configurable fonts, layout, and color support. Includes code examples and plugin patterns. Last updated 2024.
+## MIT License
+
+# Inquirer.js
+## https://github.com/SBoudrias/Inquirer.js#readme
+A collection of common interactive command-line user interfaces. Provides prompts for input, lists, confirmations, and more, enabling richer interactive sessions beyond basic readline. Useful for guided seed selection, menu-driven commands, and form-like data input. Last updated June 2024.
+## MIT License
+
+# OpenAPI Specification
+## https://swagger.io/specification/
+The OpenAPI Specification defines a standard, language-agnostic interface to RESTful APIs. Essential for designing, documenting, and generating client/server code for the emoticon feedback API. Covers path parameters, request/response schemas, security schemes, and server bindings. Latest version 3.1.0; maintained by OpenAPI Initiative.
+## Apache-2.0
