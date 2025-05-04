@@ -220,7 +220,7 @@ export function main(args) {
     console.log("  --config, -f    path to JSON or YAML face configuration file");
     console.log("  --help, -h      show this help message");
     console.log("");
-    console.log(`Categories: ${defaultCategories.join(", ")}${defaultCategories.length ? ", " : ""}all`);
+    console.log(`Categories: ${defaultCategories.join(", ")} ,all`);
     return;
   }
 

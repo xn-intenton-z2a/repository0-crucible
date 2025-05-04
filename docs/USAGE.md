@@ -15,7 +15,7 @@ node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--se
 ### Options
 
 - `--count`, `-c`: number of faces to display (default: `1`)
-- `--category`, `-C`: emotion category (`happy`, `sad`, `angry`, `surprised`, `all`) (default: `all`)
+- `--category`, `-C`: emotion category (`happy`, `sad`, `angry`, `surprised`, `all`, or custom categories from config) (default: `all`)
 - `--seed`, `-s`: nonnegative integer seed for reproducible output
 - `--json`, `-j`: output JSON payload
 - `--serve`, `-S`: start HTTP server mode
@@ -75,6 +75,6 @@ curl "http://localhost:8080/faces?count=2&format=text"
 # => 😮
 
 # Query /faces endpoint with config
-curl "http://localhost:8080/faces?config=./tests/unit/fixtures/custom.json&category=happy&count=2"
-# => {"faces":["H1","H2"],"category":"happy","count":2,"seed":null}
+curl "http://localhost:8080/faces?config=./tests/unit/fixtures/custom.json&category=custom&count=2"
+# => {"faces":["C1","C2"],"category":"custom","count":2,"seed":null}
 ```
