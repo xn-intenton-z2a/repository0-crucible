@@ -34,8 +34,6 @@ export function parseOptions(args) {
       result.category = args[++i];
     } else if (arg === "--seed" || arg === "-s") {
       result.seed = Number(args[++i]);
-    } else if (arg === "--help" || arg === "-h") {
-      result.help = true;
     }
   }
   return OptionsSchema.parse(result);
@@ -60,18 +58,31 @@ export function main(args) {
     args = process.argv.slice(2);
   }
   if (args.includes("--help") || args.includes("-h")) {
-    console.log("Usage: node main.js [--count N] [--category CATEGORY] [--seed S]");
+    console.log("Usage: node src/lib/main.js [options]");
+    console.log("");
+    console.log("Options:");
+    console.log("  --count, -c     number of faces to display (default: 1)");
+    console.log(
+      "  --category, -C  emotion category (happy, sad, angry, surprised, all) (default: all)"
+    );
+    console.log(
+      "  --seed, -s      nonnegative integer seed for reproducible output"
+    );
+    console.log("  --help, -h      show this help message");
+    console.log("");
     console.log(`Categories: ${categories.join(", ")}`);
     return;
   }
   const { count, category, seed } = parseOptions(args);
   const rng = seed !== undefined ? seedrandom(String(seed)) : Math.random;
   let pool = [];
+
   if (category === "all") {
     pool = Object.values(faces).flat();
   } else {
     pool = faces[category];
   }
+
   for (let i = 0; i < count; i++) {
     console.log(getRandomFaceFromList(pool, rng));
   }

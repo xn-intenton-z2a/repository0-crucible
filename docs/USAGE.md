@@ -33,4 +33,7 @@ node src/lib/main.js --count 2 --seed 42
 
 # Display five sad faces with a specific seed
 node src/lib/main.js --count 5 --category sad --seed 100
+
+# Show help and options
+node src/lib/main.js --help
 ```
