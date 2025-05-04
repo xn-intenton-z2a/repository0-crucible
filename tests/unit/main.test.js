@@ -1,6 +1,6 @@
 import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
-import seedrandom from "seedrandom";
 import { parseOptions, getRandomFaceFromList, main } from "@src/lib/main.js";
+import seedrandom from "seedrandom";
 
 describe("parseOptions", () => {
   test("default options", () => {

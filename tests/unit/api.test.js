@@ -1,5 +1,5 @@
 import { describe, test, expect } from "vitest";
-import { getFaces, listCategories } from "@src/lib/main.js";
+import { getFaces, listCategories, faces } from "@src/lib/main.js";
 
 describe("Library API", () => {
   test("default getFaces returns one face from all category with null seed", () => {
@@ -32,6 +32,6 @@ describe("Library API", () => {
   test("listCategories returns all valid categories", () => {
     const cats = listCategories();
     expect(Array.isArray(cats)).toBe(true);
-    expect(cats.sort()).toEqual(["happy", "sad", "angry", "surprised", "all"].sort());
+    expect(cats.sort()).toEqual([...(Object.keys(faces)), "all"].sort());
   });
 });
