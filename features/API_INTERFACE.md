@@ -1,56 +1,40 @@
 # Overview
-Merge statistics and category listing into a unified API interface. Provide CLI flags, HTTP endpoints, and programmatic functions to report face pool statistics and list available categories, with support for custom configurations.
+Merge statistics and category listing into a unified API interface. Provide consistent CLI flags, HTTP endpoints, and programmatic functions to report the distribution of faces by category and to list available categories with support for custom face definitions.
 
 # CLI Behavior
-• Add flag --stats, -T (boolean) to report face pool statistics.
-  • When stats is true:
-    • If --json is provided, output JSON mapping each category to its count and a total count.
-    • Otherwise print lines “category: count” for each and a final “total: count”.
-• Add flag --list-categories, -L (boolean) to list available categories.
-  • When list-categories is true:
-    • If --json is provided, output a JSON array of category names.
+• Add flag --stats, alias -T (boolean) to report face pool statistics.
+  • When --stats is set:
+    • If --json is specified then output a JSON object mapping each category to its count plus a total count property.
+    • Otherwise print each line as category: count followed by total: count.
+• Add flag --list-categories, alias -L (boolean) to list available categories.
+  • When --list-categories is set:
+    • If --json is specified then output a JSON array of category names.
     • Otherwise print each category on its own line.
-• Flags can be combined with --config to merge custom face definitions into both reports.
+• Flags --stats and --list-categories may be combined. If neither is present fall back to existing face generation behavior. Flags honor --config for merging custom definitions.
 
 # HTTP API
 • GET /stats endpoint
-  • Accepts query parameter config for JSON or YAML config path.
-  • On success returns HTTP 200 with JSON:
-    {
-      stats: { <category>: <count>, … },
-      total: <count>
-    }
-  • On invalid config or parse error returns HTTP 400 with { error: message }.
+  • Accept optional query parameter config for path to JSON or YAML config file.
+  • On success respond with HTTP 200 and JSON body { stats: { <category>: <count>, … }, total: <count> }.
+  • On invalid config or parse error respond HTTP 400 with { error: <message> }.
 • GET /categories endpoint
-  • Accepts query parameter config for JSON or YAML config path.
-  • On success returns HTTP 200 with JSON { categories: [<name>, …] }.
-  • On invalid config or parse error returns HTTP 400 with { error: message }.
+  • Accept optional query parameter config for custom definitions.
+  • On success respond with HTTP 200 and JSON body { categories: [<name>, …] }.
+  • On invalid config or parse error respond HTTP 400 with { error: <message> }.
 
 # Programmatic API
-• Export getStats(options) returning { stats: Record<string, number>, total: number }.
-  • options: { config?: string } to merge custom definitions.
-• Export listCategories(options) returning string[] of category names including built-in, custom, and "all".
+• Export function getStats(options) returning { stats: Record<string, number>, total: number }.
+  • options: { config?: string } to include custom definitions.
+• Export function listCategories(options) returning string[] of category names including built-in, custom, and “all”.
 
 # Implementation Details
-1 Extend OptionsSchema to include:
-   • stats: z.boolean().default(false)
-   • listCategories: z.boolean().default(false)
-2 Update parseOptions to parse --stats/-T and --list-categories/-L and attach to returned options.
-3 In main():
-   • Check stats flag before generation. If set call getStats and format output based on json flag.
-   • Check listCategories flag before generation. If set call listCategories and format output based on json flag.
-4 In createApp():
-   • Implement /stats route: parse config, call getStats, handle success and error.
-   • Implement /categories route: parse config, call listCategories, handle success and error.
-5 Update CLI help output, README.md, and docs/USAGE.md to include new flags and usage examples.
+1 Extend OptionsSchema to include boolean stats and listCategories, default false.  
+2 Update parseOptions to recognize --stats/-T and --list-categories/-L and attach to returned options object.  
+3 In main(): check stats flag first; if set call getStats and format based on json; then check listCategories and format. If neither, continue to face generation.  
+4 In createApp(): implement routes /stats and /categories as defined above, using shared parsing and error handling pattern from /faces.  
+5 Update README.md and docs/USAGE.md to document new flags and endpoints with usage examples and expected output formats.
 
 # Testing
-• Unit tests for getStats and listCategories with default settings, custom config merging, and error cases.
-• CLI tests for invoking with --stats and --list-categories in text and JSON modes and exit codes.
-• HTTP tests for GET /stats and GET /categories with default, custom config, and invalid config scenarios.
-
-# Documentation
-Update README.md and docs/USAGE.md to document:
-• --stats/-T and --list-categories/-L flags
-• GET /stats and GET /categories endpoints
-• getStats and listCategories programmatic APIs
+• Unit tests for getStats and listCategories with default, custom config, and error scenarios.  
+• CLI tests invoking main with --stats and --list-categories in text and JSON modes, verifying correct output and exit codes.  
+• HTTP tests for GET /stats and GET /categories with valid default, custom config, and invalid config requests.
