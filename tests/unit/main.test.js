@@ -4,7 +4,27 @@ import { parseOptions, getRandomFaceFromList, main } from "@src/lib/main.js";
 
 describe("parseOptions", () => {
   test("default options", () => {
-    expect(parseOptions([])).toEqual({ count: 1, category: "all", seed: undefined, json: false });
+    expect(parseOptions([])).toEqual({ count: 1, category: "all", seed: undefined, json: false, serve: false, port: 3000 });
+  });
+
+  test("serve flag default off", () => {
+    expect(parseOptions([]).serve).toBe(false);
+  });
+
+  test("long serve flag", () => {
+    expect(parseOptions(["--serve"]).serve).toBe(true);
+  });
+
+  test("short serve flag", () => {
+    expect(parseOptions(["-S"]).serve).toBe(true);
+  });
+
+  test("port flag", () => {
+    expect(parseOptions(["--port", "8080"]).port).toBe(8080);
+  });
+
+  test("short port flag", () => {
+    expect(parseOptions(["-p", "9090"]).port).toBe(9090);
   });
 
   test("json flag default off", () => {
@@ -14,24 +34,24 @@ describe("parseOptions", () => {
 
   test("long json flag", () => {
     expect(parseOptions(["--json"]))
-      .toEqual({ count: 1, category: "all", seed: undefined, json: true });
+      .toEqual({ count: 1, category: "all", seed: undefined, json: true, serve: false, port: 3000 });
   });
 
   test("short json flag", () => {
     expect(parseOptions(["-j"]))
-      .toEqual({ count: 1, category: "all", seed: undefined, json: true });
+      .toEqual({ count: 1, category: "all", seed: undefined, json: true, serve: false, port: 3000 });
   });
 
   test("custom count and category", () => {
     expect(
       parseOptions(["--count", "3", "--category", "happy"]),
-    ).toEqual({ count: 3, category: "happy", seed: undefined, json: false });
+    ).toEqual({ count: 3, category: "happy", seed: undefined, json: false, serve: false, port: 3000 });
   });
 
   test("short flags", () => {
     expect(
       parseOptions(["-c", "2", "-C", "sad", "-s", "42"]),
-    ).toEqual({ count: 2, category: "sad", seed: 42, json: false });
+    ).toEqual({ count: 2, category: "sad", seed: 42, json: false, serve: false, port: 3000 });
   });
 
   test("invalid count throws", () => {

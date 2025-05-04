@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // src/lib/main.js
 
+import express from "express";
 import { fileURLToPath } from "url";
 import seedrandom from "seedrandom";
 import { z } from "zod";
@@ -19,6 +20,8 @@ const OptionsSchema = z.object({
   category: z.enum(categories).default("all"),
   seed: z.coerce.number().int().nonnegative().optional(),
   json: z.boolean().default(false),
+  serve: z.boolean().default(false),
+  port: z.coerce.number().int().min(1).default(3000),
 });
 
 /**
@@ -26,7 +29,14 @@ const OptionsSchema = z.object({
  * @param {string[]} args
  */
 export function parseOptions(args) {
-  const result = { count: undefined, category: undefined, seed: undefined, json: undefined };
+  const result = {
+    count: undefined,
+    category: undefined,
+    seed: undefined,
+    json: undefined,
+    serve: undefined,
+    port: undefined,
+  };
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg === "--count" || arg === "-c") {
@@ -37,6 +47,10 @@ export function parseOptions(args) {
       result.seed = Number(args[++i]);
     } else if (arg === "--json" || arg === "-j") {
       result.json = true;
+    } else if (arg === "--serve" || arg === "-S") {
+      result.serve = true;
+    } else if (arg === "--port" || arg === "-p") {
+      result.port = Number(args[++i]);
     }
   }
   return OptionsSchema.parse(result);
@@ -50,6 +64,58 @@ export function parseOptions(args) {
 export function getRandomFaceFromList(list, rng = Math.random) {
   const idx = Math.floor(rng() * list.length);
   return list[idx];
+}
+
+/**
+ * Create and configure the Express app
+ */
+export function createApp() {
+  const app = express();
+
+  app.get("/health", (req, res) => {
+    res.json({ status: "OK" });
+  });
+
+  app.get("/faces", (req, res) => {
+    let count = parseInt(req.query.count, 10);
+    if (isNaN(count) || count < 1) count = 1;
+
+    let category = req.query.category;
+    if (!categories.includes(category)) category = "all";
+
+    let seedVal = null;
+    let rng = Math.random;
+    if (req.query.seed !== undefined) {
+      const s = parseInt(req.query.seed, 10);
+      if (!isNaN(s) && s >= 0) {
+        seedVal = s;
+        rng = seedrandom(String(s));
+      }
+    }
+
+    let pool = [];
+    if (category === "all") {
+      pool = Object.values(faces).flat();
+    } else {
+      pool = faces[category];
+    }
+
+    const facesArray = [];
+    for (let i = 0; i < count; i++) {
+      facesArray.push(getRandomFaceFromList(pool, rng));
+    }
+
+    const format = req.query.format === "text" ? "text" : "json";
+
+    if (format === "text") {
+      res.set("Content-Type", "text/plain");
+      res.send(facesArray.join("\n"));
+    } else {
+      res.json({ faces: facesArray, category, count, seed: seedVal });
+    }
+  });
+
+  return app;
 }
 
 /**
@@ -72,12 +138,24 @@ export function main(args) {
       "  --seed, -s      nonnegative integer seed for reproducible output"
     );
     console.log("  --json, -j      output JSON payload");
+    console.log("  --serve, -S     start HTTP server mode");
+    console.log("  --port, -p      port for HTTP server (default: 3000)");
     console.log("  --help, -h      show this help message");
     console.log("");
     console.log(`Categories: ${categories.join(", ")}`);
     return;
   }
-  const { count, category, seed, json } = parseOptions(args);
+
+  const { count, category, seed, json, serve, port } = parseOptions(args);
+
+  if (serve) {
+    const app = createApp();
+    app.listen(port, () => {
+      console.log(`Serving ASCII faces on http://localhost:${port}/faces`);
+    });
+    return;
+  }
+
   const rng = seed !== undefined ? seedrandom(String(seed)) : Math.random;
   let pool = [];
 
