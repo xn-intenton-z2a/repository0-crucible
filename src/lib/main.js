@@ -18,6 +18,7 @@ const OptionsSchema = z.object({
   count: z.coerce.number().int().min(1).default(1),
   category: z.enum(categories).default("all"),
   seed: z.coerce.number().int().nonnegative().optional(),
+  json: z.boolean().default(false),
 });
 
 /**
@@ -25,7 +26,7 @@ const OptionsSchema = z.object({
  * @param {string[]} args
  */
 export function parseOptions(args) {
-  const result = { count: undefined, category: undefined, seed: undefined };
+  const result = { count: undefined, category: undefined, seed: undefined, json: undefined };
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
     if (arg === "--count" || arg === "-c") {
@@ -34,6 +35,8 @@ export function parseOptions(args) {
       result.category = args[++i];
     } else if (arg === "--seed" || arg === "-s") {
       result.seed = Number(args[++i]);
+    } else if (arg === "--json" || arg === "-j") {
+      result.json = true;
     }
   }
   return OptionsSchema.parse(result);
@@ -68,12 +71,13 @@ export function main(args) {
     console.log(
       "  --seed, -s      nonnegative integer seed for reproducible output"
     );
+    console.log("  --json, -j      output JSON payload");
     console.log("  --help, -h      show this help message");
     console.log("");
     console.log(`Categories: ${categories.join(", ")}`);
     return;
   }
-  const { count, category, seed } = parseOptions(args);
+  const { count, category, seed, json } = parseOptions(args);
   const rng = seed !== undefined ? seedrandom(String(seed)) : Math.random;
   let pool = [];
 
@@ -81,6 +85,16 @@ export function main(args) {
     pool = Object.values(faces).flat();
   } else {
     pool = faces[category];
+  }
+
+  if (json) {
+    const facesArray = [];
+    for (let i = 0; i < count; i++) {
+      facesArray.push(getRandomFaceFromList(pool, rng));
+    }
+    const payload = { faces: facesArray, category, count, seed: seed !== undefined ? seed : null };
+    console.log(JSON.stringify(payload));
+    return;
   }
 
   for (let i = 0; i < count; i++) {
