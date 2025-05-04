@@ -48,6 +48,10 @@ node src/lib/main.js --config ./tests/unit/fixtures/custom.json --category happy
 
 # Override sad category with a custom YAML config
 node src/lib/main.js -f ./config/custom.yaml --category sad -c 3
+
+# Add and use a new custom category via JSON config
+node src/lib/main.js --config ./tests/unit/fixtures/custom.json --category custom --count 2
+# e.g. C1 C2
 ```
 
 ### HTTP Server Mode
@@ -73,30 +77,4 @@ curl "http://localhost:8080/faces?count=2&format=text"
 # Query /faces endpoint with config
 curl "http://localhost:8080/faces?config=./tests/unit/fixtures/custom.json&category=happy&count=2"
 # => {"faces":["H1","H2"],"category":"happy","count":2,"seed":null}
-```
-
-## Library API
-
-You can generate faces programmatically by importing the functions from the library:
-
-```js
-import { generateFaces, listCategories } from '@xn-intenton-z2a/repository0-crucible';
-
-// Default usage
-const result = generateFaces();
-console.log(result.faces, result.category, result.count, result.seed);
-// e.g. ['😊'] 'all' 1 null
-
-// Custom options
-const custom = generateFaces({ count: 3, category: 'happy', seed: 42 });
-console.log(custom);
-// e.g. { faces: ['😀','😄','😊'], category: 'happy', count: 3, seed: 42 }
-
-// Override with custom config
-const override = generateFaces({ config: './tests/unit/fixtures/custom.json', category: 'happy', count: 2 });
-console.log(override.faces); // ['H1', 'H2']
-
-// List available categories
-console.log(listCategories());
-// ['happy','sad','angry','surprised','all']
 ```

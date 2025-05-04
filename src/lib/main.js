@@ -17,13 +17,12 @@ export const faces = {
   surprised: ["😮", "😲", "😯", "(ﾟOﾟ)", "(⊙_⊙)"],
 };
 
-// Allowed categories including all
-const categories = [...Object.keys(faces), "all"];
+const defaultCategories = Object.keys(faces);
 
 // Schema for options including programmatic API and config
 export const OptionsSchema = z.object({
   count: z.coerce.number().int().min(1).default(1),
-  category: z.enum(categories).default("all"),
+  category: z.string().default("all"),
   seed: z.coerce.number().int().nonnegative().optional(),
   json: z.boolean().default(false),
   serve: z.boolean().default(false),
@@ -84,7 +83,12 @@ export function parseOptions(args) {
       result.config = args[++i];
     }
   }
-  return OptionsSchema.parse(result);
+  const opts = OptionsSchema.parse(result);
+  // Validate category against default categories when no config
+  if (!opts.config && opts.category !== "all" && !defaultCategories.includes(opts.category)) {
+    throw new Error(`Invalid category: ${opts.category}`);
+  }
+  return opts;
 }
 
 /**
@@ -107,20 +111,22 @@ export function generateFacesCore(opts = {}) {
     count: true,
     category: true,
     seed: true,
-    config: true
+    config: true,
   }).parse(opts);
   const { count, category, seed, config } = parsed;
 
-  // Merge custom config if provided
+  // Merge default faces with custom config if provided
   let mergedFaces = { ...faces };
   if (config) {
     const custom = loadCustomConfig(config);
-    for (const key in custom) {
-      if (!mergedFaces.hasOwnProperty(key)) {
-        throw new Error(`Unknown category in config: ${key}`);
-      }
-      mergedFaces[key] = custom[key];
-    }
+    // Allow overrides and new categories
+    mergedFaces = { ...mergedFaces, ...custom };
+  }
+
+  // Validate category against merged categories
+  const validCategories = [...Object.keys(mergedFaces), "all"];
+  if (!validCategories.includes(category)) {
+    throw new Error(`Unknown category: ${category}`);
   }
 
   // Instantiate RNG
@@ -156,10 +162,7 @@ export function createApp() {
     const c = parseInt(req.query.count, 10);
     count = !isNaN(c) && c >= 1 ? c : undefined;
 
-    let category = req.query.category;
-    if (!categories.includes(category)) {
-      category = undefined;
-    }
+    const category = req.query.category;
 
     let seed;
     if (req.query.seed !== undefined) {
@@ -217,7 +220,7 @@ export function main(args) {
     console.log("  --config, -f    path to JSON or YAML face configuration file");
     console.log("  --help, -h      show this help message");
     console.log("");
-    console.log(`Categories: ${categories.join(", ")}`);
+    console.log(`Categories: ${defaultCategories.join(", ")}${defaultCategories.length ? ", " : ""}all`);
     return;
   }
 
@@ -242,7 +245,7 @@ export function main(args) {
         faces: result.faces,
         category: result.category,
         count: result.count,
-        seed: result.seed
+        seed: result.seed,
       })
     );
     return;
@@ -252,29 +255,14 @@ export function main(args) {
 }
 
 // Programmatic API
-/**
- * Get random faces programmatically
- * @param {{count?: number, category?: string, seed?: number, config?: string}} options
- * @returns {{faces: string[], category: string, count: number, seed: number|null}}
- */
 export function getFaces(options = {}) {
-  // Delegate to core
   return generateFacesCore(options);
 }
 
-/**
- * List available categories
- * @returns {string[]}
- */
 export function listCategories() {
-  return [...categories];
+  return [...defaultCategories, "all"];
 }
 
-/**
- * Generate random faces programmatically
- * @param {{count?: number, category?: string, seed?: number, config?: string}} options
- * @returns {{faces: string[], category: string, count: number, seed: number|null}}
- */
 export function generateFaces(options = {}) {
   return getFaces(options);
 }
