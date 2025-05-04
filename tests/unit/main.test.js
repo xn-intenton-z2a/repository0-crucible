@@ -4,7 +4,7 @@ import seedrandom from "seedrandom";
 
 describe("parseOptions", () => {
   test("default options", () => {
-    expect(parseOptions([])).toEqual({ count: 1, category: "all", seed: undefined, json: false, serve: false, port: 3000 });
+    expect(parseOptions([])).toEqual({ count: 1, category: "all", seed: undefined, json: false, serve: false, port: 3000, config: undefined });
   });
 
   test("serve flag default off", () => {
@@ -34,24 +34,24 @@ describe("parseOptions", () => {
 
   test("long json flag", () => {
     expect(parseOptions(["--json"]))
-      .toEqual({ count: 1, category: "all", seed: undefined, json: true, serve: false, port: 3000 });
+      .toEqual({ count: 1, category: "all", seed: undefined, json: true, serve: false, port: 3000, config: undefined });
   });
 
   test("short json flag", () => {
     expect(parseOptions(["-j"]))
-      .toEqual({ count: 1, category: "all", seed: undefined, json: true, serve: false, port: 3000 });
+      .toEqual({ count: 1, category: "all", seed: undefined, json: true, serve: false, port: 3000, config: undefined });
   });
 
   test("custom count and category", () => {
     expect(
       parseOptions(["--count", "3", "--category", "happy"]),
-    ).toEqual({ count: 3, category: "happy", seed: undefined, json: false, serve: false, port: 3000 });
+    ).toEqual({ count: 3, category: "happy", seed: undefined, json: false, serve: false, port: 3000, config: undefined });
   });
 
   test("short flags", () => {
     expect(
       parseOptions(["-c", "2", "-C", "sad", "-s", "42"]),
-    ).toEqual({ count: 2, category: "sad", seed: 42, json: false, serve: false, port: 3000 });
+    ).toEqual({ count: 2, category: "sad", seed: 42, json: false, serve: false, port: 3000, config: undefined });
   });
 
   test("invalid count throws", () => {
