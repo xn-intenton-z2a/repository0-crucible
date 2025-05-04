@@ -65,9 +65,13 @@ node src/lib/main.js --serve
 # Start server on port 8080
 node src/lib/main.js --serve --port 8080
 
-# Query the /faces endpoint in JSON
+# Query the /faces endpoint in JSON (shared OptionsSchema validated)
 curl "http://localhost:8080/faces?count=2&category=sad&seed=100"
 # => {"faces":[...],"category":"sad","count":2,"seed":100}
+
+# Invalid parameters return HTTP 400 with JSON error response
+curl "http://localhost:8080/faces?count=abc"
+# => {"error":"Expected number, received \"abc\""}
 
 # Query /faces endpoint in text format
 curl "http://localhost:8080/faces?count=2&format=text"
@@ -79,6 +83,10 @@ curl "http://localhost:8080/faces?config=./tests/unit/fixtures/custom.json&categ
 # => {"faces":["C1","C2"],"category":"custom","count":2,"seed":null}
 ```
 
-### Error Handling
+### Unified API Surface
 
-If query parameters fail validation (e.g., unknown category, non-integer count, negative seed), the server responds with HTTP 400 and a JSON payload containing an `error` key with a descriptive message. The HTTP API uses the same option names and validation rules as the CLI (`--count`, `--category`, `--seed`, `--config`) and programmatic API (`generateFaces(options)`).
+The CLI, HTTP endpoints, and programmatic API share a single `OptionsSchema` for consistent defaults, validation, and error handling:
+
+- **CLI**: Flags `--count`, `--category`, `--seed`, `--json`, `--serve`, `--port`, `--config`, all validated via `OptionsSchema`.
+- **HTTP**: Query parameters `count`, `category`, `seed`, `format`, `config` parsed and validated with the same schema; invalid inputs yield HTTP 400 errors.
+- **Programmatic**: Functions `generateFaces(options)` and `listCategories()` follow the same schema and behavior.
