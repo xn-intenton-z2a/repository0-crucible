@@ -1,7 +1,7 @@
 {
   "name": "@xn-intenton-z2a/repository0-crucible",
   "version": "1.2.0-0",
-  "description": "add repository description here",
+  "description": "CLI tool that outputs random ASCII face expressions for emotional feedback (supports --count, --category, --seed).",
   "type": "module",
   "imports": {
     "@src/*": "./src/*"
@@ -27,7 +27,14 @@
     "refresh": "node src/lib/main.js --refresh",
     "merge-persist": "node src/lib/main.js --merge-persist"
   },
-  "keywords": [],
+  "keywords": [
+    "ascii",
+    "cli",
+    "emoticon",
+    "seedrandom",
+    "faces",
+    "random"
+  ],
   "author": "",
   "license": "Apache-2.0",
   "dependencies": {
@@ -66,11 +73,21 @@
   "engines": {
     "node": ">=20.0.0"
   },
-  "files": ["package.json"],
+  "files": [
+    "package.json"
+  ],
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
-  "eslintIgnore": ["archive/**", "build/", "coverage/", "dist/", "exports/", "node_modules/", "eslint.config.js"],
+  "eslintIgnore": [
+    "archive/**",
+    "build/",
+    "coverage/",
+    "dist/",
+    "exports/",
+    "node_modules/",
+    "eslint.config.js"
+  ],
   "eslintConfig": {
     "rules": {
       "sonarjs/cognitive-complexity": "off"
