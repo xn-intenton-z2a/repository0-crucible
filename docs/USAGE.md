@@ -77,10 +77,6 @@ curl "http://localhost:8080/faces?count=abc"
 curl "http://localhost:8080/faces?count=2&format=text"
 # => 😢
 # => 😮
-
-# Query /faces endpoint with config
-curl "http://localhost:8080/faces?config=./tests/unit/fixtures/custom.json&category=custom&count=2"
-# => {"faces":["C1","C2"],"category":"custom","count":2,"seed":null}
 ```
 
 ### Unified API Surface
