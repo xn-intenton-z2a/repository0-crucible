@@ -78,3 +78,7 @@ curl "http://localhost:8080/faces?count=2&format=text"
 curl "http://localhost:8080/faces?config=./tests/unit/fixtures/custom.json&category=custom&count=2"
 # => {"faces":["C1","C2"],"category":"custom","count":2,"seed":null}
 ```
+
+### Error Handling
+
+If query parameters fail validation (e.g., unknown category, non-integer count, negative seed), the server responds with HTTP 400 and a JSON payload containing an `error` key with a descriptive message. The HTTP API uses the same option names and validation rules as the CLI (`--count`, `--category`, `--seed`, `--config`) and programmatic API (`generateFaces(options)`).
