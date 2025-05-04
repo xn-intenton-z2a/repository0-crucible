@@ -13,6 +13,7 @@ describe("HTTP server mode", () => {
     const res = await request(app).get("/health");
     expect(res.status).toBe(200);
     expect(res.body).toEqual({ status: "OK" });
+    expect(res.header).toHaveProperty("access-control-allow-origin", "*");
   });
 
   test("GET /faces default returns JSON with one face", async () => {
@@ -24,6 +25,7 @@ describe("HTTP server mode", () => {
     expect(res.body.category).toBe("all");
     expect(res.body.count).toBe(1);
     expect(res.body.seed).toBe(null);
+    expect(res.header).toHaveProperty("access-control-allow-origin", "*");
   });
 
   test("GET /faces with parameters returns correct JSON", async () => {
@@ -34,6 +36,7 @@ describe("HTTP server mode", () => {
     expect(category).toBe("happy");
     expect(faces.length).toBe(3);
     expect(seed).toBe(42);
+    expect(res.header).toHaveProperty("access-control-allow-origin", "*");
 
     const res2 = await request(app).get("/faces?count=3&category=happy&seed=42");
     expect(res2.body.faces).toEqual(faces);
@@ -42,6 +45,7 @@ describe("HTTP server mode", () => {
   test("GET /faces text format returns plain text", async () => {
     const res = await request(app).get("/faces?count=2&format=text");
     expect(res.status).toBe(200);
+    expect(res.header).toHaveProperty("access-control-allow-origin", "*");
     expect(res.header["content-type"]).toMatch(/text\/plain/);
     const lines = res.text.split("\n");
     expect(lines.length).toBe(2);
@@ -52,6 +56,7 @@ describe("HTTP server mode", () => {
     expect(res.status).toBe(400);
     expect(res.body).toHaveProperty("error");
     expect(res.body.error).toMatch(/Unknown category/i);
+    expect(res.header).toHaveProperty("access-control-allow-origin", "*");
   });
 
   test("GET /faces with non-numeric count returns validation error", async () => {
@@ -59,5 +64,6 @@ describe("HTTP server mode", () => {
     expect(res.status).toBe(400);
     expect(res.body).toHaveProperty("error");
     expect(res.body.error).toMatch(/number/i);
+    expect(res.header).toHaveProperty("access-control-allow-origin", "*");
   });
 });
