@@ -28,6 +28,7 @@ export const OptionsSchema = z.object({
   serve: z.boolean().default(false),
   port: z.coerce.number().int().min(1).default(3000),
   config: z.string().optional(),
+  format: z.string().optional(), // format only for HTTP
 });
 
 /**
@@ -64,6 +65,7 @@ export function parseOptions(args) {
     serve: undefined,
     port: undefined,
     config: undefined,
+    format: undefined,
   };
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -83,7 +85,7 @@ export function parseOptions(args) {
       result.config = args[++i];
     }
   }
-  const opts = OptionsSchema.parse(result);
+  const opts = OptionsSchema.omit({ format: true }).parse(result);
   // Validate category against default categories when no config
   if (!opts.config && opts.category !== "all" && !defaultCategories.includes(opts.category)) {
     throw new Error(`Invalid category: ${opts.category}`);
@@ -157,18 +159,20 @@ export function createApp() {
   });
 
   app.get("/faces", (req, res) => {
-    // Parse query parameters using Zod schema
     let parsedOpts;
     try {
+      // Use shared schema for parsing and validation
       parsedOpts = OptionsSchema.pick({
         count: true,
         category: true,
         seed: true,
         config: true,
-      }).parse(req.query);
+        format: true,
+      }).parse({
+        ...req.query,
+      });
     } catch (err) {
       if (err instanceof ZodError) {
-        // Collect validation messages
         const message = err.errors.map((e) => e.message).join(", ");
         res.status(400).json({ error: message });
       } else {
@@ -187,9 +191,9 @@ export function createApp() {
     }
 
     // Determine format
-    const format = req.query.format === "text" ? "text" : "json";
+    const fmt = parsedOpts.format === "text" || req.query.format === "text" ? "text" : "json";
 
-    if (format === "text") {
+    if (fmt === "text") {
       res.set("Content-Type", "text/plain");
       res.send(result.faces.join("\n"));
     } else {
