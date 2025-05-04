@@ -1,7 +1,8 @@
 #!/usr/bin/env node
 // src/lib/main.js
 
-import { fileURLToPath } from "url";
+import { fileURLToPath, URL } from "url";
+import http from "http";
 
 /**
  * Stub core generation function for demo purposes.
@@ -32,6 +33,85 @@ export function runDemo() {
  */
 export function main(args) {
   args = args || [];
+  if (args.includes("--serve")) {
+    // Parse port from --port=<port> or default to 3000
+    let port = 3000;
+    const portArg = args.find((a) => a.startsWith("--port="));
+    if (portArg) {
+      const parsed = parseInt(portArg.split("=")[1], 10);
+      if (!isNaN(parsed)) {
+        port = parsed;
+      }
+    }
+    const server = http.createServer((req, res) => {
+      try {
+        const reqUrl = new URL(req.url || "", `http://${req.headers.host}`);
+        if (req.method === "GET" && reqUrl.pathname === "/faces") {
+          const params = reqUrl.searchParams;
+          // count
+          const countStr = params.get("count");
+          if (!countStr) {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ error: "Missing required parameter: count" }));
+            return;
+          }
+          const count = parseInt(countStr, 10);
+          if (isNaN(count)) {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ error: "Invalid parameter: count must be an integer" }));
+            return;
+          }
+          // seed
+          const seedStr = params.get("seed");
+          if (!seedStr) {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ error: "Missing required parameter: seed" }));
+            return;
+          }
+          const seed = parseInt(seedStr, 10);
+          if (isNaN(seed)) {
+            res.writeHead(400, { "Content-Type": "application/json" });
+            res.end(JSON.stringify({ error: "Invalid parameter: seed must be an integer" }));
+            return;
+          }
+          // category
+          const category = params.get("category") || "all";
+          // unique
+          const uniqueStr = params.get("unique");
+          let unique = false;
+          if (uniqueStr !== null) {
+            if (uniqueStr === "true") {
+              unique = true;
+            } else if (uniqueStr === "false") {
+              unique = false;
+            } else {
+              res.writeHead(400, { "Content-Type": "application/json" });
+              res.end(
+                JSON.stringify({
+                  error: "Invalid parameter: unique must be true or false",
+                })
+              );
+              return;
+            }
+          }
+          const result = generateFacesCore({ count, seed, category, unique });
+          const payload = { faces: result };
+          res.writeHead(200, { "Content-Type": "application/json" });
+          res.end(JSON.stringify(payload));
+        } else {
+          res.writeHead(404, { "Content-Type": "application/json" });
+          res.end(JSON.stringify({ error: "Not Found" }));
+        }
+      } catch (err) {
+        res.writeHead(500, { "Content-Type": "application/json" });
+        res.end(JSON.stringify({ error: "Internal Server Error" }));
+      }
+    });
+    server.listen(port, () => {
+      console.log(`Listening on port ${port}`);
+    });
+    return server;
+  }
   if (args.includes("--demo")) {
     runDemo();
     return;
