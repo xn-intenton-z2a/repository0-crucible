@@ -31,12 +31,16 @@
 <ul class="md-github">
 <li class="md-github">Outputs random ASCII face expressions for emotional feedback.</li>
 <li class="md-github">Configurable flags for count, category, and reproducible output via seed.</li>
+<li class="md-github">HTTP Server Mode: Using <code class="md-github">--serve</code> (<code class="md-github">-S</code>) starts an HTTP API server on port <code class="md-github">3000</code> by default, or on a custom port via <code class="md-github">--port</code> (<code class="md-github">-p</code>).</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="flags-and-defaults" href="#flags-and-defaults"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Flags and Defaults</h2>
 <ul class="md-github">
 <li class="md-github"><code class="md-github">--count</code>, <code class="md-github">-c</code> (integer ≥1, default: <code class="md-github">1</code>): number of faces to display.</li>
 <li class="md-github"><code class="md-github">--category</code>, <code class="md-github">-C</code> (<code class="md-github">happy</code>, <code class="md-github">sad</code>, <code class="md-github">angry</code>, <code class="md-github">surprised</code>, <code class="md-github">all</code>; default: <code class="md-github">all</code>): emotion category.</li>
 <li class="md-github"><code class="md-github">--seed</code>, <code class="md-github">-s</code> (nonnegative integer): seed for reproducible output.</li>
+<li class="md-github"><code class="md-github">--json</code>, <code class="md-github">-j</code>: output JSON payload.</li>
+<li class="md-github"><code class="md-github">--serve</code>, <code class="md-github">-S</code>: start HTTP server mode (default: off).</li>
+<li class="md-github"><code class="md-github">--port</code>, <code class="md-github">-p</code> (integer ≥1, default: <code class="md-github">3000</code>): port for HTTP server.</li>
 <li class="md-github"><code class="md-github">--help</code>, <code class="md-github">-h</code>: display usage information.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="available-categories" href="#available-categories"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Available Categories</h2>
@@ -67,14 +71,33 @@
 </code></pre>
 </li>
 </ol>
-<h2 class="md-github"><a class="md-github__anchor" name="contributing" href="#contributing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Contributing</h2>
-<p class="md-github">Please see <a href="CONTRIBUTING.md" class="md-github">CONTRIBUTING.md</a> for contribution guidelines.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="http-server-mode" href="#http-server-mode"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>HTTP Server Mode</h2>
+<p class="md-github">Use <code class="md-github">--serve</code> (<code class="md-github">-S</code>) to start an HTTP server instead of printing to stdout. Use <code class="md-github">--port</code> (<code class="md-github">-p</code>) to specify the port (default: <code class="md-github">3000</code>).</p>
+<pre class="md-github"><code class="md-github language-bash"># Start server on default port 3000
+node src/lib/main.js --serve
+
+# Start server on port 8080
+node src/lib/main.js --serve --port 8080
+
+# Query the /faces endpoint in JSON
+curl &quot;http://localhost:8080/faces?count=2&amp;category=sad&amp;seed=100&quot;
+# =&gt; {&quot;faces&quot;:[...],&quot;category&quot;:&quot;sad&quot;,&quot;count&quot;:2,&quot;seed&quot;:100}
+
+# Query the /health endpoint
+curl &quot;http://localhost:8080/health&quot;
+# =&gt; {&quot;status&quot;:&quot;OK&quot;}
+
+# Query /faces endpoint in plain text
+curl &quot;http://localhost:8080/faces?count=2&amp;format=text&quot;
+# =&gt; 😢
+# =&gt; 😮
+</code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
 <p class="md-github">Released under the MIT License.</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-05-04T04:22:09.819Z</p>
+    <p>Generated on 2025-05-04T05:21:23.673Z</p>
   </footer>
 </body>
 </html>

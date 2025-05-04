@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="yargs_core" href="#yargs_core"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>YARGS_CORE</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Installed via npm install --save yargs. Use import yargs from 'yargs' or require('yargs'), plus hideBin helper. Initialize parser with yargs(hideBin(process.argv)), scriptName(), usage(), help(), parse(). Define commands via .command(name, desc, builder(yargs), handler(argv)), enforce via .demandCommand(). Define options via .option(key, {...}) and .positional(). Global modes: strict(), strictCommands(), strictOptions(), exitProcess(), showHelpOnFail(). Add help/version via .help(), .alias(), .version(). Dual distribution: ESM build + Rollup CJS bundle + package.json conditional exports. Experimental Deno support via URL import. v16 breaking: no deep imports, removed rebase(), Node 8 dropped.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Initialization and Parsing
+2 Command Definition
+3 Option Definition
+4 Global Configuration
+5 Helpers
+6 Distribution Patterns</p>
+<p class="md-github">1 Initialization and Parsing
+Import ESM: import yargs from 'yargs'; import { hideBin } from 'yargs/helpers'
+Usage: yargs(hideBin(process.argv)).scriptName(scriptName).usage(usagePattern).help().parse()</p>
+<p class="md-github">2 Command Definition
+.command(name:string, description:string, builder:(yargs)-&gt;yargs, handler:(argv)-&gt;void)
+.demandCommand(min:number, max?:number)</p>
+<p class="md-github">3 Option Definition
+.option(key:string, {
+alias?:string|string[]
+type:'string'|'number'|'boolean'
+default?:string|number|boolean
+describe:string
+requiresArg?:boolean
+choices?:Array&lt;string|number&gt;
+coerce?:(value)-&gt;any
+})
+.positional(name:string, {
+type:'string'|'number'|'boolean'
+default?:string|number|boolean
+describe:string
+})</p>
+<p class="md-github">4 Global Configuration
+.strict()
+.strictCommands()
+.strictOptions()
+.exitProcess(enabled:boolean)
+.showHelpOnFail(enabled:boolean, formatter?)</p>
+<p class="md-github">5 Helpers
+hideBin(argv:string[]):string[]  removes node exec and script path</p>
+<p class="md-github">6 Distribution Patterns
+ESM build from TypeScript
+Rollup for CommonJS bundle
+package.json exports:
+import: './esm/index.js'
+require: './cjs/index.js'</p>
+<p class="md-github">Deno Import:
+import yargs from 'https://deno.land/x/yargs/deno.ts'
+import {Arguments,YargsType} from 'https://deno.land/x/yargs/types.ts'</p>
+<p class="md-github">yargs().command('download &lt;files...&gt;', 'download', (yargs:YargsType)=&gt;yargs.positional('files',{describe:'files'}),(argv:Arguments)=&gt;console.info(argv)).strictCommands().demandCommand(1).parse(Deno.args)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Installation:
+npm install --save yargs
+Helpers:
+hideBin(process.argv) strips default args
+Command:
+.command(name,desc,builder,handler) supports nested builder chaining
+Options:
+.option(key,{alias,type,default,describe,requiresArg,choices,coerce})
+.positional(name,{type,default,describe})
+Configuration:
+.strict(): throw on unknown commands/options
+.strictCommands(): throw on unknown commands
+.strictOptions(): throw on unknown options
+.demandCommand(1): require at least 1 command
+.exitProcess(false): return errors instead of process.exit
+.showHelpOnFail(true): display help on parsing errors</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Method Signatures:
+function yargs(argv?:string[]): yargs.Argv&lt;{}&gt;
+interface Argv<T> {
+scriptName(name:string): this
+usage(command:string): this
+command(cmd:string|string[], description:string, builder?: (args:Argv<any>)=&gt;Argv<any>, handler?: (args:T)=&gt;void): this
+demandCommand(min:number, max?:number): this
+option(key:string, opts:OptionDefinition): this
+positional(name:string, opts:PositionalDefinition): this
+help(key?:string): this
+alias(key:string, alias:string|string[]): this
+version(version?:string, key?:string): this
+parse(argv?:string[]): T
+strict(): this
+strictCommands(): this
+strictOptions(): this
+exitProcess(enabled:boolean): this
+showHelpOnFail(enabled:boolean, formatter?:(msg:string,dash:string)=&gt;string): this
+}
+interface OptionDefinition {
+alias?:string|string[];
+type:'string'|'number'|'boolean';
+default?:string|number|boolean;
+describe:string;
+requiresArg?:boolean;
+choices?:Array&lt;string|number&gt;;
+coerce?:(arg:any)=&gt;any;
+}
+interface PositionalDefinition {
+type:'string'|'number'|'boolean';
+default?:string|number|boolean;
+describe:string;
+}
+helper hideBin(argv:string[]): string[]</p>
+<p class="md-github">Code Example:
+#!/usr/bin/env node
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'</p>
+<p class="md-github">const parser = yargs(hideBin(process.argv))
+.scriptName('app')
+.usage('$0 <cmd> [options]')
+.option('verbose', { alias:'v', type:'boolean', default:false, describe:'enable verbose logging'})
+.command('start <port>', 'start server', yargs=&gt;yargs.positional('port',{type:'number',describe:'port to listen on'}), argv=&gt;{
+if(argv.verbose) console.log('Starting on port',argv.port)
+})
+.strict()
+.help()
+.alias('help','h')
+.version('1.0.0','version')
+.alias('version','V')
+.parse()</p>
+<p class="md-github">package.json exports:
+&quot;exports&quot;:{
+&quot;import&quot;:&quot;./esm/index.js&quot;,
+&quot;require&quot;:&quot;./cjs/index.js&quot;
+}</p>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Use hideBin to clean argv</li>
+<li class="md-github">Validate unknown via strict</li>
+<li class="md-github">Chain commands/options before parse</li>
+<li class="md-github">Group related options</li>
+</ul>
+<p class="md-github">Troubleshooting:
+Command: node app.js --unk
+Expected: Error 'Unknown argument: unk'
+With showHelpOnFail: shows help usage and error</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">install npm install --save yargs; import yargs from 'yargs'; import {hideBin} from 'yargs/helpers'; yargs(hideBin(process.argv)).scriptName(name).usage(pattern).option(key,{alias,type,default,describe,requiresArg,choices,coerce}).positional(name,{type,default,describe}).command(cmd,desc,builder,handler).demandCommand(n).strict().strictCommands().strictOptions().exitProcess(false).showHelpOnFail(true).help().alias(key,alias).version(version,key).parse(); API Argv: scriptName(string)-&gt;this; usage(string)-&gt;this; command(string|string[],string,(Argv)-&gt;Argv,(T)-&gt;void)-&gt;this; option(string,OptionDef)-&gt;this; positional(string,PositionalDef)-&gt;this; demandCommand(number,number?)-&gt;this; strict()-&gt;this; strictCommands()-&gt;this; strictOptions()-&gt;this; exitProcess(boolean)-&gt;this; showHelpOnFail(boolean,function?)-&gt;this; help(string?)-&gt;this; alias(string,string|string[])-&gt;this; version(string,string?)-&gt;this; parse(string[]?)-&gt;T; helper hideBin(argv:string[]):string[]; OptionDef: alias?:string|string[]; type:'string'|'number'|'boolean'; default?:string|number|boolean; describe:string; requiresArg?:boolean; choices?:Array&lt;string|number&gt;; coerce?:(any)-&gt;any; PositionalDef: type:'string'|'number'|'boolean'; default?:string|number|boolean; describe:string; distribution: TS-&gt;ESM compile, Rollup-&gt;CJS, conditional exports in package.json; Deno import from deno.land; v16: removed deep requires, removed rebase(), dropped Node 8 support.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Initialization and Parsing
+2 Command Definition
+3 Option Definition
+4 Global Configuration
+5 Helpers
+6 Distribution Patterns</p>
+<p class="md-github">1 Initialization and Parsing
+Import ESM: import yargs from 'yargs'; import { hideBin } from 'yargs/helpers'
+Usage: yargs(hideBin(process.argv)).scriptName(scriptName).usage(usagePattern).help().parse()</p>
+<p class="md-github">2 Command Definition
+.command(name:string, description:string, builder:(yargs)-&gt;yargs, handler:(argv)-&gt;void)
+.demandCommand(min:number, max?:number)</p>
+<p class="md-github">3 Option Definition
+.option(key:string, {
+alias?:string|string[]
+type:'string'|'number'|'boolean'
+default?:string|number|boolean
+describe:string
+requiresArg?:boolean
+choices?:Array&lt;string|number&gt;
+coerce?:(value)-&gt;any
+})
+.positional(name:string, {
+type:'string'|'number'|'boolean'
+default?:string|number|boolean
+describe:string
+})</p>
+<p class="md-github">4 Global Configuration
+.strict()
+.strictCommands()
+.strictOptions()
+.exitProcess(enabled:boolean)
+.showHelpOnFail(enabled:boolean, formatter?)</p>
+<p class="md-github">5 Helpers
+hideBin(argv:string[]):string[]  removes node exec and script path</p>
+<p class="md-github">6 Distribution Patterns
+ESM build from TypeScript
+Rollup for CommonJS bundle
+package.json exports:
+import: './esm/index.js'
+require: './cjs/index.js'</p>
+<p class="md-github">Deno Import:
+import yargs from 'https://deno.land/x/yargs/deno.ts'
+import {Arguments,YargsType} from 'https://deno.land/x/yargs/types.ts'</p>
+<p class="md-github">yargs().command('download &lt;files...&gt;', 'download', (yargs:YargsType)=&gt;yargs.positional('files',{describe:'files'}),(argv:Arguments)=&gt;console.info(argv)).strictCommands().demandCommand(1).parse(Deno.args)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">Yargs
+https://yargs.js.org/docs/</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-yargs_core" href="#digest-of-yargs_core"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of YARGS_CORE</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="yargs-core-api-specifications-and-implementation-patterns" href="#yargs-core-api-specifications-and-implementation-patterns"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Yargs Core API Specifications and Implementation Patterns</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="1-installation" href="#1-installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>1. Installation</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="npm" href="#npm"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>npm</h3>
+<p class="md-github">Command: npm install --save yargs
+Data Size Impact: +348 KB</p>
+<h2 class="md-github"><a class="md-github__anchor" name="2-initialization-and-parsing" href="#2-initialization-and-parsing"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>2. Initialization and Parsing</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="import-patterns" href="#import-patterns"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Import Patterns</h3>
+<p class="md-github">ESM:
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'</p>
+<p class="md-github">CommonJS:
+const yargs = require('yargs')
+const { hideBin } = require('yargs/helpers')</p>
+<h3 class="md-github"><a class="md-github__anchor" name="basic-usage" href="#basic-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Basic Usage</h3>
+<p class="md-github">yargs(hideBin(process.argv))
+.scriptName(string scriptName)
+.usage(string usagePattern)
+.help() -&gt; returns yargs instance
+.parse([string[] argv]) -&gt; returns Arguments</p>
+<h2 class="md-github"><a class="md-github__anchor" name="3-command-definition" href="#3-command-definition"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>3. Command Definition</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="commandname-description-builder-handler" href="#commandname-description-builder-handler"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.command(name, description, builder, handler)</h3>
+<p class="md-github">Parameters:
+name: string | string[] (e.g. 'hello [name]')
+description: string
+builder: function(yargs) -&gt; yargs
+handler: function(argv: Arguments) -&gt; void</p>
+<h3 class="md-github"><a class="md-github__anchor" name="demandcommandmin-number-max-number---yargs-instance" href="#demandcommandmin-number-max-number---yargs-instance"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.demandCommand(min: number, max?: number) -&gt; yargs instance</h3>
+<p class="md-github">Ensures at least min commands provided; errors otherwise</p>
+<h2 class="md-github"><a class="md-github__anchor" name="4-option-definitions" href="#4-option-definitions"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>4. Option Definitions</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="optionkey-" href="#optionkey-"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.option(key, {</h3>
+<pre class="md-github"><code class="md-github">alias?: string | string[]
+type: 'string' | 'number' | 'boolean'
+default?: string | number | boolean
+describe: string
+requiresArg?: boolean
+choices?: Array&lt;string | number&gt;
+coerce?: function(value) -&gt; any
+</code></pre>
+<p class="md-github">}) -&gt; yargs instance</p>
+<h3 class="md-github"><a class="md-github__anchor" name="positionalname-" href="#positionalname-"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.positional(name, {</h3>
+<pre class="md-github"><code class="md-github">type: 'string' | 'number' | 'boolean'
+default?: string | number | boolean
+describe: string
+</code></pre>
+<p class="md-github">}) -&gt; yargs instance</p>
+<h2 class="md-github"><a class="md-github__anchor" name="5-helpers-namespace" href="#5-helpers-namespace"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>5. Helpers Namespace</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="hidebinargv-string---string" href="#hidebinargv-string---string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>hideBin(argv: string[]) -&gt; string[]</h3>
+<p class="md-github">Strips Node executable and script path</p>
+<h2 class="md-github"><a class="md-github__anchor" name="6-global-configuration-options" href="#6-global-configuration-options"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>6. Global Configuration Options</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="strict---yargs-instance" href="#strict---yargs-instance"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.strict() -&gt; yargs instance</h3>
+<p class="md-github">Validates unknown commands and options</p>
+<h3 class="md-github"><a class="md-github__anchor" name="strictcommands---yargs-instance" href="#strictcommands---yargs-instance"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.strictCommands() -&gt; yargs instance</h3>
+<p class="md-github">Validates unknown commands</p>
+<h3 class="md-github"><a class="md-github__anchor" name="strictoptions---yargs-instance" href="#strictoptions---yargs-instance"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.strictOptions() -&gt; yargs instance</h3>
+<p class="md-github">Validates unknown options</p>
+<h3 class="md-github"><a class="md-github__anchor" name="exitprocessenabled-boolean---yargs-instance" href="#exitprocessenabled-boolean---yargs-instance"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.exitProcess([enabled: boolean]) -&gt; yargs instance</h3>
+<p class="md-github">Controls process.exit behavior</p>
+<h3 class="md-github"><a class="md-github__anchor" name="showhelponfailenabled-boolean-messageformatter---yargs-instance" href="#showhelponfailenabled-boolean-messageformatter---yargs-instance"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.showHelpOnFail([enabled: boolean], [messageFormatter]) -&gt; yargs instance</h3>
+<p class="md-github">Displays help on failure</p>
+<h2 class="md-github"><a class="md-github__anchor" name="7-help-and-version" href="#7-help-and-version"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>7. Help and Version</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="helpkey-string" href="#helpkey-string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.help([key]: string)</h3>
+<p class="md-github">Adds --help alias</p>
+<h3 class="md-github"><a class="md-github__anchor" name="aliaskey-string-alias-string--string" href="#aliaskey-string-alias-string--string"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.alias(key: string, alias: string | string[])</h3>
+<p class="md-github">Creates aliases</p>
+<h3 class="md-github"><a class="md-github__anchor" name="versionversion-key" href="#versionversion-key"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>.version([version], [key])</h3>
+<p class="md-github">Adds --version alias</p>
+<h2 class="md-github"><a class="md-github__anchor" name="8-examples" href="#8-examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>8. Examples</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="example-basic-command" href="#example-basic-command"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Example: Basic Command</h3>
+<p class="md-github">#!/usr/bin/env node
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'</p>
+<p class="md-github">yargs(hideBin(process.argv))
+.scriptName(&quot;pirate-parser&quot;)
+.usage('$0 <cmd> [args]')
+.command(
+'hello [name]',
+'welcome ter yargs!',
+yargs =&gt; yargs.positional('name', {type:'string', default:'Cambi', describe:'the name to say hello to'}),
+argv =&gt; console.log('hello', argv.name, 'welcome to yargs!')
+)
+.help()
+.parse()</p>
+<h2 class="md-github"><a class="md-github__anchor" name="9-implementation-patterns" href="#9-implementation-patterns"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>9. Implementation Patterns</h2>
+<h3 class="md-github"><a class="md-github__anchor" name="dual-mode-distribution" href="#dual-mode-distribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Dual Mode Distribution</h3>
+<ul class="md-github">
+<li class="md-github">TypeScript compile targeting ESM</li>
+<li class="md-github">Rollup bundle for CommonJS</li>
+<li class="md-github">Conditional exports field in package.json:
+{
+&quot;exports&quot;: {
+&quot;import&quot;: &quot;./esm/index.js&quot;,
+&quot;require&quot;: &quot;./cjs/index.js&quot;
+}
+}</li>
+</ul>
+<h3 class="md-github"><a class="md-github__anchor" name="deno-experimental-support" href="#deno-experimental-support"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Deno Experimental Support</h3>
+<p class="md-github">import yargs from 'https://deno.land/x/yargs/deno.ts'
+import { Arguments, YargsType } from 'https://deno.land/x/yargs/types.ts'</p>
+<p class="md-github">yargs()
+.command('download &lt;files...&gt;', 'download a list of files', (yargs: YargsType) =&gt; yargs.positional('files', {describe:'a list of files'}), (argv: Arguments) =&gt; console.info(argv))
+.strictCommands()
+.demandCommand(1)
+.parse(Deno.args)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="10-breaking-changes-in-v16" href="#10-breaking-changes-in-v16"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>10. Breaking Changes in v16</h2>
+<ul class="md-github">
+<li class="md-github">Removed deep requires; only exposed helpers</li>
+<li class="md-github">Removed rebase() helper</li>
+<li class="md-github">Dropped Node.js 8 support</li>
+</ul>
+<hr class="md-github">
+<p class="md-github">Date Retrieved: 2023-09-14
+Attribution: yargs.js.org/docs/ (Data Size: 348060 bytes)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: Yargs</li>
+<li class="md-github">URL: https://yargs.js.org/docs/</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-05-04T04:50:19.976Z</li>
+<li class="md-github">Data Size: 348060 bytes</li>
+<li class="md-github">Links Found: 34</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-04</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-04T05:21:23.420Z</p>
+  </footer>
+</body>
+</html>
