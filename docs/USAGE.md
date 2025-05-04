@@ -101,7 +101,7 @@ curl "http://localhost:8080/faces?count=2&category=sad&seed=100&unique=true"
 
 # Invalid parameters return HTTP 400 with JSON error response
 curl "http://localhost:8080/faces?count=abc"
-# => {"error":"Expected number, received \"abc\""}
+# => {"error":"Expected number, received "abc""}
 
 # Query /faces endpoint in text format
 curl "http://localhost:8080/faces?count=2&format=text&unique=true"
