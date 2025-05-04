@@ -64,6 +64,26 @@ node src/lib/main.js --config ./tests/unit/fixtures/custom.json --category custo
 # e.g. C1 C2
 ```
 
+### Programmatic API
+
+```js
+import { generateFaces, listCategories } from '@xn-intenton-z2a/repository0-crucible';
+
+// Generate faces programmatically
+const result = generateFaces({ count: 3, category: 'happy', seed: 42 });
+console.log(result.faces); // Array of faces
+
+// List available categories without custom config
+console.log(listCategories());
+// => ['happy', 'sad', 'angry', 'surprised', 'all']
+
+// List available categories with custom config
+console.log(
+  listCategories({ config: 'tests/unit/fixtures/custom.json' })
+);
+// => ['happy', 'sad', 'angry', 'surprised', 'custom', 'all']
+```
+
 ### HTTP Server Mode
 
 Use `--serve` or `-S` to start an HTTP server instead of printing to stdout. Use `--port` or `-p` to specify the port (default: `3000`).
