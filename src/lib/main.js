@@ -98,6 +98,49 @@ export function getRandomFaceFromList(list, rng = Math.random) {
 }
 
 /**
+ * Internal core function to generate faces
+ * @param {{ count?: number, category?: string, seed?: number, config?: string }} opts
+ * @returns {{ faces: string[], category: string, count: number, seed: number|null }}
+ */
+export function generateFacesCore(opts = {}) {
+  const parsed = OptionsSchema.pick({
+    count: true,
+    category: true,
+    seed: true,
+    config: true
+  }).parse(opts);
+  const { count, category, seed, config } = parsed;
+
+  // Merge custom config if provided
+  let mergedFaces = { ...faces };
+  if (config) {
+    const custom = loadCustomConfig(config);
+    for (const key in custom) {
+      if (!mergedFaces.hasOwnProperty(key)) {
+        throw new Error(`Unknown category in config: ${key}`);
+      }
+      mergedFaces[key] = custom[key];
+    }
+  }
+
+  // Instantiate RNG
+  const seedVal = seed !== undefined ? seed : null;
+  const rng = seed !== undefined ? seedrandom(String(seed)) : Math.random;
+
+  // Build face pool
+  const pool =
+    category === "all" ? Object.values(mergedFaces).flat() : mergedFaces[category];
+
+  // Generate faces
+  const facesArray = [];
+  for (let i = 0; i < count; i++) {
+    facesArray.push(getRandomFaceFromList(pool, rng));
+  }
+
+  return { faces: facesArray, category, count, seed: seedVal };
+}
+
+/**
  * Create and configure the Express app
  */
 export function createApp() {
@@ -108,57 +151,41 @@ export function createApp() {
   });
 
   app.get("/faces", (req, res) => {
-    // parse query parameters
-    let count = parseInt(req.query.count, 10);
-    if (isNaN(count) || count < 1) count = 1;
+    // Parse and sanitize inputs
+    let count;
+    const c = parseInt(req.query.count, 10);
+    count = !isNaN(c) && c >= 1 ? c : undefined;
 
     let category = req.query.category;
-    if (!categories.includes(category)) category = "all";
+    if (!categories.includes(category)) {
+      category = undefined;
+    }
 
-    let seedVal = null;
-    let rng = Math.random;
+    let seed;
     if (req.query.seed !== undefined) {
       const s = parseInt(req.query.seed, 10);
-      if (!isNaN(s) && s >= 0) {
-        seedVal = s;
-        rng = seedrandom(String(s));
-      }
+      seed = !isNaN(s) && s >= 0 ? s : undefined;
     }
 
-    // merge custom config if provided
-    let mergedFaces = { ...faces };
-    if (req.query.config) {
-      const custom = loadCustomConfig(req.query.config);
-      for (const key in custom) {
-        if (!mergedFaces.hasOwnProperty(key)) {
-          res.status(400).json({ error: `Unknown category in config: ${key}` });
-          return;
-        }
-        mergedFaces[key] = custom[key];
-      }
+    const config = req.query.config;
+
+    // Generate faces using core
+    let result;
+    try {
+      result = generateFacesCore({ count, category, seed, config });
+    } catch (err) {
+      res.status(400).json({ error: err.message });
+      return;
     }
 
-    // build pool
-    let pool = [];
-    if (category === "all") {
-      pool = Object.values(mergedFaces).flat();
-    } else {
-      pool = mergedFaces[category];
-    }
-
-    // format selection
-    const facesArray = [];
-    for (let i = 0; i < count; i++) {
-      facesArray.push(getRandomFaceFromList(pool, rng));
-    }
-
+    // Determine format
     const format = req.query.format === "text" ? "text" : "json";
 
     if (format === "text") {
       res.set("Content-Type", "text/plain");
-      res.send(facesArray.join("\n"));
+      res.send(result.faces.join("\n"));
     } else {
-      res.json({ faces: facesArray, category, count, seed: seedVal });
+      res.json(result);
     }
   });
 
@@ -194,7 +221,9 @@ export function main(args) {
     return;
   }
 
-  const { count, category, seed, json, serve, port, config } = parseOptions(args);
+  const { count, category, seed, json, serve, port, config } = parseOptions(
+    args
+  );
 
   if (serve) {
     const app = createApp();
@@ -204,40 +233,22 @@ export function main(args) {
     return;
   }
 
-  // merge custom config if provided
-  let mergedFaces = { ...faces };
-  if (config) {
-    const custom = loadCustomConfig(config);
-    for (const key in custom) {
-      if (!mergedFaces.hasOwnProperty(key)) {
-        throw new Error(`Unknown category in config: ${key}`);
-      }
-      mergedFaces[key] = custom[key];
-    }
-  }
-
-  const rng = seed !== undefined ? seedrandom(String(seed)) : Math.random;
-
-  let pool = [];
-  if (category === "all") {
-    pool = Object.values(mergedFaces).flat();
-  } else {
-    pool = mergedFaces[category];
-  }
+  // Generate faces using core
+  const result = generateFacesCore({ count, category, seed, config });
 
   if (json) {
-    const facesArray = [];
-    for (let i = 0; i < count; i++) {
-      facesArray.push(getRandomFaceFromList(pool, rng));
-    }
-    const payload = { faces: facesArray, category, count, seed: seed !== undefined ? seed : null };
-    console.log(JSON.stringify(payload));
+    console.log(
+      JSON.stringify({
+        faces: result.faces,
+        category: result.category,
+        count: result.count,
+        seed: result.seed
+      })
+    );
     return;
   }
 
-  for (let i = 0; i < count; i++) {
-    console.log(getRandomFaceFromList(pool, rng));
-  }
+  result.faces.forEach((face) => console.log(face));
 }
 
 // Programmatic API
@@ -247,34 +258,8 @@ export function main(args) {
  * @returns {{faces: string[], category: string, count: number, seed: number|null}}
  */
 export function getFaces(options = {}) {
-  const parsed = OptionsSchema.parse({
-    count: options.count,
-    category: options.category,
-    seed: options.seed,
-    config: options.config,
-  });
-  const { count, category, seed: seedInput, config } = parsed;
-  const seedVal = seedInput !== undefined ? seedInput : null;
-  const rng = seedInput !== undefined ? seedrandom(String(seedInput)) : Math.random;
-
-  // merge custom config if provided
-  let mergedFaces = { ...faces };
-  if (config) {
-    const custom = loadCustomConfig(config);
-    for (const key in custom) {
-      if (!mergedFaces.hasOwnProperty(key)) {
-        throw new Error(`Unknown category in config: ${key}`);
-      }
-      mergedFaces[key] = custom[key];
-    }
-  }
-
-  const pool = category === "all" ? Object.values(mergedFaces).flat() : mergedFaces[category];
-  const facesArray = [];
-  for (let i = 0; i < count; i++) {
-    facesArray.push(getRandomFaceFromList(pool, rng));
-  }
-  return { faces: facesArray, category, count, seed: seedVal };
+  // Delegate to core
+  return generateFacesCore(options);
 }
 
 /**
