@@ -3,19 +3,24 @@
 
 import express from "express";
 import { fileURLToPath } from "url";
+import fs from "fs";
+import path from "path";
 import seedrandom from "seedrandom";
 import { z } from "zod";
 
-const faces = {
+// Default face categories
+export const faces = {
   happy: ["😀", "😄", "😊", "(＾▽＾)", "(＾ω＾)"],
   sad: ["😢", "😞", "☹️", "(Ｔ＿Ｔ)", "(；д；)"],
   angry: ["😠", "😡", "👿", "(-_-#)", "(╬ಠ益ಠ)"],
   surprised: ["😮", "😲", "😯", "(ﾟOﾟ)", "(⊙_⊙)"],
 };
 
+// Allowed categories including all
 const categories = [...Object.keys(faces), "all"];
 
-const OptionsSchema = z.object({
+// Schema for options including programmatic API
+export const OptionsSchema = z.object({
   count: z.coerce.number().int().min(1).default(1),
   category: z.enum(categories).default("all"),
   seed: z.coerce.number().int().nonnegative().optional(),
@@ -181,8 +186,12 @@ export function main(args) {
 }
 
 // Programmatic API
+/**
+ * Get random faces programmatically
+ * @param {{count?: number, category?: string, seed?: number}} options
+ * @returns {{faces: string[], category: string, count: number, seed: number|null}}
+ */
 export function getFaces(options = {}) {
-  // validate only count, category, seed
   const parsed = OptionsSchema.parse({
     count: options.count,
     category: options.category,
@@ -199,6 +208,10 @@ export function getFaces(options = {}) {
   return { faces: facesArray, category, count, seed: seedVal };
 }
 
+/**
+ * List available categories
+ * @returns {string[]}
+ */
 export function listCategories() {
   return [...categories];
 }
