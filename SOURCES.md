@@ -28,16 +28,6 @@ Introduces popular multi-command CLI frameworks—Salesforce’s oclif and Yarn�
 Defines a lightweight convention for commit message formatting, enabling automated changelog generation, semantic-release workflows, and consistent versioning. Guides integration with Commitizen and semantic-release to enforce change classification, breaking-change alerts, and release automation. Published January 2020; maintained by community.
 ## CC0 Public Domain
 
-# dotenv
-## https://github.com/motdotla/dotenv#readme
-A zero-dependency module for loading environment variables from `.env` files. Covers parsing rules, variable expansion, custom path resolution, and security considerations, enabling configurable CLI behavior via environment settings like `EMOTICONS_CONFIG` and `EMOTICONS_DIAGNOSTICS`. Over 2 million weekly downloads.
-## BSD-2-Clause
-
-# EJS Templating
-## https://ejs.co/#docs
-An embedded JavaScript templating engine with syntax for interpolation, includes, and layouts. Applicable to generating dynamic help screens, banner templates, or HTML-based UI endpoints in Express applications. Includes layout partials, custom delimiters, and asynchronous rendering options. Maintained under MIT.
-## MIT License
-
 # ESLint
 ## https://eslint.org/docs/latest/
 Official ESLint documentation outlining rule configuration, plugin management, and integration with Prettier. Ensures code quality, consistency, and style enforcement across a growing codebase and CI workflows. Covers advanced rules, custom parsers, shareable configurations, and performance tips. Last updated 2024.
@@ -68,11 +58,6 @@ The formal Semantic Versioning specification defines breaking changes, feature r
 A SuperAgent-driven library for testing HTTP servers in Node.js. Demonstrates patterns for writing expressive tests against endpoints, including query strings, header negotiation, and JSON/plain-text response assertions. Widely used in Node.js testing ecosystems with real-world examples. Updated March 2024.
 ## MIT License
 
-# Twelve-Factor App: Config
-## https://12factor.net/config
-Outlines best practices for configuration management via environment variables, detailing declarative formats and separation of config from code. Guides the design of CLI options and `.env` integration to support flexible deployments and twelve-factor compliance. Core resource for modern cloud-native CLI tools.
-## (none)
-
 # Vitest Documentation
 ## https://vitest.dev/guide/
 Comprehensive guide to Vitest including test definitions, mocking, snapshot testing, and coverage reporting. Covers configuration options, plugins, and watch modes to ensure robust unit and integration tests for CLI logic. Released March 2023; maintained by Vitest team.
@@ -93,6 +78,11 @@ A TypeScript-first schema declaration and validation library. Shows parsing of C
 Official Express documentation on routing and middleware composition. Describes `Router` instances, parameterized routes, mounting sub-routers, and middleware chaining—fundamental for integrating potential HTTP endpoints for emoticon services. Covers error-handling patterns and async support.
 ## MIT License
 
+# Express Error Handling
+## https://expressjs.com/en/guide/error-handling.html
+Guidance on implementing and customizing error-handling middleware in Express applications. Covers synchronous and asynchronous error traps, the built-in `errorHandler`, and best practices for structured error responses in an HTTP API.
+## MIT License
+
 # Fastify Framework
 ## https://www.fastify.io/docs/latest/
 Introduces Fastify as a high-performance HTTP framework with schema-based validation, plugin architecture, and built-in JSON schema support. Useful as a reference for alternative routing designs, performance-oriented server patterns, and low-overhead plugin systems. Updated May 2024.
@@ -105,17 +95,12 @@ Comprehensive guide to Cross-Origin Resource Sharing (CORS), explaining prefligh
 
 # Node.js Readline & REPL Modules
 ## https://nodejs.org/api/readline.html
-Detailed documentation for interactive input via the Readline module and the built-in REPL. Essential for implementing the CLI’s interactive mode with commands like `random`, `seed`, `list`, `json`, `help`, and `exit`. Describes event-driven line handling, history management, and custom evaluator contexts.  
+Detailed documentation for interactive input via the Readline module and the built-in REPL. Essential for implementing the CLI’s interactive mode with commands like `random`, `seed`, `list`, `json`, `help`, and `exit`. Describes event-driven line handling, history management, and custom evaluator contexts.
 ## Node.js Foundation (MIT-like)
 
 # Prettier Documentation
 ## https://prettier.io/docs/en/index.html
 Official Prettier documentation covering configuration options, formatting rules, plugin integration, and editor/CI setup. Crucial for maintaining consistent code style across the CLI codebase, automated formatting in pre-commit hooks, and CI pipelines. Latest version 3.5.3.
-## MIT License
-
-# markdown-it
-## https://github.com/markdown-it/markdown-it#readme
-High-performance Markdown parser with plugin architecture and support for GitHub Flavored Markdown. Useful for rendering markdown-based help screens or generating documentation programmatically. Covers AST APIs, extensibility patterns, and performance benchmarks.
 ## MIT License
 
 # minimatch
@@ -137,3 +122,8 @@ Documentation for the `seedrandom` library, detailing initialization options for
 ## https://nodejs.org/api/http.html
 Detailed reference for Node.js's built-in HTTP module, covering the `http.createServer`, request and response objects, streaming paradigms, performance considerations, and keep-alive handling. Provides foundational knowledge for HTTP server behavior under Express and for custom low-level server implementations. Last updated June 2024; authoritative from the Node.js Foundation.
 ## Node.js Foundation (MIT-like)
+
+# Fisher-Yates Shuffle Algorithm
+## https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
+Detailed description of the Fisher-Yates shuffle algorithm for unbiased random permutations of arrays. Essential for implementing robust and reproducible unique-selection logic in `generateFacesCore`, ensuring no biases in shuffled face pools. Includes complexity analysis and implementation pseudocode.
+## CC BY-SA 3.0
