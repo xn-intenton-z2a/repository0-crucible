@@ -1,6 +1,6 @@
 # Node.js Core API Reference
 ## https://nodejs.org/api/
-Comprehensive API reference for Node.js covering modules such as `process`, `fs`, `http`, `path`, `url`, `console`, `readline`, `tty`, `esm`, `assert` and more, including ES Module behaviors, loader hooks, and package scope rules. Essential for implementing CLI flag parsing, file I/O, HTTP server patterns, and ESM module resolution in both script and module contexts. Includes platform-specific notes, migration paths from CommonJS, and detailed examples for robust production usage. Last updated June 2024; authoritative from the Node.js Foundation.
+Comprehensive API reference for Node.js covering modules such as `process`, `fs`, `http`, `path`, `url`, `console`, `readline`, `tty`, `esm`, `assert`, and more, including ES Module behaviors, loader hooks, and package scope rules. Essential for implementing CLI flag parsing, file I/O, HTTP server patterns via Express (which uses the underlying http module), and ESM module resolution in both script and module contexts. Includes platform-specific notes, migration paths from CommonJS, and detailed examples for robust production usage. Last updated June 2024; authoritative from the Node.js Foundation.
 ## Node.js Foundation (MIT-like)
 
 # ANSI Escape Codes Reference
@@ -103,36 +103,10 @@ Introduces Fastify as a high-performance HTTP framework with schema-based valida
 Comprehensive guide to Cross-Origin Resource Sharing (CORS), explaining preflight requests, headers (`Access-Control-Allow-Origin`, `Access-Control-Allow-Methods`), and security implications. Helps ensure correct CORS handling in HTTP responses for web-based emoticon APIs.
 ## CC BY-SA 2.5
 
-# GraphQL Specification
-## https://spec.graphql.org/
-The official GraphQL language specification, detailing type system definitions, query and mutation syntax, introspection, and execution semantics. Essential for designing consistent GraphQL schemas and batch operations for random or seeded faces. Continuously updated by the GraphQL Foundation.
-## CC BY 4.0
-
-# GraphQL.js Reference Implementation
-## https://github.com/graphql/graphql-js#readme
-The reference implementation of GraphQL in JavaScript, covering schema creation, type definitions, resolvers, and execution APIs. Provides examples of defining `Query` types, input validation, and schema stitching—directly applicable to implementing `/graphql` endpoints.
-## MIT License
-
-# express-graphql Middleware
-## https://github.com/graphql/express-graphql#readme
-An Express middleware to set up GraphQL HTTP servers with minimal configuration. Documents options for `graphqlHTTP`, schema injection, rootValue, context, and GraphiQL integration. Demonstrates error handling hooks and metrics instrumentation patterns.
-## MIT License
-
-# GraphiQL Interactive IDE
-## https://github.com/graphql/graphiql#readme
-The in-browser IDE for exploring GraphQL APIs with syntax highlighting, autocompletion, and documentation explorer. Covers embedding GraphiQL in Express or static pages, enabling interactive queries and mutation testing during development.
-## MIT License
-
 # Node.js Readline & REPL Modules
 ## https://nodejs.org/api/readline.html
-Detailed documentation for interactive input via the Readline module and the built-in REPL. Essential for implementing the CLI’s interactive mode with commands like `random`, `seed`, `list`, `json`, `help`, and `exit`. Describes event-driven line handling, history management, and custom evaluator contexts.
-
+Detailed documentation for interactive input via the Readline module and the built-in REPL. Essential for implementing the CLI’s interactive mode with commands like `random`, `seed`, `list`, `json`, `help`, and `exit`. Describes event-driven line handling, history management, and custom evaluator contexts.  
 ## Node.js Foundation (MIT-like)
-
-# Clipanion (Optional)
-## https://github.com/oclif/oclif#readme
-Details Clipanion’s decorator-based CLI definitions, command invocation patterns, and TypeScript-first experience. Offers an alternative design for command registration and plugin deployment. Updated February 2024.
-## MIT License
 
 # Prettier Documentation
 ## https://prettier.io/docs/en/index.html
@@ -151,5 +125,15 @@ A glob-matching library for file path pattern matching. Provides minimatch, micr
 
 # GitHub Actions Workflow Syntax
 ## https://docs.github.com/en/actions/using-workflows/workflow-syntax-for-github-actions
-Official GitHub Actions workflow syntax reference covering triggers, jobs, steps, reusable workflows, contexts, and expressions. Essential for customizing CI/CD pipelines, scheduling, and environment variable management within GitHub workflows. Released under GitHub Docs Terms of Service (CC BY 4.0).
+Official GitHub Actions workflow syntax reference covering triggers, jobs, steps, reusable workflows, contexts, and expressions. Essential for customizing CI/CD pipelines, scheduling, and environment variable management within GitHub workflows.
 ## CC BY 4.0
+
+# seedrandom Package
+## https://github.com/davidbau/seedrandom#readme
+Documentation for the `seedrandom` library, detailing initialization options for various algorithms, reproducible pseudorandom number generation, global override patterns, and security considerations. Essential for implementing deterministic face selection via seeded RNG and ensuring reproducibility across CLI and HTTP modes. Last updated 2023; widely adopted for JavaScript RNG.
+## MIT License
+
+# Node.js HTTP Module
+## https://nodejs.org/api/http.html
+Detailed reference for Node.js's built-in HTTP module, covering the `http.createServer`, request and response objects, streaming paradigms, performance considerations, and keep-alive handling. Provides foundational knowledge for HTTP server behavior under Express and for custom low-level server implementations. Last updated June 2024; authoritative from the Node.js Foundation.
+## Node.js Foundation (MIT-like)
