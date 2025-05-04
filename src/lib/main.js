@@ -180,6 +180,29 @@ export function main(args) {
   }
 }
 
+// Programmatic API
+export function getFaces(options = {}) {
+  // validate only count, category, seed
+  const parsed = OptionsSchema.parse({
+    count: options.count,
+    category: options.category,
+    seed: options.seed,
+  });
+  const { count, category, seed: seedInput } = parsed;
+  const seedVal = seedInput !== undefined ? seedInput : null;
+  const rng = seedInput !== undefined ? seedrandom(String(seedInput)) : Math.random;
+  const pool = category === "all" ? Object.values(faces).flat() : faces[category];
+  const facesArray = [];
+  for (let i = 0; i < count; i++) {
+    facesArray.push(getRandomFaceFromList(pool, rng));
+  }
+  return { faces: facesArray, category, count, seed: seedVal };
+}
+
+export function listCategories() {
+  return [...categories];
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main();
 }
