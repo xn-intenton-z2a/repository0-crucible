@@ -1,6 +1,9 @@
 import { describe, test, expect } from "vitest";
 import { getFaces, listCategories, faces } from "@src/lib/main.js";
 
+// Path to custom JSON config fixture
+const jsonConfigPath = "tests/unit/fixtures/custom.json";
+
 describe("Library API", () => {
   test("default getFaces returns one face from all category with null seed", () => {
     const result = getFaces();
@@ -29,9 +32,24 @@ describe("Library API", () => {
     expect(() => getFaces({ seed: -1 })).toThrow();
   });
 
-  test("listCategories returns all valid categories", () => {
+  test("listCategories default returns built-in plus all only", () => {
     const cats = listCategories();
     expect(Array.isArray(cats)).toBe(true);
     expect(cats.sort()).toEqual([...(Object.keys(faces)), "all"].sort());
+  });
+
+  test("listCategories with custom config includes custom keys and all", () => {
+    const cats = listCategories({ config: jsonConfigPath });
+    expect(Array.isArray(cats)).toBe(true);
+    // built-in
+    expect(cats).toEqual(expect.arrayContaining(Object.keys(faces)));
+    // custom
+    expect(cats).toContain("custom");
+    // all
+    expect(cats).toContain("all");
+  });
+
+  test("listCategories with invalid config throws error", () => {
+    expect(() => listCategories({ config: "no-such-file.json" })).toThrow(/Config file not found/);
   });
 });

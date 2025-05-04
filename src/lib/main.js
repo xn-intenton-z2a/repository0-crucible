@@ -172,6 +172,28 @@ export function generateFacesCore(opts = {}) {
 }
 
 /**
+ * Programmatic API: generate faces
+ */
+export function getFaces(options = {}) {
+  return generateFacesCore(options);
+}
+
+/**
+ * Programmatic API: list available categories, optionally merging custom config
+ * @param {{ config?: string }} options
+ * @returns {string[]}
+ */
+export function listCategories(options = {}) {
+  const { config } = options || {};
+  let mergedFaces = { ...faces };
+  if (config) {
+    const custom = loadCustomConfig(config);
+    mergedFaces = { ...mergedFaces, ...custom };
+  }
+  return [...Object.keys(mergedFaces), "all"];
+}
+
+/**
  * Create and configure the Express app
  */
 export function createApp() {
@@ -296,15 +318,7 @@ export function main(args) {
   result.faces.forEach((face) => console.log(face));
 }
 
-// Programmatic API
-export function getFaces(options = {}) {
-  return generateFacesCore(options);
-}
-
-export function listCategories() {
-  return [...defaultCategories, "all"];
-}
-
+// Export programmatic API alias
 export function generateFaces(options = {}) {
   return getFaces(options);
 }
