@@ -216,6 +216,15 @@ export function listCategories() {
   return [...categories];
 }
 
+/**
+ * Generate random faces programmatically
+ * @param {{count?: number, category?: string, seed?: number}} options
+ * @returns {{faces: string[], category: string, count: number, seed: number|null}}
+ */
+export function generateFaces(options = {}) {
+  return getFaces(options);
+}
+
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
   main();
 }

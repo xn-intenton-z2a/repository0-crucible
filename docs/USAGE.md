@@ -75,15 +75,15 @@ curl "http://localhost:8080/faces?count=2&format=text"
 You can generate faces programmatically by importing the functions from the library:
 
 ```js
-import { getFaces, listCategories } from '@xn-intenton-z2a/repository0-crucible';
+import { generateFaces, listCategories } from '@xn-intenton-z2a/repository0-crucible';
 
 // Default usage
-const result = getFaces();
+const result = generateFaces();
 console.log(result.faces, result.category, result.count, result.seed);
 // e.g. ['😊'] 'all' 1 null
 
 // Custom options
-const custom = getFaces({ count: 3, category: 'happy', seed: 42 });
+const custom = generateFaces({ count: 3, category: 'happy', seed: 42 });
 console.log(custom);
 // e.g. { faces: ['😀','😄','😊'], category: 'happy', count: 3, seed: 42 }
 
