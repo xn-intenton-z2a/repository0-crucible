@@ -9,7 +9,7 @@ npm install -g @xn-intenton-z2a/repository0-crucible
 ## Commands
 
 ```bash
-node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--serve] [--port P] [--config FILE] [--help]
+node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--serve] [--port P] [--config FILE] [--unique] [--help]
 ```
 
 ### Options
@@ -21,6 +21,7 @@ node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--se
 - `--serve`, `-S`: start HTTP server mode
 - `--port`, `-p`: port for HTTP server (default: `3000`)
 - `--config`, `-f`: path to JSON or YAML configuration file to override or extend face categories
+- `--unique`, `-u`: ensure returned faces are unique within the request; error if count exceeds pool size
 - `--help`, `-h`: show this help message
 
 ### Available Categories
@@ -51,12 +52,12 @@ node src/lib/main.js --count 5 --category sad --seed 100
 node src/lib/main.js --count 2 --category surprised --seed 123 --json
 # e.g. {"faces":["😮","(⊙_⊙)"],"category":"surprised","count":2,"seed":123}
 
+# Display three unique faces without replacement
+node src/lib/main.js --unique --count 3
+
 # Override happy category with a custom JSON config
 node src/lib/main.js --config ./tests/unit/fixtures/custom.json --category happy --count 2
 # e.g. H1 H2
-
-# Override sad category with a custom YAML config
-node src/lib/main.js -f ./config/custom.yaml --category sad -c 3
 
 # Add and use a new custom category via JSON config
 node src/lib/main.js --config ./tests/unit/fixtures/custom.json --category custom --count 2
@@ -75,7 +76,7 @@ node src/lib/main.js --serve
 node src/lib/main.js --serve --port 8080
 
 # Query the /faces endpoint in JSON (shared OptionsSchema validated)
-curl "http://localhost:8080/faces?count=2&category=sad&seed=100"
+curl "http://localhost:8080/faces?count=2&category=sad&seed=100&unique=true"
 # => {"faces":[...],"category":"sad","count":2,"seed":100}
 
 # Invalid parameters return HTTP 400 with JSON error response
@@ -83,7 +84,7 @@ curl "http://localhost:8080/faces?count=abc"
 # => {"error":"Expected number, received \"abc\""}
 
 # Query /faces endpoint in text format
-curl "http://localhost:8080/faces?count=2&format=text"
+curl "http://localhost:8080/faces?count=2&format=text&unique=true"
 # => 😢
 # => 😮
 ```

@@ -28,6 +28,7 @@ export const OptionsSchema = z.object({
   serve: z.boolean().default(false),
   port: z.coerce.number().int().min(1).default(3000),
   config: z.string().optional(),
+  unique: z.boolean().default(false),
   format: z.string().optional(), // format only for HTTP
 });
 
@@ -65,6 +66,7 @@ export function parseOptions(args) {
     serve: undefined,
     port: undefined,
     config: undefined,
+    unique: undefined,
     format: undefined,
   };
   for (let i = 0; i < args.length; i++) {
@@ -83,6 +85,8 @@ export function parseOptions(args) {
       result.port = Number(args[++i]);
     } else if (arg === "--config" || arg === "-f") {
       result.config = args[++i];
+    } else if (arg === "--unique" || arg === "-u") {
+      result.unique = true;
     }
   }
   const opts = OptionsSchema.omit({ format: true }).parse(result);
@@ -105,7 +109,7 @@ export function getRandomFaceFromList(list, rng = Math.random) {
 
 /**
  * Internal core function to generate faces
- * @param {{ count?: number, category?: string, seed?: number, config?: string }} opts
+ * @param {{ count?: number, category?: string, seed?: number, config?: string, unique?: boolean }} opts
  * @returns {{ faces: string[], category: string, count: number, seed: number|null }}
  */
 export function generateFacesCore(opts = {}) {
@@ -114,8 +118,9 @@ export function generateFacesCore(opts = {}) {
     category: true,
     seed: true,
     config: true,
+    unique: true,
   }).parse(opts);
-  const { count, category, seed, config } = parsed;
+  const { count, category, seed, config, unique } = parsed;
 
   // Merge default faces with custom config if provided
   let mergedFaces = { ...faces };
@@ -140,9 +145,22 @@ export function generateFacesCore(opts = {}) {
     category === "all" ? Object.values(mergedFaces).flat() : mergedFaces[category];
 
   // Generate faces
-  const facesArray = [];
-  for (let i = 0; i < count; i++) {
-    facesArray.push(getRandomFaceFromList(pool, rng));
+  let facesArray = [];
+  if (unique) {
+    if (count > pool.length) {
+      throw new Error(`Requested ${count} unique faces, but only ${pool.length} available in category '${category}'`);
+    }
+    // Shuffle pool deterministically
+    const copy = [...pool];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(rng() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    facesArray = copy.slice(0, count);
+  } else {
+    for (let i = 0; i < count; i++) {
+      facesArray.push(getRandomFaceFromList(pool, rng));
+    }
   }
 
   return { faces: facesArray, category, count, seed: seedVal };
@@ -161,16 +179,19 @@ export function createApp() {
   app.get("/faces", (req, res) => {
     let parsedOpts;
     try {
+      const raw = {
+        ...req.query,
+        unique: req.query.unique === "true",
+      };
       // Use shared schema for parsing and validation
       parsedOpts = OptionsSchema.pick({
         count: true,
         category: true,
         seed: true,
         config: true,
+        unique: true,
         format: true,
-      }).parse({
-        ...req.query,
-      });
+      }).parse(raw);
     } catch (err) {
       if (err instanceof ZodError) {
         const message = err.errors.map((e) => e.message).join(", ");
@@ -227,13 +248,14 @@ export function main(args) {
     console.log("  --serve, -S     start HTTP server mode");
     console.log("  --port, -p      port for HTTP server (default: 3000)");
     console.log("  --config, -f    path to JSON or YAML face configuration file");
+    console.log("  --unique, -u    unique faces without replacement (error if count exceeds pool)");
     console.log("  --help, -h      show this help message");
     console.log("");
     console.log(`Categories: ${defaultCategories.join(", ")} ,all`);
     return;
   }
 
-  const { count, category, seed, json, serve, port, config } = parseOptions(
+  const { count, category, seed, json, serve, port, config, unique } = parseOptions(
     args
   );
 
@@ -246,7 +268,13 @@ export function main(args) {
   }
 
   // Generate faces using core
-  const result = generateFacesCore({ count, category, seed, config });
+  let result;
+  try {
+    result = generateFacesCore({ count, category, seed, config, unique });
+  } catch (err) {
+    console.error(err.message);
+    process.exit(1);
+  }
 
   if (json) {
     console.log(
