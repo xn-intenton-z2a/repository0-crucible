@@ -18,7 +18,7 @@ node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--se
 - `--category`, `-C`: emotion category (`happy`, `sad`, `angry`, `surprised`, `all`, or custom categories from config) (default: `all`)
 - `--seed`, `-s`: nonnegative integer seed for reproducible output
 - `--json`, `-j`: output JSON payload
-- `--serve`, `-S`: start HTTP server mode
+- `--serve`, `-S`: start HTTP server mode (CORS enabled for all origins)
 - `--port`, `-p`: port for HTTP server (default: `3000`)
 - `--config`, `-f`: path to JSON or YAML configuration file to override or extend face categories
 - `--unique`, `-u`: ensure returned faces are unique within the request; error if count exceeds pool size
@@ -86,7 +86,7 @@ console.log(
 
 ### HTTP Server Mode
 
-Use `--serve` or `-S` to start an HTTP server instead of printing to stdout. Use `--port` or `-p` to specify the port (default: `3000`).
+Use `--serve` or `-S` to start an HTTP server instead of printing to stdout. Use `--port` or `-p` to specify the port (default: `3000`). CORS is enabled by default for all origins.
 
 ```bash
 # Start server on default port 3000
@@ -101,7 +101,7 @@ curl "http://localhost:8080/faces?count=2&category=sad&seed=100&unique=true"
 
 # Invalid parameters return HTTP 400 with JSON error response
 curl "http://localhost:8080/faces?count=abc"
-# => {"error":"Expected number, received "abc""}
+# => {"error":"Expected number, received \"abc\""}
 
 # Query /faces endpoint in text format
 curl "http://localhost:8080/faces?count=2&format=text&unique=true"
