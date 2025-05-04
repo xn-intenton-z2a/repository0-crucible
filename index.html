@@ -31,7 +31,8 @@
 <ul class="md-github">
 <li class="md-github">Outputs random ASCII face expressions for emotional feedback.</li>
 <li class="md-github">Configurable flags for count, category, and reproducible output via seed.</li>
-<li class="md-github">HTTP Server Mode: Using <code class="md-github">--serve</code> (<code class="md-github">-S</code>) starts an HTTP API server on port <code class="md-github">3000</code> by default, or on a custom port via <code class="md-github">--port</code> (<code class="md-github">-p</code>).</li>
+<li class="md-github">Custom Face Configuration: override or extend face categories via JSON/YAML with <code class="md-github">--config</code> (<code class="md-github">-f</code>).</li>
+<li class="md-github">HTTP Server Mode: using <code class="md-github">--serve</code> (<code class="md-github">-S</code>) starts an HTTP API server on port <code class="md-github">3000</code> by default, or on a custom port via <code class="md-github">--port</code> (<code class="md-github">-p</code>).</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="flags-and-defaults" href="#flags-and-defaults"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Flags and Defaults</h2>
 <ul class="md-github">
@@ -41,10 +42,11 @@
 <li class="md-github"><code class="md-github">--json</code>, <code class="md-github">-j</code>: output JSON payload.</li>
 <li class="md-github"><code class="md-github">--serve</code>, <code class="md-github">-S</code>: start HTTP server mode (default: off).</li>
 <li class="md-github"><code class="md-github">--port</code>, <code class="md-github">-p</code> (integer ≥1, default: <code class="md-github">3000</code>): port for HTTP server.</li>
+<li class="md-github"><code class="md-github">--config</code>, <code class="md-github">-f</code> (string): path to JSON or YAML file to override or extend face categories.</li>
 <li class="md-github"><code class="md-github">--help</code>, <code class="md-github">-h</code>: display usage information.</li>
 </ul>
 <h2 class="md-github"><a class="md-github__anchor" name="available-categories" href="#available-categories"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Available Categories</h2>
-<p class="md-github">happy, sad, angry, surprised, all</p>
+<p class="md-github">happy, sad, angry, surprised, all (plus custom categories via <code class="md-github">--config</code>)</p>
 <h2 class="md-github"><a class="md-github__anchor" name="examples" href="#examples"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Examples</h2>
 <ol class="md-github">
 <li class="md-github">
@@ -66,8 +68,21 @@
 </code></pre>
 </li>
 <li class="md-github">
-<p class="md-github">Show help:</p>
-<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --help
+<p class="md-github">Display two faces in JSON format:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --count 2 --category surprised --seed 123 --json
+# =&gt; {&quot;faces&quot;:[&quot;😮&quot;,&quot;(⊙_⊙)&quot;],&quot;category&quot;:&quot;surprised&quot;,&quot;count&quot;:2,&quot;seed&quot;:123}
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Override happy category with a custom JSON config:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --config ./tests/unit/fixtures/custom.json --category happy --count 2
+# e.g. H1 H2
+</code></pre>
+</li>
+<li class="md-github">
+<p class="md-github">Add and use a new custom category via JSON config:</p>
+<pre class="md-github"><code class="md-github language-bash">node src/lib/main.js --config ./tests/unit/fixtures/custom.json --category custom --count 2
+# e.g. C1 C2
 </code></pre>
 </li>
 </ol>
@@ -92,12 +107,24 @@ curl &quot;http://localhost:8080/faces?count=2&amp;format=text&quot;
 # =&gt; 😢
 # =&gt; 😮
 </code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="programmatic-api" href="#programmatic-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Programmatic API</h2>
+<p class="md-github">You can use the library directly in your code:</p>
+<pre class="md-github"><code class="md-github language-javascript">import { generateFaces, listCategories } from '@xn-intenton-z2a/repository0-crucible';
+
+// Generate faces programmatically
+const result = generateFaces({ count: 3, category: 'happy', seed: 42 });
+console.log(result.faces); // Array of faces
+
+// List available categories (including custom via config)
+const categories = listCategories();
+console.log(categories);
+</code></pre>
 <h2 class="md-github"><a class="md-github__anchor" name="license" href="#license"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>License</h2>
-<p class="md-github">Released under the MIT License.</p>
+<p class="md-github">Released under the Apache-2.0 License.</p>
 
   </section>
   <footer>
-    <p>Generated on 2025-05-04T08:22:11.015Z</p>
+    <p>Generated on 2025-05-04T09:21:35.016Z</p>
   </footer>
 </body>
 </html>

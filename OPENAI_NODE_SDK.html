@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="openai_node_sdk" href="#openai_node_sdk"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OPENAI_NODE_SDK</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">Installation commands; client constructor options with defaults (apiKey, maxRetries, timeout, fetch, httpAgent, dangerouslyAllowBrowser, azureADTokenProvider, apiVersion); primary APIs: responses.create, chat.completions.create, files.create with exact params and return types; SSE streaming usage; file upload input types; error classes mapping HTTP codes; retry defaults on connection, 408,409,429,&gt;=500; timeout default 600000ms; access request_id via property or withResponse; auto-pagination methods; WebSocket realtime API; AzureOpenAI usage; advanced usage asResponse, withResponse; custom HTTP verbs; fetch shims; logging middleware via fetch override or DEBUG; HTTP agent config; semantic versioning notes; supported runtimes.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents
+1 Installation
+2 Client Configuration
+3 Responses API
+4 Chat Completions API
+5 Streaming
+6 File Uploads
+7 Error Handling
+8 Retries
+9 Timeouts
+10 Request IDs
+11 Auto-pagination
+12 Realtime API Beta
+13 Azure OpenAI
+14 Advanced Usage
+15 Custom Requests
+16 Fetch Client Shim
+17 Logging and Middleware
+18 HTTP(S) Agent
+19 Semantic Versioning
+20 Requirements</p>
+<p class="md-github">1 Installation
+npm install openai
+deno add jsr:@openai/openai
+npx jsr add @openai/openai</p>
+<p class="md-github">2 Client Configuration
+Constructor: new OpenAI(options)
+options.apiKey?: string (default from env OPENAI_API_KEY)
+options.maxRetries?: number (default 2)
+options.timeout?: number ms (default 600000)
+options.fetch?: function(url, init) =&gt; Promise&lt;Response)
+options.httpAgent?: Agent
+options.dangerouslyAllowBrowser?: boolean (default false)
+options.azureADTokenProvider?: BearerTokenProvider
+options.apiVersion?: string</p>
+<p class="md-github">3 Responses API
+client.responses.create(
+{model: string; instructions?: string; input?: string; stream?: boolean},
+{maxRetries?: number; timeout?: number; httpAgent?: Agent}
+)
+Returns Promise&lt;{output_text: string; _request_id: string}&gt; or AsyncIterable<ServerSentEvent></p>
+<p class="md-github">4 Chat Completions API
+client.chat.completions.create(
+{model: string; messages: {role: 'developer'|'user'|'assistant'; content: string}[]; stream?: boolean; temperature?: number; max_tokens?: number},
+RequestOptions
+)
+Returns Promise<ChatCompletionResponse> or AsyncIterable<ServerSentEvent></p>
+<p class="md-github">5 Streaming
+Use stream: true. Example: const stream = await client.responses.create({model, input, stream:true}); for await (const ev of stream) console.log(ev);</p>
+<p class="md-github">6 File Uploads
+client.files.create({file: fs.ReadStream|File|Response|toFile(buffer,filename); purpose: 'fine-tune'});
+Supports fs.createReadStream, File, fetch Response, toFile helper</p>
+<p class="md-github">7 Error Handling
+Throws OpenAI.APIError subclasses
+Properties: request_id, status, name, headers
+Mapping: 400 BadRequestError, 401 AuthenticationError, 403 PermissionDeniedError, 404 NotFoundError, 422 UnprocessableEntityError, 429 RateLimitError, &gt;=500 InternalServerError, network APIConnectionError</p>
+<p class="md-github">8 Retries
+Default 2 retries for network errors, 408, 409, 429, &gt;=500
+Override via maxRetries in client or per request</p>
+<p class="md-github">9 Timeouts
+Default 600000 ms
+Throws APIConnectionTimeoutError
+Retries twice by default
+Override via timeout in client or per request</p>
+<p class="md-github">10 Request IDs
+Access via response._request_id
+Or withResponse(): const {data, request_id} = await client.responses.create(params).withResponse();</p>
+<p class="md-github">11 Auto-pagination
+List methods return Page<T>
+Use for await of client.fineTuning.jobs.list({limit}) or manual page.hasNextPage() and page.getNextPage()</p>
+<p class="md-github">12 Realtime API Beta
+Use WebSocket:
+const rt = new OpenAIRealtimeWebSocket({model})
+rt.on('response.text.delta',(event)=&gt;...)</p>
+<p class="md-github">13 Azure OpenAI
+Use AzureOpenAI class:
+new AzureOpenAI({azureADTokenProvider, apiVersion})
+openai.chat.completions.create({model, messages})</p>
+<p class="md-github">14 Advanced Usage
+.asResponse() returns raw Response
+.withResponse() returns {data, response}</p>
+<p class="md-github">15 Custom Requests
+client.post('/path',{body,query});
+Allow undocumented params with @ts-expect-error</p>
+<p class="md-github">16 Fetch Client Shim
+import 'openai/shims/web' for global fetch
+import 'openai/shims/node' for node-fetch polyfill</p>
+<p class="md-github">17 Logging and Middleware
+Pass fetch override in client options to intercept
+Set DEBUG=true to auto log requests/responses</p>
+<p class="md-github">18 HTTP(S) Agent
+Default connection pooling
+Override via httpAgent in client or per request</p>
+<p class="md-github">19 Semantic Versioning
+Follows SemVer; minor may include static-type breaking changes</p>
+<p class="md-github">20 Requirements
+TypeScript&gt;=4.5; Node.js&gt;=18; Deno&gt;=1.28.0; Bun&gt;=1.0; Cloudflare Workers; Vercel Edge; Jest&gt;=28+node; Nitro&gt;=2.6; Browser support via dangerouslyAllowBrowser</p>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">ClientOptions defaults: maxRetries=2; timeout=600000ms; dangerouslyAllowBrowser=false. SSE Streaming: uses EventSource protocol under the hood; each chunk decoded to ServerSentEvent objects with fields data:string, event?:string, id?:string. File uploads: toFile(buffer,filename) returns {path: string; name: string; data: Buffer} accepted by files.create. RequestOptions fields: maxRetries, timeout (ms), httpAgent. ChatCompletionResponse: { id:string; object:'chat.completion'; created:number; model:string; choices:Array&lt;{index:number; message:{role:string; content:string}; finish_reason:string}&gt;; usage:{prompt_tokens:number; completion_tokens:number; total_tokens:number}}. Page<T>: { data:T[]; hasNextPage():boolean; getNextPage():Promise&lt;Page<T>&gt; }. OpenAIRealtimeWebSocket: methods: constructor(options:{ model:string; url?: string }); on(event:'response.text.delta', callback:(event:{delta:string})=&gt;void); on(event:'response.audio.delta', callback:(event:{delta:ArrayBuffer})=&gt;void); close():void. AzureOpenAI differences: endpoints prefix with /openai/deployments/{model}/...; param names same. Raw response access: .asResponse(): Promise<Response>; .withResponse(): Promise&lt;{data:any; response:Response}&gt;. Custom HTTP verbs: client.get<T>(path:string, options:{query?:any; headers?:any}): Promise<T>.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">// Client class
+interface OpenAIOptions {
+apiKey?: string;
+maxRetries?: number;
+timeout?: number;
+fetch?: (url: RequestInfo, init?: RequestInit) =&gt; Promise<Response>;
+httpAgent?: Agent;
+dangerouslyAllowBrowser?: boolean;
+azureADTokenProvider?: BearerTokenProvider;
+apiVersion?: string;
+}
+class OpenAI {
+constructor(options?: OpenAIOptions);
+responses: {
+create(
+params: {
+model: string;
+instructions?: string;
+input?: string;
+stream?: boolean;
+},
+options?: { maxRetries?: number; timeout?: number; httpAgent?: Agent }
+): Promise&lt;{ output_text: string; _request_id: string }&gt; | AsyncIterable<ServerSentEvent>;
+}
+chat: {
+completions: {
+create(
+params: {
+model: string;
+messages: { role: 'developer'|'user'|'assistant'; content: string }[];
+stream?: boolean;
+temperature?: number;
+max_tokens?: number;
+},
+options?: { maxRetries?: number; timeout?: number; httpAgent?: Agent }
+): Promise<ChatCompletionResponse> | AsyncIterable<ServerSentEvent>;
+}
+}
+files: {
+create(
+params: {
+file: File|fs.ReadStream|Response|{ toFile: Function }|Buffer|Uint8Array;
+purpose: 'fine-tune'|'search'|'answers';
+},
+options?: { maxRetries?: number; timeout?: number; httpAgent?: Agent }
+): Promise&lt;{ id: string; object: string; bytes: number; created_at: number; filename: string; purpose: string; _request_id: string }&gt;;
+}
+post<T>(path: string, options: { body?: any; query?: any; headers?: any }): Promise<T>;
+}</p>
+<p class="md-github">// Error classes
+namespace OpenAI {
+class APIError extends Error {
+request_id: string;
+status: number;
+name: string;
+headers: Record&lt;string,string&gt;;
+}
+class BadRequestError extends APIError {}
+class AuthenticationError extends APIError {}
+class PermissionDeniedError extends APIError {}
+class NotFoundError extends APIError {}
+class UnprocessableEntityError extends APIError {}
+class RateLimitError extends APIError {}
+class InternalServerError extends APIError {}
+class APIConnectionError extends Error {}
+class APIConnectionTimeoutError extends APIConnectionError {}
+}</p>
+<p class="md-github">// Usage examples
+toFile(buffer: Buffer|Uint8Array, filename: string): Promise&lt;{blob: Blob; name: string}&gt;;</p>
+<p class="md-github">const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, maxRetries: 5, timeout: 20000, httpAgent: new HttpsProxyAgent(URL) });</p>
+<p class="md-github">// Text generation
+const response = await client.responses.create({ model: 'gpt-4o', instructions: 'Pirate', input: 'Semicolons?' });
+console.log(response.output_text);</p>
+<p class="md-github">// Chat completion
+const completion = await client.chat.completions.create({ model: 'gpt-4o', messages: [{role:'user',content:'Hello'}], temperature:0.7, max_tokens:100 });
+console.log(completion.choices[0].message.content);</p>
+<p class="md-github">// Streaming
+for await (const ev of await client.chat.completions.create({ model: 'gpt-4o', messages, stream: true })) { console.log(ev.data); }</p>
+<p class="md-github">// File upload
+await client.files.create({ file: fs.createReadStream('file.jsonl'), purpose: 'fine-tune' });</p>
+<p class="md-github">// Error handling
+try { await client.chat.completions.create({ model:'invalid', messages }); } catch (err) { if (err instanceof OpenAI.AuthenticationError) handleAuth(); }</p>
+<p class="md-github">// WebSocket realtime
+const rt = new OpenAIRealtimeWebSocket({ model: 'gpt-4o-realtime-preview' });
+rt.on('response.text.delta', e =&gt; process.stdout.write(e.delta));</p>
+<p class="md-github">// Troubleshooting</p>
+<h1 class="md-github"><a class="md-github__anchor" name="enable-debug-logs" href="#enable-debug-logs"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Enable debug logs</h1>
+<p class="md-github">DEBUG=true node script.js</p>
+<h1 class="md-github"><a class="md-github__anchor" name="inspect-request-id" href="#inspect-request-id"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Inspect request ID</h1>
+<p class="md-github">console.log(response._request_id);</p>
+<h1 class="md-github"><a class="md-github__anchor" name="capture-raw-response" href="#capture-raw-response"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Capture raw response</h1>
+<p class="md-github">const raw = await client.responses.create({ model, input }).asResponse();
+console.log(raw.status, raw.headers.get('content-type'));</p>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">apiKey=env;maxRetries=2;timeout=600000;fetchOverride;httpAgent;dangerouslyAllowBrowser=false;azureADToken;apiVersion. responses.create(params{model:string;instructions?;input?;stream?},opts{maxRetries?;timeout?;httpAgent?})-&gt;Promise&lt;{output_text;_request_id}&gt;|AsyncIterable<SSE>. chat.completions.create(params{model;messages[];stream?;temperature?;max_tokens?},opts?)-&gt;Promise<ChatResp>|AsyncIterable<SSE>. files.create(params{file:fs.ReadStream|File|Response|toFile;purpose},opts?)-&gt;Promise<FileObj>. stream: for await ev of create({stream:true}). Error classes map HTTP codes. Retries on network,408,409,429,&gt;=500;override maxRetries. Timeout default600000ms;throws APIConnectionTimeoutError;retry2. RequestID: resp._request_id or .withResponse(). Pagination: for await page of client.jobs.list or manual page.getNextPage(). Realtime: new OpenAIRealtimeWebSocket({model}).on('response.text.delta',cb). AzureOpenAI: new AzureOpenAI({azureADTokenProvider,apiVersion}). Advanced: .asResponse(), .withResponse(). Custom: client.get/post(path,{body,query}). Shim: import openai/shims/web/node. Logging: fetch override or DEBUG env. HTTP Agent: default pooled; override via httpAgent.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents
+1 Installation
+2 Client Configuration
+3 Responses API
+4 Chat Completions API
+5 Streaming
+6 File Uploads
+7 Error Handling
+8 Retries
+9 Timeouts
+10 Request IDs
+11 Auto-pagination
+12 Realtime API Beta
+13 Azure OpenAI
+14 Advanced Usage
+15 Custom Requests
+16 Fetch Client Shim
+17 Logging and Middleware
+18 HTTP(S) Agent
+19 Semantic Versioning
+20 Requirements</p>
+<p class="md-github">1 Installation
+npm install openai
+deno add jsr:@openai/openai
+npx jsr add @openai/openai</p>
+<p class="md-github">2 Client Configuration
+Constructor: new OpenAI(options)
+options.apiKey?: string (default from env OPENAI_API_KEY)
+options.maxRetries?: number (default 2)
+options.timeout?: number ms (default 600000)
+options.fetch?: function(url, init) =&gt; Promise&lt;Response)
+options.httpAgent?: Agent
+options.dangerouslyAllowBrowser?: boolean (default false)
+options.azureADTokenProvider?: BearerTokenProvider
+options.apiVersion?: string</p>
+<p class="md-github">3 Responses API
+client.responses.create(
+{model: string; instructions?: string; input?: string; stream?: boolean},
+{maxRetries?: number; timeout?: number; httpAgent?: Agent}
+)
+Returns Promise&lt;{output_text: string; _request_id: string}&gt; or AsyncIterable<ServerSentEvent></p>
+<p class="md-github">4 Chat Completions API
+client.chat.completions.create(
+{model: string; messages: {role: 'developer'|'user'|'assistant'; content: string}[]; stream?: boolean; temperature?: number; max_tokens?: number},
+RequestOptions
+)
+Returns Promise<ChatCompletionResponse> or AsyncIterable<ServerSentEvent></p>
+<p class="md-github">5 Streaming
+Use stream: true. Example: const stream = await client.responses.create({model, input, stream:true}); for await (const ev of stream) console.log(ev);</p>
+<p class="md-github">6 File Uploads
+client.files.create({file: fs.ReadStream|File|Response|toFile(buffer,filename); purpose: 'fine-tune'});
+Supports fs.createReadStream, File, fetch Response, toFile helper</p>
+<p class="md-github">7 Error Handling
+Throws OpenAI.APIError subclasses
+Properties: request_id, status, name, headers
+Mapping: 400 BadRequestError, 401 AuthenticationError, 403 PermissionDeniedError, 404 NotFoundError, 422 UnprocessableEntityError, 429 RateLimitError, &gt;=500 InternalServerError, network APIConnectionError</p>
+<p class="md-github">8 Retries
+Default 2 retries for network errors, 408, 409, 429, &gt;=500
+Override via maxRetries in client or per request</p>
+<p class="md-github">9 Timeouts
+Default 600000 ms
+Throws APIConnectionTimeoutError
+Retries twice by default
+Override via timeout in client or per request</p>
+<p class="md-github">10 Request IDs
+Access via response._request_id
+Or withResponse(): const {data, request_id} = await client.responses.create(params).withResponse();</p>
+<p class="md-github">11 Auto-pagination
+List methods return Page<T>
+Use for await of client.fineTuning.jobs.list({limit}) or manual page.hasNextPage() and page.getNextPage()</p>
+<p class="md-github">12 Realtime API Beta
+Use WebSocket:
+const rt = new OpenAIRealtimeWebSocket({model})
+rt.on('response.text.delta',(event)=&gt;...)</p>
+<p class="md-github">13 Azure OpenAI
+Use AzureOpenAI class:
+new AzureOpenAI({azureADTokenProvider, apiVersion})
+openai.chat.completions.create({model, messages})</p>
+<p class="md-github">14 Advanced Usage
+.asResponse() returns raw Response
+.withResponse() returns {data, response}</p>
+<p class="md-github">15 Custom Requests
+client.post('/path',{body,query});
+Allow undocumented params with @ts-expect-error</p>
+<p class="md-github">16 Fetch Client Shim
+import 'openai/shims/web' for global fetch
+import 'openai/shims/node' for node-fetch polyfill</p>
+<p class="md-github">17 Logging and Middleware
+Pass fetch override in client options to intercept
+Set DEBUG=true to auto log requests/responses</p>
+<p class="md-github">18 HTTP(S) Agent
+Default connection pooling
+Override via httpAgent in client or per request</p>
+<p class="md-github">19 Semantic Versioning
+Follows SemVer; minor may include static-type breaking changes</p>
+<p class="md-github">20 Requirements
+TypeScript&gt;=4.5; Node.js&gt;=18; Deno&gt;=1.28.0; Bun&gt;=1.0; Cloudflare Workers; Vercel Edge; Jest&gt;=28+node; Nitro&gt;=2.6; Browser support via dangerouslyAllowBrowser</p>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">OpenAI Node.js SDK
+https://github.com/openai/openai-node#readme</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-openai_node_sdk" href="#digest-of-openai_node_sdk"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of OPENAI_NODE_SDK</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="openai-nodejs-sdk-retrieved-2024-06-30" href="#openai-nodejs-sdk-retrieved-2024-06-30"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>OPENAI NODE.JS SDK (Retrieved 2024-06-30)</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="installation" href="#installation"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Installation</h2>
+<pre class="md-github"><code class="md-github language-bash">npm install openai
+# Deno / JSR
+deno add jsr:@openai/openai
+npx jsr add @openai/openai
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="client-configuration" href="#client-configuration"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Client Configuration</h2>
+<p class="md-github">Constructor: <code class="md-github">new OpenAI(options?: OpenAIOptions)</code></p>
+<p class="md-github">Options:</p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">apiKey?: string</code>  (default from OPENAI_API_KEY env)</li>
+<li class="md-github"><code class="md-github">maxRetries?: number</code>  (default 2)</li>
+<li class="md-github"><code class="md-github">timeout?: number</code>  (ms, default 600000)</li>
+<li class="md-github"><code class="md-github">fetch?: (url: RequestInfo, init?: RequestInit) =&gt; Promise&lt;Response&gt;</code></li>
+<li class="md-github"><code class="md-github">httpAgent?: http.Agent | https.Agent</code></li>
+<li class="md-github"><code class="md-github">dangerouslyAllowBrowser?: boolean</code>  (default false)</li>
+<li class="md-github"><code class="md-github">azureADTokenProvider?: BearerTokenProvider</code></li>
+<li class="md-github"><code class="md-github">apiVersion?: string</code></li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="responses-api" href="#responses-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Responses API</h2>
+<pre class="md-github"><code class="md-github language-ts">client.responses.create(
+  params: { model: string; instructions?: string; input?: string; stream?: boolean },
+  options?: { maxRetries?: number; timeout?: number; httpAgent?: Agent }
+): Promise&lt;{ output_text: string; _request_id: string } | AsyncIterable&lt;ServerSentEvent&gt; &gt;
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="chat-completions-api" href="#chat-completions-api"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Chat Completions API</h2>
+<pre class="md-github"><code class="md-github language-ts">client.chat.completions.create(
+  params: { model: string; messages: Array&lt;{ role: 'developer'|'user'|'assistant'; content: string }&gt;; stream?: boolean; temperature?: number; max_tokens?: number },
+  options?: RequestOptions
+): Promise&lt;ChatCompletionResponse | AsyncIterable&lt;ServerSentEvent&gt;&gt;
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="streaming" href="#streaming"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Streaming</h2>
+<p class="md-github">Use <code class="md-github">stream: true</code> and for-await:</p>
+<pre class="md-github"><code class="md-github language-ts">const stream = await client.responses.create({ model, input, stream: true });
+for await (const event of stream) { console.log(event); }
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="file-uploads" href="#file-uploads"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>File Uploads</h2>
+<pre class="md-github"><code class="md-github language-ts">client.files.create({ file: fs.ReadStream | File | Response | toFile(buffer, filename); purpose: 'fine-tune' });
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="error-handling" href="#error-handling"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Error Handling</h2>
+<p class="md-github">Throws subclasses of <code class="md-github">OpenAI.APIError</code> with:</p>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">request_id: string</code></li>
+<li class="md-github"><code class="md-github">status: number</code></li>
+<li class="md-github"><code class="md-github">name: string</code></li>
+<li class="md-github"><code class="md-github">headers: Record&lt;string,string&gt;</code></li>
+</ul>
+<p class="md-github">Error mapping:</p>
+<ul class="md-github">
+<li class="md-github">400: BadRequestError</li>
+<li class="md-github">401: AuthenticationError</li>
+<li class="md-github">403: PermissionDeniedError</li>
+<li class="md-github">404: NotFoundError</li>
+<li class="md-github">422: UnprocessableEntityError</li>
+<li class="md-github">429: RateLimitError</li>
+<li class="md-github">
+<blockquote class="md-github">
+<p class="md-github">=500: InternalServerError</p>
+</blockquote>
+</li>
+<li class="md-github">network: APIConnectionError</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retries" href="#retries"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retries</h2>
+<p class="md-github">Defaults: 2 attempts on connection errors, 408, 409, 429, &gt;=500.
+Override via <code class="md-github">maxRetries</code> in client or per request.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="timeouts" href="#timeouts"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Timeouts</h2>
+<p class="md-github">Default: 600000 ms.  Throws <code class="md-github">APIConnectionTimeoutError</code>.  Retry twice.
+Override via <code class="md-github">timeout</code> in client or per request.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="request-ids" href="#request-ids"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Request IDs</h2>
+<p class="md-github">Access via <code class="md-github">_request_id</code> on responses or <code class="md-github">.withResponse()</code>:</p>
+<pre class="md-github"><code class="md-github language-ts">const { data, request_id } = await client.responses.create(params).withResponse();
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="auto-pagination" href="#auto-pagination"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Auto-pagination</h2>
+<p class="md-github">List methods return <code class="md-github">Page&lt;T&gt;</code> with <code class="md-github">.data: T[]</code>, <code class="md-github">.hasNextPage()</code>, <code class="md-github">.getNextPage()</code>; or use <code class="md-github">for await</code> on <code class="md-github">client.fineTuning.jobs.list()</code>.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="realtime-api-beta" href="#realtime-api-beta"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Realtime API Beta</h2>
+<pre class="md-github"><code class="md-github language-ts">const rt = new OpenAIRealtimeWebSocket({ model: string });
+rt.on('response.text.delta', (event: { delta: string }) =&gt; process.stdout.write(event.delta));
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="azure-openai" href="#azure-openai"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Azure OpenAI</h2>
+<pre class="md-github"><code class="md-github language-ts">const openai = new AzureOpenAI({ azureADTokenProvider, apiVersion });
+openai.chat.completions.create({ model, messages });
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="advanced-usage" href="#advanced-usage"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Advanced Usage</h2>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">.asResponse()</code> returns raw <code class="md-github">Response</code></li>
+<li class="md-github"><code class="md-github">.withResponse()</code> returns <code class="md-github">{ data, response }</code></li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="custom-requests" href="#custom-requests"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Custom Requests</h2>
+<pre class="md-github"><code class="md-github language-ts">await client.post('/endpoint', { body, query });
+// allow undocumented params with @ts-expect-error
+</code></pre>
+<h2 class="md-github"><a class="md-github__anchor" name="fetch-client-shim" href="#fetch-client-shim"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Fetch Client Shim</h2>
+<ul class="md-github">
+<li class="md-github"><code class="md-github">import 'openai/shims/web'</code> to use global fetch</li>
+<li class="md-github"><code class="md-github">import 'openai/shims/node'</code> to use node-fetch polyfills</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="logging-and-middleware" href="#logging-and-middleware"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Logging and Middleware</h2>
+<p class="md-github">Pass <code class="md-github">fetch</code> option to intercept requests/responses. Set DEBUG=true for automatic logs.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="https-agent" href="#https-agent"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>HTTP(S) Agent</h2>
+<p class="md-github">Default: pooled agent. Override via <code class="md-github">httpAgent</code> in client or per request.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="semantic-versioning" href="#semantic-versioning"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Semantic Versioning</h2>
+<p class="md-github">Follows SemVer. Minor releases may contain breaking static-type changes.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="requirements" href="#requirements"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Requirements</h2>
+<ul class="md-github">
+<li class="md-github">TS &gt;=4.5, Node.js &gt;=18, Deno &gt;=1.28.0, Bun &gt;=1.0, Cloudflare Workers, Vercel Edge, Jest28+, Nitro&gt;=2.6.</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: OpenAI Node.js SDK</li>
+<li class="md-github">URL: https://github.com/openai/openai-node#readme</li>
+<li class="md-github">License: MIT License</li>
+<li class="md-github">Crawl Date: 2025-05-04T08:50:20.297Z</li>
+<li class="md-github">Data Size: 702054 bytes</li>
+<li class="md-github">Links Found: 5432</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-04</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-04T09:21:34.768Z</p>
+  </footer>
+</body>
+</html>
