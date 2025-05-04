@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>agentic-lib</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 2em; background-color: #f9f9f9; color: #333; }
+    header { padding-bottom: 1em; border-bottom: 2px solid #ccc; margin-bottom: 1em; }
+    h1 { font-size: 2em; }
+    section { margin-bottom: 1.5em; }
+    ul { list-style: none; padding: 0; }
+    li { margin: 0.5em 0; }
+    .label { font-weight: bold; }
+    footer { margin-top: 2em; font-size: 0.9em; color: #777; }
+    a { color: #0366d6; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>agentic-lib</h1>
+    <p><a href="https://github.com/xn-intenton-z2a/agentic-lib">repository</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/latest.html">latest stats</a> - <a href="https://xn-intenton-z2a.github.io/agentic-lib/all.html">all stats</a></p>
+  </header>
+  <section>
+    <h1 class="md-github"><a class="md-github__anchor" name="server_sent_events" href="#server_sent_events"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SERVER_SENT_EVENTS</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="crawl-summary" href="#crawl-summary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Crawl Summary</h2>
+<p class="md-github">EventSource(url:USVString,{withCredentials?:boolean=false})
+Properties: url:string readonly, withCredentials:boolean readonly, readyState:0|1|2
+Constants: CONNECTING=0, OPEN=1, CLOSED=2
+Methods: close():void, addEventListener(type,listener,options), removeEventListener(...), dispatchEvent(event)
+Event Handlers: onopen(evt), onmessage(evt.data:string,evt.lastEventId:string), onerror(evt)
+Protocol: text/event-stream; charset=UTF-8; fields: id:, event:, data:, retry:, comments start with ':'; blank line ends message; retry sets reconnect delay</p>
+<h2 class="md-github"><a class="md-github__anchor" name="normalised-extract" href="#normalised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Normalised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Constructor</p>
+</li>
+<li class="md-github">
+<p class="md-github">EventSourceInit</p>
+</li>
+<li class="md-github">
+<p class="md-github">Properties</p>
+</li>
+<li class="md-github">
+<p class="md-github">Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Constants</p>
+</li>
+<li class="md-github">
+<p class="md-github">Event Handlers</p>
+</li>
+<li class="md-github">
+<p class="md-github">Protocol Format</p>
+</li>
+<li class="md-github">
+<p class="md-github">Constructor
+Signature: EventSource(url: USVString, eventSourceInitDict?: {withCredentials?: boolean})
+Parameters:
+url: absolute or relative URL of SSE endpoint
+eventSourceInitDict.withCredentials: true|false (default false)
+Behavior: Initiates HTTP GET with Accept: text/event-stream; reconnects automatically on failure.</p>
+</li>
+<li class="md-github">
+<p class="md-github">EventSourceInit
+Dictionary:
+withCredentials boolean optional default false; controls sending of credentials.</p>
+</li>
+<li class="md-github">
+<p class="md-github">Properties
+url: USVString readonly; endpoint URL
+withCredentials: boolean readonly; from init dict
+readyState: 0|1|2 readonly; connection state codes</p>
+</li>
+<li class="md-github">
+<p class="md-github">Methods
+close(): void; stops stream and reconnection
+addEventListener(type: string, listener: MessageEventListener, options?: boolean | AddEventListenerOptions): void
+removeEventListener(type: string, listener: MessageEventListener, options?: boolean | EventListenerOptions): void
+dispatchEvent(event: Event): boolean</p>
+</li>
+<li class="md-github">
+<p class="md-github">Constants
+static CONNECTING = 0
+static OPEN = 1
+static CLOSED = 2</p>
+</li>
+<li class="md-github">
+<p class="md-github">Event Handlers
+onopen(evt: Event): called on open
+onmessage(evt: MessageEvent): evt.data:string, evt.lastEventId:string
+onerror(evt: Event): called on error; readyState may transition</p>
+</li>
+<li class="md-github">
+<p class="md-github">Protocol Format
+Headers: Content-Type: text/event-stream; charset=UTF-8; Cache-Control: no-cache
+Fields per line: id:, event:, data:, retry:
+Comments with &quot;:&quot;
+Blank line terminates message block
+data: lines accumulate with newline separators
+retry: sets next reconnect interval (ms)</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="supplementary-details" href="#supplementary-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Supplementary Details</h2>
+<p class="md-github">Server Setup (Node.js Express):
+app.get('/sse', (req, res) =&gt; {
+res.writeHead(200, {
+'Content-Type': 'text/event-stream',
+'Cache-Control': 'no-cache',
+Connection: 'keep-alive'
+});
+let id = 0;
+const send = (data, eventType = 'message') =&gt; {
+res.write(<code class="md-github">id: ${id}\n</code>);
+if(eventType !== 'message') res.write(<code class="md-github">event: ${eventType}\n</code>);
+data.split('\n').forEach(line =&gt; res.write(<code class="md-github">data: ${line}\n</code>));
+res.write('\n');
+id++;
+};
+send('Connection established');
+const interval = setInterval(() =&gt; send(<code class="md-github">Server time: ${Date.now()}</code>), 3000);
+req.on('close', () =&gt; clearInterval(interval));
+});</p>
+<p class="md-github">Client Code (JavaScript):
+const source = new EventSource('/sse', {withCredentials: true});
+source.onopen = () =&gt; console.log('SSE connection opened');
+source.onmessage = event =&gt; console.log('Message:', event.data, 'Last ID:', event.lastEventId);
+source.onerror = () =&gt; console.error('SSE error, state:', source.readyState);</p>
+<p class="md-github">Configuration Options:
+withCredentials: false | true (default false)
+Reconnection: default 3000ms or as set by retry field</p>
+<h2 class="md-github"><a class="md-github__anchor" name="reference-details" href="#reference-details"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Reference Details</h2>
+<p class="md-github">API Specifications
+EventSource
+Constructor(url: USVString, eventSourceInitDict?: EventSourceInit)
+EventSourceInit {
+withCredentials?: boolean // default false
+}
+Properties:
+url: USVString (readonly)
+withCredentials: boolean (readonly)
+readyState: number (readonly; 0=CONNECTING,1=OPEN,2=CLOSED)
+Constants:
+static CONNECTING: 0
+static OPEN: 1
+static CLOSED: 2
+Event Handlers:
+onopen: (evt: Event) =&gt; void
+onmessage: (evt: MessageEvent) =&gt; void // evt.data: string; evt.lastEventId: string
+onerror: (evt: Event) =&gt; void
+Methods:
+close(): void
+addEventListener(type: string, listener: (evt: MessageEvent) =&gt; any, options?: boolean|AddEventListenerOptions): void
+removeEventListener(type: string, listener: (evt: MessageEvent) =&gt; any, options?: boolean|EventListenerOptions): void
+dispatchEvent(event: Event): boolean</p>
+<p class="md-github">PHP Server Example:</p>
+ <?php
+ header('Content-Type: text/event-stream');
+ header('Cache-Control: no-cache');
+ $id = 0;
+ while (true) {
+   echo "id: {$id}\n";
+   echo "data: Server time: " . date('r') . "\n\n";
+   ob_flush(); flush();
+   $id++;
+   sleep(1);
+ }
+ ?>
+<p class="md-github">Implementation Pattern:</p>
+<ol class="md-github">
+<li class="md-github">Set appropriate headers</li>
+<li class="md-github">Stream messages using id:, event:, data:, blank line</li>
+<li class="md-github">Flush after each message</li>
+<li class="md-github">Handle client disconnects</li>
+<li class="md-github">Use retry field for dynamic reconnection intervals</li>
+</ol>
+<p class="md-github">Best Practices:</p>
+<ul class="md-github">
+<li class="md-github">Include id in each message for reconnection continuity</li>
+<li class="md-github">Use custom event types via event: <type></li>
+<li class="md-github">Handle readyState CLOSED to fallback</li>
+</ul>
+<p class="md-github">Troubleshooting:</p>
+<ul class="md-github">
+<li class="md-github">Inspect raw stream: curl -N http://server/sse</li>
+<li class="md-github">Expect lines starting with data:, id:, blank line separation</li>
+<li class="md-github">If nothing appears: verify Content-Type and disable buffering at server/proxy</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="information-dense-extract" href="#information-dense-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Information Dense Extract</h2>
+<p class="md-github">EventSource(url:USVString,{withCredentials?:boolean=false}); Properties: url,withCredentials,readyState(0|1|2); Constants: CONNECTING=0,OPEN=1,CLOSED=2; Methods: close(), addEventListener(type,listener,options), removeEventListener(...), dispatchEvent(event); Handlers: onopen, onmessage(data:string,lastEventId:string), onerror; Protocol: text/event-stream; charset=UTF-8; fields: id:,event:,data:,retry:; comments with ':'; blank line ends event; retry sets reconnect ms</p>
+<h2 class="md-github"><a class="md-github__anchor" name="sanitised-extract" href="#sanitised-extract"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Sanitised Extract</h2>
+<p class="md-github">Table of Contents</p>
+<ol class="md-github">
+<li class="md-github">
+<p class="md-github">Constructor</p>
+</li>
+<li class="md-github">
+<p class="md-github">EventSourceInit</p>
+</li>
+<li class="md-github">
+<p class="md-github">Properties</p>
+</li>
+<li class="md-github">
+<p class="md-github">Methods</p>
+</li>
+<li class="md-github">
+<p class="md-github">Constants</p>
+</li>
+<li class="md-github">
+<p class="md-github">Event Handlers</p>
+</li>
+<li class="md-github">
+<p class="md-github">Protocol Format</p>
+</li>
+<li class="md-github">
+<p class="md-github">Constructor
+Signature: EventSource(url: USVString, eventSourceInitDict?: {withCredentials?: boolean})
+Parameters:
+url: absolute or relative URL of SSE endpoint
+eventSourceInitDict.withCredentials: true|false (default false)
+Behavior: Initiates HTTP GET with Accept: text/event-stream; reconnects automatically on failure.</p>
+</li>
+<li class="md-github">
+<p class="md-github">EventSourceInit
+Dictionary:
+withCredentials boolean optional default false; controls sending of credentials.</p>
+</li>
+<li class="md-github">
+<p class="md-github">Properties
+url: USVString readonly; endpoint URL
+withCredentials: boolean readonly; from init dict
+readyState: 0|1|2 readonly; connection state codes</p>
+</li>
+<li class="md-github">
+<p class="md-github">Methods
+close(): void; stops stream and reconnection
+addEventListener(type: string, listener: MessageEventListener, options?: boolean | AddEventListenerOptions): void
+removeEventListener(type: string, listener: MessageEventListener, options?: boolean | EventListenerOptions): void
+dispatchEvent(event: Event): boolean</p>
+</li>
+<li class="md-github">
+<p class="md-github">Constants
+static CONNECTING = 0
+static OPEN = 1
+static CLOSED = 2</p>
+</li>
+<li class="md-github">
+<p class="md-github">Event Handlers
+onopen(evt: Event): called on open
+onmessage(evt: MessageEvent): evt.data:string, evt.lastEventId:string
+onerror(evt: Event): called on error; readyState may transition</p>
+</li>
+<li class="md-github">
+<p class="md-github">Protocol Format
+Headers: Content-Type: text/event-stream; charset=UTF-8; Cache-Control: no-cache
+Fields per line: id:, event:, data:, retry:
+Comments with ':'
+Blank line terminates message block
+data: lines accumulate with newline separators
+retry: sets next reconnect interval (ms)</p>
+</li>
+</ol>
+<h2 class="md-github"><a class="md-github__anchor" name="original-source" href="#original-source"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Original Source</h2>
+<p class="md-github">MDN Server-Sent Events (SSE)
+https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events</p>
+<h2 class="md-github"><a class="md-github__anchor" name="digest-of-server_sent_events" href="#digest-of-server_sent_events"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Digest of SERVER_SENT_EVENTS</h2>
+<h1 class="md-github"><a class="md-github__anchor" name="server-sent-events-sse" href="#server-sent-events-sse"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Server-Sent Events (SSE)</h1>
+<p class="md-github">Date Retrieved: 2024-06-01
+Source: MDN Web Docs, Server-Sent Events (last modified Mar 20, 2025)
+Data Size: 1860366 bytes</p>
+<h1 class="md-github"><a class="md-github__anchor" name="eventsource-interface" href="#eventsource-interface"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>EventSource Interface</h1>
+<h2 class="md-github"><a class="md-github__anchor" name="constructor" href="#constructor"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Constructor</h2>
+<p class="md-github">EventSource(url: USVString, eventSourceInitDict?: EventSourceInit)
+Initializes a persistent SSE connection to the given URL, automatically reconnecting on network failures.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="eventsourceinit-dictionary" href="#eventsourceinit-dictionary"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>EventSourceInit Dictionary</h2>
+<p class="md-github">withCredentials: boolean
+Default: false
+Controls whether cookies and HTTP authentication are sent with requests.</p>
+<h2 class="md-github"><a class="md-github__anchor" name="properties" href="#properties"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Properties</h2>
+<p class="md-github">url: USVString (readonly)
+withCredentials: boolean (readonly)
+readyState: number (readonly; 0=CONNECTING, 1=OPEN, 2=CLOSED)</p>
+<h2 class="md-github"><a class="md-github__anchor" name="methods" href="#methods"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Methods</h2>
+<p class="md-github">close(): void
+Terminates the connection and stops reconnection.</p>
+<p class="md-github">addEventListener(type: string, listener: (evt: MessageEvent) =&gt; any, options?: boolean | AddEventListenerOptions): void
+removeEventListener(type: string, listener: (evt: MessageEvent) =&gt; any, options?: boolean | EventListenerOptions): void
+dispatchEvent(event: Event): boolean</p>
+<h2 class="md-github"><a class="md-github__anchor" name="constants" href="#constants"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Constants</h2>
+<p class="md-github">static CONNECTING: 0
+static OPEN: 1
+static CLOSED: 2</p>
+<h2 class="md-github"><a class="md-github__anchor" name="event-handlers" href="#event-handlers"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Event Handlers</h2>
+<p class="md-github">onopen: (evt: Event) =&gt; any
+onmessage: (evt: MessageEvent) =&gt; any
+onerror: (evt: Event) =&gt; any</p>
+<h1 class="md-github"><a class="md-github__anchor" name="protocol-format" href="#protocol-format"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Protocol Format</h1>
+<p class="md-github">Streams must use Content-Type: text/event-stream; charset=UTF-8 and disable buffering.
+Each message block ends with a blank line. Supported fields per line:</p>
+<p class="md-github">id: <string>    sets lastEventId for reconnection
+event: <type>   sets custom event type beyond default &quot;message&quot;
+data: <content> payload; multiple lines concatenate with &quot;\n&quot;
+retry: <ms>     updates reconnection delay (in milliseconds)
+: <comment>     ignored by client</p>
+<h2 class="md-github"><a class="md-github__anchor" name="attribution" href="#attribution"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Attribution</h2>
+<ul class="md-github">
+<li class="md-github">Source: MDN Server-Sent Events (SSE)</li>
+<li class="md-github">URL: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events</li>
+<li class="md-github">License: CC BY-SA 2.5</li>
+<li class="md-github">Crawl Date: 2025-05-04T12:59:45.417Z</li>
+<li class="md-github">Data Size: 1860366 bytes</li>
+<li class="md-github">Links Found: 21397</li>
+</ul>
+<h2 class="md-github"><a class="md-github__anchor" name="retrieved" href="#retrieved"><svg class="md-github__octicon md-github__octicon-link" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Retrieved</h2>
+<p class="md-github">2025-05-04</p>
+
+  </section>
+  <footer>
+    <p>Generated on 2025-05-04T13:22:38.019Z</p>
+  </footer>
+</body>
+</html>
