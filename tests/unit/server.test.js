@@ -60,4 +60,26 @@ describe("HTTP server mode", () => {
     expect(res.body).toHaveProperty("error");
     expect(res.body.error).toMatch(/number/i);
   });
+
+  // New HTTP tests for categories endpoint
+  test("GET /categories returns default categories", async () => {
+    const res = await request(app).get("/categories");
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body).toEqual(["happy","sad","angry","surprised","all"]);
+  });
+
+  test("GET /categories with config returns merged categories", async () => {
+    const res = await request(app).get("/categories?config=tests/unit/fixtures/custom.json");
+    expect(res.status).toBe(200);
+    expect(Array.isArray(res.body)).toBe(true);
+    expect(res.body).toEqual(["happy","sad","angry","surprised","custom","all"]);
+  });
+
+  test("GET /categories with invalid config returns 400", async () => {
+    const res = await request(app).get("/categories?config=no-such-file.json");
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("error");
+    expect(res.body.error).toMatch(/Config file not found/);
+  });
 });

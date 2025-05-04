@@ -19,7 +19,7 @@ export const faces = {
 
 const defaultCategories = Object.keys(faces);
 
-// Schema for options including programmatic API and config
+// Schema for options including programmatic API, config, and listing
 export const OptionsSchema = z.object({
   count: z.coerce.number().int().min(1).default(1),
   category: z.string().default("all"),
@@ -29,6 +29,7 @@ export const OptionsSchema = z.object({
   port: z.coerce.number().int().min(1).default(3000),
   config: z.string().optional(),
   format: z.string().optional(), // format only for HTTP
+  listCategories: z.boolean().default(false),
 });
 
 /**
@@ -66,6 +67,7 @@ export function parseOptions(args) {
     port: undefined,
     config: undefined,
     format: undefined,
+    listCategories: undefined,
   };
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -83,11 +85,13 @@ export function parseOptions(args) {
       result.port = Number(args[++i]);
     } else if (arg === "--config" || arg === "-f") {
       result.config = args[++i];
+    } else if (arg === "--list-categories" || arg === "-L") {
+      result.listCategories = true;
     }
   }
   const opts = OptionsSchema.omit({ format: true }).parse(result);
-  // Validate category against default categories when no config
-  if (!opts.config && opts.category !== "all" && !defaultCategories.includes(opts.category)) {
+  // Validate category when not listing and no custom config
+  if (!opts.config && !opts.listCategories && opts.category !== "all" && !defaultCategories.includes(opts.category)) {
     throw new Error(`Invalid category: ${opts.category}`);
   }
   return opts;
@@ -121,7 +125,6 @@ export function generateFacesCore(opts = {}) {
   let mergedFaces = { ...faces };
   if (config) {
     const custom = loadCustomConfig(config);
-    // Allow overrides and new categories
     mergedFaces = { ...mergedFaces, ...custom };
   }
 
@@ -136,8 +139,7 @@ export function generateFacesCore(opts = {}) {
   const rng = seed !== undefined ? seedrandom(String(seed)) : Math.random;
 
   // Build face pool
-  const pool =
-    category === "all" ? Object.values(mergedFaces).flat() : mergedFaces[category];
+  const pool = category === "all" ? Object.values(mergedFaces).flat() : mergedFaces[category];
 
   // Generate faces
   const facesArray = [];
@@ -158,10 +160,24 @@ export function createApp() {
     res.json({ status: "OK" });
   });
 
+  app.get("/categories", (req, res) => {
+    let mergedFaces = { ...faces };
+    if (req.query.config) {
+      try {
+        const custom = loadCustomConfig(req.query.config);
+        mergedFaces = { ...mergedFaces, ...custom };
+      } catch (err) {
+        res.status(400).json({ error: err.message });
+        return;
+      }
+    }
+    const categories = [...Object.keys(mergedFaces), "all"];
+    res.json(categories);
+  });
+
   app.get("/faces", (req, res) => {
     let parsedOpts;
     try {
-      // Use shared schema for parsing and validation
       parsedOpts = OptionsSchema.pick({
         count: true,
         category: true,
@@ -181,7 +197,6 @@ export function createApp() {
       return;
     }
 
-    // Generate faces using core
     let result;
     try {
       result = generateFacesCore(parsedOpts);
@@ -190,7 +205,6 @@ export function createApp() {
       return;
     }
 
-    // Determine format
     const fmt = parsedOpts.format === "text" || req.query.format === "text" ? "text" : "json";
 
     if (fmt === "text") {
@@ -226,16 +240,40 @@ export function main(args) {
     console.log("  --json, -j      output JSON payload");
     console.log("  --serve, -S     start HTTP server mode");
     console.log("  --port, -p      port for HTTP server (default: 3000)");
-    console.log("  --config, -f    path to JSON or YAML face configuration file");
+    console.log(
+      "  --config, -f    path to JSON or YAML face configuration file"
+    );
+    console.log("  --list-categories, -L  list available categories");
     console.log("  --help, -h      show this help message");
     console.log("");
     console.log(`Categories: ${defaultCategories.join(", ")} ,all`);
     return;
   }
 
-  const { count, category, seed, json, serve, port, config } = parseOptions(
+  const { count, category, seed, json, serve, port, config, listCategories } = parseOptions(
     args
   );
+
+  // Handle list-categories flag in CLI mode
+  if (listCategories && !serve) {
+    let merged = { ...faces };
+    if (config) {
+      try {
+        const custom = loadCustomConfig(config);
+        merged = { ...merged, ...custom };
+      } catch (err) {
+        console.error(err.message);
+        process.exit(1);
+      }
+    }
+    const categories = [...Object.keys(merged), "all"];
+    if (json) {
+      console.log(JSON.stringify(categories));
+    } else {
+      categories.forEach((c) => console.log(c));
+    }
+    return;
+  }
 
   if (serve) {
     const app = createApp();

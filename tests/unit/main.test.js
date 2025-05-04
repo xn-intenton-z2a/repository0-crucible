@@ -4,7 +4,16 @@ import seedrandom from "seedrandom";
 
 describe("parseOptions", () => {
   test("default options", () => {
-    expect(parseOptions([])).toEqual({ count: 1, category: "all", seed: undefined, json: false, serve: false, port: 3000, config: undefined });
+    expect(parseOptions([])).toEqual({
+      count: 1,
+      category: "all",
+      seed: undefined,
+      json: false,
+      serve: false,
+      port: 3000,
+      config: undefined,
+      listCategories: false,
+    });
   });
 
   test("serve flag default off", () => {
@@ -34,24 +43,60 @@ describe("parseOptions", () => {
 
   test("long json flag", () => {
     expect(parseOptions(["--json"]))
-      .toEqual({ count: 1, category: "all", seed: undefined, json: true, serve: false, port: 3000, config: undefined });
+      .toEqual({
+        count: 1,
+        category: "all",
+        seed: undefined,
+        json: true,
+        serve: false,
+        port: 3000,
+        config: undefined,
+        listCategories: false,
+      });
   });
 
   test("short json flag", () => {
     expect(parseOptions(["-j"]))
-      .toEqual({ count: 1, category: "all", seed: undefined, json: true, serve: false, port: 3000, config: undefined });
+      .toEqual({
+        count: 1,
+        category: "all",
+        seed: undefined,
+        json: true,
+        serve: false,
+        port: 3000,
+        config: undefined,
+        listCategories: false,
+      });
   });
 
   test("custom count and category", () => {
     expect(
       parseOptions(["--count", "3", "--category", "happy"]),
-    ).toEqual({ count: 3, category: "happy", seed: undefined, json: false, serve: false, port: 3000, config: undefined });
+    ).toEqual({
+      count: 3,
+      category: "happy",
+      seed: undefined,
+      json: false,
+      serve: false,
+      port: 3000,
+      config: undefined,
+      listCategories: false,
+    });
   });
 
   test("short flags", () => {
     expect(
       parseOptions(["-c", "2", "-C", "sad", "-s", "42"]),
-    ).toEqual({ count: 2, category: "sad", seed: 42, json: false, serve: false, port: 3000, config: undefined });
+    ).toEqual({
+      count: 2,
+      category: "sad",
+      seed: 42,
+      json: false,
+      serve: false,
+      port: 3000,
+      config: undefined,
+      listCategories: false,
+    });
   });
 
   test("invalid count throws", () => {
@@ -68,6 +113,19 @@ describe("parseOptions", () => {
     expect(() => parseOptions(["--seed", "-5"])) .toThrow();
     expect(() => parseOptions(["--seed", "1.5"])) .toThrow();
   });
+
+  // New tests for listCategories flag
+  test("listCategories flag default off", () => {
+    expect(parseOptions([]).listCategories).toBe(false);
+  });
+
+  test("long listCategories flag sets true", () => {
+    expect(parseOptions(["--list-categories"]).listCategories).toBe(true);
+  });
+
+  test("short listCategories flag sets true", () => {
+    expect(parseOptions(["-L"]).listCategories).toBe(true);
+  });
 });
 
 describe("getRandomFaceFromList", () => {
@@ -83,6 +141,7 @@ describe("main CLI", () => {
   beforeEach(() => {
     logs = [];
     vi.spyOn(console, "log").mockImplementation((...args) => logs.push(args.join(" ")));
+    vi.spyOn(console, "error").mockImplementation((...args) => logs.push(args.join(" ")));
   });
 
   afterEach(() => {
@@ -137,6 +196,29 @@ describe("main CLI", () => {
     main(["-c", "3", "-C", "sad", "-s", "99", "-j"]);
     const obj2 = JSON.parse(logs[0]);
     expect(obj2.faces).toEqual(firstFaces);
+  });
+
+  // New CLI tests for listCategories
+  test("list categories in text mode", () => {
+    main(["--list-categories"]);
+    expect(logs).toEqual(["happy","sad","angry","surprised","all"]);
+  });
+
+  test("short list categories flag", () => {
+    main(["-L"]);
+    expect(logs).toEqual(["happy","sad","angry","surprised","all"]);
+  });
+
+  test("list categories with custom config includes custom category", () => {
+    main(["-L","--config","tests/unit/fixtures/custom.json"]);
+    expect(logs).toEqual(["happy","sad","angry","surprised","custom","all"]);
+  });
+
+  test("list categories with json outputs JSON array", () => {
+    main(["-L","--json"]);
+    expect(logs.length).toBe(1);
+    const arr = JSON.parse(logs[0]);
+    expect(arr).toEqual(["happy","sad","angry","surprised","all"]);
   });
 });
 

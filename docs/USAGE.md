@@ -9,7 +9,7 @@ npm install -g @xn-intenton-z2a/repository0-crucible
 ## Commands
 
 ```bash
-node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--serve] [--port P] [--config FILE] [--help]
+node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--serve] [--port P] [--config FILE] [--list-categories] [--help]
 ```
 
 ### Options
@@ -21,6 +21,7 @@ node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--se
 - `--serve`, `-S`: start HTTP server mode
 - `--port`, `-p`: port for HTTP server (default: `3000`)
 - `--config`, `-f`: path to JSON or YAML configuration file to override or extend face categories
+- `--list-categories`, `-L`: list available categories
 - `--help`, `-h`: show this help message
 
 ### Examples
@@ -46,12 +47,15 @@ node src/lib/main.js --count 2 --category surprised --seed 123 --json
 node src/lib/main.js --config ./tests/unit/fixtures/custom.json --category happy --count 2
 # e.g. H1 H2
 
-# Override sad category with a custom YAML config
-node src/lib/main.js -f ./config/custom.yaml --category sad -c 3
+# List available categories
+node src/lib/main.js --list-categories
 
-# Add and use a new custom category via JSON config
-node src/lib/main.js --config ./tests/unit/fixtures/custom.json --category custom --count 2
-# e.g. C1 C2
+# List available categories in JSON
+node src/lib/main.js --list-categories --json
+
+# List categories including custom config
+node src/lib/main.js --list-categories --config ./tests/unit/fixtures/custom.json
+# e.g. happy sad angry surprised custom all
 ```
 
 ### HTTP Server Mode
@@ -81,12 +85,12 @@ curl "http://localhost:8080/faces?count=2&format=text"
 # Query /faces endpoint with config
 curl "http://localhost:8080/faces?config=./tests/unit/fixtures/custom.json&category=custom&count=2"
 # => {"faces":["C1","C2"],"category":"custom","count":2,"seed":null}
+
+# List categories via HTTP
+curl "http://localhost:8080/categories"
+# => ["happy","sad","angry","surprised","all"]
+
+# List categories with config via HTTP
+curl "http://localhost:8080/categories?config=./tests/unit/fixtures/custom.json"
+# => ["happy","sad","angry","surprised","custom","all"]
 ```
-
-### Unified API Surface
-
-The CLI, HTTP endpoints, and programmatic API share a single `OptionsSchema` for consistent defaults, validation, and error handling:
-
-- **CLI**: Flags `--count`, `--category`, `--seed`, `--json`, `--serve`, `--port`, `--config`, all validated via `OptionsSchema`.
-- **HTTP**: Query parameters `count`, `category`, `seed`, `format`, `config` parsed and validated with the same schema; invalid inputs yield HTTP 400 errors.
-- **Programmatic**: Functions `generateFaces(options)` and `listCategories()` follow the same schema and behavior.
