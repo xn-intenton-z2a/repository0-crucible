@@ -1,54 +1,62 @@
 # repository0-crucible
 
-`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
-
-To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
-
-This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
-
-## Repository Template
-
-The repository is intended as a template that includes:
-* A Template Base: A starting point for new projects.
-* A Running Experiment: An example implementation that demonstrates one way to use the template.
-* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
+CLI tool that outputs random ASCII/emoticon faces as emotional feedback.
 
 ## Installation
 
-Install via npm:
-
 ```bash
-npm install repository0-crucible
+npm install -g @xn-intenton-z2a/repository0-crucible
 ```
 
 ## Features
 
-TODO: Add features here.
+- Outputs random ASCII face expressions for emotional feedback.
+- Configurable flags for count, category, and reproducible output via seed.
 
-## Usage
+## Flags and Defaults
 
-To run the CLI tool and see help instructions:
+- `--count`, `-c` (integer ≥1, default: `1`): number of faces to display.
+- `--category`, `-C` (`happy`, `sad`, `angry`, `surprised`, `all`; default: `all`): emotion category.
+- `--seed`, `-s` (nonnegative integer): seed for reproducible output.
+- `--help`, `-h`: display usage information.
 
-```bash
-node src/lib/main.js --help
-```
+## Available Categories
 
-### Example Commands
+happy, sad, angry, surprised, all
 
-- **Default Demo Output:**
-  ```bash
-  npm run start
-  ```
+## Examples
 
+1. Display a single random face (default):
 
-## Incremental Changes Plan
+   ```bash
+   node src/lib/main.js
+   # e.g. 😊
+   ```
 
-TODO: Add forthcoming changes here.
+2. Display three happy faces:
+
+   ```bash
+   node src/lib/main.js --count 3 --category happy
+   # e.g. 😄 😊 😀
+   ```
+
+3. Display two faces reproducibly with a seed:
+
+   ```bash
+   node src/lib/main.js -c 2 -s 42
+   # e.g. 😢 😮  (will be the same each run)
+   ```
+
+4. Show help:
+
+   ```bash
+   node src/lib/main.js --help
+   ```
 
 ## Contributing
 
-We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
+Please see [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
 
 ## License
 
-Released under the MIT License (see [LICENSE](./LICENSE)).
+Released under the MIT License.
