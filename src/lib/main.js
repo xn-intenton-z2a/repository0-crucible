@@ -322,7 +322,7 @@ export function main(args) {
 
 // Export programmatic API alias
 export function generateFaces(options = {}) {
-  return getGrics(options);
+  return getFaces(options);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
