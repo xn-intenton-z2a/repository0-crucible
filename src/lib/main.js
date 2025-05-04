@@ -6,7 +6,7 @@ import { fileURLToPath } from "url";
 import fs from "fs";
 import path from "path";
 import seedrandom from "seedrandom";
-import { z } from "zod";
+import { z, ZodError } from "zod";
 import yaml from "js-yaml";
 
 // Default face categories
@@ -157,25 +157,30 @@ export function createApp() {
   });
 
   app.get("/faces", (req, res) => {
-    // Parse and sanitize inputs
-    let count;
-    const c = parseInt(req.query.count, 10);
-    count = !isNaN(c) && c >= 1 ? c : undefined;
-
-    const category = req.query.category;
-
-    let seed;
-    if (req.query.seed !== undefined) {
-      const s = parseInt(req.query.seed, 10);
-      seed = !isNaN(s) && s >= 0 ? s : undefined;
+    // Parse query parameters using Zod schema
+    let parsedOpts;
+    try {
+      parsedOpts = OptionsSchema.pick({
+        count: true,
+        category: true,
+        seed: true,
+        config: true,
+      }).parse(req.query);
+    } catch (err) {
+      if (err instanceof ZodError) {
+        // Collect validation messages
+        const message = err.errors.map((e) => e.message).join(", ");
+        res.status(400).json({ error: message });
+      } else {
+        res.status(400).json({ error: err.message });
+      }
+      return;
     }
-
-    const config = req.query.config;
 
     // Generate faces using core
     let result;
     try {
-      result = generateFacesCore({ count, category, seed, config });
+      result = generateFacesCore(parsedOpts);
     } catch (err) {
       res.status(400).json({ error: err.message });
       return;

@@ -46,4 +46,18 @@ describe("HTTP server mode", () => {
     const lines = res.text.split("\n");
     expect(lines.length).toBe(2);
   });
+
+  test("GET /faces with unknown category returns validation error", async () => {
+    const res = await request(app).get("/faces?category=unknown");
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("error");
+    expect(res.body.error).toMatch(/Unknown category/i);
+  });
+
+  test("GET /faces with non-numeric count returns validation error", async () => {
+    const res = await request(app).get("/faces?count=abc");
+    expect(res.status).toBe(400);
+    expect(res.body).toHaveProperty("error");
+    expect(res.body.error).toMatch(/number/i);
+  });
 });
