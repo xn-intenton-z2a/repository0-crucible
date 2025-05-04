@@ -23,6 +23,15 @@ node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--se
 - `--config`, `-f`: path to JSON or YAML configuration file to override or extend face categories
 - `--help`, `-h`: show this help message
 
+### Available Categories
+
+- `happy`
+- `sad`
+- `angry`
+- `surprised`
+- `all` (default)
+- Custom categories defined via configuration files (use the `--config` flag)
+
 ### Examples
 
 ```bash
@@ -78,11 +87,3 @@ curl "http://localhost:8080/faces?count=2&format=text"
 # => 😢
 # => 😮
 ```
-
-### Unified API Surface
-
-The CLI, HTTP endpoints, and programmatic API share a single `OptionsSchema` for consistent defaults, validation, and error handling:
-
-- **CLI**: Flags `--count`, `--category`, `--seed`, `--json`, `--serve`, `--port`, `--config`, all validated via `OptionsSchema`.
-- **HTTP**: Query parameters `count`, `category`, `seed`, `format`, `config` parsed and validated with the same schema; invalid inputs yield HTTP 400 errors.
-- **Programmatic**: Functions `generateFaces(options)` and `listCategories()` follow the same schema and behavior.

@@ -68,6 +68,16 @@ describe("parseOptions", () => {
     expect(() => parseOptions(["--seed", "-5"])) .toThrow();
     expect(() => parseOptions(["--seed", "1.5"])) .toThrow();
   });
+
+  test("long config flag sets config property", () => {
+    expect(parseOptions(["--config", "path/to/config.json"]))
+      .toEqual({ count: 1, category: "all", seed: undefined, json: false, serve: false, port: 3000, config: "path/to/config.json" });
+  });
+
+  test("short config flag sets config property", () => {
+    expect(parseOptions(["-f", "path/to/config.yaml"]))
+      .toEqual({ count: 1, category: "all", seed: undefined, json: false, serve: false, port: 3000, config: "path/to/config.yaml" });
+  });
 });
 
 describe("getRandomFaceFromList", () => {
@@ -137,6 +147,12 @@ describe("main CLI", () => {
     main(["-c", "3", "-C", "sad", "-s", "99", "-j"]);
     const obj2 = JSON.parse(logs[0]);
     expect(obj2.faces).toEqual(firstFaces);
+  });
+
+  test("config flag prints faces from custom config", () => {
+    main(["--config", "tests/unit/fixtures/custom.json", "--category", "happy", "-c", "2"]);
+    expect(logs.length).toBe(2);
+    expect(logs.every((face) => ["H1", "H2"].includes(face))).toBe(true);
   });
 });
 
