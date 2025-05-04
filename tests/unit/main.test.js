@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach, vi } from "vitest";
+import { describe, test, expect, beforeEach, afterEach, vi } from "vitest";
 import seedrandom from "seedrandom";
 import { parseOptions, getRandomFaceFromList, main } from "@src/lib/main.js";
 
@@ -8,34 +8,30 @@ describe("parseOptions", () => {
   });
 
   test("custom count and category", () => {
-    expect(parseOptions(["--count", "3", "--category", "happy"]))
-      .toEqual({ count: 3, category: "happy", seed: undefined });
+    expect(
+      parseOptions(["--count", "3", "--category", "happy"]),
+    ).toEqual({ count: 3, category: "happy", seed: undefined });
   });
 
   test("short flags", () => {
-    expect(parseOptions(["-c", "2", "-C", "sad", "-s", "42"]))
-      .toEqual({ count: 2, category: "sad", seed: 42 });
+    expect(
+      parseOptions(["-c", "2", "-C", "sad", "-s", "42"]),
+    ).toEqual({ count: 2, category: "sad", seed: 42 });
   });
 
   test("invalid count throws", () => {
-    expect(() => parseOptions(["--count", "0"]))
-      .toThrow();
-    expect(() => parseOptions(["--count", "-1"]))
-      .toThrow();
-    expect(() => parseOptions(["--count", "a"]))
-      .toThrow();
+    expect(() => parseOptions(["--count", "0"])).toThrow();
+    expect(() => parseOptions(["--count", "-1"])).toThrow();
+    expect(() => parseOptions(["--count", "a"])).toThrow();
   });
 
   test("invalid category throws", () => {
-    expect(() => parseOptions(["--category", "unknown"]))
-      .toThrow();
+    expect(() => parseOptions(["--category", "unknown"])).toThrow();
   });
 
   test("invalid seed throws", () => {
-    expect(() => parseOptions(["--seed", "-5"]))
-      .toThrow();
-    expect(() => parseOptions(["--seed", "1.5"]))
-      .toThrow();
+    expect(() => parseOptions(["--seed", "-5"])).toThrow();
+    expect(() => parseOptions(["--seed", "1.5"])).toThrow();
   });
 });
 
@@ -51,7 +47,11 @@ describe("main CLI", () => {
   let logs = [];
   beforeEach(() => {
     logs = [];
-    vi.stub(console, "log").callsFake((...args) => logs.push(args.join(" ")));
+    vi.spyOn(console, "log").mockImplementation((...args) => logs.push(args.join(" ")));
+  });
+
+  afterEach(() => {
+    vi.restoreAllMocks();
   });
 
   test("help message", () => {
