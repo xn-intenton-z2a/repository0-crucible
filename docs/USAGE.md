@@ -47,9 +47,7 @@ node src/lib/main.js --help
 
 ### HTTP Server Mode
 
-Use `--serve` or `-S` to start an HTTP server instead of printing to stdout. Use `--port` or `-p` to specify the port (default: 3000).
-
-Example:
+Use `--serve` or `-S` to start an HTTP server instead of printing to stdout. Use `--port` or `-p` to specify the port (default: `3000`).
 
 ```bash
 # Start server on default port 3000
@@ -58,11 +56,15 @@ node src/lib/main.js --serve
 # Start server on port 8080
 node src/lib/main.js --serve --port 8080
 
-# Query the /faces endpoint
+# Query the /faces endpoint in JSON
 curl "http://localhost:8080/faces?count=2&category=sad&seed=100"
 # => {"faces":[...],"category":"sad","count":2,"seed":100}
 
-# Query in text format
+# Query the /health endpoint
+curl "http://localhost:8080/health"
+# => {"status":"OK"}
+
+# Query /faces endpoint in plain text
 curl "http://localhost:8080/faces?count=2&format=text"
 # => 😢
 # => 😮
