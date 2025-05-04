@@ -3,6 +3,9 @@
   "version": "1.2.0-0",
   "description": "add repository description here",
   "type": "module",
+  "imports": {
+    "@src/*": "./src/*"
+  },
   "main": "src/lib/main.js",
   "scripts": {
     "build": "echo 'Nothing to build'",
@@ -33,7 +36,8 @@
     "ejs": "^3.1.10",
     "js-yaml": "^4.1.0",
     "minimatch": "^9.0.5",
-    "zod": "^3.24.3"
+    "zod": "^3.24.3",
+    "seedrandom": "^3.0.0"
   },
   "devDependencies": {
     "eslint": "^9.24.0",
