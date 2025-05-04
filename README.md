@@ -1,94 +1,54 @@
 # repository0-crucible
 
-A CLI and Node.js library for random and seeded ASCII emoticon output, featuring a built-in HTTP/Express server with Prometheus metrics and a Web UI, plus a programmatic API.
+`repository0-crucible` is a demo repository that showcases the GitHub workflows imported from intentïon [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib). Its primary purpose is to demonstrate these automated CI/CD workflows.
+
+To create a self-evolving agentic coding system of your own based on this one see https://github.com/xn-intenton-z2a/agentic-lib
+
+This readme shall evolve into a JavaScript library based on of the seed CONTRIBUTING files in [./seeds](./seeds).
+
+## Repository Template
+
+The repository is intended as a template that includes:
+* A Template Base: A starting point for new projects.
+* A Running Experiment: An example implementation that demonstrates one way to use the template.
+* Example GitHub Workflows from [agentic‑lib](https://github.com/xn-intenton-z2a/agentic-lib) which hand off to reusable workflows.
 
 ## Installation
 
+Install via npm:
+
 ```bash
-npm install @xn-intenton-z2a/repository0-crucible
+npm install repository0-crucible
 ```
 
-```js
-import { listFaces } from '@xn-intenton-z2a/repository0-crucible';
-```
+## Features
 
-## CLI Usage
+TODO: Add features here.
 
-- `--config <path>`: Load a custom emoticon list (JSON or YAML)
-- `--diagnostics`: Output diagnostics as JSON
-- `--list`: List all emoticons with zero-based indices
-- `--seed <n>`: Deterministic emoticon by non-negative seed
-- `--json`: JSON output mode
-- `--count <n>`: Output multiple emoticons
-- `--interactive, -i`: Launch interactive REPL
-- `--help, -h`: Display help and exit
-- `--version, -v`: Print version and exit
-- `--serve`: Start built-in HTTP server
-- `--port <n>`: Specify HTTP server port (default: 3000)
+## Usage
 
-### Examples
+To run the CLI tool and see help instructions:
 
 ```bash
 node src/lib/main.js --help
 ```
 
-```bash
-node src/lib/main.js --json --seed 3 --count 2
-# Example output: [":D", "(¬_¬)"]
-```
+### Example Commands
 
-## HTTP Server & Endpoints
-
-```bash
-node src/lib/main.js --serve [--port <n>]
-```
-
-- `/` → Plain-text random emoticon  
+- **Default Demo Output:**
   ```bash
-  curl http://localhost:3000/
+  npm run start
   ```
-- `/list` → Plain-text list of all emoticons  
-  ```bash
-  curl http://localhost:3000/list
-  ```
-- `/json`, `/json?seed=<n>`, `/json?count=<n>`, `/json/list` → JSON responses  
-  ```bash
-  curl http://localhost:3000/json?seed=1&count=3
-  ```
-- `/version` → `{ "version": "<current>" }`
-- `/metrics` → Prometheus counters
-- `/health` → `OK`
-- `/ui` → Web UI browser
 
-## Programmatic API
 
-Exported functions and middleware:
+## Incremental Changes Plan
 
-`listFaces()`, `randomFace()`, `seededFace()`, `emoticonJson()`, `configureEmoticons()`, `getEmoticonDiagnostics()`, `createEmoticonRouter()`, `graphQLHandler()`
+TODO: Add forthcoming changes here.
 
-```js
-import {
-  listFaces,
-  randomFace,
-  seededFace,
-  configureEmoticons,
-  getEmoticonDiagnostics
-} from '@xn-intenton-z2a/repository0-crucible';
+## Contributing
 
-console.log(listFaces());
-console.log(randomFace());
-console.log(seededFace(3));
+We welcome contributions! Please review our [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute effectively.
 
-const diag = configureEmoticons({ configPath: 'custom.json' });
-console.log(getEmoticonDiagnostics());
-```
+## License
 
-## Documentation Links
-
-- [HTTP API](docs/HTTP_API.md)
-- [Emoticon Output](docs/EMOTICON_OUTPUT.md)
-- [GraphQL API](features/GRAPHQL_API.md)
-
-## Verification
-
-Copy and paste the commands and code snippets above into a terminal or code file to confirm they execute without errors.
+Released under the MIT License (see [LICENSE](./LICENSE)).
