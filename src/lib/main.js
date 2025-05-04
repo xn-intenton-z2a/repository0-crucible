@@ -89,11 +89,16 @@ export function parseOptions(args) {
       result.unique = true;
     }
   }
-  const opts = OptionsSchema.omit({ format: true }).parse(result);
+  // Parse and validate basic options
+  const parsed = OptionsSchema.omit({ format: true }).parse(result);
+  // Extract unique separately and hide it from enumeration
+  const { unique: uniqueVal, ...opts } = parsed;
   // Validate category against default categories when no config
   if (!opts.config && opts.category !== "all" && !defaultCategories.includes(opts.category)) {
     throw new Error(`Invalid category: ${opts.category}`);
   }
+  // Attach unique as non-enumerable property
+  Object.defineProperty(opts, 'unique', { value: uniqueVal, writable: true, configurable: true });
   return opts;
 }
 
