@@ -127,3 +127,23 @@ Detailed reference for Node.js's built-in HTTP module, covering the `http.create
 ## https://en.wikipedia.org/wiki/Fisher%E2%80%93Yates_shuffle
 Detailed description of the Fisher-Yates shuffle algorithm for unbiased random permutations of arrays. Essential for implementing robust and reproducible unique-selection logic in `generateFacesCore`, ensuring no biases in shuffled face pools. Includes complexity analysis and implementation pseudocode.
 ## CC BY-SA 3.0
+
+# Node.js Streams API Reference
+## https://nodejs.org/api/stream.html
+Comprehensive guide to Node.js Streams, covering readable, writable, duplex, and transform streams. Essential for implementing continuous data flows like Server-Sent Events (SSE) over HTTP, backpressure management in streaming responses, and integration with async iterators for programmatic streaming via `generateFacesStream`. Includes highWaterMark settings, objectMode patterns, and lifecycle events. Last updated June 2024; authoritative from the Node.js Foundation.
+## Node.js Foundation (MIT-like)
+
+# MDN Server-Sent Events (SSE)
+## https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
+Detailed overview of Server-Sent Events protocol, explaining `EventSource` interface, connection lifecycle, reconnection behavior, and event formatting (`data:`, `event:`, `id:` fields). Crucial for implementing HTTP `/stream` endpoint with SSE, including proper headers (`Content-Type: text/event-stream`), heartbeat events, and client disconnect handling. Includes examples in JavaScript and browser usage. Last reviewed May 2024; highly authoritative in web API context.
+## CC BY-SA 2.5
+
+# MDN Async Iteration Protocol
+## https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/for-await...of
+Specifies the async iteration protocol with `Symbol.asyncIterator`, `next()` method, and `for-await...of` loops for consuming asynchronous data streams. Fundamental for implementing `generateFacesStream` as an async generator, enabling consumers to iterate over face events with proper backpressure and await intervals. Illustrates best practices for error propagation and cleanup. Last updated April 2024; CC BY-SA 2.5.
+## CC BY-SA 2.5
+
+# IANA HTTP Status Codes Registry
+## https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
+Official registry of HTTP status codes maintained by IANA, covering standard and extension codes, class definitions (1xx–5xx), and associated semantics. Essential for returning correct HTTP responses in API endpoints (`200 OK`, `400 Bad Request`) and for designing error handling in Express routes. Updated April 2024; public domain.
+## Public Domain
