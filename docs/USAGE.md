@@ -9,7 +9,7 @@ npm install -g @xn-intenton-z2a/repository0-crucible
 ## Commands
 
 ```bash
-node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--serve] [--port P] [--help]
+node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--serve] [--port P] [--config FILE] [--help]
 ```
 
 ### Options
@@ -20,6 +20,7 @@ node src/lib/main.js [--count N] [--category CATEGORY] [--seed S] [--json] [--se
 - `--json`, `-j`: output JSON payload
 - `--serve`, `-S`: start HTTP server mode
 - `--port`, `-p`: port for HTTP server (default: `3000`)
+- `--config`, `-f`: path to JSON or YAML configuration file to override or extend face categories
 - `--help`, `-h`: show this help message
 
 ### Examples
@@ -31,7 +32,7 @@ node src/lib/main.js
 # Display three happy faces
 node src/lib/main.js --count 3 --category happy
 
-# Display two faces from any category with seed for reproducibility
+# Display two faces reproducibly with a seed
 node src/lib/main.js --count 2 --seed 42
 
 # Display five sad faces with a specific seed
@@ -41,8 +42,12 @@ node src/lib/main.js --count 5 --category sad --seed 100
 node src/lib/main.js --count 2 --category surprised --seed 123 --json
 # e.g. {"faces":["😮","(⊙_⊙)"],"category":"surprised","count":2,"seed":123}
 
-# Show help and options
-node src/lib/main.js --help
+# Override happy category with a custom JSON config
+node src/lib/main.js --config ./tests/unit/fixtures/custom.json --category happy --count 2
+# e.g. H1 H2
+
+# Override sad category with a custom YAML config
+node src/lib/main.js -f ./config/custom.yaml --category sad -c 3
 ```
 
 ### HTTP Server Mode
@@ -60,14 +65,14 @@ node src/lib/main.js --serve --port 8080
 curl "http://localhost:8080/faces?count=2&category=sad&seed=100"
 # => {"faces":[...],"category":"sad","count":2,"seed":100}
 
-# Query the /health endpoint
-curl "http://localhost:8080/health"
-# => {"status":"OK"}
-
-# Query /faces endpoint in plain text
+# Query /faces endpoint in text format
 curl "http://localhost:8080/faces?count=2&format=text"
 # => 😢
 # => 😮
+
+# Query /faces endpoint with config
+curl "http://localhost:8080/faces?config=./tests/unit/fixtures/custom.json&category=happy&count=2"
+# => {"faces":["H1","H2"],"category":"happy","count":2,"seed":null}
 ```
 
 ## Library API
@@ -86,6 +91,10 @@ console.log(result.faces, result.category, result.count, result.seed);
 const custom = generateFaces({ count: 3, category: 'happy', seed: 42 });
 console.log(custom);
 // e.g. { faces: ['😀','😄','😊'], category: 'happy', count: 3, seed: 42 }
+
+// Override with custom config
+const override = generateFaces({ config: './tests/unit/fixtures/custom.json', category: 'happy', count: 2 });
+console.log(override.faces); // ['H1', 'H2']
 
 // List available categories
 console.log(listCategories());

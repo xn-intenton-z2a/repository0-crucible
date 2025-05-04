@@ -7,6 +7,7 @@ import fs from "fs";
 import path from "path";
 import seedrandom from "seedrandom";
 import { z } from "zod";
+import yaml from "js-yaml";
 
 // Default face categories
 export const faces = {
@@ -19,7 +20,7 @@ export const faces = {
 // Allowed categories including all
 const categories = [...Object.keys(faces), "all"];
 
-// Schema for options including programmatic API
+// Schema for options including programmatic API and config
 export const OptionsSchema = z.object({
   count: z.coerce.number().int().min(1).default(1),
   category: z.enum(categories).default("all"),
@@ -27,7 +28,29 @@ export const OptionsSchema = z.object({
   json: z.boolean().default(false),
   serve: z.boolean().default(false),
   port: z.coerce.number().int().min(1).default(3000),
+  config: z.string().optional(),
 });
+
+/**
+ * Load and validate a custom face configuration file (YAML or JSON)
+ * @param {string} configPath
+ * @returns {Record<string,string[]>}
+ */
+export function loadCustomConfig(configPath) {
+  if (!fs.existsSync(configPath)) {
+    throw new Error(`Config file not found: ${configPath}`);
+  }
+  const content = fs.readFileSync(configPath, "utf8");
+  let parsed;
+  if (configPath.endsWith(".yaml") || configPath.endsWith(".yml")) {
+    parsed = yaml.load(content);
+  } else {
+    parsed = JSON.parse(content);
+  }
+  const configSchema = z.record(z.array(z.string()));
+  const custom = configSchema.parse(parsed);
+  return custom;
+}
 
 /**
  * Parse command line arguments into options
@@ -41,6 +64,7 @@ export function parseOptions(args) {
     json: undefined,
     serve: undefined,
     port: undefined,
+    config: undefined,
   };
   for (let i = 0; i < args.length; i++) {
     const arg = args[i];
@@ -56,6 +80,8 @@ export function parseOptions(args) {
       result.serve = true;
     } else if (arg === "--port" || arg === "-p") {
       result.port = Number(args[++i]);
+    } else if (arg === "--config" || arg === "-f") {
+      result.config = args[++i];
     }
   }
   return OptionsSchema.parse(result);
@@ -82,6 +108,7 @@ export function createApp() {
   });
 
   app.get("/faces", (req, res) => {
+    // parse query parameters
     let count = parseInt(req.query.count, 10);
     if (isNaN(count) || count < 1) count = 1;
 
@@ -98,13 +125,28 @@ export function createApp() {
       }
     }
 
-    let pool = [];
-    if (category === "all") {
-      pool = Object.values(faces).flat();
-    } else {
-      pool = faces[category];
+    // merge custom config if provided
+    let mergedFaces = { ...faces };
+    if (req.query.config) {
+      const custom = loadCustomConfig(req.query.config);
+      for (const key in custom) {
+        if (!mergedFaces.hasOwnProperty(key)) {
+          res.status(400).json({ error: `Unknown category in config: ${key}` });
+          return;
+        }
+        mergedFaces[key] = custom[key];
+      }
     }
 
+    // build pool
+    let pool = [];
+    if (category === "all") {
+      pool = Object.values(mergedFaces).flat();
+    } else {
+      pool = mergedFaces[category];
+    }
+
+    // format selection
     const facesArray = [];
     for (let i = 0; i < count; i++) {
       facesArray.push(getRandomFaceFromList(pool, rng));
@@ -145,13 +187,14 @@ export function main(args) {
     console.log("  --json, -j      output JSON payload");
     console.log("  --serve, -S     start HTTP server mode");
     console.log("  --port, -p      port for HTTP server (default: 3000)");
+    console.log("  --config, -f    path to JSON or YAML face configuration file");
     console.log("  --help, -h      show this help message");
     console.log("");
     console.log(`Categories: ${categories.join(", ")}`);
     return;
   }
 
-  const { count, category, seed, json, serve, port } = parseOptions(args);
+  const { count, category, seed, json, serve, port, config } = parseOptions(args);
 
   if (serve) {
     const app = createApp();
@@ -161,13 +204,25 @@ export function main(args) {
     return;
   }
 
-  const rng = seed !== undefined ? seedrandom(String(seed)) : Math.random;
-  let pool = [];
+  // merge custom config if provided
+  let mergedFaces = { ...faces };
+  if (config) {
+    const custom = loadCustomConfig(config);
+    for (const key in custom) {
+      if (!mergedFaces.hasOwnProperty(key)) {
+        throw new Error(`Unknown category in config: ${key}`);
+      }
+      mergedFaces[key] = custom[key];
+    }
+  }
 
+  const rng = seed !== undefined ? seedrandom(String(seed)) : Math.random;
+
+  let pool = [];
   if (category === "all") {
-    pool = Object.values(faces).flat();
+    pool = Object.values(mergedFaces).flat();
   } else {
-    pool = faces[category];
+    pool = mergedFaces[category];
   }
 
   if (json) {
@@ -188,7 +243,7 @@ export function main(args) {
 // Programmatic API
 /**
  * Get random faces programmatically
- * @param {{count?: number, category?: string, seed?: number}} options
+ * @param {{count?: number, category?: string, seed?: number, config?: string}} options
  * @returns {{faces: string[], category: string, count: number, seed: number|null}}
  */
 export function getFaces(options = {}) {
@@ -196,11 +251,25 @@ export function getFaces(options = {}) {
     count: options.count,
     category: options.category,
     seed: options.seed,
+    config: options.config,
   });
-  const { count, category, seed: seedInput } = parsed;
+  const { count, category, seed: seedInput, config } = parsed;
   const seedVal = seedInput !== undefined ? seedInput : null;
   const rng = seedInput !== undefined ? seedrandom(String(seedInput)) : Math.random;
-  const pool = category === "all" ? Object.values(faces).flat() : faces[category];
+
+  // merge custom config if provided
+  let mergedFaces = { ...faces };
+  if (config) {
+    const custom = loadCustomConfig(config);
+    for (const key in custom) {
+      if (!mergedFaces.hasOwnProperty(key)) {
+        throw new Error(`Unknown category in config: ${key}`);
+      }
+      mergedFaces[key] = custom[key];
+    }
+  }
+
+  const pool = category === "all" ? Object.values(mergedFaces).flat() : mergedFaces[category];
   const facesArray = [];
   for (let i = 0; i < count; i++) {
     facesArray.push(getRandomFaceFromList(pool, rng));
@@ -218,7 +287,7 @@ export function listCategories() {
 
 /**
  * Generate random faces programmatically
- * @param {{count?: number, category?: string, seed?: number}} options
+ * @param {{count?: number, category?: string, seed?: number, config?: string}} options
  * @returns {{faces: string[], category: string, count: number, seed: number|null}}
  */
 export function generateFaces(options = {}) {
