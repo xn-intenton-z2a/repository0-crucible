@@ -1,62 +1,63 @@
-features/EMOTICON_SERVICE.md
-# features/EMOTICON_SERVICE.md
-# EMOTICON_SERVICE Feature
-
+features/API_INTERFACE.md
+# features/API_INTERFACE.md
 # Overview
-Unify and extend the emoticon core service into a consistent interface offering CLI, HTTP server, Express middleware, GraphQL API, programmatic API, diagnostics, and custom configuration.
+Extend the existing API interface feature to include version reporting across CLI, HTTP, and programmatic APIs.
 
-# CLI Interface
-- Default invocation prints a random emoticon in plain text
-- Options:
-  --config <path> for JSON or YAML custom list
-  --diagnostics for JSON diagnostics
-  --list to enumerate emoticons with zero-based indices
-  --seed <n> for deterministic selection
-  --json for JSON output
-  --count <n> for batch output
-  --interactive or -i for REPL
-  --serve to start the HTTP server
-  --port <n> to set the server port
-  --help or -h and --version or -v
-- Invalid inputs produce error messages and appropriate exit codes
+# CLI Behavior
+• Introduce flag --version, alias -v to output the tool version from package.json and exit immediately.
+• Version command takes precedence over any other flags and does not generate faces or start the server.
 
 # HTTP API
-- Endpoints activated when --serve or via Express middleware
-- GET / returns a random emoticon in text/plain
-- GET /list returns all emoticons one per line in text/plain
-- GET /json returns JSON with face, mode, and seed
-- GET /json?seed=<n> returns deterministic JSON or 400 error on invalid seed
-- GET /json?count=<n> returns JSON array of emoticons, supports seed for sequential output
-- GET /json?list or /json/list returns full emoticon array in JSON
-- GET /version returns { version } in application/json
-- GET /health returns OK in text/plain
-- GET /metrics exposes Prometheus counters: emoticon_requests_total, emoticon_requests_root_total, emoticon_requests_list_total, emoticon_requests_json_total, emoticon_requests_seeded_total, emoticon_requests_errors_total
-- GET /ui serves an HTML interface with controls for random, seeded, count, and list operations
-- All responses include Access-Control-Allow-Origin: * header
-
-# Express Middleware
-- Export createEmoticonRouter() returning an Express Router with the same HTTP endpoints, CORS headers, metrics counters, and web UI
-
-# GraphQL API
-- Define a GraphQL schema using graphql-js with Query type fields:
-  random: String!
-  seeded(seed: Int!): String!
-  list: [String!]!
-  count(count: Int!, seed: Int): [String!]!
-  version: String!
-- Export graphQLHandler() as Express middleware mounted at /graphql supporting GET and POST with JSON body parsing
-- Apply CORS on all GraphQL responses
-- Validate seed and count as non-negative integers, return GraphQL errors on invalid inputs
-- Increment internal counters for random, seeded, and count resolvers
+• Add endpoint GET /version
+  • On success respond status 200 with JSON body containing field version with the current version string (read from package.json).
 
 # Programmatic API
-- Export functions:
-  listFaces(), randomFace(), seededFace(seed), emoticonJson({ face, mode, seed }), configureEmoticons({ configPath }), getEmoticonDiagnostics(), createEmoticonRouter(), graphQLHandler(), and version constant
+• Export function getVersion() returning the current version string from package.json.
 
-# Diagnostics and Configuration
-- Load custom emoticon list at runtime via --config flag or EMOTICONS_CONFIG environment variable
-- configureEmoticons returns a diagnostics object with version, configSource, emoticonCount, isCustomConfig, colorStyle, supportsColorLevel and updates internal state
-- getEmoticonDiagnostics returns the last diagnostics snapshot without side effects
+# Implementation Details
+1. Import version from package.json at the top of src/lib/main.js.
+2. In main(), before processing help or other flags, detect --version or -v in args. If present, console.log(version) and return.
+3. Update createApp() to add a route handler for GET /version that responds with res.json({ version }).
+4. Export getVersion() alongside generateFaces and listCategories, reading the imported version constant.
+5. Update README.md, docs/USAGE.md, and docs/README.md to document the new CLI flag, HTTP endpoint, and programmatic function.
 
-# Dependencies
-- Add graphql to package.json dependencies and import necessary graphql-js types
+# Testing
+• Add unit tests for getVersion(): expect it to return the exact version from package.json.
+• Add CLI tests invoking main with --version and -v, capturing console output to match version string and ensuring process does not exit with error.
+• Add HTTP tests for GET /version: expect status 200 and JSON response { version } matching package.json.version.features/STREAM_MODE.md
+# features/STREAM_MODE.md
+# Overview
+Add continuous streaming capability for face expressions across CLI, HTTP, and programmatic APIs to support ongoing emotive feedback.
+
+# CLI Behavior
+• Introduce --stream, -w (boolean) to enable continuous output mode.
+• Introduce --interval, -I (integer milliseconds, default: 1000) to set time between outputs.
+• When stream mode is active: at each interval generate faces according to count, category, seed, and unique flags and print in text or JSON depending on json flag. Loop indefinitely until process termination.
+
+# HTTP API
+• Add GET /stream endpoint serving server-sent events (SSE) with Content-Type text/event-stream.
+• Accept query parameters: count, category, seed, unique, interval.
+• On connection, send an event named face every interval with data as JSON payload containing faces, category, count, seed, and timestamp.
+• Clean up interval timer on client disconnect.
+
+# Programmatic API
+• Export async generator generateFacesStream(options) that yields an object { faces, category, count, seed, timestamp } every interval based on options: count, category, seed, config, unique, interval.
+• Allows consumers to iterate over face events until manually stopped.
+
+# Implementation Details
+1. Extend OptionsSchema to include interval: z.coerce.number().int().min(1).default(1000).
+2. Update parseOptions to capture --stream/-w and --interval/-I and include stream flag in returned options.
+3. In main(), detect stream flag and set up setInterval to call generateFacesCore and output accordingly.
+4. In createApp(), implement /stream handler that sets headers for SSE, parses options via OptionsSchema.pick including interval, sets up interval to write event: data: JSON.stringify(result) and send event: face. Remove timer on close.
+5. Implement generateFacesStream as async function* that loops with setTimeout or for-await sleep to yield results of generateFacesCore with options including interval.
+
+# Testing
+• Unit tests for parseOptions recognizing stream and interval flags and default values.
+• Tests for generateFacesStream: verify that it yields correct events and respects interval option by mocking timer.
+• HTTP tests for /stream: verify response headers, first event chunk format, and clean disconnect.
+• CLI integration tests: run main with --stream and --interval in a subprocess, capture initial outputs, then terminate.
+
+# Documentation
+• Update README.md and docs/USAGE.md to describe new flags --stream/-w and --interval/-I in CLI section.
+• Document HTTP SSE usage under Streaming section with example curl command.
+• Update API reference to document generateFacesStream usage and options.

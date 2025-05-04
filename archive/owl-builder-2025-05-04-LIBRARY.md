@@ -1,2613 +1,1540 @@
-library/READLINE.md
-# library/READLINE.md
-# READLINE
+library/YARGS_CORE.md
+# library/YARGS_CORE.md
+# YARGS_CORE
 
 ## Crawl Summary
-readline.createInterface({input,output,completer?,terminal?,history?,historySize,removeHistoryDuplicates,prompt,crlfDelay,escapeCodeTimeout,tabSize,signal}) returns InterfaceConstructor. InterfaceConstructor extends EventEmitter with events 'line'(string), 'close', 'pause','resume','SIGINT','SIGCONT','SIGTSTP','history'. Methods: close(), pause(), resume(), prompt(preserveCursor?), setPrompt(string), getPrompt():string, write(string|key), [Symbol.asyncIterator]():AsyncIterator<string>, getCursorPos():{rows:number,cols:number}. readline.Interface.question(query[,options],callback) and readlinePromises.Interface.question(query[,options]):Promise<string>. readlinePromises.Readline(stream,options) supports clearLine(dir),clearScreenDown(),cursorTo(x,y),moveCursor(dx,dy),commit(),rollback().
-
-## Normalised Extract
-Table of Contents:
-1. Interface Creation
-2. Event Handlers
-3. Instance Methods
-4. Properties
-5. Promises API
-6. Callback API
-7. Configuration Options
-8. Usage Examples
-
-1. Interface Creation
-   Method: createInterface(options)
-   Options:
-     input: Readable (required)
-     output: Writable
-     completer: function(line)→[matches:string[],substr:string] or Promise
-     terminal: boolean (default: output.isTTY)
-     history: string[] (default: [])
-     historySize: number (default: 30)
-     removeHistoryDuplicates: boolean (default: false)
-     prompt: string (default: '> ')
-     crlfDelay: number ≥100 or Infinity (default: 100)
-     escapeCodeTimeout: number ms (default: 500)
-     tabSize: integer ≥1 (default: 8)
-     signal: AbortSignal
-   Returns: InterfaceConstructor
-
-2. Event Handlers
-   'line'(input:string)
-   'close'()
-   'pause'()
-   'resume'()
-   'history'(history:string[])
-   'SIGINT'(), 'SIGCONT'(), 'SIGTSTP'()
-
-3. Instance Methods
-   close(): void
-   [Symbol.dispose](): void
-   pause(): void
-   resume(): void
-   setPrompt(prompt:string): void
-   getPrompt(): string
-   prompt(preserveCursor?:boolean): void
-   write(data:string, key?:{ctrl?:boolean;meta?:boolean;shift?:boolean;name:string}): void
-   [Symbol.asyncIterator](): AsyncIterator<string>
-   getCursorPos(): {rows:number;cols:number}
-
-4. Properties
-   line: string
-   cursor: number
-
-5. Promises API
-   question(query:string, options?:{signal:AbortSignal}): Promise<string>
-   Usage: const answer = await rl.question('Q? ')
-
-6. Callback API
-   question(query:string, options?:{signal:AbortSignal}, callback:(answer:string)=>void): void
-
-7. Configuration Options
-   Default values and effects as above under Interface Creation.
-
-8. Usage Examples
-   Basic prompt (Promises) and file streaming (Callback).
-
-
-## Supplementary Details
-DefaultValues:
-  terminal: inferred from output.isTTY
-  history: []
-  historySize: 30 (0 disables history)
-  removeHistoryDuplicates: false
-  prompt: '> '
-  crlfDelay: 100ms (min 100) or Infinity
-  escapeCodeTimeout: 500ms
-  tabSize: 8
-UsageSteps:
- 1. import createInterface from 'node:readline' or '/promises'
- 2. call createInterface with streams and options
- 3. attach 'line' and other event listeners or call question()
- 4. for Promises API await question(), then close()
- 5. call rl.close() or process.stdin.unref() to exit
-ErrorHandling:
- - question() after close() rejects (Promises) or throws (Callback).
- - signal.abort() during question() causes immediate reject or callback not called.
-
-
-## Reference Details
-API Specifications:
-readline.createInterface(options:Object): InterfaceConstructor
-  options.input: stream.Readable (required)
-  options.output: stream.Writable
-  options.completer: (line:string)->[string[],string]|Promise<[string[],string]>
-  options.terminal: boolean
-  options.history: string[]
-  options.historySize: number
-  options.removeHistoryDuplicates: boolean
-  options.prompt: string
-  options.crlfDelay: number
-  options.escapeCodeTimeout: number
-  options.tabSize: number
-  options.signal: AbortSignal
-InterfaceConstructor methods:
-  close(): void
-  [Symbol.dispose](): void
-  pause(): void
-  resume(): void
-  setPrompt(prompt:string): void
-  getPrompt(): string
-  prompt(preserveCursor?:boolean): void
-  write(data:string, key?:{ctrl?:boolean;meta?:boolean;shift?:boolean;name:string}): void
-  [Symbol.asyncIterator](): AsyncIterator<string>
-  getCursorPos():{rows:number,cols:number}
-InterfaceConstructor events:
-  on('line', listener:(line:string)=>void)
-  on('close', listener:()=>void)
-  on('history', listener:(history:string[])=>void)
-  on('pause', listener:()=>void)
-  on('resume', listener:()=>void)
-  on('SIGINT', listener:()=>void)
-  on('SIGCONT', listener:()=>void)
-  on('SIGTSTP', listener:()=>void)
-readline.Interface.question(query:string, options?:{signal:AbortSignal}, callback:(answer:string)=>void): void
-readlinePromises.Interface.question(query:string, options?:{signal:AbortSignal}): Promise<string>
-readlinePromises.Readline(stream:Writable, options?:{autoCommit?:boolean})
-  clearLine(dir:-1|0|1): this
-  clearScreenDown(): this
-  cursorTo(x:number, y?:number): this
-  moveCursor(dx:number, dy:number): this
-  commit(): Promise<void>
-  rollback(): this
-Examples:
-// Basic CLI loop
-import { createInterface } from 'node:readline';
-const rl = createInterface({input:process.stdin,output:process.stdout,prompt:'> '});
-rl.prompt();
-rl.on('line', line=>{ switch(line.trim()){ case 'exit': rl.close(); break; default: console.log(line); rl.prompt()} });
-rl.on('close', ()=>process.exit(0));
-
-// Troubleshooting:
-// 1. Missing prompt: ensure output stream is not null and terminal=true
-// 2. question hanging: call rl.close() or abort signal
-// 3. No EOL recognition: set crlfDelay>=input EOL delay
-
-Commands:
-$ node script.js
-> hello
-hello
-> exit
-$
-
-## Information Dense Extract
-readline.createInterface({input:Readable,output:Writable,completer?(line)->[string[],string]|Promise,terminal?:boolean,history?:string[],historySize?:number,removeHistoryDuplicates?:boolean,prompt?:string,crlfDelay?:number>=100||Infinity,escapeCodeTimeout?:number(ms),tabSize?:number,signal?:AbortSignal}):InterfaceConstructor events: 'line'(string),'close','pause','resume','history'(string[]),'SIGINT','SIGCONT','SIGTSTP'; methods: close(),pause(),resume(),prompt(preserveCursor?:boolean),setPrompt(string),getPrompt():string,write(string,key:{ctrl?,meta?,shift?,name}),[Symbol.asyncIterator]():AsyncIterator<string>,getCursorPos():{rows,cols}; properties: line:string,cursor:number; readline.Interface.question(query:string,options?:{signal:AbortSignal},callback:(ans:string)=>void); readlinePromises.Interface.question(query:string,options?:{signal:AbortSignal}):Promise<string>; readlinePromises.Readline(stream:Writable,{autoCommit?:boolean}).clearLine(dir:-1|0|1),clearScreenDown(),cursorTo(x,y?),moveCursor(dx,dy),commit():Promise,rollback(); defaults: terminal=output.isTTY,history=[],historySize=30,removeHistoryDuplicates=false,prompt='> ',crlfDelay=100,escapeCodeTimeout=500,tabSize=8; example: const rl= createInterface(...); const ans=await rl.question('Q? '); rl.close();
-
-## Sanitised Extract
-Table of Contents:
-1. Interface Creation
-2. Event Handlers
-3. Instance Methods
-4. Properties
-5. Promises API
-6. Callback API
-7. Configuration Options
-8. Usage Examples
-
-1. Interface Creation
-   Method: createInterface(options)
-   Options:
-     input: Readable (required)
-     output: Writable
-     completer: function(line)[matches:string[],substr:string] or Promise
-     terminal: boolean (default: output.isTTY)
-     history: string[] (default: [])
-     historySize: number (default: 30)
-     removeHistoryDuplicates: boolean (default: false)
-     prompt: string (default: '> ')
-     crlfDelay: number 100 or Infinity (default: 100)
-     escapeCodeTimeout: number ms (default: 500)
-     tabSize: integer 1 (default: 8)
-     signal: AbortSignal
-   Returns: InterfaceConstructor
-
-2. Event Handlers
-   'line'(input:string)
-   'close'()
-   'pause'()
-   'resume'()
-   'history'(history:string[])
-   'SIGINT'(), 'SIGCONT'(), 'SIGTSTP'()
-
-3. Instance Methods
-   close(): void
-   [Symbol.dispose](): void
-   pause(): void
-   resume(): void
-   setPrompt(prompt:string): void
-   getPrompt(): string
-   prompt(preserveCursor?:boolean): void
-   write(data:string, key?:{ctrl?:boolean;meta?:boolean;shift?:boolean;name:string}): void
-   [Symbol.asyncIterator](): AsyncIterator<string>
-   getCursorPos(): {rows:number;cols:number}
-
-4. Properties
-   line: string
-   cursor: number
-
-5. Promises API
-   question(query:string, options?:{signal:AbortSignal}): Promise<string>
-   Usage: const answer = await rl.question('Q? ')
-
-6. Callback API
-   question(query:string, options?:{signal:AbortSignal}, callback:(answer:string)=>void): void
-
-7. Configuration Options
-   Default values and effects as above under Interface Creation.
-
-8. Usage Examples
-   Basic prompt (Promises) and file streaming (Callback).
-
-## Original Source
-Node.js Readline
-https://nodejs.org/api/readline.html
-
-## Digest of READLINE
-
-# Readline Module (Node.js v23.11.0, retrieved: 2024-06-20)
-
-## Class: InterfaceConstructor
-Signature: InterfaceConstructor extends EventEmitter
-
-Constructor invoked via readline.createInterface(options) or readlinePromises.createInterface(options).
-
-### Events
-- 'close'(): emitted on rl.close(), input end, Ctrl+D, or unhandled Ctrl+C.
-- 'line'(line: string): emitted on end-of-line input (\n, \r, \r\n) or stream end without EOL.
-- 'history'(history: string[]): emitted on history array change (v14.18.0+).
-- 'pause'(): emitted when input stream paused or on SIGCONT if not paused.
-- 'resume'(): emitted on input stream resume.
-- 'SIGCONT'(): emitted when process resumed to foreground (not on Windows).
-- 'SIGINT'(): emitted on Ctrl+C if listeners exist; otherwise 'pause'.
-- 'SIGTSTP'(): emitted on Ctrl+Z if listener; overrides background behavior (not on Windows).
-
-### Instance Methods
-- close(): void — closes interface, emits 'close'.
-- [Symbol.dispose](): void — alias for close().
-- pause(): void — pauses input stream.
-- resume(): void — resumes input stream.
-- setPrompt(prompt: string): void — sets prompt string.
-- getPrompt(): string — returns current prompt.
-- prompt(preserveCursor?: boolean): void — writes prompt, resumes stream; preserveCursor prevents cursor reset.
-- write(data: string, key?: {ctrl?: boolean; meta?: boolean; shift?: boolean; name: string}): void — writes data or key sequence into input.
-- [Symbol.asyncIterator](): AsyncIterator<string> — enables for await...of to iterate lines, auto-closes on break.
-- getCursorPos(): {rows: number; cols: number} — actual cursor position accounting for wrapping.
-
-### Properties
-- line: string — current processed input (cleared after 'line').
-- cursor: number — cursor offset within rl.line.
-
-## Promises API (experimental, v17.0.0+)
-
-### Class: readlinePromises.Interface
-Extends InterfaceConstructor with rl.question(query: string, options?: {signal: AbortSignal}): Promise<string>.
-
-### Class: readlinePromises.Readline
-Constructor: new Readline(stream: stream.Writable, options?: {autoCommit?: boolean})
-- clearLine(dir: -1|0|1): this
-- clearScreenDown(): this
-- cursorTo(x: number, y?: number): this
-- moveCursor(dx: number, dy: number): this
-- commit(): Promise<void>
-- rollback(): this
-
-### createInterface(options)
-Same options as callback API (below).
-
-## Callback API (stable)
-
-### Class: readline.Interface extends InterfaceConstructor
-- question(query: string, options?: {signal: AbortSignal}, callback: (answer: string) => void): void
-
-### Static Methods
-- createInterface(options): Interface
-- clearLine(stream: stream.Writable, dir: -1|0|1, callback?: (err: Error|null) => void): boolean
-- clearScreenDown(stream: stream.Writable, callback?: (err: Error|null) => void): boolean
-- cursorTo(stream: stream.Writable, x: number, y?: number, callback?: (err: Error|null) => void): boolean
-- moveCursor(stream: stream.Writable, dx: number, dy: number, callback?: (err: Error|null) => void): boolean
-- emitKeypressEvents(stream: stream.Readable, interface?: InterfaceConstructor): void
-
-## createInterface Options
-Options object fields:
-- input: Readable (required)
-- output: Writable
-- completer: (line: string) => [string[], string] | Promise<[string[], string>]
-- terminal: boolean (default: output.isTTY)
-- history: string[] (default: [])
-- historySize: number (default: 30)
-- removeHistoryDuplicates: boolean (default: false)
-- prompt: string (default: '> ')
-- crlfDelay: number >=100 or Infinity (default: 100)
-- escapeCodeTimeout: number in ms (default: 500)
-- tabSize: integer >=1 (default: 8)
-- signal: AbortSignal
-
-## Examples
-### Basic prompt (Promises)
-```js
-import { createInterface } from 'node:readline/promises';
-import { stdin, stdout } from 'node:process';
-const rl = createInterface({ input: stdin, output: stdout });
-const answer = await rl.question('What is your favorite food? ');
-console.log(answer);
-rl.close();
-```
-
-### File line-by-line (Callback)
-```js
-import { createReadStream } from 'node:fs';
-import { createInterface } from 'node:readline';
-const rl = createInterface({ input: createReadStream('input.txt'), crlfDelay: Infinity });
-rl.on('line', line => console.log(line));
-```
-
-## Attribution
-- Source: Node.js Readline
-- URL: https://nodejs.org/api/readline.html
-- License: Node.js Foundation (MIT-like)
-- Crawl Date: 2025-05-03T01:08:44.634Z
-- Data Size: 3619143 bytes
-- Links Found: 2718
-
-## Retrieved
-2025-05-03
-library/COMMANDER_JS.md
-# library/COMMANDER_JS.md
-# COMMANDER_JS
-
-## Crawl Summary
-Commander.js v11 for Node.js (≥v18) provides a fluent API on Command objects: instantiate with `new Command(name)`, chain .option(flags,desc,default,parser), .requiredOption, .addOption(Option), .argument, .command for subcommands or executables, .action(handler), .parse()/.parseAsync(), plus utility methods: .version, .name, .usage, .description, .summary, help customization via .helpOption/.helpCommand/.configureHelp/.addHelpText, error handling via .exitOverride/.error/.showHelpAfterError/.showSuggestionAfterError, parsing configuration via .allowUnknownOption/.allowExcessArguments/.enablePositionalOptions/.passThroughOptions, output customization via .configureOutput, lifecycle hooks via .hook(event,listener). Option class supports .default/.choices/.env/.preset/.argParser/.conflicts/.implies/.hideHelp/.makeOptionMandatory.
-
-## Normalised Extract
-Table of Contents:
- 1 Program Initialization
- 2 Defining Options
- 3 Processing Option Types
- 4 Required and Variadic Options
- 5 Command and Subcommand Configuration
- 6 Argument Definitions
- 7 Action Handlers
- 8 Parsing and Execution
- 9 Help and Version Handling
-10 Error Handling and Overrides
-11 Hooks and Lifecycle Events
-12 Output Configuration
-
-1 Program Initialization
- Instantiate: const program = new Command('name') or use global require{program}
- Chainable methods return Command instance
-
-2 Defining Options
- .option(flags, description, defaultValue?, parser?)
- Flags: '-s, --sep <char>' or '--flag'
- DefaultValue: string|number|boolean
- Parser: function(value, prev)
- .requiredOption(flags, description, defaultValue?)
- .addOption(new Option(flags, description)[.default()][.choices()][.env()][.preset()][.argParser()][.conflicts()][.implies()][.hideHelp()][.makeOptionMandatory()])
-
-3 Processing Option Types
- Boolean: --flag sets true
- Negatable: --no-flag sets false
- Value: <value> after flag
- Optional: [value]
- Greedy: consumes next arg
- Variadic: <values...>
-
-4 Required and Variadic Options
- Required: .requiredOption throws error if missing
- Variadic: flags ending with '...'; returns array until next dash or '--'
-
-5 Command and Subcommand Configuration
- .command(nameAndArgs, descriptionOrOpts) creates subcommand with action or standalone executable
- .addCommand(cmd, {hidden?,isDefault?}) embeds prepared Command
- .alias(name)
- .executableDir(dir)
- .copyInheritedSettings(parent)
-
-6 Argument Definitions
- .argument(name, description?, defaultValue?, parser?)
- Variadic: '<items...>' returns array
- .addArgument(new Argument(name, description)[.choices()][.default()][.argParser()])
-
-7 Action Handlers
- .action(fn(...args, options, command))
- Async handlers: use .parseAsync
- Handler context: this = command for function expression
-
-8 Parsing and Execution
- .parse(argv?, {from:'node'|'user'|'electron'}) auto-detects Node/Electron
- .parseAsync returns Promise
- .enablePositionalOptions() only parse options before subcommands
- .passThroughOptions() leave unknown options as args
- .allowUnknownOption() skip unknown-option error
- .allowExcessArguments() disable excess-args error
-
-9 Help and Version Handling
- .version(versionString, flags?, description?) active flags -V,--version
- .helpOption(flags, description) customize or disable
- .helpCommand(name, description) customize implicit help command
- .configureHelp({sortOptions:boolean,sortSubcommands:boolean,showGlobalOptions:boolean,formatting functions})
- .addHelpText(position, content)
- showHelpAfterError(message?) auto-print help on error
- showSuggestionAfterError(false) disable spelling suggestions
-
-10 Error Handling and Overrides
- .exitOverride(callback) throw CommanderError
- .error(message, {exitCode?, code?}) exit immediately
- .configureOutput({writeOut,writeErr,outputError})
-
-11 Hooks and Lifecycle Events
- .hook('preAction'|'postAction'|'preSubcommand', (thisCmd,actionCmd))
- Async hooks require parseAsync
- Multiple hooks allowed per event
-
-12 Output Configuration
- Write routines: writeOut(str), writeErr(str)
- outputError(str, write) apply color or formatting
-
-
-## Supplementary Details
-Node Requirement: ≥ v18, fallback to older Commander for legacy Node. Global import for simple use: const { program } = require('commander'); Local Command instantiation for testing and complex apps: const { Command } = require('commander'); const program = new Command(); Parser precedence: parser functions receive (value, previous) and return coerced type or throw InvalidArgumentError; default initial value passed as 3rd parameter to .option or 4th for parser. Environment default: .env('VAR') reads process.env.VAR. CLI stop parsing at '--'. Short options may be combined '-abc'. Option value may follow '=' for long flags. Mixed camelCase: multi-word long flags map to camelCase in opts() output. .opts() returns only local options; .optsWithGlobals() merges. getOptionValue(key)/setOptionValue(key,value) to read/write individual option. getOptionValueSource(key) returns 'default'|'env'|'cli'. Subcommand inheritance: .command() inherits parent settings at time of call; .addCommand() does not. Standalone executables: name and path resolution in entry script directory; extension try list: .js,.cjs,.mjs; override file via { executableFile: 'path' }. Debug child process ports: Node --inspect child increments port by 1; VSCode autoAttachChildProcesses:true. npm run-script requires '--' to pass options. Legacy .storeOptionsAsProperties() maps opts to properties on command object. Typescript support: using @commander-js/extra-typings for strong types; ts-node use node -r ts-node/register entry.ts. createCommand(): factory for new commands, override to customize subcommand class. 
-
-## Reference Details
-Class: Command
-  constructor(name?: string)
-  option(flags: string, description?: string, defaultValue?: any, parser?: (value:any,prev:any)=>any): Command
-  requiredOption(flags: string, description: string, defaultValue?: any): Command
-  addOption(option: Option): Command
-  argument(arg: string, description?: string, defaultValue?: any, parser?: Function): Command
-  addArgument(arg: Argument): Command
-  command(nameAndArgs: string, description?: string | object, opts?: object): Command | this
-  addCommand(cmd: Command, opts?: { hidden?: boolean, isDefault?: boolean }): this
-  alias(name: string): Command
-  exectuableDir(dir: string): Command
-  action(fn: (...args:any[])=>void): Command
-  parse(argv?: string[], opts?: { from: 'user'|'node'|'electron' }): Command
-  parseAsync(argv?: string[], opts?: object): Promise<Command>
-  version(version: string, flags?: string, description?: string): Command
-  name(str: string): Command
-  usage(str: string): Command
-  description(str: string, details?: string): Command
-  summary(str: string): Command
-  helpOption(flags: string|false, description?: string): Command
-  helpCommand(name?: string|false, description?: string): Command
-  configureHelp(opts: { sortOptions?: boolean, sortSubcommands?: boolean, showGlobalOptions?: boolean, formatHelp?: Function, ... }): Command
-  addHelpText(position: 'beforeAll'|'before'|'after'|'afterAll', content: string|Function): Command
-  showHelpAfterError(msg?: string): Command
-  showSuggestionAfterError(flag: boolean): Command
-  allowUnknownOption(flag?: boolean): Command
-  allowExcessArguments(flag?: boolean): Command
-  enablePositionalOptions(): Command
-  passThroughOptions(): Command
-  exitOverride(callback?: (err: CommanderError)=>void): Command
-  configureOutput(opts: { writeOut?: (str:string)=>void, writeErr?: (str:string)=>void, outputError?: (str:string, write:(s:string)=>void)=>void }): Command
-  error(message: string, options?: { exitCode?: number, code?: string }): never
-  hook(event: 'preAction'|'postAction'|'preSubcommand', listener: Function): Command
-  createCommand(): Command
-
-Class: Option
-  constructor(flags: string, description?: string)
-  default(value: any, name?: string): Option
-  choices(list: any[]): Option
-  env(name: string): Option
-  preset(value: any): Option
-  argParser(fn: (value:string,prev:any)=>any): Option
-  conflicts(other: string): Option
-  implies(mapping: object): Option
-  hideHelp(): Option
-  makeOptionMandatory(): Option
-
-Error Classes: InvalidArgumentError extends Error; CommanderError { exitCode:number; code:string; message:string }
-
-Usage Patterns:
- - Combine flags: -ab for boolean a and b; -n80 for -n 80
- - End options: --
- - Pass-through in npm: npm run-script cmd -- --flag
-
-Best Practices:
- - Use local Command for unit tests
- - Explicit .name() for consistent help
- - Use .hook('preAction') for trace logs
- - Use .exitOverride() in daemons to catch errors
- - ConfigureOutput for custom UI
-
-Troubleshooting:
-$ node app.js --unknown
-error: unknown option '--unknown'
-(add --help for additional information)
-$ node app.js -p
-error: option '-p, --port <number>' argument missing
-$ node app.js --drink huge
-error: option '-d, --drink <size>' argument 'huge' is invalid. Allowed choices are small, medium, large.
-$ conflict example:
-program.addOption(new Option('--disable-server').conflicts('port'))
-$ node app --disable-server --port 8000
-error: option '--disable-server' cannot be used with option '-p, --port <number>'
-
-
-## Information Dense Extract
-Commander.js v11: import {Command, Option, Argument} from 'commander'; instantiate via new Command(name); chain .option(flags,desc,default,parser), .requiredOption, .addOption; define arguments via .argument/.addArgument; create subcommands via .command/.addCommand with opts hidden,isDefault,executableFile; attach handlers via .action(fn); parse via .parse()/parseAsync(); customize help via .version/.helpOption/.helpCommand/.configureHelp/.addHelpText; configure parsing via .allowUnknownOption/.allowExcessArguments/.enablePositionalOptions/.passThroughOptions; override exit via .exitOverride, error via .error; hook events 'preAction'|'postAction'|'preSubcommand'; configure output via .configureOutput(writeOut,writeErr,outputError). Option class supports .default/.choices/.env/.preset/.argParser/.conflicts/.implies/.hideHelp/.makeOptionMandatory. Errors: InvalidArgumentError, CommanderError(exitCode,code,message). Node ≥v18 required.
-
-## Sanitised Extract
-Table of Contents:
- 1 Program Initialization
- 2 Defining Options
- 3 Processing Option Types
- 4 Required and Variadic Options
- 5 Command and Subcommand Configuration
- 6 Argument Definitions
- 7 Action Handlers
- 8 Parsing and Execution
- 9 Help and Version Handling
-10 Error Handling and Overrides
-11 Hooks and Lifecycle Events
-12 Output Configuration
-
-1 Program Initialization
- Instantiate: const program = new Command('name') or use global require{program}
- Chainable methods return Command instance
-
-2 Defining Options
- .option(flags, description, defaultValue?, parser?)
- Flags: '-s, --sep <char>' or '--flag'
- DefaultValue: string|number|boolean
- Parser: function(value, prev)
- .requiredOption(flags, description, defaultValue?)
- .addOption(new Option(flags, description)[.default()][.choices()][.env()][.preset()][.argParser()][.conflicts()][.implies()][.hideHelp()][.makeOptionMandatory()])
-
-3 Processing Option Types
- Boolean: --flag sets true
- Negatable: --no-flag sets false
- Value: <value> after flag
- Optional: [value]
- Greedy: consumes next arg
- Variadic: <values...>
-
-4 Required and Variadic Options
- Required: .requiredOption throws error if missing
- Variadic: flags ending with '...'; returns array until next dash or '--'
-
-5 Command and Subcommand Configuration
- .command(nameAndArgs, descriptionOrOpts) creates subcommand with action or standalone executable
- .addCommand(cmd, {hidden?,isDefault?}) embeds prepared Command
- .alias(name)
- .executableDir(dir)
- .copyInheritedSettings(parent)
-
-6 Argument Definitions
- .argument(name, description?, defaultValue?, parser?)
- Variadic: '<items...>' returns array
- .addArgument(new Argument(name, description)[.choices()][.default()][.argParser()])
-
-7 Action Handlers
- .action(fn(...args, options, command))
- Async handlers: use .parseAsync
- Handler context: this = command for function expression
-
-8 Parsing and Execution
- .parse(argv?, {from:'node'|'user'|'electron'}) auto-detects Node/Electron
- .parseAsync returns Promise
- .enablePositionalOptions() only parse options before subcommands
- .passThroughOptions() leave unknown options as args
- .allowUnknownOption() skip unknown-option error
- .allowExcessArguments() disable excess-args error
-
-9 Help and Version Handling
- .version(versionString, flags?, description?) active flags -V,--version
- .helpOption(flags, description) customize or disable
- .helpCommand(name, description) customize implicit help command
- .configureHelp({sortOptions:boolean,sortSubcommands:boolean,showGlobalOptions:boolean,formatting functions})
- .addHelpText(position, content)
- showHelpAfterError(message?) auto-print help on error
- showSuggestionAfterError(false) disable spelling suggestions
-
-10 Error Handling and Overrides
- .exitOverride(callback) throw CommanderError
- .error(message, {exitCode?, code?}) exit immediately
- .configureOutput({writeOut,writeErr,outputError})
-
-11 Hooks and Lifecycle Events
- .hook('preAction'|'postAction'|'preSubcommand', (thisCmd,actionCmd))
- Async hooks require parseAsync
- Multiple hooks allowed per event
-
-12 Output Configuration
- Write routines: writeOut(str), writeErr(str)
- outputError(str, write) apply color or formatting
-
-## Original Source
-Commander.js
-https://github.com/tj/commander.js/#readme
-
-## Digest of COMMANDER_JS
-
-# Installation and Quick Start (Retrieved: 2023-11-20)
-
-## Installation
-
-Install via npm:
-
-    npm install commander
-
-Requires Node.js ≥ v18. Commander 11.0.0 used in examples.
-
-## Quick Start Example (split.js)
-
-    const { program } = require('commander');
-
-    program
-      .option('--first')
-      .option('-s, --separator <char>')
-      .argument('<string>')
-      .parse();
-
-    const options = program.opts();
-    const limit   = options.first ? 1 : undefined;
-    console.log(program.args[0].split(options.separator, limit));
-
-$ node split.js -s / --first a/b/c
-[ 'a' ]
-
-## Core API Method Signatures
-
-    new Command([name: string])
-    Command.option(flags: string, description?: string, defaultValue?: any, parser?: Function)
-      → Command
-    Command.requiredOption(flags: string, description: string, defaultValue?: any)
-      → Command
-    Command.addOption(option: Option)
-      → Command
-    Command.argument(arg: string, description?: string, defaultValue?: any, parser?: Function)
-      → Command
-    Command.command(nameAndArgs: string, description?: string | { executableFile?: string, isDefault?: boolean, hidden?: boolean })
-      → Command | this
-    Command.addCommand(cmd: Command, opts?: { hidden?: boolean, isDefault?: boolean })
-      → this
-    Command.action(fn: Function)
-      → Command
-    Command.parse(argv?: string[], opts?: { from: 'user' | 'node' | 'electron' })
-      → Command
-    Command.parseAsync(argv?: string[], opts?: object)
-      → Promise<Command>
-    Command.version(version: string, flags?: string, description?: string)
-      → Command
-    Command.name(str: string)
-      → Command
-    Command.usage(str: string)
-      → Command
-    Command.description(str: string, details?: string)
-      → Command
-    Command.summary(str: string)
-      → Command
-    Command.helpOption(flags: string | false, description?: string)
-      → Command
-    Command.helpCommand(name?: string | false, description?: string)
-      → Command
-    Command.configureHelp(options: object)
-      → Command
-    Command.addHelpText(position: 'beforeAll' | 'before' | 'after' | 'afterAll', content: string | Function)
-      → Command
-    Command.showHelpAfterError(msg?: string)
-      → Command
-    Command.showSuggestionAfterError(value: boolean)
-      → Command
-    Command.allowUnknownOption(value?: boolean)
-      → Command
-    Command.allowExcessArguments(value?: boolean)
-      → Command
-    Command.enablePositionalOptions()
-      → Command
-    Command.passThroughOptions()
-      → Command
-    Command.exitOverride(handler?: Function)
-      → Command
-    Command.configureOutput(opts: { writeOut?: Function, writeErr?: Function, outputError?: Function })
-      → Command
-    Command.error(message: string, options?: { exitCode?: number, code?: string })
-      → never
-    Command.hook(event: 'preAction' | 'postAction' | 'preSubcommand', listener: Function)
-      → Command
-    Command.createCommand()
-      → Command
-
-## Option Class
-
-    new Option(flags: string, description?: string)
-      .default(value: any, name?: string)
-      .choices(list: any[])
-      .env(varName: string)
-      .preset(value: any)
-      .argParser(parser: Function)
-      .conflicts(other: string)
-      .implies(mapping: object)
-      .hideHelp()
-      .makeOptionMandatory()
-
-## Attribution
-
-Source: GitHub tj/commander.js README.md  (Data Size: 802392 bytes, Links: 5541, Error: None)
-
-
-## Attribution
-- Source: Commander.js
-- URL: https://github.com/tj/commander.js/#readme
-- License: MIT License
-- Crawl Date: 2025-05-03T00:07:24.536Z
-- Data Size: 802392 bytes
-- Links Found: 5541
-
-## Retrieved
-2025-05-03
-library/CHALK.md
-# library/CHALK.md
-# CHALK
-
-## Crawl Summary
-npm install chalk; import chalk from 'chalk'; chalk.<style>[.<style>...](string,...string[]):string; chalk.level:0-3; per-instance new Chalk({level}); supportsColor object with level and flags; use FORCE_COLOR env or --color flags to override; separate stderr instance: chalkStderr and supportsColorStderr; exposed arrays: modifierNames, foregroundColorNames, backgroundColorNames, colorNames; style names lists; color models: rgb, hex, ansi256 with bg variants; downsampling levels: 16,256,truecolor; theme definitions via function assignments; string substitution via %s; no dependencies; nestable; high adoption.
-
-## Normalised Extract
-Table of Contents:
-1 Installation
-2 Importing
-3 Basic Usage
-4 Composable API
-5 Theme Definition
-6 String Substitution
-7 Color Level Configuration
-8 Color Detection & Forcing
-9 stderr Instance
-10 Style Name Arrays
-11 Styles List
-12 Color Models & Levels
-
-1 Installation
-npm install chalk
-
-2 Importing
-import chalk from 'chalk'
-import {Chalk} from 'chalk'
-
-3 Basic Usage
-console.log(chalk.blue('Hello world!'))
-
-4 Composable API
-Signature: chalk.<style>[.<style>...](input:string, ...inputs:string[]):string
-Chain order irrelevant; last style overrides
-Multi-arg: separated by spaces
-
-5 Theme Definition
-const error=chalk.bold.red
-const warning=chalk.hex('#FFA500')
-error('Error!')
-warning('Warning!')
-
-6 String Substitution
-console.log(chalk.green('Hello %s'), name)
-
-7 Color Level Configuration
-chalk.level = 0|1|2|3
-const custom=new Chalk({level:0})
-
-8 Color Detection & Forcing
-supportsColor: {level, hasBasic, has256, has16m}
-FORCE_COLOR=0|1|2|3
-Flags: --color, --no-color, --color=256, --color=16m
-
-9 stderr Instance
-chalkStderr: Chalk instance configured per stderr support detection
-supportsColorStderr: supportsColor for stderr
-
-10 Style Name Arrays
-modifierNames: [reset,bold,dim,italic,underline,overline,inverse,hidden,strikethrough,visible]
-foregroundColorNames: [black,red,green,yellow,blue,magenta,cyan,white,blackBright,redBright,greenBright,yellowBright,blueBright,magentaBright,cyanBright,whiteBright]
-backgroundColorNames: [bgBlack,bgRed,bgGreen,bgYellow,bgBlue,bgMagenta,bgCyan,bgWhite,bgBlackBright,bgRedBright,bgGreenBright,bgYellowBright,bgBlueBright,bgMagentaBright,bgCyanBright,bgWhiteBright]
-colorNames: combination of both
-
-11 Styles List
-Modifiers and color names as above
-
-12 Color Models & Levels
-rgb(r,g,b), hex('#rrggbb'), ansi256(n)
-bgRgb, bgHex, bgAnsi256
-Level1: 16 colors; Level2: 256; Level3: truecolor
-
-
-## Supplementary Details
-Function Signatures and Types:
-- chalk.<style>[.<style>...](input:string, ...inputs:string[]):string
-- chalk.rgb(r:number,g:number,b:number):Chalk
-- chalk.hex(hex:string):Chalk
-- chalk.ansi256(code:number):Chalk
-- chalk.bgRgb(r:number,g:number,b:number):Chalk
-- chalk.bgHex(hex:string):Chalk
-- chalk.bgAnsi256(code:number):Chalk
-- Chalk constructor: new Chalk(options:{level:number})
-
-Properties:
-- chalk.level: number default auto-detected (0-3)
-- supportsColor: {level:number,hasBasic:boolean,has256:boolean,has16m:boolean}
-- supportsColorStderr: same structure for stderr
-- chalkStderr: Chalk
-- modifierNames: string[]
-- foregroundColorNames: string[]
-- backgroundColorNames: string[]
-- colorNames: string[]
-
-Environment Variables and CLI Flags:
-- FORCE_COLOR: 0 (disable),1 (basic),2 (256),3 (truecolor)
-- --color, --no-color (boolean mode)
-- --color=256, --color=16m (explicit modes)
-
-Implementation Steps:
-1 install via npm
-2 import module
-3 apply styles via chainable API
-4 override global level or create custom Chalk instance
-5 use supportsColor to branch logic
-6 define theme constants via style combinations
-
-
-
-## Reference Details
-API Specifications:
-function chalk.<style>[.<style>...](input:string, ...inputs:string[]):string
-- Applies ANSI escape codes for each style in chain; returns concatenated styled string
-
-property chalk.level:number
-- 0: disable all color
-- 1: basic (16 colors)
-- 2: 256 colors
-- 3: truecolor (16 million)
-
-class Chalk
-constructor(options:{level:number})
-methods returning Chalk instance for further chaining:
-- rgb(r:number,g:number,b:number)
-- hex(hex:string)
-- ansi256(code:number)
-- bgRgb(r:number,g:number,b:number)
-- bgHex(hex:string)
-- bgAnsi256(code:number)
-- reset(), bold(), dim(), italic(), underline(), overline(), inverse(), hidden(), strikethrough(), visible()
-
-properties:
-- level:number
-
-object supportsColor and supportsColorStderr
-type: {level:number,hasBasic:boolean,has256:boolean,has16m:boolean}
-
-utility arrays:
-- modifierNames:string[] length 11
-- foregroundColorNames:string[] length 16
-- backgroundColorNames:string[] length 16
-- colorNames:string[] length 32
-
-Exact Code Examples:
-import chalk from 'chalk'
-console.log(chalk.blue('Hello','World!')) // yields ESC[34mHello World!ESC[39m
-console.log(chalk.red.bgWhite.bold('Alert'))
-const custom=new Chalk({level:2})
-console.log(custom.rgb(0,255,0)('OK'))
-
-Implementation Patterns:
-- Create theme constants: const info=chalk.blue; info('Info message')
-- Nest styles: chalk.green('green', chalk.red('red'), 'green again')
-- Template literals: console.log(`Status: ${chalk.yellow('pending')}`)
-
-Configuration Options:
-- Global override: chalk.level=0|1|2|3
-- Env override: FORCE_COLOR=...
-- CLI flags as described
-
-Best Practices:
-- Use new Chalk for reusable modules to avoid global side effects
-- Check supportsColor before printing color-specific output
-- Define and reuse theme constants for consistency
-
-Troubleshooting Procedures:
-- No colors: verify supportsColor.level; run node with --color or set FORCE_COLOR
-- stderr color missing: use chalkStderr in console.error
-- Windows no color: switch to Windows Terminal or use external ANSI support
-- To strip ANSI codes: pipe output through strip-ansi
-Commands:
-$ FORCE_COLOR=1 node app.js
-$ node --color=256 app.js
-$ env | grep FORCE_COLOR
-
-
-## Information Dense Extract
-npm install chalk; import chalk from 'chalk'; chalk.<style>[.<style>...](input:string,...inputs:string[]):string; styles: reset,bold,dim,italic,underline,overline,inverse,hidden,strikethrough,visible; colors: black,red,green,yellow,blue,magenta,cyan,white,blackBright,redBright,greenBright,yellowBright,blueBright,magentaBright,cyanBright,whiteBright; backgrounds: bgBlack,...,bgWhiteBright; color models: rgb(r,g,b), hex('#rrggbb'), ansi256(n) with bg variants; chalk.level:0-3; new Chalk({level}); supportsColor/supportsColorStderr: {level,hasBasic,has256,has16m}; FORCE_COLOR=0-3; --color flags; theme constants; template literal usage; nesting; new Chalk for libraries; check supportsColor before styling; troubleshooting via env flags and Windows Terminal.
-
-## Sanitised Extract
-Table of Contents:
-1 Installation
-2 Importing
-3 Basic Usage
-4 Composable API
-5 Theme Definition
-6 String Substitution
-7 Color Level Configuration
-8 Color Detection & Forcing
-9 stderr Instance
-10 Style Name Arrays
-11 Styles List
-12 Color Models & Levels
-
-1 Installation
-npm install chalk
-
-2 Importing
-import chalk from 'chalk'
-import {Chalk} from 'chalk'
-
-3 Basic Usage
-console.log(chalk.blue('Hello world!'))
-
-4 Composable API
-Signature: chalk.<style>[.<style>...](input:string, ...inputs:string[]):string
-Chain order irrelevant; last style overrides
-Multi-arg: separated by spaces
-
-5 Theme Definition
-const error=chalk.bold.red
-const warning=chalk.hex('#FFA500')
-error('Error!')
-warning('Warning!')
-
-6 String Substitution
-console.log(chalk.green('Hello %s'), name)
-
-7 Color Level Configuration
-chalk.level = 0|1|2|3
-const custom=new Chalk({level:0})
-
-8 Color Detection & Forcing
-supportsColor: {level, hasBasic, has256, has16m}
-FORCE_COLOR=0|1|2|3
-Flags: --color, --no-color, --color=256, --color=16m
-
-9 stderr Instance
-chalkStderr: Chalk instance configured per stderr support detection
-supportsColorStderr: supportsColor for stderr
-
-10 Style Name Arrays
-modifierNames: [reset,bold,dim,italic,underline,overline,inverse,hidden,strikethrough,visible]
-foregroundColorNames: [black,red,green,yellow,blue,magenta,cyan,white,blackBright,redBright,greenBright,yellowBright,blueBright,magentaBright,cyanBright,whiteBright]
-backgroundColorNames: [bgBlack,bgRed,bgGreen,bgYellow,bgBlue,bgMagenta,bgCyan,bgWhite,bgBlackBright,bgRedBright,bgGreenBright,bgYellowBright,bgBlueBright,bgMagentaBright,bgCyanBright,bgWhiteBright]
-colorNames: combination of both
-
-11 Styles List
-Modifiers and color names as above
-
-12 Color Models & Levels
-rgb(r,g,b), hex('#rrggbb'), ansi256(n)
-bgRgb, bgHex, bgAnsi256
-Level1: 16 colors; Level2: 256; Level3: truecolor
-
-## Original Source
-Chalk
-https://github.com/chalk/chalk#readme
-
-## Digest of CHALK
-
-# Chalk Technical Digest (Retrieved 2024-07-05)
-
-# Installation
-
-npm install chalk
-
-# Importing
-
-import chalk from 'chalk';
-import {Chalk} from 'chalk';
-
-# Basic Usage
-
-console.log(chalk.blue('Hello world!'));
-
-# Composable API
-
-**Signature**
-
-chalk.<style>[.<style>...](input:string, ...inputs:string[]): string
-
-**Behavior**
-
-- Chain any number of style properties; last one wins on conflict
-- Multiple arguments are joined by spaces
-
-# Theme Definition
-
-const error = chalk.bold.red
-const warning = chalk.hex('#FFA500')
-console.log(error('Error!'))
-console.log(warning('Warning!'))
-
-# String Substitution
-
-console.log(chalk.green('Hello %s'), name)
-
-# Color Level Configuration
-
-chalk.level: number (0-3)
-new Chalk({level:number}) // per-instance override
-
-# Color Detection & Forcing
-
-- supportsColor: {level, hasBasic, has256, has16m}
-- FORCE_COLOR=0|1|2|3 overrides all
-- CLI flags: --color, --no-color, --color=256, --color=16m
-
-# stderr Instance
-
-chalkStderr: Chalk // color support based on stderr
-supportsColorStderr: supportsColor object
-
-# Exposed Style Name Arrays
-
-modifierNames: string[]
-foregroundColorNames: string[]
-backgroundColorNames: string[]
-colorNames: string[]
-
-# Styles
-
-Modifiers: reset, bold, dim, italic, underline, overline, inverse, hidden, strikethrough, visible
-Colors: black, red, green, yellow, blue, magenta, cyan, white, blackBright, redBright, greenBright, yellowBright, blueBright, magentaBright, cyanBright, whiteBright
-Backgrounds: bgBlack, bgRed, bgGreen, bgYellow, bgBlue, bgMagenta, bgCyan, bgWhite, bgBlackBright, bgRedBright, bgGreenBright, bgYellowBright, bgBlueBright, bgMagentaBright, bgCyanBright, bgWhiteBright
-
-# Color Models & Downsampling
-
-- rgb(r:number,g:number,b:number)
-- hex(hex:string)
-- ansi256(code:number)
-- bgRgb, bgHex, bgAnsi256 variants
-- Level1 downsampling: 16 colors; Level2: 256; Level3: truecolor
-
-# Performance & Adoption
-
-- No dependencies
-- High performance
-- Used by ~115,000 packages
-
-
-## Attribution
-- Source: Chalk
-- URL: https://github.com/chalk/chalk#readme
-- License: MIT License
-- Crawl Date: 2025-05-03T08:50:11.740Z
-- Data Size: 703582 bytes
-- Links Found: 5476
-
-## Retrieved
-2025-05-03
-library/CONVENTIONAL_COMMITS.md
-# library/CONVENTIONAL_COMMITS.md
-# CONVENTIONAL_COMMITS
-
-## Crawl Summary
-Commits must follow `<type>[scope][!]: description` header with optional body and footers. Types: feat→MINOR, fix→PATCH; others no effect. Scope in parentheses. Description required, max 72 chars. Body separated by blank line. Footers: `<token>: <value>` or `token #value`, token hyphenated. Breaking changes: use `!` or `BREAKING CHANGE:` footer. Implement with commitlint rules and conventional-changelog CLI.
+Installed via npm install --save yargs. Use import yargs from 'yargs' or require('yargs'), plus hideBin helper. Initialize parser with yargs(hideBin(process.argv)), scriptName(), usage(), help(), parse(). Define commands via .command(name, desc, builder(yargs), handler(argv)), enforce via .demandCommand(). Define options via .option(key, {...}) and .positional(). Global modes: strict(), strictCommands(), strictOptions(), exitProcess(), showHelpOnFail(). Add help/version via .help(), .alias(), .version(). Dual distribution: ESM build + Rollup CJS bundle + package.json conditional exports. Experimental Deno support via URL import. v16 breaking: no deep imports, removed rebase(), Node 8 dropped.
 
 ## Normalised Extract
 Table of Contents
-1 Commit Message Grammar
-2 Type Definitions
-3 Scope Syntax
-4 Description Requirements
-5 Body Content
-6 Footer Format
-7 Breaking Change Indicators
-8 Usage Examples
+1 Initialization and Parsing
+2 Command Definition
+3 Option Definition
+4 Global Configuration
+5 Helpers
+6 Distribution Patterns
 
-1 Commit Message Grammar
-Header must match regex ^(?<type>\w+)(?:\((?<scope>[\w\- ]+)\))?(?<breaking>!)?: (?<description>.+)$
+1 Initialization and Parsing
+Import ESM: import yargs from 'yargs'; import { hideBin } from 'yargs/helpers'
+Usage: yargs(hideBin(process.argv)).scriptName(scriptName).usage(usagePattern).help().parse()
 
-2 Type Definitions
-feat : increment MINOR version
-fix  : increment PATCH version
-Allowed additional types: build, chore, ci, docs, style, refactor, perf, test (no semver effect unless breaking)
+2 Command Definition
+.command(name:string, description:string, builder:(yargs)->yargs, handler:(argv)->void)
+.demandCommand(min:number, max?:number)
 
-3 Scope Syntax
-scope MUST be noun/hyphen words inside () immediately after type, e.g., feat(parser-core)
+3 Option Definition
+.option(key:string, {
+  alias?:string|string[]
+  type:'string'|'number'|'boolean'
+  default?:string|number|boolean
+  describe:string
+  requiresArg?:boolean
+  choices?:Array<string|number>
+  coerce?:(value)->any
+})
+.positional(name:string, {
+  type:'string'|'number'|'boolean'
+  default?:string|number|boolean
+  describe:string
+})
 
-4 Description Requirements
-MUST follow colon and space. SHOULD be ≤72 chars. No trailing period.
+4 Global Configuration
+.strict()
+.strictCommands()
+.strictOptions()
+.exitProcess(enabled:boolean)
+.showHelpOnFail(enabled:boolean, formatter?)
 
-5 Body Content
-MAY include after one blank line. Free-form paragraphs. No metadata tokens.
+5 Helpers
+hideBin(argv:string[]):string[]  removes node exec and script path
 
-6 Footer Format
-MAY include after one blank line. Each line:<token>: <value> or <token> #<value>. Tokens use hyphens, e.g., Reviewed-by.
+6 Distribution Patterns
+ESM build from TypeScript
+Rollup for CommonJS bundle
+package.json exports:
+  import: './esm/index.js'
+  require: './cjs/index.js'
 
-7 Breaking Change Indicators
-MUST use ! in header before : OR FOOTER token BREAKING CHANGE:. Include description after ": ".
+Deno Import:
+import yargs from 'https://deno.land/x/yargs/deno.ts'
+import {Arguments,YargsType} from 'https://deno.land/x/yargs/types.ts'
 
-8 Usage Examples
-feat(cli): add interactive prompt
-fix(api)!: remove deprecated parameter
-BREAKING CHANGE: config file format changed
+yargs().command('download <files...>', 'download', (yargs:YargsType)=>yargs.positional('files',{describe:'files'}),(argv:Arguments)=>console.info(argv)).strictCommands().demandCommand(1).parse(Deno.args)
 
 
 ## Supplementary Details
-Commitlint configuration snippet:
-{
-  "rules": {
-    "type-enum": [2, "always", ["feat","fix","build","chore","ci","docs","style","refactor","perf","test"]],
-    "scope-case": [2, "always", "kebab-case"],
-    "header-max-length": [2, "always", 72],
-    "subject-case": [2, "never", ["start-case","pascal-case"]]
-  }
-}
-
-Conventional-changelog CLI:
-npx conventional-changelog -p angular -i CHANGELOG.md -s
-
-Semantic-release plugin:
-"@semantic-release/commit-analyzer": {"preset":"angular"}
-
-
-## Reference Details
-Regex validation in parser:
-const headerPattern = /^(\w+)(?:\([\w\- ]+\))!?\: .+$/;
-
-Sample commitlint.config.js:
-module.exports = {
-  extends: ['@commitlint/config-conventional'],
-  rules: { 'header-max-length': [2, 'always', 72] }
-};
-
-Git hook integration (husky):
-"husky":{ "hooks":{ "commit-msg":"commitlint -E HUSKY_GIT_PARAMS" }}
-
-Best practice: Use git commit --amend to fix header mismatch. Then git push --force-with-lease.
-
-Troubleshooting common errors:
-Error: header must not be longer than 72 characters
-Command: commitlint -e $GIT_PARAMS
-Fix: shorten header summary.
-
-
-## Information Dense Extract
-HeaderRegex:^(type)(\(scope\))?(!)?:description;Types:feat→MINOR,fix→PATCH,others no semver;Scope:(noun-hyphen);Desc:MUST non-empty,≤72;Body:MAY paragraphs after blank-line;Footer:token: value or token #value;TokenHyphenated;Breaking:! or BREAKING CHANGE:desc;CommitlintRules:type-enum,scope-case,kebab,header-max-length72;CLI:npx conventional-changelog -p angular -i CHANGELOG.md -s;GitHook:husky commitlint;Amend:git commit --amend;Push:--force-with-lease;
-
-## Sanitised Extract
-Table of Contents
-1 Commit Message Grammar
-2 Type Definitions
-3 Scope Syntax
-4 Description Requirements
-5 Body Content
-6 Footer Format
-7 Breaking Change Indicators
-8 Usage Examples
-
-1 Commit Message Grammar
-Header must match regex ^(?<type>'w+)(?:'((?<scope>['w'- ]+)'))?(?<breaking>!)?: (?<description>.+)$
-
-2 Type Definitions
-feat : increment MINOR version
-fix  : increment PATCH version
-Allowed additional types: build, chore, ci, docs, style, refactor, perf, test (no semver effect unless breaking)
-
-3 Scope Syntax
-scope MUST be noun/hyphen words inside () immediately after type, e.g., feat(parser-core)
-
-4 Description Requirements
-MUST follow colon and space. SHOULD be 72 chars. No trailing period.
-
-5 Body Content
-MAY include after one blank line. Free-form paragraphs. No metadata tokens.
-
-6 Footer Format
-MAY include after one blank line. Each line:<token>: <value> or <token> #<value>. Tokens use hyphens, e.g., Reviewed-by.
-
-7 Breaking Change Indicators
-MUST use ! in header before : OR FOOTER token BREAKING CHANGE:. Include description after ': '.
-
-8 Usage Examples
-feat(cli): add interactive prompt
-fix(api)!: remove deprecated parameter
-BREAKING CHANGE: config file format changed
-
-## Original Source
-Conventional Commits Specification
-https://www.conventionalcommits.org/en/v1.0.0/
-
-## Digest of CONVENTIONAL_COMMITS
-
-# Conventional Commits 1.0.0
-
-## Overview
-The Conventional Commits spec defines a strict commit message format:
-  - Header: `<type>[scope][!]: description`
-  - Body: blank line followed by free-form text
-  - Footers: blank line followed by one or more metadata lines
-
-## Grammar
-```regex
-^(?<type>\w+)(?:\((?<scope>[\w\- ]+)\))?(?<breaking>!)?: (?<description>.+)$```
-
-## Types
-  • feat (MINOR semver)  
-  • fix (PATCH semver)  
-  • build, chore, ci, docs, style, refactor, perf, test, etc. (no semver effect unless breaking)
-
-## Scope
-  • Format: noun or hyphenated words inside parentheses  
-  • Example: `feat(parser): parse arrays`
-
-## Description
-  • Required: non-empty summary after `: `  
-  • Max length: 72 characters recommended
-
-## Body
-  • Optional: blank line then paragraphs  
-  • Explain motivation and internal details
-
-## Footers
-  • Format: `<token>: <value>` or `<token> #<value>`  
-  • Tokens use hyphens instead of spaces except `BREAKING CHANGE`
-
-## Breaking Changes
-  • Indicated by `!` before `:` or `BREAKING CHANGE: description` footer  
-  • Always use uppercase token and provide description
-
-## Examples
-  • `feat: add new API method`
-  • `fix(api)!: update endpoint signature`
-  • Footer example:
-    BREAKING CHANGE: endpoint now requires auth token
-
-## Integration
-  • commitlint rules: type-enum, header-max-length, scope-case, subject-capital-letter
-  • changelog generation: conventional-changelog CLI, semantic-release plugins
-
-## Troubleshooting
-  • git rebase -i HEAD~N to amend past commits  
-  • commitlint error codes and remediation  
-  • Fix invalid header: update to match regex
-
-Retrieved: 2023-10-10
-Data Size: 352798 bytes
-
-## Attribution
-- Source: Conventional Commits Specification
-- URL: https://www.conventionalcommits.org/en/v1.0.0/
-- License: CC0 Public Domain
-- Crawl Date: 2025-05-03T20:48:27.235Z
-- Data Size: 352798 bytes
-- Links Found: 232
-
-## Retrieved
-2025-05-03
-library/DOTENV.md
-# library/DOTENV.md
-# DOTENV
-
-## Crawl Summary
-Load .env file into process.env via require('dotenv').config(). Default options: path=path.resolve(cwd,'.env'), encoding='utf8', debug=false, override=false, processEnv=process.env. parse(src: Buffer|string, opt.debug=false) returns key/value object. populate(target, parsed, opt.override=false, opt.debug=false) assigns parsed keys. CLI preload via node -r dotenv/config supports dotenv_config_path and dotenv_config_debug flags or DOTENV_CONFIG_<OPTION> env variables. .env syntax: KEY=VALUE, multiline support via quotes or \n, comments start #. For advanced needs use dotenv-expand for variable expansion and dotenvx for multi-environment, encrypted, sync, and deploy workflows. Troubleshooting: config debug, file path, webpack polyfills.
-
-## Normalised Extract
-Table of Contents:
-1. Installation
-2. Configuration API
-3. CLI Preload
-4. Parse API
-5. Populate API
-6. .env File Syntax
-7. Troubleshooting
-
-1. Installation
-npm install dotenv --save
-or yarn add dotenv
-or bun add dotenv
-
-2. Configuration API
-Function: require('dotenv').config(options)
+Installation:
+  npm install --save yargs
+Helpers:
+  hideBin(process.argv) strips default args
+Command:
+  .command(name,desc,builder,handler) supports nested builder chaining
 Options:
-  path: string or string[] (default path.resolve(process.cwd(),'.env'))
-  encoding: string (default 'utf8')
-  debug: boolean (default false)
-  override: boolean (default false)
-  processEnv: object (default process.env)
-Returns: { parsed?: Record<string,string>, error?: Error }
+  .option(key,{alias,type,default,describe,requiresArg,choices,coerce})
+  .positional(name,{type,default,describe})
+Configuration:
+  .strict(): throw on unknown commands/options
+  .strictCommands(): throw on unknown commands
+  .strictOptions(): throw on unknown options
+  .demandCommand(1): require at least 1 command
+  .exitProcess(false): return errors instead of process.exit
+  .showHelpOnFail(true): display help on parsing errors
 
-3. CLI Preload
-Command: node -r dotenv/config script.js
-Flags:
-  dotenv_config_path=/custom/path/.env
-  dotenv_config_debug=true
-Environment Variables:
-  DOTENV_CONFIG_<OPTION>=value overrides flags
-
-4. Parse API
-Function: dotenv.parse(src, options)
-src: string or Buffer containing env data
-options:
-  debug: boolean (default false)
-Returns: Record<string,string>
-
-5. Populate API
-Function: dotenv.populate(target, source, options)
-target: object to receive variables (e.g., process.env)
-source: parsed key/value object
-options:
-  override: boolean (default false)
-  debug: boolean (default false)
-Returns: void
-
-6. .env File Syntax
-Entries: KEY=VALUE per line
-Comments: lines starting with # or inline after values
-Quoted values preserve inner whitespace; double quotes expand newlines
-Multiline values: use literal line breaks inside quotes or \n escapes
-Backtick delimiters supported
-Empty values produce empty strings
-
-7. Troubleshooting
-If .env is not loaded:
-  require('dotenv').config({ debug: true })
-If React variables missing, prefix with REACT_APP_
-Webpack front-end error crypto|os|path:
-  npm install node-polyfill-webpack-plugin
-  add NodePolyfillPlugin to webpack.config.js
-
-## Supplementary Details
-Default parameter values:
-path: path.resolve(process.cwd(), '.env')
-encoding: 'utf8'
-debug: false (use for verbose parsing/populating logs)
-override: false (set true to overwrite existing environment variables)
-processEnv: process.env (overwrite target if custom object provided)
-
-Implementation Steps:
-1. Place .env in project root or working directory.
-2. Install dotenv via npm, yarn, or bun.
-3. Early in app entry point call require('dotenv').config(opts) or import 'dotenv/config'.
-4. Access variables via process.env.KEY.
-5. For advanced parsing use dotenv.parse(), then manually assign via dotenv.populate().
-6. Use CLI preload to avoid explicit require in code.
-
-Multi-environment & Encryption (via dotenvx):
-• Use dotenvx run --env-file=.env.production -- node index.js
-• Use dotenvx set KEY value --encrypt -f .env.production
-• Provide DOTENV_PRIVATE_KEY_ENV to CLI for decryption
 
 ## Reference Details
-### API Specifications
-
-#### config(options?: ConfigOptions) => ConfigOutput
-```ts
-interface ConfigOptions {
-  path?: string | string[];
-  encoding?: string;
-  debug?: boolean;
-  override?: boolean;
-  processEnv?: Record<string,string>;
+API Method Signatures:
+function yargs(argv?:string[]): yargs.Argv<{}>
+interface Argv<T> {
+  scriptName(name:string): this
+  usage(command:string): this
+  command(cmd:string|string[], description:string, builder?: (args:Argv<any>)=>Argv<any>, handler?: (args:T)=>void): this
+  demandCommand(min:number, max?:number): this
+  option(key:string, opts:OptionDefinition): this
+  positional(name:string, opts:PositionalDefinition): this
+  help(key?:string): this
+  alias(key:string, alias:string|string[]): this
+  version(version?:string, key?:string): this
+  parse(argv?:string[]): T
+  strict(): this
+  strictCommands(): this
+  strictOptions(): this
+  exitProcess(enabled:boolean): this
+  showHelpOnFail(enabled:boolean, formatter?:(msg:string,dash:string)=>string): this
 }
-interface ConfigOutput {
-  parsed?: Record<string,string>;
-  error?: Error;
+interface OptionDefinition {
+  alias?:string|string[];
+  type:'string'|'number'|'boolean';
+  default?:string|number|boolean;
+  describe:string;
+  requiresArg?:boolean;
+  choices?:Array<string|number>;
+  coerce?:(arg:any)=>any;
 }
-```
-- Defaults:
-  path = path.resolve(process.cwd(), '.env')
-  encoding = 'utf8'
-  debug = false
-  override = false
-  processEnv = process.env
-
-##### Example:
-```js
-const result = require('dotenv').config({
-  path: ['/app/.env.local', '/app/.env'],
-  encoding: 'latin1',
-  debug: process.env.DEBUG === 'true',
-  override: true
-});
-if (result.error) {
-  console.error('Failed to load .env:', result.error);
-  process.exit(1);
+interface PositionalDefinition {
+  type:'string'|'number'|'boolean';
+  default?:string|number|boolean;
+  describe:string;
 }
-console.log('Loaded env:', result.parsed);
-```
+helper hideBin(argv:string[]): string[]
 
-#### parse(src: string | Buffer, options?: { debug?: boolean }) => Record<string,string>
-- Accepts raw env content as string or Buffer
-- Returns key/value object
-- Options.debug enables parse error logs
-
-##### Example:
-```js
-const fs = require('fs');
-const dotenv = require('dotenv');
-const content = fs.readFileSync('.env');
-const parsed = dotenv.parse(content, { debug: true });
-console.log(parsed);
-```
-
-#### populate(target: object, source: Record<string,string>, options?: { override?: boolean; debug?: boolean; }) => void
-- Copies source entries into target
-- override=true overwrites existing keys
-- debug=true logs each assignment
-
-##### Example:
-```js
-const dotenv = require('dotenv');
-const parsed = { API_URL: 'https://api' };
-dotenv.populate(process.env, parsed, { override: true, debug: true });
-console.log(process.env.API_URL);
-```
-
-### CLI Preload Patterns
-```bash
-# Preload dotenv without code
-node -r dotenv/config index.js
-# with options
-node -r dotenv/config index.js dotenv_config_path=/config/.env dotenv_config_debug=true
-# via env vars
-DOTENV_CONFIG_PATH=/config/.env DOTENV_CONFIG_DEBUG=true node -r dotenv/config index.js
-```
-
-### .env File Syntax and Rules
-- KEY=VALUE pairs
-environment lines trimmed
-- Comments start at # outside quotes
-- Empty values produce ''
-- Quoted values preserve whitespace
-double quotes expand newlines
-templated lines supported by dotenvx
-
-### Best Practices
-1. Add require('dotenv').config() at top of entry file
-2. Use override only when safe to overwrite existing env
-3. Validate required vars at startup
-4. Do not commit .env to VCS
-
-### Troubleshooting Procedures
-1. .env not loaded:
-   ```js
-   const result = require('dotenv').config({ debug: true });
-   if (result.error) console.error(result.error);
-   ```
-2. React missing vars: prefix REACT_APP_
-3. Webpack missing crypto/polyfill:
-   ```bash
-   npm install node-polyfill-webpack-plugin
-   ```
-   ```js
-   // webpack.config.js
-   const NodePolyfillPlugin = require('node-polyfill-webpack-plugin');
-   module.exports = { plugins: [new NodePolyfillPlugin()] };
-   ```
-4. Prevent .env commit in Docker builds:
-   ```dockerfile
-   RUN curl -fsS https://dotenvx.sh/ | sh && dotenvx prebuild
-   ```
-
-### Git Hook to Prevent .env Commit
-```bash
-brew install dotenvx/brew/dotenvx
-dotenvx precommit --install
-```
-
-## Information Dense Extract
-config(options:{path=string|string[]=path.resolve(cwd,'.env'),encoding='utf8',debug=false,override=false,processEnv=process.env})=>{parsed?:Record<string,string>,error?:Error} parse(src:string|Buffer,options:{debug=false})=>Record<string,string> populate(target:object,source:Record<string,string>,options:{override=false,debug=false})=>void CLI preload: node -r dotenv/config [dotenv_config_path=PATH dotenv_config_debug=true] or set DOTENV_CONFIG_<OPTION>=value .env syntax: KEY=VALUE, comments #, multilines via quoted blocks or \n, quoted values preserve whitespace, backticks supported, empty values->''. Best practices: load early, one .env per env, never commit .env. Troubleshoot with config debug, validate path, prefix REACT_APP_, add node-polyfill-webpack-plugin for webpack.
-
-## Sanitised Extract
-Table of Contents:
-1. Installation
-2. Configuration API
-3. CLI Preload
-4. Parse API
-5. Populate API
-6. .env File Syntax
-7. Troubleshooting
-
-1. Installation
-npm install dotenv --save
-or yarn add dotenv
-or bun add dotenv
-
-2. Configuration API
-Function: require('dotenv').config(options)
-Options:
-  path: string or string[] (default path.resolve(process.cwd(),'.env'))
-  encoding: string (default 'utf8')
-  debug: boolean (default false)
-  override: boolean (default false)
-  processEnv: object (default process.env)
-Returns: { parsed?: Record<string,string>, error?: Error }
-
-3. CLI Preload
-Command: node -r dotenv/config script.js
-Flags:
-  dotenv_config_path=/custom/path/.env
-  dotenv_config_debug=true
-Environment Variables:
-  DOTENV_CONFIG_<OPTION>=value overrides flags
-
-4. Parse API
-Function: dotenv.parse(src, options)
-src: string or Buffer containing env data
-options:
-  debug: boolean (default false)
-Returns: Record<string,string>
-
-5. Populate API
-Function: dotenv.populate(target, source, options)
-target: object to receive variables (e.g., process.env)
-source: parsed key/value object
-options:
-  override: boolean (default false)
-  debug: boolean (default false)
-Returns: void
-
-6. .env File Syntax
-Entries: KEY=VALUE per line
-Comments: lines starting with # or inline after values
-Quoted values preserve inner whitespace; double quotes expand newlines
-Multiline values: use literal line breaks inside quotes or 'n escapes
-Backtick delimiters supported
-Empty values produce empty strings
-
-7. Troubleshooting
-If .env is not loaded:
-  require('dotenv').config({ debug: true })
-If React variables missing, prefix with REACT_APP_
-Webpack front-end error crypto|os|path:
-  npm install node-polyfill-webpack-plugin
-  add NodePolyfillPlugin to webpack.config.js
-
-## Original Source
-dotenv
-https://github.com/motdotla/dotenv#readme
-
-## Digest of DOTENV
-
-# Dotenv README Digest
-Retrieved: 2024-06-30
-Data Size: 643985 bytes
-Source: https://github.com/motdotla/dotenv#readme
-
-# Installation
-
-npm install dotenv --save
-
-yarn add dotenv
-
-bun add dotenv
-
-# Basic Usage
-
-1. Create a .env file in your project root:
-   S3_BUCKET="YOURS3BUCKET"
-   SECRET_KEY="YOURSECRETKEYGOESHERE"
-2. In CommonJS:
-   require('dotenv').config()
-3. In ES Modules:
-   import 'dotenv/config'
-4. process.env now contains defined variables.
-
-# Multiline Values
-
-Supported >= v15.0.0:
-
-PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----
-...
------END RSA PRIVATE KEY-----"
-
-Or escape newlines:
-
-PRIVATE_KEY="-----BEGIN RSA PRIVATE KEY-----\n...\n-----END RSA PRIVATE KEY-----\n"
-
-# Comments
-
-# Lines starting with # are comments
-SECRET_KEY=KEY # inline comment
-SECRET_HASH="value-with-#-inside"
-
-# Parsing Engine
-
-const dotenv = require('dotenv')
-const buf = Buffer.from('BASIC=basic')
-const config = dotenv.parse(buf)   // returns { BASIC: 'basic' }
-
-# Preload via CLI
-
-$ node -r dotenv/config your_script.js
-$ node -r dotenv/config your_script.js dotenv_config_path=/custom/.env dotenv_config_debug=true
-$ DOTENV_CONFIG_ENCODING=latin1 DOTENV_CONFIG_DEBUG=true node -r dotenv/config index.js
-
-# API Reference
-
-## config(options?)
-Signature: config(options?: { path?: string|string[], encoding?: string, debug?: boolean, override?: boolean, processEnv?: object }) => { parsed?: Record<string,string>, error?: Error }
-
-## parse(src, opt?)
-Signature: parse(src: string|Buffer, opt?: { debug?: boolean }) => Record<string,string>
-
-## populate(target, source, opt?)
-Signature: populate(target: object, source: Record<string,string>, opt?: { override?: boolean, debug?: boolean }) => void
-
-# Options Defaults
-
-path: path.resolve(process.cwd(), '.env')
-encoding: 'utf8'
-debug: false
-override: false
-processEnv: process.env
-
-# Troubleshooting
-
-.env not loading: require('dotenv').config({ debug: true })
-Webpack front-end missing polyfills: npm install node-polyfill-webpack-plugin
-Add in webpack.config.js:
-  new NodePolyfillPlugin(),
-
-# Best Practices
-
-• Load dotenv as early as possible.
-• Do not commit .env to version control.
-• Use one .env per environment.
-
-
-## Attribution
-- Source: dotenv
-- URL: https://github.com/motdotla/dotenv#readme
-- License: BSD-2-Clause
-- Crawl Date: 2025-05-03T12:58:46.894Z
-- Data Size: 643985 bytes
-- Links Found: 4989
-
-## Retrieved
-2025-05-03
-library/OCLIF_INTRO.md
-# library/OCLIF_INTRO.md
-# OCLIF_INTRO
-
-## Crawl Summary
-Install oclif CLI globally via npm. Generate a new project with "oclif generate <name>", answering prompts for module-type (ESM|CommonJS), npm package name, and binary name. Development mode uses bin/dev.js, production mode uses bin/run.js. Initialize an existing project with "oclif init", supplying flags --bin, --module-type, --package-manager, --topic-separator, --output-dir, --yes. init adds bin scripts, oclif section to package.json (fields bin, dirname, commands, topicSeparator), dependencies @oclif/core and ts-node. Create commands via "oclif generate command <topic:command>", defining class extending Command with static description, flags, args, and async run returning Promise<void>. Create hooks via "oclif generate hook <name> --event <lifecycle>". package.json oclif section supports bin, dirname, commands, topicSeparator. Flag definitions use Flags.boolean, Flags.string, Flags.integer with char, description, default, required. Args defined as array of {name, description, required}.
-
-## Normalised Extract
-Table of Contents
-
-1 Installation
-2 Project Generation
-3 Development & Production Execution
-4 Initialization in Existing Project
-5 Command Creation
-6 Hook Creation
-7 Configuration Options
-8 Flags Definition
-9 Arguments Definition
-
-1 Installation
-
-Install oclif CLI globally
-
-$ npm install --global oclif
-
-2 Project Generation
-
-$ oclif generate mynewcli
-Prompts:
-  module type  ESM or CommonJS
-  npm package name  mynewcli
-  command bin name  mynewcli
-
-3 Development & Production Execution
-
-Development mode:
-$ ./bin/dev.js hello world
-Production mode:
-$ ./bin/run.js hello world
-
-4 Initialization in Existing Project
-
-$ oclif init --output-dir=/path/to/project --bin=my-pkg --module-type=CommonJS --package-manager=npm --topic-separator=spaces --yes
-Creates:
-  bin/run.js, bin/run.cmd, bin/dev.js, bin/dev.cmd
-  package.json oclif section with fields:
-    bin: my-pkg
-    dirname: ./src/commands
-    commands: ./src/commands
-    topicSeparator: " "
-  dependencies: @oclif/core
-  devDependencies: ts-node
-
-5 Command Creation
-
-$ oclif generate command foo:bar
-Creates src/commands/foo/bar.ts
-Class skeleton:
-import {Command, Flags} from '@oclif/core'
-export default class FooBar extends Command {
-  static description = '...'
-  static flags = { force: Flags.boolean({char: 'f', description: '...', default: false}) }
-  static args = [{name: 'input', required: true, description: '...'}]
-  async run(): Promise<void> { const {args, flags} = await this.parse(FooBar) }
-}
-
-6 Hook Creation
-
-$ oclif generate hook my-hook --event init
-Creates src/hooks/my-hook.ts
-
-7 Configuration Options
-
-package.json oclif section:
-  bin          string   CLI executable name
-  dirname      string   path to commands folder
-  commands     string   path or glob for commands
-  topicSeparator string ":" or " "
-
-8 Flags Definition
-
-static flags = {
-  count: Flags.integer({char: 'c', description: '...', default: 1, required: true}),
-  name: Flags.string({char: 'n', description: '...', required: false}),
-}
-
-9 Arguments Definition
-
-static args = [ { name: 'file', description: '...', required: true } ]
-
-## Supplementary Details
-Exact package.json changes when running init:
-
-Add under dependencies:
-  "@oclif/core": "^<version>"
-Add under devDependencies:
-  "ts-node": "^<version>"
-
-After init, package.json entry:
-"oclif": {
-  "bin": "my-pkg",
-  "dirname": "./src/commands",
-  "commands": "./src/commands",
-  "topicSeparator": " "
-}
-
-Generated bin scripts content:
-
-bin/run.js:
+Code Example:
 #!/usr/bin/env node
-require('@oclif/command').run()
-
-bin/dev.js:
-#!/usr/bin/env node
-process.env.NODE_ENV='development'
-require('@oclif/command').run()
-
-Configuration step-by-step:
-1 install oclif CLI
-2 run oclif init in existing project directory
-3 verify package.json oclif section
-4 add commands or hooks via generate
-5 run dev and run scripts
-
-Flag options for init command:
---output-dir <value>  default: cwd
---bin <value>         default: package.json "name"
---module-type <ESM|CommonJS> default: ESM
---package-manager <npm|yarn|pnpm> default: npm
---topic-separator <colons|spaces> default: colons
--y, --yes             use defaults for all prompts
-
-
-
-## Reference Details
-CLI Commands
-
-1 npm install --global oclif
-2 oclif generate <name>
-   Options:
-     --language <TypeScript|JavaScript>   default: TypeScript
-     --module-type <ESM|CommonJS>         default: ESM
-     --package-manager <npm|yarn|pnpm>    default: npm
-     --bin <value>                        command binary name
-3 oclif init [--output-dir <value>] [--bin <value>] [--module-type <ESM|CommonJS>] [--package-manager <npm|yarn|pnpm>] [--topic-separator <colons|spaces>] [-y]
-   Creates bin scripts and updates package.json
-4 oclif generate command <topic:command>
-   Creates src/commands/<topic>/<command>.ts with skeleton:
-     import {Command, Flags} from '@oclif/core'
-     export default class Name extends Command {
-       static description = '...'
-       static flags = {...}
-       static args = [{name, description, required}]
-       async run(): Promise<void> { ... }
-     }
-5 oclif generate hook <name> --event <lifecycle>
-   Lifecycle events: init, prerun, postrun, command_not_found, update
-
-SDK Method Signatures
-
-declare module '@oclif/core' {
-  export abstract class Command {
-    static description?: string
-    static flags?: Record<string, import('@oclif/core').Flag>
-    static args?: Array<{name: string; description?: string; required?: boolean}>
-    parse<T extends Command>(this: new () => T): Promise<{args: any; flags: any}>
-    log(message: string): void
-    error(message: string, options?: {code?: string; exit?: number; ref?: string; suggestions?: string[]}): void
-  }
-  export namespace Flags {
-    function boolean(opts: {char?: string; description: string; default?: boolean; required?: boolean}): import('@oclif/core').Flag<boolean>
-    function string(opts: {char?: string; description: string; required?: boolean; multiple?: boolean; default?: string}): import('@oclif/core').Flag<string>
-    function integer(opts: {char?: string; description: string; default?: number; required?: boolean}): import('@oclif/core').Flag<number>
-  }
-}
-
-Configuration Variables
-
-In package.json:
-"oclif": {
-  "bin": "mycli",
-  "dirname": "./src/commands",
-  "commands": "./src/commands",
-  "topicSeparator": ":"  or  " "
-}
-
-Best Practices
-
-Use src/commands subdirectories to group topics. Topic separator default is colon but can switch to spaces. Hide deprecated commands via hiddenAliases array on Command class. Preparse hook example:
-
-export async function preparse(input: string[]): Promise<string[]> {
-  if (input[0]==='--flags-dir') {
-    const fileFlags = require(input[1])
-    return [...fileFlags, ...input.slice(2)]
-  }
-  return input
-}
-
-Troubleshooting
-
-If commands not found, verify package.json oclif.commands path points to correct directory. Example:
-  "commands": "./build/commands"
-
-Enable debug output:
-
-$ export OCLIF_DEBUG=1
-$ ./bin/run.js hello
-
-Check generated bin scripts have shebang '#!/usr/bin/env node' and correct require('@oclif/core').run() calls.
-
-## Information Dense Extract
-npm install -g oclif | oclif generate <name> --language TypeScript --module-type ESM --package-manager npm --bin <name> | cd <name> | ./bin/dev.js <cmd> for dev, ./bin/run.js <cmd> for prod | oclif init [--output-dir=<dir>] [--bin=<name>] [--module-type=ESM|CommonJS] [--package-manager=npm|yarn|pnpm] [--topic-separator=colons|spaces] [-y] adds bin scripts, package.json oclif:{bin,dirname,commands,topicSeparator}, deps:@oclif/core,devDeps:ts-node | oclif generate command <topic:cmd> creates src/commands/<topic>/<cmd>.ts with class extends Command, static description, flags via Flags.boolean/string/integer, args array, async run():Promise<void> parse via this.parse() | oclif generate hook <name> --event <init|prerun|postrun|command_not_found|update> | package.json oclif:{bin:string,dirname:string,commands:string,topicSeparator:':'} | Flags.boolean({char?,description,default?,required?}), Flags.string({char?,description,required?,multiple?,default?}), Flags.integer({char?,description,default?,required?}) | Command.parse<T>():Promise<{args,flags}>, Command.log(msg), Command.error(msg,{code,exit,ref,suggestions}) | Troubleshoot via OCLIF_DEBUG=1, verify oclif.commands path
-
-## Sanitised Extract
-Table of Contents
-
-1 Installation
-2 Project Generation
-3 Development & Production Execution
-4 Initialization in Existing Project
-5 Command Creation
-6 Hook Creation
-7 Configuration Options
-8 Flags Definition
-9 Arguments Definition
-
-1 Installation
-
-Install oclif CLI globally
-
-$ npm install --global oclif
-
-2 Project Generation
-
-$ oclif generate mynewcli
-Prompts:
-  module type  ESM or CommonJS
-  npm package name  mynewcli
-  command bin name  mynewcli
-
-3 Development & Production Execution
-
-Development mode:
-$ ./bin/dev.js hello world
-Production mode:
-$ ./bin/run.js hello world
-
-4 Initialization in Existing Project
-
-$ oclif init --output-dir=/path/to/project --bin=my-pkg --module-type=CommonJS --package-manager=npm --topic-separator=spaces --yes
-Creates:
-  bin/run.js, bin/run.cmd, bin/dev.js, bin/dev.cmd
-  package.json oclif section with fields:
-    bin: my-pkg
-    dirname: ./src/commands
-    commands: ./src/commands
-    topicSeparator: ' '
-  dependencies: @oclif/core
-  devDependencies: ts-node
-
-5 Command Creation
-
-$ oclif generate command foo:bar
-Creates src/commands/foo/bar.ts
-Class skeleton:
-import {Command, Flags} from '@oclif/core'
-export default class FooBar extends Command {
-  static description = '...'
-  static flags = { force: Flags.boolean({char: 'f', description: '...', default: false}) }
-  static args = [{name: 'input', required: true, description: '...'}]
-  async run(): Promise<void> { const {args, flags} = await this.parse(FooBar) }
-}
-
-6 Hook Creation
-
-$ oclif generate hook my-hook --event init
-Creates src/hooks/my-hook.ts
-
-7 Configuration Options
-
-package.json oclif section:
-  bin          string   CLI executable name
-  dirname      string   path to commands folder
-  commands     string   path or glob for commands
-  topicSeparator string ':' or ' '
-
-8 Flags Definition
-
-static flags = {
-  count: Flags.integer({char: 'c', description: '...', default: 1, required: true}),
-  name: Flags.string({char: 'n', description: '...', required: false}),
-}
-
-9 Arguments Definition
-
-static args = [ { name: 'file', description: '...', required: true } ]
-
-## Original Source
-CLI Frameworks
-https://oclif.io/docs/introduction
-
-## Digest of OCLIF_INTRO
-
-# Installation
-
-Install the oclif CLI globally:
-
-    $ npm install --global oclif
-
-# Create an oclif Project from Scratch
-
-Run the generator:
-
-    $ oclif generate mynewcli
-
-Prompts:
-  • Select module type           ESM or CommonJS
-  • npm package name             mynewcli
-  • Command bin name the CLI will export  mynewcli
-
-After generation:
-
-    $ cd mynewcli
-
-# Development and Production Scripts
-
-Use development script (with automatic reload):
-
-    $ ./bin/dev.js hello world
-    hello world!  (./src/commands/hello/world.ts)
-
-Use production script:
-
-    $ ./bin/run.js hello world
-    hello world!  (./src/commands/hello/world.ts)
-
-# Initialize oclif in an Existing Project
-
-Run init with optional flags:
-
-    $ oclif init --output-dir=/path/to/project \
-      --bin=my-pkg \
-      --module-type=CommonJS \
-      --package-manager=npm \
-      --topic-separator=spaces \
-      --yes
-
-Files and changes added:
-  • bin/run.js, bin/run.cmd, bin/dev.js, bin/dev.cmd
-  • package.json oclif section:
-      {
-        "bin": "my-pkg",
-        "dirname": "./src/commands",
-        "commands": "./src/commands",
-        "topicSeparator": " "
-      }
-  • @oclif/core added to dependencies
-  • ts-node added to devDependencies
-
-# Add Commands
-
-Generate a new command:
-
-    $ oclif generate command foo:bar
-
-Creates file:
-
-    src/commands/foo/bar.ts
-
-Skeleton:
-
-    import {Command, Flags} from '@oclif/core'
-
-    export default class FooBar extends Command {
-      static description = 'describe the command'
-
-      static flags = {
-        force: Flags.boolean({char: 'f', description: 'force operation', default: false}),
-      }
-
-      static args = [
-        {name: 'input', required: true, description: 'input file'}
-      ]
-
-      async run(): Promise<void> {
-        const {args, flags} = await this.parse(FooBar)
-        // implementation
-      }
-    }
-
-# Add Hooks
-
-Generate a new hook:
-
-    $ oclif generate hook my-hook --event init
-
-Creates file:
-
-    src/hooks/my-hook.ts
-
-# Configuration Options
-
-In package.json under "oclif":
-  • bin: string            Command binary name
-  • dirname: string        Path to commands directory
-  • commands: string       Glob or directory for command files
-  • topicSeparator: string ":" or " "
-
-# Flags and Arguments
-
-Flag definition:
-
-    static flags = {
-      count: Flags.integer({char: 'c', description: 'number of items', default: 1, required: true}),
-      name: Flags.string({char: 'n', description: 'user name', required: false}),
-    }
-
-Argument definition:
-
-    static args = [
-      {name: 'file', description: 'file to process', required: true}
-    ]
-
-
-## Attribution
-- Source: CLI Frameworks
-- URL: https://oclif.io/docs/introduction
-- License: MIT License
-- Crawl Date: 2025-05-03T04:50:47.140Z
-- Data Size: 5079924 bytes
-- Links Found: 4226
-
-## Retrieved
-2025-05-03
-library/GRAPHQLJS.md
-# library/GRAPHQLJS.md
-# GRAPHQLJS
-
-## Crawl Summary
-Installation via npm or yarn; import core types and functions from 'graphql'; GraphQLSchema requires a config object with query, mutation, subscription fields; GraphQLObjectType needs name and fields definitions with type and resolve functions; graphql() accepts an args object {schema, source, rootValue?, contextValue?, variableValues?, operationName?, fieldResolver?, typeResolver?} and returns Promise<ExecutionResult>; set NODE_ENV=production for performance; install bleeding-edge via git URL; enable experimental @defer and @stream via package.json; use .mjs builds for browser bundling.
-
-## Normalised Extract
-Table of Contents:
-1. Installation
-2. Schema Construction
-3. Query Execution
-4. Environment Configuration
-5. Bleeding Edge Usage
-6. Enabling Experimental Features
-7. Browser Bundling
-
-Installation
- npm install --save graphql
- yarn add graphql
-
-Schema Construction
- import { graphql, GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql'
- new GraphQLSchema({
-   query: new GraphQLObjectType({
-     name: 'RootQueryType',
-     fields: {
-       hello: { type: GraphQLString, resolve: () => 'world' }
-     }
-   })
- })
-
-Query Execution
- graphql({
-   schema: GraphQLSchema,
-   source: string_QUERY,
-   rootValue?: any,
-   contextValue?: any,
-   variableValues?: { [key: string]: any },
-   operationName?: string,
-   fieldResolver?: Function,
-   typeResolver?: Function
- }).then((result) => console.log(result))
-
-Environment Configuration
- export NODE_ENV=production    # disables type assertion and deprecation warnings
-
-Bleeding Edge Usage
- npm install graphql@git://github.com/graphql/graphql-js.git#npm
-
-Enabling Experimental Features
- In package.json:
- "dependencies": { "graphql": "experimental-stream-defer" }
-
-Browser Bundling
- Ensure webpack/rollup resolves .mjs extensions; import { graphql } from 'graphql'; only modules used are included
-
-## Supplementary Details
-Supported Node.js versions: >=10.13.0. GraphQL.js build outputs: dist/index.js (CommonJS), dist/index.mjs (ESModule). GraphQLSchemaConfig: { query?: GraphQLObjectType, mutation?: GraphQLObjectType, subscription?: GraphQLObjectType, types?: GraphQLType[] }. FieldMapDefinition: key: GraphQLFieldConfig with properties: type: GraphQLOutputType, args?: GraphQLFieldConfigArgumentMap, resolve?: GraphQLFieldResolver, subscribe?: GraphQLFieldResolver, description?: string, deprecationReason?: string. graphql function full signature: graphql(args: ExecutionArgs): Promise<ExecutionResult>. Default fieldResolver uses property access. To override, pass fieldResolver. To enable @defer/@stream directives, install experimental-stream-defer. Bundler configs: webpack 5 resolve.extensions: ['.mjs','.js','.json']
-
-## Reference Details
-API Specifications:
-
-`graphql(args: { schema: GraphQLSchema; source: string; rootValue?: any; contextValue?: any; variableValues?: { [key: string]: any }; operationName?: string; fieldResolver?: Function; typeResolver?: Function }): Promise<ExecutionResult>`
-ExecutionResult: { data?: any; errors?: GraphQLError[] }
-
-`new GraphQLSchema(config: { query?: GraphQLObjectType; mutation?: GraphQLObjectType; subscription?: GraphQLObjectType; types?: GraphQLType[] })`
-
-`new GraphQLObjectType(config: { name: string; description?: string; fields: () => GraphQLFieldConfigMap<any,any>; interfaces?: () => GraphQLInterfaceType[] })`
-
-Configuration Options:
- NODE_ENV: 'development' (default), 'production' (disable type checks, improve perf)
- Dependencies entry for experimental features: "graphql": "experimental-stream-defer"
-
-Best Practices:
- set NODE_ENV=production in production
- separate schema definitions and resolver implementations
- use fieldResolver override for custom resolution logic
- remove unused parts via ESModule builds
-
-Implementation Patterns:
-1. Define types and fields in GraphQLObjectType
-2. Compose schema via GraphQLSchema
-3. Call graphql() with full ExecutionArgs
-4. Handle result.data and result.errors
-
-Troubleshooting:
-Error: Cannot query field X on Y
- Command:
- var source = '{ X }';
- graphql({ schema, source }).then(result => console.log(result.errors));
- Expected error entry: { message: 'Cannot query field X on Y', locations: [{ line:1,column:3 }] }
- Fix: add field X to Y's fields map
-
- bundler missing .mjs resolution:
- Error: Module not found: Error: Can't resolve 'graphql'
- Fix: configure resolve.extensions to include '.mjs'
-
-
-## Information Dense Extract
-npm install graphql   import { graphql,GraphQLSchema,GraphQLObjectType,GraphQLString } from 'graphql'   schema= new GraphQLSchema({query:new GraphQLObjectType({name:'RootQueryType',fields:{hello:{type:GraphQLString,resolve:()=> 'world'}}})})   graphql({schema,source:'{hello}'}).then(res=>res.data)   graphql(args:ExecutionArgs):Promise<ExecutionResult>   set NODE_ENV=production   enable @defer/@stream via "experimental-stream-defer"   bundle .mjs for tree-shaking
-
-## Sanitised Extract
-Table of Contents:
-1. Installation
-2. Schema Construction
-3. Query Execution
-4. Environment Configuration
-5. Bleeding Edge Usage
-6. Enabling Experimental Features
-7. Browser Bundling
-
-Installation
- npm install --save graphql
- yarn add graphql
-
-Schema Construction
- import { graphql, GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql'
- new GraphQLSchema({
-   query: new GraphQLObjectType({
-     name: 'RootQueryType',
-     fields: {
-       hello: { type: GraphQLString, resolve: () => 'world' }
-     }
-   })
- })
-
-Query Execution
- graphql({
-   schema: GraphQLSchema,
-   source: string_QUERY,
-   rootValue?: any,
-   contextValue?: any,
-   variableValues?: { [key: string]: any },
-   operationName?: string,
-   fieldResolver?: Function,
-   typeResolver?: Function
- }).then((result) => console.log(result))
-
-Environment Configuration
- export NODE_ENV=production    # disables type assertion and deprecation warnings
-
-Bleeding Edge Usage
- npm install graphql@git://github.com/graphql/graphql-js.git#npm
-
-Enabling Experimental Features
- In package.json:
- 'dependencies': { 'graphql': 'experimental-stream-defer' }
-
-Browser Bundling
- Ensure webpack/rollup resolves .mjs extensions; import { graphql } from 'graphql'; only modules used are included
-
-## Original Source
-GraphQL.js Reference Implementation
-https://github.com/graphql/graphql-js#readme
-
-## Digest of GRAPHQLJS
-
-# GraphQL.js Reference Implementation
-
-# Installation
-
-npm install --save graphql
-
-yarn add graphql
-
-# Schema Construction
-
-import { graphql, GraphQLSchema, GraphQLObjectType, GraphQLString } from 'graphql';
-
-var schema = new GraphQLSchema({
-  query: new GraphQLObjectType({
-    name: 'RootQueryType',
-    fields: {
-      hello: {
-        type: GraphQLString,
-        resolve() {
-          return 'world';
-        }
-      }
-    }
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
+
+const parser = yargs(hideBin(process.argv))
+  .scriptName('app')
+  .usage('$0 <cmd> [options]')
+  .option('verbose', { alias:'v', type:'boolean', default:false, describe:'enable verbose logging'})
+  .command('start <port>', 'start server', yargs=>yargs.positional('port',{type:'number',describe:'port to listen on'}), argv=>{
+    if(argv.verbose) console.log('Starting on port',argv.port)
   })
-});
+  .strict()
+  .help()
+  .alias('help','h')
+  .version('1.0.0','version')
+  .alias('version','V')
+  .parse()
 
-# Query Execution
-
-var source = '{ hello }';
-
-graphql({ schema, source }).then((result) => {
-  console.log(result);
-});
-
-# Environment Configuration
-
-Set NODE_ENV=production to disable development-only checks and improve execution performance.
-
-# Bleeding Edge
-
-npm install graphql@git://github.com/graphql/graphql-js.git#npm
-
-# Experimental Features
-
-In your package.json dependencies section:
-
-"graphql": "experimental-stream-defer"
-
-# Browser Usage
-
-GraphQL.js is distributed with both CommonJS and ESModule (.mjs) builds. Configure webpack or rollup to resolve .mjs files to include only used modules.
-
-## Attribution
-- Source: GraphQL.js Reference Implementation
-- URL: https://github.com/graphql/graphql-js#readme
-- License: MIT License
-- Crawl Date: 2025-05-03T16:50:28.915Z
-- Data Size: 654601 bytes
-- Links Found: 5605
-
-## Retrieved
-2025-05-03
-library/COMMITIZEN.md
-# library/COMMITIZEN.md
-# COMMITIZEN
-
-## Crawl Summary
-Install commitizen globally or locally, init adapters via npx commitizen init <adapter> --save-dev --save-exact. Configure adapter path in package.json config.commitizen.path or .czrc/.czrc.js. Use git cz or npm run commit. Customize adapters (e.g., cz-customizable) via cz.config.js defining types, scopes, limits. Programmatic API exposed as run(args[], {cwd, config}). Troubleshoot PATH, config syntax, adapter resolution errors.
-
-## Normalised Extract
-Table of Contents:
-1 Installation
-2 Initialization
-3 Configuration
-4 Adapter Customization
-5 CLI Usage
-6 Programmatic API
-7 Troubleshooting
-
-1 Installation
- Global: npm install -g commitizen@4.4.4
- Local: npm install --save-dev commitizen@4.4.4
-
-2 Initialization
- Command: npx commitizen init <adapter> --save-dev --save-exact
- Effects:
-  add devDependency <adapter>@latest
-  package.json: config.commitizen.path = "./node_modules/<adapter>"
-
-3 Configuration
- package.json:
-  "config": { "commitizen": { "path": "./node_modules/<adapter>" } }
- .czrc (JSON): { "path": "node_modules/<adapter>" }
- .czrc.js (Module.exports) supports additional fields maxHeaderWidth, maxLineWidth
- Priority: project .czrc > package.json > user .czrc
-
-4 Adapter Customization (cz-customizable)
- File: cz.config.js
-  fields:
-    types: array of {value:string, name:string}
-    scopes: string[]
-    allowCustomScopes: boolean
-    allowBreakingChanges: string[]
-    subjectLimit: number
-    skipQuestions: string[]
-
-5 CLI Usage
- Commands:
-  git cz
-  npx git-cz
-  npm run commit (requires script "commit": "git-cz")
- Flags:
-  --verbose : debug output
-  --config <path> : override adapter path or config file
-
-6 Programmatic API
- Signature:
-  run(args: string[], options?: { cwd?: string; config?: string|object; }): Promise<void>
- Example:
-  const { run } = require('commitizen');
-  run(['--config', './cz.config.js'], { cwd: process.cwd() });
-
-7 Troubleshooting
-  Ensure node_modules/.bin in PATH or global install
-  Validate JSON/JS syntax in config files
-  Verify adapter installation and correct path in config
-
-## Supplementary Details
-Installation versions: commitizen@4.4.4, cz-conventional-changelog@4.3.0, cz-customizable@6.3.0. Adapter init flags: --save-dev adds to devDependencies, --save-exact pins exact version. Config file resolution order: project .czrc -> package.json config.commitizen.path -> user ~/.czrc. Default CLI exit codes: 0 success, 1 invalid config, 2 adapter load error. Adapter config defaults: maxHeaderWidth=100, maxLineWidth=100, allowCustomScopes=false, allowBreakingChanges=[]. Config file names supported: .czrc, .czrc.js, cz.config.js. Package.json key: config.commitizen.path. git-cz shim name resolution: lookup package.json script "commit" alias.
-
-## Reference Details
-API: run(args: string[], options?: { cwd?: string; config?: string|object; }): Promise<void>
-Parameters:
- args: array of CLI arguments: --config, --verbose, adapter-specific flags
- options.cwd: working directory path string
- options.config: path to adapter config file or object with adapter settings
-Return: Promise resolves on successful commit, rejects with Error containing code, message, stack
-
-CLI:
- Global: commitizen
- Local: npx commitizen
- Alias: git-cz
- Commands:
-  init <adapter> [--save-dev] [--save-exact]
-    adapter: name or module path
-  run [--config <path>] [--verbose]
-
-package.json config:
-  "config": { "commitizen": { "path": string } }
-
-Adapter config (cz-config.js): module.exports = { types: {value:string,name:string}[], scopes:string[], allowCustomScopes:boolean, allowBreakingChanges:string[], subjectLimit:number, skipQuestions:string[], breaklineChar:string }
-
-Example .czrc.js:
-module.exports = {
-  path: "node_modules/cz-customizable",
-  maxHeaderWidth: 72,
-  maxLineWidth: 100
-};
+package.json exports:
+"exports":{
+  "import":"./esm/index.js",
+  "require":"./cjs/index.js"
+}
 
 Best Practices:
-• Lock adapter versions with --save-exact
-• Define subjectLimit<=50
-• Allow breaking changes only for feat and fix
-• Skip body/footer prompts if not needed
+  - Use hideBin to clean argv
+  - Validate unknown via strict
+  - Chain commands/options before parse
+  - Group related options
 
-Troubleshooting Commands:
-$ git cz --verbose
-Expected: prompts appear, commit message printed to stdout
+Troubleshooting:
+Command: node app.js --unk
+Expected: Error 'Unknown argument: unk'
+With showHelpOnFail: shows help usage and error
 
-$ npx commitizen init nonexistent-adapter
-Expected: Error: Adapter "nonexistent-adapter" not found
-
-Check:
-$ node -e "console.log(require('commitizen/package.json').version)"
-Expected: 4.4.4
 
 ## Information Dense Extract
-commitizen@4.4.4 install via npm global/local; init adapters: npx commitizen init <adapter> --save-dev --save-exact => config.commitizen.path=./node_modules/<adapter>; config resolution: project .czrc > package.json> user .czrc; .czrc.js supports path, maxHeaderWidth=100, maxLineWidth=100; cz-customizable cz.config.js fields types[{value,name}],scopes[],allowCustomScopes=false,allowBreakingChanges[],subjectLimit=50,skipQuestions[]; CLI: git cz|npx git-cz (script "commit":"git-cz"); flags: --config<path>,--verbose; API: run(args:string[],options?{cwd?:string,config?:string|object}):Promise<void>; exit codes:0 success,1 invalid config,2 load error; key config.commitizen.path; troubleshooting: ensure node_modules/.bin in PATH, valid JSON/JS, adapter installed.
+install npm install --save yargs; import yargs from 'yargs'; import {hideBin} from 'yargs/helpers'; yargs(hideBin(process.argv)).scriptName(name).usage(pattern).option(key,{alias,type,default,describe,requiresArg,choices,coerce}).positional(name,{type,default,describe}).command(cmd,desc,builder,handler).demandCommand(n).strict().strictCommands().strictOptions().exitProcess(false).showHelpOnFail(true).help().alias(key,alias).version(version,key).parse(); API Argv: scriptName(string)->this; usage(string)->this; command(string|string[],string,(Argv)->Argv,(T)->void)->this; option(string,OptionDef)->this; positional(string,PositionalDef)->this; demandCommand(number,number?)->this; strict()->this; strictCommands()->this; strictOptions()->this; exitProcess(boolean)->this; showHelpOnFail(boolean,function?)->this; help(string?)->this; alias(string,string|string[])->this; version(string,string?)->this; parse(string[]?)->T; helper hideBin(argv:string[]):string[]; OptionDef: alias?:string|string[]; type:'string'|'number'|'boolean'; default?:string|number|boolean; describe:string; requiresArg?:boolean; choices?:Array<string|number>; coerce?:(any)->any; PositionalDef: type:'string'|'number'|'boolean'; default?:string|number|boolean; describe:string; distribution: TS->ESM compile, Rollup->CJS, conditional exports in package.json; Deno import from deno.land; v16: removed deep requires, removed rebase(), dropped Node 8 support.
 
 ## Sanitised Extract
-Table of Contents:
-1 Installation
-2 Initialization
-3 Configuration
-4 Adapter Customization
-5 CLI Usage
-6 Programmatic API
-7 Troubleshooting
+Table of Contents
+1 Initialization and Parsing
+2 Command Definition
+3 Option Definition
+4 Global Configuration
+5 Helpers
+6 Distribution Patterns
 
-1 Installation
- Global: npm install -g commitizen@4.4.4
- Local: npm install --save-dev commitizen@4.4.4
+1 Initialization and Parsing
+Import ESM: import yargs from 'yargs'; import { hideBin } from 'yargs/helpers'
+Usage: yargs(hideBin(process.argv)).scriptName(scriptName).usage(usagePattern).help().parse()
 
-2 Initialization
- Command: npx commitizen init <adapter> --save-dev --save-exact
- Effects:
-  add devDependency <adapter>@latest
-  package.json: config.commitizen.path = './node_modules/<adapter>'
+2 Command Definition
+.command(name:string, description:string, builder:(yargs)->yargs, handler:(argv)->void)
+.demandCommand(min:number, max?:number)
 
-3 Configuration
- package.json:
-  'config': { 'commitizen': { 'path': './node_modules/<adapter>' } }
- .czrc (JSON): { 'path': 'node_modules/<adapter>' }
- .czrc.js (Module.exports) supports additional fields maxHeaderWidth, maxLineWidth
- Priority: project .czrc > package.json > user .czrc
+3 Option Definition
+.option(key:string, {
+  alias?:string|string[]
+  type:'string'|'number'|'boolean'
+  default?:string|number|boolean
+  describe:string
+  requiresArg?:boolean
+  choices?:Array<string|number>
+  coerce?:(value)->any
+})
+.positional(name:string, {
+  type:'string'|'number'|'boolean'
+  default?:string|number|boolean
+  describe:string
+})
 
-4 Adapter Customization (cz-customizable)
- File: cz.config.js
-  fields:
-    types: array of {value:string, name:string}
-    scopes: string[]
-    allowCustomScopes: boolean
-    allowBreakingChanges: string[]
-    subjectLimit: number
-    skipQuestions: string[]
+4 Global Configuration
+.strict()
+.strictCommands()
+.strictOptions()
+.exitProcess(enabled:boolean)
+.showHelpOnFail(enabled:boolean, formatter?)
 
-5 CLI Usage
- Commands:
-  git cz
-  npx git-cz
-  npm run commit (requires script 'commit': 'git-cz')
- Flags:
-  --verbose : debug output
-  --config <path> : override adapter path or config file
+5 Helpers
+hideBin(argv:string[]):string[]  removes node exec and script path
 
-6 Programmatic API
- Signature:
-  run(args: string[], options?: { cwd?: string; config?: string|object; }): Promise<void>
- Example:
-  const { run } = require('commitizen');
-  run(['--config', './cz.config.js'], { cwd: process.cwd() });
+6 Distribution Patterns
+ESM build from TypeScript
+Rollup for CommonJS bundle
+package.json exports:
+  import: './esm/index.js'
+  require: './cjs/index.js'
 
-7 Troubleshooting
-  Ensure node_modules/.bin in PATH or global install
-  Validate JSON/JS syntax in config files
-  Verify adapter installation and correct path in config
+Deno Import:
+import yargs from 'https://deno.land/x/yargs/deno.ts'
+import {Arguments,YargsType} from 'https://deno.land/x/yargs/types.ts'
+
+yargs().command('download <files...>', 'download', (yargs:YargsType)=>yargs.positional('files',{describe:'files'}),(argv:Arguments)=>console.info(argv)).strictCommands().demandCommand(1).parse(Deno.args)
 
 ## Original Source
-Commitizen & Conventional Commits
-https://github.com/conventional-changelog/commitizen#readme
+Yargs
+https://yargs.js.org/docs/
 
-## Digest of COMMITIZEN
+## Digest of YARGS_CORE
 
-# COMMITIZEN
-
-Content retrieved on 2024-06-04 from https://github.com/conventional-changelog/commitizen#readme
+# Yargs Core API Specifications and Implementation Patterns
 
 ## 1. Installation
 
-### 1.1 Global
-npm install -g commitizen@4.4.4
+### npm
 
-### 1.2 Local (Project)
-npm install --save-dev commitizen@4.4.4
+  Command: npm install --save yargs
+  Data Size Impact: +348 KB
 
-## 2. Initialization
+## 2. Initialization and Parsing
 
-### 2.1 Init with Adapter
-npx commitizen init cz-conventional-changelog --save-dev --save-exact
+### Import Patterns
 
-Effects:
-  • Adds devDependency cz-conventional-changelog@4.3.0
-  • Updates package.json with:
+  ESM:
+    import yargs from 'yargs'
+    import { hideBin } from 'yargs/helpers'
+
+  CommonJS:
+    const yargs = require('yargs')
+    const { hideBin } = require('yargs/helpers')
+
+### Basic Usage
+
+  yargs(hideBin(process.argv))
+    .scriptName(string scriptName)
+    .usage(string usagePattern)
+    .help() -> returns yargs instance
+    .parse([string[] argv]) -> returns Arguments
+
+## 3. Command Definition
+
+### .command(name, description, builder, handler)
+
+  Parameters:
+    name: string | string[] (e.g. 'hello [name]')
+    description: string
+    builder: function(yargs) -> yargs
+    handler: function(argv: Arguments) -> void
+
+### .demandCommand(min: number, max?: number) -> yargs instance
+
+  Ensures at least min commands provided; errors otherwise
+
+## 4. Option Definitions
+
+### .option(key, {
+    alias?: string | string[]
+    type: 'string' | 'number' | 'boolean'
+    default?: string | number | boolean
+    describe: string
+    requiresArg?: boolean
+    choices?: Array<string | number>
+    coerce?: function(value) -> any
+  }) -> yargs instance
+
+### .positional(name, {
+    type: 'string' | 'number' | 'boolean'
+    default?: string | number | boolean
+    describe: string
+  }) -> yargs instance
+
+## 5. Helpers Namespace
+
+### hideBin(argv: string[]) -> string[]
+  Strips Node executable and script path
+
+## 6. Global Configuration Options
+
+### .strict() -> yargs instance
+  Validates unknown commands and options
+
+### .strictCommands() -> yargs instance
+  Validates unknown commands
+
+### .strictOptions() -> yargs instance
+  Validates unknown options
+
+### .exitProcess([enabled: boolean]) -> yargs instance
+  Controls process.exit behavior
+
+### .showHelpOnFail([enabled: boolean], [messageFormatter]) -> yargs instance
+  Displays help on failure
+
+## 7. Help and Version
+
+### .help([key]: string)
+  Adds --help alias
+
+### .alias(key: string, alias: string | string[])
+  Creates aliases
+
+### .version([version], [key])
+  Adds --version alias
+
+## 8. Examples
+
+### Example: Basic Command
+
+#!/usr/bin/env node
+import yargs from 'yargs'
+import { hideBin } from 'yargs/helpers'
+
+yargs(hideBin(process.argv))
+  .scriptName("pirate-parser")
+  .usage('$0 <cmd> [args]')
+  .command(
+    'hello [name]',
+    'welcome ter yargs!',
+    yargs => yargs.positional('name', {type:'string', default:'Cambi', describe:'the name to say hello to'}),
+    argv => console.log('hello', argv.name, 'welcome to yargs!')
+  )
+  .help()
+  .parse()
+
+## 9. Implementation Patterns
+
+### Dual Mode Distribution
+
+  - TypeScript compile targeting ESM
+  - Rollup bundle for CommonJS
+  - Conditional exports field in package.json:
     {
-      "config": {
-        "commitizen": {
-          "path": "./node_modules/cz-conventional-changelog"
-        }
+      "exports": {
+        "import": "./esm/index.js",
+        "require": "./cjs/index.js"
       }
     }
-  • Installs git-cz CLI shim in node_modules/.bin/git-cz
 
-## 3. Configuration
+### Deno Experimental Support
 
-### 3.1 package.json
-In package.json:
-  "config": {
-    "commitizen": {
-      "path": "./node_modules/<adapter>"
-    }
-  }
+  import yargs from 'https://deno.land/x/yargs/deno.ts'
+  import { Arguments, YargsType } from 'https://deno.land/x/yargs/types.ts'
 
-### 3.2 .czrc (JSON)
-In project root or $HOME/.czrc:
-  {
-    "path": "node_modules/<adapter>"
-  }
+  yargs()
+    .command('download <files...>', 'download a list of files', (yargs: YargsType) => yargs.positional('files', {describe:'a list of files'}), (argv: Arguments) => console.info(argv))
+    .strictCommands()
+    .demandCommand(1)
+    .parse(Deno.args)
 
-### 3.3 .czrc.js (Module)
-module.exports = {
-  path: "node_modules/<adapter>",
-  maxHeaderWidth: 100,
-  maxLineWidth: 100
-};
+## 10. Breaking Changes in v16
 
-Resolution priority: 1) .czrc in project, 2) package.json config.commitizen, 3) $HOME/.czrc
+  - Removed deep requires; only exposed helpers
+  - Removed rebase() helper
+  - Dropped Node.js 8 support
 
-## 4. Adapter Customization (cz-customizable)
+---
 
-File: cz.config.js in project root:
-
-module.exports = {
-  types: [
-    { value: "feat", name: "feat:     A new feature" },
-    { value: "fix",  name: "fix:      A bug fix" },
-    { value: "docs", name: "docs:     Documentation only changes" },
-    { value: "style",name: "style:    Changes that do not affect the meaning of the code" }
-  ],
-  scopes: ["core", "cli", "api", "infra"],
-  allowCustomScopes: true,
-  allowBreakingChanges: ["feat", "fix"],
-  subjectLimit: 50,
-  skipQuestions: ["body", "footer"]
-};
-
-## 5. Usage
-
-### 5.1 CLI Commands
-• git cz  
-• npx git-cz  
-• npm run commit (script: "commit": "git-cz")
-
-### 5.2 Flags
---verbose       Enable debug logging
---config <path> Override adapter path or config file
-
-## 6. Programmatic API
-
-Import and run within Node.js scripts:
-
-```js
-const { run } = require("commitizen");
-
-run(["--config", "./cz.config.js"], { cwd: process.cwd() })
-  .then(() => console.log("Commit complete"))
-  .catch(err => console.error(err));
-```
-
-Signature:
-  run(args: string[], options?: {
-    cwd?: string;
-    config?: string | object;
-  }): Promise<void>
-
-## 7. Troubleshooting
-
-### 7.1 Command Not Found
-Ensure node_modules/.bin is in PATH or install commitizen globally.
-
-### 7.2 Bad Configuration
-Error: Unexpected token in JSON.  
-Check .czrc or cz.config.js syntax.
-
-### 7.3 Adapter Load Fail
-Error: Cannot find module <adapter>.  
-Verify adapter installed and config.path correct.
-
-Attribution: Conventional Changelog Commitizen README
-Data Size: 2.5 KB
+Date Retrieved: 2023-09-14
+Attribution: yargs.js.org/docs/ (Data Size: 348060 bytes)
 
 ## Attribution
-- Source: Commitizen & Conventional Commits
-- URL: https://github.com/conventional-changelog/commitizen#readme
+- Source: Yargs
+- URL: https://yargs.js.org/docs/
 - License: MIT License
-- Crawl Date: 2025-05-03T00:30:52.200Z
-- Data Size: 0 bytes
-- Links Found: 0
+- Crawl Date: 2025-05-04T04:50:19.976Z
+- Data Size: 348060 bytes
+- Links Found: 34
 
 ## Retrieved
-2025-05-03
+2025-05-04
+library/VITEST_SETUP.md
+# library/VITEST_SETUP.md
+# VITEST_SETUP
+
+## Crawl Summary
+Install: npm install -D vitest, requires Vite>=5.0.0 & Node>=18.0.0. Tests: files must end in .test. or .spec., import {test, expect}, add scripts. Config: use Vite config or standalone vitest.config.ts with defineConfig({test: {}}); CLI: vitest run, vitest --config, options --port, --https; Workspaces: workspace array. Env var VITEST_SKIP_INSTALL_CHECKS. IDE: VSCode extension.
+
+## Normalised Extract
+Table of Contents:
+1. Installation
+2. Writing Tests
+3. Scripts
+4. Configuration
+   4.1 Unified Vite
+   4.2 Standalone
+   4.3 CLI Override
+   4.4 Merging Configs
+5. Workspaces
+6. CLI Usage
+7. Environment Variables
+8. IDE Integration
+
+1. Installation
+- npm install -D vitest
+- yarn add -D vitest
+- pnpm add -D vitest
+- bun add -D vitest
+
+2. Writing Tests
+sum.js
+ export function sum(a: number, b: number): number { return a + b }
+
+sum.test.js
+ import { test, expect } from 'vitest'
+ import { sum } from './sum.js'
+ test('adds 1 + 2 to equal 3', () => { expect(sum(1, 2)).toBe(3) })
+
+3. Scripts
+package.json
+  "scripts": { "test": "vitest", "coverage": "vitest run --coverage" }
+
+4. Configuration
+4.1 Unified Vite
+ vite.config.ts
+  import { defineConfig } from 'vite'
+  export default defineConfig({ resolve: {...}, plugins: [...], test: { include: ['**/*.test.ts'], environment: 'node', globals: true } })
+
+4.2 Standalone
+ vitest.config.ts
+  import { defineConfig } from 'vitest/config'
+  export default defineConfig({ test: { include: ['tests/**/*.spec.ts'], environment: 'happy-dom', setupFiles: ['./setup.ts'], coverage: { reporter: ['text', 'lcov'], include: ['src/**/*.ts'], exclude: ['**/*.d.ts'] } } })
+
+4.3 CLI Override
+ vitest --config ./path/to/vitest.config.ts --port 5123 --https
+
+4.4 Merging Configs
+ mergeConfig(viteConfig, defineConfig({ test: { threads: false, reporters: ['dot', 'json'], threads: true } }))
+
+5. Workspaces
+vitest.config.ts
+ test.workspace: [ 'packages/*', 'tests/*/vitest.config.{e2e,unit}.ts', { test: { name: 'node', root: './shared_tests', environment: 'node', setupFiles: ['./setup.node.ts'] } } ]
+
+6. CLI Usage
+ - vitest            # watch
+ - vitest run        # one-time
+ - vitest run --coverage
+ - vitest --help     # list options (e.g. --dir, --maxThreads, --duration)
+
+7. Environment Variables
+ VITEST_SKIP_INSTALL_CHECKS=1
+ VITEST_THREAD_COUNT=4
+
+8. IDE Integration
+ Visual Studio Code extension: 'Vitest Runner'
+
+
+## Supplementary Details
+Parameter List:
+- test.include: string[] default ['**/*.{test,spec}.{js,mjs,cjs,ts,jsx,tsx}']
+- test.exclude: string[] default ['node_modules']
+- test.environment: 'node'|'jsdom'|'happy-dom' default 'node'
+- test.globals: boolean default false
+- test.setupFiles: string[] default []
+- test.coverage.reporter: string[] default ['text']
+- test.coverage.exclude: string[] default []
+- test.threads: boolean|number default true (auto)
+
+Implementation Steps:
+1. Ensure Vite >=5 & Node >=18
+2. Install vitest
+3. Create config (optional)
+4. Write tests matching include
+5. Run vitest
+6. View coverage reports
+
+Best Practices:
+- Use globals:true to avoid imports of expect/test
+- Use .spec.ts for integration tests
+- Keep unit and e2e configs separate
+- Use coverage thresholds in config under test.threshold
+
+
+## Reference Details
+API: test(name: string, fn: () => void | Promise<void> | AsyncFunction, timeout?: number) => void
+ global functions: describe(name: string, fn: () => void)
+ expect(value: any).toBe(expected: any): void
+ expect(value).toEqual(expected: any): void
+ expect(value).toMatchInlineSnapshot(snapshot?: string): void
+ expect(value).toThrow(error?: string|RegExp|Function): void
+
+Vitest CLI Options:
+--config: string path
+--run: boolean
+--watch: boolean
+--port: number default 5113
+--https: boolean
+--dir: string test root default cwd
+--exclude: string[] default ['node_modules']
+
+Configuration Options (test property):
+- include: string[] (glob)
+- exclude: string[] (glob)
+- dir: string
+- threads: boolean|number
+- pool: boolean default false
+- environment: 'node'|'jsdom'|'happy-dom'
+- globals: boolean
+- reporters: string[] default ['default']
+- logHeapUsage: boolean default false
+- watch: boolean default true
+- coverage: { enabled: boolean, reporter: string[], reportsDirectory: string }
+
+Implementation Pattern:
+1. defineConfig from 'vitest/config'
+2. export default defineConfig({ test: { ... } })
+3. (optional) mergeConfig
+
+Troubleshooting:
+Command: vitest run --coverage
+Output: Error: Cannot find module 'happy-dom'
+Fix: npm install happy-dom
+
+Command: test files not found
+Check: test.include globs, file extensions
+
+Coverage missing
+Set coverage.enabled true and include patterns
+
+
+
+## Information Dense Extract
+install|-D vitest;npm,yarn,pnpm,bun;require Vite>=5,Node>=18;tests: .test/.spec;import{test,expect};script:test=vitest;config:test.include=['**/*.{test,spec}.{js,ts}'],test.environment=node|jsdom|happy-dom,test.globals,setupFiles,coverage.reporter,threads;use defineConfig in vitest/config;CLI:--config,run,watch,port,https,dir;workspaces: array of glob or config objects;env VITEST_SKIP_INSTALL_CHECKS;API:test(name,fn,timeout?),describe,expect.toBe,toEqual,toThrow;reconfigure via mergeConfig;troubleshoot missing deps or globs
+
+## Sanitised Extract
+Table of Contents:
+1. Installation
+2. Writing Tests
+3. Scripts
+4. Configuration
+   4.1 Unified Vite
+   4.2 Standalone
+   4.3 CLI Override
+   4.4 Merging Configs
+5. Workspaces
+6. CLI Usage
+7. Environment Variables
+8. IDE Integration
+
+1. Installation
+- npm install -D vitest
+- yarn add -D vitest
+- pnpm add -D vitest
+- bun add -D vitest
+
+2. Writing Tests
+sum.js
+ export function sum(a: number, b: number): number { return a + b }
+
+sum.test.js
+ import { test, expect } from 'vitest'
+ import { sum } from './sum.js'
+ test('adds 1 + 2 to equal 3', () => { expect(sum(1, 2)).toBe(3) })
+
+3. Scripts
+package.json
+  'scripts': { 'test': 'vitest', 'coverage': 'vitest run --coverage' }
+
+4. Configuration
+4.1 Unified Vite
+ vite.config.ts
+  import { defineConfig } from 'vite'
+  export default defineConfig({ resolve: {...}, plugins: [...], test: { include: ['**/*.test.ts'], environment: 'node', globals: true } })
+
+4.2 Standalone
+ vitest.config.ts
+  import { defineConfig } from 'vitest/config'
+  export default defineConfig({ test: { include: ['tests/**/*.spec.ts'], environment: 'happy-dom', setupFiles: ['./setup.ts'], coverage: { reporter: ['text', 'lcov'], include: ['src/**/*.ts'], exclude: ['**/*.d.ts'] } } })
+
+4.3 CLI Override
+ vitest --config ./path/to/vitest.config.ts --port 5123 --https
+
+4.4 Merging Configs
+ mergeConfig(viteConfig, defineConfig({ test: { threads: false, reporters: ['dot', 'json'], threads: true } }))
+
+5. Workspaces
+vitest.config.ts
+ test.workspace: [ 'packages/*', 'tests/*/vitest.config.{e2e,unit}.ts', { test: { name: 'node', root: './shared_tests', environment: 'node', setupFiles: ['./setup.node.ts'] } } ]
+
+6. CLI Usage
+ - vitest            # watch
+ - vitest run        # one-time
+ - vitest run --coverage
+ - vitest --help     # list options (e.g. --dir, --maxThreads, --duration)
+
+7. Environment Variables
+ VITEST_SKIP_INSTALL_CHECKS=1
+ VITEST_THREAD_COUNT=4
+
+8. IDE Integration
+ Visual Studio Code extension: 'Vitest Runner'
+
+## Original Source
+Vitest Documentation
+https://vitest.dev/guide/
+
+## Digest of VITEST_SETUP
+
+# Vitest Setup and Configuration
+
+## Adding Vitest to Your Project
+
+Install as dev dependency:
+
+- npm: npm install -D vitest
+- yarn: yarn add -D vitest
+- pnpm: pnpm add -D vitest
+- bun: bun add -D vitest
+
+Requirements:
+- Vite >=5.0.0
+- Node >=18.0.0
+
+## Writing Tests
+
+Create sum.js:
+```js
+export function sum(a, b) {
+  return a + b
+}
+```
+Create sum.test.js:
+```js
+import { test, expect } from 'vitest'
+import { sum } from './sum.js'
+
+test('adds 1 + 2 to equal 3', () => {
+  expect(sum(1, 2)).toBe(3)
+})
+```
+
+Add script to package.json:
+```json
+{
+  "scripts": {
+    "test": "vitest"
+  }
+}
+```
+
+Run tests:
+- npm run test
+- yarn test
+- pnpm test
+- bun run test (for bun)
+
+## Configuration
+
+Unified with Vite:
+- vitest reads root vite.config.ts
+- Use resolve.alias, plugins directly
+
+Override testing config:
+1. Create vitest.config.ts with defineConfig({ test: {} })
+2. Pass --config to CLI: vitest --config ./vitest.config.ts
+3. Use process.env.VITEST or defineConfig(mode)
+
+Supported config file extensions: .js .mjs .cjs .ts .cts .mts (no .json)
+
+Standalone config (no Vite):
+vitest.config.ts:
+```ts
+import { defineConfig } from 'vitest/config'
+export default defineConfig({
+  test: { /* options */ }
+})
+```
+
+Vite config integration:
+```ts
+/// <reference types="vitest/config" />
+import { defineConfig } from 'vite'
+export default defineConfig({
+  test: { /* options */ }
+})
+```
+
+Merge with existing Vite config:
+```js
+import { defineConfig, mergeConfig } from 'vitest/config'
+import viteConfig from './vite.config.mjs'
+export default mergeConfig(viteConfig, defineConfig({ test: { /* options */ } }))
+```
+
+## Workspaces Support
+
+vitest.config.ts:
+```ts
+import { defineConfig } from 'vitest/config'
+export default defineConfig({
+  test: {
+    workspace: [
+      'packages/*',
+      'tests/*/vitest.config.{e2e,unit}.ts',
+      { test: { name: 'happy-dom', root: './shared_tests', environment: 'happy-dom', setupFiles: ['./setup.happy-dom.ts'] } },
+      { test: { name: 'node', root: './shared_tests', environment: 'node', setupFiles: ['./setup.node.ts'] } }
+    ]
+  }
+})
+```
+
+## Command Line Interface
+
+Default npm scripts:
+```json
+{
+  "scripts": {
+    "test": "vitest",
+    "coverage": "vitest run --coverage"
+  }
+}
+```
+
+Run once without watch: vitest run
+Options: --port, --https, etc.
+
+## Environment Variables
+
+- VITEST_SKIP_INSTALL_CHECKS=1: disable automatic dependency prompts
+
+## IDE Integration
+
+VS Code extension: install from Marketplace
+
+Last Updated: 2023-10-03
+
+## Attribution
+- Source: Vitest Documentation
+- URL: https://vitest.dev/guide/
+- License: MIT License
+- Crawl Date: 2025-05-04T01:09:09.545Z
+- Data Size: 25819763 bytes
+- Links Found: 21879
+
+## Retrieved
+2025-05-04
+library/OPENAI_NODE_SDK.md
+# library/OPENAI_NODE_SDK.md
+# OPENAI_NODE_SDK
+
+## Crawl Summary
+Installation commands; client constructor options with defaults (apiKey, maxRetries, timeout, fetch, httpAgent, dangerouslyAllowBrowser, azureADTokenProvider, apiVersion); primary APIs: responses.create, chat.completions.create, files.create with exact params and return types; SSE streaming usage; file upload input types; error classes mapping HTTP codes; retry defaults on connection, 408,409,429,>=500; timeout default 600000ms; access request_id via property or withResponse; auto-pagination methods; WebSocket realtime API; AzureOpenAI usage; advanced usage asResponse, withResponse; custom HTTP verbs; fetch shims; logging middleware via fetch override or DEBUG; HTTP agent config; semantic versioning notes; supported runtimes.
+
+## Normalised Extract
+Table of Contents
+1 Installation
+2 Client Configuration
+3 Responses API
+4 Chat Completions API
+5 Streaming
+6 File Uploads
+7 Error Handling
+8 Retries
+9 Timeouts
+10 Request IDs
+11 Auto-pagination
+12 Realtime API Beta
+13 Azure OpenAI
+14 Advanced Usage
+15 Custom Requests
+16 Fetch Client Shim
+17 Logging and Middleware
+18 HTTP(S) Agent
+19 Semantic Versioning
+20 Requirements
+
+1 Installation
+npm install openai
+deno add jsr:@openai/openai
+npx jsr add @openai/openai
+
+2 Client Configuration
+Constructor: new OpenAI(options)
+options.apiKey?: string (default from env OPENAI_API_KEY)
+options.maxRetries?: number (default 2)
+options.timeout?: number ms (default 600000)
+options.fetch?: function(url, init) => Promise<Response)
+options.httpAgent?: Agent
+options.dangerouslyAllowBrowser?: boolean (default false)
+options.azureADTokenProvider?: BearerTokenProvider
+options.apiVersion?: string
+
+3 Responses API
+client.responses.create(
+  {model: string; instructions?: string; input?: string; stream?: boolean},
+  {maxRetries?: number; timeout?: number; httpAgent?: Agent}
+)
+Returns Promise<{output_text: string; _request_id: string}> or AsyncIterable<ServerSentEvent>
+
+4 Chat Completions API
+client.chat.completions.create(
+  {model: string; messages: {role: 'developer'|'user'|'assistant'; content: string}[]; stream?: boolean; temperature?: number; max_tokens?: number},
+  RequestOptions
+)
+Returns Promise<ChatCompletionResponse> or AsyncIterable<ServerSentEvent>
+
+5 Streaming
+Use stream: true. Example: const stream = await client.responses.create({model, input, stream:true}); for await (const ev of stream) console.log(ev);
+
+6 File Uploads
+client.files.create({file: fs.ReadStream|File|Response|toFile(buffer,filename); purpose: 'fine-tune'});
+Supports fs.createReadStream, File, fetch Response, toFile helper
+
+7 Error Handling
+Throws OpenAI.APIError subclasses
+Properties: request_id, status, name, headers
+Mapping: 400 BadRequestError, 401 AuthenticationError, 403 PermissionDeniedError, 404 NotFoundError, 422 UnprocessableEntityError, 429 RateLimitError, >=500 InternalServerError, network APIConnectionError
+
+8 Retries
+Default 2 retries for network errors, 408, 409, 429, >=500
+Override via maxRetries in client or per request
+
+9 Timeouts
+Default 600000 ms
+Throws APIConnectionTimeoutError
+Retries twice by default
+Override via timeout in client or per request
+
+10 Request IDs
+Access via response._request_id
+Or withResponse(): const {data, request_id} = await client.responses.create(params).withResponse();
+
+11 Auto-pagination
+List methods return Page<T>
+Use for await of client.fineTuning.jobs.list({limit}) or manual page.hasNextPage() and page.getNextPage()
+
+12 Realtime API Beta
+Use WebSocket:
+const rt = new OpenAIRealtimeWebSocket({model})
+rt.on('response.text.delta',(event)=>...)
+
+13 Azure OpenAI
+Use AzureOpenAI class:
+new AzureOpenAI({azureADTokenProvider, apiVersion})
+openai.chat.completions.create({model, messages})
+
+14 Advanced Usage
+.asResponse() returns raw Response
+.withResponse() returns {data, response}
+
+15 Custom Requests
+client.post('/path',{body,query});
+Allow undocumented params with @ts-expect-error
+
+16 Fetch Client Shim
+import 'openai/shims/web' for global fetch
+import 'openai/shims/node' for node-fetch polyfill
+
+17 Logging and Middleware
+Pass fetch override in client options to intercept
+Set DEBUG=true to auto log requests/responses
+
+18 HTTP(S) Agent
+Default connection pooling
+Override via httpAgent in client or per request
+
+19 Semantic Versioning
+Follows SemVer; minor may include static-type breaking changes
+
+20 Requirements
+TypeScript>=4.5; Node.js>=18; Deno>=1.28.0; Bun>=1.0; Cloudflare Workers; Vercel Edge; Jest>=28+node; Nitro>=2.6; Browser support via dangerouslyAllowBrowser
+
+## Supplementary Details
+ClientOptions defaults: maxRetries=2; timeout=600000ms; dangerouslyAllowBrowser=false. SSE Streaming: uses EventSource protocol under the hood; each chunk decoded to ServerSentEvent objects with fields data:string, event?:string, id?:string. File uploads: toFile(buffer,filename) returns {path: string; name: string; data: Buffer} accepted by files.create. RequestOptions fields: maxRetries, timeout (ms), httpAgent. ChatCompletionResponse: { id:string; object:'chat.completion'; created:number; model:string; choices:Array<{index:number; message:{role:string; content:string}; finish_reason:string}>; usage:{prompt_tokens:number; completion_tokens:number; total_tokens:number}}. Page<T>: { data:T[]; hasNextPage():boolean; getNextPage():Promise<Page<T>> }. OpenAIRealtimeWebSocket: methods: constructor(options:{ model:string; url?: string }); on(event:'response.text.delta', callback:(event:{delta:string})=>void); on(event:'response.audio.delta', callback:(event:{delta:ArrayBuffer})=>void); close():void. AzureOpenAI differences: endpoints prefix with /openai/deployments/{model}/...; param names same. Raw response access: .asResponse(): Promise<Response>; .withResponse(): Promise<{data:any; response:Response}>. Custom HTTP verbs: client.get<T>(path:string, options:{query?:any; headers?:any}): Promise<T>.
+
+## Reference Details
+// Client class
+interface OpenAIOptions {
+  apiKey?: string;
+  maxRetries?: number;
+  timeout?: number;
+  fetch?: (url: RequestInfo, init?: RequestInit) => Promise<Response>;
+  httpAgent?: Agent;
+  dangerouslyAllowBrowser?: boolean;
+  azureADTokenProvider?: BearerTokenProvider;
+  apiVersion?: string;
+}
+class OpenAI {
+  constructor(options?: OpenAIOptions);
+  responses: {
+    create(
+      params: {
+        model: string;
+        instructions?: string;
+        input?: string;
+        stream?: boolean;
+      },
+      options?: { maxRetries?: number; timeout?: number; httpAgent?: Agent }
+    ): Promise<{ output_text: string; _request_id: string }> | AsyncIterable<ServerSentEvent>;
+  }
+  chat: {
+    completions: {
+      create(
+        params: {
+          model: string;
+          messages: { role: 'developer'|'user'|'assistant'; content: string }[];
+          stream?: boolean;
+          temperature?: number;
+          max_tokens?: number;
+        },
+        options?: { maxRetries?: number; timeout?: number; httpAgent?: Agent }
+      ): Promise<ChatCompletionResponse> | AsyncIterable<ServerSentEvent>;
+    }
+  }
+  files: {
+    create(
+      params: {
+        file: File|fs.ReadStream|Response|{ toFile: Function }|Buffer|Uint8Array;
+        purpose: 'fine-tune'|'search'|'answers';
+      },
+      options?: { maxRetries?: number; timeout?: number; httpAgent?: Agent }
+    ): Promise<{ id: string; object: string; bytes: number; created_at: number; filename: string; purpose: string; _request_id: string }>;
+  }
+  post<T>(path: string, options: { body?: any; query?: any; headers?: any }): Promise<T>;
+}
+
+// Error classes
+namespace OpenAI {
+  class APIError extends Error {
+    request_id: string;
+    status: number;
+    name: string;
+    headers: Record<string,string>;
+  }
+  class BadRequestError extends APIError {}
+  class AuthenticationError extends APIError {}
+  class PermissionDeniedError extends APIError {}
+  class NotFoundError extends APIError {}
+  class UnprocessableEntityError extends APIError {}
+  class RateLimitError extends APIError {}
+  class InternalServerError extends APIError {}
+  class APIConnectionError extends Error {}
+  class APIConnectionTimeoutError extends APIConnectionError {}
+}
+
+// Usage examples
+toFile(buffer: Buffer|Uint8Array, filename: string): Promise<{blob: Blob; name: string}>;
+
+const client = new OpenAI({ apiKey: process.env.OPENAI_API_KEY, maxRetries: 5, timeout: 20000, httpAgent: new HttpsProxyAgent(URL) });
+
+// Text generation
+const response = await client.responses.create({ model: 'gpt-4o', instructions: 'Pirate', input: 'Semicolons?' });
+console.log(response.output_text);
+
+// Chat completion
+const completion = await client.chat.completions.create({ model: 'gpt-4o', messages: [{role:'user',content:'Hello'}], temperature:0.7, max_tokens:100 });
+console.log(completion.choices[0].message.content);
+
+// Streaming
+for await (const ev of await client.chat.completions.create({ model: 'gpt-4o', messages, stream: true })) { console.log(ev.data); }
+
+// File upload
+await client.files.create({ file: fs.createReadStream('file.jsonl'), purpose: 'fine-tune' });
+
+// Error handling
+try { await client.chat.completions.create({ model:'invalid', messages }); } catch (err) { if (err instanceof OpenAI.AuthenticationError) handleAuth(); }
+
+// WebSocket realtime
+const rt = new OpenAIRealtimeWebSocket({ model: 'gpt-4o-realtime-preview' });
+rt.on('response.text.delta', e => process.stdout.write(e.delta));
+
+// Troubleshooting
+# Enable debug logs
+DEBUG=true node script.js
+# Inspect request ID
+console.log(response._request_id);
+# Capture raw response
+const raw = await client.responses.create({ model, input }).asResponse();
+console.log(raw.status, raw.headers.get('content-type'));
+
+## Information Dense Extract
+apiKey=env;maxRetries=2;timeout=600000;fetchOverride;httpAgent;dangerouslyAllowBrowser=false;azureADToken;apiVersion. responses.create(params{model:string;instructions?;input?;stream?},opts{maxRetries?;timeout?;httpAgent?})->Promise<{output_text;_request_id}>|AsyncIterable<SSE>. chat.completions.create(params{model;messages[];stream?;temperature?;max_tokens?},opts?)->Promise<ChatResp>|AsyncIterable<SSE>. files.create(params{file:fs.ReadStream|File|Response|toFile;purpose},opts?)->Promise<FileObj>. stream: for await ev of create({stream:true}). Error classes map HTTP codes. Retries on network,408,409,429,>=500;override maxRetries. Timeout default600000ms;throws APIConnectionTimeoutError;retry2. RequestID: resp._request_id or .withResponse(). Pagination: for await page of client.jobs.list or manual page.getNextPage(). Realtime: new OpenAIRealtimeWebSocket({model}).on('response.text.delta',cb). AzureOpenAI: new AzureOpenAI({azureADTokenProvider,apiVersion}). Advanced: .asResponse(), .withResponse(). Custom: client.get/post(path,{body,query}). Shim: import openai/shims/web/node. Logging: fetch override or DEBUG env. HTTP Agent: default pooled; override via httpAgent.
+
+## Sanitised Extract
+Table of Contents
+1 Installation
+2 Client Configuration
+3 Responses API
+4 Chat Completions API
+5 Streaming
+6 File Uploads
+7 Error Handling
+8 Retries
+9 Timeouts
+10 Request IDs
+11 Auto-pagination
+12 Realtime API Beta
+13 Azure OpenAI
+14 Advanced Usage
+15 Custom Requests
+16 Fetch Client Shim
+17 Logging and Middleware
+18 HTTP(S) Agent
+19 Semantic Versioning
+20 Requirements
+
+1 Installation
+npm install openai
+deno add jsr:@openai/openai
+npx jsr add @openai/openai
+
+2 Client Configuration
+Constructor: new OpenAI(options)
+options.apiKey?: string (default from env OPENAI_API_KEY)
+options.maxRetries?: number (default 2)
+options.timeout?: number ms (default 600000)
+options.fetch?: function(url, init) => Promise<Response)
+options.httpAgent?: Agent
+options.dangerouslyAllowBrowser?: boolean (default false)
+options.azureADTokenProvider?: BearerTokenProvider
+options.apiVersion?: string
+
+3 Responses API
+client.responses.create(
+  {model: string; instructions?: string; input?: string; stream?: boolean},
+  {maxRetries?: number; timeout?: number; httpAgent?: Agent}
+)
+Returns Promise<{output_text: string; _request_id: string}> or AsyncIterable<ServerSentEvent>
+
+4 Chat Completions API
+client.chat.completions.create(
+  {model: string; messages: {role: 'developer'|'user'|'assistant'; content: string}[]; stream?: boolean; temperature?: number; max_tokens?: number},
+  RequestOptions
+)
+Returns Promise<ChatCompletionResponse> or AsyncIterable<ServerSentEvent>
+
+5 Streaming
+Use stream: true. Example: const stream = await client.responses.create({model, input, stream:true}); for await (const ev of stream) console.log(ev);
+
+6 File Uploads
+client.files.create({file: fs.ReadStream|File|Response|toFile(buffer,filename); purpose: 'fine-tune'});
+Supports fs.createReadStream, File, fetch Response, toFile helper
+
+7 Error Handling
+Throws OpenAI.APIError subclasses
+Properties: request_id, status, name, headers
+Mapping: 400 BadRequestError, 401 AuthenticationError, 403 PermissionDeniedError, 404 NotFoundError, 422 UnprocessableEntityError, 429 RateLimitError, >=500 InternalServerError, network APIConnectionError
+
+8 Retries
+Default 2 retries for network errors, 408, 409, 429, >=500
+Override via maxRetries in client or per request
+
+9 Timeouts
+Default 600000 ms
+Throws APIConnectionTimeoutError
+Retries twice by default
+Override via timeout in client or per request
+
+10 Request IDs
+Access via response._request_id
+Or withResponse(): const {data, request_id} = await client.responses.create(params).withResponse();
+
+11 Auto-pagination
+List methods return Page<T>
+Use for await of client.fineTuning.jobs.list({limit}) or manual page.hasNextPage() and page.getNextPage()
+
+12 Realtime API Beta
+Use WebSocket:
+const rt = new OpenAIRealtimeWebSocket({model})
+rt.on('response.text.delta',(event)=>...)
+
+13 Azure OpenAI
+Use AzureOpenAI class:
+new AzureOpenAI({azureADTokenProvider, apiVersion})
+openai.chat.completions.create({model, messages})
+
+14 Advanced Usage
+.asResponse() returns raw Response
+.withResponse() returns {data, response}
+
+15 Custom Requests
+client.post('/path',{body,query});
+Allow undocumented params with @ts-expect-error
+
+16 Fetch Client Shim
+import 'openai/shims/web' for global fetch
+import 'openai/shims/node' for node-fetch polyfill
+
+17 Logging and Middleware
+Pass fetch override in client options to intercept
+Set DEBUG=true to auto log requests/responses
+
+18 HTTP(S) Agent
+Default connection pooling
+Override via httpAgent in client or per request
+
+19 Semantic Versioning
+Follows SemVer; minor may include static-type breaking changes
+
+20 Requirements
+TypeScript>=4.5; Node.js>=18; Deno>=1.28.0; Bun>=1.0; Cloudflare Workers; Vercel Edge; Jest>=28+node; Nitro>=2.6; Browser support via dangerouslyAllowBrowser
+
+## Original Source
+OpenAI Node.js SDK
+https://github.com/openai/openai-node#readme
+
+## Digest of OPENAI_NODE_SDK
+
+# OPENAI NODE.JS SDK (Retrieved 2024-06-30)
+
+## Installation
+
+```bash
+npm install openai
+# Deno / JSR
+deno add jsr:@openai/openai
+npx jsr add @openai/openai
+``` 
+
+## Client Configuration
+
+Constructor: `new OpenAI(options?: OpenAIOptions)`
+
+Options:
+- `apiKey?: string`  (default from OPENAI_API_KEY env)
+- `maxRetries?: number`  (default 2)
+- `timeout?: number`  (ms, default 600000)
+- `fetch?: (url: RequestInfo, init?: RequestInit) => Promise<Response>`
+- `httpAgent?: http.Agent | https.Agent`
+- `dangerouslyAllowBrowser?: boolean`  (default false)
+- `azureADTokenProvider?: BearerTokenProvider`
+- `apiVersion?: string`
+
+## Responses API
+
+```ts
+client.responses.create(
+  params: { model: string; instructions?: string; input?: string; stream?: boolean },
+  options?: { maxRetries?: number; timeout?: number; httpAgent?: Agent }
+): Promise<{ output_text: string; _request_id: string } | AsyncIterable<ServerSentEvent> >
+```
+
+## Chat Completions API
+
+```ts
+client.chat.completions.create(
+  params: { model: string; messages: Array<{ role: 'developer'|'user'|'assistant'; content: string }>; stream?: boolean; temperature?: number; max_tokens?: number },
+  options?: RequestOptions
+): Promise<ChatCompletionResponse | AsyncIterable<ServerSentEvent>>
+```
+
+## Streaming
+
+Use `stream: true` and for-await:
+
+```ts
+const stream = await client.responses.create({ model, input, stream: true });
+for await (const event of stream) { console.log(event); }
+```
+
+## File Uploads
+
+```ts
+client.files.create({ file: fs.ReadStream | File | Response | toFile(buffer, filename); purpose: 'fine-tune' });
+```
+
+## Error Handling
+
+Throws subclasses of `OpenAI.APIError` with:
+- `request_id: string`
+- `status: number`
+- `name: string`
+- `headers: Record<string,string>`
+
+Error mapping:
+- 400: BadRequestError
+- 401: AuthenticationError
+- 403: PermissionDeniedError
+- 404: NotFoundError
+- 422: UnprocessableEntityError
+- 429: RateLimitError
+- >=500: InternalServerError
+- network: APIConnectionError
+
+## Retries
+
+Defaults: 2 attempts on connection errors, 408, 409, 429, >=500.
+Override via `maxRetries` in client or per request.
+
+## Timeouts
+
+Default: 600000 ms.  Throws `APIConnectionTimeoutError`.  Retry twice.
+Override via `timeout` in client or per request.
+
+## Request IDs
+
+Access via `_request_id` on responses or `.withResponse()`:
+
+```ts
+const { data, request_id } = await client.responses.create(params).withResponse();
+```
+
+## Auto-pagination
+
+List methods return `Page<T>` with `.data: T[]`, `.hasNextPage()`, `.getNextPage()`; or use `for await` on `client.fineTuning.jobs.list()`.
+
+## Realtime API Beta
+
+```ts
+const rt = new OpenAIRealtimeWebSocket({ model: string });
+rt.on('response.text.delta', (event: { delta: string }) => process.stdout.write(event.delta));
+```
+
+## Azure OpenAI
+
+```ts
+const openai = new AzureOpenAI({ azureADTokenProvider, apiVersion });
+openai.chat.completions.create({ model, messages });
+```
+
+## Advanced Usage
+
+- `.asResponse()` returns raw `Response`
+- `.withResponse()` returns `{ data, response }`
+
+## Custom Requests
+
+```ts
+await client.post('/endpoint', { body, query });
+// allow undocumented params with @ts-expect-error
+```
+
+## Fetch Client Shim
+
+- `import 'openai/shims/web'` to use global fetch
+- `import 'openai/shims/node'` to use node-fetch polyfills
+
+## Logging and Middleware
+
+Pass `fetch` option to intercept requests/responses. Set DEBUG=true for automatic logs.
+
+## HTTP(S) Agent
+
+Default: pooled agent. Override via `httpAgent` in client or per request.
+
+## Semantic Versioning
+
+Follows SemVer. Minor releases may contain breaking static-type changes.
+
+## Requirements
+
+- TS >=4.5, Node.js >=18, Deno >=1.28.0, Bun >=1.0, Cloudflare Workers, Vercel Edge, Jest28+, Nitro>=2.6.
+
+
+
+## Attribution
+- Source: OpenAI Node.js SDK
+- URL: https://github.com/openai/openai-node#readme
+- License: MIT License
+- Crawl Date: 2025-05-04T08:50:20.297Z
+- Data Size: 702054 bytes
+- Links Found: 5432
+
+## Retrieved
+2025-05-04
+library/SERVER_SENT_EVENTS.md
+# library/SERVER_SENT_EVENTS.md
+# SERVER_SENT_EVENTS
+
+## Crawl Summary
+EventSource(url:USVString,{withCredentials?:boolean=false})
+Properties: url:string readonly, withCredentials:boolean readonly, readyState:0|1|2
+Constants: CONNECTING=0, OPEN=1, CLOSED=2
+Methods: close():void, addEventListener(type,listener,options), removeEventListener(...), dispatchEvent(event)
+Event Handlers: onopen(evt), onmessage(evt.data:string,evt.lastEventId:string), onerror(evt)
+Protocol: text/event-stream; charset=UTF-8; fields: id:, event:, data:, retry:, comments start with ':'; blank line ends message; retry sets reconnect delay
+
+## Normalised Extract
+Table of Contents
+1. Constructor
+2. EventSourceInit
+3. Properties
+4. Methods
+5. Constants
+6. Event Handlers
+7. Protocol Format
+
+1. Constructor
+Signature: EventSource(url: USVString, eventSourceInitDict?: {withCredentials?: boolean})
+Parameters:
+ url: absolute or relative URL of SSE endpoint
+ eventSourceInitDict.withCredentials: true|false (default false)
+Behavior: Initiates HTTP GET with Accept: text/event-stream; reconnects automatically on failure.
+
+2. EventSourceInit
+Dictionary:
+ withCredentials boolean optional default false; controls sending of credentials.
+
+3. Properties
+ url: USVString readonly; endpoint URL
+ withCredentials: boolean readonly; from init dict
+ readyState: 0|1|2 readonly; connection state codes
+
+4. Methods
+ close(): void; stops stream and reconnection
+ addEventListener(type: string, listener: MessageEventListener, options?: boolean | AddEventListenerOptions): void
+ removeEventListener(type: string, listener: MessageEventListener, options?: boolean | EventListenerOptions): void
+ dispatchEvent(event: Event): boolean
+
+5. Constants
+ static CONNECTING = 0
+ static OPEN = 1
+ static CLOSED = 2
+
+6. Event Handlers
+ onopen(evt: Event): called on open
+ onmessage(evt: MessageEvent): evt.data:string, evt.lastEventId:string
+ onerror(evt: Event): called on error; readyState may transition
+
+7. Protocol Format
+ Headers: Content-Type: text/event-stream; charset=UTF-8; Cache-Control: no-cache
+ Fields per line: id:, event:, data:, retry:
+ Comments with ":"
+ Blank line terminates message block
+ data: lines accumulate with newline separators
+ retry: sets next reconnect interval (ms)
+
+## Supplementary Details
+Server Setup (Node.js Express):
+ app.get('/sse', (req, res) => {
+   res.writeHead(200, {
+     'Content-Type': 'text/event-stream',
+     'Cache-Control': 'no-cache',
+     Connection: 'keep-alive'
+   });
+   let id = 0;
+   const send = (data, eventType = 'message') => {
+     res.write(`id: ${id}\n`);
+     if(eventType !== 'message') res.write(`event: ${eventType}\n`);
+     data.split('\n').forEach(line => res.write(`data: ${line}\n`));
+     res.write('\n');
+     id++;
+   };
+   send('Connection established');
+   const interval = setInterval(() => send(`Server time: ${Date.now()}`), 3000);
+   req.on('close', () => clearInterval(interval));
+ });
+
+Client Code (JavaScript):
+ const source = new EventSource('/sse', {withCredentials: true});
+ source.onopen = () => console.log('SSE connection opened');
+ source.onmessage = event => console.log('Message:', event.data, 'Last ID:', event.lastEventId);
+ source.onerror = () => console.error('SSE error, state:', source.readyState);
+
+Configuration Options:
+ withCredentials: false | true (default false)
+ Reconnection: default 3000ms or as set by retry field
+
+## Reference Details
+API Specifications
+EventSource
+ Constructor(url: USVString, eventSourceInitDict?: EventSourceInit)
+ EventSourceInit {
+   withCredentials?: boolean // default false
+ }
+ Properties:
+ url: USVString (readonly)
+ withCredentials: boolean (readonly)
+ readyState: number (readonly; 0=CONNECTING,1=OPEN,2=CLOSED)
+ Constants:
+ static CONNECTING: 0
+ static OPEN: 1
+ static CLOSED: 2
+ Event Handlers:
+ onopen: (evt: Event) => void
+ onmessage: (evt: MessageEvent) => void // evt.data: string; evt.lastEventId: string
+ onerror: (evt: Event) => void
+ Methods:
+ close(): void
+ addEventListener(type: string, listener: (evt: MessageEvent) => any, options?: boolean|AddEventListenerOptions): void
+ removeEventListener(type: string, listener: (evt: MessageEvent) => any, options?: boolean|EventListenerOptions): void
+ dispatchEvent(event: Event): boolean
+
+PHP Server Example:
+ <?php
+ header('Content-Type: text/event-stream');
+ header('Cache-Control: no-cache');
+ $id = 0;
+ while (true) {
+   echo "id: {$id}\n";
+   echo "data: Server time: " . date('r') . "\n\n";
+   ob_flush(); flush();
+   $id++;
+   sleep(1);
+ }
+ ?>
+
+Implementation Pattern:
+ 1. Set appropriate headers
+ 2. Stream messages using id:, event:, data:, blank line
+ 3. Flush after each message
+ 4. Handle client disconnects
+ 5. Use retry field for dynamic reconnection intervals
+
+Best Practices:
+ - Include id in each message for reconnection continuity
+ - Use custom event types via event: <type>
+ - Handle readyState CLOSED to fallback
+
+Troubleshooting:
+ - Inspect raw stream: curl -N http://server/sse
+ - Expect lines starting with data:, id:, blank line separation
+ - If nothing appears: verify Content-Type and disable buffering at server/proxy
+
+## Information Dense Extract
+EventSource(url:USVString,{withCredentials?:boolean=false}); Properties: url,withCredentials,readyState(0|1|2); Constants: CONNECTING=0,OPEN=1,CLOSED=2; Methods: close(), addEventListener(type,listener,options), removeEventListener(...), dispatchEvent(event); Handlers: onopen, onmessage(data:string,lastEventId:string), onerror; Protocol: text/event-stream; charset=UTF-8; fields: id:,event:,data:,retry:; comments with ':'; blank line ends event; retry sets reconnect ms
+
+## Sanitised Extract
+Table of Contents
+1. Constructor
+2. EventSourceInit
+3. Properties
+4. Methods
+5. Constants
+6. Event Handlers
+7. Protocol Format
+
+1. Constructor
+Signature: EventSource(url: USVString, eventSourceInitDict?: {withCredentials?: boolean})
+Parameters:
+ url: absolute or relative URL of SSE endpoint
+ eventSourceInitDict.withCredentials: true|false (default false)
+Behavior: Initiates HTTP GET with Accept: text/event-stream; reconnects automatically on failure.
+
+2. EventSourceInit
+Dictionary:
+ withCredentials boolean optional default false; controls sending of credentials.
+
+3. Properties
+ url: USVString readonly; endpoint URL
+ withCredentials: boolean readonly; from init dict
+ readyState: 0|1|2 readonly; connection state codes
+
+4. Methods
+ close(): void; stops stream and reconnection
+ addEventListener(type: string, listener: MessageEventListener, options?: boolean | AddEventListenerOptions): void
+ removeEventListener(type: string, listener: MessageEventListener, options?: boolean | EventListenerOptions): void
+ dispatchEvent(event: Event): boolean
+
+5. Constants
+ static CONNECTING = 0
+ static OPEN = 1
+ static CLOSED = 2
+
+6. Event Handlers
+ onopen(evt: Event): called on open
+ onmessage(evt: MessageEvent): evt.data:string, evt.lastEventId:string
+ onerror(evt: Event): called on error; readyState may transition
+
+7. Protocol Format
+ Headers: Content-Type: text/event-stream; charset=UTF-8; Cache-Control: no-cache
+ Fields per line: id:, event:, data:, retry:
+ Comments with ':'
+ Blank line terminates message block
+ data: lines accumulate with newline separators
+ retry: sets next reconnect interval (ms)
+
+## Original Source
+MDN Server-Sent Events (SSE)
+https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
+
+## Digest of SERVER_SENT_EVENTS
+
+# Server-Sent Events (SSE)
+Date Retrieved: 2024-06-01
+Source: MDN Web Docs, Server-Sent Events (last modified Mar 20, 2025)
+Data Size: 1860366 bytes
+
+# EventSource Interface
+
+## Constructor
+
+EventSource(url: USVString, eventSourceInitDict?: EventSourceInit)
+Initializes a persistent SSE connection to the given URL, automatically reconnecting on network failures.
+
+## EventSourceInit Dictionary
+
+withCredentials: boolean
+Default: false
+Controls whether cookies and HTTP authentication are sent with requests.
+
+## Properties
+
+url: USVString (readonly)
+withCredentials: boolean (readonly)
+readyState: number (readonly; 0=CONNECTING, 1=OPEN, 2=CLOSED)
+
+## Methods
+
+close(): void
+Terminates the connection and stops reconnection.
+
+addEventListener(type: string, listener: (evt: MessageEvent) => any, options?: boolean | AddEventListenerOptions): void
+removeEventListener(type: string, listener: (evt: MessageEvent) => any, options?: boolean | EventListenerOptions): void
+dispatchEvent(event: Event): boolean
+
+## Constants
+
+static CONNECTING: 0
+static OPEN: 1
+static CLOSED: 2
+
+## Event Handlers
+
+onopen: (evt: Event) => any
+onmessage: (evt: MessageEvent) => any
+onerror: (evt: Event) => any
+
+# Protocol Format
+
+Streams must use Content-Type: text/event-stream; charset=UTF-8 and disable buffering.
+Each message block ends with a blank line. Supported fields per line:
+
+id: <string>    sets lastEventId for reconnection
+event: <type>   sets custom event type beyond default "message"
+data: <content> payload; multiple lines concatenate with "\n"
+retry: <ms>     updates reconnection delay (in milliseconds)
+: <comment>     ignored by client
+
+
+## Attribution
+- Source: MDN Server-Sent Events (SSE)
+- URL: https://developer.mozilla.org/en-US/docs/Web/API/Server-sent_events
+- License: CC BY-SA 2.5
+- Crawl Date: 2025-05-04T12:59:45.417Z
+- Data Size: 1860366 bytes
+- Links Found: 21397
+
+## Retrieved
+2025-05-04
